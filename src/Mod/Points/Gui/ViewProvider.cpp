@@ -472,20 +472,20 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
 
 // -------------------------------------------------
 
-PROPERTY_SOURCE(PointsGui::ViewProviderOrganized, PointsGui::ViewProviderPoints)
+PROPERTY_SOURCE(PointsGui::ViewProviderStructured, PointsGui::ViewProviderPoints)
 
-ViewProviderOrganized::ViewProviderOrganized()
+ViewProviderStructured::ViewProviderStructured()
 {
     pcPoints = new SoIndexedPointSet();
     pcPoints->ref();
 }
 
-ViewProviderOrganized::~ViewProviderOrganized()
+ViewProviderStructured::~ViewProviderStructured()
 {
     pcPoints->unref();
 }
 
-void ViewProviderOrganized::attach(App::DocumentObject* pcObj)
+void ViewProviderStructured::attach(App::DocumentObject* pcObj)
 {
     // call parent's attach to define display modes
     ViewProviderGeometryObject::attach(pcObj);
@@ -531,7 +531,7 @@ void ViewProviderOrganized::attach(App::DocumentObject* pcObj)
     }
 }
 
-void ViewProviderOrganized::updateData(const App::Property* prop)
+void ViewProviderStructured::updateData(const App::Property* prop)
 {
     ViewProviderPoints::updateData(prop);
     if (prop->getTypeId() == Points::PropertyPointKernel::getClassTypeId()) {
@@ -543,7 +543,7 @@ void ViewProviderOrganized::updateData(const App::Property* prop)
     }
 }
 
-void ViewProviderOrganized::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)
+void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)
 {
     // create the polygon from the picked points
     Base::Polygon2D cPoly;

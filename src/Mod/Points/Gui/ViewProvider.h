@@ -142,17 +142,17 @@ protected:
 };
 
 /**
- * The ViewProviderOrganized class creates
- * a node representing the organized points.
+ * The ViewProviderStructured class creates
+ * a node representing the structured points.
  * @author Werner Mayer
  */
-class PointsGuiExport ViewProviderOrganized : public ViewProviderPoints
+class PointsGuiExport ViewProviderStructured : public ViewProviderPoints
 {
-    PROPERTY_HEADER(PointsGui::ViewProviderOrganized);
+    PROPERTY_HEADER(PointsGui::ViewProviderStructured);
 
 public:
-    ViewProviderOrganized();
-    virtual ~ViewProviderOrganized();
+    ViewProviderStructured();
+    virtual ~ViewProviderStructured();
 
     /**
      * Extracts the point data from the feature \a pcFeature and creates

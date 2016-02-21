@@ -177,7 +177,7 @@ bool Reader::hasNormals() const
     return (!normals.empty());
 }
 
-bool Reader::isOrganized() const
+bool Reader::isStructured() const
 {
     return (width > 1 && height > 1);
 }

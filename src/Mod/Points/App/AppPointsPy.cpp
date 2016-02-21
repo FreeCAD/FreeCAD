@@ -48,7 +48,7 @@
 #include "Points.h"
 #include "PointsPy.h"
 #include "PointsAlgos.h"
-#include "PointsFeature.h"
+#include "Structured.h"
 #include "Properties.h"
 
 namespace Points {
@@ -107,9 +107,9 @@ private:
 
             Points::Feature *pcFeature = 0;
             if (reader->hasProperties()) {
-                // is organized in a grid structure?
-                if (reader->isOrganized()) {
-                    pcFeature = new Points::OrganizedCustom();
+                // Scattered or structured points?
+                if (reader->isStructured()) {
+                    pcFeature = new Points::StructuredCustom();
 
                     App::PropertyInteger* width = static_cast<App::PropertyInteger*>
                         (pcFeature->getPropertyByName("Width"));
@@ -214,9 +214,9 @@ private:
 
             Points::Feature *pcFeature = 0;
             if (reader->hasProperties()) {
-                // is organized in a grid structure?
-                if (reader->isOrganized()) {
-                    pcFeature = new Points::OrganizedCustom();
+                // Scattered or structured points?
+                if (reader->isStructured()) {
+                    pcFeature = new Points::StructuredCustom();
 
                     App::PropertyInteger* width = static_cast<App::PropertyInteger*>
                         (pcFeature->getPropertyByName("Width"));
