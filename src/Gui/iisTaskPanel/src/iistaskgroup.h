@@ -9,6 +9,10 @@
 #define IISTASKGROUP_H
 
 #include <QtGui>
+#include <QWidget>
+#include <QFrame>
+#include <QBoxLayout>
+#include <QPaintEvent>
 
 #include "iistaskpanel_global.h"
 
