@@ -83,7 +83,7 @@ bool CImageConvApp::Save(const QString& fn)
     {
         if (!fn.isEmpty())
         {
-            return m_clPixmap.save(fn, ext.toUpper().toAscii());
+            return m_clPixmap.save(fn, ext.toUpper().toLatin1());
         }
     }
 
@@ -113,7 +113,7 @@ bool CImageConvApp::ConvertToXPM(bool bAppendToFile)
     cout << "Try converting to XPM..." << endl;
     if (list.count() == 0)
     {
-        cout << "Cannot find " << (const char*)m_Dir.nameFilters().join(" ").toAscii() << endl;
+        cout << "Cannot find " << (const char*)m_Dir.nameFilters().join(" ").toLatin1() << endl;
         return false;
     }
 
@@ -126,7 +126,7 @@ bool CImageConvApp::ConvertToXPM(bool bAppendToFile)
         if (m_Output == *it)
             continue; // if the file is the output file itself
 
-        cout << "Converting " << (const char*)(*it).toAscii() << " ...";
+        cout << "Converting " << (const char*)(*it).toLatin1() << " ...";
     
         if (Load(*it) == true)
         {
@@ -250,21 +250,21 @@ bool CImageConvApp::AppendToFile(const QString& file)
 
 void CImageConvApp::Error()
 {
-    cerr << "Usage: " << (const char*)m_Executable.toAscii() << " [OPTION(S)] -i input file(s) {-o output file}" << endl;
-    cerr << "Try '"   << (const char*)m_Executable.toAscii() << " --help' for more information." << endl;
+    cerr << "Usage: " << (const char*)m_Executable.toLatin1() << " [OPTION(S)] -i input file(s) {-o output file}" << endl;
+    cerr << "Try '"   << (const char*)m_Executable.toLatin1() << " --help' for more information." << endl;
 
     exit(0);
 }
 
 void CImageConvApp::Version()
 {
-    cerr << (const char*)m_Executable.toAscii() << " 1.0.0 " << endl;
+    cerr << (const char*)m_Executable.toLatin1() << " 1.0.0 " << endl;
     exit(0);
 }
 
 void CImageConvApp::Usage()
 {
-    cerr << "Usage: " << (const char*)m_Executable.toAscii() << " [OPTION(S)] -i input file(s) {-o output file}\n" << endl;
+    cerr << "Usage: " << (const char*)m_Executable.toLatin1() << " [OPTION(S)] -i input file(s) {-o output file}\n" << endl;
     cerr << "Options:" << endl;
 
     cerr << "  -i       \tSpecify the input file(s).\n"
@@ -297,7 +297,7 @@ void CImageConvApp::Usage()
 
     cerr << "This program supports the following image formats:\n"
             " BMP, GIF, JPEG, MNG, PNG, PNM, XBM and XPM\n\n"
-         << (const char*)m_Executable.toAscii() << " uses Qt Version " << qVersion() << "\n"
+         << (const char*)m_Executable.toLatin1() << " uses Qt Version " << qVersion() << "\n"
             "Qt can be downloaded at http://www.trolltech.com." << endl;
 
     exit(0);
