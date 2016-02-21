@@ -155,12 +155,14 @@ private:
                 // delayed adding of the points feature
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
             else {
                 Points::Feature *pcFeature = static_cast<Points::Feature*>
                     (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
                 pcFeature->Points.setValue(reader->getPoints());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
         }
         catch (const Base::Exception& e) {
@@ -260,12 +262,14 @@ private:
                 // delayed adding of the points feature
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
             else {
                 Points::Feature *pcFeature = static_cast<Points::Feature*>
                     (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
                 pcFeature->Points.setValue(reader->getPoints());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
         }
         catch (const Base::Exception& e) {

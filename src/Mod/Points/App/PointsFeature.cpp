@@ -54,6 +54,11 @@ Feature::~Feature()
 {
 }
 
+short Feature::mustExecute() const
+{
+    return 0;
+}
+
 App::DocumentObjectExecReturn *Feature::execute(void)
 {
     this->Points.touch();
@@ -95,8 +100,8 @@ PROPERTY_SOURCE(Points::Organized, Points::Feature)
 
 Organized::Organized()
 {
-    ADD_PROPERTY_TYPE(Width,(1),"Width",App::Prop_ReadOnly,"Width");
-    ADD_PROPERTY_TYPE(Height,(1),"Height",App::Prop_ReadOnly,"Height");
+    ADD_PROPERTY_TYPE(Width,(1),"Organized points",App::Prop_ReadOnly,"Width of the frame");
+    ADD_PROPERTY_TYPE(Height,(1),"Organized points",App::Prop_ReadOnly,"Height of the frame");
 }
 
 Organized::~Organized()

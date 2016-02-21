@@ -28,12 +28,16 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoPointSet.h>
+# include <Inventor/nodes/SoIndexedPointSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoNormal.h>
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
+
+#include <boost/math/special_functions/fpclassify.hpp>
+#include <limits>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui,...
 #include <Base/Console.h>
@@ -60,7 +64,7 @@ using namespace PointsGui;
 using namespace Points;
 
 
-PROPERTY_SOURCE(PointsGui::ViewProviderPoints, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE_ABSTRACT(PointsGui::ViewProviderPoints, Gui::ViewProviderGeometryObject)
 
 
 App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0,64.0,1.0};
@@ -78,8 +82,6 @@ ViewProviderPoints::ViewProviderPoints()
 
     pcPointsCoord = new SoCoordinate3();
     pcPointsCoord->ref();
-    pcPoints = new SoPointSet();
-    pcPoints->ref();
     pcPointsNormal = new SoNormal();
     pcPointsNormal->ref();
     pcColorMat = new SoMaterial;
@@ -95,7 +97,6 @@ ViewProviderPoints::~ViewProviderPoints()
 {
     pcHighlight->unref();
     pcPointsCoord->unref();
-    pcPoints->unref();
     pcPointsNormal->unref();
     pcColorMat->unref();
     pcPointStyle->unref();
@@ -188,52 +189,6 @@ void ViewProviderPoints::setVertexNormalMode(Points::PropertyNormalList* pcPrope
     }
 
     pcPointsNormal->vector.finishEditing();
-}
-
-void ViewProviderPoints::attach(App::DocumentObject* pcObj)
-{
-    // call parent's attach to define display modes
-    ViewProviderGeometryObject::attach(pcObj);
-
-    pcHighlight->objectName = pcObj->getNameInDocument();
-    pcHighlight->documentName = pcObj->getDocument()->getName();
-    pcHighlight->subElementName = "Main";
-
-    // Hilight for selection
-    pcHighlight->addChild(pcPointsCoord);
-    pcHighlight->addChild(pcPoints);
-
-    std::vector<std::string> modes = getDisplayModes();
-
-    // points part ---------------------------------------------
-    SoGroup* pcPointRoot = new SoGroup();
-    pcPointRoot->addChild(pcPointStyle);
-    pcPointRoot->addChild(pcShapeMaterial);
-    pcPointRoot->addChild(pcHighlight);
-    addDisplayMaskMode(pcPointRoot, "Point");
-
-    // points shaded ---------------------------------------------
-    if (std::find(modes.begin(), modes.end(), std::string("Shaded")) != modes.end()) {
-        SoGroup* pcPointShadedRoot = new SoGroup();
-        pcPointShadedRoot->addChild(pcPointStyle);
-        pcPointShadedRoot->addChild(pcShapeMaterial);
-        pcPointShadedRoot->addChild(pcPointsNormal);
-        pcPointShadedRoot->addChild(pcHighlight);
-        addDisplayMaskMode(pcPointShadedRoot, "Shaded");
-    }
-
-    // color shaded  ------------------------------------------
-    if (std::find(modes.begin(), modes.end(), std::string("Color")) != modes.end() ||
-        std::find(modes.begin(), modes.end(), std::string("Intensity")) != modes.end()) {
-        SoGroup* pcColorShadedRoot = new SoGroup();
-        pcColorShadedRoot->addChild(pcPointStyle);
-        SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
-        pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
-        pcColorShadedRoot->addChild(pcColorMat);
-        pcColorShadedRoot->addChild(pcMatBinding);
-        pcColorShadedRoot->addChild(pcHighlight);
-        addDisplayMaskMode(pcColorShadedRoot, "Color");
-    }
 }
 
 void ViewProviderPoints::setDisplayMode(const char* ModeName)
@@ -339,18 +294,6 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderPoints::updateData(const App::Property* prop)
-{
-    Gui::ViewProviderGeometryObject::updateData(prop);
-    if (prop->getTypeId() == Points::PropertyPointKernel::getClassTypeId()) {
-        ViewProviderPointsBuilder builder;
-        builder.createPoints(prop, pcPointsCoord, pcPoints);
-
-        // The number of points might have changed, so force also a resize of the Inventor internals
-        setActiveMode();
-    }
-}
-
 QIcon ViewProviderPoints::getIcon() const
 {
     static const char * const Points_Feature_xpm[] = {
@@ -414,7 +357,80 @@ void ViewProviderPoints::clipPointsCallback(void * ud, SoEventCallback * n)
     view->redraw();
 }
 
-void ViewProviderPoints::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)
+// -------------------------------------------------
+
+PROPERTY_SOURCE(PointsGui::ViewProviderScattered, PointsGui::ViewProviderPoints)
+
+ViewProviderScattered::ViewProviderScattered()
+{
+    pcPoints = new SoPointSet();
+    pcPoints->ref();
+}
+
+ViewProviderScattered::~ViewProviderScattered()
+{
+    pcPoints->unref();
+}
+
+void ViewProviderScattered::attach(App::DocumentObject* pcObj)
+{
+    // call parent's attach to define display modes
+    ViewProviderGeometryObject::attach(pcObj);
+
+    pcHighlight->objectName = pcObj->getNameInDocument();
+    pcHighlight->documentName = pcObj->getDocument()->getName();
+    pcHighlight->subElementName = "Main";
+
+    // Hilight for selection
+    pcHighlight->addChild(pcPointsCoord);
+    pcHighlight->addChild(pcPoints);
+
+    std::vector<std::string> modes = getDisplayModes();
+
+    // points part ---------------------------------------------
+    SoGroup* pcPointRoot = new SoGroup();
+    pcPointRoot->addChild(pcPointStyle);
+    pcPointRoot->addChild(pcShapeMaterial);
+    pcPointRoot->addChild(pcHighlight);
+    addDisplayMaskMode(pcPointRoot, "Point");
+
+    // points shaded ---------------------------------------------
+    if (std::find(modes.begin(), modes.end(), std::string("Shaded")) != modes.end()) {
+        SoGroup* pcPointShadedRoot = new SoGroup();
+        pcPointShadedRoot->addChild(pcPointStyle);
+        pcPointShadedRoot->addChild(pcShapeMaterial);
+        pcPointShadedRoot->addChild(pcPointsNormal);
+        pcPointShadedRoot->addChild(pcHighlight);
+        addDisplayMaskMode(pcPointShadedRoot, "Shaded");
+    }
+
+    // color shaded  ------------------------------------------
+    if (std::find(modes.begin(), modes.end(), std::string("Color")) != modes.end() ||
+        std::find(modes.begin(), modes.end(), std::string("Intensity")) != modes.end()) {
+        SoGroup* pcColorShadedRoot = new SoGroup();
+        pcColorShadedRoot->addChild(pcPointStyle);
+        SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
+        pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+        pcColorShadedRoot->addChild(pcColorMat);
+        pcColorShadedRoot->addChild(pcMatBinding);
+        pcColorShadedRoot->addChild(pcHighlight);
+        addDisplayMaskMode(pcColorShadedRoot, "Color");
+    }
+}
+
+void ViewProviderScattered::updateData(const App::Property* prop)
+{
+    ViewProviderPoints::updateData(prop);
+    if (prop->getTypeId() == Points::PropertyPointKernel::getClassTypeId()) {
+        ViewProviderPointsBuilder builder;
+        builder.createPoints(prop, pcPointsCoord, pcPoints);
+
+        // The number of points might have changed, so force also a resize of the Inventor internals
+        setActiveMode();
+    }
+}
+
+void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)
 {
     // create the polygon from the picked points
     Base::Polygon2D cPoly;
@@ -460,15 +476,64 @@ PROPERTY_SOURCE(PointsGui::ViewProviderOrganized, PointsGui::ViewProviderPoints)
 
 ViewProviderOrganized::ViewProviderOrganized()
 {
+    pcPoints = new SoIndexedPointSet();
+    pcPoints->ref();
 }
 
 ViewProviderOrganized::~ViewProviderOrganized()
 {
+    pcPoints->unref();
+}
+
+void ViewProviderOrganized::attach(App::DocumentObject* pcObj)
+{
+    // call parent's attach to define display modes
+    ViewProviderGeometryObject::attach(pcObj);
+
+    pcHighlight->objectName = pcObj->getNameInDocument();
+    pcHighlight->documentName = pcObj->getDocument()->getName();
+    pcHighlight->subElementName = "Main";
+
+    // Hilight for selection
+    pcHighlight->addChild(pcPointsCoord);
+    pcHighlight->addChild(pcPoints);
+
+    std::vector<std::string> modes = getDisplayModes();
+
+    // points part ---------------------------------------------
+    SoGroup* pcPointRoot = new SoGroup();
+    pcPointRoot->addChild(pcPointStyle);
+    pcPointRoot->addChild(pcShapeMaterial);
+    pcPointRoot->addChild(pcHighlight);
+    addDisplayMaskMode(pcPointRoot, "Point");
+
+    // points shaded ---------------------------------------------
+    if (std::find(modes.begin(), modes.end(), std::string("Shaded")) != modes.end()) {
+        SoGroup* pcPointShadedRoot = new SoGroup();
+        pcPointShadedRoot->addChild(pcPointStyle);
+        pcPointShadedRoot->addChild(pcShapeMaterial);
+        pcPointShadedRoot->addChild(pcPointsNormal);
+        pcPointShadedRoot->addChild(pcHighlight);
+        addDisplayMaskMode(pcPointShadedRoot, "Shaded");
+    }
+
+    // color shaded  ------------------------------------------
+    if (std::find(modes.begin(), modes.end(), std::string("Color")) != modes.end() ||
+        std::find(modes.begin(), modes.end(), std::string("Intensity")) != modes.end()) {
+        SoGroup* pcColorShadedRoot = new SoGroup();
+        pcColorShadedRoot->addChild(pcPointStyle);
+        SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
+        pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+        pcColorShadedRoot->addChild(pcColorMat);
+        pcColorShadedRoot->addChild(pcMatBinding);
+        pcColorShadedRoot->addChild(pcHighlight);
+        addDisplayMaskMode(pcColorShadedRoot, "Color");
+    }
 }
 
 void ViewProviderOrganized::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    ViewProviderPoints::updateData(prop);
     if (prop->getTypeId() == Points::PropertyPointKernel::getClassTypeId()) {
         ViewProviderPointsBuilder builder;
         builder.createPoints(prop, pcPointsCoord, pcPoints);
@@ -478,15 +543,66 @@ void ViewProviderOrganized::updateData(const App::Property* prop)
     }
 }
 
+void ViewProviderOrganized::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)
+{
+    // create the polygon from the picked points
+    Base::Polygon2D cPoly;
+    for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it) {
+        cPoly.Add(Base::Vector2D((*it)[0],(*it)[1]));
+    }
+
+    // get a reference to the point feature
+    Points::Feature* fea = static_cast<Points::Feature*>(pcObject);
+    const Points::PointKernel& points = fea->Points.getValue();
+
+    SoCamera* pCam = Viewer.getSoRenderManager()->getCamera();
+    SbViewVolume  vol = pCam->getViewVolume();
+
+    // search for all points inside/outside the polygon
+    Points::PointKernel newKernel;
+    newKernel.reserve(points.size());
+
+    bool invalidatePoints = false;
+    double nan = std::numeric_limits<double>::quiet_NaN();
+    for (Points::PointKernel::const_iterator jt = points.begin(); jt != points.end(); ++jt) {
+        // valid point?
+        Base::Vector3d vec(*jt);
+        if (!(boost::math::isnan(jt->x) || boost::math::isnan(jt->y) || boost::math::isnan(jt->z))) {
+            SbVec3f pt(jt->x,jt->y,jt->z);
+
+            // project from 3d to 2d
+            vol.projectToScreen(pt, pt);
+            if (cPoly.Contains(Base::Vector2D(pt[0],pt[1]))) {
+                invalidatePoints = true;
+                vec.Set(nan, nan, nan);
+            }
+        }
+
+        newKernel.push_back(vec);
+    }
+
+    if (invalidatePoints) {
+        //Remove the points from the cloud and open a transaction object for the undo/redo stuff
+        Gui::Application::Instance->activeDocument()->openCommand("Cut points");
+
+        // sets the points outside the polygon to update the Inventor node
+        fea->Points.setValue(newKernel);
+
+        // unset the modified flag because we don't need the features' execute() to be called
+        Gui::Application::Instance->activeDocument()->commitCommand();
+        fea->purgeTouched();
+    }
+}
+
 // -------------------------------------------------
 
 namespace Gui {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(PointsGui::ViewProviderPython, PointsGui::ViewProviderPoints)
+PROPERTY_SOURCE_TEMPLATE(PointsGui::ViewProviderPython, PointsGui::ViewProviderScattered)
 /// @endcond
 
 // explicit template instantiation
-template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProviderPoints>;
+template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProviderScattered>;
 }
 
 // -------------------------------------------------
@@ -530,4 +646,36 @@ void ViewProviderPointsBuilder::createPoints(const App::Property* prop, SoCoordi
 
     points->numPoints = cPts.size();
     coords->point.finishEditing();
+}
+
+void ViewProviderPointsBuilder::createPoints(const App::Property* prop, SoCoordinate3* coords, SoIndexedPointSet* points) const
+{
+    const Points::PropertyPointKernel* prop_points = static_cast<const Points::PropertyPointKernel*>(prop);
+    const Points::PointKernel& cPts = prop_points->getValue();
+
+    coords->point.setNum(cPts.size());
+    SbVec3f* vec = coords->point.startEditing();
+
+    // get all points
+    std::size_t idx=0;
+    std::vector<int32_t> indices;
+    indices.reserve(cPts.size());
+    const std::vector<Points::PointKernel::value_type>& kernel = cPts.getBasicPoints();
+    for (std::vector<Points::PointKernel::value_type>::const_iterator it = kernel.begin(); it != kernel.end(); ++it, idx++) {
+        vec[idx].setValue(it->x, it->y, it->z);
+        // valid point?
+        if (!(boost::math::isnan(it->x) || boost::math::isnan(it->y) || boost::math::isnan(it->z))) {
+            indices.push_back(idx);
+        }
+    }
+    coords->point.finishEditing();
+
+    // get all point indices
+    idx=0;
+    points->coordIndex.setNum(indices.size());
+    int32_t* pos = points->coordIndex.startEditing();
+    for (std::vector<int32_t>::iterator it = indices.begin(); it != indices.end(); ++it) {
+        pos[idx++] = *it;
+    }
+    points->coordIndex.finishEditing();
 }
