@@ -835,14 +835,15 @@ class inp_writer:
         #  [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
         node_length_table = []
         mesh_edge_length = 0
+        Nodes_copy = self.mesh_object.FemMesh.Nodes
         # print(len(edge_table))
         for me in edge_table:
             if len(edge_table[me]) == 2:  # 2 node mesh edge
                 # end_node_length = mesh_edge_length / 2
                 #    ______
                 #  P1      P2
-                P1 = self.mesh_object.FemMesh.Nodes[edge_table[me][0]]
-                P2 = self.mesh_object.FemMesh.Nodes[edge_table[me][1]]
+                P1 = Nodes_copy[edge_table[me][0]]
+                P2 = Nodes_copy[edge_table[me][1]]
                 edge_vec = P2 - P1
                 mesh_edge_length = edge_vec.Length
                 # print(mesh_edge_length)
@@ -855,9 +856,9 @@ class inp_writer:
                 # middle_node_length = mesh_face_area * 2 / 3
                 #   _______ _______
                 # P1       P3      P2
-                P1 = self.mesh_object.FemMesh.Nodes[edge_table[me][0]]
-                P2 = self.mesh_object.FemMesh.Nodes[edge_table[me][1]]
-                P3 = self.mesh_object.FemMesh.Nodes[edge_table[me][2]]
+                P1 = Nodes_copy[edge_table[me][0]]
+                P2 = Nodes_copy[edge_table[me][1]]
+                P3 = Nodes_copy[edge_table[me][2]]
                 edge_vec1 = P3 - P1
                 edge_vec2 = P2 - P3
                 mesh_edge_length = edge_vec1.Length + edge_vec2.Length
@@ -879,6 +880,7 @@ class inp_writer:
         #  [ (nodeID,Area), ... , (nodeID,Area) ]  some nodes will have more than one entry
         node_area_table = []
         mesh_face_area = 0
+        Nodes_copy = self.mesh_object.FemMesh.Nodes
         for mf in face_table:
             if len(face_table[mf]) == 3:  # 3 node mesh face triangle
                 # corner_node_area = mesh_face_area / 3.0
@@ -887,9 +889,9 @@ class inp_writer:
                 #     /  \
                 #    /____\
                 #  P1      P2
-                P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
-                P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
-                P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
+                P1 = Nodes_copy[face_table[mf][0]]
+                P2 = Nodes_copy[face_table[mf][1]]
+                P3 = Nodes_copy[face_table[mf][2]]
 
                 mesh_face_area = getTriangleArea(P1, P2, P3)
                 corner_node_area = mesh_face_area / 3.0
@@ -913,12 +915,12 @@ class inp_writer:
                 #    /t1 \  /t2 \
                 #   /_____\/_____\
                 # P1      P4      P2
-                P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
-                P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
-                P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
-                P4 = self.mesh_object.FemMesh.Nodes[face_table[mf][3]]
-                P5 = self.mesh_object.FemMesh.Nodes[face_table[mf][4]]
-                P6 = self.mesh_object.FemMesh.Nodes[face_table[mf][5]]
+                P1 = Nodes_copy[face_table[mf][0]]
+                P2 = Nodes_copy[face_table[mf][1]]
+                P3 = Nodes_copy[face_table[mf][2]]
+                P4 = Nodes_copy[face_table[mf][3]]
+                P5 = Nodes_copy[face_table[mf][4]]
+                P6 = Nodes_copy[face_table[mf][5]]
 
                 mesh_face_t1_area = getTriangleArea(P1, P4, P6)
                 mesh_face_t2_area = getTriangleArea(P2, P5, P4)
