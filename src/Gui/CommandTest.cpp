@@ -27,6 +27,7 @@
 # include <QEventLoop>
 # include <QFileDialog>
 # include <QMutex>
+# include <QMutexLocker>
 # include <QThread>
 # include <QTimer>
 # include <QMdiArea>
@@ -294,10 +295,10 @@ CmdTestProgress1::CmdTestProgress1()
 
 void CmdTestProgress1::activated(int iMsg)
 {
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
     try
     {
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 1000;
         Base::SequencerLauncher seq("Starting progress bar", steps);
 
@@ -306,8 +307,6 @@ void CmdTestProgress1::activated(int iMsg)
             seq.next(true);
             QWaitCondition().wait(&mutex, 30);
         }
-
-        mutex.unlock();
     }
     catch (...)
     {
@@ -337,10 +336,11 @@ CmdTestProgress2::CmdTestProgress2()
 
 void CmdTestProgress2::activated(int iMsg)
 {
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
+
     try
     {
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 1000;
         Base::SequencerLauncher seq("Starting progress bar", steps);
 
@@ -378,11 +378,12 @@ CmdTestProgress3::CmdTestProgress3()
 
 void CmdTestProgress3::activated(int iMsg)
 {
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
+    
     try
     {
         // level 1
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 5;
         Base::SequencerLauncher seq1("Starting progress bar", steps);
         for (unsigned long i=0; i<steps;i++)
@@ -446,10 +447,11 @@ CmdTestProgress4::CmdTestProgress4()
 
 void CmdTestProgress4::activated(int iMsg)
 {
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
+
     try
     {
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 50;
         Base::SequencerLauncher* seq = new Base::SequencerLauncher("Starting progress bar", steps);
 
@@ -508,10 +510,11 @@ public:
     }
     void run()
     {
+        QMutex mutex;
+        QMutexLocker ml(&mutex);
+	
         try
         {
-            QMutex mutex;
-            mutex.lock();
             Base::SequencerLauncher seq("Starting progress bar in thread", steps);
 
             for (unsigned long i=0; i<this->steps;i++)
@@ -519,7 +522,6 @@ public:
                 seq.next(true);
                 QWaitCondition().wait(&mutex, 5);
             }
-            mutex.unlock();
         }
         catch (...)
         {
@@ -662,27 +664,23 @@ public:
     }
     virtual void Warning(const char * msg)
     {
-        mutex.lock();
+        QMutexLocker ml(&mutex);
         matchWrn += strcmp(msg, "Write a warning to the console output.\n");
-        mutex.unlock();
     }
     virtual void Message(const char * msg)
     {
-        mutex.lock();
+        QMutexLocker ml(&mutex);
         matchMsg += strcmp(msg, "Write a message to the console output.\n");
-        mutex.unlock();
     }
     virtual void Error(const char * msg)
     {
-        mutex.lock();
+        QMutexLocker ml(&mutex);
         matchErr += strcmp(msg, "Write an error to the console output.\n");
-        mutex.unlock();
     }
     virtual void Log(const char * msg)
     {
-        mutex.lock();
+        QMutexLocker ml(&mutex);
         matchLog += strcmp(msg, "Write a log to the console output.\n");
-        mutex.unlock();
     }
 };
 
