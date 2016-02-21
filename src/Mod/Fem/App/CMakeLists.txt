@@ -5,7 +5,7 @@ else(MSVC)
 endif(MSVC)
 
 if(BUILD_FEM_NETGEN)
-    add_definitions(-DFCWithNetgen)
+    add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
 
 
