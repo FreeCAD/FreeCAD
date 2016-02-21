@@ -59,7 +59,7 @@ public:
     bool hasColors() const;
     const std::vector<Base::Vector3f>& getNormals() const;
     bool hasNormals() const;
-    bool isOrganized() const;
+    bool isStructured() const;
     int getWidth() const;
     int getHeight() const;
 
