@@ -620,14 +620,29 @@ void Command::applyCommandData(const char* context, Action* action)
 
 const char* Command::keySequenceToAccel(int sk) const
 {
+    /* Local class to ensure free()'ing the strings allocated below */
+    class StringMap : public std::map<int, char *> {
+    public:
+
+        ~StringMap() {
+            for (iterator i = begin(); i != end(); ++i)
+                free(i->second);
+        }
+    };
+    static StringMap strings;
+    StringMap::iterator i = strings.find(sk);
+
+    if (i != strings.end())
+        return i->second;
+
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
     QByteArray data = qs.toLatin1();
 #if defined (_MSC_VER)
-    return _strdup((const char*)data);
+    return strings[sk] = _strdup((const char*)data);
 #else
-    return strdup((const char*)data);
+    return strings[sk] = strdup((const char*)data);
 #endif
 }
 
