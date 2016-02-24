@@ -84,6 +84,10 @@ void MDIView::deleteSelf()
         parent->deleteLater();
     else
         this->deleteLater();
+
+    // detach from document
+    if (_pcDocument)
+        onClose();
     _pcDocument = 0;
 }
 
