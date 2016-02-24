@@ -138,6 +138,7 @@ public:
     /** @name Editing */
     //@{
     bool doubleClicked(void){ return false; }
+    bool isFacetSelected(unsigned long facet);
     void selectComponent(unsigned long facet);
     void deselectComponent(unsigned long facet);
     void selectFacet(unsigned long facet);
@@ -145,6 +146,7 @@ public:
     void setSelection(const std::vector<unsigned long>&);
     void addSelection(const std::vector<unsigned long>&);
     void removeSelection(const std::vector<unsigned long>&);
+    void invertSelection();
     void clearSelection();
     void deleteSelection();
     void getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
