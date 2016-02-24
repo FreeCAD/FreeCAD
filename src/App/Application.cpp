@@ -165,13 +165,8 @@ PyDoc_STRVAR(Console_doc,
      "FreeCAD Console\n"
     );
 
-Application::Application(ParameterManager * /*pcSysParamMngr*/,
-                         ParameterManager * /*pcUserParamMngr*/,
-                         std::map<std::string,std::string> &mConfig)
-    ://_pcSysParamMngr(pcSysParamMngr),
-    //_pcUserParamMngr(pcUserParamMngr),
-    _mConfig(mConfig),
-    _pActiveDoc(0)
+Application::Application(std::map<std::string,std::string> &mConfig)
+  : _mConfig(mConfig), _pActiveDoc(0)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -1277,7 +1272,7 @@ void Application::initApplication(void)
 
     // creating the application
     if (!(mConfig["Verbose"] == "Strict")) Console().Log("Create Application\n");
-    Application::_pcSingleton = new Application(0,0,mConfig);
+    Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
