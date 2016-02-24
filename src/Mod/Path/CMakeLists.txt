@@ -48,7 +48,7 @@ SET(PathScripts_SRCS
     PathScripts/PathFromShape.py
     PathScripts/DlgSettingsPath.ui
     PathScripts/PathKurveUtils.py
-    PathScripts/PathKurve.py
+    PathScripts/PathAreaUtils.py
     PathScripts/slic3r_pre.py
     PathScripts/PathFaceProfile.py
     PathScripts/PathFacePocket.py
@@ -56,6 +56,13 @@ SET(PathScripts_SRCS
     PathScripts/PathCustom.py
     PathScripts/PathInspect.py
     PathScripts/PathSimpleCopy.py
+    PathScripts/PathEngrave.py
+    PathScripts/nc/nc.py
+    PathScripts/nc/iso.py
+    PathScripts/nc/__init__.py
+    PathScripts/nc/format.py
+    PathScripts/nc/iso_codes.py
+
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
