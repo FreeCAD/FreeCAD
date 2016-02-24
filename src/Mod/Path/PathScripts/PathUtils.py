@@ -53,8 +53,9 @@ def cleanedges(splines,precision):
             edges = curvetowire(spline, 1.0) #fixme hardcoded value
                         
         elif geomType(spline)=="Circle":
-            #arcs=filterArcs(spline)
-            edges.append(spline)
+            arcs=filterArcs(spline)
+            for i in arcs:
+                edges.append(Part.Edge(i))
                                      
         elif geomType(spline)=="Line":
             edges.append(spline)
@@ -285,7 +286,8 @@ def MakePath(wire,Side,radius,clockwise,ZClearance,StepDown,ZStart,ZFinalDepth,f
     ''' makes the path - just a simple profile for now '''
     offset = SortPath(wire,Side,radius,clockwise,firstedge,SegLen=0.5)
     toolpath = offset.Edges[:]
-    paths = "" 
+    paths = ""
+    paths += "G0 Z" + str(ZClearance)+"\n"
     first = toolpath[0].Vertexes[0].Point
     paths += "G0 X"+str(fmt(first.x))+"Y"+str(fmt(first.y))+"\n"
     ZCurrent = ZStart- StepDown
@@ -382,3 +384,79 @@ def getLastZ(obj):
                     lastZ= c.Parameters['Z']
     return lastZ
 
+def frange(start, stop, step, finish):
+    x = []
+    curdepth = start
+    if step == 0:
+        return x
+    # do the base cuts until finishing round
+    while curdepth >= stop + step + finish:
+        curdepth = curdepth - step
+        if curdepth <= stop + finish:
+            curdepth = stop + finish
+        x.append(curdepth)
+
+    # we might have to do a last pass or else finish round might be too far away
+    if curdepth - stop > finish:
+        x.append(stop + finish)
+
+    # do the the finishing round
+    if curdepth >= stop:
+        curdepth = stop
+        x.append(curdepth)
+
+     # Why this?
+#    if start >= stop:
+#        start = stop
+#        x.append (start)
+
+    return x
+
+
+
+class depth_params:
+    def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, user_depths=None):
+        self.clearance_height = clearance_height
+        self.rapid_safety_space = math.fabs(rapid_safety_space)
+        self.start_depth = start_depth
+        self.step_down = math.fabs(step_down)
+        self.z_finish_depth = math.fabs(z_finish_depth)
+        self.final_depth = final_depth
+        self.user_depths = user_depths
+        
+    def get_depths(self):
+        depths = []
+        if self.user_depths != None:
+            depths = self.user_depths
+        else:
+            depth = self.final_depth
+            depths = [depth]
+            depth += self.z_finish_depth
+            if depth + 0.0000001 < self.start_depth:
+                if self.z_finish_depth > 0.0000001: depths.insert(0, depth)
+                layer_count = int((self.start_depth - depth) / self.step_down - 0.0000001) + 1
+                if layer_count > 0:
+                    layer_depth = (self.start_depth - depth)/layer_count
+                    for i in range(1, layer_count):
+                        depth += layer_depth
+                        depths.append(depth)
+        return depths
+
+# def get_depths(start_depth, final_depth, step_down, z_finish_depth):
+#     '''get_depths returns a list of z heights for pocket clearing.  First value is Z depth of the first pass, etc.
+#     start_depth: starting depth of pocket
+#     step_down: max amount removed per pocket pass
+#     z_finish_depth: amount to remove on last (finishing) pass 
+#     final_depth: bottom of pocket'''
+#     depths = [depth]
+#     depth += z_finish_depth
+#     if depth + 0.0000001 < start_depth:
+#         if z_finish_depth > 0.0000001: depths.insert(0, depth)
+#         layer_count = int((start_depth - depth) / step_down - 0.0000001) + 1
+#         if layer_count > 0:
+#             layer_depth = (start_depth - depth)/layer_count
+#             for i in range(1, layer_count):
+#                 depth += layer_depth
+#                 depths.insert(0, depth)
+                
+#     return depths
