@@ -266,6 +266,16 @@ void ViewProvider::setDisplayMaskMode( const char* type )
     setModeSwitch();
 }
 
+SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
+{
+    std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find( type );
+    if (it != _sDisplayMaskModes.end()) {
+        return pcModeSwitch->getChild(it->second);
+    }
+
+    return 0;
+}
+
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 {
     std::vector<std::string> types;
