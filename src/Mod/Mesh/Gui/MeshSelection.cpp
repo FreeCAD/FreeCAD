@@ -170,6 +170,8 @@ void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
     if (viewer) {
         stopInteractiveCallback(viewer);
         startInteractiveCallback(viewer, cb);
+        viewer->navigationStyle()->stopSelection();
+
         // set cross cursor
         Gui::BrushSelection* brush = new Gui::BrushSelection();
         brush->setClosed(true);

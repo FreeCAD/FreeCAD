@@ -1368,15 +1368,15 @@ class DraftToolBar:
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.endswith("i"):
+        elif txt.endswith("I"):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.endswith("f"):
+        elif txt.endswith("F"):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.endswith("t"):
+        elif txt.endswith("T"):
             self.toggleContinue()
             spec = True
         elif txt.endswith("w"):
@@ -1415,7 +1415,8 @@ class DraftToolBar:
                 self.closeLine()
             elif self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
-        elif txt.endswith("n"):
+            spec = True
+        elif txt.endswith("N"):
             if self.continueCmd.isVisible():
                 self.continueCmd.setChecked(not self.continueCmd.isChecked())
             spec = True

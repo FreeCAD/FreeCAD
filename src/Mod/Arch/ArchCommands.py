@@ -1208,7 +1208,13 @@ class _CommandComponent:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
-def makeIfcSpreadsheet(obj=None):
+def makeIfcSpreadsheet(archobj=None):
+    ifc_container = None
+    for obj in FreeCAD.ActiveDocument.Objects :
+        if obj.Name == "IfcPropertiesContainer" :
+            ifc_container = obj
+    if not ifc_container :
+        ifc_container = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup','IfcPropertiesContainer')
     import Spreadsheet
     ifc_spreadsheet = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet','IfcProperties')
     ifc_spreadsheet.set('A1', translate("Arch","Category"))
@@ -1216,14 +1222,15 @@ def makeIfcSpreadsheet(obj=None):
     ifc_spreadsheet.set('C1', translate("Arch","Type"))
     ifc_spreadsheet.set('D1', translate("Arch","Value"))
     ifc_spreadsheet.set('E1', translate("Arch","Unit"))
-    if obj :
-        if hasattr(obj,"IfcProperties"):
-            obj.IfcProperties = ifc_spreadsheet
+    ifc_container.addObject(ifc_spreadsheet)
+    if archobj :
+        if hasattr(obj,"IfcProperties") :
+            archobj.IfcProperties = ifc_spreadsheet
             return ifc_spreadsheet
         else :
-            FreeCAD.Console.PrintWarning(translate("Arch", "The object have not IfcProperties attribute. Cancel spreadsheet creation for object : ") + obj.Label)
+            FreeCAD.Console.PrintWarning(translate("Arch", "The object have not IfcProperties attribute. Cancel spreadsheet creation for object : ") + archobj.Label)
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
-    else:
+    else :
         return ifc_spreadsheet
 
 class _CommandIfcSpreadsheet:

@@ -91,7 +91,7 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QItemDelegate::paint(painter, option, index);
 
-    QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &option));
+    QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt, qobject_cast<QWidget*>(parent())));
     painter->setPen(QPen(color));
     if (index.column() == 1 || !(property && property->isSeparator())) {
         int right = (option.direction == Qt::LeftToRight) ? option.rect.right() : option.rect.left();

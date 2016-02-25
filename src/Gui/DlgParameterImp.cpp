@@ -265,10 +265,9 @@ void DlgParameterImp::onChangeParameterSet(int index)
     hGrp = hGrp->GetGroup("ParameterEditor");
     QString path = QString::fromUtf8(hGrp->GetASCII("LastParameterGroup").c_str());
     QStringList paths = path.split(QLatin1String("."), QString::SkipEmptyParts);
-    if (paths.empty())
-        return;
+
     QTreeWidgetItem* parent = 0;
-    for (int index=0; index < paramGroup->topLevelItemCount(); index++) {
+    for (int index=0; index < paramGroup->topLevelItemCount() && !paths.empty(); index++) {
         QTreeWidgetItem* child = paramGroup->topLevelItem(index);
         if (child->text(0) == paths.front()) {
             paths.pop_front();
