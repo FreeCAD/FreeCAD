@@ -33,7 +33,7 @@
 class DrawingWorkbench (Workbench):
     "Drawing workbench object"
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Drawing/Resources/icons/actions/drawing-landscape.svg"
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Drawing/Resources/icons/DrawingWorkbench.svg"
         self.__class__.MenuText = "Drawing"
         self.__class__.ToolTip = "Drawing workbench"
 

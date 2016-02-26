@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Ship_AreaCurve.svg</file>
         <file>icons/Ship_CapacityCurve.svg</file>
         <file>icons/Ship_Instance.svg</file>
@@ -12,6 +12,7 @@
         <file>icons/Ship_OutlineDraw.svg</file>
         <file>icons/Ship_Tank.svg</file>
         <file>icons/Ship_Weight.svg</file>
+        <file>icons/ShipWorkbench.svg</file>
         <file>translations/Ship.qm</file>
         <file>translations/Ship_af.qm</file>
         <file>translations/Ship_cs.qm</file>
@@ -40,4 +41,4 @@
         <file>translations/Ship_el.qm</file>
         <file>translations/Ship_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

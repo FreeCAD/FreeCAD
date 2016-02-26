@@ -54,3 +54,11 @@ INSTALL(
     DESTINATION
         Mod/OpenSCAD
 )
+
+SET(OpenSCADGuiIcon_SVG
+    Resources/icons/OpenSCADWorkbench.svg
+)
+
+fc_copy_sources(OpenSCAD "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/OpenSCAD" ${OpenSCADGuiIcon_SVG})
+
+INSTALL(FILES ${OpenSCADGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/OpenSCAD/Resources/icons")

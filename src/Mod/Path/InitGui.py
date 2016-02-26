@@ -24,38 +24,10 @@
 
 class PathWorkbench ( Workbench ):
     "Path workbench"
-    Icon = """
-            /* XPM */
-            static char * Path_xpm[] = {
-            "16 16 9 1",
-            "   c None",
-            ".  c #262623",
-            "+  c #452F16",
-            "@  c #525451",
-            "#  c #7E5629",
-            "$  c #838582",
-            "%  c #BE823B",
-            "&  c #989A97",
-            "*  c #CFD1CE",
-            "  .@@@@@@@@@@.  ",
-            "  $**********$  ",
-            "  @$$$&&&&$$$@  ",
-            "    .$&&&&$.    ",
-            "    @******.    ",
-            "    @******.    ",
-            "    ...@@...    ",
-            "     .&&@.      ",
-            "     .@. .      ",
-            "       .&&.     ",
-            "     .$*$.      ",
-            "     .$. .      ",
-            "+###+  .@&.+###+",
-            "+%%%+ .$$. +%%%+",
-            "+%%%%#.. .#%%%%+",
-            ".++++++..++++++."};
-            """
-    MenuText = "Path"
-    ToolTip = "Path workbench"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Path/Resources/icons/PathWorkbench.svg"
+        self.__class__.MenuText = "Path"
+        self.__class__.ToolTip = "Path workbench"
 
     def Initialize(self):
         # load the builtin modules
