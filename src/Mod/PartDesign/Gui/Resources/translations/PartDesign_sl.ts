@@ -96,7 +96,7 @@
     <message>
         <location line="+1"/>
         <source>create a linear pattern feature</source>
-        <translation>ustvari značilnost premočrtnega vzorca</translation>
+        <translation>Ustvari premočrtni vzorec</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     <message>
         <location line="+1"/>
         <source>create a mirrored feature</source>
-        <translation>ustvari zrcaljeno značilnost</translation>
+        <translation>Ustvari zrcaljeno značilnost</translation>
     </message>
 </context>
 <context>
@@ -132,7 +132,7 @@
     <message>
         <location line="+1"/>
         <source>create a multitransform feature</source>
-        <translation>ustvari značilnost večkratnega preoblikovanja</translation>
+        <translation>Ustvari večkratno preoblikovanje</translation>
     </message>
 </context>
 <context>
@@ -186,7 +186,7 @@
     <message>
         <location line="+1"/>
         <source>create a polar pattern feature</source>
-        <translation>ustvari značilnost polarnega vzorca</translation>
+        <translation>Ustvari polarni vzorec</translation>
     </message>
 </context>
 <context>
@@ -222,7 +222,7 @@
     <message>
         <location line="+1"/>
         <source>create a scaled feature</source>
-        <translation>ustvari povečavo značilnosti</translation>
+        <translation>Ustvari povečavo značilnosti</translation>
     </message>
 </context>
 <context>
@@ -258,7 +258,7 @@
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation>Modul</translation>
+        <translation>Modul:</translation>
     </message>
     <message>
         <location line="+85"/>

@@ -272,7 +272,7 @@
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation>Pritisnite srednjo tipko miške</translation>
+        <translation>Pritisnite srednjo tipko na miški</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
@@ -287,7 +287,7 @@
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation>Pritisnite srednjo tipko miške</translation>
+        <translation>Pritisnite srednjo tipko na miški</translation>
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
@@ -322,7 +322,7 @@ kliknete na levi ali desni gumb in premikate miško gor in dol</translation>
     <name>Gui::ControlSingleton</name>
     <message>
         <source>Task panel</source>
-        <translation>Opravilna plošča</translation>
+        <translation>Podokno opravil</translation>
     </message>
 </context>
 <context>
@@ -1234,15 +1234,11 @@ Prosim določite drugačno bližnjico.</translation>
     <name>Gui::Dialog::DlgMacroExecute</name>
     <message>
         <source>Execute macro</source>
-        <translation>Izvedi makro</translation>
+        <translation>Zaženi makro</translation>
     </message>
     <message>
         <source>Macro name:</source>
         <translation>Ime makra:</translation>
-    </message>
-    <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Cilj makrov:</translation>
     </message>
     <message>
         <source>Execute</source>
@@ -1266,15 +1262,15 @@ Prosim določite drugačno bližnjico.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Uporabniški makri</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistemski makri</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mesto uporabniških makrov:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Samo za branje</translation>
     </message>
 </context>
 <context>
@@ -1611,7 +1607,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Extract project</source>
-        <translation>Izvleči projekt</translation>
+        <translation>Izvleci projekt</translation>
     </message>
     <message>
         <source>Source</source>
@@ -1807,11 +1803,11 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ortografski izris</translation>
+        <translation type="obsolete">Ortografski izris</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Izris v perspektivi</translation>
+        <translation type="obsolete">Izris v perspektivi</translation>
     </message>
     <message>
         <source></source>
@@ -1880,6 +1876,14 @@ Navedite drugo mapo.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2251,7 +2255,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Pixel</source>
-        <translation>sl. točk</translation>
+        <translation> sl. točk</translation>
     </message>
     <message>
         <source>&amp;Width:</source>
@@ -2446,7 +2450,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Macro path</source>
-        <translation>Makro pot</translation>
+        <translation>Pot makrov</translation>
     </message>
     <message>
         <source>General macro settings</source>
@@ -2497,7 +2501,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation>Angleške decimalke (palci/funti)</translation>
+        <translation>Angleške decimalne (palci/funti)</translation>
     </message>
 </context>
 <context>
@@ -3100,7 +3104,7 @@ Stolpec &apos;Stanje&apos; prikazuje, ali je dokument mogoče obnoviti.</transla
     </message>
     <message>
         <source>Apply incremental changes to object placement</source>
-        <translation>Uporabi prirastne spremembe postavitve objekta</translation>
+        <translation>Uporabi prirastne spr. postavitve objekta</translation>
     </message>
     <message>
         <source>Apply</source>
@@ -3663,7 +3667,7 @@ Ali želite shraniti spremembe?</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
-        <translation>Pritisnite srednjo tipko miške</translation>
+        <translation>Pritisnite srednjo tipko na miški</translation>
     </message>
     <message>
         <source>Press left mouse button</source>
@@ -4188,7 +4192,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation>Samodejna dokumentacija o modulih Python</translation>
+        <translation>Dokumentacija o samodejnih modulih Python</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
@@ -4552,7 +4556,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
         <source>Cannot load workbench</source>
-        <translation>Ni mogoče naložiti delovnega okolja</translation>
+        <translation>Delovnega okolja ni mogoče naložiti</translation>
     </message>
     <message>
         <source>A general error occurred while loading the workbench</source>
@@ -4864,11 +4868,11 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Izbriši makro</translation>
+        <translation>Izbriši makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistemskih makrov ni dovoljeno izbrisati</translation>
     </message>
 </context>
 <context>
@@ -4890,11 +4894,11 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>&amp;About %1</source>
-        <translation>&amp;O %1</translation>
+        <translation>&amp;O %1u</translation>
     </message>
     <message>
         <source>About %1</source>
-        <translation>O %1</translation>
+        <translation>O %1u</translation>
     </message>
 </context>
 <context>
@@ -4920,7 +4924,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Ne&amp;xt</source>
-        <translation>Nap&amp;rej</translation>
+        <translation>Napr&amp;ej</translation>
     </message>
     <message>
         <source>Activate next window</source>
@@ -4965,7 +4969,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Arrange &amp;Icons</source>
-        <translation>&amp;Razporedi ikone</translation>
+        <translation>R&amp;azporedi ikone</translation>
     </message>
     <message>
         <source>Arrange Icons</source>
@@ -5141,11 +5145,11 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Execute macro</source>
-        <translation>Izvedi makro</translation>
+        <translation>Zaženi makro</translation>
     </message>
     <message>
         <source>Execute the macro in the editor</source>
-        <translation>Izvedi makro v urejevalniku</translation>
+        <translation>Zaženi makro v urejevalniku</translation>
     </message>
 </context>
 <context>
@@ -5205,7 +5209,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
-        <translation>Seznam razpoložljivih usidrljivih plošč</translation>
+        <translation>Seznam razpoložljivih usidrljivih podoken</translation>
     </message>
 </context>
 <context>
@@ -5242,7 +5246,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Toggle &amp;Edit mode</source>
-        <translation>Preklopi način &amp;urejanja</translation>
+        <translation>Pr&amp;eklopi način urejanja</translation>
     </message>
     <message>
         <source>Toggles the selected object&apos;s edit mode</source>
@@ -5706,7 +5710,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>&amp;Export PDF...</source>
-        <translation>I&amp;zvozi PDF …</translation>
+        <translation>Izvozi &amp;PDF …</translation>
     </message>
     <message>
         <source>Export the document as PDF</source>
@@ -5721,7 +5725,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>&amp;Print preview...</source>
-        <translation>&amp;Predogled tiskanja …</translation>
+        <translation>P&amp;redogled tiskanja …</translation>
     </message>
     <message>
         <source>Print the document</source>
@@ -5740,7 +5744,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Project i&amp;nformation...</source>
-        <translation>&amp;Podatki o projektu …</translation>
+        <translation>Po&amp;datki o projektu …</translation>
     </message>
     <message>
         <source>Show details of the currently active project</source>
@@ -5886,7 +5890,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation>Shrani &amp;kot …</translation>
+        <translation>Shr&amp;ani kot …</translation>
     </message>
     <message>
         <source>Save the active document under a new file name</source>
@@ -6598,11 +6602,11 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>Workbench</source>
-        <translation>Delovna miza</translation>
+        <translation>Delovno okolje</translation>
     </message>
     <message>
         <source>Switch between workbenches</source>
-        <translation>Preklopi med delovnimi mizami</translation>
+        <translation>Preklopi med delovnimi okolji</translation>
     </message>
 </context>
 <context>
@@ -6845,7 +6849,7 @@ Ali želite navesti namestitveno pot, če je že nameščen?</translation>
     </message>
     <message>
         <source>&amp;Windows</source>
-        <translation>&amp;Okna</translation>
+        <translation>O&amp;kna</translation>
     </message>
     <message>
         <source>&amp;On-line help</source>
@@ -6890,7 +6894,7 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;Plošča opravil iis&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;Podokno opravil iis&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Ustvarjeno za Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;/p&gt;
@@ -6898,7 +6902,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Choose the style of the Task Panel</source>
-        <translation>Izberite slog plošče opravil</translation>
+        <translation>Izberite slog podokna opravil</translation>
     </message>
     <message>
         <source>Default</source>

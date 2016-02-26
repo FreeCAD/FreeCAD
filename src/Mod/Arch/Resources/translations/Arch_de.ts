@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1142"/>
+      <location filename="ArchWindow.py" line="1158"/>
       <source>Components</source>
       <translation>Komponenten</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Die Größe der Achsen-Blasen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1136"/>
+      <location filename="ArchWindow.py" line="1152"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1137"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
@@ -84,57 +84,57 @@
       <translation>Geschoss</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="209"/>
+      <location filename="ArchCommands.py" line="211"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>Entfernen der unterstützenden Skizze um Querverweise zu vermeiden</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="613"/>
       <source>is not closed</source>
       <translation>ist nicht geschlossen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="613"/>
+      <location filename="ArchCommands.py" line="615"/>
       <source>is not valid</source>
       <translation>ist ungültig</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="615"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>doesn't contain any solid</source>
       <translation>Enthält keinen Volumenkörper</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="621"/>
+      <location filename="ArchCommands.py" line="623"/>
       <source>contains a non-closed solid</source>
       <translation>Enthält einen nicht geschlossenen Volumenkörper</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="625"/>
       <source>contains faces that are not part of any solid</source>
       <translation>Enthält Flächen, die nicht Teil eines Volumenkörpers sind</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="953"/>
+      <location filename="ArchCommands.py" line="955"/>
       <source>Grouping</source>
       <translation>Gruppierung</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="985"/>
+      <location filename="ArchCommands.py" line="987"/>
       <source>Ungrouping</source>
       <translation>Aufheben der Gruppierung</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Split Mesh</source>
       <translation>Netz zerlegen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1056"/>
+      <location filename="ArchCommands.py" line="1058"/>
       <source>Mesh to Shape</source>
       <translation>Wandelt Netz in Form um</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1137"/>
+      <location filename="ArchCommands.py" line="1139"/>
       <source>All good! no problems found</source>
       <translation>Alles gut! Keine Probleme gefunden</translation>
     </message>
@@ -159,7 +159,7 @@
       <translation>Objekte</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="801"/>
+      <location filename="ArchComponent.py" line="805"/>
       <source>closing Sketch edit</source>
       <translation>Schließe Skizzenbearbeitung</translation>
     </message>
@@ -219,27 +219,27 @@
       <translation>Seite erstellen</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="433"/>
+      <location filename="ArchStructure.py" line="183"/>
       <source>Create Structure</source>
       <translation>Struktur erzeugen</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="565"/>
+      <location filename="ArchStructure.py" line="338"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Die Länge dieses Elements, wenn es nicht auf einem Profil basiert</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="566"/>
+      <location filename="ArchStructure.py" line="339"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Die Breite dieses Elements, wenn es nicht auf einem Profil basiert</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="567"/>
+      <location filename="ArchStructure.py" line="340"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>Höhe oder Extrusionstiefe dieses Elements (0 für automatisch)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="775"/>
+      <location filename="ArchStructure.py" line="523"/>
       <source>Axes systems this structure is built on</source>
       <translation>Achsensysteme, auf denen diese Struktur basiert</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Richtung der Normalen-Extrusion dieses Objekts ((0,0,0) für automatisch)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="776"/>
+      <location filename="ArchStructure.py" line="524"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Die Element-Nummern ausschließen, wenn diese Struktur auf Achsen basiert</translation>
     </message>
@@ -309,57 +309,57 @@
       <translation>Dieses Polygonnetz ist ein ungültiger Volumenkörper</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="466"/>
+      <location filename="ArchWindow.py" line="467"/>
       <source>Create Window</source>
       <translation>Fenster erzeugen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="607"/>
+      <location filename="ArchWindow.py" line="623"/>
       <source>the components of this window</source>
       <translation>Die Komponenten dieses Fensters</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1138"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Edit</source>
       <translation>Bearbeiten</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1139"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Create/update component</source>
       <translation>Erstelle / aktualisiere Komponente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1140"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Base 2D object</source>
       <translation>2D Basisobjekt</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1146"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Wires</source>
       <translation>Kantenzüge</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1143"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Create new component</source>
       <translation>Neue Komponente erstellen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1144"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1145"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1147"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1148"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Z offset</source>
       <translation>Z-Abstand</translation>
     </message>
@@ -403,12 +403,12 @@
       <translation>Das Nummerierungsformat</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="949"/>
+      <location filename="ArchCommands.py" line="951"/>
       <source>Add space boundary</source>
       <translation>Hinzufügen von Raum-Grenzen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="981"/>
+      <location filename="ArchCommands.py" line="983"/>
       <source>Remove space boundary</source>
       <translation>Raum-Grenzen entfernen</translation>
     </message>
@@ -443,12 +443,12 @@
       <translation>Rahmen erstellen</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="121"/>
+      <location filename="ArchRebar.py" line="127"/>
       <source>Create Rebar</source>
       <translation>Bewehrung erstellen</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="131"/>
+      <location filename="ArchRebar.py" line="137"/>
       <source>Please select a base face on a structural object
 </source>
       <translation>Bitte eine Basisfläche auf einem Strukturelement auswählen
@@ -577,22 +577,12 @@
       <translation>Der Versatz zwischen Treppenrand und Treppenwange</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="40"/>
-      <source>Wood</source>
-      <translation>Holz</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="41"/>
-      <source>Steel</source>
-      <translation>Stahl</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="459"/>
+      <location filename="ArchStructure.py" line="214"/>
       <source>Structure options</source>
       <translation>Optionen Struktur</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="526"/>
+      <location filename="ArchWindow.py" line="539"/>
       <source>Preset</source>
       <translation>Voreinstellung</translation>
     </message>
@@ -602,37 +592,37 @@
       <translation>Länge</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="494"/>
+      <location filename="ArchStructure.py" line="255"/>
       <source>Rotate</source>
       <translation>Drehen</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="317"/>
       <source>Con&amp;tinue</source>
-      <translation>For&amp;tfahren</translation>
+      <translation>Fortfahren</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="564"/>
+      <location filename="ArchStructure.py" line="337"/>
       <source>An optional extrusion path for this element</source>
       <translation>Ein optionaler Extrusionspfad für dieses Objekt</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="568"/>
+      <location filename="ArchStructure.py" line="341"/>
       <source>Armatures contained in this element</source>
       <translation>In diesem Bauteil enthaltene Einbauteile</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="570"/>
+      <location filename="ArchStructure.py" line="343"/>
       <source>The structural nodes of this element</source>
       <translation>Die strukturellen Knoten dieses Elements</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="601"/>
+      <location filename="ArchStructure.py" line="374"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Fehler: Die Basisform konnte nicht entlang des Hilfsobjektes extrudiert werden</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="828"/>
+      <location filename="ArchStructure.py" line="576"/>
       <source>Couldn't compute a shape</source>
       <translation>Form konnte nicht berechnet werden</translation>
     </message>
@@ -672,38 +662,38 @@
       <translation>Der Versatz zwischen Wand und Grundlinie (nur für linke und rechte Ausrichtungen)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="455"/>
+      <location filename="ArchWindow.py" line="453"/>
       <source>Pick a face on an existing object or select a preset
 </source>
       <translation>Wählen Sie die Oberfläche eines vorhandenen Objekt oder wählen Sie eine Vorgabe </translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="515"/>
+      <location filename="ArchWindow.py" line="522"/>
       <source>Window options</source>
       <translation>Optionen Fenster</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="608"/>
+      <location filename="ArchWindow.py" line="624"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation>Die Tiefe der Öffnung, die dieses Fenster im Grundobjekt erzeugt. Behalten Sie 0 für Automatik.</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="610"/>
+      <location filename="ArchWindow.py" line="626"/>
       <source>The width of this window (for preset windows only)</source>
       <translation>Die Breite des Fensters (Nur für Fenster aus Vorlagen)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="611"/>
+      <location filename="ArchWindow.py" line="627"/>
       <source>The height of this window (for preset windows only)</source>
       <translation>Die Höhe des Fensters (Nur für Fenster aus Vorlagen)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="612"/>
+      <location filename="ArchWindow.py" line="628"/>
       <source>The normal direction of this window</source>
       <translation>Die normale Ausrichtung dieses Fensters</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1113"/>
+      <location filename="ArchWindow.py" line="1129"/>
       <source>Unable to create component
 </source>
       <translation>Konnte Komponente nicht erstellen
@@ -728,12 +718,12 @@
       <translation>Abstand (mm) und Winkel (deg) zwischen den Achsen</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="649"/>
+      <location filename="ArchComponent.py" line="651"/>
       <source>Error computing the shape of this object</source>
       <translation>Fehler, die Form des Objektes konnte nicht ermittelt werden</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="398"/>
+      <location filename="ArchStructure.py" line="148"/>
       <source>Create Structural System</source>
       <translation>Erstelle ein Strukturelles System</translation>
     </message>
@@ -751,37 +741,37 @@
 </translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="56"/>
+      <location filename="importOBJ.py" line="60"/>
       <source>Found a shape containing curves, triangulating
 </source>
       <translation>Shape mit Kurven gefunden, Triangulierung (Zerteilung in Geraden)
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="358"/>
+      <location filename="ArchCommands.py" line="360"/>
       <source>Invalid cutplane
 </source>
       <translation>Ungültige Schnittebene</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="365"/>
+      <location filename="ArchCommands.py" line="367"/>
       <source>No objects are cut by the plane
 </source>
       <translation>Die Ebene schneidet keine Objekte
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="804"/>
+      <location filename="ArchCommands.py" line="806"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Objekt hat keine festlegbaren IFC Attribute</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="810"/>
+      <location filename="ArchCommands.py" line="812"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Deaktiviere erzwungene Darstellung durch Begrenzungsflächen für dieses Objekt</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="816"/>
+      <location filename="ArchCommands.py" line="818"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Aktiviere erzwungene Darstellung durch Begrenzungsflächen für dieses Objekt</translation>
     </message>
@@ -808,15 +798,15 @@
     <message>
       <location filename="ArchComponent.py" line="297"/>
       <source>An optional tag for this component</source>
-      <translation>Ein optionales Tag für diese Komponente</translation>
+      <translation>Eine optionale markierung für diese Komponente</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="298"/>
+      <location filename="ArchComponent.py" line="302"/>
       <source>Custom IFC properties and attributes</source>
-      <translation>Benutzerdefinierte IFC Eigenschaften und Attribute</translation>
+      <translation>Benutzerdefinierte IFC-Eigenschaften und Attribute</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="615"/>
+      <location filename="ArchWindow.py" line="631"/>
       <source>A material for this object</source>
       <translation>Ein Material für dieses Objekt</translation>
     </message>
@@ -831,17 +821,17 @@
       <translation>Gibt an, ob dieses Objekt gemeinsam bewegt werden muss, wenn das Grundobjekt verschoben wird</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="656"/>
+      <location filename="ArchComponent.py" line="658"/>
       <source>has no solid</source>
       <translation>enthält keinen Volumenkörper</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="658"/>
+      <location filename="ArchComponent.py" line="660"/>
       <source>has an invalid shape</source>
       <translation>hat eine ungültige Form</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="660"/>
+      <location filename="ArchComponent.py" line="662"/>
       <source>has a null shape</source>
       <translation>hat eine ungültige Form</translation>
     </message>
@@ -878,7 +868,7 @@
     <message>
       <location filename="ArchEquipment.py" line="212"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation>Dieser Vorgang kann lange andauern. Fortfahren?</translation>
+      <translation>Dieser Vorgang kann etwas länger dauern. Fortfahren?</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="219"/>
@@ -923,7 +913,7 @@
     <message>
       <location filename="ArchPanel.py" line="263"/>
       <source>The offset between this panel and its baseline</source>
-      <translation>Der Versatz zwischen diesem Panel und der Basislinie</translation>
+      <translation>Der Versatz zwischen diesem Paneel und der Grundlinie</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="745"/>
@@ -1056,12 +1046,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Zeige Einheiten Suffix</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="571"/>
+      <location filename="ArchStructure.py" line="344"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation>Beschreibung des Standard Profils auf welchem diese Element basiert</translation>
+      <translation>Beschreibung des Standard Profils auf welchem dieses Element basiert</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="519"/>
+      <location filename="ArchWindow.py" line="532"/>
       <source>Sill height</source>
       <translation>Brüstungshöhe</translation>
     </message>
@@ -1073,12 +1063,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
     <message>
       <location filename="ArchCutPlane.py" line="53"/>
       <source>CutPlane</source>
-      <translation>Schnittebene</translation>
+      <translation>SchnittEbene</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="86"/>
       <source>PreviewCutVolume</source>
-      <translation>Vorschau Schnittvolumen</translation>
+      <translation>VorschauSchnittVolumen</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="122"/>
@@ -1172,19 +1162,19 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Der Typ von diesem Gebäude </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="215"/>
+      <location filename="ArchCommands.py" line="217"/>
       <source>removing sketch external reference to avoid cross-referencing</source>
-      <translation>entfernen von externen Skizzen Referenzen, um Kreuz-Querverweise zu vermeiden</translation>
+      <translation>entfernen von externen Referenzen, um Querverweise zu vermeiden</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1203"/>
+      <location filename="ArchCommands.py" line="1205"/>
       <source>Create Component</source>
       <translation>Komponente erstellen</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="293"/>
       <source>The object this component is cloning</source>
-      <translation>Das Objekt, das von dieser Komponente geklont wird</translation>
+      <translation>Das Objekt wird von dieser Komponente geklont</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="78"/>
@@ -1289,7 +1279,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
     <message>
       <location filename="ArchSchedule.py" line="241"/>
       <source>Total</source>
-      <translation>Summe</translation>
+      <translation>Insgesamt</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="151"/>
@@ -1297,27 +1287,27 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Zeigen Sie den Schnitt in der 3D-Ansicht</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="62"/>
+      <location filename="ArchServer.py" line="63"/>
       <source>This document is not saved. Please save it first</source>
       <translation>Dieses Dokument wurde noch nicht gespeichert. Bitte speichern Sie es zuerst</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="67"/>
+      <location filename="ArchServer.py" line="68"/>
       <source>The Python Git module was not found. Please install the python-git package.</source>
       <translation>Das Python-Git-Modul wurde nicht gefunden. Bitte installieren Sie das Paket Python-Git.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="72"/>
+      <location filename="ArchServer.py" line="73"/>
       <source>This document doesn't appear to be part of a Git repository.</source>
       <translation>Dieses Dokument scheint kein Teil eines Git Repositories zu sein.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="76"/>
+      <location filename="ArchServer.py" line="77"/>
       <source>Warning: no remote repositories. Unable to push</source>
       <translation>Warnung: keine externen Bibliotheken. Schieben nicht möglich</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="82"/>
+      <location filename="ArchServer.py" line="83"/>
       <source>The Git repository cannot handle this document.</source>
       <translation>Das Git Repository kann dieses Dokument nicht bearbeiten.</translation>
     </message>
@@ -1357,7 +1347,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Wände konnen nur auf Volumenkörper oder Netz-Körper aufbauen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="609"/>
+      <location filename="ArchWindow.py" line="625"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>ein zusätzliches Objekt zur Definition des Volumens, das vom Basiskörper des Fensters abgezogen wird</translation>
     </message>
@@ -1377,49 +1367,84 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Textposition festlegen</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="623"/>
+      <location filename="ArchStructure.py" line="400"/>
       <source>Unable to extrude the base shape
 </source>
       <translation>Grundform nicht extrudierbar
 </translation>
     </message>
+    <message>
+      <location filename="ArchStructure.py" line="218"/>
+      <source>Category</source>
+      <translation>Kategorie</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1217"/>
+      <source>Key</source>
+      <translation>Schlüssel</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1219"/>
+      <source>Value</source>
+      <translation>Wert</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1220"/>
+      <source>Unit</source>
+      <translation>Einheit</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1226"/>
+      <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
+      <translation>Das Objekt weist kein IFC-Eigenschaften Attribut auf. Die Erstellung einer Kalulationstabelle für dieses Objekt abbrechen: </translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1244"/>
+      <source>Create IFC properties spreadsheet</source>
+      <translation>Erstelle Kalkulationstabelle für IFC-Eigenschaften</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="526"/>
+      <source>Auto include in host object</source>
+      <translation>Automatisch in Hostobjekt einfügen</translation>
+    </message>
   </context>
   <context>
     <name>ArchGitOptions</name>
     <message>
-      <location filename="ArchServer.py" line="152"/>
+      <location filename="ArchServer.py" line="153"/>
       <source>Git Options</source>
       <translation>Optionen Git</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="153"/>
+      <location filename="ArchServer.py" line="154"/>
       <source>What to commit</source>
       <translation>Was commitet werden soll</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="154"/>
+      <location filename="ArchServer.py" line="155"/>
       <source>All files in folder</source>
       <translation>Alle Dateien im Ordner</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="155"/>
+      <location filename="ArchServer.py" line="156"/>
       <source>Only this .FcStd file</source>
       <translation>Nur diese .FcStd Datei</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="156"/>
+      <location filename="ArchServer.py" line="157"/>
       <source>Commit message</source>
       <translation>Commit Nachricht</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="157"/>
+      <location filename="ArchServer.py" line="158"/>
       <source>commit</source>
       <translation>Commit</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="158"/>
+      <location filename="ArchServer.py" line="159"/>
       <source>Push to default remote repository</source>
-      <translation>Zum Standard Repository pushen</translation>
+      <translation>Zum externen Standard Repository hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -1427,7 +1452,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
     <message>
       <location filename="ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation>Arch Material</translation>
+      <translation>Bogenmaterial</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="23"/>
@@ -1476,12 +1501,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="940"/>
+      <location filename="ArchCommands.py" line="942"/>
       <source>Add component</source>
       <translation>Komponente hinzufügen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="941"/>
+      <location filename="ArchCommands.py" line="943"/>
       <source>Adds the selected components to the active object</source>
       <translation>Fügt ausgewählte Komponenten zu den aktiven Objekten hinzu</translation>
     </message>
@@ -1502,12 +1527,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Bimserver</name>
     <message>
-      <location filename="ArchServer.py" line="42"/>
+      <location filename="ArchServer.py" line="43"/>
       <source>BIM server</source>
       <translation>BIM Server</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="43"/>
+      <location filename="ArchServer.py" line="44"/>
       <source>Opens a browser window and connects to a BIM server instance</source>
       <translation>Ein Browserfenster öffnen und mit einer BIM-Server-Instanz verbinden</translation>
     </message>
@@ -1528,17 +1553,17 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1128"/>
+      <location filename="ArchCommands.py" line="1130"/>
       <source>Check</source>
       <translation>Überprüfung</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1129"/>
+      <location filename="ArchCommands.py" line="1131"/>
       <source>Checks the selected objects for problems</source>
       <translation>Überprüft die ausgewählten Objekte auf Probleme</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1152"/>
       <source>Explore the contents of an Ifc file</source>
       <translation>Den Inhalt von Ifc-Dateien untersuchen</translation>
     </message>
@@ -1546,25 +1571,25 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1111"/>
+      <location filename="ArchCommands.py" line="1113"/>
       <source>Close holes</source>
       <translation>Schließt Löcher</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1112"/>
+      <location filename="ArchCommands.py" line="1114"/>
       <source>Closes holes in open shapes, turning them solids</source>
-      <translation>Schließt Löcher in Formen und wandelt sie um in Volumenkörper</translation>
+      <translation>Schließt Löcher in offenen Formen und wandelt sie in Volumenkörper um</translation>
     </message>
   </context>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1193"/>
+      <location filename="ArchCommands.py" line="1195"/>
       <source>Component</source>
       <translation>Komponente</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1195"/>
+      <location filename="ArchCommands.py" line="1197"/>
       <source>Creates an undefined architectural component</source>
       <translation>Erstellt eine undefinierte Architekturkomponente</translation>
     </message>
@@ -1624,12 +1649,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Git</name>
     <message>
-      <location filename="ArchServer.py" line="56"/>
+      <location filename="ArchServer.py" line="57"/>
       <source>Commit with Git</source>
       <translation>Commit mit Git</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="57"/>
+      <location filename="ArchServer.py" line="58"/>
       <source>Commits the current document</source>
       <translation>Das aktuelle Dokument commiten</translation>
     </message>
@@ -1637,9 +1662,22 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="ArchCommands.py" line="1149"/>
+      <location filename="ArchCommands.py" line="1151"/>
       <source>Ifc Explorer</source>
       <translation>Ifc Explorer</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_IfcSpreadsheet</name>
+    <message>
+      <location filename="ArchCommands.py" line="1235"/>
+      <source>Create IFC spreadsheet...</source>
+      <translation>Erstelle IFC Kalulationstabelle...</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1237"/>
+      <source>Creates a spreadsheet to store ifc properties of an object.</source>
+      <translation>Erstellt eine Kalulationstabelle um IFC-Eigenschaften eines Objekts zu speichern.</translation>
     </message>
   </context>
   <context>
@@ -1671,12 +1709,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1032"/>
+      <location filename="ArchCommands.py" line="1034"/>
       <source>Mesh to Shape</source>
       <translation>Wandelt Netz in Form um</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1033"/>
+      <location filename="ArchCommands.py" line="1035"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Wandelt gewählte Netze in Part Form Objekte um</translation>
     </message>
@@ -1697,12 +1735,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="ArchRebar.py" line="84"/>
+      <location filename="ArchRebar.py" line="90"/>
       <source>Rebar</source>
       <translation>Bewehrung</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="86"/>
+      <location filename="ArchRebar.py" line="92"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Erzeugt einen Bewehrungsstab basierend auf der markierten Fläche eines Strukturobjektes</translation>
     </message>
@@ -1710,25 +1748,25 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="972"/>
+      <location filename="ArchCommands.py" line="974"/>
       <source>Remove component</source>
       <translation>Komponente entfernen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="973"/>
+      <location filename="ArchCommands.py" line="975"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
-      <translation>Entferne die ausgewählten Komponenten von ihrem Elternobjekt, oder erstelle ein Loch in einer Komponente</translation>
+      <translation>Entferne die ausgewählten Komponenten von ihrem Elternobjekt, oder erstelle eine Öffnung in einer Komponente</translation>
     </message>
   </context>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1096"/>
+      <location filename="ArchCommands.py" line="1098"/>
       <source>Remove Shape from Arch</source>
       <translation>Entfernt Formen aus Architektur</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1097"/>
+      <location filename="ArchCommands.py" line="1099"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Entfernt kubische Formen von Architektur-Komponenten</translation>
     </message>
@@ -1775,12 +1813,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1067"/>
+      <location filename="ArchCommands.py" line="1069"/>
       <source>Select non-manifold meshes</source>
       <translation>Wähle nicht-mehrfache Polygonnetze</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1068"/>
+      <location filename="ArchCommands.py" line="1070"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Wählt alle nichtmannigfaltigen Polygonnetze aus dem Dokument oder aus der ausgewählten Gruppe</translation>
     </message>
@@ -1819,12 +1857,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1007"/>
+      <location filename="ArchCommands.py" line="1009"/>
       <source>Split Mesh</source>
       <translation>Netz zerlegen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1008"/>
+      <location filename="ArchCommands.py" line="1010"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Zerlegt ausgewählte Netze in unabhängige Komponenten</translation>
     </message>
@@ -1840,12 +1878,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="ArchStructure.py" line="376"/>
+      <location filename="ArchStructure.py" line="126"/>
       <source>Structure</source>
       <translation>Struktur</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="378"/>
+      <location filename="ArchStructure.py" line="128"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Erzeugt ein Strukturobjekt von Grund auf neu oder von einem ausgewählten Objekt (Skizze, Kantenzug, Oberfläche oder Volumenkörper)</translation>
     </message>
@@ -1853,12 +1891,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1163"/>
+      <location filename="ArchCommands.py" line="1165"/>
       <source>Survey</source>
       <translation>Messen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1164"/>
+      <location filename="ArchCommands.py" line="1166"/>
       <source>Starts survey</source>
       <translation>Messen starten</translation>
     </message>
@@ -1866,12 +1904,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1178"/>
+      <location filename="ArchCommands.py" line="1180"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep Kennzeichen Umschalten</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1179"/>
+      <location filename="ArchCommands.py" line="1181"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Erzwingen den Exports eines Objekts als Brep (oder nicht)</translation>
     </message>
@@ -2078,27 +2116,27 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Dies ist die Standardfarbe für neue Strukturobjekte</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="208"/>
+      <location filename="preferences-arch.ui" line="228"/>
       <source>2D rendering</source>
       <translation>2D Rendering</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="216"/>
+      <location filename="preferences-arch.ui" line="236"/>
       <source>Show debug information during 2D rendering</source>
       <translation>Debuginformationen während des 2D-Renderns anzeigen</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="219"/>
+      <location filename="preferences-arch.ui" line="239"/>
       <source>Show renderer debug messages</source>
       <translation>Renderer-Debug-Nachrichten anzeigen</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="252"/>
+      <location filename="preferences-arch.ui" line="272"/>
       <source>Cut areas line thickness ratio</source>
       <translation>Flächen Linien Dicke Verhältnis schneiden</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="272"/>
+      <location filename="preferences-arch.ui" line="292"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
       <translation>Gibt an wie oft die Linienstärke angewendet werden muss um Linien zu durchtrennen</translation>
     </message>
@@ -2168,11 +2206,6 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Objektfang</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="55"/>
-      <source>Walls drawing</source>
-      <translation>Einstellungen für das Erzeugen von Wänden</translation>
-    </message>
-    <message>
       <location filename="preferences-arch.ui" line="63"/>
       <source>Auto-join walls</source>
       <translation>Wände automatisch verbinden</translation>
@@ -2180,7 +2213,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
     <message>
       <location filename="preferences-arch.ui" line="83"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation>Wenn aktiviert, dann wird versucht beim Verbinden von ähnlichen Wänden die zugrunde liegenden Skizzen auch zu vereinigen. Die beiden Wände werden zu einer Wand</translation>
+      <translation>Wenn aktiviert; Werden zwei ähnlichen Wände verbunden so werden die zugrundeliegenden Skizzen auch vereinigen. Die beiden Wände werden zu einer Wand</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="86"/>
@@ -2188,84 +2221,84 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Vereinige die Basisskizzen von Wänden wenn möglich</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="104"/>
+      <location filename="preferences-arch.ui" line="124"/>
       <source>Mesh to Shape Conversion</source>
       <translation>Netz zu Form umwandeln</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="112"/>
+      <location filename="preferences-arch.ui" line="132"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
       <translation>Wenn aktiviert, ist die Umwandlung schneller, aber das Ergebnis kann noch triangulierte Flächen enthalten</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="115"/>
+      <location filename="preferences-arch.ui" line="135"/>
       <source>Fast conversion</source>
       <translation>Schnelle Umwandlung</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="131"/>
+      <location filename="preferences-arch.ui" line="151"/>
       <source>Tolerance:</source>
       <translation>Toleranz:</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="141"/>
+      <location filename="preferences-arch.ui" line="161"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
       <translation>Toleranz, die verwendet wird um zu prüfen, ob zwei angrenzende Flächen koplanar sind</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="164"/>
+      <location filename="preferences-arch.ui" line="184"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
       <translation>Wenn diese Option aktiviert ist wird die Planheit von Flächen erzwungen, was zu Lücken und ungültigen Ergebnissen führen kann</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="167"/>
+      <location filename="preferences-arch.ui" line="187"/>
       <source>Force flat faces</source>
       <translation>Erzwinge plane Flächen</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="184"/>
+      <location filename="preferences-arch.ui" line="204"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation>Falls aktiviert werden Löcher in Flächen durch Subtraktion anstatt durch Verwendung der Kantenrichtung realisiert</translation>
+      <translation>Wenn aktiviert, werden Löcher in Flächen durch Subtraktion anstatt durch Verwendung der Kantenrichtung realisiert</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="187"/>
+      <location filename="preferences-arch.ui" line="207"/>
       <source>Cut method</source>
       <translation>Schnittmethode</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="37"/>
+      <location filename="preferences-ifc.ui" line="50"/>
       <source>Show debug messages</source>
       <translation>Debugmeldungen anzeigen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="183"/>
+      <location filename="preferences-ifc.ui" line="196"/>
       <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
       <translation>Falls diese Option aktiviert ist, werden Öffnungen als Subtraktionen importiert, falls nicht werden Wände mit Öffnungen importiert</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="186"/>
+      <location filename="preferences-ifc.ui" line="199"/>
       <source>Separate openings</source>
       <translation>Separate Öffnungen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="223"/>
+      <location filename="preferences-ifc.ui" line="236"/>
       <source>If this is checked, object names will be prefixed with the IFC ID number</source>
-      <translation>Hier aktivieren um den Objektnamen die Ifc-ID-Nummer voranzustellen</translation>
+      <translation>Wenn aktiviert, wird den Objektnamen die IFC-ID-Nummer vorangestellt</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="226"/>
+      <location filename="preferences-ifc.ui" line="239"/>
       <source>Prefix names with ID number</source>
-      <translation>Objektnamen mit Ifc-ID-Nummern</translation>
+      <translation>Setze ID-Nummer vor die Namen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="263"/>
+      <location filename="preferences-ifc.ui" line="316"/>
       <source>Exclude list: </source>
       <translation>Ausschluß-Liste: </translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="270"/>
+      <location filename="preferences-ifc.ui" line="323"/>
       <source>A comma-separated list of Ifc entities to exclude from import</source>
-      <translation>Eine durch Kommas getrennte Liste von Ifc-Objekten, die beim Import ausgeschlossen werden</translation>
+      <translation>Eine durch Kommas getrennte Liste von IFC-Objekten, die beim Import ausgeschlossen werden</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="34"/>
@@ -2295,7 +2328,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
     <message>
       <location filename="preferences-archdefaults.ui" line="148"/>
       <source>Structures</source>
-      <translation>Bauteil</translation>
+      <translation>Strukturen</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="309"/>
@@ -2313,22 +2346,22 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Transparenz:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="302"/>
+      <location filename="preferences-ifc.ui" line="355"/>
       <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
-      <translation>Einige IFCViewer haben Probleme mit Austragungen. Mit dieser Einstellung werden alle Objekte als BREP-Geometrie exportiert.</translation>
+      <translation>Einige IFC-Viewer haben Probleme mit Objekten die als Extrusionen exportiert werden. Mit dieser Einstellung werden alle Objekte als BREP-Geometrie exportiert.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="308"/>
+      <location filename="preferences-arch.ui" line="328"/>
       <source>Hidden geomety pattern</source>
       <translation>Verstecktes Geometrie Muster</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="328"/>
+      <location filename="preferences-arch.ui" line="348"/>
       <source>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</source>
-      <translation>Dies ist die SVG stroke-dasharray (gestrichelte Linie) Eigenschaft welche auf die Projektionen verborgener Objekte angewendet wird.</translation>
+      <translation>Dies ist die SVG stroke-dasharray (gestrichelte Linie) Eigenschaft welche auf die Projektionen verborgener Objekte angewandt wird.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="331"/>
+      <location filename="preferences-arch.ui" line="351"/>
       <source>30, 10</source>
       <translation>30, 10</translation>
     </message>
@@ -2358,27 +2391,27 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="305"/>
+      <location filename="preferences-ifc.ui" line="358"/>
       <source>Force export as Brep</source>
       <translation>Export als Brep erzwingen</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="352"/>
+      <location filename="preferences-arch.ui" line="372"/>
       <source>Bim server</source>
       <translation>BIM Server</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="360"/>
+      <location filename="preferences-arch.ui" line="380"/>
       <source>Address</source>
       <translation>Adresse</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="367"/>
+      <location filename="preferences-arch.ui" line="387"/>
       <source>The URL of a bim server instance (www.bimserver.org)  to connect to.</source>
       <translation>Die URL der  BIM-Server-Instanz (www.bimserver.org) zu der eine Verbindung aufgebaut werden soll.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="370"/>
+      <location filename="preferences-arch.ui" line="390"/>
       <source>http://localhost:8082</source>
       <translation>http://localhost:8082</translation>
     </message>
@@ -2388,7 +2421,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="294"/>
+      <location filename="preferences-ifc.ui" line="347"/>
       <source>Export options</source>
       <translation>Export Einstellungen</translation>
     </message>
@@ -2398,102 +2431,102 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>IFC</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="26"/>
+      <location filename="preferences-ifc.ui" line="39"/>
       <source>General options</source>
       <translation>Allgemeine Einstellungen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="34"/>
+      <location filename="preferences-ifc.ui" line="47"/>
       <source>Show verbose information during import and export of IFC files</source>
       <translation>Ausführliche Informationen beim Import und Export von IFC-Dateien anzeigen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="55"/>
+      <location filename="preferences-ifc.ui" line="68"/>
       <source>Import options</source>
       <translation>Import Einstellungen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="63"/>
+      <location filename="preferences-ifc.ui" line="76"/>
       <source>Import arch IFC objects as</source>
       <translation>Importiere architektonische IFC-Objekte als</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="119"/>
+      <location filename="preferences-ifc.ui" line="132"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Legt fest, welcher Objekttyp in FreeCAD erstellt wird</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="80"/>
+      <location filename="preferences-ifc.ui" line="93"/>
       <source>Parametric Arch objects</source>
       <translation>Parametrische Arch-Objekte</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="129"/>
+      <location filename="preferences-ifc.ui" line="142"/>
       <source>Non-parametric Arch objects</source>
       <translation>Nichtparametrische Arch-Objekte</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="134"/>
+      <location filename="preferences-ifc.ui" line="147"/>
       <source>Simple Part shapes</source>
       <translation>Einfache Grundkörper-Formen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="95"/>
+      <location filename="preferences-ifc.ui" line="108"/>
       <source>One compound per floor</source>
       <translation>ein Verbundobjekt für alle Objekte eines Geschosses</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="100"/>
+      <location filename="preferences-ifc.ui" line="113"/>
       <source>Do not import Arch objects</source>
       <translation>architektonische IFC-Objekte nicht importieren</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="112"/>
+      <location filename="preferences-ifc.ui" line="125"/>
       <source>Import struct IFC objects as</source>
       <translation>Importiere analytische IFC-Objekte als</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="139"/>
+      <location filename="preferences-ifc.ui" line="152"/>
       <source>One compound for all</source>
       <translation>ein Verbundobjekt für alle Objekte</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="144"/>
+      <location filename="preferences-ifc.ui" line="157"/>
       <source>Do not import structural objects</source>
       <translation>Keine Struktur-Objekte importieren</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="156"/>
+      <location filename="preferences-ifc.ui" line="169"/>
       <source>Root element:</source>
       <translation>Root-Element:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="163"/>
+      <location filename="preferences-ifc.ui" line="176"/>
       <source>Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</source>
       <translation>Nur Subtypen dieses Elements werden importiert. Um alle Bauteile zu importieren den Eintrag auf "IfcProduct" belassen.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="166"/>
+      <location filename="preferences-ifc.ui" line="179"/>
       <source>IfcProduct</source>
       <translation>IfcProduct</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="203"/>
+      <location filename="preferences-ifc.ui" line="216"/>
       <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
-      <translation>Wenn diese Option aktiviert ist, versucht der Importer Austragungen zu erkennen. Dies könnte den Import verlangsamen...</translation>
+      <translation>Wenn diese Option aktiviert ist, versucht der Importer Extrusionen zu erkennen. Dies könnte den Import verlangsamen ...</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="206"/>
+      <location filename="preferences-ifc.ui" line="219"/>
       <source>Detect extrusions</source>
-      <translation>Erkenne Austragungen</translation>
+      <translation>Erkenne Extrusionen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="243"/>
+      <location filename="preferences-ifc.ui" line="256"/>
       <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
       <translation>Wenn mehrere Materialien mit dem gleichen Namen in der IFC-Datei gefunden werden, werden sie als ein Material behandelt.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="246"/>
+      <location filename="preferences-ifc.ui" line="259"/>
       <source>Merge materials with same name</source>
       <translation>Zusammenführen von Materialien mit gleichem Namen</translation>
     </message>
@@ -2525,7 +2558,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
     <message>
       <location filename="preferences-dae.ui" line="104"/>
       <source>Builtin and mefisto mesher options</source>
-      <translation>Optionen interner- und Mefisto-Netzgenerator</translation>
+      <translation>Optionen interner- und des Mefisto-Netzgenerators</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="112"/>
@@ -2603,24 +2636,59 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Nutze Vierecke</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="322"/>
+      <location filename="preferences-ifc.ui" line="375"/>
       <source>Use triangulation options set in the DAE options page</source>
-      <translation>DAE Netzgeneratoroptionen des DAE-Optionen-Tabs werden verwendet</translation>
+      <translation>Verwende triangulationsoptionen des DAE-Optionen-Tabs</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="325"/>
+      <location filename="preferences-ifc.ui" line="378"/>
       <source>Use DAE triangulation options</source>
-      <translation>Verwende DAE Netzgeneratoroptionen</translation>
+      <translation>Verwende DAE triangulationsoptionen</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="342"/>
+      <location filename="preferences-ifc.ui" line="395"/>
       <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
       <translation>Geschwungene Formen, die in IFC nicht als Wölbung dargestellt werden können, werden als ebene Facetten zerlegt. Wenn diese Option aktiviert ist, werden zusätzliche Berechnungen durchgeführt um koplanare Facetten zu erzeugen.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="345"/>
+      <location filename="preferences-ifc.ui" line="398"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Vereinige planparallele Netzelemente während Netzgenerierung</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="55"/>
+      <source>Object creation</source>
+      <translation>Objekterstellung</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="103"/>
+      <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
+      <translation>Zwei mögliche Strategien um kreisförmige Abhängigkeiten zu vermeiden: Erstelle ein weiteres Objekt (deaktiviert) oder entferne die externe Geometrie der Grundskizze (aktiviert)</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="106"/>
+      <source>Remove external geometry of base sketches when needed</source>
+      <translation>Entferne bei Bedarf die externe Geometrie der Grundskizze</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="276"/>
+      <source>Create clones when objects have shared geometry</source>
+      <translation>Erstelle Klone wenn Objekte eine geteilte Geometrie besitzen</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="26"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation>Diesen Dialog beim importieren und exportieren anzeigen</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="296"/>
+      <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
+      <translation>Wenn aktiviert werden die IFC-Eigenschaften eines jeden Objekts in einer Kalkulationstabelle gespeichert.</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="299"/>
+      <source>Import Ifc Properties in spreadsheet</source>
+      <translation>Importiere IFC-Eigenschaften in eine Kalkulationstabelle</translation>
     </message>
   </context>
   <context>

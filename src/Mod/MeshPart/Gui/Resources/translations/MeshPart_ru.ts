@@ -49,7 +49,7 @@
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -104,7 +104,7 @@
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Elements per curvature radius:</translation>
+        <translation>Элементов на радиус кривизны:</translation>
     </message>
     <message>
         <location line="+31"/>

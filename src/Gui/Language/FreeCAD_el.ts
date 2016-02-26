@@ -1240,10 +1240,6 @@ Please define another shortcut.</source>
         <translation>Όνομα μακροεντολής:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Προορισμός μακροεντολής:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Εκτέλεση</translation>
     </message>
@@ -1265,15 +1261,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1807,11 +1803,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ορθογραφική αποτύπωση</translation>
+        <translation type="obsolete">Ορθογραφική αποτύπωση</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Προοπτική αποτύπωση</translation>
+        <translation type="obsolete">Προοπτική αποτύπωση</translation>
     </message>
     <message>
         <source></source>
@@ -1880,6 +1876,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4868,11 +4872,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Διαγραφή μακροεντολής</translation>
+        <translation>Διαγραφή μακροεντολής</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

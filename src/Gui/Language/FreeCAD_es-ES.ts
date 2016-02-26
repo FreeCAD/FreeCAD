@@ -148,7 +148,7 @@
     </message>
     <message>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation>Aceptar</translation>
     </message>
 </context>
 <context>
@@ -1240,10 +1240,6 @@ Por favor defina otro atajo de teclado.</translation>
         <translation>Nombre de la macro:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Destino de la macro:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Ejecutar</translation>
     </message>
@@ -1265,15 +1261,15 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros de usuario</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros de sistema</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubicación de macros de usuario:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Este archivo ya existe.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Solo lectura</translation>
     </message>
 </context>
 <context>
@@ -1807,11 +1803,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Renderizado ortográfico</translation>
+        <translation type="obsolete">Renderizado ortográfico</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Renderizado en perspectiva</translation>
+        <translation type="obsolete">Renderizado en perspectiva</translation>
     </message>
     <message>
         <source></source>
@@ -1880,6 +1876,14 @@ Especifique otro directorio, por favor.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8 x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4858,11 +4862,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Borrar macro</translation>
+        <translation>Borrar macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>No se permite eliminar macros del sistema</translation>
     </message>
 </context>
 <context>

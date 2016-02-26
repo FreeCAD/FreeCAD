@@ -119,7 +119,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation>&amp;Processador</translation>
+        <translation>&amp;renderizar</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1142"/>
+      <location filename="ArchWindow.py" line="1158"/>
       <source>Components</source>
       <translation>Komponenty</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Velikost bubliny osy</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1136"/>
+      <location filename="ArchWindow.py" line="1152"/>
       <source>Remove</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1137"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Add</source>
       <translation>Přidat</translation>
     </message>
@@ -84,57 +84,57 @@
       <translation>Podlaha</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="209"/>
+      <location filename="ArchCommands.py" line="211"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>Odstraní rovinu náčrtu pro předejití křížového odkazu</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="613"/>
       <source>is not closed</source>
       <translation>není uzavřeno</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="613"/>
+      <location filename="ArchCommands.py" line="615"/>
       <source>is not valid</source>
       <translation>není platný</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="615"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>doesn't contain any solid</source>
       <translation>neobsahuje žádné těleso</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="621"/>
+      <location filename="ArchCommands.py" line="623"/>
       <source>contains a non-closed solid</source>
       <translation>obsahuje neuzavřené těleso</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="625"/>
       <source>contains faces that are not part of any solid</source>
       <translation>obsahuje plochy které nejsou součástí žádného tělesa</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="953"/>
+      <location filename="ArchCommands.py" line="955"/>
       <source>Grouping</source>
       <translation>Seskupování</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="985"/>
+      <location filename="ArchCommands.py" line="987"/>
       <source>Ungrouping</source>
       <translation>Rozdělit skupinu</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Split Mesh</source>
       <translation>Rozdělit síť</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1056"/>
+      <location filename="ArchCommands.py" line="1058"/>
       <source>Mesh to Shape</source>
       <translation>Síť na Tvar</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1137"/>
+      <location filename="ArchCommands.py" line="1139"/>
       <source>All good! no problems found</source>
       <translation>Vše v pořádku! nebyly zjištěny žádné problémy</translation>
     </message>
@@ -159,7 +159,7 @@
       <translation>Objekty</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="801"/>
+      <location filename="ArchComponent.py" line="805"/>
       <source>closing Sketch edit</source>
       <translation>Ukončit úpravu náčrtu</translation>
     </message>
@@ -219,27 +219,27 @@
       <translation>Vytvořit parcelu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="433"/>
+      <location filename="ArchStructure.py" line="183"/>
       <source>Create Structure</source>
       <translation>Vytvořit strukturu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="565"/>
+      <location filename="ArchStructure.py" line="338"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Délka tohoto prvku, není-li založena na profilu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="566"/>
+      <location filename="ArchStructure.py" line="339"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Šířka tohoto prvku, není-li založena na profilu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="567"/>
+      <location filename="ArchStructure.py" line="340"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>Výška tohoto prvku, není-li založena na profilu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="775"/>
+      <location filename="ArchStructure.py" line="523"/>
       <source>Axes systems this structure is built on</source>
       <translation>Systém os této konstrukce je založen na</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Normálový směr vytažení tohoto objektu (pro (0,0,0) automatická normála)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="776"/>
+      <location filename="ArchStructure.py" line="524"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Počet elementů pro vyjmutí když tato struktura je založena na ose</translation>
     </message>
@@ -309,57 +309,57 @@
       <translation>Tato síť netvoří platné těleso</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="466"/>
+      <location filename="ArchWindow.py" line="467"/>
       <source>Create Window</source>
       <translation>Vytvořit okno</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="607"/>
+      <location filename="ArchWindow.py" line="623"/>
       <source>the components of this window</source>
       <translation>součásti tohoto okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1138"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1139"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Create/update component</source>
       <translation>Vytvořit/aktualizovat díl</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1140"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Base 2D object</source>
       <translation>Základní 2D objekt</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1146"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Wires</source>
       <translation>Dráty</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1143"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Create new component</source>
       <translation>Vytvořit nový díl</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1144"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Name</source>
       <translation>Jméno</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1145"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1147"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Thickness</source>
       <translation>Tloušťka</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1148"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Z offset</source>
       <translation>Z posun</translation>
     </message>
@@ -405,12 +405,12 @@
       <translation>Styl číslování</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="949"/>
+      <location filename="ArchCommands.py" line="951"/>
       <source>Add space boundary</source>
       <translation>Přidat hranici prostoru</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="981"/>
+      <location filename="ArchCommands.py" line="983"/>
       <source>Remove space boundary</source>
       <translation>Odstranit hranici prostoru</translation>
     </message>
@@ -445,12 +445,12 @@
       <translation>Vytvořit rám</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="121"/>
+      <location filename="ArchRebar.py" line="127"/>
       <source>Create Rebar</source>
       <translation>Vytvoř výztuž</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="131"/>
+      <location filename="ArchRebar.py" line="137"/>
       <source>Please select a base face on a structural object
 </source>
       <translation>Vyberte prosím základní plochu na konstrukčním objektu
@@ -579,22 +579,12 @@
       <translation>Odsazení mezi hranou schodiště a konstrukcí</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="40"/>
-      <source>Wood</source>
-      <translation>Dřevo</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="41"/>
-      <source>Steel</source>
-      <translation>Ocel</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="459"/>
+      <location filename="ArchStructure.py" line="214"/>
       <source>Structure options</source>
       <translation>Volba struktury</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="526"/>
+      <location filename="ArchWindow.py" line="539"/>
       <source>Preset</source>
       <translation>Předvolba</translation>
     </message>
@@ -604,7 +594,7 @@
       <translation>Délka</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="494"/>
+      <location filename="ArchStructure.py" line="255"/>
       <source>Rotate</source>
       <translation>Rotace</translation>
     </message>
@@ -614,27 +604,27 @@
       <translation>Pokračovat</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="564"/>
+      <location filename="ArchStructure.py" line="337"/>
       <source>An optional extrusion path for this element</source>
       <translation>Volitelná dráha vytažení pro tento prvek</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="568"/>
+      <location filename="ArchStructure.py" line="341"/>
       <source>Armatures contained in this element</source>
       <translation>Armatury obsažené v tomto prvku</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="570"/>
+      <location filename="ArchStructure.py" line="343"/>
       <source>The structural nodes of this element</source>
       <translation>Konstrukční uzly tohoto prvku</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="601"/>
+      <location filename="ArchStructure.py" line="374"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Chyba: Základní tvar nemůže být vysunut podél tohoto objektu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="828"/>
+      <location filename="ArchStructure.py" line="576"/>
       <source>Couldn't compute a shape</source>
       <translation>Nemohu vyřešit plochu</translation>
     </message>
@@ -674,39 +664,39 @@
       <translation>Odsazení mezi touto zdí a základní linií (pouze pro levé a pravé zarovnání)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="455"/>
+      <location filename="ArchWindow.py" line="453"/>
       <source>Pick a face on an existing object or select a preset
 </source>
       <translation>Vyberte povrch existujícího objektu nebo vyberte aktuální
 </translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="515"/>
+      <location filename="ArchWindow.py" line="522"/>
       <source>Window options</source>
       <translation>Volby okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="608"/>
+      <location filename="ArchWindow.py" line="624"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation>Hloubka díry kterou toto okno udělá v objektu. Zadání 0 pro automaticky.</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="610"/>
+      <location filename="ArchWindow.py" line="626"/>
       <source>The width of this window (for preset windows only)</source>
       <translation>Šířka tohoto okna (jen pro aktuální okna)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="611"/>
+      <location filename="ArchWindow.py" line="627"/>
       <source>The height of this window (for preset windows only)</source>
       <translation>Výška tohoto okna (pouze aktuální okna)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="612"/>
+      <location filename="ArchWindow.py" line="628"/>
       <source>The normal direction of this window</source>
       <translation>Normálový směr tohoto okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1113"/>
+      <location filename="ArchWindow.py" line="1129"/>
       <source>Unable to create component
 </source>
       <translation>Nelze vytvořit komponentu
@@ -732,12 +722,12 @@
       <translation>Vzdálenosti (mm) a úhly (deg) mezi osami</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="649"/>
+      <location filename="ArchComponent.py" line="651"/>
       <source>Error computing the shape of this object</source>
       <translation>Chyba při výpočtu tvaru tohoto objektu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="398"/>
+      <location filename="ArchStructure.py" line="148"/>
       <source>Create Structural System</source>
       <translation>Vytvořit konstrukční systém</translation>
     </message>
@@ -756,38 +746,38 @@
 </translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="56"/>
+      <location filename="importOBJ.py" line="60"/>
       <source>Found a shape containing curves, triangulating
 </source>
       <translation>Nalezený tvar obsahuje křivky, triangulace
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="358"/>
+      <location filename="ArchCommands.py" line="360"/>
       <source>Invalid cutplane
 </source>
       <translation>Neplatná rovina řezu
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="365"/>
+      <location filename="ArchCommands.py" line="367"/>
       <source>No objects are cut by the plane
 </source>
       <translation>Rovina neprotíná žádné objekty
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="804"/>
+      <location filename="ArchCommands.py" line="806"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Objekt nemá nastavitelné IFC atributy</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="810"/>
+      <location filename="ArchCommands.py" line="812"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Vypnutí vynuceného značení objektů Brep</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="816"/>
+      <location filename="ArchCommands.py" line="818"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Zapnutí vynuceného značení objektů Brep</translation>
     </message>
@@ -817,12 +807,12 @@
       <translation>Volitelný štítek pro tuto komponentu</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="298"/>
+      <location filename="ArchComponent.py" line="302"/>
       <source>Custom IFC properties and attributes</source>
       <translation>Uživatelské vlastnosti a atributy IFC</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="615"/>
+      <location filename="ArchWindow.py" line="631"/>
       <source>A material for this object</source>
       <translation>Materiál pro tento objekt</translation>
     </message>
@@ -837,17 +827,17 @@
       <translation>Určuje, jestli se má tento objekt přesunout spolu s jeho nadřazeným objektem</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="656"/>
+      <location filename="ArchComponent.py" line="658"/>
       <source>has no solid</source>
       <translation>nemá objemové těleso</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="658"/>
+      <location filename="ArchComponent.py" line="660"/>
       <source>has an invalid shape</source>
       <translation>nemá platný tvar</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="660"/>
+      <location filename="ArchComponent.py" line="662"/>
       <source>has a null shape</source>
       <translation>má neplatný tvar</translation>
     </message>
@@ -1062,12 +1052,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Ukaž příponu jednotek</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="571"/>
+      <location filename="ArchStructure.py" line="344"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>Popis standardního profilu, na kterém je tento element založen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="519"/>
+      <location filename="ArchWindow.py" line="532"/>
       <source>Sill height</source>
       <translation>Výška parapetu</translation>
     </message>
@@ -1179,12 +1169,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Typ budovy</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="215"/>
+      <location filename="ArchCommands.py" line="217"/>
       <source>removing sketch external reference to avoid cross-referencing</source>
       <translation>odstraňování vnější reference náčrtu, aby se zabránilo křížení referencí</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1203"/>
+      <location filename="ArchCommands.py" line="1205"/>
       <source>Create Component</source>
       <translation>Vytvořit komponentu</translation>
     </message>
@@ -1304,27 +1294,27 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Zobrazit řez ve 3D pohledu</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="62"/>
+      <location filename="ArchServer.py" line="63"/>
       <source>This document is not saved. Please save it first</source>
       <translation>Tento dokument není uložen. Nejdříve jej prosím uložte</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="67"/>
+      <location filename="ArchServer.py" line="68"/>
       <source>The Python Git module was not found. Please install the python-git package.</source>
       <translation>Python Git modul nebyl nalezen. Nainstalujte prosím balík python-git.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="72"/>
+      <location filename="ArchServer.py" line="73"/>
       <source>This document doesn't appear to be part of a Git repository.</source>
       <translation>Tento dokument nevypadá jako součást Git repozitáře.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="76"/>
+      <location filename="ArchServer.py" line="77"/>
       <source>Warning: no remote repositories. Unable to push</source>
       <translation>Varování: žádné vzdálené repozitáře. Není možné odesílat</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="82"/>
+      <location filename="ArchServer.py" line="83"/>
       <source>The Git repository cannot handle this document.</source>
       <translation>Git repozitář nemůže manipulovat s tímto dokumentem.</translation>
     </message>
@@ -1364,7 +1354,7 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Zdi mohou být založeny jen na objektech součásti nebo sítě</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="609"/>
+      <location filename="ArchWindow.py" line="625"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>volitelný objekt, který definuje objem odečtený z hostitelů tohoto okna</translation>
     </message>
@@ -1376,55 +1366,90 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="ArchSectionPlane.py" line="625"/>
       <source>Objects seen by this section plane</source>
-      <translation type="unfinished">Objects seen by this section plane</translation>
+      <translation>Objekty viditelné touto rovinou řezu</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="540"/>
       <source>Set text position</source>
-      <translation type="unfinished">Set text position</translation>
+      <translation>Nastavit pozici textu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="623"/>
+      <location filename="ArchStructure.py" line="400"/>
       <source>Unable to extrude the base shape
 </source>
-      <translation type="unfinished">Unable to extrude the base shape
+      <translation>Nelze vysunout základní tvar
 </translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="218"/>
+      <source>Category</source>
+      <translation>Kategorie</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1217"/>
+      <source>Key</source>
+      <translation type="unfinished">Key</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1219"/>
+      <source>Value</source>
+      <translation>Hodnota</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1220"/>
+      <source>Unit</source>
+      <translation>Jednotka</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1226"/>
+      <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
+      <translation>Objektn nemá atribut Ifc vlastností. Zrušit vytváření tabulky pro objekt: </translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1244"/>
+      <source>Create IFC properties spreadsheet</source>
+      <translation>Vytvořit tabulku IFC vlastností</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="526"/>
+      <source>Auto include in host object</source>
+      <translation>Atomaticky zahrnout do hostitelského objektu</translation>
     </message>
   </context>
   <context>
     <name>ArchGitOptions</name>
     <message>
-      <location filename="ArchServer.py" line="152"/>
+      <location filename="ArchServer.py" line="153"/>
       <source>Git Options</source>
       <translation>Git možnosti</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="153"/>
+      <location filename="ArchServer.py" line="154"/>
       <source>What to commit</source>
       <translation type="unfinished">What to commit</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="154"/>
-      <source>All files in folder</source>
-      <translation type="unfinished">All files in folder</translation>
-    </message>
-    <message>
       <location filename="ArchServer.py" line="155"/>
-      <source>Only this .FcStd file</source>
-      <translation type="unfinished">Only this .FcStd file</translation>
+      <source>All files in folder</source>
+      <translation>Všechny soubory ve složce</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="156"/>
+      <source>Only this .FcStd file</source>
+      <translation>Jen tento .FcStd soubor</translation>
+    </message>
+    <message>
+      <location filename="ArchServer.py" line="157"/>
       <source>Commit message</source>
       <translation type="unfinished">Commit message</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="157"/>
+      <location filename="ArchServer.py" line="158"/>
       <source>commit</source>
       <translation type="unfinished">commit</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="158"/>
+      <location filename="ArchServer.py" line="159"/>
       <source>Push to default remote repository</source>
       <translation type="unfinished">Push to default remote repository</translation>
     </message>
@@ -1434,12 +1459,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation type="unfinished">Arch material</translation>
+      <translation>Architektonický materiál</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="23"/>
       <source>Choose preset...</source>
-      <translation type="unfinished">Choose preset...</translation>
+      <translation>Vyberte předvolbu...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="35"/>
@@ -1483,12 +1508,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="940"/>
+      <location filename="ArchCommands.py" line="942"/>
       <source>Add component</source>
       <translation>Přidat komponentu</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="941"/>
+      <location filename="ArchCommands.py" line="943"/>
       <source>Adds the selected components to the active object</source>
       <translation>Přidá vybrané komponenty do aktivního objektu</translation>
     </message>
@@ -1509,14 +1534,14 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Bimserver</name>
     <message>
-      <location filename="ArchServer.py" line="42"/>
+      <location filename="ArchServer.py" line="43"/>
       <source>BIM server</source>
-      <translation type="unfinished">BIM server</translation>
+      <translation>BIM server</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="43"/>
+      <location filename="ArchServer.py" line="44"/>
       <source>Opens a browser window and connects to a BIM server instance</source>
-      <translation type="unfinished">Opens a browser window and connects to a BIM server instance</translation>
+      <translation>Otevře okno prohlížeče a připojí se k instanci BIM serveru</translation>
     </message>
   </context>
   <context>
@@ -1535,17 +1560,17 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1128"/>
+      <location filename="ArchCommands.py" line="1130"/>
       <source>Check</source>
       <translation>Zkontroluj</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1129"/>
+      <location filename="ArchCommands.py" line="1131"/>
       <source>Checks the selected objects for problems</source>
       <translation>Zkontroluje vybrané objekty na problémy</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1152"/>
       <source>Explore the contents of an Ifc file</source>
       <translation>Procházej obsah souboru Ifc</translation>
     </message>
@@ -1553,12 +1578,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1111"/>
+      <location filename="ArchCommands.py" line="1113"/>
       <source>Close holes</source>
       <translation>Uzavřít díry</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1112"/>
+      <location filename="ArchCommands.py" line="1114"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Uzavřít díry v otevřených plochách, vytvoření tělesa</translation>
     </message>
@@ -1566,14 +1591,14 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1193"/>
+      <location filename="ArchCommands.py" line="1195"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Komponenta</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1195"/>
+      <location filename="ArchCommands.py" line="1197"/>
       <source>Creates an undefined architectural component</source>
-      <translation type="unfinished">Creates an undefined architectural component</translation>
+      <translation>Vytvoří nedefinovanou architektonickou komponentu</translation>
     </message>
   </context>
   <context>
@@ -1631,12 +1656,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Git</name>
     <message>
-      <location filename="ArchServer.py" line="56"/>
+      <location filename="ArchServer.py" line="57"/>
       <source>Commit with Git</source>
       <translation type="unfinished">Commit with Git</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="57"/>
+      <location filename="ArchServer.py" line="58"/>
       <source>Commits the current document</source>
       <translation type="unfinished">Commits the current document</translation>
     </message>
@@ -1644,9 +1669,22 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="ArchCommands.py" line="1149"/>
+      <location filename="ArchCommands.py" line="1151"/>
       <source>Ifc Explorer</source>
       <translation>Ifc prohlížeč</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_IfcSpreadsheet</name>
+    <message>
+      <location filename="ArchCommands.py" line="1235"/>
+      <source>Create IFC spreadsheet...</source>
+      <translation>Vytvořit tabulku IFC...</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1237"/>
+      <source>Creates a spreadsheet to store ifc properties of an object.</source>
+      <translation>Vytvoří tabulku s ifc vlastnostmi objektu.</translation>
     </message>
   </context>
   <context>
@@ -1654,12 +1692,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="ArchMaterial.py" line="72"/>
       <source>Set material...</source>
-      <translation type="unfinished">Set material...</translation>
+      <translation>Nastavit materiál...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="74"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>Vytvoří nebo upraví definici materiálu vybraného objektu.</translation>
     </message>
   </context>
   <context>
@@ -1678,12 +1716,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1032"/>
+      <location filename="ArchCommands.py" line="1034"/>
       <source>Mesh to Shape</source>
       <translation>Síť na Tvar</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1033"/>
+      <location filename="ArchCommands.py" line="1035"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Převede vybrané objekty sítě na objekty tvaru</translation>
     </message>
@@ -1704,12 +1742,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="ArchRebar.py" line="84"/>
+      <location filename="ArchRebar.py" line="90"/>
       <source>Rebar</source>
       <translation>Výztuž</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="86"/>
+      <location filename="ArchRebar.py" line="92"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Vytvoří vyztužující prut z vybrané plochy konstrukčního objektu</translation>
     </message>
@@ -1717,12 +1755,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="972"/>
+      <location filename="ArchCommands.py" line="974"/>
       <source>Remove component</source>
       <translation>Odstranit komponent</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="973"/>
+      <location filename="ArchCommands.py" line="975"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Odstranit vybrané komponenty z jejich rodičů, nebo vytvořit díry v komponentě</translation>
     </message>
@@ -1730,12 +1768,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1096"/>
+      <location filename="ArchCommands.py" line="1098"/>
       <source>Remove Shape from Arch</source>
       <translation>Odstranění Tvaru ze Stavby</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1097"/>
+      <location filename="ArchCommands.py" line="1099"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Odstraní krychlové tvary z komponent Stavby</translation>
     </message>
@@ -1758,12 +1796,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="ArchSchedule.py" line="40"/>
       <source>Create schedule...</source>
-      <translation type="unfinished">Create schedule...</translation>
+      <translation>Vytvořit plán...</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="41"/>
       <source>Creates a materials or areas schedule.</source>
-      <translation type="unfinished">Creates a materials or areas schedule.</translation>
+      <translation>Vytovří materiály nebo plán území.</translation>
     </message>
   </context>
   <context>
@@ -1782,14 +1820,14 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1067"/>
+      <location filename="ArchCommands.py" line="1069"/>
       <source>Select non-manifold meshes</source>
-      <translation type="unfinished">Select non-manifold meshes</translation>
+      <translation>Vyberte non-manifold sítě</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1068"/>
+      <location filename="ArchCommands.py" line="1070"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
-      <translation type="unfinished">Selects all non-manifold meshes from the document or from the selected groups</translation>
+      <translation>Vybere všechny non-manifold sítě z dokumentu nebo z vybraných skupin</translation>
     </message>
   </context>
   <context>
@@ -1826,12 +1864,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1007"/>
+      <location filename="ArchCommands.py" line="1009"/>
       <source>Split Mesh</source>
       <translation>Rozdělit síť</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1008"/>
+      <location filename="ArchCommands.py" line="1010"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Rozdělí vybrané sítě na nezávislé komponenty</translation>
     </message>
@@ -1847,12 +1885,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="ArchStructure.py" line="376"/>
+      <location filename="ArchStructure.py" line="126"/>
       <source>Structure</source>
       <translation>Struktura</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="378"/>
+      <location filename="ArchStructure.py" line="128"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Vytvoří konstrukční objekt kompoletně nebo z vybraného objektu (náčrt, drát, povrch nebo těleso)</translation>
     </message>
@@ -1860,12 +1898,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1163"/>
+      <location filename="ArchCommands.py" line="1165"/>
       <source>Survey</source>
       <translation>Prohlížení</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1164"/>
+      <location filename="ArchCommands.py" line="1166"/>
       <source>Starts survey</source>
       <translation>Začne prohlížení</translation>
     </message>
@@ -1873,12 +1911,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1178"/>
+      <location filename="ArchCommands.py" line="1180"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Přepnout IFC Brep znak</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1179"/>
+      <location filename="ArchCommands.py" line="1181"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Vynutit nebo ne nevynutit export objektu jako Brep</translation>
     </message>
@@ -1924,22 +1962,22 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="ArchSchedule.ui" line="156"/>
       <source>Quantities</source>
-      <translation type="unfinished">Quantities</translation>
+      <translation>Množství</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="32"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>Prostory</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="37"/>
       <source>Doors and windows</source>
-      <translation type="unfinished">Doors and windows</translation>
+      <translation>Dveře a okna</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="47"/>
       <source>Start cell</source>
-      <translation type="unfinished">Start cell</translation>
+      <translation>Počáteční buňka</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="54"/>
@@ -1949,87 +1987,87 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="ArchSchedule.ui" line="68"/>
       <source>Area unit</source>
-      <translation type="unfinished">Area unit</translation>
+      <translation>Plošná jednotka</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="75"/>
       <source>m²</source>
-      <translation type="unfinished">m²</translation>
+      <translation>m²</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="89"/>
       <source>Volume unit</source>
-      <translation type="unfinished">Volume unit</translation>
+      <translation>Objemová jednotka</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="96"/>
       <source>m³</source>
-      <translation type="unfinished">m³</translation>
+      <translation>m³</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="110"/>
       <source>Currency unit</source>
-      <translation type="unfinished">Currency unit</translation>
+      <translation>Jednotka měny</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="117"/>
       <source>This must match what is stored in the project materials. No conversion will be done.</source>
-      <translation type="unfinished">This must match what is stored in the project materials. No conversion will be done.</translation>
+      <translation>Toto musí odpovídat materiálům projektu. Nebude proveden převod.</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="135"/>
       <source>€</source>
-      <translation type="unfinished">€</translation>
+      <translation>€</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="162"/>
       <source>Only show totals</source>
-      <translation type="unfinished">Only show totals</translation>
+      <translation>Zobrazit jen celky</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="172"/>
       <source>Add material description</source>
-      <translation type="unfinished">Add material description</translation>
+      <translation>Přidat popis materiálu</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="182"/>
       <source>Add material color</source>
-      <translation type="unfinished">Add material color</translation>
+      <translation>Přidat barvu materiálu</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="192"/>
       <source>Add material finish</source>
-      <translation type="unfinished">Add material finish</translation>
+      <translation>Přidat dokončení materiálu</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="202"/>
       <source>Add material URL</source>
-      <translation type="unfinished">Add material URL</translation>
+      <translation>Přidat URL materiálu</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="209"/>
       <source>Add price calculation</source>
-      <translation type="unfinished">Add price calculation</translation>
+      <translation>Přidat výpočet ceny</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="219"/>
       <source>Add structures</source>
-      <translation type="unfinished">Add structures</translation>
+      <translation>Přidat konstrukce</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="229"/>
       <source>Add stairs</source>
-      <translation type="unfinished">Add stairs</translation>
+      <translation>Přidat schody</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="239"/>
       <source>Add walls</source>
-      <translation type="unfinished">Add walls</translation>
+      <translation>Přidat zdi</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="249"/>
       <source>Add all other roles</source>
-      <translation type="unfinished">Add all other roles</translation>
+      <translation>Přidat všechyn ostatní role</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="259"/>
@@ -2064,7 +2102,7 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="ArchSchedule.ui" line="319"/>
       <source>Add furniture</source>
-      <translation type="unfinished">Add furniture</translation>
+      <translation>Přidat nábitek</translation>
     </message>
   </context>
   <context>
@@ -2085,27 +2123,27 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Toto je přednastavená barva pro nový objekt struktury</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="208"/>
+      <location filename="preferences-arch.ui" line="228"/>
       <source>2D rendering</source>
       <translation>2D vykreslování</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="216"/>
+      <location filename="preferences-arch.ui" line="236"/>
       <source>Show debug information during 2D rendering</source>
       <translation>Zobrazit ladicí informace během 2D vykreslování</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="219"/>
+      <location filename="preferences-arch.ui" line="239"/>
       <source>Show renderer debug messages</source>
       <translation>Zobrazit ladící zprávy vykreslování</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="252"/>
+      <location filename="preferences-arch.ui" line="272"/>
       <source>Cut areas line thickness ratio</source>
       <translation>Poměr tlouštěk čar řezajících plochy</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="272"/>
+      <location filename="preferences-arch.ui" line="292"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
       <translation>Určuje kolikanásobně se má zobrazit tloušťka řezných čar</translation>
     </message>
@@ -2175,11 +2213,6 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Přichycení</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="55"/>
-      <source>Walls drawing</source>
-      <translation>Kreslení zdí</translation>
-    </message>
-    <message>
       <location filename="preferences-arch.ui" line="63"/>
       <source>Auto-join walls</source>
       <translation>Automatické slučování zdí</translation>
@@ -2195,82 +2228,82 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Sloučit základní náčrty zdí, pokud je to možné</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="104"/>
+      <location filename="preferences-arch.ui" line="124"/>
       <source>Mesh to Shape Conversion</source>
       <translation>Převedení sítě na tvar</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="112"/>
+      <location filename="preferences-arch.ui" line="132"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
       <translation>Je-li zaškrtnuto, konverze je rychlejší, ale výsledek může stále obsahovat trojúhelníkové stěny</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="115"/>
+      <location filename="preferences-arch.ui" line="135"/>
       <source>Fast conversion</source>
       <translation>Rychlá konverze</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="131"/>
+      <location filename="preferences-arch.ui" line="151"/>
       <source>Tolerance:</source>
       <translation>Tolerance:</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="141"/>
+      <location filename="preferences-arch.ui" line="161"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
       <translation>Hodnota tolerance používaná při kontrole, zda jsou dvě přilehlé stěny rovinné</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="164"/>
+      <location filename="preferences-arch.ui" line="184"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
       <translation>Je-li zaškrtnuto, skupiny plochých stěn budou vyhlazeny, což může vést k mezerám a ne-tělesovým výsledkům</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="167"/>
+      <location filename="preferences-arch.ui" line="187"/>
       <source>Force flat faces</source>
       <translation>Umělé rovinné plochy</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="184"/>
+      <location filename="preferences-arch.ui" line="204"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
       <translation>Při zaškrtnutí díry v plochách budou provedeny odečtením, jinak orientací drátu</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="187"/>
+      <location filename="preferences-arch.ui" line="207"/>
       <source>Cut method</source>
       <translation>Metoda řezu</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="37"/>
+      <location filename="preferences-ifc.ui" line="50"/>
       <source>Show debug messages</source>
       <translation>Zobrazit zprávy ladění</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="183"/>
+      <location filename="preferences-ifc.ui" line="196"/>
       <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
       <translation>Je-li zaškrtnuto, otvory budou importovány jako odečítání, jinak již budou mít tvary zdí své otvory odečtené</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="186"/>
+      <location filename="preferences-ifc.ui" line="199"/>
       <source>Separate openings</source>
       <translation>Separovat otvory</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="223"/>
+      <location filename="preferences-ifc.ui" line="236"/>
       <source>If this is checked, object names will be prefixed with the IFC ID number</source>
       <translation>Je-li zaškrtuto, názvy objektů budou mít předponu IFC ID čísla</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="226"/>
+      <location filename="preferences-ifc.ui" line="239"/>
       <source>Prefix names with ID number</source>
       <translation>Předřaď jménu ID</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="263"/>
+      <location filename="preferences-ifc.ui" line="316"/>
       <source>Exclude list: </source>
       <translation>Seznam vyloučení: </translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="270"/>
+      <location filename="preferences-ifc.ui" line="323"/>
       <source>A comma-separated list of Ifc entities to exclude from import</source>
       <translation>Čárkami oddělený seznam Ifc entit, pro vyloučení z importu</translation>
     </message>
@@ -2320,22 +2353,22 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Průhlednost:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="302"/>
+      <location filename="preferences-ifc.ui" line="355"/>
       <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
       <translation>Některé IFC prohlížeče nemají rády objekty exportované jako extruze. Použijte tohoto k vynucenému exportu všech objektů  jako BREP geometrie.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="308"/>
+      <location filename="preferences-arch.ui" line="328"/>
       <source>Hidden geomety pattern</source>
       <translation>Vzor skryté geometrie</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="328"/>
+      <location filename="preferences-arch.ui" line="348"/>
       <source>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</source>
       <translation>Toto je typ čáry (vlastnost SVG stroke-dasharray) pro skryté objekty.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="331"/>
+      <location filename="preferences-arch.ui" line="351"/>
       <source>30, 10</source>
       <translation>30, 10</translation>
     </message>
@@ -2365,37 +2398,37 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Tloušťka</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="305"/>
+      <location filename="preferences-ifc.ui" line="358"/>
       <source>Force export as Brep</source>
       <translation>Vynutit export jako Brep</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="352"/>
+      <location filename="preferences-arch.ui" line="372"/>
       <source>Bim server</source>
-      <translation type="unfinished">Bim server</translation>
+      <translation>Bim server</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="360"/>
+      <location filename="preferences-arch.ui" line="380"/>
       <source>Address</source>
-      <translation type="unfinished">Address</translation>
+      <translation>Adresa</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="367"/>
+      <location filename="preferences-arch.ui" line="387"/>
       <source>The URL of a bim server instance (www.bimserver.org)  to connect to.</source>
-      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org)  to connect to.</translation>
+      <translation>URL instance bim serveru (www.bimserver.org)  k připojení.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="370"/>
+      <location filename="preferences-arch.ui" line="390"/>
       <source>http://localhost:8082</source>
-      <translation type="unfinished">http://localhost:8082</translation>
+      <translation>http://localhost:8082</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="14"/>
       <source>DAE</source>
-      <translation type="unfinished">DAE</translation>
+      <translation>DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="294"/>
+      <location filename="preferences-ifc.ui" line="347"/>
       <source>Export options</source>
       <translation>Možnosti exportu</translation>
     </message>
@@ -2405,119 +2438,119 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>IFC</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="26"/>
+      <location filename="preferences-ifc.ui" line="39"/>
       <source>General options</source>
       <translation>Obecné nastavení</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="34"/>
+      <location filename="preferences-ifc.ui" line="47"/>
       <source>Show verbose information during import and export of IFC files</source>
-      <translation type="unfinished">Show verbose information during import and export of IFC files</translation>
+      <translation>Zobrazit podrobné informace během importu a exportu IFC souborů</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="55"/>
+      <location filename="preferences-ifc.ui" line="68"/>
       <source>Import options</source>
       <translation>Možnosti importu</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="63"/>
+      <location filename="preferences-ifc.ui" line="76"/>
       <source>Import arch IFC objects as</source>
       <translation>Importovat arch IFC objekty jako</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="119"/>
+      <location filename="preferences-ifc.ui" line="132"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Určuje, jaký druh objektů bude vytvořen v FreeCAD</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="80"/>
+      <location filename="preferences-ifc.ui" line="93"/>
       <source>Parametric Arch objects</source>
       <translation>Parametrické Arch objekty</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="129"/>
+      <location filename="preferences-ifc.ui" line="142"/>
       <source>Non-parametric Arch objects</source>
       <translation>Neparametrické Arch objekty</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="134"/>
+      <location filename="preferences-ifc.ui" line="147"/>
       <source>Simple Part shapes</source>
       <translation>Jednoduché tvary součásti</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="95"/>
+      <location filename="preferences-ifc.ui" line="108"/>
       <source>One compound per floor</source>
-      <translation type="unfinished">One compound per floor</translation>
+      <translation>Jedna složenina na patro</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="100"/>
+      <location filename="preferences-ifc.ui" line="113"/>
       <source>Do not import Arch objects</source>
       <translation>Neimportujte Arch objekty</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="112"/>
+      <location filename="preferences-ifc.ui" line="125"/>
       <source>Import struct IFC objects as</source>
       <translation>Import objektů IFC struct jako</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="139"/>
+      <location filename="preferences-ifc.ui" line="152"/>
       <source>One compound for all</source>
-      <translation type="unfinished">One compound for all</translation>
+      <translation>Jedna složenina pro všechno</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="144"/>
+      <location filename="preferences-ifc.ui" line="157"/>
       <source>Do not import structural objects</source>
       <translation>Neimportovat stavební objekty</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="156"/>
+      <location filename="preferences-ifc.ui" line="169"/>
       <source>Root element:</source>
       <translation>Kořenový prvek:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="163"/>
+      <location filename="preferences-ifc.ui" line="176"/>
       <source>Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</source>
-      <translation type="unfinished">Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</translation>
+      <translation>Importovány budou jenom podtypy tohoto elementu. Hodnota zůstane jako "IfcProduct" pro import všech stavebních elementů.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="166"/>
+      <location filename="preferences-ifc.ui" line="179"/>
       <source>IfcProduct</source>
-      <translation type="unfinished">IfcProduct</translation>
+      <translation>IfcProduct</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="203"/>
+      <location filename="preferences-ifc.ui" line="216"/>
       <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
-      <translation type="unfinished">If this is checked, the importer will try to detect extrusions. This might slow things down...</translation>
+      <translation>Je-li zaškrtnuto, import se bude automaticky snažit detekovat vytažení. To může vést ke zpomalení...</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="206"/>
+      <location filename="preferences-ifc.ui" line="219"/>
       <source>Detect extrusions</source>
-      <translation type="unfinished">Detect extrusions</translation>
+      <translation>Detekovat vytažení</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="243"/>
+      <location filename="preferences-ifc.ui" line="256"/>
       <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
-      <translation type="unfinished">If several materials with the same name are found in the IFC file, they will be treated as one.</translation>
+      <translation>Je-li v IFC souboru nalezeno několik materiálů se stejným jménem, budou zpracovány jako jeden.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="246"/>
+      <location filename="preferences-ifc.ui" line="259"/>
       <source>Merge materials with same name</source>
-      <translation type="unfinished">Merge materials with same name</translation>
+      <translation>Sloučit materiály se stejným jménem</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="64"/>
       <source>Mesher</source>
-      <translation type="unfinished">Mesher</translation>
+      <translation>Algoritmus síťování</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="71"/>
       <source>The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</source>
-      <translation type="unfinished">The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</translation>
+      <translation>Použitý algoritmus síťování. Při použití Netgenu se ujistěte, že je Netgen povolen v modulu Síť</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="81"/>
       <source>Builtin</source>
-      <translation type="unfinished">Builtin</translation>
+      <translation>Vestavěný</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="86"/>
@@ -2532,7 +2565,7 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="preferences-dae.ui" line="104"/>
       <source>Builtin and mefisto mesher options</source>
-      <translation type="unfinished">Builtin and mefisto mesher options</translation>
+      <translation>Možnosti Mefisto a vestavěného síťovacího algoritmu</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="112"/>
@@ -2542,47 +2575,47 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="preferences-dae.ui" line="119"/>
       <source>The tessellation value to use with the builtin and mefisto meshers</source>
-      <translation type="unfinished">The tessellation value to use with the builtin and mefisto meshers</translation>
+      <translation>Hodnota teselace (mozaikování) použitá ve vestavěném a Mefisto síťovacím algoritmu</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="143"/>
       <source>Netgen mesher options</source>
-      <translation type="unfinished">Netgen mesher options</translation>
+      <translation>Možnosti síťovacího algoritmu Netgen</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="151"/>
       <source>Grading</source>
-      <translation type="unfinished">Grading</translation>
+      <translation>Stupňování</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="158"/>
       <source>The grading value to use for netgen meshing</source>
-      <translation type="unfinished">The grading value to use for netgen meshing</translation>
+      <translation>Hodnota stupňování použitá v síťovacím algoritmu Netgen</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="181"/>
       <source>Segments per edge</source>
-      <translation type="unfinished">Segments per edge</translation>
+      <translation>Segmentů na hraně</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="188"/>
       <source>The maximum number of segments per edge</source>
-      <translation type="unfinished">The maximum number of segments per edge</translation>
+      <translation>Maximální počet segmentů na hraně</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="211"/>
       <source>Segments per radius</source>
-      <translation type="unfinished">Segments per radius</translation>
+      <translation>Segmentů na poloměru</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="218"/>
       <source>The number of segments per radius</source>
-      <translation type="unfinished">The number of segments per radius</translation>
+      <translation>Počet segmentů na poloměru</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="241"/>
       <source>Allow second order</source>
-      <translation type="unfinished">Allow second order</translation>
+      <translation>Povolit druhý řád</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="244"/>
@@ -2592,7 +2625,7 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="preferences-dae.ui" line="261"/>
       <source>Allows optimization</source>
-      <translation type="unfinished">Allows optimization</translation>
+      <translation>Povolí optimalizaci</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="264"/>
@@ -2602,32 +2635,67 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
     <message>
       <location filename="preferences-dae.ui" line="284"/>
       <source>Allow quad faces</source>
-      <translation type="unfinished">Allow quad faces</translation>
+      <translation>Povolí čtyřúhelníkové plochy</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="287"/>
       <source>Allow quads</source>
-      <translation type="unfinished">Allow quads</translation>
+      <translation>Povolit čtyřúhelníky</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="322"/>
+      <location filename="preferences-ifc.ui" line="375"/>
       <source>Use triangulation options set in the DAE options page</source>
-      <translation type="unfinished">Use triangulation options set in the DAE options page</translation>
+      <translation>Použít možnosti triangulace nastavení na straně nastavení DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="325"/>
+      <location filename="preferences-ifc.ui" line="378"/>
       <source>Use DAE triangulation options</source>
-      <translation type="unfinished">Use DAE triangulation options</translation>
+      <translation>Použít triangulaci nastavení DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="342"/>
+      <location filename="preferences-ifc.ui" line="395"/>
       <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</translation>
+      <translation>Zakřivené tvary nemohou být reprezentovány, protože zakřivení jsou v IFC složeny z rovných ploch. Je-li toto zaškrtnuto, ke spojení koplanárních (ležicí v jedné rovině) ploch budou použitý dodatečné výpočty.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="345"/>
+      <location filename="preferences-ifc.ui" line="398"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation type="unfinished">Join coplanar facets when triangulating</translation>
+      <translation>Sloučit koplanární plochy při triangulaci</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="55"/>
+      <source>Object creation</source>
+      <translation>Vytvoření objektu</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="103"/>
+      <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
+      <translation>Dvě možné strategie pro předejití kruhových závislostí: Vytovřit jeden další objekt (nezaškrtnuto) nebo odstranit vnější geometrii základního náčrtu (zaškrtnuto)</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="106"/>
+      <source>Remove external geometry of base sketches when needed</source>
+      <translation>Odstranit vnější geometrii základních náčrtů, když je potřeba</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="276"/>
+      <source>Create clones when objects have shared geometry</source>
+      <translation>Vytovřit klony, když mají objekty společnou geometrii</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="26"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation>Zobrazit tento dialog při importu a exportu</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="296"/>
+      <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
+      <translation>Je-li zaškrtnuto, každý objekt bude mít své Ifc vlastnosti v tabulce objektu.</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="299"/>
+      <source>Import Ifc Properties in spreadsheet</source>
+      <translation>Importovat Ifc vlastnosti do tabulky</translation>
     </message>
   </context>
   <context>

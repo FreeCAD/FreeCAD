@@ -1240,10 +1240,6 @@ Definiera en annan genväg.</translation>
         <translation>Makronamn:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makro destination:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Utför</translation>
     </message>
@@ -1265,15 +1261,15 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Denna fil finns redan.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1807,11 +1803,11 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ortografisk rendering</translation>
+        <translation type="obsolete">Ortografisk rendering</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspektivrendering</translation>
+        <translation type="obsolete">Perspektivrendering</translation>
     </message>
     <message>
         <source></source>
@@ -1880,6 +1876,14 @@ Ange en annan katalog.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4862,11 +4866,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Radera makro</translation>
+        <translation>Radera makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

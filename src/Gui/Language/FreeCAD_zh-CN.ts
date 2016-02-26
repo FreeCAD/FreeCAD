@@ -1239,10 +1239,6 @@ Please define another shortcut.</source>
         <translation>宏名称:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">宏目录:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>执行</translation>
     </message>
@@ -1264,15 +1260,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1313,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1804,11 +1800,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>等轴侧渲染</translation>
+        <translation type="obsolete">等轴侧渲染</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>透视渲染</translation>
+        <translation type="obsolete">透视渲染</translation>
     </message>
     <message>
         <source></source>
@@ -1877,6 +1873,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4852,11 +4856,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">删除宏</translation>
+        <translation>删除宏</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

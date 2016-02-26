@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="unfinished">&amp;Discard</translation>
+        <translation>&amp; Отменить</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -1240,10 +1240,6 @@ Please define another shortcut.</source>
         <translation>Имя макроса:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Папка с макросами:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Выполнить</translation>
     </message>
@@ -1265,15 +1261,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользовательские макросы</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Системные макросы</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение пользовательских макросов:</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1313,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только для чтения</translation>
     </message>
 </context>
 <context>
@@ -1805,11 +1801,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Рендеринг в параллельной проекции</translation>
+        <translation type="obsolete">Рендеринг в параллельной проекции</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Рендеринг в перспективной проекции</translation>
+        <translation type="obsolete">Рендеринг в перспективной проекции</translation>
     </message>
     <message>
         <source></source>
@@ -1878,6 +1874,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3533,7 +3537,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF файл</translation>
     </message>
 </context>
 <context>
@@ -3676,7 +3680,7 @@ Do you want to save your changes?</source>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished">List</translation>
+        <translation>Список</translation>
     </message>
 </context>
 <context>
@@ -3737,7 +3741,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>No such macro file: &apos;%1&apos;</source>
-        <translation type="unfinished">No such macro file: &apos;%1&apos;</translation>
+        <translation>Нет такого файла макроса: «%1»</translation>
     </message>
 </context>
 <context>
@@ -4075,7 +4079,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -4340,7 +4344,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF файл</translation>
     </message>
     <message>
         <source>Opening file failed</source>
@@ -4853,11 +4857,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Удалить макрос</translation>
+        <translation>Удалить макрос</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>
@@ -5890,7 +5894,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Save a &amp;Copy...</source>
-        <translation type="unfinished">Save a &amp;Copy...</translation>
+        <translation>Сохранить &amp;копию...</translation>
     </message>
     <message>
         <source>Save a copy of the active document under a new file name</source>
