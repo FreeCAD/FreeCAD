@@ -24,6 +24,7 @@
         <file>icons/fem-shell-thickness.svg</file>
         <file>icons/fem-beam-section.svg</file>
         <file>icons/preferences-fem.svg</file>
+        <file>icons/FemWorkbench.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
         <file>translations/Fem_fi.qm</file> 

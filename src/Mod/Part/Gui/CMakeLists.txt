@@ -238,3 +238,11 @@ SET_BIN_DIR(PartGui PartGui /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(PartGui)
 
 INSTALL(TARGETS PartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PartGuiIcon_SVG
+    Resources/icons/PartWorkbench.svg
+)
+
+fc_copy_sources(PartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Part" ${PartGuiIcon_SVG})
+
+INSTALL(FILES ${PartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Part/Resources/icons")

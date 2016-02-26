@@ -97,3 +97,11 @@ SET_BIN_DIR(PathGui PathGui /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(PathGui)
 
 INSTALL(TARGETS PathGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PathGuiIcon_SVG
+    Resources/icons/PathWorkbench.svg
+)
+
+fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Path" ${PathGuiIcon_SVG})
+
+INSTALL(FILES ${PathGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Path/Resources/icons")
