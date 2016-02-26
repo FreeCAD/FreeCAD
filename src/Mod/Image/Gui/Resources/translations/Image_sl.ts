@@ -107,7 +107,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;1:1 scale</source>
-        <translation>merilo &amp;1:1</translation>
+        <translation>Merilo &amp;1:1</translation>
     </message>
     <message>
         <location line="+2"/>

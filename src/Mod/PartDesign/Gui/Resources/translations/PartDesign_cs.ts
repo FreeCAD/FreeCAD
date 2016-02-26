@@ -37,7 +37,7 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Zkosení</translation>
+        <translation>Ponor</translation>
     </message>
     <message>
         <location line="+1"/>

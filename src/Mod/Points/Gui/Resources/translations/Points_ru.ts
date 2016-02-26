@@ -242,7 +242,7 @@
         <location line="-49"/>
         <location line="+49"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>

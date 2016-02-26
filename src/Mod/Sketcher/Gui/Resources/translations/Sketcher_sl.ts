@@ -108,7 +108,7 @@
     <message>
         <location line="+4"/>
         <source>3 rim points</source>
-        <translation>3 točke na robu</translation>
+        <translation>3 točke na obodu</translation>
     </message>
 </context>
 <context>
@@ -1152,7 +1152,7 @@
     <message>
         <location line="+1"/>
         <source>Show all internal geometry / hide unused internal geometry</source>
-        <translation>Prikaži vso notranjo geometrijo/skrij neuporabljeno notranjo geometrijo</translation>
+        <translation>Prikaži vso notranjo geometrijo/Skrij neuporabljeno notranjo geometrijo</translation>
     </message>
 </context>
 <context>
@@ -1346,7 +1346,7 @@
     <message>
         <location line="+1"/>
         <source>Trim an edge with respect to the picked position</source>
-        <translation>Prireži rob glede na izbran položaj</translation>
+        <translation>Prireži rob glede na izbrani položaj</translation>
     </message>
     <message>
         <source>Trims an edge with respect to the picked position</source>
@@ -1657,7 +1657,7 @@
     <message>
         <location line="+218"/>
         <source>Select only entities from the sketch.</source>
-        <translation>Izberite samo entitete iz skice.</translation>
+        <translation>Izberite samo entitete na skici.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1990,7 +1990,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
         <location line="+101"/>
         <source>Select two edges from the sketch.</source>
-        <translation>Izberite dva robova iz skice.</translation>
+        <translation>Izberite dva robova na skici.</translation>
     </message>
     <message>
         <source>Select atleast two lines from the sketch.</source>
@@ -2931,7 +2931,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+34"/>
         <source>Grid snap</source>
-        <translation>Pripenjanje na mrežo</translation>
+        <translation>Pripni na mrežo</translation>
     </message>
     <message>
         <source>Unsolved</source>
@@ -3167,7 +3167,7 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+19"/>
         <source>Empty sketch</source>
-        <translation>Izprazni skico</translation>
+        <translation>Prazna skica</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3211,12 +3211,12 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+5"/>
         <source>Under-constrained sketch with 1 degree of freedom</source>
-        <translation>Skica z manjkajočimi omejitvami z 1 prostostno stopnjo</translation>
+        <translation>Skica ima še 1 prostostno stopnjo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Under-constrained sketch with %1 degrees of freedom</source>
-        <translation>Skica z manjkajočimi omejitvami z %1-mi prostostnimi stopnjami</translation>
+        <translation>Skica ima še %1 prostostne stopnje</translation>
     </message>
     <message>
         <location line="+3"/>

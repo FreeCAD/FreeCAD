@@ -29,99 +29,104 @@
       <translation>匯入OpenSCAD</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="76"/>
+      <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
       <translation>於樹枝圖使用檢視提供者功能</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
+      <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
       <translation>若勾選此項，將會參數化多矩陣物件</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="96"/>
+      <location filename="openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
       <translation>使用多矩陣功能</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="136"/>
+      <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
       <translation>如果fn大於多邊形、 棱形或錐形面之最大數目,物件將認為是一圓形。設定0表示沒有限制。</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="116"/>
+      <location filename="openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>多邊形(fn)之最大面數量</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="160"/>
+      <location filename="openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
       <translation>匯出OpenSCAD</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="168"/>
+      <location filename="openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
       <translation>片段之對大尺寸</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="198"/>
+      <location filename="openscadprefs-base.ui" line="215"/>
       <source>minimum angle for a fragment</source>
       <translation>片段之最小角度</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="191"/>
+      <location filename="openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
       <translation>角 (fa)</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="201"/>
+      <location filename="openscadprefs-base.ui" line="218"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="255"/>
+      <location filename="openscadprefs-base.ui" line="272"/>
       <source>minimum size of a fragment</source>
       <translation>片段之最小尺寸</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="233"/>
+      <location filename="openscadprefs-base.ui" line="250"/>
       <source>size (fs)</source>
       <translation>尺寸(fs)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="261"/>
+      <location filename="openscadprefs-base.ui" line="278"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="287"/>
+      <location filename="openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
       <translation>凸度</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="324"/>
+      <location filename="openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
       <translation>網格退縮</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="366"/>
+      <location filename="openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
       <translation>偏斜</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="369"/>
+      <location filename="openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
       <translation>偏斜</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="376"/>
+      <location filename="openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
       <translation>三角測量設定</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
+      <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation>若勾選此項，於樹狀檢視中特徵將會納入其子項</translation>
+    </message>
+    <message>
+      <location filename="openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation>於主控台顯示除錯訊息</translation>
     </message>
   </context>
   <context>
@@ -137,12 +142,12 @@
       <translation>請先選擇3個物件</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Unsupported Function</source>
       <translation>此功能未支援</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Press OK</source>
       <translation>按確定</translation>
     </message>

@@ -922,7 +922,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
         <source>Display properties</source>
-        <translation>Propriedades da Visualização</translation>
+        <translation>Propriedades</translation>
     </message>
     <message>
         <source>Display</source>
@@ -1238,10 +1238,6 @@ Please define another shortcut.</source>
         <translation> Nome da Macro: </translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Destino da macro:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Executar</translation>
     </message>
@@ -1263,15 +1259,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros do utilizador</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros do sistema</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Localização de macros do utilizador:</translation>
     </message>
 </context>
 <context>
@@ -1315,7 +1311,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Só-de-leitura</translation>
     </message>
 </context>
 <context>
@@ -1678,7 +1674,7 @@ Por favor, indique outra pasta.</translation>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
         <source>Output window</source>
-        <translation>Janela de Destino</translation>
+        <translation>Janela mensagens</translation>
     </message>
     <message>
         <source>Output</source>
@@ -1776,7 +1772,7 @@ Por favor, indique outra pasta.</translation>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
         <source>3D View</source>
-        <translation>Visualização a 3D</translation>
+        <translation>Vista 3D</translation>
     </message>
     <message>
         <source>3D View settings</source>
@@ -1804,11 +1800,11 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Renderização Ortográfica</translation>
+        <translation type="obsolete">Renderização Ortográfica</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Renderização de perspectiva</translation>
+        <translation type="obsolete">Renderização de perspectiva</translation>
     </message>
     <message>
         <source></source>
@@ -1877,6 +1873,14 @@ Por favor, indique outra pasta.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4476,7 +4480,7 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
         <source>Combo View</source>
-        <translation>Visualizar Combinação de visualizações</translation>
+        <translation>Visualização Combinada</translation>
     </message>
     <message>
         <source>Toolbox</source>
@@ -4488,7 +4492,7 @@ Quer especificar outro diretório?</translation>
     </message>
     <message>
         <source>Display properties</source>
-        <translation>Propriedades da Visualização</translation>
+        <translation>Propriedades</translation>
     </message>
 </context>
 <context>
@@ -4851,11 +4855,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Apagar macro</translation>
+        <translation>Apagar macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é permitido apagar macros do sistema</translation>
     </message>
 </context>
 <context>

@@ -38,17 +38,17 @@
     <message>
         <location line="+256"/>
         <source>Fem</source>
-        <translation type="unfinished">Mke</translation>
+        <translation>Mke</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM displacement constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustvari MKE omejitev premika</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a displacement acting on a face</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustvari MKE omejitev za premik, ki deluje na ploskev</translation>
     </message>
 </context>
 <context>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="+639"/>
         <source>Input error</source>
-        <translation type="unfinished">Napaka vnosa</translation>
+        <translation>Napaka vnosa</translation>
     </message>
 </context>
 <context>
@@ -412,7 +412,7 @@
     <message>
         <location line="-26"/>
         <source>Please specify a force greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Navedite silo, ki je večja od 0</translation>
     </message>
 </context>
 <context>
@@ -434,7 +434,7 @@
     <message>
         <location line="-16"/>
         <source>Please specify a pressure greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Navedite tlak, ki je večji od 0</translation>
     </message>
 </context>
 <context>
@@ -527,7 +527,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="-570"/>
         <source>Delete</source>
-        <translation type="unfinished">Izbriši</translation>
+        <translation>Izbriši</translation>
     </message>
     <message>
         <location line="+343"/>
@@ -535,19 +535,19 @@
         <location line="+32"/>
         <location line="+10"/>
         <source>Selection error</source>
-        <translation type="unfinished">Napaka izbire</translation>
+        <translation>Napaka izbire</translation>
     </message>
     <message>
         <location line="-52"/>
         <location line="+42"/>
         <source>Nothing selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nič ni izbrano!</translation>
     </message>
     <message>
         <location line="-32"/>
         <location line="+42"/>
         <source>Selected object is not a part!</source>
-        <translation type="unfinished"></translation>
+        <translation>Izbrani objekt ni del!</translation>
     </message>
 </context>
 <context>
@@ -1356,27 +1356,27 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.ui" line="+35"/>
         <source>Prescribed Displacement</source>
-        <translation type="unfinished"></translation>
+        <translation>Predpisani premik</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Select multiple face(s), click Add or Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Izberite več ploskev, kliknite Dodaj ali Odstrani</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Add</source>
-        <translation type="unfinished">Dodaj</translation>
+        <translation>Dodaj</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstrani</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Displacement x</source>
-        <translation type="unfinished"></translation>
+        <translation>Premik X</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1386,7 +1386,7 @@
         <location line="+39"/>
         <location line="+42"/>
         <source>Free</source>
-        <translation type="unfinished"></translation>
+        <translation>Prost</translation>
     </message>
     <message>
         <location line="-219"/>
@@ -1396,37 +1396,37 @@
         <location line="+39"/>
         <location line="+45"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Pritrjen</translation>
     </message>
     <message>
         <location line="-203"/>
         <source>Displacement y</source>
-        <translation type="unfinished"></translation>
+        <translation>Premik Y</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Displacement z</source>
-        <translation type="unfinished"></translation>
+        <translation>Premik Z</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Rotations are only valid for Beam and Shell elements.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrtenje je veljavno samo za nosilce in lupine.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Rotation x</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrtenje X</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation y</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrtenje Y</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation z</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrtenje Z</translation>
     </message>
 </context>
 <context>
