@@ -517,12 +517,11 @@ class Line(Creator):
         "undoes last line segment"
         if (len(self.node) > 1):
             self.node.pop()
-            last = self.node[len(self.node)-1]
+            last = self.node[-1]
             if self.obj.Shape.Edges:
                 edges = self.obj.Shape.Edges
                 if len(edges) > 1:
-                    edges.pop()
-                    newshape = Part.Wire(edges)
+                    newshape = Part.makePolygon(self.node)
                     self.obj.Shape = newshape
                 else:
                     self.obj.ViewObject.hide()
