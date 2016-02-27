@@ -2475,6 +2475,8 @@ def clone(obj,delta=None):
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
+    elif len(obj) == 1:
+        cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
     return cl
     
@@ -5236,8 +5238,7 @@ class _Clone(_DraftObject):
                 obj.Placement = shapes[0].Placement
             else:
                 obj.Shape = Part.makeCompound(shapes)
-        if not DraftGeomUtils.isNull(pl):
-            obj.Placement = pl
+        obj.Placement = pl
             
     def getSubVolume(self,obj,placement=None):
         # this allows clones of arch windows to return a subvolume too
