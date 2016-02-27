@@ -256,7 +256,7 @@
     <message>
       <location filename="StartPage.py" line="104"/>
       <source>Load an Architectural example model</source>
-      <translation>Caricare un esempio di modello architettonico</translation>
+      <translation>Carica un esempio di modello architettonico</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="87"/>
@@ -297,6 +297,11 @@
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
       <translation>È disponibile una nuova release di FreeCAD .</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Carica un esempio di analisi FEM</translation>
     </message>
   </context>
 </TS>

@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation type="unfinished">Insert preselection position into trajectory (W)</translation>
+        <translation>Insira a pré-selecção posição na trajetória (W)</translation>
     </message>
 </context>
 <context>
@@ -246,7 +246,7 @@
     <message>
         <location line="+1"/>
         <source>set the default orientation for subsequent commands for waypoint creation</source>
-        <translation type="unfinished">set the default orientation for subsequent commands for waypoint creation</translation>
+        <translation>definir a orientação predefinida para os comandos subsequentes para a criação de waypoint</translation>
     </message>
 </context>
 <context>

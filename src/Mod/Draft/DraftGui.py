@@ -1486,20 +1486,18 @@ class DraftToolBar:
                     dp = plane.getLocalCoords(point)
 
             # set widgets
-            if self.mask in ['y','z']:
-                self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            else:
-                if dp:
+            if dp:
+                if self.mask in ['y','z']:
                     self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            if self.mask in ['x','z']:
-                self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            else:
-                if dp:
+                else:
+                    self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
+                if self.mask in ['x','z']:
                     self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            if self.mask in ['x','y']:
-                self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
-            else:
-                if dp:
+                else:
+                    self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
+                if self.mask in ['x','y']:
+                    self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
+                else:
                     self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
                     
             # set length and angle

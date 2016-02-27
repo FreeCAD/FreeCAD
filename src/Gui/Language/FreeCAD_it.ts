@@ -1240,10 +1240,6 @@ Definire un&apos;altra scorciatoia.</translation>
         <translation>Nome macro:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Percorso Macro:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Esegui</translation>
     </message>
@@ -1265,15 +1261,15 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macro utente</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macro di sistema</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione delle macro utente:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Il file esiste già.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Sola lettura</translation>
     </message>
 </context>
 <context>
@@ -1807,11 +1803,11 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Render ortografico</translation>
+        <translation type="obsolete">Render ortografico</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Render prospettico</translation>
+        <translation type="obsolete">Render prospettico</translation>
     </message>
     <message>
         <source></source>
@@ -1880,6 +1876,14 @@ Specificare un&apos;altra cartella.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4818,7 +4822,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>Navigation styles</source>
-        <translation>Stili di navigazione</translation>
+        <translation>Stile di navigazione</translation>
     </message>
     <message>
         <source>%1 navigation</source>
@@ -4862,11 +4866,11 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Cancella macro</translation>
+        <translation>Cancella macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Non è consentito eliminare le macro di sistema</translation>
     </message>
 </context>
 <context>

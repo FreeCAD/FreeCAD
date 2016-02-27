@@ -1239,10 +1239,6 @@ Please define another shortcut.</source>
         <translation>Makro ime:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makro odredište:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Izvršiti</translation>
     </message>
@@ -1264,15 +1260,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1313,7 @@ Ova datoteka već postoji.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1804,11 +1800,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Renderiranje pravopisa</translation>
+        <translation type="obsolete">Renderiranje pravopisa</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspektivna projekcija</translation>
+        <translation type="obsolete">Perspektivna projekcija</translation>
     </message>
     <message>
         <source></source>
@@ -1877,6 +1873,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4854,11 +4858,11 @@ Pazite jer točke odabira utječu.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Brisanje makro</translation>
+        <translation>Brisanje makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>
