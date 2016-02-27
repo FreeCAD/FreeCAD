@@ -24,6 +24,8 @@
 
 #include "DlgSettingsImportExportImp.h"
 #include "ui_DlgSettingsImportExport.h"
+#include <App/Application.h>
+
 
 using namespace MeshGui;
 
@@ -40,12 +42,19 @@ DlgSettingsImportExport::~DlgSettingsImportExport()
 
 void DlgSettingsImportExport::saveSettings()
 {
-    ui->maxDeviationExport->onSave();
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Mesh/");
+    double value = ui->maxDeviationExport->value().getValue();
+    handle->SetFloat("MaxDeviationExport", value);
 }
 
 void DlgSettingsImportExport::loadSettings()
 {
-    ui->maxDeviationExport->onRestore();
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Mesh/");
+    double value = ui->maxDeviationExport->value().getValue();
+    value = handle->GetFloat("MaxDeviationExport", value);
+    ui->maxDeviationExport->setValue(value);
 }
 
 /**
