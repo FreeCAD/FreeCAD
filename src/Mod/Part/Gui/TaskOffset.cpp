@@ -73,7 +73,7 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
 
     d->offset = offset;
     d->ui.setupUi(this);
-    d->ui.spinOffset->setDecimals(Base::UnitsApi::getDecimals());
+    d->ui.spinOffset->setUnit(Base::Unit::Length);
     d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.spinOffset->setValue(d->offset->Value.getValue());
@@ -144,8 +144,9 @@ bool OffsetWidget::accept()
     std::string name = d->offset->getNameInDocument();
 
     try {
+        double offsetValue = d->ui.spinOffset->value().getValue();
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),d->ui.spinOffset->value());
+            name.c_str(),offsetValue);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
             name.c_str(),d->ui.modeType->currentIndex());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
