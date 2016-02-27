@@ -104,10 +104,10 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     ui->xPos->setRange(-DBL_MAX,DBL_MAX);
     ui->yPos->setRange(-DBL_MAX,DBL_MAX);
     ui->zPos->setRange(-DBL_MAX,DBL_MAX);
-    ui->xPos->setDecimals(Base::UnitsApi::getDecimals());
-    ui->yPos->setDecimals(Base::UnitsApi::getDecimals());
-    ui->zPos->setDecimals(Base::UnitsApi::getDecimals());
-    ui->angle->setDecimals(Base::UnitsApi::getDecimals());
+    ui->xPos->setUnit(Base::Unit::Length);
+    ui->yPos->setUnit(Base::Unit::Length);
+    ui->zPos->setUnit(Base::Unit::Length);
+    ui->angle->setUnit(Base::Unit::Angle);
     findShapes();
 
     Gui::ItemViewSelection sel(ui->treeWidget);
@@ -206,10 +206,10 @@ void DlgRevolution::accept()
             .arg(axis.x,0,'f',2)
             .arg(axis.y,0,'f',2)
             .arg(axis.z,0,'f',2)
-            .arg(ui->xPos->value(),0,'f',2)
-            .arg(ui->yPos->value(),0,'f',2)
-            .arg(ui->zPos->value(),0,'f',2)
-            .arg(ui->angle->value(),0,'f',2)
+            .arg(ui->xPos->value().getValue(),0,'f',2)
+            .arg(ui->yPos->value().getValue(),0,'f',2)
+            .arg(ui->zPos->value().getValue(),0,'f',2)
+            .arg(ui->angle->value().getValue(),0,'f',2)
             .arg(solid)
             ;
         Gui::Application::Instance->runPythonCode((const char*)code.toLatin1());
