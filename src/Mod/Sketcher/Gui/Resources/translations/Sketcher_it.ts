@@ -70,7 +70,7 @@
     <message>
         <location line="+1"/>
         <source>Create an arc in the sketcher</source>
-        <translation>Crea un arco nello sketch</translation>
+        <translation>Crea un arco nello schizzo</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -98,7 +98,7 @@
     <message>
         <location line="+1"/>
         <source>Create a circle in the sketcher</source>
-        <translation>Crea un cerchio nello sketch</translation>
+        <translation>Crea un cerchio nello schizzo</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -159,7 +159,7 @@
     <message>
         <location line="+1"/>
         <source>Create an regular polygon in the sketcher</source>
-        <translation>Crea un poligono regolare nello sketcher</translation>
+        <translation>Crea un poligono regolare nello schizzo</translation>
     </message>
     <message>
         <location line="+100"/>
@@ -609,7 +609,7 @@
     </message>
     <message>
         <source>Create an arc in the sketch</source>
-        <translation type="obsolete">Crea un arco nello sketch</translation>
+        <translation type="obsolete">Crea un arco nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -645,7 +645,7 @@
     <message>
         <location line="+1"/>
         <source>Create a circle in the sketch</source>
-        <translation>Crea un cerchio nello sketch</translation>
+        <translation>Crea un cerchio nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -663,7 +663,7 @@
     <message>
         <location line="+1"/>
         <source>Create a draft line in the sketch</source>
-        <translation>Crea una linea di costruzione nello sketch</translation>
+        <translation>Crea una linea di costruzione nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -775,7 +775,7 @@
     <message>
         <location line="+1"/>
         <source>Create a line in the sketch</source>
-        <translation>Crea una linea nello sketch</translation>
+        <translation>Crea una linea nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -829,7 +829,7 @@
     <message>
         <location line="+1"/>
         <source>Create a point in the sketch</source>
-        <translation>Crea un punto nello sketch</translation>
+        <translation>Crea un punto nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -847,11 +847,11 @@
     <message>
         <location line="+1"/>
         <source>Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</source>
-        <translation>Crea una polilinea nello sketch. &apos;M&apos; per ripetere ciclicamente</translation>
+        <translation>Crea una polilinea nello schizzo. &apos;M&apos; per ripetere ciclicamente</translation>
     </message>
     <message>
         <source>Create a polyline in the sketch</source>
-        <translation type="obsolete">Crea una polilinea nello sketch</translation>
+        <translation type="obsolete">Crea una polilinea nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -869,7 +869,7 @@
     <message>
         <location line="+1"/>
         <source>Create a rectangle in the sketch</source>
-        <translation>Crea un rettangolo nello sketch</translation>
+        <translation>Crea un rettangolo nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -887,7 +887,7 @@
     <message>
         <location line="+1"/>
         <source>Create a slot in the sketch</source>
-        <translation>Crea un&apos;asola nello sketch</translation>
+        <translation>Crea un&apos;asola nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@
     <message>
         <location line="+1"/>
         <source>Create text in the sketch</source>
-        <translation>Crea un testo nello sketch</translation>
+        <translation>Crea un testo nello schizzo</translation>
     </message>
 </context>
 <context>
@@ -995,7 +995,7 @@
     <message>
         <location line="+1"/>
         <source>Close the editing of the sketch</source>
-        <translation>Chiude la modifica dello sketch</translation>
+        <translation>Chiude la modifica dello schizzo</translation>
     </message>
 </context>
 <context>
@@ -1008,12 +1008,12 @@
     <message>
         <location line="+1"/>
         <source>Map sketch to face...</source>
-        <translation>Mappa sketch su faccia...</translation>
+        <translation>Mappa schizzo su faccia...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Map a sketch to a face</source>
-        <translation>Mappa uno sketch su una faccia</translation>
+        <translation>Mappa uno schizzo su una faccia</translation>
     </message>
 </context>
 <context>
@@ -1074,7 +1074,7 @@
     <message>
         <location line="+1"/>
         <source>Create sketch</source>
-        <translation>Crea uno sketch</translation>
+        <translation>Crea uno schizzo</translation>
     </message>
     <message>
         <source>Create a new or edit the selected sketch</source>
@@ -1129,12 +1129,12 @@
     <message>
         <location line="+1"/>
         <source>Reorient sketch...</source>
-        <translation>Riorienta lo sketch...</translation>
+        <translation>Riorienta lo schizzo...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reorient the selected sketch</source>
-        <translation>Riorienta lo sketch selezionato</translation>
+        <translation>Riorienta lo schizzo selezionato</translation>
     </message>
 </context>
 <context>
@@ -1368,7 +1368,7 @@
     <message>
         <location line="+1"/>
         <source>Validate sketch</source>
-        <translation>Convalida lo sketch</translation>
+        <translation>Convalida lo schizzo</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1378,7 +1378,7 @@
     <message>
         <location line="+1"/>
         <source>Select one sketch, please.</source>
-        <translation>Selezionare uno sketch.</translation>
+        <translation>Selezionare uno schizzo.</translation>
     </message>
 </context>
 <context>
@@ -1510,13 +1510,13 @@
         <location line="-7"/>
         <location line="+8"/>
         <source>Select edge(s) from the sketch.</source>
-        <translation>Seleziona bordo/i dello sketch.</translation>
+        <translation>Seleziona bordo/i dello schizzo.</translation>
     </message>
     <message>
         <location filename="../../CommandConstraints.cpp" line="-3152"/>
         <location line="+97"/>
         <source>Select an edge from the sketch.</source>
-        <translation>Seleziona un bordo dello sketch.</translation>
+        <translation>Seleziona un bordo dello schizzo.</translation>
     </message>
     <message>
         <location line="-70"/>
@@ -1552,12 +1552,12 @@
         <location line="+11"/>
         <location line="+12"/>
         <source>Only sketch and its support is allowed to select</source>
-        <translation>E&apos; consentito selezionare solo lo sketch e il suo supporto</translation>
+        <translation>E&apos; consentito selezionare solo lo schizzo e il suo supporto</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>One of the selected has to be on the sketch</source>
-        <translation>Una delle entità selezionate deve essere nello sketch</translation>
+        <translation>Una delle entità selezionate deve essere nello schizzo</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -1584,16 +1584,16 @@
     <message>
         <location line="+53"/>
         <source>Select entities from the sketch.</source>
-        <translation>Seleziona entità dello sketch.</translation>
+        <translation>Seleziona entità dello schizzo.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Select exactly one entity from the sketch.</source>
-        <translation>Selezionare solo una entità dello sketch.</translation>
+        <translation>Selezionare solo una entità dello schizzo.</translation>
     </message>
     <message>
         <source>Select one vertex from the sketch.</source>
-        <translation type="obsolete">Selezionare un vertice dallo sketch.</translation>
+        <translation type="obsolete">Selezionare un vertice dallo schizzo.</translation>
     </message>
     <message>
         <location line="+90"/>
@@ -1602,7 +1602,7 @@
         <location line="+86"/>
         <location line="+165"/>
         <source>Select vertexes from the sketch.</source>
-        <translation>Selezionare vertici dello sketch.</translation>
+        <translation>Selezionare vertici dello schizzo.</translation>
     </message>
     <message>
         <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
@@ -1789,19 +1789,19 @@
     </message>
     <message>
         <source>Select exactly two vertexes from the sketch.</source>
-        <translation type="obsolete">Selezionare esattamente due vertici dello sketch.</translation>
+        <translation type="obsolete">Selezionare esattamente due vertici nello schizzo.</translation>
     </message>
     <message>
         <location line="-2850"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
-        <translation>Selezionare due o più vertici nello sketch.</translation>
+        <translation>Selezionare due o più vertici nello schizzo.</translation>
     </message>
     <message>
         <location line="+82"/>
         <location line="+123"/>
         <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-        <translation>Selezionare una linea o un punto più una linea, oppure due punti dello sketch.</translation>
+        <translation>Selezionare una linea o un punto più una linea, oppure due punti dello schizzo.</translation>
     </message>
     <message>
         <source>Cannot add a length constraint on an external geometry!</source>
@@ -1814,7 +1814,7 @@
     </message>
     <message>
         <source>Select exactly one point and one object from the sketch.</source>
-        <translation type="obsolete">Selezionare esattamente un punto e un oggetto dello sketch.</translation>
+        <translation type="obsolete">Selezionare esattamente un punto e un oggetto dello schizzo.</translation>
     </message>
     <message>
         <location line="+172"/>
@@ -1822,7 +1822,7 @@
         <location line="+56"/>
         <location line="+107"/>
         <source>Select exactly one line or up to two points from the sketch.</source>
-        <translation>Selezionare solo una linea oppure al massimo due punti dello sketch.</translation>
+        <translation>Selezionare solo una linea oppure al massimo due punti dello schizzo.</translation>
     </message>
     <message>
         <source>Cannot add a horizontal length constraint on an external geometry!</source>
@@ -1861,13 +1861,13 @@
     <message>
         <location line="+104"/>
         <source>Select two or more lines from the sketch.</source>
-        <translation>Selezionare due o più linee dello sketch.</translation>
+        <translation>Selezionare due o più linee dello schizzo.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+1260"/>
         <source>Select at least two lines from the sketch.</source>
-        <translation>Selezionare almeno due linee dello sketch.</translation>
+        <translation>Selezionare almeno due linee dello schizzo.</translation>
     </message>
     <message>
         <location line="-1246"/>
@@ -1968,11 +1968,11 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     </message>
     <message>
         <source>Select exactly one arc or circle from the sketch.</source>
-        <translation type="obsolete">Selezionare solo un arco o cerchio dello sketch.</translation>
+        <translation type="obsolete">Selezionare solo un arco o cerchio dello schizzo.</translation>
     </message>
     <message>
         <source>Select one or two lines from the sketch.</source>
-        <translation type="obsolete">Selezionare una o due linee nello sketch.</translation>
+        <translation type="obsolete">Selezionare una o due linee nello schizzo.</translation>
     </message>
     <message>
         <source>Cannot add an angle constraint on an external geometry!</source>
@@ -1985,16 +1985,16 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     </message>
     <message>
         <source>Select exactly one or two lines from the sketch.</source>
-        <translation type="obsolete">Selezionare solo una o due linee dello sketch.</translation>
+        <translation type="obsolete">Selezionare solo una o due linee dello schizzo.</translation>
     </message>
     <message>
         <location line="+101"/>
         <source>Select two edges from the sketch.</source>
-        <translation>Selezionare due spigoli dello sketch.</translation>
+        <translation>Selezionare due spigoli dello schizzo.</translation>
     </message>
     <message>
         <source>Select atleast two lines from the sketch.</source>
-        <translation type="obsolete">Selezionare almeno due linee dello sketch.</translation>
+        <translation type="obsolete">Selezionare almeno due linee dello schizzo.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2005,7 +2005,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="-458"/>
         <source>Sketch axes cannot be used in equality constraints</source>
-        <translation>Gli assi dello sketch non possono essere utilizzati nei vincoli di uguaglianza</translation>
+        <translation>Gli assi dello schizzo non possono essere utilizzati nei vincoli di uguaglianza</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -2019,7 +2019,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
         <location line="+48"/>
         <location line="+78"/>
         <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-        <translation>Selezionare due punti e una linea di simmetria, o due punti e un punto di simmetria, o una linea e una punto di simmetria dallo sketch.</translation>
+        <translation>Selezionare due punti e una linea di simmetria, o due punti e un punto di simmetria, o una linea e un punto di simmetria nello schizzo.</translation>
     </message>
     <message>
         <location line="-60"/>
@@ -2046,27 +2046,27 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     </message>
     <message>
         <source>Select two points and one line from the sketch.</source>
-        <translation type="obsolete">Selezionare due punti e una linea dello sketch.</translation>
+        <translation type="obsolete">Selezionare due punti e una linea dello schizzo.</translation>
     </message>
     <message>
         <source>Select exactly one line from the sketch.</source>
-        <translation type="obsolete">Selezionare solo una linea dello sketch.</translation>
+        <translation type="obsolete">Selezionare solo una linea dello schizzo.</translation>
     </message>
     <message>
         <source>Select two lines from the sketch.</source>
-        <translation type="obsolete">Selezionare due linee dello sketch.</translation>
+        <translation type="obsolete">Selezionare due linee dello schizzo.</translation>
     </message>
     <message>
         <source>Select exactly two lines from the sketch.</source>
-        <translation type="obsolete">Selezionare esattamente due linee dello sketch.</translation>
+        <translation type="obsolete">Selezionare esattamente due linee dello schizzo.</translation>
     </message>
     <message>
         <source>Select two entities from the sketch.</source>
-        <translation type="obsolete">Selezionare due entità dello sketch.</translation>
+        <translation type="obsolete">Selezionare due entità dello schizzo.</translation>
     </message>
     <message>
         <source>Select exactly two entities from the sketch.</source>
-        <translation type="obsolete">Selezionare solo due entità dello sketch.</translation>
+        <translation type="obsolete">Selezionare solo due entità dello schizzo.</translation>
     </message>
     <message>
         <source>Edit sketch</source>
@@ -2088,7 +2088,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+1"/>
         <source>You have to select a single face as support for a sketch!</source>
-        <translation>Si deve selezionare una singola faccia come supporto per uno sketch!</translation>
+        <translation>Si deve selezionare una singola faccia come supporto per uno schizzo!</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2098,7 +2098,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+1"/>
         <source>You have to select a face as support for a sketch!</source>
-        <translation>Selezionare una faccia come supporto per uno sketch!</translation>
+        <translation>Selezionare una faccia come supporto per uno schizzo!</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2108,7 +2108,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+1"/>
         <source>You need a planar face as support for a sketch!</source>
-        <translation>Serve una faccia planare come supporto per uno sketch!</translation>
+        <translation>Serve una faccia planare come supporto per uno schizzo!</translation>
     </message>
     <message>
         <location filename="../../EditDatumDialog.cpp" line="+82"/>
@@ -2118,7 +2118,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+1"/>
         <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-        <translation>Non è consentito modificare il dato perché lo sketch contiene vincoli in conflitto</translation>
+        <translation>Non è consentito modificare il dato perché lo schizzo contiene dei vincoli in conflitto</translation>
     </message>
     <message>
         <location filename="../../CommandConstraints.cpp" line="-2845"/>
@@ -2200,7 +2200,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     </message>
     <message>
         <source>Sketch orientation</source>
-        <translation type="obsolete">Orientamento dello sketch</translation>
+        <translation type="obsolete">Orientamento dello schizzo</translation>
     </message>
     <message>
         <source>XY-Plane</source>
@@ -2393,7 +2393,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+6"/>
         <source>Sketch orientation</source>
-        <translation>Orientamento dello sketch</translation>
+        <translation>Orientamento dello schizzo</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2556,7 +2556,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+19"/>
         <source>Sketch Solver</source>
-        <translation>Risolutore dello Schizzo</translation>
+        <translation>Risolutore dello schizzo</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2632,7 +2632,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+25"/>
         <source>Sketch editing</source>
-        <translation>Modifica dello sketch</translation>
+        <translation>Modifica dello schizzo</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3208,7 +3208,7 @@ Utilizzare lo strumento di convalida di schizzo.</translation>
     <message>
         <location line="+11"/>
         <source>Fully constrained sketch</source>
-        <translation>Sketch completamente vincolato</translation>
+        <translation>Schizzo completamente vincolato</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3384,13 +3384,13 @@ Utilizzare lo strumento di convalida di schizzo.</translation>
     <message>
         <location filename="../../Command.cpp" line="+164"/>
         <source>Sketch has support</source>
-        <translation>Lo sketch ha il supporto</translation>
+        <translation>Lo schizzo ha un supporto</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-        <translation>Uno sketch con una faccia di supporto non può essere riorientato. Lo vuoi per separare dal supporto?</translation>
+        <translation>Uno schizzo mappato su una faccia di supporto non può essere riorientato. Lo vuoi per separare dal supporto?</translation>
     </message>
 </context>
 <context>
@@ -3610,7 +3610,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+33"/>
         <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
-        <translation>Se selezionato, il valore di massimo di iterazioni dell&apos;algoritmo delle ridondaze viene moltiplicato per la dimensione dello schizzo</translation>
+        <translation>Se selezionato, il valore di massimo di iterazioni dell&apos;algoritmo delle ridondanze viene moltiplicato per la dimensione dello schizzo</translation>
     </message>
     <message>
         <location line="+3"/>

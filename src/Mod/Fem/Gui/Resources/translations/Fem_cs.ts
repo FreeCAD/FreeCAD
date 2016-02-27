@@ -38,17 +38,17 @@
     <message>
         <location line="+256"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation>Fem</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM displacement constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytovří MKP vazbu posuvu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a displacement acting on a face</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytovří MKP vazbu pro posuv na stěně</translation>
     </message>
 </context>
 <context>
@@ -205,7 +205,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a solver to the Analysis</source>
-        <translation type="unfinished">Add a solver to the Analysis</translation>
+        <translation>Přidat řešič do Analýzy</translation>
     </message>
 </context>
 <context>
@@ -263,27 +263,27 @@
     <message>
         <location line="+42"/>
         <source>Default analysis settings</source>
-        <translation type="unfinished">Default analysis settings</translation>
+        <translation>Výchozí nastavení analýzy</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default type on analysis</source>
-        <translation type="unfinished">Default type on analysis</translation>
+        <translation>Výchozí typ analýzy</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Static</source>
-        <translation type="unfinished">Static</translation>
+        <translation>Statická</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Frequency</source>
-        <translation type="unfinished">Frequency</translation>
+        <translation>Frekvenční</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Eigenmode number</source>
-        <translation type="unfinished">Eigenmode number</translation>
+        <translation>Počet vlastních tvarů</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -293,18 +293,18 @@
     <message>
         <location line="+23"/>
         <source>High frequency limit</source>
-        <translation type="unfinished">High frequency limit</translation>
+        <translation>Horní limit frekvence</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Low frequency limit</source>
-        <translation type="unfinished">Low frequency limit</translation>
+        <translation>Dolní limit frekvence</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+7"/>
         <source>Hz</source>
-        <translation type="unfinished">Hz</translation>
+        <translation>Hz</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="+639"/>
         <source>Input error</source>
-        <translation type="unfinished">Chyba zadání</translation>
+        <translation>Chyba zadání</translation>
     </message>
 </context>
 <context>
@@ -412,7 +412,7 @@
     <message>
         <location line="-26"/>
         <source>Please specify a force greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Zadejte prosím sílu větší než 0</translation>
     </message>
 </context>
 <context>
@@ -434,7 +434,7 @@
     <message>
         <location line="-16"/>
         <source>Please specify a pressure greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Zadejte prosím tlak větší než 0</translation>
     </message>
 </context>
 <context>
@@ -527,7 +527,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="-570"/>
         <source>Delete</source>
-        <translation type="unfinished">Odstranit</translation>
+        <translation>Odstranit</translation>
     </message>
     <message>
         <location line="+343"/>
@@ -535,19 +535,19 @@
         <location line="+32"/>
         <location line="+10"/>
         <source>Selection error</source>
-        <translation type="unfinished">Chyba výběru</translation>
+        <translation>Chyba výběru</translation>
     </message>
     <message>
         <location line="-52"/>
         <location line="+42"/>
         <source>Nothing selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nic není vybráno!</translation>
     </message>
     <message>
         <location line="-32"/>
         <location line="+42"/>
         <source>Selected object is not a part!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybraný objekt není součást!</translation>
     </message>
 </context>
 <context>
@@ -720,7 +720,7 @@
     <message>
         <location filename="../../ViewProviderAnalysis.cpp" line="+84"/>
         <source>Activate analysis</source>
-        <translation type="unfinished">Activate analysis</translation>
+        <translation>Aktivovat analýzu</translation>
     </message>
 </context>
 <context>
@@ -747,36 +747,36 @@
     <message>
         <location line="+12"/>
         <source>Cross Section</source>
-        <translation type="unfinished">Cross Section</translation>
+        <translation>Průřez</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+18"/>
         <source>Use FreeCAD Property Editor</source>
-        <translation type="unfinished">Use FreeCAD Property Editor</translation>
+        <translation>Použijte editaci vlastností ve FreeCADu</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>to edit the cross section values</source>
-        <translation type="unfinished">to edit the cross section values</translation>
+        <translation>pro upravení rozměrů průřezu</translation>
     </message>
     <message>
         <location line="+10"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+17"/>
         <source>References</source>
-        <translation type="unfinished">References</translation>
+        <translation>Reference</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+6"/>
         <source>Leave references blank </source>
-        <translation type="unfinished">Leave references blank </translation>
+        <translation>Ponechte reference prázndné </translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+7"/>
         <source>to choose all remaining shapes</source>
-        <translation type="unfinished">to choose all remaining shapes</translation>
+        <translation>pro výběr všech zbývajících tvarů</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -792,7 +792,7 @@
     <message>
         <location line="+13"/>
         <source>to edit the thickness value</source>
-        <translation type="unfinished">to edit the thickness value</translation>
+        <translation>pro úpravu tloušťky</translation>
     </message>
 </context>
 <context>
@@ -815,27 +815,27 @@
     <message>
         <location line="+10"/>
         <source>Analysis type</source>
-        <translation type="unfinished">Analysis type</translation>
+        <translation>Typ analýzy</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Static</source>
-        <translation type="unfinished">Static</translation>
+        <translation>Statická</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Frequency</source>
-        <translation type="unfinished">Frequency</translation>
+        <translation>Frekvenční</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Write .inp file</source>
-        <translation type="unfinished">Write .inp file</translation>
+        <translation>Zapsat .inp soubor</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit .inp file</source>
-        <translation type="unfinished">Edit .inp file</translation>
+        <translation>Editovat .inp soubor</translation>
     </message>
     <message>
         <source>Write Calculix Input File</source>
@@ -873,17 +873,17 @@
     <message>
         <location line="+21"/>
         <source>References</source>
-        <translation type="unfinished">References</translation>
+        <translation>Reference</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Leave references blank </source>
-        <translation type="unfinished">Leave references blank </translation>
+        <translation>Ponechte reference prázndné </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>to choose all remaining shapes</source>
-        <translation type="unfinished">to choose all remaining shapes</translation>
+        <translation>pro výběr všech zbývajících tvarů</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -898,7 +898,7 @@
     <message>
         <location line="+145"/>
         <source>External material resources</source>
-        <translation type="unfinished">External material resources</translation>
+        <translation>Vnější zdroje materiálů</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1052,7 +1052,7 @@
     <message>
         <location filename="../../PropertyFemMeshItem.cpp" line="+98"/>
         <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-        <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
+        <translation>[Uzly: %1, Hrany: %2, Plochy: %3, Mnohoúhelníky: %4, Objemy: %5, Mnohostěny: %6]</translation>
     </message>
 </context>
 <context>
@@ -1356,27 +1356,27 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.ui" line="+35"/>
         <source>Prescribed Displacement</source>
-        <translation type="unfinished"></translation>
+        <translation>Předepsané posunutí</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Select multiple face(s), click Add or Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte plochy, klikněte Přidat nebo Odstranit</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Add</source>
-        <translation type="unfinished">Přidat</translation>
+        <translation>Přidat</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstranit</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Displacement x</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunutí x</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1386,7 +1386,7 @@
         <location line="+39"/>
         <location line="+42"/>
         <source>Free</source>
-        <translation type="unfinished"></translation>
+        <translation>Volné</translation>
     </message>
     <message>
         <location line="-219"/>
@@ -1396,37 +1396,37 @@
         <location line="+39"/>
         <location line="+45"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Pevné</translation>
     </message>
     <message>
         <location line="-203"/>
         <source>Displacement y</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunutí y</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Displacement z</source>
-        <translation type="unfinished"></translation>
+        <translation>Posunutí z</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Rotations are only valid for Beam and Shell elements.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotace jsou platné jen pro nosníkové a skořepinové elementy.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Rotation x</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotace x</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation y</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotace y</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation z</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotace z</translation>
     </message>
 </context>
 <context>

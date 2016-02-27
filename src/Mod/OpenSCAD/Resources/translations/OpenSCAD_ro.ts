@@ -29,99 +29,104 @@
       <translation>Import OpenSCAD</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="76"/>
+      <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
       <translation>Folosire ViewProvider pentru vederea arborescenta</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
+      <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
       <translation>Daca e bifat, obiectul Multimax va fi parametric</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="96"/>
+      <location filename="openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
       <translation>Folositi caracteristica Multmatrix</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="136"/>
+      <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
       <translation>Numarul de fete a poligonului, prismei sau trunchiului. Daca fn este mai mare decat aceasta valoare obiectul este considerat circular. 0 inseamna ca nu exista nici o limita</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="116"/>
+      <location filename="openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>Numarul maxim de fete pentru poligoane (fn)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="160"/>
+      <location filename="openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
       <translation>Export OpenSCAD</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="168"/>
+      <location filename="openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
       <translation>marimea maxima a fragmentului</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="198"/>
+      <location filename="openscadprefs-base.ui" line="215"/>
       <source>minimum angle for a fragment</source>
       <translation>unghiul minim pentru un fragment</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="191"/>
+      <location filename="openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
       <translation>unghiular (fa)</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="201"/>
+      <location filename="openscadprefs-base.ui" line="218"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="255"/>
+      <location filename="openscadprefs-base.ui" line="272"/>
       <source>minimum size of a fragment</source>
       <translation>marimea minima a unui fragment</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="233"/>
+      <location filename="openscadprefs-base.ui" line="250"/>
       <source>size (fs)</source>
       <translation>marime (fs)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="261"/>
+      <location filename="openscadprefs-base.ui" line="278"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="287"/>
+      <location filename="openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
       <translation>convex</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="324"/>
+      <location filename="openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
       <translation>Retea de rezerva</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="366"/>
+      <location filename="openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
       <translation>Deformarea</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="369"/>
+      <location filename="openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
       <translation>deformarea</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="376"/>
+      <location filename="openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
       <translation>Setari pentru triangulatie</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
+      <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation>Dacă această casuţă este bifată, componentele îşi vor însuşii copii în vizualizarea arbore</translation>
+    </message>
+    <message>
+      <location filename="openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation type="unfinished">Print debug information in the Console</translation>
     </message>
   </context>
   <context>
@@ -137,12 +142,12 @@
       <translation>Selectati mai intai 3 obiecte</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Unsupported Function</source>
       <translation>Functia nu este suportata</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Press OK</source>
       <translation>Apasati Ok</translation>
     </message>

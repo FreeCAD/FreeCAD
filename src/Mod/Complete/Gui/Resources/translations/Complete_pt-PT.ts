@@ -37,7 +37,7 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>&amp;Desenho</translation>
+        <translation>&amp;Desenho (folha)</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -57,7 +57,7 @@
     <message>
         <location line="+1"/>
         <source>Sketch based</source>
-        <translation>Esboço baseado</translation>
+        <translation>Baseado em esboço</translation>
     </message>
     <message>
         <location line="+1"/>

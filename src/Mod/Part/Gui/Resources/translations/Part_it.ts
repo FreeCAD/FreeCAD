@@ -412,7 +412,7 @@
     <message>
         <location line="+1"/>
         <source>Make compound</source>
-        <translation>Crea un conposto</translation>
+        <translation>Crea un composto</translation>
     </message>
     <message>
         <location line="+1"/>

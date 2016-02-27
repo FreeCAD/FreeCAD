@@ -1531,7 +1531,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation>Éditer la gorge</translation>
+        <translation>Éditer la rainure</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
