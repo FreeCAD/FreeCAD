@@ -70,9 +70,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="spinSurfaceDeviation">
-              <property name="decimals">
-               <number>3</number>
+             <widget class="Gui::QuantitySpinBox" name="spinSurfaceDeviation">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
               </property>
               <property name="minimum">
                <double>0.001000000000000</double>
@@ -117,9 +117,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="spinMaximumEdgeLength">
-              <property name="decimals">
-               <number>3</number>
+             <widget class="Gui::QuantitySpinBox" name="spinMaximumEdgeLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
               </property>
               <property name="singleStep">
                <double>0.100000000000000</double>
@@ -339,6 +339,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>treeWidget</tabstop>
  </tabstops>
