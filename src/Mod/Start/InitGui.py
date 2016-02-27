@@ -32,45 +32,17 @@
 
 
 class StartWorkbench ( Workbench ):
-	"Start workbench object"
-	Icon = """
-                /* XPM */
-                static char * start_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #000200",
-                "+	c #081938",
-                "@	c #113155",
-                "#	c #1133A0",
-                "$	c #1D56DC",
-                "%	c #2161A8",
-                "&	c #2670EB",
-                "*	c #2C86F2",
-                "                ",
-                "        .       ",
-                "        #+      ",
-                "       .#$+     ",
-                "       .#$&+    ",
-                "  ####$$$&&&+   ",
-                " .#$$$$$&&&&*@  ",
-                " .#$$$$&&&&***@ ",
-                " .#$$$&&&&***%  ",
-                " .#$$&&&&***%   ",
-                " .++++++%**%    ",
-                "       .%*@     ",
-                "       .%@      ",
-                "       ..       ",
-                "                ",
-                "                "};
-		"""
-	MenuText = "Start"
-	ToolTip = "Start workbench"
+    "Start workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Start/Resources/icons/StartWorkbench.svg"
+        self.__class__.MenuText = "Start"
+        self.__class__.ToolTip = "Start workbench"
 
-	def Initialize(self):
-		# load the module
-		import StartGui
-		import Start
-	def GetClassName(self):
-		return "StartGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import StartGui
+        import Start
+    def GetClassName(self):
+        return "StartGui::Workbench"
 
 Gui.addWorkbench(StartWorkbench())

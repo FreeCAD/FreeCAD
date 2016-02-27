@@ -32,45 +32,17 @@
 
 
 class WebWorkbench ( Workbench ):
-	"Web workbench object"
-	Icon = """
-                /* XPM */
-                static char * web_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #102D45",
-                "+	c #2B4A60",
-                "@	c #194E74",
-                "#	c #306996",
-                "$	c #426882",
-                "%	c #4D83A8",
-                "&	c #69A4CA",
-                "*	c #A4DCF8",
-                "      $$$+      ",
-                "    %%&&$..+    ",
-                "   %****&%@.+   ",
-                "  %&****&%@@.+  ",
-                " $&******%%@..  ",
-                " $&*****&%##@.+ ",
-                " $&*****&##@@.+ ",
-                " +&&&&&&%##@..+ ",
-                " .@##%%###%%$.+ ",
-                " .@@@###@%%%+.+ ",
-                " +.@&%####%$+.  ",
-                "  +.%&&%##@..$  ",
-                "   ++$%%#@..$   ",
-                "    ++++..++    ",
-                "     .++++.     ",
-                "                "};
-		"""
-	MenuText = "Web"
-	ToolTip = "Web workbench"
+    "Web workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Web/Resources/icons/WebWorkbench.svg"
+        self.__class__.MenuText = "Web"
+        self.__class__.ToolTip = "Web workbench"
 
-	def Initialize(self):
-		# load the module
-		import WebGui
+    def Initialize(self):
+        # load the module
+        import WebGui
 
-	def GetClassName(self):
-		return "WebGui::Workbench"
+    def GetClassName(self):
+        return "WebGui::Workbench"
 
 Gui.addWorkbench(WebWorkbench())

@@ -74,5 +74,13 @@ INSTALL(
         Presets
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/Arch
-	FILES_MATCHING PATTERN "*.csv*"
+    FILES_MATCHING PATTERN "*.csv*"
 )
+
+SET(ArchGuiIcon_SVG
+    Resources/icons/ArchWorkbench.svg
+)
+
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch" ${ArchGuiIcon_SVG})
+
+INSTALL(FILES ${ArchGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Arch/Resources/icons")
