@@ -12,8 +12,9 @@ IF(DOCDIR)
     add_definitions(-DDOCDIR="${DOCDIR}")
 ENDIF(DOCDIR)
 
+<<<<<<< 99c1373c94c4a8d3efa0cc0f558a8e523389a501
 add_definitions(-DBOOST_${Boost_VERSION})
-
+=======
 #write relevant cmake variables to a file for later access with python. Exportet are all variables 
 #starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we 
 #use a python list for export. 
@@ -32,6 +33,7 @@ foreach (_variableName ${_variableNames})
 endforeach()
 set(_vars "${_vars}]\\n\" \n;")
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h "${_vars}" )
+>>>>>>> Give access to cmake BUILD variables from python
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src

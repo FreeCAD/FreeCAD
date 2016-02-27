@@ -129,6 +129,7 @@ using namespace boost::program_options;
 // scriptings (scripts are build in but can be overridden by command line option)
 #include "InitScript.h"
 #include "TestScript.h"
+#include "CMakeScript.h"
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
@@ -1292,6 +1293,7 @@ void Application::initApplication(void)
 {
     // interpreter and Init script ==========================================================
     // register scripts
+    new ScriptProducer( "CMakeVariables", CMakeVariables );
     new ScriptProducer( "FreeCADInit",    FreeCADInit    );
     new ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
@@ -1310,6 +1312,7 @@ void Application::initApplication(void)
 
     // starting the init script
     Console().Log("Run App init script\n");
+    Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
 }
 
