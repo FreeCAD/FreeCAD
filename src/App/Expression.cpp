@@ -1397,8 +1397,6 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
 
     initParser(owner);
 
-    yydebug = 0;
-
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
 
