@@ -360,12 +360,6 @@ static void initParser(const App::DocumentObject *owner)
     labels = std::stack<std::string>();
     unitExpression = valueExpression = false;
 
-#ifdef FC_DEBUG
-    yydebug = 1;
-#else
-    yydebug = 0;
-#endif
-
     if (!has_registered_functions) {
         registered_functions["acos"] = FunctionExpression::ACOS;
         registered_functions["asin"] = FunctionExpression::ASIN;
