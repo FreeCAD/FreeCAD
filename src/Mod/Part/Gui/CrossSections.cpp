@@ -125,9 +125,9 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
     ui = new Ui_CrossSections();
     ui->setupUi(this);
     ui->position->setRange(-DBL_MAX, DBL_MAX);
-    ui->position->setDecimals(Base::UnitsApi::getDecimals());
+    ui->position->setUnit(Base::Unit::Length);
     ui->distance->setMaximum(DBL_MAX);
-    ui->distance->setDecimals(Base::UnitsApi::getDecimals());
+    ui->distance->setUnit(Base::Unit::Length);
     vp = new ViewProviderCrossSections();
 
     Base::Vector3d c = bbox.GetCenter();
@@ -189,7 +189,7 @@ void CrossSections::apply()
     if (ui->sectionsBox->isChecked())
         d = getPlanes();
     else
-        d.push_back(ui->position->value());
+        d.push_back(ui->position->value().getValue());
     double a=0,b=0,c=0;
     switch (plane()) {
         case CrossSections::XY:
@@ -354,7 +354,7 @@ void CrossSections::on_sectionsBox_toggled(bool b)
 
 void CrossSections::on_checkBothSides_toggled(bool b)
 {
-    double d = ui->distance->value();
+    double d = ui->distance->value().getValue();
     d = b ? 2.0 * d : 0.5 * d;
     ui->distance->setValue(d);
     calcPlanes(plane());
@@ -446,8 +446,8 @@ void CrossSections::calcPlanes(Plane type)
 std::vector<double> CrossSections::getPlanes() const
 {
     int count = ui->countSections->value();
-    double pos = ui->position->value();
-    double stp = ui->distance->value();
+    double pos = ui->position->value().getValue();
+    double stp = ui->distance->value().getValue();
     bool both = ui->checkBothSides->isChecked();
 
     std::vector<double> d;
