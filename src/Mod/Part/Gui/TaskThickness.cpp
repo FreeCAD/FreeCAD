@@ -211,7 +211,7 @@ bool ThicknessWidget::accept()
                 name.c_str(),d->selection.c_str());
         }
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),d->ui.spinOffset->value());
+            name.c_str(),d->ui.spinOffset->value().getValue());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
             name.c_str(),d->ui.modeType->currentIndex());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
