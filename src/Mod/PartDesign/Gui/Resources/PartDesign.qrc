@@ -1,8 +1,8 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/PartDesign_Chamfer.svg</file>
         <file>icons/PartDesign_Fillet.svg</file>
-	<file>icons/PartDesign_Draft.svg</file>
+        <file>icons/PartDesign_Draft.svg</file>
         <file>icons/PartDesign_Groove.svg</file>
         <file>icons/PartDesign_Pad.svg</file>
         <file>icons/PartDesign_Pocket.svg</file>
@@ -17,6 +17,7 @@
         <file>icons/Tree_PartDesign_Revolution.svg</file>
         <file>icons/PartDesign_InternalExternalGear.svg</file>
         <file>icons/PartDesign_InvoluteGear.svg</file>
+        <file>icons/PartDesignWorkbench.svg</file>
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_de.qm</file>
         <file>translations/PartDesign_fi.qm</file>
@@ -44,4 +45,4 @@
         <file>translations/PartDesign_el.qm</file>
         <file>translations/PartDesign_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

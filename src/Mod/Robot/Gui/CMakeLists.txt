@@ -156,3 +156,11 @@ SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
 SET_PYTHON_PREFIX_SUFFIX(RobotGui)
 
 INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(RobotGuiIcon_SVG
+    Resources/icons/RobotWorkbench.svg
+)
+
+fc_copy_sources(RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG})
+
+INSTALL(FILES ${RobotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Robot/Resources/icons")

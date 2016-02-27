@@ -193,3 +193,10 @@ SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
 
 INSTALL(TARGETS PartDesignGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
+SET(PartDesignGuiIcon_SVG
+    Resources/icons/PartDesignWorkbench.svg
+)
+
+fc_copy_sources(PartDesignGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign" ${PartDesignGuiIcon_SVG})
+
+INSTALL(FILES ${PartDesignGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/PartDesign/Resources/icons")

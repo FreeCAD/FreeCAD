@@ -12,77 +12,77 @@ SET(ShipMain_SRCS
 SOURCE_GROUP("" FILES ${ShipMain_SRCS})
 
 SET(ShipExamples_SRCS
-	resources/examples/s60.fcstd
-	resources/examples/s60_katamaran.fcstd
-	resources/examples/wigley.fcstd
-	resources/examples/wigley_katamaran.fcstd
+    resources/examples/s60.fcstd
+    resources/examples/s60_katamaran.fcstd
+    resources/examples/wigley.fcstd
+    resources/examples/wigley_katamaran.fcstd
 )
 SOURCE_GROUP("shipexamples" FILES ${ShipExamples_SRCS})
 
 SET(ShipLoadExample_SRCS
-	shipLoadExample/__init__.py
-	shipLoadExample/TaskPanel.py
-	shipLoadExample/TaskPanel.ui
+    shipLoadExample/__init__.py
+    shipLoadExample/TaskPanel.py
+    shipLoadExample/TaskPanel.ui
 )
 SOURCE_GROUP("shiploadexample" FILES ${ShipLoadExample_SRCS})
 
 SET(ShipCreateShip_SRCS
-	shipCreateShip/__init__.py
-	shipCreateShip/Preview.py
-	shipCreateShip/TaskPanel.py
-	shipCreateShip/TaskPanel.ui
-	shipCreateShip/Tools.py
+    shipCreateShip/__init__.py
+    shipCreateShip/Preview.py
+    shipCreateShip/TaskPanel.py
+    shipCreateShip/TaskPanel.ui
+    shipCreateShip/Tools.py
 )
 SOURCE_GROUP("shipcreateship" FILES ${ShipCreateShip_SRCS})
 
 SET(ShipOutlineDraw_SRCS
-	shipOutlineDraw/__init__.py
-	shipOutlineDraw/Preview.py
-	shipOutlineDraw/TaskPanel.py
-	shipOutlineDraw/TaskPanel.ui
+    shipOutlineDraw/__init__.py
+    shipOutlineDraw/Preview.py
+    shipOutlineDraw/TaskPanel.py
+    shipOutlineDraw/TaskPanel.ui
 )
 SOURCE_GROUP("shipoutlinedraw" FILES ${ShipOutlineDraw_SRCS})
 
 SET(ShipAreasCurve_SRCS
-	shipAreasCurve/__init__.py
-	shipAreasCurve/PlotAux.py
-	shipAreasCurve/Preview.py
-	shipAreasCurve/TaskPanel.py
-	shipAreasCurve/TaskPanel.ui
+    shipAreasCurve/__init__.py
+    shipAreasCurve/PlotAux.py
+    shipAreasCurve/Preview.py
+    shipAreasCurve/TaskPanel.py
+    shipAreasCurve/TaskPanel.ui
 )
 SOURCE_GROUP("shipareascurve" FILES ${ShipAreasCurve_SRCS})
 
 SET(ShipHydrostatics_SRCS
-	shipHydrostatics/__init__.py
-	shipHydrostatics/PlotAux.py
-	shipHydrostatics/TaskPanel.py
-	shipHydrostatics/TaskPanel.ui
-	shipHydrostatics/Tools.py
+    shipHydrostatics/__init__.py
+    shipHydrostatics/PlotAux.py
+    shipHydrostatics/TaskPanel.py
+    shipHydrostatics/TaskPanel.ui
+    shipHydrostatics/Tools.py
 )
 SOURCE_GROUP("shiphydrostatics" FILES ${ShipHydrostatics_SRCS})
 
 SET(ShipCreateWeight_SRCS
-	shipCreateWeight/__init__.py
-	shipCreateWeight/TaskPanel.py
-	shipCreateWeight/TaskPanel.ui
-	shipCreateWeight/Tools.py
+    shipCreateWeight/__init__.py
+    shipCreateWeight/TaskPanel.py
+    shipCreateWeight/TaskPanel.ui
+    shipCreateWeight/Tools.py
 )
 SOURCE_GROUP("shipcreateweight" FILES ${ShipCreateWeight_SRCS})
 
 SET(ShipCreateTank_SRCS
-	shipCreateTank/__init__.py
-	shipCreateTank/TaskPanel.py
-	shipCreateTank/TaskPanel.ui
-	shipCreateTank/Tools.py
+    shipCreateTank/__init__.py
+    shipCreateTank/TaskPanel.py
+    shipCreateTank/TaskPanel.ui
+    shipCreateTank/Tools.py
 )
 SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
 
 SET(ShipCapacityCurve_SRCS
-	shipCapacityCurve/__init__.py
-	shipCapacityCurve/PlotAux.py
-	shipCapacityCurve/TaskPanel.py
-	shipCapacityCurve/TaskPanel.ui
-	shipCapacityCurve/Tools.py
+    shipCapacityCurve/__init__.py
+    shipCapacityCurve/PlotAux.py
+    shipCapacityCurve/TaskPanel.py
+    shipCapacityCurve/TaskPanel.ui
+    shipCapacityCurve/Tools.py
 )
 SOURCE_GROUP("shipcapacitycurve" FILES ${ShipCapacityCurve_SRCS})
 
@@ -93,20 +93,20 @@ SET(ShipCreateLoadCondition_SRCS
 SOURCE_GROUP("shipcreateloadcondition" FILES ${ShipCreateLoadCondition_SRCS})
 
 SET(ShipGZ_SRCS
-	shipGZ/__init__.py
-	shipGZ/PlotAux.py
-	shipGZ/TaskPanel.py
-	shipGZ/TaskPanel.ui
-	shipGZ/Tools.py
+    shipGZ/__init__.py
+    shipGZ/PlotAux.py
+    shipGZ/TaskPanel.py
+    shipGZ/TaskPanel.ui
+    shipGZ/Tools.py
 )
 SOURCE_GROUP("shipgz" FILES ${ShipGZ_SRCS})
 
 SET(ShipUtils_SRCS
-	shipUtils/__init__.py
-	shipUtils/Locale.py
-	shipUtils/Math.py
-	shipUtils/Paths.py
-	shipUtils/Units.py
+    shipUtils/__init__.py
+    shipUtils/Locale.py
+    shipUtils/Math.py
+    shipUtils/Paths.py
+    shipUtils/Units.py
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
@@ -205,4 +205,10 @@ INSTALL(
         Mod/Ship
 )
 
+SET(ShipGuiIcon_SVG
+    resources/icons/ShipWorkbench.svg
+)
 
+fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Ship" ${ShipGuiIcon_SVG})
+
+INSTALL(FILES ${ShipGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Ship/resources/icons")
