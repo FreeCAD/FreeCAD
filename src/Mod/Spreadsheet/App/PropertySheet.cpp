@@ -313,6 +313,8 @@ void PropertySheet::Restore(Base::XMLReader &reader)
 {
     int Cnt;
 
+    AtomicPropertyChange signaller(*this);
+
     reader.readElement("Cells");
     Cnt = reader.getAttributeAsInteger("Count");
     for (int i = 0; i < Cnt; i++) {
