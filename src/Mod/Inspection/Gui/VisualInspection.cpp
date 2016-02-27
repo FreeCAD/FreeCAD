@@ -89,9 +89,9 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
 
     //FIXME: Not used yet
     ui->textLabel2->hide();
-    ui->prefFloatSpinBox2->hide();
-    ui->prefFloatSpinBox1->setDecimals(Base::UnitsApi::getDecimals());
-    ui->prefFloatSpinBox2->setDecimals(Base::UnitsApi::getDecimals());
+    ui->thickness->hide();
+    ui->searchRadius->setUnit(Base::Unit::Length);
+    ui->thickness->setUnit(Base::Unit::Length);
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     // disable Ok button and enable of at least one item in each view is on
@@ -147,14 +147,27 @@ VisualInspection::~VisualInspection()
 
 void VisualInspection::loadSettings()
 {
-    ui->prefFloatSpinBox1->onRestore();
-    ui->prefFloatSpinBox2->onRestore();
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+
+    double searchDistance = ui->searchRadius->value().getValue();
+    searchDistance = handle->GetFloat("SearchDistance", searchDistance);
+    ui->searchRadius->setValue(searchDistance);
+
+    double thickness = ui->thickness->value().getValue();
+    thickness = handle->GetFloat("Thickness", thickness);
+    ui->thickness->setValue(thickness);
 }
 
 void VisualInspection::saveSettings()
 {
-    ui->prefFloatSpinBox1->onSave();
-    ui->prefFloatSpinBox2->onSave();
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+    double searchDistance = ui->searchRadius->value().getValue();
+    handle->SetFloat("SearchDistance", searchDistance);
+
+    double thickness = ui->thickness->value().getValue();
+    handle->SetFloat("Thickness", thickness);
 }
 
 void VisualInspection::onActivateItem(QTreeWidgetItem* item)
@@ -204,8 +217,8 @@ void VisualInspection::accept()
                 nominalNames << sel->data(0, Qt::UserRole).toString();
         }
 
-        float searchRadius = ui->prefFloatSpinBox1->value();
-        float thickness = ui->prefFloatSpinBox2->value();
+        double searchRadius = ui->searchRadius->value().getValue();
+        double thickness = ui->thickness->value().getValue();
 
         // open a new command
         Gui::Document* doc = Gui::Application::Instance->activeDocument();

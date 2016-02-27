@@ -43,7 +43,7 @@ DlgSettingsImportExport::~DlgSettingsImportExport()
 void DlgSettingsImportExport::saveSettings()
 {
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Mesh/");
+        ("User parameter:BaseApp/Preferences/Mod/Mesh");
     double value = ui->maxDeviationExport->value().getValue();
     handle->SetFloat("MaxDeviationExport", value);
 }
@@ -51,7 +51,7 @@ void DlgSettingsImportExport::saveSettings()
 void DlgSettingsImportExport::loadSettings()
 {
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Mesh/");
+        ("User parameter:BaseApp/Preferences/Mod/Mesh");
     double value = ui->maxDeviationExport->value().getValue();
     value = handle->GetFloat("MaxDeviationExport", value);
     ui->maxDeviationExport->setValue(value);
