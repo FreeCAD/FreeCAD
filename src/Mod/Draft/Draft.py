@@ -1451,13 +1451,15 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
         return obj
 
 def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
-    '''offset(object,Vector,[copymode],[bind]): offsets the given wire by
-    applying the given Vector to its first vertex. If copymode is
+    '''offset(object,delta,[copymode],[bind]): offsets the given wire by
+    applying the given delta Vector to its first vertex. If copymode is
     True, another object is created, otherwise the same object gets
     offsetted. If bind is True, and provided the wire is open, the original
     and the offsetted wires will be bound by their endpoints, forming a face
     if sym is True, bind must be true too, and the offset is made on both
-    sides, the total width being the given delta length.'''
+    sides, the total width being the given delta length. If offsetting a 
+    BSpline, the delta must not be a Vector but a list of Vectors, one for
+    each node of the spline.'''
     import Part, DraftGeomUtils
     newwire = None
     delete = None
