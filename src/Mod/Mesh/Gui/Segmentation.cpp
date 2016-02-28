@@ -78,11 +78,11 @@ void Segmentation::accept()
     std::vector<MeshCore::MeshSurfaceSegment*> segm;
     if (ui->groupBoxCyl->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvatureCylindricalSegment
-            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->radCyl->value()));
+            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->radCyl->value().getValue()));
     }
     if (ui->groupBoxSph->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvatureSphericalSegment
-            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->radSph->value()));
+            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->radSph->value().getValue()));
     }
     if (ui->groupBoxPln->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvaturePlanarSegment
