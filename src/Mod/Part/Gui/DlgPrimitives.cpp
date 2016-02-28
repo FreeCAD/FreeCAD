@@ -663,9 +663,6 @@ void DlgPrimitives::createPrimitive(const QString& placement)
 Location::Location(QWidget* parent)
 {
     ui.setupUi(this);
-    QList<QDoubleSpinBox*> list = this->findChildren<QDoubleSpinBox*>();
-    for (QList<QDoubleSpinBox*>::iterator it = list.begin(); it != list.end(); ++it)
-        (*it)->setDecimals(Base::UnitsApi::getDecimals());
 }
 
 Location::~Location()

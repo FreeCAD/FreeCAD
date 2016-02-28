@@ -55,9 +55,6 @@ MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags
   : QDialog( parent, fl )
 {
     this->setupUi(this);
-    QList<QDoubleSpinBox*> list = this->findChildren<QDoubleSpinBox*>();
-    for (QList<QDoubleSpinBox*>::iterator it = list.begin(); it != list.end(); ++it)
-        (*it)->setDecimals(Base::UnitsApi::getDecimals());
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh,BuildRegularGeoms");
 
     // set limits
