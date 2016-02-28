@@ -126,9 +126,9 @@ void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Width=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(boxLength->value(),0,'f',2)
-                .arg(boxWidth->value(),0,'f',2)
-                .arg(boxHeight->value(),0,'f',2);
+                .arg(boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
         }
         else if (comboBox1->currentIndex() == 1) {  // cylinder
             name = doc->getUniqueObjectName("Cylinder");
@@ -140,9 +140,9 @@ void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Closed=%5\n"
                 "App.ActiveDocument.%1.Sampling=%6\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(cylinderRadius->value(),0,'f',2)
-                .arg(cylinderLength->value(),0,'f',2)
-                .arg(cylinderEdgeLength->value(),0,'f',2)
+                .arg(cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(cylinderLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(cylinderEdgeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(QLatin1String((cylinderClosed->isChecked()?"True":"False")))
                 .arg(cylinderCount->value());
         }
@@ -157,10 +157,10 @@ void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Closed=%6\n"
                 "App.ActiveDocument.%1.Sampling=%7\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(coneRadius1->value(),0,'f',2)
-                .arg(coneRadius2->value(),0,'f',2)
-                .arg(coneLength->value(),0,'f',2)
-                .arg(coneEdgeLength->value(),0,'f',2)
+                .arg(coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(coneLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(coneEdgeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(QLatin1String((coneClosed->isChecked()?"True":"False")))
                 .arg(coneCount->value());
         }
@@ -171,7 +171,7 @@ void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Radius=%2\n"
                 "App.ActiveDocument.%1.Sampling=%3\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(sphereRadius->value(),0,'f',2)
+                .arg(sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(sphereCount->value());
         }
         else if (comboBox1->currentIndex() == 4) {  // ellipsoid
@@ -182,8 +182,8 @@ void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Radius2=%3\n"
                 "App.ActiveDocument.%1.Sampling=%4\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(ellipsoidRadius1->value(),0,'f',2)
-                .arg(ellipsoidRadius2->value(),0,'f',2)
+                .arg(ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(ellipsoidCount->value());
         }
         else if (comboBox1->currentIndex() == 5) {  // toroid
@@ -194,8 +194,8 @@ void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Radius2=%3\n"
                 "App.ActiveDocument.%1.Sampling=%4\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(toroidRadius1->value(),0,'f',2)
-                .arg(toroidRadius2->value(),0,'f',2)
+                .arg(toroidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(toroidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(toroidCount->value());
         }
 
