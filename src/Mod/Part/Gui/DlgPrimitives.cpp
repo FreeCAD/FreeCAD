@@ -130,13 +130,13 @@ QString Picker::toPlacement(const gp_Ax2& axis) const
     gp_Pnt loc = axis.Location();
 
     return QString::fromLatin1("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
-        .arg(loc.X(),0,'f',2)
-        .arg(loc.Y(),0,'f',2)
-        .arg(loc.Z(),0,'f',2)
-        .arg(rot[0],0,'f',2)
-        .arg(rot[1],0,'f',2)
-        .arg(rot[2],0,'f',2)
-        .arg(rot[3],0,'f',2);
+        .arg(loc.X(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(loc.Y(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(loc.Z(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[0],0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[1],0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[2],0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[3],0,'f',Base::UnitsApi::getDecimals());
 }
 
 class CircleFromThreePoints : public Picker
@@ -167,9 +167,9 @@ public:
             "App.ActiveDocument.%1.Angle1=%4\n"
             "App.ActiveDocument.%1.Placement=%5\n")
             .arg(name)
-            .arg(circle->Radius(),0,'f',2)
-            .arg(Base::toDegrees(trim->FirstParameter()),0,'f',2)
-            .arg(Base::toDegrees(trim->LastParameter ()),0,'f',2)
+            .arg(circle->Radius(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(Base::toDegrees(trim->FirstParameter()),0,'f',Base::UnitsApi::getDecimals())
+            .arg(Base::toDegrees(trim->LastParameter ()),0,'f',Base::UnitsApi::getDecimals())
             .arg(toPlacement(circle->Position()));
     }
 
@@ -357,8 +357,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%4\n"
                 "App.ActiveDocument.%1.Label='%5'\n")
                 .arg(name)
-                .arg(ui.planeLength->value().getValue(),0,'f',2)
-                .arg(ui.planeWidth->value().getValue(),0,'f',2)
+                .arg(ui.planeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.planeWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Plane"));
         }
@@ -372,9 +372,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.boxLength->value().getValue(),0,'f',2)
-                .arg(ui.boxWidth->value().getValue(),0,'f',2)
-                .arg(ui.boxHeight->value().getValue(),0,'f',2)
+                .arg(ui.boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Box"));
         }
@@ -388,9 +388,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.cylinderRadius->value().getValue(),0,'f',2)
-                .arg(ui.cylinderHeight->value().getValue(),0,'f',2)
-                .arg(ui.cylinderAngle->value().getValue(),0,'f',2)
+                .arg(ui.cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Cylinder"));
         }
@@ -405,10 +405,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%6\n"
                 "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
-                .arg(ui.coneRadius1->value().getValue(),0,'f',2)
-                .arg(ui.coneRadius2->value().getValue(),0,'f',2)
-                .arg(ui.coneHeight->value().getValue(),0,'f',2)
-                .arg(ui.coneAngle->value().getValue(),0,'f',2)
+                .arg(ui.coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Cone"));
         }
@@ -423,10 +423,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%6\n"
                 "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
-                .arg(ui.sphereRadius->value().getValue(),0,'f',2)
-                .arg(ui.sphereAngle1->value().getValue(),0,'f',2)
-                .arg(ui.sphereAngle2->value().getValue(),0,'f',2)
-                .arg(ui.sphereAngle3->value().getValue(),0,'f',2)
+                .arg(ui.sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Sphere"));
         }
@@ -443,12 +443,12 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%8\n"
                 "App.ActiveDocument.%1.Label='%9'\n")
                 .arg(name)
-                .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',2)
+                .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Ellipsoid"));
         }
@@ -464,11 +464,11 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%7\n"
                 "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
-                .arg(ui.torusRadius1->value().getValue(),0,'f',2)
-                .arg(ui.torusRadius2->value().getValue(),0,'f',2)
-                .arg(ui.torusAngle1->value().getValue(),0,'f',2)
-                .arg(ui.torusAngle2->value().getValue(),0,'f',2)
-                .arg(ui.torusAngle3->value().getValue(),0,'f',2)
+                .arg(ui.torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Torus"));
         }
@@ -483,8 +483,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.prismPolygon->value())
-                .arg(ui.prismCircumradius->value().getValue(),0,'f',2)
-                .arg(ui.prismHeight->value().getValue(),0,'f',2)
+                .arg(ui.prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Prism"));
         }
@@ -505,16 +505,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%12\n"
                 "App.ActiveDocument.%1.Label='%13'\n")
                 .arg(name)
-                .arg(ui.wedgeXmin->value().getValue(),0,'f',2)
-                .arg(ui.wedgeYmin->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZmin->value().getValue(),0,'f',2)
-                .arg(ui.wedgeX2min->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZ2min->value().getValue(),0,'f',2)
-                .arg(ui.wedgeXmax->value().getValue(),0,'f',2)
-                .arg(ui.wedgeYmax->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZmax->value().getValue(),0,'f',2)
-                .arg(ui.wedgeX2max->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZ2max->value().getValue(),0,'f',2)
+                .arg(ui.wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Wedge"));
         }
@@ -531,10 +531,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%7\n"
                 "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
-                .arg(ui.helixPitch->value().getValue(),0,'f',2)
-                .arg(ui.helixHeight->value().getValue(),0,'f',2)
-                .arg(ui.helixRadius->value().getValue(),0,'f',2)
-                .arg(ui.helixAngle->value().getValue(),0,'f',2)
+                .arg(ui.helixPitch->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.helixHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.helixRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.helixAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(ui.helixLocalCS->currentIndex())
                 .arg(placement)
                 .arg(tr("Helix"));
@@ -549,9 +549,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.spiralGrowth->value().getValue(),0,'f',2)
-                .arg(ui.spiralRotation->value(),0,'f',2)
-                .arg(ui.spiralRadius->value().getValue(),0,'f',2)
+                .arg(ui.spiralGrowth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.spiralRotation->value(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.spiralRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Spiral"));
         }
@@ -565,9 +565,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.circleRadius->value().getValue(),0,'f',2)
-                .arg(ui.circleAngle0->value().getValue(),0,'f',2)
-                .arg(ui.circleAngle1->value().getValue(),0,'f',2)
+                .arg(ui.circleRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.circleAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.circleAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Circle"));
         }
@@ -582,10 +582,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%6\n"
                 "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
-                .arg(ui.ellipseMajorRadius->value().getValue(),0,'f',2)
-                .arg(ui.ellipseMinorRadius->value().getValue(),0,'f',2)
-                .arg(ui.ellipseAngle0->value().getValue(),0,'f',2)
-                .arg(ui.ellipseAngle1->value().getValue(),0,'f',2)
+                .arg(ui.ellipseMajorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipseMinorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipseAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.ellipseAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Ellipse"));
         }
@@ -599,9 +599,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.vertexX->value().getValue(),0,'f',2)
-                .arg(ui.vertexY->value().getValue(),0,'f',2)
-                .arg(ui.vertexZ->value().getValue(),0,'f',2)
+                .arg(ui.vertexX->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.vertexY->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.vertexZ->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Vertex"));
         }
@@ -618,12 +618,12 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%8\n"
                 "App.ActiveDocument.%1.Label='%9'\n")
                 .arg(name)
-                .arg(ui.edgeX1->value().getValue(),0,'f',2)
-                .arg(ui.edgeY1->value().getValue(),0,'f',2)
-                .arg(ui.edgeZ1->value().getValue(),0,'f',2)
-                .arg(ui.edgeX2->value().getValue(),0,'f',2)
-                .arg(ui.edgeY2->value().getValue(),0,'f',2)
-                .arg(ui.edgeZ2->value().getValue(),0,'f',2)
+                .arg(ui.edgeX1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.edgeY1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.edgeZ1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.edgeX2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.edgeY2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.edgeZ2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Line"));
         }
@@ -637,7 +637,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Label='%5'\n")
                 .arg(name)
                 .arg(ui.regularPolygonPolygon->value())
-                .arg(ui.regularPolygonCircumradius->value().getValue(),0,'f',2)
+                .arg(ui.regularPolygonCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Regular polygon"));
         }
@@ -790,13 +790,13 @@ QString Location::toPlacement() const
     Base::Vector3d loc = ui.loc->getPosition();
 
     return QString::fromLatin1("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
-        .arg(loc.x,0,'f',2)
-        .arg(loc.y,0,'f',2)
-        .arg(loc.z,0,'f',2)
-        .arg(rot[0],0,'f',2)
-        .arg(rot[1],0,'f',2)
-        .arg(rot[2],0,'f',2)
-        .arg(rot[3],0,'f',2);
+        .arg(loc.x,0,'f',Base::UnitsApi::getDecimals())
+        .arg(loc.y,0,'f',Base::UnitsApi::getDecimals())
+        .arg(loc.z,0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[0],0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[1],0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[2],0,'f',Base::UnitsApi::getDecimals())
+        .arg(rot[3],0,'f',Base::UnitsApi::getDecimals());
 }
 
 // ----------------------------------------------
