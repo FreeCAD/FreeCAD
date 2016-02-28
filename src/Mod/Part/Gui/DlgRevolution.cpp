@@ -49,6 +49,7 @@
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/Tools.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 
 
 
@@ -203,13 +204,13 @@ void DlgRevolution::accept()
             "FreeCAD.ActiveDocument.%2.Solid = %11\n"
             "FreeCADGui.ActiveDocument.%3.Visibility = False\n")
             .arg(type).arg(name).arg(shape)
-            .arg(axis.x,0,'f',2)
-            .arg(axis.y,0,'f',2)
-            .arg(axis.z,0,'f',2)
-            .arg(ui->xPos->value().getValue(),0,'f',2)
-            .arg(ui->yPos->value().getValue(),0,'f',2)
-            .arg(ui->zPos->value().getValue(),0,'f',2)
-            .arg(ui->angle->value().getValue(),0,'f',2)
+            .arg(axis.x,0,'f',Base::UnitsApi::getDecimals())
+            .arg(axis.y,0,'f',Base::UnitsApi::getDecimals())
+            .arg(axis.z,0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui->xPos->value().getValue(), 0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui->yPos->value().getValue(), 0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui->zPos->value().getValue(), 0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui->angle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
             .arg(solid)
             ;
         Gui::Application::Instance->runPythonCode((const char*)code.toLatin1());
