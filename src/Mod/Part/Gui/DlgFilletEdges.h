@@ -67,6 +67,7 @@ public:
     Qt::ItemFlags flags (const QModelIndex & index) const;
     bool setData (const QModelIndex & index, const QVariant & value,
                   int role = Qt::EditRole);
+    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
     void updateCheckStates();
 
 Q_SIGNALS:
@@ -104,8 +105,8 @@ private Q_SLOTS:
     void on_selectAllButton_clicked();
     void on_selectNoneButton_clicked();
     void on_filletType_activated(int);
-    void on_filletStartRadius_valueChanged(double);
-    void on_filletEndRadius_valueChanged(double);
+    void on_filletStartRadius_valueChanged(const Base::Quantity&);
+    void on_filletEndRadius_valueChanged(const Base::Quantity&);
     void toggleCheckState(const QModelIndex&);
     void onHighlightEdges();
 
