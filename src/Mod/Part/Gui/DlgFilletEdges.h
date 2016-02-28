@@ -157,6 +157,8 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    virtual bool needsFullSpace() const
+    { return true; }
 
 private:
     DlgFilletEdges* widget;
@@ -179,6 +181,8 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    virtual bool needsFullSpace() const
+    { return true; }
 
 private:
     DlgChamferEdges* widget;
