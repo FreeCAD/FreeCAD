@@ -98,7 +98,10 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="filletStartRadius">
+         <widget class="Gui::QuantitySpinBox" name="filletStartRadius">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
           </property>
@@ -108,7 +111,10 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="filletEndRadius">
+         <widget class="Gui::QuantitySpinBox" name="filletEndRadius">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
           </property>
@@ -177,6 +183,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>shapeObject</tabstop>
   <tabstop>filletType</tabstop>
