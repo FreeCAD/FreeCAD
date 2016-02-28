@@ -211,6 +211,19 @@ namespace PartGui {
         typedef boost::signals::connection Connection;
         Connection connectApplicationDeletedObject;
         Connection connectApplicationDeletedDocument;
+
+        class SelectionObjectCompare
+        {
+        public:
+            App::DocumentObject* obj;
+            SelectionObjectCompare(App::DocumentObject* obj) : obj(obj)
+            {
+            }
+            bool operator()(const Gui::SelectionObject& sel) const
+            {
+                return (sel.getObject() == obj);
+            }
+        };
     };
 };
 
@@ -491,7 +504,7 @@ void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
     QString name = QString::fromLatin1("Edge%1").arg(id);
     Qt::CheckState checkState = static_cast<Qt::CheckState>(check.toInt());
 
-    bool block = this->blockConnection(false);
+    bool block = this->blockConnection(true);
 
     // is item checked
     if (checkState & Qt::Checked) {
@@ -597,9 +610,30 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         ui->filletEndRadius->blockSignals(false);
 
         App::Document* doc = d->object->getDocument();
-        Gui::Selection().addSelection(doc->getName(),
-            d->object->getNameInDocument(),
-            subElements);
+        // get current selection and their sub-elements
+        std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx(doc->getName());
+        std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(), selObj.end(),
+            Private::SelectionObjectCompare(d->object));
+
+        // If sub-objects are already selected then only add the un-selected parts.
+        // This is impotant to avoid recursive calls of rmvSelection() which
+        // invalidates the internal iterator (#0002200).
+        if (selIt != selObj.end()) {
+            std::vector<std::string> selElements = selIt->getSubNames();
+            std::sort(selElements.begin(), selElements.end());
+            std::sort(subElements.begin(), subElements.end());
+
+            std::vector<std::string> complementary;
+            std::back_insert_iterator<std::vector<std::string> > biit(complementary);
+            std::set_difference(subElements.begin(), subElements.end(), selElements.begin(), selElements.end(), biit);
+            subElements = complementary;
+        }
+
+        if (!subElements.empty()) {
+            Gui::Selection().addSelection(doc->getName(),
+                d->object->getNameInDocument(),
+                subElements);
+        }
     }
 }
 
