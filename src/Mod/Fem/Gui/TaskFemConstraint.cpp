@@ -181,6 +181,11 @@ const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, con
 
 //==== calls from the TaskView ===============================================================
 
+void TaskDlgFemConstraint::open()
+{
+    ConstraintView->setVisible(true);
+    Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+}
 
 bool TaskDlgFemConstraint::accept()
 {
