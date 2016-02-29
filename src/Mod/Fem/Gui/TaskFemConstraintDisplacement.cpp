@@ -445,8 +445,8 @@ void TaskFemConstraintDisplacement::addToSelection()
                 searchStr="Face";
             for (unsigned int iStr=0;iStr<(SubElements.size());++iStr){
                 if ((SubElements[iStr].find(searchStr)==std::string::npos)&&(SubElements.size()>0)){
-                    std::string Msg="Only one type of selection (vertex,face or edge) per constraint allowed!";
-                    QMessageBox::warning(this, tr("Selection error"),QString::fromStdString(Msg));
+                    QString msg = tr("Only one type of selection (vertex,face or edge) per constraint allowed!");
+                    QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe=false;
                     break;
                 }
