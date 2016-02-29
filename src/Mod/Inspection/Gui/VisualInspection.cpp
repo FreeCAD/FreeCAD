@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <cfloat>
+#endif
 #include "VisualInspection.h"
 #include "ui_VisualInspection.h"
 
