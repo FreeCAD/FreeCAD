@@ -126,7 +126,7 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
     ui->setupUi(this);
     ui->position->setRange(-DBL_MAX, DBL_MAX);
     ui->position->setUnit(Base::Unit::Length);
-    ui->distance->setMaximum(DBL_MAX);
+    ui->distance->setRange(0, DBL_MAX);
     ui->distance->setUnit(Base::Unit::Length);
     vp = new ViewProviderCrossSections();
 

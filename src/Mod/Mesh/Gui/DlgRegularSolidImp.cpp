@@ -60,29 +60,44 @@ MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags
     // set limits
     // Box
     boxLength->setMaximum(DBL_MAX);
+    boxLength->setMinimum(0);
     boxWidth->setMaximum(DBL_MAX);
+    boxWidth->setMinimum(0);
     boxHeight->setMaximum(DBL_MAX);
+    boxHeight->setMinimum(0);
     // Cylinder
     cylinderRadius->setMaximum(DBL_MAX);
+    cylinderRadius->setMinimum(0);
     cylinderLength->setMaximum(DBL_MAX);
+    cylinderLength->setMinimum(0);
     cylinderEdgeLength->setMaximum(DBL_MAX);
+    cylinderEdgeLength->setMinimum(0);
     cylinderCount->setMaximum(1000);
     // Cone
     coneRadius1->setMaximum(DBL_MAX);
+    coneRadius1->setMinimum(0);
     coneRadius2->setMaximum(DBL_MAX);
+    coneRadius2->setMinimum(0);
     coneLength->setMaximum(DBL_MAX);
+    coneLength->setMinimum(0);
     coneEdgeLength->setMaximum(DBL_MAX);
+    coneEdgeLength->setMinimum(0);
     coneCount->setMaximum(1000);
     // Sphere
     sphereRadius->setMaximum(DBL_MAX);
+    sphereRadius->setMinimum(0);
     sphereCount->setMaximum(1000);
     // Ellipsoid
     ellipsoidRadius1->setMaximum(DBL_MAX);
+    ellipsoidRadius1->setMinimum(0);
     ellipsoidRadius2->setMaximum(DBL_MAX);
+    ellipsoidRadius2->setMinimum(0);
     ellipsoidCount->setMaximum(1000);
     // Torus
     toroidRadius1->setMaximum(DBL_MAX);
+    toroidRadius1->setMinimum(0);
     toroidRadius2->setMaximum(DBL_MAX);
+    toroidRadius2->setMinimum(0);
     toroidCount->setMaximum(1000);
 }
 
