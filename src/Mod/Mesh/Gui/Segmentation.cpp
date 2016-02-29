@@ -48,8 +48,10 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     ui->setupUi(this);
     ui->numPln->setRange(1, INT_MAX);
     ui->numPln->setValue(100);
+    ui->radCyl->setRange(0, INT_MAX);
     ui->numCyl->setRange(1, INT_MAX);
     ui->numCyl->setValue(100);
+    ui->radSph->setRange(0, INT_MAX);
     ui->numSph->setRange(1, INT_MAX);
     ui->numSph->setValue(100);
 }

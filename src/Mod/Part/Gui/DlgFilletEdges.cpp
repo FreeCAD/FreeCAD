@@ -234,8 +234,11 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 {
     ui->setupUi(this);
     ui->filletStartRadius->setMaximum(INT_MAX);
-    ui->filletEndRadius->setMaximum(INT_MAX);
+    ui->filletStartRadius->setMinimum(0);
     ui->filletStartRadius->setUnit(Base::Unit::Length);
+
+    ui->filletEndRadius->setMaximum(INT_MAX);
+    ui->filletEndRadius->setMinimum(0);
     ui->filletEndRadius->setUnit(Base::Unit::Length);
 
     d->object = 0;

@@ -191,28 +191,42 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     // set limits
     //
     // plane
-    ui.planeLength->setMaximum(INT_MAX);
-    ui.planeWidth->setMaximum(INT_MAX);
+    ui.planeLength->setRange(0, INT_MAX);
+    ui.planeWidth->setRange(0, INT_MAX);
     // box
-    ui.boxLength->setMaximum(INT_MAX);
-    ui.boxWidth->setMaximum(INT_MAX);
-    ui.boxHeight->setMaximum(INT_MAX);
+    ui.boxLength->setRange(0, INT_MAX);
+    ui.boxWidth->setRange(0, INT_MAX);
+    ui.boxHeight->setRange(0, INT_MAX);
     // cylinder
-    ui.cylinderRadius->setMaximum(INT_MAX);
-    ui.cylinderHeight->setMaximum(INT_MAX);
+    ui.cylinderRadius->setRange(0, INT_MAX);
+    ui.cylinderHeight->setRange(0, INT_MAX);
+    ui.cylinderAngle->setRange(0, 360);
     // cone
-    ui.coneRadius1->setMaximum(INT_MAX);
-    ui.coneRadius2->setMaximum(INT_MAX);
-    ui.coneHeight->setMaximum(INT_MAX);
+    ui.coneRadius1->setRange(0, INT_MAX);
+    ui.coneRadius2->setRange(0, INT_MAX);
+    ui.coneHeight->setRange(0, INT_MAX);
+    ui.coneAngle->setRange(0, 360);
     // sphere
-    ui.sphereRadius->setMaximum(INT_MAX);
+    ui.sphereRadius->setRange(0, INT_MAX);
+    ui.sphereAngle1->setRange(-90, 90);
+    ui.sphereAngle2->setRange(-90, 90);
+    ui.sphereAngle3->setRange(0, 360);
     // ellipsoid
-    ui.ellipsoidRadius1->setMaximum(INT_MAX);
-    ui.ellipsoidRadius2->setMaximum(INT_MAX);
-    ui.ellipsoidRadius3->setMaximum(INT_MAX);
+    ui.ellipsoidRadius1->setRange(0, INT_MAX);
+    ui.ellipsoidRadius2->setRange(0, INT_MAX);
+    ui.ellipsoidRadius3->setRange(0, INT_MAX);
+    ui.ellipsoidAngle1->setRange(-90, 90);
+    ui.ellipsoidAngle2->setRange(-90, 90);
+    ui.ellipsoidAngle3->setRange(0, 360);
     // torus
-    ui.torusRadius1->setMaximum(INT_MAX);
-    ui.torusRadius2->setMaximum(INT_MAX);
+    ui.torusRadius1->setRange(0, INT_MAX);
+    ui.torusRadius2->setRange(0, INT_MAX);
+    ui.torusAngle1->setRange(-180, 180);
+    ui.torusAngle2->setRange(-180, 180);
+    ui.torusAngle3->setRange(0, 360);
+    // prism
+    ui.prismCircumradius->setRange(0, INT_MAX);
+    ui.prismHeight->setRange(0, INT_MAX);
     // wedge
     ui.wedgeXmin->setMinimum(INT_MIN);
     ui.wedgeXmin->setMaximum(INT_MAX);
@@ -235,11 +249,19 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.wedgeZ2max->setMinimum(INT_MIN);
     ui.wedgeZ2max->setMaximum(INT_MAX);
     // helix
-    ui.helixPitch->setMaximum(INT_MAX);
-    ui.helixHeight->setMaximum(INT_MAX);
-    ui.helixRadius->setMaximum(INT_MAX);
+    ui.helixPitch->setRange(0, INT_MAX);
+    ui.helixHeight->setRange(0, INT_MAX);
+    ui.helixRadius->setRange(0, INT_MAX);
+    ui.helixAngle->setRange(0, 90);
     // circle
-    ui.circleRadius->setMaximum(INT_MAX);
+    ui.circleRadius->setRange(0, INT_MAX);
+    ui.circleAngle0->setRange(0, 360);
+    ui.circleAngle1->setRange(0, 360);
+    // ellipse
+    ui.ellipseMajorRadius->setRange(0, INT_MAX);
+    ui.ellipseMinorRadius->setRange(0, INT_MAX);
+    ui.ellipseAngle0->setRange(0, 360);
+    ui.ellipseAngle1->setRange(0, 360);
     // vertex
     ui.vertexX->setMaximum(INT_MAX);
     ui.vertexY->setMaximum(INT_MAX);
@@ -261,6 +283,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.edgeZ2->setMaximum(INT_MAX);
     ui.edgeZ2->setMinimum(INT_MIN);
     // RegularPolygon
+    ui.regularPolygonCircumradius->setRange(0, INT_MAX);
 }
 
 /*  
