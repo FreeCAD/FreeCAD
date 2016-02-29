@@ -1368,15 +1368,15 @@ class DraftToolBar:
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.endswith("i"):
+        elif txt.endswith("I"):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.endswith("f"):
+        elif txt.endswith("F"):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.endswith("t"):
+        elif txt.endswith("T"):
             self.toggleContinue()
             spec = True
         elif txt.endswith("w"):
@@ -1415,7 +1415,8 @@ class DraftToolBar:
                 self.closeLine()
             elif self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
-        elif txt.endswith("n"):
+            spec = True
+        elif txt.endswith("N"):
             if self.continueCmd.isVisible():
                 self.continueCmd.setChecked(not self.continueCmd.isChecked())
             spec = True
@@ -1485,20 +1486,18 @@ class DraftToolBar:
                     dp = plane.getLocalCoords(point)
 
             # set widgets
-            if self.mask in ['y','z']:
-                self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            else:
-                if dp:
+            if dp:
+                if self.mask in ['y','z']:
                     self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            if self.mask in ['x','z']:
-                self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            else:
-                if dp:
+                else:
+                    self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
+                if self.mask in ['x','z']:
                     self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            if self.mask in ['x','y']:
-                self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
-            else:
-                if dp:
+                else:
+                    self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
+                if self.mask in ['x','y']:
+                    self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
+                else:
                     self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
                     
             # set length and angle

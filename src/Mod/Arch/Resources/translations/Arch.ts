@@ -3,7 +3,7 @@
 <context>
     <name>Arch</name>
     <message>
-        <location filename="ArchWindow.py" line="1158"/>
+        <location filename="ArchWindow.py" line="1159"/>
         <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,12 +43,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1152"/>
+        <location filename="ArchWindow.py" line="1153"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1153"/>
+        <location filename="ArchWindow.py" line="1154"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -318,47 +318,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1154"/>
+        <location filename="ArchWindow.py" line="1155"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1155"/>
+        <location filename="ArchWindow.py" line="1156"/>
         <source>Create/update component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1156"/>
+        <location filename="ArchWindow.py" line="1157"/>
         <source>Base 2D object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1162"/>
+        <location filename="ArchWindow.py" line="1163"/>
         <source>Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1159"/>
+        <location filename="ArchWindow.py" line="1160"/>
         <source>Create new component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1160"/>
+        <location filename="ArchWindow.py" line="1161"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1161"/>
+        <location filename="ArchWindow.py" line="1162"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1163"/>
+        <location filename="ArchWindow.py" line="1164"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1164"/>
+        <location filename="ArchWindow.py" line="1165"/>
         <source>Z offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -689,7 +689,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1129"/>
+        <location filename="ArchWindow.py" line="1130"/>
         <source>Unable to create component
 </source>
         <translation type="unfinished"></translation>
@@ -1359,27 +1359,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1217"/>
+        <location filename="ArchCommands.py" line="1223"/>
         <source>Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1219"/>
+        <location filename="ArchCommands.py" line="1225"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1220"/>
+        <location filename="ArchCommands.py" line="1226"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1226"/>
+        <location filename="ArchCommands.py" line="1233"/>
         <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1244"/>
+        <location filename="ArchCommands.py" line="1251"/>
         <source>Create IFC properties spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1650,12 +1650,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-        <location filename="ArchCommands.py" line="1235"/>
+        <location filename="ArchCommands.py" line="1242"/>
         <source>Create IFC spreadsheet...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1237"/>
+        <location filename="ArchCommands.py" line="1244"/>
         <source>Creates a spreadsheet to store ifc properties of an object.</source>
         <translation type="unfinished"></translation>
     </message>

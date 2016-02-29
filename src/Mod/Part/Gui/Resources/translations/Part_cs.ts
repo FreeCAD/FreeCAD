@@ -636,12 +636,12 @@
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished">Make face from sketch</translation>
+        <translation>Vytvořit plochu z náčrtu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from selected sketches</source>
-        <translation type="unfinished">Make face from selected sketches</translation>
+        <translation>Vytvořit plochu z vybraných náčrtů</translation>
     </message>
 </context>
 <context>
@@ -1719,7 +1719,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
 </context>
 <context>
@@ -1766,7 +1766,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
 </context>
 <context>
@@ -3347,12 +3347,12 @@ Chcete pokračovat?</translation>
     <message>
         <location line="+387"/>
         <source>All CAD Files</source>
-        <translation type="unfinished">All CAD Files</translation>
+        <translation>Všechny CAD soubory</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
     <message>
         <location line="+804"/>
@@ -3690,7 +3690,7 @@ Chcete pokračovat?</translation>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished">Show control points</translation>
+        <translation>Zobrazit řídící body</translation>
     </message>
 </context>
 <context>

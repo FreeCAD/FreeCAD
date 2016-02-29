@@ -344,7 +344,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
-        bool on = rGrp.GetBool("ZoomAtCursor", false);
+        bool on = rGrp.GetBool("ZoomAtCursor", true);
         _viewer->navigationStyle()->setZoomAtCursor(on);
     }
     else if (strcmp(Reason,"ZoomStep") == 0) {

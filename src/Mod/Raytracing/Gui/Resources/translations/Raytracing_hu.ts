@@ -366,7 +366,7 @@ Do you want to continue?</translation>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Minden Fájl</translation>
     </message>
     <message>
         <location line="-29"/>

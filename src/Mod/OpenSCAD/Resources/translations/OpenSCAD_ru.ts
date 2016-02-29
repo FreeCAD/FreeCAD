@@ -29,99 +29,104 @@
       <translation>Импорт OpenSCAD</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="76"/>
+      <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
       <translation>Использовать ViewProvider в представлении в виде дерева</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
+      <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
       <translation>Если этот флажок установлен, Объект Multmatrix  будет Параметрический</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="96"/>
+      <location filename="openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
       <translation>Использовать функцию Multmatrix</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="136"/>
+      <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
       <translation>Максимальное количество граней многоугольника, призмы или усеченной приамиды. Если fn больше чем это значение, то  объект считается круглым. Установка в 0 приводит к снятию ограничений</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="116"/>
+      <location filename="openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>Максимальное количество граней для полигонов (fn)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="160"/>
+      <location filename="openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
       <translation>Экспорт в OpenSCAD</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="168"/>
+      <location filename="openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
       <translation>Размер максимального фрагмента</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="198"/>
+      <location filename="openscadprefs-base.ui" line="215"/>
       <source>minimum angle for a fragment</source>
       <translation>минимальный угол фрагмента</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="191"/>
+      <location filename="openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
       <translation>угловатость (fa)</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="201"/>
+      <location filename="openscadprefs-base.ui" line="218"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="255"/>
+      <location filename="openscadprefs-base.ui" line="272"/>
       <source>minimum size of a fragment</source>
       <translation>Минимальный размер фрагмента</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="233"/>
+      <location filename="openscadprefs-base.ui" line="250"/>
       <source>size (fs)</source>
       <translation>размер (fs)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="261"/>
+      <location filename="openscadprefs-base.ui" line="278"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="287"/>
+      <location filename="openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
       <translation>Выпуклость</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="324"/>
+      <location filename="openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
       <translation>Отмена сетки</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="366"/>
+      <location filename="openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
       <translation>Прогиб</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="369"/>
+      <location filename="openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
       <translation>прогиб</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="376"/>
+      <location filename="openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
       <translation>Параметры триангуляции</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
+      <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+    </message>
+    <message>
+      <location filename="openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation>Печать отладочной информации в консоли</translation>
     </message>
   </context>
   <context>
@@ -137,12 +142,12 @@
       <translation>Сначала необходимо выбрать 3 объекта</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Unsupported Function</source>
       <translation>Неподдерживаемая функция</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Press OK</source>
       <translation>Нажмите кнопку OK</translation>
     </message>

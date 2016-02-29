@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1142"/>
+      <location filename="ArchWindow.py" line="1158"/>
       <source>Components</source>
       <translation>コンポーネント</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>軸バブルのサイズ</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1136"/>
+      <location filename="ArchWindow.py" line="1152"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1137"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Add</source>
       <translation>追加</translation>
     </message>
@@ -84,57 +84,57 @@
       <translation>床</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="209"/>
+      <location filename="ArchCommands.py" line="211"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>相互参照を避けるためスケッチサポートを削除</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="613"/>
       <source>is not closed</source>
       <translation>が閉じていません</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="613"/>
+      <location filename="ArchCommands.py" line="615"/>
       <source>is not valid</source>
       <translation>は無効です</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="615"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>doesn't contain any solid</source>
       <translation>ソリッドが含まれていません</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="621"/>
+      <location filename="ArchCommands.py" line="623"/>
       <source>contains a non-closed solid</source>
       <translation>閉じていないソリッドが含まれています</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="625"/>
       <source>contains faces that are not part of any solid</source>
       <translation>どのソリッドにも属していない面が含まれています</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="953"/>
+      <location filename="ArchCommands.py" line="955"/>
       <source>Grouping</source>
       <translation>グループ化</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="985"/>
+      <location filename="ArchCommands.py" line="987"/>
       <source>Ungrouping</source>
       <translation>グループ化の解除</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Split Mesh</source>
       <translation>メッシュを分割</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1056"/>
+      <location filename="ArchCommands.py" line="1058"/>
       <source>Mesh to Shape</source>
       <translation>メッシュからシェイプへ</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1137"/>
+      <location filename="ArchCommands.py" line="1139"/>
       <source>All good! no problems found</source>
       <translation>すべて良好！問題は見つかりませんでした</translation>
     </message>
@@ -159,7 +159,7 @@
       <translation>オブジェクト</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="801"/>
+      <location filename="ArchComponent.py" line="805"/>
       <source>closing Sketch edit</source>
       <translation>スケッチ編集を終了</translation>
     </message>
@@ -219,27 +219,27 @@
       <translation>サイトを作成</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="433"/>
+      <location filename="ArchStructure.py" line="183"/>
       <source>Create Structure</source>
       <translation>構造体を作成</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="565"/>
+      <location filename="ArchStructure.py" line="338"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>プロファイルに基づいていない場合、この要素の長さ</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="566"/>
+      <location filename="ArchStructure.py" line="339"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>プロファイルに基づいていない場合、この要素の幅</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="567"/>
+      <location filename="ArchStructure.py" line="340"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>この要素の高さまたは押し出し深さ。自動設定する場合は0のままにしてください。</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="775"/>
+      <location filename="ArchStructure.py" line="523"/>
       <source>Axes systems this structure is built on</source>
       <translation>この構造体の座標系</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>このオブジェクトの法線押し出し方向（法線自動設定を行う場合は（0,0,0）のままにしてください）</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="776"/>
+      <location filename="ArchStructure.py" line="524"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>軸に基づいてこの構造体を押し出す場合に押し出す要素の数</translation>
     </message>
@@ -309,57 +309,57 @@
       <translation>このメッシュは無効なソリッドです</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="466"/>
+      <location filename="ArchWindow.py" line="467"/>
       <source>Create Window</source>
       <translation>窓を作成</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="607"/>
+      <location filename="ArchWindow.py" line="623"/>
       <source>the components of this window</source>
       <translation>この窓のコンポーネント</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1138"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Edit</source>
       <translation>編集</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1139"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Create/update component</source>
       <translation>コンポーネントを作成/更新する</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1140"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Base 2D object</source>
       <translation>ベース2Dオブジェクト</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1146"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Wires</source>
       <translation>ワイヤー</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1143"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Create new component</source>
       <translation>新しいコンポーネントを作成</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1144"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Name</source>
       <translation>名前</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1145"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Type</source>
       <translation>タイプ</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1147"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Thickness</source>
       <translation>厚み</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1148"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Z offset</source>
       <translation>Z オフセット</translation>
     </message>
@@ -402,12 +402,12 @@
       <translation>番号付けのスタイル</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="949"/>
+      <location filename="ArchCommands.py" line="951"/>
       <source>Add space boundary</source>
       <translation>スペース境界を追加</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="981"/>
+      <location filename="ArchCommands.py" line="983"/>
       <source>Remove space boundary</source>
       <translation>スペース境界を削除</translation>
     </message>
@@ -442,12 +442,12 @@
       <translation>軸組の作成</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="121"/>
+      <location filename="ArchRebar.py" line="127"/>
       <source>Create Rebar</source>
       <translation>異形鉄筋を作成</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="131"/>
+      <location filename="ArchRebar.py" line="137"/>
       <source>Please select a base face on a structural object
 </source>
       <translation>構造オブジェクト上から基準面を選択してください。
@@ -576,22 +576,12 @@
       <translation>階段境界線と構造の間のオフセット</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="40"/>
-      <source>Wood</source>
-      <translation>木材</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="41"/>
-      <source>Steel</source>
-      <translation>鋼材</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="459"/>
+      <location filename="ArchStructure.py" line="214"/>
       <source>Structure options</source>
       <translation>構造オプション</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="526"/>
+      <location filename="ArchWindow.py" line="539"/>
       <source>Preset</source>
       <translation>プリセット</translation>
     </message>
@@ -601,7 +591,7 @@
       <translation>長さ</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="494"/>
+      <location filename="ArchStructure.py" line="255"/>
       <source>Rotate</source>
       <translation>回転</translation>
     </message>
@@ -611,27 +601,27 @@
       <translation>続行 (&amp;T)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="564"/>
+      <location filename="ArchStructure.py" line="337"/>
       <source>An optional extrusion path for this element</source>
       <translation>この要素のオプション押し出し経路</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="568"/>
+      <location filename="ArchStructure.py" line="341"/>
       <source>Armatures contained in this element</source>
       <translation>この要素に含まれている骨組み</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="570"/>
+      <location filename="ArchStructure.py" line="343"/>
       <source>The structural nodes of this element</source>
       <translation>この要素の構造ノード</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="601"/>
+      <location filename="ArchStructure.py" line="374"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>エラー: ベースシェイプをこのツールオブジェクトに沿って押し出すことはできません</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="828"/>
+      <location filename="ArchStructure.py" line="576"/>
       <source>Couldn't compute a shape</source>
       <translation>シェイプを計算できません</translation>
     </message>
@@ -671,38 +661,38 @@
       <translation>この壁とそのベースラインとの間のオフセット距離(左揃え、右揃えの時のみ)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="455"/>
+      <location filename="ArchWindow.py" line="453"/>
       <source>Pick a face on an existing object or select a preset
 </source>
       <translation>既存オブジェクトにある面を選択するか、プリセットを選択</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="515"/>
+      <location filename="ArchWindow.py" line="522"/>
       <source>Window options</source>
       <translation>窓のオプション</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="608"/>
+      <location filename="ArchWindow.py" line="624"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation>穴の深さは、そのホスト・オブジェクトに作る窓の開口にある。 0であれば自動。</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="610"/>
+      <location filename="ArchWindow.py" line="626"/>
       <source>The width of this window (for preset windows only)</source>
       <translation>この窓の幅（プリセットに用いる幅）</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="611"/>
+      <location filename="ArchWindow.py" line="627"/>
       <source>The height of this window (for preset windows only)</source>
       <translation>この窓の高さ（プリセットに用いる幅）</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="612"/>
+      <location filename="ArchWindow.py" line="628"/>
       <source>The normal direction of this window</source>
       <translation>このウィンドウの法線方向</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1113"/>
+      <location filename="ArchWindow.py" line="1129"/>
       <source>Unable to create component
 </source>
       <translation>コンポーネントを作成できません</translation>
@@ -725,12 +715,12 @@
       <translation>軸の間の距離 (mm) と角度 (度)</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="649"/>
+      <location filename="ArchComponent.py" line="651"/>
       <source>Error computing the shape of this object</source>
       <translation>このオブジェクトのシェイプ計算でエラーが発生しました。</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="398"/>
+      <location filename="ArchStructure.py" line="148"/>
       <source>Create Structural System</source>
       <translation>構造システムを作成</translation>
     </message>
@@ -747,38 +737,38 @@
       <translation>エラー: IfcOpenShellバージョンが古すぎます。</translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="56"/>
+      <location filename="importOBJ.py" line="60"/>
       <source>Found a shape containing curves, triangulating
 </source>
       <translation>三角分割および曲線を含む図形が見つかりました
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="358"/>
+      <location filename="ArchCommands.py" line="360"/>
       <source>Invalid cutplane
 </source>
       <translation>切断面が無効です
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="365"/>
+      <location filename="ArchCommands.py" line="367"/>
       <source>No objects are cut by the plane
 </source>
       <translation>平面によって切断されるオブジェクトがありません
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="804"/>
+      <location filename="ArchCommands.py" line="806"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>オブジェクトに設定可能な IFC 属性がありません</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="810"/>
+      <location filename="ArchCommands.py" line="812"/>
       <source>Disabling Brep force flag of object</source>
       <translation>オブジェクトの Brep 強制フラグを無効化</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="816"/>
+      <location filename="ArchCommands.py" line="818"/>
       <source>Enabling Brep force flag of object</source>
       <translation>オブジェクトの Brep 強制フラグを有効化</translation>
     </message>
@@ -808,12 +798,12 @@
       <translation>このコンポーネントのオプション・タグ</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="298"/>
+      <location filename="ArchComponent.py" line="302"/>
       <source>Custom IFC properties and attributes</source>
       <translation>IFC のカスタムされたプロパティと属性</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="615"/>
+      <location filename="ArchWindow.py" line="631"/>
       <source>A material for this object</source>
       <translation>このオブジェクトのマテリアル</translation>
     </message>
@@ -828,17 +818,17 @@
       <translation>ホストの移動時にこのオブジェクトが一緒に移動する必要があるかどうかを指定</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="656"/>
+      <location filename="ArchComponent.py" line="658"/>
       <source>has no solid</source>
       <translation>ソリッドではありません</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="658"/>
+      <location filename="ArchComponent.py" line="660"/>
       <source>has an invalid shape</source>
       <translation>無効な形状があります</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="660"/>
+      <location filename="ArchComponent.py" line="662"/>
       <source>has a null shape</source>
       <translation>形状がありません</translation>
     </message>
@@ -1054,12 +1044,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>単位表記を表示</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="571"/>
+      <location filename="ArchStructure.py" line="344"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>この要素の基となる標準プロファイルの説明</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="519"/>
+      <location filename="ArchWindow.py" line="532"/>
       <source>Sill height</source>
       <translation>敷居の高さ</translation>
     </message>
@@ -1171,12 +1161,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>この建物の種類</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="215"/>
+      <location filename="ArchCommands.py" line="217"/>
       <source>removing sketch external reference to avoid cross-referencing</source>
       <translation>相互参照を避けるためにスケッチの外部参照を削除</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1203"/>
+      <location filename="ArchCommands.py" line="1205"/>
       <source>Create Component</source>
       <translation>コンポーネントを作成</translation>
     </message>
@@ -1296,27 +1286,27 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation type="unfinished">Show the cut in the 3D view</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="62"/>
+      <location filename="ArchServer.py" line="63"/>
       <source>This document is not saved. Please save it first</source>
       <translation>このドキュメントは保存されません。まず最初に保存してください。</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="67"/>
+      <location filename="ArchServer.py" line="68"/>
       <source>The Python Git module was not found. Please install the python-git package.</source>
       <translation>Pythonの Gitモジュールが見つかりませんでした。 python-git  パッケージをインストールしてください。</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="72"/>
+      <location filename="ArchServer.py" line="73"/>
       <source>This document doesn't appear to be part of a Git repository.</source>
       <translation>このドキュメントはGitリポジトリの一部ではない可能性があります。</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="76"/>
+      <location filename="ArchServer.py" line="77"/>
       <source>Warning: no remote repositories. Unable to push</source>
       <translation>警告: リモート・リポジトリがありません。故にpushができません。</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="82"/>
+      <location filename="ArchServer.py" line="83"/>
       <source>The Git repository cannot handle this document.</source>
       <translation>Git リポジトリは、このドキュメントをハンドルすることができません。</translation>
     </message>
@@ -1356,7 +1346,7 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="609"/>
+      <location filename="ArchWindow.py" line="625"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation type="unfinished">an optional object that defines a volume to be subtracted from hosts of this window</translation>
     </message>
@@ -1376,47 +1366,82 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation type="unfinished">Set text position</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="623"/>
+      <location filename="ArchStructure.py" line="400"/>
       <source>Unable to extrude the base shape
 </source>
       <translation type="unfinished">Unable to extrude the base shape
 </translation>
     </message>
+    <message>
+      <location filename="ArchStructure.py" line="218"/>
+      <source>Category</source>
+      <translation>カテゴリ</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1217"/>
+      <source>Key</source>
+      <translation type="unfinished">Key</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1219"/>
+      <source>Value</source>
+      <translation>値</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1220"/>
+      <source>Unit</source>
+      <translation>単位</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1226"/>
+      <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
+      <translation type="unfinished">The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1244"/>
+      <source>Create IFC properties spreadsheet</source>
+      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="526"/>
+      <source>Auto include in host object</source>
+      <translation type="unfinished">Auto include in host object</translation>
+    </message>
   </context>
   <context>
     <name>ArchGitOptions</name>
     <message>
-      <location filename="ArchServer.py" line="152"/>
+      <location filename="ArchServer.py" line="153"/>
       <source>Git Options</source>
       <translation>Git のオプション</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="153"/>
+      <location filename="ArchServer.py" line="154"/>
       <source>What to commit</source>
       <translation>コミット対象</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="154"/>
+      <location filename="ArchServer.py" line="155"/>
       <source>All files in folder</source>
       <translation>フォルダー内の全てのファイル</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="155"/>
+      <location filename="ArchServer.py" line="156"/>
       <source>Only this .FcStd file</source>
       <translation>この.FcStd ファイルのみ</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="156"/>
+      <location filename="ArchServer.py" line="157"/>
       <source>Commit message</source>
       <translation>コミットメッセージ</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="157"/>
+      <location filename="ArchServer.py" line="158"/>
       <source>commit</source>
       <translation>コミット</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="158"/>
+      <location filename="ArchServer.py" line="159"/>
       <source>Push to default remote repository</source>
       <translation>既定のリモート・リポジトリにプッシュする</translation>
     </message>
@@ -1475,12 +1500,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="940"/>
+      <location filename="ArchCommands.py" line="942"/>
       <source>Add component</source>
       <translation>コンポーネントを追加</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="941"/>
+      <location filename="ArchCommands.py" line="943"/>
       <source>Adds the selected components to the active object</source>
       <translation>選択したコンポーネントをアクティブなオブジェクトに追加します</translation>
     </message>
@@ -1501,12 +1526,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Bimserver</name>
     <message>
-      <location filename="ArchServer.py" line="42"/>
+      <location filename="ArchServer.py" line="43"/>
       <source>BIM server</source>
       <translation>BIM サーバー</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="43"/>
+      <location filename="ArchServer.py" line="44"/>
       <source>Opens a browser window and connects to a BIM server instance</source>
       <translation>ブラウザーウィンドウを開いてBIMサーバーのインスタンスに接続</translation>
     </message>
@@ -1527,17 +1552,17 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1128"/>
+      <location filename="ArchCommands.py" line="1130"/>
       <source>Check</source>
       <translation>チェック</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1129"/>
+      <location filename="ArchCommands.py" line="1131"/>
       <source>Checks the selected objects for problems</source>
       <translation>選択されているオブジェクトの問題を確認します</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1152"/>
       <source>Explore the contents of an Ifc file</source>
       <translation>Ifcファイルの内容を閲覧</translation>
     </message>
@@ -1545,12 +1570,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1111"/>
+      <location filename="ArchCommands.py" line="1113"/>
       <source>Close holes</source>
       <translation>穴をふさぐ</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1112"/>
+      <location filename="ArchCommands.py" line="1114"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>開いたシェイプの穴をふさいでソリッドにします</translation>
     </message>
@@ -1558,12 +1583,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1193"/>
+      <location filename="ArchCommands.py" line="1195"/>
       <source>Component</source>
       <translation>コンポーネント</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1195"/>
+      <location filename="ArchCommands.py" line="1197"/>
       <source>Creates an undefined architectural component</source>
       <translation type="unfinished">Creates an undefined architectural component</translation>
     </message>
@@ -1623,12 +1648,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Git</name>
     <message>
-      <location filename="ArchServer.py" line="56"/>
+      <location filename="ArchServer.py" line="57"/>
       <source>Commit with Git</source>
       <translation>Git を使用してコミット</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="57"/>
+      <location filename="ArchServer.py" line="58"/>
       <source>Commits the current document</source>
       <translation>現在のドキュメントをコミット</translation>
     </message>
@@ -1636,9 +1661,22 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="ArchCommands.py" line="1149"/>
+      <location filename="ArchCommands.py" line="1151"/>
       <source>Ifc Explorer</source>
       <translation>IFCエクスプ ローラー</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_IfcSpreadsheet</name>
+    <message>
+      <location filename="ArchCommands.py" line="1235"/>
+      <source>Create IFC spreadsheet...</source>
+      <translation type="unfinished">Create IFC spreadsheet...</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1237"/>
+      <source>Creates a spreadsheet to store ifc properties of an object.</source>
+      <translation type="unfinished">Creates a spreadsheet to store ifc properties of an object.</translation>
     </message>
   </context>
   <context>
@@ -1670,12 +1708,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1032"/>
+      <location filename="ArchCommands.py" line="1034"/>
       <source>Mesh to Shape</source>
       <translation>メッシュからシェイプへ</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1033"/>
+      <location filename="ArchCommands.py" line="1035"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>選択されているメッシュをパートシェイプオブジェクトへ変換します</translation>
     </message>
@@ -1696,12 +1734,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="ArchRebar.py" line="84"/>
+      <location filename="ArchRebar.py" line="90"/>
       <source>Rebar</source>
       <translation>異形鉄筋</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="86"/>
+      <location filename="ArchRebar.py" line="92"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>構造オブジェクトの選択した面から異形鉄筋を作成します</translation>
     </message>
@@ -1709,12 +1747,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="972"/>
+      <location filename="ArchCommands.py" line="974"/>
       <source>Remove component</source>
       <translation>コンポーネントの削除</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="973"/>
+      <location filename="ArchCommands.py" line="975"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>選択されているオブジェクトを親オブジェクトから取り除くか、またはコンポーネントに穴を作成します</translation>
     </message>
@@ -1722,12 +1760,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1096"/>
+      <location filename="ArchCommands.py" line="1098"/>
       <source>Remove Shape from Arch</source>
       <translation>Archからシェイプを削除します。</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1097"/>
+      <location filename="ArchCommands.py" line="1099"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Archコンポーネントから立方体シェイプを取り除きます</translation>
     </message>
@@ -1774,12 +1812,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1067"/>
+      <location filename="ArchCommands.py" line="1069"/>
       <source>Select non-manifold meshes</source>
       <translation>ノンマニフォールドメッシュを選択</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1068"/>
+      <location filename="ArchCommands.py" line="1070"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>ドキュメントまたは選択されているグループから全てのノンマニフォールドメッシュを選択</translation>
     </message>
@@ -1818,12 +1856,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1007"/>
+      <location filename="ArchCommands.py" line="1009"/>
       <source>Split Mesh</source>
       <translation>メッシュを分割</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1008"/>
+      <location filename="ArchCommands.py" line="1010"/>
       <source>Splits selected meshes into independent components</source>
       <translation>選択されたメッシュを分割して独立したコンポーネントにします</translation>
     </message>
@@ -1839,12 +1877,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="ArchStructure.py" line="376"/>
+      <location filename="ArchStructure.py" line="126"/>
       <source>Structure</source>
       <translation>構造体</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="378"/>
+      <location filename="ArchStructure.py" line="128"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>スクラッチまたは選択されているオブジェクト（スケッチ、ワイヤー、面、ソリッド）から構造体オブジェクトを作成します</translation>
     </message>
@@ -1852,12 +1890,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1163"/>
+      <location filename="ArchCommands.py" line="1165"/>
       <source>Survey</source>
       <translation>調査</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1164"/>
+      <location filename="ArchCommands.py" line="1166"/>
       <source>Starts survey</source>
       <translation>調査開始</translation>
     </message>
@@ -1865,12 +1903,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1178"/>
+      <location filename="ArchCommands.py" line="1180"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep フラグの切り替え</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1179"/>
+      <location filename="ArchCommands.py" line="1181"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>オブジェクトを強制的に Brep としてエクスポートするかどうか</translation>
     </message>
@@ -2077,27 +2115,27 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>新しい構造体オブジェクトのデフォルト色です。</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="208"/>
+      <location filename="preferences-arch.ui" line="228"/>
       <source>2D rendering</source>
       <translation>2Dレンダリング</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="216"/>
+      <location filename="preferences-arch.ui" line="236"/>
       <source>Show debug information during 2D rendering</source>
       <translation>2Dレンダリング中にデバッグ情報を表示</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="219"/>
+      <location filename="preferences-arch.ui" line="239"/>
       <source>Show renderer debug messages</source>
       <translation>レンダラーのデバッグメッセージを表示</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="252"/>
+      <location filename="preferences-arch.ui" line="272"/>
       <source>Cut areas line thickness ratio</source>
       <translation>領域カットラインの太さ比</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="272"/>
+      <location filename="preferences-arch.ui" line="292"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
       <translation>表示ライン太さの何倍をカットラインに適用するかを指定</translation>
     </message>
@@ -2167,11 +2205,6 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>スナップ</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="55"/>
-      <source>Walls drawing</source>
-      <translation>壁図面</translation>
-    </message>
-    <message>
       <location filename="preferences-arch.ui" line="63"/>
       <source>Auto-join walls</source>
       <translation>壁の自動結合</translation>
@@ -2187,83 +2220,83 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>可能な場合には壁のベーススケッチを結合</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="104"/>
+      <location filename="preferences-arch.ui" line="124"/>
       <source>Mesh to Shape Conversion</source>
       <translation>メッシュをシェイプに変換します</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="112"/>
+      <location filename="preferences-arch.ui" line="132"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
       <translation>チェックされている場合、変換が高速になりますが結果に3角形面が残る可能性があります。</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="115"/>
+      <location filename="preferences-arch.ui" line="135"/>
       <source>Fast conversion</source>
       <translation>高速変換</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="131"/>
+      <location filename="preferences-arch.ui" line="151"/>
       <source>Tolerance:</source>
       <translation>許容範囲:</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="141"/>
+      <location filename="preferences-arch.ui" line="161"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
       <translation>隣り合う2面が同一平面上にあるかどうか調べる際に使用する許容値</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="164"/>
+      <location filename="preferences-arch.ui" line="184"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
       <translation>チェックされている場合、面のフラット・グループが強制的に平滑化されます。処理の結果に段差が含まれたり、非ソリッドな結果となる場合があります。</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="167"/>
+      <location filename="preferences-arch.ui" line="187"/>
       <source>Force flat faces</source>
       <translation>強制的に平滑化</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="184"/>
+      <location filename="preferences-arch.ui" line="204"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
       <translation>チェックされている場合、面に開いた穴はワイヤー方向を使わずに減算によって処理されます。</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="187"/>
+      <location filename="preferences-arch.ui" line="207"/>
       <source>Cut method</source>
       <translation>切断方法</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="37"/>
+      <location filename="preferences-ifc.ui" line="50"/>
       <source>Show debug messages</source>
       <translation>デバッグ情報を表示</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="183"/>
+      <location filename="preferences-ifc.ui" line="196"/>
       <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
       <translation>チェックされている場合、開口部は減算結果としてインポートされます。それ以外の場合、壁形状はすでに開口部を減算したものになります。
 </translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="186"/>
+      <location filename="preferences-ifc.ui" line="199"/>
       <source>Separate openings</source>
       <translation>開口部を識別</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="223"/>
+      <location filename="preferences-ifc.ui" line="236"/>
       <source>If this is checked, object names will be prefixed with the IFC ID number</source>
       <translation>チェックされている場合、オブジェクト名の接頭辞にIFC ID番号が使用されます。</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="226"/>
+      <location filename="preferences-ifc.ui" line="239"/>
       <source>Prefix names with ID number</source>
       <translation>ID番号の接頭辞</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="263"/>
+      <location filename="preferences-ifc.ui" line="316"/>
       <source>Exclude list: </source>
       <translation>除外リスト：</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="270"/>
+      <location filename="preferences-ifc.ui" line="323"/>
       <source>A comma-separated list of Ifc entities to exclude from import</source>
       <translation>カンマと空白文字で区切られたIFCエンティティのリストをインポートから除外する</translation>
     </message>
@@ -2313,22 +2346,22 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>透明度:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="302"/>
+      <location filename="preferences-ifc.ui" line="355"/>
       <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
       <translation>一部のIFCビューワーでは押し出し部品としてエクスポートされたオブジェクトを読み取れないことがあります。これを使用するとすべてのオブジェクトを強制的にBREPジオメトリーとしてエクスポートします。</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="308"/>
+      <location filename="preferences-arch.ui" line="328"/>
       <source>Hidden geomety pattern</source>
       <translation>非表示ジオメトリー用のパターン</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="328"/>
+      <location filename="preferences-arch.ui" line="348"/>
       <source>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</source>
       <translation>非表示オブジェクトのプロジェクションに適用する SVG の stroke-dasharray プロパティー</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="331"/>
+      <location filename="preferences-arch.ui" line="351"/>
       <source>30, 10</source>
       <translation>30, 10</translation>
     </message>
@@ -2358,27 +2391,27 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>厚み</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="305"/>
+      <location filename="preferences-ifc.ui" line="358"/>
       <source>Force export as Brep</source>
       <translation>Brepとして強制エクスポート</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="352"/>
+      <location filename="preferences-arch.ui" line="372"/>
       <source>Bim server</source>
       <translation>Bim サーバー</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="360"/>
+      <location filename="preferences-arch.ui" line="380"/>
       <source>Address</source>
       <translation>アドレス</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="367"/>
+      <location filename="preferences-arch.ui" line="387"/>
       <source>The URL of a bim server instance (www.bimserver.org)  to connect to.</source>
       <translation> BMIサーバーへ接続するインスタンス (www.bimserver.org) のURL。</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="370"/>
+      <location filename="preferences-arch.ui" line="390"/>
       <source>http://localhost:8082</source>
       <translation>http://localhost:8082</translation>
     </message>
@@ -2388,7 +2421,7 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="294"/>
+      <location filename="preferences-ifc.ui" line="347"/>
       <source>Export options</source>
       <translation>エクスポート・オプション</translation>
     </message>
@@ -2398,102 +2431,102 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation>IFC</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="26"/>
+      <location filename="preferences-ifc.ui" line="39"/>
       <source>General options</source>
       <translation>一般設定</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="34"/>
+      <location filename="preferences-ifc.ui" line="47"/>
       <source>Show verbose information during import and export of IFC files</source>
       <translation type="unfinished">Show verbose information during import and export of IFC files</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="55"/>
+      <location filename="preferences-ifc.ui" line="68"/>
       <source>Import options</source>
       <translation>インポート・オプション</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="63"/>
+      <location filename="preferences-ifc.ui" line="76"/>
       <source>Import arch IFC objects as</source>
       <translation type="unfinished">Import arch IFC objects as</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="119"/>
+      <location filename="preferences-ifc.ui" line="132"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="80"/>
+      <location filename="preferences-ifc.ui" line="93"/>
       <source>Parametric Arch objects</source>
       <translation>パラメトリックな建築オブジェクト</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="129"/>
+      <location filename="preferences-ifc.ui" line="142"/>
       <source>Non-parametric Arch objects</source>
       <translation>非パラメトリックな建築オブジェクト</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="134"/>
+      <location filename="preferences-ifc.ui" line="147"/>
       <source>Simple Part shapes</source>
       <translation type="unfinished">Simple Part shapes</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="95"/>
+      <location filename="preferences-ifc.ui" line="108"/>
       <source>One compound per floor</source>
       <translation type="unfinished">One compound per floor</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="100"/>
+      <location filename="preferences-ifc.ui" line="113"/>
       <source>Do not import Arch objects</source>
       <translation>建築オブジェクトをインポートできません</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="112"/>
+      <location filename="preferences-ifc.ui" line="125"/>
       <source>Import struct IFC objects as</source>
       <translation type="unfinished">Import struct IFC objects as</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="139"/>
+      <location filename="preferences-ifc.ui" line="152"/>
       <source>One compound for all</source>
       <translation type="unfinished">One compound for all</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="144"/>
+      <location filename="preferences-ifc.ui" line="157"/>
       <source>Do not import structural objects</source>
       <translation>構造オブジェクトはインポートできません</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="156"/>
+      <location filename="preferences-ifc.ui" line="169"/>
       <source>Root element:</source>
       <translation>ルート要素:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="163"/>
+      <location filename="preferences-ifc.ui" line="176"/>
       <source>Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</source>
       <translation type="unfinished">Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="166"/>
+      <location filename="preferences-ifc.ui" line="179"/>
       <source>IfcProduct</source>
       <translation>IfcProduct</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="203"/>
+      <location filename="preferences-ifc.ui" line="216"/>
       <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
       <translation>チェックされている場合、インポート時に押し出しの検出を試みます。処理が遅くなる可能性があります…</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="206"/>
+      <location filename="preferences-ifc.ui" line="219"/>
       <source>Detect extrusions</source>
       <translation>押し出しを検出</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="243"/>
+      <location filename="preferences-ifc.ui" line="256"/>
       <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
       <translation>同じ名前を持つ幾つかの材料がIFC ファイル内に見つかった場合には、同一のものとして扱われます。</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="246"/>
+      <location filename="preferences-ifc.ui" line="259"/>
       <source>Merge materials with same name</source>
       <translation>同じ名前の材料をマージします。</translation>
     </message>
@@ -2603,24 +2636,59 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
       <translation type="unfinished">Allow quads</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="322"/>
+      <location filename="preferences-ifc.ui" line="375"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation type="unfinished">Use triangulation options set in the DAE options page</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="325"/>
+      <location filename="preferences-ifc.ui" line="378"/>
       <source>Use DAE triangulation options</source>
       <translation type="unfinished">Use DAE triangulation options</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="342"/>
+      <location filename="preferences-ifc.ui" line="395"/>
       <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
       <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="345"/>
+      <location filename="preferences-ifc.ui" line="398"/>
       <source>Join coplanar facets when triangulating</source>
       <translation type="unfinished">Join coplanar facets when triangulating</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="55"/>
+      <source>Object creation</source>
+      <translation type="unfinished">Object creation</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="103"/>
+      <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
+      <translation type="unfinished">Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="106"/>
+      <source>Remove external geometry of base sketches when needed</source>
+      <translation type="unfinished">Remove external geometry of base sketches when needed</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="276"/>
+      <source>Create clones when objects have shared geometry</source>
+      <translation type="unfinished">Create clones when objects have shared geometry</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="26"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="296"/>
+      <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
+      <translation type="unfinished">If checked each object will have their Ifc Properties stored in a spreadsheet object.</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="299"/>
+      <source>Import Ifc Properties in spreadsheet</source>
+      <translation type="unfinished">Import Ifc Properties in spreadsheet</translation>
     </message>
   </context>
   <context>

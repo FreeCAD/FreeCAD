@@ -1797,14 +1797,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1870,6 +1862,14 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>MSAA 8x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

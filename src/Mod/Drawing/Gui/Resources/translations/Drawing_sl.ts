@@ -584,7 +584,7 @@ Ali želite nadaljevati?</translation>
     <message>
         <location line="+15"/>
         <source>Scale</source>
-        <translation>Merilo</translation>
+        <translation>Povečava</translation>
     </message>
     <message>
         <source>Primary x / y</source>
@@ -670,22 +670,22 @@ Ali želite nadaljevati?</translation>
     <message>
         <location line="+14"/>
         <source>No active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Ni dejavnega dokumenta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Trenutno ni dejavnega dokumenta za dokončanje opravila</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished"></translation>
+        <translation>Ni dejavnega pogleda</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Trenutno ni dejavnega pogleda za dokončanje opravila</translation>
     </message>
 </context>
 <context>
@@ -756,7 +756,7 @@ Ali želite nadaljevati?</translation>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation>Vstavi novo %1 %2 %3 risbo</translation>
+        <translation>Vstavi novo risbo %1 %2 %3</translation>
     </message>
     <message>
         <location line="+8"/>

@@ -1697,6 +1697,13 @@ void ViewProviderMesh::deselectFacet(unsigned long facet)
     }
 }
 
+bool ViewProviderMesh::isFacetSelected(unsigned long facet)
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
+    return faces[facet].IsFlag(MeshCore::MeshFacet::SELECTED);
+}
+
 void ViewProviderMesh::selectComponent(unsigned long uFacet)
 {
     std::vector<unsigned long> selection;
@@ -1764,6 +1771,24 @@ void ViewProviderMesh::removeSelection(const std::vector<unsigned long>& indices
         highlightSelection();
     else
         unhighlightSelection();
+}
+
+void ViewProviderMesh::invertSelection()
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
+    unsigned long num_notsel = std::count_if(faces.begin(), faces.end(),
+        std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
+        MeshCore::MeshFacet::SELECTED));
+    std::vector<unsigned long> notselect;
+    notselect.reserve(num_notsel);
+    MeshCore::MeshFacetArray::_TConstIterator beg = faces.begin();
+    MeshCore::MeshFacetArray::_TConstIterator end = faces.end();
+    for (MeshCore::MeshFacetArray::_TConstIterator jt = beg; jt != end; ++jt) {
+        if (!jt->IsFlag(MeshCore::MeshFacet::SELECTED))
+            notselect.push_back(jt-beg);
+    }
+    setSelection(notselect);
 }
 
 void ViewProviderMesh::clearSelection()

@@ -1240,10 +1240,6 @@ Defina outro atalho.</translation>
         <translation>Nome da macro:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Destino da macro:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Executar</translation>
     </message>
@@ -1265,15 +1261,15 @@ Defina outro atalho.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros do usuário</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros do sistema</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Localização das macros do usuário:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Este arquivo já existe.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Somente leitura</translation>
     </message>
 </context>
 <context>
@@ -1806,11 +1802,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Renderização ortográfica</translation>
+        <translation type="obsolete">Renderização ortográfica</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Renderização perspectiva</translation>
+        <translation type="obsolete">Renderização perspectiva</translation>
     </message>
     <message>
         <source></source>
@@ -1879,6 +1875,14 @@ Por favor especifique outro diretório.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4847,11 +4851,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Excluir macro</translation>
+        <translation>Excluir macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é permitido excluir macros do sistema</translation>
     </message>
 </context>
 <context>

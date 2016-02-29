@@ -273,7 +273,7 @@ protected:
 
 private:
     /// Constructor
-    Application(ParameterManager *pcSysParamMngr, ParameterManager *pcUserParamMngr,std::map<std::string,std::string> &mConfig);
+    Application(std::map<std::string,std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 

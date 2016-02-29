@@ -317,7 +317,7 @@ Do you want to continue?</source>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+        <translation>LuxRender</translation>
     </message>
     <message>
         <location line="+74"/>

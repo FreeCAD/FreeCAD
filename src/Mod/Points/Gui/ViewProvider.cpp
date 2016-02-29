@@ -428,6 +428,15 @@ void ViewProviderScattered::updateData(const App::Property* prop)
         // The number of points might have changed, so force also a resize of the Inventor internals
         setActiveMode();
     }
+    else if (prop->getTypeId() == Points::PropertyNormalList::getClassTypeId()) {
+        setActiveMode();
+    }
+    else if (prop->getTypeId() == Points::PropertyGreyValueList::getClassTypeId()) {
+        setActiveMode();
+    }
+    else if (prop->getTypeId() == App::PropertyColorList::getClassTypeId()) {
+        setActiveMode();
+    }
 }
 
 void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)
@@ -446,24 +455,63 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
     SbViewVolume  vol = pCam->getViewVolume();
 
     // search for all points inside/outside the polygon
-    Points::PointKernel newKernel;
-    for (Points::PointKernel::const_iterator jt = points.begin(); jt != points.end(); ++jt) {
+    std::vector<unsigned long> removeIndices;
+    removeIndices.reserve(points.size());
+
+    unsigned long index = 0;
+    for (Points::PointKernel::const_iterator jt = points.begin(); jt != points.end(); ++jt, ++index) {
         SbVec3f pt(jt->x,jt->y,jt->z);
 
         // project from 3d to 2d
         vol.projectToScreen(pt, pt);
-        if (!cPoly.Contains(Base::Vector2D(pt[0],pt[1])))
-            newKernel.push_back(*jt);
+        if (cPoly.Contains(Base::Vector2D(pt[0],pt[1])))
+            removeIndices.push_back(index);
     }
 
-    if (newKernel.size() == points.size())
+    if (removeIndices.empty())
         return; // nothing needs to be done
 
     //Remove the points from the cloud and open a transaction object for the undo/redo stuff
     Gui::Application::Instance->activeDocument()->openCommand("Cut points");
 
     // sets the points outside the polygon to update the Inventor node
-    fea->Points.setValue(newKernel);
+    fea->Points.removeIndices(removeIndices);
+
+    std::map<std::string,App::Property*> Map;
+    pcObject->getPropertyMap(Map);
+
+    for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
+        Base::Type type = it->second->getTypeId();
+        if (type == Points::PropertyNormalList::getClassTypeId()) {
+            static_cast<Points::PropertyNormalList*>(it->second)->removeIndices(removeIndices);
+        }
+        else if (type == Points::PropertyGreyValueList::getClassTypeId()) {
+            static_cast<Points::PropertyGreyValueList*>(it->second)->removeIndices(removeIndices);
+        }
+        else if (type == App::PropertyColorList::getClassTypeId()) {
+            //static_cast<App::PropertyColorList*>(it->second)->removeIndices(removeIndices);
+            const std::vector<App::Color>& colors = static_cast<App::PropertyColorList*>(it->second)->getValues();
+
+            if (removeIndices.size() > colors.size())
+                break;
+
+            std::vector<App::Color> remainValue;
+            remainValue.reserve(colors.size() - removeIndices.size());
+
+            std::vector<unsigned long>::iterator pos = removeIndices.begin();
+            for (std::vector<App::Color>::const_iterator jt = colors.begin(); jt != colors.end(); ++jt) {
+                unsigned long index = jt - colors.begin();
+                if (pos == removeIndices.end())
+                    remainValue.push_back( *jt );
+                else if (index != *pos)
+                    remainValue.push_back( *jt );
+                else 
+                    ++pos;
+            }
+
+            static_cast<App::PropertyColorList*>(it->second)->setValues(remainValue);
+        }
+    }
 
     // unset the modified flag because we don't need the features' execute() to be called
     Gui::Application::Instance->activeDocument()->commitCommand();

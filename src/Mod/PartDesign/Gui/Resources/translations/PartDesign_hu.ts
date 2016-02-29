@@ -37,12 +37,12 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Tervezés</translation>
+        <translation>Tervrajz</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>Készítsen vázlatot egy felületen</translation>
+        <translation>Készítsen tervrajzot egy felületen</translation>
     </message>
 </context>
 <context>
@@ -516,7 +516,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+17"/>
         <source>Draft angle</source>
-        <translation>Szög vázlat</translation>
+        <translation>Szög tervrajza</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -536,7 +536,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="-347"/>
         <source>Draft parameters</source>
-        <translation>Paraméter vázlat</translation>
+        <translation>Paraméterek tervrajza</translation>
     </message>
     <message>
         <location line="+43"/>

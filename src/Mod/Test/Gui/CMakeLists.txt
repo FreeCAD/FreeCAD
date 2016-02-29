@@ -61,3 +61,10 @@ SET_PYTHON_PREFIX_SUFFIX(QtUnitGui)
 INSTALL(TARGETS QtUnitGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${TestGuiPy_SRCS} DESTINATION Mod/Test)
 
+SET(TestGuiIcon_SVG
+    Resources/icons/TestWorkbench.svg
+)
+
+fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test" ${TestGuiIcon_SVG})
+
+INSTALL(FILES ${TestGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Test/Resources/icons")

@@ -1240,10 +1240,6 @@ Please define another shortcut.</source>
         <translation>Назва макросу:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Призначення макросу:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Виконати</translation>
     </message>
@@ -1265,15 +1261,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1806,11 +1802,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ортогональна візуалізація</translation>
+        <translation type="obsolete">Ортогональна візуалізація</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Візуалізація в перспективі</translation>
+        <translation type="obsolete">Візуалізація в перспективі</translation>
     </message>
     <message>
         <source></source>
@@ -1879,6 +1875,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4859,11 +4863,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Видалити макрос</translation>
+        <translation>Видалити макрос</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

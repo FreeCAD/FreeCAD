@@ -4,7 +4,7 @@
   <context>
     <name>Draft</name>
     <message>
-      <location filename="importDXF.py" line="76"/>
+      <location filename="importDXF.py" line="84"/>
       <source>Download of dxf libraries failed.
 Please download and install them manually.
 See complete instructions at
@@ -18,12 +18,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3920"/>
+      <location filename="DraftTools.py" line="3914"/>
       <source>Add Point</source>
       <translation>点の追加</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3921"/>
+      <location filename="DraftTools.py" line="3915"/>
       <source>Adds a point to an existing wire/bspline</source>
       <translation>既存の連線またはBスプライン曲線に点を追加します。</translation>
     </message>
@@ -31,12 +31,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="DraftTools.py" line="3873"/>
+      <location filename="DraftTools.py" line="3867"/>
       <source>Add to group...</source>
       <translation>グループに追加...</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3874"/>
+      <location filename="DraftTools.py" line="3868"/>
       <source>Adds the selected object(s) to an existing group</source>
       <translation>選択したオブジェクトを既存のグループに追加する</translation>
     </message>
@@ -70,12 +70,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="DraftTools.py" line="4142"/>
+      <location filename="DraftTools.py" line="4136"/>
       <source>Array</source>
       <translation>配列</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4143"/>
+      <location filename="DraftTools.py" line="4137"/>
       <source>Creates a polar or rectangular array from a selected object</source>
       <translation>選択したオブジェクトから円形または矩形の配列を作成します</translation>
     </message>
@@ -122,12 +122,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="DraftTools.py" line="4296"/>
+      <location filename="DraftTools.py" line="4290"/>
       <source>Clone</source>
       <translation>複製</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4297"/>
+      <location filename="DraftTools.py" line="4291"/>
       <source>Clones the selected object(s)</source>
       <translation>選択されたオブジェクト（複数可）の複製を作成</translation>
     </message>
@@ -148,12 +148,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3945"/>
+      <location filename="DraftTools.py" line="3939"/>
       <source>Remove Point</source>
       <translation>点の削除</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3946"/>
+      <location filename="DraftTools.py" line="3940"/>
       <source>Removes a point from an existing wire or bspline</source>
       <translation>既存の連線またはBスプライン曲線から点を削除します。</translation>
     </message>
@@ -187,12 +187,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="DraftTools.py" line="4084"/>
+      <location filename="DraftTools.py" line="4078"/>
       <source>Draft to Sketch</source>
       <translation>ドラフトからスケッチへ</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4085"/>
+      <location filename="DraftTools.py" line="4079"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
       <translation>ドラフトオブジェクトとスケッチオブジェクトを相互に変換します</translation>
     </message>
@@ -239,12 +239,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="DraftTools.py" line="4367"/>
+      <location filename="DraftTools.py" line="4361"/>
       <source>Facebinder</source>
       <translation>フェイスバインダー</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4368"/>
+      <location filename="DraftTools.py" line="4362"/>
       <source>Creates a facebinder object from selected face(s)</source>
       <translation>選択された面(複数可)からフェイスバインダー・オブジェクトを作成</translation>
     </message>
@@ -265,12 +265,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="DraftTools.py" line="4395"/>
+      <location filename="DraftTools.py" line="4389"/>
       <source>Flip Dimension</source>
       <translation>寸法を反転</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4396"/>
+      <location filename="DraftTools.py" line="4390"/>
       <source>Flip the normal direction of a dimension</source>
       <translation>寸法の法線方向を反転</translation>
     </message>
@@ -278,12 +278,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="DraftTools.py" line="4348"/>
+      <location filename="DraftTools.py" line="4342"/>
       <source>Heal</source>
       <translation>修復</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4349"/>
+      <location filename="DraftTools.py" line="4343"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
       <translation> 旧FreeCAD バージョンに保存されている、 欠陥のあるドラフト オブジェクトを修復します</translation>
     </message>
@@ -304,12 +304,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="DraftTools.py" line="4434"/>
+      <location filename="DraftTools.py" line="4428"/>
       <source>Mirror</source>
       <translation>鏡像コピー</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4435"/>
+      <location filename="DraftTools.py" line="4429"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
       <translation>2点で定義された線に沿って選択したオブジェクトを鏡像コピー</translation>
     </message>
@@ -344,12 +344,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="DraftTools.py" line="4171"/>
+      <location filename="DraftTools.py" line="4165"/>
       <source>PathArray</source>
       <translation>PathArray</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4172"/>
+      <location filename="DraftTools.py" line="4166"/>
       <source>Creates copies of a selected object along a selected path.</source>
       <translation>選択したパスに沿って選択したオブジェクトのコピーを作成します。</translation>
     </message>
@@ -357,12 +357,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="DraftTools.py" line="4207"/>
+      <location filename="DraftTools.py" line="4201"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4208"/>
+      <location filename="DraftTools.py" line="4202"/>
       <source>Creates a point object</source>
       <translation>点を作成します。</translation>
     </message>
@@ -422,12 +422,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="DraftTools.py" line="4012"/>
+      <location filename="DraftTools.py" line="4006"/>
       <source>Select group</source>
       <translation>グループを選択</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4013"/>
+      <location filename="DraftTools.py" line="4007"/>
       <source>Selects all objects with the same parents as this group</source>
       <translation>このグループと同じ親を持つすべてのオブジェクトを選択します</translation>
     </message>
@@ -448,12 +448,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="DraftTools.py" line="4044"/>
+      <location filename="DraftTools.py" line="4038"/>
       <source>Shape 2D view</source>
       <translation>2Dビュー形状</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4045"/>
+      <location filename="DraftTools.py" line="4039"/>
       <source>Creates Shape 2D views of selected objects</source>
       <translation>選択されているオブジェクトの2Dビュー形状を作成します</translation>
     </message>
@@ -474,12 +474,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="DraftTools.py" line="4282"/>
+      <location filename="DraftTools.py" line="4276"/>
       <source>Show Snap Bar</source>
       <translation>スナップバーを表示</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4283"/>
+      <location filename="DraftTools.py" line="4277"/>
       <source>Shows Draft snap toolbar</source>
       <translation>ドラフトスナップ ツールバーを表示</translation>
     </message>
@@ -487,12 +487,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="DraftTools.py" line="4641"/>
+      <location filename="DraftTools.py" line="4635"/>
       <source>Angles</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4642"/>
+      <location filename="DraftTools.py" line="4636"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
       <translation>円弧や円上の点を、45度および90度にスナップさせる</translation>
     </message>
@@ -500,12 +500,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="DraftTools.py" line="4653"/>
+      <location filename="DraftTools.py" line="4647"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4654"/>
+      <location filename="DraftTools.py" line="4648"/>
       <source>Snaps to center of circles and arcs</source>
       <translation>円、円弧の中心にスナップ</translation>
     </message>
@@ -513,12 +513,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="DraftTools.py" line="4701"/>
+      <location filename="DraftTools.py" line="4695"/>
       <source>Dimensions</source>
       <translation>寸法</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4702"/>
+      <location filename="DraftTools.py" line="4696"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
       <translation>Archオブジェクトにスナップする場合は仮寸法を表示</translation>
     </message>
@@ -526,12 +526,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="DraftTools.py" line="4629"/>
+      <location filename="DraftTools.py" line="4623"/>
       <source>Endpoint</source>
       <translation>端点</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4630"/>
+      <location filename="DraftTools.py" line="4624"/>
       <source>Snaps to endpoints of edges</source>
       <translation>エッジの端点にスナップ</translation>
     </message>
@@ -539,12 +539,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="DraftTools.py" line="4665"/>
+      <location filename="DraftTools.py" line="4659"/>
       <source>Extension</source>
       <translation>延長線上</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4666"/>
+      <location filename="DraftTools.py" line="4660"/>
       <source>Snaps to extension of edges</source>
       <translation>エッジの延長にスナップ</translation>
     </message>
@@ -552,12 +552,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="DraftTools.py" line="4593"/>
+      <location filename="DraftTools.py" line="4587"/>
       <source>Grid</source>
       <translation>グリッド</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4594"/>
+      <location filename="DraftTools.py" line="4588"/>
       <source>Snaps to grid points</source>
       <translation>グリッド点にスナップ</translation>
     </message>
@@ -565,12 +565,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="DraftTools.py" line="4605"/>
+      <location filename="DraftTools.py" line="4599"/>
       <source>Intersection</source>
       <translation>共通集合</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4606"/>
+      <location filename="DraftTools.py" line="4600"/>
       <source>Snaps to edges intersections</source>
       <translation>エッジの交点にスナップ</translation>
     </message>
@@ -578,12 +578,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="DraftTools.py" line="4559"/>
+      <location filename="DraftTools.py" line="4553"/>
       <source>Toggle On/Off</source>
       <translation>オン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4560"/>
+      <location filename="DraftTools.py" line="4554"/>
       <source>Activates/deactivates all snap tools at once</source>
       <translation>全てのスナップツールを同時にアクティブ化/非アクティブ化</translation>
     </message>
@@ -591,12 +591,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="DraftTools.py" line="4569"/>
+      <location filename="DraftTools.py" line="4563"/>
       <source>Midpoint</source>
       <translation>中点</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4570"/>
+      <location filename="DraftTools.py" line="4564"/>
       <source>Snaps to midpoints of edges</source>
       <translation>エッジの中点にスナップ</translation>
     </message>
@@ -604,12 +604,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="DraftTools.py" line="4677"/>
+      <location filename="DraftTools.py" line="4671"/>
       <source>Nearest</source>
       <translation>最近接</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4678"/>
+      <location filename="DraftTools.py" line="4672"/>
       <source>Snaps to nearest point on edges</source>
       <translation>エッジ上の最も近い点にスナップ</translation>
     </message>
@@ -617,12 +617,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="DraftTools.py" line="4689"/>
+      <location filename="DraftTools.py" line="4683"/>
       <source>Ortho</source>
       <translation>正射投影</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4690"/>
+      <location filename="DraftTools.py" line="4684"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
       <translation>４５度の方向でスナップさせる</translation>
     </message>
@@ -630,12 +630,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="DraftTools.py" line="4617"/>
+      <location filename="DraftTools.py" line="4611"/>
       <source>Parallel</source>
       <translation>平行</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4618"/>
+      <location filename="DraftTools.py" line="4612"/>
       <source>Snaps to parallel directions of edges</source>
       <translation>エッジの平行方向にスナップ</translation>
     </message>
@@ -643,12 +643,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="DraftTools.py" line="4581"/>
+      <location filename="DraftTools.py" line="4575"/>
       <source>Perpendicular</source>
       <translation>垂直</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4582"/>
+      <location filename="DraftTools.py" line="4576"/>
       <source>Snaps to perpendicular points on edges</source>
       <translation>エッジ上の垂直点にスナップ</translation>
     </message>
@@ -656,12 +656,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="DraftTools.py" line="4713"/>
+      <location filename="DraftTools.py" line="4707"/>
       <source>Working Plane</source>
       <translation>作業平面</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4714"/>
+      <location filename="DraftTools.py" line="4708"/>
       <source>Restricts the snapped point to the current working plane</source>
       <translation>スナップされる点を現在の作業平面に制限</translation>
     </message>
@@ -721,12 +721,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="DraftTools.py" line="4327"/>
+      <location filename="DraftTools.py" line="4321"/>
       <source>Toggle Grid</source>
       <translation>グリッドの切り替え</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4328"/>
+      <location filename="DraftTools.py" line="4322"/>
       <source>Toggles the Draft grid on/off</source>
       <translation>ドラフトのグリッドの オン/オフを切り替えます</translation>
     </message>
@@ -773,12 +773,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_VisGroup</name>
     <message>
-      <location filename="DraftTools.py" line="4410"/>
+      <location filename="DraftTools.py" line="4404"/>
       <source>VisGroup</source>
       <translation>VisGroup</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4411"/>
+      <location filename="DraftTools.py" line="4405"/>
       <source>Adds a VisGroup</source>
       <translation>VisGroup を追加</translation>
     </message>
@@ -799,12 +799,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="DraftTools.py" line="3970"/>
+      <location filename="DraftTools.py" line="3964"/>
       <source>Wire to BSpline</source>
       <translation>連線をBスプライン曲線に変換</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3971"/>
+      <location filename="DraftTools.py" line="3965"/>
       <source>Converts between Wire and BSpline</source>
       <translation>連線とBスプライン曲線を相互変換</translation>
     </message>
@@ -945,17 +945,17 @@ such as "Arial:Bold"</source>
       <translation>標準の色と線幅</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="128"/>
+      <location filename="preferences-dxf.ui" line="144"/>
       <source>if this is checked, paper space objects will be imported too</source>
       <translation>これがチェックされていると、ぺーバー空間オブジェクト[paper space object]もインポートされます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="99"/>
+      <location filename="preferences-dxf.ui" line="115"/>
       <source>if this is unchecked, texts/mtexts won't be imported</source>
       <translation>チェックされていない場合、[texts/mtext]はインポートされません</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="428"/>
+      <location filename="preferences-dxf.ui" line="424"/>
       <source>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</source>
       <translation>スプラインをDXFへエクスポートする場合、それらはポリラインに変換されます。この値はポリラインの各セグメントの最大長です。0の場合、スプラインの全体が直線セグメントとして扱われます。</translation>
     </message>
@@ -997,17 +997,17 @@ Values with differences below this value will be treated as same.</source>
 これ以下の値の違いは、同じものとして扱われます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="144"/>
+      <location filename="preferences-dxf.ui" line="160"/>
       <source>Check this if you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>(*で開始する)名称のないブロックもインポートしたい場合にはチェックしてください</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="246"/>
+      <location filename="preferences-dxf.ui" line="262"/>
       <source>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</source>
       <translation>チェックした場合、FreeCADは一致するオブジェクトをワイヤーに結合しようとします。これには時間がかかる場合があります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="249"/>
+      <location filename="preferences-dxf.ui" line="265"/>
       <source>Join geometry</source>
       <translation>ジオメトリを結合</translation>
     </message>
@@ -1152,22 +1152,22 @@ Values with differences below this value will be treated as same.</source>
       <translation>右面図</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="266"/>
+      <location filename="preferences-dxf.ui" line="282"/>
       <source>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
       <translation>チェックされている場合、同じレイヤーのオブジェクトがドラフトブロックとして連結されますが、高速表示をオンにすることで、より容易に編集できるようになります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="269"/>
+      <location filename="preferences-dxf.ui" line="285"/>
       <source>Group layers into blocks</source>
       <translation>グループレイヤーをブロックへ</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="466"/>
+      <location filename="preferences-dxf.ui" line="462"/>
       <source>If this is checked, all objects containing faces will be exported as 3d polyfaces</source>
       <translation>これがチェックされている場合は、3Dポリフェイスとしての面を含むすべてのオブジェクトがエクスポートされます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="469"/>
+      <location filename="preferences-dxf.ui" line="465"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>3D オブジェクトをポリフェイスメッシュとしてエクスポートします。</translation>
     </message>
@@ -1202,32 +1202,32 @@ Values with differences below this value will be treated as same.</source>
       <translation>チェックされている場合、ドラフトワークベンチのアクティブ状態中に常にドラフトグリッドが表示されます。それ以外の場合はコマンド使用時のみです。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="306"/>
+      <location filename="preferences-dxf.ui" line="302"/>
       <source>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</source>
       <translation>チェックされている場合、インポートされたテキストサイズは、DXF 文書内にあるサイズから標準ドラフトで定義されたテキストサイズへ変換されます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="309"/>
+      <location filename="preferences-dxf.ui" line="305"/>
       <source>Use standard font size for texts</source>
       <translation>標準フォントサイズを使用</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="346"/>
+      <location filename="preferences-dxf.ui" line="342"/>
       <source>If this is checked, hatches will be converted into simple wires</source>
       <translation>チェックされている場合、ハッチングは単純な線に変換されます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="349"/>
+      <location filename="preferences-dxf.ui" line="345"/>
       <source>Import hatch boundaries as wires</source>
       <translation>ハッチング境界を線としてインポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="366"/>
+      <location filename="preferences-dxf.ui" line="362"/>
       <source>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</source>
       <translation>チェックされている場合、ポリラインに幅の定義があるときには適切な幅の閉じたワイヤーとしてレンダリングされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="369"/>
+      <location filename="preferences-dxf.ui" line="365"/>
       <source>Render polylines with width</source>
       <translation>幅のあるポリラインをレンダリングします。</translation>
     </message>
@@ -1292,42 +1292,42 @@ Values with differences below this value will be treated as same.</source>
       <translation>補助形状の色</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="92"/>
+      <location filename="preferences-dxf.ui" line="108"/>
       <source>Import</source>
       <translation>インポート</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="102"/>
+      <location filename="preferences-dxf.ui" line="118"/>
       <source>texts and dimensions</source>
       <translation>テキストと寸法線</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="115"/>
+      <location filename="preferences-dxf.ui" line="131"/>
       <source>points</source>
       <translation>ポイント</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="131"/>
+      <location filename="preferences-dxf.ui" line="147"/>
       <source>layouts</source>
       <translation>レイアウト</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="147"/>
+      <location filename="preferences-dxf.ui" line="163"/>
       <source>*blocks</source>
       <translation>*blocks</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="286"/>
+      <location filename="preferences-dxf.ui" line="505"/>
       <source>If this is checked, the exported objects will be projected to reflect the current view direction</source>
       <translation>チェックされている場合、エクスポートされるオブジェクトは現在のビュー方向を考慮して投影されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="289"/>
+      <location filename="preferences-dxf.ui" line="508"/>
       <source>Project exported objects along current view direction</source>
       <translation>エクスポートされるオブジェクトを現在のビュー方向と平行に投影</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="386"/>
+      <location filename="preferences-dxf.ui" line="382"/>
       <source>Ellipse export is badly supported. Use this to export them as polylines instead.</source>
       <translation>楕円のエクスポートは十分にサポートされていません。代わりにこれを使用してポリラインとしてエクスポートしてください。</translation>
     </message>
@@ -1447,52 +1447,52 @@ Values with differences below this value will be treated as same.</source>
       <translation>できるだけオブジェクトの面を塗りつぶす</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="164"/>
+      <location filename="preferences-dxf.ui" line="180"/>
       <source>Create</source>
       <translation>作成</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="174"/>
+      <location filename="preferences-dxf.ui" line="190"/>
       <source>simple Part shapes</source>
       <translation>パート形状を単純化</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="190"/>
+      <location filename="preferences-dxf.ui" line="206"/>
       <source>If this is checked, parametric Draft objects will be created whenever possible</source>
       <translation>ここをチェックされている場合、できる限りパラメトリックなドラフト・オブジェクトが作成されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="193"/>
+      <location filename="preferences-dxf.ui" line="209"/>
       <source>Draft objects</source>
       <translation>ドラフトオブジェクト</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="206"/>
+      <location filename="preferences-dxf.ui" line="222"/>
       <source>If this is checked, sketches will be created whenever possible</source>
       <translation>チェックされている場合、可能であれば常にスケッチが作成されます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="209"/>
+      <location filename="preferences-dxf.ui" line="225"/>
       <source>Sketches</source>
       <translation>スケッチ</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="226"/>
+      <location filename="preferences-dxf.ui" line="242"/>
       <source>If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</source>
       <translation>ここをチェックした場合、色は可能な限りDXFオブジェクトから読み出されます。それ以外の場合、デフォルトの色が適用されます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="229"/>
+      <location filename="preferences-dxf.ui" line="245"/>
       <source>Get original colors from the DXF file</source>
       <translation>DXFファイルからオリジナルの色を取得</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="389"/>
+      <location filename="preferences-dxf.ui" line="385"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>楕円およびスプラインをポリラインとして扱う</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="418"/>
+      <location filename="preferences-dxf.ui" line="414"/>
       <source>Max Spline Segment: </source>
       <translation>スプラインの最長線分：</translation>
     </message>
@@ -1507,37 +1507,32 @@ Values with differences below this value will be treated as same.</source>
       <translation>寸法の単位サフィックスを表示する</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="26"/>
-      <source>Automatic update</source>
-      <translation>自動更新</translation>
-    </message>
-    <message>
-      <location filename="preferences-dxf.ui" line="34"/>
+      <location filename="preferences-dxf.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;これをチェックすると、FreeCADにDXFのインポートとエクスポートに必要なコン&lt;/p&gt;&lt;p&gt;ポーネントをのダウンロードと更新ができる。 また次のサイトを参照すると手動で&lt;/p&gt;&lt;p&gt;同様のことができる。https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="37"/>
+      <location filename="preferences-dxf.ui" line="69"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>FreeCAD に、DXF ライブラリの自動的なダウンロードと更新を許可します。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="171"/>
+      <location filename="preferences-dxf.ui" line="187"/>
       <source>If this is checked, only standard Part objects will be created (fastest)</source>
       <translation>チェックされている場合、標準のPartオブジェクトだけが作成されます(最も高速)</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="326"/>
+      <location filename="preferences-dxf.ui" line="322"/>
       <source>If this is checked, DXF layers will be imported as Draft VisGroups</source>
       <translation>チェックされている場合、DXFレイヤーはドラフト VisGroups としてインポートされます</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="329"/>
+      <location filename="preferences-dxf.ui" line="325"/>
       <source>Use VisGroups</source>
       <translation>VisGroups を使用</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="434"/>
+      <location filename="preferences-dxf.ui" line="430"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1697,12 +1692,12 @@ Values with differences below this value will be treated as same.</source>
       <translation>インポート・オプション</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="69"/>
+      <location filename="preferences-dxf.ui" line="39"/>
       <source>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</source>
       <translation>チェックされている場合、古いPythonによるインポート機能が使用されます。それ以外の場合は新しいC++による機能（より拘束ですがまだ多くの機能が欠けています）が使用されます。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="72"/>
+      <location filename="preferences-dxf.ui" line="42"/>
       <source>Use legacy python importer</source>
       <translation>過去のPythonインポーターを使用</translation>
     </message>
@@ -1732,14 +1727,29 @@ Values with differences below this value will be treated as same.</source>
       <translation>単位スケーリングを無効</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="486"/>
+      <location filename="preferences-dxf.ui" line="482"/>
       <source>if this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
       <translation>チェックされている場合、ドローイングビューはブロックとしてエクスポートされます。ポストR12テンプレートの際には失敗する可能性があります。</translation>
     </message>
     <message>
-      <location filename="preferences-dxf.ui" line="489"/>
+      <location filename="preferences-dxf.ui" line="485"/>
       <source>Export Drawing Views as blocks</source>
       <translation>ドローイングビューをブロックとしてエクスポート</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="99"/>
+      <source>Note: Not all the options below are used by the new importer yet</source>
+      <translation>注: 以下のオプションには新しいインポート機能ではまだ使用できないものがあります</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="26"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+    </message>
+    <message>
+      <location filename="preferences-dxf.ui" line="58"/>
+      <source>Automatic update (legacy importer only)</source>
+      <translation>自動更新 (旧来インポート機能のみ)</translation>
     </message>
   </context>
   <context>
@@ -1763,162 +1773,162 @@ Values with differences below this value will be treated as same.</source>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="266"/>
+      <location filename="DraftGui.py" line="269"/>
       <source>Draft Command Bar</source>
       <translation>ドラフトコマンドバー</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="605"/>
+      <location filename="DraftGui.py" line="612"/>
       <source>active command:</source>
       <translation>アクティブコマンド:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="848"/>
+      <location filename="DraftGui.py" line="859"/>
       <source>None</source>
       <translation>なし</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="607"/>
+      <location filename="DraftGui.py" line="614"/>
       <source>Active Draft command</source>
       <translation>アクティブドラフトコマンド</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="608"/>
+      <location filename="DraftGui.py" line="615"/>
       <source>X coordinate of next point</source>
       <translation>次の点の X 座標</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="849"/>
+      <location filename="DraftGui.py" line="860"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="610"/>
+      <location filename="DraftGui.py" line="617"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="611"/>
+      <location filename="DraftGui.py" line="618"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="612"/>
+      <location filename="DraftGui.py" line="619"/>
       <source>Y coordinate of next point</source>
       <translation>次の点の Y 座標</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="613"/>
+      <location filename="DraftGui.py" line="620"/>
       <source>Z coordinate of next point</source>
       <translation>次の点の Z 座標</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="898"/>
+      <location filename="DraftGui.py" line="909"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="621"/>
+      <location filename="DraftGui.py" line="630"/>
       <source>Radius of Circle</source>
       <translation>円の半径</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="622"/>
+      <location filename="DraftGui.py" line="631"/>
       <source>&amp;Relative</source>
       <translation>相対 (&amp;R)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="623"/>
+      <location filename="DraftGui.py" line="632"/>
       <source>Coordinates relative to last point or absolute (SPACE)</source>
       <translation>最後の点からの相対座標、または絶対座標[スペース]</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="624"/>
+      <location filename="DraftGui.py" line="633"/>
       <source>F&amp;illed</source>
       <translation>塗りつぶし (&amp;I)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="625"/>
+      <location filename="DraftGui.py" line="634"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
       <translation>チェックされている場合、オブジェクトは塗りつぶし表示されます。それ以外の場合、ワイヤーフレーム表示されます (i)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="626"/>
+      <location filename="DraftGui.py" line="635"/>
       <source>&amp;Finish</source>
       <translation>終了 (&amp;F)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="627"/>
+      <location filename="DraftGui.py" line="636"/>
       <source>Finishes the current drawing or editing operation (F)</source>
       <translation>現在の製図、または編集操作を終了します (F)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="628"/>
+      <location filename="DraftGui.py" line="637"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>チェックされている場合、再びコマンドボタンを押すまでコマンドが終了しなくなります</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="630"/>
+      <location filename="DraftGui.py" line="639"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>チェックされている場合、従来のオフセットの代わりにくOCC-スタイルのオフセットが行われます</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="631"/>
+      <location filename="DraftGui.py" line="640"/>
       <source>&amp;OCC-style offset</source>
       <translation>OCC スタイル オフセット (&amp;O)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="632"/>
+      <location filename="DraftGui.py" line="641"/>
       <source>Add points to the current object</source>
       <translation>現在のオブジェクトに点を追加します</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="633"/>
+      <location filename="DraftGui.py" line="642"/>
       <source>Remove points from the current object</source>
       <translation>現在のオブジェクトから点を削除します</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="634"/>
+      <location filename="DraftGui.py" line="643"/>
       <source>Make Bezier node sharp</source>
       <translation>ベジエ曲線の頂点を鋭角にする</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="635"/>
+      <location filename="DraftGui.py" line="644"/>
       <source>Make Bezier node tangent</source>
       <translation>ベジエ曲線の頂点を接線にする</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="636"/>
+      <location filename="DraftGui.py" line="645"/>
       <source>Make Bezier node symmetric</source>
       <translation>ベジエ曲線の頂点を対称にする</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="637"/>
+      <location filename="DraftGui.py" line="646"/>
       <source>&amp;Undo</source>
       <translation>元に戻す（&amp;U）</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="638"/>
+      <location filename="DraftGui.py" line="647"/>
       <source>Undo the last segment (CTRL+Z)</source>
       <translation>最後のセグメントを元に戻す (Ctrl+Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="640"/>
+      <location filename="DraftGui.py" line="649"/>
       <source>Finishes and closes the current line (C)</source>
       <translation>現在の線を閉じて終了[C]</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="641"/>
+      <location filename="DraftGui.py" line="650"/>
       <source>&amp;Wipe</source>
       <translation>消去 (&amp;W)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="642"/>
+      <location filename="DraftGui.py" line="651"/>
       <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
       <translation>直線の既存の区間を消去して最後の点から再開します (W)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="646"/>
+      <location filename="DraftGui.py" line="655"/>
       <source>Number of sides</source>
       <translation>辺の数</translation>
     </message>
@@ -1928,132 +1938,132 @@ Values with differences below this value will be treated as same.</source>
       <translation>オフセット</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="648"/>
+      <location filename="DraftGui.py" line="657"/>
       <source>XY</source>
       <translation>XY</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="649"/>
+      <location filename="DraftGui.py" line="658"/>
       <source>Select XY plane</source>
       <translation>XY 平面を選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="650"/>
+      <location filename="DraftGui.py" line="659"/>
       <source>XZ</source>
       <translation>XZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="651"/>
+      <location filename="DraftGui.py" line="660"/>
       <source>Select XZ plane</source>
       <translation>XZ 平面を選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="652"/>
+      <location filename="DraftGui.py" line="661"/>
       <source>YZ</source>
       <translation>YZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="653"/>
+      <location filename="DraftGui.py" line="662"/>
       <source>Select YZ plane</source>
       <translation>YZ 平面を選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="654"/>
+      <location filename="DraftGui.py" line="663"/>
       <source>View</source>
       <translation>表示</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="655"/>
+      <location filename="DraftGui.py" line="664"/>
       <source>Select plane perpendicular to the current view</source>
       <translation>現在のビューに垂直な面を選択する。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="657"/>
+      <location filename="DraftGui.py" line="666"/>
       <source>Do not project points to a drawing plane</source>
       <translation>描画平面に点を投影しないでください</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="659"/>
+      <location filename="DraftGui.py" line="668"/>
       <source>If checked, objects will be copied instead of moved (C)</source>
       <translation>チェックされている場合、オブジェクトは移動 (C) ではなくコピーされます。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="660"/>
+      <location filename="DraftGui.py" line="669"/>
       <source>Text string to draw</source>
       <translation>描画するテキスト文字列</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="661"/>
+      <location filename="DraftGui.py" line="670"/>
       <source>String</source>
       <translation>文字列</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="662"/>
+      <location filename="DraftGui.py" line="671"/>
       <source>Height of text</source>
       <translation>テキストの高さ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="663"/>
+      <location filename="DraftGui.py" line="672"/>
       <source>Height</source>
       <translation>高さ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="664"/>
+      <location filename="DraftGui.py" line="673"/>
       <source>Intercharacter spacing</source>
       <translation>文字間隔</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="665"/>
+      <location filename="DraftGui.py" line="674"/>
       <source>Tracking</source>
       <translation>トラッキング</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="666"/>
+      <location filename="DraftGui.py" line="675"/>
       <source>Full path to font file:</source>
       <translation>フォントファイルのフルパス:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="667"/>
+      <location filename="DraftGui.py" line="676"/>
       <source>Open a FileChooser for font file</source>
       <translation>ファイル選択ダイアログを開いてフォントファイルを選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="687"/>
+      <location filename="DraftGui.py" line="696"/>
       <source>Set/unset a working plane</source>
       <translation>作業平面の設定/非設定</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="688"/>
+      <location filename="DraftGui.py" line="697"/>
       <source>Line Color</source>
       <translation>線の色</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="689"/>
+      <location filename="DraftGui.py" line="698"/>
       <source>Face Color</source>
       <translation>面の色</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="690"/>
+      <location filename="DraftGui.py" line="699"/>
       <source>Line Width</source>
       <translation>線の幅</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="691"/>
+      <location filename="DraftGui.py" line="700"/>
       <source>Font Size</source>
       <translation>フォントサイズ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="692"/>
+      <location filename="DraftGui.py" line="701"/>
       <source>Apply to selected objects</source>
       <translation>選択したオブジェクトに適用します。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="693"/>
+      <location filename="DraftGui.py" line="702"/>
       <source>Toggles Construction Mode</source>
       <translation>作成モードへの切り替え</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="739"/>
+      <location filename="DraftGui.py" line="748"/>
       <source>Select Plane</source>
       <translation>平面選択</translation>
     </message>
@@ -2068,237 +2078,237 @@ Values with differences below this value will be treated as same.</source>
       <translation>Dワイヤー</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="798"/>
+      <location filename="DraftGui.py" line="808"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="805"/>
+      <location filename="DraftGui.py" line="815"/>
       <source>Center X</source>
       <translation>中心X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="804"/>
+      <location filename="DraftGui.py" line="814"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="808"/>
+      <location filename="DraftGui.py" line="818"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="891"/>
+      <location filename="DraftGui.py" line="902"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="888"/>
+      <location filename="DraftGui.py" line="899"/>
       <source>Trim</source>
       <translation>トリム</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="980"/>
+      <location filename="DraftGui.py" line="991"/>
       <source>Pick Object</source>
       <translation>オブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="985"/>
+      <location filename="DraftGui.py" line="996"/>
       <source>Edit</source>
       <translation>編集</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1022"/>
+      <location filename="DraftGui.py" line="1033"/>
       <source>Global X</source>
       <translation>グローバル座標 X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1023"/>
+      <location filename="DraftGui.py" line="1034"/>
       <source>Global Y</source>
       <translation>グローバル座標 Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1024"/>
+      <location filename="DraftGui.py" line="1035"/>
       <source>Global Z</source>
       <translation>グローバル座標 Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1027"/>
+      <location filename="DraftGui.py" line="1038"/>
       <source>Local X</source>
       <translation>ローカル座標 X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1028"/>
+      <location filename="DraftGui.py" line="1039"/>
       <source>Local Y</source>
       <translation>ローカル座標 Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1029"/>
+      <location filename="DraftGui.py" line="1040"/>
       <source>Local Z</source>
       <translation>ローカル座標 Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1231"/>
+      <location filename="DraftGui.py" line="1247"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>サイズの値が無効です。　200.0 を使ってください。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1239"/>
+      <location filename="DraftGui.py" line="1255"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>トラッキングの値が無効です。　0 を使ってください。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1253"/>
+      <location filename="DraftGui.py" line="1269"/>
       <source>Please enter a text string.</source>
       <translation>文字を入力してください。</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1261"/>
+      <location filename="DraftGui.py" line="1277"/>
       <source>Select a Font file</source>
       <translation>フォントファイルを選択</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1291"/>
+      <location filename="DraftGui.py" line="1307"/>
       <source>Please enter a font file.</source>
       <translation>フォントファイルを入力してください。</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="835"/>
+      <location filename="Draft.py" line="852"/>
       <source>Draft.makeBSpline: not enough points
 </source>
       <translation>Draft.makeBSpline: 点の数が不十分
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="841"/>
+      <location filename="Draft.py" line="858"/>
       <source>Draft.makeBSpline: Equal endpoints forced Closed
 </source>
       <translation>Draft.makeBSpline: 等しい端点を強制的につなぐ
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="843"/>
+      <location filename="Draft.py" line="860"/>
       <source>Draft.makeBSpline: Invalid pointslist
 </source>
       <translation>Draft.makeBSpline: 無効な頂点リスト
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2867"/>
+      <location filename="Draft.py" line="2885"/>
       <source>Found groups: closing each open object inside
 </source>
       <translation>グループを見つけました: 内部の開いているオブジェクトを閉じます
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2872"/>
+      <location filename="Draft.py" line="2890"/>
       <source>Found mesh(es): turning into Part shapes
 </source>
       <translation>メッシュが見つかりました：パート形状へ変換します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2880"/>
+      <location filename="Draft.py" line="2898"/>
       <source>Found 1 solidificable object: solidifying it
 </source>
       <translation>ソリッド化可能なオブジェクトが1つ見つかりました: ソリッド化します</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2885"/>
+      <location filename="Draft.py" line="2903"/>
       <source>Found 2 objects: fusing them
 </source>
       <translation>オブジェクトを2つ見つけました: 結合します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2900"/>
+      <location filename="Draft.py" line="2918"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
       <translation>非パラメトリックなオブジェクトを1つ見つけました: 製図します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2931"/>
+      <location filename="Draft.py" line="2949"/>
       <source>Found 1 open wire: closing it
 </source>
       <translation>開いたワイヤーを1つ見つけました: 閉じます
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2936"/>
+      <location filename="Draft.py" line="2954"/>
       <source>Found several open wires: joining them
 </source>
       <translation>複数の開いたワイヤーが見つかりました：結合する</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2941"/>
+      <location filename="Draft.py" line="2959"/>
       <source>Found several edges: wiring them
 </source>
       <translation>複数のエッジを見つけました: ワイヤーとして結合します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2950"/>
+      <location filename="Draft.py" line="2968"/>
       <source>Unable to upgrade these objects.
 </source>
       <translation>これらのオブジェクトはアップグレードできません。</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3106"/>
+      <location filename="Draft.py" line="3124"/>
       <source>Found 1 block: exploding it
 </source>
       <translation>ブロックが1つ見つかりました：このブロックを分解</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3118"/>
+      <location filename="Draft.py" line="3136"/>
       <source>Found 1 parametric object: breaking its dependencies
 </source>
       <translation>パラメトリックなオブジェクトを1つ見つけました: 依存関係を破棄します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3125"/>
+      <location filename="Draft.py" line="3143"/>
       <source>Found 2 objects: subtracting them
 </source>
       <translation>オブジェクトを2つ見つけました: 減算を行います
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3132"/>
+      <location filename="Draft.py" line="3150"/>
       <source>Found several faces: splitting them
 </source>
       <translation>複数の面を見つけました: 分割します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3137"/>
+      <location filename="Draft.py" line="3155"/>
       <source>Found several objects: subtracting them from the first one
 </source>
       <translation>複数のオブジェクトを見つけました: 最初の1つから残りを減算します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3142"/>
+      <location filename="Draft.py" line="3160"/>
       <source>Found 1 face: extracting its wires
 </source>
       <translation>面を1つ見つけました: ワイヤーを抽出します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3147"/>
+      <location filename="Draft.py" line="3165"/>
       <source>Found only wires: extracting their edges
 </source>
       <translation>ワイヤーのみ見つかりました: エッジを抽出します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3151"/>
+      <location filename="Draft.py" line="3169"/>
       <source>No more downgrade possible
 </source>
       <translation>それ以上のダウングレードはできません</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="4577"/>
+      <location filename="Draft.py" line="4600"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </source>
       <translation>_BSpline.createGeometry：最初/最後の点を一致させて曲線を閉じてください。ジオメトリーはは更新されていません。
@@ -2666,7 +2676,7 @@ Values with differences below this value will be treated as same.</source>
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4052"/>
+      <location filename="DraftTools.py" line="4046"/>
       <source>Select an object to project
 </source>
       <translation>投影するオブジェクトを選択</translation>
@@ -2685,55 +2695,55 @@ Values with differences below this value will be treated as same.</source>
       <translation>このオブジェクトタイプは編集できません</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3738"/>
+      <location filename="DraftTools.py" line="3735"/>
       <source>Active object must have more than two points/nodes
 </source>
       <translation>アクティブオブジェクトは２つ以上の点またはノードが必要</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3787"/>
+      <location filename="DraftTools.py" line="3783"/>
       <source>Selection is not a Knot
 </source>
       <translation>節点が選択されていません
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3812"/>
+      <location filename="DraftTools.py" line="3808"/>
       <source>Endpoint of BezCurve can't be smoothed
 </source>
       <translation>ベジエ曲線の端点はスムージングできません</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4092"/>
+      <location filename="DraftTools.py" line="4086"/>
       <source>Select an object to convert
 </source>
       <translation>変換するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4150"/>
+      <location filename="DraftTools.py" line="4144"/>
       <source>Select an object to array
 </source>
       <translation>配列にするオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4179"/>
+      <location filename="DraftTools.py" line="4173"/>
       <source>Please select base and path objects
 </source>
       <translation>ベースとパスオブジェクトを選択してください</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4265"/>
+      <location filename="DraftTools.py" line="4259"/>
       <source>Create Point</source>
       <translation>点を作成</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4304"/>
+      <location filename="DraftTools.py" line="4298"/>
       <source>Select an object to clone
 </source>
       <translation>複製するオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4375"/>
+      <location filename="DraftTools.py" line="4369"/>
       <source>Select face(s) on existing object(s)
 </source>
       <translation>既存のオブジェクトの面を選択</translation>
@@ -2766,106 +2776,106 @@ Values with differences below this value will be treated as same.</source>
       <translation>スナップ</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="3112"/>
+      <location filename="Draft.py" line="3130"/>
       <source>Found 1 multi-solids compound: exploding it
 </source>
       <translation>コンパウンドが1つ見つかりました：このコンパウンドを分解
 </translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="645"/>
+      <location filename="DraftGui.py" line="654"/>
       <source>Sides</source>
       <translation>側面</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2373"/>
+      <location filename="Draft.py" line="2391"/>
       <source>BSplines and Bezier curves are not supported by this tool</source>
       <translation>このツールではBスプラインとベジェ曲線はサポートされていません</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2369"/>
+      <location filename="Draft.py" line="2387"/>
       <source>The given object is not planar and cannot be converted into a sketch.</source>
       <translation>指定されたオブジェクトは平面およびスケッチに変換することができません。</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2890"/>
+      <location filename="Draft.py" line="2908"/>
       <source>Found several objects: creating a shell
 </source>
       <translation>幾つかのオブジェクトが見つかりました: シェルを作成します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2895"/>
+      <location filename="Draft.py" line="2913"/>
       <source>Found several coplanar objects or faces: creating one face
 </source>
       <translation>同一平面上にあるオブジェクトまたは面が見つかりました：ひとつの面を作成します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2913"/>
+      <location filename="Draft.py" line="2931"/>
       <source>Found 1 linear object: converting to line
 </source>
       <translation>ひとつの 線形オブジェクトが見つかりました: 線分へ変換します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2921"/>
+      <location filename="Draft.py" line="2939"/>
       <source>Found 1 closed sketch object: creating a face from it
 </source>
       <translation>閉じたスケッチオブジェクトを1つ見つけました: 面を作成します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2926"/>
+      <location filename="Draft.py" line="2944"/>
       <source>Found closed wires: creating faces
 </source>
       <translation>閉じた連線が見つかりました： 面を作成します
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2946"/>
+      <location filename="Draft.py" line="2964"/>
       <source>Found several non-treatable objects: creating compound
 </source>
       <translation>複数の修復不能なオブジェクトを見つけました: 複合物を作成します
 </translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="614"/>
+      <location filename="DraftGui.py" line="623"/>
       <source>Length</source>
       <translation>長さ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="615"/>
+      <location filename="DraftGui.py" line="624"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="616"/>
+      <location filename="DraftGui.py" line="625"/>
       <source>Length of current segment</source>
       <translation>現在のセグメントの長さ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="617"/>
+      <location filename="DraftGui.py" line="626"/>
       <source>Angle of current segment</source>
       <translation>現在のセグメントの角度</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="619"/>
+      <location filename="DraftGui.py" line="628"/>
       <source>Check this to lock the current angle (l)</source>
       <translation>ここにチェックを入れると、現在の角度 (l)を拘束します</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="643"/>
+      <location filename="DraftGui.py" line="652"/>
       <source>&amp;Select edge</source>
       <translation>エッジを選択 (&amp;S)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="644"/>
+      <location filename="DraftGui.py" line="653"/>
       <source>Selects an existing edge to be measured by this dimension (E)</source>
       <translation>寸法(E)を計測したいところの既存エッジを選択して下さい</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="656"/>
+      <location filename="DraftGui.py" line="665"/>
       <source>Auto</source>
       <translation>自動</translation>
     </message>
@@ -2877,22 +2887,22 @@ Values with differences below this value will be treated as same.</source>
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4116"/>
+      <location filename="DraftTools.py" line="4110"/>
       <source>Convert to Sketch</source>
       <translation>スケッチに変換</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4120"/>
+      <location filename="DraftTools.py" line="4114"/>
       <source>Convert to Draft</source>
       <translation>ドラフトに変換</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4132"/>
+      <location filename="DraftTools.py" line="4126"/>
       <source>Convert</source>
       <translation>変換</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4161"/>
+      <location filename="DraftTools.py" line="4155"/>
       <source>Array</source>
       <translation>配列</translation>
     </message>
@@ -2932,7 +2942,7 @@ Values with differences below this value will be treated as same.</source>
 </translation>
     </message>
     <message>
-      <location filename="importDXF.py" line="91"/>
+      <location filename="importDXF.py" line="99"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either enable FreeCAD to download these libraries:
@@ -2951,79 +2961,89 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 FreeCADでこれらライブラリーのダウンロードを有効にするためにYesを選択します。</translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2489"/>
+      <location filename="Draft.py" line="2507"/>
       <source>No object given
 </source>
       <translation>オブジェクトが指定されていません
 </translation>
     </message>
     <message>
-      <location filename="Draft.py" line="2492"/>
+      <location filename="Draft.py" line="2510"/>
       <source>The two points are coincident
 </source>
       <translation>2点が一致しています
 </translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="629"/>
+      <location filename="DraftGui.py" line="638"/>
       <source>Co&amp;ntinue</source>
       <translation>続ける(&amp;n)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="639"/>
+      <location filename="DraftGui.py" line="648"/>
       <source>Cl&amp;ose</source>
       <translation>閉じる(&amp;O)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="658"/>
+      <location filename="DraftGui.py" line="667"/>
       <source>C&amp;opy</source>
       <translation>コピー(&amp;O)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1914"/>
+      <location filename="DraftGui.py" line="1930"/>
       <source>Faces</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1915"/>
+      <location filename="DraftGui.py" line="1931"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1916"/>
+      <location filename="DraftGui.py" line="1932"/>
       <source>Add</source>
       <translation>追加</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="1917"/>
+      <location filename="DraftGui.py" line="1933"/>
       <source>Facebinder elements</source>
       <translation>フェイスバインダー要素</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4479"/>
+      <location filename="DraftTools.py" line="4473"/>
       <source>Mirror</source>
       <translation>鏡像コピー</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4444"/>
+      <location filename="DraftTools.py" line="4438"/>
       <source>Select an object to mirror
 </source>
       <translation>鏡像コピーするオブジェクトを選択
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4458"/>
+      <location filename="DraftTools.py" line="4452"/>
       <source>Pick start point of mirror line:
 </source>
       <translation>対称線の始点を選択:
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="4541"/>
+      <location filename="DraftTools.py" line="4535"/>
       <source>Pick end point of mirror line:
 </source>
       <translation>対称線の終点を選択:
 </translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="621"/>
+      <source>Enter point</source>
+      <translation>点の入力</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="622"/>
+      <source>Enter a new point with the given coordinates</source>
+      <translation>指定された座標に新しい点を入力</translation>
     </message>
   </context>
 </TS>

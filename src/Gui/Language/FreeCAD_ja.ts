@@ -1241,10 +1241,6 @@ Please define another shortcut.</source>
         <translation>マクロ名:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">マクロのコピー先:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>実行</translation>
     </message>
@@ -1266,15 +1262,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーマクロ</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>システムマクロ</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーマクロの場所:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>読み取り専用</translation>
     </message>
 </context>
 <context>
@@ -1806,11 +1802,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>正射投影レンダリング</translation>
+        <translation type="obsolete">正射投影レンダリング</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>透視投影レンダリング</translation>
+        <translation type="obsolete">透視投影レンダリング</translation>
     </message>
     <message>
         <source></source>
@@ -1879,6 +1875,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4856,11 +4860,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">マクロの削除</translation>
+        <translation>マクロの削除</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>システム全体のマクロを削除することはできません</translation>
     </message>
 </context>
 <context>

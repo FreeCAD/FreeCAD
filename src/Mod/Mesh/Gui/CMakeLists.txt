@@ -133,16 +133,15 @@ fc_target_copy_resource(MeshGui
     ${CMAKE_BINARY_DIR}/Mod/Mesh
     InitGui.py)
 
+SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
+SET_PYTHON_PREFIX_SUFFIX(MeshGui)
+
+INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
 SET(MeshGuiIcon_SVG
-    Resources/icons/Tree_Mesh.svg
+    Resources/icons/MeshWorkbench.svg
 )
 
 fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})
 
 INSTALL(FILES ${MeshGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Mesh/Resources/icons")
-
-
-SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
-SET_PYTHON_PREFIX_SUFFIX(MeshGui)
-
-INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

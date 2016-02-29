@@ -38,7 +38,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Imports a point cloud</source>
-        <translation>Pontfelhő importálása</translation>
+        <translation>Egy pontfelhő importálása</translation>
     </message>
 </context>
 <context>
@@ -58,7 +58,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Cuts a point cloud with a picked polygon</source>
-        <translation>Pontfelhő kivágása egy kiválaszott polygonnal</translation>
+        <translation>Pontfelhő kivágása egy kiválasztott polygonnal</translation>
     </message>
 </context>
 <context>
@@ -236,13 +236,13 @@
         <location filename="../../Command.cpp" line="-78"/>
         <location line="+49"/>
         <source>Ascii Points</source>
-        <translation type="unfinished">Ascii Points</translation>
+        <translation>Ascii pontok</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+49"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Minden Fájl</translation>
     </message>
 </context>
 <context>

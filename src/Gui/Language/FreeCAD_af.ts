@@ -1240,10 +1240,6 @@ Definieer asseblief &apos;n ander kortpad.</translation>
         <translation>Makronaam:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makrobestemming:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Voer uit</translation>
     </message>
@@ -1265,15 +1261,15 @@ Definieer asseblief &apos;n ander kortpad.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1806,11 +1802,11 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ortografiese weergawe</translation>
+        <translation type="obsolete">Ortografiese weergawe</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspektief weergawe</translation>
+        <translation type="obsolete">Perspektief weergawe</translation>
     </message>
     <message>
         <source></source>
@@ -1879,6 +1875,14 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4860,11 +4864,11 @@ Wees bewus dat die punt waar jy kliek belangrik is.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Verwyder makro</translation>
+        <translation>Verwyder makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

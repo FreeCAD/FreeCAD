@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+476"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -17,7 +17,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts an Annotation view in the active drawing</source>
-        <translation>Insere uma Anotação no desenho (folha) ativo</translation>
+        <translation>Insere uma Anotação na folha de desenho ativa</translation>
     </message>
 </context>
 <context>
@@ -25,7 +25,7 @@
     <message>
         <location line="+44"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -36,7 +36,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a clip group in the active drawing</source>
-        <translation>Insere um grupo de corte no desenho ativo</translation>
+        <translation>Insere um grupo de corte na folha de desenho ativa</translation>
     </message>
 </context>
 <context>
@@ -44,7 +44,7 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -82,7 +82,7 @@
     <message>
         <location line="-355"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -96,13 +96,13 @@
     <message>
         <location line="-185"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Insert new drawing</source>
-        <translation>Inserir novo desenho (folha)</translation>
+        <translation>Inserir nova folha de desenho</translation>
     </message>
 </context>
 <context>
@@ -110,17 +110,17 @@
     <message>
         <location line="+219"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert view in drawing</source>
-        <translation>Inserir uma vista no desenho (folha)</translation>
+        <translation>Inserir uma vista na folha de desenho</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert a new View of a Part in the active drawing</source>
-        <translation>Inserir uma nova Vista de uma peça no desenho ativo</translation>
+        <translation>Inserir uma nova Vista de uma peça na folha de desenho ativa</translation>
     </message>
 </context>
 <context>
@@ -128,7 +128,7 @@
     <message>
         <location line="-255"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -146,7 +146,7 @@
     <message>
         <location line="+378"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -165,7 +165,7 @@
     <message>
         <location line="-53"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -175,7 +175,7 @@
     <message>
         <location line="+1"/>
         <source>Insert an orthographic projection of a part in the active drawing</source>
-        <translation>Inserir uma projeção ortográfica de uma parte no desenho ativo</translation>
+        <translation>Inserir uma projeção ortográfica de uma peça na folha de desenho ativa</translation>
     </message>
 </context>
 <context>
@@ -183,7 +183,7 @@
     <message>
         <location line="+284"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -202,7 +202,7 @@
     <message>
         <location line="+62"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -221,7 +221,7 @@
     <message>
         <location line="-176"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -232,7 +232,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation>Insere um símbolo de um arquivo svg no desenho ativo</translation>
+        <translation>Insere um símbolo de um arquivo svg na folha de desenho ativa</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation>A impressora utiliza uma orientação diferente do desenho. Deseja continuar?</translation>
+        <translation>A impressora utiliza uma orientação diferente da folha de desenho. Deseja continuar?</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -353,7 +353,7 @@ Do you want to continue?</source>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation>A impressora usa um tamanho de papel diferente do desenho. Deseja continuar?</translation>
+        <translation>A impressora usa um tamanho de papel diferente da folha de desenho. Deseja continuar?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -668,22 +668,22 @@ Do you want to continue?</source>
     <message>
         <location line="+14"/>
         <source>No active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum documento ativo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Não há atualmente nenhum documento ativo para concluir a operação</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished"></translation>
+        <translation>Não há nenhuma vista ativa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Não há atualmente nenhuma vista ativa para concluir a operação</translation>
     </message>
 </context>
 <context>
@@ -754,7 +754,7 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation>Inserir novo desenho %1%2 %3 (folha)</translation>
+        <translation>Inserir nova %1%2 %3 folha de desenho</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -764,7 +764,7 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation>Inserir novo desenho %1%2 %3 (%4) Folha</translation>
+        <translation>Inserir nova %1%2 %3 (%4) folha de desenho</translation>
     </message>
 </context>
 <context>
@@ -877,7 +877,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../ViewProviderPage.cpp" line="+152"/>
         <source>Show drawing</source>
-        <translation>Mostrar desenho</translation>
+        <translation>Mostrar folha de desenho</translation>
     </message>
     <message>
         <source>Front</source>
@@ -927,7 +927,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Drawing</source>
-        <translation>Desenho (layout)</translation>
+        <translation>Desenho de folhas (layout)</translation>
     </message>
 </context>
 </TS>

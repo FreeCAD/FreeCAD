@@ -57,6 +57,7 @@
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Schedule.svg</file>
+        <file>icons/ArchWorkbench.svg</file>
         <file>ui/preferences-arch.ui</file>
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-ifc.ui</file>

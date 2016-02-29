@@ -296,6 +296,10 @@ public:
     int historySize() const;
     /// set the value of the history size property 
     void setHistorySize(int);
+    /// Convenience method as offered by PrefWidget. Does the same as pushToHistory().
+    void onSave();
+    /// Convenience method as offered by PrefWidget. Does the same as setToLastUsedValue().
+    void onRestore();
 
     /** @name history and default management */
     //@{
