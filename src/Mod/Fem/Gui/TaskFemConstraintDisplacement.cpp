@@ -435,10 +435,30 @@ void TaskFemConstraintDisplacement::addToSelection()
                     addMe=false;
                 }
             }
+            // limit constraint such that only vertexes or faces or edges can be used depending on what was selected first
+            std::string searchStr("");
+            if (subNames[subIt].find("Vertex")!=std::string::npos)
+                searchStr="Vertex";
+            else if (subNames[subIt].find("Edge")!=std::string::npos)
+                searchStr="Edge";
+            else
+                searchStr="Face";
+            for (unsigned int iStr=0;iStr<(SubElements.size());++iStr){
+                if ((SubElements[iStr].find(searchStr)==std::string::npos)&&(SubElements.size()>0)){
+                    std::string Msg="Only one type of selection (vertex,face or edge) per constraint allowed!";
+                    QMessageBox::warning(this, tr("Selection error"),QString::fromStdString(Msg));
+                    addMe=false;
+                    break;
+                }
+            }
             if (addMe){
+                disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
                 Objects.push_back(obj);
                 SubElements.push_back(subNames[subIt]);
                 ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
             }
         }
     }
@@ -458,7 +478,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
     Fem::ConstraintDisplacement* pcConstraint = static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    std::vector<int> itemsToDel;
+    std::vector<unsigned int> itemsToDel;
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
         if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
@@ -480,6 +500,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
         }
     }
 
+    std::sort(itemsToDel.begin(),itemsToDel.end());
     while (itemsToDel.size()>0){
         Objects.erase(Objects.begin()+itemsToDel.back());
         SubElements.erase(SubElements.begin()+itemsToDel.back());
@@ -502,9 +523,9 @@ void TaskFemConstraintDisplacement::removeFromSelection()
 }
 
 void TaskFemConstraintDisplacement::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-    
     std::string s = item->text().toStdString();
+    std::string docName=ConstraintView->getObject()->getDocument()->getName();
+
     std::string delimiter = ":";
 
     size_t pos = 0;
@@ -520,10 +541,7 @@ void TaskFemConstraintDisplacement::setSelection(QListWidgetItem* item){
 }
 
 void TaskFemConstraintDisplacement::onReferenceDeleted() {
-    int row = ui->lw_references->currentIndex().row();
-    TaskFemConstraint::onReferenceDeleted(row);
-    ui->lw_references->model()->removeRow(row);
-    ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
+    TaskFemConstraintDisplacement::removeFromSelection(); //OvG: On right-click face is automatically selected, so just remove
 }
 
 const std::string TaskFemConstraintDisplacement::getReferences() const
@@ -585,8 +603,10 @@ void TaskDlgFemConstraintDisplacement::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint normal stress");
+        QString msg = QObject::tr("Constraint displacement");
         Gui::Command::openCommand((const char*)msg.toUtf8());
+        ConstraintView->setVisible(true);
+        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 

@@ -342,6 +342,8 @@ void TaskDlgFemConstraintForce::open()
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = QObject::tr("Constraint force");
         Gui::Command::openCommand((const char*)msg.toUtf8());
+        ConstraintView->setVisible(true);
+        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
