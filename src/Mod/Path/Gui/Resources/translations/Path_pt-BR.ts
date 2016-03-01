@@ -206,26 +206,34 @@
     </message>
   </context>
   <context>
+    <name>Pat_hHop</name>
+  </context>
+  <context>
     <name>Path</name>
     <message>
-      <location filename="InitGui.py" line="105"/>
+      <location filename="InitGui.py" line="113"/>
       <source>Project Setup</source>
       <translation>Configurações do Projeto</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="106"/>
-      <source>Prepatory Commands</source>
-      <translation>Comandos preparatórios</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="107"/>
-      <source>New Operation</source>
-      <translation>Nova operação</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="108"/>
+      <location filename="InitGui.py" line="116"/>
       <source>Path Modification</source>
       <translation>Modificação do caminho</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="114"/>
+      <source>Partial Commands</source>
+      <translation>Comandos parciais</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="115"/>
+      <source>New Operations</source>
+      <translation>Novas Operações</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="116"/>
+      <source>Path</source>
+      <translation>Trajetória</translation>
     </message>
   </context>
   <context>
@@ -234,24 +242,6 @@
       <location filename="PathProfile.py" line="48"/>
       <source>If the toolpath is a closed polyline this is True</source>
       <translation>Se o caminho de ferramenta é uma polilinha fechada isto é Verdadeiro</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathComment</name>
-    <message>
-      <location filename="PathComment.py" line="109"/>
-      <source>Comment</source>
-      <translation>Comentário</translation>
-    </message>
-    <message>
-      <location filename="PathComment.py" line="111"/>
-      <source>Add a Comment to your CNC program</source>
-      <translation>Adicionar um comentário ao seu programa CNC</translation>
-    </message>
-    <message>
-      <location filename="PathComment.py" line="117"/>
-      <source>Create a Comment in your CNC program</source>
-      <translation>Criar um comentário no seu programa CNC</translation>
     </message>
   </context>
   <context>
@@ -271,21 +261,6 @@
       <source>The retract height, above top surface of part, between compounded operations inside clamping area</source>
       <translation>A altura de retrair, acima da superfície superior da peça, entre operações combinadas dentro da área de aperto</translation>
     </message>
-    <message>
-      <location filename="PathCompoundExtended.py" line="91"/>
-      <source>Compound</source>
-      <translation>Composto</translation>
-    </message>
-    <message>
-      <location filename="PathCompoundExtended.py" line="93"/>
-      <source>Creates a Path Compound object</source>
-      <translation>Cria um objeto de caminho composto</translation>
-    </message>
-    <message>
-      <location filename="PathCompoundExtended.py" line="100"/>
-      <source>Create Compound</source>
-      <translation>Criar composto</translation>
-    </message>
   </context>
   <context>
     <name>PathCopy</name>
@@ -293,21 +268,6 @@
       <location filename="PathCopy.py" line="44"/>
       <source>The path to be copied</source>
       <translation>O caminho a ser copiado</translation>
-    </message>
-    <message>
-      <location filename="PathCopy.py" line="83"/>
-      <source>Copy</source>
-      <translation>Copiar</translation>
-    </message>
-    <message>
-      <location filename="PathCopy.py" line="85"/>
-      <source>Creates a linked copy of another path</source>
-      <translation>Cria uma cópia vinculada de outro caminho</translation>
-    </message>
-    <message>
-      <location filename="PathCopy.py" line="92"/>
-      <source>Create Copy</source>
-      <translation>Criar cópia</translation>
     </message>
   </context>
   <context>
@@ -327,94 +287,6 @@
       <source>The modification to be added</source>
       <translation>A modificação a ser adicionado</translation>
     </message>
-    <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Roupagem</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Cria um objeto de 'caminho Dess-up' a partir de um caminho selecionado</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="110"/>
-      <source>Please select one path object
-</source>
-      <translation>Por favor, selecione um objeto de caminho
-</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="113"/>
-      <source>The selected object is not a path
-</source>
-      <translation>O objeto selecionado não é um caminho
-</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="116"/>
-      <source>Please select a Path object</source>
-      <translation>Por favor, selecione um objeto de caminho</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="120"/>
-      <source>Create Dress-up</source>
-      <translation>Criar Dress-up</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathDrilling</name>
-    <message>
-      <location filename="PathDrilling.py" line="150"/>
-      <source>Drilling</source>
-      <translation>Perfuração</translation>
-    </message>
-    <message>
-      <location filename="PathDrilling.py" line="152"/>
-      <source>Creates a Path Drilling object</source>
-      <translation>Criar um caminho de perfuração</translation>
-    </message>
-    <message>
-      <location filename="PathDrilling.py" line="168"/>
-      <source>Create Drilling</source>
-      <translation>Criar perfuração</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathFixture</name>
-    <message>
-      <location filename="PathFixture.py" line="119"/>
-      <source>Fixture</source>
-      <translation>Acessório</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="121"/>
-      <source>Creates a Fixture Offset object</source>
-      <translation>Criar um objeto offset de acessório</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="127"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Criar um offset de acessório</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathFromShape</name>
-    <message>
-      <location filename="PathFromShape.py" line="75"/>
-      <source>Gcode from a Shape</source>
-      <translation>Gcode a partir de uma forma</translation>
-    </message>
-    <message>
-      <location filename="PathFromShape.py" line="77"/>
-      <source>Creates GCode from a FreeCAD wire/curve</source>
-      <translation>Cria Gcode a partir de um arame/curva do FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="PathFromShape.py" line="83"/>
-      <source>Create GCode from a wire/curve</source>
-      <translation>Criar GCode a partir de um arame/curva</translation>
-    </message>
   </context>
   <context>
     <name>PathHop</name>
@@ -428,161 +300,34 @@
       <source>The Z height of the hop</source>
       <translation>A altura de Z para o salto</translation>
     </message>
-    <message>
-      <location filename="PathHop.py" line="104"/>
-      <source>Hop</source>
-      <translation>Salto</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="106"/>
-      <source>Creates a Path Hop object</source>
-      <translation>Cria um objeto de caminho de salto</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="116"/>
-      <source>Please select one path object
-</source>
-      <translation>Por favor, selecione um objeto de caminho
-</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="119"/>
-      <source>The selected object is not a path
-</source>
-      <translation>O objeto selecionado não é um caminho
-</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="122"/>
-      <source>Create Hop</source>
-      <translation>Criar salto</translation>
-    </message>
   </context>
   <context>
-    <name>PathKurve</name>
+    <name>PathInspect</name>
     <message>
-      <location filename="PathKurve.py" line="184"/>
-      <source>Create a Profile operation using libarea</source>
-      <translation>Criar uma operação de perfil usando librarea</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathLoadTool</name>
-    <message>
-      <location filename="PathLoadTool.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Número da ferramenta a carregar</translation>
+      <location filename="PathInspect.py" line="131"/>
+      <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
+      <translation>&lt;b&gt;Nota&lt;/b&gt;: Apertar Ok salvará qualquer alteração feita acima no objeto, mas se o objeto for paramétrico, essas alterações serão descartadas quando o objeto for recalculado.</translation>
     </message>
   </context>
   <context>
     <name>PathMachine</name>
     <message>
-      <location filename="PathMachine.py" line="198"/>
+      <location filename="PathMachine.py" line="202"/>
       <source>Machine Object</source>
       <translation>Objeto de máquina</translation>
     </message>
     <message>
-      <location filename="PathMachine.py" line="206"/>
+      <location filename="PathMachine.py" line="210"/>
       <source>Create a Machine object</source>
       <translation>Criar um objeto de máquina</translation>
     </message>
   </context>
   <context>
-    <name>PathPlane</name>
-    <message>
-      <location filename="PathPlane.py" line="114"/>
-      <source>Selection Plane</source>
-      <translation>Plano de seleção</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="134"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Criar um plano de seleção</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathPocket</name>
-    <message>
-      <location filename="PathPocket.py" line="265"/>
-      <source>Pocket</source>
-      <translation>Perfuração</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="267"/>
-      <source>Creates a Path Pocket object from a loop of edges or a face</source>
-      <translation>Cria um objeto de caminho de bolso (pocket) a partir de um loop de arestas ou uma face</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="280"/>
-      <source>Please select an edges loop from one object, or a single face
-</source>
-      <translation>Por favor selecione um loop de arestas de um objeto, ou uma face única
-</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="285"/>
-      <source>Please select only edges or a single face
-</source>
-      <translation>Por favor, selecione apenas arestas ou uma face simples
-</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="292"/>
-      <source>The selected edges don't form a loop
-</source>
-      <translation>As arestas selecionadas não formam um loop
-</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="296"/>
-      <source>Create Pocket</source>
-      <translation>Criar bolso (pocket)</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathPost</name>
-    <message>
-      <location filename="PathPost.py" line="45"/>
-      <source>Post Process</source>
-      <translation>Pós-processamento</translation>
-    </message>
-    <message>
-      <location filename="PathPost.py" line="47"/>
-      <source>Post Process the selected Project</source>
-      <translation>Pós-processar o projeto selecionado</translation>
-    </message>
-    <message>
-      <location filename="PathPost.py" line="53"/>
-      <source>Post Process the Selected path(s)</source>
-      <translation>Pós-processar o(s) caminho(s) selecionado(s)</translation>
-    </message>
-  </context>
-  <context>
     <name>PathProfile</name>
-    <message>
-      <location filename="PathProfile.py" line="203"/>
-      <source>Profile</source>
-      <translation>Perfil</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="205"/>
-      <source>Creates a Path Profile object from selected faces</source>
-      <translation>Criar um caminho de perfil a partir de faces selecionadas</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="220"/>
-      <source>Create Profile</source>
-      <translation>Criar perfil</translation>
-    </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
       <source>The tool number in use</source>
       <translation>O número de ferramenta em uso</translation>
-    </message>
-    <message>
-      <location filename="PathKurve.py" line="178"/>
-      <source>Creates a Path Profile object from selected edges, using libarea for offset algorithm</source>
-      <translation>Cria um objeto de caminho de perfil a partir de arestas selecionadas, usando o libarea para o algoritmo de offset</translation>
     </message>
   </context>
   <context>
@@ -657,21 +402,6 @@
       <source>An optional description for this project</source>
       <translation>Uma descrição opcional para este projeto</translation>
     </message>
-    <message>
-      <location filename="PathProject.py" line="118"/>
-      <source>Project</source>
-      <translation>Projeto</translation>
-    </message>
-    <message>
-      <location filename="PathProject.py" line="120"/>
-      <source>Creates a Path Project object</source>
-      <translation>Cria um objeto de projeto de caminho</translation>
-    </message>
-    <message>
-      <location filename="PathProject.py" line="131"/>
-      <source>Create Project</source>
-      <translation>Criar Projeto</translation>
-    </message>
   </context>
   <context>
     <name>PathStock</name>
@@ -687,7 +417,464 @@
     </message>
   </context>
   <context>
-    <name>PathStop</name>
+    <name>Path_Array</name>
+    <message>
+      <location filename="PathArray.py" line="106"/>
+      <source>Array</source>
+      <translation>Matriz</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="107"/>
+      <source>Creates an array from a selected path</source>
+      <translation>Cria uma matriz a partir de uma trajetória selecionada</translation>
+    </message>
+    <message>
+      <location filename="PathArray.py" line="120"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Apenas uma trajetória deve ser selecionada
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Comment</name>
+    <message>
+      <location filename="PathComment.py" line="109"/>
+      <source>Comment</source>
+      <translation>Comentário</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="111"/>
+      <source>Add a Comment to your CNC program</source>
+      <translation>Adicionar um comentário ao seu programa CNC</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="117"/>
+      <source>Create a Comment in your CNC program</source>
+      <translation>Criar um comentário no seu programa CNC</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_CompoundExtended</name>
+    <message>
+      <location filename="PathCompoundExtended.py" line="95"/>
+      <source>Compound</source>
+      <translation>Composto</translation>
+    </message>
+    <message>
+      <location filename="PathCompoundExtended.py" line="97"/>
+      <source>Creates a Path Compound object</source>
+      <translation>Cria um objeto de trajetória composta</translation>
+    </message>
+    <message>
+      <location filename="PathCompoundExtended.py" line="104"/>
+      <source>Create Compound</source>
+      <translation>Criar composto</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Copy</name>
+    <message>
+      <location filename="PathCopy.py" line="83"/>
+      <source>Copy</source>
+      <translation>Copiar</translation>
+    </message>
+    <message>
+      <location filename="PathCopy.py" line="85"/>
+      <source>Creates a linked copy of another path</source>
+      <translation>Cria uma cópia vinculada de outra trajetória</translation>
+    </message>
+    <message>
+      <location filename="PathCopy.py" line="92"/>
+      <source>Create Copy</source>
+      <translation>Criar cópia</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Custom</name>
+    <message>
+      <location filename="PathCustom.py" line="69"/>
+      <source>Custom</source>
+      <translation>Personalizado</translation>
+    </message>
+    <message>
+      <location filename="PathCustom.py" line="70"/>
+      <source>Creates a path object based on custom G-code</source>
+      <translation>Cria uma trajetória baseada em código G-Code personalizado</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Dressup</name>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Vestimento</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Cria uma trajetória de vestimento a partir de uma trajetória selecionada</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="110"/>
+      <source>Please select one path object
+</source>
+      <translation>Por favor selecione uma trajetória
+</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="113"/>
+      <source>The selected object is not a path
+</source>
+      <translation>O objeto selecionado não é uma trajetória
+</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="116"/>
+      <source>Please select a Path object</source>
+      <translation>Por favor selecione uma trajetória</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="120"/>
+      <source>Create Dress-up</source>
+      <translation>Criar vestimento</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Drilling</name>
+    <message>
+      <location filename="PathDrilling.py" line="150"/>
+      <source>Drilling</source>
+      <translation>Perfuração</translation>
+    </message>
+    <message>
+      <location filename="PathDrilling.py" line="152"/>
+      <source>Creates a Path Drilling object</source>
+      <translation>Criar uma trajetória de perfuração</translation>
+    </message>
+    <message>
+      <location filename="PathDrilling.py" line="168"/>
+      <source>Create Drilling</source>
+      <translation>Criar perfuração</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_FacePocket</name>
+    <message>
+      <location filename="PathFacePocket.py" line="142"/>
+      <source>Face Pocket</source>
+      <translation>Bolso de face</translation>
+    </message>
+    <message>
+      <location filename="PathFacePocket.py" line="143"/>
+      <source>Creates a pocket inside a loop of edges or a face</source>
+      <translation>Cria um bolso dentro de uma sequência de arestas ou uma face</translation>
+    </message>
+    <message>
+      <location filename="PathFacePocket.py" line="156"/>
+      <source>Please select an edges loop from one object, or a single face
+</source>
+      <translation>Por favor selecione uma sequência de arestas em um objeto, ou uma face única
+</translation>
+    </message>
+    <message>
+      <location filename="PathFacePocket.py" line="161"/>
+      <source>Please select only edges or a single face
+</source>
+      <translation>Por favor selecione apenas arestas ou uma única face
+</translation>
+    </message>
+    <message>
+      <location filename="PathFacePocket.py" line="168"/>
+      <source>The selected edges don't form a loop
+</source>
+      <translation>As arestas selecionadas não formam uma sequência
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_FaceProfile</name>
+    <message>
+      <location filename="PathFaceProfile.py" line="114"/>
+      <source>Face Profile</source>
+      <translation>Perfil de face</translation>
+    </message>
+    <message>
+      <location filename="PathFaceProfile.py" line="115"/>
+      <source>Creates a profile object around a selected face</source>
+      <translation>Cria uma trajetória de perfil em torno de uma face selecionada</translation>
+    </message>
+    <message>
+      <location filename="PathFaceProfile.py" line="125"/>
+      <source>Please select one face or wire
+</source>
+      <translation>Por favor selecionar uma face ou arame
+</translation>
+    </message>
+    <message>
+      <location filename="PathFaceProfile.py" line="128"/>
+      <source>Please select only one face or wire
+</source>
+      <translation>Por favor selecione apenas uma face ou arame
+</translation>
+    </message>
+    <message>
+      <location filename="PathFaceProfile.py" line="131"/>
+      <source>Please select only a face or a wire
+</source>
+      <translation>Por favor selecione apenas uma face ou arame
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Fixture</name>
+    <message>
+      <location filename="PathFixture.py" line="119"/>
+      <source>Fixture</source>
+      <translation>Fixação</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="121"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Criar um ponto de fixação</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="127"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Criar um ponto de fixação</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_FromShape</name>
+    <message>
+      <location filename="PathFromShape.py" line="79"/>
+      <source>Path from a Shape</source>
+      <translation>Forma para trajetória</translation>
+    </message>
+    <message>
+      <location filename="PathFromShape.py" line="81"/>
+      <source>Creates a Path from a wire/curve</source>
+      <translation>Cria uma trajetória a partir de uma curva ou arame</translation>
+    </message>
+    <message>
+      <location filename="PathFromShape.py" line="94"/>
+      <source>Please select exactly one Part-based object
+</source>
+      <translation>Por favor selecione exatamente um objeto de tipo Peça
+</translation>
+    </message>
+    <message>
+      <location filename="PathFromShape.py" line="97"/>
+      <source>Create path from shape</source>
+      <translation>Criar uma trajetória a partir de uma forma</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Hop</name>
+    <message>
+      <location filename="PathHop.py" line="104"/>
+      <source>Hop</source>
+      <translation>Salto</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="106"/>
+      <source>Creates a Path Hop object</source>
+      <translation>Cria uma trajetória de salto</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="116"/>
+      <source>Please select one path object
+</source>
+      <translation>Por favor selecione uma trajetória
+</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="119"/>
+      <source>The selected object is not a path
+</source>
+      <translation>O objeto selecionado não é uma trajetória
+</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="122"/>
+      <source>Create Hop</source>
+      <translation>Criar salto</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Inspect</name>
+    <message>
+      <location filename="PathInspect.py" line="168"/>
+      <source>Inspect G-code</source>
+      <translation>Inspecionar G-Code</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="169"/>
+      <source>Inspects the G-code contents of a path</source>
+      <translation>Inspeciona o código G-Code de uma trajetória</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="181"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Apenas uma trajetória deve ser selecionada
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Kurve</name>
+    <message>
+      <location filename="PathKurve.py" line="176"/>
+      <source>Profile</source>
+      <translation>Perfil</translation>
+    </message>
+    <message>
+      <location filename="PathKurve.py" line="178"/>
+      <source>Creates a Path Profile object from selected edges, using libarea for offset algorithm</source>
+      <translation>Cria uma trajetória de perfil a partir de arestas selecionadas, usando o libarea como algoritmo de offset</translation>
+    </message>
+    <message>
+      <location filename="PathKurve.py" line="184"/>
+      <source>Create a Profile operation using libarea</source>
+      <translation>Criar uma operação de perfil usando libarea</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_LoadTool</name>
+    <message>
+      <location filename="PathLoadTool.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Número da ferramenta a carregar</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Plane</name>
+    <message>
+      <location filename="PathPlane.py" line="114"/>
+      <source>Selection Plane</source>
+      <translation>Plano de seleção</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Criar um plano de seleção</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Pocket</name>
+    <message>
+      <location filename="PathPocket.py" line="265"/>
+      <source>Pocket</source>
+      <translation>Perfuração</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="267"/>
+      <source>Creates a Path Pocket object from a loop of edges or a face</source>
+      <translation>Cria uma trajetória de bolso a partir de uma sequência de arestas ou uma face</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="280"/>
+      <source>Please select an edges loop from one object, or a single face
+</source>
+      <translation>Por favor selecione uma sequência de arestas em um objeto, ou uma face única
+</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="285"/>
+      <source>Please select only edges or a single face
+</source>
+      <translation>Por favor selecione apenas arestas ou uma única face
+</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="292"/>
+      <source>The selected edges don't form a loop
+</source>
+      <translation>As arestas selecionadas não formam uma sequência
+</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="296"/>
+      <source>Create Pocket</source>
+      <translation>Criar bolso</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Post</name>
+    <message>
+      <location filename="PathPost.py" line="45"/>
+      <source>Post Process</source>
+      <translation>Pós-processamento</translation>
+    </message>
+    <message>
+      <location filename="PathPost.py" line="47"/>
+      <source>Post Process the selected Project</source>
+      <translation>Pós-processar o projeto selecionado</translation>
+    </message>
+    <message>
+      <location filename="PathPost.py" line="53"/>
+      <source>Post Process the Selected path(s)</source>
+      <translation>Pós-processar a(s) trajetória(s) selecionada(s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Profile</name>
+    <message>
+      <location filename="PathProfile.py" line="203"/>
+      <source>Profile</source>
+      <translation>Perfil</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Creates a Path Profile object from selected faces</source>
+      <translation>Criar uma trajetória de perfil a partir de faces selecionadas</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="220"/>
+      <source>Create Profile</source>
+      <translation>Criar perfil</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Project</name>
+    <message>
+      <location filename="PathProject.py" line="122"/>
+      <source>Project</source>
+      <translation>Projeto</translation>
+    </message>
+    <message>
+      <location filename="PathProject.py" line="124"/>
+      <source>Creates a Path Project object</source>
+      <translation>Cria um projeto de trajetória</translation>
+    </message>
+    <message>
+      <location filename="PathProject.py" line="135"/>
+      <source>Create Project</source>
+      <translation>Criar Projeto</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_SimpleCopy</name>
+    <message>
+      <location filename="PathSimpleCopy.py" line="62"/>
+      <source>Simple Copy</source>
+      <translation>Cópia simples</translation>
+    </message>
+    <message>
+      <location filename="PathSimpleCopy.py" line="47"/>
+      <source>Creates a non-parametric copy of another path</source>
+      <translation>Cria uma cópia não-paramétricos de outra trajetória</translation>
+    </message>
+    <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Apenas uma trajetória deve ser selecionada
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Stop</name>
     <message>
       <location filename="PathStop.py" line="114"/>
       <source>Stop</source>
@@ -700,57 +887,47 @@
     </message>
   </context>
   <context>
-    <name>PathToolLenOffset</name>
+    <name>Path_ToolChange</name>
+    <message>
+      <location filename="PathToolChange.py" line="63"/>
+      <source>Tool Change</source>
+      <translation>Mudar de ferramenta</translation>
+    </message>
+    <message>
+      <location filename="PathToolChange.py" line="64"/>
+      <source>Changes the current tool</source>
+      <translation>Muda a ferramenta atual</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_ToolLenOffset</name>
     <message>
       <location filename="PathToolLenOffset.py" line="126"/>
       <source>Tool Length Offset</source>
-      <translation>Offset de comprimento da ferramenta</translation>
+      <translation>Ajuste de comprimento da ferramenta</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="128"/>
       <source>Create a Tool Length Offset object</source>
-      <translation>Criar um objeto do offset do comprimento da ferramenta</translation>
+      <translation>Criar um objeto de ajuste do comprimento da ferramenta</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="134"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Criar um plano de seleção</translation>
     </message>
   </context>
   <context>
-    <name>PathToolTableEdit</name>
+    <name>Path_ToolTableEdit</name>
     <message>
       <location filename="PathToolTableEdit.py" line="40"/>
       <source>EditToolTable</source>
-      <translation>Editar Tabela Ferramentas</translation>
+      <translation type="unfinished">EditToolTable</translation>
     </message>
     <message>
       <location filename="PathToolTableEdit.py" line="48"/>
       <source>Edits a Tool Table in a selected Project</source>
-      <translation>Edita a tabela de ferramentas de um projeto selecionado</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathWorkbench</name>
-    <message>
-      <location filename="InitGui.py" line="99"/>
-      <source>Commands for setting up Project</source>
-      <translation>Comandos de configuração de projeto</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="100"/>
-      <source>Prepatory Commands</source>
-      <translation>Comandos preparatórios</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="101"/>
-      <source>Operations</source>
-      <translation>Operações</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="102"/>
-      <source>Commands for grouping,copying, and organizing operations</source>
-      <translation>Comandos para agrupar, copiar e organizar operações</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="108"/>
-      <source>Path</source>
-      <translation>Caminho</translation>
+      <translation type="unfinished">Edits a Tool Table in a selected Project</translation>
     </message>
   </context>
   <context>
@@ -817,7 +994,7 @@
   <context>
     <name>Shape Object</name>
     <message>
-      <location filename="PathFromShape.py" line="41"/>
+      <location filename="PathFromShape.py" line="44"/>
       <source>The base Shape of this toolpath</source>
       <translation>A forma base deste caminho de ferramenta</translation>
     </message>

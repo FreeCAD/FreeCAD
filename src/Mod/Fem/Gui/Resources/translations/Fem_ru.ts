@@ -38,17 +38,17 @@
     <message>
         <location line="+256"/>
         <source>Fem</source>
-        <translation type="unfinished">МКЭ (метод конечных элементов)</translation>
+        <translation>МКЭ (метод конечных элементов)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM displacement constraint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create FEM displacement constraint</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a displacement acting on a face</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
     </message>
 </context>
 <context>
@@ -304,22 +304,22 @@
         <location line="+32"/>
         <location line="+7"/>
         <source>Hz</source>
-        <translation type="unfinished">Hz</translation>
+        <translation>Гц</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Materials</source>
-        <translation type="unfinished">Materials</translation>
+        <translation>Материалы</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Use built-in materials</source>
-        <translation type="unfinished">Use built-in materials</translation>
+        <translation>Использовать встроенные материалы</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Use materials from .FreeCAD/Materials directory</source>
-        <translation type="unfinished">Use materials from .FreeCAD/Materials directory</translation>
+        <translation>Использовать материалы из каталога .FreeCAD/Materials</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -329,7 +329,7 @@
     <message>
         <location line="+55"/>
         <source>User directory</source>
-        <translation type="unfinished">User directory</translation>
+        <translation>Каталог пользователя</translation>
     </message>
 </context>
 <context>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="+639"/>
         <source>Input error</source>
-        <translation type="unfinished">Ошибка ввода</translation>
+        <translation>Ошибка ввода</translation>
     </message>
 </context>
 <context>
@@ -412,7 +412,7 @@
     <message>
         <location line="-26"/>
         <source>Please specify a force greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please specify a force greater than 0</translation>
     </message>
 </context>
 <context>
@@ -434,7 +434,7 @@
     <message>
         <location line="-16"/>
         <source>Please specify a pressure greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please specify a pressure greater than 0</translation>
     </message>
 </context>
 <context>
@@ -527,7 +527,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="-570"/>
         <source>Delete</source>
-        <translation type="unfinished">Удалить</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location line="+343"/>
@@ -535,19 +535,19 @@
         <location line="+32"/>
         <location line="+10"/>
         <source>Selection error</source>
-        <translation type="unfinished">Ошибка выбора</translation>
+        <translation>Ошибка выбора</translation>
     </message>
     <message>
         <location line="-52"/>
         <location line="+42"/>
         <source>Nothing selected!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nothing selected!</translation>
     </message>
     <message>
         <location line="-32"/>
         <location line="+42"/>
         <source>Selected object is not a part!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selected object is not a part!</translation>
     </message>
 </context>
 <context>
@@ -1356,27 +1356,27 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.ui" line="+35"/>
         <source>Prescribed Displacement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prescribed Displacement</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Select multiple face(s), click Add or Remove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Add</source>
-        <translation type="unfinished">Добавить</translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Displacement x</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Displacement x</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1386,7 +1386,7 @@
         <location line="+39"/>
         <location line="+42"/>
         <source>Free</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Free</translation>
     </message>
     <message>
         <location line="-219"/>
@@ -1396,37 +1396,37 @@
         <location line="+39"/>
         <location line="+45"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fixed</translation>
     </message>
     <message>
         <location line="-203"/>
         <source>Displacement y</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Displacement y</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Displacement z</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Displacement z</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Rotations are only valid for Beam and Shell elements.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Rotation x</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation x</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation y</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation y</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation z</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation z</translation>
     </message>
 </context>
 <context>

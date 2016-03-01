@@ -1240,10 +1240,6 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
         <translation>Nume macrocomandă:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Destinație de macrocomandă:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Execută</translation>
     </message>
@@ -1265,15 +1261,15 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Acest fişier există deja.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1805,11 +1801,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Redare ortografică</translation>
+        <translation type="obsolete">Redare ortografică</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Redare din perspectivă</translation>
+        <translation type="obsolete">Redare din perspectivă</translation>
     </message>
     <message>
         <source></source>
@@ -1878,6 +1874,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4856,11 +4860,11 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Ştergeţi macrocomanda</translation>
+        <translation>Ştergeţi macrocomanda</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

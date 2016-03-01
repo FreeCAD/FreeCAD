@@ -38,6 +38,7 @@
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
 #include "DlgExpressionInput.h"
+#include "propertyeditor/PropertyItem.h"
 #include "BitmapFactory.h"
 #include "Command.h"
 #include <Base/Tools.h>

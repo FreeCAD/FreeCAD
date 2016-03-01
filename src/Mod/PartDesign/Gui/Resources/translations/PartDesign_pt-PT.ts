@@ -55,12 +55,12 @@
     <message>
         <location line="+1"/>
         <source>Fillet</source>
-        <translation>Filete/Listel</translation>
+        <translation>Boleado (fillet)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a fillet on an edge, face or body</source>
-        <translation>Criar um filete/listel numa aresta, face ou corpo</translation>
+        <translation>Criar um Boleado (fillet) numa aresta, face ou corpo</translation>
     </message>
 </context>
 <context>
@@ -424,7 +424,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation>Editar filete</translation>
+        <translation>Editar Boleado (fillet)</translation>
     </message>
 </context>
 <context>
@@ -559,7 +559,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="-86"/>
         <source>Fillet parameters</source>
-        <translation>Parâmetros de Filete/Listrel</translation>
+        <translation>Parâmetros de Boleado (fillet)</translation>
     </message>
 </context>
 <context>
@@ -1341,7 +1341,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>O Filete/Listrel só funciona em partes</translation>
+        <translation>O boleado (fillet) funciona somente em peças</translation>
     </message>
     <message>
         <location line="+312"/>
@@ -1351,7 +1351,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Filete impossível nas faces/arestas selecionadas</translation>
+        <translation>Boleado (fillet) impossível nas faces/arestas selecionadas</translation>
     </message>
     <message>
         <location line="+71"/>
@@ -1512,7 +1512,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
         <source>Edit fillet</source>
-        <translation>Editar filete</translation>
+        <translation>Editar Boleado (fillet)</translation>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>

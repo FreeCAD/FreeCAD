@@ -429,7 +429,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimetön</translation>
     </message>
 </context>
 <context>

@@ -136,7 +136,7 @@
     <name>DlgExpressionInput</name>
     <message>
         <source>Formula editor</source>
-        <translation type="unfinished">Formula editor</translation>
+        <translation>Editor vzorců</translation>
     </message>
     <message>
         <source>Result:</source>
@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="unfinished">&amp;Discard</translation>
+        <translation>&amp;Zahodit</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -246,7 +246,7 @@
     </message>
     <message>
         <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-        <translation type="unfinished">%1 help files not found (%2). You might need to install the %1 documentation package.</translation>
+        <translation>%1 soubory nápovědy nebyly nalezeny (%2). Zřejmě potřebujete nainstalovat %1 balík dokumentace.</translation>
     </message>
     <message>
         <source>Unable to launch Qt Assistant (%1)</source>
@@ -257,7 +257,7 @@
     <name>Gui::AutoSaver</name>
     <message>
         <source>Please wait until the AutoRecovery file has been saved...</source>
-        <translation type="unfinished">Please wait until the AutoRecovery file has been saved...</translation>
+        <translation>Prosím počkejte než se uloží soubor Automatické obnovy...</translation>
     </message>
 </context>
 <context>
@@ -1238,10 +1238,6 @@ Please define another shortcut.</source>
         <translation>Název makra:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Umístění makra:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Spustit</translation>
     </message>
@@ -1263,15 +1259,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Uživatelská makra</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Systémová makra</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Umístění uživatelských maker:</translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1312,7 @@ Tento soubor již existuje.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Jen pro čtení</translation>
     </message>
 </context>
 <context>
@@ -1449,7 +1445,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>HTML files</source>
-        <translation type="unfinished">HTML files</translation>
+        <translation>HTML soubory</translation>
     </message>
 </context>
 <context>
@@ -1525,15 +1521,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Clear user settings</source>
-        <translation type="unfinished">Clear user settings</translation>
+        <translation>Vymazat uživatelská nastavení</translation>
     </message>
     <message>
         <source>Do you want to clear all your user settings?</source>
-        <translation type="unfinished">Do you want to clear all your user settings?</translation>
+        <translation>Chcete vymazat všechna uživatelská nastavení?</translation>
     </message>
     <message>
         <source>If you agree all your settings will be cleared.</source>
-        <translation type="unfinished">If you agree all your settings will be cleared.</translation>
+        <translation>Pokud souhlasíte, budou všechna vaše nastavení vymazána.</translation>
     </message>
 </context>
 <context>
@@ -1803,11 +1799,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ortografické vykreslování</translation>
+        <translation type="obsolete">Ortografické vykreslování</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspektivní vykreslování</translation>
+        <translation type="obsolete">Perspektivní vykreslování</translation>
     </message>
     <message>
         <source></source>
@@ -1877,6 +1873,14 @@ Specify another directory, please.</source>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -1886,11 +1890,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Anti-aliasing</source>
-        <translation type="unfinished">Anti-aliasing</translation>
+        <translation>Anti-aliasing</translation>
     </message>
     <message>
         <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-        <translation type="unfinished">Open a new viewer or restart %1 to apply anti-aliasing changes.</translation>
+        <translation>Otevřete nové okno nebo restartujte %1 pro aplikaci změn anti-aliasingu.</translation>
     </message>
 </context>
 <context>
@@ -2140,11 +2144,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Run AutoRecovery at startup</source>
-        <translation type="unfinished">Run AutoRecovery at startup</translation>
+        <translation>Spusti Automatickou obnovu při startu</translation>
     </message>
     <message>
         <source>Save AutoRecovery information every</source>
-        <translation type="unfinished">Save AutoRecovery information every</translation>
+        <translation>Uložit informace Automatické obnovy každých</translation>
     </message>
 </context>
 <context>
@@ -2597,11 +2601,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Enabled workbenches</source>
-        <translation type="unfinished">Enabled workbenches</translation>
+        <translation>Povolené workenche</translation>
     </message>
     <message>
         <source>Disabled workbenches</source>
-        <translation type="unfinished">Disabled workbenches</translation>
+        <translation>Vyřazené workbenche</translation>
     </message>
     <message>
         <source>Move down</source>
@@ -2609,7 +2613,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Přesunout vybranou položku dolů.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Položka bude přesunuta dolů&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
@@ -2617,7 +2621,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Odstranit vybrané workbenche z povolených workenchů&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
@@ -2625,15 +2629,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Přesunout vybrané workbenche mezi povolené workbenche.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Sort enabled workbenches</source>
-        <translation type="unfinished">Sort enabled workbenches</translation>
+        <translation>Třídit povolené workbenche</translation>
     </message>
     <message>
         <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Třídit povolené workbenche&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move up</source>
@@ -2641,15 +2645,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Přesunout vybranou položku nahoru.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Položka bude přesunuta nahoru.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Poznámka:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; Změna bude aktivní po příštím startu FreeCADu&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Add all to enabled workbenches</source>
-        <translation type="unfinished">Add all to enabled workbenches</translation>
+        <translation>Přidat všechny mezi povolené workbenche</translation>
     </message>
 </context>
 <context>
@@ -2663,23 +2667,23 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DocumentRecovery</name>
     <message>
         <source>Document Recovery</source>
-        <translation type="unfinished">Document Recovery</translation>
+        <translation>Obnova dokumentu</translation>
     </message>
     <message>
         <source>Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
 
 The &apos;Status&apos; column shows whether the document could be recovered.</source>
-        <translation type="unfinished">Press &apos;Start Recovery&apos; to start the recovery process of the doument listed below.
+        <translation>Stiskněte &quot;Začít obnovu&quot; pro start procesu obnovy dokumentu níže.
 
-The &apos;Status&apos; column shows whether the document could be recovered.</translation>
+Sloupec &quot;Status&quot; zobrazuje, jestli může být dokument obnoven.</translation>
     </message>
     <message>
         <source>Status of recovered documents:</source>
-        <translation type="unfinished">Status of recovered documents:</translation>
+        <translation>Status obnovených dokumentů:</translation>
     </message>
     <message>
         <source>Document Name</source>
-        <translation type="unfinished">Document Name</translation>
+        <translation>Název dokumentu</translation>
     </message>
     <message>
         <source>Status</source>
@@ -2691,19 +2695,19 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Not yet recovered</source>
-        <translation type="unfinished">Not yet recovered</translation>
+        <translation>Zatím neobnoveno</translation>
     </message>
     <message>
         <source>Unknown problem occurred</source>
-        <translation type="unfinished">Unknown problem occurred</translation>
+        <translation>Objevil se neznámý problém</translation>
     </message>
     <message>
         <source>Failed to recover</source>
-        <translation type="unfinished">Failed to recover</translation>
+        <translation>Obnova selhala</translation>
     </message>
     <message>
         <source>Successfully recovered</source>
-        <translation type="unfinished">Successfully recovered</translation>
+        <translation>Úspěšně obnoveno</translation>
     </message>
     <message>
         <source>Finish</source>
@@ -3120,7 +3124,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Euler angles (XY&apos;Z&apos;&apos;)</source>
-        <translation type="unfinished">Euler angles (XY&apos;Z&apos;&apos;)</translation>
+        <translation>Eulerovy úhly (XY&apos;Z&quot;)</translation>
     </message>
 </context>
 <context>
@@ -3338,7 +3342,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>Plain Text Files</source>
-        <translation type="unfinished">Plain Text Files</translation>
+        <translation>Soubory prostého textu</translation>
     </message>
 </context>
 <context>
@@ -3404,11 +3408,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     </message>
     <message>
         <source>To python console</source>
-        <translation type="unfinished">To python console</translation>
+        <translation>Do konzole pythonu</translation>
     </message>
     <message>
         <source>Reveals this object and its subelements in the python console.</source>
-        <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
+        <translation>Odkrýt tento objekt a jeho subelementy v konzoli pythonu.</translation>
     </message>
 </context>
 <context>
@@ -3525,11 +3529,11 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
         <source>FreeCAD macro</source>
-        <translation type="unfinished">FreeCAD macro</translation>
+        <translation>FreeCAD makro</translation>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF soubor</translation>
     </message>
 </context>
 <context>
@@ -3592,19 +3596,19 @@ Chcete uložit provedené změny?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished">Tap. Or click left mouse button.</translation>
+        <translation>Ťukněte. Nebo stiskněte levé tlačítko myši.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press right mouse button.</source>
-        <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
+        <translation>Táhněte obrazovku dvěma prsty. Nebo stiskněté pravé tlačítko myši.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished">Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+        <translation>Táhněte obrazovku jedním prstem. Nebo stiskněté levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
+        <translation>Štípněte (položte dva prsty na obrazovku a táhněte je od sebe/k sobě). Nebo rolujte prostředním tlačítem myši. Nebo použijte na klávesnici PgUp/PgDown.</translation>
     </message>
 </context>
 <context>
@@ -3631,11 +3635,11 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
         <source>SVG format</source>
-        <translation type="unfinished">SVG format</translation>
+        <translation>SVG formát</translation>
     </message>
     <message>
         <source>PDF format</source>
-        <translation type="unfinished">PDF format</translation>
+        <translation>PDF formát</translation>
     </message>
 </context>
 <context>
@@ -3729,11 +3733,11 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
         <source>Macro file doesn&apos;t exist</source>
-        <translation type="unfinished">Macro file doesn&apos;t exist</translation>
+        <translation>Soubor makra neexistuje</translation>
     </message>
     <message>
         <source>No such macro file: &apos;%1&apos;</source>
-        <translation type="unfinished">No such macro file: &apos;%1&apos;</translation>
+        <translation>Není soubor makra: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -3769,15 +3773,15 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation type="unfinished">There is a rendering issue on MacOS.</translation>
+        <translation>Na MacOS je problém s vykreslováním.</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
-        <translation type="unfinished">See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</translation>
+        <translation>Podívejte se na &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; wiki&lt;/a&gt; pro více informací</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished">Don&apos;t show again</translation>
+        <translation>Znovu nezobrazovat</translation>
     </message>
 </context>
 <context>
@@ -3875,19 +3879,19 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
         <source>Tap. Or click left mouse button.</source>
-        <translation type="unfinished">Tap. Or click left mouse button.</translation>
+        <translation>Ťukněte. Nebo stiskněte levé tlačítko myši.</translation>
     </message>
     <message>
         <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-        <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
+        <translation>Táhněte obrazovku dvěma prsty. Nebo stiskněte ALT + prostřední tlačítko myši.</translation>
     </message>
     <message>
         <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-        <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+        <translation>Táhněte obrazovku jedním prstem. Nebo stiskněte ALT + levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
+        <translation>Štípněte (položte dva prsty na obrazovku a táhněte je od sebe/k sobě). Nebo rolujte prostředním tlačítkem myši. Nebo stiskněte ALT + pravé tlačítko myši. Nebo použijte PgUp/PgDown na klávesnici.</translation>
     </message>
 </context>
 <context>
@@ -3906,7 +3910,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     </message>
     <message>
         <source>Press CTRL and middle mouse button</source>
-        <translation type="unfinished">Press CTRL and middle mouse button</translation>
+        <translation>Stiskněte CTRL a prostřední tlačítko myši</translation>
     </message>
     <message>
         <source>Press CTRL and right mouse button</source>
@@ -4073,7 +4077,7 @@ Chcete průvodce ukončit bez uložení dat?</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
 </context>
 <context>
@@ -4337,15 +4341,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF soubor</translation>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Otevření souboru selhalo</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>Soubor &quot;%1&quot; nelze otevřít pro zápis.</translation>
     </message>
 </context>
 <context>
@@ -4842,7 +4846,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
         <source>Frozen views</source>
-        <translation type="unfinished">Frozen views</translation>
+        <translation>Zmražené pohledy</translation>
     </message>
     <message>
         <source>Saving document failed</source>
@@ -4854,11 +4858,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Odstranit makro</translation>
+        <translation>Odstranit makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Není povoleno mazat systémová makra</translation>
     </message>
 </context>
 <context>
@@ -5015,7 +5019,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
         <source>Close all windows</source>
-        <translation>Zavřete všechna okna</translation>
+        <translation>Zavřít všechna okna</translation>
     </message>
 </context>
 <context>
@@ -5195,7 +5199,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
-        <translation type="unfinished">List of available dock panels</translation>
+        <translation>Seznam dostupných dokovaných panelů</translation>
     </message>
 </context>
 <context>
@@ -5846,11 +5850,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="unfinished">Revert</translation>
+        <translation>Vrátit</translation>
     </message>
     <message>
         <source>Reverts to the saved version of this file</source>
-        <translation type="unfinished">Reverts to the saved version of this file</translation>
+        <translation>Vrátit se k uložené verzi tohoto souboru</translation>
     </message>
 </context>
 <context>
@@ -5895,7 +5899,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
         <source>Save a copy of the active document under a new file name</source>
-        <translation type="unfinished">Save a copy of the active document under a new file name</translation>
+        <translation>Uložit kopii aktivního dokumento pod novým názvem</translation>
     </message>
 </context>
 <context>

@@ -412,7 +412,7 @@
     <message>
         <location line="+1"/>
         <source>Make compound</source>
-        <translation>複合体</translation>
+        <translation>複合体を作成</translation>
     </message>
     <message>
         <location line="+1"/>

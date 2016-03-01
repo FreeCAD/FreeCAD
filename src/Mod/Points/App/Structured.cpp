@@ -32,13 +32,13 @@
 #include <Base/Exception.h>
 
 
-#include "ViewFeature.h"
+#include "Structured.h"
 
 using namespace Points;
 
 
 //===========================================================================
-// ViewFeature
+// Structured
 //===========================================================================
 /*
 import Points
@@ -55,34 +55,46 @@ for i in range(21):
 
 p.addPoints(pts)
 doc=App.ActiveDocument
-pts=doc.addObject('Points::ViewFeature','View')
+pts=doc.addObject('Points::Structured','View')
 pts.Points=p
 pts.Width=21
 pts.Height=21
 */
 
-PROPERTY_SOURCE(Points::ViewFeature, Points::Feature)
+// ---------------------------------------------------------
 
-ViewFeature::ViewFeature()
+PROPERTY_SOURCE(Points::Structured, Points::Feature)
+
+Structured::Structured()
 {
-    App::PropertyType type = static_cast<App::PropertyType>(App::Prop_None);
-    ADD_PROPERTY_TYPE(Width ,(0), "View", type, "The width of the point view");
-    ADD_PROPERTY_TYPE(Height,(0), "View", type, "The height of the point view");
-    ADD_PROPERTY_TYPE(Direction ,(Base::Vector3d(0,0,1)), "View", type, "The direction of the point view");
-
-    Width.setStatus(App::Property::ReadOnly, true);
-    Height.setStatus(App::Property::ReadOnly, true);
+//    App::PropertyType type = static_cast<App::PropertyType>(App::Prop_None);
+    App::PropertyType type = static_cast<App::PropertyType>(App::Prop_ReadOnly);
+    ADD_PROPERTY_TYPE(Width,(1),"Structured points", type, "Width of the image");
+    ADD_PROPERTY_TYPE(Height,(1),"Structured points", type, "Height of the image");
+    //Width.setStatus(App::Property::ReadOnly, true);
+    //Height.setStatus(App::Property::ReadOnly, true);
 }
 
-ViewFeature::~ViewFeature()
+Structured::~Structured()
 {
 }
 
-App::DocumentObjectExecReturn *ViewFeature::execute(void)
+App::DocumentObjectExecReturn *Structured::execute(void)
 {
     std::size_t size = Height.getValue() * Width.getValue();
     if (size != Points.getValue().size())
         throw Base::ValueError("(Width * Height) doesn't match with number of points");
     this->Points.touch();
     return App::DocumentObject::StdReturn;
+}
+
+// ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Points::StructuredCustom, Points::Structured)
+/// @endcond
+
+// explicit template instantiation
+template class PointsExport FeatureCustomT<Points::Structured>;
 }

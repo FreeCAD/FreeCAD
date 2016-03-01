@@ -41,7 +41,7 @@
     <message>
       <location filename="StartPage.py" line="60"/>
       <source>Load a PartDesign example</source>
-      <translation>Load a PartDesign example</translation>
+      <translation>Carregar um exemplo de desenho de peças</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="61"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="StartPage.py" line="62"/>
       <source>Load a Robot simulation example</source>
-      <translation>Load a Robot simulation example</translation>
+      <translation>Carregar um exemplo de simulação de robot</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="63"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="StartPage.py" line="69"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>A área de trabalho &lt;b&gt; Desenhar Peças &lt;/b&gt; está programada para criar peças complexas baseadas em esboços a 2D combinados. Use isto para desenhar formas em 2D, junte alguns dos elementos e extraia-os para formar peças em 3D.</translation>
+      <translation>A bancada de trabalho &lt;b&gt; PartDesign (Desenho de Peças) &lt;/b&gt; foi desenhada para criar peças complexas baseadas em esboços a 2D com restrições. Use-a para desenhar formas em 2D, restrinja alguns dos elementos e extruda-os para formar peças em 3D.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="70"/>
@@ -101,12 +101,12 @@
     <message>
       <location filename="StartPage.py" line="72"/>
       <source>Designing architectural elements</source>
-      <translation>Desenho de Elementos Arquiteturais</translation>
+      <translation>Desenhar Elementos de Arquitetura</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="73"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
-      <translation>A área de trabalho &lt;b&gt; Desenho Arquitetural &lt;/b&gt; está programado especialmente, para trabalhar com elementos arquiteturais, tais como, paredes e janelas. Comece por desenhar formas em 2D, e use-as como guias para criar objetos arquiteturais.</translation>
+      <translation>A bancada de trabalho &lt;b&gt; Arquitetura &lt;/b&gt; está especialmente concebida, para trabalhar com elementos de arquitetura, tais como, paredes e janelas. Comece por desenhar formas em 2D, e use-as como base para criar objetos de arquitetura.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="StartPage.py" line="76"/>
       <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>A &lt;b&gt;Mesa de trabalho Malha&lt;/b&gt; é usada para trabalhar com objetos Malha. Malhas são objetos 3D mais simples do que os objetos Peça, mas muitas vezes são mais fáceis de importar e exportar de/para outros aplicativos.</translation>
+      <translation>A &lt;b&gt;bancada de trabalho Malha&lt;/b&gt; é usada para trabalhar com objetos Malha. Malhas são objetos 3D mais simples do que os objetos Peça, mas muitas vezes são mais fáceis de importar e exportar de/para outros aplicativos.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="77"/>
@@ -131,12 +131,12 @@
     <message>
       <location filename="StartPage.py" line="79"/>
       <source>The complete workbench</source>
-      <translation>A Área de Trabalho Completa</translation>
+      <translation>A bancada de trabalho Completa</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="80"/>
       <source>FreeCAD Complete workbench</source>
-      <translation>Área de Trabalho Completa do FreeCAD</translation>
+      <translation>Bancada de Trabalho Completa do FreeCAD</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="82"/>
@@ -231,12 +231,12 @@
     <message>
       <location filename="StartPage.py" line="98"/>
       <source>Getting started</source>
-      <translation>Iniciação ...</translation>
+      <translation>Por onde começar</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="99"/>
       <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>A interface do FreeCAD está dividida em Áreas de Trabalho, que são conjuntos de ferramentas apropriadas para uma tarefa especifica. Pode iniciar com uma área de trabalho desta lista, ou com uma área de trabalho completa, com algumas das ferramentas mais usadas, obtidas de outras áreas de trabalho. Clique para ler mais sobre as áreas de trabalho no site da Web do FreeCAD.</translation>
+      <translation>A interface do FreeCAD está dividida em bancadas de trabalho, que são conjuntos de ferramentas apropriadas para uma tarefa especifica. Pode iniciar com uma bancada de trabalho desta lista, ou com a bancada de trabalho completa, com algumas das ferramentas mais usadas, obtidas de outras bancada de trabalho. Clique para ler mais sobre as bancadas de trabalho no site da Web do FreeCAD.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="101"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="StartPage.py" line="104"/>
       <source>Load an Architectural example model</source>
-      <translation>Carregar um modelo de exemplo de arquitectura</translation>
+      <translation>Carregar um exemplo de modelo de arquitectura</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="87"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="StartPage.py" line="96"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>A seção do site da Web do FreeCAd, dedicada ao "python scripting", com exemplos, explicações e, comandos API.</translation>
+      <translation>A seção do site da Web do FreeCAD, dedicada ao "python scripting", com exemplos, explicações e, comandos API.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="100"/>
@@ -297,6 +297,11 @@
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
       <translation>Há uma nova versão do FreeCAD disponível.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Carregar um exemplo de análise FEM (Finite Element Method)</translation>
     </message>
   </context>
 </TS>

@@ -239,6 +239,7 @@ class DraftToolBar:
         self.fillmode = Draft.getParam("fillmode",False)
         self.mask = None
         self.alock = False
+        self.angle = None
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         self.FORMAT = makeFormatSpec(self.DECIMALS,'Length')
         self.AFORMAT = makeFormatSpec(self.DECIMALS,'Angle')
@@ -760,6 +761,7 @@ class DraftToolBar:
         self.labelangle.show()
         self.angleValue.show()
         self.angleLock.show()
+        self.angleLock.setChecked(False)
 
     def hideXYZ(self):
         ''' turn off all the point entry widgets '''
@@ -1366,15 +1368,15 @@ class DraftToolBar:
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.endswith("i"):
+        elif txt.endswith("I"):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.endswith("f"):
+        elif txt.endswith("F"):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.endswith("t"):
+        elif txt.endswith("T"):
             self.toggleContinue()
             spec = True
         elif txt.endswith("w"):
@@ -1413,7 +1415,8 @@ class DraftToolBar:
                 self.closeLine()
             elif self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
-        elif txt.endswith("n"):
+            spec = True
+        elif txt.endswith("N"):
             if self.continueCmd.isVisible():
                 self.continueCmd.setChecked(not self.continueCmd.isChecked())
             spec = True
@@ -1483,27 +1486,26 @@ class DraftToolBar:
                     dp = plane.getLocalCoords(point)
 
             # set widgets
-            if self.mask in ['y','z']:
-                self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            else:
-                if dp:
+            if dp:
+                if self.mask in ['y','z']:
                     self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            if self.mask in ['x','z']:
-                self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            else:
-                if dp:
+                else:
+                    self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
+                if self.mask in ['x','z']:
                     self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            if self.mask in ['x','y']:
-                self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
-            else:
-                if dp:
+                else:
+                    self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
+                if self.mask in ['x','y']:
+                    self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
+                else:
                     self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
                     
             # set length and angle
             if last and dp and plane:
                 self.lengthValue.setText(displayExternal(dp.Length,self.DECIMALS,'Length'))
                 a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
-                self.angleValue.setText(displayExternal(a,self.DECIMALS,'Angle'))
+                if not self.angleLock.isChecked():
+                    self.angleValue.setText(displayExternal(a,self.DECIMALS,'Angle'))
                 if not mask:
                     # automask
                     if a in [0,180,-180]:
@@ -1740,30 +1742,32 @@ class DraftToolBar:
         self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
         self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
         self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
-        self.xValue.setFocus()
-        self.xValue.selectAll()
         
     def changeAngleValue(self,d):
         v = FreeCAD.Vector(self.x,self.y,self.z)
         a = DraftVecUtils.angle(v,FreeCAD.DraftWorkingPlane.u,FreeCAD.DraftWorkingPlane.axis)
         a = math.radians(d)+a
         v=DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
+        self.angle = v
         self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
         self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
         self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
-        self.xValue.setFocus()
-        self.xValue.selectAll()
+        if self.angleLock.isChecked():
+            FreeCADGui.Snapper.setAngle(self.angle)
         
-    def toggleAngle(self,bool):
+    def toggleAngle(self,b):
         self.alock = self.angleLock.isChecked()
-        FreeCADGui.Snapper.setAngle()
-            
-            
+        if b:
+            FreeCADGui.Snapper.setAngle(self.angle)
+        else:
+            FreeCADGui.Snapper.setAngle()
+            self.angle = None
+
 
 #---------------------------------------------------------------------------
 # TaskView operations
 #---------------------------------------------------------------------------
-	                
+
     def setWatchers(self):
         class DraftCreateWatcher:
             def __init__(self):

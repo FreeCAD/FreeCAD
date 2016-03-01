@@ -48,7 +48,7 @@
 #include "Points.h"
 #include "PointsPy.h"
 #include "PointsAlgos.h"
-#include "PointsFeature.h"
+#include "Structured.h"
 #include "Properties.h"
 
 namespace Points {
@@ -104,8 +104,28 @@ private:
             reader->read(EncodedName);
 
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+
+            Points::Feature *pcFeature = 0;
             if (reader->hasProperties()) {
-                Points::FeatureCustom *pcFeature = new Points::FeatureCustom();
+                // Scattered or structured points?
+                if (reader->isStructured()) {
+                    pcFeature = new Points::StructuredCustom();
+
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Width"));
+                    if (width) {
+                        width->setValue(reader->getWidth());
+                    }
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Height"));
+                    if (height) {
+                        height->setValue(reader->getHeight());
+                    }
+                }
+                else {
+                    pcFeature = new Points::FeatureCustom();
+                }
+
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {
@@ -135,12 +155,14 @@ private:
                 // delayed adding of the points feature
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
             else {
                 Points::Feature *pcFeature = static_cast<Points::Feature*>
                     (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
                 pcFeature->Points.setValue(reader->getPoints());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
         }
         catch (const Base::Exception& e) {
@@ -190,8 +212,27 @@ private:
                 pcDoc = App::GetApplication().newDocument(DocName);
             }
 
+            Points::Feature *pcFeature = 0;
             if (reader->hasProperties()) {
-                Points::FeatureCustom *pcFeature = new Points::FeatureCustom();
+                // Scattered or structured points?
+                if (reader->isStructured()) {
+                    pcFeature = new Points::StructuredCustom();
+
+                    App::PropertyInteger* width = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Width"));
+                    if (width) {
+                        width->setValue(reader->getWidth());
+                    }
+                    App::PropertyInteger* height = static_cast<App::PropertyInteger*>
+                        (pcFeature->getPropertyByName("Height"));
+                    if (height) {
+                        height->setValue(reader->getHeight());
+                    }
+                }
+                else {
+                    pcFeature = new Points::FeatureCustom();
+                }
+
                 pcFeature->Points.setValue(reader->getPoints());
                 // add gray values
                 if (reader->hasIntensities()) {
@@ -221,12 +262,14 @@ private:
                 // delayed adding of the points feature
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
             else {
                 Points::Feature *pcFeature = static_cast<Points::Feature*>
                     (pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
                 pcFeature->Points.setValue(reader->getPoints());
                 pcDoc->recomputeFeature(pcFeature);
+                pcFeature->purgeTouched();
             }
         }
         catch (const Base::Exception& e) {

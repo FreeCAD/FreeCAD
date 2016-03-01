@@ -44,6 +44,10 @@
 #include "ApproxSurface.h"
 #include "BSplineFitting.h"
 #include "SurfaceTriangulation.h"
+#if defined(HAVE_PCL_FILTERS)
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/point_types.h>
+#endif
 
 using namespace Reen;
 
@@ -81,6 +85,11 @@ public:
 #if defined(HAVE_PCL_OPENNURBS)
         add_keyword_method("fitBSpline",&Module::fitBSpline,
             "fitBSpline(PointKernel)."
+        );
+#endif
+#if defined(HAVE_PCL_FILTERS)
+        add_keyword_method("filterVoxelGrid",&Module::filterVoxelGrid,
+            "filterVoxelGrid(dim)."
         );
 #endif
         initialize("This module is the ReverseEngineering module."); // register with Python
@@ -517,6 +526,50 @@ Mesh.show(m)
         }
 
         throw Py::RuntimeError("Computation of B-Spline surface failed");
+    }
+#endif
+#if defined(HAVE_PCL_FILTERS)
+    Py::Object filterVoxelGrid(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        double voxDimX = 0;
+        double voxDimY = 0;
+        double voxDimZ = 0;
+
+        static char* kwds_voxel[] = {"Points", "DimX", "DimY", "DimZ", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|dd", kwds_voxel,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &voxDimX, &voxDimY, &voxDimZ))
+            throw Py::Exception();
+
+        if (voxDimY == 0)
+            voxDimY = voxDimX;
+
+        if (voxDimZ == 0)
+            voxDimZ = voxDimX;
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+        cloud->reserve(points->size());
+        for (Points::PointKernel::const_iterator it = points->begin(); it != points->end(); ++it) {
+            cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
+        }
+
+        // Create the filtering object
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_downSmpl (new pcl::PointCloud<pcl::PointXYZ>);
+        pcl::VoxelGrid<pcl::PointXYZ> voxG;
+        voxG.setInputCloud (cloud);
+        voxG.setLeafSize (voxDimX, voxDimY, voxDimZ);
+        voxG.filter (*cloud_downSmpl);
+
+        Points::PointKernel* points_sample = new Points::PointKernel();
+        points_sample->reserve(cloud_downSmpl->size());
+        for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_downSmpl->begin();it!=cloud_downSmpl->end();++it) {
+            points_sample->push_back(Base::Vector3d(it->x,it->y,it->z));
+        }
+
+        return Py::asObject(new Points::PointsPy(points_sample));
     }
 #endif
 };

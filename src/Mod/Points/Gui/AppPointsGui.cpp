@@ -87,9 +87,11 @@ PyMODINIT_FUNC initPointsGui()
     // instantiating the commands
     CreatePointsCommands();
 
-    PointsGui::ViewProviderPoints::init();
-    PointsGui::ViewProviderPython::init();
-    PointsGui::Workbench         ::init();
+    PointsGui::ViewProviderPoints       ::init();
+    PointsGui::ViewProviderScattered    ::init();
+    PointsGui::ViewProviderStructured   ::init();
+    PointsGui::ViewProviderPython       ::init();
+    PointsGui::Workbench                ::init();
     Gui::ViewProviderBuilder::add(
         Points::PropertyPointKernel::getClassTypeId(),
         PointsGui::ViewProviderPoints::getClassTypeId());

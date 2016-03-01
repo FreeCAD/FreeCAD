@@ -38,17 +38,17 @@
     <message>
         <location line="+256"/>
         <source>Fem</source>
-        <translation type="unfinished">FEM</translation>
+        <translation>FEM</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM displacement constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear restricción de desplazamiento FEM</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a displacement acting on a face</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear restricción FEM para un desplazamiento actuando en una cara</translation>
     </message>
 </context>
 <context>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="+639"/>
         <source>Input error</source>
-        <translation type="unfinished">Error de entrada</translation>
+        <translation>Error de entrada</translation>
     </message>
 </context>
 <context>
@@ -412,7 +412,7 @@
     <message>
         <location line="-26"/>
         <source>Please specify a force greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor especifique una fuerza mas grande que 0</translation>
     </message>
 </context>
 <context>
@@ -434,7 +434,7 @@
     <message>
         <location line="-16"/>
         <source>Please specify a pressure greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor especifique una presión mas grande que 0</translation>
     </message>
 </context>
 <context>
@@ -527,7 +527,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="-570"/>
         <source>Delete</source>
-        <translation type="unfinished">Borrar</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <location line="+343"/>
@@ -535,19 +535,19 @@
         <location line="+32"/>
         <location line="+10"/>
         <source>Selection error</source>
-        <translation type="unfinished">Error de selección</translation>
+        <translation>Error de selección</translation>
     </message>
     <message>
         <location line="-52"/>
         <location line="+42"/>
         <source>Nothing selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nada seleccionado!</translation>
     </message>
     <message>
         <location line="-32"/>
         <location line="+42"/>
         <source>Selected object is not a part!</source>
-        <translation type="unfinished"></translation>
+        <translation>El objeto seleccionado no es una pieza!</translation>
     </message>
 </context>
 <context>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="+16"/>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1356,27 +1356,27 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.ui" line="+35"/>
         <source>Prescribed Displacement</source>
-        <translation type="unfinished"></translation>
+        <translation>Desplazamiento Prescrito</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Select multiple face(s), click Add or Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccione cara(s) múltiple(s), haga click en Agregar o Remover</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Add</source>
-        <translation type="unfinished">Añadir</translation>
+        <translation>Añadir</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitar</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Displacement x</source>
-        <translation type="unfinished"></translation>
+        <translation>Desplazamiento en x</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1386,7 +1386,7 @@
         <location line="+39"/>
         <location line="+42"/>
         <source>Free</source>
-        <translation type="unfinished"></translation>
+        <translation>Liberar</translation>
     </message>
     <message>
         <location line="-219"/>
@@ -1396,37 +1396,37 @@
         <location line="+39"/>
         <location line="+45"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation>Fijo</translation>
     </message>
     <message>
         <location line="-203"/>
         <source>Displacement y</source>
-        <translation type="unfinished"></translation>
+        <translation>Desplazamiento en y</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Displacement z</source>
-        <translation type="unfinished"></translation>
+        <translation>Desplazamiento en z</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Rotations are only valid for Beam and Shell elements.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Rotation x</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotación x</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation y</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotación y</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation z</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotación z</translation>
     </message>
 </context>
 <context>

@@ -1241,10 +1241,6 @@ Definujte iného zástupcu, prosím.</translation>
         <translation>Názov makra:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Umiestnenie makra:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Vykonať</translation>
     </message>
@@ -1266,15 +1262,15 @@ Definujte iného zástupcu, prosím.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1319,7 +1315,7 @@ Tento súbor už existuje.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1808,11 +1804,11 @@ Určite iný adresár.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ortografické vykresľovanie</translation>
+        <translation type="obsolete">Ortografické vykresľovanie</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspektívne vykresľovanie</translation>
+        <translation type="obsolete">Perspektívne vykresľovanie</translation>
     </message>
     <message>
         <source></source>
@@ -1881,6 +1877,14 @@ Určite iný adresár.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4865,11 +4869,11 @@ Buďte opatrní pri klikaní na body.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Odstrániť makro</translation>
+        <translation>Odstrániť makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

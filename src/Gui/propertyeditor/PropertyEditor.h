@@ -41,9 +41,25 @@ namespace Gui {
 namespace PropertyEditor {
 
 class PropertyModel;
+/*!
+ Put this into the .qss file after Gui--PropertyEditor--PropertyEditor
+ 
+ Gui--PropertyEditor--PropertyEditor
+ {
+    qproperty-groupBackground: gray;
+    qproperty-groupTextColor: white;
+ }
+
+ See also: https://man42.net/blog/2011/09/qt-4-7-modify-a-custom-q_property-with-a-qt-style-sheet/
+
+*/
+
 class PropertyEditor : public QTreeView
 {
     Q_OBJECT
+
+    Q_PROPERTY(QBrush groupBackground READ groupBackground WRITE setGroupBackground DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor groupTextColor READ groupTextColor WRITE setGroupTextColor DESIGNABLE true SCRIPTABLE true)
 
 public:
     PropertyEditor(QWidget *parent = 0);
@@ -56,6 +72,11 @@ public:
     void removeProperty(const App::Property&);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
+
+    QBrush groupBackground() const;
+    void setGroupBackground(const QBrush& c);
+    QColor groupTextColor() const;
+    void setGroupTextColor(const QColor& c);
 
 protected:
     virtual void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
@@ -72,6 +93,8 @@ private:
     bool autoupdate;
     bool committing;
     bool delaybuild;
+    QColor groupColor;
+    QBrush background;
 };
 
 } //namespace PropertyEditor

@@ -674,13 +674,21 @@ void TopoShape::importBrep(std::istream& str)
 
 void TopoShape::importBinary(std::istream& str)
 {
-    BinTools_ShapeSet set;
-    set.Read(str);
-    Standard_Integer index;
-    BinTools::GetInteger(str, index);
+    BinTools_ShapeSet theShapeSet;
+    theShapeSet.Read(str);
+    Standard_Integer shapeId=0, locId=0, orient=0;
+    BinTools::GetInteger(str, shapeId);
+    if (shapeId <= 0 || shapeId > theShapeSet.NbShapes())
+        return;
+
+    BinTools::GetInteger(str, locId);
+    BinTools::GetInteger(str, orient);
+    TopAbs_Orientation anOrient = static_cast<TopAbs_Orientation>(orient);
 
     try {
-        this->_Shape = set.Shape(index);
+        this->_Shape = theShapeSet.Shape(shapeId);
+        this->_Shape.Location(theShapeSet.Locations().Location (locId));
+        this->_Shape.Orientation (anOrient);
     }
     catch (Standard_Failure) {
         throw Base::RuntimeError("Failed to read shape from binary stream");
@@ -777,10 +785,25 @@ void TopoShape::exportBrep(std::ostream& out) const
 
 void TopoShape::exportBinary(std::ostream& out)
 {
-    BinTools_ShapeSet set;
-    Standard_Integer index = set.Add(this->_Shape);
-    set.Write(out);
-    BinTools::PutInteger(out, index);
+    // An example how to use BinTools_ShapeSet can be found in BinMNaming_NamedShapeDriver.cxx
+    BinTools_ShapeSet theShapeSet;
+    if (this->_Shape.IsNull()) {
+        theShapeSet.Add(this->_Shape);
+        theShapeSet.Write(out);
+        BinTools::PutInteger(out, -1);
+        BinTools::PutInteger(out, -1);
+        BinTools::PutInteger(out, -1);
+    }
+    else {
+        Standard_Integer shapeId = theShapeSet.Add(this->_Shape);
+        Standard_Integer locId = theShapeSet.Locations().Index(this->_Shape.Location());
+        Standard_Integer orient = static_cast<int>(this->_Shape.Orientation());
+
+        theShapeSet.Write(out);
+        BinTools::PutInteger(out, shapeId);
+        BinTools::PutInteger(out, locId);
+        BinTools::PutInteger(out, orient);
+    }
 }
 
 void TopoShape::dump(std::ostream& out) const

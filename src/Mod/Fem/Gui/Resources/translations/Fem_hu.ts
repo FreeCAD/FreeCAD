@@ -38,17 +38,17 @@
     <message>
         <location line="+256"/>
         <source>Fem</source>
-        <translation type="unfinished">Végeselemes analízis FEM</translation>
+        <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM displacement constraint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create FEM displacement constraint</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a displacement acting on a face</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
     </message>
 </context>
 <context>
@@ -258,7 +258,7 @@
     <message>
         <location line="+16"/>
         <source>Working directory</source>
-        <translation type="unfinished">Working directory</translation>
+        <translation>Munkakönyvtár</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -273,12 +273,12 @@
     <message>
         <location line="+10"/>
         <source>Static</source>
-        <translation type="unfinished">Static</translation>
+        <translation>Statikus</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Frequency</source>
-        <translation type="unfinished">Frequency</translation>
+        <translation>Gyakoriság</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -309,7 +309,7 @@
     <message>
         <location line="+12"/>
         <source>Materials</source>
-        <translation type="unfinished">Materials</translation>
+        <translation>Anyagok</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="+639"/>
         <source>Input error</source>
-        <translation type="unfinished">Bemeneti hiba</translation>
+        <translation>Bemeneti hiba</translation>
     </message>
 </context>
 <context>
@@ -412,7 +412,7 @@
     <message>
         <location line="-26"/>
         <source>Please specify a force greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please specify a force greater than 0</translation>
     </message>
 </context>
 <context>
@@ -434,7 +434,7 @@
     <message>
         <location line="-16"/>
         <source>Please specify a pressure greater than 0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please specify a pressure greater than 0</translation>
     </message>
 </context>
 <context>
@@ -527,7 +527,7 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="-570"/>
         <source>Delete</source>
-        <translation type="unfinished">Törlés</translation>
+        <translation>Törlés</translation>
     </message>
     <message>
         <location line="+343"/>
@@ -541,13 +541,13 @@
         <location line="-52"/>
         <location line="+42"/>
         <source>Nothing selected!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nothing selected!</translation>
     </message>
     <message>
         <location line="-32"/>
         <location line="+42"/>
         <source>Selected object is not a part!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selected object is not a part!</translation>
     </message>
 </context>
 <context>
@@ -764,19 +764,19 @@
         <location line="+10"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+17"/>
         <source>References</source>
-        <translation type="unfinished">References</translation>
+        <translation>Hivatkozások</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+6"/>
         <source>Leave references blank </source>
-        <translation type="unfinished">Leave references blank </translation>
+        <translation>Hagyja üresen a referenciákat </translation>
     </message>
     <message>
         <location line="+7"/>
         <location filename="../../../TaskPanelFemShellThickness.ui" line="+7"/>
         <source>to choose all remaining shapes</source>
-        <translation type="unfinished">to choose all remaining shapes</translation>
+        <translation>minden fennmaradó alakzat kiválasztása</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -800,12 +800,12 @@
     <message>
         <location filename="../../../TaskPanelFemSolverCalculix.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanical analysis</translation>
+        <translation>Mechanikai analízis</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Working directory</source>
-        <translation type="unfinished">Working directory</translation>
+        <translation>Munkakönyvtár</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -815,27 +815,27 @@
     <message>
         <location line="+10"/>
         <source>Analysis type</source>
-        <translation type="unfinished">Analysis type</translation>
+        <translation>Elemzés típusa</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Static</source>
-        <translation type="unfinished">Static</translation>
+        <translation>Statikus</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Frequency</source>
-        <translation type="unfinished">Frequency</translation>
+        <translation>Gyakoriság</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Write .inp file</source>
-        <translation type="unfinished">Write .inp file</translation>
+        <translation>.Inp fájl írása</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit .inp file</source>
-        <translation type="unfinished">Edit .inp file</translation>
+        <translation>.Inp fájl szerkesztése</translation>
     </message>
     <message>
         <source>Write Calculix Input File</source>
@@ -853,12 +853,12 @@
     <message>
         <location line="+21"/>
         <source>Time:</source>
-        <translation type="unfinished">Time:</translation>
+        <translation>Idő:</translation>
     </message>
     <message>
         <location filename="../../../TaskPanelMechanicalMaterial.ui" line="+14"/>
         <source>Mechanical material</source>
-        <translation type="unfinished">Mechanical material</translation>
+        <translation>Mechanikus anyag</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -868,22 +868,22 @@
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">choose...</translation>
+        <translation>válasszon...</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>References</source>
-        <translation type="unfinished">References</translation>
+        <translation>Hivatkozások</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Leave references blank </source>
-        <translation type="unfinished">Leave references blank </translation>
+        <translation>Hagyja üresen a referenciákat </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>to choose all remaining shapes</source>
-        <translation type="unfinished">to choose all remaining shapes</translation>
+        <translation>minden fennmaradó alakzat kiválasztása</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -893,17 +893,17 @@
     <message>
         <location line="+19"/>
         <source>Properties</source>
-        <translation type="unfinished">Properties</translation>
+        <translation>Tulajdonságok</translation>
     </message>
     <message>
         <location line="+145"/>
         <source>External material resources</source>
-        <translation type="unfinished">External material resources</translation>
+        <translation>Külső anyag típusú erőforrások</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>MatWeb database...</source>
-        <translation type="unfinished">MatWeb database...</translation>
+        <translation>MatWeb adatbázis...</translation>
     </message>
     <message>
         <location line="-140"/>
@@ -922,7 +922,7 @@
     <message>
         <location line="-145"/>
         <source>Material Description</source>
-        <translation type="unfinished">Material Description</translation>
+        <translation>Az anyag leírás</translation>
     </message>
     <message>
         <source>Pa</source>
@@ -939,12 +939,12 @@
     <message>
         <location filename="../../Command.cpp" line="-595"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">No active Analysis</translation>
+        <translation>Nincs aktív elemzés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">You need to create or activate a Analysis</translation>
+        <translation>Létre kell hozni, vagy aktiválni kell egy elemzést</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -1356,27 +1356,27 @@
     <message>
         <location filename="../../TaskFemConstraintDisplacement.ui" line="+35"/>
         <source>Prescribed Displacement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prescribed Displacement</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Select multiple face(s), click Add or Remove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Add</source>
-        <translation type="unfinished">Hozzáad</translation>
+        <translation>Hozzáad</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Törlés</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Displacement x</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Displacement x</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1386,7 +1386,7 @@
         <location line="+39"/>
         <location line="+42"/>
         <source>Free</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Free</translation>
     </message>
     <message>
         <location line="-219"/>
@@ -1396,37 +1396,37 @@
         <location line="+39"/>
         <location line="+45"/>
         <source>Fixed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fixed</translation>
     </message>
     <message>
         <location line="-203"/>
         <source>Displacement y</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Displacement y</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Displacement z</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Displacement z</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Rotations are only valid for Beam and Shell elements.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Rotation x</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation x</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation y</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation y</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Rotation z</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotation z</translation>
     </message>
 </context>
 <context>

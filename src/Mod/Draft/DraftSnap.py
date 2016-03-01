@@ -897,9 +897,11 @@ class Snapper:
             if self.trackLine:
                 self.trackLine.off()
         
-    def setAngle(self):
+    def setAngle(self,delta=None):
         "keeps the current angle"
-        if isinstance(self.mask,FreeCAD.Vector):
+        if delta:
+            self.mask = delta
+        elif isinstance(self.mask,FreeCAD.Vector):
             self.mask = None
         elif self.trackLine:
             if self.trackLine.Visible:

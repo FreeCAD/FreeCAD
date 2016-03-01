@@ -1239,10 +1239,6 @@ Please define another shortcut.</source>
         <translation>Makro adı:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makro konumu:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Çalıştır</translation>
     </message>
@@ -1264,15 +1260,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1313,7 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1806,11 +1802,11 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ortografik işleme</translation>
+        <translation type="obsolete">Ortografik işleme</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspektif işleme</translation>
+        <translation type="obsolete">Perspektif işleme</translation>
     </message>
     <message>
         <source></source>
@@ -1879,6 +1875,14 @@ Lütfen başka bir dizin belirtin.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4854,11 +4858,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Makroyu sil</translation>
+        <translation>Makroyu sil</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

@@ -2670,7 +2670,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+1"/>
         <source>%1 missing coincidences found</source>
-        <translation type="unfinished">%1 missing coincidences found</translation>
+        <translation>%1 manglende sammenfaliinger funnet</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -2730,7 +2730,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished">%1 changes were made to constraints linking to endpoints of reversed arcs.</translation>
+        <translation>%1 endringer ble gjort i begrensninger koblet til endepunktene på motsatt buer.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -3181,7 +3181,7 @@ Use the sketch validation tool.</translation>
         <location line="+7"/>
         <location line="+8"/>
         <source>(click to select)</source>
-        <translation type="unfinished">(click to select)</translation>
+        <translation>(Klikk for å velge)</translation>
     </message>
     <message>
         <location line="-9"/>
@@ -3440,7 +3440,7 @@ Do you want to detach it from the support?</translation>
     <message>
         <location line="+3"/>
         <source>Auto Update</source>
-        <translation type="unfinished">Auto Update</translation>
+        <translation>Autooppdatering</translation>
     </message>
     <message>
         <location line="+16"/>

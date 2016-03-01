@@ -1239,10 +1239,6 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
         <translation>Macro-naam:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Macro-bestemming:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Uitvoeren</translation>
     </message>
@@ -1264,15 +1260,15 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikers macro&apos;s</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Systeem macro&apos;s</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Locatie gebruikers macro&apos;s:</translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1312,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Enkel lezen</translation>
     </message>
 </context>
 <context>
@@ -1804,11 +1800,11 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Orthogonale projectie</translation>
+        <translation type="obsolete">Orthogonale projectie</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspectiefreproductie</translation>
+        <translation type="obsolete">Perspectiefreproductie</translation>
     </message>
     <message>
         <source></source>
@@ -1877,6 +1873,14 @@ Kies een andere map, alstublieft.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2703,7 +2707,7 @@ De kolom &apos;Status&apos; toont als het document kan hersteld worden.</transla
     </message>
     <message>
         <source>Successfully recovered</source>
-        <translation type="unfinished">Successfully recovered</translation>
+        <translation>Met success teruggehaald</translation>
     </message>
     <message>
         <source>Finish</source>
@@ -3611,31 +3615,31 @@ Wilt u uw wijzigingen opslaan?</translation>
     <name>Gui::GraphvizView</name>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation>Export grafiek</translation>
     </message>
     <message>
         <source>PNG format</source>
-        <translation type="unfinished">PNG format</translation>
+        <translation>PNG formaat</translation>
     </message>
     <message>
         <source>Bitmap format</source>
-        <translation type="unfinished">Bitmap format</translation>
+        <translation>Bitmap formaat</translation>
     </message>
     <message>
         <source>GIF format</source>
-        <translation type="unfinished">GIF format</translation>
+        <translation>GIF formaat</translation>
     </message>
     <message>
         <source>JPG format</source>
-        <translation type="unfinished">JPG format</translation>
+        <translation>JPG formaat</translation>
     </message>
     <message>
         <source>SVG format</source>
-        <translation type="unfinished">SVG format</translation>
+        <translation>SVG formaat</translation>
     </message>
     <message>
         <source>PDF format</source>
-        <translation type="unfinished">PDF format</translation>
+        <translation>PDF formaat</translation>
     </message>
 </context>
 <context>
@@ -3760,7 +3764,7 @@ Wilt u uw wijzigingen opslaan?</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation>Object afhankelijkheden</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
@@ -4067,7 +4071,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Macro Files</source>
-        <translation type="unfinished">Macro Files</translation>
+        <translation>Macro Bestanden</translation>
     </message>
     <message>
         <source>All Files</source>
@@ -4853,11 +4857,11 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Verwijder macro</translation>
+        <translation>Verwijder macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>
@@ -5845,11 +5849,11 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Revert</source>
-        <translation type="unfinished">Revert</translation>
+        <translation>Ongedaan maken</translation>
     </message>
     <message>
         <source>Reverts to the saved version of this file</source>
-        <translation type="unfinished">Reverts to the saved version of this file</translation>
+        <translation>Keer terug naar de bewaarde versie van dit bestand</translation>
     </message>
 </context>
 <context>
@@ -5890,11 +5894,11 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>Save a &amp;Copy...</source>
-        <translation type="unfinished">Save a &amp;Copy...</translation>
+        <translation>&amp;Duplicaat opslagen...</translation>
     </message>
     <message>
         <source>Save a copy of the active document under a new file name</source>
-        <translation type="unfinished">Save a copy of the active document under a new file name</translation>
+        <translation>Bewaar een duplikaat van het aktieve document onder een nieuwe naam</translation>
     </message>
 </context>
 <context>
@@ -6691,7 +6695,7 @@ Let op, het maakt uit waar je klikt.</translation>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation>Object afhankelijkheden</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
@@ -6740,20 +6744,20 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation>Punten modus</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation>Object afhankelijkheden</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation>De geselecteerde objecten hebben een afhankelijkheid van niet-geselecteerde objecten. 
+Wilt u deze ook dupliceren?</translation>
     </message>
 </context>
 <context>
@@ -6788,11 +6792,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     <name>Std_Revert</name>
     <message>
         <source>This will discard all the changes since last file save.</source>
-        <translation type="unfinished">This will discard all the changes since last file save.</translation>
+        <translation>Dit zal alle wijzigingen annuleren sinds de laatste keer dat het bestand werd bewaard.</translation>
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation type="unfinished">Are you sure?</translation>
+        <translation>Bent u zeker?</translation>
     </message>
 </context>
 <context>

@@ -134,7 +134,7 @@ public:
 
         splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
         QMutex mutex;
-        mutex.lock();
+        QMutexLocker ml(&mutex);
         QWaitCondition().wait(&mutex, 50);
     }
 

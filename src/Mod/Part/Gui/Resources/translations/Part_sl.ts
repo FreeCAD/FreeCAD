@@ -565,7 +565,7 @@
     <message>
         <location line="+1"/>
         <source>Make a union of several shapes</source>
-        <translation>Ustvari zvezo več oblik</translation>
+        <translation>Ustvari unijo iz več oblik</translation>
     </message>
 </context>
 <context>
@@ -731,7 +731,7 @@
     <message>
         <location line="+1"/>
         <source>Creation of parametrized geometric primitives</source>
-        <translation>Ustvarjanje parametriziranih geometrijskih osnovnih oblik</translation>
+        <translation>Ustvarjanje parametriziranih osnovnih geometrijskih oblik</translation>
     </message>
 </context>
 <context>
@@ -1460,12 +1460,12 @@ Najprej izberite veljavno obliko iz spustnega seznama.</translation>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation>Skupine prirezanih površin (vrste 144)</translation>
+        <translation>skupine prirezanih površin (vrste 144)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-        <translation>Telesa (vrste 186) in lupine (vrste 514)/način B-REP</translation>
+        <translation>telesa (vrste 186) in lupine (vrste 514)/način B-REP</translation>
     </message>
     <message>
         <source>Enable B-REP mode</source>
@@ -1776,7 +1776,7 @@ Najprej izberite veljavno obliko iz spustnega seznama.</translation>
     <message>
         <location filename="../../DlgPrimitives.ui" line="+14"/>
         <source>Geometric Primitives</source>
-        <translation>Geometrijske osnovne oblike</translation>
+        <translation>Osnovne geometrijske oblike</translation>
     </message>
     <message>
         <source>Primitive</source>

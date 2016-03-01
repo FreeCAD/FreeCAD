@@ -1720,7 +1720,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Minden Fájl</translation>
     </message>
 </context>
 <context>
@@ -1767,7 +1767,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Minden Fájl</translation>
     </message>
 </context>
 <context>
@@ -2995,7 +2995,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+7"/>
         <source>Box selection</source>
-        <translation>Box kiválasztás</translation>
+        <translation>Négyzet kiválasztás</translation>
     </message>
 </context>
 <context>
@@ -3354,7 +3354,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Minden Fájl</translation>
     </message>
     <message>
         <location line="+804"/>

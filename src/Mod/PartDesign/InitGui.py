@@ -30,53 +30,25 @@
 #***************************************************************************/
 
 class PartDesignWorkbench ( Workbench ):
-        "PartDesign workbench object"
-        Icon = """
-                /* XPM */
-                static char * partdesign_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #040006",
-                "+	c #070F38",
-                "@	c #002196",
-                "#	c #0030F3",
-                "$	c #5A4D20",
-                "%	c #858EB2",
-                "&	c #DEB715",
-                "*	c #BFB99D",
-                " &    ........  ",
-                "&&&$..@@@@@@+...",
-                "&&&&$@#####@..@.",
-                "&&&&&$......@#@.",
-                "&&&&&&@@@+.###@.",
-                "$&&&&&&@#@.###@.",
-                ".$&&&&&%#@.###@.",
-                ".@*&&&*%#@.###@.",
-                ".@#*&**%#@.###@.",
-                ".@#@%%%.@@.###@.",
-                ".@@@@@@@#@.###@.",
-                ".@#######@.###@.",
-                ".@#######@.##+. ",
-                ".+@@@####@.@..  ",
-                " ......+++..    ",
-                "        ...     "};
-                        """
-        MenuText = "Part Design"
-        ToolTip = "Part Design workbench"
+    "PartDesign workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/PartDesign/Resources/icons/PartDesignWorkbench.svg"
+        self.__class__.MenuText = "Part Design"
+        self.__class__.ToolTip = "Part Design workbench"
 
-        def Initialize(self):
-                # load the module
-                try:
-                    from WizardShaft import WizardShaft
-                except ImportError:
-                    print "Wizard shaft module cannot be loaded"
-                import PartDesignGui
-                import PartDesign
-                try:
-                    import InvoluteGearFeature
-                except ImportError:
-                    print "Involute gear module cannot be loaded"
-        def GetClassName(self):
-                return "PartDesignGui::Workbench"
+    def Initialize(self):
+            # load the module
+            try:
+                from WizardShaft import WizardShaft
+            except ImportError:
+                print "Wizard shaft module cannot be loaded"
+            import PartDesignGui
+            import PartDesign
+            try:
+                import InvoluteGearFeature
+            except ImportError:
+                print "Involute gear module cannot be loaded"
+    def GetClassName(self):
+            return "PartDesignGui::Workbench"
 
 Gui.addWorkbench(PartDesignWorkbench())
