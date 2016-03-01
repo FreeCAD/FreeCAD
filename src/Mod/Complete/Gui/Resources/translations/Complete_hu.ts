@@ -52,7 +52,7 @@
     <message>
         <location line="+1"/>
         <source>&amp;Drafting</source>
-        <translation>Vázlatkészítés &amp;D</translation>
+        <translation>Tervrajzkészítés</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -62,11 +62,12 @@ public:
     //@{
     void Restore(Base::XMLReader &reader);
     void RestoreDocFile(Base::Reader &reader);
+    short mustExecute() const;
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "PointsGui::ViewProviderPoints";
+        return "PointsGui::ViewProviderScattered";
     }
 protected:
     void onChanged(const App::Property* prop);

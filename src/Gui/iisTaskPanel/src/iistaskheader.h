@@ -9,6 +9,10 @@
 #define IISTASKHEADER_H
 
 #include <QtGui>
+#include <QFrame>
+#include <QLabel>
+#include <QEvent>
+#include <QMouseEvent>
 
 #include "iistaskpanel_global.h"
 

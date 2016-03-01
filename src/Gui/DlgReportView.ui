@@ -20,7 +20,16 @@
       <string>Output</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <item row="0" column="0">
@@ -77,7 +86,16 @@
       <string>Colors</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -101,7 +119,16 @@
       </item>
       <item row="0" column="0">
        <layout class="QGridLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
@@ -147,7 +174,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -202,7 +229,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -257,7 +284,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>170</green>
@@ -312,7 +339,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>0</green>
@@ -343,6 +370,9 @@
         <property name="text">
          <string>Redirect internal Python output to report view</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>RedirectPythonOutput</cstring>
         </property>
@@ -355,6 +385,9 @@
        <widget class="Gui::PrefCheckBox" name="pythonError">
         <property name="text">
          <string>Redirect internal Python errors to report view</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RedirectPythonErrors</cstring>

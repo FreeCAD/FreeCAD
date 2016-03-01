@@ -177,7 +177,10 @@
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="boxHeight">
+             <widget class="Gui::QuantitySpinBox" name="boxHeight">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="maximum">
                <double>1000.000000000000000</double>
               </property>
@@ -187,7 +190,10 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="boxLength">
+             <widget class="Gui::QuantitySpinBox" name="boxLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="minimum">
                <double>0.000000000000000</double>
               </property>
@@ -207,7 +213,10 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="boxWidth">
+             <widget class="Gui::QuantitySpinBox" name="boxWidth">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="maximum">
                <double>1000.000000000000000</double>
               </property>
@@ -267,14 +276,20 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="cylinderRadius">
+             <widget class="Gui::QuantitySpinBox" name="cylinderRadius">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>2.000000000000000</double>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="cylinderLength">
+             <widget class="Gui::QuantitySpinBox" name="cylinderLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>10.000000000000000</double>
               </property>
@@ -339,7 +354,10 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="cylinderEdgeLength">
+             <widget class="Gui::QuantitySpinBox" name="cylinderEdgeLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="maximum">
                <double>10.000000000000000</double>
               </property>
@@ -385,7 +403,10 @@
              <number>6</number>
             </property>
             <item row="1" column="1" rowspan="2">
-             <widget class="QDoubleSpinBox" name="coneRadius2">
+             <widget class="Gui::QuantitySpinBox" name="coneRadius2">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>4.000000000000000</double>
               </property>
@@ -399,7 +420,10 @@
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QDoubleSpinBox" name="coneLength">
+             <widget class="Gui::QuantitySpinBox" name="coneLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>10.000000000000000</double>
               </property>
@@ -420,7 +444,10 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="coneRadius1">
+             <widget class="Gui::QuantitySpinBox" name="coneRadius1">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>2.000000000000000</double>
               </property>
@@ -447,7 +474,10 @@
              <number>6</number>
             </property>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="coneEdgeLength">
+             <widget class="Gui::QuantitySpinBox" name="coneEdgeLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>1.000000000000000</double>
               </property>
@@ -528,7 +558,10 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="sphereRadius">
+             <widget class="Gui::QuantitySpinBox" name="sphereRadius">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>5.000000000000000</double>
               </property>
@@ -605,7 +638,10 @@
              <number>6</number>
             </property>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="ellipsoidRadius2">
+             <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>4.000000000000000</double>
               </property>
@@ -619,7 +655,10 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="ellipsoidRadius1">
+             <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>2.000000000000000</double>
               </property>
@@ -717,14 +756,20 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="toroidRadius2">
+             <widget class="Gui::QuantitySpinBox" name="toroidRadius2">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>2.000000000000000</double>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="toroidRadius1">
+             <widget class="Gui::QuantitySpinBox" name="toroidRadius1">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
               <property name="value">
                <double>10.000000000000000</double>
               </property>
@@ -792,6 +837,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>comboBox1</tabstop>
   <tabstop>boxLength</tabstop>

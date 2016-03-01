@@ -1720,7 +1720,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -1767,7 +1767,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -2476,12 +2476,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+38"/>
         <source>Annotations</source>
-        <translation type="unfinished">Annotations</translation>
+        <translation>Аннотации</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default text color</source>
-        <translation type="unfinished">Default text color</translation>
+        <translation>Цвет текста по умолчанию</translation>
     </message>
 </context>
 <context>
@@ -3265,7 +3265,7 @@ Do you want to continue?</source>
     <message>
         <location line="+171"/>
         <source>Select one shape or more, please.</source>
-        <translation type="unfinished">Select one shape or more, please.</translation>
+        <translation>Выберите одну или более фигур.</translation>
     </message>
     <message>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
@@ -3347,12 +3347,12 @@ Do you want to continue?</source>
     <message>
         <location line="+387"/>
         <source>All CAD Files</source>
-        <translation type="unfinished">All CAD Files</translation>
+        <translation>Все CAD файлы</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location line="+804"/>
@@ -3690,7 +3690,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished">Show control points</translation>
+        <translation>Показать контрольные точки</translation>
     </message>
 </context>
 <context>

@@ -31,7 +31,7 @@
 
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Points/App/ViewFeature.h>
+#include <Mod/Points/App/Structured.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 
@@ -221,15 +221,15 @@ CmdViewTriangulation::CmdViewTriangulation()
 {
     sAppModule      = "Reen";
     sGroup          = QT_TR_NOOP("Reverse Engineering");
-    sMenuText       = QT_TR_NOOP("View triangulation");
-    sToolTipText    = QT_TR_NOOP("View triangulation");
-    sToolTipText    = QT_TR_NOOP("View triangulation");
+    sMenuText       = QT_TR_NOOP("Structured point clouds");
+    sToolTipText    = QT_TR_NOOP("Triangulation of structured point clouds");
+    sToolTipText    = QT_TR_NOOP("Triangulation of structured point clouds");
     sWhatsThis      = "Reen_ViewTriangulation";
 }
 
 void CmdViewTriangulation::activated(int iMsg)
 {
-    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::ViewFeature::getClassTypeId());
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Structured::getClassTypeId());
     addModule(App,"ReverseEngineering");
     openCommand("View triangulation");
     try {
@@ -263,7 +263,7 @@ void CmdViewTriangulation::activated(int iMsg)
 
 bool CmdViewTriangulation::isActive(void)
 {
-    return Gui::Selection().countObjectsOfType(Points::ViewFeature::getClassTypeId()) > 0;
+    return  (Gui::Selection().countObjectsOfType(Points::Structured::getClassTypeId()) > 0);
 }
 
 void CreateReverseEngineeringCommands(void)

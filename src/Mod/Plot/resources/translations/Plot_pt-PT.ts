@@ -216,7 +216,7 @@
   <context>
     <name>plot_console</name>
     <message>
-      <location filename="Plot.py" line="38"/>
+      <location filename="Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
       <translation>matplotlib não encontrado, então o módulo de traçagem não pode ser carregado</translation>
     </message>
@@ -387,7 +387,7 @@
     <message>
       <location filename="TaskPanel.py" line="169"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
+      <translation>Pontos por polegadas, com tamanho irão definir a resolução de imagem de saída</translation>
     </message>
   </context>
   <context>

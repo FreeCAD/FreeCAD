@@ -712,7 +712,7 @@
     <message>
         <location line="+1"/>
         <source>Create fillet</source>
-        <translation>Criar fillet</translation>
+        <translation>Criar Boleado (fillet)</translation>
     </message>
     <message>
         <source>Create a fillet between two lines or at a coincidental point</source>
@@ -990,7 +990,7 @@
     <message>
         <location line="+1"/>
         <source>Leave sketch</source>
-        <translation>Sair do Desenho</translation>
+        <translation>Sair do esboço</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1074,7 +1074,7 @@
     <message>
         <location line="+1"/>
         <source>Create sketch</source>
-        <translation>Criar Desenho</translation>
+        <translation>Criar esboço</translation>
     </message>
     <message>
         <source>Create a new or edit the selected sketch</source>

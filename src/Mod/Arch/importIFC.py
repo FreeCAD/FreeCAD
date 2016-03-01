@@ -1306,7 +1306,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 shapetype = "brep"
                 for fcface in fcsolid.Faces:
                     for e in fcface.Edges:
-                        if not isinstance(e.Curve,Part.Line):
+                        if DraftGeomUtils.geomType(e) != "Line":
                             if e.curvatureAt(e.FirstParameter+(e.LastParameter-e.FirstParameter)/2) > 0.0001:
                                 curves = True
                                 break

@@ -33,7 +33,7 @@
 #include "PointsPy.h"
 #include "Properties.h"
 #include "PropertyPointKernel.h"
-#include "ViewFeature.h"
+#include "Structured.h"
 
 namespace Points {
     extern PyObject* initModule();
@@ -57,7 +57,8 @@ PyMODINIT_FUNC initPoints()
 
     // add data types
     Points::Feature               ::init();
+    Points::Structured            ::init();
     Points::FeatureCustom         ::init();
+    Points::StructuredCustom      ::init();
     Points::FeaturePython         ::init();
-    Points::ViewFeature           ::init();
 }

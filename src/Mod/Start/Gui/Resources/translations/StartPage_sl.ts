@@ -106,7 +106,7 @@
     <message>
       <location filename="StartPage.py" line="73"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
-      <translation>Delovno okolje &lt;b&gt;arhitekturno oblikovanje&lt;/b&gt; je zasnovano posebej za delo z arhitekturnimi elementi, kot so zidovi ali okna. Začnite z izrisom oblik 2D in jih uporabite kot osnovo za gradnjo arhitekturnih objektov.</translation>
+      <translation>Delovno okolje &lt;b&gt;Arhitekturno oblikovanje&lt;/b&gt; je zasnovano posebej za delo z arhitekturnimi elementi, kot so zidovi ali okna. Začnite z izrisom oblik 2D in jih uporabite kot osnovo za gradnjo arhitekturnih objektov.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
@@ -297,6 +297,11 @@
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
       <translation>Na voljo je nova izdaja FreeCADa.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Naloži primer analize MKE</translation>
     </message>
   </context>
 </TS>

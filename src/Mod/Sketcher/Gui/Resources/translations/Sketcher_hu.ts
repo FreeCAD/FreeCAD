@@ -29,12 +29,12 @@
     <message>
         <location line="+1"/>
         <source>Close Shape</source>
-        <translation type="unfinished">Close Shape</translation>
+        <translation>Zárja be az alakzatot</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Produce closed shape by Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished">Produce closed shape by Link end point of element with next elements&apos; starting point</translation>
+        <translation>Zárt alakzatot hoz létre az elem végpontjával összekötve a következő elem kiindulási pontját</translation>
     </message>
 </context>
 <context>
@@ -121,27 +121,27 @@
     <message>
         <location line="+1"/>
         <source>Create a conic</source>
-        <translation type="unfinished">Create a conic</translation>
+        <translation>Létrehoz egy kúp ívet</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a conic in the sketch</source>
-        <translation type="unfinished">Create a conic in the sketch</translation>
+        <translation>Létrehoz egy kúp ívet a vázlaton</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Ellipse by center, major radius, point</source>
-        <translation type="unfinished">Ellipse by center, major radius, point</translation>
+        <translation>Ellipszis központtal, fő sugárral, ponttal</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-        <translation type="unfinished">Ellipse by Periapsis, apoapsis, minor radius</translation>
+        <translation>Ellipszis periapsis-al, apoapsis-al, alárendelt sugárral</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Arc of ellipse by center, major radius, endpoints</source>
-        <translation type="unfinished">Arc of ellipse by center, major radius, endpoints</translation>
+        <translation>Ellipszis ív központtal, fő sugárral, végpontokkal</translation>
     </message>
 </context>
 <context>
@@ -154,42 +154,42 @@
     <message>
         <location line="+1"/>
         <source>Create regular polygon</source>
-        <translation type="unfinished">Create regular polygon</translation>
+        <translation>Szabályos sokszög létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an regular polygon in the sketcher</source>
-        <translation type="unfinished">Create an regular polygon in the sketcher</translation>
+        <translation>Szabályos sokszög létrehozása a vázlatban</translation>
     </message>
     <message>
         <location line="+100"/>
         <source>Triangle</source>
-        <translation type="unfinished">Triangle</translation>
+        <translation>Háromszög</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Square</source>
-        <translation type="unfinished">Square</translation>
+        <translation>Négyzet</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Pentagon</source>
-        <translation type="unfinished">Pentagon</translation>
+        <translation>Ötszög</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Hexagon</source>
-        <translation type="unfinished">Hexagon</translation>
+        <translation>Hatszög</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Heptagon</source>
-        <translation type="unfinished">Heptagon</translation>
+        <translation>Hétszög</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Octagon</source>
-        <translation type="unfinished">Octagon</translation>
+        <translation>Nyolcszög</translation>
     </message>
 </context>
 <context>
@@ -202,12 +202,12 @@
     <message>
         <location line="+1"/>
         <source>Connect Edges</source>
-        <translation type="unfinished">Connect Edges</translation>
+        <translation>Élek csatlakoztatása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished">Link end point of element with next elements&apos; starting point</translation>
+        <translation>Elem végpontjával kösse össze a következő elem kiindulási pontját</translation>
     </message>
 </context>
 <context>
@@ -354,12 +354,12 @@
     <message>
         <location line="+1"/>
         <source>Constrain InternalAlignment</source>
-        <translation type="unfinished">Constrain InternalAlignment</translation>
+        <translation>BelsőIgazítás kényszerítése</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrains an element to be aligned with the internal geometry of another element</source>
-        <translation type="unfinished">Constrains an element to be aligned with the internal geometry of another element</translation>
+        <translation>Egy elemet kényszerít egy másik elem belső geometriájához kényszerítéssel</translation>
     </message>
 </context>
 <context>
@@ -466,12 +466,12 @@
     <message>
         <location line="+1"/>
         <source>Constrain refraction (Snell&apos;s law&apos;)</source>
-        <translation type="unfinished">Constrain refraction (Snell&apos;s law&apos;)</translation>
+        <translation>Kényszerítés törésmutatója (Snellius–Descartes-törvény)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</source>
-        <translation type="unfinished">Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</translation>
+        <translation>Létrehoz egy törésmutató törvény (Snellius–Descartes-törvény) kényszerítést két végpont és egy él, mint interfész, közt.</translation>
     </message>
 </context>
 <context>
@@ -622,12 +622,12 @@
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse</source>
-        <translation type="unfinished">Create an arc of ellipse</translation>
+        <translation>Létrehoz egy ellipszis ívet</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse in the sketch</source>
-        <translation type="unfinished">Create an arc of ellipse in the sketch</translation>
+        <translation>Létrehoz egy ellipszis ívet a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -658,12 +658,12 @@
     <message>
         <location line="+1"/>
         <source>Create draft line</source>
-        <translation>Vázlatvonal rajzolása</translation>
+        <translation>Tervvonal rajzolása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a draft line in the sketch</source>
-        <translation>Vázlatvonal rajzolása a vázlaton</translation>
+        <translation>Tervvonal rajzolása a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -676,12 +676,12 @@
     <message>
         <location line="+1"/>
         <source>Create ellipse by 3 points</source>
-        <translation type="unfinished">Create ellipse by 3 points</translation>
+        <translation>Létrehoz egy 3 pontos ellipszist</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by 3 points in the sketch</source>
-        <translation type="unfinished">Create an ellipse by 3 points in the sketch</translation>
+        <translation>Létrehoz egy 3 pontos ellipszist a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -694,12 +694,12 @@
     <message>
         <location line="+1"/>
         <source>Create ellipse by center</source>
-        <translation type="unfinished">Create ellipse by center</translation>
+        <translation>Ellipszis létrehozása középponttal</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by center in the sketch</source>
-        <translation type="unfinished">Create an ellipse by center in the sketch</translation>
+        <translation>Ellipszis létrehozása középponttal a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -734,12 +734,12 @@
     <message>
         <location line="+1"/>
         <source>Create heptagon</source>
-        <translation type="unfinished">Create heptagon</translation>
+        <translation>Hétszög létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a heptagon in the sketch</source>
-        <translation type="unfinished">Create a heptagon in the sketch</translation>
+        <translation>Egy hétszög létrehozása a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -752,12 +752,12 @@
     <message>
         <location line="+1"/>
         <source>Create hexagon</source>
-        <translation type="unfinished">Create hexagon</translation>
+        <translation>Hatszög létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a hexagon in the sketch</source>
-        <translation type="unfinished">Create a hexagon in the sketch</translation>
+        <translation>Egy hatszög létrehozása a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -788,12 +788,12 @@
     <message>
         <location line="+1"/>
         <source>Create octagon</source>
-        <translation type="unfinished">Create octagon</translation>
+        <translation>Nyolcszög létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an octagon in the sketch</source>
-        <translation type="unfinished">Create an octagon in the sketch</translation>
+        <translation>Egy nyolcszög létrehozása a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -806,12 +806,12 @@
     <message>
         <location line="+1"/>
         <source>Create pentagon</source>
-        <translation type="unfinished">Create pentagon</translation>
+        <translation>Ötszög létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a pentagon in the sketch</source>
-        <translation type="unfinished">Create a pentagon in the sketch</translation>
+        <translation>Egy ötszög létrehozása a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -900,12 +900,12 @@
     <message>
         <location line="+1"/>
         <source>Create square</source>
-        <translation type="unfinished">Create square</translation>
+        <translation>Négyzet létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a square in the sketch</source>
-        <translation type="unfinished">Create a square in the sketch</translation>
+        <translation>Egy négyszög létrehozása a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -936,12 +936,12 @@
     <message>
         <location line="+1"/>
         <source>Create equilateral triangle</source>
-        <translation type="unfinished">Create equilateral triangle</translation>
+        <translation>Egyenlő oldalú háromszög létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an equilateral triangle in the sketch</source>
-        <translation type="unfinished">Create an equilateral triangle in the sketch</translation>
+        <translation>Egyenlő oldalú háromszög létrehozása a vázlaton</translation>
     </message>
 </context>
 <context>
@@ -959,7 +959,7 @@
     <message>
         <location line="+1"/>
         <source>Edit the selected sketch</source>
-        <translation type="unfinished">Edit the selected sketch</translation>
+        <translation>Kijelölt vázlat szerkesztése</translation>
     </message>
 </context>
 <context>
@@ -1027,7 +1027,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Merge sketches</source>
-        <translation type="unfinished">Merge sketches</translation>
+        <translation>Vázlatok egyesítése</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1037,7 +1037,7 @@
     <message>
         <location line="+1"/>
         <source>Select at least two sketches, please.</source>
-        <translation type="unfinished">Select at least two sketches, please.</translation>
+        <translation>Kérjük válasszon ki legalább két vázlatot.</translation>
     </message>
 </context>
 <context>
@@ -1051,7 +1051,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Mirror sketch</source>
-        <translation type="unfinished">Mirror sketch</translation>
+        <translation>Vázlat tükrözés</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1061,7 +1061,7 @@
     <message>
         <location line="+1"/>
         <source>Select one or more sketches, please.</source>
-        <translation type="unfinished">Select one or more sketches, please.</translation>
+        <translation>Válasszon egy vagy több vázlatol, legyen szíves.</translation>
     </message>
 </context>
 <context>
@@ -1111,12 +1111,12 @@
     <message>
         <location line="+1"/>
         <source>Rectangular Array</source>
-        <translation type="unfinished">Rectangular Array</translation>
+        <translation>Téglalap alakú tömb</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates an rectangular array pattern of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished">Creates an rectangular array pattern of the geometry taking as reference the last selected point</translation>
+        <translation>Létrehoz egy téglalap alakú tömb mintát a geometriáról, az utolsó kijelölt referenciapontot figyelembe véve</translation>
     </message>
 </context>
 <context>
@@ -1147,12 +1147,12 @@
     <message>
         <location line="+1"/>
         <source>Show/hide internal geometry</source>
-        <translation type="unfinished">Show/hide internal geometry</translation>
+        <translation>Belső geometria megjelenítése/elrejtése</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show all internal geometry / hide unused internal geometry</source>
-        <translation type="unfinished">Show all internal geometry / hide unused internal geometry</translation>
+        <translation>Minden belső geometria megjelenítése / a fel nem használt belső geometriája elrejtése</translation>
     </message>
 </context>
 <context>
@@ -1166,7 +1166,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Conflicting Constraints</source>
-        <translation type="unfinished">Select Conflicting Constraints</translation>
+        <translation>Jelölje ki az egymásnak ellentmondó kényszerítéseket</translation>
     </message>
 </context>
 <context>
@@ -1179,12 +1179,12 @@
     <message>
         <location line="+1"/>
         <source>Select Constraints</source>
-        <translation type="unfinished">Select Constraints</translation>
+        <translation>Jelölje ki a kényszerítéseket</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the constraints associated to the selected elements</source>
-        <translation type="unfinished">Select the constraints associated to the selected elements</translation>
+        <translation>Válassza ki a kijelölt elemekhez kapcsolódó kényszerítéseket</translation>
     </message>
 </context>
 <context>
@@ -1198,7 +1198,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Elements associated with constraints</source>
-        <translation type="unfinished">Select Elements associated with constraints</translation>
+        <translation>Kényszerítéssel kapcsolatos elemek kijelölése</translation>
     </message>
 </context>
 <context>
@@ -1211,12 +1211,12 @@
     <message>
         <location line="+1"/>
         <source>Select Horizontal Axis</source>
-        <translation type="unfinished">Select Horizontal Axis</translation>
+        <translation>Jelölje a vízszintes tengelyt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the horizontal axis</source>
-        <translation type="unfinished">Select the horizontal axis</translation>
+        <translation>Jelölje ki a vízszintes tengelyt</translation>
     </message>
 </context>
 <context>
@@ -1229,12 +1229,12 @@
     <message>
         <location line="+1"/>
         <source>Select Origin</source>
-        <translation type="unfinished">Select Origin</translation>
+        <translation>Válassza ki a kezdetét</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the origin point</source>
-        <translation type="unfinished">Select the origin point</translation>
+        <translation>Válassza ki a kezdőpontot</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Redundant Constraints</source>
-        <translation type="unfinished">Select Redundant Constraints</translation>
+        <translation>Válassza ki a felesleges kényszerítéseket</translation>
     </message>
 </context>
 <context>
@@ -1261,12 +1261,12 @@
     <message>
         <location line="+1"/>
         <source>Select Vertical Axis</source>
-        <translation type="unfinished">Select Vertical Axis</translation>
+        <translation>Függőleges tengely választása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the vertical axis</source>
-        <translation type="unfinished">Select the vertical axis</translation>
+        <translation>Függőleges tengely kiválasztása</translation>
     </message>
 </context>
 <context>
@@ -1279,12 +1279,12 @@
     <message>
         <location line="+1"/>
         <source>Symmetry</source>
-        <translation type="unfinished">Symmetry</translation>
+        <translation>Szimmetria</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates symmetric geometry with respect to the last selected line or point</source>
-        <translation type="unfinished">Creates symmetric geometry with respect to the last selected line or point</translation>
+        <translation>Létrehozza az utolsó kijelölt vonal vagy pont geometriai szimmetriáját</translation>
     </message>
 </context>
 <context>
@@ -1297,12 +1297,12 @@
     <message>
         <location line="+1"/>
         <source>Toggle construction geometry</source>
-        <translation type="unfinished">Toggle construction geometry</translation>
+        <translation>Építési geometria átkapcsolása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-        <translation type="unfinished">Toggles the toolbar or selected geometry to/from construction mode</translation>
+        <translation>Építési módból/-ba váltja az eszköztárat vagy a kijelölt geometriát</translation>
     </message>
     <message>
         <source>Toggle construction line</source>
@@ -1323,7 +1323,7 @@
     <message>
         <location line="+1"/>
         <source>Toggle reference/driving constraint</source>
-        <translation type="unfinished">Toggle reference/driving constraint</translation>
+        <translation>Referencia/megvezetési kényszerítés ki-/ bekapcsolása</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2685,7 +2685,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+4"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished">Invalid constraints</translation>
+        <translation>Érvénytelen illesztés</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3087,7 +3087,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished">Disable</translation>
+        <translation>Letilt</translation>
     </message>
     <message>
         <location line="-86"/>
@@ -3105,7 +3105,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="-53"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished">Invalid constraints</translation>
+        <translation>Érvénytelen illesztés</translation>
     </message>
 </context>
 <context>
@@ -3113,7 +3113,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../ViewProviderSketch.cpp" line="+4186"/>
         <source>Invalid sketch</source>
-        <translation type="unfinished">Invalid sketch</translation>
+        <translation>Érvénytelen vázlat</translation>
     </message>
     <message>
         <source>The sketch is invalid and cannot be edited.
@@ -3139,12 +3139,12 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+15"/>
         <source>Do you want to open the sketch validation tool?</source>
-        <translation type="unfinished">Do you want to open the sketch validation tool?</translation>
+        <translation>Szeretné megnyitni a vázlat érvényesítés eszközt?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.</source>
-        <translation type="unfinished">The sketch is invalid and cannot be edited.</translation>
+        <translation>A vázlat érvénytelen, és nem szerkeszthető.</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -3174,24 +3174,24 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+7"/>
         <source>Over-constrained sketch </source>
-        <translation type="unfinished">Over-constrained sketch </translation>
+        <translation>Túl sok illesztés tartalmazó vázlat </translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+7"/>
         <location line="+8"/>
         <source>(click to select)</source>
-        <translation type="unfinished">(click to select)</translation>
+        <translation>(kattintás a kijelöléshez)</translation>
     </message>
     <message>
         <location line="-9"/>
         <source>Sketch contains conflicting constraints </source>
-        <translation type="unfinished">Sketch contains conflicting constraints </translation>
+        <translation>Vázlat szabálytalan illesztéseket tartalmaz </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Sketch contains redundant constraints </source>
-        <translation type="unfinished">Sketch contains redundant constraints </translation>
+        <translation>A vázlat felesleges illesztéseket tartalmaz </translation>
     </message>
     <message>
         <source>Over-constrained sketch</source>
@@ -3546,17 +3546,17 @@ Le akarja választani a támogatási felületről?</translation>
     <message>
         <location line="+30"/>
         <source>Param1</source>
-        <translation type="unfinished">Param1</translation>
+        <translation>Param1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param2</source>
-        <translation type="unfinished">Param2</translation>
+        <translation>Param2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param3</source>
-        <translation type="unfinished">Param3</translation>
+        <translation>Param3</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -3586,37 +3586,37 @@ Le akarja választani a támogatási felületről?</translation>
     <message>
         <location line="+7"/>
         <source>1E-13</source>
-        <translation type="unfinished">1E-13</translation>
+        <translation>1E-13</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solving algorithm used for determination of Redundant constraints</source>
-        <translation type="unfinished">Solving algorithm used for determination of Redundant constraints</translation>
+        <translation>A felesleges kényszerítések meghatározására használt megoldó algoritmus</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redundant Solver:</source>
-        <translation type="unfinished">Redundant Solver:</translation>
+        <translation>Feleslegesség megoldó:</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Maximum number of iterations of the solver used for determination of Redundant constraints</source>
-        <translation type="unfinished">Maximum number of iterations of the solver used for determination of Redundant constraints</translation>
+        <translation>A felesleges kényszerítések meghatározására használt megoldó maximum ismétléseinek száma</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Max Iterations:</source>
-        <translation type="unfinished">Red. Max Iterations:</translation>
+        <translation>Felesleges ismétlődések maximuma:</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
-        <translation type="unfinished">If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</translation>
+        <translation>Kiválasztás esetén, a feleslegesség algoritmus maximum ismétlődések értéke összeszorzásra kerül a vázlat mérettel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Sketch size multiplier:</source>
-        <translation type="unfinished">Red. Sketch size multiplier:</translation>
+        <translation>Felesleges vázlat méret szorzó:</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3626,27 +3626,27 @@ Le akarja választani a támogatási felületről?</translation>
     <message>
         <location line="+3"/>
         <source>Red. Convergence</source>
-        <translation type="unfinished">Red. Convergence</translation>
+        <translation>Feleslegesség hasonlító</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1E-10</source>
-        <translation type="unfinished">1E-10</translation>
+        <translation>1E-10</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Red. Param1</source>
-        <translation type="unfinished">Red. Param1</translation>
+        <translation>Feleslegesség Param1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param2</source>
-        <translation type="unfinished">Red. Param2</translation>
+        <translation>Feleslegesség Param2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param3</source>
-        <translation type="unfinished">Red. Param3</translation>
+        <translation>Feleslegesség Param3</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -3671,22 +3671,22 @@ Le akarja választani a támogatási felületről?</translation>
     <message>
         <location line="+5"/>
         <source>Iteration Level</source>
-        <translation type="unfinished">Iteration Level</translation>
+        <translation>Ismétlődés foka</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Solve</source>
-        <translation type="unfinished">Solve</translation>
+        <translation>Megoldás</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Resets all solver values to their default values</source>
-        <translation type="unfinished">Resets all solver values to their default values</translation>
+        <translation>Alaphelyzetbe állítja a megoldó értékeit az alapértelmezett értékekre</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restore Defaults</source>
-        <translation type="unfinished">Restore Defaults</translation>
+        <translation>Alapértékek visszaállítása</translation>
     </message>
 </context>
 <context>
@@ -3704,7 +3704,7 @@ Le akarja választani a támogatási felületről?</translation>
     <message>
         <location line="+2"/>
         <source>Sketcher tools</source>
-        <translation type="unfinished">Sketcher tools</translation>
+        <translation>Vázlatkészítő eszközök</translation>
     </message>
     <message>
         <source>Sketcher geoms</source>

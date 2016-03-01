@@ -166,19 +166,9 @@
 </context>
 <context>
     <name>Machine Name</name>
-    <message>
-        <location filename="PathMachine.py" line="44"/>
-        <source>Name of the Machine that will use the CNC program</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Machine Units</name>
-    <message>
-        <location filename="PathMachine.py" line="48"/>
-        <source>Units that the machine works in, ie Metric or Inch</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>OffsetExtra</name>
@@ -203,9 +193,6 @@
         <source>The base geometry of this toolpath</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>Pat_hHop</name>
 </context>
 <context>
     <name>Path</name>
@@ -310,16 +297,6 @@
 </context>
 <context>
     <name>PathMachine</name>
-    <message>
-        <location filename="PathMachine.py" line="202"/>
-        <source>Machine Object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathMachine.py" line="210"/>
-        <source>Create a Machine object</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>PathProfile</name>
@@ -734,6 +711,64 @@
     </message>
 </context>
 <context>
+    <name>Path_Machine</name>
+    <message>
+        <location filename="PathMachine.py" line="44"/>
+        <source>Name of the Machine that will use the CNC program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="46"/>
+        <source>Select the Post Processor file for this machine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="48"/>
+        <source>Units that the machine works in, ie Metric or Inch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="51"/>
+        <source>The tooltable used for this CNC program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="55"/>
+        <source>The Maximum distance in X the machine can travel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="59"/>
+        <source>The Minimum distance in X the machine can travel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="61"/>
+        <source>Home position of machine, in X (mainly for visualization)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="62"/>
+        <source>Home position of machine, in Y (mainly for visualization)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="63"/>
+        <source>Home position of machine, in Z (mainly for visualization)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="202"/>
+        <source>Machine Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathMachine.py" line="210"/>
+        <source>Create a Machine object</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Path_Plane</name>
     <message>
         <location filename="PathPlane.py" line="114"/>
@@ -922,11 +957,6 @@
 </context>
 <context>
     <name>Post Processor</name>
-    <message>
-        <location filename="PathMachine.py" line="46"/>
-        <source>Select the Post Processor file for this machine</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Program Stop</name>
@@ -1057,11 +1087,6 @@
 </context>
 <context>
     <name>Tool Table</name>
-    <message>
-        <location filename="PathMachine.py" line="51"/>
-        <source>The tooltable used for this CNC program</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TooltableEditor</name>
@@ -1384,59 +1409,24 @@
 </context>
 <context>
     <name>X Home Position</name>
-    <message>
-        <location filename="PathMachine.py" line="61"/>
-        <source>Home position of machine, in X (mainly for visualization)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>X Maximum Limit</name>
-    <message>
-        <location filename="PathMachine.py" line="53"/>
-        <source>The Maximum distance in X the machine can travel</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>X Minimum Limit</name>
-    <message>
-        <location filename="PathMachine.py" line="57"/>
-        <source>The Minimum distance in X the machine can travel</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Y Home Position</name>
-    <message>
-        <location filename="PathMachine.py" line="62"/>
-        <source>Home position of machine, in Y (mainly for visualization)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Y Maximum Limit</name>
-    <message>
-        <location filename="PathMachine.py" line="55"/>
-        <source>The Maximum distance in X the machine can travel</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Y Minimum Limit</name>
-    <message>
-        <location filename="PathMachine.py" line="59"/>
-        <source>The Minimum distance in X the machine can travel</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Z Home Position</name>
-    <message>
-        <location filename="PathMachine.py" line="63"/>
-        <source>Home position of machine, in Z (mainly for visualization)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>extend at end</name>

@@ -265,7 +265,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 
     painter->save();
     painter->fillRect(40,40,40,60,Qt::lightGray);
-    painter->drawText(50,50, QString::fromAscii("Done with QPainter"));
+    painter->drawText(50,50, QString::fromLatin1("Done with QPainter"));
     painter->restore();
 
     QTimer::singleShot(20, this, SLOT(update()));

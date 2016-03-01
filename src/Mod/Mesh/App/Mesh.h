@@ -220,7 +220,9 @@ public:
     void addPointsToSelection(const std::vector<unsigned long>&) const;
     void removeFacetsFromSelection(const std::vector<unsigned long>&) const;
     void removePointsFromSelection(const std::vector<unsigned long>&) const;
+    unsigned long countSelectedFacets() const;
     bool hasSelectedFacets() const;
+    unsigned long countSelectedPoints() const;
     bool hasSelectedPoints() const;
     void getFacetsFromSelection(std::vector<unsigned long>&) const;
     void getPointsFromSelection(std::vector<unsigned long>&) const;

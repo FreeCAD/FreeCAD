@@ -74,11 +74,11 @@ void CmdPartSimpleCylinder::activated(int iMsg)
                       ".Shape=Part.makeCylinder(%f,%f,"
                       "Base.Vector(%f,%f,%f),"
                       "Base.Vector(%f,%f,%f))"
-                     ,dlg.radius->value()
-                     ,dlg.length->value()
-                     ,dlg.xPos->value()
-                     ,dlg.yPos->value()
-                     ,dlg.zPos->value()
+                     ,dlg.radius->value().getValue()
+                     ,dlg.length->value().getValue()
+                     ,dlg.xPos->value().getValue()
+                     ,dlg.yPos->value().getValue()
+                     ,dlg.zPos->value().getValue()
                      ,dir.x,dir.y,dir.z);
         commitCommand();
         updateActive();

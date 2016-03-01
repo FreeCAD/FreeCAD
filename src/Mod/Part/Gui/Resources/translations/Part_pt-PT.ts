@@ -542,12 +542,12 @@
     <message>
         <location line="+1"/>
         <source>Fillet...</source>
-        <translation>Filete/Listel ...</translation>
+        <translation>Boleado (fillet)...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Fillet the selected edges of a shape</source>
-        <translation>Criar filete/listel nas arestas selecionadas de uma forma</translation>
+        <translation>Criar Boleado (fillet) nas arestas selecionadas de uma forma</translation>
     </message>
 </context>
 <context>
@@ -1270,12 +1270,12 @@
     <message>
         <location filename="../../DlgFilletEdges.ui" line="+14"/>
         <source>Fillet Edges</source>
-        <translation>Criar Filete/Listel nas Bordas</translation>
+        <translation>Criar Boleado (fillet) nas Bordas</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Fillet Parameter</source>
-        <translation>Parâmetro de Filete/Listel</translation>
+        <translation>Parâmetro de Boleado (fillet)</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -1295,7 +1295,7 @@
     <message>
         <location line="-104"/>
         <source>Fillet type:</source>
-        <translation>Tipo de Filete/Listel:</translation>
+        <translation>Tipo de Boleado (fillet):</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1356,7 +1356,7 @@
     <message>
         <location line="+3"/>
         <source>Edges to fillet</source>
-        <translation>Bordas para criar Filete/Listel</translation>
+        <translation>Arestas para criar Boleado (fillet)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1388,7 +1388,7 @@
         <location line="+1"/>
         <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-        <translation>Não foi selecionada nenhuma borda para criar Filete/Listel. Por favor, marque primeiro uma ou mais entidades de borda.</translation>
+        <translation>Não foi selecionada nenhuma aresta para criar Boleado (fillet). Por favor, marque primeiro uma ou mais entidades aresta.</translation>
     </message>
     <message>
         <location filename="../../DlgFilletEdges.ui" line="+101"/>
@@ -2199,7 +2199,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <source>3D View</source>
-        <translation type="obsolete">Visualização a 3D</translation>
+        <translation type="obsolete">Vista 3D</translation>
     </message>
 </context>
 <context>
@@ -2511,7 +2511,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+24"/>
         <source>3D View</source>
-        <translation>Visualização a 3D</translation>
+        <translation>Vista 3D</translation>
     </message>
 </context>
 <context>
@@ -3361,7 +3361,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../ViewProviderMirror.cpp" line="-325"/>
         <source>Edit fillet edges</source>
-        <translation>Editar Filete/Listel Bordas</translation>
+        <translation>Editar arestas do Boleado (fillet)</translation>
     </message>
     <message>
         <location filename="../../ViewProviderExt.cpp" line="+697"/>

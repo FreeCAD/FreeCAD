@@ -110,7 +110,6 @@ SET(FemScripts_SRCS
     MechanicalMaterial.py
     SelectionObserverFem.py
     TestFem.py
-    ccxInpWriterFemConstraintDisplacement.py
 
     TaskPanelFemBeamSection.ui
     TaskPanelFemShellThickness.ui

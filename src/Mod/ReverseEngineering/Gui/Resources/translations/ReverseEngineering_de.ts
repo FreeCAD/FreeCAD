@@ -68,10 +68,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+1"/>
         <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation>Vernetzung anzeigen</translation>
+        <translation type="obsolete">Vernetzung anzeigen</translation>
     </message>
 </context>
 <context>

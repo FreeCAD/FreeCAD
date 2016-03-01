@@ -308,6 +308,8 @@ protected:
     void addDisplayMaskMode( SoNode *node, const char* type );
     /// Activates the display mask mode \a type
     void setDisplayMaskMode( const char* type );
+    /// Get the node to the display mask mode \a type
+    SoNode* getDisplayMaskMode(const char* type) const;
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);

@@ -90,3 +90,11 @@ SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
 
 INSTALL(TARGETS SpreadsheetGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(SpreadsheetGuiIcon_SVG
+    Resources/icons/SpreadsheetWorkbench.svg
+)
+
+fc_copy_sources(SpreadsheetGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet" ${SpreadsheetGuiIcon_SVG})
+
+INSTALL(FILES ${SpreadsheetGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet/Resources/icons")

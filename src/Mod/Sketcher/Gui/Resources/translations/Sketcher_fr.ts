@@ -3506,12 +3506,12 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
         <location line="+5"/>
         <source>LeastNorm-FullPivLU</source>
-        <translation type="unfinished">LeastNorm-FullPivLU</translation>
+        <translation>LeastNorm-FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-LDLT</source>
-        <translation type="unfinished">LeastNorm-LDLT</translation>
+        <translation>LeastNorm-LDLT</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3571,12 +3571,12 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
         <location line="+17"/>
         <source>Eigen Dense QR</source>
-        <translation type="unfinished">Eigen Dense QR</translation>
+        <translation>Eigen Dense QR</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Eigen Sparse QR</source>
-        <translation type="unfinished">Eigen Sparse QR</translation>
+        <translation>Eigen Sparse QR</translation>
     </message>
     <message>
         <location line="+12"/>

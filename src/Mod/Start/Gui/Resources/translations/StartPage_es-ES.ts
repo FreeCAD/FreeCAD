@@ -298,5 +298,10 @@
       <source>There is a new release of FreeCAD available.</source>
       <translation>Hay una nueva versión de FreeCAD disponible.</translation>
     </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Cargar un ejemplo de análisis FEM</translation>
+    </message>
   </context>
 </TS>

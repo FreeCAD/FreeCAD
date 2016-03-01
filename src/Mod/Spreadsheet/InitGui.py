@@ -32,41 +32,18 @@
 
 
 class SpreadsheetWorkbench ( Workbench ):
-        "Spreadsheet workbench object"
-        Icon = """
-            /* XPM */
-            static char * Spreadsheet_xpm[] = {
-            "16 16 5 1",
-            "   c None",
-            ".  c #151614",
-            "+  c #575956",
-            "@  c #969895",
-            "#  c #F7F9F6",
-            "                ",
-            "                ",
-            " ...............",
-            ".@##@+########@.",
-            ".+@@+.@@@@@@@@+.",
-            "..+++.+++++++++.",
-            ".@##@+########@.",
-            ".+@@+.@@@@@@@@+.",
-            "..+++.+++++++++.",
-            ".@##@+########@.",
-            ".+@@+.@@@@@@@@+.",
-            "..+++.+++++++++.",
-            ".@##@+########@.",
-            "..+++.+++++++++.",
-            "                ",
-            "                "};"""
-        MenuText = "Spreadsheet"
-        ToolTip = "Spreadsheet workbench"
+    "Spreadsheet workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Spreadsheet/Resources/icons/SpreadsheetWorkbench.svg"
+        self.__class__.MenuText = "Spreadsheet"
+        self.__class__.ToolTip = "Spreadsheet workbench"
 
-	def Initialize(self):
-		# load the module
-                import SpreadsheetGui
+    def Initialize(self):
+        # load the module
+        import SpreadsheetGui
 
-	def GetClassName(self):
-                return "SpreadsheetGui::Workbench"
+    def GetClassName(self):
+        return "SpreadsheetGui::Workbench"
 
 Gui.addWorkbench(SpreadsheetWorkbench())
 

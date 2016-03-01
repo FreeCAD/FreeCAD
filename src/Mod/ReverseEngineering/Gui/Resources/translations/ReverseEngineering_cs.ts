@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished">Approximate B-Spline surface...</translation>
+        <translation>Aproximace B-Spline plochy...</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -51,12 +51,12 @@
     <message>
         <location line="+1"/>
         <source>Poisson...</source>
-        <translation type="unfinished">Poisson...</translation>
+        <translation>Poisson...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation type="unfinished">Poisson surface reconstruction</translation>
+        <translation>Poissonova rekonstrukce plochy</translation>
     </message>
 </context>
 <context>
@@ -68,10 +68,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+1"/>
         <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation type="unfinished">View triangulation</translation>
+        <translation type="obsolete">Zobrazit triangulaci</translation>
     </message>
 </context>
 <context>
@@ -79,29 +87,29 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished">Fit B-Spline surface</translation>
+        <translation>Přizpůsobit B-spline plochu</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>směr u</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished">Degree</translation>
+        <translation>Stupeň</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>Řídící body</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>směr v</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -111,12 +119,12 @@
     <message>
         <location line="+6"/>
         <source>Iterations</source>
-        <translation type="unfinished">Iterations</translation>
+        <translation>Iterace</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>Koeficient velikosti</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -126,27 +134,27 @@
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished">Total Weight</translation>
+        <translation>Celková váha</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Length of gradient</source>
-        <translation type="unfinished">Length of gradient</translation>
+        <translation>Velikost gradientu</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Bending energy</source>
-        <translation type="unfinished">Bending energy</translation>
+        <translation>Ohybová energie</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Curvature variation</source>
-        <translation type="unfinished">Curvature variation</translation>
+        <translation>Variace křivosti</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished">User-defined u/v directions</translation>
+        <translation>Uživatelsky definované směry u/v</translation>
     </message>
 </context>
 <context>
@@ -159,7 +167,7 @@
     <message>
         <location line="+1"/>
         <source>Please select a single placement object to get local orientation.</source>
-        <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+        <translation>Vyberte prosím jedno umístění objektu pro lokální orientaci.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -172,12 +180,12 @@
     <message>
         <location filename="../../Poisson.ui" line="+14"/>
         <source>Poisson</source>
-        <translation type="unfinished">Poisson</translation>
+        <translation>Poisson</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>Parametry</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -192,7 +200,7 @@
     <message>
         <location line="+20"/>
         <source>Samples per node</source>
-        <translation type="unfinished">Samples per node</translation>
+        <translation>Vzorků na uzel</translation>
     </message>
     <message>
         <location filename="../../Poisson.cpp" line="+108"/>
@@ -212,7 +220,7 @@
         <location line="-129"/>
         <location line="+130"/>
         <source>Please select a single point cloud.</source>
-        <translation type="unfinished">Please select a single point cloud.</translation>
+        <translation>Vyberte prosím jednu množinu bodů.</translation>
     </message>
 </context>
 <context>
@@ -220,7 +228,7 @@
     <message>
         <location line="+55"/>
         <source>View triangulation failed</source>
-        <translation type="unfinished">View triangulation failed</translation>
+        <translation>Zobrazení triangulace selhalo</translation>
     </message>
 </context>
 <context>

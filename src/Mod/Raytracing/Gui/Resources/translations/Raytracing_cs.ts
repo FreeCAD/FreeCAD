@@ -316,7 +316,7 @@ Do you want to continue?</source>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+        <translation>Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -365,7 +365,7 @@ Do you want to continue?</source>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
     <message>
         <location line="-29"/>

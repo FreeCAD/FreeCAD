@@ -1051,7 +1051,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Mirror sketch</source>
-        <translation>Ozrcadlit náčrt</translation>
+        <translation>Zrcadlit náčrt</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2243,7 +2243,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
         <location line="+7"/>
         <source>Center sketch</source>
-        <translation type="unfinished">Center sketch</translation>
+        <translation>Střed náčrtu</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2253,7 +2253,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
         <location line="+4"/>
         <source>Swap constraint names</source>
-        <translation type="unfinished">Swap constraint names</translation>
+        <translation>Prohodit názvy vazeb</translation>
     </message>
 </context>
 <context>
@@ -2348,7 +2348,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
         <location line="+17"/>
         <source>Name (optional)</source>
-        <translation type="unfinished">Name (optional)</translation>
+        <translation>Název (volitelný)</translation>
     </message>
 </context>
 <context>
@@ -3138,12 +3138,12 @@ Použijte nástroj Kontrola náčrtu.</translation>
     <message>
         <location line="+15"/>
         <source>Do you want to open the sketch validation tool?</source>
-        <translation type="unfinished">Do you want to open the sketch validation tool?</translation>
+        <translation>Chcete otevřít nástroje pro ověření náčrtu?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.</source>
-        <translation type="unfinished">The sketch is invalid and cannot be edited.</translation>
+        <translation>Náčrt není platný a nemůže být upravován.</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -3675,17 +3675,17 @@ Přeješ si odstranit podporu průčelí?</translation>
     <message>
         <location line="+12"/>
         <source>Solve</source>
-        <translation type="unfinished">Solve</translation>
+        <translation>Řešit</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Resets all solver values to their default values</source>
-        <translation type="unfinished">Resets all solver values to their default values</translation>
+        <translation>Obnoví všechny hodnoty řešiče do výchozí pozice</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restore Defaults</source>
-        <translation type="unfinished">Restore Defaults</translation>
+        <translation>Výchozí nastavení</translation>
     </message>
 </context>
 <context>

@@ -30,6 +30,7 @@
         <file>icons/Path-Inspect.svg</file>
         <file>icons/Path-ToolChange.svg</file>
         <file>icons/Path-SimpleCopy.svg</file>
+        <file>icons/PathWorkbench.svg</file>
         <file>translations/Path_de.qm</file>
         <file>translations/Path_af.qm</file>
         <file>translations/Path_zh-CN.qm</file>

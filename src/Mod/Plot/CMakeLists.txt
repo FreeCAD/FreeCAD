@@ -3,50 +3,50 @@ IF (BUILD_GUI)
 ENDIF (BUILD_GUI)
 
 SET(PlotMain_SRCS
-	Plot.py
-	InitGui.py
-	PlotGui.py
+    Plot.py
+    InitGui.py
+    PlotGui.py
 )
 SOURCE_GROUP("" FILES ${PlotMain_SRCS})
 
 SET(PlotAxes_SRCS
-	plotAxes/__init__.py
-	plotAxes/TaskPanel.py
-	plotAxes/TaskPanel.ui
+    plotAxes/__init__.py
+    plotAxes/TaskPanel.py
+    plotAxes/TaskPanel.ui
 )
 SOURCE_GROUP("plotaxes" FILES ${PlotAxes_SRCS})
 
 SET(PlotLabels_SRCS
-	plotLabels/__init__.py
-	plotLabels/TaskPanel.py
-	plotLabels/TaskPanel.ui
+    plotLabels/__init__.py
+    plotLabels/TaskPanel.py
+    plotLabels/TaskPanel.ui
 )
 SOURCE_GROUP("plotlabels" FILES ${PlotLabels_SRCS})
 
 SET(PlotPositions_SRCS
-	plotPositions/__init__.py
-	plotPositions/TaskPanel.py
-	plotPositions/TaskPanel.ui
+    plotPositions/__init__.py
+    plotPositions/TaskPanel.py
+    plotPositions/TaskPanel.ui
 )
 SOURCE_GROUP("plotpositions" FILES ${PlotPositions_SRCS})
 
 SET(PlotSave_SRCS
-	plotSave/__init__.py
-	plotSave/TaskPanel.py
-	plotSave/TaskPanel.ui
+    plotSave/__init__.py
+    plotSave/TaskPanel.py
+    plotSave/TaskPanel.ui
 )
 SOURCE_GROUP("plotsave" FILES ${PlotSave_SRCS})
 
 SET(PlotSeries_SRCS
-	plotSeries/__init__.py
-	plotSeries/TaskPanel.py
-	plotSeries/TaskPanel.ui
+    plotSeries/__init__.py
+    plotSeries/TaskPanel.py
+    plotSeries/TaskPanel.ui
 )
 SOURCE_GROUP("plotseries" FILES ${PlotSeries_SRCS})
 
 SET(PlotUtils_SRCS
-	plotUtils/__init__.py
-	plotUtils/Paths.py
+    plotUtils/__init__.py
+    plotUtils/Paths.py
 )
 SOURCE_GROUP("plotutils" FILES ${PlotUtils_SRCS})
 
@@ -109,4 +109,10 @@ INSTALL(
         Mod/Plot
 )
 
+SET(PlotGuiIcon_SVG
+    resources/icons/PlotWorkbench.svg
+)
 
+fc_copy_sources(Plot "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Plot" ${PlotGuiIcon_SVG})
+
+INSTALL(FILES ${PlotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Plot/resources/icons")

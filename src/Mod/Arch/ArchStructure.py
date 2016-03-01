@@ -380,7 +380,9 @@ class _Structure(ArchComponent.Component):
                         if len(obj.Base.Shape.Faces) > 0 :
                             normal=obj.Base.Shape.Faces[0].normalAt(.5,.5)
                         else:
-                            return
+                            normal = DraftGeomUtils.getNormal(obj.Base.Shape)
+                            if not normal:
+                                normal = FreeCAD.Vector(0,0,1)
                             #p = FreeCAD.Placement(obj.Base.Placement)
                             #normal = p.Rotation.multVec(normal)
                     else:

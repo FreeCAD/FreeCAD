@@ -91,7 +91,7 @@
     <message>
         <location line="+1"/>
         <source>LinearPattern</source>
-        <translation type="unfinished">LinearPattern</translation>
+        <translation>LineairPatroon</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -830,12 +830,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+4"/>
         <source>Add linear pattern</source>
-        <translation>Een lineair patroon toevoegen</translation>
+        <translation>Lineair patroon toevoegen</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add polar pattern</source>
-        <translation>Een polair patroon toevoegen</translation>
+        <translation>Polair patroon toevoegen</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1347,7 +1347,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>Vorm van geselecteerde onderdeel is leeg</translation>
+        <translation>Vorm van geselecteerde Onderdeel is leeg</translation>
     </message>
     <message>
         <location line="-232"/>
@@ -1363,7 +1363,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <location line="-142"/>
         <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>Vorm van geselecteerde deel is leeg</translation>
+        <translation>Vorm van geselecteerd onderdeel is leeg</translation>
     </message>
     <message>
         <location line="-481"/>
