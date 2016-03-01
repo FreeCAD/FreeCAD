@@ -859,7 +859,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>χιλ.</translation>
+        <translation type="obsolete">χιλ.</translation>
     </message>
 </context>
 <context>

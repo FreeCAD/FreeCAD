@@ -464,7 +464,12 @@ Ali želite nadaljevati?</translation>
         <translation>Ime datoteke kamere:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Izris</translation>
     </message>
@@ -531,12 +536,11 @@ Ali želite nadaljevati?</translation>
         <translation>Nastavitve izvoza mreže</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>največje odstopanje mreže:</translation>
+        <translation type="obsolete">največje odstopanje mreže:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Ne izračunaj normal temen</translation>
     </message>

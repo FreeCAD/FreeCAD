@@ -463,7 +463,12 @@ Do you want to continue?</translation>
         <translation>Ім&apos;я файлу камери:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Візуалізувати</translation>
     </message>
@@ -530,12 +535,11 @@ Do you want to continue?</translation>
         <translation>Налаштування експорту сітки(Mesh)</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Максимальне відхилення сітки:</translation>
+        <translation type="obsolete">Максимальне відхилення сітки:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Не розраховувати нормалі вершин</translation>
     </message>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0">
+<!DOCTYPE TS>
+<TS version="2.1">
 <context>
     <name>Active</name>
     <message>
@@ -165,12 +166,6 @@
     </message>
 </context>
 <context>
-    <name>Machine Name</name>
-</context>
-<context>
-    <name>Machine Units</name>
-</context>
-<context>
     <name>OffsetExtra</name>
     <message>
         <location filename="PathProfile.py" line="90"/>
@@ -197,27 +192,27 @@
 <context>
     <name>Path</name>
     <message>
-        <location filename="InitGui.py" line="113"/>
+        <location filename="InitGui.py" line="85"/>
         <source>Project Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="116"/>
-        <source>Path Modification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="114"/>
+        <location filename="InitGui.py" line="86"/>
         <source>Partial Commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="115"/>
+        <location filename="InitGui.py" line="87"/>
         <source>New Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="116"/>
+        <location filename="InitGui.py" line="88"/>
+        <source>Path Modification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="88"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
@@ -294,9 +289,6 @@
         <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>PathMachine</name>
 </context>
 <context>
     <name>PathProfile</name>
@@ -956,9 +948,6 @@
     </message>
 </context>
 <context>
-    <name>Post Processor</name>
-</context>
-<context>
     <name>Program Stop</name>
     <message>
         <location filename="PathStop.py" line="41"/>
@@ -1084,9 +1073,6 @@
         <source>The active tool</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>Tool Table</name>
 </context>
 <context>
     <name>TooltableEditor</name>
@@ -1271,13 +1257,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TooltableEditor.py" line="435"/>
-        <source>mm</source>
+        <location filename="TooltableEditor.py" line="426"/>
+        <source>Length offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TooltableEditor.py" line="426"/>
-        <source>Length offset</source>
+        <location filename="TooltableEditor.py" line="435"/>
+        <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1297,7 +1283,7 @@
     </message>
     <message>
         <location filename="TooltableEditor.py" line="433"/>
-        <source>&#xc2;&#xb0;</source>
+        <source>Â°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1408,27 +1394,6 @@
     </message>
 </context>
 <context>
-    <name>X Home Position</name>
-</context>
-<context>
-    <name>X Maximum Limit</name>
-</context>
-<context>
-    <name>X Minimum Limit</name>
-</context>
-<context>
-    <name>Y Home Position</name>
-</context>
-<context>
-    <name>Y Maximum Limit</name>
-</context>
-<context>
-    <name>Y Minimum Limit</name>
-</context>
-<context>
-    <name>Z Home Position</name>
-</context>
-<context>
     <name>extend at end</name>
     <message>
         <location filename="PathProfile.py" line="79"/>
@@ -1457,6 +1422,158 @@
     <message>
         <location filename="PathProfile.py" line="80"/>
         <source>length of straight segment of toolpath that comes in at angle to last part edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPathCompound</name>
+    <message>
+        <location filename="../../Command.cpp" line="53"/>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="54"/>
+        <source>Compound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="55"/>
+        <source>Creates a compound from selected paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPathShape</name>
+    <message>
+        <location filename="../../Command.cpp" line="107"/>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="108"/>
+        <source>From Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="109"/>
+        <source>Creates a path from a selected shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DlgProcessorChooser</name>
+    <message>
+        <location filename="../../DlgProcessorChooser.ui" line="14"/>
+        <source>Choose a processor</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgSettingsPath</name>
+    <message>
+        <location filename="../../../PathScripts/DlgSettingsPath.ui" line="14"/>
+        <location filename="../../../PathScripts/DlgSettingsPath.ui" line="26"/>
+        <source>General Path settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
+        <source>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/DlgSettingsPath.ui" line="37"/>
+        <source>Automatic project handling</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathGui::DlgProcessorChooser</name>
+    <message>
+        <location filename="../../DlgProcessorChooser.cpp" line="49"/>
+        <location filename="../../DlgProcessorChooser.cpp" line="66"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathGui::DlgSettingsPathColor</name>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="14"/>
+        <source>Path colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="20"/>
+        <source>Default Path colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="34"/>
+        <source>Default normal path color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="41"/>
+        <source>The default color for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="67"/>
+        <source>Default pathline width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="74"/>
+        <source>The default line thickness for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="77"/>
+        <source>px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="102"/>
+        <source>Default path marker color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="109"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="142"/>
+        <source>The default line color for new shapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="135"/>
+        <source>Rapid path color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsPathColor.ui" line="162"/>
+        <source>Machine extents color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathGui::TaskWidgetPathCompound</name>
+    <message>
+        <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
+        <source>Compound paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TaskDlgPathCompound</name>
+    <message>
+        <location filename="../../TaskDlgPathCompound.ui" line="14"/>
+        <source>Paths list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskDlgPathCompound.ui" line="20"/>
+        <source>Reorder children by dragging and dropping them to their correct location</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
