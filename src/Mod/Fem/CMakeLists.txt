@@ -11,8 +11,6 @@ INSTALL(
         Init.py
         InitGui.py
 
-        ccxInpWriterFemConstraintDisplacement.py
-
         convert2TetGen.py
 
         SelectionObserverFem.py
