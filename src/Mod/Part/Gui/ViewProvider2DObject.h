@@ -49,7 +49,7 @@ public:
 
   /// Property to switch the grid on and off
   App::PropertyBool ShowGrid;
-  App::PropertyDistance GridSize;
+  App::PropertyLength GridSize;
   App::PropertyEnumeration GridStyle;
   App::PropertyBool TightGrid;
   App::PropertyBool GridSnap;
@@ -75,6 +75,7 @@ protected:
   float MinY;
   float MaxY;
   static const char* GridStyleEnums[];
+  static App::PropertyQuantityConstraint::Constraints GridSizeRange;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObjectPython;
