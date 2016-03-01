@@ -2075,20 +2075,8 @@ def rebaseWire(wire,vidx):
     if vidx > len(wire.Vertexes):
         #print("Vertex index above maximum\n")
         return wire
-    basepoint = wire.Vertexes[vidx-1].Point
-    #wire = Part.__sortEdges__(wire)
-    edges = []
-    start = False
-    for i in range(len(wire.Edges)):
-        if wire.Edges[i].Vertexes[0].Point == basepoint:
-            start = True
-            edges.append(wire.Edges[i])
-        elif start:
-            edges.append(wire.Edges[i])
-    if len(edges) < len(wire.Edges):
-        f = len(wire.Edges) - len(edges)
-        edges.extend(wire.Edges[0:f])
-    return Part.Wire(edges)
+    #This can be done in one step
+    return Part.Wire(wire.Edges[vidx-1:] + wire.Edges[:vidx-1])
 
 
 # circle functions *********************************************************
