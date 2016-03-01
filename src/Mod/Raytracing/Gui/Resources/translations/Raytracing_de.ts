@@ -463,7 +463,12 @@ Do you want to continue?</source>
         <translation>Kamera-Dateiname:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Rendern</translation>
     </message>
@@ -530,12 +535,11 @@ Do you want to continue?</source>
         <translation>Mesh-Exporteinstellungen</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>max. Mesh-Abweichung:</translation>
+        <translation type="obsolete">max. Mesh-Abweichung:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Vertexnormalen nicht berechnen</translation>
     </message>

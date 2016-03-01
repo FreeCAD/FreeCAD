@@ -464,7 +464,12 @@ Do you want to continue?</translation>
         <translation>Názov súboru fotoaparátu:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation type="unfinished">Render</translation>
     </message>
@@ -531,12 +536,11 @@ Do you want to continue?</translation>
         <translation>Nastavenia exportu oka</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Max.odchýlka oka:</translation>
+        <translation type="obsolete">Max.odchýlka oka:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Nepočítať normály vrcholu</translation>
     </message>

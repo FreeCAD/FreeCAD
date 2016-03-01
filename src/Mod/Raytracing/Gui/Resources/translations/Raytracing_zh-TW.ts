@@ -462,7 +462,12 @@ Do you want to continue?</source>
         <translation>攝影機檔案名稱:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>彩現</translation>
     </message>
@@ -529,12 +534,11 @@ Do you want to continue?</source>
         <translation>網格匯出設定</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>最大網格偏差：</translation>
+        <translation type="obsolete">最大網格偏差：</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>不計算頂點法線</translation>
     </message>
