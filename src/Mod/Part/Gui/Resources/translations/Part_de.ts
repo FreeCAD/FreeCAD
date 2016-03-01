@@ -744,12 +744,12 @@
     <message>
         <location line="+1"/>
         <source>Refine shape</source>
-        <translation>Ergebnis Form kopieren</translation>
+        <translation>Form aufbereiten</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Refine the copy of a shape</source>
-        <translation>Kopie einer Form verfeinern</translation>
+        <translation>Kopie einer Form aufbereiten</translation>
     </message>
 </context>
 <context>
@@ -2386,12 +2386,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+19"/>
         <source>Automatically refine model after boolean operation</source>
-        <translation>nach boolescher Operation automatisch Ergebnis Geometrie erstellen</translation>
+        <translation>Modell nach Boolscher Operation automatisch aufbereiten</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation>nach Skizzenoperation automatisch Ergebnis Geometrie erstellen</translation>
+        <translation>Modell nach skizzenbasierter Operation automatisch aufbereiten</translation>
     </message>
     <message>
         <location line="+16"/>
