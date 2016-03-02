@@ -73,14 +73,14 @@ class inp_writer:
         inpfile.write('\n\n')
         self.write_element_sets_material_and_femelement_type(inpfile)
         self.write_node_sets_constraints_fixed(inpfile)
-        self.write_displacement_nodes(inpfile)
+        self.write_node_sets_constraints_displacement(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
             self.write_node_sets_constraints_force(inpfile)
         self.write_materials(inpfile)
         self.write_femelementsets(inpfile)
         self.write_step_begin(inpfile)
         self.write_constraints_fixed(inpfile)
-        self.write_displacement(inpfile)
+        self.write_constraints_displacement(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
             self.write_constraints_force(inpfile)
             self.write_constraints_pressure(inpfile)
@@ -148,7 +148,7 @@ class inp_writer:
                 for i in n:
                     f.write(str(i) + ',\n')
 
-    def write_displacement_nodes(self,f):
+    def write_node_sets_constraints_displacement(self,f):
         f.write('\n***********************************************************\n')
         f.write('** Node sets for prescribed displacement constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
@@ -286,7 +286,7 @@ class inp_writer:
                 f.write(fix_obj_name + ',6\n')
             f.write('\n')
 
-    def write_displacement(self,f):
+    def write_constraints_displacement(self,f):
         f.write('\n***********************************************************\n')
         f.write('** Displacement constraint applied\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
