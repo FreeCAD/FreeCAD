@@ -649,6 +649,7 @@ Mesh.show(m)
         for (std::size_t i = 0; i < parameters.size(); i++)
             tuple.setItem(i, Py::Float(parameters[i]));
         dict.setItem(Py::String("Probability"), Py::Float(probability));
+        dict.setItem(Py::String("Parameters"), tuple);
 
         return dict;
     }

@@ -26,6 +26,7 @@
 #include "SampleConsensus.h"
 #include <Mod/Points/App/Points.h>
 #include <Base/Exception.h>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #if defined(HAVE_PCL_SAMPLE_CONSENSUS)
 #include <pcl/point_types.h>
@@ -48,7 +49,8 @@ double SampleConsensus::perform(std::vector<float>& parameters)
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+            cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
     }
 
     cloud->width = int (cloud->points.size ());
