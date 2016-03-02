@@ -148,13 +148,13 @@ class inp_writer:
                 for i in n:
                     f.write(str(i) + ',\n')
 
-    def write_node_sets_constraints_displacement(self,f):
+    def write_node_sets_constraints_displacement(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Node sets for prescribed displacement constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.displacement_objects:
             disp_obj = fobj['Object']
-            f.write('*NSET,NSET='+disp_obj.Name + '\n')
+            f.write('*NSET,NSET=' + disp_obj.Name + '\n')
             for o, elem in disp_obj.References:
                 fo = o.Shape.getElement(elem)
                 n = []
@@ -286,39 +286,39 @@ class inp_writer:
                 f.write(fix_obj_name + ',6\n')
             f.write('\n')
 
-    def write_constraints_displacement(self,f):
+    def write_constraints_displacement(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Displacement constraint applied\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for disp_obj in self.displacement_objects:
             disp_obj_name = disp_obj['Object'].Name
             f.write('*BOUNDARY\n')
-            if disp_obj['Object'].xFix == True:
+            if disp_obj['Object'].xFix:
                 f.write(disp_obj_name + ',1\n')
-            elif disp_obj['Object'].xFree == False:
-                f.write(disp_obj_name + ',1,1,'+str(disp_obj['Object'].xDisplacement)+'\n')
-            if disp_obj['Object'].yFix == True:
+            elif not disp_obj['Object'].xFree:
+                f.write(disp_obj_name + ',1,1,' + str(disp_obj['Object'].xDisplacement) + '\n')
+            if disp_obj['Object'].yFix:
                 f.write(disp_obj_name + ',2\n')
-            elif disp_obj['Object'].yFree == False:
-                f.write(disp_obj_name + ',2,2,'+str(disp_obj['Object'].yDisplacement)+'\n')
-            if disp_obj['Object'].zFix == True:
+            elif not disp_obj['Object'].yFree:
+                f.write(disp_obj_name + ',2,2,' + str(disp_obj['Object'].yDisplacement) + '\n')
+            if disp_obj['Object'].zFix:
                 f.write(disp_obj_name + ',3\n')
-            elif disp_obj['Object'].zFree == False:
-                f.write(disp_obj_name + ',3,3,'+str(disp_obj['Object'].zDisplacement)+'\n')
+            elif not disp_obj['Object'].zFree:
+                f.write(disp_obj_name + ',3,3,' + str(disp_obj['Object'].zDisplacement) + '\n')
 
             if self.beamsection_objects or self.shellthickness_objects:
-                if disp_obj['Object'].rotxFix == True:
+                if disp_obj['Object'].rotxFix:
                     f.write(disp_obj_name + ',4\n')
-                elif disp_obj['Object'].rotxFree == False:
-                    f.write(disp_obj_name + ',4,4,'+str(disp_obj['Object'].xRotation)+'\n')
-                if disp_obj['Object'].rotyFix == True:
+                elif not disp_obj['Object'].rotxFree:
+                    f.write(disp_obj_name + ',4,4,' + str(disp_obj['Object'].xRotation) + '\n')
+                if disp_obj['Object'].rotyFix:
                     f.write(disp_obj_name + ',5\n')
-                elif disp_obj['Object'].rotyFree == False:
-                    f.write(disp_obj_name + ',5,5,'+str(disp_obj['Object'].yRotation)+'\n')
-                if disp_obj['Object'].rotzFix == True:
+                elif not disp_obj['Object'].rotyFree:
+                    f.write(disp_obj_name + ',5,5,' + str(disp_obj['Object'].yRotation) + '\n')
+                if disp_obj['Object'].rotzFix:
                     f.write(disp_obj_name + ',6\n')
-                elif disp_obj['Object'].rotzFree == False:
-                    f.write(disp_obj_name + ',6,6,'+str(disp_obj['Object'].zRotation)+'\n')
+                elif not disp_obj['Object'].rotzFree:
+                    f.write(disp_obj_name + ',6,6,' + str(disp_obj['Object'].zRotation) + '\n')
         f.write('\n')
 
     def write_constraints_force(self, f):

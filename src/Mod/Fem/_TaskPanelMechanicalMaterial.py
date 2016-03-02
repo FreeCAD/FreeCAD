@@ -142,7 +142,7 @@ class _TaskPanelMechanicalMaterial:
         old_pr = Units.Quantity(self.material['PoissonRatio'])
         variation = 0.001
         if value:
-            if  not (1 - variation < float(old_pr) / value < 1 + variation):
+            if not (1 - variation < float(old_pr) / value < 1 + variation):
                 # PoissonRatio has changed
                 material = self.material
                 material['PoissonRatio'] = unicode(value)
