@@ -33,14 +33,3 @@ class _FemAnalysis:
 
     def execute(self, obj):
         return
-
-    def onChanged(self, obj, prop):
-        if prop in ["MaterialName"]:
-            return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
