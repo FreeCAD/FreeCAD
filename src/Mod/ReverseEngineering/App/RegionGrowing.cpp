@@ -26,6 +26,7 @@
 #include "RegionGrowing.h"
 #include <Mod/Points/App/Points.h>
 #include <Base/Exception.h>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #if defined(HAVE_PCL_FILTERS)
 #include <pcl/filters/passthrough.h>
@@ -55,7 +56,8 @@ void RegionGrowing::perform(int ksearch)
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+            cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
     }
 
     //normal estimation
@@ -102,18 +104,22 @@ void RegionGrowing::perform(const std::vector<Base::Vector3f>& myNormals)
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
     cloud->reserve(myPoints.size());
-    for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
+    pcl::PointCloud <pcl::Normal>::Ptr normals (new pcl::PointCloud <pcl::Normal>);
+    normals->reserve(myNormals.size());
+
+    std::size_t num_points = myPoints.size();
+    const std::vector<Base::Vector3f>& points = myPoints.getBasicPoints();
+    for (std::size_t index=0; index<num_points; index++) {
+        const Base::Vector3f& p = points[index];
+        const Base::Vector3f& n = myNormals[index];
+        if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+            cloud->push_back(pcl::PointXYZ(p.x, p.y, p.z));
+            normals->push_back(pcl::Normal(n.x, n.y, n.z));
+        }
     }
 
     pcl::search::Search<pcl::PointXYZ>::Ptr tree = boost::shared_ptr<pcl::search::Search<pcl::PointXYZ> > (new pcl::search::KdTree<pcl::PointXYZ>);
     tree->setInputCloud (cloud);
-
-    pcl::PointCloud <pcl::Normal>::Ptr normals (new pcl::PointCloud <pcl::Normal>);
-    normals->reserve(myNormals.size());
-    for (std::vector<Base::Vector3f>::const_iterator it = myNormals.begin(); it != myNormals.end(); ++it) {
-        normals->push_back(pcl::Normal(it->x, it->y, it->z));
-    }
 
     // pass through
     pcl::IndicesPtr indices (new std::vector <int>);
