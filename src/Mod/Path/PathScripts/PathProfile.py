@@ -226,6 +226,8 @@ class ObjectProfile:
                 curve = PathKurveUtils.makeAreaCurve(edgelist,direction,startpoint, endpoint)
 
                 '''The following line uses a profile function written for use with FreeCAD.  It's clean but incomplete.  It doesn't handle
+        print "x = " + str(point.x)
+        print "y - " + str(point.y)
                     holding tags
                     start location
                     CRC
@@ -286,6 +288,78 @@ class ObjectProfile:
 
 #     def __setstate__(self,state):
 #         return None
+
+
+class _CommandAddTag:
+    def GetResources(self):
+        return {'Pixmap'  : 'Path-Holding',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Add Holding Tag"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Add Holding Tag")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+    
+    def setpoint(self,point,o):
+        obj=FreeCADGui.Selection.getSelection()[0]
+        obj.StartPoint.x = point.x
+        obj.StartPoint.y = point.y
+        loc = obj.locs
+        h = obj.heights
+        l = obj.lengths
+        a = obj.angles
+        
+        x =  point.x
+        y =  point.y
+        z =  float(0.0)
+        loc.append(Vector(x,y,z))
+        h.append(4.0)
+        l.append(5.0)
+        a.append(45.0)
+
+        obj.locs = loc
+        obj.heights = h
+        obj.lengths = l
+        obj.angles = a
+
+
+
+    def Activated(self):
+
+        FreeCADGui.Snapper.getPoint(callback=self.setpoint)
+
+class _CommandSetStartPoint:
+    def GetResources(self):
+        return {'Pixmap'  : 'Path-Holding',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Pick Start Point"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Pick Start Point")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+    
+    def setpoint(self,point,o):
+        obj=FreeCADGui.Selection.getSelection()[0]
+        obj.StartPoint.x = point.x
+        obj.StartPoint.y = point.y
+    def Activated(self):
+
+        FreeCADGui.Snapper.getPoint(callback=self.setpoint)
+
+class _CommandSetEndPoint:
+    def GetResources(self):
+        return {'Pixmap'  : 'Path-Holding',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Pick End Point"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Profile","Pick End Point")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+    
+    def setpoint(self,point,o):
+        obj=FreeCADGui.Selection.getSelection()[0]
+        obj.EndPoint.x = point.x
+        obj.EndPoint.y = point.y
+    def Activated(self):
+
+        FreeCADGui.Snapper.getPoint(callback=self.setpoint)
 
 
 class CommandPathProfile:
@@ -568,5 +642,8 @@ class _EditPanel:
 if FreeCAD.GuiUp: 
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Profile',CommandPathProfile())
+    FreeCADGui.addCommand('Add_Tag',_CommandAddTag())
+    FreeCADGui.addCommand('Set_StartPoint',_CommandSetStartPoint())
+    FreeCADGui.addCommand('Set_EndPoint',_CommandSetEndPoint())
 
 FreeCAD.Console.PrintLog("Loading PathProfile... done\n")

@@ -548,7 +548,7 @@ class Creator(nc.Creator):
     ##  Moves
 
     def rapid(self, x=None, y=None, z=None, a=None, b=None, c=None ):
-        if self.same_xyz(x, y, z, a, b, c): return
+        #if self.same_xyz(x, y, z, a, b, c): return
         self.on_move()
 
         if self.g0123_modal:
