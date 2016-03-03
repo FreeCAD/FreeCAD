@@ -37,11 +37,6 @@ from nc.nc import *
 import PathScripts.nc.iso
 
 
-
-
-
-
-
 def makeAreaVertex(seg):
     if seg.ShapeType =='Edge':
         if isinstance(seg.Curve,Part.Circle):
@@ -54,18 +49,22 @@ def makeAreaVertex(seg):
             vertex = area.Point(seg.valueAt(seg.LastParameter)[0],seg.valueAt(seg.LastParameter)[1])
         else:
             pass
+    #print "returning vertex: area.Point(" + str(seg.valueAt(seg.LastParameter)[0]) +"," + str(seg.valueAt(seg.LastParameter)[1]) +")"
     return vertex
 
 def makeAreaCurve(edges,direction,startpt=None,endpt=None):
     curveobj = area.Curve()
 
-    cleanededges = PathUtils.cleanedges(edges, 0.01)
+    cleanededges = Part.__sortEdges__(PathUtils.cleanedges(edges, 0.01))
+    
+    for e in cleanededges:
+        print str(e.valueAt(e.FirstParameter)) + "," + str(e.valueAt(e.LastParameter))
     edgelist=[]
     
     if len(cleanededges) == 1: #user selected a single edge.
         edgelist = cleanededges 
     else:
-        edgelist = [] #Multiple edges.  Need to sequence the vetexes.
+        #edgelist = [] #Multiple edges.  Need to sequence the vetexes.
         #First get the first segment oriented correctly.
 
         #We first compare the last parameter of the first segment to see if it matches either end of the second segment. If not, it must need flipping.
@@ -84,7 +83,7 @@ def makeAreaCurve(edges,direction,startpt=None,endpt=None):
             else:
                 nextedge = PathUtils.reverseEdge(edge)
             edgelist.append(nextedge)
-    #print (str(area.Point(edgelist[0].Vertexes[0].X) + ", " + str(edgelist[0].Vertexes[0].Y)))
+    #print "makeareacurve 87: " + "area.Point(" + str(edgelist[0].Vertexes[0].X) + ", " + str(edgelist[0].Vertexes[0].Y)+")"
     curveobj.append(area.Point(edgelist[0].Vertexes[0].X,edgelist[0].Vertexes[0].Y))
 #     seglist =[]
 #     if direction=='CW':
