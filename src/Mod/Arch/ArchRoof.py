@@ -36,10 +36,12 @@ __author__ = "Yorik van Havre", "Jonathan Wiedemann"
 __url__ = "http://www.freecadweb.org"
 
 def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickness = [50.,], overhang=[100.,], name="Roof"):
-    '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a closed wire.
-    face from an existing object. You can provide a list of angles, run, idrel, thickness,
-    overhang for each edges in the wire to define the roof shape. The default for angle is 45
-    and the list is automatically complete to match with number of edges in the wire.'''
+    '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on
+    a closed wire or an object. You can provide a list of angles, run,
+    idrel, thickness, overhang for each edges in the wire to define the
+    roof shape. The default for angle is 45 and the list is
+    automatically complete to match with number of edges in the wire.
+    If the base object is a solid the roof take the shape.'''
     import Part
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
@@ -50,20 +52,22 @@ def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickn
     if baseobj:
         obj.Base = baseobj
         if obj.Base.isDerivedFrom("Part::Feature"):
-            if (facenr == 0) and obj.Base.Shape.Solids:
-                # the base shape is a solid and facenr hasn't been set:
-                # assume its shape is copied over
+            if obj.Base.Shape.Solids:
                 if FreeCAD.GuiUp:
                     obj.Base.ViewObject.hide()
             else:
-                # set facenr to 1
-                facenr = 1
-            if (obj.Base.Shape.Faces and obj.Face):
-                w = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
-            elif obj.Base.Shape.Wires:
-                w = obj.Base.Shape.Wires[0]
+                if (obj.Base.Shape.Faces and obj.Face):
+                    w = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
+                    if FreeCAD.GuiUp:
+                        obj.Base.ViewObject.hide()
+                elif obj.Base.Shape.Wires:
+                    w = obj.Base.Shape.Wires[0]
+                    if FreeCAD.GuiUp:
+                        obj.Base.ViewObject.hide()
         if w:
             if w.isClosed():
+                if FreeCAD.GuiUp:
+                    obj.Base.ViewObject.hide()
                 edges = Part.__sortEdges__(w.Edges)
                 l = len(edges)
     
@@ -388,7 +392,6 @@ class _Roof(ArchComponent.Component):
             self.ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave[0]))
             self.ptsPaneProject.append(FreeCAD.Vector(profilCurrent["eave"].Vertexes[0].Point[0]))
 
-
     def nextSmaller(self, i):
         import DraftGeomUtils
         profilCurrent = self.findProfil(i)
@@ -496,88 +499,87 @@ class _Roof(ArchComponent.Component):
         #self.baseface = None
 
         base = None
+        w = None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                w = None
                 if obj.Base.Shape.Solids:
-                    base = obj.Base.Shape.copy()
+                    base = obj.Base.Shape
+                    #pl = obj.Base.Placement
                 else:
                     if (obj.Base.Shape.Faces and obj.Face):
                         w = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
                     elif obj.Base.Shape.Wires:
                         w = obj.Base.Shape.Wires[0]
-                if w:
-                    if w.isClosed():
-                        self.profilsDico = []
-                        self.shps = []
-                        self.subVolshps = []
-                        heights = []
-                        edges = Part.__sortEdges__(w.Edges)
-                        l = len(edges)
-                        for i in range(l):
-                            self.makeRoofProfilsDic(i, obj.Angles[i], obj.Runs[i], obj.IdRel[i], obj.Overhang[i], obj.Thickness[i])
-                        for i in range(l):
-                            self.calcMissingData(i)
-                        for i in range(l):
-                            self.calcEdgeGeometry(edges, i)
-                        for i in range(l):
-                            self.calcDraftEdges(i)
-                        for i in range(l):
-                            self.calcEave(i)
-                        for p in self.profilsDico:
-                            heights.append(p["height"])
-                        obj.Heights = heights
-                        for i in range(l):
-                            self.getRoofPaneProject(i)
-                            profilCurrent = self.findProfil(i)
-                            midpoint = DraftGeomUtils.findMidpoint(profilCurrent["edge"])
-                            ptsPaneProject = profilCurrent["points"]
-                            lp = len(ptsPaneProject)
-                            if lp != 0:
-                                ptsPaneProject.append(ptsPaneProject[0])
-                                edgesWire = []
-                                for p in range(lp):
-                                    edge = Part.makeLine(ptsPaneProject[p],ptsPaneProject[p+1])
-                                    edgesWire.append(edge)
-                                wire = Part.Wire(edgesWire)
-                                d = wire.BoundBox.DiagonalLength
-                                thicknessV = profilCurrent["thickness"]/(math.cos(math.radians(profilCurrent["angle"])))
-                                overhangV = profilCurrent["overhang"]*math.tan(math.radians(profilCurrent["angle"]))
-                                if wire.isClosed():
-                                    f = Part.Face(wire)
-                                    f = f.extrude(FreeCAD.Vector(0,0,profilCurrent["height"]+1000000.0))
-                                    f.translate(FreeCAD.Vector(0.0,0.0,-2*overhangV))
-                                ptsPaneProfil=[FreeCAD.Vector(-profilCurrent["overhang"],-overhangV,0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"],0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"]+thicknessV,0.0),FreeCAD.Vector(-profilCurrent["overhang"],-overhangV+thicknessV,0.0)]
-                                self.shps.append(self.createProfilShape(ptsPaneProfil, midpoint, profilCurrent["rot"], profilCurrent["vec"], profilCurrent["run"], d, f))
-                                ## subVolume shape
-                                ptsSubVolumeProfil=[FreeCAD.Vector(-profilCurrent["overhang"],-overhangV,0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"],0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"]+900000.0,0.0),FreeCAD.Vector(-profilCurrent["overhang"],profilCurrent["height"]+900000.0,0.0)]
-                                self.subVolshps.append(self.createProfilShape(ptsSubVolumeProfil, midpoint, profilCurrent["rot"], profilCurrent["vec"], profilCurrent["run"], d, f))
-                        ## SubVolume
-                        self.sub = self.subVolshps.pop()
-                        for s in self.subVolshps:
-                            self.sub = self.sub.fuse(s)
-                        self.sub = self.sub.removeSplitter()
-                        if not self.sub.isNull():
-                            if not DraftGeomUtils.isNull(pl):
-                                self.sub.Placement = pl
-                        ## BaseVolume
-                        base = Part.makeCompound(self.shps)
-                        if not base.isNull():
-                            if not DraftGeomUtils.isNull(pl):
-                                base.Placement = pl
-            else:
-                FreeCAD.Console.PrintMessage(translate("Arch","Unable to create a roof"))
-        base = self.processSubShapes(obj,base)
-        if base:
-            if not base.isNull():
-                obj.Shape = base
+        if w:
+            if w.isClosed():
+                self.profilsDico = []
+                self.shps = []
+                self.subVolshps = []
+                heights = []
+                edges = Part.__sortEdges__(w.Edges)
+                l = len(edges)
+                for i in range(l):
+                    self.makeRoofProfilsDic(i, obj.Angles[i], obj.Runs[i], obj.IdRel[i], obj.Overhang[i], obj.Thickness[i])
+                for i in range(l):
+                    self.calcMissingData(i)
+                for i in range(l):
+                    self.calcEdgeGeometry(edges, i)
+                for i in range(l):
+                    self.calcDraftEdges(i)
+                for i in range(l):
+                    self.calcEave(i)
+                for p in self.profilsDico:
+                    heights.append(p["height"])
+                obj.Heights = heights
+                for i in range(l):
+                    self.getRoofPaneProject(i)
+                    profilCurrent = self.findProfil(i)
+                    midpoint = DraftGeomUtils.findMidpoint(profilCurrent["edge"])
+                    ptsPaneProject = profilCurrent["points"]
+                    lp = len(ptsPaneProject)
+                    if lp != 0:
+                        ptsPaneProject.append(ptsPaneProject[0])
+                        edgesWire = []
+                        for p in range(lp):
+                            edge = Part.makeLine(ptsPaneProject[p],ptsPaneProject[p+1])
+                            edgesWire.append(edge)
+                        wire = Part.Wire(edgesWire)
+                        d = wire.BoundBox.DiagonalLength
+                        thicknessV = profilCurrent["thickness"]/(math.cos(math.radians(profilCurrent["angle"])))
+                        overhangV = profilCurrent["overhang"]*math.tan(math.radians(profilCurrent["angle"]))
+                        if wire.isClosed():
+                            f = Part.Face(wire)
+                            f = f.extrude(FreeCAD.Vector(0,0,profilCurrent["height"]+1000000.0))
+                            f.translate(FreeCAD.Vector(0.0,0.0,-2*overhangV))
+                        ptsPaneProfil=[FreeCAD.Vector(-profilCurrent["overhang"],-overhangV,0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"],0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"]+thicknessV,0.0),FreeCAD.Vector(-profilCurrent["overhang"],-overhangV+thicknessV,0.0)]
+                        self.shps.append(self.createProfilShape(ptsPaneProfil, midpoint, profilCurrent["rot"], profilCurrent["vec"], profilCurrent["run"], d, f))
+                        ## subVolume shape
+                        ptsSubVolumeProfil=[FreeCAD.Vector(-profilCurrent["overhang"],-overhangV,0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"],0.0),FreeCAD.Vector(profilCurrent["run"],profilCurrent["height"]+900000.0,0.0),FreeCAD.Vector(-profilCurrent["overhang"],profilCurrent["height"]+900000.0,0.0)]
+                        self.subVolshps.append(self.createProfilShape(ptsSubVolumeProfil, midpoint, profilCurrent["rot"], profilCurrent["vec"], profilCurrent["run"], d, f))
+                ## SubVolume
+                self.sub = self.subVolshps.pop()
+                for s in self.subVolshps:
+                    self.sub = self.sub.fuse(s)
+                self.sub = self.sub.removeSplitter()
+                if not self.sub.isNull():
+                    if not DraftGeomUtils.isNull(pl):
+                        self.sub.Placement = pl
+                ## BaseVolume
+                base = Part.makeCompound(self.shps)
+                base = self.processSubShapes(obj,base)
+                self.applyShape(obj,base,pl)
+        elif base :
+            base = self.processSubShapes(obj,base)
+            self.applyShape(obj,base,pl)
+        else:
+            FreeCAD.Console.PrintMessage(translate("Arch","Unable to create a roof"))
 
     def getSubVolume(self,obj):
         "returns a volume to be subtracted"
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.Solids:
-                    return obj.Base.Shape
+                    return obj.Shape
                 else :
                     if self.sub:
                         return self.sub
