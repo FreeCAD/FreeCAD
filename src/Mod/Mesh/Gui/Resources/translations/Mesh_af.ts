@@ -859,7 +859,7 @@ Gee eers die opdrag om die voue te herstel</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>

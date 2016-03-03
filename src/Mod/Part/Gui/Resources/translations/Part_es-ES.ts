@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
         <source>Chamfer Edges</source>
         <translation>Aristas del chaflán</translation>
     </message>
@@ -1189,17 +1189,17 @@
         <translation>Dirección</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+6"/>
         <source>Along normal</source>
         <translation>A lo largo de la normal</translation>
     </message>
     <message>
-        <location line="-34"/>
+        <location line="+117"/>
         <source>Length:</source>
         <translation>Longitud:</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="-110"/>
         <source>3D view</source>
         <translation>Vista 3D</translation>
     </message>
@@ -1209,7 +1209,7 @@
         <translation>Nota: Esta opción funciona solo para planos</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+127"/>
         <source>Create solid</source>
         <translation>Crear sólido</translation>
     </message>
@@ -1219,7 +1219,7 @@
         <translation>Forma cónica con ángulo hacia afuera</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+41"/>
         <source>Shape</source>
         <translation>Forma</translation>
     </message>
@@ -1228,7 +1228,7 @@
         <translation>(Vacio)</translation>
     </message>
     <message>
-        <location line="-199"/>
+        <location line="-168"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1278,22 +1278,27 @@
         <translation>Parámetro de redondeo</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+91"/>
         <source>Radius:</source>
         <translation>Radio:</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-69"/>
         <source>Select faces</source>
         <translation>Seleccione caras</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
+        <source>Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Select edges</source>
         <translation>Seleccione aristas</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="+47"/>
         <source>Fillet type:</source>
         <translation>Tipo de redondeo:</translation>
     </message>
@@ -1308,7 +1313,7 @@
         <translation>Radio variable</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-103"/>
         <source>Shape</source>
         <translation>Forma</translation>
     </message>
@@ -1323,7 +1328,7 @@
         <translation>Ninguna selección</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
         <source>Length:</source>
         <translation>Longitud:</translation>
     </message>
@@ -1344,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+520"/>
+        <location line="+545"/>
         <source>Start length</source>
         <translation>Longitud de inicio</translation>
     </message>
     <message>
-        <location line="-519"/>
+        <location line="-544"/>
         <source>End length</source>
         <translation>Longitud final</translation>
     </message>
@@ -1360,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+517"/>
+        <location line="+542"/>
         <source>Start radius</source>
         <translation>Radio inicial</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-541"/>
         <source>End radius</source>
         <translation>Radio final</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+531"/>
         <source>Length</source>
         <translation>Longitud</translation>
     </message>
@@ -1392,17 +1397,17 @@ Please check one or more edge entities first.</source>
 Por favor selecciona primero una o más aristas.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+101"/>
+        <location filename="../../DlgFilletEdges.ui" line="+40"/>
         <source>All</source>
         <translation>Todo</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+7"/>
         <source>None</source>
         <translation>Nada</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-248"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Lado %1</translation>
@@ -1567,7 +1572,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Definición de prisma</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+71"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1595,7 +1600,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Tamaño:</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+51"/>
         <source>Height:</source>
         <translation>Altura:</translation>
     </message>
@@ -1610,12 +1615,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Longitud:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-154"/>
         <source>Position:</source>
         <translation>Posición:</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Direction:</source>
         <translation>Dirección:</translation>
     </message>
@@ -1628,7 +1633,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Definición de cilindro</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+95"/>
         <source>Parameter</source>
         <translation>Parámetro</translation>
     </message>
@@ -1643,7 +1648,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Radio:</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-108"/>
         <source>Position:</source>
         <translation>Posición:</translation>
     </message>
@@ -1847,7 +1852,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+519"/>
+        <location filename="../../DlgPrimitives.cpp" line="+542"/>
         <source>Wedge</source>
         <translation>Cuña</translation>
     </message>
@@ -2159,7 +2164,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Punto de inicio</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+193"/>
+        <location filename="../../DlgPrimitives.cpp" line="+190"/>
         <source>&amp;Create</source>
         <translation>&amp;Crear</translation>
     </message>
@@ -2176,7 +2181,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">ALT+O</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-485"/>
         <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
@@ -2221,12 +2226,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+17"/>
         <source>Angle:</source>
         <translation>Ángulo:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Z:</source>
         <translation>Z:</translation>
     </message>
@@ -2236,7 +2241,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Eje:</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Shape</source>
         <translation>Forma</translation>
     </message>
@@ -2251,7 +2256,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Crear sólido</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+177"/>
+        <location filename="../../DlgRevolution.cpp" line="+178"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Primero seleccione una forma de revolución.</translation>
     </message>
@@ -2591,26 +2596,30 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+8"/>
-        <source>Base point:</source>
-        <translation>Punto base:</translation>
+        <source>Base point</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <source>Base point:</source>
+        <translation type="obsolete">Punto base:</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>y</source>
         <translation>y</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>z</source>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+122"/>
+        <location filename="../../Mirroring.cpp" line="+123"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Primero seleccione la forma que va a reflejar.</translation>
     </message>
@@ -2623,7 +2632,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+165"/>
+        <location filename="../../TaskOffset.cpp" line="+166"/>
         <source>Input error</source>
         <translation>Error de entrada</translation>
     </message>
@@ -3065,7 +3074,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Equidistancia</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Mode</source>
         <translation>Modo</translation>
     </message>

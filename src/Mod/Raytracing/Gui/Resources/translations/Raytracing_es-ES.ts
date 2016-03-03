@@ -462,7 +462,12 @@ Do you want to continue?</source>
         <translation>Nombre del archivo de la cámara:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Renderizar</translation>
     </message>
@@ -529,12 +534,11 @@ Do you want to continue?</source>
         <translation>Configuración de la exportación de mallas</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Desviación máxima de la malla:</translation>
+        <translation type="obsolete">Desviación máxima de la malla:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>No calcular vértices normales</translation>
     </message>

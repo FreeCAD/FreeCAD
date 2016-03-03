@@ -859,7 +859,7 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>

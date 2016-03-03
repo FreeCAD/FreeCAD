@@ -238,7 +238,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="523"/>
+        <location filename="ArchStructure.py" line="525"/>
         <source>Axes systems this structure is built on</source>
         <translation type="unfinished"></translation>
     </message>
@@ -248,7 +248,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="524"/>
+        <location filename="ArchStructure.py" line="526"/>
         <source>The element numbers to exclude when this structure is based on axes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -618,7 +618,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="576"/>
+        <location filename="ArchStructure.py" line="578"/>
         <source>Couldn&apos;t compute a shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1348,7 +1348,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="400"/>
+        <location filename="ArchStructure.py" line="402"/>
         <source>Unable to extrude the base shape
 </source>
         <translation type="unfinished"></translation>
@@ -2674,17 +2674,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="InitGui.py" line="109"/>
+        <location filename="InitGui.py" line="73"/>
         <source>Arch tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="110"/>
+        <location filename="InitGui.py" line="74"/>
         <source>Draft tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="111"/>
+        <location filename="InitGui.py" line="75"/>
         <source>Draft mod tools</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2692,22 +2692,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>arch</name>
     <message>
-        <location filename="InitGui.py" line="113"/>
+        <location filename="InitGui.py" line="77"/>
         <source>&amp;Architecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="116"/>
+        <location filename="InitGui.py" line="80"/>
         <source>&amp;Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="115"/>
+        <location filename="InitGui.py" line="79"/>
         <source>Utilities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="116"/>
+        <location filename="InitGui.py" line="80"/>
         <source>Snapping</source>
         <translation type="unfinished"></translation>
     </message>

@@ -859,7 +859,7 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>

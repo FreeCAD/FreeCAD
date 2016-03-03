@@ -859,7 +859,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>
