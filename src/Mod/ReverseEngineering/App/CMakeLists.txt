@@ -65,6 +65,8 @@ SET(Reen_SRCS
     RegionGrowing.h
     SampleConsensus.cpp
     SampleConsensus.h
+    Segmentation.cpp
+    Segmentation.h
     SurfaceTriangulation.cpp
     SurfaceTriangulation.h
     PreCompiled.cpp

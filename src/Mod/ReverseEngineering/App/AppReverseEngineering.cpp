@@ -45,6 +45,7 @@
 #include "BSplineFitting.h"
 #include "SurfaceTriangulation.h"
 #include "RegionGrowing.h"
+#include "Segmentation.h"
 #include "SampleConsensus.h"
 #if defined(HAVE_PCL_FILTERS)
 #include <pcl/filters/passthrough.h>
@@ -99,8 +100,11 @@ public:
         add_keyword_method("regionGrowingSegmentation",&Module::regionGrowingSegmentation,
             "regionGrowingSegmentation()."
         );
+        add_keyword_method("featureSegmentation",&Module::featureSegmentation,
+            "featureSegmentation()."
+        );
 #endif
-#if defined(HAVE_PCL_SEGMENTATION)
+#if defined(HAVE_PCL_SAMPLE_CONSENSUS)
         add_keyword_method("sampleConsensus",&Module::sampleConsensus,
             "sampleConsensus()."
         );
@@ -627,8 +631,35 @@ Mesh.show(m)
 
         return lists;
     }
+    Py::Object featureSegmentation(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        int ksearch=5;
+
+        static char* kwds_segment[] = {"Points", "KSearch", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|i", kwds_segment,
+                                        &(Points::PointsPy::Type), &pts, &ksearch))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        std::list<std::vector<int> > clusters;
+        Segmentation segm(*points, clusters);
+        segm.perform(ksearch);
+
+        Py::List lists;
+        for (std::list<std::vector<int> >::iterator it = clusters.begin(); it != clusters.end(); ++it) {
+            Py::Tuple tuple(it->size());
+            for (std::size_t i = 0; i < it->size(); i++) {
+                tuple.setItem(i, Py::Long((*it)[i]));
+            }
+            lists.append(tuple);
+        }
+
+        return lists;
+    }
 #endif
-#if defined(HAVE_PCL_SEGMENTATION)
+#if defined(HAVE_PCL_SAMPLE_CONSENSUS)
     Py::Object sampleConsensus(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
