@@ -117,7 +117,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, const 
     , documentObjectNameSet(false)
 {
     if (owner) {
-        const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(owner);
+        const DocumentObject * docObj = owner->getObject();
         if (!docObj)
             throw Base::Exception("Property must be owned by a document object.");
 
@@ -142,7 +142,8 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop)
     , documentNameSet(false)
     , documentObjectNameSet(false)
 {
-    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
+	assert(owner);
+    DocumentObject * docObj = owner->getObject();
 
     if (!docObj)
         throw Base::TypeError("Property must be owned by a document object.");
@@ -634,7 +635,10 @@ App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * 
 
 void ObjectIdentifier::resolve(ResolveResults &results) const
 {
-    if (freecad_dynamic_cast<DocumentObject>(owner) == 0)
+	assert(owner);
+
+	const App::DocumentObject * docObject = owner->getObject();
+    if (! docObject)
         return;
 
     /* Document name specified? */
@@ -643,7 +647,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
         results.resolvedDocumentName = documentName;
     }
     else {
-        results.resolvedDocument = freecad_dynamic_cast<DocumentObject>(owner)->getDocument();
+        results.resolvedDocument = docObject->getDocument();
         results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
     }
 
@@ -655,7 +659,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
         if (documentName.getString().size() > 0)
             return;
 
-        results.resolvedDocument = freecad_dynamic_cast<DocumentObject>(owner)->getDocument();
+        results.resolvedDocument = docObject->getDocument();
         if (results.resolvedDocument == 0)
             return;
     }

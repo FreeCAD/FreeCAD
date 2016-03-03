@@ -93,6 +93,10 @@ public:
     DocumentObject(void);
     virtual ~DocumentObject();
 
+    DocumentObject* getObject() const {
+    	return const_cast<DocumentObject*>(this);
+    }
+
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
     /// gets the document in which this Object is handled
