@@ -766,7 +766,7 @@ def makeAngularDimension(center,angles,p3,normal=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
+def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
     '''makeWire(pointslist,[closed],[placement]): Creates a Wire object
     from the given list of vectors. If closed is True or first
     and last points are identical, the wire is closed. If face is
@@ -794,7 +794,8 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
-    #obj.MakeFace = face
+    if face != None:
+        obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
