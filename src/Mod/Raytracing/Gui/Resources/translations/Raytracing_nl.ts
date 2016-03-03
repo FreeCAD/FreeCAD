@@ -464,7 +464,12 @@ Do you want to continue?</translation>
         <translation>Camera-bestand naam:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Renderen</translation>
     </message>
@@ -531,12 +536,11 @@ Do you want to continue?</translation>
         <translation>Maas exportinstellingen</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Max. maas-afwijking:</translation>
+        <translation type="obsolete">Max. maas-afwijking:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Bereken niet de vertex-normalen</translation>
     </message>

@@ -64,7 +64,7 @@
     </message>
     <message>
         <source>Test console output</source>
-        <translation type="unfinished">Test console output</translation>
+        <translation>測試主控台輸出</translation>
     </message>
 </context>
 <context>
@@ -1238,10 +1238,6 @@ Please define another shortcut.</source>
         <translation>巨集名稱：</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">巨集目標：</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>執行</translation>
     </message>
@@ -1263,15 +1259,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>使用者自訂巨集</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>系統自有巨集</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>使用者自訂巨集之位置：</translation>
     </message>
 </context>
 <context>
@@ -1315,7 +1311,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>唯讀</translation>
     </message>
 </context>
 <context>
@@ -1802,11 +1798,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>正視圖角度的彩現</translation>
+        <translation type="obsolete">正視圖角度的彩現</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>透視彩現</translation>
+        <translation type="obsolete">透視彩現</translation>
     </message>
     <message>
         <source></source>
@@ -1875,6 +1871,14 @@ Specify another directory, please.</source>
     <message>
         <source>MSAA 8x</source>
         <translation>反鋸齒 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3402,11 +3406,11 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>To python console</source>
-        <translation type="unfinished">To python console</translation>
+        <translation>至 python 主控台</translation>
     </message>
     <message>
         <source>Reveals this object and its subelements in the python console.</source>
-        <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
+        <translation>將此物件及其子元素於python主控台中顯示</translation>
     </message>
 </context>
 <context>
@@ -4843,11 +4847,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">刪除巨集</translation>
+        <translation>刪除巨集</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>不允取刪除系統自有之巨集</translation>
     </message>
 </context>
 <context>
@@ -5184,7 +5188,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>List of available dock panels</source>
-        <translation type="unfinished">List of available dock panels</translation>
+        <translation>可使用之面板清單</translation>
     </message>
 </context>
 <context>

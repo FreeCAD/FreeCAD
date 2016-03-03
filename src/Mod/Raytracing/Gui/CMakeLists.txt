@@ -88,3 +88,11 @@ SET_BIN_DIR(RaytracingGui RaytracingGui /Mod/Raytracing)
 SET_PYTHON_PREFIX_SUFFIX(RaytracingGui)
 
 INSTALL(TARGETS RaytracingGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(RaytracingGuiIcon_SVG
+    Resources/icons/RaytracingWorkbench.svg
+)
+
+fc_copy_sources(RaytracingGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Raytracing" ${RaytracingGuiIcon_SVG})
+
+INSTALL(FILES ${RaytracingGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Raytracing/Resources/icons")

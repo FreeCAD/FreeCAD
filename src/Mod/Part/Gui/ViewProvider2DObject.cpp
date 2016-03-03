@@ -32,6 +32,7 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
+# include <cfloat>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -52,6 +53,7 @@ using namespace std;
 // Construction/Destruction
 
 const char* ViewProvider2DObject::GridStyleEnums[]= {"Dashed","Light",NULL};
+App::PropertyQuantityConstraint::Constraints ViewProvider2DObject::GridSizeRange = {0.001,DBL_MAX,1.0};
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 
@@ -68,9 +70,10 @@ ViewProvider2DObject::ViewProvider2DObject()
     MinX = MinY = -100;
     MaxX = MaxY = 100;
     GridStyle.setEnums(GridStyleEnums);
+    GridSize.setConstraints(&GridSizeRange);
 
     pcRoot->addChild(GridRoot);
- 
+
     sPixmap = "PartFeatureImport";
 }
 

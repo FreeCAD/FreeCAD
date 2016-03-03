@@ -29,99 +29,104 @@
       <translation>OpenSCADのインポート</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="76"/>
+      <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
       <translation>ツリービューでViewProviderを使用</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
+      <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
       <translation>チェックされている場合、Multmatrixオブジェクトがパラメトリックになります</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="96"/>
+      <location filename="openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
       <translation>Multmatrixフィーチャーを使用</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="136"/>
+      <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
       <translation>ポリゴン、角柱、錐体の最大面数。fnがこの値より大きい場合、オブジェクトは円と見なされます。無限にする場合は0を設定してください。</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="116"/>
+      <location filename="openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>ポリゴンの最大面数（fn）</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="160"/>
+      <location filename="openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
       <translation>OpenSCADへエクスポート</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="168"/>
+      <location filename="openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
       <translation>最大断片サイズ</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="198"/>
+      <location filename="openscadprefs-base.ui" line="215"/>
       <source>minimum angle for a fragment</source>
       <translation>断片の最小角度</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="191"/>
+      <location filename="openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
       <translation>角度（fa）</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="201"/>
+      <location filename="openscadprefs-base.ui" line="218"/>
       <source>°</source>
       <translation>度</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="255"/>
+      <location filename="openscadprefs-base.ui" line="272"/>
       <source>minimum size of a fragment</source>
       <translation>断片の最小サイズ</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="233"/>
+      <location filename="openscadprefs-base.ui" line="250"/>
       <source>size (fs)</source>
       <translation>サイズ（fs）</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="261"/>
+      <location filename="openscadprefs-base.ui" line="278"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="287"/>
+      <location filename="openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
       <translation>凸面</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="324"/>
+      <location filename="openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
       <translation>メッシュフォールバック</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="366"/>
+      <location filename="openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
       <translation>偏差</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="369"/>
+      <location filename="openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
       <translation>偏差</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="376"/>
+      <location filename="openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
       <translation>三角形分割設定</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
+      <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation>チェックされている場合、ツリービューでフィーチャーが子を持ちます</translation>
+    </message>
+    <message>
+      <location filename="openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation>コンソールにデバッグ情報を表示</translation>
     </message>
   </context>
   <context>
@@ -137,12 +142,12 @@
       <translation>まず最初にオブジェクトを3つ選択してください</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Unsupported Function</source>
       <translation>サポートされていない関数です</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Press OK</source>
       <translation>OKを押してください</translation>
     </message>

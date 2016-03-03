@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="Plot"> 
+    <qresource prefix="Plot">
         <file>icons/Axes.svg</file>
         <file>icons/Grid.svg</file>
         <file>icons/Icon.svg</file>
@@ -8,6 +8,7 @@
         <file>icons/Positions.svg</file>
         <file>icons/Save.svg</file>
         <file>icons/Series.svg</file>
+        <file>icons/PlotWorkbench.svg</file>
         <file>translations/Plot_af.qm</file>
         <file>translations/Plot_cs.qm</file>
         <file>translations/Plot_de.qm</file>
@@ -35,4 +36,4 @@
         <file>translations/Plot_el.qm</file>
         <file>translations/Plot_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

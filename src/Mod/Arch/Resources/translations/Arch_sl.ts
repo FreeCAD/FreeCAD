@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1142"/>
+      <location filename="ArchWindow.py" line="1158"/>
       <source>Components</source>
       <translation>Komponente</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Velikost kroga oznake osi</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1136"/>
+      <location filename="ArchWindow.py" line="1152"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1137"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
@@ -84,57 +84,57 @@
       <translation>Tla</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="209"/>
+      <location filename="ArchCommands.py" line="211"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>odstranjevanje podpore za skico v izogib navzkrižnemu sklicevanju</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="613"/>
       <source>is not closed</source>
       <translation>ni zaprt</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="613"/>
+      <location filename="ArchCommands.py" line="615"/>
       <source>is not valid</source>
       <translation>ni veljaven</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="615"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>doesn't contain any solid</source>
       <translation>ne vsebuje telesa</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="621"/>
+      <location filename="ArchCommands.py" line="623"/>
       <source>contains a non-closed solid</source>
       <translation>vsebuje nezaprto telo</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="625"/>
       <source>contains faces that are not part of any solid</source>
       <translation>vsebuje ploskve, ki niso del nobenega telesa</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="953"/>
+      <location filename="ArchCommands.py" line="955"/>
       <source>Grouping</source>
       <translation>Združevanje</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="985"/>
+      <location filename="ArchCommands.py" line="987"/>
       <source>Ungrouping</source>
       <translation>Razdruževanje</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Split Mesh</source>
       <translation>Razcepi mrežo</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1056"/>
+      <location filename="ArchCommands.py" line="1058"/>
       <source>Mesh to Shape</source>
       <translation>Mreža v obliko</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1137"/>
+      <location filename="ArchCommands.py" line="1139"/>
       <source>All good! no problems found</source>
       <translation>Vse v redu! Nobene zaznane težave</translation>
     </message>
@@ -159,7 +159,7 @@
       <translation>Objekti</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="801"/>
+      <location filename="ArchComponent.py" line="805"/>
       <source>closing Sketch edit</source>
       <translation>zapiranje urejanja Skice</translation>
     </message>
@@ -219,27 +219,27 @@
       <translation>Ustvari lokacijo</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="433"/>
+      <location filename="ArchStructure.py" line="183"/>
       <source>Create Structure</source>
       <translation>Ustvari konstrukcijo</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="565"/>
+      <location filename="ArchStructure.py" line="338"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Dolžina tega elementa, ko ni povzeta iz profila</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="566"/>
+      <location filename="ArchStructure.py" line="339"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Širina tega elementa, ko ni povzeta iz profila</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="567"/>
+      <location filename="ArchStructure.py" line="340"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>Višina oziroma globina izvleka tega elementa. Pustite 0 za samodejno</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="775"/>
+      <location filename="ArchStructure.py" line="523"/>
       <source>Axes systems this structure is built on</source>
       <translation>Osni sistem, ki je osnova te konstrukcije</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Običajna smer izvleka tega objekta (pustite (0,0,0) za samodejno smer)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="776"/>
+      <location filename="ArchStructure.py" line="524"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Neupoštevane številke elementa, ko je ta konstrukcija na osnovi sistema osi</translation>
     </message>
@@ -309,57 +309,57 @@
       <translation>Ta mreža je neveljavno telo</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="466"/>
+      <location filename="ArchWindow.py" line="467"/>
       <source>Create Window</source>
       <translation>Ustvari okno</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="607"/>
+      <location filename="ArchWindow.py" line="623"/>
       <source>the components of this window</source>
       <translation>komponente tega okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1138"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1139"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Create/update component</source>
       <translation>Ustvari/posodobi komponento</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1140"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Base 2D object</source>
       <translation>Osnovni 2D objekt</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1146"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Wires</source>
       <translation>Žice</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1143"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Create new component</source>
       <translation>Ustvari novo komponento</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1144"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1145"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Type</source>
       <translation>Vrsta</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1147"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Thickness</source>
       <translation>Debelina</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1148"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Z offset</source>
       <translation>Z odmik</translation>
     </message>
@@ -405,12 +405,12 @@
       <translation>Slog oštevilčevanja</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="949"/>
+      <location filename="ArchCommands.py" line="951"/>
       <source>Add space boundary</source>
       <translation>Dodaj prostorsko omejitev</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="981"/>
+      <location filename="ArchCommands.py" line="983"/>
       <source>Remove space boundary</source>
       <translation>Odstrani prostorsko omejitev</translation>
     </message>
@@ -445,12 +445,12 @@
       <translation>Ustvari ogrodje</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="121"/>
+      <location filename="ArchRebar.py" line="127"/>
       <source>Create Rebar</source>
       <translation>Ustvari ojačitveni drog</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="131"/>
+      <location filename="ArchRebar.py" line="137"/>
       <source>Please select a base face on a structural object
 </source>
       <translation>Izberite osnovno ploskev na objektu konstrukcije
@@ -579,22 +579,12 @@
       <translation>Odmik med robom stopnišča in konstrukcijo</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="40"/>
-      <source>Wood</source>
-      <translation>Les</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="41"/>
-      <source>Steel</source>
-      <translation>Jeklo</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="459"/>
+      <location filename="ArchStructure.py" line="214"/>
       <source>Structure options</source>
       <translation>Možnosti konstrukcije</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="526"/>
+      <location filename="ArchWindow.py" line="539"/>
       <source>Preset</source>
       <translation>Prednastavljeno</translation>
     </message>
@@ -604,7 +594,7 @@
       <translation>Dolžina</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="494"/>
+      <location filename="ArchStructure.py" line="255"/>
       <source>Rotate</source>
       <translation>Zavrti</translation>
     </message>
@@ -614,27 +604,27 @@
       <translation>&amp;Nadaljuj</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="564"/>
+      <location filename="ArchStructure.py" line="337"/>
       <source>An optional extrusion path for this element</source>
       <translation>Izbirna pot izvleka tega elementa</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="568"/>
+      <location filename="ArchStructure.py" line="341"/>
       <source>Armatures contained in this element</source>
       <translation>Armature, ki jih vsebuje ta element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="570"/>
+      <location filename="ArchStructure.py" line="343"/>
       <source>The structural nodes of this element</source>
       <translation>Konstrukcijska vozlišča tega elementa</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="601"/>
+      <location filename="ArchStructure.py" line="374"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Napaka: osnovne oblike ni bilo mogoče izvleči vzdolž tega orodja</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="828"/>
+      <location filename="ArchStructure.py" line="576"/>
       <source>Couldn't compute a shape</source>
       <translation>Ni bilo možno izračunati oblike</translation>
     </message>
@@ -674,39 +664,39 @@
       <translation>Odmik med tem zidom in osnovno črto (samo za leve in desne poravnave)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="455"/>
+      <location filename="ArchWindow.py" line="453"/>
       <source>Pick a face on an existing object or select a preset
 </source>
       <translation>Izberite ploskev ne obstoječem objektu ali izberite prednastavitev
 </translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="515"/>
+      <location filename="ArchWindow.py" line="522"/>
       <source>Window options</source>
       <translation>Možnosti okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="608"/>
+      <location filename="ArchWindow.py" line="624"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
       <translation>Globina luknje okna v gostiteljskem objektu. Pustite 0 za samodejno.</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="610"/>
+      <location filename="ArchWindow.py" line="626"/>
       <source>The width of this window (for preset windows only)</source>
       <translation>Širina tega okna (samo za prednastavljena okna)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="611"/>
+      <location filename="ArchWindow.py" line="627"/>
       <source>The height of this window (for preset windows only)</source>
       <translation>Višina tega okna (samo za prednastavljena okna)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="612"/>
+      <location filename="ArchWindow.py" line="628"/>
       <source>The normal direction of this window</source>
       <translation>Običajna smer tega okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1113"/>
+      <location filename="ArchWindow.py" line="1129"/>
       <source>Unable to create component
 </source>
       <translation>Komponente ni bilo mogoče ustvariti
@@ -732,12 +722,12 @@
       <translation>Razdalje (mm) in koti (°) med osmi</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="649"/>
+      <location filename="ArchComponent.py" line="651"/>
       <source>Error computing the shape of this object</source>
       <translation>Napaka pri računanju oblike tega objekta</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="398"/>
+      <location filename="ArchStructure.py" line="148"/>
       <source>Create Structural System</source>
       <translation>Ustvari konstrukcijski sistem</translation>
     </message>
@@ -756,38 +746,38 @@
 </translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="56"/>
+      <location filename="importOBJ.py" line="60"/>
       <source>Found a shape containing curves, triangulating
 </source>
       <translation>Najdena oblika, ki vsebuje krivulje, triangulacija
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="358"/>
+      <location filename="ArchCommands.py" line="360"/>
       <source>Invalid cutplane
 </source>
       <translation>Neveljavna rezalna ravnina
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="365"/>
+      <location filename="ArchCommands.py" line="367"/>
       <source>No objects are cut by the plane
 </source>
       <translation>Noben objekt ni bil prerezan z ravnino
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="804"/>
+      <location filename="ArchCommands.py" line="806"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Objekt nima nastavljivih atributov IFC</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="810"/>
+      <location filename="ArchCommands.py" line="812"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Onemogočanje vsiljene zastavice predstavitve objekta z ovojnico</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="816"/>
+      <location filename="ArchCommands.py" line="818"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Omogočanje vsiljene zastavice predstavitve objekta z ovojnico</translation>
     </message>
@@ -817,12 +807,12 @@
       <translation>Izbirna oznaka te komponente</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="298"/>
+      <location filename="ArchComponent.py" line="302"/>
       <source>Custom IFC properties and attributes</source>
       <translation>Lastnosti in atributi IFC po meri</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="615"/>
+      <location filename="ArchWindow.py" line="631"/>
       <source>A material for this object</source>
       <translation>Material tega objekta</translation>
     </message>
@@ -837,17 +827,17 @@
       <translation>Določa, ali naj se objekt premakne skupaj z gostiteljem</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="656"/>
+      <location filename="ArchComponent.py" line="658"/>
       <source>has no solid</source>
       <translation>nima telesa</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="658"/>
+      <location filename="ArchComponent.py" line="660"/>
       <source>has an invalid shape</source>
       <translation>ima neveljavno obliko</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="660"/>
+      <location filename="ArchComponent.py" line="662"/>
       <source>has a null shape</source>
       <translation>ima ničelno obliko</translation>
     </message>
@@ -1062,12 +1052,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Prikaži pripono enot</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="571"/>
+      <location filename="ArchStructure.py" line="344"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>Opis standardnega profila, na katerem je osnovan ta element</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="519"/>
+      <location filename="ArchWindow.py" line="532"/>
       <source>Sill height</source>
       <translation>Višina okenske police</translation>
     </message>
@@ -1179,12 +1169,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Vrsta zgradbe</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="215"/>
+      <location filename="ArchCommands.py" line="217"/>
       <source>removing sketch external reference to avoid cross-referencing</source>
       <translation>odstranjevanje zunanjega sklica skice v izogib navzkrižnemu sklicevanju</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1203"/>
+      <location filename="ArchCommands.py" line="1205"/>
       <source>Create Component</source>
       <translation>Ustvari komponento</translation>
     </message>
@@ -1304,27 +1294,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Prikaži prerez v pogledu 3D</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="62"/>
+      <location filename="ArchServer.py" line="63"/>
       <source>This document is not saved. Please save it first</source>
       <translation>Ta dokument ni shranjen. Najprej ga shranite</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="67"/>
+      <location filename="ArchServer.py" line="68"/>
       <source>The Python Git module was not found. Please install the python-git package.</source>
       <translation>Modula Python Git ni bilo mogoče najti. Namestite paket python-git.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="72"/>
+      <location filename="ArchServer.py" line="73"/>
       <source>This document doesn't appear to be part of a Git repository.</source>
       <translation>Ne izgleda, da je ta dokumentacija del skladišča Git.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="76"/>
+      <location filename="ArchServer.py" line="77"/>
       <source>Warning: no remote repositories. Unable to push</source>
       <translation>Opozorilo: ni oddaljenih skladišč. Potisk ni mogoč</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="82"/>
+      <location filename="ArchServer.py" line="83"/>
       <source>The Git repository cannot handle this document.</source>
       <translation>Skladišče Git ne more obdelati tega dokumenta.</translation>
     </message>
@@ -1364,7 +1354,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Zidovi so lahko osnovani samo na delih ali mrežah</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="609"/>
+      <location filename="ArchWindow.py" line="625"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>izbirni objekt, ki določa prostornino za odštevanje od gostiteljev tega okna</translation>
     </message>
@@ -1384,47 +1374,82 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Nastavi položaj besedila</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="623"/>
+      <location filename="ArchStructure.py" line="400"/>
       <source>Unable to extrude the base shape
 </source>
       <translation>Izvleka osnovne oblike ni mogoča
 </translation>
     </message>
+    <message>
+      <location filename="ArchStructure.py" line="218"/>
+      <source>Category</source>
+      <translation>Kategorija</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1217"/>
+      <source>Key</source>
+      <translation>Ključ</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1219"/>
+      <source>Value</source>
+      <translation>Vrednost</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1220"/>
+      <source>Unit</source>
+      <translation>Enota</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1226"/>
+      <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
+      <translation>Objekt nima atributa IfcProperties, Prekličite ustvarjanje preglednice za objekt: </translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1244"/>
+      <source>Create IFC properties spreadsheet</source>
+      <translation>Ustvari preglednico lastnosti IFC</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="526"/>
+      <source>Auto include in host object</source>
+      <translation>Samodejno vključi v gostiteljskem objektu</translation>
+    </message>
   </context>
   <context>
     <name>ArchGitOptions</name>
     <message>
-      <location filename="ArchServer.py" line="152"/>
+      <location filename="ArchServer.py" line="153"/>
       <source>Git Options</source>
       <translation>Možnosti Git</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="153"/>
+      <location filename="ArchServer.py" line="154"/>
       <source>What to commit</source>
       <translation>Predmeti za uveljavitev</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="154"/>
+      <location filename="ArchServer.py" line="155"/>
       <source>All files in folder</source>
       <translation>Vse datoteke v mapi</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="155"/>
+      <location filename="ArchServer.py" line="156"/>
       <source>Only this .FcStd file</source>
       <translation>Samo ta datoteka .FcStd</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="156"/>
+      <location filename="ArchServer.py" line="157"/>
       <source>Commit message</source>
       <translation>Sporočilo uveljavitve</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="157"/>
+      <location filename="ArchServer.py" line="158"/>
       <source>commit</source>
       <translation>Uveljavi</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="158"/>
+      <location filename="ArchServer.py" line="159"/>
       <source>Push to default remote repository</source>
       <translation>Potisni v privzeto oddaljeno skladišče</translation>
     </message>
@@ -1483,12 +1508,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="940"/>
+      <location filename="ArchCommands.py" line="942"/>
       <source>Add component</source>
       <translation>Dodaj komponento</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="941"/>
+      <location filename="ArchCommands.py" line="943"/>
       <source>Adds the selected components to the active object</source>
       <translation>Dodaj izbrane komponente v dejavni objekt</translation>
     </message>
@@ -1509,12 +1534,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Bimserver</name>
     <message>
-      <location filename="ArchServer.py" line="42"/>
+      <location filename="ArchServer.py" line="43"/>
       <source>BIM server</source>
       <translation>Strežnik BIM</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="43"/>
+      <location filename="ArchServer.py" line="44"/>
       <source>Opens a browser window and connects to a BIM server instance</source>
       <translation>Odpre okno brskalnika in se poveže s primerkom strežnika BIM</translation>
     </message>
@@ -1535,17 +1560,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1128"/>
+      <location filename="ArchCommands.py" line="1130"/>
       <source>Check</source>
       <translation>Preveri</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1129"/>
+      <location filename="ArchCommands.py" line="1131"/>
       <source>Checks the selected objects for problems</source>
       <translation>Preveri izbrane objekte za morebitne napake</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1152"/>
       <source>Explore the contents of an Ifc file</source>
       <translation>Razišči vsebino datoteke IFC</translation>
     </message>
@@ -1553,12 +1578,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1111"/>
+      <location filename="ArchCommands.py" line="1113"/>
       <source>Close holes</source>
       <translation>Zapri luknje</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1112"/>
+      <location filename="ArchCommands.py" line="1114"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Zapre luknje v odprtih oblikah in jih pretvori v telesa</translation>
     </message>
@@ -1566,12 +1591,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1193"/>
+      <location filename="ArchCommands.py" line="1195"/>
       <source>Component</source>
       <translation>Komponenta</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1195"/>
+      <location filename="ArchCommands.py" line="1197"/>
       <source>Creates an undefined architectural component</source>
       <translation>Ustvari nedoločeno arhitekturno komponento</translation>
     </message>
@@ -1631,12 +1656,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Git</name>
     <message>
-      <location filename="ArchServer.py" line="56"/>
+      <location filename="ArchServer.py" line="57"/>
       <source>Commit with Git</source>
       <translation>Uveljavi z Gitom</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="57"/>
+      <location filename="ArchServer.py" line="58"/>
       <source>Commits the current document</source>
       <translation>Uveljavi trenutni dokument</translation>
     </message>
@@ -1644,9 +1669,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="ArchCommands.py" line="1149"/>
+      <location filename="ArchCommands.py" line="1151"/>
       <source>Ifc Explorer</source>
       <translation>Raziskovalec IFC</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_IfcSpreadsheet</name>
+    <message>
+      <location filename="ArchCommands.py" line="1235"/>
+      <source>Create IFC spreadsheet...</source>
+      <translation>Ustvari preglednico IFC …</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1237"/>
+      <source>Creates a spreadsheet to store ifc properties of an object.</source>
+      <translation>Ustvari preglednico za shranjevanje lastnosti IFC objekta.</translation>
     </message>
   </context>
   <context>
@@ -1678,12 +1716,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1032"/>
+      <location filename="ArchCommands.py" line="1034"/>
       <source>Mesh to Shape</source>
       <translation>Mreža v obliko</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1033"/>
+      <location filename="ArchCommands.py" line="1035"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Pretvori izbrane mreže v oblike dela</translation>
     </message>
@@ -1704,12 +1742,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="ArchRebar.py" line="84"/>
+      <location filename="ArchRebar.py" line="90"/>
       <source>Rebar</source>
       <translation>Ojač. drog</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="86"/>
+      <location filename="ArchRebar.py" line="92"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Ustvari ojačitveni drog iz izbrane ploskve konstrukcije</translation>
     </message>
@@ -1717,12 +1755,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="972"/>
+      <location filename="ArchCommands.py" line="974"/>
       <source>Remove component</source>
       <translation>Odstrani komponento</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="973"/>
+      <location filename="ArchCommands.py" line="975"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Odstrani izbrano komponento iz nadrejenih komponent ali ustvari luknjo v komponenti</translation>
     </message>
@@ -1730,12 +1768,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1096"/>
+      <location filename="ArchCommands.py" line="1098"/>
       <source>Remove Shape from Arch</source>
       <translation>Odstrani obliko iz arhitekture</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1097"/>
+      <location filename="ArchCommands.py" line="1099"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Odstrani kockaste oblike iz arhitekturnih komponent</translation>
     </message>
@@ -1782,12 +1820,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1067"/>
+      <location filename="ArchCommands.py" line="1069"/>
       <source>Select non-manifold meshes</source>
       <translation>Izberi nemnogoterne mreže</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1068"/>
+      <location filename="ArchCommands.py" line="1070"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Izbere vse nemnogoterne mreže v dokumentu ali izbranih skupinah</translation>
     </message>
@@ -1826,12 +1864,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1007"/>
+      <location filename="ArchCommands.py" line="1009"/>
       <source>Split Mesh</source>
       <translation>Razcepi mrežo</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1008"/>
+      <location filename="ArchCommands.py" line="1010"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Razcepi izbrane mreže v neodvisne komponente</translation>
     </message>
@@ -1847,12 +1885,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="ArchStructure.py" line="376"/>
+      <location filename="ArchStructure.py" line="126"/>
       <source>Structure</source>
       <translation>Struktura</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="378"/>
+      <location filename="ArchStructure.py" line="128"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Ustvari objekt konstrukcije od začetka ali iz izbranega objekta (skice, žice, ploskve ali telesa)</translation>
     </message>
@@ -1860,12 +1898,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1163"/>
+      <location filename="ArchCommands.py" line="1165"/>
       <source>Survey</source>
       <translation>Raziskava</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1164"/>
+      <location filename="ArchCommands.py" line="1166"/>
       <source>Starts survey</source>
       <translation>Zažene raziskavo</translation>
     </message>
@@ -1873,12 +1911,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1178"/>
+      <location filename="ArchCommands.py" line="1180"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Preklopi zastavico pred. z ovojnico IFC</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1179"/>
+      <location filename="ArchCommands.py" line="1181"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Vsili izvoz objekta kot predstavitve z ovojnico ali ne</translation>
     </message>
@@ -2085,27 +2123,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>To je privzeta barva vseh novih konstrukcij</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="208"/>
+      <location filename="preferences-arch.ui" line="228"/>
       <source>2D rendering</source>
       <translation>Izris 2D</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="216"/>
+      <location filename="preferences-arch.ui" line="236"/>
       <source>Show debug information during 2D rendering</source>
       <translation>Prikaži podatke o razhroščevanju med izrisom 2D</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="219"/>
+      <location filename="preferences-arch.ui" line="239"/>
       <source>Show renderer debug messages</source>
       <translation>Prikaži sporočila razhroščevanja izrisovalnika</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="252"/>
+      <location filename="preferences-arch.ui" line="272"/>
       <source>Cut areas line thickness ratio</source>
       <translation>Razmerje debeline črte površin prereza</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="272"/>
+      <location filename="preferences-arch.ui" line="292"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
       <translation>Določi, kolikokrat mora biti debelina črte pogleda uporabljena za črte prereza</translation>
     </message>
@@ -2175,11 +2213,6 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Pripenjanje</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="55"/>
-      <source>Walls drawing</source>
-      <translation>Risanje zidov</translation>
-    </message>
-    <message>
       <location filename="preferences-arch.ui" line="63"/>
       <source>Auto-join walls</source>
       <translation>Samodejno spoji zidove</translation>
@@ -2195,82 +2228,82 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Spoji osnovne skice zidov, ko je to mogoče</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="104"/>
+      <location filename="preferences-arch.ui" line="124"/>
       <source>Mesh to Shape Conversion</source>
       <translation>Pretvorba mreže v obliko</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="112"/>
+      <location filename="preferences-arch.ui" line="132"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
       <translation>Če je to označeno, bo pretvorba hitrejša, vendar bo rezultat še vedno morda vseboval triangulirane ploskve</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="115"/>
+      <location filename="preferences-arch.ui" line="135"/>
       <source>Fast conversion</source>
       <translation>Hitra pretvorba</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="131"/>
+      <location filename="preferences-arch.ui" line="151"/>
       <source>Tolerance:</source>
       <translation>Toleranca:</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="141"/>
+      <location filename="preferences-arch.ui" line="161"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
       <translation>Vrednost tolerance, ki naj se uporabi ob preverjanju, če sta 2 sosednji ploskvi koplanarni</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="164"/>
+      <location filename="preferences-arch.ui" line="184"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
       <translation>Če je to označeno, bodo ravne skupine ploskev prisilno zravnane, kar se lahko pokaže v možnih vrzelih in netelesnih objektih</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="167"/>
+      <location filename="preferences-arch.ui" line="187"/>
       <source>Force flat faces</source>
       <translation>Vsili ravne ploskve</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="184"/>
+      <location filename="preferences-arch.ui" line="204"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
       <translation>Če je to označeno, bodo luknje in ploskve izvedene z odštevanjem namesto z uporabo usmerjenosti žic</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="187"/>
+      <location filename="preferences-arch.ui" line="207"/>
       <source>Cut method</source>
       <translation>Način rezanja</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="37"/>
+      <location filename="preferences-ifc.ui" line="50"/>
       <source>Show debug messages</source>
       <translation>Prikaži sporočila razhroščevanja</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="183"/>
+      <location filename="preferences-ifc.ui" line="196"/>
       <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
       <translation>Če je to označeno, bodo odprtine uvožene kot odštevanje, v nasprotnem primeru pa bodo imele oblike zidu svoje odprtine že odštete</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="186"/>
+      <location filename="preferences-ifc.ui" line="199"/>
       <source>Separate openings</source>
       <translation>Ločene odprtine</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="223"/>
+      <location filename="preferences-ifc.ui" line="236"/>
       <source>If this is checked, object names will be prefixed with the IFC ID number</source>
       <translation>Če je to označeno, bodo imena objektov predpeta s številko ID-ja IFC</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="226"/>
+      <location filename="preferences-ifc.ui" line="239"/>
       <source>Prefix names with ID number</source>
       <translation>Predpni imena s številko ID-ja</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="263"/>
+      <location filename="preferences-ifc.ui" line="316"/>
       <source>Exclude list: </source>
       <translation>Seznam izključitev: </translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="270"/>
+      <location filename="preferences-ifc.ui" line="323"/>
       <source>A comma-separated list of Ifc entities to exclude from import</source>
       <translation>Seznam entitet IFC ločenih z vejico za izključitev iz uvoza</translation>
     </message>
@@ -2320,22 +2353,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Prosojnost:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="302"/>
+      <location filename="preferences-ifc.ui" line="355"/>
       <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
       <translation>Nekateri pregledovalniki IFC ne marajo izvoza objektov kot izvlek. Uporabite to za vsilitev izvoza vseh objektov kot geometrije predstavitve z ovojnico.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="308"/>
+      <location filename="preferences-arch.ui" line="328"/>
       <source>Hidden geomety pattern</source>
       <translation>Skriti vzorec geometrije</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="328"/>
+      <location filename="preferences-arch.ui" line="348"/>
       <source>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</source>
       <translation>To je lastnost SVG stroke-dasharray, ki se uporablja pri projekcijah skritih objektov.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="331"/>
+      <location filename="preferences-arch.ui" line="351"/>
       <source>30, 10</source>
       <translation>30, 10</translation>
     </message>
@@ -2365,27 +2398,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Debelina</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="305"/>
+      <location filename="preferences-ifc.ui" line="358"/>
       <source>Force export as Brep</source>
       <translation>Vsili izvoz kot predstavitev z ovojnico</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="352"/>
+      <location filename="preferences-arch.ui" line="372"/>
       <source>Bim server</source>
       <translation>Strežnik BIM</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="360"/>
+      <location filename="preferences-arch.ui" line="380"/>
       <source>Address</source>
       <translation>Naslov</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="367"/>
+      <location filename="preferences-arch.ui" line="387"/>
       <source>The URL of a bim server instance (www.bimserver.org)  to connect to.</source>
       <translation>URL primerka strežnika BIM (www.bimserver.org) za povezavo.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="370"/>
+      <location filename="preferences-arch.ui" line="390"/>
       <source>http://localhost:8082</source>
       <translation>http://localhost:8082</translation>
     </message>
@@ -2395,7 +2428,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="294"/>
+      <location filename="preferences-ifc.ui" line="347"/>
       <source>Export options</source>
       <translation>Možnosti izvoza</translation>
     </message>
@@ -2405,102 +2438,102 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>IFC</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="26"/>
+      <location filename="preferences-ifc.ui" line="39"/>
       <source>General options</source>
       <translation>Splošne možnosti</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="34"/>
+      <location filename="preferences-ifc.ui" line="47"/>
       <source>Show verbose information during import and export of IFC files</source>
       <translation>Prikaži podrobne podatke med uvozom in izvozom datotek IFC</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="55"/>
+      <location filename="preferences-ifc.ui" line="68"/>
       <source>Import options</source>
       <translation>Možnosti izvoza</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="63"/>
+      <location filename="preferences-ifc.ui" line="76"/>
       <source>Import arch IFC objects as</source>
       <translation>Uvozi arhitekturne objekte IFC kot</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="119"/>
+      <location filename="preferences-ifc.ui" line="132"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Določi vrsto objektov za ustvarjanje v FreeCADu</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="80"/>
+      <location filename="preferences-ifc.ui" line="93"/>
       <source>Parametric Arch objects</source>
       <translation>Parametrični arhitekturni objekti</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="129"/>
+      <location filename="preferences-ifc.ui" line="142"/>
       <source>Non-parametric Arch objects</source>
       <translation>Neparametrični arhitekturni objekti</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="134"/>
+      <location filename="preferences-ifc.ui" line="147"/>
       <source>Simple Part shapes</source>
       <translation>Preproste oblike delov</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="95"/>
+      <location filename="preferences-ifc.ui" line="108"/>
       <source>One compound per floor</source>
       <translation>En sestav na nadstropje</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="100"/>
+      <location filename="preferences-ifc.ui" line="113"/>
       <source>Do not import Arch objects</source>
       <translation>Ne uvozi arhitekturnih objektov</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="112"/>
+      <location filename="preferences-ifc.ui" line="125"/>
       <source>Import struct IFC objects as</source>
       <translation>Uvozi konstrukcijske objekte IFC kot</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="139"/>
+      <location filename="preferences-ifc.ui" line="152"/>
       <source>One compound for all</source>
       <translation>En sestav za vse</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="144"/>
+      <location filename="preferences-ifc.ui" line="157"/>
       <source>Do not import structural objects</source>
       <translation>Ne uvozi konstrukcijskih objektov</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="156"/>
+      <location filename="preferences-ifc.ui" line="169"/>
       <source>Root element:</source>
       <translation>Korenski element:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="163"/>
+      <location filename="preferences-ifc.ui" line="176"/>
       <source>Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</source>
       <translation>Uvožene bodo samo podvrste tega elementa. Pustite vrednost na "IfcProduct" za uvoz vseh elementov zgradbe.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="166"/>
+      <location filename="preferences-ifc.ui" line="179"/>
       <source>IfcProduct</source>
       <translation>IfcProduct</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="203"/>
+      <location filename="preferences-ifc.ui" line="216"/>
       <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
       <translation>Če je to označeno, bo uvozilnik poizkusil zaznati izvleke. To lahko stvari upočasni …</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="206"/>
+      <location filename="preferences-ifc.ui" line="219"/>
       <source>Detect extrusions</source>
       <translation>Zaznaj izvleke</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="243"/>
+      <location filename="preferences-ifc.ui" line="256"/>
       <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
       <translation>Če je v datoteki IFC najdenih več materialov z enakim imenom, bodo obravnavani kot en material.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="246"/>
+      <location filename="preferences-ifc.ui" line="259"/>
       <source>Merge materials with same name</source>
       <translation>Združi materiale z enakim imenom</translation>
     </message>
@@ -2512,7 +2545,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="preferences-dae.ui" line="71"/>
       <source>The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</source>
-      <translation>Mrežilnik, ki naj se uporabi. Če uporabljate NETGEN, se prepričajte, da je omogočen v mrežnem modulu.</translation>
+      <translation>Mrežilnik, ki naj se uporabi. Če uporabljate NETGEN, se prepričajte, da je omogočen v mrežnem modulu</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="81"/>
@@ -2610,24 +2643,59 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Dovoli štirik. ploskve</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="322"/>
+      <location filename="preferences-ifc.ui" line="375"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>Uporabi niz možnosti triangulacije na strani možnosti DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="325"/>
+      <location filename="preferences-ifc.ui" line="378"/>
       <source>Use DAE triangulation options</source>
       <translation>Uporabi možnosti triangulacije DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="342"/>
+      <location filename="preferences-ifc.ui" line="395"/>
       <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
       <translation>Ukrivljene oblike, ki jih v IFC-ju ni mogoče predstaviti kot krivulje, se razgradijo v ravne ploskve. Če je to označeno, se izvede dodatni izračun za spojitev koplanarnih ploskev.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="345"/>
+      <location filename="preferences-ifc.ui" line="398"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Spoji koplanarne ploskve ob triagulaciji</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="55"/>
+      <source>Object creation</source>
+      <translation>Ustvarjanje objekta</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="103"/>
+      <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
+      <translation>Dve možni strategiji za preprečevanje krožnih odvisnosti: ustvarite še en objekt (odznačeno) ali odstranite zunanjo geometrijo osnovne skice (označeno)</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="106"/>
+      <source>Remove external geometry of base sketches when needed</source>
+      <translation>Po potrebi odstrani zunanjo geometrijo osnovnih skic</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="276"/>
+      <source>Create clones when objects have shared geometry</source>
+      <translation>Ustvari klone, ko imajo objekti geometrijo v souporabi</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="26"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation>Prikaži to pogovorno okno med uvažanjem in izvažanjem</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="296"/>
+      <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
+      <translation>Če je označeno, bo imel vsak objekt svoje lastnosti IFC shranjene v preglednici.</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="299"/>
+      <source>Import Ifc Properties in spreadsheet</source>
+      <translation>Uvozi lastnosti IFC v preglednico</translation>
     </message>
   </context>
   <context>

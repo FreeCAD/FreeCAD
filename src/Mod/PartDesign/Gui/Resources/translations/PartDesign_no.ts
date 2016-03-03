@@ -1369,17 +1369,17 @@ Merk en eller flere kanter først.</translation>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished">No valid sketches selected</translation>
+        <translation>Ingen gyldig skisser valgt</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation>Ingen valgte skisser/2D objekter er gyldig for utfylling. Velg en gyldig skisse eller 2D-objekt som ikke brukes av en annen funksjon.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation>Ingen valgte skisser/2D objekter er gyldig for utfylling. Velg en gyldig skisse eller 2D-objekt som ikke brukes av en annen funksjon.</translation>
     </message>
     <message>
         <location line="+393"/>

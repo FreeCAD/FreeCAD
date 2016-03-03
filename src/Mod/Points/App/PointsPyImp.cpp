@@ -27,6 +27,7 @@
 #include <Base/Builder3D.h>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 // inclusion of the generated files (generated out of PointsPy.xml)
 #include "PointsPy.h"
@@ -166,6 +167,54 @@ PyObject* PointsPy::addPoints(PyObject * args)
     }
 
     Py_Return;
+}
+
+PyObject* PointsPy::fromSegment(PyObject * args)
+{
+    PyObject *obj;
+    if (!PyArg_ParseTuple(args, "O", &obj))
+        return 0;
+
+    try {
+        const PointKernel* points = getPointKernelPtr();
+        Py::Sequence list(obj);
+        std::auto_ptr<PointKernel> pts(new PointKernel());
+        pts->reserve(list.size());
+        int numPoints = static_cast<int>(points->size());
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            int index = static_cast<int>(Py::Int(*it));
+            if (index >= 0 && index < numPoints)
+                pts->push_back(points->getPoint(index));
+        }
+
+        return new PointsPy(pts.release());
+    }
+    catch (const Py::Exception&) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a list of int");
+        return 0;
+    }
+}
+
+PyObject* PointsPy::fromValid(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        const PointKernel* points = getPointKernelPtr();
+        std::auto_ptr<PointKernel> pts(new PointKernel());
+        pts->reserve(points->size());
+        for (PointKernel::const_iterator it = points->begin(); it != points->end(); ++it) {
+            if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+                pts->push_back(*it);
+        }
+
+        return new PointsPy(pts.release());
+    }
+    catch (const Py::Exception&) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a list of int");
+        return 0;
+    }
 }
 
 Py::Int PointsPy::getCountPoints(void) const

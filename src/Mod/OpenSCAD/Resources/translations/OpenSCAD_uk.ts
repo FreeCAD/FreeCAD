@@ -29,99 +29,104 @@
       <translation>OpenSCAD імпорт</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="76"/>
+      <location filename="openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
       <translation>Використовувати ViewProvider у дереві перегляду</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="93"/>
+      <location filename="openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
       <translation>Якщо буде позначено цей пункт, то об'єкт Мультиматриця буде параметричним</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="96"/>
+      <location filename="openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
       <translation>Використовувати функцію Мультиматриці</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="136"/>
+      <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
       <translation>Максимальна кількість граней багатокутника, призми або зрізаний конус. Якщо fn більше, ніж це значення, то об'єкт вважається круговим. Значення 0 для без обмежень</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="116"/>
+      <location filename="openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>Максимальна кількість граней многокутника (fn)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="160"/>
+      <location filename="openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
       <translation>OpenSCAD експорт</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="168"/>
+      <location filename="openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
       <translation>максимальний розмір фрагменту</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="198"/>
+      <location filename="openscadprefs-base.ui" line="215"/>
       <source>minimum angle for a fragment</source>
       <translation>мінімальний кут для фрагменту</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="191"/>
+      <location filename="openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
       <translation>кутові (фа)</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="openscadprefs-base.ui" line="201"/>
+      <location filename="openscadprefs-base.ui" line="218"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="255"/>
+      <location filename="openscadprefs-base.ui" line="272"/>
       <source>minimum size of a fragment</source>
       <translation>Мінімальний розмір фрагменту</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="233"/>
+      <location filename="openscadprefs-base.ui" line="250"/>
       <source>size (fs)</source>
       <translation>Розмір (fs)</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="261"/>
+      <location filename="openscadprefs-base.ui" line="278"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="287"/>
+      <location filename="openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
       <translation>опуклість</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="324"/>
+      <location filename="openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
       <translation>Скасувати зміни сітки</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="366"/>
+      <location filename="openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
       <translation>Відхилення</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="369"/>
+      <location filename="openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
       <translation>відхилення</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="376"/>
+      <location filename="openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
       <translation>Налаштування тріангуляції</translation>
     </message>
     <message>
-      <location filename="openscadprefs-base.ui" line="73"/>
+      <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+    </message>
+    <message>
+      <location filename="openscadprefs-base.ui" line="73"/>
+      <source>Print debug information in the Console</source>
+      <translation type="unfinished">Print debug information in the Console</translation>
     </message>
   </context>
   <context>
@@ -137,12 +142,12 @@
       <translation>Будь ласка, оберіть спочатку 3 об'єкти</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Unsupported Function</source>
       <translation>Непідтримувані функції</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1115"/>
+      <location filename="importCSG.py" line="1118"/>
       <source>Press OK</source>
       <translation>Натисніть OK</translation>
     </message>

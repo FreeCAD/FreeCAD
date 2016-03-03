@@ -26,46 +26,10 @@ __url__ = ["http://www.freecadweb.org"]
 
 class DraftWorkbench (Workbench):
     "the Draft Workbench"
-    Icon = """
-        /* XPM */
-        static char * draft_xpm[] = {
-        "16 16 17 1",
-        " 	c None",
-        ".	c #5F4A1C",
-        "+	c #5A4E36",
-        "@	c #8A4D00",
-        "#	c #835A04",
-        "$	c #7E711F",
-        "%	c #847954",
-        "&	c #C27400",
-        "*	c #817D74",
-        "=	c #E79300",
-        "-	c #BFAB0C",
-        ";	c #ADA791",
-        ">	c #B3AE87",
-        ",	c #B0B2AE",
-        "'	c #ECD200",
-        ")	c #D6D8D5",
-        "!	c #FCFEFA",
-        "   ,!!)!!!!!!!!!",
-        "   ,!!>;!!!!!!!!",
-        "   ,!!>-,!!!!!!!",
-        "   ,!!>'$)!!!!!!",
-        "   ,!!>-'%!!!!!!",
-        "   ,!!>-$-;!!!!!",
-        "   ,!!>-*-$)!!!!",
-        " @&+!!>-*;-%!!!!",
-        "@&=+)!;'-''-*!!!",
-        ".@@.;;%%....+;;!",
-        ".&&===========$,",
-        ".&&=====&&####.,",
-        ".&&.++***,,)))!!",
-        "#==+)!!!!!!!!!!!",
-        " ##+)!!!!!!!!!!!",
-        "   *,,,,,,,,,,,,"};"""
-
-    MenuText = "Draft"
-    ToolTip = "The Draft module is used for basic 2D CAD Drafting"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Draft/Resources/icons/DraftWorkbench.svg"
+        self.__class__.MenuText = "Draft"
+        self.__class__.ToolTip = "The Draft module is used for basic 2D CAD Drafting"
 
     def Initialize(self):
         def QT_TRANSLATE_NOOP(scope, text):

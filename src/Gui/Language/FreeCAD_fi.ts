@@ -1240,10 +1240,6 @@ Määritä toinen pikakuvake.</translation>
         <translation>Makron nimi:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makro kohde:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Suorita</translation>
     </message>
@@ -1265,15 +1261,15 @@ Määritä toinen pikakuvake.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Tämä tiedosto on jo olemassa.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1807,11 +1803,11 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation>Ortografinen renderointi</translation>
+        <translation type="obsolete">Ortografinen renderointi</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation>Perspektiivin renderöinti</translation>
+        <translation type="obsolete">Perspektiivin renderöinti</translation>
     </message>
     <message>
         <source></source>
@@ -1880,6 +1876,14 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
+    </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4859,11 +4863,11 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Poista makro</translation>
+        <translation>Poista makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

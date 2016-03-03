@@ -133,7 +133,7 @@
     <message>
         <location filename="../../Command.cpp" line="+1661"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -151,7 +151,7 @@
     <message>
         <location line="+31"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -169,7 +169,7 @@
     <message>
         <location line="+62"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -183,7 +183,7 @@
     <message>
         <location line="+26"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -197,7 +197,7 @@
     <message>
         <location line="-58"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -211,7 +211,7 @@
     <message>
         <location line="+116"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -225,7 +225,7 @@
     <message>
         <location line="-36"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -239,7 +239,7 @@
     <message>
         <location line="+60"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -253,7 +253,7 @@
     <message>
         <location line="-889"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../../CommandParametric.cpp" line="+86"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -299,7 +299,7 @@
     <message>
         <location filename="../../Command.cpp" line="-861"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -317,7 +317,7 @@
     <message>
         <location line="+39"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -335,7 +335,7 @@
     <message>
         <location line="+1069"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -353,7 +353,7 @@
     <message>
         <location line="-95"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -371,7 +371,7 @@
     <message>
         <location line="-810"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -389,7 +389,7 @@
     <message>
         <location line="+163"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -407,7 +407,7 @@
     <message>
         <location line="+103"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -425,7 +425,7 @@
     <message>
         <location filename="../../CommandParametric.cpp" line="+78"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -445,7 +445,7 @@
     <message>
         <location filename="../../Command.cpp" line="+590"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -463,7 +463,7 @@
     <message>
         <location line="-941"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -481,7 +481,7 @@
     <message>
         <location filename="../../CommandParametric.cpp" line="-122"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -501,7 +501,7 @@
     <message>
         <location filename="../../Command.cpp" line="+499"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -519,7 +519,7 @@
     <message>
         <location line="+252"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -537,7 +537,7 @@
     <message>
         <location line="+101"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -555,7 +555,7 @@
     <message>
         <location line="-701"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -573,7 +573,7 @@
     <message>
         <location line="+281"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -591,7 +591,7 @@
     <message>
         <location line="+104"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -609,7 +609,7 @@
     <message>
         <location line="+458"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -631,7 +631,7 @@
     <message>
         <location line="-226"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -649,7 +649,7 @@
     <message>
         <location line="-190"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -667,7 +667,7 @@
     <message>
         <location line="+316"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -685,7 +685,7 @@
     <message>
         <location line="+148"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -703,7 +703,7 @@
     <message>
         <location line="-1243"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -721,7 +721,7 @@
     <message>
         <location line="+124"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -739,7 +739,7 @@
     <message>
         <location filename="../../CommandSimple.cpp" line="+214"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -757,7 +757,7 @@
     <message>
         <location filename="../../Command.cpp" line="+723"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -775,7 +775,7 @@
     <message>
         <location line="+157"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -793,7 +793,7 @@
     <message>
         <location line="+449"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -820,7 +820,7 @@
     <message>
         <location line="-2"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -833,7 +833,7 @@
     <message>
         <location filename="../../CommandSimple.cpp" line="-109"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -851,7 +851,7 @@
     <message>
         <location line="+61"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -869,7 +869,7 @@
     <message>
         <location line="-115"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -892,7 +892,7 @@
     <message>
         <location line="-2"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -907,7 +907,7 @@
     <message>
         <location filename="../../Command.cpp" line="+637"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -925,7 +925,7 @@
     <message>
         <location line="+73"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -964,7 +964,7 @@
     <message>
         <location line="-2"/>
         <source>Part</source>
-        <translation>Component</translation>
+        <translation>Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
         <source>Chamfer Edges</source>
         <translation>Afschuinen Randen</translation>
     </message>
@@ -1189,17 +1189,17 @@
         <translation>Richting</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+6"/>
         <source>Along normal</source>
         <translation>Langs de normaal</translation>
     </message>
     <message>
-        <location line="-34"/>
+        <location line="+117"/>
         <source>Length:</source>
         <translation>Lengte:</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="-110"/>
         <source>3D view</source>
         <translation>3D-weergave</translation>
     </message>
@@ -1209,7 +1209,7 @@
         <translation>Opmerking: deze optie werkt allen voor vlakken</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+127"/>
         <source>Create solid</source>
         <translation>Maak een volumemodel</translation>
     </message>
@@ -1219,7 +1219,7 @@
         <translation type="unfinished">Taper outward angle</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+41"/>
         <source>Shape</source>
         <translation>Vorm</translation>
     </message>
@@ -1228,7 +1228,7 @@
         <translation>&apos;&apos;</translation>
     </message>
     <message>
-        <location line="-199"/>
+        <location line="-168"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1278,22 +1278,27 @@
         <translation>Afrond-parameter</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+91"/>
         <source>Radius:</source>
         <translation>Straal:</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-69"/>
         <source>Select faces</source>
         <translation>Selecteer vlakken</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
+        <source>Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Select edges</source>
         <translation>Selecteer randen</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="+47"/>
         <source>Fillet type:</source>
         <translation>Afrond-type:</translation>
     </message>
@@ -1308,7 +1313,7 @@
         <translation>Variabele radius</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-103"/>
         <source>Shape</source>
         <translation>Vorm</translation>
     </message>
@@ -1323,7 +1328,7 @@
         <translation>Geen selectie</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
         <source>Length:</source>
         <translation>Lengte:</translation>
     </message>
@@ -1344,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+520"/>
+        <location line="+545"/>
         <source>Start length</source>
         <translation>Startlengte</translation>
     </message>
     <message>
-        <location line="-519"/>
+        <location line="-544"/>
         <source>End length</source>
         <translation>Eindlengte</translation>
     </message>
@@ -1360,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+517"/>
+        <location line="+542"/>
         <source>Start radius</source>
         <translation>Start-radius</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-541"/>
         <source>End radius</source>
         <translation>Eind-radius</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+531"/>
         <source>Length</source>
         <translation>Lengte</translation>
     </message>
@@ -1392,17 +1397,17 @@ Please check one or more edge entities first.</source>
 Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+101"/>
+        <location filename="../../DlgFilletEdges.ui" line="+40"/>
         <source>All</source>
         <translation>Alles</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+7"/>
         <source>None</source>
         <translation>Geen</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-248"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Rand %1</translation>
@@ -1567,7 +1572,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Blok-definitie</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+71"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1595,7 +1600,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Grootte:</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+51"/>
         <source>Height:</source>
         <translation>Hoogte:</translation>
     </message>
@@ -1610,12 +1615,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Lengte:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-154"/>
         <source>Position:</source>
         <translation>Positie:</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Direction:</source>
         <translation>Richting:</translation>
     </message>
@@ -1628,7 +1633,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Cilinder-definitie</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+95"/>
         <source>Parameter</source>
         <translation>Parameter</translation>
     </message>
@@ -1643,7 +1648,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Straal:</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-108"/>
         <source>Position:</source>
         <translation>Positie:</translation>
     </message>
@@ -1847,7 +1852,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+519"/>
+        <location filename="../../DlgPrimitives.cpp" line="+542"/>
         <source>Wedge</source>
         <translation>Wig</translation>
     </message>
@@ -2159,7 +2164,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Beginpunt</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+193"/>
+        <location filename="../../DlgPrimitives.cpp" line="+190"/>
         <source>&amp;Create</source>
         <translation>&amp;Maken</translation>
     </message>
@@ -2176,7 +2181,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">Alt+O</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-485"/>
         <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
@@ -2221,12 +2226,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+17"/>
         <source>Angle:</source>
         <translation>Hoek:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Z:</source>
         <translation>Z:</translation>
     </message>
@@ -2236,7 +2241,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Assen:</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Shape</source>
         <translation>Vorm</translation>
     </message>
@@ -2251,7 +2256,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="unfinished">Create Solid</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+177"/>
+        <location filename="../../DlgRevolution.cpp" line="+178"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Selecteer eerst een vorm om te roteren.</translation>
     </message>
@@ -2408,17 +2413,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
         <source>Part colors</source>
-        <translation type="unfinished">Part colors</translation>
+        <translation>Onderdeel kleuren</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Default Part colors</translation>
+        <translation>Standaard Onderdeel kleuren</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Default shape color</translation>
+        <translation>Standaardkleur van de vorm</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2591,26 +2596,30 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+8"/>
-        <source>Base point:</source>
-        <translation>Basispunt:</translation>
+        <source>Base point</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <source>Base point:</source>
+        <translation type="obsolete">Basispunt:</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>y</source>
         <translation>y</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>z</source>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+122"/>
+        <location filename="../../Mirroring.cpp" line="+123"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Selecteer eerst een vorm om te spiegelen.</translation>
     </message>
@@ -2623,7 +2632,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+165"/>
+        <location filename="../../TaskOffset.cpp" line="+166"/>
         <source>Input error</source>
         <translation>Invoerfout</translation>
     </message>
@@ -2686,7 +2695,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+53"/>
         <source>Select only one part object</source>
-        <translation type="unfinished">Select only one part object</translation>
+        <translation>Selecteer slechts één deel object</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -3065,7 +3074,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Verschuiving</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Mode</source>
         <translation type="unfinished">Mode</translation>
     </message>
@@ -3700,7 +3709,7 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>&amp;Part</source>
-        <translation>&amp;Component</translation>
+        <translation>&amp;Onderdeel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3715,7 +3724,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+2"/>
         <source>Part tools</source>
-        <translation>Component-gereedschap</translation>
+        <translation>Onderdeel-gereedschap</translation>
     </message>
     <message>
         <location line="-1"/>

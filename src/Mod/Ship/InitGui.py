@@ -24,13 +24,13 @@
 
 class ShipWorkbench(Workbench):
     """Ships design workbench."""
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Ship/resources/icons/ShipWorkbench.svg"
+        self.__class__.MenuText = "Ship"
+        self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
+
     from shipUtils import Paths
     import ShipGui
-
-    Icon = "Ship_Module.svg"
-    MenuText = "Ship"
-    ToolTip = ("Ship module provides some of the commonly used tool to design"
-               " ship forms")
 
     def Initialize(self):
         from PySide import QtCore, QtGui

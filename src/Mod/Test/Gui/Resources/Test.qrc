@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>icons/TestWorkbench.svg</file>
         <file>translations/Test_af.qm</file>
         <file>translations/Test_de.qm</file>
         <file>translations/Test_fi.qm</file>

@@ -44,6 +44,16 @@ transforming and much more.
         <UserDocu>add one or more (list of) points to the object</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="fromSegment" Const="true">
+      <Documentation>
+        <UserDocu>Get a new point object from a given segment</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fromValid" Const="true">
+      <Documentation>
+        <UserDocu>Get a new point object from points with valid coordinates (i.e. that are not NaN)</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="CountPoints" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Return the number of vertices of the points object.</UserDocu>

@@ -44,6 +44,13 @@
 #include "ApproxSurface.h"
 #include "BSplineFitting.h"
 #include "SurfaceTriangulation.h"
+#include "RegionGrowing.h"
+#include "SampleConsensus.h"
+#if defined(HAVE_PCL_FILTERS)
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/point_types.h>
+#endif
 
 using namespace Reen;
 
@@ -81,6 +88,21 @@ public:
 #if defined(HAVE_PCL_OPENNURBS)
         add_keyword_method("fitBSpline",&Module::fitBSpline,
             "fitBSpline(PointKernel)."
+        );
+#endif
+#if defined(HAVE_PCL_FILTERS)
+        add_keyword_method("filterVoxelGrid",&Module::filterVoxelGrid,
+            "filterVoxelGrid(dim)."
+        );
+#endif
+#if defined(HAVE_PCL_SEGMENTATION)
+        add_keyword_method("regionGrowingSegmentation",&Module::regionGrowingSegmentation,
+            "regionGrowingSegmentation()."
+        );
+#endif
+#if defined(HAVE_PCL_SEGMENTATION)
+        add_keyword_method("sampleConsensus",&Module::sampleConsensus,
+            "sampleConsensus()."
         );
 #endif
         initialize("This module is the ReverseEngineering module."); // register with Python
@@ -517,6 +539,119 @@ Mesh.show(m)
         }
 
         throw Py::RuntimeError("Computation of B-Spline surface failed");
+    }
+#endif
+#if defined(HAVE_PCL_FILTERS)
+    Py::Object filterVoxelGrid(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        double voxDimX = 0;
+        double voxDimY = 0;
+        double voxDimZ = 0;
+
+        static char* kwds_voxel[] = {"Points", "DimX", "DimY", "DimZ", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|dd", kwds_voxel,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &voxDimX, &voxDimY, &voxDimZ))
+            throw Py::Exception();
+
+        if (voxDimY == 0)
+            voxDimY = voxDimX;
+
+        if (voxDimZ == 0)
+            voxDimZ = voxDimX;
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+        cloud->reserve(points->size());
+        for (Points::PointKernel::const_iterator it = points->begin(); it != points->end(); ++it) {
+            cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
+        }
+
+        // Create the filtering object
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_downSmpl (new pcl::PointCloud<pcl::PointXYZ>);
+        pcl::VoxelGrid<pcl::PointXYZ> voxG;
+        voxG.setInputCloud (cloud);
+        voxG.setLeafSize (voxDimX, voxDimY, voxDimZ);
+        voxG.filter (*cloud_downSmpl);
+
+        Points::PointKernel* points_sample = new Points::PointKernel();
+        points_sample->reserve(cloud_downSmpl->size());
+        for (pcl::PointCloud<pcl::PointXYZ>::const_iterator it = cloud_downSmpl->begin();it!=cloud_downSmpl->end();++it) {
+            points_sample->push_back(Base::Vector3d(it->x,it->y,it->z));
+        }
+
+        return Py::asObject(new Points::PointsPy(points_sample));
+    }
+#endif
+#if defined(HAVE_PCL_SEGMENTATION)
+    Py::Object regionGrowingSegmentation(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        PyObject *vec = 0;
+        int ksearch=5;
+
+        static char* kwds_segment[] = {"Points", "KSearch", "Normals", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|iO", kwds_segment,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &ksearch, &vec))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        std::list<std::vector<int> > clusters;
+        RegionGrowing segm(*points, clusters);
+        if (vec) {
+            Py::Sequence list(vec);
+            std::vector<Base::Vector3f> normals;
+            normals.reserve(list.size());
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Base::Vector3d v = Py::Vector(*it).toVector();
+                normals.push_back(Base::convertTo<Base::Vector3f>(v));
+            }
+            segm.perform(normals);
+        }
+        else {
+            segm.perform(ksearch);
+        }
+
+        Py::List lists;
+        for (std::list<std::vector<int> >::iterator it = clusters.begin(); it != clusters.end(); ++it) {
+            Py::Tuple tuple(it->size());
+            for (std::size_t i = 0; i < it->size(); i++) {
+                tuple.setItem(i, Py::Long((*it)[i]));
+            }
+            lists.append(tuple);
+        }
+
+        return lists;
+    }
+#endif
+#if defined(HAVE_PCL_SEGMENTATION)
+    Py::Object sampleConsensus(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+
+        static char* kwds_sample[] = {"Points", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!", kwds_sample,
+                                        &(Points::PointsPy::Type), &pts))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        std::vector<float> parameters;
+        SampleConsensus sample(*points);
+        double probability = sample.perform(parameters);
+
+        Py::Dict dict;
+        Py::Tuple tuple(parameters.size());
+        for (std::size_t i = 0; i < parameters.size(); i++)
+            tuple.setItem(i, Py::Float(parameters[i]));
+        dict.setItem(Py::String("Probability"), Py::Float(probability));
+        dict.setItem(Py::String("Parameters"), tuple);
+
+        return dict;
     }
 #endif
 };

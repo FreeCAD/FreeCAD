@@ -24,12 +24,12 @@
     <message>
         <location filename="../../Workbench.cpp" line="+57"/>
         <source>Self-test...</source>
-        <translation>hola</translation>
+        <translation>Auto-prueba...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Runs a self-test to check if the application works properly</source>
-        <translation>Runs a self-test to check if the application works properly</translation>
+        <translation>Ejecuta una auto-prueba para comprobar si la aplicación funciona correctamente</translation>
     </message>
 </context>
 <context>
@@ -42,7 +42,7 @@
     <message>
         <location line="-1"/>
         <source>S&amp;ketch</source>
-        <translation>Bosquejo</translation>
+        <translation>Croquis</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -57,12 +57,12 @@
     <message>
         <location line="+1"/>
         <source>Sketch based</source>
-        <translation>Basado en esbozo</translation>
+        <translation>Basado en croquis</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Primitives</source>
-        <translation>Primarios</translation>
+        <translation>Primitivas</translation>
     </message>
     <message>
         <source>Parametric</source>

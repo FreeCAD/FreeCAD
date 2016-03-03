@@ -54,9 +54,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="position">
-          <property name="decimals">
-           <number>4</number>
+         <widget class="Gui::QuantitySpinBox" name="position">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
           </property>
          </widget>
         </item>
@@ -111,9 +111,9 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="distance">
-          <property name="decimals">
-           <number>4</number>
+         <widget class="Gui::QuantitySpinBox" name="distance">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
           </property>
          </widget>
         </item>
@@ -124,6 +124,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>xyPlane</tabstop>
   <tabstop>xzPlane</tabstop>

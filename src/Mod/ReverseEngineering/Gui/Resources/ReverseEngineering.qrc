@@ -1,6 +1,7 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/actions/FitSurface.svg</file>
+        <file>icons/ReverseEngineeringWorkbench.svg</file>
         <file>translations/ReverseEngineering_af.qm</file>
         <file>translations/ReverseEngineering_de.qm</file>
         <file>translations/ReverseEngineering_fi.qm</file>
@@ -28,4 +29,4 @@
         <file>translations/ReverseEngineering_el.qm</file>
         <file>translations/ReverseEngineering_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

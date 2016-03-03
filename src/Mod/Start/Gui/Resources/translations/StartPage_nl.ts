@@ -46,7 +46,7 @@
     <message>
       <location filename="StartPage.py" line="61"/>
       <source>Load a Drawing extraction</source>
-      <translation>Open een tekening-extractie </translation>
+      <translation>Laad een Tekening-extractie</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="62"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="StartPage.py" line="68"/>
       <source>Designing parts</source>
-      <translation>Ontwerpen van onderdelen</translation>
+      <translation>Ontwerpen van Onderdelen</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="69"/>
@@ -101,12 +101,12 @@
     <message>
       <location filename="StartPage.py" line="72"/>
       <source>Designing architectural elements</source>
-      <translation>Het ontwerpen van architecturale elementen</translation>
+      <translation>Ontwerpen van bouwkundige elementen</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="73"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
-      <translation>de &lt;/b&gt;bouwkundig ontwerp&lt;/b&gt; werkbank is speciaal ontworpen voor het werken met bouwkundige elementen zoals muren of ramen. Begin met het tekenen van 2D vormen, en gebruik ze als leidraad om bouwkundige objecten te ontwerpen.</translation>
+      <translation>De &lt;b&gt;Bouwkundig Ontwerp&lt;/b&gt; werkbank is speciaal ontworpen voor het werken met bouwkundige elementen zoals muren of ramen. Begin met het tekenen van 2D vormen, en gebruik ze als leidraad om bouwkundige objecten te ontwerpen.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="StartPage.py" line="77"/>
       <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FreeCAD biedt u verschillende gereedschappen om te converteren tussen Mesh en Part objecten.</translation>
+      <translation>FreeCAD biedt u verschillende gereedschappen om te converteren tussen Mesh en Onderdeel objecten.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="78"/>
       <source>Work with Meshes</source>
-      <translation>Werk met meshes</translation>
+      <translation>Werk met Meshes</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="79"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="StartPage.py" line="53"/>
       <source>Latest videos</source>
-      <translation>Recentste Video's</translation>
+      <translation>Nieuwste video 's</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="54"/>
@@ -236,7 +236,7 @@
     <message>
       <location filename="StartPage.py" line="99"/>
       <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>De FreeCad interface is onderverdeeld in werkbanken, verzamelingen van gereedschappen die zijn geschikt voor een bepaalde taak. U kunt beginnen met een van de werkbanken in deze lijst, of met de volledige werkbank, met een aantal van de meest gebruikte gereedschappen van andere werkbanken. Klik om op de FreeCad website meer te lezen over werkbanken.</translation>
+      <translation>De FreeCAD interface is onderverdeeld in werkbanken, verzamelingen van gereedschappen die geschikt zijn voor een bepaalde taak. U kunt beginnen met een van de werkbanken in deze lijst, of met de volledige werkbank, met een aantal van de meest gebruikte gereedschappen van andere werkbanken. Klik om meer te lezen over werkbanken op de FreeCAD website.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="101"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="StartPage.py" line="103"/>
       <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>De &lt;b&gt;Scheepsontwerp&lt;/b&gt;-module biedt verschillende hulpmiddelen voor scheepsontwerpers om profielen en andere bepaalde eigenschappen van scheepsrompen te bekijken, te ontwerpen en te berekenen.</translation>
+      <translation>De &lt;b&gt;Scheepsontwerp&lt;/b&gt;-module biedt verschillende hulpmiddelen voor scheepsontwerpers om profielen en andere eigenschappen van scheepsrompen te bekijken, te ontwerpen en te berekenen.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="104"/>
@@ -261,17 +261,17 @@
     <message>
       <location filename="StartPage.py" line="87"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</source>
-      <translation>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc/nl</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
-      <translation>http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Tutorials/nl</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
-      <translation>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub/nl</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="74"/>
@@ -281,12 +281,12 @@
     <message>
       <location filename="StartPage.py" line="96"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>De sectie van de FreeCAD website gewijd aan python scripting, met voorbeelden, uitleg en API.</translation>
+      <translation>De sectie van de FreeCAD website gewijd aan Python scripting, met voorbeelden, uitleg en API.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="100"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
-      <translation>http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Workbenches/nl</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="107"/>
@@ -296,7 +296,12 @@
     <message>
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
-      <translation>Een nieuwe versie van FreeCAD is beschikbaar.</translation>
+      <translation>Er is een nieuwe versie van FreeCAD beschikbaar.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Open een FEM voorbeeld analyse</translation>
     </message>
   </context>
 </TS>

@@ -22,7 +22,11 @@
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QDoubleSpinBox" name="spinOffset"/>
+    <widget class="Gui::QuantitySpinBox" name="spinOffset">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
@@ -143,6 +147,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>spinOffset</tabstop>
   <tabstop>modeType</tabstop>

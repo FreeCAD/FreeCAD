@@ -317,7 +317,7 @@ Do you want to continue?</source>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+        <translation>LuxRender</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -463,7 +463,12 @@ Do you want to continue?</source>
         <translation>カメラファイル名:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>レンダー</translation>
     </message>
@@ -530,12 +535,11 @@ Do you want to continue?</source>
         <translation>メッシュエクスポート設定</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>メッシュ最大分割数：</translation>
+        <translation type="obsolete">メッシュ最大分割数：</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>頂点の法線を計算しない</translation>
     </message>

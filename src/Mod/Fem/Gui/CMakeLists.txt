@@ -225,7 +225,7 @@ fc_target_copy_resource(FemGui
     )
 
 SET(FemGuiIcon_SVG
-    Resources/icons/preferences-fem.svg
+    Resources/icons/FemWorkbench.svg
 )
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})

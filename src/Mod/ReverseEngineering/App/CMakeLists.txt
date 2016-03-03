@@ -12,6 +12,18 @@ if (PCL_SURFACE_FOUND AND PCL_FEATURES_FOUND)
     endif()
 endif ()
 
+if (PCL_FILTERS_FOUND AND PCL_FEATURES_FOUND)
+    add_definitions(-DHAVE_PCL_FILTERS)
+endif ()
+
+if (PCL_SEGMENTATION_FOUND AND PCL_FEATURES_FOUND)
+    add_definitions(-DHAVE_PCL_SEGMENTATION)
+endif ()
+
+if (PCL_SAMPLE_CONSENSUS_FOUND)
+    add_definitions(-DHAVE_PCL_SAMPLE_CONSENSUS)
+endif ()
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIRS}
@@ -35,8 +47,11 @@ set(Reen_LIBS
     ${PCL_COMMON_LIBRARIES}
     ${PCL_KDTREE_LIBRARIES}
     ${PCL_FEATURES_LIBRARIES}
+    ${PCL_FILTERS_LIBRARIES}
     ${PCL_SEARCH_LIBRARIES}
     ${PCL_SURFACE_LIBRARIES}
+    ${PCL_SEGMENTATION_LIBRARIES}
+    ${PCL_SAMPLE_CONSENSUS_LIBRARIES}
     ${QT_QTCORE_LIBRARY}
 )
 
@@ -46,6 +61,10 @@ SET(Reen_SRCS
     ApproxSurface.h
     BSplineFitting.cpp
     BSplineFitting.h
+    RegionGrowing.cpp
+    RegionGrowing.h
+    SampleConsensus.cpp
+    SampleConsensus.h
     SurfaceTriangulation.cpp
     SurfaceTriangulation.h
     PreCompiled.cpp

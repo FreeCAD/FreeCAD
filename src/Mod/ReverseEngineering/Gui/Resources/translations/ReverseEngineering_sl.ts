@@ -68,10 +68,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+1"/>
         <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation>Pokaži triangulacijo</translation>
+        <translation type="obsolete">Pokaži triangulacijo</translation>
     </message>
 </context>
 <context>
