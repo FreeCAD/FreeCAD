@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>540</width>
+    <width>568</width>
     <height>406</height>
    </rect>
   </property>
@@ -89,7 +89,7 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
+         <enum>QSizePolicy::Preferred</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -108,15 +108,18 @@
          <number>6</number>
         </property>
         <item row="1" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="prefFloatSpinBox2">
-          <property name="suffix">
-           <string> mm</string>
-          </property>
-          <property name="decimals">
-           <number>3</number>
+         <widget class="Gui::QuantitySpinBox" name="thickness">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
           </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
+          </property>
+          <property name="suffix" stdset="0">
+           <string> mm</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>3</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>Thickness</cstring>
@@ -134,15 +137,21 @@
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="prefFloatSpinBox1">
-          <property name="suffix">
-           <string> mm</string>
+         <widget class="Gui::QuantitySpinBox" name="searchRadius">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
           </property>
-          <property name="decimals">
-           <number>3</number>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
           </property>
           <property name="value">
            <double>0.050000000000000</double>
+          </property>
+          <property name="suffix" stdset="0">
+           <string> mm</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>3</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SearchDistance</cstring>
@@ -165,7 +174,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
+           <enum>QSizePolicy::Preferred</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -181,7 +190,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
+           <enum>QSizePolicy::Preferred</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -208,14 +217,14 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>prefFloatSpinBox1</tabstop>
-  <tabstop>prefFloatSpinBox2</tabstop>
+  <tabstop>searchRadius</tabstop>
+  <tabstop>thickness</tabstop>
  </tabstops>
  <resources/>
  <connections>

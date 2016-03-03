@@ -1,5 +1,6 @@
 <RCC>
     <qresource> 
         <file>icons/inspect_pipette.svg</file>
+        <file>icons/InspectionWorkbench.svg</file>
     </qresource>
 </RCC> 

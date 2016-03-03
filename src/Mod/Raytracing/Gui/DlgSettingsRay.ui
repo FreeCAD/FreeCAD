@@ -49,7 +49,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>max mesh deviation:</string>
+           <string>Max mesh deviation:</string>
           </property>
          </widget>
         </item>

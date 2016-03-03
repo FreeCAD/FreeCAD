@@ -33,38 +33,10 @@
 
 class PartWorkbench ( Workbench ):
     "Part workbench object"
-    Icon = """
-                /* XPM */
-                static char * part_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #000209",
-                "+	c #00061D",
-                "@	c #010A2F",
-                "#	c #001152",
-                "$	c #001772",
-                "%	c #00209F",
-                "&	c #0025B8",
-                "*	c #0032FF",
-                "      ........  ",
-                "   ..+$&%%$$#+..",
-                "....#%*****%..$.",
-                ".##@.....+..%*&.",
-                ".%*****&%#.***&.",
-                ".%*******%.***&.",
-                ".%*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***$.",
-                ".&*******%.**#. ",
-                ".@$%&****%.%..  ",
-                " ......@##..    ",
-                "        ...     "};
-        """
-    MenuText = "Part"
-    ToolTip = "Part workbench"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Part/Resources/icons/PartWorkbench.svg"
+        self.__class__.MenuText = "Part"
+        self.__class__.ToolTip = "Part workbench"
 
     def Initialize(self):
         # load the module

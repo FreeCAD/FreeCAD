@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF файл</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -414,46 +414,46 @@ Do you want to continue?</source>
         <location line="+11"/>
         <location line="+200"/>
         <source>X +ve</source>
-        <translation type="unfinished">X +ve</translation>
+        <translation>X +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Y +ve</source>
-        <translation type="unfinished">Y +ve</translation>
+        <translation>Y +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Z +ve</source>
-        <translation type="unfinished">Z +ve</translation>
+        <translation>Z +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+200"/>
         <source>X -ve</source>
-        <translation type="unfinished">X -ve</translation>
+        <translation>X -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Y -ve</source>
-        <translation type="unfinished">Y -ve</translation>
+        <translation>Y -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Z -ve</source>
-        <translation type="unfinished">Z -ve</translation>
+        <translation>Z -ve</translation>
     </message>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isometric</translation>
+        <translation>Изометрический</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -596,7 +596,7 @@ Do you want to continue?</source>
     <message>
         <location line="+125"/>
         <source>Show hidden lines</source>
-        <translation type="unfinished">Show hidden lines</translation>
+        <translation>Показать скрытые линии</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -669,22 +669,22 @@ Do you want to continue?</source>
     <message>
         <location line="+14"/>
         <source>No active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет активного документа</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There is currently no active document to complete the operation</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No active view</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There is currently no active view to complete the operation</translation>
     </message>
 </context>
 <context>
@@ -755,7 +755,7 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 drawing</translation>
+        <translation>Вставить новый чертёж %1 %2 %3</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -765,7 +765,7 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
+        <translation>Вставить новый чертёж %1 %2 %3 (%4)</translation>
     </message>
 </context>
 <context>
@@ -815,7 +815,7 @@ Do you want to continue?</source>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished">Scalable Vector Graphic</translation>
+        <translation>Масштабируемая векторная графика (SVG)</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -851,7 +851,7 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location line="+110"/>

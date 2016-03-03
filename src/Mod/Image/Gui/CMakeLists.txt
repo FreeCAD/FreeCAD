@@ -78,3 +78,11 @@ SET_BIN_DIR(ImageGui ImageGui /Mod/Image)
 SET_PYTHON_PREFIX_SUFFIX(ImageGui)
 
 INSTALL(TARGETS ImageGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(ImageGuiIcon_SVG
+    Resources/icons/ImageWorkbench.svg
+)
+
+fc_copy_sources(ImageGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Image" ${ImageGuiIcon_SVG})
+
+INSTALL(FILES ${ImageGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Image/Resources/icons")

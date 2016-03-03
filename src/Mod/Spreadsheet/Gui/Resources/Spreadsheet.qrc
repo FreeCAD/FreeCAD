@@ -15,6 +15,7 @@
         <file>icons/SpreadsheetStyleUnderline.svg</file>
         <file>icons/SpreadsheetStyleItalic.svg</file>
         <file>icons/SpreadsheetStyleBold.svg</file>
+        <file>icons/SpreadsheetWorkbench.svg</file>
         <file>translations/Spreadsheet_de.qm</file>
         <file>translations/Spreadsheet_af.qm</file>
         <file>translations/Spreadsheet_zh-CN.qm</file>

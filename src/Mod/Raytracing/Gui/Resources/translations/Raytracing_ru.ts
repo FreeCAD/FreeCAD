@@ -161,7 +161,7 @@
     <message>
         <location line="+1"/>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation>Экспорт позиции камеры из активного 3D-вида в POV-Ray формате в файл</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -182,12 +182,12 @@
     <message>
         <location line="+1"/>
         <source>Export part to POV-Ray...</source>
-        <translation type="unfinished">Export part to POV-Ray...</translation>
+        <translation>Экспортировать деталь в POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the selected Part (object) as a POV-Ray file</source>
-        <translation type="unfinished">Write the selected Part (object) as a POV-Ray file</translation>
+        <translation>Записать выбранную деталь (объект) как файл POV-Ray</translation>
     </message>
     <message>
         <source>Export part to povray...</source>
@@ -214,18 +214,17 @@
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
-Do you want to continue?</translation>
+        <translation>Текущий вид камеры не является перспективным и таким образом итоговое POV-Ray изображение позже может выглядеть иначе, чем вы ожидаете. Вы хотите продолжить?</translation>
     </message>
     <message>
         <location line="-109"/>
         <source>Export view to POV-Ray...</source>
-        <translation type="unfinished">Export view to POV-Ray...</translation>
+        <translation>Экспорт вида в POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-        <translation type="unfinished">Write the active 3D view with camera and all its content to a POV-Ray file</translation>
+        <translation>Запись активного 3D вида с камерой и всем его содержимым в POV-Ray файл</translation>
     </message>
     <message>
         <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
@@ -317,33 +316,33 @@ Do you want to continue?</source>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+        <translation>Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
-        <translation type="unfinished">POV-Ray not found</translation>
+        <translation>POV-Ray не найден</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the POV-Ray executable in the preferences.</translation>
+        <translation>Задайте путь к исполняемому файлу POV-Ray в настройках.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
+        <translation>Исправьте путь к исполняемому файлу POV-Ray в настройках.</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>Lux project file missing</source>
-        <translation type="unfinished">Lux project file missing</translation>
+        <translation>Отсутствует файл проекта Lux</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Lux project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The Lux project file doesn&apos;t exist.</translation>
+        <translation>Файл проекта Lux не существует.</translation>
     </message>
     <message>
         <location line="-68"/>
@@ -366,7 +365,7 @@ Do you want to continue?</source>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -381,12 +380,12 @@ Do you want to continue?</source>
     <message>
         <location line="+12"/>
         <source>POV-Ray file missing</source>
-        <translation type="unfinished">POV-Ray file missing</translation>
+        <translation>Отсутствует файл POV-Ray</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The POV-Ray project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The POV-Ray project file doesn&apos;t exist.</translation>
+        <translation>Файл проекта POV-Ray не существует.</translation>
     </message>
     <message>
         <source>Rendered image (*.bmp)</source>
@@ -430,22 +429,22 @@ Do you want to continue?</source>
     <message>
         <location line="+103"/>
         <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation type="unfinished">The path to the POV-Ray executable, if you want to render from FreeCAD</translation>
+        <translation>Путь к исполняемому файлу POV-Ray, если вы хотите выполнять рендеринг из FreeCAD</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>POV-Ray executable:</source>
-        <translation type="unfinished">POV-Ray executable:</translation>
+        <translation>Исполняемый файл POV-Ray:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>POV-Ray output parameters:</source>
-        <translation type="unfinished">POV-Ray output parameters:</translation>
+        <translation>Выходные параметры POV-Ray:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The POV-Ray parameters to be passed to the render.</source>
-        <translation type="unfinished">The POV-Ray parameters to be passed to the render.</translation>
+        <translation>Параметры POV-Ray, которые должны быть переданы рендеру.</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -463,7 +462,12 @@ Do you want to continue?</source>
         <translation>Название фото-файла:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Визуализация</translation>
     </message>
@@ -530,12 +534,11 @@ Do you want to continue?</source>
         <translation>Экспорт настроек сетки</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>максимальное отклонение сетки:</translation>
+        <translation type="obsolete">максимальное отклонение сетки:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Не вычислять нормалей вершины</translation>
     </message>

@@ -316,7 +316,7 @@ Do you want to continue?</source>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+        <translation>Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -365,7 +365,7 @@ Do you want to continue?</source>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -462,7 +462,12 @@ Do you want to continue?</source>
         <translation>Název souboru fotoaparátu:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Vykreslit</translation>
     </message>
@@ -529,12 +534,11 @@ Do you want to continue?</source>
         <translation>Nastavení exportu sítě</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Maximální odchylka sítě:</translation>
+        <translation type="obsolete">Maximální odchylka sítě:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Nepočítat vrcholové normály</translation>
     </message>

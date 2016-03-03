@@ -45,7 +45,7 @@
            <double>99999999.0</double>
          </property>
          <property name="minimum" stdset="0">
-           <double>0.2</double>
+           <double>0.001</double>
          </property>
          <property name="singleStep" stdset="0">
            <double>1.000000000000000</double>

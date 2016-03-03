@@ -66,7 +66,7 @@ public:
 
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-
+    void open();
 };
 
 } //namespace FemGui

@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+93"/>
         <source>Reverse Engineering</source>
-        <translation>Visszatervezés</translation>
+        <translation>Fordított tervezés</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -24,7 +24,7 @@
     <message>
         <location line="-37"/>
         <source>Reverse Engineering</source>
-        <translation>Visszatervezés</translation>
+        <translation>Fordított tervezés</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -46,7 +46,7 @@
     <message>
         <location line="+129"/>
         <source>Reverse Engineering</source>
-        <translation>Visszatervezés</translation>
+        <translation>Fordított tervezés</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -64,14 +64,22 @@
     <message>
         <location line="+32"/>
         <source>Reverse Engineering</source>
-        <translation>Visszatervezés</translation>
+        <translation>Fordított tervezés</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
-        <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation type="unfinished">View triangulation</translation>
+        <translation type="obsolete">View triangulation</translation>
     </message>
 </context>
 <context>
@@ -79,29 +87,29 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished">Fit B-Spline surface</translation>
+        <translation>B-görbe felület ilesztése</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>u-Irány</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished">Degree</translation>
+        <translation>Fok</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>Ellenőrzési pontok</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>v-Irány</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -111,12 +119,12 @@
     <message>
         <location line="+6"/>
         <source>Iterations</source>
-        <translation type="unfinished">Iterations</translation>
+        <translation>Lépésszám</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>Méret tényező</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -126,27 +134,27 @@
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished">Total Weight</translation>
+        <translation>Összsúly</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Length of gradient</source>
-        <translation type="unfinished">Length of gradient</translation>
+        <translation>Dőlés hossza</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Bending energy</source>
-        <translation type="unfinished">Bending energy</translation>
+        <translation>Hajlítási energia</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Curvature variation</source>
-        <translation type="unfinished">Curvature variation</translation>
+        <translation>Görbület variáció</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished">User-defined u/v directions</translation>
+        <translation>Felhasználó által definiált u/v irányba</translation>
     </message>
 </context>
 <context>
@@ -159,7 +167,7 @@
     <message>
         <location line="+1"/>
         <source>Please select a single placement object to get local orientation.</source>
-        <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+        <translation>Kérjük, válasszon egy önállóan elhelyezett tárgyat a hely meghatározásához.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -228,7 +236,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Reverse Engineering</source>
-        <translation>Visszatervezés</translation>
+        <translation>Fordított tervezés</translation>
     </message>
 </context>
 </TS>

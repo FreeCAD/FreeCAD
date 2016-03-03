@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Constraint_Concentric.svg</file>
         <file>icons/Constraint_Ellipse_Axis_Angle.svg</file>
         <file>icons/Constraint_Ellipse_Major_Radius.svg</file>
@@ -141,6 +141,7 @@
         <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
+        <file>icons/SketcherWorkbench.svg</file>
         <file>icons/small/Constraint_Concentric_sm.xpm</file>
         <file>icons/small/Constraint_EqualLength_sm.xpm</file>
         <file>icons/small/Constraint_ExternalAngle_sm.xpm</file>
@@ -192,4 +193,4 @@
         <file>translations/Sketcher_el.qm</file>
         <file>translations/Sketcher_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

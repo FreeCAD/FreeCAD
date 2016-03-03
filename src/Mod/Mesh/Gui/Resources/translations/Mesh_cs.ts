@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished">Merge</translation>
+        <translation>Sloučit</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished">Merges selected meshes into one</translation>
+        <translation>Sloučí vybrané sítě do jedné</translation>
     </message>
 </context>
 <context>
@@ -839,27 +839,27 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
         <source>Mesh Formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Formáty sítě</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Export</translation>
     </message>
     <message>
         <source>Defines the deviation of tessellation to the actual surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Definuje odhylku plátování sítě aktuální plochy</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Plátování&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Definuje maximální odhylku plátů sítě na ploše. Nejmenší hodnota je nejpomalejší pro rendering ale má nejhezčí vzhled.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Maximum mesh deviation</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximální odchylka sítě</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>
@@ -1333,67 +1333,67 @@ Max = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished">All Mesh Files</translation>
+        <translation>Všechny soubory sítí</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished">Binary STL</translation>
+        <translation>Binární STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished">ASCII STL</translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished">Binary Mesh</translation>
+        <translation>Binární síť</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished">Alias Mesh</translation>
+        <translation>Alias sítě</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished">Object File Format</translation>
+        <translation>Formát souboru objektu</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished">Inventor V2.1 ascii</translation>
+        <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished">Stanford Polygon</translation>
+        <translation>Mnohoúhelník Stanford</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished">X3D Extensible 3D</translation>
+        <translation>X3D rozšířitelné 3D</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished">VRML V2.0</translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished">Compressed VRML 2.0</translation>
+        <translation>Komprimované VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished">Nastran</translation>
+        <translation>Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished">Python module def</translation>
+        <translation>Definice Python modulu</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
-        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+        <translation>[Body: %1, Hrany: %2, Plochy: %3]</translation>
     </message>
     <message>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Import-Export</translation>
     </message>
 </context>
 <context>

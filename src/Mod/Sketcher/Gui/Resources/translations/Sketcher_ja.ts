@@ -2243,7 +2243,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+7"/>
         <source>Center sketch</source>
-        <translation type="unfinished">Center sketch</translation>
+        <translation>スケッチを中央に配置</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2253,7 +2253,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+4"/>
         <source>Swap constraint names</source>
-        <translation type="unfinished">Swap constraint names</translation>
+        <translation>拘束名を交換</translation>
     </message>
 </context>
 <context>
@@ -2348,7 +2348,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+17"/>
         <source>Name (optional)</source>
-        <translation type="unfinished">Name (optional)</translation>
+        <translation>名前 (オプション)</translation>
     </message>
 </context>
 <context>
@@ -3139,12 +3139,12 @@ Use the sketch validation tool.</source>
     <message>
         <location line="+15"/>
         <source>Do you want to open the sketch validation tool?</source>
-        <translation type="unfinished">Do you want to open the sketch validation tool?</translation>
+        <translation>スケッチ検証ツールを起動しますか?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.</source>
-        <translation type="unfinished">The sketch is invalid and cannot be edited.</translation>
+        <translation>スケッチが不正で、編集できません。</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -3490,27 +3490,27 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="-310"/>
         <source>Type of function to apply in DogLeg for the Gauss step</source>
-        <translation type="unfinished">Type of function to apply in DogLeg for the Gauss step</translation>
+        <translation>ガウス ステップのためにドッグレッグで適用する関数の種類</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>DogLeg Gauss step:</source>
-        <translation type="unfinished">DogLeg Gauss step:</translation>
+        <translation>DogLeg ガウス ステップ:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>FullPivLU</source>
-        <translation type="unfinished">FullPivLU</translation>
+        <translation>FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-FullPivLU</source>
-        <translation type="unfinished">LeastNorm-FullPivLU</translation>
+        <translation>最小ノルム-FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-LDLT</source>
-        <translation type="unfinished">LeastNorm-LDLT</translation>
+        <translation>最小ノルム-LDLT</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3605,7 +3605,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+3"/>
         <source>Red. Max Iterations:</source>
-        <translation>Red. 最大反復回数：</translation>
+        <translation>余剰最大反復回数：</translation>
     </message>
     <message>
         <location line="+33"/>
