@@ -405,14 +405,8 @@ def frange(start, stop, step, finish):
         curdepth = stop
         x.append(curdepth)
 
-     # Why this?
-#    if start >= stop:
-#        start = stop
-#        x.append (start)
 
     return x
-
-
 
 class depth_params:
     def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, user_depths=None):
@@ -425,6 +419,7 @@ class depth_params:
         self.user_depths = user_depths
         
     def get_depths(self):
+        print "in function"
         depths = []
         if self.user_depths != None:
             depths = self.user_depths
@@ -440,23 +435,7 @@ class depth_params:
                     for i in range(1, layer_count):
                         depth += layer_depth
                         depths.append(depth)
+        depths.reverse()
         return depths
 
-# def get_depths(start_depth, final_depth, step_down, z_finish_depth):
-#     '''get_depths returns a list of z heights for pocket clearing.  First value is Z depth of the first pass, etc.
-#     start_depth: starting depth of pocket
-#     step_down: max amount removed per pocket pass
-#     z_finish_depth: amount to remove on last (finishing) pass 
-#     final_depth: bottom of pocket'''
-#     depths = [depth]
-#     depth += z_finish_depth
-#     if depth + 0.0000001 < start_depth:
-#         if z_finish_depth > 0.0000001: depths.insert(0, depth)
-#         layer_count = int((start_depth - depth) / step_down - 0.0000001) + 1
-#         if layer_count > 0:
-#             layer_depth = (start_depth - depth)/layer_count
-#             for i in range(1, layer_count):
-#                 depth += layer_depth
-#                 depths.insert(0, depth)
-                
-#     return depths
+
