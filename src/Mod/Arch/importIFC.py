@@ -631,14 +631,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         for p in properties[pid][c]:
                             l = ifcfile[p]
                             if l.is_a("IfcPropertySingleValue"):
-                                if IMPORT_PROPERTIES :
+                                if DEBUG :
+                                    print("property name",l.Name,type(l.Name))
+                                ifc_spreadsheet.set(str('A'+str(n)), catname.encode("utf8"))
+                                ifc_spreadsheet.set(str('B'+str(n)), l.Name.encode("utf8"))
+                                if l.NominalValue :
                                     if DEBUG :
-                                        print("property name",l.Name,type(l.Name))
                                         print("property NominalValue",l.NominalValue.is_a(),type(l.NominalValue.is_a()))
                                         print("property NominalValue.wrappedValue",l.NominalValue.wrappedValue,type(l.NominalValue.wrappedValue))
                                         #print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
-                                    ifc_spreadsheet.set(str('A'+str(n)), catname.encode("utf8"))
-                                    ifc_spreadsheet.set(str('B'+str(n)), l.Name.encode("utf8"))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
                                     if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                                         ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
@@ -646,7 +647,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                         ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
                                     if hasattr(l.NominalValue,'Unit') :
                                         ifc_spreadsheet.set(str('E'+str(n)), str(l.NominalValue.Unit))
-                                    n += 1
+                                n += 1
                         obj.IfcProperties = ifc_spreadsheet
                 elif hasattr(obj,"IfcAttributes"):
                     a = obj.IfcAttributes
