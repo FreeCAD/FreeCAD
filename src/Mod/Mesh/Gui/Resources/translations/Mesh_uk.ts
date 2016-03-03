@@ -858,7 +858,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>mm</source>
-        <translation>мм</translation>
+        <translation type="obsolete">мм</translation>
     </message>
 </context>
 <context>

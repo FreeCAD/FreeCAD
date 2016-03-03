@@ -859,7 +859,7 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>

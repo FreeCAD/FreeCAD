@@ -214,7 +214,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
-            elif m.isDerivedFrom("Fem::ConstraintDisplacement"): #OvG: Replacement reference to C++ implementation of Displacement Constraint
+            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):  # OvG: Replacement reference to C++ implementation of Displacement Constraint
                 displacement_constraint_dict = {}
                 displacement_constraint_dict['Object'] = m
                 self.displacement_constraints.append(displacement_constraint_dict)
@@ -248,7 +248,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 if has_no_references is True:
                     message += "More than one Material has empty References list (Only one empty References list is allowed!).\n"
                 has_no_references = True
-        if not (self.fixed_constraints): 
+        if not (self.fixed_constraints):
             message += "No fixed-constraint nodes defined in the Analysis\n"
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints):
@@ -277,7 +277,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             inp_writer = iw.inp_writer(self.analysis, self.mesh, self.materials,
                                        self.fixed_constraints,
                                        self.force_constraints, self.pressure_constraints,
-                                       self.displacement_constraints, #OvG: Stick to naming convention
+                                       self.displacement_constraints,  # OvG: Stick to naming convention
                                        self.beam_sections, self.shell_thicknesses,
                                        self.analysis_type, self.eigenmode_parameters,
                                        self.working_dir)
