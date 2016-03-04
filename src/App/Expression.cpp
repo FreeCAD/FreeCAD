@@ -297,8 +297,34 @@ bool OperatorExpression::isTouched() const
     return left->isTouched() || right->isTouched();
 }
 
+/* The following definitions are from The art of computer programming by Knuth
+ * (copied from http://stackoverflow.com/questions/17333/most-effective-way-for-float-and-double-comparison)
+ */
+
+/*
+static bool approximatelyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+*/
+
+static bool essentiallyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+static bool definitelyGreaterThan(double a, double b, double epsilon)
+{
+    return (a - b) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+static bool definitelyLessThan(double a, double b, double epsilon)
+{
+    return (b - a) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
 /**
-  * Evalutate the expression. Returns a new NumberExpression with the result, or throws
+  * Evalutate the expression. Returns a new Expression with the result, or throws
   * an exception if something is wrong, i.e the expression cannot be evaluated.
   */
 
@@ -308,7 +334,8 @@ Expression * OperatorExpression::eval() const
     NumberExpression * v1;
     std::auto_ptr<Expression> e2(right->eval());
     NumberExpression * v2;
-    NumberExpression * output;
+    Expression * output;
+    const double epsilon = std::numeric_limits<double>::epsilon();
 
     v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
@@ -339,33 +366,35 @@ Expression * OperatorExpression::eval() const
         break;
     case EQ:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) < 1e-7));
+            throw ExpressionError("Incompatible units for the = operator");
+        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case NEQ:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) > 1e-7));
+            throw ExpressionError("Incompatible units for the != operator");
+        output = new BooleanExpression(owner, !essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LT:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() < v2->getValue()));
+            throw ExpressionError("Incompatible units for the < operator");
+        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case GT:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() > v2->getValue()));
+            throw ExpressionError("Incompatible units for the > operator");
+        output = new BooleanExpression(owner, definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LTE:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() - v2->getValue() < 1e-7));
+            throw ExpressionError("Incompatible units for the <= operator");
+        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) ||
+                                       essentiallyEqual(v1->getValue(), v2->getValue(), epsilon));
         break;
     case GTE:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v2->getValue() - v1->getValue()) < 1e-7);
+            throw ExpressionError("Incompatible units for the >= operator");
+        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) ||
+                                       definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon));
         break;
     case NEG:
         output = new NumberExpression(owner, -v1->getQuantity() );
