@@ -225,6 +225,7 @@ class ObjectProfile:
                 PathKurveUtils.feedrate_hv(obj.HorizFeed.Value, obj.VertFeed.Value)
 
                 output = ""
+                output += "G0 Z" + str(clearance)
                 curve = PathKurveUtils.makeAreaCurve(edgelist,direction,startpoint, endpoint)
 
                 '''The following line uses a profile function written for use with FreeCAD.  It's clean but incomplete.  It doesn't handle
