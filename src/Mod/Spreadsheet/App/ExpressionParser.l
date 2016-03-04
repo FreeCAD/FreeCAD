@@ -241,6 +241,7 @@ EXPO     [eE][-+]?[0-9]+
 
 {DIGIT}*"."{DIGIT}+{EXPO}?   yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}*","{DIGIT}+{EXPO}?   yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
+{DIGIT}+{EXPO}               yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}+                     yylval.ivalue = strtoll( yytext, NULL, 0 ); if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
 
 "pi"                         yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
