@@ -252,6 +252,16 @@ MeshPoint MeshObject::getPoint(unsigned long index) const
     return point;
 }
 
+void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
+                           float Accuracy, uint16_t flags) const
+{
+    unsigned long ctpoints = _kernel.CountPoints();
+    Points.reserve(ctpoints);
+    for (unsigned long i=0; i<ctpoints; i++) {
+        Points.push_back(this->getPoint(i));
+    }
+}
+
 Mesh::Facet MeshObject::getFacet(unsigned long index) const
 {
     Mesh::Facet face(_kernel.GetFacets()[index], const_cast<MeshObject*>(this), index);
