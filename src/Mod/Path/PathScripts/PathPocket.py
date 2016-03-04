@@ -68,11 +68,15 @@ class ObjectPocket:
         obj.addProperty("App::PropertyFloat", "FinishDepth", "Depth", translate("PathProject","Maximum material removed on final pass."))
         #obj.addProperty("App::PropertyFloat", "RetractHeight", "Depth", translate("PathProject","The height desired to retract tool when path is finished"))
 
+        # #Feed Properties
+        # obj.addProperty("App::PropertyFloatConstraint", "VertFeed", "Feed",translate("Vert Feed","Feed rate for vertical moves in Z"))
+        # obj.VertFeed = (0.0, 0.0, 100000.0, 1.0)
+        # obj.addProperty("App::PropertyFloatConstraint", "HorizFeed", "Feed",translate("Horiz Feed","Feed rate for horizontal moves"))
+        # obj.HorizFeed = (0.0, 0.0, 100000.0, 1.0)
+
         #Feed Properties
-        obj.addProperty("App::PropertyFloatConstraint", "VertFeed", "Feed",translate("Vert Feed","Feed rate for vertical moves in Z"))
-        obj.VertFeed = (0.0, 0.0, 100000.0, 1.0)
-        obj.addProperty("App::PropertyFloatConstraint", "HorizFeed", "Feed",translate("Horiz Feed","Feed rate for horizontal moves"))
-        obj.HorizFeed = (0.0, 0.0, 100000.0, 1.0)
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed",translate("Path","Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",translate("Path","Feed rate for horizontal moves"))
 
         #Pocket Properties
         obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket",translate("PathProject", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
@@ -95,9 +99,20 @@ class ObjectPocket:
         obj.HelixSize = (0.0, 0.01, 100.0, 0.5)
         obj.addProperty("App::PropertyFloatConstraint", "RampAngle", "Entry", translate("PathProject","The Angle of the ramp entry."))
         obj.RampAngle = (0.0, 0.01, 100.0, 0.5)
-
-
+        
         obj.Proxy = self
+
+    def onChanged(self,obj,prop):
+        if prop == "UseEntry":
+            if obj.UseEntry:
+                print "made it"
+                obj.setEditorMode('HelixSize',0) #make this visible
+                obj.setEditorMode('RampAngle',0) #make this visible
+                obj.setEditorMode('RampSize',0) #make this visible
+            else:
+                obj.setEditorMode('HelixSize',2) #make this hidden
+                obj.setEditorMode('RampAngle',2) #make this hidden
+                obj.setEditorMode('RampSize',2) #make this hidden
 
     def __getstate__(self):
         return None
@@ -140,6 +155,8 @@ class ObjectPocket:
         cut_mode = obj.CutMode
 
         PathAreaUtils.output('mem')
+        PathAreaUtils.feedrate_hv(obj.HorizFeed.Value, obj.VertFeed.Value)
+
 
         print "a," + str(self.radius) + "," + str(extraoffset) + "," + str(stepover) + ",depthparams, " + str(from_center) + "," + str(keep_tool_down) + "," + str(use_zig_zag) + "," + str(zig_angle) + "," + str(zig_unidirectional) + "," + str(start_point) + "," + str(cut_mode)
 
@@ -526,14 +543,7 @@ class ObjectPocket:
                 
                 a.Reorder()
                 output += self.buildpathlibarea(obj, a)
-            if obj.UseEntry:
-                obj.setEditorMode('HelixSize',0) #make this visible
-                obj.setEditorMode('RampAngle',0) #make this visible
-                obj.setEditorMode('RampSize',0) #make this visible
-            else:
-                obj.setEditorMode('HelixSize',2) #make this hidden
-                obj.setEditorMode('RampAngle',2) #make this hidden
-                obj.setEditorMode('RampSize',2) #make this hidden
+
 
             if obj.Active:
                 path = Path.Path(output)

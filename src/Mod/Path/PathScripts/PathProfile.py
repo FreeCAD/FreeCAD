@@ -222,6 +222,8 @@ class ObjectProfile:
                     return
                 
                 PathKurveUtils.output('mem')
+                PathKurveUtils.feedrate_hv(obj.HorizFeed.Value, obj.VertFeed.Value)
+
                 output = ""
                 curve = PathKurveUtils.makeAreaCurve(edgelist,direction,startpoint, endpoint)
 
