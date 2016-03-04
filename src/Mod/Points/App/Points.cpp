@@ -193,8 +193,9 @@ void PointKernel::save(std::ostream& out) const
     }
 }
 
-void PointKernel::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-                           float Accuracy, uint16_t flags) const
+void PointKernel::getPoints(std::vector<Base::Vector3d> &Points,
+                            std::vector<Base::Vector3d> &Normals,
+                            float Accuracy, uint16_t flags) const
 {
     unsigned long ctpoints = _Points.size();
     Points.reserve(ctpoints);

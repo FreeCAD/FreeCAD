@@ -85,9 +85,10 @@ public:
     { this->_Points = pts; }
     void swap(std::vector<value_type>& pts)
     { this->_Points.swap(pts); }
-    void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const;
 
+    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+        std::vector<Base::Vector3d> &Normals,
+        float Accuracy, uint16_t flags=0) const;
     virtual void transformGeometry(const Base::Matrix4D &rclMat);
     virtual Base::BoundBox3d getBoundBox(void)const;
 
