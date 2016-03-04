@@ -105,7 +105,6 @@ class ObjectPocket:
     def onChanged(self,obj,prop):
         if prop == "UseEntry":
             if obj.UseEntry:
-                print "made it"
                 obj.setEditorMode('HelixSize',0) #make this visible
                 obj.setEditorMode('RampAngle',0) #make this visible
                 obj.setEditorMode('RampSize',0) #make this visible
@@ -143,7 +142,7 @@ class ObjectPocket:
         
         depthparams = depth_params (obj.ClearanceHeight, obj.SafeHeight, obj.StartDepth, obj.StepDown, obj.FinishDepth, obj.FinalDepth)
         
-        horizfeed = obj.HorizFeed
+        horizfeed = obj.HorizFeed.Value
         extraoffset = obj.MaterialAllowance
         stepover = obj.StepOver
         use_zig_zag = obj.UseZigZag
@@ -153,7 +152,8 @@ class ObjectPocket:
         zig_unidirectional = obj.ZigUnidirectional
         start_point = None
         cut_mode = obj.CutMode
-
+        
+        PathAreaUtils.flush_nc()
         PathAreaUtils.output('mem')
         PathAreaUtils.feedrate_hv(obj.HorizFeed.Value, obj.VertFeed.Value)
 
@@ -192,9 +192,9 @@ class ObjectPocket:
             global feedxy
             retstr = "G01 F"
             if(x == None) and (y == None):
-                retstr += str("%.4f" % obj.HorizFeed)
+                retstr += str("%.4f" % obj.HorizFeed.Value)
             else:
-                retstr += str("%.4f" % obj.VertFeed)
+                retstr += str("%.4f" % obj.VertFeed.Value)
             
             if (x != None) or (y != None) or (z != None):
                 if (x != None):
@@ -223,7 +223,7 @@ class ObjectPocket:
                 retstr += "G03 F"
             else:
                 retstr += "G02 F"
-            retstr += str(obj.HorizFeed)
+            retstr += str(obj.HorizFeed.Value)
             
             #End location
             retstr += " X" + str("%.4f" % ex) + " Y" + str("%.4f" % ey)
