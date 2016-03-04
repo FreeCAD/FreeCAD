@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <qaction.h>
 # include <qdir.h>
 # include <qfileinfo.h>
@@ -43,6 +44,7 @@
 #include <Gui/View3DInventorViewer.h>
 
 #include "../App/PointsFeature.h"
+#include "../App/Properties.h"
 #include "DlgPointsReadImp.h"
 #include "ViewProvider.h"
 
@@ -198,13 +200,34 @@ void CmdPointsConvert::activated(int iMsg)
             std::vector<Base::Vector3d> normals;
             data->getPoints(vertexes, normals, 0.0f);
             if (!vertexes.empty()) {
-                App::Document* doc = (*it)->getDocument();
-                Points::Feature* fea = static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Points"));
+                Points::Feature* fea = 0;
+                if (vertexes.size() == normals.size()) {
+                    fea = static_cast<Points::Feature*>(Base::Type::fromName("Points::FeatureCustom").createInstance());
+                    if (!fea) {
+                        Base::Console().Error("Failed to create instance of 'Points::FeatureCustom'\n");
+                        continue;
+                    }
+                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
+                        (fea->addDynamicProperty("Points::PropertyNormalList", "Normal"));
+                    if (prop) {
+                        std::vector<Base::Vector3f> normf;
+                        normf.resize(normals.size());
+                        std::transform(normals.begin(), normals.end(), normf.begin(), Base::toVector<float, double>);
+                        prop->setValues(normf);
+                    }
+                }
+                else {
+                    fea = new Points::Feature;
+                }
+
                 Points::PointKernel kernel;
                 kernel.reserve(vertexes.size());
                 for (std::vector<Base::Vector3d>::iterator pt = vertexes.begin(); pt != vertexes.end(); ++pt)
                     kernel.push_back(*pt);
                 fea->Points.setValue(kernel);
+
+                App::Document* doc = (*it)->getDocument();
+                doc->addObject(fea, "Points");
             }
         }
     }
