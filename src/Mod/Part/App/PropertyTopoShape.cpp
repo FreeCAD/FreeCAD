@@ -133,13 +133,6 @@ Base::BoundBox3d PropertyPartShape::getBoundingBox() const
     return box;
 }
 
-void PropertyPartShape::getFaces(std::vector<Base::Vector3d> &aPoints,
-                                 std::vector<Data::ComplexGeoData::Facet> &aTopo,
-                                 float accuracy, uint16_t flags) const
-{
-    _Shape.getFaces(aPoints, aTopo, accuracy, flags);
-}
-
 void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 {
     aboutToSetValue();

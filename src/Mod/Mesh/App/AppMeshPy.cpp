@@ -293,12 +293,15 @@ private:
                     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                         std::vector<Base::Vector3d> aPoints;
                         std::vector<Data::ComplexGeoData::Facet> aTopo;
-                        static_cast<App::PropertyComplexGeoData*>(shape)->getFaces(aPoints, aTopo,fTolerance);
-                        mesh->addFacets(aTopo, aPoints);
-                        if (global_mesh.countFacets() == 0)
-                            global_mesh = *mesh;
-                        else
-                            global_mesh.addMesh(*mesh);
+                        const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData();
+                        if (data) {
+                            data->getFaces(aPoints, aTopo,fTolerance);
+                            mesh->addFacets(aTopo, aPoints);
+                            if (global_mesh.countFacets() == 0)
+                                global_mesh = *mesh;
+                            else
+                                global_mesh.addMesh(*mesh);
+                        }
                     }
                 }
                 else {
