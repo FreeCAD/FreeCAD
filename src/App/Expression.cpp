@@ -1262,6 +1262,18 @@ Expression *ConstantExpression::copy() const
     return new ConstantExpression(owner, name.c_str(), quantity);
 }
 
+TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
+
+BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
+    : NumberExpression(owner, _value ? 1.0 : 0.0)
+{
+}
+
+Expression *BooleanExpression::copy() const
+{
+    return new BooleanExpression(owner, getValue() > 0.5 ? true : false);
+}
+
 namespace App {
 
 namespace ExpressionParser {

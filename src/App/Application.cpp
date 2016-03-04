@@ -1139,7 +1139,7 @@ void Application::initTypes(void)
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
-
+    App ::BooleanExpression         ::init();
 }
 
 void Application::initConfig(int argc, char ** argv)

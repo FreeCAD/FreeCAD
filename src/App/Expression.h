@@ -190,6 +190,15 @@ protected:
     std::string name; /**< Constant's name */
 };
 
+class AppExport BooleanExpression : public NumberExpression {
+    TYPESYSTEM_HEADER();
+public:
+    BooleanExpression(const App::DocumentObject *_owner = 0, bool _value = false);
+
+    virtual Expression * copy() const;
+
+};
+
 
 /**
   * Class implementing an infix expression.
