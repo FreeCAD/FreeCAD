@@ -46,6 +46,7 @@
 #include <Base/Stream.h>
 
 #include <boost/regex.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 using namespace Points;
 
@@ -435,4 +436,356 @@ void PcdReader::read(const std::string& filename)
     }
 }
 
+#endif
+
+// ----------------------------------------------------------------------------
+
+Writer::Writer(const PointKernel& p) : points(p)
+{
+    width = p.size();
+    height = 1;
+}
+
+Writer::~Writer()
+{
+}
+
+void Writer::setIntensities(const std::vector<float>& i)
+{
+    intensity = i;
+}
+
+void Writer::setColors(const std::vector<App::Color>& c)
+{
+    colors = c;
+}
+
+void Writer::setNormals(const std::vector<Base::Vector3f>& n)
+{
+    normals = n;
+}
+
+void Writer::setWidth(int w)
+{
+    width = w;
+}
+
+void Writer::setHeight(int h)
+{
+    height = h;
+}
+
+// ----------------------------------------------------------------------------
+
+AscWriter::AscWriter(const PointKernel& p) : Writer(p)
+{
+}
+
+AscWriter::~AscWriter()
+{
+}
+
+void AscWriter::write(const std::string& filename)
+{
+    points.save(filename.c_str());
+}
+
+// ----------------------------------------------------------------------------
+
+#ifdef HAVE_PCL_IO
+PlyWriter::PlyWriter(const PointKernel& p) : Writer(p)
+{
+}
+
+PlyWriter::~PlyWriter()
+{
+}
+
+void PlyWriter::write(const std::string& filename)
+{
+    bool hasIntensity = (intensity.size() == points.size());
+    bool hasColors = (colors.size() == points.size());
+    bool hasNormals = (normals.size() == points.size());
+
+    if (hasNormals && hasColors) {
+        pcl::PointCloud<pcl::PointXYZRGBNormal> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const Base::Vector3f& n = normals[index];
+            const App::Color& c = colors[index];
+            if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+                pcl::PointXYZRGBNormal pn;
+                pn.x = p.x;
+                pn.y = p.y;
+                pn.z = p.z;
+                pn.normal_x = n.x;
+                pn.normal_y = n.y;
+                pn.normal_z = n.z;
+                pn.r = c.r * 255.0f;
+                pn.g = c.g * 255.0f;
+                pn.b = c.b * 255.0f;
+                cloud_out.push_back(pn);
+            }
+        }
+
+        pcl::io::savePLYFile<pcl::PointXYZRGBNormal>(filename, cloud_out);
+    }
+    else if (hasNormals && hasIntensity) {
+        pcl::PointCloud<pcl::PointXYZINormal> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const Base::Vector3f& n = normals[index];
+            if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+                pcl::PointXYZINormal pn;
+                pn.x = p.x;
+                pn.y = p.y;
+                pn.z = p.z;
+                pn.normal_x = n.x;
+                pn.normal_y = n.y;
+                pn.normal_z = n.z;
+                pn.intensity = intensity[index];
+                cloud_out.push_back(pn);
+            }
+        }
+
+        pcl::io::savePLYFile<pcl::PointXYZINormal>(filename, cloud_out);
+    }
+    else if (hasColors) {
+        pcl::PointCloud<pcl::PointXYZRGBA> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const App::Color& c = colors[index];
+            if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+                pcl::PointXYZRGBA pc;
+                pc.x = p.x;
+                pc.y = p.y;
+                pc.z = p.z;
+                pc.r = c.r * 255.0f;
+                pc.g = c.g * 255.0f;
+                pc.b = c.b * 255.0f;
+                cloud_out.push_back(pc);
+            }
+        }
+
+        pcl::io::savePLYFile<pcl::PointXYZRGBA>(filename, cloud_out);
+    }
+    else if (hasIntensity) {
+        pcl::PointCloud<pcl::PointXYZI> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+                pcl::PointXYZI pi;
+                pi.x = p.x;
+                pi.y = p.y;
+                pi.z = p.z;
+                pi.intensity = intensity[index];
+                cloud_out.push_back(pi);
+            }
+        }
+
+        pcl::io::savePLYFile<pcl::PointXYZI>(filename, cloud_out);
+    }
+    else if (hasNormals) {
+        pcl::PointCloud<pcl::PointNormal> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const Base::Vector3f& n = normals[index];
+            if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+                pcl::PointNormal pn;
+                pn.x = p.x;
+                pn.y = p.y;
+                pn.z = p.z;
+                pn.normal_x = n.x;
+                pn.normal_y = n.y;
+                pn.normal_z = n.z;
+                cloud_out.push_back(pn);
+            }
+        }
+
+        pcl::io::savePLYFile<pcl::PointNormal>(filename, cloud_out);
+    }
+    else {
+        pcl::PointCloud<pcl::PointXYZ> cloud_out;
+        cloud_out.reserve(points.size());
+        for (Points::PointKernel::const_iterator it = points.begin(); it != points.end(); ++it) {
+            if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z)) {
+                cloud_out.push_back(pcl::PointXYZ(it->x, it->y, it->z));
+            }
+        }
+
+        pcl::io::savePLYFile<pcl::PointXYZ>(filename, cloud_out);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+PcdWriter::PcdWriter(const PointKernel& p) : Writer(p)
+{
+}
+
+PcdWriter::~PcdWriter()
+{
+}
+
+void PcdWriter::write(const std::string& filename)
+{
+    bool hasIntensity = (intensity.size() == points.size());
+    bool hasColors = (colors.size() == points.size());
+    bool hasNormals = (normals.size() == points.size());
+
+    if (hasNormals && hasColors) {
+        pcl::PointCloud<pcl::PointXYZRGBNormal> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const Base::Vector3f& n = normals[index];
+            const App::Color& c = colors[index];
+            pcl::PointXYZRGBNormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            pn.r = c.r * 255.0f;
+            pn.g = c.g * 255.0f;
+            pn.b = c.b * 255.0f;
+            cloud_out.push_back(pn);
+        }
+
+        cloud_out.width = width;
+        cloud_out.height = height;
+
+        pcl::io::savePCDFile<pcl::PointXYZRGBNormal>(filename, cloud_out);
+    }
+    else if (hasNormals && hasIntensity) {
+        pcl::PointCloud<pcl::PointXYZINormal> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const Base::Vector3f& n = normals[index];
+            pcl::PointXYZINormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            pn.intensity = intensity[index];
+            cloud_out.push_back(pn);
+        }
+
+        cloud_out.width = width;
+        cloud_out.height = height;
+
+        pcl::io::savePCDFile<pcl::PointXYZINormal>(filename, cloud_out);
+    }
+    else if (hasColors) {
+        pcl::PointCloud<pcl::PointXYZRGBA> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const App::Color& c = colors[index];
+            pcl::PointXYZRGBA pc;
+            pc.x = p.x;
+            pc.y = p.y;
+            pc.z = p.z;
+            pc.r = c.r * 255.0f;
+            pc.g = c.g * 255.0f;
+            pc.b = c.b * 255.0f;
+            cloud_out.push_back(pc);
+        }
+
+        cloud_out.width = width;
+        cloud_out.height = height;
+
+        pcl::io::savePCDFile<pcl::PointXYZRGBA>(filename, cloud_out);
+    }
+    else if (hasIntensity) {
+        pcl::PointCloud<pcl::PointXYZI> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            pcl::PointXYZI pi;
+            pi.x = p.x;
+            pi.y = p.y;
+            pi.z = p.z;
+            pi.intensity = intensity[index];
+            cloud_out.push_back(pi);
+        }
+
+        cloud_out.width = width;
+        cloud_out.height = height;
+
+        pcl::io::savePCDFile<pcl::PointXYZI>(filename, cloud_out);
+    }
+    else if (hasNormals) {
+        pcl::PointCloud<pcl::PointNormal> cloud_out;
+        cloud_out.reserve(points.size());
+
+        const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
+        std::size_t num_points = pts.size();
+        for (std::size_t index=0; index<num_points; index++) {
+            const Base::Vector3f& p = pts[index];
+            const Base::Vector3f& n = normals[index];
+            pcl::PointNormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            cloud_out.push_back(pn);
+        }
+
+        cloud_out.width = width;
+        cloud_out.height = height;
+
+        pcl::io::savePCDFile<pcl::PointNormal>(filename, cloud_out);
+    }
+    else {
+        pcl::PointCloud<pcl::PointXYZ> cloud_out;
+        cloud_out.reserve(points.size());
+        for (Points::PointKernel::const_iterator it = points.begin(); it != points.end(); ++it) {
+            cloud_out.push_back(pcl::PointXYZ(it->x, it->y, it->z));
+        }
+
+        cloud_out.width = width;
+        cloud_out.height = height;
+
+        pcl::io::savePCDFile<pcl::PointXYZ>(filename, cloud_out);
+    }
+}
 #endif
