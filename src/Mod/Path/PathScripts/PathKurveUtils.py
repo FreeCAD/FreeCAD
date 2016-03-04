@@ -121,8 +121,6 @@ def makeAreaCurve(edges,direction,startpt=None,endpt=None):
         curveobj.Reverse()
     elif not curveobj.IsClockwise() and direction == 'CW':
         curveobj.Reverse()
-    print "direction is clockwise: " + str(curveobj.IsClockwise())
-    print "numvertices: " + str(curveobj.getNumVertices())
     return curveobj
 
 
