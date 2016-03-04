@@ -97,6 +97,53 @@ public:
 };
 #endif
 
+class Writer
+{
+public:
+    Writer(const PointKernel&);
+    virtual ~Writer();
+    virtual void write(const std::string& filename) = 0;
+
+    void setIntensities(const std::vector<float>&);
+    void setColors(const std::vector<App::Color>&);
+    void setNormals(const std::vector<Base::Vector3f>&);
+    void setWidth(int);
+    void setHeight(int);
+
+protected:
+    const PointKernel& points;
+    std::vector<float> intensity;
+    std::vector<App::Color> colors;
+    std::vector<Base::Vector3f> normals;
+    int width, height;
+};
+
+class AscWriter : public Writer
+{
+public:
+    AscWriter(const PointKernel&);
+    ~AscWriter();
+    void write(const std::string& filename);
+};
+
+#ifdef HAVE_PCL_IO
+class PlyWriter : public Writer
+{
+public:
+    PlyWriter(const PointKernel&);
+    ~PlyWriter();
+    void write(const std::string& filename);
+};
+
+class PcdWriter : public Writer
+{
+public:
+    PcdWriter(const PointKernel&);
+    ~PcdWriter();
+    void write(const std::string& filename);
+};
+#endif
+
 } // namespace Points
 
 

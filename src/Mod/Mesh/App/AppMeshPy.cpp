@@ -67,9 +67,6 @@ public:
         add_varargs_method("insert",&Module::importer,
             "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."
         );
-        add_varargs_method("insert",&Module::importer,
-            "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."
-        );
         add_varargs_method("export",&Module::exporter,
             "export(list,string,[tolerance]) -- Export a list of objects into a single file.  tolerance is in mm\n"
             "and specifies the maximum acceptable deviation between the specified objects and the exported mesh."
