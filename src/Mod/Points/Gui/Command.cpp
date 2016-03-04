@@ -173,6 +173,48 @@ bool CmdPointsTransform::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
 
+DEF_STD_CMD_A(CmdPointsConvert);
+
+CmdPointsConvert::CmdPointsConvert()
+  :Command("Points_Convert")
+{
+    sAppModule    = "Points";
+    sGroup        = QT_TR_NOOP("Points");
+    sMenuText     = QT_TR_NOOP("Convert to points");
+    sToolTipText  = QT_TR_NOOP("Convert to points");
+    sWhatsThis    = QT_TR_NOOP("Convert to points");
+    sStatusTip    = QT_TR_NOOP("Convert to points");
+}
+
+void CmdPointsConvert::activated(int iMsg)
+{
+    openCommand("Convert to points");
+    std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Base::Type::fromName("Mesh::Feature"));
+    for (std::vector<App::DocumentObject*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
+        App::PropertyComplexGeoData* prop = dynamic_cast<App::PropertyComplexGeoData*>((*it)->getPropertyByName("Mesh"));
+        if (prop) {
+            const Data::ComplexGeoData* data = prop->getComplexData();
+            std::vector<Base::Vector3d> vertexes;
+            data->getPoints(vertexes, 0.0f);
+            if (!vertexes.empty()) {
+                App::Document* doc = (*it)->getDocument();
+                Points::Feature* fea = static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Points"));
+                Points::PointKernel kernel;
+                kernel.reserve(vertexes.size());
+                for (std::vector<Base::Vector3d>::iterator pt = vertexes.begin(); pt != vertexes.end(); ++pt)
+                    kernel.push_back(*pt);
+                fea->Points.setValue(kernel);
+            }
+        }
+    }
+    commitCommand();
+}
+
+bool CmdPointsConvert::isActive(void)
+{
+    return getSelection().countObjectsOfType(Base::Type::fromName("Mesh::Feature")) > 0;
+}
+
 DEF_STD_CMD_A(CmdPointsPolyCut);
 
 CmdPointsPolyCut::CmdPointsPolyCut()
@@ -222,5 +264,6 @@ void CreatePointsCommands(void)
     rcCmdMgr.addCommand(new CmdPointsImport());
     rcCmdMgr.addCommand(new CmdPointsExport());
     rcCmdMgr.addCommand(new CmdPointsTransform());
+    rcCmdMgr.addCommand(new CmdPointsConvert());
     rcCmdMgr.addCommand(new CmdPointsPolyCut());
 }

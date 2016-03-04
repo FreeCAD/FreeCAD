@@ -127,7 +127,10 @@ public:
     Mesh::Facet getFacet(unsigned long) const;
     double getSurface() const;
     double getVolume() const;
-    void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
+    /** Get points from object with given accuracy */
+    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+        float Accuracy, uint16_t flags=0) const;
+    virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
     std::vector<unsigned long> getPointsFromFacets(const std::vector<unsigned long>& facets) const;
     //@}
