@@ -195,7 +195,8 @@ void CmdPointsConvert::activated(int iMsg)
         if (prop) {
             const Data::ComplexGeoData* data = prop->getComplexData();
             std::vector<Base::Vector3d> vertexes;
-            data->getPoints(vertexes, 0.0f);
+            std::vector<Base::Vector3d> normals;
+            data->getPoints(vertexes, normals, 0.0f);
             if (!vertexes.empty()) {
                 App::Document* doc = (*it)->getDocument();
                 Points::Feature* fea = static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Points"));

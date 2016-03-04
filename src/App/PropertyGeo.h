@@ -357,9 +357,6 @@ public:
     //@{
     virtual const Data::ComplexGeoData* getComplexData() const = 0;
     virtual Base::BoundBox3d getBoundingBox() const = 0;
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const  = 0;
     //@}
 };
 

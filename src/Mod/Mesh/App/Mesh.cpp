@@ -253,6 +253,7 @@ MeshPoint MeshObject::getPoint(unsigned long index) const
 }
 
 void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
+                           std::vector<Base::Vector3d> &Normals,
                            float Accuracy, uint16_t flags) const
 {
     unsigned long ctpoints = _kernel.CountPoints();

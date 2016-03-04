@@ -107,7 +107,11 @@ void CmdApproxPlane::activated(int iMsg)
             if (jt->second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                 std::vector<Base::Vector3d> aPoints;
                 std::vector<Data::ComplexGeoData::Facet> aTopo;
-                static_cast<App::PropertyComplexGeoData*>(jt->second)->getFaces(aPoints, aTopo,0.01f);
+                const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(jt->second)->getComplexData();
+                if (!data)
+                    continue;
+
+                data->getFaces(aPoints, aTopo,0.01f);
 
                 // get a reference normal for the plane fit
                 Base::Vector3f refNormal(0,0,0);

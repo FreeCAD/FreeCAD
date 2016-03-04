@@ -526,8 +526,11 @@ void CmdMeshFromGeometry::activated(int iMsg)
                 if (jt->first == "Shape" && jt->second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                     std::vector<Base::Vector3d> aPoints;
                     std::vector<Data::ComplexGeoData::Facet> aTopo;
-                    static_cast<App::PropertyComplexGeoData*>(jt->second)->getFaces(aPoints, aTopo,(float)tol);
-                    mesh.setFacets(aTopo, aPoints);
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(jt->second)->getComplexData();
+                    if (data) {
+                        data->getFaces(aPoints, aTopo,(float)tol);
+                        mesh.setFacets(aTopo, aPoints);
+                    }
                 }
             }
 
