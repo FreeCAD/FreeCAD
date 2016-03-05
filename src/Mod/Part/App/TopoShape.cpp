@@ -59,6 +59,7 @@
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepCheck_ListIteratorOfListOfStatus.hxx>
 # include <BRepCheck_Result.hxx>
+# include <BRepClass_FaceClassifier.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRepMesh_Triangle.hxx>
@@ -76,6 +77,8 @@
 # include <BRepTools_ShapeSet.hxx>
 # include <BRepFill_CompatibleWires.hxx>
 # include <GCE2d_MakeSegment.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
 # include <Geom2d_Line.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 # include <GeomLProp_SLProps.hxx>
@@ -86,6 +89,7 @@
 # include <GeomFill_Pipe.hxx>
 # include <GeomFill_SectionLaw.hxx>
 # include <GeomFill_Sweep.hxx>
+# include <GeomLib.hxx>
 # include <Handle_Law_BSpFunc.hxx>
 # include <Handle_Law_BSpline.hxx>
 # include <Handle_TopTools_HSequenceOfShape.hxx>
@@ -2531,4 +2535,112 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     _Shape.Reverse(); // seems that we have to reverse the orientation
     if (_Shape.IsNull())
         _Shape = aComp;
+}
+
+void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
+                          std::vector<Base::Vector3d> &Normals,
+                          float Accuracy, uint16_t flags) const
+{
+    if (_Shape.IsNull())
+        return;
+
+    const int minPointsPerEdge = 30;
+    const double lateralDistance = Accuracy;
+
+    // get all 3d points from free vertices
+    for (TopExp_Explorer xp(_Shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+        gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+        Points.push_back(Base::convertTo<Base::Vector3d>(p));
+        Normals.push_back(Base::Vector3d(0,0,0));
+    }
+
+    // sample inner points of all free edges
+    for (TopExp_Explorer xp(_Shape, TopAbs_EDGE, TopAbs_FACE); xp.More(); xp.Next()) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(xp.Current()));
+        GCPnts_UniformAbscissa discretizer(curve, lateralDistance, curve.FirstParameter(), curve.LastParameter());
+        if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            int nbPoints = discretizer.NbPoints();
+            for (int i=1; i<=nbPoints; i++) {
+                gp_Pnt p = curve.Value (discretizer.Parameter(i));
+                Points.push_back(Base::convertTo<Base::Vector3d>(p));
+                Normals.push_back(Base::Vector3d(0,0,0));
+            }
+        }
+    }
+
+    // sample inner points of all faces
+    BRepClass_FaceClassifier classifier;
+    bool hasFaces = false;
+    for (TopExp_Explorer xp(_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
+        hasFaces = true;
+        int pointsPerEdge = minPointsPerEdge;
+        TopoDS_Face face = TopoDS::Face(xp.Current());
+        BRepAdaptor_Surface surface(face);
+        Handle(Geom_Surface) aSurf = BRep_Tool::Surface(face);
+
+        // parameter ranges
+        Standard_Real uFirst = surface.FirstUParameter();
+        Standard_Real uLast = surface.LastUParameter();
+        Standard_Real vFirst = surface.FirstVParameter();
+        Standard_Real vLast = surface.LastVParameter();
+
+        // get geometrical length and width of the surface
+        //
+        gp_Pnt p1, p2;
+        Standard_Real fLengthU = 0.0, fLengthV = 0.0;
+        for (int i = 1; i <= pointsPerEdge; i++) {
+            double u1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
+            double s1 = (1.0-u1)*uFirst + u1*uLast;
+            p1 = surface.Value(s1,0.0);
+
+            double u2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
+            double s2 = (1.0-u2)*uFirst + u2*uLast;
+            p2 = surface.Value(s2,0.0);
+
+            fLengthU += p1.Distance(p2);
+        }
+
+        for (int i = 1; i <= pointsPerEdge; i++) {
+            double v1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
+            double t1 = (1.0-v1)*vFirst + v1*vLast;
+            p1 = surface.Value(0.0,t1);
+
+            double v2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
+            double t2 = (1.0-v2)*vFirst + v2*vLast;
+            p2 = surface.Value(0.0,t2);
+
+            fLengthV += p1.Distance(p2);
+        }
+
+        int uPointsPerEdge = static_cast<int>(fLengthU / lateralDistance);
+        int vPointsPerEdge = static_cast<int>(fLengthV / lateralDistance);
+
+        for (int i = 0; i <= uPointsPerEdge; i++) {
+            double u = static_cast<double>(i)/static_cast<double>(uPointsPerEdge);
+            double s = (1.0-u)*uFirst + u*uLast;
+
+            for (int j = 0; j <= vPointsPerEdge; j++) {
+                double v = static_cast<double>(j)/static_cast<double>(vPointsPerEdge);
+                double t = (1.0-v)*vFirst + v*vLast;
+
+                gp_Pnt2d p2d(s,t);
+                classifier.Perform(face,p2d,1.0e-4);
+                if (classifier.State() == TopAbs_IN || classifier.State() == TopAbs_ON) {
+                    gp_Pnt p = surface.Value(s,t);
+                    Points.push_back(Base::convertTo<Base::Vector3d>(p));
+                    gp_Dir normal;
+                    if (GeomLib::NormEstim(aSurf, p2d, Precision::Confusion(), normal) <= 1) {
+                        Normals.push_back(Base::convertTo<Base::Vector3d>(normal));
+                    }
+                    else {
+                        Normals.push_back(Base::Vector3d(0,0,0));
+                    }
+                }
+            }
+        }
+    }
+
+    // if no faces are found then the normals can be cleared
+    if (!hasFaces)
+        Normals.clear();
 }

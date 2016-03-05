@@ -24,9 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <qaction.h>
-# include <qdir.h>
-# include <qfileinfo.h>
+# include <QFileInfo>
+# include <QInputDialog>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
@@ -42,6 +41,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/WaitCursor.h>
 
 #include "../App/PointsFeature.h"
 #include "../App/Properties.h"
@@ -182,7 +182,7 @@ CmdPointsConvert::CmdPointsConvert()
 {
     sAppModule    = "Points";
     sGroup        = QT_TR_NOOP("Points");
-    sMenuText     = QT_TR_NOOP("Convert to points");
+    sMenuText     = QT_TR_NOOP("Convert to points...");
     sToolTipText  = QT_TR_NOOP("Convert to points");
     sWhatsThis    = QT_TR_NOOP("Convert to points");
     sStatusTip    = QT_TR_NOOP("Convert to points");
@@ -190,15 +190,32 @@ CmdPointsConvert::CmdPointsConvert()
 
 void CmdPointsConvert::activated(int iMsg)
 {
+    bool ok;
+    double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
+        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok);
+    if (!ok)
+        return;
+
+    Gui::WaitCursor wc;
     openCommand("Convert to points");
-    std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Base::Type::fromName("Mesh::Feature"));
-    for (std::vector<App::DocumentObject*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
-        App::PropertyComplexGeoData* prop = dynamic_cast<App::PropertyComplexGeoData*>((*it)->getPropertyByName("Mesh"));
+    std::vector<App::DocumentObject*> geoObject = getSelection().getObjectsOfType(Base::Type::fromName("App::GeoFeature"));
+
+    bool addedPoints = false;
+    for (std::vector<App::DocumentObject*>::iterator it = geoObject.begin(); it != geoObject.end(); ++it) {
+        App::PropertyComplexGeoData* prop = 0;
+
+        // a cad shape?
+        if ((*it)->isDerivedFrom(Base::Type::fromName("Part::Feature")))
+            prop = dynamic_cast<App::PropertyComplexGeoData*>((*it)->getPropertyByName("Shape"));
+        // a mesh?
+        else if ((*it)->isDerivedFrom(Base::Type::fromName("Mesh::Feature")))
+            prop = dynamic_cast<App::PropertyComplexGeoData*>((*it)->getPropertyByName("Mesh"));
+
         if (prop) {
             const Data::ComplexGeoData* data = prop->getComplexData();
             std::vector<Base::Vector3d> vertexes;
             std::vector<Base::Vector3d> normals;
-            data->getPoints(vertexes, normals, 0.0f);
+            data->getPoints(vertexes, normals, static_cast<float>(tol));
             if (!vertexes.empty()) {
                 Points::Feature* fea = 0;
                 if (vertexes.size() == normals.size()) {
@@ -228,15 +245,20 @@ void CmdPointsConvert::activated(int iMsg)
 
                 App::Document* doc = (*it)->getDocument();
                 doc->addObject(fea, "Points");
+                addedPoints = true;
             }
         }
     }
-    commitCommand();
+
+    if (addedPoints)
+        commitCommand();
+    else
+        abortCommand();
 }
 
 bool CmdPointsConvert::isActive(void)
 {
-    return getSelection().countObjectsOfType(Base::Type::fromName("Mesh::Feature")) > 0;
+    return getSelection().countObjectsOfType(Base::Type::fromName("App::GeoFeature")) > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsPolyCut);
