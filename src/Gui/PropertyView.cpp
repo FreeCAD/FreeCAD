@@ -105,6 +105,9 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectPropRemove =
     App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
         (&PropertyView::slotRemoveDynamicProperty, this, _1));
+    this->connectPropChange =
+    App::GetApplication().signalChangePropertyEditor.connect(boost::bind
+        (&PropertyView::slotChangePropertyEditor, this, _1));
 }
 
 PropertyView::~PropertyView()
@@ -113,6 +116,7 @@ PropertyView::~PropertyView()
     this->connectPropView.disconnect();
     this->connectPropAppend.disconnect();
     this->connectPropRemove.disconnect();
+    this->connectPropChange.disconnect();
 }
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
@@ -147,6 +151,17 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
     }
     else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
         propertyEditorView->removeProperty(prop);
+    }
+}
+
+void PropertyView::slotChangePropertyEditor(const App::Property& prop)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        propertyEditorData->updatetEditorMode(prop);
+    }
+    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+        propertyEditorView->updatetEditorMode(prop);
     }
 }
 

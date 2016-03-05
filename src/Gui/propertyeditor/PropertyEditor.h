@@ -68,6 +68,7 @@ public:
     /** Builds up the list view with the properties. */
     void buildUp(const PropertyModel::PropertyList& props);
     void updateProperty(const App::Property&);
+    void updatetEditorMode(const App::Property&);
     void appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
     void setAutomaticDocumentUpdate(bool);
@@ -85,6 +86,9 @@ protected:
     virtual void currentChanged (const QModelIndex & current, const QModelIndex & previous);
     virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
     virtual QStyleOptionViewItem viewOptions() const;
+
+private:
+    void updateItemEditor(bool enable, int column, const QModelIndex& parent);
 
 private:
     PropertyModel* propertyModel;
