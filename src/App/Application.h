@@ -150,6 +150,8 @@ public:
     boost::signal<void (const App::Property&)> signalAppendDynamicProperty;
     /// signal on about removing a dynamic property
     boost::signal<void (const App::Property&)> signalRemoveDynamicProperty;
+    /// signal on about changing the editor mode of a property
+    boost::signal<void (const App::Property&)> signalChangePropertyEditor;
     //@}
 
 
