@@ -131,6 +131,22 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
         openPersistentEditor(model()->buddy(current));
 }
 
+void PropertyEditor::reset()
+{
+    QTreeView::reset();
+
+    QModelIndex index;
+    int numRows = propertyModel->rowCount(index);
+    if (numRows > 0)
+        setEditorMode(index, 0, numRows-1);
+}
+
+void PropertyEditor::rowsInserted (const QModelIndex & parent, int start, int end)
+{
+    QTreeView::rowsInserted(parent, start, end);
+    setEditorMode(parent, start, end);
+}
+
 void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const
 {
     QTreeView::drawBranches(painter, rect, index);
@@ -178,7 +194,19 @@ void PropertyEditor::updateProperty(const App::Property& prop)
         propertyModel->updateProperty(prop);
 }
 
-void PropertyEditor::updatetEditorMode(const App::Property& prop)
+void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int end)
+{
+    int column = 1;
+    for (int i=start; i<=end; i++) {
+        QModelIndex item = propertyModel->index(i, column, parent);
+        PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
+        if (propItem && propItem->testStatus(App::Property::Hidden)) {
+            setRowHidden (i, parent, true);
+        }
+    }
+}
+
+void PropertyEditor::updateEditorMode(const App::Property& prop)
 {
     // check if the parent object is selected
     std::string editor = prop.getEditorName();

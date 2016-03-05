@@ -68,11 +68,13 @@ public:
     /** Builds up the list view with the properties. */
     void buildUp(const PropertyModel::PropertyList& props);
     void updateProperty(const App::Property&);
-    void updatetEditorMode(const App::Property&);
+    void updateEditorMode(const App::Property&);
     void appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
+    /*! Reset the internal state of the view. */
+    virtual void reset();
 
     QBrush groupBackground() const;
     void setGroupBackground(const QBrush& c);
@@ -84,10 +86,12 @@ protected:
     virtual void commitData (QWidget * editor);
     virtual void editorDestroyed (QObject * editor);
     virtual void currentChanged (const QModelIndex & current, const QModelIndex & previous);
+    virtual void rowsInserted (const QModelIndex & parent, int start, int end);
     virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
     virtual QStyleOptionViewItem viewOptions() const;
 
 private:
+    void setEditorMode(const QModelIndex & parent, int start, int end);
     void updateItemEditor(bool enable, int column, const QModelIndex& parent);
 
 private:
