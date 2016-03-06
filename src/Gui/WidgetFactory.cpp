@@ -243,7 +243,11 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     Py::Callable func = sipmod.getDict().getItem("wrapinstance");
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
+#if QT_VERSION >= 0x050000
+    Py::Module qtmod(PyImport_ImportModule((char*)"PyQt5.QtWidgets"));
+#else
     Py::Module qtmod(PyImport_ImportModule((char*)"PyQt4.Qt"));
+#endif
     arguments[1] = qtmod.getDict().getItem("QWidget");
     return func.apply(arguments);
 #endif
