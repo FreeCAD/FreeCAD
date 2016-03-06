@@ -1111,7 +1111,7 @@
     <message>
         <location line="+1"/>
         <source>Rectangular Array</source>
-        <translation type="unfinished">Rectangular Array</translation>
+        <translation>Прямоугольный массив</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1279,7 +1279,7 @@
     <message>
         <location line="+1"/>
         <source>Symmetry</source>
-        <translation type="unfinished">Symmetry</translation>
+        <translation>Симметрия</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2348,7 +2348,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+17"/>
         <source>Name (optional)</source>
-        <translation type="unfinished">Name (optional)</translation>
+        <translation>Название (необязательно)</translation>
     </message>
 </context>
 <context>
@@ -2426,7 +2426,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../SketchRectangularArrayDialog.ui" line="+17"/>
         <source>Create array</source>
-        <translation type="unfinished">Create array</translation>
+        <translation>Создать массив</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2436,7 +2436,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+7"/>
         <source>Number of columns of the linear array</source>
-        <translation type="unfinished">Number of columns of the linear array</translation>
+        <translation>Количество столбцов линейного массива</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2446,7 +2446,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+7"/>
         <source>Number of rows of the linear array</source>
-        <translation type="unfinished">Number of rows of the linear array</translation>
+        <translation>Количество строк линейного массива</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -3449,7 +3449,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+3"/>
         <source>Update</source>
-        <translation type="unfinished">Update</translation>
+        <translation>Обновить</translation>
     </message>
 </context>
 <context>
@@ -3515,12 +3515,12 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+12"/>
         <source>Maximum number of iterations of the default algorithm</source>
-        <translation type="unfinished">Maximum number of iterations of the default algorithm</translation>
+        <translation>Максимальное количество итераций алгоритма по умолчанию</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Maximum Iterations:</source>
-        <translation type="unfinished">Maximum Iterations:</translation>
+        <translation>Максимальное количество итераций:</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -3585,7 +3585,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+7"/>
         <source>1E-13</source>
-        <translation type="unfinished">1E-13</translation>
+        <translation>1E-13</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3630,7 +3630,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+7"/>
         <source>1E-10</source>
-        <translation type="unfinished">1E-10</translation>
+        <translation>1E-10</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3685,7 +3685,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+3"/>
         <source>Restore Defaults</source>
-        <translation type="unfinished">Restore Defaults</translation>
+        <translation>Восстановить настройки по умолчанию</translation>
     </message>
 </context>
 <context>

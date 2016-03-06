@@ -1802,14 +1802,6 @@ Määritä toinen hakemisto, ole hyvä.</translation>
         <translation>Kameratyyppi</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ortografinen renderointi</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektiivin renderöinti</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1879,11 +1871,11 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>

@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибір</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2598,7 +2598,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2664,12 +2664,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Невірний вибір</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Виберіть дві вершини</translation>
@@ -2694,32 +2694,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Виберіть дві або більше грані</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Виберіть лише одну частину об&apos;єкта</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Виберіть дві вершини для створення краю</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>Виберіть список вершин</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Виберіть замкнутий набір країв</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Виберіть суміжні грані</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Можуть бути виділені усі типи фігур</translation>
     </message>
@@ -3175,7 +3175,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Суцільне тіло з оболонки</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Уточнення форми</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Створити</translation>
     </message>

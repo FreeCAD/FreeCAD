@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1158"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Components</source>
       <translation>Componentes</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>O tamanho das bolhas de eixo</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1152"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1153"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Add</source>
       <translation>Adicionar</translation>
     </message>
@@ -239,7 +239,7 @@
       <translation>A altura ou a profundidade da extrusão deste elemento. Manter 0 para automático</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="523"/>
+      <location filename="ArchStructure.py" line="525"/>
       <source>Axes systems this structure is built on</source>
       <translation>Sistemas de eixos, em que esta estrutura é construída</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>A direção de extrusão normal deste objeto (manter (0, 0,0) para o automático normal)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="524"/>
+      <location filename="ArchStructure.py" line="526"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Os números de elemento para excluir quando esta estrutura for baseada nos eixos</translation>
     </message>
@@ -319,47 +319,47 @@
       <translation>Componentes desta janela</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1154"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1155"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Create/update component</source>
       <translation>Criar/atualizar componente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1156"/>
+      <location filename="ArchWindow.py" line="1157"/>
       <source>Base 2D object</source>
       <translation>Objeto 2D de Base</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1162"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Wires</source>
       <translation>Aramado</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1159"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Create new component</source>
       <translation>Criar novo componente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1160"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Name</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1161"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Type</source>
       <translation>Tipo</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1163"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Thickness</source>
       <translation>Espessura</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1164"/>
+      <location filename="ArchWindow.py" line="1165"/>
       <source>Z offset</source>
       <translation>Offset em Z</translation>
     </message>
@@ -624,7 +624,7 @@
       <translation>Erro: A forma base não pode ser extrudida ao longo deste objeto</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="576"/>
+      <location filename="ArchStructure.py" line="578"/>
       <source>Couldn't compute a shape</source>
       <translation>Não foi possível calcular uma forma</translation>
     </message>
@@ -696,7 +696,7 @@
       <translation>A direção normal desta janela</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1129"/>
+      <location filename="ArchWindow.py" line="1130"/>
       <source>Unable to create component
 </source>
       <translation>Não é possível criar componente </translation>
@@ -1363,7 +1363,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Definir a posição do texto</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="400"/>
+      <location filename="ArchStructure.py" line="402"/>
       <source>Unable to extrude the base shape
 </source>
       <translation>Não foi possível extrudir o objeto de base
@@ -1375,27 +1375,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Categoria</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1217"/>
+      <location filename="ArchCommands.py" line="1223"/>
       <source>Key</source>
       <translation>Chave</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1219"/>
+      <location filename="ArchCommands.py" line="1225"/>
       <source>Value</source>
       <translation>Valor</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1220"/>
+      <location filename="ArchCommands.py" line="1226"/>
       <source>Unit</source>
       <translation>Unidade</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1226"/>
+      <location filename="ArchCommands.py" line="1233"/>
       <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
       <translation>O objeto tem não atributos IfcProperties. Cancele a criação de tabela para o objeto: </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1244"/>
+      <location filename="ArchCommands.py" line="1251"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Criar tabela de propriedades IFC</translation>
     </message>
@@ -1666,12 +1666,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1235"/>
+      <location filename="ArchCommands.py" line="1242"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Crie tabela IFC...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1237"/>
+      <location filename="ArchCommands.py" line="1244"/>
       <source>Creates a spreadsheet to store ifc properties of an object.</source>
       <translation>Cria uma tabela para armazenar propriedades ifc de um objeto.</translation>
     </message>
@@ -2690,17 +2690,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="109"/>
+      <location filename="InitGui.py" line="73"/>
       <source>Arch tools</source>
       <translation>Ferramentas de Arquitetura</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="110"/>
+      <location filename="InitGui.py" line="74"/>
       <source>Draft tools</source>
       <translation>Ferramentas de rascunho (Draft)</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="111"/>
+      <location filename="InitGui.py" line="75"/>
       <source>Draft mod tools</source>
       <translation>Ferramentas de modificação (Draft)</translation>
     </message>
@@ -2708,22 +2708,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>arch</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="77"/>
       <source>&amp;Architecture</source>
       <translation>&amp;Arquitetura</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>&amp;Draft</source>
       <translation>&amp;Traço (Draft)</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="79"/>
       <source>Utilities</source>
       <translation>Utilitários</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>Snapping</source>
       <translation>Alinhamento e atração</translation>
     </message>

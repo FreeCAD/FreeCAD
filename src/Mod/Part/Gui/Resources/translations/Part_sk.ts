@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Výber</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2598,7 +2598,7 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2664,12 +2664,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Chybný výber</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Vyberte dva body</translation>
@@ -2694,32 +2694,32 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <translation>Vyberte dva alebo viac plôch</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Vyberte iba jednu časť objektu</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Vyberte dva vrcholy k vytvoreniu hrany</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>Vyberte zoznam bodov</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Vyberte uzavretú sadu hrán</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Vybrať priľahlé plochy</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Všetky typy tvarov môžu byť vybraté</translation>
     </message>
@@ -3175,7 +3175,12 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
         <translation>Teleso zo škrupiny</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Vylepšiť tvar</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Vytvoriť</translation>
     </message>

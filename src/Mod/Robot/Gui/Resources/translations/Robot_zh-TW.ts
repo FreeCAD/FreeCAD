@@ -415,7 +415,7 @@
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <location line="-61"/>

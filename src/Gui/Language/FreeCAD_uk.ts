@@ -1801,14 +1801,6 @@ Specify another directory, please.</source>
         <translation>Тип камери</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ортогональна візуалізація</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Візуалізація в перспективі</translation>
-    </message>
-    <message>
         <source></source>
         <translation>Про програму</translation>
     </message>
@@ -1878,11 +1870,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>

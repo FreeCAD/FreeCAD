@@ -1802,14 +1802,6 @@ Especifique otro directorio, por favor.</translation>
         <translation>Tipo de cámara</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Renderizado ortográfico</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Renderizado en perspectiva</translation>
-    </message>
-    <message>
         <source></source>
         <translation>(Vacio)</translation>
     </message>
@@ -1879,11 +1871,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>

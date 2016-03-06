@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1158"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Components</source>
       <translation>Komponenter</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Aksens boblestørrelse</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1152"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Remove</source>
       <translation>Fjern</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1153"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Add</source>
       <translation>Legg til</translation>
     </message>
@@ -239,7 +239,7 @@
       <translation>Høyde eller ekstruderingsdybde på dette elementet. Behold 0 for automatisk</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="523"/>
+      <location filename="ArchStructure.py" line="525"/>
       <source>Axes systems this structure is built on</source>
       <translation>Aksesystemer denne strukturen er bygget på</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Ekstruderingsens normalplan for dette objektet. Behold (0,0,0) for automatisk normalplan</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="524"/>
+      <location filename="ArchStructure.py" line="526"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Antall elementer å utelate når denne strukturen er basert på akser</translation>
     </message>
@@ -319,47 +319,47 @@
       <translation>komponentene i dette vinduet</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1154"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Edit</source>
       <translation>Rediger</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1155"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Create/update component</source>
       <translation>Opprett/oppdater komponent</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1156"/>
+      <location filename="ArchWindow.py" line="1157"/>
       <source>Base 2D object</source>
       <translation type="unfinished">Base 2D object</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1162"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Wires</source>
       <translation type="unfinished">Wires</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1159"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Create new component</source>
       <translation>Opprett ny komponent</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1160"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Name</source>
       <translation>Navn</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1161"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1163"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Thickness</source>
       <translation>Tykkelse</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1164"/>
+      <location filename="ArchWindow.py" line="1165"/>
       <source>Z offset</source>
       <translation>Z forskyvning</translation>
     </message>
@@ -624,7 +624,7 @@
       <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="576"/>
+      <location filename="ArchStructure.py" line="578"/>
       <source>Couldn't compute a shape</source>
       <translation type="unfinished">Couldn't compute a shape</translation>
     </message>
@@ -696,7 +696,7 @@
       <translation type="unfinished">The normal direction of this window</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1129"/>
+      <location filename="ArchWindow.py" line="1130"/>
       <source>Unable to create component
 </source>
       <translation>Kan ikke opprette komponent
@@ -1374,7 +1374,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">Set text position</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="400"/>
+      <location filename="ArchStructure.py" line="402"/>
       <source>Unable to extrude the base shape
 </source>
       <translation type="unfinished">Unable to extrude the base shape
@@ -1386,27 +1386,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Kategori</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1217"/>
+      <location filename="ArchCommands.py" line="1223"/>
       <source>Key</source>
       <translation type="unfinished">Key</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1219"/>
+      <location filename="ArchCommands.py" line="1225"/>
       <source>Value</source>
       <translation>Verdi</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1220"/>
+      <location filename="ArchCommands.py" line="1226"/>
       <source>Unit</source>
       <translation>Enhet</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1226"/>
+      <location filename="ArchCommands.py" line="1233"/>
       <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
       <translation type="unfinished">The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1244"/>
+      <location filename="ArchCommands.py" line="1251"/>
       <source>Create IFC properties spreadsheet</source>
       <translation type="unfinished">Create IFC properties spreadsheet</translation>
     </message>
@@ -1677,12 +1677,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1235"/>
+      <location filename="ArchCommands.py" line="1242"/>
       <source>Create IFC spreadsheet...</source>
       <translation type="unfinished">Create IFC spreadsheet...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1237"/>
+      <location filename="ArchCommands.py" line="1244"/>
       <source>Creates a spreadsheet to store ifc properties of an object.</source>
       <translation type="unfinished">Creates a spreadsheet to store ifc properties of an object.</translation>
     </message>
@@ -2701,17 +2701,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="109"/>
+      <location filename="InitGui.py" line="73"/>
       <source>Arch tools</source>
       <translation type="unfinished">Arch tools</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="110"/>
+      <location filename="InitGui.py" line="74"/>
       <source>Draft tools</source>
       <translation type="unfinished">Draft tools</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="111"/>
+      <location filename="InitGui.py" line="75"/>
       <source>Draft mod tools</source>
       <translation type="unfinished">Draft mod tools</translation>
     </message>
@@ -2719,22 +2719,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>arch</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="77"/>
       <source>&amp;Architecture</source>
       <translation type="unfinished">&amp;Architecture</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>&amp;Draft</source>
       <translation type="unfinished">&amp;Draft</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="79"/>
       <source>Utilities</source>
       <translation type="unfinished">Utilities</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>Snapping</source>
       <translation type="unfinished">Snapping</translation>
     </message>

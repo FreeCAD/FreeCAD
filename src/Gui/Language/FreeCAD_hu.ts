@@ -148,7 +148,7 @@
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -1801,14 +1801,6 @@ Kérem válasszon másik könyvtárat.</translation>
         <translation>Kamera típus</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Függőleges vetület leképezés</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektivikus leképezés</translation>
-    </message>
-    <message>
         <source></source>
         <translation>Program infó</translation>
     </message>
@@ -1854,7 +1846,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation>Élsimítás</translation>
+        <translation>Ellen-Élsimítás</translation>
     </message>
     <message>
         <source>None</source>
@@ -1878,11 +1870,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyenesvonalú leképzés</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Perspektivikus leképezés</translation>
     </message>
 </context>
 <context>
@@ -1893,7 +1885,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
-        <translation>Élsimítás</translation>
+        <translation>Ellen-Élsimítás</translation>
     </message>
     <message>
         <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
@@ -2084,7 +2076,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished">Company</translation>
+        <translation>Vállalat</translation>
     </message>
     <message>
         <source>Default license</source>
@@ -2132,7 +2124,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Other</translation>
+        <translation>Egyéb</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -5202,7 +5194,7 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source>Panels</source>
-        <translation type="unfinished">Panels</translation>
+        <translation>Panelek</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
@@ -6423,11 +6415,11 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source>Stereo quad buffer</source>
-        <translation>Sztereo négyszeres tároló</translation>
+        <translation>Sztereó négyszeres tároló</translation>
     </message>
     <message>
         <source>Switch stereo viewing to quad buffer</source>
-        <translation>Sztereó nézet váltása: négyszeres tároló</translation>
+        <translation>Sztereó nézet váltása 4-szeres tárolóra</translation>
     </message>
 </context>
 <context>

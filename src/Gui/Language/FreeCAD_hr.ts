@@ -1799,14 +1799,6 @@ Specify another directory, please.</source>
         <translation>Tip kamere</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Renderiranje pravopisa</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektivna projekcija</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1876,11 +1868,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>

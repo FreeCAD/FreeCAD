@@ -1801,14 +1801,6 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
         <translation>Kamerasoort</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ortografiese weergawe</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektief weergawe</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1878,11 +1870,11 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>

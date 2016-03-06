@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleksie</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2598,7 +2598,7 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2664,12 +2664,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Verkeerde keuse</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Kies twee hoekpunte</translation>
@@ -2694,32 +2694,32 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
         <translation>Kies twee of meer vlakke</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Kies slegs een onderdeel</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Kies twee hoekpunte om &apos;n kant te skep</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation type="unfinished">Select a list of vertices</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Kies &apos;n geslote stel kante</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Kies aangrensende vlakke</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Alle vormtipes kan gekies word</translation>
     </message>
@@ -3175,7 +3175,12 @@ Kies eers &apos;n geldige vorm in die vallys.</translation>
         <translation>Soliede van &apos;n skil</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Refine shape</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Skep</translation>
     </message>

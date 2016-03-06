@@ -1799,14 +1799,6 @@ Specify another directory, please.</source>
         <translation>相机类型</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">等轴侧渲染</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">透视渲染</translation>
-    </message>
-    <message>
         <source></source>
         <translation>关于</translation>
     </message>
@@ -1876,11 +1868,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>

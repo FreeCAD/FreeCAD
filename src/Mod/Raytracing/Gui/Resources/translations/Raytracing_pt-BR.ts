@@ -463,7 +463,7 @@ Do you want to continue?</source>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Desvio Max. de malha:</translation>
     </message>
     <message>
         <location line="+57"/>

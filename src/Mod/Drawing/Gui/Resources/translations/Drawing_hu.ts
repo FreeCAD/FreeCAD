@@ -265,7 +265,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;High Quality Antialiasing</source>
-        <translation>&amp;Magas minőségű Antialiasing &amp;H</translation>
+        <translation>Magas minőségű élsimítás</translation>
     </message>
     <message>
         <location line="+33"/>

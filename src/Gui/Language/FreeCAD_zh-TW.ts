@@ -1797,14 +1797,6 @@ Specify another directory, please.</source>
         <translation>相機類型</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">正視圖角度的彩現</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">透視彩現</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1874,11 +1866,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>
@@ -3532,7 +3524,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF 檔</translation>
     </message>
 </context>
 <context>
@@ -4071,7 +4063,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
 </context>
 <context>
@@ -4335,15 +4327,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF 檔</translation>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>開啟檔案失敗</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>無法開啟並寫入檔案 &apos;%1&apos; </translation>
     </message>
 </context>
 <context>

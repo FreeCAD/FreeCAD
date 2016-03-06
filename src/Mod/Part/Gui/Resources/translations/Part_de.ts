@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswahl</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2598,7 +2598,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation>Basispunkt</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2664,12 +2664,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Falsche Auswahl</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Wähle zwei Knotenpunkte</translation>
@@ -2694,32 +2694,32 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Wähle zwei oder mehr Oberflächen aus</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Wählen Sie nur ein Teileobjekt</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Wählen Sie zwei Knoten zum Erzeugen einer Kante aus</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>Wählen Sie eine Liste der Eckpunkte</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Wählen Sie eine geschlossene Gruppe von Kanten</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Wähle angrenzende Oberflächen aus</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Alle Form-Typen können ausgewählt werden</translation>
     </message>
@@ -3175,7 +3175,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Volumenkörper aus Hüllkörper</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Form aufbereiten</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Erstellen</translation>
     </message>

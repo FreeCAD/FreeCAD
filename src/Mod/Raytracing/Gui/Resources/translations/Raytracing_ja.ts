@@ -465,7 +465,7 @@ Do you want to continue?</source>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation type="unfinished"></translation>
+        <translation>最大メッシュ偏差：</translation>
     </message>
     <message>
         <location line="+57"/>

@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1158"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Components</source>
       <translation>Összetevők</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>A tengely buborékok mérete</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1152"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1153"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
@@ -239,7 +239,7 @@
       <translation>Ez az elem magassága vagy kihúzás nagysága. 0 megtartása automatikushoz</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="523"/>
+      <location filename="ArchStructure.py" line="525"/>
       <source>Axes systems this structure is built on</source>
       <translation>Ez a struktúrának erre a tengelyek rendszerre épül</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Ennek az objektumnak a normál kihúzás iránya (automatikus normál (0,0,0) megtartása)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="524"/>
+      <location filename="ArchStructure.py" line="526"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>A kihúzandó elemek száma, ha az tengelyeken alapul</translation>
     </message>
@@ -319,47 +319,47 @@
       <translation>Összetevők ebben az ablakban</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1154"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1155"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Create/update component</source>
       <translation>Létrehozni/frissíteni összetevőt</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1156"/>
+      <location filename="ArchWindow.py" line="1157"/>
       <source>Base 2D object</source>
       <translation>Alap 2D objektumot</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1162"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Wires</source>
       <translation>Vonalak</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1159"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Create new component</source>
       <translation>Új összetevő létrehozásához</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1160"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Name</source>
       <translation>Név</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1161"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Type</source>
       <translation>Típus</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1163"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1164"/>
+      <location filename="ArchWindow.py" line="1165"/>
       <source>Z offset</source>
       <translation>Z-eltolás</translation>
     </message>
@@ -622,7 +622,7 @@
       <translation>Hiba: Az alap alakzatot nem lehet kihúzni ennek az eszköz objektumnak a mentén</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="576"/>
+      <location filename="ArchStructure.py" line="578"/>
       <source>Couldn't compute a shape</source>
       <translation>Nem tudott létrehozni alakzatot</translation>
     </message>
@@ -694,7 +694,7 @@
       <translation>Ez az ablak normál iránya</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1129"/>
+      <location filename="ArchWindow.py" line="1130"/>
       <source>Unable to create component
 </source>
       <translation>Nem lehet létrehozni összetevőt
@@ -747,7 +747,7 @@
       <location filename="importOBJ.py" line="60"/>
       <source>Found a shape containing curves, triangulating
 </source>
-      <translation>Találtam egy görbét tartalmazó alakzatot, háromszögelés
+      <translation>Találtam egy görbét tartalmazó alakzatot, háromszögelést
 </translation>
     </message>
     <message>
@@ -997,12 +997,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSpace.py" line="231"/>
       <source>Objects that are included inside this space, such as furniture</source>
-      <translation type="unfinished">Objects that are included inside this space, such as furniture</translation>
+      <translation>Tárgyak, melyek szerepelnek ebben a helyben, mint például a bútorok</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="360"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>A szöveg megjelenítéséhez. $area, $label, $tag, $floor, $walls, $ceiling segítségével illessze be a megfelelő adatokat</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="361"/>
@@ -1012,7 +1012,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSpace.py" line="362"/>
       <source>The color of the area text</source>
-      <translation type="unfinished">The color of the area text</translation>
+      <translation>A szöveg terület színe</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="363"/>
@@ -1022,77 +1022,77 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSpace.py" line="364"/>
       <source>The size of the first line of text</source>
-      <translation type="unfinished">The size of the first line of text</translation>
+      <translation>A szöveg első sorának a mérete</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="365"/>
       <source>The space between the lines of text</source>
-      <translation type="unfinished">The space between the lines of text</translation>
+      <translation>A szövegsorok közötti térköz</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="366"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
-      <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
+      <translation>A szöveg helyzete. Hagyja (0,0,0) értéken az automatikus pozicionáláshoz</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="367"/>
       <source>The justification of the text</source>
-      <translation type="unfinished">The justification of the text</translation>
+      <translation>A szöveges irányítása</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="368"/>
       <source>The number of decimals to use for calculated texts</source>
-      <translation type="unfinished">The number of decimals to use for calculated texts</translation>
+      <translation>A számításhoz használt szövegek tizedesjegyek száma</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="369"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>A mértékegység utótag megjelenítése</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="344"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>A szokásos profil leírása amin ez az elem alapszik</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="532"/>
       <source>Sill height</source>
-      <translation type="unfinished">Sill height</translation>
+      <translation>Könyöklő magassága</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="46"/>
       <source>CutVolume</source>
-      <translation type="unfinished">CutVolume</translation>
+      <translation>VágnikívántŰrtartalom</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="53"/>
       <source>CutPlane</source>
-      <translation type="unfinished">CutPlane</translation>
+      <translation>VágásiSík</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="86"/>
       <source>PreviewCutVolume</source>
-      <translation type="unfinished">PreviewCutVolume</translation>
+      <translation>VágnikívántŰrtartalomElőnézet</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="122"/>
       <source>Cut Plane</source>
-      <translation type="unfinished">Cut Plane</translation>
+      <translation>Vágási sík</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="123"/>
       <source>Cut Plane options</source>
-      <translation type="unfinished">Cut Plane options</translation>
+      <translation>Vágási sík beállítások</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="124"/>
       <source>Wich side to cut</source>
-      <translation type="unfinished">Wich side to cut</translation>
+      <translation>Melyik oldalon vágjon</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="125"/>
       <source>Behind</source>
-      <translation type="unfinished">Behind</translation>
+      <translation>Mögött</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="125"/>
@@ -1103,93 +1103,93 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
       <location filename="ArchFrame.py" line="150"/>
       <source>Crossing point not found in profile.
 </source>
-      <translation type="unfinished">Crossing point not found in profile.
+      <translation>Keresztezési pont nem található a profilban.
 </translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="149"/>
       <source>A list of angles for each roof pane</source>
-      <translation type="unfinished">A list of angles for each roof pane</translation>
+      <translation>Az egyes tető mezők hajlásszögének listája</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="150"/>
       <source>A list of horizontal length projections for each roof pane</source>
-      <translation type="unfinished">A list of horizontal length projections for each roof pane</translation>
+      <translation>Egyes tető mezők vízszintes hossz vetítése</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="151"/>
       <source>A list of IDs of relative profiles for each roof pane</source>
-      <translation type="unfinished">A list of IDs of relative profiles for each roof pane</translation>
+      <translation>Egyes tető mezők relatív profiljai ID azonosítóinak listája</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="152"/>
       <source>A list of thicknesses for each roof pane</source>
-      <translation type="unfinished">A list of thicknesses for each roof pane</translation>
+      <translation>Egyes tető mezők vastagságainak listája</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="153"/>
       <source>A list of overhangs for each roof pane</source>
-      <translation type="unfinished">A list of overhangs for each roof pane</translation>
+      <translation>Egyes tető mezők túlnyúlásának listája</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="154"/>
       <source>A list of calculated heights for each roof pane</source>
-      <translation type="unfinished">A list of calculated heights for each roof pane</translation>
+      <translation>Egyes tető mezők számított magasságának listája</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="746"/>
       <source>Angle (deg)</source>
-      <translation type="unfinished">Angle (deg)</translation>
+      <translation>Szög (fok)</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="746"/>
       <source>Run (mm)</source>
-      <translation type="unfinished">Run (mm)</translation>
+      <translation>Futás (mm)</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="746"/>
       <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <translation>Vastagság (mm)</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="746"/>
       <source>Overhang (mm)</source>
-      <translation type="unfinished">Overhang (mm)</translation>
+      <translation>Túlnyúlás (mm)</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="746"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Magasság (mm)</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="232"/>
       <source>The type of this building</source>
-      <translation type="unfinished">The type of this building</translation>
+      <translation>Ennek az épületnek a típusa</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="217"/>
       <source>removing sketch external reference to avoid cross-referencing</source>
-      <translation type="unfinished">removing sketch external reference to avoid cross-referencing</translation>
+      <translation>vázlat külső referencia eltávolítása a kereszthivatkozás elkerülésére</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1205"/>
       <source>Create Component</source>
-      <translation type="unfinished">Create Component</translation>
+      <translation>Összetevő létrehozás</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="293"/>
       <source>The object this component is cloning</source>
-      <translation type="unfinished">The object this component is cloning</translation>
+      <translation>Ennek az összetevőnek a tárgyát klónozza</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="78"/>
       <source>Create material</source>
-      <translation type="unfinished">Create material</translation>
+      <translation>Anyag létrehozás</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="124"/>
       <source>Quantities schedule</source>
-      <translation type="unfinished">Quantities schedule</translation>
+      <translation>Mennyiségek ütemezése</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="126"/>
@@ -1199,7 +1199,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSchedule.py" line="128"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Dátum</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="134"/>
@@ -1234,37 +1234,37 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSchedule.py" line="150"/>
       <source>Volume</source>
-      <translation type="unfinished">Volume</translation>
+      <translation>Térfogat</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="153"/>
       <source>Unit price</source>
-      <translation type="unfinished">Unit price</translation>
+      <translation>Egységár</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="155"/>
       <source>Total price</source>
-      <translation type="unfinished">Total price</translation>
+      <translation>Összár</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="161"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Oszlopok</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="162"/>
       <source>Beams</source>
-      <translation type="unfinished">Beams</translation>
+      <translation>Gerendák</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="163"/>
       <source>Slabs</source>
-      <translation type="unfinished">Slabs</translation>
+      <translation>Burkolólapok</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="164"/>
       <source>Foundations</source>
-      <translation type="unfinished">Foundations</translation>
+      <translation>Alapzatok</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="167"/>
@@ -1274,108 +1274,108 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSchedule.py" line="172"/>
       <source>Walls</source>
-      <translation type="unfinished">Walls</translation>
+      <translation>Falak</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="176"/>
       <source>Miscellaneous</source>
-      <translation type="unfinished">Miscellaneous</translation>
+      <translation>Egyéb</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="241"/>
       <source>Total</source>
-      <translation type="unfinished">Total</translation>
+      <translation>Összesen</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="151"/>
       <source>Show the cut in the 3D view</source>
-      <translation type="unfinished">Show the cut in the 3D view</translation>
+      <translation>A vágás 3D-s nézetének megjelenítése</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="63"/>
       <source>This document is not saved. Please save it first</source>
-      <translation type="unfinished">This document is not saved. Please save it first</translation>
+      <translation>Ez a dokumentum nincs mentve. Kérjük először mentse</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="68"/>
       <source>The Python Git module was not found. Please install the python-git package.</source>
-      <translation type="unfinished">The Python Git module was not found. Please install the python-git package.</translation>
+      <translation>A Python Git modul nem található. Kérem telepítse a python-git csomagot.</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="73"/>
       <source>This document doesn't appear to be part of a Git repository.</source>
-      <translation type="unfinished">This document doesn't appear to be part of a Git repository.</translation>
+      <translation>Ez a dokumentum nem jelenik meg a Git könyvtár részeként.</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="77"/>
       <source>Warning: no remote repositories. Unable to push</source>
-      <translation type="unfinished">Warning: no remote repositories. Unable to push</translation>
+      <translation>Figyelmeztetés: nincs távoli könyvtár. Képtelen hozzáadni</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="83"/>
       <source>The Git repository cannot handle this document.</source>
-      <translation type="unfinished">The Git repository cannot handle this document.</translation>
+      <translation>A Git könyvtár nem tudja kezelni ezt a dokumentumot.</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="96"/>
       <source>The street and housenumber of this site</source>
-      <translation type="unfinished">The street and housenumber of this site</translation>
+      <translation>Ennek a területnek az utcája és házszáma</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="97"/>
       <source>The postal or zip code of this site</source>
-      <translation type="unfinished">The postal or zip code of this site</translation>
+      <translation>Ennek a területnek a postai vagy irányítószáma</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="98"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>Ehhez a városhoz tartozik a terület</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="99"/>
       <source>The country of this site</source>
-      <translation type="unfinished">The country of this site</translation>
+      <translation>Ehhez az országhoz tartozik a terület</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="232"/>
       <source>The type of this space</source>
-      <translation type="unfinished">The type of this space</translation>
+      <translation>A terület típusa</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="233"/>
       <source>The thickness of the floor finish</source>
-      <translation type="unfinished">The thickness of the floor finish</translation>
+      <translation>Padlóburkolat vastagsága</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="56"/>
       <source>Walls can only be based on Part or Mesh objects</source>
-      <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
+      <translation>Falat csak az Alkotórész vagy Háló objektumhoz húzhat</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="625"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
-      <translation type="unfinished">an optional object that defines a volume to be subtracted from hosts of this window</translation>
+      <translation>a megválasztható tárgy, mely meghatározza a területet amit az ablak a gazda területből kivon</translation>
     </message>
     <message>
       <location filename="importGBXML.py" line="47"/>
       <source>This exporter can currently only export one site object</source>
-      <translation type="unfinished">This exporter can currently only export one site object</translation>
+      <translation>Ez az exportőr jelenleg csak egy terület objektumot exportál</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="625"/>
       <source>Objects seen by this section plane</source>
-      <translation type="unfinished">Objects seen by this section plane</translation>
+      <translation>Metszősík által látható tárgyak</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="540"/>
       <source>Set text position</source>
-      <translation type="unfinished">Set text position</translation>
+      <translation>Szöveg helyzetének beállítása</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="400"/>
+      <location filename="ArchStructure.py" line="402"/>
       <source>Unable to extrude the base shape
 </source>
-      <translation type="unfinished">Unable to extrude the base shape
+      <translation>Nem tudja az alap alakzatot kihúzni
 </translation>
     </message>
     <message>
@@ -1384,34 +1384,34 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
       <translation>Kategória</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1217"/>
+      <location filename="ArchCommands.py" line="1223"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Kulcs</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1219"/>
+      <location filename="ArchCommands.py" line="1225"/>
       <source>Value</source>
       <translation>Érték</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1220"/>
+      <location filename="ArchCommands.py" line="1226"/>
       <source>Unit</source>
       <translation>Egység</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1226"/>
+      <location filename="ArchCommands.py" line="1233"/>
       <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
-      <translation type="unfinished">The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </translation>
+      <translation>Az objektum nem rendelkezik IfcProperties attribútummal. Mégse hozzon létre számolótáblát ehhez az objektumhoz: </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1244"/>
+      <location filename="ArchCommands.py" line="1251"/>
       <source>Create IFC properties spreadsheet</source>
-      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+      <translation>IFC tulajdonság számolótábla létrehozása</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="526"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>Kiszolgáló objektum automatikus hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -1419,37 +1419,37 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchServer.py" line="153"/>
       <source>Git Options</source>
-      <translation type="unfinished">Git Options</translation>
+      <translation>Git beállítások</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="154"/>
       <source>What to commit</source>
-      <translation type="unfinished">What to commit</translation>
+      <translation>Mit tegyen közzé</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="155"/>
       <source>All files in folder</source>
-      <translation type="unfinished">All files in folder</translation>
+      <translation>Minden mappában lévő fájlt</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="156"/>
       <source>Only this .FcStd file</source>
-      <translation type="unfinished">Only this .FcStd file</translation>
+      <translation>Csak ezt a . FcStd fájlt</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="157"/>
       <source>Commit message</source>
-      <translation type="unfinished">Commit message</translation>
+      <translation>Üzenet közzététele</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="158"/>
       <source>commit</source>
-      <translation type="unfinished">commit</translation>
+      <translation>közzététel</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="159"/>
       <source>Push to default remote repository</source>
-      <translation type="unfinished">Push to default remote repository</translation>
+      <translation>Tegye az alapértelmezett távoli könyvtárba</translation>
     </message>
   </context>
   <context>
@@ -1462,7 +1462,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchMaterial.ui" line="23"/>
       <source>Choose preset...</source>
-      <translation type="unfinished">Choose preset...</translation>
+      <translation>Előre beállítás választása...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="35"/>
@@ -1495,12 +1495,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchEquipment.py" line="194"/>
       <source>3 views from mesh</source>
-      <translation type="unfinished">3 views from mesh</translation>
+      <translation>3 nézet a hálóból</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="195"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation type="unfinished">Creates 3 views (top, front, side) from a mesh-based object</translation>
+      <translation>3 nézet (felső, első, oldalsó) létrehozása a háló-kiindulópontú tárgyból</translation>
     </message>
   </context>
   <context>
@@ -1534,12 +1534,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchServer.py" line="43"/>
       <source>BIM server</source>
-      <translation type="unfinished">BIM server</translation>
+      <translation>BIM szerver</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="44"/>
       <source>Opens a browser window and connects to a BIM server instance</source>
-      <translation type="unfinished">Opens a browser window and connects to a BIM server instance</translation>
+      <translation>Böngészőablakot nyit és BIM szerver példányhoz kapcsolódik</translation>
     </message>
   </context>
   <context>
@@ -1591,12 +1591,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchCommands.py" line="1195"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Összetevő</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1197"/>
       <source>Creates an undefined architectural component</source>
-      <translation type="unfinished">Creates an undefined architectural component</translation>
+      <translation>Létrehoz egy meghatározatlan építészeti összetevőt</translation>
     </message>
   </context>
   <context>
@@ -1604,12 +1604,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchCutPlane.py" line="62"/>
       <source>Cut with plane</source>
-      <translation type="unfinished">Cut with plane</translation>
+      <translation>Síkkal vágja</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="63"/>
       <source>Cut an object with a plane</source>
-      <translation type="unfinished">Cut an object with a plane</translation>
+      <translation>Egy síkkal elvágja az objektumot</translation>
     </message>
   </context>
   <context>
@@ -1617,12 +1617,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchEquipment.py" line="166"/>
       <source>Equipment</source>
-      <translation type="unfinished">Equipment</translation>
+      <translation>Felszerelési tárgy</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="168"/>
       <source>Creates an equipment object from a selected object (Part or Mesh)</source>
-      <translation type="unfinished">Creates an equipment object from a selected object (Part or Mesh)</translation>
+      <translation>Egy Felszerelési objektumot hoz létre egy kijelölt objektumból (Alkatrész vagy Háló)</translation>
     </message>
   </context>
   <context>
@@ -1656,12 +1656,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchServer.py" line="57"/>
       <source>Commit with Git</source>
-      <translation type="unfinished">Commit with Git</translation>
+      <translation>Git-el közzétesz</translation>
     </message>
     <message>
       <location filename="ArchServer.py" line="58"/>
       <source>Commits the current document</source>
-      <translation type="unfinished">Commits the current document</translation>
+      <translation>Kötelezi az aktuális dokumentum</translation>
     </message>
   </context>
   <context>
@@ -1675,14 +1675,14 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1235"/>
+      <location filename="ArchCommands.py" line="1242"/>
       <source>Create IFC spreadsheet...</source>
-      <translation type="unfinished">Create IFC spreadsheet...</translation>
+      <translation>IFC számolótábla létrehozása...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1237"/>
+      <location filename="ArchCommands.py" line="1244"/>
       <source>Creates a spreadsheet to store ifc properties of an object.</source>
-      <translation type="unfinished">Creates a spreadsheet to store ifc properties of an object.</translation>
+      <translation>Készít egy számolótáblát egy objektum ifc tulajdonságainak tárolására.</translation>
     </message>
   </context>
   <context>
@@ -1690,12 +1690,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchMaterial.py" line="72"/>
       <source>Set material...</source>
-      <translation type="unfinished">Set material...</translation>
+      <translation>Anyag beállítása...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="74"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>A kiválasztott tárgy anyag meghatározását hozza létre vagy szerkeszti.</translation>
     </message>
   </context>
   <context>
@@ -1729,12 +1729,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchPanel.py" line="92"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Panel</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="94"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Panel tárgyat hoz létre a semmiből vagy egy kijelölt objektumból (vázlat, drót, felület vagy szilárd test)</translation>
     </message>
   </context>
   <context>
@@ -1747,7 +1747,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchRebar.py" line="92"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of a structural object</translation>
+      <translation>Létrehoz egy rúd megerősítést a strukturált tárgy kijelölt felületéről</translation>
     </message>
   </context>
   <context>
@@ -1786,7 +1786,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchRoof.py" line="108"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation type="unfinished">Creates a roof object from the selected wire.</translation>
+      <translation>Egy tető objektumot hoz létre a kijelölt drótvázból.</translation>
     </message>
   </context>
   <context>
@@ -1794,12 +1794,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSchedule.py" line="40"/>
       <source>Create schedule...</source>
-      <translation type="unfinished">Create schedule...</translation>
+      <translation>Ütemezés létrehozása...</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="41"/>
       <source>Creates a materials or areas schedule.</source>
-      <translation type="unfinished">Creates a materials or areas schedule.</translation>
+      <translation>Létrehoz egy anyag vagy terület ütemezést.</translation>
     </message>
   </context>
   <context>
@@ -1851,12 +1851,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSpace.py" line="198"/>
       <source>Creates a space object from selected boundary objects</source>
-      <translation type="unfinished">Creates a space object from selected boundary objects</translation>
+      <translation>Létrehoz egy Terület-objektumot a határoló objektumokból</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="73"/>
       <source>Creates a stairs object</source>
-      <translation type="unfinished">Creates a stairs object</translation>
+      <translation>Lépcső objektumot hoz létre</translation>
     </message>
   </context>
   <context>
@@ -1898,12 +1898,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchCommands.py" line="1165"/>
       <source>Survey</source>
-      <translation type="unfinished">Survey</translation>
+      <translation>Felmérés</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1166"/>
       <source>Starts survey</source>
-      <translation type="unfinished">Starts survey</translation>
+      <translation>Felmérés indítása</translation>
     </message>
   </context>
   <context>
@@ -1911,12 +1911,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchCommands.py" line="1180"/>
       <source>Toggle IFC Brep flag</source>
-      <translation type="unfinished">Toggle IFC Brep flag</translation>
+      <translation>IFC Brep jelölő zászló</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1181"/>
       <source>Force an object to be exported as Brep or not</source>
-      <translation type="unfinished">Force an object to be exported as Brep or not</translation>
+      <translation>Erőltessen egy tárgyat Brep exportálásra vagy sem</translation>
     </message>
   </context>
   <context>
@@ -1960,22 +1960,22 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSchedule.ui" line="156"/>
       <source>Quantities</source>
-      <translation type="unfinished">Quantities</translation>
+      <translation>Mennyiségek</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="32"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>Helyek</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="37"/>
       <source>Doors and windows</source>
-      <translation type="unfinished">Doors and windows</translation>
+      <translation>Ajtók és ablakok</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="47"/>
       <source>Start cell</source>
-      <translation type="unfinished">Start cell</translation>
+      <translation>Cellák indítása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="54"/>
@@ -1985,122 +1985,122 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="ArchSchedule.ui" line="68"/>
       <source>Area unit</source>
-      <translation type="unfinished">Area unit</translation>
+      <translation>Terület mértékegység</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="75"/>
       <source>m²</source>
-      <translation type="unfinished">m²</translation>
+      <translation>m²</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="89"/>
       <source>Volume unit</source>
-      <translation type="unfinished">Volume unit</translation>
+      <translation>Űrtartalom egysége</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="96"/>
       <source>m³</source>
-      <translation type="unfinished">m³</translation>
+      <translation>m³</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="110"/>
       <source>Currency unit</source>
-      <translation type="unfinished">Currency unit</translation>
+      <translation>Pénznem egysége</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="117"/>
       <source>This must match what is stored in the project materials. No conversion will be done.</source>
-      <translation type="unfinished">This must match what is stored in the project materials. No conversion will be done.</translation>
+      <translation>Ennek egyeznie kell az eltárolt projekt anyagokkal. Nem történik átalakítás.</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="135"/>
       <source>€</source>
-      <translation type="unfinished">€</translation>
+      <translation>€</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="162"/>
       <source>Only show totals</source>
-      <translation type="unfinished">Only show totals</translation>
+      <translation>Csak az összegeket jelenítse meg</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="172"/>
       <source>Add material description</source>
-      <translation type="unfinished">Add material description</translation>
+      <translation>Anyag leírás hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="182"/>
       <source>Add material color</source>
-      <translation type="unfinished">Add material color</translation>
+      <translation>Anyag szín hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="192"/>
       <source>Add material finish</source>
-      <translation type="unfinished">Add material finish</translation>
+      <translation>Anyag felület kezelés hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="202"/>
       <source>Add material URL</source>
-      <translation type="unfinished">Add material URL</translation>
+      <translation>Anyag URL hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="209"/>
       <source>Add price calculation</source>
-      <translation type="unfinished">Add price calculation</translation>
+      <translation>Ár kalkuláció hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="219"/>
       <source>Add structures</source>
-      <translation type="unfinished">Add structures</translation>
+      <translation>Felépítés hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="229"/>
       <source>Add stairs</source>
-      <translation type="unfinished">Add stairs</translation>
+      <translation>Lépcsők hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="239"/>
       <source>Add walls</source>
-      <translation type="unfinished">Add walls</translation>
+      <translation>Falak hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="249"/>
       <source>Add all other roles</source>
-      <translation type="unfinished">Add all other roles</translation>
+      <translation>Egyéb szereplő hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="259"/>
       <source>Add floors</source>
-      <translation type="unfinished">Add floors</translation>
+      <translation>Padló hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="269"/>
       <source>Add ceilings</source>
-      <translation type="unfinished">Add ceilings</translation>
+      <translation>Mennyezetek hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="279"/>
       <source>Add roofs</source>
-      <translation type="unfinished">Add roofs</translation>
+      <translation>Tetők hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="289"/>
       <source>Add windows and doors</source>
-      <translation type="unfinished">Add windows and doors</translation>
+      <translation>Ablakok és ajtók hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="299"/>
       <source>Add panels</source>
-      <translation type="unfinished">Add panels</translation>
+      <translation>Panelek hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="309"/>
       <source>Add equipments</source>
-      <translation type="unfinished">Add equipments</translation>
+      <translation>Eszközök hozzáadása</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="319"/>
       <source>Add furniture</source>
-      <translation type="unfinished">Add furniture</translation>
+      <translation>Bútorok hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -2158,7 +2158,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="preferences-archdefaults.ui" line="925"/>
       <source>Color:</source>
-      <translation type="unfinished">Color:</translation>
+      <translation>Szín:</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="804"/>
@@ -2168,7 +2168,7 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="preferences-archdefaults.ui" line="317"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Átmérő</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="356"/>
@@ -2178,167 +2178,167 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="preferences-archdefaults.ui" line="443"/>
       <source>The default width for new windows</source>
-      <translation type="unfinished">The default width for new windows</translation>
+      <translation>Az új ablakokhoz az új alapértelmezett szélesség</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="485"/>
       <source>The default height for new windows</source>
-      <translation type="unfinished">The default height for new windows</translation>
+      <translation>Az új ablakokhoz az új alapértelmezett magasság</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="520"/>
       <source>Thickness:</source>
-      <translation type="unfinished">Thickness:</translation>
+      <translation>Vastagság:</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="527"/>
       <source>The default thickness for new windows</source>
-      <translation type="unfinished">The default thickness for new windows</translation>
+      <translation>Az új ablakokhoz az új alapértelmezett mélység</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="586"/>
       <source>Frame color:</source>
-      <translation type="unfinished">Frame color:</translation>
+      <translation>Keret színe:</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="610"/>
       <source>Glass color:</source>
-      <translation type="unfinished">Glass color:</translation>
+      <translation>Üveg színe:</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="26"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Igazítás</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="63"/>
       <source>Auto-join walls</source>
-      <translation type="unfinished">Auto-join walls</translation>
+      <translation>Falak auto-összekötése</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="83"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation type="unfinished">If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</translation>
+      <translation>Ha ez bejelölt, miközben 2 hasonló falat csatlakoztat, az aláhúzott vázlatokat eggyé csatlakoztatja, és egy fal lesz a kettőből</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="86"/>
       <source>Join walls base sketches when possible</source>
-      <translation type="unfinished">Join walls base sketches when possible</translation>
+      <translation>Ha lehetséges csatlakoztassa a fal vázlat alapjait</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="124"/>
       <source>Mesh to Shape Conversion</source>
-      <translation type="unfinished">Mesh to Shape Conversion</translation>
+      <translation>Hálót alakzattá alakítja</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="132"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation type="unfinished">If this is checked, conversion is faster but the result might still contain triangulated faces</translation>
+      <translation>Ha bejelölt, konvertálás gyorsabb, de az eredmény még mindig tartalmazhat háromszögelésű felületeket</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="135"/>
       <source>Fast conversion</source>
-      <translation type="unfinished">Fast conversion</translation>
+      <translation>Gyors átalakítás</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="151"/>
       <source>Tolerance:</source>
-      <translation type="unfinished">Tolerance:</translation>
+      <translation>Tűrés:</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="161"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation type="unfinished">Tolerance value to use when checking if 2 adjacent faces as planar</translation>
+      <translation>2 szomszédos felület síkbeli ellenőrzésekor használt tűrés érték</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="184"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation type="unfinished">If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</translation>
+      <translation>Ha ez bejelölt, a lapos felület csoportok lapítottá-erőltetettek, amik térközzel rendelkező és nem-szilárdtest eredményűek lehetnek</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="187"/>
       <source>Force flat faces</source>
-      <translation type="unfinished">Force flat faces</translation>
+      <translation>Lapos felületek erültetése</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="204"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation type="unfinished">If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</translation>
+      <translation>Ha ez bejelölt, felületeken lyukakat hajt végre dróthálós orientáció használata helyett</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="207"/>
       <source>Cut method</source>
-      <translation type="unfinished">Cut method</translation>
+      <translation>Vágási módszer</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="50"/>
       <source>Show debug messages</source>
-      <translation type="unfinished">Show debug messages</translation>
+      <translation>Hibakeresési üzenetek megjelenítése</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="196"/>
       <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
-      <translation type="unfinished">If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</translation>
+      <translation>Ha ez bejelölt, a nyílások kivonásokként lesznek importálva, egyébként fal alakzatok nyílásai már kivonásra kerülnek</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="199"/>
       <source>Separate openings</source>
-      <translation type="unfinished">Separate openings</translation>
+      <translation>Elkülönült nyílások</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="236"/>
       <source>If this is checked, object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">If this is checked, object names will be prefixed with the IFC ID number</translation>
+      <translation>Ha ez bejelölt, a tárgyak nevei az IFC azonosítószám előtaggal lesznek ellátva</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="239"/>
       <source>Prefix names with ID number</source>
-      <translation type="unfinished">Prefix names with ID number</translation>
+      <translation>Előtag nevek, ID azonosító számmal</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="316"/>
       <source>Exclude list: </source>
-      <translation type="unfinished">Exclude list: </translation>
+      <translation>Kizárási lista: </translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="323"/>
       <source>A comma-separated list of Ifc entities to exclude from import</source>
-      <translation type="unfinished">A comma-separated list of Ifc entities to exclude from import</translation>
+      <translation>Az importból kizárt Ifc tételek vesszővel elválasztott listája</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="34"/>
       <source>Scaling factor</source>
-      <translation type="unfinished">Scaling factor</translation>
+      <translation>Lépték tényező</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="34"/>
       <source>Snap to baselines of Arch objects (override with CTRL)</source>
-      <translation type="unfinished">Snap to baselines of Arch objects (override with CTRL)</translation>
+      <translation>Igazítás az ív objektumok alapvonalához (felülírja a CTRL)</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="14"/>
       <source>Defaults</source>
-      <translation type="unfinished">Defaults</translation>
+      <translation>Alapértelmezések</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="26"/>
       <source>Walls</source>
-      <translation type="unfinished">Walls</translation>
+      <translation>Falak</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="732"/>
       <source> mm</source>
-      <translation type="unfinished"> mm</translation>
+      <translation> mm</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="148"/>
       <source>Structures</source>
-      <translation type="unfinished">Structures</translation>
+      <translation>Építőelemek</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="309"/>
       <source>Rebars</source>
-      <translation type="unfinished">Rebars</translation>
+      <translation>Újrahálózás</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="428"/>
@@ -2353,22 +2353,22 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="preferences-ifc.ui" line="355"/>
       <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
-      <translation type="unfinished">Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</translation>
+      <translation>Néhány IFC nézegető nem szereti a kihúzott állapotban exportált objektumokat. Ezzel erőltetve az összes objektum BREP geometriaként kerül kivitelre.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="328"/>
       <source>Hidden geomety pattern</source>
-      <translation type="unfinished">Hidden geomety pattern</translation>
+      <translation>Rejtett geometria minta</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="348"/>
       <source>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</source>
-      <translation type="unfinished">This is the SVG stroke-dasharray property to apply to projections of hidden objects.</translation>
+      <translation>Ez az SVG stroke-dasharray tulajdonság, amit a rejtett objektumok vetítésére alkalmaz.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="351"/>
       <source>30, 10</source>
-      <translation type="unfinished">30, 10</translation>
+      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="639"/>
@@ -2378,12 +2378,12 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="preferences-archdefaults.ui" line="768"/>
       <source>Number of steps:</source>
-      <translation type="unfinished">Number of steps:</translation>
+      <translation>Lépések száma:</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="796"/>
       <source>Panels</source>
-      <translation type="unfinished">Panels</translation>
+      <translation>Panelek</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="889"/>
@@ -2398,172 +2398,172 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="preferences-ifc.ui" line="358"/>
       <source>Force export as Brep</source>
-      <translation type="unfinished">Force export as Brep</translation>
+      <translation>Erőltetett Exportálás Brep-ként</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="372"/>
       <source>Bim server</source>
-      <translation type="unfinished">Bim server</translation>
+      <translation>Bim szerver</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="380"/>
       <source>Address</source>
-      <translation type="unfinished">Address</translation>
+      <translation>Cím</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="387"/>
       <source>The URL of a bim server instance (www.bimserver.org)  to connect to.</source>
-      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org)  to connect to.</translation>
+      <translation>Egy BIM szerver példány URL-címe (www.bimserver.org) a kapcsolódáshoz.</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="390"/>
       <source>http://localhost:8082</source>
-      <translation type="unfinished">http://localhost:8082</translation>
+      <translation>http://localhost:8082</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="14"/>
       <source>DAE</source>
-      <translation type="unfinished">DAE</translation>
+      <translation>DAE</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="347"/>
       <source>Export options</source>
-      <translation type="unfinished">Export options</translation>
+      <translation>Exportálási beállítások</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="14"/>
       <source>IFC</source>
-      <translation type="unfinished">IFC</translation>
+      <translation>IFC</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="39"/>
       <source>General options</source>
-      <translation type="unfinished">General options</translation>
+      <translation>Általános beállítások</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="47"/>
       <source>Show verbose information during import and export of IFC files</source>
-      <translation type="unfinished">Show verbose information during import and export of IFC files</translation>
+      <translation>Részletes információk megjelenítése az IFC-fájlok importja és exportja során</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="68"/>
       <source>Import options</source>
-      <translation type="unfinished">Import options</translation>
+      <translation>Importálási beállítások</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="76"/>
       <source>Import arch IFC objects as</source>
-      <translation type="unfinished">Import arch IFC objects as</translation>
+      <translation>Építészeti IFC objektumok importálása</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="132"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
+      <translation>Itt adható meg, milyen típusú objektumok fog létrehozni a FreeCAD-ben</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="93"/>
       <source>Parametric Arch objects</source>
-      <translation type="unfinished">Parametric Arch objects</translation>
+      <translation>Parametrikus építészeti objektumok</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="142"/>
       <source>Non-parametric Arch objects</source>
-      <translation type="unfinished">Non-parametric Arch objects</translation>
+      <translation>Nem-parametrikus építészeti objektumok</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="147"/>
       <source>Simple Part shapes</source>
-      <translation type="unfinished">Simple Part shapes</translation>
+      <translation>Egyszerű alkatrész alakzatok</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="108"/>
       <source>One compound per floor</source>
-      <translation type="unfinished">One compound per floor</translation>
+      <translation>Szintenként egy összetevő</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="113"/>
       <source>Do not import Arch objects</source>
-      <translation type="unfinished">Do not import Arch objects</translation>
+      <translation>Ne importálja az építészeti objektumok</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="125"/>
       <source>Import struct IFC objects as</source>
-      <translation type="unfinished">Import struct IFC objects as</translation>
+      <translation>Struct IFC objektumok importálása mint</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="152"/>
       <source>One compound for all</source>
-      <translation type="unfinished">One compound for all</translation>
+      <translation>Egy összetétel mindenhez</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="157"/>
       <source>Do not import structural objects</source>
-      <translation type="unfinished">Do not import structural objects</translation>
+      <translation>Ne importálja a strukturált tárgyakat</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="169"/>
       <source>Root element:</source>
-      <translation type="unfinished">Root element:</translation>
+      <translation>Gyökér elem:</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="176"/>
       <source>Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</source>
-      <translation type="unfinished">Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</translation>
+      <translation>Csak ennek az elemnek az altípusait importálja. Minden elem importálásához tartsa az értéket "IfcProduct" -ként.</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="179"/>
       <source>IfcProduct</source>
-      <translation type="unfinished">IfcProduct</translation>
+      <translation>IfcProduct</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="216"/>
       <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
-      <translation type="unfinished">If this is checked, the importer will try to detect extrusions. This might slow things down...</translation>
+      <translation>Ha bejelölt, az importáló megpróbálja felismerni a kihúzásokat. Ez lassíthatja a dolgokat...</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="219"/>
       <source>Detect extrusions</source>
-      <translation type="unfinished">Detect extrusions</translation>
+      <translation>Kihúzások felismerése</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="256"/>
       <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
-      <translation type="unfinished">If several materials with the same name are found in the IFC file, they will be treated as one.</translation>
+      <translation>Ha az IFC fájlban több anyagnak ugyanaz a neve, akkor azokat egyként kezeli.</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="259"/>
       <source>Merge materials with same name</source>
-      <translation type="unfinished">Merge materials with same name</translation>
+      <translation>Ugyanolyan nevű anyagok egyesítése</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="64"/>
       <source>Mesher</source>
-      <translation type="unfinished">Mesher</translation>
+      <translation>Hálógeneráló</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="71"/>
       <source>The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</source>
-      <translation type="unfinished">The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</translation>
+      <translation>A hálógenerálót kell használni. Ha netgen-t használ, győződjön meg róla, hogy a netgen engedélyezve van háló modulban</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="81"/>
       <source>Builtin</source>
-      <translation type="unfinished">Builtin</translation>
+      <translation>Beépített</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="86"/>
       <source>Mefisto</source>
-      <translation type="unfinished">Mefisto</translation>
+      <translation>Mefisto</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="91"/>
       <source>Netgen</source>
-      <translation type="unfinished">Netgen</translation>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="104"/>
       <source>Builtin and mefisto mesher options</source>
-      <translation type="unfinished">Builtin and mefisto mesher options</translation>
+      <translation>Beépített és Mephisto háló generáló lehetőségek</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="112"/>
@@ -2573,168 +2573,168 @@ Ha a Futás = 0 akkor a Futást úgy számolja, hogy a magasság ugyanaz mint a 
     <message>
       <location filename="preferences-dae.ui" line="119"/>
       <source>The tessellation value to use with the builtin and mefisto meshers</source>
-      <translation type="unfinished">The tessellation value to use with the builtin and mefisto meshers</translation>
+      <translation>Hálózófaktor: Hálópontosság igazítás a FreeCAD belső- és Mefisto-háló létrehozó alapján</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="143"/>
       <source>Netgen mesher options</source>
-      <translation type="unfinished">Netgen mesher options</translation>
+      <translation>Netgen hálólétrehozó lehetőségek</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="151"/>
       <source>Grading</source>
-      <translation type="unfinished">Grading</translation>
+      <translation>Hálófinomítás osztályzás érték</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="158"/>
       <source>The grading value to use for netgen meshing</source>
-      <translation type="unfinished">The grading value to use for netgen meshing</translation>
+      <translation>Hálóosztályozási érték: Netgen háló finomítása vagy durvábbá tétele</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="181"/>
       <source>Segments per edge</source>
-      <translation type="unfinished">Segments per edge</translation>
+      <translation>Élenkénti szakaszok</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="188"/>
       <source>The maximum number of segments per edge</source>
-      <translation type="unfinished">The maximum number of segments per edge</translation>
+      <translation>Élenkénti szakaszok maximális száma</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="211"/>
       <source>Segments per radius</source>
-      <translation type="unfinished">Segments per radius</translation>
+      <translation>Sugarankénti szakaszok</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="218"/>
       <source>The number of segments per radius</source>
-      <translation type="unfinished">The number of segments per radius</translation>
+      <translation>Sugarankénti szakaszok száma</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="241"/>
       <source>Allow second order</source>
-      <translation type="unfinished">Allow second order</translation>
+      <translation>Másod rendezés engedélyezése</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="244"/>
       <source>Second order</source>
-      <translation type="unfinished">Second order</translation>
+      <translation>Második sorrend</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="261"/>
       <source>Allows optimization</source>
-      <translation type="unfinished">Allows optimization</translation>
+      <translation>Optimalizálás engedélyezése</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="264"/>
       <source>Optimize</source>
-      <translation type="unfinished">Optimize</translation>
+      <translation>Optimalizál</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="284"/>
       <source>Allow quad faces</source>
-      <translation type="unfinished">Allow quad faces</translation>
+      <translation>Négyzet nézetek engedélyezése</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="287"/>
       <source>Allow quads</source>
-      <translation type="unfinished">Allow quads</translation>
+      <translation>Négyzetek engedélyezése</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="375"/>
       <source>Use triangulation options set in the DAE options page</source>
-      <translation type="unfinished">Use triangulation options set in the DAE options page</translation>
+      <translation>DAE beállítások lapon található háromszögelés beállításokat használjon</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="378"/>
       <source>Use DAE triangulation options</source>
-      <translation type="unfinished">Use DAE triangulation options</translation>
+      <translation>DAE háromszögelés beállításokat használjon</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="395"/>
       <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</translation>
+      <translation>Ívelt formák, amely nem ábrázolható görbeként az IFC-ben, azokat lapos felületté bontjuk. Ha ez bejelölt, néhány további számítás történik sík felületek csatlakoztatásához.</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="398"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation type="unfinished">Join coplanar facets when triangulating</translation>
+      <translation>Csatlakozzon párhuzamos sík felületeket háromszögelésnél</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="55"/>
       <source>Object creation</source>
-      <translation type="unfinished">Object creation</translation>
+      <translation>Objektum létrehozása</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="103"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation type="unfinished">Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</translation>
+      <translation>Két lehetséges stratégiát a körkörös függőségi viszony elkerülésére: Hozzon létre még egy objektumot (bejelöletlen) vagy távolítsa el az alap vázlat külső geometriáját (bejelölt)</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="106"/>
       <source>Remove external geometry of base sketches when needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches when needed</translation>
+      <translation>Távolítsa el az alap vázlatok külső geometriáit, ha szükséges</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="276"/>
       <source>Create clones when objects have shared geometry</source>
-      <translation type="unfinished">Create clones when objects have shared geometry</translation>
+      <translation>Klónok létrehozása, ha a tárgyak rendelkeznek megosztott geometriával</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="26"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+      <translation>Importálás és Exportálás alatt ezt a párbeszédpanelt mutassa</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="296"/>
       <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
-      <translation type="unfinished">If checked each object will have their Ifc Properties stored in a spreadsheet object.</translation>
+      <translation>Ha bejelölt, akkor minden tárgy Ifc-tulajdonságát egy számolótábla objektumban tárolja.</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="299"/>
       <source>Import Ifc Properties in spreadsheet</source>
-      <translation type="unfinished">Import Ifc Properties in spreadsheet</translation>
+      <translation>Ifc tulajdonságok importálása egy számolótábla</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="109"/>
+      <location filename="InitGui.py" line="73"/>
       <source>Arch tools</source>
       <translation>Építészeti eszközök</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="110"/>
+      <location filename="InitGui.py" line="74"/>
       <source>Draft tools</source>
       <translation>Tervrajz eszközök</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="111"/>
+      <location filename="InitGui.py" line="75"/>
       <source>Draft mod tools</source>
-      <translation type="unfinished">Draft mod tools</translation>
+      <translation>Tervezet modul eszközök</translation>
     </message>
   </context>
   <context>
     <name>arch</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="77"/>
       <source>&amp;Architecture</source>
       <translation>Építészet</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>&amp;Draft</source>
       <translation>Tervrajz</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="79"/>
       <source>Utilities</source>
-      <translation type="unfinished">Utilities</translation>
+      <translation>Kiegészítők</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Igazítás</translation>
     </message>
   </context>
 </TS>

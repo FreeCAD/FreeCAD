@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1300,7 +1300,7 @@
     <message>
         <location line="+47"/>
         <source>Fillet type:</source>
-        <translation>圓角種類:</translation>
+        <translation>類型:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1725,7 +1725,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
 </context>
 <context>
@@ -1772,7 +1772,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+1"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
 </context>
 <context>
@@ -2296,7 +2296,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished">Maximum angular deflection</translation>
+        <translation>最大偏移角</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
@@ -2597,7 +2597,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation>基準點</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2663,12 +2663,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>錯誤的選取</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>選擇兩個頂點</translation>
@@ -2693,32 +2693,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>選擇兩個或更多面</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>僅選擇單一零件物件</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>選擇兩頂點建立邊緣</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>選取一個頂點之清單</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>選擇封閉之邊緣組</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>選擇鄰近面</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>所有造型類型皆可選擇</translation>
     </message>
@@ -3174,7 +3174,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>由殼產生實體</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">調整造型</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>建立</translation>
     </message>
@@ -3362,7 +3367,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <location line="+804"/>

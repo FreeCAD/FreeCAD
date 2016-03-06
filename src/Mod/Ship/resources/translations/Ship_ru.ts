@@ -451,7 +451,7 @@
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Максимальный угол</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="WeightInstance.py" line="76"/>
       <source>Area density [kg / m^2]</source>
-      <translation type="unfinished">Area density [kg / m^2]</translation>
+      <translation>Плотность площади [кг/м^2]</translation>
     </message>
   </context>
 </TS>

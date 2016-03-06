@@ -145,7 +145,7 @@
     <message>
         <location line="+1"/>
         <source>Pad</source>
-        <translation>Występ</translation>
+        <translation>Wyciągnij</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1367,7 +1367,7 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished">No valid sketches selected</translation>
+        <translation>Nie wybrano szkiców</translation>
     </message>
     <message>
         <location line="-157"/>

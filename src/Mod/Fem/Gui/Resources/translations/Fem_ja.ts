@@ -1,1610 +1,1753 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja" sourcelanguage="en">
-<context>
+<TS version="2.1" language="ja" sourcelanguage="en">
+  <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>新しい力学解析</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>新しい力学解析を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_BeamSection</name>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="41"/>
+      <source>FEM Beam Cross Section Definition ...</source>
+      <translation>FEM ビーム断面定義...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemBeamSection.py" line="43"/>
+      <source>Creates a FEM Beam Cross Section</source>
+      <translation>FEM ビーム断面を作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Command</name>
+    <message>
+      <location filename="FemCommands.py" line="39"/>
+      <source>Default Fem Command MenuText</source>
+      <translation>デフォルト FEM コマンドメニューテキスト</translation>
+    </message>
+    <message>
+      <location filename="FemCommands.py" line="41"/>
+      <source>Default Fem Command ToolTip</source>
+      <translation>デフォルト FEM コマンドツールチップ</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_CreateFromShape</name>
+    <message>
+      <location filename="_CommandFemFromShape.py" line="39"/>
+      <source>Create FEM mesh</source>
+      <translation>有限要素メッシュを作成します。</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemFromShape.py" line="40"/>
+      <source>Create FEM mesh from shape</source>
+      <translation>形状から有限要素メッシュを作成する</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_JobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation>ソルバージョブ制御を開始</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation>選択ソルバーを計算開始するためのダイアログ</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Material</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation>機械材料...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation>機械材料定義を作成、または編集</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_PurgeResults</name>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="40"/>
+      <source>Purge results</source>
+      <translation>結果を消去</translation>
+    </message>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="42"/>
+      <source>Purge results from an analysis</source>
+      <translation>解析から結果を消去</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Quick_Analysis</name>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="40"/>
+      <source>Run CalculiX ccx</source>
+      <translation>CalculiX ccx を実行</translation>
+    </message>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="42"/>
+      <source>Write .inp file and run CalculiX ccx</source>
+      <translation>.inp ファイルを出力して CalculiX ccx を実行</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Result</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>結果表示</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation>解析の結果情報を表示</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>FEM Shell Plate Thickness Definition ...</source>
+      <translation>FEM シェルプレート厚み定義...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM Shell Thickness</source>
+      <translation>FEM シェル厚みを作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="41"/>
+      <source>Create FEM Solver CalculiX ...</source>
+      <translation>FEM ソルバー CalculiX を作成...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="43"/>
+      <source>Creates FEM Solver CalculiX</source>
+      <translation>FEM ソルバー CalculiX を作成</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemAddPart</name>
     <message>
-        <location filename="../../Command.cpp" line="+165"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="165"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+1"/>
-        <source>Add a part to the Analysis</source>
-        <translation>部品の解析を追加</translation>
+      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="167"/>
+      <source>Add a part to the Analysis</source>
+      <translation>部品の解析を追加</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-        <location line="+106"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="273"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM bearing constraint</source>
-        <translation>FEMベアリング拘束を作成</translation>
+      <location filename="../../Command.cpp" line="274"/>
+      <source>Create FEM bearing constraint</source>
+      <translation>FEMベアリング拘束を作成</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM constraint for a bearing</source>
-        <translation>ベアリングのためのFEM拘束を作成</translation>
+      <location filename="../../Command.cpp" line="275"/>
+      <source>Create FEM constraint for a bearing</source>
+      <translation>ベアリングのためのFEM拘束を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemConstraintDisplacement</name>
     <message>
-        <location line="+256"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="531"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM displacement constraint</source>
-        <translation type="unfinished">Create FEM displacement constraint</translation>
+      <location filename="../../Command.cpp" line="532"/>
+      <source>Create FEM displacement constraint</source>
+      <translation>FEM 変位拘束を作成</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM constraint for a displacement acting on a face</source>
-        <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
+      <location filename="../../Command.cpp" line="533"/>
+      <source>Create FEM constraint for a displacement acting on a face</source>
+      <translation>面に働くする変位に対する FEM 拘束を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemConstraintFixed</name>
     <message>
-        <location line="-219"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="314"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM fixed constraint</source>
-        <translation>FEM固定拘束を作成</translation>
+      <location filename="../../Command.cpp" line="315"/>
+      <source>Create FEM fixed constraint</source>
+      <translation>FEM固定拘束を作成</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM constraint for a fixed geometric entity</source>
-        <translation>ジオメトリーエンティティの固定を表すFEM拘束を作成</translation>
+      <location filename="../../Command.cpp" line="316"/>
+      <source>Create FEM constraint for a fixed geometric entity</source>
+      <translation>ジオメトリーエンティティの固定を表すFEM拘束を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemConstraintForce</name>
     <message>
-        <location line="+40"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="356"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM force constraint</source>
-        <translation>FEM荷重拘束を作成</translation>
+      <location filename="../../Command.cpp" line="357"/>
+      <source>Create FEM force constraint</source>
+      <translation>FEM荷重拘束を作成</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM constraint for a force acting on a geometric entity</source>
-        <translation>ジオメトリーエンティティに作用する力を表すFEM拘束を作成</translation>
+      <location filename="../../Command.cpp" line="358"/>
+      <source>Create FEM constraint for a force acting on a geometric entity</source>
+      <translation>ジオメトリーエンティティに作用する力を表すFEM拘束を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemConstraintGear</name>
     <message>
-        <location line="+87"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="445"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM gear constraint</source>
-        <translation>FEMギア拘束を作成</translation>
+      <location filename="../../Command.cpp" line="446"/>
+      <source>Create FEM gear constraint</source>
+      <translation>FEMギア拘束を作成</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM constraint for a gear</source>
-        <translation>ギアのためのFEM拘束を作成</translation>
+      <location filename="../../Command.cpp" line="447"/>
+      <source>Create FEM constraint for a gear</source>
+      <translation>ギアのためのFEM拘束を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-        <location line="-47"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="400"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM pressure constraint</source>
-        <translation>FEM圧力拘束を作成</translation>
+      <location filename="../../Command.cpp" line="401"/>
+      <source>Create FEM pressure constraint</source>
+      <translation>FEM圧力拘束を作成</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM constraint for a pressure acting on a face</source>
-        <translation>面に作用する圧力のためのFEM拘束を作成</translation>
+      <location filename="../../Command.cpp" line="402"/>
+      <source>Create FEM constraint for a pressure acting on a face</source>
+      <translation>面に作用する圧力のためのFEM拘束を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-        <location line="+84"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="486"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM pulley constraint</source>
-        <translation>FEMプーリー拘束を作成</translation>
+      <location filename="../../Command.cpp" line="487"/>
+      <source>Create FEM pulley constraint</source>
+      <translation>FEMプーリー拘束を作成</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM constraint for a pulley</source>
-        <translation>プーリーのためのFEM拘束を作成</translation>
+      <location filename="../../Command.cpp" line="488"/>
+      <source>Create FEM constraint for a pulley</source>
+      <translation>プーリーのためのFEM拘束を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemCreateAnalysis</name>
     <message>
-        <location line="-385"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="103"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+1"/>
-        <source>Create a FEM analysis</source>
-        <translation>FEM解析を作成</translation>
+      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <source>Create a FEM analysis</source>
+      <translation>FEM解析を作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-        <source>Fem</source>
-        <translation type="obsolete">有限要素法</translation>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <source>Create FEM mesh</source>
-        <translation type="obsolete">有限要素メッシュを作成します。</translation>
+      <source>Create FEM mesh</source>
+      <translation>有限要素メッシュを作成します。</translation>
     </message>
     <message>
-        <source>Create FEM mesh from shape</source>
-        <translation type="obsolete">形状から有限要素メッシュを作成する</translation>
+      <source>Create FEM mesh from shape</source>
+      <translation>形状から有限要素メッシュを作成する</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-        <location line="+614"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="719"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+1"/>
-        <source>Define/create a nodes set...</source>
-        <translation>頂点セットを定義/作成</translation>
+      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="721"/>
+      <source>Define/create a nodes set...</source>
+      <translation>頂点セットを定義/作成</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Wrong selection</source>
-        <translation>誤った選択</translation>
+      <location filename="../../Command.cpp" line="749"/>
+      <source>Wrong selection</source>
+      <translation>誤った選択</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Select a single FEM mesh or nodes set, please.</source>
-        <translation>単一のFEMメッシュまたはノード セットを選択してください。</translation>
+      <location filename="../../Command.cpp" line="750"/>
+      <source>Select a single FEM mesh or nodes set, please.</source>
+      <translation>単一のFEMメッシュまたはノード セットを選択してください。</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemCreateSolver</name>
     <message>
-        <location line="-522"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="228"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+1"/>
-        <source>Add a solver to the Analysis</source>
-        <translation>解析にソルバーを追加</translation>
+      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="230"/>
+      <source>Add a solver to the Analysis</source>
+      <translation>解析にソルバーを追加</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-        <location line="+432"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="662"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+1"/>
-        <location line="+2"/>
-        <source>Create node set by Poly</source>
-        <translation>ポリゴンから頂点セットを作成</translation>
+      <location filename="../../Command.cpp" line="663"/>
+      <location filename="../../Command.cpp" line="664"/>
+      <location filename="../../Command.cpp" line="666"/>
+      <source>Create node set by Poly</source>
+      <translation>ポリゴンから頂点セットを作成</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::DlgSettingsFemImp</name>
     <message>
-        <location filename="../../DlgSettingsFem.ui" line="+14"/>
-        <source>FEM</source>
-        <translation>有限要素法</translation>
+      <location filename="../../DlgSettingsFem.ui" line="14"/>
+      <source>FEM</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>CalculiX</source>
-        <translation>CalculiX</translation>
+      <location filename="../../DlgSettingsFem.ui" line="37"/>
+      <source>CalculiX</source>
+      <translation>CalculiX</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Use internal editor for .inp files</source>
-        <translation>.Inp ファイル用の内部エディターを使用</translation>
+      <location filename="../../DlgSettingsFem.ui" line="51"/>
+      <source>Use internal editor for .inp files</source>
+      <translation>.Inp ファイル用の内部エディターを使用</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>External editor:</source>
-        <translation>外部エディター:</translation>
+      <location filename="../../DlgSettingsFem.ui" line="78"/>
+      <source>External editor:</source>
+      <translation>外部エディター:</translation>
     </message>
     <message>
-        <location line="+44"/>
-        <source>Leave blank to use default CalculiX ccx binary file</source>
-        <translation>デフォルトの CalculiX ccx バイナリーファイルを使用する場合は入力なし</translation>
+      <location filename="../../DlgSettingsFem.ui" line="122"/>
+      <source>Leave blank to use default CalculiX ccx binary file</source>
+      <translation>デフォルトの CalculiX ccx バイナリーファイルを使用する場合は入力なし</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>ccx binary</source>
-        <translation>ccx バイナリー</translation>
+      <location filename="../../DlgSettingsFem.ui" line="141"/>
+      <source>ccx binary</source>
+      <translation>ccx バイナリー</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Working directory</source>
-        <translation>作業ディレクトリ</translation>
+      <location filename="../../DlgSettingsFem.ui" line="157"/>
+      <source>Working directory</source>
+      <translation>作業ディレクトリ</translation>
     </message>
     <message>
-        <location line="+42"/>
-        <source>Default analysis settings</source>
-        <translation>デフォルトの解析設定</translation>
+      <location filename="../../DlgSettingsFem.ui" line="199"/>
+      <source>Default analysis settings</source>
+      <translation>デフォルトの解析設定</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Default type on analysis</source>
-        <translation>デフォルトの解析タイプ</translation>
+      <location filename="../../DlgSettingsFem.ui" line="213"/>
+      <source>Default type on analysis</source>
+      <translation>デフォルトの解析タイプ</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Static</source>
-        <translation type="unfinished">Static</translation>
+      <location filename="../../DlgSettingsFem.ui" line="223"/>
+      <source>Static</source>
+      <translation>静的</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Frequency</source>
-        <translation type="unfinished">Frequency</translation>
+      <location filename="../../DlgSettingsFem.ui" line="232"/>
+      <source>Frequency</source>
+      <translation>周波数</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Eigenmode number</source>
-        <translation type="unfinished">Eigenmode number</translation>
+      <location filename="../../DlgSettingsFem.ui" line="244"/>
+      <source>Eigenmode number</source>
+      <translation>固有モード番号</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Type</source>
-        <translation>タイプ</translation>
+      <location filename="../../DlgSettingsFem.ui" line="251"/>
+      <source>Type</source>
+      <translation>タイプ</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>High frequency limit</source>
-        <translation type="unfinished">High frequency limit</translation>
+      <location filename="../../DlgSettingsFem.ui" line="274"/>
+      <source>High frequency limit</source>
+      <translation>高周波数制限</translation>
     </message>
     <message>
-        <location line="+29"/>
-        <source>Low frequency limit</source>
-        <translation type="unfinished">Low frequency limit</translation>
+      <location filename="../../DlgSettingsFem.ui" line="303"/>
+      <source>Low frequency limit</source>
+      <translation>低周波数制限</translation>
     </message>
     <message>
-        <location line="+32"/>
-        <location line="+7"/>
-        <source>Hz</source>
-        <translation>Hz</translation>
+      <location filename="../../DlgSettingsFem.ui" line="335"/>
+      <location filename="../../DlgSettingsFem.ui" line="342"/>
+      <source>Hz</source>
+      <translation>Hz</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Materials</source>
-        <translation>材質</translation>
+      <location filename="../../DlgSettingsFem.ui" line="354"/>
+      <source>Materials</source>
+      <translation>材質</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Use built-in materials</source>
-        <translation>用意された材料を使用</translation>
+      <location filename="../../DlgSettingsFem.ui" line="362"/>
+      <source>Use built-in materials</source>
+      <translation>用意された材料を使用</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Use materials from .FreeCAD/Materials directory</source>
-        <translation>.FreeCAD/Materials ディレクトリにある材質を使用</translation>
+      <location filename="../../DlgSettingsFem.ui" line="378"/>
+      <source>Use materials from .FreeCAD/Materials directory</source>
+      <translation>.FreeCAD/Materials ディレクトリにある材質を使用</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Use materials from user defined directory</source>
-        <translation>ユーザー定義ディレクトリにある材質を使用</translation>
+      <location filename="../../DlgSettingsFem.ui" line="394"/>
+      <source>Use materials from user defined directory</source>
+      <translation>ユーザー定義ディレクトリにある材質を使用</translation>
     </message>
     <message>
-        <location line="+55"/>
-        <source>User directory</source>
-        <translation>ユーザー ディレクトリ</translation>
+      <location filename="../../DlgSettingsFem.ui" line="449"/>
+      <source>User directory</source>
+      <translation>ユーザー ディレクトリ</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::HypothesisWidget</name>
     <message>
-        <source>Hypothesis</source>
-        <translation type="obsolete">仮定</translation>
+      <source>Hypothesis</source>
+      <translation>仮定</translation>
     </message>
     <message>
-        <source>Quadrangle</source>
-        <translation type="obsolete">四辺形</translation>
+      <source>Quadrangle</source>
+      <translation>四辺形</translation>
     </message>
     <message>
-        <source>Maximum length</source>
-        <translation type="obsolete">最大長</translation>
+      <source>Maximum length</source>
+      <translation>最大長</translation>
     </message>
     <message>
-        <source>Local length</source>
-        <translation type="obsolete">ローカルの長さ</translation>
+      <source>Local length</source>
+      <translation>ローカルの長さ</translation>
     </message>
     <message>
-        <source>Maximum element area</source>
-        <translation type="obsolete">最大要素エリア</translation>
+      <source>Maximum element area</source>
+      <translation>最大要素エリア</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskAnalysisInfo</name>
     <message>
-        <location filename="../../TaskAnalysisInfo.cpp" line="+45"/>
-        <source>Nodes set</source>
-        <translation>頂点セット</translation>
+      <location filename="../../TaskAnalysisInfo.cpp" line="45"/>
+      <source>Nodes set</source>
+      <translation>頂点セット</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskCreateNodeSet</name>
     <message>
-        <location filename="../../TaskCreateNodeSet.cpp" line="+63"/>
-        <source>Nodes set</source>
-        <translation>頂点セット</translation>
+      <location filename="../../TaskCreateNodeSet.cpp" line="63"/>
+      <source>Nodes set</source>
+      <translation>頂点セット</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-        <location filename="../../TaskFemConstraint.cpp" line="+195"/>
-        <location line="+11"/>
-        <source>Input error</source>
-        <translation>入力エラー</translation>
+      <location filename="../../TaskFemConstraint.cpp" line="195"/>
+      <location filename="../../TaskFemConstraint.cpp" line="206"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
     </message>
     <message>
-        <location line="-11"/>
-        <source>You must specify at least one reference</source>
-        <translation>少なくとも 1 つの参照を指定する必要があります。</translation>
+      <location filename="../../TaskFemConstraint.cpp" line="195"/>
+      <source>You must specify at least one reference</source>
+      <translation>少なくとも 1 つの参照を指定する必要があります。</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-        <location filename="../../TaskFemConstraintBearing.cpp" line="+351"/>
-        <source>Input error</source>
-        <translation>入力エラー</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="351"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-        <location filename="../../TaskFemConstraintDisplacement.cpp" line="+639"/>
-        <source>Input error</source>
-        <translation>入力エラー</translation>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="639"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+358"/>
-        <location line="+26"/>
-        <source>Input error</source>
-        <translation>入力エラー</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="384"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
     </message>
     <message>
-        <location line="-26"/>
-        <source>Please specify a force greater than 0</source>
-        <translation>力に0より大きい値を指定してください</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
+      <source>Please specify a force greater than 0</source>
+      <translation>力に0より大きい値を指定してください</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-        <location filename="../../TaskFemConstraintGear.cpp" line="+310"/>
-        <source>Input error</source>
-        <translation>入力エラー</translation>
+      <location filename="../../TaskFemConstraintGear.cpp" line="310"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-        <location filename="../../TaskFemConstraintPressure.cpp" line="+257"/>
-        <location line="+16"/>
-        <source>Input error</source>
-        <translation>入力エラー</translation>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="273"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
     </message>
     <message>
-        <location line="-16"/>
-        <source>Please specify a pressure greater than 0</source>
-        <translation>圧力に0より大きい値を指定してください</translation>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
+      <source>Please specify a pressure greater than 0</source>
+      <translation>圧力に0より大きい値を指定してください</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-        <location filename="../../TaskFemConstraintPulley.cpp" line="+204"/>
-        <source>Input error</source>
-        <translation>入力エラー</translation>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="204"/>
+      <source>Input error</source>
+      <translation>入力エラー</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDlgMeshShapeNetgen</name>
     <message>
-        <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="+75"/>
-        <source>Edit FEM mesh</source>
-        <translation>FEM メッシュを編集</translation>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
+      <source>Edit FEM mesh</source>
+      <translation>FEM メッシュを編集</translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Meshing failure</source>
-        <translation>メッシュ作成失敗</translation>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
+      <source>Meshing failure</source>
+      <translation>メッシュ作成失敗</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskDriver</name>
     <message>
-        <location filename="../../TaskDriver.cpp" line="+51"/>
-        <source>Nodes set</source>
-        <translation>頂点セット</translation>
+      <location filename="../../TaskDriver.cpp" line="51"/>
+      <source>Nodes set</source>
+      <translation>頂点セット</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraint</name>
     <message>
-        <location filename="../../TaskFemConstraint.cpp" line="-128"/>
-        <source>FEM constraint parameters</source>
-        <translation>FEM拘束パラメーター</translation>
+      <location filename="../../TaskFemConstraint.cpp" line="67"/>
+      <source>FEM constraint parameters</source>
+      <translation>FEM拘束パラメーター</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraintBearing</name>
     <message>
-        <location filename="../../TaskFemConstraintBearing.cpp" line="-275"/>
-        <source>Delete</source>
-        <translation>削除</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="76"/>
+      <source>Delete</source>
+      <translation>削除</translation>
     </message>
     <message>
-        <location line="+98"/>
-        <location line="+4"/>
-        <location line="+7"/>
-        <location line="+16"/>
-        <location line="+6"/>
-        <location line="+5"/>
-        <source>Selection error</source>
-        <translation>選択エラー</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="207"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="212"/>
+      <source>Selection error</source>
+      <translation>選択エラー</translation>
     </message>
     <message>
-        <location line="-38"/>
-        <source>Please use only a single reference for bearing constraint</source>
-        <translation>ベアリング拘束では参照を1つだけ使用してください</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
+      <source>Please use only a single reference for bearing constraint</source>
+      <translation>ベアリング拘束では参照を1つだけ使用してください</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Only faces can be picked</source>
-        <translation>面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
+      <source>Only faces can be picked</source>
+      <translation>面のみを選択できます。</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Only cylindrical faces can be picked</source>
-        <translation>円筒面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="185"/>
+      <source>Only cylindrical faces can be picked</source>
+      <translation>円筒面のみを選択できます。</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Only planar faces can be picked</source>
-        <translation>平らな面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="201"/>
+      <source>Only planar faces can be picked</source>
+      <translation>平らな面のみを選択できます。</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Only linear edges can be picked</source>
-        <translation>直線状のエッジのみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="207"/>
+      <source>Only linear edges can be picked</source>
+      <translation>直線状のエッジのみを選択できます。</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Only faces and edges can be picked</source>
-        <translation>面やエッジだけを選択できます。</translation>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="212"/>
+      <source>Only faces and edges can be picked</source>
+      <translation>面やエッジだけを選択できます。</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-        <location filename="../../TaskFemConstraintDisplacement.cpp" line="-570"/>
-        <source>Delete</source>
-        <translation>削除</translation>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="69"/>
+      <source>Delete</source>
+      <translation>削除</translation>
     </message>
     <message>
-        <location line="+343"/>
-        <location line="+10"/>
-        <location line="+32"/>
-        <location line="+10"/>
-        <source>Selection error</source>
-        <translation>選択エラー</translation>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
+      <source>Selection error</source>
+      <translation>選択エラー</translation>
     </message>
     <message>
-        <location line="-52"/>
-        <location line="+42"/>
-        <source>Nothing selected!</source>
-        <translation type="unfinished">Nothing selected!</translation>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
     </message>
     <message>
-        <location line="-32"/>
-        <location line="+42"/>
-        <source>Selected object is not a part!</source>
-        <translation type="unfinished">Selected object is not a part!</translation>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
+      <source>Selected object is not a part!</source>
+      <translation>選択されたオブジェクトは部品ではありません!</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraintFixed</name>
     <message>
-        <location filename="../../TaskFemConstraintFixed.cpp" line="+74"/>
-        <source>Delete</source>
-        <translation>削除</translation>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="74"/>
+      <source>Delete</source>
+      <translation>削除</translation>
     </message>
     <message>
-        <location line="+61"/>
-        <location line="+5"/>
-        <source>Selection error</source>
-        <translation>選択エラー</translation>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
+      <source>Selection error</source>
+      <translation>選択エラー</translation>
     </message>
     <message>
-        <location line="-5"/>
-        <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation>複数のシェイプタイプを使用することはできません。2番目の拘束を代わりに使用してください。</translation>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
+      <source>Mixed shape types are not possible. Use a second constraint instead</source>
+      <translation>複数のシェイプタイプを使用することはできません。2番目の拘束を代わりに使用してください。</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Only faces, edges and vertices can be picked</source>
-        <translation>面，エッジ，および頂点のみ選択可能</translation>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
+      <source>Only faces, edges and vertices can be picked</source>
+      <translation>面，エッジ，および頂点のみ選択可能</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-283"/>
-        <source>Delete</source>
-        <translation>削除</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="75"/>
+      <source>Delete</source>
+      <translation>削除</translation>
     </message>
     <message>
-        <source>Point load [N]</source>
-        <translation type="obsolete">点荷重 [N]</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
+      <source>Point load</source>
+      <translation>点荷重</translation>
     </message>
     <message>
-        <source>Line load [N/mm]</source>
-        <translation type="obsolete">線荷重 [N/mm]</translation>
-    </message>
-    <message utf8="true">
-        <source>Area load [N/mm²]</source>
-        <translation type="obsolete">面荷重 [N/mm ²]</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
+      <source>Line load</source>
+      <translation>線荷重</translation>
     </message>
     <message>
-        <location line="+67"/>
-        <source>Point load</source>
-        <translation>点荷重</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
+      <source>Area load</source>
+      <translation>面荷重</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Line load</source>
-        <translation>線荷重</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="219"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="224"/>
+      <source>Selection error</source>
+      <translation>選択エラー</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Area load</source>
-        <translation>面荷重</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
+      <source>Mixed shape types are not possible. Use a second constraint instead</source>
+      <translation>複数のシェイプタイプを使用することはできません。2番目の拘束を代わりに使用してください。</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <location line="+6"/>
-        <location line="+31"/>
-        <location line="+6"/>
-        <location line="+5"/>
-        <source>Selection error</source>
-        <translation>選択エラー</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
+      <source>Only faces, edges and vertices can be picked</source>
+      <translation>面，エッジ，および頂点のみ選択可能</translation>
     </message>
     <message>
-        <location line="-48"/>
-        <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation>複数のシェイプタイプを使用することはできません。2番目の拘束を代わりに使用してください。</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
+      <source>Only planar faces can be picked</source>
+      <translation>平らな面のみを選択できます。</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Only faces, edges and vertices can be picked</source>
-        <translation>面，エッジ，および頂点のみ選択可能</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="219"/>
+      <source>Only linear edges can be picked</source>
+      <translation>直線状のエッジのみを選択できます。</translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Only planar faces can be picked</source>
-        <translation>平らな面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="224"/>
+      <source>Only faces and edges can be picked</source>
+      <translation>面やエッジだけを選択できます。</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Only linear edges can be picked</source>
-        <translation>直線状のエッジのみを選択できます。</translation>
+      <source>Point load [N]</source>
+      <translation>点荷重 [N]</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Only faces and edges can be picked</source>
-        <translation>面やエッジだけを選択できます。</translation>
+      <source>Line load [N/mm]</source>
+      <translation>線荷重 [N/mm]</translation>
     </message>
-</context>
-<context>
+    <message>
+      <source>Area load [N/mm²]</source>
+      <translation>面荷重 [N/mm ²]</translation>
+    </message>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraintGear</name>
     <message>
-        <location filename="../../TaskFemConstraintGear.cpp" line="-156"/>
-        <location line="+6"/>
-        <location line="+5"/>
-        <source>Selection error</source>
-        <translation>選択エラー</translation>
+      <location filename="../../TaskFemConstraintGear.cpp" line="154"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
+      <source>Selection error</source>
+      <translation>選択エラー</translation>
     </message>
     <message>
-        <location line="-11"/>
-        <source>Only planar faces can be picked</source>
-        <translation>平らな面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintGear.cpp" line="154"/>
+      <source>Only planar faces can be picked</source>
+      <translation>平らな面のみを選択できます。</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Only linear edges can be picked</source>
-        <translation>直線状のエッジのみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintGear.cpp" line="160"/>
+      <source>Only linear edges can be picked</source>
+      <translation>直線状のエッジのみを選択できます。</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Only faces and edges can be picked</source>
-        <translation>面やエッジだけを選択できます。</translation>
+      <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
+      <source>Only faces and edges can be picked</source>
+      <translation>面やエッジだけを選択できます。</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-        <location filename="../../TaskFemConstraintPressure.cpp" line="-196"/>
-        <source>Delete</source>
-        <translation>削除</translation>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="61"/>
+      <source>Delete</source>
+      <translation>削除</translation>
     </message>
     <message>
-        <location line="+84"/>
-        <source>Selection error</source>
-        <translation>選択エラー</translation>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
+      <source>Selection error</source>
+      <translation>選択エラー</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Only faces can be picked</source>
-        <translation>面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
+      <source>Only faces can be picked</source>
+      <translation>面のみを選択できます。</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskFemConstraintPulley</name>
     <message>
-        <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
-        <source>Pulley diameter</source>
-        <translation>プーリ径</translation>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="94"/>
+      <source>Pulley diameter</source>
+      <translation>プーリ径</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Torque [Nm]</source>
-        <translation>トルク [Nm]</translation>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
+      <source>Torque [Nm]</source>
+      <translation>トルク [Nm]</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskObjectName</name>
     <message>
-        <location filename="../../TaskObjectName.cpp" line="+48"/>
-        <source>TaskObjectName</source>
-        <translation>TaskObjectName</translation>
+      <location filename="../../TaskObjectName.cpp" line="48"/>
+      <source>TaskObjectName</source>
+      <translation>TaskObjectName</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::TaskTetParameter</name>
     <message>
-        <location filename="../../TaskTetParameter.cpp" line="+52"/>
-        <source>Tet Parameter</source>
-        <translation>テトラパラメーター</translation>
+      <location filename="../../TaskTetParameter.cpp" line="52"/>
+      <source>Tet Parameter</source>
+      <translation>テトラパラメーター</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-        <location filename="../../ViewProviderAnalysis.cpp" line="+84"/>
-        <source>Activate analysis</source>
-        <translation type="unfinished">Activate analysis</translation>
+      <location filename="../../ViewProviderAnalysis.cpp" line="84"/>
+      <source>Activate analysis</source>
+      <translation>解析をアクティブ化</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::ViewProviderFemMeshShapeNetgen</name>
     <message>
-        <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="+76"/>
-        <source>Meshing failure</source>
-        <translation>メッシュ作成失敗</translation>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
+      <source>Meshing failure</source>
+      <translation>メッシュ作成失敗</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-        <translation>FEM モジュールは NETGEN サポート無しでビルドされています。メッシュ作成機能は動作しません!</translation>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
+      <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
+      <translation>FEM モジュールは NETGEN サポート無しでビルドされています。メッシュ作成機能は動作しません!</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Form</name>
     <message>
-        <location filename="../../../TaskPanelFemBeamSection.ui" line="+14"/>
-        <location filename="../../../TaskPanelFemShellThickness.ui" line="+14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="14"/>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Cross Section</source>
-        <translation type="unfinished">Cross Section</translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
+      <source>Cross Section</source>
+      <translation>断面</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location filename="../../../TaskPanelFemShellThickness.ui" line="+18"/>
-        <source>Use FreeCAD Property Editor</source>
-        <translation>FreeCADのプロパティエディターを使用</translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="32"/>
+      <source>Use FreeCAD Property Editor</source>
+      <translation>FreeCADのプロパティエディターを使用</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>to edit the cross section values</source>
-        <translation type="unfinished">to edit the cross section values</translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
+      <source>to edit the cross section values</source>
+      <translation>断面値を編集</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location filename="../../../TaskPanelFemShellThickness.ui" line="+17"/>
-        <source>References</source>
-        <translation type="unfinished">References</translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
+      <source>References</source>
+      <translation>参照</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location filename="../../../TaskPanelFemShellThickness.ui" line="+6"/>
-        <source>Leave references blank </source>
-        <translation type="unfinished">Leave references blank </translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
+      <source>Leave references blank </source>
+      <translation>参照は未設定にする </translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location filename="../../../TaskPanelFemShellThickness.ui" line="+7"/>
-        <source>to choose all remaining shapes</source>
-        <translation type="unfinished">to choose all remaining shapes</translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
+      <source>to choose all remaining shapes</source>
+      <translation>残りのすべての形状を選択</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location filename="../../../TaskPanelFemShellThickness.ui" line="+10"/>
-        <source>Add reference</source>
-        <translation>参照を追加</translation>
+      <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="72"/>
+      <source>Add reference</source>
+      <translation>参照を追加</translation>
     </message>
     <message>
-        <location filename="../../../TaskPanelFemShellThickness.ui" line="-46"/>
-        <source>Thickness</source>
-        <translation>厚み</translation>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="26"/>
+      <source>Thickness</source>
+      <translation>厚み</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>to edit the thickness value</source>
-        <translation type="unfinished">to edit the thickness value</translation>
+      <location filename="../../../TaskPanelFemShellThickness.ui" line="39"/>
+      <source>to edit the thickness value</source>
+      <translation>厚み値を編集</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>MechanicalMaterial</name>
     <message>
-        <location filename="../../../TaskPanelFemSolverCalculix.ui" line="+14"/>
-        <source>Mechanical analysis</source>
-        <translation>機械解析</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="14"/>
+      <source>Mechanical analysis</source>
+      <translation>機械解析</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Working directory</source>
-        <translation>作業ディレクトリ</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>作業ディレクトリ</translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>...</source>
-        <translation>...</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="45"/>
+      <source>...</source>
+      <translation>...</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Analysis type</source>
-        <translation>解析タイプ</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
+      <source>Analysis type</source>
+      <translation>解析タイプ</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Static</source>
-        <translation type="unfinished">Static</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
+      <source>Static</source>
+      <translation>静的</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Frequency</source>
-        <translation type="unfinished">Frequency</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
+      <source>Frequency</source>
+      <translation>周波数</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Write .inp file</source>
-        <translation>.Inp ファイルの書き出し</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
+      <source>Write .inp file</source>
+      <translation>.Inp ファイルの書き出し</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Edit .inp file</source>
-        <translation>.Inp ファイルを編集</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
+      <source>Edit .inp file</source>
+      <translation>.Inp ファイルを編集</translation>
     </message>
     <message>
-        <source>Write Calculix Input File</source>
-        <translation type="obsolete">Calculix 入力ファイルを書き込みする</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
+      <source>Run Calculix</source>
+      <translation>Calculix を実行</translation>
     </message>
     <message>
-        <source>Edit Calculix Input File</source>
-        <translation type="obsolete">Calculix 入力ファイルを編集</translation>
+      <location filename="../../../TaskPanelFemSolverCalculix.ui" line="130"/>
+      <source>Time:</source>
+      <translation>時間：</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Run Calculix</source>
-        <translation>Calculix を実行</translation>
+      <source>Write Calculix Input File</source>
+      <translation>Calculix 入力ファイルを書き込みする</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>Time:</source>
-        <translation>時間：</translation>
+      <source>Edit Calculix Input File</source>
+      <translation>Calculix 入力ファイルを編集</translation>
     </message>
     <message>
-        <location filename="../../../TaskPanelMechanicalMaterial.ui" line="+14"/>
-        <source>Mechanical material</source>
-        <translation>機械材料</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
+      <source>Mechanical material</source>
+      <translation>機械材料</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Material</source>
-        <translation>素材</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="26"/>
+      <source>Material</source>
+      <translation>素材</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>choose...</source>
-        <translation>選択...</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>
+      <source>choose...</source>
+      <translation>選択...</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>References</source>
-        <translation type="unfinished">References</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
+      <source>Material Description</source>
+      <translation>材質の説明</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Leave references blank </source>
-        <translation type="unfinished">Leave references blank </translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
+      <source>References</source>
+      <translation>参照</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>to choose all remaining shapes</source>
-        <translation type="unfinished">to choose all remaining shapes</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
+      <source>Leave references blank </source>
+      <translation>参照は未設定にする </translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Add reference</source>
-        <translation>参照を追加</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
+      <source>to choose all remaining shapes</source>
+      <translation>残りのすべての形状を選択</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Properties</source>
-        <translation type="unfinished">Properties</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
+      <source>Add reference</source>
+      <translation>参照を追加</translation>
     </message>
     <message>
-        <location line="+145"/>
-        <source>External material resources</source>
-        <translation>外部の材質リソース</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
+      <source>Properties</source>
+      <translation type="unfinished">Properties</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>MatWeb database...</source>
-        <translation>MatWebデータベース...</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
+      <source>Young's Modulus:</source>
+      <translation>ヤング係数:</translation>
     </message>
     <message>
-        <location line="-140"/>
-        <source>Young&apos;s Modulus:</source>
-        <translation>ヤング係数:</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="148"/>
+      <source>Poisson Ratio:</source>
+      <translation>ポアソン比:</translation>
     </message>
     <message>
-        <location line="+79"/>
-        <source>Density</source>
-        <translation>密度</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="186"/>
+      <source>Density</source>
+      <translation>密度</translation>
     </message>
     <message>
-        <source>0 kg/m^3</source>
-        <translation type="obsolete">0 kg/m ^3</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
+      <source>External material resources</source>
+      <translation>外部の材質リソース</translation>
     </message>
     <message>
-        <location line="-145"/>
-        <source>Material Description</source>
-        <translation>材質の説明</translation>
+      <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
+      <source>MatWeb database...</source>
+      <translation>MatWebデータベース...</translation>
     </message>
     <message>
-        <source>Pa</source>
-        <translation type="obsolete">Pa</translation>
+      <source>0 kg/m^3</source>
+      <translation>0 kg/m ^3</translation>
     </message>
     <message>
-        <location line="+107"/>
-        <source>Poisson Ratio:</source>
-        <translation>ポアソン比:</translation>
+      <source>Pa</source>
+      <translation>Pa</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-595"/>
-        <source>No active Analysis</source>
-        <translation>実行中の解析はありません</translation>
+      <location filename="../../Command.cpp" line="71"/>
+      <source>No active Analysis</source>
+      <translation>実行中の解析はありません</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>You need to create or activate a Analysis</source>
-        <translation>解析を作成または有効にする必要があります。</translation>
+      <location filename="../../Command.cpp" line="72"/>
+      <source>You need to create or activate a Analysis</source>
+      <translation>解析を作成または有効にする必要があります。</translation>
     </message>
     <message>
-        <location line="+42"/>
-        <location line="+8"/>
-        <location line="+54"/>
-        <location line="+8"/>
-        <location line="+55"/>
-        <source>Wrong selection</source>
-        <translation>誤った選択</translation>
+      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="239"/>
+      <source>Wrong selection</source>
+      <translation>誤った選択</translation>
     </message>
     <message>
-        <location line="-124"/>
-        <location line="+62"/>
-        <location line="+63"/>
-        <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-        <translation>このFreeCAD にはNETGENが含まれていません。メッシュは動作しません。</translation>
+      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="240"/>
+      <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
+      <translation>このFreeCAD にはNETGENが含まれていません。メッシュは動作しません。</translation>
     </message>
     <message>
-        <location line="-117"/>
-        <location line="+62"/>
-        <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation>エッジ、面、立体を選択してください。選択できる立体は1つだけです。</translation>
+      <location filename="../../Command.cpp" line="123"/>
+      <location filename="../../Command.cpp" line="185"/>
+      <source>Select an edge, face or body. Only one body is allowed.</source>
+      <translation>エッジ、面、立体を選択してください。選択できる立体は1つだけです。</translation>
     </message>
     <message>
-        <location line="-57"/>
-        <location line="+62"/>
-        <source>Wrong object type</source>
-        <translation>間違ったオブジェクトの種類</translation>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Wrong object type</source>
+      <translation>間違ったオブジェクトの種類</translation>
     </message>
     <message>
-        <location line="-61"/>
-        <location line="+62"/>
-        <source>Fillet works only on parts</source>
-        <translation>フィレットは部品にのみ適用できます</translation>
+      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="191"/>
+      <source>Fillet works only on parts</source>
+      <translation>フィレットは部品にのみ適用できます</translation>
     </message>
     <message>
-        <location filename="../../TaskFemConstraint.cpp" line="+16"/>
-        <source>Ok</source>
-        <translation>OK</translation>
+      <location filename="../../TaskFemConstraint.cpp" line="83"/>
+      <source>Ok</source>
+      <translation>OK</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation>キャンセル</translation>
+      <location filename="../../TaskFemConstraint.cpp" line="84"/>
+      <source>Cancel</source>
+      <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemConstraint.cpp" line="+145"/>
-        <source>Edit constraint</source>
-        <translation>拘束を編集</translation>
+      <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
+      <source>Edit constraint</source>
+      <translation>拘束を編集</translation>
     </message>
     <message>
-        <source>Combo View</source>
-        <translation type="obsolete">コンボビュー</translation>
+      <source>Combo View</source>
+      <translation>コンボビュー</translation>
     </message>
     <message>
-        <source>combiTab</source>
-        <translation type="obsolete">combiTab</translation>
+      <source>combiTab</source>
+      <translation>combiTab</translation>
     </message>
     <message>
-        <source>qt_tabwidget_stackedwidget</source>
-        <translation type="obsolete">qt_tabwidget_stackedwidget</translation>
+      <source>qt_tabwidget_stackedwidget</source>
+      <translation>qt_tabwidget_stackedwidget</translation>
     </message>
     <message>
-        <source>ShaftWizard</source>
-        <translation type="obsolete">軸ウィザード</translation>
+      <source>ShaftWizard</source>
+      <translation>軸ウィザード</translation>
     </message>
     <message>
-        <source>ShaftWizardLayout</source>
-        <translation type="obsolete">ShaftWizardLayout</translation>
+      <source>ShaftWizardLayout</source>
+      <translation>ShaftWizardLayout</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemConstraintBearing.cpp" line="+74"/>
-        <location filename="../../ViewProviderFemConstraintFixed.cpp" line="+74"/>
-        <location filename="../../ViewProviderFemConstraintForce.cpp" line="+73"/>
-        <location filename="../../ViewProviderFemConstraintGear.cpp" line="+74"/>
-        <location filename="../../ViewProviderFemConstraintPulley.cpp" line="+73"/>
-        <source>A dialog is already open in the task panel</source>
-        <translation>タスクパネルで既にダイアログが開かれています</translation>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="74"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="73"/>
+      <source>A dialog is already open in the task panel</source>
+      <translation>タスクパネルで既にダイアログが開かれています</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="../../ViewProviderFemConstraintFixed.cpp" line="+1"/>
-        <location filename="../../ViewProviderFemConstraintForce.cpp" line="+1"/>
-        <location filename="../../ViewProviderFemConstraintGear.cpp" line="+1"/>
-        <location filename="../../ViewProviderFemConstraintPulley.cpp" line="+1"/>
-        <source>Do you want to close this dialog?</source>
-        <translation>このダイアログを閉じますか？</translation>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="75"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="75"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="74"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="75"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="74"/>
+      <source>Do you want to close this dialog?</source>
+      <translation>このダイアログを閉じますか？</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="-15"/>
-        <source>Meshing</source>
-        <translation>メッシュ作成</translation>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
+      <source>Meshing</source>
+      <translation>メッシュ作成</translation>
     </message>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
-        <source>Constraint force</source>
-        <translation>拘束力</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
+      <source>Constraint force</source>
+      <translation>拘束力</translation>
     </message>
     <message>
-        <location filename="../../TaskFemConstraintDisplacement.cpp" line="+123"/>
-        <location filename="../../TaskFemConstraintPressure.cpp" line="+98"/>
-        <source>Constraint normal stress</source>
-        <translation>垂直応力拘束</translation>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
+      <source>Constraint normal stress</source>
+      <translation>垂直応力拘束</translation>
     </message>
     <message>
-        <location filename="../../PropertyFemMeshItem.cpp" line="+98"/>
-        <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-        <translation>[点: %1, 線: %2, 面: %3, ポリゴン: %4, 体積: %5, ポリへドロン: %6]</translation>
+      <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
+      <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
+      <translation>[点: %1, 線: %2, 面: %3, ポリゴン: %4, 体積: %5, ポリへドロン: %6]</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>ShowDisplacement</name>
     <message>
-        <location filename="../../../TaskPanelShowDisplacement.ui" line="+14"/>
-        <source>Show result</source>
-        <translation>結果表示</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="14"/>
+      <source>Show result</source>
+      <translation>結果表示</translation>
     </message>
     <message>
-        <source>Colors</source>
-        <translation type="obsolete">色</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
+      <source>Result type</source>
+      <translation>結果タイプ</translation>
     </message>
     <message>
-        <location line="+121"/>
-        <source>Displacement</source>
-        <translation>変位</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
+      <source>Y displacement</source>
+      <translation>Y 変位</translation>
     </message>
     <message>
-        <location line="-39"/>
-        <source>Max:</source>
-        <translation>最大：</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
+      <source>X displacement</source>
+      <translation>X 変位</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <source>Result type</source>
-        <translation>結果タイプ</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
+      <source>Z displacement</source>
+      <translation>Z 変位</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Y displacement</source>
-        <translation>Y 変位</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
+      <source>None</source>
+      <translation>なし</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>X displacement</source>
-        <translation>X 変位</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
+      <source>Von Mises stress</source>
+      <translation>フォンミーゼス応力</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Z displacement</source>
-        <translation>Z 変位</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
+      <source>Abs displacement</source>
+      <translation>変位の絶対値</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Von Mises stress</source>
-        <translation>フォンミーゼス応力</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
+      <source>Avg:</source>
+      <translation>平均:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Abs displacement</source>
-        <translation>変位の絶対値</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
+      <source>Max:</source>
+      <translation>最大：</translation>
     </message>
     <message>
-        <location line="+55"/>
-        <source>Min:</source>
-        <translation>最小:</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="123"/>
+      <source>Min:</source>
+      <translation>最小:</translation>
     </message>
     <message>
-        <location line="-72"/>
-        <source>None</source>
-        <translation>なし</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
+      <source>Displacement</source>
+      <translation>変位</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Avg:</source>
-        <translation>平均:</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="143"/>
+      <source>Show</source>
+      <translation>表示</translation>
     </message>
     <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="176"/>
+      <source>Factor:</source>
+      <translation>係数:</translation>
     </message>
     <message>
-        <location line="+64"/>
-        <source>Show</source>
-        <translation>表示</translation>
+      <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
+      <source>Slider max:</source>
+      <translation>スライダー最大値:</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Factor:</source>
-        <translation>係数:</translation>
+      <source>Colors</source>
+      <translation>色</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Slider max:</source>
-        <translation>スライダー最大値:</translation>
+      <source>mm</source>
+      <translation>mm</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskAnalysisInfo</name>
     <message>
-        <location filename="../../TaskAnalysisInfo.ui" line="+20"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskAnalysisInfo.ui" line="20"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Meshes:</source>
-        <translation>メッシュ:</translation>
+      <location filename="../../TaskAnalysisInfo.ui" line="32"/>
+      <source>Meshes:</source>
+      <translation>メッシュ:</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Constraints</source>
-        <translation type="unfinished">Constraints</translation>
+      <location filename="../../TaskAnalysisInfo.ui" line="48"/>
+      <source>Constraints</source>
+      <translation type="unfinished">Constraints</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskCreateNodeSet</name>
     <message>
-        <location filename="../../TaskCreateNodeSet.ui" line="+20"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="20"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Volume</source>
-        <translation>ボリューム</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="27"/>
+      <source>Volume</source>
+      <translation>ボリューム</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Surface</source>
-        <translation>サーフェス</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="32"/>
+      <source>Surface</source>
+      <translation>サーフェス</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Nodes: 0</source>
-        <translation>ノード: 0</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="49"/>
+      <source>Nodes: 0</source>
+      <translation>ノード: 0</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Poly</source>
-        <translation>ポリゴン</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="60"/>
+      <source>Poly</source>
+      <translation>ポリゴン</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Box</source>
-        <translation>立方体</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="70"/>
+      <source>Box</source>
+      <translation>立方体</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Pick</source>
-        <translation>ピック</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="80"/>
+      <source>Pick</source>
+      <translation>ピック</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Add</source>
-        <translation>追加</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="87"/>
+      <source>Add</source>
+      <translation>追加</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Angle-search</source>
-        <translation>角度を検索</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="96"/>
+      <source>Angle-search</source>
+      <translation>角度を検索</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Collect adjancent nodes</source>
-        <translation>隣接する頂点を集める</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="102"/>
+      <source>Collect adjancent nodes</source>
+      <translation>隣接する頂点を集める</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Stop angle:</source>
-        <translation>停止角度</translation>
+      <location filename="../../TaskCreateNodeSet.ui" line="111"/>
+      <source>Stop angle:</source>
+      <translation>停止角度</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskDriver</name>
     <message>
-        <location filename="../../TaskDriver.ui" line="+20"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskDriver.ui" line="20"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskFemConstraint</name>
     <message>
-        <location filename="../../TaskFemConstraint.ui" line="+14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskFemConstraint.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Add reference</source>
-        <translation>参照を追加</translation>
+      <location filename="../../TaskFemConstraint.ui" line="23"/>
+      <source>Add reference</source>
+      <translation>参照を追加</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Load [N]</source>
-        <translation>荷重 [N]</translation>
+      <location filename="../../TaskFemConstraint.ui" line="35"/>
+      <source>Load [N]</source>
+      <translation>荷重 [N]</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Diameter</source>
-        <translation>直径</translation>
+      <location filename="../../TaskFemConstraint.ui" line="59"/>
+      <source>Diameter</source>
+      <translation>直径</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Other diameter</source>
-        <translation>その他の直径</translation>
+      <location filename="../../TaskFemConstraint.ui" line="86"/>
+      <source>Other diameter</source>
+      <translation>その他の直径</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Center distance</source>
-        <translation>中心間距離</translation>
+      <location filename="../../TaskFemConstraint.ui" line="113"/>
+      <source>Center distance</source>
+      <translation>中心間距離</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Direction</source>
-        <translation>方向</translation>
+      <location filename="../../TaskFemConstraint.ui" line="137"/>
+      <source>Direction</source>
+      <translation>方向</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Reverse direction</source>
-        <translation>逆方向</translation>
+      <location filename="../../TaskFemConstraint.ui" line="149"/>
+      <source>Reverse direction</source>
+      <translation>逆方向</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Location</source>
-        <translation>場所</translation>
+      <location filename="../../TaskFemConstraint.ui" line="158"/>
+      <source>Location</source>
+      <translation>場所</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Distance</source>
-        <translation>距離</translation>
+      <location filename="../../TaskFemConstraint.ui" line="172"/>
+      <source>Distance</source>
+      <translation>距離</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskFemConstraintBearing</name>
     <message>
-        <location filename="../../TaskFemConstraintBearing.ui" line="+14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Add reference</source>
-        <translation>参照を追加</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
+      <source>Add reference</source>
+      <translation>参照を追加</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Gear diameter</source>
-        <translation>歯車の直径</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
+      <source>Gear diameter</source>
+      <translation>歯車の直径</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Other pulley dia</source>
-        <translation>その他の滑車直径</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
+      <source>Other pulley dia</source>
+      <translation>その他の滑車直径</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Center distance</source>
-        <translation>中心間距離</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
+      <source>Center distance</source>
+      <translation>中心間距離</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Force</source>
-        <translation>加力</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="110"/>
+      <source>Force</source>
+      <translation>加力</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Belt tension force</source>
-        <translation>ベルト張力</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="134"/>
+      <source>Belt tension force</source>
+      <translation>ベルト張力</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Driven pulley</source>
-        <translation>駆動プーリー</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="156"/>
+      <source>Driven pulley</source>
+      <translation>駆動プーリー</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Force location [deg]</source>
-        <translation>加力位置 [度]</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
+      <source>Force location [deg]</source>
+      <translation>加力位置 [度]</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Force Direction</source>
-        <translation>荷重方向</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="192"/>
+      <source>Force Direction</source>
+      <translation>荷重方向</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Reversed direction</source>
-        <translation>逆方向</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
+      <source>Reversed direction</source>
+      <translation>逆方向</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Axial free</source>
-        <translation>軸方向は非拘束</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
+      <source>Axial free</source>
+      <translation>軸方向は非拘束</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Location</source>
-        <translation>場所</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
+      <source>Location</source>
+      <translation>場所</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Distance</source>
-        <translation>距離</translation>
+      <location filename="../../TaskFemConstraintBearing.ui" line="234"/>
+      <source>Distance</source>
+      <translation>距離</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskFemConstraintDisplacement</name>
     <message>
-        <location filename="../../TaskFemConstraintDisplacement.ui" line="+35"/>
-        <source>Prescribed Displacement</source>
-        <translation type="unfinished">Prescribed Displacement</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
+      <source>Prescribed Displacement</source>
+      <translation>既定の変位</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Select multiple face(s), click Add or Remove</source>
-        <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
+      <source>Select multiple face(s), click Add or Remove</source>
+      <translation>複数の面を選択し、 [追加] または [削除] をクリック</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Add</source>
-        <translation>追加</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
+      <source>Add</source>
+      <translation>追加</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Remove</source>
-        <translation>削除</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="66"/>
+      <source>Remove</source>
+      <translation>削除</translation>
     </message>
     <message>
-        <location line="+29"/>
-        <source>Displacement x</source>
-        <translation type="unfinished">Displacement x</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
+      <source>Displacement x</source>
+      <translation>変位 x</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+42"/>
-        <location line="+42"/>
-        <location line="+61"/>
-        <location line="+39"/>
-        <location line="+42"/>
-        <source>Free</source>
-        <translation type="unfinished">Free</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="146"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="188"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="249"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
+      <source>Free</source>
+      <translation>自由</translation>
     </message>
     <message>
-        <location line="-219"/>
-        <location line="+42"/>
-        <location line="+42"/>
-        <location line="+61"/>
-        <location line="+39"/>
-        <location line="+45"/>
-        <source>Fixed</source>
-        <translation type="unfinished">Fixed</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="153"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="195"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="256"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
+      <source>Fixed</source>
+      <translation>固定</translation>
     </message>
     <message>
-        <location line="-203"/>
-        <source>Displacement y</source>
-        <translation type="unfinished">Displacement y</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
+      <source>Displacement y</source>
+      <translation>変位 y</translation>
     </message>
     <message>
-        <location line="+42"/>
-        <source>Displacement z</source>
-        <translation type="unfinished">Displacement z</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
+      <source>Displacement z</source>
+      <translation>変位 z</translation>
     </message>
     <message>
-        <location line="+46"/>
-        <source>Rotations are only valid for Beam and Shell elements.</source>
-        <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
+      <source>Rotations are only valid for Beam and Shell elements.</source>
+      <translation>回転はビーム要素、シェル要素でのみ有効です。</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Rotation x</source>
-        <translation type="unfinished">Rotation x</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
+      <source>Rotation x</source>
+      <translation>回転 x</translation>
     </message>
     <message>
-        <location line="+39"/>
-        <source>Rotation y</source>
-        <translation type="unfinished">Rotation y</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
+      <source>Rotation y</source>
+      <translation>回転 y</translation>
     </message>
     <message>
-        <location line="+39"/>
-        <source>Rotation z</source>
-        <translation type="unfinished">Rotation z</translation>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
+      <source>Rotation z</source>
+      <translation>回転 z</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskFemConstraintFixed</name>
     <message>
-        <location filename="../../TaskFemConstraintFixed.ui" line="+14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskFemConstraintFixed.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Add reference</source>
-        <translation>参照を追加</translation>
+      <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
+      <source>Add reference</source>
+      <translation>参照を追加</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.ui" line="+14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskFemConstraintForce.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Add reference</source>
-        <translation>参照を追加</translation>
+      <location filename="../../TaskFemConstraintForce.ui" line="20"/>
+      <source>Add reference</source>
+      <translation>参照を追加</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Load [N]</source>
-        <translation>荷重 [N]</translation>
+      <location filename="../../TaskFemConstraintForce.ui" line="32"/>
+      <source>Load [N]</source>
+      <translation>荷重 [N]</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Direction</source>
-        <translation>方向</translation>
+      <location filename="../../TaskFemConstraintForce.ui" line="56"/>
+      <source>Direction</source>
+      <translation>方向</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Reverse direction</source>
-        <translation>逆方向</translation>
+      <location filename="../../TaskFemConstraintForce.ui" line="68"/>
+      <source>Reverse direction</source>
+      <translation>逆方向</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskFemConstraintPressure</name>
     <message>
-        <location filename="../../TaskFemConstraintPressure.ui" line="+14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskFemConstraintPressure.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Add reference</source>
-        <translation>参照を追加</translation>
+      <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
+      <source>Add reference</source>
+      <translation>参照を追加</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Pressure</source>
-        <translation>圧力</translation>
+      <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
+      <source>Pressure</source>
+      <translation>圧力</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>1 MPa</source>
-        <translation>1 MPa</translation>
+      <location filename="../../TaskFemConstraintPressure.ui" line="39"/>
+      <source>1 MPa</source>
+      <translation>1 MPa</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Reverse direction</source>
-        <translation>逆方向</translation>
+      <location filename="../../TaskFemConstraintPressure.ui" line="51"/>
+      <source>Reverse direction</source>
+      <translation>逆方向</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskObjectName</name>
     <message>
-        <location filename="../../TaskObjectName.ui" line="+14"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskObjectName.ui" line="14"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskTetParameter</name>
     <message>
-        <location filename="../../TaskTetParameter.ui" line="+20"/>
-        <source>Form</source>
-        <translation>フォーム</translation>
+      <location filename="../../TaskTetParameter.ui" line="20"/>
+      <source>Form</source>
+      <translation>フォーム</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Max. Size:</source>
-        <translation>最大サイズ:</translation>
+      <location filename="../../TaskTetParameter.ui" line="28"/>
+      <source>Max. Size:</source>
+      <translation>最大サイズ:</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Second order</source>
-        <translation>2次精度</translation>
+      <location filename="../../TaskTetParameter.ui" line="44"/>
+      <source>Second order</source>
+      <translation>2次精度</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Fineness:</source>
-        <translation>細かさ:</translation>
+      <location filename="../../TaskTetParameter.ui" line="53"/>
+      <source>Fineness:</source>
+      <translation>細かさ:</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>VeryCoarse</source>
-        <translation>非常に粗い</translation>
+      <location filename="../../TaskTetParameter.ui" line="64"/>
+      <source>VeryCoarse</source>
+      <translation>非常に粗い</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Coarse</source>
-        <translation>粗い</translation>
+      <location filename="../../TaskTetParameter.ui" line="69"/>
+      <source>Coarse</source>
+      <translation>粗い</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Moderate</source>
-        <translation>中程度</translation>
+      <location filename="../../TaskTetParameter.ui" line="74"/>
+      <source>Moderate</source>
+      <translation>中程度</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Fine</source>
-        <translation>細かい</translation>
+      <location filename="../../TaskTetParameter.ui" line="79"/>
+      <source>Fine</source>
+      <translation>細かい</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>VeryFine</source>
-        <translation>非常に細かい</translation>
+      <location filename="../../TaskTetParameter.ui" line="84"/>
+      <source>VeryFine</source>
+      <translation>非常に細かい</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>UserDefined</source>
-        <translation>ユーザー定義</translation>
+      <location filename="../../TaskTetParameter.ui" line="89"/>
+      <source>UserDefined</source>
+      <translation>ユーザー定義</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Growth Rate:</source>
-        <translation>増加率:</translation>
+      <location filename="../../TaskTetParameter.ui" line="97"/>
+      <source>Growth Rate:</source>
+      <translation>増加率:</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Nbr. Segs per Edge:</source>
-        <translation>エッジあたりのセグメント数</translation>
+      <location filename="../../TaskTetParameter.ui" line="111"/>
+      <source>Nbr. Segs per Edge:</source>
+      <translation>エッジあたりのセグメント数</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Nbr. Segs per Radius:</source>
-        <translation>半径あたりのセグメント数</translation>
+      <location filename="../../TaskTetParameter.ui" line="128"/>
+      <source>Nbr. Segs per Radius:</source>
+      <translation>半径あたりのセグメント数</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Optimize</source>
-        <translation>最適化</translation>
+      <location filename="../../TaskTetParameter.ui" line="144"/>
+      <source>Optimize</source>
+      <translation>最適化</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Node count: </source>
-        <translation>ノード数:</translation>
+      <location filename="../../TaskTetParameter.ui" line="166"/>
+      <source>Node count: </source>
+      <translation>ノード数:</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Triangle count:</source>
-        <translation>三角形数:</translation>
+      <location filename="../../TaskTetParameter.ui" line="180"/>
+      <source>Triangle count:</source>
+      <translation>三角形数:</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Tetraeder count:</source>
-        <translation>テトラ数:</translation>
+      <location filename="../../TaskTetParameter.ui" line="194"/>
+      <source>Tetraeder count:</source>
+      <translation>テトラ数:</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+38"/>
-        <source>FEM</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>FEM</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;FEM</source>
-        <translation>有限要素法(&amp;F)</translation>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>&amp;FEM</source>
+      <translation>有限要素法(&amp;F)</translation>
     </message>
-</context>
+  </context>
 </TS>

@@ -1803,14 +1803,6 @@ Určite iný adresár.</translation>
         <translation>Typ kamery</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ortografické vykresľovanie</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektívne vykresľovanie</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1880,11 +1872,11 @@ Určite iný adresár.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>
