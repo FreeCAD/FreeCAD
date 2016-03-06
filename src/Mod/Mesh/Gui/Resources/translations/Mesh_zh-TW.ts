@@ -1364,7 +1364,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>

@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>選択範囲</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2598,7 +2598,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation>ベース ポイント</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2664,12 +2664,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>誤った選択</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>2つの頂点を選択</translation>
@@ -2694,32 +2694,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>2つ以上の面を選択</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>部品オブジェクトを1つ選択してください</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>エッジを作成するための2頂点を選択してください</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>頂点リストを選択</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>閉じたエッジの集合を選択してください</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>隣接する面を選択</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>全ての図形タイプを選択できます</translation>
     </message>
@@ -3175,7 +3175,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>シェルからソリッドへ</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">形状を高精度化</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>作成</translation>
     </message>

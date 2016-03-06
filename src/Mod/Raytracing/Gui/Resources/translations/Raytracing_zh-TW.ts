@@ -365,7 +365,7 @@ Do you want to continue?</source>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -464,7 +464,7 @@ Do you want to continue?</source>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation type="unfinished"></translation>
+        <translation>網格最大誤差：</translation>
     </message>
     <message>
         <location line="+57"/>

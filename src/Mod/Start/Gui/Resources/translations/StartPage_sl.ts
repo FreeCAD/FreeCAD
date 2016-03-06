@@ -164,11 +164,6 @@
       <translation>Najnovejši video posnetki</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>Zadnje novice</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="55"/>
       <source>On the web</source>
       <translation>Na spletu</translation>
@@ -302,6 +297,26 @@
       <location filename="StartPage.py" line="109"/>
       <source>Load an FEM example analysis</source>
       <translation>Naloži primer analize MKE</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>Najnovejši prispevki</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>Pridobi razvojno različico</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>&lt;b&gt;Razvojne različice&lt;/b&gt; občasno dajo na voljo člani skupnosti in običajno vsebujejo najnovejše spremembe, vendar lahko vsebujejo tudi hrošče.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>Pokaži vse prispevke</translation>
     </message>
   </context>
 </TS>

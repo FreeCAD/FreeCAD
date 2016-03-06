@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1158"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Components</source>
       <translation>Componentes</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>El tamaño de los globos de eje</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1152"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Remove</source>
       <translation>Quitar</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1153"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Add</source>
       <translation>Añadir</translation>
     </message>
@@ -239,7 +239,7 @@
       <translation>La altura o profundidad de extrusión de este elemento. Mantener 0 para automático</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="523"/>
+      <location filename="ArchStructure.py" line="525"/>
       <source>Axes systems this structure is built on</source>
       <translation>Los sistemas de ejes de esta estructura estan basados en</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Dirección de extrusión normal de este objeto (mantener (0,0,0) para automática normal)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="524"/>
+      <location filename="ArchStructure.py" line="526"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>El número de elementos a excluir cuando esta estructura se base en ejes</translation>
     </message>
@@ -319,47 +319,47 @@
       <translation>los componentes de esta ventana</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1154"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1155"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Create/update component</source>
       <translation>Crear/actualizar componente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1156"/>
+      <location filename="ArchWindow.py" line="1157"/>
       <source>Base 2D object</source>
       <translation>Objeto base 2D</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1162"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Wires</source>
       <translation>Alambres</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1159"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Create new component</source>
       <translation>Crear nuevo componente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1160"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Name</source>
       <translation>Nombre</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1161"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Type</source>
       <translation>Tipo</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1163"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Thickness</source>
       <translation>Espesor</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1164"/>
+      <location filename="ArchWindow.py" line="1165"/>
       <source>Z offset</source>
       <translation>Desplazamiento en eje z</translation>
     </message>
@@ -620,7 +620,7 @@
       <translation>Error: La figura base no pudo ser extruída a lo largo del objeto guía</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="576"/>
+      <location filename="ArchStructure.py" line="578"/>
       <source>Couldn't compute a shape</source>
       <translation>No se pudo procesar una figura</translation>
     </message>
@@ -692,7 +692,7 @@
       <translation>Dirección normal de la ventana</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1129"/>
+      <location filename="ArchWindow.py" line="1130"/>
       <source>Unable to create component
 </source>
       <translation>No se ha podido crear el componente
@@ -1370,7 +1370,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Establecer la posición del texto</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="400"/>
+      <location filename="ArchStructure.py" line="402"/>
       <source>Unable to extrude the base shape
 </source>
       <translation>No puede extruir la forma de base
@@ -1382,27 +1382,27 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Categoría</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1217"/>
+      <location filename="ArchCommands.py" line="1223"/>
       <source>Key</source>
       <translation>Clave</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1219"/>
+      <location filename="ArchCommands.py" line="1225"/>
       <source>Value</source>
       <translation>Valor</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1220"/>
+      <location filename="ArchCommands.py" line="1226"/>
       <source>Unit</source>
       <translation>Unidad</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1226"/>
+      <location filename="ArchCommands.py" line="1233"/>
       <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
       <translation>El objeto no contiene el atributo IfcProperties. Cancelar la creación de hojas de cálculo para el objeto: </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1244"/>
+      <location filename="ArchCommands.py" line="1251"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Crear la hoja de cálculo de propiedades IFC</translation>
     </message>
@@ -1673,12 +1673,12 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1235"/>
+      <location filename="ArchCommands.py" line="1242"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Crear la hoja de cálculo IFC...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1237"/>
+      <location filename="ArchCommands.py" line="1244"/>
       <source>Creates a spreadsheet to store ifc properties of an object.</source>
       <translation>Crea una hoja de cálculo para almacenar las propiedades ifc de un objeto.</translation>
     </message>
@@ -2697,17 +2697,17 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="109"/>
+      <location filename="InitGui.py" line="73"/>
       <source>Arch tools</source>
       <translation>Herramientas de arquitectura</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="110"/>
+      <location filename="InitGui.py" line="74"/>
       <source>Draft tools</source>
       <translation>Herramientas de croquis</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="111"/>
+      <location filename="InitGui.py" line="75"/>
       <source>Draft mod tools</source>
       <translation>Herramientas para modificar el croquis</translation>
     </message>
@@ -2715,22 +2715,22 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
   <context>
     <name>arch</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="77"/>
       <source>&amp;Architecture</source>
       <translation>&amp;Arquitectura</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>&amp;Draft</source>
       <translation>&amp;Bosquejo</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="79"/>
       <source>Utilities</source>
       <translation>Utilidades</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>Snapping</source>
       <translation>Ajuste</translation>
     </message>

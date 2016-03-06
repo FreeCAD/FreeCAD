@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2596,7 +2596,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2662,12 +2662,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Sélection invalide</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Sélectionnez deux sommets</translation>
@@ -2692,32 +2692,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Sélectionnez au moins deux faces</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Sélectionnez seulement un objet pièce</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Sélectionner deux sommets pour créer une arête</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>Sélectionnez une liste de sommets</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Sélectionner un ensemble fermé d&apos;arêtes</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Sélectionner les faces adjacentes</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Tous les types de forme peuvent être sélectionnés</translation>
     </message>
@@ -3173,7 +3173,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Solide depuis une coque</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Affiner la forme</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Créer</translation>
     </message>

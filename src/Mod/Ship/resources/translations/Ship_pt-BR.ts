@@ -160,7 +160,7 @@
     <message>
       <location filename="TaskPanel.py" line="384"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>Número de pontos da ferramenta de curvas de área</translation>
     </message>
   </context>
   <context>
@@ -291,67 +291,67 @@
     <message>
       <location filename="TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Uma instância de condição de carga deve ser selecionada antes de usar esta ferramenta (não há objetos selecionados)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="197"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>Rótulo de navio errado! (não há instâncias rotuladas como '{}' encontradas)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="206"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>Rótulo de navio ambíguo! ({} instâncias rotuladas como '{}' encontradas)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="185"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>Mais de uma condição de carga foram selecionadas (as condições de carregamento extra serão ignoradas)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="196"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>Uma instância de condição de carga deve ser selecionada antes de usar esta ferramenta (nenhuma condição de carga válida encontrada nos objetos selecionados)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>Muito peso! O navio nunca deslocará água suficiente</translation>
     </message>
     <message>
       <location filename="Tools.py" line="232"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>Rótulo de peso errado! (não há instâncias rotuladas como '{}' encontradas)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="241"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>Rótulo de peso ambíguo! ({} instâncias rotuladas como '{}' encontradas)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="254"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>Peso inválido! (o objeto rotulado como '{}' não é um peso)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="280"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>Rótulo de tanque errado! (não há instâncias rotuladas como '{}' encontradas)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="289"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>Rótulo de tanque ambíguo! ({} instâncias rotuladas como '{}' encontradas)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="302"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Tanque inválido! (o objeto rotulado como '{}' não é um tanque)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Calculando curvas de capacidade</translation>
     </message>
     <message>
       <location filename="Tools.py" line="122"/>
@@ -361,22 +361,22 @@
     <message>
       <location filename="Tools.py" line="198"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: Falha de cálculo de área transversal</translation>
     </message>
     <message>
       <location filename="Tools.py" line="275"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>ZeroDivisionError: Volume nulo encontrado durante o cálculo de deslocamento!</translation>
     </message>
     <message>
       <location filename="Tools.py" line="377"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: Área de flutuação não pode ser computada</translation>
     </message>
     <message>
       <location filename="Tools.py" line="390"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>ZeroDivisionError: Área nula encontrada durante o cálculo de área de flutuação!</translation>
     </message>
     <message>
       <location filename="Tools.py" line="466"/>
@@ -551,12 +551,12 @@
     <message>
       <location filename="ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Criar uma nova condição de carga</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>Criar uma nova planilha de condição de carga</translation>
     </message>
   </context>
   <context>
@@ -725,7 +725,7 @@
     <message>
       <location filename="WeightInstance.py" line="76"/>
       <source>Area density [kg / m^2]</source>
-      <translation type="unfinished">Area density [kg / m^2]</translation>
+      <translation>Densidade de área [kg / m^2]</translation>
     </message>
   </context>
 </TS>

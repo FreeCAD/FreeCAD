@@ -145,7 +145,7 @@
     <message>
         <location line="+1"/>
         <source>Pad</source>
-        <translation>Вырост</translation>
+        <translation>Выдавливание</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1368,17 +1368,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished">No valid sketches selected</translation>
+        <translation>Не выбраны подходящие эскизы</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation>Ни один из выбранных эскизов/2D объектов не подходит для выдавливания. Пожалуйста выберите подходящий эскиз или 2D объект, который не используется другим компонентом.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation>Ни один из выбранных эскизов/2D объектов не подходит для вращения. Пожалуйста выберите подходящий эскиз или 2D объект, который не используется другим компонентом.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1436,7 +1436,7 @@ Create the sketch on a face.</source>
         <location filename="../../TaskPadParameters.cpp" line="+86"/>
         <location filename="../../ViewProviderPad.cpp" line="+64"/>
         <source>Edit pad</source>
-        <translation>Редактировать прокладку</translation>
+        <translation>Редактировать выдавливание</translation>
     </message>
     <message>
         <location filename="../../ViewProviderPocket.cpp" line="+65"/>

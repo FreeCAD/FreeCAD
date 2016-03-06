@@ -1801,14 +1801,6 @@ Lütfen başka bir dizin belirtin.</translation>
         <translation>kamera tipi</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ortografik işleme</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektif işleme</translation>
-    </message>
-    <message>
         <source></source>
         <translation>Altgrup &apos;%1&apos; zaten mevcut.</translation>
     </message>
@@ -1878,11 +1870,11 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>

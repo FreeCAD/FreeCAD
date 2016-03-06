@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2597,7 +2597,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2663,12 +2663,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Verkeerde selectie</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Selecteer twee hoekpunten</translation>
@@ -2693,32 +2693,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Selecteer twee of meer vlakken</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Selecteer slechts één deel object</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Selecteer twee hoekpunten om een ​​rand te creëren</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation type="unfinished">Select a list of vertices</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Selecteer een gesloten set van randen</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Selecteer aangrenzende vlakken</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Alle vorm types kunnen geselecteerd worden</translation>
     </message>
@@ -3174,7 +3174,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="unfinished">Solid from shell</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Refine shape</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Aanmaken</translation>
     </message>

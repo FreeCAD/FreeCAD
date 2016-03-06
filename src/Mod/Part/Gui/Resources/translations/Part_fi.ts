@@ -1290,7 +1290,7 @@
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Valinta</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2598,7 +2598,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2664,12 +2664,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Väärä valinta</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Valitse kaksi kärkipistettä</translation>
@@ -2694,32 +2694,32 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <translation>Valitse vähintään kaksi pintaa</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Valitse vain yksi osa-objekti</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Valitse kaksi kärkipistettä luodaksesi reunan</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>Valitse luettelo kärkipisteitä</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Valitse suljettu joukko reunoista</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Valitse vierekkäiset pinnat</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Kaikki muototyypit voidaan valita</translation>
     </message>
@@ -3175,7 +3175,12 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
         <translation>Kiinteä kuoresta</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Tarkenna muotoa</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Luo</translation>
     </message>

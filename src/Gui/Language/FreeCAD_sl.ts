@@ -1802,14 +1802,6 @@ Navedite drugo mapo.</translation>
         <translation>Vrsta kamere</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ortografski izris</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Izris v perspektivi</translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1879,11 +1871,11 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ortografski izris</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Izris v p&amp;erspektivi</translation>
     </message>
 </context>
 <context>

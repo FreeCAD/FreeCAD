@@ -121,12 +121,12 @@
     <message>
       <location filename="openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>Ha ez be van jelölve, a fa nézetben a tulajdonságok jellegét meghatározzák az al értékek</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>Hibakeresési információk a konzolra nyomtatva</translation>
     </message>
   </context>
   <context>
@@ -174,22 +174,22 @@
     <message>
       <location filename="OpenSCADCommands.py" line="340"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>Végrehajt</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="341"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Logikai háló</translation>
     </message>
     <message>
       <location filename="OpenSCADUtils.py" line="560"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>Hiba, az alakzatok 2D-ek legyenek vagy mindkettő 3D legyen</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="91"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>Képtelen szétrobbantani ezt %s</translation>
     </message>
   </context>
   <context>
@@ -244,12 +244,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="100"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>Csoport szétrobbantása</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="102"/>
       <source>remove fusion, apply placement to children and color randomly</source>
-      <translation type="unfinished">remove fusion, apply placement to children and color randomly</translation>
+      <translation>távolítsa el a fúziót, alkalmazzon véletlenszerű elhelyezést a gyermekekre és a színre</translation>
     </message>
   </context>
   <context>
@@ -257,12 +257,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="417"/>
       <source>Hull</source>
-      <translation type="unfinished">Hull</translation>
+      <translation>Héj</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="419"/>
       <source>Perform Hull</source>
-      <translation type="unfinished">Perform Hull</translation>
+      <translation>Héj létrehozás</translation>
     </message>
   </context>
   <context>
@@ -270,12 +270,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="181"/>
       <source>Increase Tolerance Feature</source>
-      <translation type="unfinished">Increase Tolerance Feature</translation>
+      <translation>Növelje a tűréshatár tulajdonságot</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="183"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation type="unfinished">Create Feature that allows to increase the tolerance</translation>
+      <translation>Tulajdonságot hoz létre, mely lehetővé teszi a tűréshatár növelését</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="396"/>
       <source>Mesh Boolean...</source>
-      <translation type="unfinished">Mesh Boolean...</translation>
+      <translation>Logikai háló...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="398"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation.</translation>
+      <translation>Hálóként exportálja a tárgyakat és egy logikai művelet végrehajtásához használja az OpenSCAD-ot.</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="438"/>
       <source>Minkowski</source>
-      <translation type="unfinished">Minkowski</translation>
+      <translation>Minkowski</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="440"/>
       <source>Perform Minkowski</source>
-      <translation type="unfinished">Perform Minkowski</translation>
+      <translation>Minkowski végrehajtás</translation>
     </message>
   </context>
   <context>
@@ -346,17 +346,17 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="131"/>
+      <location filename="InitGui.py" line="80"/>
       <source>OpenSCAD Part tools</source>
-      <translation type="unfinished">OpenSCAD Part tools</translation>
+      <translation>OpenSCAD alkatrész eszközök</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="129"/>
+      <location filename="InitGui.py" line="78"/>
       <source>OpenSCADTools</source>
-      <translation type="unfinished">OpenSCADTools</translation>
+      <translation>OpenSCADeszközök</translation>
     </message>
   </context>
 </TS>

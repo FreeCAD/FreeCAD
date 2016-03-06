@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1158"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Components</source>
       <translation>Komponenty</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Velikost bubliny osy</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1152"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Remove</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1153"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Add</source>
       <translation>Přidat</translation>
     </message>
@@ -239,7 +239,7 @@
       <translation>Výška tohoto prvku, není-li založena na profilu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="523"/>
+      <location filename="ArchStructure.py" line="525"/>
       <source>Axes systems this structure is built on</source>
       <translation>Systém os této konstrukce je založen na</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Normálový směr vytažení tohoto objektu (pro (0,0,0) automatická normála)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="524"/>
+      <location filename="ArchStructure.py" line="526"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Počet elementů pro vyjmutí když tato struktura je založena na ose</translation>
     </message>
@@ -319,47 +319,47 @@
       <translation>součásti tohoto okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1154"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1155"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Create/update component</source>
       <translation>Vytvořit/aktualizovat díl</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1156"/>
+      <location filename="ArchWindow.py" line="1157"/>
       <source>Base 2D object</source>
       <translation>Základní 2D objekt</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1162"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Wires</source>
       <translation>Dráty</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1159"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Create new component</source>
       <translation>Vytvořit nový díl</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1160"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Name</source>
       <translation>Jméno</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1161"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1163"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Thickness</source>
       <translation>Tloušťka</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1164"/>
+      <location filename="ArchWindow.py" line="1165"/>
       <source>Z offset</source>
       <translation>Z posun</translation>
     </message>
@@ -624,7 +624,7 @@
       <translation>Chyba: Základní tvar nemůže být vysunut podél tohoto objektu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="576"/>
+      <location filename="ArchStructure.py" line="578"/>
       <source>Couldn't compute a shape</source>
       <translation>Nemohu vyřešit plochu</translation>
     </message>
@@ -696,7 +696,7 @@
       <translation>Normálový směr tohoto okna</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1129"/>
+      <location filename="ArchWindow.py" line="1130"/>
       <source>Unable to create component
 </source>
       <translation>Nelze vytvořit komponentu
@@ -1374,7 +1374,7 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Nastavit pozici textu</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="400"/>
+      <location filename="ArchStructure.py" line="402"/>
       <source>Unable to extrude the base shape
 </source>
       <translation>Nelze vysunout základní tvar
@@ -1386,27 +1386,27 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
       <translation>Kategorie</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1217"/>
+      <location filename="ArchCommands.py" line="1223"/>
       <source>Key</source>
       <translation type="unfinished">Key</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1219"/>
+      <location filename="ArchCommands.py" line="1225"/>
       <source>Value</source>
       <translation>Hodnota</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1220"/>
+      <location filename="ArchCommands.py" line="1226"/>
       <source>Unit</source>
       <translation>Jednotka</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1226"/>
+      <location filename="ArchCommands.py" line="1233"/>
       <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
       <translation>Objektn nemá atribut Ifc vlastností. Zrušit vytváření tabulky pro objekt: </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1244"/>
+      <location filename="ArchCommands.py" line="1251"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Vytvořit tabulku IFC vlastností</translation>
     </message>
@@ -1677,12 +1677,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1235"/>
+      <location filename="ArchCommands.py" line="1242"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Vytvořit tabulku IFC...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1237"/>
+      <location filename="ArchCommands.py" line="1244"/>
       <source>Creates a spreadsheet to store ifc properties of an object.</source>
       <translation>Vytvoří tabulku s ifc vlastnostmi objektu.</translation>
     </message>
@@ -2701,17 +2701,17 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="109"/>
+      <location filename="InitGui.py" line="73"/>
       <source>Arch tools</source>
       <translation>Architektonické nástroje</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="110"/>
+      <location filename="InitGui.py" line="74"/>
       <source>Draft tools</source>
       <translation>Nástroje Návrhu</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="111"/>
+      <location filename="InitGui.py" line="75"/>
       <source>Draft mod tools</source>
       <translation>Nástroje modifikace Návrhu</translation>
     </message>
@@ -2719,22 +2719,22 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>arch</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="77"/>
       <source>&amp;Architecture</source>
       <translation>Stavby</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>&amp;Draft</source>
       <translation>&amp;Návrh</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="79"/>
       <source>Utilities</source>
       <translation>Nástroje</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>Snapping</source>
       <translation>Přichycení</translation>
     </message>

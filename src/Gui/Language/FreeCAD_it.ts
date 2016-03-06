@@ -1802,14 +1802,6 @@ Specificare un&apos;altra cartella.</translation>
         <translation>Tipo di camera</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Render ortografico</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Render prospettico</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1879,11 +1871,11 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista &amp;ortografica</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista in &amp;prospettiva</translation>
     </message>
 </context>
 <context>

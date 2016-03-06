@@ -285,7 +285,7 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished">Merge</translation>
+        <translation>Объединить</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
@@ -838,7 +838,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
         <source>Mesh Formats</source>
-        <translation type="unfinished">Mesh Formats</translation>
+        <translation>Форматы полигональной сетки</translation>
     </message>
     <message>
         <source>Export</source>
@@ -1336,11 +1336,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished">Binary STL</translation>
+        <translation>Двоичный STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished">ASCII STL</translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
@@ -1372,11 +1372,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished">VRML V2.0</translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished">Compressed VRML 2.0</translation>
+        <translation>Сжатый VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
@@ -1388,7 +1388,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
-        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+        <translation>[Точек: %1, рёбер: %2, граней: %3]</translation>
     </message>
     <message>
         <source>Import-Export</source>

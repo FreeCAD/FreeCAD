@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished">Approximate B-Spline surface...</translation>
+        <translation>Hozzávetőleges B-görbe felület...</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -44,19 +44,19 @@
 <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-        <location line="+129"/>
+        <location line="+134"/>
         <source>Reverse Engineering</source>
         <translation>Fordított tervezés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson...</source>
-        <translation type="unfinished">Poisson...</translation>
+        <translation>Poisson eloszlás...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation type="unfinished">Poisson surface reconstruction</translation>
+        <translation>Poisson felszín újrapítése</translation>
     </message>
 </context>
 <context>
@@ -69,13 +69,13 @@
     <message>
         <location line="+1"/>
         <source>Structured point clouds</source>
-        <translation type="unfinished"></translation>
+        <translation>Strukturált pontfelhők</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Triangulation of structured point clouds</source>
-        <translation type="unfinished"></translation>
+        <translation>Pont strukturált felhők háromszögelése</translation>
     </message>
     <message>
         <source>View triangulation</source>
@@ -180,27 +180,27 @@
     <message>
         <location filename="../../Poisson.ui" line="+14"/>
         <source>Poisson</source>
-        <translation type="unfinished">Poisson</translation>
+        <translation>Poisson eloszlás</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>Paraméterek</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Octree depth</source>
-        <translation type="unfinished">Octree depth</translation>
+        <translation>Octree fastruktúra mélysége</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solver divide</source>
-        <translation type="unfinished">Solver divide</translation>
+        <translation>Szétosztó megoldó</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Samples per node</source>
-        <translation type="unfinished">Samples per node</translation>
+        <translation>Csomópontonkénti minta</translation>
     </message>
     <message>
         <location filename="../../Poisson.cpp" line="+108"/>
@@ -211,16 +211,16 @@
 <context>
     <name>Reen_ApproxSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="-154"/>
-        <location line="+130"/>
+        <location filename="../../Command.cpp" line="-159"/>
+        <location line="+135"/>
         <source>Wrong selection</source>
         <translation>Rossz kijelölés</translation>
     </message>
     <message>
-        <location line="-129"/>
-        <location line="+130"/>
+        <location line="-134"/>
+        <location line="+135"/>
         <source>Please select a single point cloud.</source>
-        <translation type="unfinished">Please select a single point cloud.</translation>
+        <translation>Kérjük, válasszon egy pontú felhőt.</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
     <message>
         <location line="+55"/>
         <source>View triangulation failed</source>
-        <translation type="unfinished">View triangulation failed</translation>
+        <translation>Háromtényezős nézet nem sikerült</translation>
     </message>
 </context>
 <context>

@@ -466,7 +466,7 @@ Haluatko jatkaa?</translation>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Max mesh deviation:</translation>
     </message>
     <message>
         <location line="+57"/>

@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1158"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Components</source>
       <translation>Komponenten</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Die Größe der Achsen-Blasen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1152"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1153"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
@@ -239,7 +239,7 @@
       <translation>Höhe oder Extrusionstiefe dieses Elements (0 für automatisch)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="523"/>
+      <location filename="ArchStructure.py" line="525"/>
       <source>Axes systems this structure is built on</source>
       <translation>Achsensysteme, auf denen diese Struktur basiert</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Richtung der Normalen-Extrusion dieses Objekts ((0,0,0) für automatisch)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="524"/>
+      <location filename="ArchStructure.py" line="526"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Die Element-Nummern ausschließen, wenn diese Struktur auf Achsen basiert</translation>
     </message>
@@ -319,47 +319,47 @@
       <translation>Die Komponenten dieses Fensters</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1154"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Edit</source>
       <translation>Bearbeiten</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1155"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Create/update component</source>
       <translation>Erstelle / aktualisiere Komponente</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1156"/>
+      <location filename="ArchWindow.py" line="1157"/>
       <source>Base 2D object</source>
       <translation>2D Basisobjekt</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1162"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Wires</source>
       <translation>Kantenzüge</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1159"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Create new component</source>
       <translation>Neue Komponente erstellen</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1160"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1161"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1163"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1164"/>
+      <location filename="ArchWindow.py" line="1165"/>
       <source>Z offset</source>
       <translation>Z-Abstand</translation>
     </message>
@@ -622,7 +622,7 @@
       <translation>Fehler: Die Basisform konnte nicht entlang des Hilfsobjektes extrudiert werden</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="576"/>
+      <location filename="ArchStructure.py" line="578"/>
       <source>Couldn't compute a shape</source>
       <translation>Form konnte nicht berechnet werden</translation>
     </message>
@@ -693,7 +693,7 @@
       <translation>Die normale Ausrichtung dieses Fensters</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1129"/>
+      <location filename="ArchWindow.py" line="1130"/>
       <source>Unable to create component
 </source>
       <translation>Konnte Komponente nicht erstellen
@@ -1367,7 +1367,7 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Textposition festlegen</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="400"/>
+      <location filename="ArchStructure.py" line="402"/>
       <source>Unable to extrude the base shape
 </source>
       <translation>Grundform nicht extrudierbar
@@ -1379,27 +1379,27 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation>Kategorie</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1217"/>
+      <location filename="ArchCommands.py" line="1223"/>
       <source>Key</source>
       <translation>Schlüssel</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1219"/>
+      <location filename="ArchCommands.py" line="1225"/>
       <source>Value</source>
       <translation>Wert</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1220"/>
+      <location filename="ArchCommands.py" line="1226"/>
       <source>Unit</source>
       <translation>Einheit</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1226"/>
+      <location filename="ArchCommands.py" line="1233"/>
       <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
       <translation>Das Objekt weist kein IFC-Eigenschaften Attribut auf. Die Erstellung einer Kalulationstabelle für dieses Objekt abbrechen: </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1244"/>
+      <location filename="ArchCommands.py" line="1251"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Erstelle Kalkulationstabelle für IFC-Eigenschaften</translation>
     </message>
@@ -1670,12 +1670,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="ArchCommands.py" line="1235"/>
+      <location filename="ArchCommands.py" line="1242"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Erstelle IFC Kalulationstabelle...</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1237"/>
+      <location filename="ArchCommands.py" line="1244"/>
       <source>Creates a spreadsheet to store ifc properties of an object.</source>
       <translation>Erstellt eine Kalulationstabelle um IFC-Eigenschaften eines Objekts zu speichern.</translation>
     </message>
@@ -2694,17 +2694,17 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="109"/>
+      <location filename="InitGui.py" line="73"/>
       <source>Arch tools</source>
       <translation>Arch Werkzeuge</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="110"/>
+      <location filename="InitGui.py" line="74"/>
       <source>Draft tools</source>
       <translation>Entwurf Werkzeuge</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="111"/>
+      <location filename="InitGui.py" line="75"/>
       <source>Draft mod tools</source>
       <translation>Entwurf Modifikationswerkzeuge</translation>
     </message>
@@ -2712,22 +2712,22 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
   <context>
     <name>arch</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="77"/>
       <source>&amp;Architecture</source>
       <translation>&amp;Architektur</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>&amp;Draft</source>
       <translation>&amp;Entwurf</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="79"/>
       <source>Utilities</source>
       <translation>Dienstprogramme</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>Snapping</source>
       <translation>Objektfang</translation>
     </message>

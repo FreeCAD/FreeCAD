@@ -29,7 +29,7 @@
     <message>
         <location filename="../../Command.cpp" line="104"/>
         <source>Next page</source>
-        <translation>Kolejna strona</translation>
+        <translation>Następna strona</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="105"/>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../../Command.cpp" line="52"/>
         <source>Opens a website in FreeCAD</source>
-        <translation>Otwórz stronę we FreeCAD&apos;zie</translation>
+        <translation>Otwórz stronę we FreeCADzie</translation>
     </message>
 </context>
 <context>

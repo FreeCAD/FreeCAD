@@ -346,7 +346,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="131"/>
+      <location filename="InitGui.py" line="80"/>
       <source>OpenSCAD Part tools</source>
       <translation>OpenSCAD 零件工具</translation>
     </message>
@@ -354,7 +354,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="129"/>
+      <location filename="InitGui.py" line="78"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCAD工具</translation>
     </message>

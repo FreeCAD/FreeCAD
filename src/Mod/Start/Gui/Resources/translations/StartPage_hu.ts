@@ -164,11 +164,6 @@
       <translation>Legújabb videó</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>Legfrissebb hírek</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="55"/>
       <source>On the web</source>
       <translation>A weben</translation>
@@ -302,6 +297,26 @@
       <location filename="StartPage.py" line="109"/>
       <source>Load an FEM example analysis</source>
       <translation>Betölt egy FEM (Finite Element Method) példa elemzést</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>Legújabb követések</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>Szerezzen be egy fejlesztői változatot</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>&lt;b&gt;Fejlesztői változatokat&lt;/b&gt; a közösség tagjai bocsátják rendelkezésre időről-időre, és általában a legújabb módosításokat tartalmazzák, de több valószínűséggel tartalmazhat hibákat.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>Lásd az összes követőt</translation>
     </message>
   </context>
 </TS>

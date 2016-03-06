@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>Plik PDF</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -358,12 +358,12 @@ Do you want to continue?</source>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Otwarcie pliku nie powiodło się</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>Nie można otworzyć pliku &quot;%1&quot; do zapisu.</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished">No active view</translation>
+        <translation>Brak aktywnego widoku</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -814,7 +814,7 @@ Do you want to continue?</source>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished">Scalable Vector Graphic</translation>
+        <translation>Skalowalna grafika wektorowa</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -839,7 +839,7 @@ Do you want to continue?</source>
     <message>
         <location line="-357"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished">Select exactly one Part object.</translation>
+        <translation>Wybierz dokładnie jeden obiekt Części.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -850,12 +850,12 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+        <translation>Wybierz dokładnie jeden obiekt Arkusza.</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>

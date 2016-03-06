@@ -466,7 +466,7 @@ Ali želite nadaljevati?</translation>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Največje odstopanje mreže:</translation>
     </message>
     <message>
         <location line="+57"/>

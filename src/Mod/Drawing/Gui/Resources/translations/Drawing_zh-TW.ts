@@ -207,13 +207,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished">&amp;Spreadsheet View</translation>
+        <translation>試算表視圖(&amp;S)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+        <translation>於使用中之工程圖內插入所選之試算表視圖</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF 檔</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -358,12 +358,12 @@ Do you want to continue?</source>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>開啟檔案失敗</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>無法開啟並寫入檔案 &apos;%1&apos; </translation>
     </message>
 </context>
 <context>
@@ -673,17 +673,17 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished">There is currently no active document to complete the operation</translation>
+        <translation>目前尚無使用中之檔案可以完成操作</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished">No active view</translation>
+        <translation>無使用中之視圖</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished">There is currently no active view to complete the operation</translation>
+        <translation>目前尚無使用中之視圖可以完成操作</translation>
     </message>
 </context>
 <context>
@@ -814,7 +814,7 @@ Do you want to continue?</source>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished">Scalable Vector Graphic</translation>
+        <translation>可縮放向量圖檔</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -850,12 +850,12 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+        <translation>請僅選擇一個試算表物件</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>

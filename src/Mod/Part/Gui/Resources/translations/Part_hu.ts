@@ -175,7 +175,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Angular</source>
-        <translation type="unfinished">Measure Angular</translation>
+        <translation>Hosszirányú méretezés</translation>
     </message>
 </context>
 <context>
@@ -189,7 +189,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation>Minden törlése</translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Linear</source>
-        <translation type="unfinished">Measure Linear</translation>
+        <translation>Egyenes méretezés</translation>
     </message>
 </context>
 <context>
@@ -217,7 +217,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>3D kapcsolása</translation>
     </message>
 </context>
 <context>
@@ -231,7 +231,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle All</source>
-        <translation type="unfinished">Toggle All</translation>
+        <translation>Mindegyiket kapcsolja</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Toggle Delta</translation>
+        <translation>Delta ki-/ bekapcsolása</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location line="-14"/>
         <source>Create a cube solid</source>
-        <translation type="unfinished">Create a cube solid</translation>
+        <translation>Kocka szilárd test létrehozása</translation>
     </message>
     <message>
         <source>Box</source>
@@ -394,12 +394,12 @@
     <message>
         <location line="+1"/>
         <source>Join objects...</source>
-        <translation type="unfinished">Join objects...</translation>
+        <translation>Objektumok csatlakoztatása...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join walled objects</source>
-        <translation type="unfinished">Join walled objects</translation>
+        <translation>Fallal határolt objektumok csatlakoztatása</translation>
     </message>
 </context>
 <context>
@@ -412,12 +412,12 @@
     <message>
         <location line="+1"/>
         <source>Make compound</source>
-        <translation type="unfinished">Make compound</translation>
+        <translation>Összetett létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a compound of several shapes</source>
-        <translation type="unfinished">Make a compound of several shapes</translation>
+        <translation>Több alakzat összetettjének létrehozása</translation>
     </message>
 </context>
 <context>
@@ -565,7 +565,7 @@
     <message>
         <location line="+1"/>
         <source>Make a union of several shapes</source>
-        <translation>Készíts egy uniót több formához</translation>
+        <translation>Készíts egy egyesítést több alakzattal</translation>
     </message>
 </context>
 <context>
@@ -636,12 +636,12 @@
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished">Make face from sketch</translation>
+        <translation>Vázlatból felület létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from selected sketches</source>
-        <translation type="unfinished">Make face from selected sketches</translation>
+        <translation>Kiválasztott vázlatokból felület létrehozása</translation>
     </message>
 </context>
 <context>
@@ -803,7 +803,7 @@
     <message>
         <location line="+1"/>
         <source>Create a ruled surface from either two Edges or two wires</source>
-        <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
+        <translation>Vonalazott felület létrehozása két élből vagy két dróthálóból</translation>
     </message>
     <message>
         <source>Create a ruled surface from two curves</source>
@@ -1255,14 +1255,14 @@
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished">Succeeded</translation>
+        <translation>Sikerült</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+5"/>
         <location line="+5"/>
         <source>Failed</source>
-        <translation type="unfinished">Failed</translation>
+        <translation>Sikertelen</translation>
     </message>
 </context>
 <context>
@@ -1285,17 +1285,17 @@
     <message>
         <location line="-69"/>
         <source>Select faces</source>
-        <translation type="unfinished">Select faces</translation>
+        <translation>Válassza ki a felületeket</translation>
     </message>
     <message>
         <location line="-16"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Kijelölés</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Select edges</source>
-        <translation type="unfinished">Select edges</translation>
+        <translation>Válasszon éleket</translation>
     </message>
     <message>
         <location line="+47"/>
@@ -1335,12 +1335,12 @@
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Constant Length</translation>
+        <translation>Állandó hosszúságú</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Variable Length</translation>
+        <translation>Változó hosszúságú</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1351,12 +1351,12 @@
         <location line="+1"/>
         <location line="+545"/>
         <source>Start length</source>
-        <translation type="unfinished">Start length</translation>
+        <translation>Hossz kezdete</translation>
     </message>
     <message>
         <location line="-544"/>
         <source>End length</source>
-        <translation type="unfinished">End length</translation>
+        <translation>Hossz vége</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1429,7 +1429,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished">IGES</translation>
+        <translation>IGES</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1439,7 +1439,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished">Units for export of IGES</translation>
+        <translation>IGES export mértékegysége</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1459,17 +1459,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Write solids and shells as</source>
-        <translation type="unfinished">Write solids and shells as</translation>
+        <translation>Szilárdtestek és kagylók kiírása mint</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
+        <translation>Vágott felületek csoportja (144. típus)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-        <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
+        <translation>Szilárdtest (186. típus) és a kagyló (514. típus) / B-REP mód</translation>
     </message>
     <message>
         <source>Enable B-REP mode</source>
@@ -1483,27 +1483,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished">Skip blank entities</translation>
+        <translation>Üres tételek átugrása</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished">Header</translation>
+        <translation>Fejléc</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished">Company</translation>
+        <translation>Vállalat</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished">Product</translation>
+        <translation>Termék</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished">Author</translation>
+        <translation>Létrehozó</translation>
     </message>
 </context>
 <context>
@@ -1511,7 +1511,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished">STEP</translation>
+        <translation>STEP</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1521,7 +1521,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished">Units for export of STEP</translation>
+        <translation>STEP export mértékegysége</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1541,27 +1541,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished">Scheme</translation>
+        <translation>Terv</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished">Header</translation>
+        <translation>Fejléc</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished">Company</translation>
+        <translation>Vállalat</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished">Author</translation>
+        <translation>Létrehozó</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished">Product</translation>
+        <translation>Termék</translation>
     </message>
 </context>
 <context>
@@ -1720,7 +1720,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgPartImportIgesImp.cpp" line="+71"/>
         <source>IGES</source>
-        <translation type="unfinished">IGES</translation>
+        <translation>IGES</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1767,7 +1767,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgPartImportStepImp.cpp" line="+70"/>
         <source>STEP</source>
-        <translation type="unfinished">STEP</translation>
+        <translation>STEP</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1942,13 +1942,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+16"/>
         <source>Prism</source>
-        <translation type="unfinished">Prism</translation>
+        <translation>Prizma</translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../../DlgPrimitives.cpp" line="+67"/>
         <source>Spiral</source>
-        <translation type="unfinished">Spiral</translation>
+        <translation>Spirál</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1971,7 +1971,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+14"/>
         <source>Regular polygon</source>
-        <translation type="unfinished">Regular polygon</translation>
+        <translation>Szabályos sokszög</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2033,28 +2033,28 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished">U parameter:</translation>
+        <translation>U paraméter:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished">V parameters:</translation>
+        <translation>V paraméterek:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Radius 3:</translation>
+        <translation>3. sugár:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished">V parameter:</translation>
+        <translation>V paraméter:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished">U Parameter:</translation>
+        <translation>U paraméter:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2068,13 +2068,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+150"/>
         <location line="+882"/>
         <source>Polygon:</source>
-        <translation type="unfinished">Polygon:</translation>
+        <translation>Sokszög:</translation>
     </message>
     <message>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished">Circumradius:</translation>
+        <translation>Körsugár:</translation>
     </message>
     <message>
         <location line="-831"/>
@@ -2119,12 +2119,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+88"/>
         <source>Growth:</source>
-        <translation type="unfinished">Growth:</translation>
+        <translation>Növekedés:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rotations:</source>
-        <translation type="unfinished">Number of rotations:</translation>
+        <translation>Fordulatok száma:</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -2253,7 +2253,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Create Solid</source>
-        <translation type="unfinished">Create Solid</translation>
+        <translation>Szilárdtest létrehozás</translation>
     </message>
     <message>
         <location filename="../../DlgRevolution.cpp" line="+178"/>
@@ -2296,7 +2296,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished">Maximum angular deflection</translation>
+        <translation>Legnagyobb szöghajlás</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
@@ -2391,17 +2391,17 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation type="unfinished">Automatically refine model after sketch-based operation</translation>
+        <translation>Vázlat-alapú művelet után automatikus modell finomítás</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Object naming</source>
-        <translation type="unfinished">Object naming</translation>
+        <translation>Objektumok elnevezése</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add name of base object</source>
-        <translation type="unfinished">Add name of base object</translation>
+        <translation>Adjon nevet az alap objektumnak</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -2414,22 +2414,22 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
         <source>Part colors</source>
-        <translation type="unfinished">Part colors</translation>
+        <translation>Alkatrészek színei</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Default Part colors</translation>
+        <translation>Alapértelmezett alkatrész színek</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Default shape color</translation>
+        <translation>Alapértelmezett alakzat szín</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The default color for new shapes</source>
-        <translation type="unfinished">The default color for new shapes</translation>
+        <translation>Az új alakzatok alapértelmezett színei</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2440,7 +2440,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line color for new shapes</source>
-        <translation type="unfinished">The default line color for new shapes</translation>
+        <translation>Az alapértelmezett vonalszín új alakzatokhoz</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -2451,43 +2451,43 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished">The default line thickness for new shapes</translation>
+        <translation>Az alapértelmezett vonalvastagság új alakzatokhoz</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+68"/>
         <source>px</source>
-        <translation type="unfinished">px</translation>
+        <translation>kp</translation>
     </message>
     <message>
         <location line="-43"/>
         <source>Default vertex color</source>
-        <translation type="unfinished">Default vertex color</translation>
+        <translation>Alapértelmezett végpont szín</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Default vertex size</translation>
+        <translation>Alapértelmezett végpont méret</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Bounding box color</source>
-        <translation type="unfinished">Bounding box color</translation>
+        <translation>Határolókeret színe</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of bounding boxes in the 3D view</source>
-        <translation type="unfinished">The color of bounding boxes in the 3D view</translation>
+        <translation>A határolókeretek színe a 3D-s nézetben</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Annotations</source>
-        <translation type="unfinished">Annotations</translation>
+        <translation>Magyarázó szövegek</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default text color</source>
-        <translation type="unfinished">Default text color</translation>
+        <translation>Alapértelmezett szövegszín</translation>
     </message>
 </context>
 <context>
@@ -2531,7 +2531,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
         <location filename="../../TaskLoft.cpp" line="+73"/>
         <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+        <translation>Csúcspont/Él/Drótváz/Felület</translation>
     </message>
     <message>
         <location line="-144"/>
@@ -2547,7 +2547,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+        <translation>Szükséges legalább két csúcspont, él, drótháló vagy felület.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2598,7 +2598,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished"></translation>
+        <translation>Alap pont</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -2664,12 +2664,12 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Rossz kijelölés</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Válasszon ki a két csúcsot</translation>
@@ -2681,7 +2681,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished">Select three or more vertices</translation>
+        <translation>Válasszon három vagy több csúcspontot</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2694,32 +2694,32 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
         <translation>Válasszon ki a két vagy több felületet</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Válasszon ki a csak egy tárgy részt</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Válasszon ki a két csúcsot egy él létrehozásához</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished">Select a list of vertices</translation>
+        <translation>Válasszon csúcspontok listáját</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Válasszon ki egy zárt él halmazt</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Válasszon ki szomszédos felületeket</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Minden alakzat kiválasztható</translation>
     </message>
@@ -2740,7 +2740,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+        <translation>Csúcspont/Él/Drótváz/Felület</translation>
     </message>
     <message>
         <location line="+129"/>
@@ -2756,7 +2756,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
+        <translation>Jelöljön ki egy vagy több egymáshoz kapcsolódó élt, melyek mentén pásztázni (Sweep) szeretne.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2776,7 +2776,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation type="unfinished">&apos;%1&apos; cannot be used as profile and path.</translation>
+        <translation>&quot;%1&quot; profilként és elérési útként nem használható.</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -2791,13 +2791,13 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished">Select one or more connected edges in the 3d view and press &apos;Done&apos;</translation>
+        <translation>Jelöljön ki egy vagy több csatlakoztatott élt a 3D-s nézetben, és nyomjon a &quot;Kész&quot;-re</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished">The selected sweep path is invalid.</translation>
+        <translation>A kijelölt pásztázási (sweep) út érvénytelen.</translation>
     </message>
 </context>
 <context>
@@ -2805,7 +2805,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="+548"/>
         <source>Shape Content</source>
-        <translation type="unfinished">Shape Content</translation>
+        <translation>Alakzat tartalma</translation>
     </message>
 </context>
 <context>
@@ -3152,7 +3152,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished">Face from vertices</translation>
+        <translation>Csúcspontokból felület</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3175,7 +3175,12 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
         <translation>Szilárd testek felületekből</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation type="unfinished">Alakzat finomítás</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Létrehozás</translation>
     </message>
@@ -3195,7 +3200,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished">Sweep Path</translation>
+        <translation>Pásztázás (Sweep) útvonala</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3262,7 +3267,7 @@ in the 3D view for the sweep path.</source>
         <location line="+82"/>
         <location line="+82"/>
         <source>Non-solids selected</source>
-        <translation type="unfinished">Non-solids selected</translation>
+        <translation>Nem szilárdtest a kiválasztott</translation>
     </message>
     <message>
         <location line="-163"/>
@@ -3270,13 +3275,12 @@ in the 3D view for the sweep path.</source>
         <location line="+82"/>
         <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-        <translation type="unfinished">The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</translation>
+        <translation>Logikai műveletekben a nem szilárdtestek használata nem várt eredményekhez vezethet. Folytatni szeretné?</translation>
     </message>
     <message>
         <location line="+171"/>
         <source>Select one shape or more, please.</source>
-        <translation type="unfinished">Select one shape or more, please.</translation>
+        <translation>Kérem, válasszon egy vagy több alakzatot.</translation>
     </message>
     <message>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
@@ -3342,7 +3346,7 @@ Do you want to continue?</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished">Import-Export</translation>
+        <translation>Importálás-Exportálás</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3358,7 +3362,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+387"/>
         <source>All CAD Files</source>
-        <translation type="unfinished">All CAD Files</translation>
+        <translation>Minden CAD fájl</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3368,7 +3372,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+804"/>
         <source>You have to select either two edges or two wires.</source>
-        <translation>Választani kell két élet, vagy két hálót.</translation>
+        <translation>Választani kell két élet, vagy két dróthálót.</translation>
     </message>
     <message>
         <location filename="../../ViewProviderMirror.cpp" line="-325"/>
@@ -3608,57 +3612,57 @@ Do you want to continue?</translation>
     <message>
         <location line="+12"/>
         <source>BOPAlgo CheckUnknown</source>
-        <translation type="unfinished">BOPAlgo CheckUnknown</translation>
+        <translation>BOPAlgo CheckUnknown</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo BadType</source>
-        <translation type="unfinished">BOPAlgo BadType</translation>
+        <translation>BOPAlgo BadType</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo SelfIntersect</source>
-        <translation type="unfinished">BOPAlgo SelfIntersect</translation>
+        <translation>BOPAlgo SelfIntersect</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo TooSmallEdge</source>
-        <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
+        <translation>BOPAlgo TooSmallEdge</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NonRecoverableFace</source>
-        <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
+        <translation>BOPAlgo NonRecoverableFace</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfVertex</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
+        <translation>BOPAlgo IncompatibilityOfVertex</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfEdge</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
+        <translation>BOPAlgo IncompatibilityOfEdge</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfFace</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
+        <translation>BOPAlgo IncompatibilityOfFace</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo OperationAborted</source>
-        <translation type="unfinished">BOPAlgo OperationAborted</translation>
+        <translation>BOPAlgo OperationAborted</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo GeomAbs_C0</source>
-        <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+        <translation>BOPAlgo GeomAbs_C0</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NotValid</source>
-        <translation type="unfinished">BOPAlgo NotValid</translation>
+        <translation>BOPAlgo NotValid</translation>
     </message>
     <message>
         <location line="+284"/>
@@ -3670,7 +3674,7 @@ Do you want to continue?</translation>
         <location filename="../../TaskDimension.cpp" line="+552"/>
         <location line="+1040"/>
         <source>Selections</source>
-        <translation type="unfinished">Selections</translation>
+        <translation>Kijelölések</translation>
     </message>
     <message>
         <location line="-1033"/>
@@ -3681,27 +3685,27 @@ Do you want to continue?</translation>
     <message>
         <location line="-265"/>
         <source>Reset Dialog</source>
-        <translation type="unfinished">Reset Dialog</translation>
+        <translation>Párbeszédpanel visszaállítás</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Toggle 3d</translation>
+        <translation>3D kapcsolása</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Toggle Delta</translation>
+        <translation>Delta ki-/ bekapcsolása</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation>Minden törlése</translation>
     </message>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="+80"/>
         <source>Show control points</source>
-        <translation type="unfinished">Show control points</translation>
+        <translation>Ellenőrző pontok megjelenítése</translation>
     </message>
 </context>
 <context>

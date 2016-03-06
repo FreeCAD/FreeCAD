@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Involute parameter</translation>
+        <translation>Befelé görbítés paramétere</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation>Fogak száma:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation>Modulok:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">High precision:</translation>
+        <translation>Nagy pontosság:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">True</translation>
+        <translation>Igaz</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">False</translation>
+        <translation>Hamis</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">External gear:</translation>
+        <translation>Külső fogaskerék:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Pressure angle:</translation>
+        <translation>Nyomás szöge:</translation>
     </message>
 </context>
 <context>
@@ -680,7 +680,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation>Válasszon referenciát...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -715,7 +715,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation>Nem definiált</translation>
     </message>
 </context>
 <context>
@@ -762,7 +762,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation>Válasszon referenciát...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -781,12 +781,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation>Válasszon egy felületet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation>Nem definiált</translation>
     </message>
 </context>
 <context>
@@ -1136,14 +1136,14 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal sketch axis</translation>
+        <translation>Normál vázlat tengely</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation>Válasszon referenciát...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1234,7 +1234,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation>Nem definiált</translation>
     </message>
 </context>
 <context>
@@ -1368,17 +1368,17 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished">No valid sketches selected</translation>
+        <translation>Nincs kijelölt érvényes vázlat</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation>Kijelölt vázlatokat/2D tárgyakat nem lehet kitölteni. Jelöljön ki egy olyan érvényes vázlatot vagy 2D objektumot, ami nem használ egyéb funkciót.</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation>Kijelölt vázlatokat/2D tárgyakat nem lehet esztergálni. Jelöljön ki egy olyan érvényes vázlatot vagy 2D objektumot, ami nem használ egyéb funkciót.</translation>
     </message>
     <message>
         <location line="+393"/>
@@ -1412,7 +1412,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
+        <translation>Először hozzon létre egy kivonási vagy összeadási tulajdonságot</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1485,13 +1485,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Lost link to base sketch</translation>
+        <translation>Elveszítette a kapcsolatot a vázlat alapjával</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
+        <translation>Az tárgy nem módosítható, mert a kapcsolat a vázlat alapjával elveszett.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1532,12 +1532,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Edit groove</translation>
+        <translation>Groove szerkesztése</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Edit revolve</translation>
+        <translation>Esztergálás szerkesztése</translation>
     </message>
 </context>
 <context>
