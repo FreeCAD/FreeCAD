@@ -444,7 +444,24 @@ Document* Application::openDocument(const char * FileName)
     newDoc->FileName.setValue(File.filePath());
 
     // read the document
-    newDoc->restore();
+    try {
+        newDoc->restore();
+    } catch (...) {
+        for (std::map<std::string, Document *>::iterator it = DocMap.begin();
+             it != DocMap.end(); ++it) {
+            if (it->second == newDoc) {
+                DocMap.erase(it);
+                break;
+            }
+        }
+
+        if (newDoc == _pActiveDoc)
+            setActiveDocument(static_cast<Document *>(0));
+
+        delete newDoc;
+
+        throw;
+    }
 
     return newDoc;
 }
