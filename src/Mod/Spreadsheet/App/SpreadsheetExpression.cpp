@@ -319,7 +319,13 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     }
     temp[i] = '\0';
 
-    ret_val = atof( temp );
+    errno = 0;
+    ret_val = strtod( temp, NULL );
+    if (ret_val == 0 && errno == ERANGE)
+        throw Base::Exception("Number underflow.");
+    if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
+        throw Base::Exception("Number overflow.");
+
     return ret_val;
 }
 
