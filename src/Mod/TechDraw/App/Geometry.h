@@ -24,14 +24,27 @@
 #define TECHDRAW_GEOMETRY_H
 
 #include <Base/Tools2D.h>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Edge.hxx>
+
 class BRepAdaptor_Curve;
 
 namespace TechDrawGeometry {
 
-enum ExtractionType {
+enum ExtractionType {               //obs sb vis/hid + hard/smooth/seam/out(edgeClass?)
       Plain = 0,
       WithHidden = 1,
       WithSmooth = 2
+};
+
+enum edgeClass {
+    ecNONE,                                                            //not used, OCC index starts at 1
+    ecUVISO,
+    ecOUTLINE,
+    ecSMOOTH,
+    ecSEAM,
+    ecHARD
 };
 
 enum GeomType {
@@ -48,11 +61,15 @@ class TechDrawExport BaseGeom
 {
 public:
    BaseGeom();
-   ~BaseGeom() {}
+   virtual ~BaseGeom() {}
 public:
     GeomType geomType;
-    ExtractionType extractType;
+    ExtractionType extractType;     //obs
+    edgeClass classOfEdge;
+    bool visible;
     bool reversed;
+    int ref3D;
+    TopoDS_Edge occEdge;            //projected Edge
     std::vector<Base::Vector2D> findEndPoints();
     Base::Vector2D getStartPoint();
     Base::Vector2D getEndPoint();
@@ -61,8 +78,7 @@ public:
 class TechDrawExport Circle: public BaseGeom
 {
 public:
-  Circle(const BRepAdaptor_Curve &c);
-  Circle();
+  Circle(const TopoDS_Edge &e);
   ~Circle() {}
 public:
   Base::Vector2D center;
@@ -72,8 +88,7 @@ public:
 class TechDrawExport Ellipse: public BaseGeom
 {
 public:
-  Ellipse(const BRepAdaptor_Curve &c);
-  Ellipse();
+  Ellipse(const TopoDS_Edge &e);
   ~Ellipse() {}
 public:
   Base::Vector2D center;
@@ -86,8 +101,7 @@ public:
 class TechDrawExport AOE: public Ellipse
 {
 public:
-  AOE(const BRepAdaptor_Curve &c);
-  AOE();
+  AOE(const TopoDS_Edge &e);
   ~AOE() {}
 public:
   Base::Vector2D startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
@@ -105,8 +119,7 @@ public:
 class TechDrawExport AOC: public Circle
 {
 public:
-  AOC(const BRepAdaptor_Curve &c);
-  AOC();
+  AOC(const TopoDS_Edge &e);
   ~AOC() {}
 public:
   Base::Vector2D startPnt;
@@ -142,23 +155,20 @@ struct BezierSegment
 class TechDrawExport BSpline: public BaseGeom
 {
 public:
-  BSpline(const BRepAdaptor_Curve &c);
-  BSpline();
+  BSpline(const TopoDS_Edge &e);
   ~BSpline(){}
 public:
   bool isLine(void);
   std::vector<BezierSegment> segments;
 };
 
-class Generic: public BaseGeom
+class TechDrawExport Generic: public BaseGeom
 {
 public:
-  Generic(Base::Vector2D start, Base::Vector2D end);
-  Generic(const BRepAdaptor_Curve& c);
+  Generic(const TopoDS_Edge &e);
   Generic();
   ~Generic() {}
   std::vector<Base::Vector2D> points;
-
 };
 
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
@@ -177,30 +187,35 @@ struct TechDrawExport Face
   std::vector<Wire *> wires;
 };
 
-/// Simple vertex
-struct TechDrawExport Vertex
+//! 2D Vertex
+class TechDrawExport Vertex
 {
+public:
   Vertex(double x, double y) { pnt = Base::Vector2D(x, y); }
   Vertex(Base::Vector2D v) { pnt = v; }
   ~Vertex() {}
   Base::Vector2D pnt;
   ExtractionType extractType;
+  bool visible;
+  int ref3D;
+  TopoDS_Vertex occVertex;
+  bool isEqual(Vertex* v, double tol);
 };
 
 //*** utility functions
 extern "C" {
 
-struct TechDrawExport getNextReturn {
+struct TechDrawExport getNextReturnVal {
     unsigned int index;
     bool reversed;
-    explicit getNextReturn(int i = 0, bool r = false) :
+    explicit getNextReturnVal(int i = 0, bool r = false) :
         index(i),
         reversed(r)
         {}
 };
 
 std::vector<TechDrawGeometry::BaseGeom*> chainGeoms(std::vector<TechDrawGeometry::BaseGeom*> geoms);
-getNextReturn nextGeom(Base::Vector2D atPoint,
+getNextReturnVal nextGeom(Base::Vector2D atPoint,
                               std::vector<TechDrawGeometry::BaseGeom*> geoms,
                               std::vector<bool> used,
                               double tolerance);

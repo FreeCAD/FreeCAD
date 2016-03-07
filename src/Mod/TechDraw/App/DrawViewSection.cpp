@@ -204,26 +204,37 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     if (!mkCut.IsDone())
         return new App::DocumentObjectExecReturn("Section cut has failed");
 
-    // Cache the result
-    result = mkCut.Shape();
+    // Cache the sectionShape
+    sectionShape = mkCut.Shape();
 
     try {
-        geometryObject->setTolerance(Tolerance.getValue());
-        geometryObject->setScale(Scale.getValue());
-        //TODO: Do we need to check for nonzero XAxisDirection here?
-        geometryObject->extractGeometry(result, Direction.getValue(), ShowHiddenLines.getValue(), XAxisDirection.getValue());
-        bbox = geometryObject->calcBoundingBox();
-
-        touch();
+        buildGeometryObject(sectionShape);
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        Base::Console().Log("DrawViewSection::execute - extractGeometry failed: %s\n",e->GetMessageString());
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+        Handle_Standard_Failure e1 = Standard_Failure::Caught();
+        Base::Console().Log("DrawViewSection::execute - extractGeometry failed: %s\n",e1->GetMessageString());
+        return new App::DocumentObjectExecReturn(e1->GetMessageString());
+    }
+
+    TopoDS_Compound sectionFaces;
+    try {
+        sectionFaces = getSectionFaces();
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e2 = Standard_Failure::Caught();
+        Base::Console().Log("DrawViewSection::execute - getSectionFaces failed: %s\n",e2->GetMessageString());
+        return new App::DocumentObjectExecReturn(e2->GetMessageString());
+    }
+
+    if (!sectionFaces.IsNull()) {
+        //TODO: do something with sectionFaces
+        //?add to GeometryObject faceGeom? but need to tag these faces as "special"
+        //how does QGIVSection know to shade these faces??
     }
 
     // TODO: touch references? see DrawViewPart.execute()
-    return DrawView::execute();                                     //sb DrawViewPart?
+    touch();
+    return DrawView::execute();                                     //note: not DrawViewPart
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
@@ -234,39 +245,37 @@ gp_Pln DrawViewSection::getSectionPlane() const
     return gp_Pln(gp_Pnt(plnPnt.x, plnPnt.y, plnPnt.z), gp_Dir(plnNorm.x, plnNorm.y, plnNorm.z));
 }
 
-//! tries to find the intersection of the section plane with the part???
-//face logic is turned off in GeometryObject, so this won't work now.
-void DrawViewSection::getSectionSurface(std::vector<TechDrawGeometry::Face *> &sectionFace) const {
-
-#if MOD_TECHDRAW_HANDLE_FACES
-    if(result.IsNull()){
-        //throw Base::Exception("Sectional View Result is Empty");
-        Base::Console().Log("DrawViewSection::getSectionSurface - Sectional View Result is Empty\n");
-        return;
+//! tries to find the intersection of the section plane with the sectionShape (a collection of planar faces)
+TopoDS_Compound DrawViewSection::getSectionFaces(void)
+{
+    TopoDS_Compound result;
+    if(sectionShape.IsNull()){
+        //throw Base::Exception("Sectional View sectionShape is Empty");
+        Base::Console().Log("DrawViewSection::getSectionSurface - Sectional View sectionShape is Empty\n");
+        return result;
     }
 
     gp_Pln pln = getSectionPlane();
     BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
+    builder.MakeCompound(result);
 
     // Iterate through all faces
-    TopExp_Explorer face(result, TopAbs_FACE);
-    for ( ; faces.More(); faces.Next()) {
-        const TopoDS_Face& face = TopoDS::Face(faces.Current());
+    TopExp_Explorer expFaces(sectionShape, TopAbs_FACE);
+    for ( ; expFaces.More(); expFaces.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(expFaces.Current());
 
         BRepAdaptor_Surface adapt(face);
         if (adapt.GetType() == GeomAbs_Plane){
             gp_Pln plane = adapt.Plane();
             if(plane.Contains(pln.Location(), Precision::Confusion()) && plane.Axis().IsParallel(pln.Axis(), Precision::Angular())) {
-                builder.Add(comp, face);
+                builder.Add(result, face);
             }
         }
     }
-    //TODO: Do we need to check for nonzero XAxisDirection here?
-    geometryObject->projectSurfaces(comp, result, Direction.getValue(), XAxisDirection.getValue(), sectionFace);
-#endif
+    return result;
 }
+
+
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App {

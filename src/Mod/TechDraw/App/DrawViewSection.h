@@ -30,6 +30,7 @@
 #include "DrawViewPart.h"
 
 class gp_Pln;
+class TopoDS_Compound;
 
 namespace TechDraw
 {
@@ -65,10 +66,10 @@ public:
     }
 
 public:
-    void getSectionSurface(std::vector<TechDrawGeometry::Face *> &sectionFace) const;
+    TopoDS_Compound getSectionFaces(void);
 
 protected:
-    TopoDS_Shape result;
+    TopoDS_Shape sectionShape;
     gp_Pln getSectionPlane() const;
 };
 

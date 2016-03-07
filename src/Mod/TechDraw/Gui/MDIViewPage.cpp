@@ -485,6 +485,7 @@ void MDIViewPage::selectionChanged()
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),
                                               ss.str().c_str()));
+                //Base::Console().Message("TRACE - MDIVP::selectionChanged - selection: %s\n",ss.str().c_str());
             }
 
             QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);

@@ -48,9 +48,11 @@
 #include "../App/DrawUtil.h"
 #include "../App/DrawViewPart.h"
 #include "../App/DrawHatch.h"
+#include "../App/Geometry.h"
 #include "QGIViewPart.h"
 
 using namespace TechDrawGui;
+using namespace TechDrawGeometry;
 
 void _dumpPath(const char* text,QPainterPath path);
 
@@ -384,33 +386,39 @@ void QGIViewPart::drawViewPart()
     // Draw Edges
     const std::vector<TechDrawGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
     const std::vector<int> &refs = viewPart->getEdgeReferences();
-    std::vector<TechDrawGeometry::BaseGeom *>::const_iterator it = geoms.begin();
+    std::vector<TechDrawGeometry::BaseGeom *>::const_iterator itEdge = geoms.begin();
     QGIEdge* item;
 
-    for(int i = 0 ; it != geoms.end(); ++it, i++) {
-        //TODO: investigate if an Edge can be both Hidden and Smooth???
-        if(((*it)->extractType == TechDrawGeometry::Plain)  ||
-          (((*it)->extractType == TechDrawGeometry::WithHidden) && viewPart->ShowHiddenLines.getValue()) ||
-          ((*it)->extractType == TechDrawGeometry::WithSmooth)) {
-//          (((*it)->extractType == TechDrawGeometry::WithSmooth) && part->ShowSmoothLines.getValue())) {
-            //item = new QGIEdge(refs.at(i));
+    for(int i = 0 ; itEdge != geoms.end(); itEdge++, i++) {
+        bool showEdge = false;
+        if ((*itEdge)->visible) {
+            if (((*itEdge)->classOfEdge == ecHARD) ||
+                ((*itEdge)->classOfEdge == ecOUTLINE) ||
+                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->ShowSmoothLines.getValue()) ||
+                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->ShowSeamLines.getValue())) {
+                showEdge = true;
+            }
+        } else {
+            if (viewPart->ShowHiddenLines.getValue()) {
+                showEdge = true;
+            }
+        }
+        if (showEdge) {
             item = new QGIEdge(i);
             item->setReference(refs.at(i));
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);
             item->setStrokeWidth(lineWidth);
-            if((*it)->extractType == TechDrawGeometry::WithHidden) {
+            if(!(*itEdge)->visible) {
                 item->setStrokeWidth(lineWidthHid);
                 item->setHiddenEdge(true);
-            } else if((*it)->extractType == TechDrawGeometry::WithSmooth) {
-                item->setSmoothEdge(true);
             }
-            item->setPath(drawPainterPath(*it));
+            item->setPath(drawPainterPath(*itEdge));
             item->setFlag(QGraphicsItem::ItemIsSelectable, true);
             item->setAcceptHoverEvents(true);
 
             //debug a path
-            //QPainterPath edgePath=drawPainterPath(*it);
+            //QPainterPath edgePath=drawPainterPath(*itEdge);
             //item->setPath(edgePath);
             //std::stringstream edgeId;
             //edgeId << "edge" << i;
@@ -422,7 +430,6 @@ void QGIViewPart::drawViewPart()
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     const std::vector<int> &vertRefs                    = viewPart->getVertexReferences();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         QGIVertex *item = new QGIVertex(i);
         item->setReference(vertRefs.at(i));

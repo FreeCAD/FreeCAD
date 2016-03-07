@@ -72,11 +72,11 @@ void QGIViewSection::drawSectionFace()
 
     //Base::Console().Log("drawing section face\n");
 
-    // Get the section face from the feature
-    std::vector<TechDrawGeometry::Face *> faceGeoms;
-    part->getSectionSurface(faceGeoms);
-    if (faceGeoms.empty()) {
-        Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No Face available. Check Section plane.\n");
+    // Get the section faces from the feature
+    std::vector<TechDrawGeometry::Face *> sectionFaces;
+    //part->getSectionFaces(faceGeoms);
+    if (sectionFaces.empty()) {
+        Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
     }
 
@@ -124,7 +124,7 @@ void QGIViewSection::drawSectionFace()
 
         if(graphicsItem) {
             // Hide any edges that are hidden if option is set.
-            //             if((*fit)->extractType == TechDrawGeometry::WithHidden && !part->ShowHiddenLines.getValue())
+            //             if(!(*fit)->visible && !part->ShowHiddenLines.getValue())
             //                 graphicsItem->hide();
 
             addToGroup(graphicsItem);
