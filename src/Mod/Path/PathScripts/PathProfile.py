@@ -274,23 +274,31 @@ class ObjectProfile:
                 obj.ViewObject.Visibility = False
 
 
-# class ViewProviderProfile:
+class _ViewProviderProfile:
 
-#     def __init__(self,vobj):
-#         vobj.Proxy = self
+    def __init__(self,vobj):
+        vobj.Proxy = self
 
-#     def attach(self,vobj):
-#         self.Object = vobj.Object
-#         return
+    def attach(self,vobj):
+        self.Object = vobj.Object
+        return
 
-#     def getIcon(self):
-#         return ":/icons/Path-Profile.svg"
+    def setEdit(self,vobj,mode=0):
+        FreeCADGui.Control.closeDialog()
+        taskd = _EditPanel()
+        taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-#     def __getstate__(self):
-#         return None
+    def getIcon(self):
+        return ":/icons/Path-Profile.svg"
 
-#     def __setstate__(self,state):
-#         return None
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
 
 
 class _CommandAddTag:
@@ -377,7 +385,7 @@ class CommandPathProfile:
         
     def Activated(self):
         import Path
-        from PathScripts import PathProject, PathUtils, PathKurve, PathKurveUtils
+        from PathScripts import PathProject, PathUtils, PathKurveUtils
 
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
@@ -438,55 +446,6 @@ class CommandPathProfile:
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-
-class _ViewProviderProfile:
-    "A View Provider for the Holding object"
-
-    def __init__(self,vobj):
-        vobj.Proxy = self
-
-    def getIcon(self):
-        return ":/icons/Path-Profile.svg"
-    def claimChildren(self):
-        return []
-
-    def attach(self, vobj):
-        return
-
-    def getDisplayModes(self,vobj):
-        return ["Default"]
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self,mode):
-        return mode
-
-    def updateData(self,obj,prop):
-        return
-    def onChanged(self, vobj, prop):
-        return
- 
-    def setEdit(self,vobj,mode=0):
-        FreeCADGui.Control.closeDialog()
-        taskd = _EditPanel()
-        taskd.obj = vobj.Object
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self,vobj,mode):
-        FreeCADGui.Control.closeDialog()
-        return
-
-    def doubleClicked(self,vobj):
-        self.setEdit(vobj)
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None
 
 class _EditPanel:
     '''The editmode TaskPanel for profile tags'''
