@@ -96,6 +96,7 @@
 #include <Gui/DlgEditFileIncludeProptertyExternal.h>
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -155,6 +156,7 @@ struct EditData {
     PreselectPoint(-1),
     PreselectCurve(-1),
     PreselectCross(-1),
+    MarkerSize(7),
     blockedPreselection(false),
     FullyConstrained(false),
     //ActSketch(0), // if you are wondering, it went to SketchObject, accessible via getSketchObject()->getSolvedSketch()
@@ -183,6 +185,7 @@ struct EditData {
     int PreselectPoint;
     int PreselectCurve;
     int PreselectCross;
+    int MarkerSize;
     std::set<int> PreselectConstraintSet;
     bool blockedPreselection;
     bool FullyConstrained;
@@ -1011,9 +1014,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         Mode != STATUS_SKETCH_DragConstraint &&
         Mode != STATUS_SKETCH_UseRubberBand) {
 
-        SoPickedPoint *pp = this->getPointOnRay(cursorPos, viewer);
-        preselectChanged = detectPreselection(pp, viewer, cursorPos);
-        delete pp;
+        boost::scoped_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
+        preselectChanged = detectPreselection(pp.get(), viewer, cursorPos);
     }
     
     switch (Mode) {
@@ -4206,6 +4208,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     assert(!edit);
     edit = new EditData();
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    edit->MarkerSize = hGrp->GetInt("EditSketcherMarkerSize", 7);
+
     createEditInventorNodes();
     edit->visibleBeforeEdit = this->isVisible();
     this->hide(); // avoid that the wires interfere with the edit lines
@@ -4213,7 +4218,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     ShowGrid.setValue(true);
     TightGrid.setValue(false);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     float transparency;
 
     // set the point color
@@ -4417,7 +4421,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     edit->PointSet = new SoMarkerSet;
     edit->PointSet->setName("PointSet");
-    edit->PointSet->markerIndex = SoMarkerSet::CIRCLE_FILLED_7_7;
+    edit->PointSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", edit->MarkerSize);
     pointsRoot->addChild(edit->PointSet);
 
     // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
