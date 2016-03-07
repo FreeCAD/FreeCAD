@@ -443,10 +443,15 @@ Document* Application::openDocument(const char * FileName)
 
     newDoc->FileName.setValue(File.filePath());
 
-    // read the document
-    newDoc->restore();
-
-    return newDoc;
+    try {
+        // read the document
+        newDoc->restore();
+        return newDoc;
+    }
+    catch (...) {
+        closeDocument(newDoc->getName());
+        throw;
+    }
 }
 
 Document* Application::getActiveDocument(void) const
