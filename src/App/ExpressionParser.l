@@ -248,7 +248,14 @@ EXPO     [eE][-+]?[0-9]+
 {DIGIT}*"."{DIGIT}+{EXPO}?   COUNT; yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}*","{DIGIT}+{EXPO}?   COUNT; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}+{EXPO}               COUNT; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
-{DIGIT}+                     COUNT; yylval.ivalue = strtoll( yytext, NULL, 0 ); if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
+{DIGIT}+                     { COUNT;
+                               yylval.ivalue = strtoll( yytext, NULL, 0 );
+                               if (yylval.ivalue == LLONG_MIN)
+                                  throw Base::Exception("Integer underflow");
+                               else if (yylval.ivalue == LLONG_MAX)
+                                  throw Base::Exception("Integer overflow");
+                               if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
+                             }
 
 "pi"                         COUNT; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 "e"                          COUNT; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e

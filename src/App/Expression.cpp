@@ -1334,7 +1334,13 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     }
     temp[i] = '\0';
 
-    ret_val = atof( temp );
+    errno = 0;
+    ret_val = strtod( temp, NULL );
+    if (ret_val == 0 && errno == ERANGE)
+        throw Base::Exception("Number underflow.");
+    if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
+        throw Base::Exception("Number overflow.");
+
     return ret_val;
 }
 
@@ -1409,8 +1415,13 @@ std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &st
     int token;
 
     column = 0;
-    while ( (token  = ExpressionParserlex()) != 0)
-        result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+    try {
+        while ( (token  = ExpressionParserlex()) != 0)
+            result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+    }
+    catch (...) {
+        // Ignore all exceptions
+    }
 
     ExpressionParser_delete_buffer(buf);
     return result;
