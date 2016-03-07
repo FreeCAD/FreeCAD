@@ -6299,36 +6299,43 @@ yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fv
 case 83:
 YY_RULE_SETUP
 #line 245 "ExpressionParser.l"
-yylval.ivalue = strtoll( ExpressionParsertext, NULL, 0 ); if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
+{
+                               yylval.ivalue = strtoll( ExpressionParsertext, NULL, 0 );
+                               if (yylval.ivalue == LLONG_MIN)
+                                 throw Base::Exception("Integer underflow");
+                               else if (yylval.ivalue == LLONG_MAX)
+                                 throw Base::Exception("Integer overflow");
+                               if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
+                             }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 247 "ExpressionParser.l"
+#line 254 "ExpressionParser.l"
 yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 248 "ExpressionParser.l"
+#line 255 "ExpressionParser.l"
 yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 250 "ExpressionParser.l"
+#line 257 "ExpressionParser.l"
 yylval.string = ExpressionParsertext; return CELLADDRESS;
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 251 "ExpressionParser.l"
+#line 258 "ExpressionParser.l"
 yylval.string = ExpressionParsertext; return CELLADDRESS;
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 252 "ExpressionParser.l"
+#line 259 "ExpressionParser.l"
 yylval.string = ExpressionParsertext; return CELLADDRESS;
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 254 "ExpressionParser.l"
+#line 261 "ExpressionParser.l"
 {
                             std::string s = ExpressionParsertext;
                             size_t i = s.size() - 2;
@@ -6345,15 +6352,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 268 "ExpressionParser.l"
+#line 275 "ExpressionParser.l"
 yylval.string = ExpressionParsertext; return IDENTIFIER;
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 269 "ExpressionParser.l"
+#line 276 "ExpressionParser.l"
 ECHO;
 	YY_BREAK
-#line 6357 "lex.ExpressionParser.c"
+#line 6364 "lex.ExpressionParser.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -7311,4 +7318,4 @@ void ExpressionParserfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 269 "ExpressionParser.l"
+#line 276 "ExpressionParser.l"
