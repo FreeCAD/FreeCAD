@@ -176,9 +176,9 @@ void GeometryObject::initHLR(const TopoDS_Shape &input,
     //TODO: hate losing references on recompute! if Shape has changed, aren't reference potentially invalid anyway?
     clear();
     if (brep_hlr) {
-        brep_hlr->Remove(1);          //remove the old shape from brep (use NbShapes() first? would we ever have > 1 shape?)
-        //delete brep_hlr;                //release old hlralgo
-        //brep_hlr = NULL;
+        if (brep_hlr->NbShapes()) {       //TODO: hack. in ProjGroupItems sometimes brep_hlr has no shapes when we get here.  why??
+            brep_hlr->Remove(1);          //remove the old shape from brep (would we ever have > 1 shape?)
+        }
     }
 
     ///TODO: Consider whether it would be possible/beneficial to cache some of this effort (eg don't do scale in OpenCASCADE land) IR
@@ -204,7 +204,7 @@ void GeometryObject::initHLR(const TopoDS_Shape &input,
         BRepBuilderAPI_Transform mkTrf(input, tempTransform);
         transShape = mkTrf.Shape();
 
-        brep_hlr = new HLRBRep_Algo();                                 //leak? when does this get freed?
+        brep_hlr = new HLRBRep_Algo();                                 //leak? when does this get freed? handle/smart pointer
         brep_hlr->Add(transShape);
 
         // Project the shape into view space with the object's centroid
