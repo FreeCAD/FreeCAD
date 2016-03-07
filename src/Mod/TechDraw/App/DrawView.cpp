@@ -30,6 +30,7 @@
 
 
 #include <strstream>
+#include <App/Application.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Exception.h>
@@ -64,7 +65,6 @@ DrawView::DrawView(void)
     static const char *group = "Drawing view";
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
-    ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
     ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
 
     // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag set to
@@ -74,6 +74,9 @@ DrawView::DrawView(void)
 
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
+    Scale.setStatus(App::Property::ReadOnly,true);
+
 }
 
 DrawView::~DrawView()
@@ -95,38 +98,36 @@ App::DocumentObjectExecReturn *DrawView::recompute(void)
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-    if (ScaleType.isValue("Document")) {
-        Scale.setStatus(App::Property::ReadOnly,true);
-        //Scale.StatusBits.set(2, true);
-
-        TechDraw::DrawPage *page = findParentPage();
-        if(page) {
-            if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
-                Scale.setValue(page->Scale.getValue()); // Recalculate scale from page
-                Scale.touch();
-            }
-        }
-    } else if (ScaleType.isValue("Custom")) {
-        Scale.setStatus(App::Property::ReadOnly,false);
-        //Scale.StatusBits.set(2, false);
-        //TODO: need to ?recompute? ?redraw? to get this to stick.  Mantis #1941
-        //TODO: try Gui::Selection to force update
-        //currently need to lose focus and re-get focus to make Scale editable.
-        //Scale.touch();                     // causes loop
-    }
     return App::DocumentObject::execute();
 }
 
 /// get called by the container when a Property was changed
 void DrawView::onChanged(const App::Property* prop)
 {
-    if (prop == &X ||
-        prop == &Y ||
-        prop == &ScaleType ||
-        prop == &Rotation) {
-          if (!isRestoring()) {
-              DrawView::execute();
-          }
+    if (!isRestoring()) {
+        if (prop == &ScaleType) {
+            if (ScaleType.isValue("Document") &&
+                !Scale.testStatus(App::Property::ReadOnly)) {
+                Scale.setStatus(App::Property::ReadOnly,true);
+                App::GetApplication().signalChangePropertyEditor(Scale);
+                TechDraw::DrawPage *page = findParentPage();
+                if(page) {
+                    if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+                        Scale.setValue(page->Scale.getValue()); // Recalculate scale from page
+                        Scale.touch();
+                    }
+                }
+            } else if (ScaleType.isValue("Custom") &&
+                Scale.testStatus(App::Property::ReadOnly)) {
+                Scale.setStatus(App::Property::ReadOnly,false);
+                App::GetApplication().signalChangePropertyEditor(Scale);
+            }
+            DrawView::execute();
+        } else if (prop == &X ||
+                   prop == &Y ||
+                   prop == &Rotation) {
+            DrawView::execute();                                       //trigger stuff to happen on Gui side
+        }
     }
 
     App::DocumentObject::onChanged(prop);
