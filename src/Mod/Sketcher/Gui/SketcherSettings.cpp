@@ -33,6 +33,7 @@
 #include "TaskSketcherGeneral.h"
 #include <App/Application.h>
 #include <Gui/PrefWidgets.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 
 using namespace SketcherGui;
 
@@ -120,6 +121,10 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     form->saveSettings();
 
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int markerSize = ui->EditSketcherMarkerSize->itemData(ui->EditSketcherMarkerSize->currentIndex()).toInt();
+    hViewGrp->SetInt("EditSketcherMarkerSize", markerSize);
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
     int pattern = data.toInt();
@@ -153,6 +158,16 @@ void SketcherSettings::loadSettings()
     ui->continueMode->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     form->loadSettings();
+
+    std::list<int> sizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_FILLED");
+    for (std::list<int>::iterator it = sizes.begin(); it != sizes.end(); ++it)
+        ui->EditSketcherMarkerSize->addItem(tr("%1 px").arg(*it), *it);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int markerSize = hViewGrp->GetInt("EditSketcherMarkerSize", 7);
+    int markerIndex = ui->EditSketcherMarkerSize->findData(QVariant(markerSize));
+    if (markerIndex < 0)
+        markerIndex = 1;
+    ui->EditSketcherMarkerSize->setCurrentIndex(markerIndex);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
