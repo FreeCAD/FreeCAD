@@ -143,6 +143,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 
     touch();
+
     return DrawView::execute();
 }
 
@@ -187,11 +188,6 @@ void DrawViewPart::buildGeometryObject(TopoDS_Shape shape)
 {
     geometryObject->setTolerance(Tolerance.getValue());
     geometryObject->setScale(Scale.getValue());
-    //TODO: need to pass ShowSmoothLines, ShowSeamLines
-    //geometryObject->extractGeometry(shape,
-    //                                Direction.getValue(),
-    //                                ShowHiddenLines.getValue(),
-    //                                _getValidXDir(this));
     geometryObject->initHLR(shape,
                             Direction.getValue(),
                             _getValidXDir(this));

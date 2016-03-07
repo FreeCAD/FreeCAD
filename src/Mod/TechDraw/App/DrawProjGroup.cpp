@@ -580,7 +580,6 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
                     view->ScaleType.setValue("Custom");
                     view->Scale.setValue(autoScale);
                     view->Scale.touch();
-                    //view->Scale.StatusBits.set(2);
                     view->Scale.setStatus(App::Property::ReadOnly,true);
                     view->touch();
                 }
