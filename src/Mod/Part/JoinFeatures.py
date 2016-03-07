@@ -147,17 +147,48 @@ class _ViewProviderPartJoinFeature:
 
     def __setstate__(self,state):
         return None
+        
+    def claimChildren(self):
+        return [self.Object.Base, self.Object.Tool]
+    
+    def onDelete(self, feature, subelements):
+        try:
+            self.Object.Base.ViewObject.show()
+            self.Object.Tool.ViewObject.show()
+        except Exception as err:
+            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+        return True
+    
 
 def CreateJoinFeature(name, mode):
+    sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create "+mode+"ObjectsFeature")
     FreeCADGui.addModule("JoinFeatures")
     FreeCADGui.doCommand("j = JoinFeatures.makePartJoinFeature(name = '"+name+"', mode = '"+mode+"' )")
-    FreeCADGui.doCommand("j.Base = FreeCADGui.Selection.getSelection()[0]")
-    FreeCADGui.doCommand("j.Tool = FreeCADGui.Selection.getSelection()[1]")
-    FreeCADGui.doCommand("j.Proxy.execute(j)")
-    FreeCADGui.doCommand("j.purgeTouched()")
+    FreeCADGui.doCommand("j.Base = App.ActiveDocument."+sel[0].Object.Name)
+    FreeCADGui.doCommand("j.Tool = App.ActiveDocument."+sel[1].Object.Name)
+    try:
+        FreeCADGui.doCommand("j.Proxy.execute(j)")
+        FreeCADGui.doCommand("j.purgeTouched()")
+    except Exception as err:
+        mb = QtGui.QMessageBox()
+        mb.setIcon(mb.Icon.Warning)
+        mb.setText(_translate("Part_JoinFeatures","Computing the result failed with an error: {err}. Click 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
+                   .format(err= err.message))
+        mb.setWindowTitle(_translate("Part_JoinFeatures","Bad selection", None))
+        btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
+        btnOK = mb.addButton(_translate("Part_JoinFeatures","Continue",None), QtGui.QMessageBox.ButtonRole.ActionRole)
+        mb.setDefaultButton(btnOK)
+
+        mb.exec_()
+        
+        if mb.clickedButton() is btnAbort:
+            FreeCAD.ActiveDocument.abortTransaction()
+            return
+
     FreeCADGui.doCommand("j.Base.ViewObject.hide()")
     FreeCADGui.doCommand("j.Tool.ViewObject.hide()")
+
     FreeCAD.ActiveDocument.commitTransaction()
 
 def getIconPath(icon_dot_svg):
@@ -176,7 +207,7 @@ class _CommandConnectFeature:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ConnectFeature","Fuses objects, taking care to preserve voids.")}
         
     def Activated(self):
-        if len(FreeCADGui.Selection.getSelection()) == 2 :
+        if len(FreeCADGui.Selection.getSelectionEx()) == 2 :
             CreateJoinFeature(name = "Connect", mode = "Connect")
         else:
             mb = QtGui.QMessageBox()
