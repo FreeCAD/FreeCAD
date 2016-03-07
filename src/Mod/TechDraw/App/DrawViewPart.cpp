@@ -89,14 +89,15 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection normal direction");
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
-    ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Control the appearance of the dashed hidden lines");
-    ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Control the appearance of the smooth lines");
-    ADD_PROPERTY_TYPE(LineWidth,(0.7f),vgroup,App::Prop_None,"The thickness of the resulting lines");
-    ADD_PROPERTY_TYPE(HiddenWidth,(0.15),vgroup,App::Prop_None,"The thickness of the hidden lines, if enabled");
+    ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Hidden lines on/off");
+    ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Smooth lines on/off");
+    ADD_PROPERTY_TYPE(ShowSeamLines ,(false),group,App::Prop_None,"Seam lines on/off");
+    //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
+    ADD_PROPERTY_TYPE(LineWidth,(0.7f),vgroup,App::Prop_None,"The thickness of visible lines");
+    ADD_PROPERTY_TYPE(HiddenWidth,(0.15),vgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
     ADD_PROPERTY_TYPE(Tolerance,(0.05f),vgroup,App::Prop_None,"The tessellation tolerance");
     Tolerance.setConstraints(&floatRange);
-    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"X-Axis direction");
-    //ADD_PROPERTY_TYPE(HatchAreas ,(0),vgroup,App::Prop_None,"Hatched areas of this view");
+    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Direction to use as X-axis in projection");
 
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
@@ -124,21 +125,12 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 
     try {
-        geometryObject->setTolerance(Tolerance.getValue());
-        geometryObject->setScale(Scale.getValue());
-        geometryObject->extractGeometry(shape,
-                                        Direction.getValue(),
-                                        ShowHiddenLines.getValue(),
-                                        _getValidXDir(this));
-        bbox = geometryObject->calcBoundingBox();
-        touch();
-
+        buildGeometryObject(shape);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
-
 
     // There is a guaranteed change so check any references linked to this and touch
     // We need to update all views pointing at this (ProjectionGroup, ClipGroup, etc)
@@ -150,6 +142,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
     }
 
+    touch();
     return DrawView::execute();
 }
 
@@ -160,7 +153,9 @@ short DrawViewPart::mustExecute() const
             Source.isTouched() ||
             Scale.isTouched() ||
             ScaleType.isTouched() ||
-            ShowHiddenLines.isTouched());
+            ShowHiddenLines.isTouched() ||
+            ShowSmoothLines.isTouched() ||
+            ShowSeamLines.isTouched());
     return result;
 }
 
@@ -172,7 +167,9 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &Source ||
             prop == &Scale ||
             prop == &ScaleType ||
-            prop == &ShowHiddenLines) {
+            prop == &ShowHiddenLines ||
+            prop == &ShowSmoothLines ||
+            prop == &ShowSeamLines) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -183,43 +180,45 @@ void DrawViewPart::onChanged(const App::Property* prop)
     }
     DrawView::onChanged(prop);
 
-//TODO: when scale changes, any Dimensions for this View sb recalculated.
+//TODO: when scale changes, any Dimensions for this View sb recalculated.  (might happen anyway if document is recomputed?)
 }
 
-#if 0
-int DrawViewPart::addHatch(App::DocumentObject *docObj)
+void DrawViewPart::buildGeometryObject(TopoDS_Shape shape)
 {
-    if(!docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()))
-        return -1;
-
-    const std::vector<App::DocumentObject *> currAreas = HatchAreas.getValues();
-    std::vector<App::DocumentObject *> newAreas(currAreas);
-    newAreas.push_back(docObj);
-    HatchAreas.setValues(newAreas);
-    HatchAreas.touch();
-    return HatchAreas.getSize();
-}
-
-int DrawViewPart::removeHatch(App::DocumentObject *docObj)
-{
-    if(!docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()))
-        return -1;
-
-    const std::vector<App::DocumentObject*> currAreas = HatchAreas.getValues();
-    std::vector<App::DocumentObject*> newAreas;
-    std::vector<App::DocumentObject*>::const_iterator it = currAreas.begin();
-    for (; it != currAreas.end(); it++) {
-        std::string areaName = docObj->getNameInDocument();
-        if (areaName.compare((*it)->getNameInDocument()) != 0) {
-            newAreas.push_back((*it));
-        }
+    geometryObject->setTolerance(Tolerance.getValue());
+    geometryObject->setScale(Scale.getValue());
+    //TODO: need to pass ShowSmoothLines, ShowSeamLines
+    //geometryObject->extractGeometry(shape,
+    //                                Direction.getValue(),
+    //                                ShowHiddenLines.getValue(),
+    //                                _getValidXDir(this));
+    geometryObject->initHLR(shape,
+                            Direction.getValue(),
+                            _getValidXDir(this));
+    geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
+                                    true);
+    geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
+                                    true);
+    if (ShowSmoothLines.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
+                                        true);
     }
-    HatchAreas.setValues(newAreas);
-    HatchAreas.touch();
-
-    return HatchAreas.getSize();
+    if (ShowSeamLines.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
+                                        true);
+    }
+    //if (ShowIsoLines.getValue()) {
+    //    geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
+    //                                    true);
+    //}
+    if (ShowHiddenLines.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
+                                        false);
+        //geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,     //hidden outline,smooth,seam??
+        //                                true);
+    }
+    bbox = geometryObject->calcBoundingBox();
 }
-#endif
 
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
 {

@@ -30,6 +30,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include <BRepLib.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
@@ -109,50 +110,23 @@ Face::~Face()
 
 BaseGeom::BaseGeom() :
     geomType(NOTDEF),
-    reversed(false)
+    extractType(Plain),
+    classOfEdge(ecNONE),
+    visible(true),
+    reversed(false),
+    ref3D(-1)
 {
 }
 
-//! ugh. yuck.
 std::vector<Base::Vector2D> BaseGeom::findEndPoints()
 {
     std::vector<Base::Vector2D> result;
-    switch(this->geomType) {
-        case TechDrawGeometry::CIRCLE: {
-          TechDrawGeometry::Circle *geom = static_cast<TechDrawGeometry::Circle *>(this);
-          double x = geom->center.fX + geom->radius;
-          result.push_back(Base::Vector2D(x,geom->center.fY));
-          result.push_back(Base::Vector2D(x,geom->center.fY));
-        } break;
-        case TechDrawGeometry::ARCOFCIRCLE: {
-          TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(this);
-          result.push_back(geom->startPnt);
-          result.push_back(geom->endPnt);
-        } break;
-        case TechDrawGeometry::ELLIPSE: {
-          TechDrawGeometry::Ellipse *geom = static_cast<TechDrawGeometry::Ellipse *>(this);
-          result.push_back(geom->center + Base::Vector2D(geom->major * cos(geom->angle), geom->major * sin(geom->angle)));
-          result.push_back(geom->center + Base::Vector2D(geom->major * cos(geom->angle), geom->major * sin(geom->angle)));
-        } break;
-        case TechDrawGeometry::ARCOFELLIPSE: {
-          TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(this);
-          result.push_back(geom->startPnt);
-          result.push_back(geom->endPnt);
-        } break;
-        case TechDrawGeometry::BSPLINE: {
-          TechDrawGeometry::BSpline *geom = static_cast<TechDrawGeometry::BSpline *>(this);
-          result.push_back(geom->segments.front().pnts[0]);
-          TechDrawGeometry::BezierSegment tempSeg = geom->segments.back();
-          result.push_back(tempSeg.pnts[tempSeg.poles - 1]);
-        } break;
-        case TechDrawGeometry::GENERIC: {
-          TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(this);
-          result.push_back(geom->points.front());
-          result.push_back(geom->points.back());
-        } break;
-        default:
-          break;
-    }
+    //if (occEdge) {
+        gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
+        result.push_back(Base::Vector2D(p.X(),p.Y()));
+        p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
+        result.push_back(Base::Vector2D(p.X(),p.Y()));
+    //}
     return result;
 }
 
@@ -168,15 +142,11 @@ Base::Vector2D BaseGeom::getEndPoint()
     return verts[1];
 }
 
-Ellipse::Ellipse()
+Ellipse::Ellipse(const TopoDS_Edge &e)
 {
     geomType = ELLIPSE;
-}
-
-Ellipse::Ellipse(const BRepAdaptor_Curve& c)
-{
-    geomType = ELLIPSE;
-
+    BRepAdaptor_Curve c(e);
+    occEdge = e;
     gp_Elips ellp = c.Ellipse();
     const gp_Pnt &p = ellp.Location();
 
@@ -189,23 +159,20 @@ Ellipse::Ellipse(const BRepAdaptor_Curve& c)
     angle = xaxis.AngleWithRef(gp_Dir(1, 0, 0), gp_Dir(0, 0, -1));
 }
 
-AOE::AOE()
-{
-    geomType = ARCOFELLIPSE;
-}
 
-AOE::AOE(const BRepAdaptor_Curve& c) : Ellipse(c)
+AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 {
     geomType = ARCOFELLIPSE;
 
+    BRepAdaptor_Curve c(e);
     double f = c.FirstParameter();
     double l = c.LastParameter();
     gp_Pnt s = c.Value(f);
     gp_Pnt m = c.Value((l+f)/2.0);
-    gp_Pnt e = c.Value(l);
+    gp_Pnt ePt = c.Value(l);
 
     gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
+    gp_Vec v2(m,ePt);
     gp_Vec v3(0,0,1);
     double a = v3.DotCross(v1,v2);
 
@@ -215,38 +182,15 @@ AOE::AOE(const BRepAdaptor_Curve& c) : Ellipse(c)
     largeArc = (l-f > M_PI) ? true : false;
 
     startPnt = Base::Vector2D(s.X(), s.Y());
-    endPnt = Base::Vector2D(e.X(), e.Y());
+    endPnt = Base::Vector2D(ePt.X(), ePt.Y());
     midPnt = Base::Vector2D(m.X(), m.Y());
-    /*
-            char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
-        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
-        out << "<path d=\"M" << s.X() <<  " " << s.Y()
-            << " A" << r1 << " " << r2 << " "
-            << angle << " " << las << " " << swp << " "
-            << e.X() << " " << e.Y() << "\" />" << std::endl;
-//     if (startAngle > endAngle) {// if arc is reversed
-//         std::swap(startAngle, endAngle);
-//     }*/
-
-//     double ax = s.X() - center.fX;
-//     double ay = s.Y() - center.fY;
-//     double bx = e.X() - center.fX;
-//     double by = e.Y() - center.fY;
-
-//     startAngle = f;
-//     float range = l-f;
-//
-//     endAngle = startAngle + range;
 }
 
-Circle::Circle()
+Circle::Circle(const TopoDS_Edge &e)
 {
     geomType = CIRCLE;
-}
-
-Circle::Circle(const BRepAdaptor_Curve& c)
-{
-    geomType = CIRCLE;
+    BRepAdaptor_Curve c(e);
+    occEdge = e;
 
     gp_Circ circ = c.Circle();
     const gp_Pnt& p = circ.Location();
@@ -255,23 +199,19 @@ Circle::Circle(const BRepAdaptor_Curve& c)
     center = Base::Vector2D(p.X(), p.Y());
 }
 
-AOC::AOC()
+AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 {
     geomType = ARCOFCIRCLE;
-}
-
-AOC::AOC(const BRepAdaptor_Curve& c) : Circle(c)
-{
-    geomType = ARCOFCIRCLE;
+    BRepAdaptor_Curve c(e);
 
     double f = c.FirstParameter();
     double l = c.LastParameter();
     gp_Pnt s = c.Value(f);
     gp_Pnt m = c.Value((l+f)/2.0);
-    gp_Pnt e = c.Value(l);
+    gp_Pnt ePt = c.Value(l);
 
     gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
+    gp_Vec v2(m,ePt);
     gp_Vec v3(0,0,1);
     double a = v3.DotCross(v1,v2);
 
@@ -281,8 +221,34 @@ AOC::AOC(const BRepAdaptor_Curve& c) : Circle(c)
     largeArc = (l-f > M_PI) ? true : false;
 
     startPnt = Base::Vector2D(s.X(), s.Y());
-    endPnt = Base::Vector2D(e.X(), e.Y());
+    endPnt = Base::Vector2D(ePt.X(), ePt.Y());
     midPnt = Base::Vector2D(m.X(), m.Y());
+}
+
+
+//!Generic is a multiline
+Generic::Generic(const TopoDS_Edge &e)
+{
+    geomType = GENERIC;
+    occEdge = e;
+    BRepLib::BuildCurve3d(occEdge);
+
+    TopLoc_Location location;
+    Handle_Poly_Polygon3D polygon = BRep_Tool::Polygon3D(occEdge, location);
+
+    if (!polygon.IsNull()) {
+        const TColgp_Array1OfPnt &nodes = polygon->Nodes();
+        for (int i = nodes.Lower(); i <= nodes.Upper(); i++){
+            points.push_back(Base::Vector2D(nodes(i).X(), nodes(i).Y()));
+        }
+    } else {
+        //no polygon representation? approximate with line?
+        Base::Console().Log("INFO - Generic::Generic(edge) - polygon is NULL\n");
+        gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
+        points.push_back(Base::Vector2D(p.X(), p.Y()));
+        p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
+        points.push_back(Base::Vector2D(p.X(), p.Y()));
+    }
 }
 
 Generic::Generic()
@@ -290,37 +256,14 @@ Generic::Generic()
     geomType = GENERIC;
 }
 
-Generic::Generic(const BRepAdaptor_Curve& c)
-{
-    geomType = GENERIC;
-
-    TopLoc_Location location;
-    Handle_Poly_Polygon3D polygon = BRep_Tool::Polygon3D(c.Edge(), location);
-    if (!polygon.IsNull()) {
-        const TColgp_Array1OfPnt &nodes = polygon->Nodes();
-        for (int i = nodes.Lower(); i <= nodes.Upper(); i++){
-            points.push_back(Base::Vector2D(nodes(i).X(), nodes(i).Y()));
-        }
-    }
-}
-
-Generic::Generic(Base::Vector2D start, Base::Vector2D end)
-{
-    geomType = GENERIC;
-    points.push_back(start);
-    points.push_back(end);
-}
-
-BSpline::BSpline()
+BSpline::BSpline(const TopoDS_Edge &e)
 {
     geomType = BSPLINE;
-}
-
-BSpline::BSpline(const BRepAdaptor_Curve &c)
-{
-    geomType = BSPLINE;
+    BRepAdaptor_Curve c(e);
+    occEdge = e;
     Handle_Geom_BSplineCurve spline = c.BSpline();
-    if (spline->Degree() > 3) {
+
+    if (spline->Degree() > 3) {                                        //if spline is too complex, approximate it
         Standard_Real tol3D = 0.001;
         Standard_Integer maxDegree = 3, maxSegment = 10;
         Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
@@ -359,6 +302,14 @@ BSpline::BSpline(const BRepAdaptor_Curve &c)
 //! can this BSpline be represented by a straight line?
 bool BSpline::isLine()
 {
+    bool result = false;
+    BRepAdaptor_Curve c(occEdge);
+    Handle_Geom_BSplineCurve spline = c.BSpline();
+    if (spline->Degree() == 1) {
+        result = true;
+    }
+    return result;
+#if 0
     bool result = true;
     std::vector<BezierSegment>::iterator iSeg = segments.begin();
     double slope;
@@ -376,6 +327,18 @@ bool BSpline::isLine()
             result = false;
             break;
         }
+    }
+    return result;
+#endif
+}
+
+//**** Vertex
+bool Vertex::isEqual(Vertex* v, double tol)
+{
+    bool result = false;
+    double dist = (pnt - (v->pnt)).Length();
+    if (dist <= tol) {
+        result = true;
     }
     return result;
 }
@@ -401,7 +364,7 @@ std::vector<TechDrawGeometry::BaseGeom*> TechDrawExport chainGeoms(std::vector<T
         Base::Vector2D atPoint = (geoms[0])->getEndPoint();
         used[0] = true;
         for (unsigned int i = 1; i < geoms.size(); i++) {              //do size-1 more edges
-            getNextReturn next = nextGeom(atPoint,geoms,used,tolerance);
+            getNextReturnVal next = nextGeom(atPoint,geoms,used,tolerance);
             if (next.index) {                                          //found an unused edge with vertex == atPoint
                 TechDrawGeometry::BaseGeom* nextEdge = geoms.at(next.index);
                 used[next.index] = true;
@@ -422,12 +385,12 @@ std::vector<TechDrawGeometry::BaseGeom*> TechDrawExport chainGeoms(std::vector<T
 }
 
 //! find an unused geom starts or ends at atPoint. returns index[1:geoms.size()),reversed [true,false]
-getNextReturn TechDrawExport nextGeom(Base::Vector2D atPoint,
+getNextReturnVal TechDrawExport nextGeom(Base::Vector2D atPoint,
                        std::vector<TechDrawGeometry::BaseGeom*> geoms,
                        std::vector<bool> used,
                        double tolerance)
 {
-    getNextReturn result(0,false);
+    getNextReturnVal result(0,false);
     std::vector<TechDrawGeometry::BaseGeom*>::iterator itGeom = geoms.begin();
     for (; itGeom != geoms.end(); itGeom++) {
         unsigned int index = itGeom - geoms.begin();

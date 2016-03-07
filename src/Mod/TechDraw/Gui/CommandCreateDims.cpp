@@ -111,11 +111,10 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    //TODO: do all these validations have to be accessible from Python?
-    //selected edge(s) must have valid reference to Source edge for True Dimension
-    //otherwise Dimension must be Projected
-    bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-    int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    //All Dimensions start as Projected
+    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
+    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    int edgeType = _isValidSingleEdge(this,false);
 
     if (edgeType) {
         if (edgeType < isCircle) {
@@ -187,12 +186,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References.setValues(objs, subs);
 
-    // make a True dimension if you can, Projected otherwise
-    if (trueDimAllowed) {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'True'",FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
-    }
+    doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
@@ -240,11 +234,10 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    //selected edge(s) must have valid reference to Source edge for True Dimension
-    //otherwise Dimension must be Projected
-    bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-    int edgeType = _isValidSingleEdge(this,trueDimAllowed);
-    if (edgeType == isCircle) {
+    //All Dimensions start as Projected
+    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
+    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    int edgeType = _isValidSingleEdge(this,false);    if (edgeType == isCircle) {
         centerLine = true;
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
@@ -272,11 +265,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References.setValues(objs, subs);
 
-    if (trueDimAllowed) {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'True'",FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
-    }
+    doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
@@ -325,11 +314,10 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    //selected edge(s) must have valid reference to Source edge for True Dimension
-    //otherwise Dimension must be Projected
-    bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-
-    int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    //All Dimensions start as Projected
+    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
+    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    int edgeType = _isValidSingleEdge(this,false);
     if (edgeType == isCircle) {
         centerLine = true;
         objs.push_back(objFeat);
@@ -358,12 +346,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References.setValues(objs, subs);
 
-    // make a True dimension if you can, Projected otherwise
-    if (trueDimAllowed) {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'True'",FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
-    }
+    doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
@@ -413,10 +396,10 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    //selected edge(s) must have valid reference to Source edge for True Dimension
-    //otherwise Dimension must be Projected
-    bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-    int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    //All Dimensions start as Projected
+    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
+    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    int edgeType = _isValidSingleEdge(this,false);
     if ((edgeType == isHorizontal) ||
         (edgeType == isVertical) ||
         (edgeType == isDiagonal)) {
@@ -451,12 +434,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
-    // make a True dimension if you can, Projected otherwise
-    if (trueDimAllowed) {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'True'",FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
-    }
+    doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
@@ -505,10 +483,10 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    //selected edge(s) must have valid reference to Source edge for True Dimension
-    //otherwise Dimension must be Projected
-    bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-    int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    //All Dimensions start as Projected
+    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
+    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    int edgeType = _isValidSingleEdge(this,false);
     if ((edgeType == isHorizontal) ||
         (edgeType == isDiagonal)) {
         objs.push_back(objFeat);
@@ -541,12 +519,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
-    // make a True dimension if you can, Projected otherwise
-    if (trueDimAllowed) {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'True'",FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
-    }
+    doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
@@ -596,10 +569,10 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    //selected edge(s) must have valid reference to Source edge for True Dimension
-    //otherwise Dimension must be Projected
-    bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-    int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    //All Dimensions start as Projected
+    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
+    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    int edgeType = _isValidSingleEdge(this,false);
     if ((edgeType == isVertical) ||
         (edgeType == isDiagonal)) {
         objs.push_back(objFeat);
@@ -631,12 +604,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
-    // make a True dimension if you can, Projected otherwise
-    if (trueDimAllowed) {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'True'",FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
-    }
+    doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
@@ -685,10 +653,10 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    //selected edge(s) must have valid reference to Source edge for True Dimension
-    //otherwise Dimension must be Projected
-    bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-    int edgeType = _isValidEdgeToEdge(this,trueDimAllowed);
+    //All Dimensions start as Projected
+    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
+    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
+    int edgeType = _isValidSingleEdge(this,false);
     if (edgeType == isAngle) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
@@ -711,12 +679,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References.setValues(objs, subs);
 
-    // make a True dimension if you can, Projected otherwise
-    if (trueDimAllowed) {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'True'",FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
-    }
+    doCommand(Doc,"App.activeDocument().%s.ProjectionType = 'Projected'",FeatName.c_str());
 
     std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());

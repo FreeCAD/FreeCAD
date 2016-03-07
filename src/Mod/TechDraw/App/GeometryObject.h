@@ -23,6 +23,7 @@
 #ifndef _TECHDRAW_GEOMETRYOBJECT_H
 #define _TECHDRAW_GEOMETRYOBJECT_H
 
+#include <Handle_HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
 #include <gp_Pnt.hxx>
 
@@ -36,13 +37,13 @@ class HLRBRep_Algo;
 class Handle_HLRBRep_Data;
 class HLRBRep_EdgeData;
 class TopoDS_Wire;
+class HLRBRep_HLRToShape;
 
 namespace TechDrawGeometry
 {
 
 class BaseGeom;
-/** Algo class for projecting shapes and creating SVG output of it
- */
+
 class TechDrawExport GeometryObject
 {
 public:
@@ -66,39 +67,29 @@ public:
     const std::vector<int> & getEdgeRefs()   const { return edgeReferences; };
     const std::vector<int> & getFaceRefs()   const { return faceReferences; };
 
-    TechDrawGeometry::BaseGeom * projectEdge(const TopoDS_Shape &edge,
-                                            const TopoDS_Shape &support,
-                                            const Base::Vector3d &direction,
-                                            const Base::Vector3d &projXAxis) const;
-    TechDrawGeometry::Vertex   * projectVertex(const TopoDS_Shape &vert,
-                                              const TopoDS_Shape &support,
-                                              const Base::Vector3d &direction,
-                                              const Base::Vector3d &projXAxis) const;
-
     void projectSurfaces(const TopoDS_Shape   &face,
                          const TopoDS_Shape   &support,
                          const Base::Vector3d &direction,
                          const Base::Vector3d &xaxis,
                          std::vector<TechDrawGeometry::Face *> &result) const;
+    BaseGeom* projectEdge(const TopoDS_Shape &edge,
+                          const TopoDS_Shape &support,
+                          const Base::Vector3d &direction,
+                          const Base::Vector3d &projXAxis) const;
+    Vertex* projectVertex(const TopoDS_Shape &vert,
+                          const TopoDS_Shape &support,
+                          const Base::Vector3d &direction,
+                          const Base::Vector3d &projXAxis) const;
 
-    /// Process 3D shape to get 2D geometry
-    /*!
-     * Applies a projection to the input based on direction and vAxis, then
-     * calls extractEdges (which in turn calls extractVerts) and extractFaces
-     * to populate vectors used by getVertexRefs(), getEdgeRefs(), and
-     * getFaceRefs()
-     */
-    void extractGeometry(const TopoDS_Shape &input,const Base::Vector3d &direction, bool extractHidden = false, const Base::Vector3d &vAxis = Base::Vector3d(0.,0.,0.));
+    void initHLR(const TopoDS_Shape &input,
+                                 const Base::Vector3d &direction,
+                                 const Base::Vector3d &xAxis);
+    void extractGeometry(edgeClass category, bool visible);
+    BaseGeom* edgeToBase(TopoDS_Edge edge);
+    void update3DRefs();
 
 protected:
-    bool shouldDraw(const bool inFace, const int typ,HLRBRep_EdgeData& ed);
-    bool isSameCurve(const BRepAdaptor_Curve &c1, const BRepAdaptor_Curve &c2) const;
-
-    /// Reimplements HLRBRep Drawing Algorithms to satisfy Drawing Workbench requirements
-    void drawFace(const bool visible, const int iface, Handle_HLRBRep_Data & DS, TopoDS_Shape& Result) const;
-
-    /// Add (visible) intervals of ed to Result as Edges
-    void drawEdge(HLRBRep_EdgeData& ed, TopoDS_Shape& Result, const bool visible) const;
+    void addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible);
 
     /// Helper for calcBoundingBox()
     /*! Note that the name of this function isn't totally accurate due to
@@ -121,21 +112,6 @@ protected:
      */
     bool isWithinArc(double theta, double first, double last, bool cw) const;
 
-    void extractVerts(HLRBRep_Algo *myAlgo, const TopoDS_Shape &S, HLRBRep_EdgeData& ed, int ie, ExtractionType extractionType);
-    void extractEdges(HLRBRep_Algo *myAlgo, const TopoDS_Shape &S, int type, bool visible, ExtractionType extractionType);
-
-    void extractFaces(HLRBRep_Algo *myAlgo,
-                      const TopoDS_Shape &S,
-                      bool visible,
-                      ExtractionType extractionType,
-                      std::vector<TechDrawGeometry::Face *> &projFaces,
-                      std::vector<int> &faceRefs) const;
-
-    int calculateGeometry(const TopoDS_Shape &input, ExtractionType extractionType, std::vector<BaseGeom *> &geoms) const;
-
-    /// Accumulate edges from input and store them in wires
-    void createWire(const TopoDS_Shape &input, std::vector<TopoDS_Wire> &wiresOut) const;
-
     // Geometry
     std::vector<BaseGeom *> edgeGeom;
     std::vector<Vertex *> vertexGeom;
@@ -148,7 +124,7 @@ protected:
     std::vector<int> edgeReferences;
     std::vector<int> faceReferences;
 
-    HLRBRep_Algo *brep_hlr;
+    Handle_HLRBRep_Algo brep_hlr;
     double Tolerance;
     double Scale;
 

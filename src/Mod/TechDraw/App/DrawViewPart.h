@@ -51,10 +51,11 @@ public:
     virtual ~DrawViewPart();
 
     App::PropertyLink   Source;                                        //Part Feature
-    App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is
+    App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyVector XAxisDirection;
     App::PropertyBool   ShowHiddenLines;
     App::PropertyBool   ShowSmoothLines;
+    App::PropertyBool   ShowSeamLines;
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
     App::PropertyFloatConstraint  Tolerance;
@@ -108,7 +109,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
-
+    void buildGeometryObject(TopoDS_Shape shape);
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
