@@ -1,7 +1,7 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.01
+version 2.02
 QT theme (stylesheet) specially developed for FreeCAD (http://www.freecadweb.org/).
 It might work with other software that uses QT styling.
 
@@ -97,7 +97,7 @@ QToolBar  {
     background-color: #f5f5f5; /* main background color */
 }
 
-QMdiArea[showImage="true"] {
+QMdiArea {
     background-image: url(qss:images/background_freecad.png);
     background-position: center center;
     background-repeat: no-repeat;
@@ -164,27 +164,29 @@ Tool bar
 ==================================================================================================*/
 QToolBar {
     border: none;
-    min-width: 32px; /* allows a minimum of space between QToolBar colums */
-    min-height: 32px; /* allows a minimum of space between QToolBar rows */
+    padding: 2px;
 }
 
-QToolBar::handle:horizontal {
+QToolBar::handle:top,
+QToolBar::handle:bottom {
     background-image: url(qss:images/Hmovetoolbar_dark.png);
     width: 10px;
-    margin: 6px 2px 6px 2px;
+    margin: 4px 2px;
     background-position: top right;
     background-repeat: repeat-y;
 }
 
-QToolBar::handle:vertical {
+QToolBar::handle:left,
+QToolBar::handle:right {
     background-image: url(qss:images/Vmovetoolbar_dark.png);
     height: 10px;
-    margin: 2px 6px 2px 6px;
+    margin: 2px 4px;
     background-position: left bottom;
     background-repeat: repeat-x;
 }
 
-QToolBar::separator:horizontal {
+QToolBar::separator:top,
+QToolBar::separator:bottom {
     background-image: url(qss:images/separtoolbar_dark.png);
     width: 10px;
     margin: 6px 2px 6px 2px;
@@ -192,7 +194,8 @@ QToolBar::separator:horizontal {
     background-repeat: repeat-y;
 }
 
-QToolBar::separator:vertical {
+QToolBar::separator:left,
+QToolBar::separator:right {
     background-image: url(qss:images/separtoolbar_dark.png);
     height: 10px;
     margin: 2px 6px 2px 6px;
@@ -575,9 +578,8 @@ QDialog#Gui__Dialog__DlgPreferences > QListView::item:hover {
 }
 
 QDialog#Gui__Dialog__DlgPreferences > QListView::item:selected {
-    color: #624b14;
-    background-color: #e3d8b9;
-    border: 3px solid #e3b64d;
+    color: white;
+    background-color: #daa116;
 }
 
 
@@ -750,6 +752,20 @@ Gui--PropertyEditor--PropertyEditor QComboBox {
     padding-bottom: 0px;
 }
 
+/* reset min-height to 0px inside list views */
+QTreeView > QWidget > QComboBox,
+QTreeView > QWidget > QAbstractSpinBox,
+QTreeView > QWidget > QSpinBox,
+QTreeView > QWidget > QDoubleSpinBox,
+QTreeView > QWidget > QLineEdit,
+QTreeView > QWidget > QTextEdit,
+QTreeView > QWidget > QTimeEdit,
+QTreeView > QWidget > QDateEdit,
+QTreeView > QWidget > QDateTimeEdit,
+QTreeView > QWidget > Gui--ColorButton {
+    min-height: 0px;
+}
+
 /* set border-radius to 0px inside list views */
 QTreeView > QWidget > QComboBox,
 QTreeView > QWidget > QAbstractSpinBox,
@@ -807,6 +823,7 @@ QTreeView > QWidget > QDateTimeEdit:read-only {
 /* Fix to correctly (not totally) draw QTextEdit on OSX at Page properties: "Page result", "Template" and "Editable Texts" */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget {
     min-height: 14px;
+    border-radius: 0px; /* reset */
 }
 
 
@@ -958,10 +975,10 @@ Text/Python editor (macros, etc...)
 ==================================================================================================*/
 QPlainTextEdit,
 QPlainTextEdit:focus {
-    background-color: #c8c8c8;
+    background-color: #f0f0f0;
     selection-color: white;
     selection-background-color: #d0970c;
-    border: 1px solid #505050;
+    border: 1px solid #c3c3c3;
     border-radius: 3px;
     margin: 4px;
 }
@@ -973,6 +990,17 @@ Tasks panel (custom FreeCAD class)
 /* Action group */
 QFrame[class="panel"] {
     background-color: transparent; /* temporal (transparent background) */
+}
+
+QSint--ActionGroup {
+    padding: 0px; /* if not reset, it might create problems with QPushButtons and other elements */
+    margin: 0px; /* if not reset, it might create problems with QPushButtons and other elements */
+}
+
+
+QSint--ActionGroup QPushButton {
+    padding: 2px; /* bigger padding crops text and icons... */
+    margin: 0px;
 }
 
 /* Separator line */
@@ -1091,6 +1119,7 @@ QDateTimeEdit {
     border: 1px solid #e0e0e0;
     border-radius: 3px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
+    min-height: 20px; /* important to be a pair number in order to up/down buttons to be divisible by two (if not set could create a blank line in Ubuntu. Its downside is that it's needed to reset it (min-width: 0px) on following elements that can't have it such as fields inside QToolBar and inside QTreeView (Property editor) */
     padding: 1px 2px; /* temporal: could don't be compatible with elements inside Tree/List view */
 }
 
@@ -1165,7 +1194,6 @@ QDateEdit:up-button,
 QDateTimeEdit:up-button {
     subcontrol-position: top right;
     border-top-right-radius: 3px;
-    height: 12px; /* fix for Ubuntu that doesn't divide the up/down button into the exact middle */
 }
 
 QAbstractSpinBox:down-button,
@@ -1218,7 +1246,7 @@ QTimeEdit::up-arrow,
 QDateEdit::up-arrow,
 QDateTimeEdit::up-arrow {
     image: url(qss:images/up_arrow_dark.png);
-    top: 0px; /* fix simetry between up and down images */
+    top: 2px; /* fix symmetry between up and down images */
 }
 
 QAbstractSpinBox::up-arrow:focus,
@@ -1635,12 +1663,6 @@ QSlider::handle:vertical:disabled {
 /*==================================================================================================
 Toolbar buttons
 ==================================================================================================*/
-QToolBar > QToolButton {
-    margin: 2px;
-    padding: 2px;
-}
-
-QToolBar > QPushButton,
 /*QToolBar > QComboBox,   disabled because creates different margins for body and drop-down button */
 QToolBar > QAbstractSpinBox,
 QToolBar > QSpinBox,
@@ -1650,18 +1672,39 @@ QToolBar > QTextEdit,
 QToolBar > QTimeEdit,
 QToolBar > QDateEdit,
 QToolBar > QDateTimeEdit {
+    margin: 0px 2px;
+    padding: 0px;
+    min-width: 70px; /* necessary to show its content */
+}
+
+QToolBar > QToolButton {
     margin: 2px;
     padding: 2px;
 }
 
+QToolBar > QComboBox,
+QToolBar > QAbstractSpinBox,
+QToolBar > QSpinBox,
+QToolBar > QDoubleSpinBox,
+QToolBar > QLineEdit,
+QToolBar > QTextEdit,
+QToolBar > QTimeEdit,
+QToolBar > QDateEdit,
+QToolBar > QDateTimeEdit {
+    min-height: 0px; /* reset it inside Tool Bar due to the user ability to set the "size of toolbar icons" inside Preferences  */
+}
+
 QToolBar > QPushButton {
+    padding: 0px;
+    margin: 1px; /* doesn't work with :left, :right:, :top or :bottom sub-controls */
+    min-width: 16px; /* could not be larger due to switchable Preferences "Size of toolbar icons" */
+    min-height: 16px; /* could not be larger due to switchable Preferences "Size of toolbar icons" */
     border-radius: 4px; /* same as regular QPushButton */
-    min-width: 20px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
 }
 
 QToolBar > QPushButton:checked {
-    border: 1px solid #d0970c;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #daa116, stop:1 #d0970c);
+    border: 1px solid #e3b64d;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #e3d8b9, stop:1 #e3b64d);
 }
 
 QToolBar > QPushButton:!checked {
@@ -1671,7 +1714,7 @@ QToolBar > QPushButton:!checked {
 }
 
 QToolBar > QPushButton:checked:hover {
-    border-color: #b28416;
+    border-color: #e2ac2a;
 }
 
 QToolBar > QPushButton:!checked:hover {
@@ -1680,7 +1723,7 @@ QToolBar > QPushButton:!checked:hover {
 }
 
 QToolBar > QPushButton:checked:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #d0970c, stop:1 #daa116);
+    background-color: #e3b64d;
 }
 
 QToolBar > QPushButton:!checked:pressed {
