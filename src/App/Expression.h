@@ -439,7 +439,7 @@ public:
   Expression * expr;
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
-  int ivalue;
+  long long int ivalue;
   double fvalue;
   struct {
     std::string name;
