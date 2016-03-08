@@ -580,7 +580,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     #PCL needs to be found before boost because the PCLConfig also calls find_package(Boost ...),
     #but with different components
     if(FREECAD_USE_PCL)
-        find_package(PCL REQUIRED COMPONENTS common kdtree features surface io)
+        find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
 
 # -------------------------------- Boost --------------------------------
