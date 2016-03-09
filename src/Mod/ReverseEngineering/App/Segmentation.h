@@ -46,6 +46,37 @@ private:
     std::list<std::vector<int> >& myClusters;
 };
 
+class NormalEstimation
+{
+public:
+    NormalEstimation(const Points::PointKernel&);
+    /** \brief Set the number of k nearest neighbors to use for the feature estimation.
+      * \param[in] k the number of k-nearest neighbors
+      */
+    inline void
+    setKSearch (int k) { kSearch = k; }
+
+    /** \brief Set the sphere radius that is to be used for determining the nearest neighbors used for the feature
+      * estimation.
+      * \param[in] radius the sphere radius used as the maximum distance to consider a point a neighbor
+      */
+    inline void
+    setSearchRadius (double radius)
+    {
+        searchRadius = radius;
+    }
+
+    /** \brief Perform the normal estimation.
+      * \param[out] the estimated normals
+      */
+    void perform(std::vector<Base::Vector3d>& normals);
+
+private:
+    const Points::PointKernel& myPoints;
+    int kSearch;
+    double searchRadius;
+};
+
 } // namespace Reen
 
 #endif // REEN_SEGMENTATION_H

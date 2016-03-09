@@ -27,16 +27,23 @@
 #include <Mod/Points/App/Points.h>
 #include <Base/Exception.h>
 
+#if defined(HAVE_PCL_FILTERS)
+#include <pcl/filters/extract_indices.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/features/normal_3d.h>
+#endif
+
+#if defined(HAVE_PCL_SAMPLE_CONSENSUS)
+#include <pcl/sample_consensus/method_types.h>
+#include <pcl/sample_consensus/model_types.h>
+#endif
+
 #if defined(HAVE_PCL_SEGMENTATION)
 #include <pcl/ModelCoefficients.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
-#include <pcl/filters/extract_indices.h>
-#include <pcl/filters/passthrough.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/sample_consensus/method_types.h>
-#include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
+#endif
 
 using namespace std;
 using namespace Reen;
@@ -44,6 +51,7 @@ using pcl::PointXYZ;
 using pcl::PointNormal;
 using pcl::PointCloud;
 
+#if defined(HAVE_PCL_SEGMENTATION)
 Segmentation::Segmentation(const Points::PointKernel& pts, std::list<std::vector<int> >& clusters)
   : myPoints(pts)
   , myClusters(clusters)
@@ -87,7 +95,7 @@ void Segmentation::perform(int ksearch)
     // Estimate point normals
     ne.setSearchMethod (tree);
     ne.setInputCloud (cloud_filtered);
-    ne.setKSearch (50);
+    ne.setKSearch (ksearch);
     ne.compute (*cloud_normals);
 
     // Create the segmentation object for the planar model and set all the parameters
@@ -146,3 +154,52 @@ void Segmentation::perform(int ksearch)
 
 #endif // HAVE_PCL_SEGMENTATION
 
+// ----------------------------------------------------------------------------
+
+#if defined (HAVE_PCL_FILTERS)
+NormalEstimation::NormalEstimation(const Points::PointKernel& pts)
+  : myPoints(pts)
+  , kSearch(0)
+  , searchRadius(0)
+{
+}
+
+void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
+{
+    // Copy the points
+    pcl::PointCloud<PointXYZ>::Ptr cloud (new pcl::PointCloud<PointXYZ>);
+    cloud->reserve(myPoints.size());
+    for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
+        cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
+    }
+
+    cloud->width = int (cloud->points.size ());
+    cloud->height = 1;
+
+    // Build a passthrough filter to remove spurious NaNs
+    pcl::PointCloud<PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<PointXYZ>);
+    pcl::PassThrough<PointXYZ> pass;
+    pass.setInputCloud (cloud);
+    pass.setFilterFieldName ("z");
+    pass.setFilterLimits (0, 1.5);
+    pass.filter (*cloud_filtered);
+
+    // Estimate point normals
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
+    pcl::search::KdTree<PointXYZ>::Ptr tree (new pcl::search::KdTree<PointXYZ> ());
+    pcl::NormalEstimation<PointXYZ, pcl::Normal> ne;
+    ne.setSearchMethod (tree);
+    ne.setInputCloud (cloud_filtered);
+    if (kSearch > 0)
+        ne.setKSearch (kSearch);
+    if (searchRadius > 0)
+        ne.setRadiusSearch (searchRadius);
+    ne.compute (*cloud_normals);
+
+    normals.reserve(cloud_normals->size());
+    for (pcl::PointCloud<pcl::Normal>::const_iterator it = cloud_normals->begin(); it != cloud_normals->end(); ++it) {
+        normals.push_back(Base::Vector3d(it->normal_x, it->normal_y, it->normal_z));
+    }
+}
+
+#endif // HAVE_PCL_FILTERS

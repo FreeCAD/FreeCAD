@@ -53,6 +53,24 @@
 #include <pcl/point_types.h>
 #endif
 
+/*
+Dependency of pcl components:
+common: none
+features: common, kdtree, octree, search, (range_image)
+filters: common, kdtree, octree, sample_consenus, search
+geomety: common
+io: common, octree
+kdtree: common
+keypoints: common, features, filters, kdtree, octree, search, (range_image)
+octree: common
+recognition: common, features, search
+registration: common, features, kdtree, sample_consensus
+sample_consensus: common
+search: common, kdtree, octree
+segmentation: common, kdtree, octree, sample_consensus, search
+surface: common, kdtree, octree, search
+*/
+
 using namespace Reen;
 
 namespace Reen {
@@ -94,6 +112,9 @@ public:
 #if defined(HAVE_PCL_FILTERS)
         add_keyword_method("filterVoxelGrid",&Module::filterVoxelGrid,
             "filterVoxelGrid(dim)."
+        );
+        add_keyword_method("normalEstimation",&Module::normalEstimation,
+            "normalEstimation(Points)."
         );
 #endif
 #if defined(HAVE_PCL_SEGMENTATION)
@@ -587,6 +608,35 @@ Mesh.show(m)
         }
 
         return Py::asObject(new Points::PointsPy(points_sample));
+    }
+#endif
+#if defined(HAVE_PCL_FILTERS)
+    Py::Object Module::normalEstimation(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject *pts;
+        int ksearch=0;
+        double searchRadius=0;
+
+        static char* kwds_normals[] = {"Points", "KSearch", "SearchRadius", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|id", kwds_normals,
+                                        &(Points::PointsPy::Type), &pts,
+                                        &ksearch, &searchRadius))
+            throw Py::Exception();
+
+        Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+
+        std::vector<Base::Vector3d> normals;
+        NormalEstimation estimate(*points);
+        estimate.setKSearch(ksearch);
+        estimate.setSearchRadius(searchRadius);
+        estimate.perform(normals);
+
+        Py::List list;
+        for (std::vector<Base::Vector3d>::iterator it = normals.begin(); it != normals.end(); ++it) {
+            list.append(Py::Vector(*it));
+        }
+
+        return list;
     }
 #endif
 #if defined(HAVE_PCL_SEGMENTATION)
