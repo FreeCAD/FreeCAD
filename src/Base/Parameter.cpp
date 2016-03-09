@@ -1062,6 +1062,13 @@ void ParameterManager::Init(void)
     }
 }
 
+void ParameterManager::Terminate(void)
+{
+    StrXUTF8::terminate();
+    XUTF8Str::terminate();
+    XMLPlatformUtils::Terminate();
+}
+
 //**************************************************************************
 // Document handling
 

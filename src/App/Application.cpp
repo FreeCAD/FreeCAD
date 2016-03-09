@@ -922,6 +922,7 @@ void Application::destruct(void)
     ScriptFactorySingleton::Destruct();
     InterpreterSingleton::Destruct();
     Base::Type::destruct();
+    ParameterManager::Terminate();
 }
 
 void Application::destructObserver(void)

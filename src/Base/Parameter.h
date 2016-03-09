@@ -218,8 +218,6 @@ public:
     std::vector<std::pair<std::string,std::string> > GetASCIIMap(const char * sFilter = NULL) const;
     //@}
 
-    static void Init(void);
-
     friend class ParameterManager;
 
     /// returns the name
@@ -278,6 +276,7 @@ public:
     ParameterManager();
     ~ParameterManager();
     static void Init(void);
+    static void Terminate(void);
 
     int   LoadDocument(const char* sFileName);
     int   LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
