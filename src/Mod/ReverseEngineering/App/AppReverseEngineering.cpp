@@ -611,7 +611,7 @@ Mesh.show(m)
     }
 #endif
 #if defined(HAVE_PCL_FILTERS)
-    Py::Object Module::normalEstimation(const Py::Tuple& args, const Py::Dict& kwds)
+    Py::Object normalEstimation(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
         int ksearch=0;
