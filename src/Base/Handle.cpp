@@ -58,7 +58,7 @@ void Handled::ref() const
 
 void Handled::unref() const
 {
-    assert(_lRefCount > 0);
+    assert(*_lRefCount > 0);
     if (!_lRefCount->deref()) {
         delete this;
     }
