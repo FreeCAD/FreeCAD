@@ -37,9 +37,9 @@ class _CommandNewMechanicalAnalysis(FemCommands):
     def __init__(self):
         super(_CommandNewMechanicalAnalysis, self).__init__()
         self.resources = {'Pixmap': 'fem-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "New mechanical analysis"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_NewMechanicalAnalysis", "New mechanical analysis"),
                           'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new mechanical analysis")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_NewMechanicalAnalysis", "Create a new mechanical analysis")}
         self.is_active = 'with_document'
 
     def Activated(self):
