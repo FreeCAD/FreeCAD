@@ -47,9 +47,12 @@
 
 using namespace std;
 using namespace Reen;
+
+#if defined(HAVE_PCL_FILTERS)
 using pcl::PointXYZ;
 using pcl::PointNormal;
 using pcl::PointCloud;
+#endif
 
 #if defined(HAVE_PCL_SEGMENTATION)
 Segmentation::Segmentation(const Points::PointKernel& pts, std::list<std::vector<int> >& clusters)
