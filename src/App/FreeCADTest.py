@@ -32,9 +32,10 @@
 
 Log ("FreeCAD test running...\n\n")
 
-import TestApp;TestApp.TestText("TestApp.All")
+import TestApp, os
 
+testResult = TestApp.TestText("TestApp.All")
 
 Log ("FreeCAD test done\n")
 
-
+os._exit(0 if testResult.wasSuccessful() else 1)
