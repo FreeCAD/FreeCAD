@@ -122,8 +122,6 @@ SET(FemScripts_SRCS
 SET(FemTests_SRCS
     test_files/ccx/mesh_points.csv
     test_files/ccx/mesh_volumes.csv
-    test_files/ccx/static_analysis.inp
-    test_files/ccx/frequency_analysis.inp
     test_files/ccx/cube_frequency.inp
     test_files/ccx/cube_frequency.dat
     test_files/ccx/cube_frequency.frd
