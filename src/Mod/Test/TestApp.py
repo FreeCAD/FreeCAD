@@ -63,7 +63,7 @@ def All():
 def TestText(s):
     s = unittest.defaultTestLoader.loadTestsFromName(s)
     r = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
-    r.run(s)
+    return r.run(s)
 
 
 def Test(s):
@@ -72,7 +72,7 @@ def Test(s):
 
 def testAll():
     r = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
-    r.run(All())
+    return r.run(All())
 
 
 def testUnit():
