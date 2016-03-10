@@ -580,6 +580,8 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 
         double startRadius = 1;
         double endRadius = 1;
+        bool twoRadii = false;
+
         std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         bool block = model->blockSignals(true); // do not call toggleCheckState
@@ -595,6 +597,8 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 
                 startRadius = et->radius1;
                 endRadius = et->radius2;
+                if (startRadius != endRadius)
+                    twoRadii = true;
 
                 int id = model->index(index, 0).data(Qt::UserRole).toInt();
                 std::stringstream str;
@@ -603,6 +607,12 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             }
         }
         model->blockSignals(block);
+
+        // #0002273
+        if (twoRadii) {
+            ui->filletType->setCurrentIndex(1);
+            on_filletType_activated(1);
+        }
 
         // #0001746
         ui->filletStartRadius->blockSignals(true);
