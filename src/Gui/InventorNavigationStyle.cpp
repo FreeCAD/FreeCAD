@@ -77,6 +77,12 @@ const char* InventorNavigationStyle::mouseButtons(ViewerMode mode)
     }
 }
 
+std::string InventorNavigationStyle::userFriendlyName() const
+{
+    // do not mark this for translation
+    return "OpenInventor";
+}
+
 SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
