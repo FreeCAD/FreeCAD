@@ -1498,23 +1498,17 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     contextMenu.addMenu(&subMenu);
 
     // add submenu at the end to select navigation style
-    QRegExp rx(QString::fromLatin1("^\\w+::(\\w+)Navigation\\w+$"));
-    std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
-    for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
-        if (*it != UserNavigationStyle::getClassTypeId()) {
-            QString data = QString::fromLatin1(it->getName());
-            QString name = data.mid(data.indexOf(QLatin1String("::"))+2);
-            if (rx.indexIn(data) > -1) {
-                name = QObject::tr("%1 navigation").arg(rx.cap(1));
-                QAction* item = subMenuGroup.addAction(name);
-                item->setData(QByteArray(it->getName()));
-                item->setCheckable(true);
-                if (*it == this->getTypeId())
-                    item->setChecked(true);
-                subMenu.addAction(item);
-            }
-        }
+    std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
+    for (std::map<Base::Type, std::string>::iterator it = styles.begin(); it != styles.end(); ++it) {
+        QByteArray data(it->first.getName());
+        QString name = QApplication::translate(it->first.getName(), it->second.c_str());
+
+        QAction* item = subMenuGroup.addAction(name);
+        item->setData(data);
+        item->setCheckable(true);
+        if (it->first == this->getTypeId())
+            item->setChecked(true);
+        subMenu.addAction(item);
     }
 
     delete view;
@@ -1538,3 +1532,35 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 // ----------------------------------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::UserNavigationStyle,Gui::NavigationStyle);
+
+std::string UserNavigationStyle::userFriendlyName() const
+{
+    std::string name = this->getTypeId().getName();
+    // remove namespaces
+    std::size_t pos = name.rfind("::");
+    if (pos != std::string::npos)
+        name = name.substr(pos + 2);
+
+    // remove 'NavigationStyle'
+    pos = name.find("NavigationStyle");
+    if (pos != std::string::npos)
+        name = name.substr(0, pos);
+    return name;
+}
+
+std::map<Base::Type, std::string> UserNavigationStyle::getUserFriendlyNames()
+{
+    std::map<Base::Type, std::string> names;
+    std::vector<Base::Type> types;
+    Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
+
+    for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
+        if (*it != UserNavigationStyle::getClassTypeId()) {
+            std::auto_ptr<UserNavigationStyle> inst(static_cast<UserNavigationStyle*>(it->createInstance()));
+            if (inst.get()) {
+                names[*it] = inst->userFriendlyName();
+            }
+        }
+    }
+    return names;
+}
