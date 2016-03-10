@@ -76,8 +76,6 @@ INSTALL(
         # changes on the file list here needs to be made in App/CMakeLists.txt as well
         test_files/ccx/mesh_points.csv
         test_files/ccx/mesh_volumes.csv
-        test_files/ccx/static_analysis.inp
-        test_files/ccx/frequency_analysis.inp
         test_files/ccx/cube_frequency.inp
         test_files/ccx/cube_frequency.dat
         test_files/ccx/cube_frequency.frd
