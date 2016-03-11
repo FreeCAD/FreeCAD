@@ -3339,7 +3339,7 @@ Restart:
                         if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                             geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                             if (Constr->Type == Equal) {
-                                double r1a,r1b,r2a,r2b;
+                                double r1a=0,r1b=0,r2a=0,r2b=0;
                                 double angle1,angle1plus=0.,  angle2, angle2plus=0.;//angle1 = rotation of object as a whole; angle1plus = arc angle (t parameter for ellipses).
                                 if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                     const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
