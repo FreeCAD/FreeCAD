@@ -130,6 +130,7 @@ SET(FemTests_SRCS
     test_files/ccx/cube_static.dat
     test_files/ccx/cube_static.frd
     test_files/ccx/cube_static_expected_values
+    test_files/ccx/cube.fcstd
 )
 
 SET(FemBase_SRCS
