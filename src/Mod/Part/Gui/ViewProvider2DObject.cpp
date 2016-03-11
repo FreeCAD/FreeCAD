@@ -36,7 +36,9 @@
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Reader.h>
 #include <Base/ViewProj.h>
 #include <App/Application.h>
 #include <Gui/SoFCBoundingBox.h>
@@ -230,6 +232,56 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
             createGrid();
         }
     }
+}
+
+void ViewProvider2DObject::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop) {
+                Base::Type inputType = Base::Type::fromName(TypeName);
+                if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+                    inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+                    // Do not directly call the property's Restore method in case the implmentation
+                    // has changed. So, create a temporary PropertyFloat object and assign the value.
+                    App::PropertyFloat floatProp;
+                    floatProp.Restore(reader);
+                    static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }
 
 void ViewProvider2DObject::attach(App::DocumentObject *pcFeat)
