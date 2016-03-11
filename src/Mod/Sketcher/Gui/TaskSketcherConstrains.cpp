@@ -126,16 +126,16 @@ public:
                 name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
                 break;
             case Sketcher::DistanceX:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs(constraint->getPresentationValue()),Base::Unit::Length).getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
                 break;
             case Sketcher::DistanceY:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs(constraint->getPresentationValue()),Base::Unit::Length).getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
                 break;
             case Sketcher::Radius:
                 name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
                 break;
             case Sketcher::Angle:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(std::abs(constraint->getPresentationValue())),Base::Unit::Angle).getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(constraint->getPresentationValue()),Base::Unit::Angle).getUserString());
                 break;
             case Sketcher::SnellsLaw: {
                 double v = constraint->getPresentationValue();

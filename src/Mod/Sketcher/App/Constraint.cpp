@@ -137,11 +137,11 @@ double Constraint::getPresentationValue() const
     switch (Type) {
     case Distance:
     case Radius:
-        return std::abs(Value);
+        return Value;
     case DistanceX:
     case DistanceY:
         if (FirstPos == Sketcher::none || Second != Sketcher::Constraint::GeoUndef)
-            return std::abs(Value);
+            return Value;
         else
             return Value;
     case Angle:

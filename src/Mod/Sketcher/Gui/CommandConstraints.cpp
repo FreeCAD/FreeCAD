@@ -128,7 +128,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
             ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
              (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)))
             // hide negative sign
-            init_val.setValue(std::abs(datum));
+            init_val.setValue(datum);
 
         else // show negative sign
             init_val.setValue(datum);
@@ -145,15 +145,6 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                 ui_ins_datum.labelEdit->pushToHistory();
 
                 double newDatum = newQuant.getValue();
-                if (Constr->Type == Sketcher::Angle ||
-                    ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-                     (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))) {
-                    // Permit negative values to flip the sign of the constraint
-                    if (newDatum >= 0) // keep the old sign
-                        newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
-                    else // flip sign
-                        newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
-                }
 
                 try {
                     if (ui_ins_datum.labelEdit->hasExpression())
