@@ -276,6 +276,9 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport CADNavigationStyle : public UserNavigationStyle {
@@ -293,6 +296,7 @@ protected:
 
 private:
     SbBool lockButton1;
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
@@ -310,6 +314,7 @@ protected:
 
 private:
     SbBool lockButton1;
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
@@ -348,6 +353,9 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport GestureNavigationStyle : public UserNavigationStyle {
@@ -387,6 +395,8 @@ public:
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
 
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 } // namespace Gui
