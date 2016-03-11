@@ -97,7 +97,7 @@ class FemTest(unittest.TestCase):
     def create_new_material(self):
         self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
         mat = self.new_material_object.Material
-        mat['Name'] = "Steel"
+        mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
         mat['Density'] = "7900 kg/m^3"
@@ -109,16 +109,16 @@ class FemTest(unittest.TestCase):
 
     def create_force_constraint(self):
         self.force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
-        self.force_constraint.References = [(self.box, "Face2")]
-        self.force_constraint.Force = 10.000000
+        self.force_constraint.References = [(self.box, "Face6")]
+        self.force_constraint.Force = 40000.0
         self.force_constraint.Direction = (self.box, ["Edge5"])
         self.force_constraint.Reversed = True
 
     def create_pressure_constraint(self):
         self.pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
         self.pressure_constraint.References = [(self.box, "Face2")]
-        self.pressure_constraint.Pressure = 10.000000
-        self.pressure_constraint.Reversed = True
+        self.pressure_constraint.Pressure = 1000.0
+        self.pressure_constraint.Reversed = False
 
     def force_unix_line_ends(self, line_list):
         new_line_list = []
