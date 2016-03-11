@@ -122,15 +122,7 @@ void EditDatumDialog::exec(bool atCursor)
 
         //ui_ins_datum.lineEdit->setParamGrpPath("User parameter:History/Sketcher/SetDatum");
 
-        // e.g. an angle or a distance X or Y applied on a line or two vertexes
-        if (Constr->Type == Sketcher::Angle ||
-            ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-             (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)))
-            // hide negative sign
-            init_val.setValue(std::abs(datum));
-
-        else // show negative sign
-            init_val.setValue(datum);
+        init_val.setValue(datum);
 
         // Enable label if we are modifying a driving constraint
         ui_ins_datum.labelEdit->setEnabled(Constr->isDriving);
@@ -150,15 +142,6 @@ void EditDatumDialog::exec(bool atCursor)
                 ui_ins_datum.labelEdit->pushToHistory();
 
                 double newDatum = newQuant.getValue();
-                if (Constr->Type == Sketcher::Angle ||
-                    ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-                     (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))) {
-                    // Permit negative values to flip the sign of the constraint
-                    if (newDatum >= 0) // keep the old sign
-                        newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
-                    else // flip sign
-                        newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
-                }
 
                 try {
                     Gui::Command::openCommand("Modify sketch constraints");
