@@ -273,7 +273,7 @@ void DlgCustomKeyboardImp::on_buttonReset_clicked()
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && cmd->getAction()) {
-      cmd->getAction()->setShortcut(QString::fromLatin1(cmd->getAccel()));
+        cmd->getAction()->setShortcut(QString::fromLatin1(cmd->getAccel()));
         QString txt = cmd->getAction()->shortcut().toString(QKeySequence::NativeText);
         accelLineEditShortcut->setText((txt.isEmpty() ? tr("none") : txt));
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
