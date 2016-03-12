@@ -82,7 +82,7 @@ public:
           sketch(s),
           ConstraintNbr(ConstNbr)
     {
-        this->setFlags(this->flags() | Qt::ItemIsEditable);       
+        this->setFlags(this->flags() | Qt::ItemIsEditable);
     }
     ~ConstraintItem()
     {
@@ -365,35 +365,39 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
-    
-    CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
-    
-    menu.addSeparator();
-       
-    if(item) // Non-driving-constraints/measurements
-    {
+
+    bool isQuantity = false;
+    bool isToggleDriving = false;
+
+    // Non-driving-constraints/measurements
+    if (item) {
         ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
-        
-        QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, SLOT(updateDrivingStatus()));
+
         // if its the right constraint
         if ((it->constraintType() == Sketcher::Distance ||
              it->constraintType() == Sketcher::DistanceX ||
              it->constraintType() == Sketcher::DistanceY ||
              it->constraintType() == Sketcher::Radius ||
              it->constraintType() == Sketcher::Angle ||
-             it->constraintType() == Sketcher::SnellsLaw) && it->isEnforceable()) {
-            driven->setEnabled(true);    
-        }
-        else{
-            driven->setEnabled(false);   
-        }
-         
+             it->constraintType() == Sketcher::SnellsLaw)) {
 
-        QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
-        QVariant v = item ? item->data(Qt::UserRole) : QVariant();
-        change->setEnabled(v.isValid() && it->isDriving());
-
+            isQuantity = true;
+            if (it->isEnforceable())
+                isToggleDriving = true;
+        }
     }
+
+    // This does the same as a double-click and thus it should be the first action and with bold text
+    QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
+    change->setEnabled(isQuantity);
+    menu.setDefaultAction(change);
+
+    QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, SLOT(updateDrivingStatus()));
+    driven->setEnabled(isToggleDriving);
+
+    menu.addSeparator();
+    CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
+
     QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
 #ifndef Q_WS_MAC // on Mac F2 doesn't seem to trigger an edit signal
         ,QKeySequence(Qt::Key_F2)
@@ -620,11 +624,11 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
 
     // if its the right constraint
     if (it->constraintType() == Sketcher::Distance ||
-            it->constraintType() == Sketcher::DistanceX ||
-            it->constraintType() == Sketcher::DistanceY ||
-            it->constraintType() == Sketcher::Radius ||
-            it->constraintType() == Sketcher::Angle ||
-            it->constraintType() == Sketcher::SnellsLaw) {
+        it->constraintType() == Sketcher::DistanceX ||
+        it->constraintType() == Sketcher::DistanceY ||
+        it->constraintType() == Sketcher::Radius ||
+        it->constraintType() == Sketcher::Angle ||
+        it->constraintType() == Sketcher::SnellsLaw) {
 
         EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);
