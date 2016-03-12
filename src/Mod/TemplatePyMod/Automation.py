@@ -79,7 +79,7 @@ def makeSnapshotWithoutGui():
 
 	# Other formats are only available if simage package is installed
 	if off.isWriteSupported("PNG"):
-		print "Save as PNG"
+		print("Save as PNG")
 		off.writeToFile("crystal.png","PNG")
 
 if FreeCAD.GuiUp:
