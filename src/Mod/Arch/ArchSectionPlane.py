@@ -622,7 +622,7 @@ class _ArchDrawingView:
     def getDXF(self,obj):
         "returns a DXF representation of the view"
         if obj.RenderingMode == "Solid":
-            print "Unable to get DXF from Solid mode: ",obj.Label
+            print("Unable to get DXF from Solid mode: ",obj.Label)
             return ""
         result = []
         import Drawing
