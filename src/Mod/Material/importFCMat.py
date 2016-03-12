@@ -125,7 +125,7 @@ def write(filename,dictionary):
     if isinstance(filename,unicode): 
         import sys
         filename = filename.encode(sys.getfilesystemencoding())
-    print filename
+    print(filename)
     f = pythonopen(filename,"wb")
     f.write("; " + header["CardName"].encode("utf8") + "\n")
     f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")

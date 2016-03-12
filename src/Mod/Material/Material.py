@@ -101,7 +101,7 @@ if __name__ == '__main__':
     # checking on the options
     for o, a in opts:
         if o in ("-c", "--output-csv"):
-            print "writing file: " + a + "\n"
+            print("writing file: " + a + "\n")
             OutPath = a
 
     # runing through the files
@@ -109,5 +109,5 @@ if __name__ == '__main__':
 
     kv_map = importFCMat(FileName)
     for k in kv_map.keys():
-        print repr(k) + " : " + repr(kv_map[k])
+        print(repr(k) + " : " + repr(kv_map[k]))
     sys.exit(0)  # no error
