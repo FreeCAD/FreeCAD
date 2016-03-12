@@ -82,11 +82,7 @@ public:
         add_varargs_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
-        initialize("This module is the Import module."); // register with Python
-
-        if(TargetObjectPy)
-            target = static_cast<App::DocumentObjectPy*>(TargetObjectPy)->getDocumentObjectPtr();
-       
+        initialize("This module is the Import module."); // register with Python       
     }
 
     virtual ~Module() {}
