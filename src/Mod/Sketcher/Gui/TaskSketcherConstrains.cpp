@@ -476,8 +476,19 @@ void ConstraintView::swapNamedOfSelectedItems()
     std::string escapedstr1 = Base::Tools::escapedUnicodeFromUtf8(item1->sketch->Constraints[item1->ConstraintNbr]->Name.c_str());
     ConstraintItem * item2 = static_cast<ConstraintItem*>(items[1]);
     std::string escapedstr2 = Base::Tools::escapedUnicodeFromUtf8(item2->sketch->Constraints[item2->ConstraintNbr]->Name.c_str());
-    std::stringstream ss;
 
+    // In commit 67800ec8c (21 Jul 2015) the implementation of on_listWidgetConstraints_itemChanged()
+    // has changed ensuring that a name of a constraint cannot be reset any more.
+    // This leads to some inconsistencies when trying to swap "empty" names.
+    //
+    // If names are empty then nothing should be done
+    if (escapedstr1.empty() || escapedstr2.empty()) {
+        QMessageBox::warning(Gui::MainWindow::getInstance(), tr("Unnamed constraint"),
+                             tr("Only the names of named constraints can be swapped."));
+        return;
+    }
+
+    std::stringstream ss;
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
@@ -673,7 +684,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
         catch (const Base::Exception & e) {
             Gui::Command::abortCommand();
 
-            QMessageBox::critical(Gui::MainWindow::getInstance(), QString::fromLatin1("Error"),
+            QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
                                   QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
         }
     }
