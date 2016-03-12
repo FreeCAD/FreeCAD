@@ -42,7 +42,7 @@ class WorkbenchTestCase(unittest.TestCase):
                 FreeCAD.Console.PrintLog("Active: "+FreeCADGui.activeWorkbench().name()+ " Expected: "+i+"\n")
                 FreeCADGui.updateGui()
                 self.failUnless(FreeCADGui.activeWorkbench().name()==i, "Test on activating workbench failed")
-        except Exception, e:
+        except Exception as e:
             self.failUnless(False, "Loading of workbench '%s' failed: %s" % (i, e.message))
         
     def testHandler(self):
