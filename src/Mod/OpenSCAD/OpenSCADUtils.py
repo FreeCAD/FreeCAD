@@ -38,7 +38,7 @@ def translate(context,text):
 try:
     import FreeCAD
     BaseError = FreeCAD.Base.FreeCADError
-except ImportError,AttributeError:
+except (ImportError, AttributeError):
     BaseError = RuntimeError
 
 class OpenSCADError(BaseError):

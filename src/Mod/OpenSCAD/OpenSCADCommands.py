@@ -301,7 +301,7 @@ class AddSCADTask:
             except OSError:
                 pass
 
-        except OpenSCADUtils.OpenSCADError, e:
+        except OpenSCADUtils.OpenSCADError as e:
             FreeCAD.Console.PrintError(e.value)
 
 class OpenSCADMeshBooleanWidget(QtGui.QWidget):
