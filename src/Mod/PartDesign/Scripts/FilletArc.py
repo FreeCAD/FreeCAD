@@ -85,9 +85,9 @@ def makeFilletArc(M1,P,Q,N,r2,ccw):
 		t = t2
 		
 	br2 = b.mult(r2)
-	print br2
+	print(br2)
 	ut = u.mult(t)
-	print ut
+	print(ut)
 	M2 = P.add(ut).add(br2)
 	S1 = M1.mult(r2/(r1+r2)).add(M2.mult(r1/(r1+r2)))
 	S2 = M2.sub(br2)
