@@ -89,8 +89,7 @@ class ObjectProfile:
         obj.addProperty("App::PropertyDistance", "RollRadius", "Profile", translate("Roll Radius","Radius at start and end"))
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile",translate("OffsetExtra","Extra value to stay away from final profile- good for roughing toolpath"))
         obj.addProperty("App::PropertyLength", "SegLen", "Profile",translate("Seg Len","Tesselation  value for tool paths made from beziers, bsplines, and ellipses"))
-
-
+        obj.addProperty("App::PropertyAngle", "RampAngle", "Profile",translate("Ramp angle","If unequal zero, use this angle to ramp downwards along the path"))
 
         obj.Proxy = self
 
@@ -159,9 +158,9 @@ class ObjectProfile:
             ZCurrent = obj.ClearanceHeight.Value
 
             if obj.UseStartDepth:
-                output += PathUtils.MakePath(wire,obj.Side,radius,clockwise,obj.ClearanceHeight.Value,obj.StepDown.Value,obj.StartDepth.Value, obj.FinalDepth.Value,FirstEdge,obj.PathClosed,obj.SegLen.Value,obj.VertFeed.Value,obj.HorizFeed.Value)
+                output += PathUtils.MakePath(wire,obj.Side,radius,clockwise,obj.ClearanceHeight.Value,obj.StepDown.Value,obj.StartDepth.Value, obj.FinalDepth.Value,FirstEdge,obj.PathClosed,obj.SegLen.Value,obj.VertFeed.Value,obj.HorizFeed.Value,RampAngle=obj.RampAngle)
             else:
-                output += PathUtils.MakePath(wire,obj.Side,radius,clockwise,obj.ClearanceHeight.Value,obj.StepDown.Value,ZMax, obj.FinalDepth.Value,FirstEdge,obj.PathClosed,obj.SegLen.Value,obj.VertFeed.Value,obj.HorizFeed.Value)
+                output += PathUtils.MakePath(wire,obj.Side,radius,clockwise,obj.ClearanceHeight.Value,obj.StepDown.Value,ZMax, obj.FinalDepth.Value,FirstEdge,obj.PathClosed,obj.SegLen.Value,obj.VertFeed.Value,obj.HorizFeed.Value,RampAngle=obj.RampAngle)
 
 
             if obj.Active:

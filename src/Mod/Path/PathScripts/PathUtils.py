@@ -169,54 +169,106 @@ def reverseEdge(e):
 
     return newedge
 
-def convert(toolpath,Side,radius,clockwise=False,Z=0.0,firstedge=None,vf=1.0,hf=2.0):
-    '''convert(toolpath,Side,radius,clockwise=False,Z=0.0,firstedge=None) Converts lines and arcs to G1,G2,G3 moves. Returns a string.'''
-    last = None
-    output = ""
+def convert(toolpath,Z=0.0,vf=1.0,hf=2.0,RampAngle=0.0,Z0=None,stop_after_length=None):
+    '''convert(toolpath,Z=0.0,vf=1.0,hf=2.0,RampAngle=0.0,Z0=None,stop_after_length=None) Converts lines and arcs to G1,G2,G3 moves. Returns a string.'''
     # create the path from the offset shape
-    for edge in toolpath:
-        if not last:
-            #set the first point
-            last = edge.Vertexes[0].Point
-            #FreeCAD.Console.PrintMessage("last pt= " + str(last)+ "\n")
-            output += "G1 X"+str(fmt(last.x))+" Y"+str(fmt(last.y))+" Z"+str(fmt(Z))+" F"+str(vf)+"\n"
+
+    lastpt = None
+    output = ""
+
+    if RampAngle:
+        if Z0 is None:
+            raise Exception("Cannot use RampAngle without Z0")
+        tanA = math.tan(math.pi * RampAngle / 180.0)
+        assert(Z0 > Z)
+        minA = 0.99 * (Z0 - Z) / sum(e.Length for e in toolpath)
+        if tanA < minA:
+            tanA = minA
+            FreeCAD.Console.PrintMessage('Increasing ramp angle to {0} degrees\n'.format(math.atan(tanA) * 180.0 / math.pi))
+    else:
+        tanA = 0.0
+        Z0 = Z
+
+    path_length = 0.0
+    Z_cur = Z0
+
+    def path_from_edge(lastpt, edge, Z):
         if isinstance(edge.Curve,Part.Circle):
-            #FreeCAD.Console.PrintMessage("arc\n")
             arcstartpt = edge.valueAt(edge.FirstParameter)
             midpt = edge.valueAt((edge.FirstParameter+edge.LastParameter)*0.5)
             arcendpt = edge.valueAt(edge.LastParameter)
-            arcchkpt=edge.valueAt(edge.LastParameter*.99)
 
-            if DraftVecUtils.equals(last,arcstartpt):
+            if DraftVecUtils.equals(lastpt,arcstartpt):
                 startpt = arcstartpt
                 endpt = arcendpt
             else:
                 startpt = arcendpt
                 endpt = arcstartpt
             center = edge.Curve.Center
-            relcenter = center.sub(last)
-            #FreeCAD.Console.PrintMessage("arc  startpt= " + str(startpt)+ "\n")
-            #FreeCAD.Console.PrintMessage("arc  midpt= " + str(midpt)+ "\n")
-            #FreeCAD.Console.PrintMessage("arc  endpt= " + str(endpt)+ "\n")
+            relcenter = center.sub(lastpt)
             arc_cw = check_clockwise([(startpt.x,startpt.y),(midpt.x,midpt.y),(endpt.x,endpt.y)])
-            #FreeCAD.Console.PrintMessage("arc_cw="+ str(arc_cw)+"\n")
             if arc_cw:
-                output += "G2"
+                output = "G2"
             else:
-                output += "G3"
+                output = "G3"
             output += " X"+str(fmt(endpt.x))+" Y"+str(fmt(endpt.y))+" Z"+str(fmt(Z))+" F"+str(hf)
             output += " I" + str(fmt(relcenter.x)) + " J" + str(fmt(relcenter.y)) + " K" + str(fmt(relcenter.z))
             output += "\n"
-            last = endpt
-            #FreeCAD.Console.PrintMessage("last pt arc= " + str(last)+ "\n")
+            lastpt = endpt
         else:
             point = edge.Vertexes[-1].Point
-            if DraftVecUtils.equals(point , last): # edges can come flipped
+            if DraftVecUtils.equals(point , lastpt): # edges can come flipped
                 point = edge.Vertexes[0].Point
-            output += "G1 X"+str(fmt(point.x))+" Y"+str(fmt(point.y))+" Z"+str(fmt(Z))+" F"+str(hf)+"\n"
-            last = point
-            #FreeCAD.Console.PrintMessage("line\n")
-            #FreeCAD.Console.PrintMessage("last pt line= " + str(last)+ "\n")
+            output = "G1 X"+str(fmt(point.x))+" Y"+str(fmt(point.y))+" Z"+str(fmt(Z))+" F"+str(hf)+"\n"
+            lastpt = point
+        return lastpt, output
+
+    for edge in toolpath:
+        if not lastpt:
+            #set the first point
+            lastpt = edge.Vertexes[0].Point
+            output += "G1 X"+str(fmt(lastpt.x))+" Y"+str(fmt(lastpt.y))+" Z"+str(fmt(Z_cur))+" F"+str(vf)+"\n"
+
+        if stop_after_length:
+            if path_length + edge.Length > stop_after_length:
+                # have to split current edge in two
+                t0 = edge.FirstParameter
+                t1 = edge.LastParameter
+                dL = stop_after_length - path_length
+                t = t0 + (t1 - t0) * dL / edge.Length
+                assert(t0 < t < t1)
+                edge = edge.split(t).Edges[0]
+                path_length = stop_after_length
+            else:
+                path_length += edge.Length
+        else:
+            path_length += edge.Length
+
+        if Z_cur > Z:
+            Z_next = Z0 - path_length * tanA
+            if Z_next < Z:
+                # have to split current edge in two
+                t0 = edge.FirstParameter
+                t1 = edge.LastParameter
+                dZ = Z_cur - Z
+                t = t0 + (t1 - t0) * (dZ / tanA) / edge.Length
+                assert(t0 < t < t1)
+                subwire = edge.split(t)
+                assert(len(subwire.Edges) == 2)
+                Z_cur = Z
+                lastpt, codes = path_from_edge(lastpt, subwire.Edges[0], Z_cur)
+                output += codes
+                edge = subwire.Edges[1]
+            else:
+                Z_cur = Z_next
+
+        lastpt, codes = path_from_edge(lastpt, edge, Z_cur)
+        output += codes
+
+        if stop_after_length:
+            if path_length >= stop_after_length:
+                break
+
     return output
 
 def SortPath(wire,Side,radius,clockwise,firstedge=None,SegLen =0.5):
@@ -281,28 +333,39 @@ def SortPath(wire,Side,radius,clockwise,firstedge=None,SegLen =0.5):
 
     return offset
 
-def MakePath(wire,Side,radius,clockwise,ZClearance,StepDown,ZStart,ZFinalDepth,firstedge=None,PathClosed=True,SegLen =0.5,VertFeed=1.0,HorizFeed=2.0):
+def MakePath(wire,Side,radius,clockwise,ZClearance,StepDown,ZStart,ZFinalDepth,firstedge=None,PathClosed=True,SegLen=0.5,VertFeed=1.0,HorizFeed=2.0,RampAngle=None):
     ''' makes the path - just a simple profile for now '''
-    offset = SortPath(wire,Side,radius,clockwise,firstedge,SegLen=0.5)
+    offset = SortPath(wire,Side,radius,clockwise,firstedge,SegLen=SegLen)
     toolpath = offset.Edges[:]
-    paths = "" 
+    paths = ""
     first = toolpath[0].Vertexes[0].Point
     paths += "G0 X"+str(fmt(first.x))+"Y"+str(fmt(first.y))+"\n"
-    ZCurrent = ZStart- StepDown
+    ZLast = ZStart
+    ZCurrent = ZStart - StepDown
+
     if PathClosed:
+        FreeCAD.Console.PrintMessage('PathClosed\n')
         while ZCurrent > ZFinalDepth:
-            paths += convert(toolpath,Side,radius,clockwise,ZCurrent,firstedge,VertFeed,HorizFeed)
-            ZCurrent = ZCurrent-abs(StepDown)
-        paths += convert(toolpath,Side,radius,clockwise,ZFinalDepth,firstedge,VertFeed,HorizFeed)
-        paths += "G0 Z" + str(ZClearance)
+            paths += convert(toolpath,ZCurrent,VertFeed,HorizFeed,RampAngle,ZLast)
+            ZLast = ZCurrent
+            ZCurrent = ZCurrent - abs(StepDown)
+        paths += convert(toolpath,ZFinalDepth,VertFeed,HorizFeed,RampAngle,ZLast)
     else:
+        FreeCAD.Console.PrintMessage('PathOpen\n')
         while ZCurrent > ZFinalDepth:
-            paths += convert(toolpath,Side,radius,clockwise,ZCurrent,firstedge,VertFeed,HorizFeed)
+            paths += convert(toolpath,ZCurrent,VertFeed,HorizFeed,RampAngle,ZLast)
             paths += "G0 Z" + str(ZClearance)
             paths += "G0 X"+str(fmt(first.x))+"Y"+str(fmt(first.y))+"\n"
-            ZCurrent = ZCurrent-abs(StepDown)
-        paths += convert(toolpath,Side,radius,clockwise,ZFinalDepth,firstedge,VertFeed,HorizFeed)
-        paths += "G0 Z" + str(ZClearance)
+            ZLast = ZCurrent
+            ZCurrent = ZCurrent - abs(StepDown)
+        paths += convert(toolpath,ZFinalDepth,VertFeed,HorizFeed,RampAngle,ZLast)
+
+    # do one last pass to clear the remaining ramp
+    if RampAngle is not None and RampAngle != 0.0:
+        tanA = math.tan(math.pi * RampAngle / 180.0)
+        paths += convert(toolpath,ZFinalDepth,VertFeed,HorizFeed,stop_after_length=abs(StepDown)/tanA)
+
+    paths += "G0 Z" + str(ZClearance)
     return paths
 
 # the next two functions are for automatically populating tool numbers/height offset numbers based on previously active toolnumbers
