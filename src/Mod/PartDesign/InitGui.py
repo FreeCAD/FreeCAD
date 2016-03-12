@@ -41,17 +41,18 @@ class PartDesignWorkbench ( Workbench ):
             try:
                 from WizardShaft import WizardShaft
             except ImportError:
-                print "Wizard shaft module cannot be loaded"
+                print("Wizard shaft module cannot be loaded")
                 try:
                     from FeatureHole import HoleGui
                 except:
                     pass
+
             import PartDesignGui
             import PartDesign
             try:
                 import InvoluteGearFeature
             except ImportError:
-                print "Involute gear module cannot be loaded"
+                print("Involute gear module cannot be loaded")
                 #try:
                 #    from FeatureHole import HoleGui
                 #except:

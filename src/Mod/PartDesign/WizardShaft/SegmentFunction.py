@@ -350,7 +350,7 @@ class TranslationFunction:
         
         try:
             self.boundaries = np.linalg.solve(A, b) # A * self.boundaries = b
-        except np.linalg.linalg.LinAlgError,  e:
+        except np.linalg.linalg.LinAlgError as e:
             FreeCAD.Console.PrintMessage(e.message)
             FreeCAD.Console.PrintMessage(". No solution possible.\n")
             return
