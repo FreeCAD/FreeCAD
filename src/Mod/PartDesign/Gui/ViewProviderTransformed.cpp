@@ -67,7 +67,6 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
     QAction* act;
     act = menu->addAction(QObject::tr((std::string("Edit ") + featureName + " feature").c_str()), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderTransformed::setEdit(int ModNum)

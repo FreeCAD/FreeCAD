@@ -50,7 +50,6 @@ void ViewProviderGroove::setupContextMenu(QMenu* menu, QObject* receiver, const 
     QAction* act;
     act = menu->addAction(QObject::tr("Edit groove"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 TaskDlgFeatureParameters *ViewProviderGroove::getEditDialog()

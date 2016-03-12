@@ -38,6 +38,7 @@ public:
     ViewProviderShapeBinder();
     virtual ~ViewProviderShapeBinder();
 
+    void setupContextMenu(QMenu*, QObject*, const char*);
     void highlightReferences(const bool on, bool auxillery);    
     
 protected:

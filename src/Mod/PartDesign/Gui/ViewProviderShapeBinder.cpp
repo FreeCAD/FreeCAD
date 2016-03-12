@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+#include <QMenu>
 # include <Inventor/nodes/SoSeparator.h>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -171,4 +172,11 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool auxillery)
             originalFaceColors.clear();
         }
     }
+}
+
+void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit shape binder"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
 }

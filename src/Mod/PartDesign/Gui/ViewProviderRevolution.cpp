@@ -50,7 +50,6 @@ void ViewProviderRevolution::setupContextMenu(QMenu* menu, QObject* receiver, co
     QAction* act;
     act = menu->addAction(QObject::tr("Edit revolution"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 TaskDlgFeatureParameters *ViewProviderRevolution::getEditDialog()
