@@ -35,7 +35,7 @@ def openscadmesh(doc,scadstr,objname):
         obj.Shape=solid#.removeSplitter()
         return obj
     else:
-        print scadstr
+        print(scadstr)
 
 class Node:
     #fnmin=12 # maximal fn for implicit polygon renderfing
@@ -544,7 +544,7 @@ class Node:
             argstr = ' (%s)' % self.arguments
         else:
             argstr = ''
-        print '%s %s%s' %('  '*level,self.name,argstr)
+        print('%s %s%s' %('  '*level,self.name,argstr))
         for child in self.children:
             child.pprint(level+1)
 
@@ -554,7 +554,7 @@ class Node:
             argstr = ' (%s)' % self.arguments
         else:
             argstr = ''
-        print '%s %s%s' %(path.ljust(pathjust),self.name,argstr)
+        print('%s %s%s' %(path.ljust(pathjust),self.name,argstr))
         for i,child in enumerate(self.children):
             child.pprint2('%s[%d]'%(path,i),pathjust)
 
@@ -603,7 +603,7 @@ def parseargs(argstring):
             else:
                 a.append(char)
         tok.append(''.join(a).strip())
-        #print tok
+        #print(tok)
         argdict=dict(zip(tok[0::2],[parseexpression(argstring) for argstring in tok[1::2]]))
 #        argdict={}
 #        for key, value in re.findall(r"(\$?\w+)\s*=\s*(\[?\w+]?),?\s*",argstring):
