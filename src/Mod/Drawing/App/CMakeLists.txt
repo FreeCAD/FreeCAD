@@ -92,7 +92,6 @@ target_link_libraries(Drawing ${Drawing_LIBS})
 
 SET(Drawing_Scripts
     Init.py
-    DrawingAlgos.py
 )
 
 fc_target_copy_resource(Drawing 
