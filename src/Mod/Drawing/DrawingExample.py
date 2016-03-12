@@ -9,18 +9,18 @@ Part.show(Part.makeBox(100,100,100).cut(Part.makeCylinder(80,100)).cut(Part.make
 # direct projection. The G0 means hard edge, the G1 is tangend continues.
 Shape = App.ActiveDocument.Shape.Shape
 [visiblyG0,visiblyG1,hiddenG0,hiddenG1] = Drawing.project(Shape)
-print "visible edges:", len(visiblyG0.Edges)
-print "hidden edges:", len(hiddenG0.Edges)
+print("visible edges:", len(visiblyG0.Edges))
+print("hidden edges:", len(hiddenG0.Edges))
 # all was projected on the Z-plane:
-print "Bnd Box shape: X=",Shape.BoundBox.XLength," Y=",Shape.BoundBox.YLength," Z=",Shape.BoundBox.ZLength
-print "Bnd Box project: X=",visiblyG0.BoundBox.XLength," Y=",visiblyG0.BoundBox.YLength," Z=",visiblyG0.BoundBox.ZLength
+print("Bnd Box shape: X=",Shape.BoundBox.XLength," Y=",Shape.BoundBox.YLength," Z=",Shape.BoundBox.ZLength)
+print("Bnd Box project: X=",visiblyG0.BoundBox.XLength," Y=",visiblyG0.BoundBox.YLength," Z=",visiblyG0.BoundBox.ZLength)
 
 # different projection vector
 [visiblyG0,visiblyG1,hiddenG0,hiddenG1] = Drawing.project(Shape,Base.Vector(1,1,1))
 
 # project to SVG
 resultSVG = Drawing.projectToSVG(Shape,App.Vector(1,1,1))
-print resultSVG
+print(resultSVG)
 
 # And now the parametric way
 # 
@@ -68,12 +68,12 @@ App.activeDocument().recompute()
 # Accessing the bits and peaces:
 # get the SVG fragment of a single view
 ViewSVG = App.activeDocument().View.ViewResult
-print ViewSVG
+print(ViewSVG)
 
 # get the hole result page (its a file in the document temp dir, only read allowed)
-print "Resulting SVG document: ",App.activeDocument().Page.PageResult
+print("Resulting SVG document: ",App.activeDocument().Page.PageResult)
 file = open(App.activeDocument().Page.PageResult,"r")
-print "Result page is ",len(file.readlines())," lines long"
+print("Result page is ",len(file.readlines())," lines long")
 # important, give free the file!
 del file
 
