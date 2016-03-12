@@ -49,7 +49,6 @@ void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const
     // TODO check if this gets a sane translation (2015-07-26, Fat-Zer)
     act = menu->addAction(QObject::tr((std::string("Edit ") + featureName() + " feature").c_str()), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 

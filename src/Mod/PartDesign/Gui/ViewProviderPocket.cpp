@@ -52,7 +52,6 @@ void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const 
     QAction* act;
     act = menu->addAction(QObject::tr("Edit pocket"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 

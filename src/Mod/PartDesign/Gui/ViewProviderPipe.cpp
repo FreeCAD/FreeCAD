@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+#include <QMenu>
 #endif
 
 #include "ViewProviderPipe.h"
@@ -63,11 +64,10 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
 }
 
 void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{/*
+{
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit pad"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit pipe"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);*/
 }
 
 bool ViewProviderPipe::doubleClicked(void)

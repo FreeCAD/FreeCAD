@@ -57,7 +57,6 @@ void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const
     QAction* act;
     act = menu->addAction(QObject::tr("Edit boolean"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderBoolean::setEdit(int ModNum)
