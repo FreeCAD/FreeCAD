@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QDesktopWidget>
+#include <QMenu>
 #include <QMouseEvent>
 
 #include "DlgExpressionInput.h"
@@ -242,6 +243,11 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
         // on the size of the widget. Instead, it must be checked if the
         // cursor is on this or an underlying widget or outside.
         if (!underMouse()) {
+            // if the expression fields context-menu is open do not close the dialog
+            QMenu* menu = qobject_cast<QMenu*>(obj);
+            if (menu && menu->parentWidget() == ui->expression) {
+                return false;
+            }
             bool on = ui->expression->completerActive();
             // Do this only if the completer is not shown
             if (!on) {
