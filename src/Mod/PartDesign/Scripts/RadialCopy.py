@@ -47,7 +47,7 @@ def makeRadialCopy():
         sel = sel[0]
         shape = sel.Shape
         name = sel.Label
-    except IndexError, AttributeError:
+    except (IndexError, AttributeError):
         QtGui.QMessageBox.critical(None,"Wrong selection","Please select a shape object")
         #raise Exception("Nothing selected")
     else:
