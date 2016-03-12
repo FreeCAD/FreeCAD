@@ -19,4 +19,4 @@ def run():
     for l in range(size):
         Robot.Tcp = Trajectory.position(l/24.0).multiply(Tool)
         FreeCADGui.updateGui()
-        FreeCADGui.ActiveDocument.ActiveView.saveImage(OutDir + "Rob_" + `l` + ".jpg",x,y,"White")
+        FreeCADGui.ActiveDocument.ActiveView.saveImage(OutDir + "Rob_" + l + ".jpg",x,y,"White")

@@ -11,7 +11,7 @@ for so in Gui.Selection.getSelectionEx():
 		if edge.Type != 'Part::TopoShape':continue 
 		pos1 = edge.valueAt(0)
 		pos2 = edge.valueAt(edge.Length)
-		print pos1,pos2
+		print(pos1,pos2)
 		if count==0: # first edge
 			FirstPos1 = pos1
 			FirstPos2 = pos2
