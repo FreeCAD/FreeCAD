@@ -8,7 +8,6 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
-        DrawingAlgos.py
         DrawingExample.py
         DrawingTests.py
         DrawingPatterns.py
