@@ -55,7 +55,7 @@ ViewProviderPipe::~ViewProviderPipe()
 std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = static_cast<PartDesign::Pipe*>(getObject())->Profile.getValue();
+    App::DocumentObject* sketch = static_cast<PartDesign::Pipe*>(getObject())->getVerifiedSketch(true);
     if (sketch != NULL)
         temp.push_back(sketch);
 

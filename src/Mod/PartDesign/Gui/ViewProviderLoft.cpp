@@ -55,7 +55,7 @@ ViewProviderLoft::~ViewProviderLoft()
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = static_cast<PartDesign::Loft*>(getObject())->Profile.getValue();
+    App::DocumentObject* sketch = static_cast<PartDesign::Loft*>(getObject())->getVerifiedSketch(true);
     if (sketch != NULL)
         temp.push_back(sketch);
 
