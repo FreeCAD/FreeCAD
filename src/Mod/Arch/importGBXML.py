@@ -79,7 +79,7 @@ def export(objectslist,filename):
                     #filestream.write( '            <PeopleNumber unit="NumberOfPeople">1.00000</PeopleNumber>\n' )
                     #filestream.write( '            <LightPowerPerArea unit="WattPerSquareFoot">1.50000</LightPowerPerArea>\n' )
                     #filestream.write( '            <EquipPowerPerArea unit="WattPerSquareFoot">0.00000</EquipPowerPerArea>\n' )
-                    filestream.write( '            <Area>$f</Area>\n' % space.Area
+                    filestream.write( '            <Area>$f</Area>\n' % space.Area)
             
             
             filestream.write( '    </Building>\n' )

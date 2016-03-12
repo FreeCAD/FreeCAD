@@ -126,16 +126,16 @@ class GUITestResult(unittest.TestResult):
     Used by BaseGUITestRunner. Need not be created directly.
     """
     def __init__(self, callback):
-	unittest.TestResult.__init__(self)
-	self.callback = callback
+        unittest.TestResult.__init__(self)
+        self.callback = callback
 
     def addError(self, test, err):
-	unittest.TestResult.addError(self, test, err)
-	self.callback.notifyTestErrored(test, err)
+        unittest.TestResult.addError(self, test, err)
+        self.callback.notifyTestErrored(test, err)
 
     def addFailure(self, test, err):
-	unittest.TestResult.addFailure(self, test, err)
-	self.callback.notifyTestFailed(test, err)
+        unittest.TestResult.addFailure(self, test, err)
+        self.callback.notifyTestFailed(test, err)
 
     def stopTest(self, test):
         unittest.TestResult.stopTest(self, test)
@@ -194,16 +194,16 @@ class TkTestRunner(BaseGUITestRunner):
         """
         self.root = root
         # Set up values that will be tied to widgets
-	self.suiteNameVar = tk.StringVar()
-	self.suiteNameVar.set(initialTestName)
+        self.suiteNameVar = tk.StringVar()
+        self.suiteNameVar.set(initialTestName)
         self.statusVar = tk.StringVar()
         self.statusVar.set("Idle")
-	self.runCountVar = tk.IntVar()
-	self.failCountVar = tk.IntVar()
-	self.errorCountVar = tk.IntVar()
-	self.remainingCountVar = tk.IntVar()
+        self.runCountVar = tk.IntVar()
+        self.failCountVar = tk.IntVar()
+        self.errorCountVar = tk.IntVar()
+        self.remainingCountVar = tk.IntVar()
         self.top = tk.Frame()
-	self.top.pack(fill=tk.BOTH, expand=1)
+        self.top.pack(fill=tk.BOTH, expand=1)
         self.createWidgets()
 
     def createWidgets(self):
@@ -217,11 +217,11 @@ class TkTestRunner(BaseGUITestRunner):
         statusFrame.pack(anchor=tk.SW, fill=tk.X, side=tk.BOTTOM)
         tk.Label(statusFrame, textvariable=self.statusVar).pack(side=tk.LEFT)
 
-	# Area to enter name of test to run
+        # Area to enter name of test to run
         leftFrame = tk.Frame(self.top, borderwidth=3)
         leftFrame.pack(fill=tk.BOTH, side=tk.LEFT, anchor=tk.NW, expand=1)
-	suiteNameFrame = tk.Frame(leftFrame, borderwidth=3)
-	suiteNameFrame.pack(fill=tk.X)
+        suiteNameFrame = tk.Frame(leftFrame, borderwidth=3)
+        suiteNameFrame.pack(fill=tk.X)
         tk.Label(suiteNameFrame, text="Enter test name:").pack(side=tk.LEFT)
         e = tk.Entry(suiteNameFrame, textvariable=self.suiteNameVar, width=25)
         e.pack(side=tk.LEFT, fill=tk.X, expand=1)
@@ -236,12 +236,12 @@ class TkTestRunner(BaseGUITestRunner):
                                        borderwidth=2)
         self.progressBar.pack(fill=tk.X, expand=1)
 
-	# Area with buttons to start/stop tests and quit
+        # Area with buttons to start/stop tests and quit
         buttonFrame = tk.Frame(self.top, borderwidth=3)
         buttonFrame.pack(side=tk.LEFT, anchor=tk.NW, fill=tk.Y)
-	self.stopGoButton = tk.Button(buttonFrame, text="Start",
+        self.stopGoButton = tk.Button(buttonFrame, text="Start",
                                       command=self.runClicked)
-	self.stopGoButton.pack(fill=tk.X)
+        self.stopGoButton.pack(fill=tk.X)
         tk.Button(buttonFrame, text="Close",
                   command=self.top.quit).pack(side=tk.BOTTOM, fill=tk.X)
         tk.Button(buttonFrame, text="About",
@@ -249,7 +249,7 @@ class TkTestRunner(BaseGUITestRunner):
         tk.Button(buttonFrame, text="Help",
                   command=self.showHelpDialog).pack(side=tk.BOTTOM, fill=tk.X)
 
-	# Area with labels reporting results
+        # Area with labels reporting results
         for label, var in (('Run:', self.runCountVar),
                            ('Failures:', self.failCountVar),
                            ('Errors:', self.errorCountVar),
@@ -263,10 +263,10 @@ class TkTestRunner(BaseGUITestRunner):
         tk.Label(leftFrame, text="Failures and errors:").pack(anchor=tk.W)
         listFrame = tk.Frame(leftFrame, relief=tk.SUNKEN, borderwidth=2)
         listFrame.pack(fill=tk.BOTH, anchor=tk.NW, expand=1)
-	self.errorListbox = tk.Listbox(listFrame, foreground='red',
+        self.errorListbox = tk.Listbox(listFrame, foreground='red',
                                        selectmode=tk.SINGLE,
                                        selectborderwidth=0)
-	self.errorListbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=1,
+        self.errorListbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=1,
                                anchor=tk.NW)
         listScroll = tk.Scrollbar(listFrame, command=self.errorListbox.yview)
         listScroll.pack(side=tk.LEFT, fill=tk.Y, anchor=tk.N)

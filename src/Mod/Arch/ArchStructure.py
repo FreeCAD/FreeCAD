@@ -93,7 +93,7 @@ def makeStructuralSystem(objects=[],axes=[],name="StructuralSystem"):
     based on the given objects and axes'''
     result = []
     if not axes:
-        print "At least one axis must be given"
+        print("At least one axis must be given")
         return
     if objects:
         if not isinstance(objects,list):

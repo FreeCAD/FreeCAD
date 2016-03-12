@@ -133,16 +133,16 @@ class GUITestResult(unittest.TestResult):
     Used by BaseGUITestRunner. Need not be created directly.
     """
     def __init__(self, callback):
-	unittest.TestResult.__init__(self)
-	self.callback = callback
+        unittest.TestResult.__init__(self)
+        self.callback = callback
 
     def addError(self, test, err):
-	unittest.TestResult.addError(self, test, err)
-	self.callback.notifyTestErrored(test, err)
+        unittest.TestResult.addError(self, test, err)
+        self.callback.notifyTestErrored(test, err)
 
     def addFailure(self, test, err):
-	unittest.TestResult.addFailure(self, test, err)
-	self.callback.notifyTestFailed(test, err)
+        unittest.TestResult.addFailure(self, test, err)
+        self.callback.notifyTestFailed(test, err)
 
     def stopTest(self, test):
         unittest.TestResult.stopTest(self, test)

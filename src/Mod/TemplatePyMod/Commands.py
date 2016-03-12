@@ -28,7 +28,7 @@ def addCommand(name,cmdObject):
 class TemplatePyMod_Cmd1:
     "Example command class"
     def Activated(self):
-        print "TemplatePyMod_Cmd1 activated ;-) "
+        print("TemplatePyMod_Cmd1 activated ;-) ")
 
     def GetResources(self):
         return {'Pixmap'  : 'Std_Tool1', 'MenuText': 'Example command', 'ToolTip': 'Very unimportand example command'}
@@ -235,9 +235,9 @@ class TemplatePyCheckable:
     "Example toggle command class"
     def Activated(self, index):
         if index == 0:
-            print "Toggle is off"
+            print("Toggle is off")
         else:
-            print "Toggle is on"
+            print("Toggle is on")
 
     def GetResources(self):
         return {'Pixmap'  : 'python', 'MenuText': 'Toggle command', 'ToolTip': 'Example toggle command', 'Checkable': True}

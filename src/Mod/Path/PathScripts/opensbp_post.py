@@ -60,10 +60,10 @@ TOOL_CHANGE = ''''A tool change is about to happen
 
 
 def move(commandline):
-    print "processing a move"
+    print("processing a move")
     txt = ""
     if commandline['F'] != None : #Feed Rate has changed
-        print "command contains an F"
+        print("command contains an F")
         txt += feedrate(commandline)
         
     if commandline['command'] == 'G0': 
@@ -91,7 +91,7 @@ def feedrate(commandline):
         movetype = "MS"
     else:  #jog
         movetype = "JS"
-    print "movetype: " + movetype
+    print("movetype: " + movetype)
     
     if commandline['X'] == None:
         newX = CurrentState['X']
@@ -122,7 +122,7 @@ def feedrate(commandline):
         AXISMOVE = "XYZ"
         if CurrentState[movetype+'XY'] == setspeed and CurrentState[movetype+'Z'] == setspeed:
             NOCHANGE = True
-    print "axismove: " + AXISMOVE
+    print("axismove: " + AXISMOVE)
     #figure out if it has actually changed.
     if NOCHANGE == True:
         txt = ""
@@ -135,7 +135,7 @@ def feedrate(commandline):
             CurrentState[movetype+'Z'] = setspeed
         else: #XYZMOVE
             txt += movetype + "," + format(setspeed, '.4f') + "," + format(setspeed, '.4f') 
-            print txt
+            print(txt)
             CurrentState[movetype+'XY'] = setspeed 
             CurrentState[movetype+'Z'] = setspeed
         
@@ -160,7 +160,7 @@ def arc(commandline):
     return txt
 
 def tool_change(commandline):
-    print "tool change"
+    print("tool change")
     txt = ""
     if OUTPUT_COMMENTS: txt += "'a tool change happens now\n"
     for line in TOOL_CHANGE.splitlines(True):
@@ -173,7 +173,7 @@ def tool_change(commandline):
     return txt
 
 def comment(commandline):
-    print "a comment"
+    print("a comment")
 
 def spindle(commandline):
     txt =""
@@ -198,14 +198,14 @@ CurrentState = {'X':0, 'Y':0, 'Z':0, 'F':0, 'S':0, 'JSXY':0, 'JSZ':0, 'MSXY':0, 
 
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
-    print "postprocessing..."
+    print("postprocessing...")
     
     output = ""
     params = ['X','Y','Z','A','B','I','J','K','F','S','T'] #This list control the order of parameters
  
     # write some stuff first
     if OUTPUT_HEADER:
-        print "outputting header"
+        print("outputting header")
         output += "'Exported by FreeCAD\n"
         output += "'Post Processor: " + __name__ +"\n"
         output += "'Output Time:"+str(now)+"\n"
@@ -222,14 +222,14 @@ def parse(inputstring):
         commandline = PostUtils.stringsplit(line)
         command = commandline['command']        
         try:
-            print commandline
-            print "command: " + command
-            print command in scommands
+            print(commandline)
+            print("command: " + command)
+            print(command in scommands)
             output += scommands[command](commandline)
         except:
-            print "I don't know what the hell the command:  " + command + " means.  Maybe I should support it."
+            print("I don't know what the hell the command:  " + command + " means.  Maybe I should support it.")
 
-    print "finished"    
+    print("finished")
     # write some more stuff at the end
     if OUTPUT_COMMENTS: output += "'begin postamble\n" 
     for line in POSTAMBLE.splitlines(True):
@@ -246,9 +246,9 @@ def parse(inputstring):
     else:
         final = output
 
-    print "done postprocessing."
+    print("done postprocessing.")
     return final
 
 
-print __name__ + " gcode postprocessor loaded."
+print(__name__ + " gcode postprocessor loaded.")
 

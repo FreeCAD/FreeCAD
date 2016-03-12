@@ -45,7 +45,7 @@ class PartWorkbench ( Workbench ):
         try:
             import JoinFeatures
         except ImportError:
-            print "JoinFeatures module cannot be loaded"
+            print("JoinFeatures module cannot be loaded")
 
     def GetClassName(self):
         return "PartGui::Workbench"

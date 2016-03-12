@@ -141,7 +141,7 @@ class TestWorkbenchCmd:
             FreeCADGui.updateGui()
             FreeCADGui.activateWorkbench("PartWorkbench")
             FreeCADGui.updateGui()
-            print i
+            print(i)
             i=i+1
         FreeCADGui.activateWorkbench("TestWorkbench")
 

@@ -67,5 +67,5 @@ if __name__ == '__main__':
     if len(args) != 2:
         p.error()
     m, Z = [float(v) for v in args]
-    print makeGear(m, int(Z), float(opts.angle))
+    print(makeGear(m, int(Z), float(opts.angle)))
 

@@ -106,7 +106,7 @@ class _Floor:
             else:
                 pl = obj.Placement.copy()
                 if not DraftVecUtils.equals(pl.Base,self.OldPlacement.Base):
-                    print "placement moved"
+                    print("placement moved")
                     delta = pl.Base.sub(self.OldPlacement.Base)
                     for o in obj.Group:
                         if hasattr(o,"Placement"):

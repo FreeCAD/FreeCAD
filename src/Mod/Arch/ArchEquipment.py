@@ -152,7 +152,7 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
             try:
                 f = Part.Face(w)
             except Part.OCCError:
-                print "Unable to produce a face from the outer wire."
+                print("Unable to produce a face from the outer wire.")
             else:
                 shape = f
 

@@ -233,7 +233,7 @@ class _ArchScheduleTaskPanel:
                     try:
                         totprice += total * float(self.getEntry(mat,"SpecificPrice"))
                     except:
-                        print "Arch.Schedule: Unable to add price"
+                        print("Arch.Schedule: Unable to add price")
                 row += 2
             if self.form.CheckPrice.isChecked():
                 if totprice:

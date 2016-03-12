@@ -94,9 +94,10 @@ def InitApplications():
 			InstallFile = os.path.join(Dir,"Init.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					#execfile(InstallFile)
-					exec open(InstallFile).read()
-				except Exception, inst:
+					# XXX: This looks scary securitywise...
+					with open(InstallFile) as f:
+						exec(f.read())
+				except Exception as inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
 					Log('-'*100+'\n')
 					output=cStringIO.StringIO()

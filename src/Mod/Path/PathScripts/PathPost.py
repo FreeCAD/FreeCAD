@@ -77,7 +77,8 @@ class CommandPathPost:
             if proj.OutputFile:
                 filename = proj.OutputFile
         
-        exec "import %s as current_post" % postname
+        # XXX: Security??
+        exec("import %s as current_post" % postname)
         current_post.export(obj,filename)
 
         FreeCAD.ActiveDocument.commitTransaction()

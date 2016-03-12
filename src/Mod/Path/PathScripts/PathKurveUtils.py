@@ -56,7 +56,7 @@ def makeAreaCurve(edges,direction,startpt=None,endpt=None):
     #sort the edges
     vlist,edgestart,common = PathSelection.Sort2Edges([cleanededges[0],cleanededges[1]])
    
-    if cleanededges[0].valueAt(cleanededges[0].FirstParameter)<>edgestart:
+    if cleanededges[0].valueAt(cleanededges[0].FirstParameter) != edgestart:
         firstedge=PathUtils.reverseEdge(cleanededges[0])
     else:
         firstedge=cleanededges[0]
@@ -126,7 +126,7 @@ def profile(curve,side_of_line,radius=1.0,vertfeed=0.0,horizfeed=0.0,offset_extr
     output = ""
     offset_curve = area.Curve(curve)
     if offset_curve.getNumVertices() <= 1:
-        raise Exception,"Sketch has no elements!"
+        raise Exception("Sketch has no elements!")
     if side_of_line == "on":
         use_CRC =False 
 
@@ -140,9 +140,9 @@ def profile(curve,side_of_line,radius=1.0,vertfeed=0.0,horizfeed=0.0,offset_extr
             offset_curve.Offset(-offset)
 
         if offset_curve == False:
-            raise Exception, "couldn't offset kurve " + str(offset_curve)
+            raise Exception("couldn't offset kurve " + str(offset_curve))
     else:
-        raise Exception,"Side must be 'left','right', or 'on'"
+        raise Exception("Side must be 'left','right', or 'on'")
 
 #===============================================================================
 #     #roll_on roll_off section
@@ -233,7 +233,7 @@ def profile(curve,side_of_line,radius=1.0,vertfeed=0.0,horizfeed=0.0,offset_extr
                 lastx = span.v.p.x
                 lasty = span.v.p.y
             else:
-                raise Exception, "valid geometry identifier needed"
+                raise Exception("valid geometry identifier needed")
         if use_CRC:
             #end_CRC()
             output +="G40"+"\n"

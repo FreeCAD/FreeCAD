@@ -396,7 +396,7 @@ class Twist:
                     pipeshell.setSpineSupport(spine)
                     pipeshell.add(wire)
                     pipeshell.setAuxiliarySpine(auxspine,True,False)
-                    print pipeshell.getStatus()
+                    print(pipeshell.getStatus())
                     assert(pipeshell.isReady())
                     #fp.Shape=pipeshell.makeSolid()
                     pipeshell.build()

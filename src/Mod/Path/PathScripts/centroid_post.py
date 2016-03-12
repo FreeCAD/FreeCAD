@@ -73,7 +73,7 @@ def export(selection,filename):
     params = ['X','Y','Z','A','B','I','J','F','H','S','T','Q','R','L'] #Using XY plane most of the time so skipping K
     for obj in selection:
         if not hasattr(obj,"Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
     myMachine = None
     for pathobj in selection:
@@ -82,7 +82,7 @@ def export(selection,filename):
                 if p.Name == "Machine":
                     myMachine = p
     if myMachine is None: 
-        print "No machine found in this selection"
+        print("No machine found in this selection")
     else:
         if myMachine.MachineUnits == "Metric":
            UNITS = "G21"
@@ -99,7 +99,7 @@ def export(selection,filename):
 
     gobjects = []
     for g in selection[0].Group:
-        if g.Name <>'Machine': #filtering out gcode home position from Machine object
+        if g.Name != 'Machine': #filtering out gcode home position from Machine object
             gobjects.append(g)
 
     for obj in gobjects:

@@ -83,10 +83,10 @@ def export(objectslist,filename):
     global UNITS
     for obj in objectslist:
         if not hasattr(obj,"Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
 
-    print "postprocessing..."
+    print("postprocessing...")
     gcode = ""
 
     #Find the machine.  
@@ -98,7 +98,7 @@ def export(objectslist,filename):
                 if p.Name == "Machine":
                     myMachine = p
     if myMachine is None: 
-        print "No machine found in this project"
+        print("No machine found in this project")
     else:
         if myMachine.MachineUnits == "Metric":
            UNITS = "G21"
@@ -149,7 +149,7 @@ def export(objectslist,filename):
     else:
         final = gcode
       
-    print "done postprocessing."
+    print("done postprocessing.")
  
     gfile = pythonopen(filename,"wb")
     gfile.write(gcode)
@@ -230,5 +230,5 @@ def parse(pathobj):
         return out
    
     
-print __name__ + " gcode postprocessor loaded."
+print(__name__ + " gcode postprocessor loaded.")
 
