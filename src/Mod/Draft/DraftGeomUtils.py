@@ -688,7 +688,7 @@ def sortEdges(edges):
                 edict.setdefault( e.Vertexes[-1].hashCode(),[] ).append(e)
                 nedges.append(e)
     if not nedges:
-        print "DraftGeomUtils.sortEdges: zero-length edges"
+        print("DraftGeomUtils.sortEdges: zero-length edges")
         return edges
     # Find the start of the path.  The start is the vertex that appears
     # in the sdict dictionary but not in the edict dictionary, and has
@@ -850,7 +850,7 @@ def invert(edge):
     elif geomType(edge) in ["BSplineCurve","BezierCurve"]:
         if isLine(edge.Curve):
             return Part.Line(edge.Vertexes[-1].Point,edge.Vertexes[0].Point).toShape()
-    print "DraftGeomUtils.invert: unable to invert ",edge.Curve
+    print("DraftGeomUtils.invert: unable to invert ",edge.Curve)
     return edge
 
 
@@ -1166,7 +1166,7 @@ def offsetWire(wire,dvec,bind=False,occ=False):
                 v = vec(curredge)
             angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
-        #print "edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta
+        #print("edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta)
         nedge = offset(curredge,delta,trim=True)
         if not nedge:
             return None
@@ -1230,7 +1230,7 @@ def connect(edges,closed=False):
         except:
             print("DraftGeomUtils.connect: unable to connect edges")
             for e in nedges:
-                print e.Curve, " ",e.Vertexes[0].Point, " ", e.Vertexes[-1].Point
+                print(e.Curve, " ",e.Vertexes[0].Point, " ", e.Vertexes[-1].Point)
             return None
 
 def findDistance(point,edge,strict=False):
