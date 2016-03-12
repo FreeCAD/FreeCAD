@@ -20,7 +20,7 @@ def PlaceBox(x,y,z):
    return mbox
 
 def Sierpinski(level,x0,y0,z0):
-   #print threading.current_thread().name
+   #print(threading.current_thread().name)
    boxnums = pow(3,level)
    thirds = boxnums / 3
    twothirds = thirds * 2
@@ -95,7 +95,7 @@ def makeMengerSponge_mt(level=3,x0=0,y0=0,z0=0):
         threads.append(thr)
         args=args[count:]
 
-    print "Number of threads: %i" % (len(threads))
+    print("Number of threads: %i" % (len(threads)))
     for thr in threads:
         thr.start()
     for thr in threads:
@@ -106,11 +106,11 @@ def makeMengerSponge_mt(level=3,x0=0,y0=0,z0=0):
         mesh.addMesh(thr.mesh)
         del thr.mesh
         
-    print mesh
+    print(mesh)
     mesh.removeDuplicatedPoints()
     mesh.removeFacets(mesh.getInternalFacets())
     mesh.rebuildNeighbourHood()
-    print "Mesh is solid: %s" % (mesh.isSolid())
+    print("Mesh is solid: %s" % (mesh.isSolid()))
     Mesh.show(mesh)
 
 
@@ -121,5 +121,5 @@ def makeMengerSponge(level=3,x0=0,y0=0,z0=0):
     mesh.removeDuplicatedPoints()
     mesh.removeFacets(mesh.getInternalFacets())
     mesh.rebuildNeighbourHood()
-    print "Mesh is solid: %s" % (mesh.isSolid())
+    print("Mesh is solid: %s" % (mesh.isSolid()))
     Mesh.show(mesh)
