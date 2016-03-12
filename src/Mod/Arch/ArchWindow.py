@@ -365,7 +365,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             FreeCAD.ActiveDocument.recompute()
             return obj
 
-    print "Arch: Unknown window type"
+    print("Arch: Unknown window type")
 
 
 class _CommandWindow:
@@ -714,7 +714,7 @@ class _Window(ArchComponent.Component):
                             if not DraftGeomUtils.isNull(pl):
                                 base.Placement = base.Placement.multiply(pl)
                     else:
-                        print "Arch: Bad formatting of window parts definitions"
+                        print("Arch: Bad formatting of window parts definitions")
 
         base = self.processSubShapes(obj,base)
         if base:
@@ -841,7 +841,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if not obj.WindowParts:
             return
         solids = obj.Shape.copy().Solids
-        #print "Colorizing ", solids
+        #print("Colorizing ", solids)
         colors = []
         base = obj.ViewObject.ShapeColor
         for i in range(len(solids)):
@@ -853,7 +853,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                     ccol = ArchCommands.getDefaultColor("WindowGlass")
             for f in solids[i].Faces:
                 colors.append(ccol)
-        #print "colors: ",colors
+        #print("colors: ",colors)
         if colors:
             obj.ViewObject.DiffuseColor = colors
 

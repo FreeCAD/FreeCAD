@@ -112,7 +112,7 @@ def read(filename):
     #for geom in col.geometries:
         for prim in geom.primitives():
         #for prim in geom.primitives:
-            #print prim, dir(prim)
+            #print(prim, dir(prim))
             meshdata = []
             if hasattr(prim,"triangles"):
                 tset = prim.triangles()
@@ -126,9 +126,9 @@ def read(filename):
                     v = [x * unit for x in v]
                     face.append([v[0],v[1],v[2]])
                 meshdata.append(face)
-            #print meshdata
+            #print(meshdata)
             newmesh = Mesh.Mesh(meshdata)
-            #print newmesh
+            #print(newmesh)
             obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature","Mesh")
             obj.Mesh = newmesh
 
@@ -151,10 +151,10 @@ def export(exportList,filename,tessellation=1):
         findex = []
         m = None
         if obj.isDerivedFrom("Part::Feature"):
-            print "exporting object ",obj.Name, obj.Shape
+            print("exporting object ",obj.Name, obj.Shape)
             m = Mesh.Mesh(triangulate(obj.Shape))
         elif obj.isDerivedFrom("Mesh::Feature"):
-            print "exporting object ",obj.Name, obj.Mesh
+            print("exporting object ",obj.Name, obj.Mesh)
             m = obj.Mesh
         if m:
             # vertex indices
@@ -168,7 +168,7 @@ def export(exportList,filename,tessellation=1):
             for i in range(len(m.Topology[1])):
                 f = m.Topology[1][i]
                 findex.extend([f[0],i,f[1],i,f[2],i])
-        print len(vindex), " vert indices, ", len(nindex), " norm indices, ", len(findex), " face indices."
+        print(len(vindex), " vert indices, ", len(nindex), " norm indices, ", len(findex), " face indices.")
         vert_src = collada.source.FloatSource("cubeverts-array"+str(objind), numpy.array(vindex), ('X', 'Y', 'Z'))
         normal_src = collada.source.FloatSource("cubenormals-array"+str(objind), numpy.array(nindex), ('X', 'Y', 'Z'))
         geom = collada.geometry.Geometry(colmesh, "geometry"+str(objind), obj.Name, [vert_src, normal_src])

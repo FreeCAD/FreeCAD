@@ -131,7 +131,7 @@ class _CommandRebar:
                         FreeCAD.ActiveDocument.recompute()
                         return
                     else:
-                        print "Arch: error: couldn't extract a base object"
+                        print("Arch: error: couldn't extract a base object")
                         return
 
         FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object\n"))
@@ -194,7 +194,7 @@ class _Rebar(ArchComponent.Component):
         father = obj.InList[0]
         wire = obj.Base.Shape.Wires[0]
         if hasattr(obj,"Rounding"):
-            #print obj.Rounding
+            #print(obj.Rounding)
             if obj.Rounding:
                 radius = obj.Rounding * obj.Diameter.Value
                 import DraftGeomUtils
@@ -209,8 +209,8 @@ class _Rebar(ArchComponent.Component):
                 axis = FreeCAD.Vector(obj.Direction) #.normalize()
                 # don't normalize so the vector can also be used to determine the distance
                 size = axis.Length
-        #print axis
-        #print size
+        #print(axis)
+        #print(size)
         if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
             return
 
@@ -222,7 +222,7 @@ class _Rebar(ArchComponent.Component):
         try:
             bar = wire.makePipeShell([circle],True,False,2)
         except Part.OCCError:
-            print "Arch: error sweeping rebar profile along the base sketch"
+            print("Arch: error sweeping rebar profile along the base sketch")
             return
         # building final shape
         shapes = []

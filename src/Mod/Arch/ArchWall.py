@@ -121,11 +121,11 @@ def mergeShapes(w1,w2):
     import DraftGeomUtils
     w = DraftGeomUtils.findWires(eds)
     if len(w) == 1:
-        #print "found common wire"
+        #print("found common wire")
         normal,length,width,height = w1.Proxy.getDefaultValues(w1)
-        print w[0].Edges
+        print(w[0].Edges)
         sh = w1.Proxy.getBase(w1,w[0],normal,width,height)
-        print sh
+        print(sh)
         return sh
     return None
 

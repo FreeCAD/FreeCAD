@@ -357,7 +357,7 @@ class _ArchDrawingView:
                 result += '">\n'
                 result += svg
                 result += '</g>\n'
-                # print "complete node:",result
+                # print("complete node:",result)
                 obj.ViewResult = result
 
     def onChanged(self, obj, prop):
@@ -405,7 +405,7 @@ class _ArchDrawingView:
                                 if obj.ShowCut:
                                     self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
                             self.svg += '</g>\n'
-                            # print render.info()
+                            # print(render.info())
 
                         else:
                             # render using the Drawing module
@@ -447,7 +447,7 @@ class _ArchDrawingView:
                                             #s = Part.Wire(s.Edges)
                                             #s = Part.Face(s)
                                         except Part.OCCError:
-                                            #print "ArchDrawingView: unable to get a face"
+                                            #print("ArchDrawingView: unable to get a face")
                                             sshapes.append(s)
                                         nsh.extend(c.Solids)
                                         #sshapes.append(s)
@@ -514,7 +514,7 @@ class _ArchDrawingView:
     def getDXF(self,obj):
         "returns a DXF representation of the view"
         if obj.RenderingMode == "Solid":
-            print "Unable to get DXF from Solid mode: ",obj.Label
+            print("Unable to get DXF from Solid mode: ",obj.Label)
             return ""
         result = []
         import Drawing

@@ -269,7 +269,7 @@ class _Space(ArchComponent.Component):
         shape = None
         faces = []
 
-        #print "starting compute"
+        #print("starting compute")
         # 1: if we have a base shape, we use it
 
         if obj.Base:
@@ -280,7 +280,7 @@ class _Space(ArchComponent.Component):
 
         # 2: if not, add all bounding boxes of considered objects and build a first shape
         if shape:
-            #print "got shape from base object"
+            #print("got shape from base object")
             bb = shape.BoundBox
         else:
             bb = None
@@ -293,7 +293,7 @@ class _Space(ArchComponent.Component):
             if not bb:
                 return
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
-            #print "created shape from boundbox"
+            #print("created shape from boundbox")
 
         # 3: identifing boundary faces
         goodfaces = []
@@ -302,9 +302,9 @@ class _Space(ArchComponent.Component):
                     if "Face" in b[1]:
                         fn = int(b[1][4:])-1
                         faces.append(b[0].Shape.Faces[fn])
-                        #print "adding face ",fn," of object ",b[0].Name
+                        #print("adding face ",fn," of object ",b[0].Name)
 
-        #print "total: ", len(faces), " faces"
+        #print("total: ", len(faces), " faces")
 
         # 4: get cutvolumes from faces
         cutvolumes = []
@@ -313,22 +313,22 @@ class _Space(ArchComponent.Component):
             f.reverse()
             cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(f,shape)
             if cutvolume:
-                #print "generated 1 cutvolume"
+                #print("generated 1 cutvolume")
                 cutvolumes.append(cutvolume.copy())
                 #Part.show(cutvolume)
         for v in cutvolumes:
-            #print "cutting"
+            #print("cutting")
             shape = shape.cut(v)
 
         # 5: get the final shape
         if shape:
             if shape.Solids:
-                #print "setting objects shape"
+                #print("setting objects shape")
                 shape = shape.Solids[0]
                 obj.Shape = shape
                 return
 
-        print "Arch: error computing space boundary"
+        print("Arch: error computing space boundary")
 
     def getArea(self,obj):
         "returns the horizontal area at the center of the space"
