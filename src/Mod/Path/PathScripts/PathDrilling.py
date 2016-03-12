@@ -94,7 +94,7 @@ class ObjectDrilling:
 
         output += "G80\n"
 
-        print output
+        print(output)
         path = Path.Path(output)
         obj.Path = path
 

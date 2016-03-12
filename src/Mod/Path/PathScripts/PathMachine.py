@@ -80,7 +80,8 @@ class Machine:
             lessextn = os.path.splitext(obj.PostProcessor)[0]
             postname = os.path.split(lessextn)[1]
 
-            exec "import %s as current_post" % postname
+            # XXX: Security???
+            exec("import %s as current_post" % postname)
             if hasattr (current_post, "UNITS"): 
                 if current_post.UNITS == "G21":
                     obj.MachineUnits = "Metric"

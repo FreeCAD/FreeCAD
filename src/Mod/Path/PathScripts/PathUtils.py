@@ -84,7 +84,7 @@ def isSameEdge(e1,e2):
         return False
     if not (isinstance(e2.Curve,Part.Line) or isinstance(e2.Curve,Part.Circle)):
         return False
-    if type(e1.Curve) <> type(e2.Curve):
+    if type(e1.Curve) != type(e2.Curve):
         return False
     if isinstance(e1.Curve,Part.Line):
         if (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point)) and \

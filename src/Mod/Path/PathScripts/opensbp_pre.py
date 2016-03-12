@@ -83,7 +83,7 @@ def insert(filename,docname):
 
 def parse(inputstring):
     "parse(inputstring): returns a list of parsed output string"
-    print "preprocessing..."
+    print("preprocessing...")
     
     # split the input by line
     lines = inputstring.split("\n")
@@ -180,7 +180,7 @@ def parse(inputstring):
 
         if words[0] in ["CG"]: #Gcode circle/arc
             if words[1] != "": # diameter mode
-                print "diameter mode not supported"
+                print("diameter mode not supported")
                 continue
 
             else:
@@ -194,9 +194,9 @@ def parse(inputstring):
     #Make sure all appended paths have at least one move command.
     if any (x in output for x in movecommand):
         return_output.append(output)
-        print "done preprocessing."
+        print("done preprocessing.")
 
     return return_output
 
-print __name__ + " gcode preprocessor loaded."
+print(__name__ + " gcode preprocessor loaded.")
 

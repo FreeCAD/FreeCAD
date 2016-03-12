@@ -135,15 +135,15 @@ def xyarc(args, state):
     steps = 64 # TODO: specify max error instead
     points = arc.discretize(steps)
     # TODO: consider direction
-    #print 'p = Part.ArcOfCircle(Part.Circle(FreeCAD.Vector(%f, %f), FreeCAD.Vector(0, 0, 1), %f), %f, %f)' % (center.x, center.y, radius, p0, p1)
+    #print('p = Part.ArcOfCircle(Part.Circle(FreeCAD.Vector(%f, %f), FreeCAD.Vector(0, 0, 1), %f), %f, %f)' % (center.x, center.y, radius, p0, p1))
     for p in points:
-        #print 'p', p.x, p.y
+        #print('p', p.x, p.y)
         c += feed(p.x, p.y, state['Z'], state)
     return c
 
 def speed(xy=None, z=None, state={}):
     c = []
-    print xy, z, state
+    print(xy, z, state)
     if xy is not None:
         xy = float(xy)
         if xy > 0.0 and xy != state['XYspeed']:
@@ -235,7 +235,7 @@ def parse(inputstring):
             continue
         parsed = PostUtils.stringsplit(line)
         command = parsed['command']
-        print 'cmd', line
+        print('cmd', line)
         try:
             if command:
                 code = convertgcode(command, parsed, state)
@@ -243,8 +243,8 @@ def parse(inputstring):
                     code = [ code ]
                 if len(code) and code[0]:
                     output += code
-        except NotImplementedError, e:
-            print e
+        except NotImplementedError as e:
+            print(e)
 
     # footer
     output += motoroff()
@@ -253,5 +253,5 @@ def parse(inputstring):
 
     return '\n'.join(output)
 
-print __name__ + " gcode postprocessor loaded."
+print (__name__ + " gcode postprocessor loaded.")
 

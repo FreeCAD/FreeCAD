@@ -149,7 +149,7 @@ class ObjectPocket:
             else:
                 edges = [getattr(obj.Base[0].Shape,sub) for sub in obj.Base[1]]
                 shape = Part.Wire(edges)
-                print len(edges)
+                print(len(edges))
 
             # absolute coords, millimeters, cancel offsets
             output = "G90\nG21\nG40\n"
@@ -162,7 +162,7 @@ class ObjectPocket:
             nextradius = radius
             result = DraftGeomUtils.pocket2d(shape,nextradius)
             while result:
-                #print "Adding " + str(len(result)) + " wires"
+                #print("Adding " + str(len(result)) + " wires")
                 offsets.extend(result)
                 nextradius += radius
                 result = DraftGeomUtils.pocket2d(shape,nextradius)
@@ -176,11 +176,11 @@ class ObjectPocket:
             if obj.StartAt != 'Edge':
                 offsets.reverse()
 
-#            print "startDepth: " + str(obj.StartDepth)
-#            print "finalDepth: " + str(obj.FinalDepth)
-#            print "stepDown: " + str(obj.StepDown)
-#            print "finishDepth" + str(obj.FinishDepth)
-#            print "offsets:", len(offsets)
+#            print("startDepth: " + str(obj.StartDepth))
+#            print("finalDepth: " + str(obj.FinalDepth))
+#            print("stepDown: " + str(obj.StepDown))
+#            print("finishDepth" + str(obj.FinishDepth))
+#            print("offsets:", len(offsets))
 
             def prnt(vlu): return str("%.4f" % round(vlu, 4))
             
@@ -237,7 +237,7 @@ class ObjectPocket:
                     elif (offsets[0].Edges[-1].Length >= tool.Diameter * rampD) and not (isinstance(offsets[0].Edges[-1].Curve, Part.Circle)):
                         rampEdge = offsets[0].Edges[-1]
                     else:
-                        print "Neither edge works: " + str(offsets[0].Edges[0]) + ", " + str(offsets[0].Edges[-1])
+                        print("Neither edge works: " + str(offsets[0].Edges[0]) + ", " + str(offsets[0].Edges[-1]))
                     #FIXME: There's got to be a smarter way to find a place to ramp
                 
             
@@ -282,7 +282,7 @@ class ObjectPocket:
                 #If start/end radii aren't within eps, abort
                 eps = 0.01
                 if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
-                    print "ERROR: Illegal arc: Stand and end radii not equal"
+                    print("ERROR: Illegal arc: Stand and end radii not equal")
                     return ""
                 
                 #Set [C]CW and feed
@@ -365,9 +365,9 @@ class ObjectPocket:
                 #Evidently edges can get flipped- pick the right one in this case
                 #FIXME: This is iffy code, based on what already existed in the "for vpos ..." loop below
                 if ePoint == sPoint:
-                    #print "FLIP"
+                    #print("FLIP")
                     ePoint = edge.Vertexes[-1].Point
-                #print "Start: " + str(sPoint) + " End: " + str(ePoint) + " Zhigh: " + prnt(startZ) + " ZLow: " + prnt(destZ)
+                #print("Start: " + str(sPoint) + " End: " + str(ePoint) + " Zhigh: " + prnt(startZ) + " ZLow: " + prnt(destZ))
                 
                 rampDist = edge.Length
                 rampDZ = math.sin(rampangle/180. * math.pi) * rampDist
@@ -404,22 +404,22 @@ class ObjectPocket:
             lastZ = fastZPos
 
             for vpos in frange(obj.StartDepth, obj.FinalDepth, obj.StepDown, obj.FinishDepth):
-#                print "vpos: " + str(vpos)
+#                print("vpos: " + str(vpos))
                 #Every for every depth we should helix down
                 first = True
                 # loop over successive wires
                 for currentWire in offsets:
-#                    print "new line (offset)"
+#                    print("new line (offset)")
                     last = None
                     for edge in currentWire.Edges:
-#                        print "new edge"
+#                        print("new edge")
                         if not last:
                             # we set the base GO to our fast move to our starting pos
                             if first:
                                 #If we can helix, do so
                                 if plungePos:
                                     output += helicalPlunge(plungePos, 3, vpos, lastZ)
-                                    #print output
+                                    #print(output)
                                     lastZ = vpos
                                 #Otherwise, see if we can ramp
                                 #FIXME: This could be a LOT smarter (eg, searching for a longer leg of the edge to ramp along)
@@ -429,7 +429,7 @@ class ObjectPocket:
                                 #Otherwise, straight plunge... Don't want to, but sometimes you might not have a choice.
                                 #FIXME: At least not with the lazy ramp programming above...
                                 else:
-                                    print "WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp"
+                                    print("WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp")
                                     startPoint = edge.Vertexes[0].Point
                                     output += "G0 X" + prnt(startPoint.x) + " Y" + prnt(startPoint.y) +\
                                               " Z" + prnt(fastZPos) + "\n"
@@ -442,7 +442,7 @@ class ObjectPocket:
                             point = edge.Vertexes[-1].Point
                             if point == last: # edges can come flipped
                                 point = edge.Vertexes[0].Point
-#                                print "flipped"
+#                                print("flipped")
                             center = edge.Curve.Center
                             relcenter = center.sub(last)
                             v1 = last.sub(center)
@@ -464,7 +464,7 @@ class ObjectPocket:
 
             #move back up
             output += "G0 Z" + prnt(fastZPos) + "\n"
-#            print output
+#            print(output)
 #            path = Path.Path(output)
 #            obj.Path = path
             if obj.Active:

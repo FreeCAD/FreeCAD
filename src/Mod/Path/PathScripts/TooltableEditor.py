@@ -66,7 +66,7 @@ class FreeCADTooltableHandler( xml.sax.ContentHandler ):
             self.tool.ToolType = str(attributes["type"])
             self.tool.Material = str(attributes["mat"])
             # for some reason without the following line I get an error 
-            print attributes["diameter"]
+            print(attributes["diameter"])
             self.tool.Diameter = float(attributes["diameter"])
             self.tool.LengthOffset = float(attributes["length"])
             self.tool.FlatRadius = float(attributes["flat"])
@@ -117,7 +117,7 @@ class HeeksTooltableHandler( xml.sax.ContentHandler ):
             elif m == "1":
                 self.tool.Material = "Carbide"
             # for some reason without the following line I get an error 
-            print attributes["diameter"]
+            print(attributes["diameter"])
             self.tool.Diameter = float(attributes["diameter"])
             self.tool.LengthOffset = float(attributes["tool_length_offset"])
             self.tool.FlatRadius = float(attributes["flat_radius"])
@@ -574,7 +574,7 @@ class Editor(QtGui.QDialog):
     def addnew(self):
         "adds a new tool at the end of the table"
         tool = Path.Tool()
-        print self.NameField
+        print(self.NameField)
         if self.NameField.text():
             tool.Name = str(self.NameField.text())
         tool.ToolType = self.getType(self.TypeField.currentIndex())
@@ -613,7 +613,7 @@ class Editor(QtGui.QDialog):
                 fil.write('<?xml version="1.0" encoding="UTF-8"?>\n')
                 fil.write(self.tooltable.Content)
                 fil.close()
-                print "Written ",filename[0]
+                print("Written ",filename[0])
                 
     def moveup(self):
         "moves a tool to a lower number, if possible"

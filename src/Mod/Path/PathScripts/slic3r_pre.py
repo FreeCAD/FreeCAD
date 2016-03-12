@@ -55,7 +55,7 @@ def insert(filename,docname):
             
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
-    print "preprocessing..."
+    print("preprocessing...")
     
     # split the input by line
     lines = inputstring.split("\n")
@@ -89,9 +89,9 @@ def parse(inputstring):
             # no G or M command: we repeat the last one
             output += lastcommand + " " + l + "\n"
             
-    print "done preprocessing."
+    print("done preprocessing.")
     return output
 
 
-print __name__ + " gcode preprocessor loaded."
+print (__name__ + " gcode preprocessor loaded.")
 

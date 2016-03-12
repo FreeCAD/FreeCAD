@@ -121,7 +121,7 @@ class ObjectProfile:
             else: #we are dealing with a face and it's edges or just a face
                 if obj.Edge1:
                     e1 = FreeCAD.ActiveDocument.getObject(obj.Base[0].Name).Shape.Edges[eval(obj.Edge1[1][0].lstrip('Edge'))-1]
-                    if e1.BoundBox.ZMax <> e1.BoundBox.ZMin:
+                    if e1.BoundBox.ZMax != e1.BoundBox.ZMin:
                         FreeCAD.Console.PrintError('vertical edges not valid yet\n')
                         return
                     if obj.Base[0].Shape.ShapeType =='Wire':
