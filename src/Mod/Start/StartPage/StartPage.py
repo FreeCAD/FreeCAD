@@ -606,7 +606,7 @@ def getFeed(url,numitems=3):
         resp += item['title']
         resp += '</a></li>'
     resp += '</ul>'
-    print resp
+    print(resp)
     return resp
 
 def getCustomBlocks():
