@@ -45,8 +45,8 @@ def replaceobj(parent,oldchild,newchild):
         else:
             if propvalue == oldchild:
                 setattr(parent,propname,newchild)
-                print propname, parent.getPropertyByName(propname)
-            #else: print propname,propvalue
+                print(propname, parent.getPropertyByName(propname))
+            #else: print(propname,propvalue)
     parent.touch()
 
 def replaceobjfromselection(objs):
