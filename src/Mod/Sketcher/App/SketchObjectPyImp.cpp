@@ -355,11 +355,14 @@ PyObject* SketchObjectPy::renameConstraint(PyObject *args)
         }
     }
 
-    Constraint* copy = this->getSketchObjectPtr()->Constraints[Index]->clone();
-    copy->Name = Name;
-    this->getSketchObjectPtr()->Constraints.set1Value(Index, copy);
-    delete copy;
-
+    // only change the constraint item if the names are different
+    const Constraint* item = this->getSketchObjectPtr()->Constraints[Index];
+    if (item->Name != Name) {
+        Constraint* copy = item->clone();
+        copy->Name = Name;
+        this->getSketchObjectPtr()->Constraints.set1Value(Index, copy);
+        delete copy;
+    }
     Py_Return;
 }
 
