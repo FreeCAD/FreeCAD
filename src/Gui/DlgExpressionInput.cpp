@@ -32,6 +32,7 @@
 #include "ExpressionCompleter.h"
 #include <Base/Tools.h>
 #include <Base/Console.h>
+#include <App/Application.h>
 #include <App/Expression.h>
 #include <App/DocumentObject.h>
 
@@ -67,16 +68,30 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     DocumentObject * docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
 
-#if defined(Q_OS_MAC)
-    setWindowFlags(Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
-#else
-    setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
-#endif
-    setAttribute(Qt::WA_NoSystemBackground, true);
-    setAttribute(Qt::WA_TranslucentBackground, true);
+    // There are some platforms where setting no system background causes a black
+    // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
+    // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
+    bool noBackground = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", true);
 
+    if (noBackground) {
+#if defined(Q_OS_MAC)
+        setWindowFlags(Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
+#else
+        setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
+#endif
+        setAttribute(Qt::WA_NoSystemBackground, true);
+        setAttribute(Qt::WA_TranslucentBackground, true);
+
+        qApp->installEventFilter(this);
+    }
+    else {
+        ui->expression->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        ui->horizontalSpacer_3->changeSize(0, 2);
+        ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
+        this->adjustSize();
+    }
     ui->expression->setFocus();
-    qApp->installEventFilter(this);
 }
 
 DlgExpressionInput::~DlgExpressionInput()
@@ -212,11 +227,14 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 #else
     Q_UNUSED(ev);
 #endif
-    //we need to reject the dialog when clicked on the background. As the background is transparent
-    //this is the expected behaviour for the user
-    bool on = ui->expression->completerActive();
-    if (!on)
-        this->reject();
+    // The 'FramelessWindowHint' is also set when the background is transparent.
+    if (windowFlags() & Qt::FramelessWindowHint) {
+        //we need to reject the dialog when clicked on the background. As the background is transparent
+        //this is the expected behaviour for the user
+        bool on = ui->expression->completerActive();
+        if (!on)
+            this->reject();
+    }
 }
 
 void DlgExpressionInput::showEvent(QShowEvent* ev)
