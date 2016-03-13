@@ -4159,8 +4159,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
 {
     //find the Part and body object the feature belongs to for placement calculations
     //TODO: this needs to be replaced with GRAPH methods to get the real stacked placement
-    parentPart = App::Part::getPartOfObject(getSketchObject());
     parentBody = Part::BodyBase::findBodyOf(getSketchObject());
+    if(parentBody) 
+        parentPart = App::Part::getPartOfObject(parentBody);
+    else 
+        parentPart = App::Part::getPartOfObject(getSketchObject());
     
     // always change to sketcher WB, remember where we come from 
     oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
