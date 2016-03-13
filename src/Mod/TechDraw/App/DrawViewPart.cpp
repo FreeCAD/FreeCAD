@@ -76,8 +76,6 @@ using namespace std;
 // DrawViewPart
 //===========================================================================
 
-Base::Vector3d _getValidXDir(const DrawViewPart *me);
-
 App::PropertyFloatConstraint::Constraints DrawViewPart::floatRange = {0.01f,5.0f,0.05f};
 
 PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
@@ -124,8 +122,18 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }
 
+    geometryObject->setTolerance(Tolerance.getValue());
+    geometryObject->setScale(Scale.getValue());
     try {
-        buildGeometryObject(shape);
+        gp_Pnt inputCenter = TechDrawGeometry::findCentroid(shape,
+                                                            Direction.getValue(),
+                                                            getValidXDir());
+        TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(shape,
+                                                                 inputCenter,
+                                                                 //Direction.getValue(),
+                                                                 //getValidXDir(),
+                                                                 Scale.getValue());
+        buildGeometryObject(mirroredShape,inputCenter);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -184,13 +192,12 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  (might happen anyway if document is recomputed?)
 }
 
-void DrawViewPart::buildGeometryObject(TopoDS_Shape shape)
+void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
 {
-    geometryObject->setTolerance(Tolerance.getValue());
-    geometryObject->setScale(Scale.getValue());
-    geometryObject->initHLR(shape,
+    geometryObject->projectShape(shape,
+                            inputCenter,
                             Direction.getValue(),
-                            _getValidXDir(this));
+                            getValidXDir());
     geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -281,7 +288,7 @@ TechDrawGeometry::BaseGeom *DrawViewPart::getCompleteEdge(int idx) const
 
     TechDrawGeometry::BaseGeom* prjShape = 0;
     try {
-        prjShape = geometryObject->projectEdge(shape, support, Direction.getValue(), _getValidXDir(this));
+        prjShape = geometryObject->projectEdge(shape, support, Direction.getValue(), getValidXDir());
     }
     catch(Standard_Failure) {
         Base::Console().Error("getCompleteEdge - OCC Error - could not project Edge: %d\n",idx);
@@ -315,7 +322,7 @@ TechDrawGeometry::Vertex * DrawViewPart::getVertex(int idx) const
 
     const TopoDS_Shape &support = static_cast<Part::Feature*>(link)->Shape.getValue();
     //TODO: Make sure prjShape gets deleted
-    TechDrawGeometry::Vertex *prjShape = geometryObject->projectVertex(shape, support, Direction.getValue(), _getValidXDir(this));
+    TechDrawGeometry::Vertex *prjShape = geometryObject->projectVertex(shape, support, Direction.getValue(), getValidXDir());
     //Base::Console().Log("vert %f, %f \n", prjShape->pnt.fX,  prjShape->pnt.fY);
     return prjShape;
 }
@@ -432,9 +439,9 @@ bool DrawViewPart::hasGeometry(void) const
     return result;
 }
 
-Base::Vector3d _getValidXDir(const DrawViewPart *me)
+Base::Vector3d DrawViewPart::getValidXDir() const
 {
-    Base::Vector3d xDir = me->XAxisDirection.getValue();
+    Base::Vector3d xDir = XAxisDirection.getValue();
     if (xDir.Length() == 0) {
         Base::Console().Warning("XAxisDirection has zero length - using (1,0,0)\n");
         xDir = Base::Vector3d(1.0,0.0,0.0);
@@ -450,6 +457,18 @@ void DrawViewPart::dumpVertexRefs(char* text) const
     int i = 0;
     for( ; it != refs.end(); it++, i++) {
         Base::Console().Message("DUMP - Vertex: %d ref: %d\n",i,(*it));
+    }
+}
+
+void DrawViewPart::dumpVertexes(const char* text, const TopoDS_Shape& s)
+{
+    Base::Console().Message("DUMP - %s\n",text);
+    TopExp_Explorer expl(s, TopAbs_VERTEX);
+    int i;
+    for (i = 1 ; expl.More(); expl.Next(),i++) {
+        const TopoDS_Vertex& v = TopoDS::Vertex(expl.Current());
+        gp_Pnt pnt = BRep_Tool::Pnt(v);
+        Base::Console().Message("v%d: (%.3f,%.3f,%.3f)\n",i,pnt.X(),pnt.Y(),pnt.Z());
     }
 }
 

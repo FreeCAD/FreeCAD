@@ -41,6 +41,7 @@
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 
+#include "ZVALUE.h"
 #include "QGISVGTemplate.h"
 
 using namespace TechDrawGui;
@@ -184,7 +185,7 @@ void QGISVGTemplate::load(const QString &fileName)
             item->setPen(myPen);
             item->setBrush(myBrush);
 
-            item->setZValue(100);
+            item->setZValue(ZVALUE::SVGTEMPLATE);
             addToGroup(item);
             textFields.push_back(item);
         }

@@ -142,6 +142,76 @@ Base::Vector2D BaseGeom::getEndPoint()
     return verts[1];
 }
 
+//!convert 1 OCC edge into 1 BaseGeom (static factory method)
+BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
+{
+    BaseGeom* result = NULL;
+    BRepAdaptor_Curve adapt(edge);
+
+    switch(adapt.GetType()) {
+      case GeomAbs_Circle: {
+        double f = adapt.FirstParameter();
+        double l = adapt.LastParameter();
+        gp_Pnt s = adapt.Value(f);
+        gp_Pnt e = adapt.Value(l);
+
+        if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
+              Circle *circle = new Circle(edge);
+              //circle->extractType = extractionType;
+              result = circle;
+        } else {
+              AOC *aoc = new AOC(edge);
+              //aoc->extractType = extractionType;
+              result = aoc;
+        }
+      } break;
+      case GeomAbs_Ellipse: {
+        double f = adapt.FirstParameter();
+        double l = adapt.LastParameter();
+        gp_Pnt s = adapt.Value(f);
+        gp_Pnt e = adapt.Value(l);
+        if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
+              Ellipse *ellipse = new Ellipse(edge);
+              //ellipse->extractType = extractionType;
+              result = ellipse;
+        } else {
+              AOE *aoe = new AOE(edge);
+              //aoe->extractType = extractionType;
+              result = aoe;
+        }
+      } break;
+      case GeomAbs_BSplineCurve: {
+        BSpline *bspline = 0;
+        Generic* gen = NULL;
+        try {
+            bspline = new BSpline(edge);
+            //bspline->extractType = extractionType;
+            if (bspline->isLine()) {
+                gen = new Generic(edge);
+                //gen->extractType = extractionType;
+                result = gen;
+                delete bspline;
+            } else {
+                result = bspline;
+            }
+            break;
+        }
+        catch (Standard_Failure) {
+            delete bspline;
+            delete gen;
+            bspline = 0;
+            // Move onto generating a primitive
+        }
+      }
+      default: {
+        Generic *primitive = new Generic(edge);
+        //primitive->extractType = extractionType;
+        result = primitive;
+      }  break;
+    }
+    return result;
+}
+
 Ellipse::Ellipse(const TopoDS_Edge &e)
 {
     geomType = ELLIPSE;
@@ -309,27 +379,6 @@ bool BSpline::isLine()
         result = true;
     }
     return result;
-#if 0
-    bool result = true;
-    std::vector<BezierSegment>::iterator iSeg = segments.begin();
-    double slope;
-    if ((*iSeg).poles == 2) {
-        slope = ((*iSeg).pnts[1].fY - (*iSeg).pnts[0].fY) /
-                ((*iSeg).pnts[1].fX - (*iSeg).pnts[0].fX);  //always at least 2 points?
-    }
-    for (; iSeg != segments.end(); iSeg++) {
-        if ((*iSeg).poles != 2) {
-            result = false;
-            break;
-        }
-        double newSlope = ((*iSeg).pnts[1].fY - (*iSeg).pnts[0].fY) / ((*iSeg).pnts[1].fX - (*iSeg).pnts[0].fX);
-        if (fabs(newSlope - slope) > Precision::Confusion()) {
-            result = false;
-            break;
-        }
-    }
-    return result;
-#endif
 }
 
 //**** Vertex

@@ -41,6 +41,8 @@
 #include <Base/Console.h>
 
 #include "../App/DrawViewSection.h"
+
+#include "ZVALUE.h"
 #include "QGIViewSection.h"
 
 using namespace TechDrawGui;
@@ -65,73 +67,29 @@ void QGIViewSection::drawSectionFace()
     if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId()))
         return;
 
-    TechDraw::DrawViewSection *part = dynamic_cast<TechDraw::DrawViewSection *>(getViewObject());
-    if (!part->hasGeometry()) {
+    TechDraw::DrawViewSection *section = dynamic_cast<TechDraw::DrawViewSection *>(getViewObject());
+    if (!section->hasGeometry()) {
         return;
     }
 
     //Base::Console().Log("drawing section face\n");
 
-    // Get the section faces from the feature
-    std::vector<TechDrawGeometry::Face *> sectionFaces;
-    //part->getSectionFaces(faceGeoms);
+    std::vector<TechDrawGeometry::Face*> sectionFaces;
+    sectionFaces = section->getFaceGeometry();
     if (sectionFaces.empty()) {
         Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
     }
-
-#if MOD_TECHDRAW_HANDLE_FACES
-    // Draw Faces
-    std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
-
-    QGraphicsItem*graphicsItem = 0;
+    std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
     QPen facePen;
-
-//TODO: check if this is the same logic as QGIVPart
-    for(int i = 0 ; fit != faceGeoms.end(); ++fit, i++) {
-        std::vector<TechDrawGeometry::Wire *> faceWires = (*fit)->wires;
-        QPainterPath facePath;
-        for(std::vector<TechDrawGeometry::Wire *>::iterator wire = faceWires.begin(); wire != faceWires.end(); ++wire) {
-            QPainterPath wirePath;
-            QPointF shapePos;
-            for(std::vector<TechDrawGeometry::BaseGeom *>::iterator baseGeom = (*wire)->geoms.begin(); baseGeom != (*wire)->geoms.end(); ++baseGeom) {
-                //Save the start Position
-                QPainterPath edgePath = drawPainterPath(*baseGeom);
-
-                // If the current end point matches the shape end point the new edge path needs reversing
-                QPointF shapePos = (wirePath.currentPosition()- edgePath.currentPosition());
-                if(sqrt(shapePos.x() * shapePos.x() + shapePos.y()*shapePos.y()) < 0.05) {
-                    edgePath = edgePath.toReversed();
-                }
-                wirePath.connectPath(edgePath);
-                wirePath.setFillRule(Qt::WindingFill);
-            }
-            facePath.addPath(wirePath);
-        }
-
-        QGIFace *item = new QGIFace(-1);
-
-        item->setPath(facePath);
-        //         item->setStrokeWidth(lineWidth);
-
-        QBrush faceBrush(QBrush(QColor(0,0,255,40)));
-
-        item->setBrush(faceBrush);
-        facePen.setColor(Qt::black);
-        item->setPen(facePen);
-        item->moveBy(x(), y());
-        graphicsItem = dynamic_cast<QGraphicsItem*>(item);
-
-        if(graphicsItem) {
-            // Hide any edges that are hidden if option is set.
-            //             if(!(*fit)->visible && !part->ShowHiddenLines.getValue())
-            //                 graphicsItem->hide();
-
-            addToGroup(graphicsItem);
-            graphicsItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        }
+    facePen.setCosmetic(true);
+    //QBrush faceBrush;
+    QBrush faceBrush(QBrush(QColor(0,0,255,40)));   //temp. sb preference or property.
+    for(; fit != sectionFaces.end(); fit++) {
+        QGIFace* newFace = drawFace(*fit);
+        newFace->setZValue(ZVALUE::SECTIONFACE);
+        //newFace->setEyeCandy()
     }
-#endif
 }
 
 void QGIViewSection::updateView(bool update)

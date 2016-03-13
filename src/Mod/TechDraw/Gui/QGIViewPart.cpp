@@ -48,7 +48,8 @@
 #include "../App/DrawUtil.h"
 #include "../App/DrawViewPart.h"
 #include "../App/DrawHatch.h"
-#include "../App/Geometry.h"
+
+#include "ZVALUE.h"
 #include "QGIViewPart.h"
 
 using namespace TechDrawGui;
@@ -286,53 +287,22 @@ void QGIViewPart::drawViewPart()
 
     prepareGeometryChange();
 
-#if MOD_TECHDRAW_HANDLE_FACES
     // Draw Faces
-    const std::vector<TechDrawGeometry::Face *> &faceGeoms = part->getFaceGeometry();
-    const std::vector<int> &faceRefs = part->getFaceReferences();
+    const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
     std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
-    QGIFace* face;
     QPen facePen;
+    facePen.setCosmetic(true);
+    QBrush faceBrush;
     for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
-        std::vector<TechDrawGeometry::Wire *> faceWires = (*fit)->wires;
-        QPainterPath facePath;
-        for(std::vector<TechDrawGeometry::Wire *>::iterator wire = faceWires.begin(); wire != faceWires.end(); wire++) {
-            QPainterPath wirePath;
-            QPointF shapePos;
-            for(std::vector<TechDrawGeometry::BaseGeom *>::iterator baseGeom = (*wire)->geoms.begin();
-                baseGeom != (*wire)->geoms.end();
-                baseGeom++) {
-                QPainterPath edgePath = drawPainterPath(*baseGeom);
-                //If the current end point matches the shape end point the new edge path needs reversing
-                QPointF shapePos = (wirePath.currentPosition()- edgePath.currentPosition());
-                if(sqrt(shapePos.x() * shapePos.x() + shapePos.y()*shapePos.y()) < 0.05) {
-                    edgePath = edgePath.toReversed();
-                }
-                wirePath.connectPath(edgePath);
-                wirePath.setFillRule(Qt::WindingFill);
-            }
-            facePath.addPath(wirePath);
-        }
-
-        //debug a path
-        //std::stringstream faceId;
-        //faceId << "facePath" << i;
-        //_dumpPath(faceId.str().c_str(),facePath);
-
-        QGIFace *fitem = new QGIFace(-1);
-        // TODO: TechDrawGeometry::Face has no easy method of determining hidden/visible???
-        // Hide any edges that are hidden if option is set.
-//      if((*fit)->extractType == TechDrawGeometry::WithHidden && !part->ShowHiddenLines.getValue())
-//          graphicsItem->hide();
-        addToGroup(fitem);
-        fitem->setPos(0.0,0.0);
-        //QPainterPath simplePath = facePath.simplified();
-        //simplePath.setFillRule(Qt::WindingFill);
-        //fitem->setPath(simplePath);
-        fitem->setPath(facePath);
-        fitem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        QGIFace* newFace = drawFace(*fit);
+        newFace->setPen(facePen);
+        newFace->setZValue(ZVALUE::FACE);
+        //newFace->setBrush(faceBrush);
     }
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+    //debug a path
+    //std::stringstream faceId;
+    //faceId << "facePath" << i;
+    //_dumpPath(faceId.str().c_str(),facePath);
 
     // Draw Hatches
     std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
@@ -380,6 +350,7 @@ void QGIViewPart::drawViewPart()
             hatch->setColor(feat->HatchColor.getValue());
             //_dumpPath("hatchPath",hatchPath);
             hatch->setFlag(QGraphicsItem::ItemIsSelectable, true);
+            hatch->setZValue(ZVALUE::HATCH);
         }
     }
 
@@ -416,13 +387,12 @@ void QGIViewPart::drawViewPart()
             item->setPath(drawPainterPath(*itEdge));
             item->setFlag(QGraphicsItem::ItemIsSelectable, true);
             item->setAcceptHoverEvents(true);
-
+            item->setZValue(ZVALUE::EDGE);
             //debug a path
-            //QPainterPath edgePath=drawPainterPath(*itEdge);
-            //item->setPath(edgePath);
-            //std::stringstream edgeId;
-            //edgeId << "edge" << i;
-            //_dumpPath(edgeId.str().c_str(),edgePath);
+            QPainterPath edgePath=drawPainterPath(*itEdge);
+            std::stringstream edgeId;
+            edgeId << "QGIVP.edgePath" << i;
+            _dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
 
@@ -436,7 +406,37 @@ void QGIViewPart::drawViewPart()
         addToGroup(item);
         item->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
         item->setRadius(lineWidth * vertexScaleFactor);
+        item->setZValue(ZVALUE::VERTEX);
      }
+}
+
+QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f)
+{
+    std::vector<TechDrawGeometry::Wire *> fWires = f->wires;
+    QPainterPath facePath;
+    for(std::vector<TechDrawGeometry::Wire *>::iterator wire = fWires.begin(); wire != fWires.end(); ++wire) {
+        QPainterPath wirePath;
+        for(std::vector<TechDrawGeometry::BaseGeom *>::iterator edge = (*wire)->geoms.begin(); edge != (*wire)->geoms.end(); ++edge) {
+            //Save the start Position
+            QPainterPath edgePath = drawPainterPath(*edge);
+            // If the current end point matches the shape end point the new edge path needs reversing
+            QPointF shapePos = (wirePath.currentPosition()- edgePath.currentPosition());
+            if(sqrt(shapePos.x() * shapePos.x() + shapePos.y()*shapePos.y()) < 0.05) {    //magic tolerance
+                edgePath = edgePath.toReversed();
+            }
+            wirePath.connectPath(edgePath);
+            wirePath.setFillRule(Qt::WindingFill);
+        }
+        facePath.addPath(wirePath);
+    }
+    QGIFace* gFace = new QGIFace(-1);
+    addToGroup(gFace);
+    gFace->setPos(0.0,0.0);
+    gFace->setPath(facePath);
+    _dumpPath("QGIVP.facePath",facePath);
+
+    //gFace->setFlag(QGraphicsItem::ItemIsSelectable, true);   ???
+    return gFace;
 }
 
 std::vector<TechDraw::DrawHatch*> QGIViewPart::getHatchesForView(TechDraw::DrawViewPart* viewPart)
