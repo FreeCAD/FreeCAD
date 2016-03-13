@@ -471,11 +471,19 @@ void QGVPage::toggleEdit(bool enable)
             //itemView->updateView(true);
         }
 
+        int textItemType = QGraphicsItem::UserType + 160;
         QGraphicsItem*item = dynamic_cast<QGraphicsItem*>(*it);
         if(item) {
             //item->setCacheMode((enable) ? QGraphicsItem::DeviceCoordinateCache : QGraphicsItem::NoCache);
             item->setCacheMode((enable) ? QGraphicsItem::NoCache : QGraphicsItem::NoCache);
             item->update();
+            if (item->type() == textItemType) {    //TODO: move this into SVGTemplate or TemplateTextField
+                if (enable) {
+                    item->show();
+                } else {
+                    item->hide();
+                }
+            }
         }
     }
     scene()->update();
