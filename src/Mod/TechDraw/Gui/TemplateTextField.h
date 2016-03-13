@@ -51,6 +51,10 @@ namespace TechDrawGui
 
             ~TemplateTextField();
 
+            enum {Type = QGraphicsItem::UserType + 160};
+            int type() const { return Type;}
+
+
             /// Returns the field name that this TemplateTextField represents
             std::string fieldName() const { return fieldNameStr; }
         protected:
@@ -61,4 +65,3 @@ namespace TechDrawGui
 }   // namespace TechDrawGui
 
 #endif // #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
-
