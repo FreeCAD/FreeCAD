@@ -31,6 +31,14 @@
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
 #include <HLRTopoBRep_OutLiner.hxx>
+
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <GProp_GProps.hxx>
+#include <BRepGProp.hxx>
+
 //#include <BRepAPI_MakeOutLine.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_ShapeBounds.hxx>
@@ -145,7 +153,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn("Section Plane doesn't intersect part");
     }
 
-    bb.Enlarge(1.0); // Enlarge the bounding box to prevent any clipping
+    //bb.Enlarge(1.0); // Enlarge the bounding box to prevent any clipping
 
     // Gather the points
     std::vector<Base::Vector3d> pnts;
@@ -200,41 +208,48 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
     BRepAlgoAPI_Cut mkCut(myShape, prism);
-    // Let's check if the fusion has been successful
     if (!mkCut.IsDone())
         return new App::DocumentObjectExecReturn("Section cut has failed");
 
-    // Cache the sectionShape
-    sectionShape = mkCut.Shape();
+    TopoDS_Shape rawShape = mkCut.Shape();
 
+    geometryObject->setTolerance(Tolerance.getValue());
+    geometryObject->setScale(Scale.getValue());
     try {
-        buildGeometryObject(sectionShape);
+        gp_Pnt inputCenter = TechDrawGeometry::findCentroid(rawShape,
+                                                            Direction.getValue(),
+                                                            getValidXDir());
+        TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
+                                                    inputCenter,
+                                                    Scale.getValue());
+        buildGeometryObject(mirroredShape,inputCenter);
+
+        TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
+        TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
+                                                                     inputCenter,
+                                                                     Scale.getValue());
+        TopoDS_Compound newFaces;
+        BRep_Builder builder;
+        builder.MakeCompound(newFaces);
+        TopExp_Explorer expl(mirroredSection, TopAbs_FACE);
+        for (int i = 1 ; expl.More(); expl.Next(),i++) {
+            const TopoDS_Face& face = TopoDS::Face(expl.Current());
+            TopoDS_Face pFace = projectFace(face,
+                                            inputCenter,
+                                            Direction.getValue(),
+                                            getValidXDir());
+             builder.Add(newFaces,pFace);
+        }
+        sectionFaces = newFaces;
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e1 = Standard_Failure::Caught();
-        Base::Console().Log("DrawViewSection::execute - extractGeometry failed: %s\n",e1->GetMessageString());
+        Base::Console().Log("DrawViewSection::execute - building Section shape failed: %s\n",e1->GetMessageString());
         return new App::DocumentObjectExecReturn(e1->GetMessageString());
     }
 
-    TopoDS_Compound sectionFaces;
-    try {
-        sectionFaces = getSectionFaces();
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e2 = Standard_Failure::Caught();
-        Base::Console().Log("DrawViewSection::execute - getSectionFaces failed: %s\n",e2->GetMessageString());
-        return new App::DocumentObjectExecReturn(e2->GetMessageString());
-    }
-
-    if (!sectionFaces.IsNull()) {
-        //TODO: do something with sectionFaces
-        //?add to GeometryObject faceGeom? but need to tag these faces as "special"
-        //how does QGIVSection know to shade these faces??
-    }
-
-    // TODO: touch references? see DrawViewPart.execute()
     touch();
-    return DrawView::execute();                                     //note: not DrawViewPart
+    return DrawView::execute();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
@@ -245,34 +260,180 @@ gp_Pln DrawViewSection::getSectionPlane() const
     return gp_Pln(gp_Pnt(plnPnt.x, plnPnt.y, plnPnt.z), gp_Dir(plnNorm.x, plnNorm.y, plnNorm.z));
 }
 
-//! tries to find the intersection of the section plane with the sectionShape (a collection of planar faces)
-TopoDS_Compound DrawViewSection::getSectionFaces(void)
+//! tries to find the intersection of the section plane with the shape giving a collection of planar faces
+TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
     TopoDS_Compound result;
-    if(sectionShape.IsNull()){
-        //throw Base::Exception("Sectional View sectionShape is Empty");
-        Base::Console().Log("DrawViewSection::getSectionSurface - Sectional View sectionShape is Empty\n");
+    if(shape.IsNull()){
+        Base::Console().Log("DrawViewSection::getSectionSurface - Sectional View shape is Empty\n");
         return result;
     }
 
-    gp_Pln pln = getSectionPlane();
+    gp_Pln plnSection = getSectionPlane();
     BRep_Builder builder;
     builder.MakeCompound(result);
 
-    // Iterate through all faces
-    TopExp_Explorer expFaces(sectionShape, TopAbs_FACE);
-    for ( ; expFaces.More(); expFaces.Next()) {
+    TopExp_Explorer expFaces(shape, TopAbs_FACE);
+    int i;
+    for (i = 1 ; expFaces.More(); expFaces.Next(), i++) {
         const TopoDS_Face& face = TopoDS::Face(expFaces.Current());
-
         BRepAdaptor_Surface adapt(face);
         if (adapt.GetType() == GeomAbs_Plane){
-            gp_Pln plane = adapt.Plane();
-            if(plane.Contains(pln.Location(), Precision::Confusion()) && plane.Axis().IsParallel(pln.Axis(), Precision::Angular())) {
+            gp_Pln plnFace = adapt.Plane();
+
+            if(plnSection.Contains(plnFace.Location(), Precision::Confusion()) &&
+               plnFace.Axis().IsParallel(plnSection.Axis(), Precision::Angular())) {
                 builder.Add(result, face);
             }
         }
     }
     return result;
+}
+
+//! get display geometry for Section faces
+std::vector<TechDrawGeometry::Face*> DrawViewSection::getFaceGeometry()
+{
+    std::vector<TechDrawGeometry::Face*> result;
+    //TopoDS_Compound c = getSectionFaces();    //get projected section faces?
+    TopoDS_Compound c = sectionFaces;
+    //for face in c
+    TopExp_Explorer faces(c, TopAbs_FACE);
+    for (; faces.More(); faces.Next()) {
+        TechDrawGeometry::Face* f = new TechDrawGeometry::Face();
+        const TopoDS_Face& face = TopoDS::Face(faces.Current());
+        TopExp_Explorer wires(face, TopAbs_WIRE);
+        for (; wires.More(); wires.Next()) {
+            TechDrawGeometry::Wire* w = new TechDrawGeometry::Wire();
+            const TopoDS_Wire& wire = TopoDS::Wire(wires.Current());
+            TopExp_Explorer edges(wire, TopAbs_EDGE);
+            for (; edges.More(); edges.Next()) {
+                const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+                TechDrawGeometry::BaseGeom* base = TechDrawGeometry::BaseGeom::baseFactory(edge);
+                w->geoms.push_back(base);
+            }
+            f->wires.push_back(w);
+        }
+        result.push_back(f);
+    }
+    return result;
+}
+
+//! project a single face using HLR
+TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
+                                     gp_Pnt faceCenter,
+                                     const Base::Vector3d &direction,
+                                     const Base::Vector3d &xaxis)
+{
+    if(face.IsNull()) {
+        throw Base::Exception("DrawViewSection::projectFace - input Face is NULL");
+        return TopoDS_Face();
+    }
+
+    gp_Ax2 transform;
+    transform = gp_Ax2(faceCenter,
+                       gp_Dir(direction.x, direction.y, direction.z),
+                       gp_Dir(xaxis.x, xaxis.y, xaxis.z));
+
+    HLRBRep_Algo *brep_hlr = new HLRBRep_Algo();
+    brep_hlr->Add(face);
+
+    HLRAlgo_Projector projector( transform );
+    brep_hlr->Projector(projector);
+    brep_hlr->Update();
+    brep_hlr->Hide();
+
+    HLRBRep_HLRToShape hlrToShape(brep_hlr);
+    TopoDS_Shape hardEdges = hlrToShape.VCompound();
+    TopoDS_Shape outEdges = hlrToShape.OutLineVCompound();
+    std::vector<TopoDS_Edge> faceEdges;
+    TopExp_Explorer expl(hardEdges, TopAbs_EDGE);
+    int i;
+    for (i = 1 ; expl.More(); expl.Next(),i++) {
+        const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
+        if (edge.IsNull()) {
+            Base::Console().Log("INFO - GO::addGeomFromCompound - hard edge: %d is NULL\n",i);
+            continue;
+        }
+        faceEdges.push_back(edge);
+    }
+    expl.Init(outEdges, TopAbs_EDGE);
+    for (i = 1 ; expl.More(); expl.Next(),i++) {
+        const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
+        if (edge.IsNull()) {
+            Base::Console().Log("INFO - GO::addGeomFromCompound - outline edge: %d is NULL\n",i);
+            continue;
+        }
+        faceEdges.push_back(edge);
+    }
+
+    //no guarantee HLR gives edges in any particular order, so have to build back into a face.
+    TopoDS_Face projectedFace;
+    std::vector<TopoDS_Wire> faceWires = DrawViewSection::connectEdges(faceEdges);
+    if (!faceWires.empty()) {
+        std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(faceWires);
+        if (sortedWires.empty()) {
+            return projectedFace;
+        }
+        BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                 //true => only want planes?
+        std::vector<TopoDS_Wire>::iterator itWire = (sortedWires.begin()) + 1;    //starting with second face
+        for (; itWire != sortedWires.end(); itWire++) {
+            mkFace.Add(*itWire);
+        }
+        projectedFace = mkFace.Face();
+    }
+    return projectedFace;
+}
+
+//! connect edges into 1 or more wires
+std::vector<TopoDS_Wire> DrawViewSection::connectEdges (std::vector<TopoDS_Edge>& edges)
+{
+    std::vector<TopoDS_Wire> result;
+    Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+    Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+    std::vector<TopoDS_Edge>::const_iterator itEdge = edges.begin();
+    for (; itEdge != edges.end(); itEdge++)
+        hEdges->Append(*itEdge);
+
+    //tolerance sb tolerance of DrawViewSection instead of Precision::Confusion()?
+    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
+
+    int len = hWires->Length();
+    for(int i=1;i<=len;i++) {
+        result.push_back(TopoDS::Wire(hWires->Value(i)));
+    }
+    //delete hEdges;               //does Handle<> take care of this?
+    //delete hWires;
+    return result;
+}
+
+//! return true if w1 bbox is bigger than w2 bbox
+class DrawViewSection::wireCompare: public std::binary_function<const TopoDS_Wire&,
+                                                            const TopoDS_Wire&, bool>
+{
+public:
+    bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
+    {
+        Bnd_Box box1, box2;
+        if (!w1.IsNull()) {
+            BRepBndLib::Add(w1, box1);
+            box1.SetGap(0.0);
+        }
+
+        if (!w2.IsNull()) {
+            BRepBndLib::Add(w2, box2);
+            box2.SetGap(0.0);
+        }
+
+        return box1.SquareExtent() > box2.SquareExtent();
+    }
+};
+
+//sort wires in descending order of size (bbox diagonal)
+std::vector<TopoDS_Wire> DrawViewSection::sortWiresBySize(std::vector<TopoDS_Wire>& w)
+{
+    std::vector<TopoDS_Wire> wires = w;
+    std::sort(wires.begin(), wires.end(), wireCompare());
+    return wires;
 }
 
 

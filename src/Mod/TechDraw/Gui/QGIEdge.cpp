@@ -160,12 +160,11 @@ void QGIEdge::setStrokeWidth(float width) {
     update();
 }
 
+//TODO: obs? we never change an existing edge's visibility.
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
     if (b) m_colCurrent = m_colHid;
     update();
-    //TODO: need some fiddling here so hidden edges don't get selected?? is it ok to select a hidden edge?
-    //wf: probably bad drafing practice to dimension a hidden line
 }
 
 void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

@@ -30,6 +30,7 @@
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
 
+#include "ZVALUE.h"
 #include "QGITemplate.h"
 
 using namespace TechDrawGui;
@@ -39,7 +40,7 @@ QGITemplate::QGITemplate(QGraphicsScene *scene) : QGraphicsItemGroup(),
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
-    setZValue(-1000); //Template is situated in background
+    setZValue(ZVALUE::TEMPLATE); //Template is situated in background
 
     scene->addItem(this);
 }

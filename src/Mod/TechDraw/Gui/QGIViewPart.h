@@ -31,14 +31,12 @@
 #include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGIHatch.h"
+#include "../App/Geometry.h"
+
 
 namespace TechDraw {
 class DrawViewPart;
 class DrawHatch;
-}
-
-namespace TechDrawGeometry {
-class BaseGeom;
 }
 
 namespace TechDrawGui
@@ -94,6 +92,7 @@ protected:
     QPainterPath drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const;
     std::vector <TechDraw::DrawHatch *> getHatchesForView(TechDraw::DrawViewPart* viewPart);
     void drawViewPart();
+    QGIFace* drawFace(TechDrawGeometry::Face* f);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 

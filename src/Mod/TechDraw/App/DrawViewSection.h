@@ -27,10 +27,14 @@
 #include <App/PropertyLinks.h>
 #include <App/FeaturePython.h>
 
+#include <TopoDS_Compound.hxx>
+
 #include "DrawViewPart.h"
+#include "Geometry.h"
 
 class gp_Pln;
 class TopoDS_Compound;
+class TopoDS_Face;
 
 namespace TechDraw
 {
@@ -66,11 +70,20 @@ public:
     }
 
 public:
-    TopoDS_Compound getSectionFaces(void);
+    std::vector<TechDrawGeometry::Face*> getFaceGeometry();
 
 protected:
-    TopoDS_Shape sectionShape;
+    TopoDS_Shape sectionShape;              //obs??
     gp_Pln getSectionPlane() const;
+    TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
+    TopoDS_Face projectFace(const TopoDS_Shape &face,
+                                     gp_Pnt faceCenter,
+                                     const Base::Vector3d &direction,
+                                     const Base::Vector3d &xaxis);
+    std::vector<TopoDS_Wire> connectEdges (std::vector<TopoDS_Edge>& edges);
+    std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w);
+    TopoDS_Compound sectionFaces;
+    class wireCompare;
 };
 
 typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;

@@ -73,6 +73,7 @@
 # include <BRepTools_WireExplorer.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <BRepProj_Projection.hxx>
+#include <BRepLib.hxx>
 
 # include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
@@ -84,7 +85,8 @@
 # include <Approx_Curve3d.hxx>
 
 # include <BRepAdaptor_HCurve.hxx>
-# include <Handle_HLRBRep_Data.hxx>
+#include <Handle_HLRBRep_Algo.hxx>
+#include <Handle_HLRBRep_Data.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -103,7 +105,7 @@
 
 # include <Mod/Part/App/PartFeature.h>
 
-# include "GeometryObject.h"
+#include "GeometryObject.h"
 
 //#include <QDebug>
 
@@ -120,7 +122,7 @@ const char* _printBool(bool b);
 void _dumpEdge(char* label, int i, TopoDS_Edge e);
 
 
-GeometryObject::GeometryObject() : brep_hlr(NULL), Tolerance(0.05f), Scale(1.f)
+GeometryObject::GeometryObject() : Tolerance(0.05f), Scale(1.f)
 {
 }
 
@@ -167,50 +169,25 @@ void GeometryObject::clear()
     edgeReferences.clear();
 }
 
-//!set up a hidden line remover and load a shape into it
-void GeometryObject::initHLR(const TopoDS_Shape &input,
-                             const Base::Vector3d &direction,
-                             const Base::Vector3d &xAxis)
+//!set up a hidden line remover and project a shape with it
+void GeometryObject::projectShape(const TopoDS_Shape& input,
+                             const gp_Pnt& inputCenter,
+                             const Base::Vector3d& direction,
+                             const Base::Vector3d& xAxis)
 {
     // Clear previous Geometry and References that may have been stored
     //TODO: hate losing references on recompute! if Shape has changed, aren't reference potentially invalid anyway?
     clear();
-    if (brep_hlr) {
-        if (brep_hlr->NbShapes()) {       //TODO: hack. in ProjGroupItems sometimes brep_hlr has no shapes when we get here.  why??
-            brep_hlr->Remove(1);          //remove the old shape from brep (would we ever have > 1 shape?)
-        }
-    }
 
-    ///TODO: Consider whether it would be possible/beneficial to cache some of this effort (eg don't do scale in OpenCASCADE land) IR
-    TopoDS_Shape transShape;
-    gp_Pnt inputCentre;
+    Handle_HLRBRep_Algo brep_hlr = NULL;
     try {
-        inputCentre = findCentroid(input, direction, xAxis);
-    }
-    catch (...) {
-        Base::Console().Log("GeometryObject::initHLR - findCentroid failed.\n");
-        return;
-    }
-    try {
-        // Make tempTransform scale the object around it's centre point and
-        // mirror about the Y axis
-        gp_Trsf tempTransform;
-        tempTransform.SetScale(inputCentre, Scale);
-        gp_Trsf mirrorTransform;
-        mirrorTransform.SetMirror( gp_Ax2(inputCentre, gp_Dir(0, 1, 0)) );
-        tempTransform.Multiply(mirrorTransform);
-
-        // Apply that transform to the shape.  This should preserve the centre.
-        BRepBuilderAPI_Transform mkTrf(input, tempTransform);
-        transShape = mkTrf.Shape();
-
-        brep_hlr = new HLRBRep_Algo();                                 //leak? when does this get freed? handle/smart pointer
-        brep_hlr->Add(transShape);
+        brep_hlr = new HLRBRep_Algo();                //leak? when does this get freed? handle/smart pointer?
+        brep_hlr->Add(input);
 
         // Project the shape into view space with the object's centroid
         // at the origin.
         gp_Ax2 viewAxis;
-        viewAxis = gp_Ax2(inputCentre,
+        viewAxis = gp_Ax2(inputCenter,
                           gp_Dir(direction.x, direction.y, direction.z),
                           gp_Dir(xAxis.x, xAxis.y, xAxis.z));
         HLRAlgo_Projector projector( viewAxis );
@@ -219,28 +196,56 @@ void GeometryObject::initHLR(const TopoDS_Shape &input,
         brep_hlr->Hide();
     }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::initHLR - error occurred while projecting shape");
+        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
     }
+    try {
+        HLRBRep_HLRToShape hlrToShape(brep_hlr);
+
+        visHard    = hlrToShape.VCompound();
+        visSmooth  = hlrToShape.Rg1LineVCompound();
+        visSeam    = hlrToShape.RgNLineVCompound();
+        visOutline = hlrToShape.OutLineVCompound();
+        visIso     = hlrToShape.IsoLineVCompound();
+        hidHard    = hlrToShape.HCompound();
+        hidSmooth  = hlrToShape.Rg1LineHCompound();
+        hidSeam    = hlrToShape.RgNLineHCompound();
+        hidOutline = hlrToShape.OutLineHCompound();
+        hidIso     = hlrToShape.IsoLineHCompound();
+
+        BRepLib::BuildCurves3d(visHard);
+        BRepLib::BuildCurves3d(visSmooth);
+        BRepLib::BuildCurves3d(visSeam);
+        BRepLib::BuildCurves3d(visOutline);
+        BRepLib::BuildCurves3d(visIso);
+        BRepLib::BuildCurves3d(hidHard);
+        BRepLib::BuildCurves3d(hidSmooth);
+        BRepLib::BuildCurves3d(hidSeam);
+        BRepLib::BuildCurves3d(hidOutline);
+        BRepLib::BuildCurves3d(hidIso);
+    }
+    catch (...) {
+        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
+    }
+
 }
 
 //!add edges meeting filter criteria for category, visibility
 void GeometryObject::extractGeometry(edgeClass category, bool visible)
 {
-    HLRBRep_HLRToShape hlrToShape(brep_hlr);
     TopoDS_Shape filtEdges;
     if (visible) {
         switch (category) {
             case ecHARD:
-                filtEdges = hlrToShape.VCompound();
+                filtEdges = visHard;
                 break;
             case ecOUTLINE:
-                filtEdges = hlrToShape.OutLineVCompound();
+                filtEdges = visOutline;
                 break;
             case ecSMOOTH:
-                filtEdges = hlrToShape.Rg1LineVCompound();
+                filtEdges = visSmooth;
                 break;
             case ecSEAM:
-                filtEdges = hlrToShape.RgNLineHCompound();
+                filtEdges = visSeam;
                 break;
             default:
                 Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported visible edgeClass: %d\n",category);
@@ -249,7 +254,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
     } else {
         switch (category) {
             case ecHARD:
-                filtEdges = hlrToShape.HCompound();
+                filtEdges = hidHard;
                 break;
             //more cases here?
             default:
@@ -281,7 +286,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
             continue;
         }
-        base = edgeToBase(edge);
+        base = BaseGeom::baseFactory(edge);
         base->classOfEdge = category;
         base->visible = visible;
         edgeGeom.push_back(base);
@@ -290,7 +295,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         //add vertices of new edge if not already in list
         if (visible) {
             BaseGeom* lastAdded = edgeGeom.back();
-            //if (edgeGeom.empty()) {horrible_death();} //back() undefined behavior (can't happen? edgeToBase always returns a Base?)
+            //if (edgeGeom.empty()) {horrible_death();} //back() undefined behavior (can't happen? baseFactory always returns a Base?)
             bool v1Add = true, v2Add = true;
             TechDrawGeometry::Vertex* v1 = new TechDrawGeometry::Vertex(lastAdded->getStartPoint());
             TechDrawGeometry::Vertex* v2 = new TechDrawGeometry::Vertex(lastAdded->getEndPoint());
@@ -322,110 +327,11 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }
 }
 
-//!convert 1 OCC edge into 1 BaseGeom
-BaseGeom* GeometryObject::edgeToBase(TopoDS_Edge edge)
-{
-    BaseGeom* result = NULL;
-    BRepAdaptor_Curve adapt(edge);
-
-    switch(adapt.GetType()) {
-      case GeomAbs_Circle: {
-        double f = adapt.FirstParameter();
-        double l = adapt.LastParameter();
-        gp_Pnt s = adapt.Value(f);
-        gp_Pnt e = adapt.Value(l);
-
-        if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              Circle *circle = new Circle(edge);
-              //circle->extractType = extractionType;
-              result = circle;
-        } else {
-              AOC *aoc = new AOC(edge);
-              //aoc->extractType = extractionType;
-              result = aoc;
-        }
-      } break;
-      case GeomAbs_Ellipse: {
-        double f = adapt.FirstParameter();
-        double l = adapt.LastParameter();
-        gp_Pnt s = adapt.Value(f);
-        gp_Pnt e = adapt.Value(l);
-        if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              Ellipse *ellipse = new Ellipse(edge);
-              //ellipse->extractType = extractionType;
-              result = ellipse;
-        } else {
-              AOE *aoe = new AOE(edge);
-              //aoe->extractType = extractionType;
-              result = aoe;
-        }
-      } break;
-      case GeomAbs_BSplineCurve: {
-        BSpline *bspline = 0;
-        Generic* gen = NULL;
-        try {
-            bspline = new BSpline(edge);
-            //bspline->extractType = extractionType;
-            if (bspline->isLine()) {
-                gen = new Generic(edge);
-                //gen->extractType = extractionType;
-                result = gen;
-                delete bspline;
-            } else {
-                result = bspline;
-            }
-            break;
-        }
-        catch (Standard_Failure) {
-            delete bspline;
-            delete gen;
-            bspline = 0;
-            // Move onto generating a primitive
-        }
-      }
-      default: {
-        Generic *primitive = new Generic(edge);
-        //primitive->extractType = extractionType;
-        result = primitive;
-      }  break;
-    }
-    return result;
-}
-
 //!find the 3D edges & vertices that correspond to 2D edges & vertices
 void GeometryObject::update3DRefs()
 {
 }
 
-gp_Pnt GeometryObject::findCentroid(const TopoDS_Shape &shape,
-                                    const Base::Vector3d &direction,
-                                    const Base::Vector3d &xAxis) const
-{
-    gp_Ax2 viewAxis;
-    viewAxis = gp_Ax2(gp_Pnt(0, 0, 0),
-                      gp_Dir(direction.x, -direction.y, direction.z),
-                      gp_Dir(xAxis.x, -xAxis.y, xAxis.z)); // Y invert warning!
-
-    gp_Trsf tempTransform;
-    tempTransform.SetTransformation(viewAxis);
-    BRepBuilderAPI_Transform builder(shape, tempTransform);
-
-    Bnd_Box tBounds;
-    BRepBndLib::Add(builder.Shape(), tBounds);
-
-    tBounds.SetGap(0.0);
-    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-    tBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-
-    Standard_Real x = (xMin + xMax) / 2.0,
-                  y = (yMin + yMax) / 2.0,
-                  z = (zMin + zMax) / 2.0;
-
-    // Get centroid back into object space
-    tempTransform.Inverted().Transforms(x, y, z);
-
-    return gp_Pnt(x, y, z);
-}
 
 
 /////////////// bbox routines
@@ -966,6 +872,66 @@ bool GeometryObject::findVertex(Base::Vector2D v)
     return found;
 }
 
+/// utility non-class member functions
+//! Returns the centroid of shape, as viewed according to direction and xAxis
+gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
+                                    const Base::Vector3d &direction,
+                                    const Base::Vector3d &xAxis)
+{
+    gp_Ax2 viewAxis;
+    viewAxis = gp_Ax2(gp_Pnt(0, 0, 0),
+                      gp_Dir(direction.x, -direction.y, direction.z),
+                      gp_Dir(xAxis.x, -xAxis.y, xAxis.z)); // Y invert warning!
+
+    gp_Trsf tempTransform;
+    tempTransform.SetTransformation(viewAxis);
+    BRepBuilderAPI_Transform builder(shape, tempTransform);
+
+    Bnd_Box tBounds;
+    BRepBndLib::Add(builder.Shape(), tBounds);
+
+    tBounds.SetGap(0.0);
+    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+    tBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+    Standard_Real x = (xMin + xMax) / 2.0,
+                  y = (yMin + yMax) / 2.0,
+                  z = (zMin + zMax) / 2.0;
+
+    // Get centroid back into object space
+    tempTransform.Inverted().Transforms(x, y, z);
+
+    return gp_Pnt(x, y, z);
+}
+
+//!scales & mirrors a shape about a center
+TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
+                             const gp_Pnt& inputCenter,
+                             double scale)
+{
+    TopoDS_Shape transShape;
+    try {
+        // Make tempTransform scale the object around it's centre point and
+        // mirror about the Y axis
+        // TODO: is this really always Y axis? sb whatever is vertical direction in projection?
+        gp_Trsf tempTransform;
+        tempTransform.SetScale(inputCenter, scale);
+        gp_Trsf mirrorTransform;
+        mirrorTransform.SetMirror( gp_Ax2(inputCenter, gp_Dir(0, 1, 0)) );
+        tempTransform.Multiply(mirrorTransform);
+
+        // Apply that transform to the shape.  This should preserve the centre.
+        BRepBuilderAPI_Transform mkTrf(input, tempTransform);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::mirrorShape - mirror/scale failed.\n");
+        return transShape;
+    }
+    return transShape;
+}
+
+/// debug functions
 void _dumpEdgeData(char* label, int i, HLRBRep_EdgeData& ed)
 {
     Base::Console().Message("Dump of EdgeData for %s Edge: %d\n",label,i);

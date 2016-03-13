@@ -40,7 +40,6 @@ namespace TechDrawGui
 class TechDrawGuiExport QGIEdge : public QGraphicsPathItem
 {
 public:
-//    explicit QGIEdge(int ref = -1);
     explicit QGIEdge(int index);
     ~QGIEdge() {}
 
@@ -51,6 +50,7 @@ public:
     QPainterPath shape() const;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
+    //TODO: edge doesn't need ref to 3D, just index in projection.  links to 3D handled in Features.
     int getReference() const { return reference; }
     void setReference(int ref) {reference = ref; }
     int getProjIndex() const { return projIndex; }

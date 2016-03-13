@@ -345,7 +345,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
 
     openCommand("Create view");
     for (std::vector<App::DocumentObject*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        std::string FeatName = getUniqueObjectName("View");
+        std::string FeatName = getUniqueObjectName("Section");
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
         doCommand(Doc,"App.activeDocument().%s.Direction = (0.0,0.0,1.0)",FeatName.c_str());

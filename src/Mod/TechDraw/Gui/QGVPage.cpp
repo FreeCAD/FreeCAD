@@ -72,6 +72,7 @@
 #include "QGIViewSymbol.h"
 #include "QGIViewClip.h"
 
+#include "ZVALUE.h"
 #include "QGVPage.h"
 
 using namespace TechDrawGui;
@@ -101,7 +102,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QWidget *parent)
 
     m_backgroundItem = new QGraphicsRectItem();
     m_backgroundItem->setCacheMode(QGraphicsItem::NoCache);
-    m_backgroundItem->setZValue(-999999);
+    m_backgroundItem->setZValue(ZVALUE::BACKGROUND);
 //     scene()->addItem(m_backgroundItem); // TODO IF SEGFAULTS WITH DRAW ENABLE THIS (REDRAWS ARE SLOWER :s)
 
     // Prepare background check-board pattern
@@ -287,7 +288,7 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
     QPointF mapPos = dim->mapToItem(parent, posRef);
     dim->moveBy(-mapPos.x(), -mapPos.y());
     parent->addToGroup(dim);
-    dim->setZValue(50.0);
+    dim->setZValue(ZVALUE::DIMENSION);
 }
 
 QGIView * QGVPage::findView(App::DocumentObject *obj) const

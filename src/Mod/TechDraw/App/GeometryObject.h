@@ -23,8 +23,8 @@
 #ifndef _TECHDRAW_GEOMETRYOBJECT_H
 #define _TECHDRAW_GEOMETRYOBJECT_H
 
-#include <Handle_HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Compound.hxx>
 #include <gp_Pnt.hxx>
 
 #include <Base/Vector3D.h>
@@ -43,6 +43,16 @@ namespace TechDrawGeometry
 {
 
 class BaseGeom;
+
+//! scales & mirrors a shape about a center
+TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
+                        const gp_Pnt& inputCenter,
+                        double scale);
+
+//! Returns the centroid of shape, as viewed according to direction and xAxis
+gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
+                        const Base::Vector3d &direction,
+                        const Base::Vector3d &xAxis);
 
 class TechDrawExport GeometryObject
 {
@@ -67,6 +77,7 @@ public:
     const std::vector<int> & getEdgeRefs()   const { return edgeReferences; };
     const std::vector<int> & getFaceRefs()   const { return faceReferences; };
 
+//begin obs?
     void projectSurfaces(const TopoDS_Shape   &face,
                          const TopoDS_Shape   &support,
                          const Base::Vector3d &direction,
@@ -80,15 +91,28 @@ public:
                           const TopoDS_Shape &support,
                           const Base::Vector3d &direction,
                           const Base::Vector3d &projXAxis) const;
+//end obs?
 
-    void initHLR(const TopoDS_Shape &input,
+    void projectShape(const TopoDS_Shape &input,
+                                 const gp_Pnt& inputCenter,
                                  const Base::Vector3d &direction,
                                  const Base::Vector3d &xAxis);
     void extractGeometry(edgeClass category, bool visible);
-    BaseGeom* edgeToBase(TopoDS_Edge edge);
     void update3DRefs();
 
 protected:
+    //HLR output
+    TopoDS_Shape visHard;
+    TopoDS_Shape visOutline;
+    TopoDS_Shape visSmooth;
+    TopoDS_Shape visSeam;
+    TopoDS_Shape visIso;
+    TopoDS_Shape hidHard;
+    TopoDS_Shape hidOutline;
+    TopoDS_Shape hidSmooth;
+    TopoDS_Shape hidSeam;
+    TopoDS_Shape hidIso;
+
     void addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible);
 
     /// Helper for calcBoundingBox()
@@ -124,14 +148,8 @@ protected:
     std::vector<int> edgeReferences;
     std::vector<int> faceReferences;
 
-    Handle_HLRBRep_Algo brep_hlr;
     double Tolerance;
     double Scale;
-
-    /// Returns the centroid of shape, as viewed according to direction and xAxis
-    gp_Pnt findCentroid(const TopoDS_Shape &shape,
-                        const Base::Vector3d &direction,
-                        const Base::Vector3d &xAxis) const;
 };
 
 } //namespace TechDrawGeometry

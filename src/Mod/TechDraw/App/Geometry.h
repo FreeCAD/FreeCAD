@@ -73,6 +73,8 @@ public:
     std::vector<Base::Vector2D> findEndPoints();
     Base::Vector2D getStartPoint();
     Base::Vector2D getEndPoint();
+public:      //class wide methods
+    static BaseGeom* baseFactory(TopoDS_Edge edge);
 };
 
 class TechDrawExport Circle: public BaseGeom
@@ -171,17 +173,21 @@ public:
   std::vector<Base::Vector2D> points;
 };
 
+
+
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
-struct TechDrawExport Wire
+class TechDrawExport Wire
 {
+public:
   Wire();
   ~Wire();
   std::vector<BaseGeom *> geoms;
 };
 
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
-struct TechDrawExport Face
+class TechDrawExport Face
 {
+public:
   Face();
   ~Face();
   std::vector<Wire *> wires;

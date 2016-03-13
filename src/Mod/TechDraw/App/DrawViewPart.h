@@ -106,10 +106,12 @@ public:
     virtual PyObject *getPyObject(void);
 
     void dumpVertexRefs(char* text) const;
+    void dumpVertexes(const char* text, const TopoDS_Shape& s);
 
 protected:
     void onChanged(const App::Property* prop);
-    void buildGeometryObject(TopoDS_Shape shape);
+    Base::Vector3d getValidXDir() const;
+    void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 

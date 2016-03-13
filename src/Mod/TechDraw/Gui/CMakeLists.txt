@@ -125,6 +125,7 @@ SET(TechDrawGuiView_SRCS
     QGIHatch.h
     TemplateTextField.cpp
     TemplateTextField.h
+    ZVALUE.h
 )
 SET(TechDrawGuiViewProvider_SRCS
     ViewProviderPage.cpp
