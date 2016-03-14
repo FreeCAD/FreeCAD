@@ -49,9 +49,10 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %left NUM
      %left INTEGER
      %left CONSTANT
+     %left EQ NEQ LT GT GTE LTE
+     %left '?' ':'
      %left MINUSSIGN '+'
      %left '*' '/'
-     %left '?' ':' EQ NEQ LT GT GTE LTE
      %left NEG     /* negation--unary minus */
      %left POS     /* unary plus */
      %right '^'    /* exponentiation */
