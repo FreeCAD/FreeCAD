@@ -52,17 +52,21 @@
 #include "Utils.h"
 
 #include "ViewProviderBody.h"
+#include "ViewProvider.h"
 
 using namespace PartDesignGui;
+
+const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",NULL};
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
 
 ViewProviderBody::ViewProviderBody()
 {
+    ADD_PROPERTY(DisplayModeBody,((long)0));
+    DisplayModeBody.setEnums(BodyModeEnum);
+    
     pcBodyChildren = new SoSeparator();
     pcBodyChildren->ref();
-    pcBodyTip = new SoSeparator();
-    pcBodyTip->ref();
 
     sPixmap = "PartDesign_Body_Tree.svg";
 }
@@ -70,26 +74,15 @@ ViewProviderBody::ViewProviderBody()
 ViewProviderBody::~ViewProviderBody()
 {
     pcBodyChildren->unref ();
-    pcBodyTip->unref ();
 }
 
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderPart::attach(pcFeat);
-    PartDesign::Body *body = static_cast <PartDesign::Body *> (pcFeat);
-
-    App::DocumentObject *tip = body->Tip.getValue ();
-
-    if (tip) {
-        Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider (tip);
-        if (vp) {
-            pcBodyTip->addChild ( vp->getRoot () );
-        }
-    }
 
     addDisplayMaskMode(pcBodyChildren, "Through");
-    addDisplayMaskMode(pcBodyTip, "Tip");
+    setDisplayMaskMode("Through");
 
     App::Document *adoc  = pcObject->getDocument ();
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
@@ -109,19 +102,14 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 // TODO drag&drop (2015-09-05, Fat-Zer)
 // TODO Add activate () call (2015-09-08, Fat-Zer)
 
-void ViewProviderBody::setDisplayMode(const char* ModeName)
-{
-    if ( strcmp("Through",ModeName)==0 )
-        setDisplayMaskMode("Through");
-    // TODO Use other Part::features display modes instead of the "Tip" (2015-09-08, Fat-Zer)
-    if ( strcmp("Tip",ModeName)==0 )
-        setDisplayMaskMode("Tip");
-    // TODO When switching into Tip mode switch it's visability to true (2015-09-05, Fat-Zer)
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
-}
-
-std::vector<std::string> ViewProviderBody::getDisplayModes(void) const {
-    return {"Through" , "Tip"};
+void ViewProviderBody::setDisplayMode(const char* ModeName) {
+    
+    //if we show "Through" we must avoid to set the display mask modes, as this would result 
+    //in going into tip mode. When through is chosen the child features are displayed, and all
+    //we need to ensure is that the display mode change is propagated to them fro within the
+    //onChanged() method.
+    if(DisplayModeBody.getValue() == 1)
+        PartGui::ViewProviderPartExt::setDisplayMode(ModeName);
 }
 
 
@@ -241,26 +229,9 @@ void ViewProviderBody::updateData(const App::Property* prop)
     if (prop == &body->Model || prop == &body->BaseFeature) {
         // update sizes of origins and datums
         updateOriginDatumSize ();
-    } else if (prop == &body->Tip) {
-        // Adjust the internals to display
-        App::DocumentObject *tip = body->Tip.getValue ();
-
-        if (tip) {
-            Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider (tip);
-            if (vp) {
-                SoNode *tipRoot = vp->getRoot ();
-                if ( pcBodyTip->findChild ( tipRoot ) == -1 ) {
-                    pcBodyTip->removeAllChildren ();
-                    pcBodyTip->addChild ( tipRoot );
-                }
-                // Else our tip is already shown
-            } else {
-                pcBodyTip->removeAllChildren ();
-            }
-        } else {
-            pcBodyTip->removeAllChildren ();
-        }
-    }
+        //ensure all model features are in visual body mode
+        setVisualBodyMode(true);
+    } 
 
     PartGui::ViewProviderPart::updateData(prop);
 }
@@ -377,3 +348,57 @@ void ViewProviderBody::updateOriginDatumSize () {
 
     vpOrigin->Size.setValue ( size*1.2 );
 }
+
+void ViewProviderBody::onChanged(const App::Property* prop) {
+        
+    if(prop == &DisplayModeBody) {
+    
+        if ( DisplayModeBody.getValue() == 0 )
+            setDisplayMaskMode("Through");
+        else 
+            setDisplayMaskMode(DisplayMode.getValueAsString());
+    }
+    else 
+        unifyVisualProperty(prop);
+    
+    PartGui::ViewProviderPartExt::onChanged(prop);
+}
+
+
+void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
+
+    if(prop == &Visibility || 
+       prop == &Selectable ||
+       prop == &DisplayModeBody)
+        return;
+                
+    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
+       
+    PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
+    auto features = body->Model.getValues();
+    for(auto feature : features) {
+        
+        if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            continue;
+        
+        //copy over the properties data
+        auto p = gdoc->getViewProvider(feature)->getPropertyByName(prop->getName());
+        p->Paste(*prop);
+    }
+}
+
+void ViewProviderBody::setVisualBodyMode(bool bodymode) {
+
+    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
+       
+    PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
+    auto features = body->Model.getValues();
+    for(auto feature : features) {
+        
+        if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            continue;
+        
+        static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature))->setBodyMode(bodymode);
+    }
+}
+

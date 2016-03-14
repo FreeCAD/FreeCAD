@@ -222,3 +222,18 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
     }
     return true;
 }
+
+void ViewProvider::setBodyMode(bool bodymode) {
+
+    std::vector<App::Property*> props;
+    getPropertyList(props);
+    
+    for(App::Property* prop : props) {
+        
+        if(prop == &Visibility ||
+           prop == &Selectable)
+            continue;
+        
+        prop->setStatus(App::Property::Hidden, bodymode);
+    }
+}

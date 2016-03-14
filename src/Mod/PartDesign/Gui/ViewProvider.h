@@ -48,6 +48,11 @@ public:
     void updateData(const App::Property*);
     void onChanged(const App::Property* prop);
 
+    //body mode means that the object is part of a body and that the body is used to set the 
+    //visual properties, not the features. Hence setting body mode to true will hide most 
+    //viewprovider properties.
+    void setBodyMode(bool bodymode);
+
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
