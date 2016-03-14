@@ -78,6 +78,20 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A23, 1)
         self.assertEqual(sheet.A24, 1)
 
+    def testPrecedence(self):
+        """ Precedence -- test precedence for relational operators and conditional operator. """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '=1 < 2 ? 3 : 4')
+        sheet.set('A2', '=1 + 2 < 3 + 4 ? 5 + 6 : 7 + 8')
+        sheet.set('A3', '=1 + 2 * 1 < 3 + 4 ? 5 * 2 + 6 * 3 + 2 ^ 4 : 7 * 2 + 8 * 3 + 2 ^ 3')
+        self.doc.recompute()
+        self.assertEqual(sheet.getContents("A1"), "=1 < 2 ? 3 : 4")
+        self.assertEqual(sheet.getContents("A2"), "=1 + 2 < 3 + 4 ? 5 + 6 : 7 + 8")
+        self.assertEqual(sheet.getContents("A3"), "=1 + 2 * 1 < 3 + 4 ? 5 * 2 + 6 * 3 + 2 ^ 4 : 7 * 2 + 8 * 3 + 2 ^ 3")
+        self.assertEqual(sheet.A1, 3)
+        self.assertEqual(sheet.A2, 11)
+        self.assertEqual(sheet.A3, 44)
+
     def testRemoveRows(self):
         """ Removing rows -- check renaming of internal cells """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
