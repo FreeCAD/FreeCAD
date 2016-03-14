@@ -48,10 +48,9 @@ public:
     /// destructor
     virtual ~ViewProviderBody();
 
+    App::PropertyEnumeration DisplayModeBody;
+    
     virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
 
     virtual bool doubleClicked(void);
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
@@ -59,15 +58,18 @@ public:
     // returns the root node where the children gets collected(3D)
     virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
+    virtual void setDisplayMode(const char* ModeName);
 
     virtual bool onDelete(const std::vector<std::string> &);
 
     /// Update the children's highlighting when triggered
     virtual void updateData(const App::Property* prop);
+    ///unify children visuals
+    virtual void onChanged(const App::Property* prop);
 
     /// Update the sizes of origin and datums
     void updateOriginDatumSize ();
-
+    
     /**
      * Return the bounding box of visible features
      * @note datums are counted as their base point only
@@ -78,14 +80,15 @@ protected:
     void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
     void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );
 
+    /// Copy over all visual properties to the child features
+    void unifyVisualProperty(const App::Property* prop);
+    /// Set Feature viewprovider into visual body mode
+    void setVisualBodyMode(bool bodymode);
 private:
     /// group used to store children collected by claimChildren3D() in the through (edit) mode.
     SoGroup *pcBodyChildren;
-    /// The tip node used to display the Body when it doesn't edited.
-    SoGroup *pcBodyTip;
 
-    /// Update the children's highlighting
-    //void updateTree();
+    static const char* BodyModeEnum[];
 
     boost::signals::connection connectChangedObjectApp;
     boost::signals::connection connectChangedObjectGui;
