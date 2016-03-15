@@ -127,6 +127,7 @@
 
 #include "SoTouchEvents.h"
 #include "WinNativeGestureRecognizers.h"
+#include "Document.h"
 
 //#define FC_LOGGING_CB
 
@@ -566,8 +567,14 @@ View3DInventorViewer::~View3DInventorViewer()
 void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
 {
     // write the document the viewer belongs to to the selection node
+    guiDocument = pcDocument;
     selectionRoot->pcDocument = pcDocument;
 }
+
+Document* View3DInventorViewer::getDocument() {
+    return guiDocument;
+}
+
 
 void View3DInventorViewer::initialize()
 {
@@ -683,8 +690,9 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
 
     overrideMode = mode;
 
-    for (std::set<ViewProvider*>::iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it)
-        (*it)->setOverrideMode(mode);
+    auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
+    for (auto view : views)
+        view->setOverrideMode(mode);
 }
 
 /// update override mode. doesn't affect providers

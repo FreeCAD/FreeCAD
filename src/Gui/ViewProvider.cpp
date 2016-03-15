@@ -65,6 +65,7 @@ PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
 ViewProvider::ViewProvider()
     : pcAnnotation(0)
     , pyViewObject(0)
+    , overrideMode("As Is")
     , _iActualMode(-1)
     , _iEditMode(-1)
     , viewOverrideMode(-1)
@@ -334,18 +335,26 @@ bool ViewProvider::isVisible() const
 }
 
 void ViewProvider::setOverrideMode(const std::string &mode)
-{
-    if (mode == "As Is")
+{    
+    if (mode == "As Is") {
         viewOverrideMode = -1;
+        overrideMode = mode;
+    }
     else {
         std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(mode);
         if (it == _sDisplayMaskModes.end())
             return; //view style not supported
         viewOverrideMode = (*it).second;
+        overrideMode = mode;
     }
     if (pcModeSwitch->whichChild.getValue() != -1)
         setModeSwitch();
 }
+
+const string ViewProvider::getOverrideMode() {
+    return overrideMode;
+}
+
 
 void ViewProvider::setModeSwitch()
 {

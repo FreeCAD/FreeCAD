@@ -341,6 +341,7 @@ public:
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);
+    Gui::Document* getDocument();
 
     virtual PyObject *getPyObject(void);
 
@@ -420,6 +421,7 @@ private:
     SbBool allowredir;
 
     std::string overrideMode;
+    Gui::Document* guiDocument = nullptr;
     
     ViewerEventFilter* viewerEventFilter;
     
