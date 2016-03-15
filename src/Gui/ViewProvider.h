@@ -233,6 +233,7 @@ public:
     bool isVisible() const;
     /// Overrides the display mode with mode.
     virtual void setOverrideMode(const std::string &mode);
+    const std::string getOverrideMode();
     //@}
 
 
@@ -348,6 +349,7 @@ protected:
     /// The root separator for annotations
     SoSeparator *pcAnnotation;
     ViewProviderPy* pyViewObject;
+    std::string overrideMode;
 
 private:
     void setModeSwitch();

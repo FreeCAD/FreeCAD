@@ -105,12 +105,25 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 void ViewProviderBody::setDisplayMode(const char* ModeName) {
     
     //if we show "Through" we must avoid to set the display mask modes, as this would result 
-    //in going into tip mode. When through is chosen the child features are displayed, and all
+    //in going into "tip" mode. When through is chosen the child features are displayed, and all
     //we need to ensure is that the display mode change is propagated to them fro within the
     //onChanged() method.
     if(DisplayModeBody.getValue() == 1)
         PartGui::ViewProviderPartExt::setDisplayMode(ModeName);
 }
+
+void ViewProviderBody::setOverrideMode(const std::__cxx11::string& mode) {
+    
+    //if we are in through mode, we need to ensure that the override mode is not set for the body
+    //(as this would result in "tip" mode), it is enough when the children are set to the correct 
+    //override mode. 
+    
+    if(DisplayModeBody.getValue() != 0)
+        Gui::ViewProvider::setOverrideMode(mode);
+    else
+        overrideMode = mode;       
+}
+
 
 
 bool ViewProviderBody::doubleClicked(void)
@@ -353,10 +366,24 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
         
     if(prop == &DisplayModeBody) {
     
-        if ( DisplayModeBody.getValue() == 0 )
+        if ( DisplayModeBody.getValue() == 0 )  {
+            //if we are in an override mode we need to make sure to come out, because 
+            //otherwise the maskmode is blocked and won't go into "through"
+            if(getOverrideMode() != "As Is") {
+                auto mode = getOverrideMode();
+                ViewProvider::setOverrideMode("As Is");
+                overrideMode = mode;
+            }
             setDisplayMaskMode("Through");
-        else 
-            setDisplayMaskMode(DisplayMode.getValueAsString());
+        }
+        else {
+            if(getOverrideMode() == "As Is")
+                setDisplayMaskMode(DisplayMode.getValueAsString());
+            else {
+                Base::Console().Message("Set override mode: %s\n", getOverrideMode().c_str());
+                setDisplayMaskMode(getOverrideMode().c_str());
+            }
+        }
     }
     else 
         unifyVisualProperty(prop);
