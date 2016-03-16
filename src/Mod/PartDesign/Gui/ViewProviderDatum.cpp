@@ -88,6 +88,8 @@ ViewProviderDatum::ViewProviderDatum()
     pPickStyle = new SoPickStyle();
     pPickStyle->ref();
     
+    DisplayMode.setStatus(App::Property::Hidden, true);
+    
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
             "User parameter:BaseApp/Preferences/Mod/PartDesign");

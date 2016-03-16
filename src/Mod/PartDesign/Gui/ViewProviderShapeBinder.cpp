@@ -57,13 +57,19 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     LineWidth.setStatus(App::Property::Hidden, true);
     PointColor.setStatus(App::Property::Hidden, true);
     PointSize.setStatus(App::Property::Hidden, true);
-    ShapeColor.setStatus(App::Property::Hidden, true);
-    Transparency.setStatus(App::Property::Hidden, true);
+    DisplayMode.setStatus(App::Property::Hidden, true);
 
     //get the datum coloring sheme
-    ShapeColor.setValue(App::Color(0.9f, 0.9f, 0.13f, 0.5f));
-    LineColor.setValue(App::Color(0.9f, 0.9f, 0.13f, 0.5f));
-    PointColor.setValue(App::Color(0.9f, 0.9f, 0.13f, 0.5f));
+    // set default color for datums (golden yellow with 60% transparency)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
+            "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
+    App::Color col ( (uint32_t) shcol );
+    
+    ShapeColor.setValue(col);
+    LineColor.setValue(col);
+    PointColor.setValue(col);
+    Transparency.setValue(60);
     LineWidth.setValue(1);
 }
 
