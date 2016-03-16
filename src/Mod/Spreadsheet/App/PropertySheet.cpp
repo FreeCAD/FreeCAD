@@ -38,7 +38,6 @@
 #include <Base/PyObjectBase.h>
 #include "PropertySheet.h"
 #include "Sheet.h"
-#include "SpreadsheetExpression.h"
 #include "Utils.h"
 #include <PropertySheetPy.h>
 #include <App/ExpressionVisitors.h>
@@ -158,7 +157,7 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
             const boost::sub_match<const char *> rowstr = cm[2];
 
             // A valid cell address?
-            if (Spreadsheet::validRow(rowstr.str()) >= 0 && Spreadsheet::validColumn(colstr.str()) >= 0)
+            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()) >= 0)
                 return false;
         }
         return true;

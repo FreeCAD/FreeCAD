@@ -26,6 +26,7 @@
 #include <QAbstractTableModel>
 #include <boost/signals/connection.hpp>
 #include <Mod/Spreadsheet/App/Utils.h>
+#include <App/Range.h>
 
 namespace Spreadsheet {
 class Sheet;
@@ -49,7 +50,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &) const;
 
 private:
-    void cellUpdated(Spreadsheet::CellAddress address);
+    void cellUpdated(App::CellAddress address);
 
     boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellUpdatedConnection;
     Spreadsheet::Sheet * sheet;
