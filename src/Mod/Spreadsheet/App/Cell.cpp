@@ -30,7 +30,7 @@
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include "SpreadsheetExpression.h"
+#include <App/Expression.h>
 #include "Sheet.h"
 #include <iomanip>
 
@@ -38,6 +38,7 @@
 #define __func__ __FUNCTION__
 #endif
 
+using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
@@ -216,7 +217,7 @@ void Cell::setContent(const char * value)
     if (value != 0) {
         if (*value == '=') {
             try {
-                expr = Spreadsheet::ExpressionParser::parse(owner->sheet(), value + 1);
+                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
             }
             catch (Base::Exception & e) {
                 expr = new App::StringExpression(owner->sheet(), value);

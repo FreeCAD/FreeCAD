@@ -37,7 +37,7 @@
 
 #include "SpreadsheetView.h"
 #include "../App/Sheet.h"
-#include "../App/Range.h"
+#include <App/Range.h>
 #include "ViewProviderSpreadsheet.h"
 #include "PropertiesDialog.h"
 
@@ -46,6 +46,7 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Base;
+using namespace App;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -793,7 +794,7 @@ void CmdSpreadsheetSetAlias::activated(int iMsg)
             QModelIndexList selection = sheetView->selectedIndexes();
 
             if (selection.size() == 1) {
-                std::vector<Spreadsheet::Range> range;
+                std::vector<Range> range;
 
                 range.push_back(Range(selection[0].row(), selection[0].column(),
                                       selection[0].row(), selection[0].column()));

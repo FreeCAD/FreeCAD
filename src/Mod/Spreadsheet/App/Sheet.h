@@ -36,6 +36,7 @@
 #include <App/PropertyStandard.h>
 #include <App/DynamicProperty.h>
 #include <App/Material.h>
+#include <App/Range.h>
 #include <Base/Unit.h>
 #include <map>
 #include "PropertySheet.h"
@@ -43,12 +44,12 @@
 #include "PropertyRowHeights.h"
 #include "Utils.h"
 
+
 namespace Spreadsheet
 {
 
 class Sheet;
 class Cell;
-class Range;
 class SheetObserver;
 
 /** Spreadsheet quantity property
@@ -86,25 +87,25 @@ public:
 
     bool exportToFile(const std::string & filename, char delimiter = '\t', char quoteChar = '\0', char escapeChar = '\\') const;
 
-    bool mergeCells(const Range &range);
+    bool mergeCells(const App::Range &range);
 
-    void splitCell(CellAddress address);
+    void splitCell(App::CellAddress address);
 
-    Cell * getCell(CellAddress address);
+    Cell * getCell(App::CellAddress address);
 
-    Cell *getNewCell(CellAddress address);
+    Cell *getNewCell(App::CellAddress address);
 
     void setCell(const char *address, const char *value);
 
-    void setCell(CellAddress address, const char *value);
+    void setCell(App::CellAddress address, const char *value);
 
     void clearAll();
 
-    void clear(CellAddress address, bool all = true);
+    void clear(App::CellAddress address, bool all = true);
 
-    void getSpans(CellAddress address, int & rows, int & cols) const;
+    void getSpans(App::CellAddress address, int & rows, int & cols) const;
 
-    bool isMergedCell(CellAddress address) const;
+    bool isMergedCell(App::CellAddress address) const;
 
     void setColumnWidth(int col, int width);
 
@@ -124,31 +125,31 @@ public:
 
     void removeRows(int row, int count);
 
-    void setContent(CellAddress address, const char * value);
+    void setContent(App::CellAddress address, const char * value);
 
-    void setAlignment(CellAddress address, int alignment);
+    void setAlignment(App::CellAddress address, int alignment);
 
-    void setStyle(CellAddress address, const std::set<std::string> & style);
+    void setStyle(App::CellAddress address, const std::set<std::string> & style);
 
-    void setForeground(CellAddress address, const App::Color &color);
+    void setForeground(App::CellAddress address, const App::Color &color);
 
-    void setBackground(CellAddress address, const App::Color &color);
+    void setBackground(App::CellAddress address, const App::Color &color);
 
-    void setDisplayUnit(CellAddress address, const std::string & unit);
+    void setDisplayUnit(App::CellAddress address, const std::string & unit);
 
-    void setComputedUnit(CellAddress address, const Base::Unit & unit);
+    void setComputedUnit(App::CellAddress address, const Base::Unit & unit);
 
-    void setAlias(CellAddress address, const std::string & alias);
+    void setAlias(App::CellAddress address, const std::string & alias);
 
     std::string getAddressFromAlias(const std::string & alias) const;
 
     bool isValidAlias(const std::string &candidate);
 
-    void setSpans(CellAddress address, int rows, int columns);
+    void setSpans(App::CellAddress address, int rows, int columns);
 
-    std::set<std::string> dependsOn(CellAddress address) const;
+    std::set<std::string> dependsOn(App::CellAddress address) const;
 
-    void providesTo(CellAddress address, std::set<std::string> & result) const;
+    void providesTo(App::CellAddress address, std::set<std::string> & result) const;
 
     PyObject *getPyObject();
 
@@ -160,7 +161,7 @@ public:
 
     App::DocumentObjectExecReturn *execute(void);
 
-    void getCellAddress(const App::Property *prop, CellAddress &address);
+    void getCellAddress(const App::Property *prop, App::CellAddress &address);
 
     std::map<int, int> getColumnWidths() const;
 
@@ -168,9 +169,9 @@ public:
 
     // Signals
 
-    boost::signal<void (Spreadsheet::CellAddress)> cellUpdated;
+    boost::signal<void (App::CellAddress)> cellUpdated;
 
-    boost::signal<void (Spreadsheet::CellAddress)> cellSpanChanged;
+    boost::signal<void (App::CellAddress)> cellSpanChanged;
 
     boost::signal<void (int, int)> columnWidthChanged;
 
@@ -231,7 +232,7 @@ public:
 
 protected:
 
-    void providesTo(CellAddress address, std::set<CellAddress> & result) const;
+    void providesTo(App::CellAddress address, std::set<App::CellAddress> & result) const;
 
     void onDocumentRestored();
 
@@ -239,25 +240,25 @@ protected:
 
     void onRenamedDocument(const App::Document & document);
 
-    void recomputeCell(CellAddress p);
+    void recomputeCell(App::CellAddress p);
 
-    App::Property *getProperty(CellAddress key) const;
+    App::Property *getProperty(App::CellAddress key) const;
 
     App::Property *getProperty(const char * addr) const;
 
-    void updateAlias(CellAddress key);
+    void updateAlias(App::CellAddress key);
 
-    void updateProperty(CellAddress key);
+    void updateProperty(App::CellAddress key);
 
-    App::Property *setStringProperty(CellAddress key, const std::string & value) ;
+    App::Property *setStringProperty(App::CellAddress key, const std::string & value) ;
 
-    App::Property *setFloatProperty(CellAddress key, double value);
+    App::Property *setFloatProperty(App::CellAddress key, double value);
 
-    App::Property *setQuantityProperty(CellAddress key, double value, const Base::Unit &unit);
+    App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
     void renamedDocumentObject(const App::DocumentObject * docObj);
 
-    void aliasRemoved(CellAddress address, const std::string &alias);
+    void aliasRemoved(App::CellAddress address, const std::string &alias);
 
     void removeAliases();
 
@@ -267,13 +268,13 @@ protected:
     App::DynamicProperty props;
 
     /* Mapping of properties to cell position */
-    std::map<const App::Property*, CellAddress > propAddress;
+    std::map<const App::Property*, App::CellAddress > propAddress;
 
     /* Removed (unprocessed) aliases */
-    std::map<CellAddress, std::string> removedAliases;
+    std::map<App::CellAddress, std::string> removedAliases;
 
     /* Set of cells with errors */
-    std::set<CellAddress> cellErrors;
+    std::set<App::CellAddress> cellErrors;
 
     /* Properties */
 

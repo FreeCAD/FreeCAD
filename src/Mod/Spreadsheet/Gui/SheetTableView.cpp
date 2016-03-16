@@ -29,13 +29,14 @@
 #include <Gui/Command.h>
 #include <boost/bind.hpp>
 #include "../App/Utils.h"
-#include "../App/Range.h"
+#include <App/Range.h>
 #include "SheetTableView.h"
 #include "LineEdit.h"
 #include "PropertiesDialog.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
+using namespace App;
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -236,7 +237,7 @@ SheetTableView::~SheetTableView()
 
 }
 
-void SheetTableView::updateCellSpan(Spreadsheet::CellAddress address)
+void SheetTableView::updateCellSpan(CellAddress address)
 {
     int rows, cols;
 

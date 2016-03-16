@@ -20,8 +20,6 @@
 
 #include <Base/Console.h>
 #include "Sheet.h"
-#include "SpreadsheetExpression.h"
-
 
 namespace Spreadsheet {
 class Module : public Py::ExtensionModule<Module>
@@ -46,8 +44,6 @@ PyMODINIT_FUNC initSpreadsheet() {
     Spreadsheet::PropertySheet::init();
 
     Spreadsheet::Sheet::init();
-    Spreadsheet::AggregateFunctionExpression::init();
-    Spreadsheet::RangeExpression::init();
 
     new Spreadsheet::Module();
     Base::Console().Log("Loading Spreadsheet module... done\n");
