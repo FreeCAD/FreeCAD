@@ -112,7 +112,7 @@ void ViewProviderBody::setDisplayMode(const char* ModeName) {
         PartGui::ViewProviderPartExt::setDisplayMode(ModeName);
 }
 
-void ViewProviderBody::setOverrideMode(const std::__cxx11::string& mode) {
+void ViewProviderBody::setOverrideMode(const std::string& mode) {
     
     //if we are in through mode, we need to ensure that the override mode is not set for the body
     //(as this would result in "tip" mode), it is enough when the children are set to the correct 
