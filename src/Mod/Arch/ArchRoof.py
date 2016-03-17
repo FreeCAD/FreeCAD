@@ -565,7 +565,9 @@ class _Roof(ArchComponent.Component):
                     if not DraftGeomUtils.isNull(pl):
                         self.sub.Placement = pl
                 ## BaseVolume
-                base = Part.makeCompound(self.shps)
+                base = self.shps.pop()
+                for s in self.shps :
+                    base = base.fuse(s)
                 base = self.processSubShapes(obj,base)
                 self.applyShape(obj,base,pl)
         elif base :
