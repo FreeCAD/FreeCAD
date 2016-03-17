@@ -34,7 +34,7 @@ namespace Gui
 /**
  * View provider associated with an App::OriginFeature.
  */
-class ViewProviderOriginFeature: public ViewProviderGeometryObject {
+class GuiExport ViewProviderOriginFeature: public ViewProviderGeometryObject {
     PROPERTY_HEADER(Gui::ViewProviderOriginFeature);
 
 public:

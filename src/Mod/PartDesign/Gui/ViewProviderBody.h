@@ -59,7 +59,7 @@ public:
     virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
     virtual void setDisplayMode(const char* ModeName);
-    virtual void setOverrideMode(const std::__cxx11::string& mode);
+    virtual void setOverrideMode(const std::string& mode);
 
     virtual bool onDelete(const std::vector<std::string> &);
 
