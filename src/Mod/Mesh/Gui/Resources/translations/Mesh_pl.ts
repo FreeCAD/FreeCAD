@@ -76,7 +76,7 @@
     </message>
     <message>
         <source>Face info</source>
-        <translation>Dane fasetki</translation>
+        <translation>Dane powierzchni</translation>
     </message>
     <message>
         <source>Information about face</source>
@@ -229,7 +229,7 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation>Utwórz siatkę z obwiedni...</translation>
+        <translation>Utwórz siatkę z kształtu...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
@@ -565,7 +565,7 @@
     </message>
     <message>
         <source>Degenerated faces</source>
-        <translation>Fasetki zniekształcone</translation>
+        <translation>Powierzchnie zniekształcone</translation>
     </message>
     <message>
         <source>Face indices</source>
@@ -577,7 +577,7 @@
     </message>
     <message>
         <source>Duplicated faces</source>
-        <translation>Zduplikowane fasetki</translation>
+        <translation>Zduplikowane powierzchnie</translation>
     </message>
     <message>
         <source>Duplicated points</source>
@@ -700,7 +700,7 @@
     </message>
     <message>
         <source>Duplicated faces</source>
-        <translation>Zduplikowane fasetki</translation>
+        <translation>Zduplikowane powierzchnie</translation>
     </message>
     <message>
         <source>No self-intersections</source>
@@ -1306,11 +1306,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Delete selected faces</source>
-        <translation>Usuń zaznaczone fasetki</translation>
+        <translation>Usuń zaznaczone powierzchnie</translation>
     </message>
     <message>
         <source>Clear selected faces</source>
-        <translation>Wyczyść zaznaczone fasetki</translation>
+        <translation>Wyczyść zaznaczone powierzchnie</translation>
     </message>
     <message>
         <source>Annotation</source>

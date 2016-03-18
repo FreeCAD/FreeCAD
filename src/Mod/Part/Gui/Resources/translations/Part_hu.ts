@@ -381,7 +381,7 @@
     <message>
         <location line="+1"/>
         <source>Make an intersection of two shapes</source>
-        <translation>Készíts egy kereszteződés két alakzattal</translation>
+        <translation>Készíts egy metszetet két alakzattal</translation>
     </message>
 </context>
 <context>
@@ -473,7 +473,7 @@
     <message>
         <location line="+1"/>
         <source>Make a cut of two shapes</source>
-        <translation>Készíts egy vágás a két alakzattal</translation>
+        <translation>Készíts egy kivágást két alakzattal</translation>
     </message>
 </context>
 <context>
@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Élek letörése</translation>
     </message>
@@ -1328,7 +1328,7 @@
         <translation>Nincs kijelölés</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Hossz:</translation>
     </message>
@@ -1349,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+545"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation>Hossz kezdete</translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation>Hossz vége</translation>
     </message>
@@ -1365,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+542"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Kezdeti sugár</translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Vég sugár</translation>
     </message>
     <message>
-        <location line="+531"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Hossz</translation>
     </message>
@@ -2094,7 +2094,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>X2 min/max:</source>
-        <translation>X 2 min/max:</translation>
+        <translation>X2 min/max:</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2457,7 +2457,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
         <location line="-65"/>
         <location line="+68"/>
         <source>px</source>
-        <translation>kp</translation>
+        <translation>px</translation>
     </message>
     <message>
         <location line="-43"/>
@@ -2776,7 +2776,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation>&quot;%1&quot; profilként és elérési útként nem használható.</translation>
+        <translation>&apos;%1&apos; profilként és elérési útként nem használható.</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -3177,7 +3177,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
         <location line="+21"/>
         <source>Refine shape</source>
-        <translation type="unfinished">Alakzat finomítás</translation>
+        <translation>Alakzat finomítás</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -3357,7 +3357,7 @@ Do you want to continue?</source>
         <location filename="../../Command.cpp" line="-269"/>
         <location line="+82"/>
         <source>Select two shapes or more, please.</source>
-        <translation>Kérem válasszon ki a két alakzatot vagy többet.</translation>
+        <translation>Kérem válasszon ki két alakzatot vagy többet.</translation>
     </message>
     <message>
         <location line="+387"/>

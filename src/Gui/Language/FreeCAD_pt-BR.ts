@@ -1870,7 +1870,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished">Or&amp;thographic rendering</translation>
+        <translation>Renderização Or&amp;tográfica</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
@@ -1881,7 +1881,7 @@ Por favor especifique outro diretório.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>navegação de %1</translation>
+        <translation type="obsolete">navegação de %1</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4803,7 +4803,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>navegação de %1</translation>
+        <translation type="obsolete">navegação de %1</translation>
     </message>
     <message>
         <source>Move annotation</source>

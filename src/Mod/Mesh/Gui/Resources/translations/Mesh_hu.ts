@@ -585,7 +585,7 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation>Nem szthatók</translation>
+        <translation>Nem szétágazó</translation>
     </message>
     <message>
         <source>Self-intersections</source>
@@ -632,7 +632,7 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation>Nem szthatók</translation>
+        <translation>Nem szétágazó</translation>
     </message>
     <message>
         <source>Cannot remove non-manifolds</source>
@@ -648,7 +648,7 @@
     </message>
     <message>
         <source>%1 flipped normals</source>
-        <translation>%1 tükrözött normalisok</translation>
+        <translation>%1 tükrözött normálisok</translation>
     </message>
     <message>
         <source>No non-manifolds</source>
@@ -730,7 +730,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>%1 folds on surface</source>
-        <translation>%1 felület hajlítása</translation>
+        <translation>%1 hajlítás a felületen</translation>
     </message>
     <message>
         <source>Folds</source>
@@ -1256,7 +1256,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>The mesh &apos;%1&apos; is a solid.</source>
-        <translation>A(z)&apos;%1&apos; háló egy szilárd test.</translation>
+        <translation>A(z) &apos;%1&apos; háló egy szilárd test.</translation>
     </message>
     <message>
         <source>The mesh &apos;%1&apos; is not a solid.</source>

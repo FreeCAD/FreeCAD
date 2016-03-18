@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Aristas del chaflán</translation>
     </message>
@@ -1328,7 +1328,7 @@
         <translation>Ninguna selección</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Longitud:</translation>
     </message>
@@ -1349,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+545"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation>Longitud de inicio</translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation>Longitud final</translation>
     </message>
@@ -1365,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+542"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Radio inicial</translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Radio final</translation>
     </message>
     <message>
-        <location line="+531"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Longitud</translation>
     </message>
@@ -2597,7 +2597,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Base point</source>
-        <translation type="unfinished">Base point</translation>
+        <translation>Punto base</translation>
     </message>
     <message>
         <source>Base point:</source>
@@ -3176,7 +3176,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+21"/>
         <source>Refine shape</source>
-        <translation type="unfinished">Refinar la forma</translation>
+        <translation>Refinar la forma</translation>
     </message>
     <message>
         <location line="+32"/>

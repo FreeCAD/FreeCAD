@@ -24,7 +24,7 @@
     <message>
         <location line="+1"/>
         <source>Chamfer the selected edges of a shape</source>
-        <translation>所選造型邊緣進行倒角</translation>
+        <translation>所選造型邊進行倒角</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location line="+1"/>
         <source>Make a fillet on an edge, face or body</source>
-        <translation>於邊緣、面或實體產生圓角</translation>
+        <translation>於邊、面或實體產生圓角</translation>
     </message>
 </context>
 <context>
@@ -304,7 +304,7 @@
     </message>
     <message>
         <source>Edge%1</source>
-        <translation type="obsolete">邊緣 %1</translation>
+        <translation type="obsolete">邊 %1</translation>
     </message>
     <message>
         <source>Distance</source>
@@ -317,12 +317,12 @@
     <message>
         <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-        <translation type="obsolete">未選取有效之造型
-請先於下拉選單中選取有效之造型</translation>
+        <translation type="obsolete">未選取有效之造型。
+請先於下拉選單中選取有效之造型。</translation>
     </message>
     <message>
         <source>No edge selected</source>
-        <translation type="obsolete">無邊界被選取</translation>
+        <translation type="obsolete">無邊被選取</translation>
     </message>
     <message>
         <source>No edge entity is checked to chamfer.
@@ -351,7 +351,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
         <source>Selected shape:</source>
-        <translation type="obsolete">選定之圖形:</translation>
+        <translation type="obsolete">選定之圖形：</translation>
     </message>
     <message>
         <source>No selection</source>
@@ -711,7 +711,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
         <source>Select an edge or a face</source>
-        <translation>選擇一個邊緣或面</translation>
+        <translation>選擇一個邊或面</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1174,7 +1174,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-55"/>
         <source>Select an edge</source>
-        <translation>選擇一邊緣</translation>
+        <translation>選擇一邊</translation>
     </message>
 </context>
 <context>
@@ -1330,7 +1330,7 @@ Please check one or more edge entities first.</translation>
         <location line="+74"/>
         <location line="+151"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation>請選取邊緣、面或實體，但僅允許選取一個實體。</translation>
+        <translation>請選取邊、面或實體，但僅允許選取一個實體。</translation>
     </message>
     <message>
         <location line="-146"/>
@@ -1352,7 +1352,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>所選之面/邊緣無法產生圓角</translation>
+        <translation>所選之面/邊無法產生圓角</translation>
     </message>
     <message>
         <location line="+71"/>
@@ -1384,7 +1384,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+393"/>
         <source>No chamfer possible on selected faces/edges</source>
-        <translation>所選之面/邊緣無法產生倒角</translation>
+        <translation>所選之面/邊無法產生倒角</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1502,7 +1502,7 @@ Create the sketch on a face.</source>
     <message>
         <location line="+1"/>
         <source>Please select a plane or an edge plus a pull direction</source>
-        <translation>請選擇一個平面或邊緣加上一個拔模方向</translation>
+        <translation>請選擇一個平面或邊加上一個拔模方向</translation>
     </message>
     <message>
         <location line="-17"/>

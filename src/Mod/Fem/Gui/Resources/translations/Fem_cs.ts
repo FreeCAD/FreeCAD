@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="cs" sourcelanguage="en">
   <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation>Nová mechanická analýza</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation>Vytvořit novou mechanickou analýzu</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_BeamSection</name>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
@@ -54,20 +41,7 @@
     </message>
   </context>
   <context>
-    <name>Fem_JobControl</name>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="40"/>
-      <source>Start solver job control</source>
-      <translation>Správa práce řešiče</translation>
-    </message>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="42"/>
-      <source>Dialog to start the calculation of the selected solver</source>
-      <translation>Dialog pro start výpočtů vybraného řešiče</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Material</name>
+    <name>Fem_MechanicalMaterial</name>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
@@ -77,6 +51,19 @@
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
       <translation>Vytvoří nebo upraví definici mechanického materiálu.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_NewMechanicalAnalysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>Nová mechanická analýza</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>Vytvořit novou mechanickou analýzu</translation>
     </message>
   </context>
   <context>
@@ -106,19 +93,6 @@
     </message>
   </context>
   <context>
-    <name>Fem_Result</name>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="40"/>
-      <source>Show result</source>
-      <translation>Zobrazit výsledek</translation>
-    </message>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="42"/>
-      <source>Show result information of an analysis</source>
-      <translation>Zobrazí výsledky analýzy</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_ShellThickness</name>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
@@ -132,6 +106,19 @@
     </message>
   </context>
   <context>
+    <name>Fem_ShowResult</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>Zobrazit výsledek</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation>Zobrazí výsledky analýzy</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_SolverCalculix</name>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
@@ -142,6 +129,71 @@
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
       <translation>Vytvoří MKP řešič CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverJobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation>Správa práce řešiče</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation>Dialog pro start výpočtů vybraného řešiče</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>Nová mechanická analýza</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>Vytvořit novou mechanickou analýzu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_JobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation>Správa práce řešiče</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation>Dialog pro start výpočtů vybraného řešiče</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Material</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation>Mechanický materiál...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation>Vytvoří nebo upraví definici mechanického materiálu.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Result</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>Zobrazit výsledek</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation>Zobrazí výsledky analýzy</translation>
     </message>
   </context>
   <context>

@@ -464,7 +464,7 @@ Do you want to continue?</source>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation type="unfinished">Max mesh deviation:</translation>
+        <translation>Desviación de malla Máx:</translation>
     </message>
     <message>
         <location line="+57"/>

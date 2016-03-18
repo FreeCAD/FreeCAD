@@ -255,7 +255,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;OpenGL</source>
-        <translation>&amp;OpenGL</translation>
+        <translation>OpenGL(&amp;O)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -280,7 +280,7 @@
     <message>
         <location line="+87"/>
         <source>&amp;Renderer</source>
-        <translation>彩現(&amp;R)</translation>
+        <translation>算繪(&amp;R)</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -613,22 +613,22 @@ Do you want to continue?</source>
     <message>
         <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
-        <translation>顯示銳利邊緣</translation>
+        <translation>顯示銳利邊</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible smooth edges</source>
-        <translation>顯示平滑邊緣</translation>
+        <translation>顯示平滑邊</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible sewn edges</source>
-        <translation>可視縫合邊緣</translation>
+        <translation>可視縫合邊</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible outline edges</source>
-        <translation>可視輪廓邊緣</translation>
+        <translation>可視輪廓邊</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -638,22 +638,22 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Hidden sharp edges</source>
-        <translation>隱藏銳利邊緣</translation>
+        <translation>隱藏銳利邊</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden smooth edges</source>
-        <translation>隱藏平滑邊緣</translation>
+        <translation>隱藏平滑邊</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden sewn edges</source>
-        <translation>隱藏縫合邊緣</translation>
+        <translation>隱藏縫合邊</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden outline edges</source>
-        <translation>隱藏輪廓邊緣</translation>
+        <translation>隱藏輪廓邊</translation>
     </message>
     <message>
         <location line="+1"/>

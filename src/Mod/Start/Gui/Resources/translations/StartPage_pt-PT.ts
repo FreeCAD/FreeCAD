@@ -301,22 +301,22 @@
     <message>
       <location filename="StartPage.py" line="54"/>
       <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <translation>Últimos commits</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="110"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>Obter uma versão de desenvolvimento</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="111"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>&lt;b&gt;Versões em desenvolvimento&lt;/b&gt; são disponibilizados de vez em quando por membros da comunidade e geralmente contêm as alterações mais recentes, mas são mais susceptíveis de conter bugs.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="112"/>
       <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <translation>Ver todos os commits</translation>
     </message>
   </context>
 </TS>

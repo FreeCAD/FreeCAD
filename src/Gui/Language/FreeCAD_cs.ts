@@ -1878,7 +1878,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigace</translation>
+        <translation type="obsolete">%1 navigace</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4810,7 +4810,7 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigace</translation>
+        <translation type="obsolete">%1 navigace</translation>
     </message>
     <message>
         <source>Move annotation</source>

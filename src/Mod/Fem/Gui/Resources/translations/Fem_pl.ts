@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl" sourcelanguage="en">
   <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_BeamSection</name>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
@@ -54,20 +41,7 @@
     </message>
   </context>
   <context>
-    <name>Fem_JobControl</name>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="40"/>
-      <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
-    </message>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="42"/>
-      <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Material</name>
+    <name>Fem_MechanicalMaterial</name>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
@@ -77,6 +51,19 @@
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
       <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_NewMechanicalAnalysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation type="unfinished">New mechanical analysis</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation type="unfinished">Create a new mechanical analysis</translation>
     </message>
   </context>
   <context>
@@ -106,19 +93,6 @@
     </message>
   </context>
   <context>
-    <name>Fem_Result</name>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="40"/>
-      <source>Show result</source>
-      <translation>Pokaż wynik</translation>
-    </message>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="42"/>
-      <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_ShellThickness</name>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
@@ -132,6 +106,19 @@
     </message>
   </context>
   <context>
+    <name>Fem_ShowResult</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>Pokaż wynik</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation type="unfinished">Show result information of an analysis</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_SolverCalculix</name>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
@@ -142,6 +129,71 @@
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
       <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverJobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation type="unfinished">Start solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation type="unfinished">New mechanical analysis</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation type="unfinished">Create a new mechanical analysis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_JobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation type="unfinished">Start solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Material</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation type="unfinished">Mechanical material...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Result</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>Pokaż wynik</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation type="unfinished">Show result information of an analysis</translation>
     </message>
   </context>
   <context>
@@ -168,7 +220,7 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Create FEM bearing constraint</source>
-      <translation>Utwórz wiązania MES łożysk</translation>
+      <translation>Utwórz wiązanie MES łożysk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -222,7 +274,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Create FEM force constraint</source>
-      <translation>Utwórz wiązania MES siły</translation>
+      <translation>Utwórz wiązanie MES siły</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
@@ -240,12 +292,12 @@
     <message>
       <location filename="../../Command.cpp" line="446"/>
       <source>Create FEM gear constraint</source>
-      <translation>Utwórz wiązania MES przekładni</translation>
+      <translation>Utwórz wiązanie MES koła zębatego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation>Utwórz wiązania MES dla przekładni</translation>
+      <translation>Utwórz wiązanie MES dla koła zębatego</translation>
     </message>
   </context>
   <context>
@@ -258,12 +310,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation>Utwórz ograniczenie FEM typu ciśnienie</translation>
+      <translation>Utwórz wiązanie MES nacisku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation>Utwórz ograniczenie FEM dla ciśnienia działającego na powierzchnię</translation>
+      <translation>Utwórz wiązanie MES dla nacisku działającego na powierzchnię</translation>
     </message>
   </context>
   <context>
@@ -276,12 +328,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation>Utwórz wiązania MES koła pasowego</translation>
+      <translation>Utwórz wiązanie MES koła pasowego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation>Utwórz wiązania MES dla koła pasowego</translation>
+      <translation>Utwórz wiązanie MES dla koła pasowego</translation>
     </message>
   </context>
   <context>
@@ -295,7 +347,7 @@
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="105"/>
       <source>Create a FEM analysis</source>
-      <translation>Utwórz analizę metodą FEM</translation>
+      <translation>Utwórz analizę MES</translation>
     </message>
   </context>
   <context>
@@ -462,12 +514,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation>Wykorzystanie z materiałów z katalogu . FreeCAD/materials</translation>
+      <translation>Użyj materiałów z katalogu .FreeCAD/Materials</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation>Wykorzystanie materiałów z katalogu zdefiniowanego przez użytkownika</translation>
+      <translation>Użyj materiałów z katalogu zdefiniowanego przez użytkownika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
@@ -593,7 +645,7 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation>Edycja siatki FEM</translation>
+      <translation>Edycja siatki MES</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
@@ -614,7 +666,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>Parametry ograniczeń FEM</translation>
+      <translation>Parametry ograniczeń MES</translation>
     </message>
   </context>
   <context>
@@ -876,7 +928,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation>Moduł FEM jest zbudowana bez wsparcia NETGEN. Tworzenie siatki nie będzie działać!</translation>
+      <translation>Moduł FEM został skompilowany bez wsparcia NETGEN. Tworzenie siatki nie będzie działać!!!</translation>
     </message>
   </context>
   <context>
@@ -1136,7 +1188,7 @@
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
-      <translation>Edytuj ograniczenia</translation>
+      <translation>Edytuj wiązanie</translation>
     </message>
     <message>
       <source>Combo View</source>
@@ -1190,12 +1242,12 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation>Ogranicznik naprężenia normalnego</translation>
+      <translation>Wiązanie naprężenia normalnego</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
+      <translation>[Węzłów: %1, Krawędzi: %2, Powierzchni: %3, Wielokątów: %4, Objętości: %5, Wielościanów: %6]</translation>
     </message>
   </context>
   <context>
@@ -1213,7 +1265,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation>Przemieszczenie Y</translation>
+      <translation>Przesunięcie Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
@@ -1223,7 +1275,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation>Przemieszczenie Z</translation>
+      <translation>Przesunięcie Z</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -1441,7 +1493,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley dia</source>
-      <translation>Inna średnica koła pasowego</translation>
+      <translation>Średnica drugiego koła pasowego</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
@@ -1734,7 +1786,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
       <source>Tetraeder count:</source>
-      <translation>Liczba tetraedrów:</translation>
+      <translation>Liczba czworościanów:</translation>
     </message>
   </context>
   <context>

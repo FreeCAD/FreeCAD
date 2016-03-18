@@ -2,29 +2,16 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_BeamSection</name>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>FEM Beam Cross Section Definition ...</source>
-      <translation type="unfinished">FEM Beam Cross Section Definition ...</translation>
+      <translation>Definición de sección transversal de viga FEM...</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
-      <translation type="unfinished">Creates a FEM Beam Cross Section</translation>
+      <translation>Crear una sección transversal de viga FEM</translation>
     </message>
   </context>
   <context>
@@ -54,6 +41,123 @@
     </message>
   </context>
   <context>
+    <name>Fem_MechanicalMaterial</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation>Material mecánico...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation>Crear o editar la definición de material mecánico.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_NewMechanicalAnalysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>Nuevo análisis mecánico</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>Crear un nuevo análisis mecánico</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_PurgeResults</name>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="40"/>
+      <source>Purge results</source>
+      <translation>Resultados de la depuración</translation>
+    </message>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="42"/>
+      <source>Purge results from an analysis</source>
+      <translation>Depurar los resultados de un análisis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Quick_Analysis</name>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="40"/>
+      <source>Run CalculiX ccx</source>
+      <translation>Ejecutar CalculiX ccx</translation>
+    </message>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="42"/>
+      <source>Write .inp file and run CalculiX ccx</source>
+      <translation>Escribir el archivo .inp y ejecutar CalculiX ccx</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>FEM Shell Plate Thickness Definition ...</source>
+      <translation>Definir espesor de FEM Shell Plate ...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM Shell Thickness</source>
+      <translation>Crear un espesor de FEM Shell</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ShowResult</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>Mostrar resultado</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation>Mostrar información de resultados de un análisis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="41"/>
+      <source>Create FEM Solver CalculiX ...</source>
+      <translation>Crear un FEM Solver CalculiX ...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="43"/>
+      <source>Creates FEM Solver CalculiX</source>
+      <translation>Crea un FEM Solver CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverJobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation type="unfinished">Start solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation>Cuadro de diálogo para iniciar el cálculo del solver seleccionado</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>Nuevo análisis mecánico</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>Crear un nuevo análisis mecánico</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_JobControl</name>
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
@@ -63,7 +167,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Cuadro de diálogo para iniciar el cálculo del solver seleccionado</translation>
     </message>
   </context>
   <context>
@@ -71,38 +175,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Material mecánico...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_PurgeResults</name>
-    <message>
-      <location filename="_CommandPurgeFemResults.py" line="40"/>
-      <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
-    </message>
-    <message>
-      <location filename="_CommandPurgeFemResults.py" line="42"/>
-      <source>Purge results from an analysis</source>
-      <translation type="unfinished">Purge results from an analysis</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Quick_Analysis</name>
-    <message>
-      <location filename="_CommandQuickAnalysis.py" line="40"/>
-      <source>Run CalculiX ccx</source>
-      <translation type="unfinished">Run CalculiX ccx</translation>
-    </message>
-    <message>
-      <location filename="_CommandQuickAnalysis.py" line="42"/>
-      <source>Write .inp file and run CalculiX ccx</source>
-      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
+      <translation>Crear o editar la definición de material mecánico.</translation>
     </message>
   </context>
   <context>
@@ -115,33 +193,7 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_ShellThickness</name>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="41"/>
-      <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation type="unfinished">FEM Shell Plate Thickness Definition ...</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="43"/>
-      <source>Creates a FEM Shell Thickness</source>
-      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="41"/>
-      <source>Create FEM Solver CalculiX ...</source>
-      <translation type="unfinished">Create FEM Solver CalculiX ...</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="43"/>
-      <source>Creates FEM Solver CalculiX</source>
-      <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+      <translation>Mostrar información de resultados de un análisis</translation>
     </message>
   </context>
   <context>
@@ -155,7 +207,7 @@
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="167"/>
       <source>Add a part to the Analysis</source>
-      <translation>Añade una parte al analisis</translation>
+      <translation>Añadir una parte al análisis</translation>
     </message>
   </context>
   <context>
@@ -204,12 +256,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>Crear restricción FEM corregida</translation>
+      <translation>Crear restricción FEM fija</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation>Crear restricción FEM para una entidad geométrica corregida</translation>
+      <translation>Crear restricción FEM para una entidad geométrica fija</translation>
     </message>
   </context>
   <context>
@@ -348,7 +400,7 @@
       <location filename="../../Command.cpp" line="229"/>
       <location filename="../../Command.cpp" line="230"/>
       <source>Add a solver to the Analysis</source>
-      <translation>Añadir un solucionador al análisis</translation>
+      <translation>Añadir un solver al análisis</translation>
     </message>
   </context>
   <context>
@@ -376,7 +428,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation>CálculosX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
@@ -391,7 +443,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Dejar en blanco para utilizar por defecto el CálculoX del archivo binario ccx</translation>
+      <translation>Dejar en blanco para utilizar por defecto el archivo binario ccx de CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
@@ -426,7 +478,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation>Número Eigenmode</translation>
+      <translation>Número de modo propio</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
@@ -462,7 +514,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation>Use materiales del directorio de FreeCAD/materiales</translation>
+      <translation>Use materiales del directorio de FreeCAD/Materiales</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
@@ -684,13 +736,13 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation>Nada seleccionado!</translation>
+      <translation>¡Nada seleccionado!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation>El objeto seleccionado no es una pieza!</translation>
+      <translation>¡El objeto seleccionado no es una pieza!</translation>
     </message>
   </context>
   <context>
@@ -732,12 +784,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>Line load</source>
-      <translation>Carga lineal</translation>
+      <translation>Carga aplicada en una línea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
       <source>Area load</source>
-      <translation>Carga distribuida</translation>
+      <translation>Carga aplicada en un área</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
@@ -876,7 +928,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation>El módulo FEM está construido sin el soporte NETGEN. EL mallado no funciona!!!</translation>
+      <translation>El módulo FEM está construido sin el soporte NETGEN. ¡El mallado no funcionará!</translation>
     </message>
   </context>
   <context>
@@ -1233,12 +1285,12 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation>Tensión von Mises</translation>
+      <translation>Esfuerzo de von Mises</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation>Desplazamiento de Abs</translation>
+      <translation>Desplazamiento absoluto</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
@@ -1322,7 +1374,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="49"/>
       <source>Nodes: 0</source>
-      <translation>Nodos:0</translation>
+      <translation>Nodos: 0</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
@@ -1529,7 +1581,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation>Liberar</translation>
+      <translation>Libre</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -1674,7 +1726,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
       <source>VeryCoarse</source>
-      <translation>Muy basta</translation>
+      <translation>Muy burda</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="69"/>

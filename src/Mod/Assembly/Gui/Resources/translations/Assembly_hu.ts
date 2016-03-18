@@ -19,12 +19,12 @@
     <message>
         <location line="+1"/>
         <source>Constraint Axle...</source>
-        <translation>Tengely menti kötés...</translation>
+        <translation>Tengely menti kényszerítés...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set a axle constraint between two objects</source>
-        <translation>tengely kötést hoz létre két tárgy között</translation>
+        <translation>tengely menti kényszerítést hoz létre két tárgy között</translation>
     </message>
 </context>
 <context>

@@ -400,8 +400,7 @@
       <location filename="PathArray.py" line="120"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
-</translation>
+      <translation>Veuillez sélectionner seulement un chemin</translation>
     </message>
   </context>
   <context>
@@ -531,12 +530,12 @@
     <message>
       <location filename="PathFacePocket.py" line="142"/>
       <source>Face Pocket</source>
-      <translation type="unfinished">Face Pocket</translation>
+      <translation>Face de la poche</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="143"/>
       <source>Creates a pocket inside a loop of edges or a face</source>
-      <translation type="unfinished">Creates a pocket inside a loop of edges or a face</translation>
+      <translation>Crée une poche à l'intérieur d'une boucle d'arêtes ou d'une face</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="156"/>
@@ -685,8 +684,7 @@
       <location filename="PathInspect.py" line="181"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
-</translation>
+      <translation>Veuillez sélectionner seulement un chemin</translation>
     </message>
   </context>
   <context>
@@ -822,7 +820,7 @@
     <message>
       <location filename="PathPocket.py" line="296"/>
       <source>Create Pocket</source>
-      <translation type="unfinished">Create Pocket</translation>
+      <translation>Créer une poche</translation>
     </message>
   </context>
   <context>
@@ -830,17 +828,17 @@
     <message>
       <location filename="PathPost.py" line="45"/>
       <source>Post Process</source>
-      <translation type="unfinished">Post Process</translation>
+      <translation>Post-traitement</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="47"/>
       <source>Post Process the selected Project</source>
-      <translation type="unfinished">Post Process the selected Project</translation>
+      <translation>Post-traitement du projet sélectionné</translation>
     </message>
     <message>
       <location filename="PathPost.py" line="53"/>
       <source>Post Process the Selected path(s)</source>
-      <translation type="unfinished">Post Process the Selected path(s)</translation>
+      <translation>Post-traitement du ou des parcours sélectionné(s)</translation>
     </message>
   </context>
   <context>
@@ -858,7 +856,7 @@
     <message>
       <location filename="PathProfile.py" line="220"/>
       <source>Create Profile</source>
-      <translation type="unfinished">Create Profile</translation>
+      <translation>Créer un profil</translation>
     </message>
   </context>
   <context>
@@ -876,7 +874,7 @@
     <message>
       <location filename="PathProject.py" line="135"/>
       <source>Create Project</source>
-      <translation type="unfinished">Create Project</translation>
+      <translation>Crée un projet</translation>
     </message>
   </context>
   <context>
@@ -884,19 +882,18 @@
     <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Copie simple</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="47"/>
       <source>Creates a non-parametric copy of another path</source>
-      <translation type="unfinished">Creates a non-parametric copy of another path</translation>
+      <translation>Crée une copie non paramétrique d'un autre chemin</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="59"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
-</translation>
+      <translation>Veuillez sélectionner seulement un chemin</translation>
     </message>
   </context>
   <context>
@@ -917,12 +914,12 @@
     <message>
       <location filename="PathToolChange.py" line="63"/>
       <source>Tool Change</source>
-      <translation type="unfinished">Tool Change</translation>
+      <translation>Changement d'outil</translation>
     </message>
     <message>
       <location filename="PathToolChange.py" line="64"/>
       <source>Changes the current tool</source>
-      <translation type="unfinished">Changes the current tool</translation>
+      <translation>Change l'outil actuel</translation>
     </message>
   </context>
   <context>
@@ -1457,7 +1454,7 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Creates a compound from selected paths</source>
-      <translation type="unfinished">Creates a compound from selected paths</translation>
+      <translation>Crée une combinaison des chemins sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -1475,7 +1472,7 @@
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Creates a path from a selected shape</source>
-      <translation type="unfinished">Creates a path from a selected shape</translation>
+      <translation>Crée un chemin depuis une forme sélectionnée</translation>
     </message>
   </context>
   <context>
@@ -1497,12 +1494,12 @@
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
       <source>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</source>
-      <translation type="unfinished">If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</translation>
+      <translation>Si cette option est activée, les nouveaux chemins seront automatiquement placés dans le projet actif, qui sera créé si nécessaire.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="37"/>
       <source>Automatic project handling</source>
-      <translation type="unfinished">Automatic project handling</translation>
+      <translation>Gestion de projet automatique</translation>
     </message>
   </context>
   <context>
@@ -1519,7 +1516,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>Path colors</source>
-      <translation type="unfinished">Path colors</translation>
+      <translation>Couleurs de chemin</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="20"/>
@@ -1534,7 +1531,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="41"/>
       <source>The default color for new shapes</source>
-      <translation>Couleur par défaut pour les nouvelles formes</translation>
+      <translation>La couleur par défaut pour les nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="67"/>
@@ -1544,7 +1541,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="74"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Épaisseur de ligne par défaut pour les nouvelles formes</translation>
+      <translation>L'épaisseur de ligne par défaut pour les nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="77"/>
@@ -1560,7 +1557,7 @@
       <location filename="../../DlgSettingsPathColor.ui" line="109"/>
       <location filename="../../DlgSettingsPathColor.ui" line="142"/>
       <source>The default line color for new shapes</source>
-      <translation>Couleur de ligne par défaut pour les nouvelles formes</translation>
+      <translation>La couleur de ligne par défaut pour les nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="135"/>
@@ -1578,7 +1575,7 @@
     <message>
       <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
       <source>Compound paths</source>
-      <translation type="unfinished">Compound paths</translation>
+      <translation>Chemins composés</translation>
     </message>
   </context>
   <context>
@@ -1586,7 +1583,7 @@
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="14"/>
       <source>Paths list</source>
-      <translation type="unfinished">Paths list</translation>
+      <translation>Liste de chemins</translation>
     </message>
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>

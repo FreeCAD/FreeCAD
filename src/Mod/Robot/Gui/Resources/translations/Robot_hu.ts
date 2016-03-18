@@ -487,7 +487,7 @@
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Válassza ki a Trayectory-t a felöltöztetéshez.</translation>
+        <translation>Válassza ki a megváltoztatni kívánt pályát.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>

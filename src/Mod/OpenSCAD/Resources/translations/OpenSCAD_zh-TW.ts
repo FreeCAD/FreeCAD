@@ -223,7 +223,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="139"/>
       <source>Convert Edges To Faces</source>
-      <translation>轉換邊緣為面</translation>
+      <translation>轉換邊為面</translation>
     </message>
   </context>
   <context>

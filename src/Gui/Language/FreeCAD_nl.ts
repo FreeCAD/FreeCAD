@@ -1879,7 +1879,7 @@ Kies een andere map, alstublieft.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigatie</translation>
+        <translation type="obsolete">%1 navigatie</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4809,7 +4809,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigatie</translation>
+        <translation type="obsolete">%1 navigatie</translation>
     </message>
     <message>
         <source>Move annotation</source>

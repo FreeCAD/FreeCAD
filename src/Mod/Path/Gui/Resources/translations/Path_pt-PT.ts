@@ -437,7 +437,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="104"/>
       <source>Create Compound</source>
-      <translation type="unfinished">Create Compound</translation>
+      <translation>Criar composto</translation>
     </message>
   </context>
   <context>
@@ -450,7 +450,7 @@
     <message>
       <location filename="PathCopy.py" line="85"/>
       <source>Creates a linked copy of another path</source>
-      <translation type="unfinished">Creates a linked copy of another path</translation>
+      <translation>Cria uma cópia vinculada de outra trajetória</translation>
     </message>
     <message>
       <location filename="PathCopy.py" line="92"/>

@@ -59,7 +59,7 @@
         <location line="-159"/>
         <location line="+164"/>
         <source>Up to face</source>
-        <translation>Do płaszczyzny</translation>
+        <translation>Do powierzchni</translation>
     </message>
     <message>
         <location line="-156"/>
@@ -161,7 +161,7 @@
     <message>
         <location line="+1"/>
         <source>Set color per face</source>
-        <translation>Ustaw kolor wg. fasetki</translation>
+        <translation>Ustaw kolor powierzchni</translation>
     </message>
 </context>
 <context>
@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Fazowanie krawędzi</translation>
     </message>
@@ -1328,7 +1328,7 @@
         <translation>Brak wyboru</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Długość:</translation>
     </message>
@@ -1349,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+545"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation>Długość początkowa</translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation>Długość końcowa</translation>
     </message>
@@ -1365,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+542"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Początek promienia</translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Koniec promienia</translation>
     </message>
     <message>
-        <location line="+531"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Długość</translation>
     </message>
@@ -2716,7 +2716,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     <message>
         <location line="+7"/>
         <source>Select adjacent faces</source>
-        <translation>Zaznacz sąsiednie płaszczyzny</translation>
+        <translation>Zaznacz przyległe powierzchnie</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2984,17 +2984,17 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     <message>
         <location filename="../../TaskFaceColors.ui" line="+14"/>
         <source>Set color per face</source>
-        <translation>Ustaw kolor wg. fasetki</translation>
+        <translation>Ustaw kolor powierzchni</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Click on the faces in the 3d view to select them.</source>
-        <translation>Aby wybrać fasetki zaznacz je w Widoku 3D</translation>
+        <translation>Aby wybrać powierzchnie zaznacz je w Widoku 3D.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Faces:</source>
-        <translation>Fasetki:</translation>
+        <translation>Powierzchnie:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3044,7 +3044,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="obsolete">Przenieś w dół</translation>
+        <translation type="obsolete">Przesuń w dół</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -3157,7 +3157,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     <message>
         <location line="+7"/>
         <source>Face from edges</source>
-        <translation>Fasetka z wierzchołków</translation>
+        <translation>Powierzchnia z wierzchołków</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -3177,7 +3177,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     <message>
         <location line="+21"/>
         <source>Refine shape</source>
-        <translation type="unfinished">Udoskonal kształt</translation>
+        <translation>Udoskonal kształt</translation>
     </message>
     <message>
         <location line="+32"/>

@@ -69,13 +69,13 @@
     <message>
         <location line="+1"/>
         <source>Structured point clouds</source>
-        <translation type="unfinished">Structured point clouds</translation>
+        <translation>Strukturovaná množina bodů</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Triangulation of structured point clouds</source>
-        <translation type="unfinished">Triangulation of structured point clouds</translation>
+        <translation>Triangulace strukturovaných množin bodů</translation>
     </message>
     <message>
         <source>View triangulation</source>

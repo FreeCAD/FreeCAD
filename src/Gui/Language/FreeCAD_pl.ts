@@ -136,7 +136,7 @@
     <name>DlgExpressionInput</name>
     <message>
         <source>Formula editor</source>
-        <translation type="unfinished">Formula editor</translation>
+        <translation>Edytor wzorów</translation>
     </message>
     <message>
         <source>Result:</source>
@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="unfinished">&amp;Discard</translation>
+        <translation>&amp;Porzuć</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -197,7 +197,7 @@
     <name>Gui::AccelLineEdit</name>
     <message>
         <source>none</source>
-        <translation>żaden</translation>
+        <translation>brak</translation>
     </message>
 </context>
 <context>
@@ -224,7 +224,7 @@
     </message>
     <message>
         <source>Move down</source>
-        <translation>Przenieś w dół</translation>
+        <translation>Przesuń w dół</translation>
     </message>
 </context>
 <context>
@@ -246,7 +246,7 @@
     </message>
     <message>
         <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-        <translation type="unfinished">%1 help files not found (%2). You might need to install the %1 documentation package.</translation>
+        <translation>%1 nie znaleziono plików pomocy (%2). Może trzeba zainstalować pakiet dokumentacji %1.</translation>
     </message>
     <message>
         <source>Unable to launch Qt Assistant (%1)</source>
@@ -257,7 +257,7 @@
     <name>Gui::AutoSaver</name>
     <message>
         <source>Please wait until the AutoRecovery file has been saved...</source>
-        <translation type="unfinished">Please wait until the AutoRecovery file has been saved...</translation>
+        <translation>Proszę czakać aż plik AutoOdzyskiwania zostanie zapisany...</translation>
     </message>
 </context>
 <context>
@@ -746,7 +746,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>none</source>
-        <translation>żaden</translation>
+        <translation>brak</translation>
     </message>
     <message>
         <source>Multiple defined shortcut</source>
@@ -782,7 +782,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Zmiany stają się aktywne po następnym załadowanie odpowiedniego warsztatu &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Zmiany stają się aktywne po następnym załadowaniu odpowiedniego warsztatu &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
@@ -802,7 +802,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Move down</source>
-        <translation>Przenieś w dół</translation>
+        <translation>Przesuń w dół</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -1151,7 +1151,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Auto load module after start up:</source>
-        <translation>Po uruchomieniu,ładuj moduł automatycznie:</translation>
+        <translation>Po uruchomieniu, załaduj automatycznie moduł:</translation>
     </message>
     <message>
         <source>Language</source>
@@ -1259,7 +1259,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished">User macros</translation>
+        <translation>Makra użytkownika</translation>
     </message>
     <message>
         <source>System macros</source>
@@ -1267,7 +1267,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished">User macros location:</translation>
+        <translation>Lokalizacja makr użytkownika:</translation>
     </message>
 </context>
 <context>
@@ -1311,7 +1311,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished">Read-only</translation>
+        <translation>Tylko do odczytu</translation>
     </message>
 </context>
 <context>
@@ -1779,7 +1779,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Show coordinate system in the corner</source>
-        <translation>Pokaż w rogu układu współrzędnych</translation>
+        <translation>Pokaż układ współrzędnych w rogu</translation>
     </message>
     <message>
         <source>Show counter of frames per second</source>
@@ -1867,18 +1867,18 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished">Or&amp;thographic rendering</translation>
+        <translation>Renderowanie or&amp;togonalne</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished">Perspective renderin&amp;g</translation>
+        <translation>Renderowanie perspektywiczne</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 nawigacji</translation>
+        <translation type="obsolete">%1 nawigacji</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -2060,7 +2060,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nazwa używana przy tworzeniu dokumentów&lt;/p&gt;&lt;p&gt;Pozostaw pustą dla anonimowego autora&lt;/p&gt;&lt;p&gt;Możesz też użyć formy:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
@@ -2128,11 +2128,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished">An URL where the user can find more details about the license</translation>
+        <translation>Adres URL gdzie użytkownik może znaleźć więcej informacji o licencji</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished">The default company to use for new files</translation>
+        <translation>Domyślna nazwa firmy używana w nowych plikach</translation>
     </message>
     <message>
         <source>Run AutoRecovery at startup</source>
@@ -2140,7 +2140,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Save AutoRecovery information every</source>
-        <translation type="unfinished">Save AutoRecovery information every</translation>
+        <translation>Zapisz informacje AutoOdzyskiwania co</translation>
     </message>
 </context>
 <context>
@@ -2476,7 +2476,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>User system:</source>
-        <translation>Użytkownik systemu:</translation>
+        <translation>System użytkownika:</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
@@ -2589,23 +2589,23 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
         <source>Workbenches</source>
-        <translation type="unfinished">Workbenches</translation>
+        <translation>Środowiska</translation>
     </message>
     <message>
         <source>Enabled workbenches</source>
-        <translation type="unfinished">Enabled workbenches</translation>
+        <translation>Włączone środowiska</translation>
     </message>
     <message>
         <source>Disabled workbenches</source>
-        <translation type="unfinished">Disabled workbenches</translation>
+        <translation>Wyłączone środowiska</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation>Przenieś w dół</translation>
+        <translation>Przesuń w dół</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Przesuń wybrany element w dół.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Element zostanie przesunięty w dół&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
@@ -2613,7 +2613,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Usuń wybrane środowisko z listy włączonych&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
@@ -2621,15 +2621,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Przenieś wybrane środowisko do listy włączonych&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Sort enabled workbenches</source>
-        <translation type="unfinished">Sort enabled workbenches</translation>
+        <translation>Sortuj włączone środowiska</translation>
     </message>
     <message>
         <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+        <translation>&lt;b&gt;Sortuj włączone środowiska&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move up</source>
@@ -2637,15 +2637,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Przesuń wybrany element w górę.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Element zostanie przesunięty w górę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; Zmiany staną się aktywne po następnym uruchomieniu FreeCADa&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Add all to enabled workbenches</source>
-        <translation type="unfinished">Add all to enabled workbenches</translation>
+        <translation>Dodaj wszystkie do włączonych modułów</translation>
     </message>
 </context>
 <context>
@@ -3088,7 +3088,7 @@ Kolumna &quot;Stan&quot; pokazuje, czy dokument może być odzyskany.</translati
     </message>
     <message>
         <source>Apply placement changes immediately</source>
-        <translation>Niezwłocznie zastosój zmiany położenia</translation>
+        <translation>Niezwłocznie zastosuj zmiany położenia</translation>
     </message>
     <message>
         <source>Apply incremental changes to object placement</source>
@@ -4801,7 +4801,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 nawigacji</translation>
+        <translation type="obsolete">%1 nawigacji</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -4968,7 +4968,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>&amp;Cascade</source>
-        <translation>&amp; Kaskadowo</translation>
+        <translation>&amp;Kaskadowo</translation>
     </message>
     <message>
         <source>Tile pragmatic</source>
@@ -5998,7 +5998,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>&amp;Tile</source>
-        <translation>&amp; Sąsiadująco</translation>
+        <translation>&amp;Sąsiadująco</translation>
     </message>
     <message>
         <source>Tile the windows</source>
@@ -6414,11 +6414,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished">Stereo red/cyan</translation>
+        <translation>Stereo czerwony/cyjan</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
+        <translation>Przełącz widok stereo na czerwony/cyjan</translation>
     </message>
 </context>
 <context>
@@ -6817,7 +6817,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>&amp;Macro</source>
-        <translation>&amp; Makra</translation>
+        <translation>&amp;Makro</translation>
     </message>
     <message>
         <source>&amp;Windows</source>
@@ -6825,7 +6825,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>&amp;On-line help</source>
-        <translation>&amp;Pomoc on-line</translation>
+        <translation>Pomoc &amp;on-line</translation>
     </message>
     <message>
         <source>&amp;Help</source>

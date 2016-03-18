@@ -230,7 +230,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="44"/>
       <source>An optional description of this compounded operation</source>
-      <translation>Una descripción opcional de la operación compuesta</translation>
+      <translation>Una descripción opcional de esta operación compuesta</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="47"/>
@@ -1014,7 +1014,7 @@
     <message>
       <location filename="PathFromShape.py" line="44"/>
       <source>The base Shape of this toolpath</source>
-      <translation>La forma base de esta ruta de herramienta</translation>
+      <translation>La Forma base de esta trayectoria de herramienta</translation>
     </message>
   </context>
   <context>
@@ -1181,7 +1181,7 @@
     <message>
       <location filename="TooltableEditor.py" line="405"/>
       <source>Counter Bore</source>
-      <translation>Contrataladro</translation>
+      <translation>Avellanado</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="406"/>
@@ -1457,7 +1457,7 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Creates a compound from selected paths</source>
-      <translation type="unfinished">Creates a compound from selected paths</translation>
+      <translation>Crea una combinación de las trayectorias seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -1470,12 +1470,12 @@
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>From Shape</source>
-      <translation type="unfinished">From Shape</translation>
+      <translation>Desde Forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Creates a path from a selected shape</source>
-      <translation type="unfinished">Creates a path from a selected shape</translation>
+      <translation>Crea una trayectoria desde una forma seleccionada</translation>
     </message>
   </context>
   <context>
@@ -1483,7 +1483,7 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Choose a processor</source>
-      <translation type="unfinished">Choose a processor</translation>
+      <translation>Seleccione un processador</translation>
     </message>
   </context>
   <context>
@@ -1492,17 +1492,17 @@
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="14"/>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="26"/>
       <source>General Path settings</source>
-      <translation type="unfinished">General Path settings</translation>
+      <translation>Ajustes generales de trayectoria</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
       <source>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</source>
-      <translation type="unfinished">If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</translation>
+      <translation>Si está opción está activada, las trayectorias nuevas serán automáticamente colocadas en el proyecto activo, el cual será creado si es necesario.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="37"/>
       <source>Automatic project handling</source>
-      <translation type="unfinished">Automatic project handling</translation>
+      <translation>Manejo automático del proyecto</translation>
     </message>
   </context>
   <context>
@@ -1519,17 +1519,17 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>Path colors</source>
-      <translation type="unfinished">Path colors</translation>
+      <translation>Colores de trayectoria</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="20"/>
       <source>Default Path colors</source>
-      <translation type="unfinished">Default Path colors</translation>
+      <translation>Colores de trayectoria predeterminados</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="34"/>
       <source>Default normal path color</source>
-      <translation type="unfinished">Default normal path color</translation>
+      <translation>Color de trayectoria normal predeterminado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="41"/>
@@ -1539,7 +1539,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="67"/>
       <source>Default pathline width</source>
-      <translation type="unfinished">Default pathline width</translation>
+      <translation>Ancho de línea de trayectoria predeterminado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="74"/>
@@ -1554,7 +1554,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="102"/>
       <source>Default path marker color</source>
-      <translation type="unfinished">Default path marker color</translation>
+      <translation>Color de marca de trayectoria predeterminado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="109"/>
@@ -1565,12 +1565,12 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="135"/>
       <source>Rapid path color</source>
-      <translation type="unfinished">Rapid path color</translation>
+      <translation>Color de trayectoria rápida</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="162"/>
       <source>Machine extents color</source>
-      <translation type="unfinished">Machine extents color</translation>
+      <translation>Color del alcance de la máquina</translation>
     </message>
   </context>
   <context>
@@ -1578,7 +1578,7 @@
     <message>
       <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
       <source>Compound paths</source>
-      <translation type="unfinished">Compound paths</translation>
+      <translation>Trayectorias compuestas</translation>
     </message>
   </context>
   <context>
@@ -1586,12 +1586,12 @@
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="14"/>
       <source>Paths list</source>
-      <translation type="unfinished">Paths list</translation>
+      <translation>Lista de trayectorias</translation>
     </message>
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>
       <source>Reorder children by dragging and dropping them to their correct location</source>
-      <translation type="unfinished">Reorder children by dragging and dropping them to their correct location</translation>
+      <translation>Reordenar hijos arrastrando y soltando en su ubicación correcta</translation>
     </message>
   </context>
 </TS>

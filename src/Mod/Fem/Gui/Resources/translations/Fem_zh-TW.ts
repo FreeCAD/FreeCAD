@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh-TW" sourcelanguage="en">
   <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation>新的力學分析</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation>建立一個新的力學分析</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_BeamSection</name>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
@@ -54,20 +41,7 @@
     </message>
   </context>
   <context>
-    <name>Fem_JobControl</name>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="40"/>
-      <source>Start solver job control</source>
-      <translation>開始求解器執行控制</translation>
-    </message>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="42"/>
-      <source>Dialog to start the calculation of the selected solver</source>
-      <translation>啟動所選求解器運算之對話窗</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Material</name>
+    <name>Fem_MechanicalMaterial</name>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
@@ -77,6 +51,19 @@
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
       <translation>建立或編輯機械材料定義</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_NewMechanicalAnalysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>新的力學分析</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>建立一個新的力學分析</translation>
     </message>
   </context>
   <context>
@@ -106,19 +93,6 @@
     </message>
   </context>
   <context>
-    <name>Fem_Result</name>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="40"/>
-      <source>Show result</source>
-      <translation>顯示結果</translation>
-    </message>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="42"/>
-      <source>Show result information of an analysis</source>
-      <translation>顯示分析結果資訊</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_ShellThickness</name>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
@@ -132,6 +106,19 @@
     </message>
   </context>
   <context>
+    <name>Fem_ShowResult</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>顯示結果</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation>顯示分析結果資訊</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_SolverCalculix</name>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
@@ -142,6 +129,71 @@
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
       <translation>建立FEM求解器 CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverJobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation>開始求解器執行控制</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation>啟動所選求解器運算之對話窗</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation>新的力學分析</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation>建立一個新的力學分析</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_JobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation>開始求解器執行控制</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation>啟動所選求解器運算之對話窗</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Material</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation>機械材料......</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation>建立或編輯機械材料定義</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Result</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>顯示結果</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation>顯示分析結果資訊</translation>
     </message>
   </context>
   <context>
@@ -657,7 +709,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="207"/>
       <source>Only linear edges can be picked</source>
-      <translation>僅可以選取線性邊緣</translation>
+      <translation>僅可以選取線性之邊</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="212"/>
@@ -766,7 +818,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="219"/>
       <source>Only linear edges can be picked</source>
-      <translation>僅可以選取線性邊緣</translation>
+      <translation>僅可以選取線性之邊</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="224"/>
@@ -803,7 +855,7 @@
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="160"/>
       <source>Only linear edges can be picked</source>
-      <translation>僅可以選取線性邊緣</translation>
+      <translation>僅可以選取線性之邊</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
@@ -1109,7 +1161,7 @@
       <location filename="../../Command.cpp" line="123"/>
       <location filename="../../Command.cpp" line="185"/>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation>請選取邊緣、面或實體，但僅允許選取一個實體。</translation>
+      <translation>請選取邊、面或實體，但僅允許選取一個實體。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>

@@ -54,7 +54,7 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation>最大邊界長度:</translation>
+        <translation>最大邊之長度:</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -99,7 +99,7 @@
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation>每個邊界多少元素:</translation>
+        <translation>每個邊多少元素:</translation>
     </message>
     <message>
         <location line="+29"/>

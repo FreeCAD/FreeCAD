@@ -375,11 +375,11 @@
     </message>
     <message>
         <source>Cyan</source>
-        <translation>Cyab</translation>
+        <translation>Cian</translation>
     </message>
     <message>
         <source>Dark cyan</source>
-        <translation>Cyan oscuro</translation>
+        <translation>Cian oscuro</translation>
     </message>
     <message>
         <source>Magenta</source>
