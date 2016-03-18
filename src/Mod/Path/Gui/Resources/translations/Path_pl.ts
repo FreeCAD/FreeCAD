@@ -1138,7 +1138,7 @@
     <message>
       <location filename="TooltableEditor.py" line="397"/>
       <source>Move down</source>
-      <translation>Przenieś w dół</translation>
+      <translation>Przesuń w dół</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="398"/>

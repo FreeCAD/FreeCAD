@@ -1882,7 +1882,7 @@ Ange en annan katalog.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigering</translation>
+        <translation type="obsolete">%1 navigering</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4818,7 +4818,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigering</translation>
+        <translation type="obsolete">%1 navigering</translation>
     </message>
     <message>
         <source>Move annotation</source>

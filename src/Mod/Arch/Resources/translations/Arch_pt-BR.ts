@@ -169,22 +169,22 @@
       <translation>A altura deste pavimento</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="744"/>
+      <location filename="ArchRoof.py" line="712"/>
       <source>Roof</source>
       <translation>Telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="130"/>
+      <location filename="ArchRoof.py" line="135"/>
       <source>Create Roof</source>
       <translation>Criar telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="137"/>
+      <location filename="ArchRoof.py" line="575"/>
       <source>Unable to create a roof</source>
       <translation>Não foi possível criar um telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="155"/>
+      <location filename="ArchRoof.py" line="160"/>
       <source>The face number of the base object used to build this roof</source>
       <translation>O número  da face do objeto base usado para construir o telhado</translation>
     </message>
@@ -920,7 +920,7 @@
       <translation>O deslocamento entre este painel e sua linha de base</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="745"/>
+      <location filename="ArchRoof.py" line="713"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -945,12 +945,12 @@ Se ângulo = 0, então o ângulo é calculado para que a altura seja a mesma que
 Se comprimento = 0, então o comprimento é calculado para que a altura seja a mesma que do perfil relativo.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1107,57 +1107,57 @@ Se comprimento = 0, então o comprimento é calculado para que a altura seja a m
 </translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="149"/>
+      <location filename="ArchRoof.py" line="154"/>
       <source>A list of angles for each roof pane</source>
       <translation>Uma lista de ângulos para cada lado do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="150"/>
+      <location filename="ArchRoof.py" line="155"/>
       <source>A list of horizontal length projections for each roof pane</source>
       <translation>Uma lista de comprimentos em projeção horizontal para cada lado do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="151"/>
+      <location filename="ArchRoof.py" line="156"/>
       <source>A list of IDs of relative profiles for each roof pane</source>
       <translation>Uma lista de IDs de perfis relativos para cada lado do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="152"/>
+      <location filename="ArchRoof.py" line="157"/>
       <source>A list of thicknesses for each roof pane</source>
       <translation>Uma lista de espessuras para cada lado do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="153"/>
+      <location filename="ArchRoof.py" line="158"/>
       <source>A list of overhangs for each roof pane</source>
       <translation>Uma lista de saliências para cada lado do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="154"/>
+      <location filename="ArchRoof.py" line="159"/>
       <source>A list of calculated heights for each roof pane</source>
       <translation>Uma lista de alturas calculadas para cada lado do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Angle (deg)</source>
       <translation>Ângulo (graus)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Run (mm)</source>
       <translation>Comprimento (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Thickness (mm)</source>
       <translation>Espessura (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Overhang (mm)</source>
       <translation>Saliência (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Height (mm)</source>
       <translation>Altura (mm)</translation>
     </message>
@@ -1779,12 +1779,12 @@ Se comprimento = 0, então o comprimento é calculado para que a altura seja a m
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="ArchRoof.py" line="106"/>
+      <location filename="ArchRoof.py" line="111"/>
       <source>Roof</source>
       <translation>Telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="108"/>
+      <location filename="ArchRoof.py" line="113"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Cria um telhado  a partir de um arame selecionado.</translation>
     </message>

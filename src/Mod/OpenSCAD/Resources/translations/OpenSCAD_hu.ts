@@ -139,7 +139,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="220"/>
       <source>Please select 3 objects first</source>
-      <translation>Kérem válasszon ki előszőr 3 tárgyat</translation>
+      <translation>Kérem válasszon ki először 3 tárgyat</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1118"/>

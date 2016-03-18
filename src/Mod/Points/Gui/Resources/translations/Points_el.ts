@@ -6,19 +6,19 @@
     <message>
         <location filename="../../Command.cpp" line="+184"/>
         <source>Points</source>
-        <translation type="unfinished">Σημεία</translation>
+        <translation>Σημεία</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Convert to points...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Convert to points...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Convert to points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Convert to points</translation>
     </message>
 </context>
 <context>
@@ -267,12 +267,12 @@
     <message>
         <location line="+70"/>
         <source>Distance</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Distance</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter maximum distance:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enter maximum distance:</translation>
     </message>
 </context>
 <context>

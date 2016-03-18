@@ -2280,7 +2280,8 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="3164"/>
       <source>Found 1 face: extracting its wires
 </source>
-      <translation>Znaleziono 1 fasetkę: ekstrakcja szkieletu</translation>
+      <translation>Znaleziono 1 powierzchnię: ekstrakcja szkieletu
+</translation>
     </message>
     <message>
       <location filename="Draft.py" line="3169"/>

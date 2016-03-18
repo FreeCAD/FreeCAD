@@ -169,22 +169,22 @@
       <translation>この階の高さ</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="744"/>
+      <location filename="ArchRoof.py" line="712"/>
       <source>Roof</source>
       <translation>屋根</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="130"/>
+      <location filename="ArchRoof.py" line="135"/>
       <source>Create Roof</source>
       <translation>屋根を作成</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="137"/>
+      <location filename="ArchRoof.py" line="575"/>
       <source>Unable to create a roof</source>
       <translation>屋根を作成できません</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="155"/>
+      <location filename="ArchRoof.py" line="160"/>
       <source>The face number of the base object used to build this roof</source>
       <translation>この屋根の作成に使用されているベースオブジェクトの面の数</translation>
     </message>
@@ -913,7 +913,7 @@
       <translation>パネルとそのベースライン間のオフセット</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="745"/>
+      <location filename="ArchRoof.py" line="713"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -939,12 +939,12 @@ Angle = 0  の場合、Height が相対プロファイルとおなじになる�
 Run = 0 の場合、Height が相対プロファイルとおなじになるように Run が計算されます。</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1101,57 +1101,57 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
 </translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="149"/>
+      <location filename="ArchRoof.py" line="154"/>
       <source>A list of angles for each roof pane</source>
       <translation>屋根面ごとの角度のリスト</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="150"/>
+      <location filename="ArchRoof.py" line="155"/>
       <source>A list of horizontal length projections for each roof pane</source>
       <translation>屋根面ごとの投影時水平方向長さのリスト</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="151"/>
+      <location filename="ArchRoof.py" line="156"/>
       <source>A list of IDs of relative profiles for each roof pane</source>
       <translation>屋根面ごとの相対プロファイルIDのリスト</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="152"/>
+      <location filename="ArchRoof.py" line="157"/>
       <source>A list of thicknesses for each roof pane</source>
       <translation>屋根面ごとの厚みのリスト</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="153"/>
+      <location filename="ArchRoof.py" line="158"/>
       <source>A list of overhangs for each roof pane</source>
       <translation>屋根面ごとの張り出しのリスト</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="154"/>
+      <location filename="ArchRoof.py" line="159"/>
       <source>A list of calculated heights for each roof pane</source>
       <translation>屋根面ごとの計算された高さのリスト</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Angle (deg)</source>
       <translation>角度 (度)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Run (mm)</source>
       <translation>踏面の奥行き (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Thickness (mm)</source>
       <translation>厚み (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Overhang (mm)</source>
       <translation>張り出し (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Height (mm)</source>
       <translation>高さ (mm)</translation>
     </message>
@@ -1773,12 +1773,12 @@ Run = 0 の場合、Height が相対プロファイルとおなじになるよ�
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="ArchRoof.py" line="106"/>
+      <location filename="ArchRoof.py" line="111"/>
       <source>Roof</source>
       <translation>屋根</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="108"/>
+      <location filename="ArchRoof.py" line="113"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>選択されワイヤーから屋根オブジェクトを作成します。</translation>
     </message>

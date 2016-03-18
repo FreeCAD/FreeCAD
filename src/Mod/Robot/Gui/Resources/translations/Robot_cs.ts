@@ -409,7 +409,7 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished">KRL file</translation>
+        <translation>KRL soubor</translation>
     </message>
     <message>
         <location line="-61"/>

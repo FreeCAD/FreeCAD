@@ -1880,7 +1880,7 @@ Vennligst angi en annen mappe.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1navigasjon</translation>
+        <translation type="obsolete">%1navigasjon</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4813,7 +4813,7 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1navigasjon</translation>
+        <translation type="obsolete">%1navigasjon</translation>
     </message>
     <message>
         <source>Move annotation</source>

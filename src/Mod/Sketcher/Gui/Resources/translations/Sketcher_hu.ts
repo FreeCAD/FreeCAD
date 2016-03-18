@@ -213,7 +213,7 @@
 <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2541"/>
+        <location filename="../../CommandConstraints.cpp" line="+2515"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -231,7 +231,7 @@
 <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-        <location line="-1682"/>
+        <location line="-1665"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -289,7 +289,7 @@
 <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-        <location line="+163"/>
+        <location line="+154"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -311,7 +311,7 @@
 <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-        <location line="+1421"/>
+        <location line="+1420"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -329,7 +329,7 @@
 <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-        <location line="-2240"/>
+        <location line="-2230"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -347,7 +347,7 @@
 <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-        <location line="+2673"/>
+        <location line="+2663"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -365,7 +365,7 @@
 <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-        <location line="-2483"/>
+        <location line="-2473"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -383,7 +383,7 @@
 <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-        <location line="+782"/>
+        <location line="+765"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -423,7 +423,7 @@
 <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-        <location line="-515"/>
+        <location line="-498"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -441,7 +441,7 @@
 <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-        <location line="+1087"/>
+        <location line="+1070"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -459,7 +459,7 @@
 <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-        <location line="+872"/>
+        <location line="+879"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-        <location line="-970"/>
+        <location line="-977"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -517,7 +517,7 @@
 <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-        <location line="-1294"/>
+        <location line="-1277"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -1316,7 +1316,7 @@
 <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2999"/>
+        <location filename="../../CommandConstraints.cpp" line="+2989"/>
         <source>Sketcher</source>
         <translation>Vázlatkészítõ</translation>
     </message>
@@ -1412,7 +1412,7 @@
     <message>
         <location filename="../../CommandAlterGeometry.cpp" line="+42"/>
         <location line="+8"/>
-        <location filename="../../CommandConstraints.cpp" line="-3412"/>
+        <location filename="../../CommandConstraints.cpp" line="-3402"/>
         <location line="+329"/>
         <location line="+97"/>
         <location line="+96"/>
@@ -1430,13 +1430,13 @@
         <location line="+7"/>
         <location line="+34"/>
         <location line="+10"/>
-        <location line="+51"/>
-        <location line="+32"/>
+        <location line="+27"/>
+        <location line="+47"/>
         <location line="+26"/>
         <location line="+46"/>
         <location line="+10"/>
-        <location line="+49"/>
-        <location line="+32"/>
+        <location line="+25"/>
+        <location line="+48"/>
         <location line="+26"/>
         <location line="+46"/>
         <location line="+12"/>
@@ -1458,7 +1458,7 @@
         <location line="+41"/>
         <location line="+271"/>
         <location line="+11"/>
-        <location line="+151"/>
+        <location line="+158"/>
         <location line="+56"/>
         <location line="+45"/>
         <location line="+12"/>
@@ -1513,7 +1513,7 @@
         <translation>A kiválasztott él(ek) a vázlatból való.</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-3152"/>
+        <location filename="../../CommandConstraints.cpp" line="-3142"/>
         <location line="+97"/>
         <source>Select an edge from the sketch.</source>
         <translation>Egy él kiválasztása a vázlaton.</translation>
@@ -1584,12 +1584,12 @@
     <message>
         <location line="+53"/>
         <source>Select entities from the sketch.</source>
-        <translation>Válasszon ki a szerkezetet a vázlatból.</translation>
+        <translation>Válasszon ki szerkezeteket a vázlatból.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Select exactly one entity from the sketch.</source>
-        <translation>Válasszon ki pontosan egy szerkezetet, a vázlatból.</translation>
+        <translation>Válasszon ki pontosan egy szerkezetet a vázlatból.</translation>
     </message>
     <message>
         <source>Select one vertex from the sketch.</source>
@@ -1600,7 +1600,7 @@
         <location line="+92"/>
         <location line="+179"/>
         <location line="+86"/>
-        <location line="+165"/>
+        <location line="+156"/>
         <source>Select vertexes from the sketch.</source>
         <translation>Csomópont kiválasztása a vázlaton.</translation>
     </message>
@@ -1618,7 +1618,7 @@
         <translation type="obsolete">Cannot add a fixed y-coordinate constraint on an external geometry!</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-521"/>
         <source>Select one vertex from the sketch other than the origin.</source>
         <translation>Jelöljön ki a vázlaton egy, a kiindulási ponttól eltérő, végpontot.</translation>
     </message>
@@ -1630,10 +1630,10 @@
     <message>
         <location line="+7"/>
         <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
-        <translation>Válasszon ki egy pontot és több görbét, vagy egy görbét és több pontot. %1 görbéket a %2 pontokat választotta.</translation>
+        <translation>Válasszon ki egy pontot és több görbét, vagy egy görbét és több pontot. %1 görbéket és a %2 pontokat választotta.</translation>
     </message>
     <message>
-        <location line="+290"/>
+        <location line="+273"/>
         <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
         <translation>Nem lehet hozzáadni rögzített y-koordinátájú kényszerítést a kiinduló ponthoz!</translation>
     </message>
@@ -1661,7 +1661,7 @@
     </message>
     <message>
         <location line="+11"/>
-        <location line="+207"/>
+        <location line="+214"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
         <translation>Válasszon egy vagy két vonalat a vázlatból. Vagy válasszon ki két élet és egy pontot.</translation>
     </message>
@@ -1792,7 +1792,7 @@
         <translation type="obsolete">Két csomópont kiválasztása a vázlaton.</translation>
     </message>
     <message>
-        <location line="-2850"/>
+        <location line="-2840"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
         <translation>Jelöljön ki két vagy több csomópontok a vázlatból.</translation>
@@ -1818,9 +1818,9 @@
     </message>
     <message>
         <location line="+172"/>
-        <location line="+109"/>
+        <location line="+100"/>
         <location line="+56"/>
-        <location line="+107"/>
+        <location line="+99"/>
         <source>Select exactly one line or up to two points from the sketch.</source>
         <translation>Válasszon ki pontosan egy vonalat, vagy legfeljebb két pontot a vázlatból.</translation>
     </message>
@@ -1829,7 +1829,7 @@
         <translation type="obsolete">Nem lehet hozzáadni egy külső geometriához a vízszintes hosszanti illesztést!</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-228"/>
         <source>Cannot add a horizontal length constraint on an axis!</source>
         <translation>Nem lehet hozzáadni egy vízszintes hosszanti illesztést egy tengelyen!</translation>
     </message>
@@ -1846,7 +1846,7 @@
         <translation type="obsolete">Nem lehet hozzáadni egy külső geometriához a függőleges hosszanti illesztést!</translation>
     </message>
     <message>
-        <location line="+163"/>
+        <location line="+154"/>
         <source>Cannot add a vertical length constraint on an axis!</source>
         <translation>Nem adható hozzá a függőleges hosszanti illesztés egy tengelyen!</translation>
     </message>
@@ -1859,18 +1859,18 @@
         <translation type="obsolete">Nem adható hozzá a rögzített y-koordináta illesztése az alap ponthoz!</translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+120"/>
         <source>Select two or more lines from the sketch.</source>
-        <translation>Válasszon ki a két vagy több vonalat a vázlatból.</translation>
+        <translation>Válasszon ki két vagy több vonalat a vázlatból.</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+1260"/>
+        <location line="+1267"/>
         <source>Select at least two lines from the sketch.</source>
         <translation>Válasszon ki legalább két  vonalat a vázlatból.</translation>
     </message>
     <message>
-        <location line="-1246"/>
+        <location line="-1253"/>
         <source>Select a valid line</source>
         <translation>Válasszon ki egy érvényes vonalat</translation>
     </message>
@@ -1904,12 +1904,12 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
         <location line="+59"/>
         <location line="+313"/>
-        <location line="+1174"/>
+        <location line="+1181"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location line="-1461"/>
+        <location line="-1468"/>
         <location line="+312"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
@@ -1979,7 +1979,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <translation type="obsolete">Nem lehet hozzáadni egy külső geometriához a szög illesztést!</translation>
     </message>
     <message>
-        <location line="+608"/>
+        <location line="+615"/>
         <source>Cannot add an angle constraint on an axis!</source>
         <translation>Nem lehet hozzáadni egy szög illesztést egy tengelyhez!</translation>
     </message>
@@ -2019,7 +2019,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <location line="+48"/>
         <location line="+78"/>
         <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-        <translation>Válasszon ki, két pontot és egy szimmetria vonalat, két pontot és egy szimmetria pontot vagy egy vonalat és egy szimmetria pontot a vázlatból.</translation>
+        <translation>Válasszon ki két pontot és egy szimmetria vonalat, két pontot és egy szimmetria pontot vagy egy vonalat és egy szimmetria pontot a vázlatból.</translation>
     </message>
     <message>
         <location line="-60"/>
@@ -2121,9 +2121,9 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <translation>Nem megengedett, hogy módosítsa a datumot, mert a vázlat tartalmaz egymásnak ellentmondó illesztéseket</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2845"/>
-        <location line="+2288"/>
-        <location filename="../../EditDatumDialog.cpp" line="+114"/>
+        <location filename="../../CommandConstraints.cpp" line="-2835"/>
+        <location line="+2271"/>
+        <location filename="../../EditDatumDialog.cpp" line="+97"/>
         <source>Dimensional constraint</source>
         <translation>Méretezett illesztés</translation>
     </message>
@@ -2226,17 +2226,17 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
 <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+377"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+395"/>
         <source>Toggle to/from reference</source>
         <translation>Váltás a referenciához/-ról</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="-4"/>
         <source>Change value</source>
         <translation>Érték módosítása</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Rename</source>
         <translation>Átnevezés</translation>
     </message>
@@ -2255,12 +2255,22 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <source>Swap constraint names</source>
         <translation>Kényszerítés nevek cseréje</translation>
     </message>
+    <message>
+        <location line="+71"/>
+        <source>Unnamed constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only the names of named constraints can be swapped.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2372"/>
-        <location filename="../../EditDatumDialog.cpp" line="-98"/>
+        <location filename="../../CommandConstraints.cpp" line="-2346"/>
+        <location filename="../../EditDatumDialog.cpp" line="-81"/>
         <source>Insert angle</source>
         <translation>Szög beillesztése</translation>
     </message>
@@ -2291,19 +2301,19 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <translation>Arány n2/n1:</translation>
     </message>
     <message>
-        <location line="+2303"/>
+        <location line="+2277"/>
         <source>Change radius</source>
         <translation>Sugár módosítása</translation>
     </message>
     <message>
-        <location line="-2308"/>
-        <location line="+2309"/>
+        <location line="-2282"/>
+        <location line="+2283"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
         <translation>Sugár:</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+758"/>
         <source>Refractive index ratio</source>
         <translation>Refraktív index arány</translation>
     </message>
@@ -2313,7 +2323,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <translation>Arány n2/n1:</translation>
     </message>
     <message>
-        <location line="-3052"/>
+        <location line="-3033"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
         <translation>Hossz beillesztése</translation>
@@ -2549,7 +2559,12 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <translation>Teljesen kényszerezett geometria</translation>
     </message>
     <message>
-        <location line="+319"/>
+        <location line="+287"/>
+        <source>Marker size</source>
+        <translation>Jelölő mérete</translation>
+    </message>
+    <message>
+        <location line="+40"/>
         <source>Geometry Creation &quot;Continue Mode&quot;</source>
         <translation>Geometria létrehozása &quot;Folyamatos mód&quot;</translation>
     </message>
@@ -2564,7 +2579,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <translation>Haladó kényszerítő megoldó vezérlő megjelenítése a tálcán</translation>
     </message>
     <message>
-        <location line="-423"/>
+        <location line="-431"/>
         <location line="+99"/>
         <source>The color of fully constrained geometry in edit mode</source>
         <translation>A teljesen kényszerített geometria szerkesztési módjának színei</translation>
@@ -2595,12 +2610,12 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <location line="-84"/>
         <location line="+35"/>
         <location line="+52"/>
-        <location line="+92"/>
+        <location line="+90"/>
         <source>px</source>
-        <translation>kp</translation>
+        <translation>px</translation>
     </message>
     <message>
-        <location line="-189"/>
+        <location line="-187"/>
         <source>Default vertex size</source>
         <translation>Alapértelmezett végpont méret</translation>
     </message>
@@ -2635,19 +2650,24 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
         <translation>Vázlat szerkesztése</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+12"/>
         <source>Font size</source>
         <translation>Betűméret</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+45"/>
         <source>Grid line pattern</source>
         <translation>Rács vonalminta</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Ask for value after creating a distance constraint</source>
         <translation>Távolság megkötés létrehozása után kérjen értéket</translation>
+    </message>
+    <message>
+        <location filename="../../SketcherSettings.cpp" line="+164"/>
+        <source>%1 px</source>
+        <translation>%1 px</translation>
     </message>
 </context>
 <context>
@@ -2803,9 +2823,14 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
         <translation>Referencia</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+85"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+24"/>
         <source>Constraints</source>
         <translation>Megkötések</translation>
+    </message>
+    <message>
+        <location line="+176"/>
+        <source>Error</source>
+        <translation type="unfinished">Hiba</translation>
     </message>
 </context>
 <context>
@@ -3111,7 +3136,7 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4186"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+4183"/>
         <source>Invalid sketch</source>
         <translation>Érvénytelen vázlat</translation>
     </message>
@@ -3147,7 +3172,7 @@ Use the sketch validation tool.</translation>
         <translation>A vázlat érvénytelen, és nem szerkeszthető.</translation>
     </message>
     <message>
-        <location line="+109"/>
+        <location line="+111"/>
         <source>Please remove the following constraint:</source>
         <translation>Kérjük, távolítsa el az alábbi ilesztést:</translation>
     </message>

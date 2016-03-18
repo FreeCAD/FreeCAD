@@ -103,7 +103,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="693"/>
       <source>Creates a Bezier curve. CTRL to snap, SHIFT to constrain</source>
-      <translation>A Bezier-görbét hoz létre. CTRL az illesztéshez, SHIFT a kényszerítéshez</translation>
+      <translation>A Bezier-görbét hoz létre. CTRL az illesztéshez, SHIFT a korlátozáshoz</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="1660"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
-      <translation>Létrehoz egy dimenziót. CTRL (igazítás), SHIFT (korlázoz), ALT szegmens kiválasztás</translation>
+      <translation>Létrehoz egy dimenziót. CTRL igazít, SHIFT korlátoz, ALT szegmens kiválasztás</translation>
     </message>
   </context>
   <context>
@@ -189,7 +189,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4077"/>
       <source>Draft to Sketch</source>
-      <translation>Tervrajz a vázlathoz</translation>
+      <translation>Tervrajzból vázlat</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4078"/>
@@ -298,7 +298,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="438"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
-      <translation>2 pontos vonal készítése. CTRL igazítás, SHIFT korlátoz</translation>
+      <translation>2 pontos vonal készítése. CTRL igazítás, SHIFT korlátozás</translation>
     </message>
   </context>
   <context>
@@ -324,7 +324,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="2078"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation>A kijelölt objektum mozgatása két pont között. CTRL igazít, SHIFT kényszerít, ALT másol</translation>
+      <translation>A kijelölt objektum mozgatása két pont között. CTRL igazít, SHIFT korlátoz, ALT másol</translation>
     </message>
   </context>
   <context>
@@ -337,7 +337,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="2424"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation>Az aktív objektum mozgatása. CTLR igazít, SHIFT kényszerít, ALT másol</translation>
+      <translation>Az aktív objektum mozgatása. CTLR igazít, SHIFT korlátoz, ALT másol</translation>
     </message>
   </context>
   <context>
@@ -376,7 +376,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="1287"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
-      <translation>Szabályos sokszög létrehozása. CTRL Csatlakozáshoz, SHIFT kiválasztáshoz</translation>
+      <translation>Szabályos sokszög létrehozása. CTRL igazít, SHIFT korlátoz</translation>
     </message>
   </context>
   <context>
@@ -402,7 +402,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="2240"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
-      <translation>Kijelölt objektumok forgatása. CTLR igazítás, SHIFT kényszerít, ALT másolatot készít</translation>
+      <translation>Kijelölt objektumok forgatása. CTLR igazítás, SHIFT korlátozás, ALT másolatot készít</translation>
     </message>
   </context>
   <context>
@@ -415,7 +415,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="3089"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation>Méretezi a kiválasztott objektumot az alap ponttól. CTRL a csatoláshoz, SHIFT a megtartáshoz, ALT CTRL a másoláshoz</translation>
+      <translation>Méretezi a kiválasztott objektumot az alap ponttól. CTRL igazításhoz, SHIFT a korlátozáshoz, ALT CTRL a másoláshoz</translation>
     </message>
   </context>
   <context>
@@ -740,7 +740,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="2677"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
-      <translation>A kijelölt tárgyat levág és meghosszabbít vagy kihúz egy egyoltalú felületet. CTRL-al kapcsolódik, SHIFT-el szegmenst választ vagy a normális, ALT megfordít</translation>
+      <translation>A kijelölt tárgyat levág és meghosszabbít vagy kihúz egy egyoldalú felületet. CTRL-al igazít, SHIFT-el korlátozza a választott szegmenshez vagy a normál állapothoz, ALT megfordít</translation>
     </message>
   </context>
   <context>
@@ -792,7 +792,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="581"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
-      <translation>Létrehoz egy több pont Terv-vonalat. Igazítás (CTRL), húzás a SHIFT</translation>
+      <translation>Létrehoz egy több pontos vonalat (DWire). CTRL az igazításhoz, SHIFT a korlátozáshoz</translation>
     </message>
   </context>
   <context>
@@ -1042,12 +1042,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="57"/>
       <source>Constrain mod</source>
-      <translation>Kényszerítő mód</translation>
+      <translation>Korlátozó mód</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="77"/>
       <source>The Constraining modifier key</source>
-      <translation>A megszorítás módosító billentyű</translation>
+      <translation>A korlátozást módosító billentyű</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="197"/>
@@ -1067,7 +1067,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="109"/>
       <source>Snap mod</source>
-      <translation>Az illesztés mod</translation>
+      <translation>Az illesztés mód</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="129"/>

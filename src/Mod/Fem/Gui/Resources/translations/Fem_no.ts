@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="no" sourcelanguage="en">
   <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_BeamSection</name>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
@@ -54,20 +41,7 @@
     </message>
   </context>
   <context>
-    <name>Fem_JobControl</name>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="40"/>
-      <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
-    </message>
-    <message>
-      <location filename="_CommandSolverJobControl.py" line="42"/>
-      <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Material</name>
+    <name>Fem_MechanicalMaterial</name>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
@@ -77,6 +51,19 @@
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
       <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_NewMechanicalAnalysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation type="unfinished">New mechanical analysis</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation type="unfinished">Create a new mechanical analysis</translation>
     </message>
   </context>
   <context>
@@ -106,19 +93,6 @@
     </message>
   </context>
   <context>
-    <name>Fem_Result</name>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="40"/>
-      <source>Show result</source>
-      <translation type="unfinished">Show result</translation>
-    </message>
-    <message>
-      <location filename="_CommandMechanicalShowResult.py" line="42"/>
-      <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_ShellThickness</name>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
@@ -132,6 +106,19 @@
     </message>
   </context>
   <context>
+    <name>Fem_ShowResult</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation type="unfinished">Show result</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation type="unfinished">Show result information of an analysis</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_SolverCalculix</name>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
@@ -142,6 +129,71 @@
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
       <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverJobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation type="unfinished">Start solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation type="unfinished">New mechanical analysis</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation type="unfinished">Create a new mechanical analysis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_JobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation type="unfinished">Start solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Material</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation type="unfinished">Mechanical material...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Result</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation type="unfinished">Show result</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation type="unfinished">Show result information of an analysis</translation>
     </message>
   </context>
   <context>

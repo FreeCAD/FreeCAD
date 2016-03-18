@@ -169,22 +169,22 @@
       <translation>Výška této podlahy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="744"/>
+      <location filename="ArchRoof.py" line="712"/>
       <source>Roof</source>
       <translation>Střecha</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="130"/>
+      <location filename="ArchRoof.py" line="135"/>
       <source>Create Roof</source>
       <translation>Vytvořit střechu</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="137"/>
+      <location filename="ArchRoof.py" line="575"/>
       <source>Unable to create a roof</source>
       <translation>Nelze vytvořit střechu</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="155"/>
+      <location filename="ArchRoof.py" line="160"/>
       <source>The face number of the base object used to build this roof</source>
       <translation>Počet ploch základního objektu použitých pro vytvoření této střechy</translation>
     </message>
@@ -922,7 +922,7 @@
       <translation>Odsazení mezi tímto panelem a jeho zádkladní linií</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="745"/>
+      <location filename="ArchRoof.py" line="713"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -947,12 +947,12 @@ Je-li Úhel = 0, pak počítán úhel, takže výška je stejná jako u relativn
 Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, takže výška je stejná jako u relativního profilu.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Id</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1109,57 +1109,57 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
 </translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="149"/>
+      <location filename="ArchRoof.py" line="154"/>
       <source>A list of angles for each roof pane</source>
       <translation>List úhlů pro jednotlivé části střechy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="150"/>
+      <location filename="ArchRoof.py" line="155"/>
       <source>A list of horizontal length projections for each roof pane</source>
       <translation>List horizontálních délek projekce jednotlivých částí střechy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="151"/>
+      <location filename="ArchRoof.py" line="156"/>
       <source>A list of IDs of relative profiles for each roof pane</source>
       <translation>List ID relativních profilů jednotlivých částí střechy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="152"/>
+      <location filename="ArchRoof.py" line="157"/>
       <source>A list of thicknesses for each roof pane</source>
       <translation>LIst tlouštěk jednotlivých částí střechy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="153"/>
+      <location filename="ArchRoof.py" line="158"/>
       <source>A list of overhangs for each roof pane</source>
       <translation>List přesahů jednotlivých částí střechy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="154"/>
+      <location filename="ArchRoof.py" line="159"/>
       <source>A list of calculated heights for each roof pane</source>
       <translation>List vypočítaných výšek jednotlivých částí střechy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Angle (deg)</source>
       <translation>Úhel (deg)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Run (mm)</source>
       <translation>Horizontální rozměr (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Thickness (mm)</source>
       <translation>Tloušťka (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Overhang (mm)</source>
       <translation>Přesah (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Height (mm)</source>
       <translation>Výška (mm)</translation>
     </message>
@@ -1781,12 +1781,12 @@ Je-li Horizontální rozměr = 0, pak je počátán Horizontální rozměr, tak�
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="ArchRoof.py" line="106"/>
+      <location filename="ArchRoof.py" line="111"/>
       <source>Roof</source>
       <translation>Střecha</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="108"/>
+      <location filename="ArchRoof.py" line="113"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Vytvoří objekt střechy z vybraného drátu.</translation>
     </message>

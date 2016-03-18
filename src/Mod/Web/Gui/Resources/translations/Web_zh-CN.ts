@@ -6,12 +6,12 @@
     <message>
         <location filename="../../Command.cpp" line="75"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="76"/>
         <source>Previous page</source>
-        <translation type="unfinished">Previous page</translation>
+        <translation>下一页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="77"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../../Command.cpp" line="103"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="104"/>
@@ -42,7 +42,7 @@
     <message>
         <location filename="../../Command.cpp" line="131"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="132"/>
@@ -56,7 +56,7 @@
     <message>
         <location filename="../../Command.cpp" line="158"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="159"/>
@@ -74,7 +74,7 @@
     <message>
         <location filename="../../Command.cpp" line="187"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="188"/>
@@ -92,7 +92,7 @@
     <message>
         <location filename="../../Command.cpp" line="215"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="216"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../../Command.cpp" line="50"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="51"/>

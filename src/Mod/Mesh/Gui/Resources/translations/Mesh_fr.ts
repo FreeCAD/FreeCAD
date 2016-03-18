@@ -1392,7 +1392,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Import-Export</source>
-        <translation>Import-Export</translation>
+        <translation>Importer-Exporter</translation>
     </message>
 </context>
 <context>

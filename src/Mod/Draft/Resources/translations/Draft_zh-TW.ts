@@ -532,7 +532,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4623"/>
       <source>Snaps to endpoints of edges</source>
-      <translation>鎖定邊緣的端點</translation>
+      <translation>鎖定邊之端點</translation>
     </message>
   </context>
   <context>
@@ -545,7 +545,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4659"/>
       <source>Snaps to extension of edges</source>
-      <translation>對齊邊界之延伸</translation>
+      <translation>對齊邊之延伸</translation>
     </message>
   </context>
   <context>
@@ -571,7 +571,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4599"/>
       <source>Snaps to edges intersections</source>
-      <translation>對齊至邊界交叉處</translation>
+      <translation>對齊至邊之交叉處</translation>
     </message>
   </context>
   <context>
@@ -597,7 +597,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4563"/>
       <source>Snaps to midpoints of edges</source>
-      <translation>對齊至邊界之中點</translation>
+      <translation>對齊至邊之中點</translation>
     </message>
   </context>
   <context>
@@ -610,7 +610,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4671"/>
       <source>Snaps to nearest point on edges</source>
-      <translation>對齊至邊界上的最近點</translation>
+      <translation>對齊至邊上的最近點</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4611"/>
       <source>Snaps to parallel directions of edges</source>
-      <translation>鎖定至邊緣之平行方向</translation>
+      <translation>鎖定至邊之平行方向</translation>
     </message>
   </context>
   <context>
@@ -649,7 +649,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4575"/>
       <source>Snaps to perpendicular points on edges</source>
-      <translation>鎖點至邊緣上的垂直點</translation>
+      <translation>鎖點至邊上的垂直點</translation>
     </message>
   </context>
   <context>
@@ -1222,12 +1222,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="362"/>
       <source>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</source>
-      <translation>若勾選,當聚合線具有寬度設定時,其會以正確寬度的封閉線條彩現</translation>
+      <translation>若勾選,當聚合線具有寬度設定時,其會以正確寬度的封閉線條算繪</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="365"/>
       <source>Render polylines with width</source>
-      <translation>彩現帶有寬度之聚合線</translation>
+      <translation>算繪帶有寬度之聚合線</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="127"/>
@@ -1742,7 +1742,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="26"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+      <translation>當匯入及匯出時顯示此對話窗</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="58"/>
@@ -2239,7 +2239,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="2963"/>
       <source>Found several edges: wiring them
 </source>
-      <translation>找到數個邊緣:將其轉為線條</translation>
+      <translation>找到數個邊：將其轉為線條</translation>
     </message>
     <message>
       <location filename="Draft.py" line="2972"/>
@@ -2287,7 +2287,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="3169"/>
       <source>Found only wires: extracting their edges
 </source>
-      <translation>僅找到線條:提取邊緣</translation>
+      <translation>僅找到線條：提取其之邊</translation>
     </message>
     <message>
       <location filename="Draft.py" line="3173"/>
@@ -2501,7 +2501,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="1903"/>
       <source>Edges don't intersect!
 </source>
-      <translation>邊緣未相交!</translation>
+      <translation>邊未相交!</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="1960"/>
@@ -2798,8 +2798,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="2968"/>
       <source>Found several non-treatable objects: creating compound
 </source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound
-</translation>
+      <translation>找到數個未設定物件：建立元件</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="624"/>
@@ -2829,12 +2828,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="653"/>
       <source>&amp;Select edge</source>
-      <translation>選取邊緣(&amp;S)</translation>
+      <translation>選取邊(&amp;S)</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="654"/>
       <source>Selects an existing edge to be measured by this dimension (E)</source>
-      <translation>選取一個現有的邊緣來衡量此一尺寸(E)</translation>
+      <translation>選取一個現有的邊來衡量此一尺寸(E)</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="666"/>
@@ -2929,7 +2928,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftGui.py" line="639"/>
       <source>Co&amp;ntinue</source>
-      <translation type="unfinished">Co&amp;ntinue</translation>
+      <translation>繼續(&amp;N)</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="649"/>
@@ -2987,12 +2986,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftGui.py" line="622"/>
       <source>Enter point</source>
-      <translation type="unfinished">Enter point</translation>
+      <translation>新增點</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="623"/>
       <source>Enter a new point with the given coordinates</source>
-      <translation type="unfinished">Enter a new point with the given coordinates</translation>
+      <translation>以給定座標方式新增點</translation>
     </message>
   </context>
 </TS>

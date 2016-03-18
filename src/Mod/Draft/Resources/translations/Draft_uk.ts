@@ -9,9 +9,9 @@
 Please download and install them manually.
 See complete instructions at
 http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please download and install them manually.
-See complete instructions at
+      <translation>Не вдалося завантажити dxf бібліотеки.
+Будь ласка, завантажте та встановіть їх самостійно.
+Переглянути детальні інструкції можна тут
 http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation>
     </message>
   </context>
@@ -974,7 +974,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-oca.ui" line="49"/>
       <source>Import OCA areas</source>
-      <translation type="unfinished">Import OCA areas</translation>
+      <translation>Імпорт OCA областей</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="14"/>
@@ -984,7 +984,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draft.ui" line="375"/>
       <source>Construction group name</source>
-      <translation type="unfinished">Construction group name</translation>
+      <translation>Назва групи конструкцій</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="270"/>
@@ -1001,7 +1001,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="160"/>
       <source>Check this if you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">Check this if you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Позначте якщо ви хочете щоб, безіменні блоки (починаються *) було також імпортовано</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="262"/>

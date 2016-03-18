@@ -1881,7 +1881,7 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigasie</translation>
+        <translation type="obsolete">%1 navigasie</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4816,7 +4816,7 @@ Wees bewus dat die punt waar jy kliek belangrik is.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigasie</translation>
+        <translation type="obsolete">%1 navigasie</translation>
     </message>
     <message>
         <source>Move annotation</source>

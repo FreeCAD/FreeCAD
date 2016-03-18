@@ -1883,7 +1883,7 @@ Určite iný adresár.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigácia</translation>
+        <translation type="obsolete">%1 navigácia</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4821,7 +4821,7 @@ Buďte opatrní pri klikaní na body.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigácia</translation>
+        <translation type="obsolete">%1 navigácia</translation>
     </message>
     <message>
         <source>Move annotation</source>

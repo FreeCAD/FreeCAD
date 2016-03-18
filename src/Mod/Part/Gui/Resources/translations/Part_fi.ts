@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Viisteen reunat</translation>
     </message>
@@ -1328,7 +1328,7 @@
         <translation>Ei valintaa</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Pituus:</translation>
     </message>
@@ -1349,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+545"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation>Aloituspituus</translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation>Lopetuspituus</translation>
     </message>
@@ -1365,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+542"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Säteen alku</translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Säteen loppu</translation>
     </message>
     <message>
-        <location line="+531"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Pituus</translation>
     </message>
@@ -3177,7 +3177,7 @@ Ole hyvä ja valitse kelvollinen muoto alas veto laatikosta.</translation>
     <message>
         <location line="+21"/>
         <source>Refine shape</source>
-        <translation type="unfinished">Tarkenna muotoa</translation>
+        <translation>Tarkenna muotoa</translation>
     </message>
     <message>
         <location line="+32"/>

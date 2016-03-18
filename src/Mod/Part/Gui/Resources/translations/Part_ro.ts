@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation type="unfinished">Chamfer Edges</translation>
     </message>
@@ -1328,7 +1328,7 @@
         <translation>Nici o selecţie</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Lungime:</translation>
     </message>
@@ -1349,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+545"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation type="unfinished">Start length</translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation type="unfinished">End length</translation>
     </message>
@@ -1365,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+542"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Raza de inceput</translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Raza finala</translation>
     </message>
     <message>
-        <location line="+531"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Lungime</translation>
     </message>
@@ -3177,7 +3177,7 @@ Selectati mai intai o forma valida in casuta de selectie.</translation>
     <message>
         <location line="+21"/>
         <source>Refine shape</source>
-        <translation type="unfinished">Rafineaza forma</translation>
+        <translation>Rafineaza forma</translation>
     </message>
     <message>
         <location line="+32"/>

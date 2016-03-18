@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="uk" sourcelanguage="en">
   <context>
-    <name>Fem_Analysis</name>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
-      <source>New mechanical analysis</source>
-      <translation type="unfinished">New mechanical analysis</translation>
-    </message>
-    <message>
-      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
-      <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_BeamSection</name>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
@@ -54,6 +41,123 @@
     </message>
   </context>
   <context>
+    <name>Fem_MechanicalMaterial</name>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="42"/>
+      <source>Mechanical material...</source>
+      <translation type="unfinished">Mechanical material...</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalMaterial.py" line="44"/>
+      <source>Creates or edit the mechanical material definition.</source>
+      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_NewMechanicalAnalysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation type="unfinished">New mechanical analysis</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation type="unfinished">Create a new mechanical analysis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_PurgeResults</name>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="40"/>
+      <source>Purge results</source>
+      <translation>Очистити результати</translation>
+    </message>
+    <message>
+      <location filename="_CommandPurgeFemResults.py" line="42"/>
+      <source>Purge results from an analysis</source>
+      <translation>Очистити результати від аналізу</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Quick_Analysis</name>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="40"/>
+      <source>Run CalculiX ccx</source>
+      <translation type="unfinished">Run CalculiX ccx</translation>
+    </message>
+    <message>
+      <location filename="_CommandQuickAnalysis.py" line="42"/>
+      <source>Write .inp file and run CalculiX ccx</source>
+      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ShellThickness</name>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="41"/>
+      <source>FEM Shell Plate Thickness Definition ...</source>
+      <translation type="unfinished">FEM Shell Plate Thickness Definition ...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemShellThickness.py" line="43"/>
+      <source>Creates a FEM Shell Thickness</source>
+      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_ShowResult</name>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="40"/>
+      <source>Show result</source>
+      <translation>Показати результат</translation>
+    </message>
+    <message>
+      <location filename="_CommandMechanicalShowResult.py" line="42"/>
+      <source>Show result information of an analysis</source>
+      <translation type="unfinished">Show result information of an analysis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverCalculix</name>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="41"/>
+      <source>Create FEM Solver CalculiX ...</source>
+      <translation type="unfinished">Create FEM Solver CalculiX ...</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="43"/>
+      <source>Creates FEM Solver CalculiX</source>
+      <translation type="unfinished">Creates FEM Solver CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_SolverJobControl</name>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="40"/>
+      <source>Start solver job control</source>
+      <translation type="unfinished">Start solver job control</translation>
+    </message>
+    <message>
+      <location filename="_CommandSolverJobControl.py" line="42"/>
+      <source>Dialog to start the calculation of the selected solver</source>
+      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>Fem_Analysis</name>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
+      <source>New mechanical analysis</source>
+      <translation type="unfinished">New mechanical analysis</translation>
+    </message>
+    <message>
+      <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
+      <source>Create a new mechanical analysis</source>
+      <translation type="unfinished">Create a new mechanical analysis</translation>
+    </message>
+  </context>
+  <context>
     <name>Fem_JobControl</name>
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
@@ -80,32 +184,6 @@
     </message>
   </context>
   <context>
-    <name>Fem_PurgeResults</name>
-    <message>
-      <location filename="_CommandPurgeFemResults.py" line="40"/>
-      <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
-    </message>
-    <message>
-      <location filename="_CommandPurgeFemResults.py" line="42"/>
-      <source>Purge results from an analysis</source>
-      <translation type="unfinished">Purge results from an analysis</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_Quick_Analysis</name>
-    <message>
-      <location filename="_CommandQuickAnalysis.py" line="40"/>
-      <source>Run CalculiX ccx</source>
-      <translation type="unfinished">Run CalculiX ccx</translation>
-    </message>
-    <message>
-      <location filename="_CommandQuickAnalysis.py" line="42"/>
-      <source>Write .inp file and run CalculiX ccx</source>
-      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
-    </message>
-  </context>
-  <context>
     <name>Fem_Result</name>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
@@ -116,32 +194,6 @@
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
       <translation type="unfinished">Show result information of an analysis</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_ShellThickness</name>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="41"/>
-      <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation type="unfinished">FEM Shell Plate Thickness Definition ...</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemShellThickness.py" line="43"/>
-      <source>Creates a FEM Shell Thickness</source>
-      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
-    </message>
-  </context>
-  <context>
-    <name>Fem_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="41"/>
-      <source>Create FEM Solver CalculiX ...</source>
-      <translation type="unfinished">Create FEM Solver CalculiX ...</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="43"/>
-      <source>Creates FEM Solver CalculiX</source>
-      <translation type="unfinished">Creates FEM Solver CalculiX</translation>
     </message>
   </context>
   <context>
@@ -416,12 +468,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Статичний</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Частота</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
@@ -447,7 +499,7 @@
       <location filename="../../DlgSettingsFem.ui" line="335"/>
       <location filename="../../DlgSettingsFem.ui" line="342"/>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Гц</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="354"/>
@@ -598,7 +650,7 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Не вдалося побудувати сітку</translation>
     </message>
   </context>
   <context>
@@ -863,7 +915,7 @@
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="84"/>
       <source>Activate analysis</source>
-      <translation type="unfinished">Activate analysis</translation>
+      <translation>Активувати аналіз</translation>
     </message>
   </context>
   <context>
@@ -871,7 +923,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Не вдалося побудувати сітку</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
@@ -890,7 +942,7 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
       <source>Cross Section</source>
-      <translation type="unfinished">Cross Section</translation>
+      <translation>Поперечний переріз</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
@@ -907,7 +959,7 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Посилання</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
@@ -958,32 +1010,32 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Тип аналізу</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Статичний</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Частота</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>Записати файл .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
       <source>Edit .inp file</source>
-      <translation type="unfinished">Edit .inp file</translation>
+      <translation>Редагувати файл .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
       <source>Run Calculix</source>
-      <translation type="unfinished">Run Calculix</translation>
+      <translation>Запустити Calculix</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="130"/>
@@ -1016,12 +1068,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
       <source>Material Description</source>
-      <translation type="unfinished">Material Description</translation>
+      <translation>Опис матеріалу</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Посилання</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
@@ -1087,7 +1139,7 @@
     <message>
       <location filename="../../Command.cpp" line="72"/>
       <source>You need to create or activate a Analysis</source>
-      <translation type="unfinished">You need to create or activate a Analysis</translation>
+      <translation>Вам потрібно створити або активувати аналіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -1213,17 +1265,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Зміщення по Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>Зміщення по X</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Зміщення по Z</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -1529,7 +1581,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Вільно</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -1539,7 +1591,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Зафіксовано</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>

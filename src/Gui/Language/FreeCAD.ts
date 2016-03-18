@@ -1876,10 +1876,6 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-        <source>%1 navigation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4790,10 +4786,6 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Navigation styles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

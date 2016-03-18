@@ -1882,7 +1882,7 @@ Navedite drugo mapo.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>Krmarjenje %1</translation>
+        <translation type="obsolete">Krmarjenje %1</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4820,7 +4820,7 @@ Upoštevajte, da je mesto klika pomembno.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>Krmarjenje %1</translation>
+        <translation type="obsolete">Krmarjenje %1</translation>
     </message>
     <message>
         <source>Move annotation</source>

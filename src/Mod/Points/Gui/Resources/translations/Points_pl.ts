@@ -6,19 +6,19 @@
     <message>
         <location filename="../../Command.cpp" line="+184"/>
         <source>Points</source>
-        <translation type="unfinished">Punkty</translation>
+        <translation>Punkty</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Convert to points...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Convert to points...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Convert to points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Convert to points</translation>
     </message>
 </context>
 <context>
@@ -195,7 +195,7 @@
         <location line="+29"/>
         <location line="+57"/>
         <source>none</source>
-        <translation>żaden</translation>
+        <translation>brak</translation>
     </message>
     <message>
         <location line="-81"/>
@@ -267,12 +267,12 @@
     <message>
         <location line="+70"/>
         <source>Distance</source>
-        <translation type="unfinished"></translation>
+        <translation>Odległość</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter maximum distance:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enter maximum distance:</translation>
     </message>
 </context>
 <context>

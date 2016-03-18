@@ -1881,7 +1881,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 Navigation</translation>
+        <translation type="obsolete">%1 Navigation</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4818,7 +4818,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 Navigation</translation>
+        <translation type="obsolete">%1 Navigation</translation>
     </message>
     <message>
         <source>Move annotation</source>

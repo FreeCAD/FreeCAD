@@ -1882,7 +1882,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigointi</translation>
+        <translation type="obsolete">%1 navigointi</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4815,7 +4815,7 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigointi</translation>
+        <translation type="obsolete">%1 navigointi</translation>
     </message>
     <message>
         <source>Move annotation</source>

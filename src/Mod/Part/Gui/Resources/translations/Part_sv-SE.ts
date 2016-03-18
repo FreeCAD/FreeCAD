@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+1020"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Fasa Kanter</translation>
     </message>
@@ -1328,7 +1328,7 @@
         <translation>Inget val</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-753"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Längd:</translation>
     </message>
@@ -1349,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+545"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation>Starta längd</translation>
     </message>
     <message>
-        <location line="-544"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation>Avsluta längd</translation>
     </message>
@@ -1365,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+542"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Start radie</translation>
     </message>
     <message>
-        <location line="-541"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Slut radie</translation>
     </message>
     <message>
-        <location line="+531"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Längd</translation>
     </message>
@@ -3176,7 +3176,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+21"/>
         <source>Refine shape</source>
-        <translation type="unfinished">Förfina form</translation>
+        <translation>Förfina form</translation>
     </message>
     <message>
         <location line="+32"/>

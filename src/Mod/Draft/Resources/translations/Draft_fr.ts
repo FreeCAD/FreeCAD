@@ -181,7 +181,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install/fr</translat
     <message>
       <location filename="DraftTools.py" line="2644"/>
       <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
-      <translation>Éclate les objets sélectionnés en objets plus simples, ou soustrait des surfaces</translation>
+      <translation>Éclate les objets sélectionnés en objets plus simples, ou soustrait des faces</translation>
     </message>
   </context>
   <context>
@@ -267,7 +267,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install/fr</translat
     <message>
       <location filename="DraftTools.py" line="4388"/>
       <source>Flip Dimension</source>
-      <translation>Inverser la direction de de la cote</translation>
+      <translation>Inverser la direction de la cote</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4389"/>
@@ -285,7 +285,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install/fr</translat
     <message>
       <location filename="DraftTools.py" line="4342"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
-      <translation>Réparer les objets de type ébauche défectueux enregistrés avec une version antérieure de FreeCAD</translation>
+      <translation>Réparer les objets de type Draft défectueux enregistrés avec une version antérieure de FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -311,7 +311,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install/fr</translat
     <message>
       <location filename="DraftTools.py" line="4428"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
-      <translation>Crée les symétriques des objets sélectionnés, par rapport à une droite définie par deux points</translation>
+      <translation>Reflète les objets sélectionnés le long d'une ligne définie par deux points</translation>
     </message>
   </context>
   <context>
@@ -519,7 +519,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install/fr</translat
     <message>
       <location filename="DraftTools.py" line="4695"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
-      <translation>Indique des dimensions provisoires lors de l'aimantation aux objets Arch</translation>
+      <translation>Affiche des dimensions provisoires lors de l'aimantation aux objets Arch</translation>
     </message>
   </context>
   <context>
@@ -1263,7 +1263,7 @@ plus rapide, mais ils seront moins facilement modifiables</translation>
     <message>
       <location filename="preferences-draft.ui" line="323"/>
       <source>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</source>
-      <translation>Lorsque cette case est cochée, les outils de tracé créent des primitives de pièces au lieu d'objets Draft, lorsque disponible.</translation>
+      <translation>Lorsque cette case est cochée, les outils Draft créeront des objets Part de type primitives au lieu des objets Draft, lorsque disponible.</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="326"/>
@@ -1328,7 +1328,7 @@ plus rapide, mais ils seront moins facilement modifiables</translation>
     <message>
       <location filename="preferences-dxf.ui" line="508"/>
       <source>Project exported objects along current view direction</source>
-      <translation>Objets du projet exporté suivant la direction de la vue actuelle</translation>
+      <translation>Projeter les objets exportés suivant la direction de la vue actuelle</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="382"/>
@@ -1413,7 +1413,7 @@ plus rapide, mais ils seront moins facilement modifiables</translation>
     <message>
       <location filename="preferences-drafttexts.ui" line="211"/>
       <source>Dot</source>
-      <translation>point</translation>
+      <translation>Point</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="216"/>
@@ -1463,12 +1463,12 @@ plus rapide, mais ils seront moins facilement modifiables</translation>
     <message>
       <location filename="preferences-dxf.ui" line="206"/>
       <source>If this is checked, parametric Draft objects will be created whenever possible</source>
-      <translation>Si cette case est cochée, les objets paramétriques du projet seront créés lorsque cela est possible</translation>
+      <translation>Si cette case est cochée, des objets paramétriques Draft seront créés lorsque cela est possible</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="209"/>
       <source>Draft objects</source>
-      <translation>Objets brouillon</translation>
+      <translation>Objets Draft</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="222"/>

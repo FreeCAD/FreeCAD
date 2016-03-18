@@ -22,7 +22,7 @@
     <message>
       <location filename="PathComment.py" line="41"/>
       <source>Comment or note for CNC program</source>
-      <translation type="unfinished">Comment or note for CNC program</translation>
+      <translation>CNC程式之注意事項或說明</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="65"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="PathProfile.py" line="49"/>
       <source>First Selected Edge to help determine which geometry to make a toolpath around</source>
-      <translation type="unfinished">First Selected Edge to help determine which geometry to make a toolpath around</translation>
+      <translation>首先選擇的邊會協助決定哪個幾何用來製作刀具路徑</translation>
     </message>
   </context>
   <context>
@@ -59,7 +59,7 @@
     <message>
       <location filename="PathProfile.py" line="50"/>
       <source>Second Selected Edge to help determine which geometry to make a toolpath around</source>
-      <translation type="unfinished">Second Selected Edge to help determine which geometry to make a toolpath around</translation>
+      <translation>第二個選擇的邊會協助決定哪個幾何用來製作刀具路徑</translation>
     </message>
   </context>
   <context>
@@ -67,7 +67,7 @@
     <message>
       <location filename="PathKurve.py" line="70"/>
       <source>List of edges selected</source>
-      <translation>所選邊緣清單</translation>
+      <translation>所選邊之清單</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="InitGui.py" line="88"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>路徑</translation>
     </message>
   </context>
   <context>
@@ -248,7 +248,7 @@
     <message>
       <location filename="PathCopy.py" line="44"/>
       <source>The path to be copied</source>
-      <translation type="unfinished">The path to be copied</translation>
+      <translation>要複製之路徑</translation>
     </message>
   </context>
   <context>
@@ -400,8 +400,7 @@
       <location filename="PathArray.py" line="120"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
-</translation>
+      <translation>請僅確實選擇單一個路徑物件</translation>
     </message>
   </context>
   <context>
@@ -536,28 +535,25 @@
     <message>
       <location filename="PathFacePocket.py" line="143"/>
       <source>Creates a pocket inside a loop of edges or a face</source>
-      <translation type="unfinished">Creates a pocket inside a loop of edges or a face</translation>
+      <translation>於邊或面之封閉區內建立一個凹陷特徵</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="156"/>
       <source>Please select an edges loop from one object, or a single face
 </source>
-      <translation type="unfinished">Please select an edges loop from one object, or a single face
-</translation>
+      <translation>請從一個物件或單一面上選取一個封閉之邊</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="161"/>
       <source>Please select only edges or a single face
 </source>
-      <translation type="unfinished">Please select only edges or a single face
-</translation>
+      <translation>請僅選取邊或單一面</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="168"/>
       <source>The selected edges don't form a loop
 </source>
-      <translation type="unfinished">The selected edges don't form a loop
-</translation>
+      <translation>所選之邊並非封閉</translation>
     </message>
   </context>
   <context>
@@ -685,8 +681,7 @@
       <location filename="PathInspect.py" line="181"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
-</translation>
+      <translation>請僅確實選擇單一個路徑物件</translation>
     </message>
   </context>
   <context>
@@ -699,7 +694,7 @@
     <message>
       <location filename="PathKurve.py" line="178"/>
       <source>Creates a Path Profile object from selected edges, using libarea for offset algorithm</source>
-      <translation type="unfinished">Creates a Path Profile object from selected edges, using libarea for offset algorithm</translation>
+      <translation>使用libarea函式偏移演算法從所選之邊建立一個路徑檔</translation>
     </message>
     <message>
       <location filename="PathKurve.py" line="184"/>
@@ -796,28 +791,25 @@
     <message>
       <location filename="PathPocket.py" line="267"/>
       <source>Creates a Path Pocket object from a loop of edges or a face</source>
-      <translation type="unfinished">Creates a Path Pocket object from a loop of edges or a face</translation>
+      <translation>於邊或面之封閉區內建立一個凹陷物件</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="280"/>
       <source>Please select an edges loop from one object, or a single face
 </source>
-      <translation type="unfinished">Please select an edges loop from one object, or a single face
-</translation>
+      <translation>請從一個物件或單一面上選取一個封閉之邊</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="285"/>
       <source>Please select only edges or a single face
 </source>
-      <translation type="unfinished">Please select only edges or a single face
-</translation>
+      <translation>請僅選取邊或單一面</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="292"/>
       <source>The selected edges don't form a loop
 </source>
-      <translation type="unfinished">The selected edges don't form a loop
-</translation>
+      <translation>所選之邊並非封閉</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="296"/>
@@ -884,19 +876,18 @@
     <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>不與原本物件連動之複製</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="47"/>
       <source>Creates a non-parametric copy of another path</source>
-      <translation type="unfinished">Creates a non-parametric copy of another path</translation>
+      <translation>對另一個路徑進行無參數之複製</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="59"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
-</translation>
+      <translation>請僅確實選擇單一個路徑物件</translation>
     </message>
   </context>
   <context>
@@ -1030,7 +1021,7 @@
     <message>
       <location filename="PathProfile.py" line="84"/>
       <source>Side of edge that tool should cut</source>
-      <translation type="unfinished">Side of edge that tool should cut</translation>
+      <translation>刀具應切除邊之一側</translation>
     </message>
   </context>
   <context>
@@ -1296,7 +1287,7 @@
     <message>
       <location filename="TooltableEditor.py" line="432"/>
       <source>Cutting edge angle</source>
-      <translation type="unfinished">Cutting edge angle</translation>
+      <translation>切削刃角</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="433"/>
@@ -1306,7 +1297,7 @@
     <message>
       <location filename="TooltableEditor.py" line="434"/>
       <source>Cutting edge height</source>
-      <translation type="unfinished">Cutting edge height</translation>
+      <translation>切削刃高度</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="593"/>
@@ -1415,7 +1406,7 @@
     <message>
       <location filename="PathProfile.py" line="79"/>
       <source>extra length of tool path after end of part edge</source>
-      <translation type="unfinished">extra length of tool path after end of part edge</translation>
+      <translation>於物件邊結束後之額外刀具路徑長度</translation>
     </message>
   </context>
   <context>
@@ -1423,7 +1414,7 @@
     <message>
       <location filename="PathProfile.py" line="74"/>
       <source>extra length of tool path before start of part edge</source>
-      <translation type="unfinished">extra length of tool path before start of part edge</translation>
+      <translation>於物件邊開始前之額外刀具路徑長度</translation>
     </message>
   </context>
   <context>
@@ -1447,7 +1438,7 @@
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>路徑</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
@@ -1465,7 +1456,7 @@
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>路徑</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -1492,7 +1483,7 @@
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="14"/>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="26"/>
       <source>General Path settings</source>
-      <translation type="unfinished">General Path settings</translation>
+      <translation>一般路徑設定</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
@@ -1519,12 +1510,12 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>Path colors</source>
-      <translation type="unfinished">Path colors</translation>
+      <translation>路徑色彩</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="20"/>
       <source>Default Path colors</source>
-      <translation type="unfinished">Default Path colors</translation>
+      <translation>預設路徑色彩</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="34"/>
@@ -1586,7 +1577,7 @@
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="14"/>
       <source>Paths list</source>
-      <translation type="unfinished">Paths list</translation>
+      <translation>路徑清單</translation>
     </message>
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>

@@ -213,7 +213,7 @@
 <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2541"/>
+        <location filename="../../CommandConstraints.cpp" line="+2515"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -231,7 +231,7 @@
 <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-        <location line="-1682"/>
+        <location line="-1665"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -289,7 +289,7 @@
 <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-        <location line="+163"/>
+        <location line="+154"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -311,7 +311,7 @@
 <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-        <location line="+1421"/>
+        <location line="+1420"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -329,7 +329,7 @@
 <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-        <location line="-2240"/>
+        <location line="-2230"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -347,7 +347,7 @@
 <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-        <location line="+2673"/>
+        <location line="+2663"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -365,7 +365,7 @@
 <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-        <location line="-2483"/>
+        <location line="-2473"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -383,7 +383,7 @@
 <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-        <location line="+782"/>
+        <location line="+765"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -423,7 +423,7 @@
 <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-        <location line="-515"/>
+        <location line="-498"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -441,7 +441,7 @@
 <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-        <location line="+1087"/>
+        <location line="+1070"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -459,7 +459,7 @@
 <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-        <location line="+872"/>
+        <location line="+879"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-        <location line="-970"/>
+        <location line="-977"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -517,7 +517,7 @@
 <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-        <location line="-1294"/>
+        <location line="-1277"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -1316,7 +1316,7 @@
 <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2999"/>
+        <location filename="../../CommandConstraints.cpp" line="+2989"/>
         <source>Sketcher</source>
         <translation>Croquizador</translation>
     </message>
@@ -1412,7 +1412,7 @@
     <message>
         <location filename="../../CommandAlterGeometry.cpp" line="+42"/>
         <location line="+8"/>
-        <location filename="../../CommandConstraints.cpp" line="-3412"/>
+        <location filename="../../CommandConstraints.cpp" line="-3402"/>
         <location line="+329"/>
         <location line="+97"/>
         <location line="+96"/>
@@ -1430,13 +1430,13 @@
         <location line="+7"/>
         <location line="+34"/>
         <location line="+10"/>
-        <location line="+51"/>
-        <location line="+32"/>
+        <location line="+27"/>
+        <location line="+47"/>
         <location line="+26"/>
         <location line="+46"/>
         <location line="+10"/>
-        <location line="+49"/>
-        <location line="+32"/>
+        <location line="+25"/>
+        <location line="+48"/>
         <location line="+26"/>
         <location line="+46"/>
         <location line="+12"/>
@@ -1458,7 +1458,7 @@
         <location line="+41"/>
         <location line="+271"/>
         <location line="+11"/>
-        <location line="+151"/>
+        <location line="+158"/>
         <location line="+56"/>
         <location line="+45"/>
         <location line="+12"/>
@@ -1513,7 +1513,7 @@
         <translation>Seleccione arista(s) del croquis.</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-3152"/>
+        <location filename="../../CommandConstraints.cpp" line="-3142"/>
         <location line="+97"/>
         <source>Select an edge from the sketch.</source>
         <translation>Seleccione una arista del croquis.</translation>
@@ -1600,7 +1600,7 @@
         <location line="+92"/>
         <location line="+179"/>
         <location line="+86"/>
-        <location line="+165"/>
+        <location line="+156"/>
         <source>Select vertexes from the sketch.</source>
         <translation>Seleccione los vértices del croquis.</translation>
     </message>
@@ -1618,7 +1618,7 @@
         <translation type="obsolete">¡No se puede crear una restricción sobre la coordenada Y en una geometría externa!</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-521"/>
         <source>Select one vertex from the sketch other than the origin.</source>
         <translation>Seleccione un vértice del croquis que no sea el origen.</translation>
     </message>
@@ -1633,7 +1633,7 @@
         <translation>Seleccione un punto y varias curvas, o una curva y varios puntos. Ha seleccionado las %1 curvas y %2 puntos.</translation>
     </message>
     <message>
-        <location line="+290"/>
+        <location line="+273"/>
         <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
         <translation>¡No se puede agregar una restricción coordenada fija en el punto de origen!</translation>
     </message>
@@ -1661,7 +1661,7 @@
     </message>
     <message>
         <location line="+11"/>
-        <location line="+207"/>
+        <location line="+214"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
         <translation>Seleccione una o dos líneas del croquis. O seleccione un punto y dos aristas.</translation>
     </message>
@@ -1792,7 +1792,7 @@
         <translation type="obsolete">Seleccione exactamente dos vértices del dibujo.</translation>
     </message>
     <message>
-        <location line="-2850"/>
+        <location line="-2840"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
         <translation>Seleccione dos o más vértices en el croquis.</translation>
@@ -1818,9 +1818,9 @@
     </message>
     <message>
         <location line="+172"/>
-        <location line="+109"/>
+        <location line="+100"/>
         <location line="+56"/>
-        <location line="+107"/>
+        <location line="+99"/>
         <source>Select exactly one line or up to two points from the sketch.</source>
         <translation>Seleccione exactamente una línea o hasta dos puntos del croquis.</translation>
     </message>
@@ -1829,7 +1829,7 @@
         <translation type="obsolete">¡No se puede agregar una restricción de longitud horizontal en una geometría externa!</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-228"/>
         <source>Cannot add a horizontal length constraint on an axis!</source>
         <translation>¡No se puede añadir una restricción de longitud horizontal en un eje!</translation>
     </message>
@@ -1846,7 +1846,7 @@
         <translation type="obsolete">No se puede agregar una restricción de longitud vertical en una geometría externa!</translation>
     </message>
     <message>
-        <location line="+163"/>
+        <location line="+154"/>
         <source>Cannot add a vertical length constraint on an axis!</source>
         <translation>¡No se puede añadir una restricción de longitud vertical sobre un eje!</translation>
     </message>
@@ -1859,18 +1859,18 @@
         <translation type="obsolete">No se puede añadir una restricción fija de coordenada-y en el punto raíz!</translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+120"/>
         <source>Select two or more lines from the sketch.</source>
         <translation>Seleccione dos o más líneas del croquis.</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+1260"/>
+        <location line="+1267"/>
         <source>Select at least two lines from the sketch.</source>
         <translation>Seleccione al menos dos líneas del croquis.</translation>
     </message>
     <message>
-        <location line="-1246"/>
+        <location line="-1253"/>
         <source>Select a valid line</source>
         <translation>Seleccione una línea válida</translation>
     </message>
@@ -1903,12 +1903,12 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
     <message>
         <location line="+59"/>
         <location line="+313"/>
-        <location line="+1174"/>
+        <location line="+1181"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location line="-1461"/>
+        <location line="-1468"/>
         <location line="+312"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
@@ -1977,7 +1977,7 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <translation type="obsolete">¡No se puede añadir una restricción angular en una geometría externa!</translation>
     </message>
     <message>
-        <location line="+608"/>
+        <location line="+615"/>
         <source>Cannot add an angle constraint on an axis!</source>
         <translation>¡No se puede añadir una restricción angular en un eje!</translation>
     </message>
@@ -2119,9 +2119,9 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <translation>No permite editar los datos de referencia porque el croquis contiene restricciones conflictivas</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2845"/>
-        <location line="+2288"/>
-        <location filename="../../EditDatumDialog.cpp" line="+114"/>
+        <location filename="../../CommandConstraints.cpp" line="-2835"/>
+        <location line="+2271"/>
+        <location filename="../../EditDatumDialog.cpp" line="+97"/>
         <source>Dimensional constraint</source>
         <translation>Restricción dimensional</translation>
     </message>
@@ -2224,17 +2224,17 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
 <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+377"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+395"/>
         <source>Toggle to/from reference</source>
         <translation>Cambiar referencia a/desde</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="-4"/>
         <source>Change value</source>
         <translation>Cambiar valor</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Rename</source>
         <translation>Renombrar</translation>
     </message>
@@ -2253,12 +2253,22 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <source>Swap constraint names</source>
         <translation>Intercambiar los nombres de restricción</translation>
     </message>
+    <message>
+        <location line="+71"/>
+        <source>Unnamed constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only the names of named constraints can be swapped.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2372"/>
-        <location filename="../../EditDatumDialog.cpp" line="-98"/>
+        <location filename="../../CommandConstraints.cpp" line="-2346"/>
+        <location filename="../../EditDatumDialog.cpp" line="-81"/>
         <source>Insert angle</source>
         <translation>Insertar ángulo</translation>
     </message>
@@ -2289,19 +2299,19 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <translation>Razón n2/n1:</translation>
     </message>
     <message>
-        <location line="+2303"/>
+        <location line="+2277"/>
         <source>Change radius</source>
         <translation>Cambiar radio</translation>
     </message>
     <message>
-        <location line="-2308"/>
-        <location line="+2309"/>
+        <location line="-2282"/>
+        <location line="+2283"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
         <translation>Radio:</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+758"/>
         <source>Refractive index ratio</source>
         <translation>Índice refracción</translation>
     </message>
@@ -2311,7 +2321,7 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <translation>Razón n2/n1:</translation>
     </message>
     <message>
-        <location line="-3052"/>
+        <location line="-3033"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
         <translation>Insertar longitud</translation>
@@ -2547,7 +2557,12 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <translation>Geometría totalmente restringida</translation>
     </message>
     <message>
-        <location line="+319"/>
+        <location line="+287"/>
+        <source>Marker size</source>
+        <translation>Tamaño del marcador</translation>
+    </message>
+    <message>
+        <location line="+40"/>
         <source>Geometry Creation &quot;Continue Mode&quot;</source>
         <translation>Creación geométrica &quot;Modo Continuo&quot;</translation>
     </message>
@@ -2562,7 +2577,7 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <translation>Muestra el solucionador avanzado en la barra de tareas</translation>
     </message>
     <message>
-        <location line="-423"/>
+        <location line="-431"/>
         <location line="+99"/>
         <source>The color of fully constrained geometry in edit mode</source>
         <translation>Color para geometrías totalmente restringidas en modo edición</translation>
@@ -2593,12 +2608,12 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <location line="-84"/>
         <location line="+35"/>
         <location line="+52"/>
-        <location line="+92"/>
+        <location line="+90"/>
         <source>px</source>
         <translation>px</translation>
     </message>
     <message>
-        <location line="-189"/>
+        <location line="-187"/>
         <source>Default vertex size</source>
         <translation>Tamaño de vértice por defecto</translation>
     </message>
@@ -2633,19 +2648,24 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
         <translation>Editar croquis</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+12"/>
         <source>Font size</source>
         <translation>Tamaño de la fuente</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+45"/>
         <source>Grid line pattern</source>
         <translation>Patrón de línea de cuadrícula</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Ask for value after creating a distance constraint</source>
         <translation>Solicitar valor tras crear restricción de distancia</translation>
+    </message>
+    <message>
+        <location filename="../../SketcherSettings.cpp" line="+164"/>
+        <source>%1 px</source>
+        <translation type="unfinished">%1 px</translation>
     </message>
 </context>
 <context>
@@ -2801,9 +2821,14 @@ Sin embargo, no se encontraron restricciones a los extremos.</translation>
         <translation>Referencia</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+85"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+24"/>
         <source>Constraints</source>
         <translation>Restricciones</translation>
+    </message>
+    <message>
+        <location line="+176"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
     </message>
 </context>
 <context>
@@ -3109,7 +3134,7 @@ Sin embargo, no se encontraron restricciones a los extremos.</translation>
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4186"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+4183"/>
         <source>Invalid sketch</source>
         <translation>Croquis no válido</translation>
     </message>
@@ -3144,7 +3169,7 @@ Use the sketch validation tool.</source>
         <translation>El croquis no es válido y no puede editarse.</translation>
     </message>
     <message>
-        <location line="+109"/>
+        <location line="+111"/>
         <source>Please remove the following constraint:</source>
         <translation>Elimine la siguiente restricción:</translation>
     </message>
