@@ -443,7 +443,7 @@ def getLinks():
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text07 + """</p>')" 
                 onMouseout="show('')"
-                exthref="http://www.freecadweb.org/">""" + text08 + """</a></li>
+                href="exthttp://www.freecadweb.org/">""" + text08 + """</a></li>
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text45 + """</p>')" 
                 onMouseout="show('')"
