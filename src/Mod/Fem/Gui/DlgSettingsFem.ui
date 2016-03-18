@@ -457,6 +457,35 @@
        </layout>
       </widget>
      </item>
+     <item>
+      <widget class="QGroupBox" name="gb_results">
+       <property name="title">
+        <string>Results</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="Gui::PrefCheckBox" name="cb_restore_result_dialog">
+            <property name="text">
+             <string>Restore result dialog settings</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>RestoreResultDialog</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="2" column="0">
