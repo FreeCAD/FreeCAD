@@ -1,7 +1,7 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.03
+version 2.04
 QT theme (stylesheet) specially developed for FreeCAD (http://www.freecadweb.org/).
 It might work with other software that uses QT styling.
 
@@ -508,7 +508,7 @@ QTabBar::tab:right {
 }
 
 QTabBar::tab:selected {
-    background-color: transparent; /* temporal (transparent background) */
+    background-color: #f5f5f5; /* same as tab content background color */
     border-color: #d2d2d2;
 }
 
@@ -1444,6 +1444,11 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget > QWidget > QF
     padding: 2px 6px;
 }
 
+QPushButton:checked {
+    background-color: #5e90fa;
+    border-color: #3874f2;
+}
+
 
 /*==================================================================================================
 Tool button inside QDialogs that works as QPushButtons
@@ -1479,9 +1484,39 @@ QDialog QToolButton:pressed {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3874f2, stop:1 #5e90fa);
 }
 
-QPushButton:checked {
-    background-color: #5e90fa;
+
+/*==================================================================================================
+Tool button inside Task Panel content that works as QPushButtons
+==================================================================================================*/
+/* found inside Part Design Workbench and "make a draft on a face" Task panel options */
+QSint--ActionGroup QFrame[class="content"] QToolButton {
+    color: #6e6e6e;
+    text-align: center;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #f5f5f5, stop:1 #e6e6e6);
+    border: 1px solid #d2d2d2;
+    border-bottom-color: #c3c3c3; /* simulates shadow under the button */
+    padding: 2px 6px; /* different than regular QPushButton */
+    margin: 2px; /* different than regular QPushButton */
+    min-height: 16px; /* same as QTabBar QPushButton min-width */
+    border-radius: 4px;
+}
+
+QSint--ActionGroup QFrame[class="content"] QToolButton:hover,
+QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
+    color: white;
     border-color: #3874f2;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #5e90fa, stop:1 #3874f2);
+}
+
+QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
+QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
+    color: #b6b6b6;
+    border-color: #e6e6e6;
+    background-color: #e6e6e6;
+}
+
+QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3874f2, stop:1 #5e90fa);
 }
 
 
@@ -1547,9 +1582,6 @@ QCheckBox::indicator {
     color: #c8c8c8;
     background-color: rgba(0,0,0,20);
     border: 1px solid #505050;
-}
-
-QCheckBox::indicator {
     width: 11px;
     height: 11px;
     border-radius:2px;
@@ -1586,6 +1618,69 @@ QCheckBox::indicator:indeterminate {
 
 QCheckBox:focus {
     border: none;
+}
+
+
+/*==================================================================================================
+Checkboxs inside QListWidget and QTreeView
+==================================================================================================*/
+QListWidget::indicator,
+QTreeView::indicator {
+    color: #c8c8c8;
+    background-color: rgba(0,0,0,20);
+    border: 1px solid #505050;
+    width: 11px;
+    height: 11px;
+    border-radius:2px;
+}
+
+/* fix for QTreeView::indicator loosing its margin */
+QTreeView::indicator {
+    margin: 3px;
+}
+
+QListWidget::indicator:selected,
+QTreeView::indicator:selected {
+    background-color: #e6e6e6;
+}
+
+QListWidget::indicator:checked:selected,
+QListWidget::indicator:indeterminate:selected,
+QTreeView::indicator:checked:selected,
+QTreeView::indicator:indeterminate:selected {
+    background-color: #7cabf9; /* slighly lighter than default */
+    border-color: #2053c0; /* slighly darker than default */
+}
+
+QListWidget::indicator:pressed,
+QListWidget::indicator:non-exclusive:checked:pressed,
+QListWidget::indicator:indeterminate:pressed,
+QListWidget::indicator:checked:pressed,
+QTreeView::indicator:pressed,
+QTreeView::indicator:non-exclusive:checked:pressed,
+QTreeView::indicator:indeterminate:pressed,
+QTreeView::indicator:checked:pressed {
+    border-color: #adc5ed;
+}
+
+QListWidget::indicator:checked,
+QTreeView::indicator:checked {
+    background-color: #5e90fa; /* QRadioButton has the same color */
+    border: 1px solid #3874f2; /* QRadioButton has the same color */
+    image:url(qss:images/checkbox_light.png);
+}
+
+QListWidget::indicator:disabled,
+QTreeView::indicator:disabled {
+    background-color: rgba(0,0,0,20);
+    border: 1px solid rgba(0,0,0,20);
+}
+
+QListWidget::indicator:indeterminate,
+QTreeView::indicator:indeterminate {
+    background-color: #5e90fa;
+    border: 1px solid #3874f2;
+    image: url(qss:images/checkbox_indeterminate_light.png);
 }
 
 
