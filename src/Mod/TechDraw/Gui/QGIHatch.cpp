@@ -168,6 +168,9 @@ void QGIHatch::setFill(std::string fillSpec)
     //QString qs(QString::fromUtf8("../src/Mod/Drawing/patterns/square.svg"));
     QSvgRenderer renderer(qs);
     //QBitmap pixMap(64,64);                         //this size is scene units (mm) instead of pixels?
+    //QPixmap::fromImage(m_image);
+    //QImage(qt_patternForBrush(style, 0), 8, 8, 1, QImage::Format_MonoLSB);
+    //QPixmap::scaled(QSize,QTAspectmode,QTTransformmode)
     QBitmap pixMap(renderer.defaultSize());
     pixMap.fill(Qt::white);   //try  Qt::transparent?
     QPainter painter(&pixMap);
@@ -176,6 +179,8 @@ void QGIHatch::setFill(std::string fillSpec)
     m_texture = pixMap;
     m_brush = QBrush(m_texture);
     m_brush.setStyle(Qt::TexturePattern);
+    //m_brush = QBrush(Qt::CrossPattern);
+    //m_brush = QBrush(Qt::DiagCrossPattern);
 }
 
 void QGIHatch::setColor(App::Color c)
