@@ -23,6 +23,7 @@ if (BUILD_VR)
 endif(BUILD_VR)
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}
