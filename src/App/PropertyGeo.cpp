@@ -594,6 +594,18 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         Property::setPathValue(path, value);
 }
 
+const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+
+    if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
+        // Convert double to quantity
+        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+    }
+    else
+        return Property::getPathValue(path);
+}
+
 PyObject *PropertyPlacement::getPyObject(void)
 {
     return new Base::PlacementPy(new Base::Placement(_cPos));

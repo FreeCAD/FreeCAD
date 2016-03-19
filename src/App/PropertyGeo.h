@@ -265,6 +265,8 @@ public:
 
     void setPathValue(const ObjectIdentifier &path, const boost::any &value);
 
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }
