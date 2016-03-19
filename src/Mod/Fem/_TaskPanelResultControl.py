@@ -40,6 +40,8 @@ class _TaskPanelResultControl:
     '''The control for the displacement post-processing'''
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelShowDisplacement.ui")
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
 
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.rb_none, QtCore.SIGNAL("toggled(bool)"), self.none_selected)
@@ -55,7 +57,10 @@ class _TaskPanelResultControl:
         QtCore.QObject.connect(self.form.sb_displacement_factor_max, QtCore.SIGNAL("valueChanged(int)"), self.sb_disp_factor_max_changed)
 
         self.update()
-        self.restore_result_dialog()
+        if self.restore_result_settings_in_dialog:
+            self.restore_result_dialog()
+        else:
+            self.restore_initial_result_dialog()
 
     def restore_result_dialog(self):
         try:
@@ -90,22 +95,26 @@ class _TaskPanelResultControl:
             self.form.sb_displacement_factor_max.setValue(dfm)
             self.form.sb_displacement_factor.setValue(df)
         except:
-            FreeCAD.FEM_dialog = {"results_type": "None", "show_disp": False,
-                                  "disp_factor": 0, "disp_factor_max": 100}
+            self.restore_initial_result_dialog()
+
+    def restore_initial_result_dialog(self):
+        FreeCAD.FEM_dialog = {"results_type": "None", "show_disp": False,
+                              "disp_factor": 0, "disp_factor_max": 100}
+        fea = FemTools()
+        fea.reset_mesh_color()
+        fea.reset_mesh_deformation()
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
 
     def get_result_stats(self, type_name, analysis=None):
-        if analysis is None:
-            analysis = FemGui.getActiveAnalysis()
-        for i in analysis.Member:
-            if (i.isDerivedFrom("Fem::FemResultObject")) and ("Stats" in i.PropertiesList):
-                match_table = {"U1": (i.Stats[0], i.Stats[1], i.Stats[2]),
-                               "U2": (i.Stats[3], i.Stats[4], i.Stats[5]),
-                               "U3": (i.Stats[6], i.Stats[7], i.Stats[8]),
-                               "Uabs": (i.Stats[9], i.Stats[10], i.Stats[11]),
-                               "Sabs": (i.Stats[12], i.Stats[13], i.Stats[14]),
+        if "Stats" in self.result_object.PropertiesList:
+                Stats = self.result_object.Stats
+                match_table = {"U1": (Stats[0], Stats[1], Stats[2]),
+                               "U2": (Stats[3], Stats[4], Stats[5]),
+                               "U3": (Stats[6], Stats[7], Stats[8]),
+                               "Uabs": (Stats[9], Stats[10], Stats[11]),
+                               "Sabs": (Stats[12], Stats[13], Stats[14]),
                                "None": (0.0, 0.0, 0.0)}
                 return match_table[type_name]
         return (0.0, 0.0, 0.0)

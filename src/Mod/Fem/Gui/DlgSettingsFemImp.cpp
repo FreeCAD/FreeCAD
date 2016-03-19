@@ -60,6 +60,7 @@ void DlgSettingsFemImp::saveSettings()
     cb_use_mat_from_config_dir->onSave();
     cb_use_mat_from_custom_dir->onSave();
     fc_custom_mat_dir->onSave();
+    cb_restore_result_dialog->onSave();
 }
 
 void DlgSettingsFemImp::loadSettings()
@@ -76,6 +77,7 @@ void DlgSettingsFemImp::loadSettings()
     cb_use_mat_from_config_dir->onRestore();
     cb_use_mat_from_custom_dir->onRestore();
     fc_custom_mat_dir->onRestore();
+    cb_restore_result_dialog->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem");
