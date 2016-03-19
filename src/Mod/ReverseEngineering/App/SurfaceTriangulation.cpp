@@ -421,7 +421,7 @@ ImageTriangulation::ImageTriangulation(int width, int height, const Points::Poin
 
 void ImageTriangulation::perform()
 {
-    if (myPoints.size() != width * height)
+    if (myPoints.size() != static_cast<std::size_t>(width * height))
         throw Base::RuntimeError("Number of points doesn't match with given width and height");
 
     //construct dataset
