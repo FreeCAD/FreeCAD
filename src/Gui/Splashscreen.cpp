@@ -34,6 +34,8 @@
 # include <Inventor/C/basic.h>
 #endif
 
+#include <LibraryVersions.h>
+
 #include "Splashscreen.h"
 #include "ui_AboutApplication.h"
 #include <Base/Console.h>
@@ -547,9 +549,16 @@ void AboutDialog::on_copyButton_clicked()
     str << "Python version: " << PY_VERSION << endl;
     str << "Qt version: " << QT_VERSION_STR << endl;
     str << "Coin version: " << COIN_VERSION << endl;
-    it = config.find("OCC_VERSION");
-    if (it != config.end())
-        str << "OCC version: " << it->second.c_str() << endl;
+#if defined(HAVE_OCC_VERSION)
+    str << "OCC version: "
+        << OCC_VERSION_MAJOR << "."
+        << OCC_VERSION_MINOR << "."
+        << OCC_VERSION_MAINTENANCE
+#ifdef OCC_VERSION_DEVELOPMENT
+        << "." OCC_VERSION_DEVELOPMENT
+#endif
+        << endl;
+#endif
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
