@@ -389,10 +389,10 @@ void QGIViewPart::drawViewPart()
             item->setAcceptHoverEvents(true);
             item->setZValue(ZVALUE::EDGE);
             //debug a path
-            QPainterPath edgePath=drawPainterPath(*itEdge);
-            std::stringstream edgeId;
-            edgeId << "QGIVP.edgePath" << i;
-            _dumpPath(edgeId.str().c_str(),edgePath);
+            //QPainterPath edgePath=drawPainterPath(*itEdge);
+            //std::stringstream edgeId;
+            //edgeId << "QGIVP.edgePath" << i;
+            //_dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
 
