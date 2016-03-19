@@ -92,13 +92,46 @@ void PyException::ReportException (void) const
 
 SystemExitException::SystemExitException()
 {
-    _sErrMsg = "System exit";
+    // Set exception message and code based upon the pthon sys.exit() code and/or message 
+    // based upon the the following sys.exit() call semantics.
+    //
+    // Invocation       |  _exitCode  |  _sErrMsg
+    // ---------------- +  ---------  +  --------
+    // sys.exit(int#)   |   int#      |   "System Exit"
+    // sys.exit(string) |   1         |   string
+    // sys.exit()       |   1         |   "System Exit"
+
+    long int errCode = 1;
+    std::string errMsg  = "System exit";
+    PyObject  *type, *value, *traceback, *code;
+
+    PyErr_Fetch(&type, &value, &traceback);
+    PyErr_NormalizeException(&type, &value, &traceback);
+
+    code = PyObject_GetAttrString(value, "code");
+    if (code != NULL && value != Py_None) {
+       Py_DECREF(value);
+       value = code;
+    }
+
+    if (PyInt_Check(value)) {
+        errCode = PyInt_AsLong(value);
+    }
+    else {
+        const char *str = PyString_AsString(value);
+        if (str)
+            errMsg = errMsg + ": " + str;
+    }
+
+    _sErrMsg  = errMsg;
+    _exitCode = errCode;
 }
 
 SystemExitException::SystemExitException(const SystemExitException &inst)
         : Exception(inst)
 {
 }
+
 
 // ---------------------------------------------------------
 
