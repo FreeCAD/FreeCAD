@@ -388,7 +388,6 @@ Mesh.show(m)
     Py::Object viewTriangulation(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
-        PyObject *vec = 0;
         int width;
         int height;
 
