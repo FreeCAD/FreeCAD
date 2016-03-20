@@ -345,9 +345,9 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         else
             newmode = NavigationStyle::SELECTION;
         break;
-    //case BUTTON1DOWN|BUTTON3DOWN:
-    //    newmode = NavigationStyle::PANNING;
-    //    break;
+    case BUTTON1DOWN|BUTTON2DOWN:
+        newmode = NavigationStyle::PANNING;
+        break;
     case SHIFTDOWN|BUTTON3DOWN:
         newmode = NavigationStyle::PANNING;
         break;
