@@ -110,12 +110,16 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     //create the vtk algorithms we use for visualisation
     m_outline   = vtkSmartPointer<vtkOutlineCornerFilter>::New();
     m_points = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    m_pointsSurface = vtkSmartPointer<vtkVertexGlyphFilter>::New();
     m_surface = vtkSmartPointer<vtkGeometryFilter>::New();
     m_wireframe = vtkSmartPointer<vtkExtractEdges>::New();
+    m_wireframeSurface = vtkSmartPointer<vtkExtractEdges>::New();
     m_surfaceEdges = vtkSmartPointer<vtkAppendPolyData>::New();
+    m_pointsSurface->AddInputConnection(m_surface->GetOutputPort());
+    m_wireframeSurface->AddInputConnection(m_surface->GetOutputPort());
     m_surfaceEdges->AddInputConnection(m_surface->GetOutputPort());
-    m_surfaceEdges->AddInputConnection(m_wireframe->GetOutputPort());
-      
+    m_surfaceEdges->AddInputConnection(m_wireframeSurface->GetOutputPort());
+    
     m_currentAlgorithm = m_outline;
 }
 
@@ -194,9 +198,13 @@ void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
         m_currentAlgorithm = m_surface;
     else if (strcmp("Wireframe",ModeName)==0)
         m_currentAlgorithm = m_wireframe;
+    else if (strcmp("Wireframe (surface only)",ModeName)==0)
+        m_currentAlgorithm = m_wireframeSurface;
     else if (strcmp("Nodes",ModeName)==0)
         m_currentAlgorithm = m_points;
-
+    else if (strcmp("Nodes (surface only)",ModeName)==0)
+        m_currentAlgorithm = m_pointsSurface;
+    
     update();
     
     ViewProviderDocumentObject::setDisplayMode( ModeName );
@@ -207,9 +215,11 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes(void) const
     std::vector<std::string> StrList;
     StrList.push_back("Outline");
     StrList.push_back("Nodes");
+    //StrList.push_back("Nodes (surface only)"); somehow this filter does not work
     StrList.push_back("Surface");
     StrList.push_back("Surface with Edges");
     StrList.push_back("Wireframe");
+    StrList.push_back("Wireframe (surface only)");
     return StrList;
 }
 

@@ -141,8 +141,8 @@ protected:
     vtkSmartPointer<vtkGeometryFilter>          m_surface;
     vtkSmartPointer<vtkAppendPolyData>          m_surfaceEdges;
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
-    vtkSmartPointer<vtkExtractEdges>            m_wireframe;
-    vtkSmartPointer<vtkVertexGlyphFilter>       m_points;
+    vtkSmartPointer<vtkExtractEdges>            m_wireframe, m_wireframeSurface;
+    vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
     
 private:
     void updateProperties();
