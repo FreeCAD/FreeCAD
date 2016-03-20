@@ -219,9 +219,8 @@ void Cell::setContent(const char * value)
                 expr = Spreadsheet::ExpressionParser::parse(owner->sheet(), value + 1);
             }
             catch (Base::Exception & e) {
-                QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
                 expr = new App::StringExpression(owner->sheet(), value);
-                setUsed(PARSE_EXCEPTION_SET);
+                setParseException(e.what());
             }
         }
         else if (*value == '\'')

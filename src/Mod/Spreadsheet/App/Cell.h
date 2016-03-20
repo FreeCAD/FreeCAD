@@ -93,8 +93,6 @@ public:
 
     void clearDirty();
 
-    void setParseException(const std::string & e);
-
     void setResolveException(const std::string &e);
 
     void clearResolveException();
@@ -143,6 +141,8 @@ public:
     static App::Color decodeColor(const std::string &color, const App::Color &defaultColor);
 
 private:
+
+    void setParseException(const std::string & e);
 
     //void setExpression(const Expression * expr);
 
