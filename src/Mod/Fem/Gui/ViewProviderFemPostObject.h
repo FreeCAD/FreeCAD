@@ -27,6 +27,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 
 #include <CXX/Objects.hxx>
+#include <Base/Observer.h>
 #include <vtkSmartPointer.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkOutlineFilter.h>
@@ -56,13 +57,17 @@ class SoIndexedFaceSet;
 class SoIndexedLineSet; 
 class SoIndexedTriangleStripSet;
 
+namespace Gui {
+  class SoFCColorBar;
+}
 
 namespace FemGui
 {
 
 class TaskDlgPost;
 
-class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject, 
+                                               public Base::Observer<int>
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemPostObject);
 
@@ -87,6 +92,14 @@ public:
     virtual bool doubleClicked(void);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+    
+    virtual void hide(void);
+    virtual void show(void);
+    
+    virtual SoSeparator* getFrontRoot(void) const;
+    
+    //observer for the color bar
+    virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
     
       /** @name Selection handling
       * This group of methodes do the selection handling.
@@ -120,6 +133,9 @@ protected:
     SoNormal*                   m_normals;
     SoDrawStyle*                m_drawStyle;
     SoSeparator*                m_seperator;
+    Gui::SoFCColorBar*          m_colorBar;
+    SoSeparator*                m_colorRoot;
+    SoDrawStyle*                m_colorStyle;
 
     vtkSmartPointer<vtkPolyDataAlgorithm>       m_currentAlgorithm;
     vtkSmartPointer<vtkGeometryFilter>          m_surface;
@@ -127,7 +143,6 @@ protected:
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
     vtkSmartPointer<vtkExtractEdges>            m_wireframe;
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points;
-    vtkSmartPointer<vtkLookupTable>             m_lookup;
     
 private:
     void updateProperties();
