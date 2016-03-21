@@ -351,7 +351,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     for (i = 1 ; expl.More(); expl.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
         if (edge.IsNull()) {
-            Base::Console().Log("INFO - GO::addGeomFromCompound - hard edge: %d is NULL\n",i);
+            Base::Console().Log("INFO - GO::projectFace - hard edge: %d is NULL\n",i);
             continue;
         }
         faceEdges.push_back(edge);
@@ -360,7 +360,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     for (i = 1 ; expl.More(); expl.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
         if (edge.IsNull()) {
-            Base::Console().Log("INFO - GO::addGeomFromCompound - outline edge: %d is NULL\n",i);
+            Base::Console().Log("INFO - GO::projectFace - outline edge: %d is NULL\n",i);
             continue;
         }
         faceEdges.push_back(edge);
@@ -368,9 +368,9 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
 
     //no guarantee HLR gives edges in any particular order, so have to build back into a face.
     TopoDS_Face projectedFace;
-    std::vector<TopoDS_Wire> faceWires = DrawViewSection::connectEdges(faceEdges);
+    std::vector<TopoDS_Wire> faceWires = connectEdges(faceEdges);               //from DrawViewPart
     if (!faceWires.empty()) {
-        std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(faceWires);
+        std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(faceWires);      //from DrawViewPart
         if (sortedWires.empty()) {
             return projectedFace;
         }
@@ -382,58 +382,6 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
         projectedFace = mkFace.Face();
     }
     return projectedFace;
-}
-
-//! connect edges into 1 or more wires
-std::vector<TopoDS_Wire> DrawViewSection::connectEdges (std::vector<TopoDS_Edge>& edges)
-{
-    std::vector<TopoDS_Wire> result;
-    Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
-    Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-    std::vector<TopoDS_Edge>::const_iterator itEdge = edges.begin();
-    for (; itEdge != edges.end(); itEdge++)
-        hEdges->Append(*itEdge);
-
-    //tolerance sb tolerance of DrawViewSection instead of Precision::Confusion()?
-    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
-
-    int len = hWires->Length();
-    for(int i=1;i<=len;i++) {
-        result.push_back(TopoDS::Wire(hWires->Value(i)));
-    }
-    //delete hEdges;               //does Handle<> take care of this?
-    //delete hWires;
-    return result;
-}
-
-//! return true if w1 bbox is bigger than w2 bbox
-class DrawViewSection::wireCompare: public std::binary_function<const TopoDS_Wire&,
-                                                            const TopoDS_Wire&, bool>
-{
-public:
-    bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
-    {
-        Bnd_Box box1, box2;
-        if (!w1.IsNull()) {
-            BRepBndLib::Add(w1, box1);
-            box1.SetGap(0.0);
-        }
-
-        if (!w2.IsNull()) {
-            BRepBndLib::Add(w2, box2);
-            box2.SetGap(0.0);
-        }
-
-        return box1.SquareExtent() > box2.SquareExtent();
-    }
-};
-
-//sort wires in descending order of size (bbox diagonal)
-std::vector<TopoDS_Wire> DrawViewSection::sortWiresBySize(std::vector<TopoDS_Wire>& w)
-{
-    std::vector<TopoDS_Wire> wires = w;
-    std::sort(wires.begin(), wires.end(), wireCompare());
-    return wires;
 }
 
 

@@ -73,17 +73,14 @@ public:
     std::vector<TechDrawGeometry::Face*> getFaceGeometry();
 
 protected:
-    TopoDS_Shape sectionShape;              //obs??
+    TopoDS_Compound sectionFaces;
+
     gp_Pln getSectionPlane() const;
     TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
     TopoDS_Face projectFace(const TopoDS_Shape &face,
                                      gp_Pnt faceCenter,
                                      const Base::Vector3d &direction,
                                      const Base::Vector3d &xaxis);
-    std::vector<TopoDS_Wire> connectEdges (std::vector<TopoDS_Edge>& edges);
-    std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w);
-    TopoDS_Compound sectionFaces;
-    class wireCompare;
 };
 
 typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;

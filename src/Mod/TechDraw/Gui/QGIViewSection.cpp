@@ -83,11 +83,12 @@ void QGIViewSection::drawSectionFace()
     std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
     QPen facePen;
     facePen.setCosmetic(true);
-    //QBrush faceBrush;
     QBrush faceBrush(QBrush(QColor(0,0,255,40)));   //temp. sb preference or property.
     for(; fit != sectionFaces.end(); fit++) {
         QGIFace* newFace = drawFace(*fit);
         newFace->setZValue(ZVALUE::SECTIONFACE);
+        newFace->setBrush(faceBrush);
+        newFace->setPen(facePen);
         //newFace->setEyeCandy()
     }
 }

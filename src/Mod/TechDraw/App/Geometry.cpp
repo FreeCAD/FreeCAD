@@ -82,6 +82,16 @@ using namespace TechDrawGeometry;
 // Collection of Geometric Features
 Wire::Wire()
 {
+}
+
+Wire::Wire(const TopoDS_Wire &w)
+{
+    TopExp_Explorer edges(w, TopAbs_EDGE);
+    for (; edges.More(); edges.Next()) {
+        const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+        TechDrawGeometry::BaseGeom* base = TechDrawGeometry::BaseGeom::baseFactory(edge);
+        geoms.push_back(base);
+    }
 
 }
 
@@ -396,11 +406,11 @@ bool Vertex::isEqual(Vertex* v, double tol)
 
 extern "C" {
 //! return a vector of BaseGeom*'s in tail to nose order
+//could/should this be replaced by DVP::connectEdges?
 std::vector<TechDrawGeometry::BaseGeom*> TechDrawExport chainGeoms(std::vector<TechDrawGeometry::BaseGeom*> geoms)
 {
     std::vector<TechDrawGeometry::BaseGeom*> result;
     std::vector<bool> used(geoms.size(),false);
-    double tolerance = 0.0;
 
     if (geoms.empty()) {
         return result;
@@ -413,7 +423,7 @@ std::vector<TechDrawGeometry::BaseGeom*> TechDrawExport chainGeoms(std::vector<T
         Base::Vector2D atPoint = (geoms[0])->getEndPoint();
         used[0] = true;
         for (unsigned int i = 1; i < geoms.size(); i++) {              //do size-1 more edges
-            getNextReturnVal next = nextGeom(atPoint,geoms,used,tolerance);
+            getNextReturnVal next = nextGeom(atPoint,geoms,used,Precision::Confusion());
             if (next.index) {                                          //found an unused edge with vertex == atPoint
                 TechDrawGeometry::BaseGeom* nextEdge = geoms.at(next.index);
                 used[next.index] = true;
@@ -446,11 +456,11 @@ getNextReturnVal TechDrawExport nextGeom(Base::Vector2D atPoint,
         if (used[index]) {
             continue;
         }
-        if (atPoint == (*itGeom)->getStartPoint()) {
+        if ((atPoint - (*itGeom)->getStartPoint()).Length() < tolerance) {
             result.index = index;
             result.reversed = false;
             break;
-        } else if (atPoint == (*itGeom)->getEndPoint()) {
+        } else if ((atPoint - (*itGeom)->getEndPoint()).Length() < tolerance) {
             result.index = index;
             result.reversed = true;
             break;

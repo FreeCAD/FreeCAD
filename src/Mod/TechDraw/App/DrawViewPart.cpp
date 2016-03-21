@@ -28,6 +28,7 @@
 # include <sstream>
 #endif
 
+#include <algorithm>
 
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
@@ -53,6 +54,12 @@
 #include <TopTools_ListOfShape.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <GProp_GProps.hxx>
+#include <BRepGProp.hxx>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -130,10 +137,12 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
                                                             getValidXDir());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(shape,
                                                                  inputCenter,
-                                                                 //Direction.getValue(),
-                                                                 //getValidXDir(),
                                                                  Scale.getValue());
         buildGeometryObject(mirroredShape,inputCenter);
+#if MOD_TECHDRAW_HANDLE_FACES
+        extractFaces();
+#endif //#if MOD_TECHDRAW_HANDLE_FACES
+
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -221,6 +230,32 @@ void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
         //                                true);
     }
     bbox = geometryObject->calcBoundingBox();
+}
+
+//! make faces from the existing edge geometry
+void DrawViewPart::extractFaces()
+{
+    geometryObject->clearFaceGeom();
+    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getEdgeGeometry();
+    std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
+    std::vector<TopoDS_Edge> occEdges;
+    for (;itEdge != goEdges.end(); itEdge++) {
+        occEdges.push_back((*itEdge)->occEdge);
+    }
+
+    //almost works. :(
+    std::vector<TopoDS_Wire> wires = connectEdges(occEdges);
+    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(wires,true);        //smallest first
+
+    std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
+    for (; itWire != sortedWires.end(); itWire++) {
+        //version 1: 1 wire/face - no voids in face
+        TechDrawGeometry::Face* f = new TechDrawGeometry::Face();
+        const TopoDS_Wire& wire = (*itWire);
+        TechDrawGeometry::Wire* w = new TechDrawGeometry::Wire(wire);
+        f->wires.push_back(w);
+        geometryObject->addFaceGeom(f);
+    }
 }
 
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
@@ -423,6 +458,65 @@ int DrawViewPart::getVertexRefByIndex(int idx) const
 Base::BoundBox3d DrawViewPart::getBoundingBox() const
 {
     return bbox;
+}
+
+//! build 1 or more wires from list of edges
+//note disjoint edges won't be connected. have to be able to traverse all the edges
+std::vector<TopoDS_Wire> DrawViewPart::connectEdges (std::vector<TopoDS_Edge>& edges)
+{
+    std::vector<TopoDS_Wire> result;
+    Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+    Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+    std::vector<TopoDS_Edge>::const_iterator itEdge = edges.begin();
+    for (; itEdge != edges.end(); itEdge++)
+        hEdges->Append(*itEdge);
+
+    //tolerance sb tolerance of DrawViewPart instead of Precision::Confusion()?
+    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
+
+    int len = hWires->Length();
+    for(int i=1;i<=len;i++) {
+        TopoDS_Wire w = TopoDS::Wire(hWires->Value(i));
+        //if (BRep_Tool::IsClosed(w)) {
+            result.push_back(w);
+        //}
+    }
+    //delete hEdges;               //does Handle<> take care of this?
+    //delete hWires;
+    return result;
+}
+
+//! return true if w1 bbox is bigger than w2 bbox
+class DrawViewPart::wireCompare: public std::binary_function<const TopoDS_Wire&,
+                                                            const TopoDS_Wire&, bool>
+{
+public:
+    bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
+    {
+        Bnd_Box box1, box2;
+        if (!w1.IsNull()) {
+            BRepBndLib::Add(w1, box1);
+            box1.SetGap(0.0);
+        }
+
+        if (!w2.IsNull()) {
+            BRepBndLib::Add(w2, box2);
+            box2.SetGap(0.0);
+        }
+
+        return box1.SquareExtent() > box2.SquareExtent();
+    }
+};
+
+//sort wires in descending order of bbox diagonal. if reversed, then ascending bbox diagonal
+std::vector<TopoDS_Wire> DrawViewPart::sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse)
+{
+    std::vector<TopoDS_Wire> wires = w;
+    std::sort(wires.begin(), wires.end(), wireCompare());
+    if (reverse) {
+        std::reverse(wires.begin(),wires.end());
+    }
+    return wires;
 }
 
 bool DrawViewPart::hasGeometry(void) const

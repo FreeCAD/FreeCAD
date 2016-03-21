@@ -27,6 +27,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
 
 class BRepAdaptor_Curve;
 
@@ -180,6 +181,7 @@ class TechDrawExport Wire
 {
 public:
   Wire();
+  Wire(const TopoDS_Wire &w);
   ~Wire();
   std::vector<BaseGeom *> geoms;
 };
