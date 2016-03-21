@@ -1837,7 +1837,7 @@ void Application::checkForPreviousCrashes()
                 tmp.setFilter(QDir::Dirs);
                 QList<QFileInfo> dirs = tmp.entryInfoList();
                 if (dirs.isEmpty()) {
-                    // delete the lock file immediately if not transient directories are related
+                    // delete the lock file immediately if no transient directories are related
                     tmp.remove(fn);
                 }
                 else {
@@ -1852,7 +1852,7 @@ void Application::checkForPreviousCrashes()
                             if (tmp.rmdir(it->filePath()))
                                 countDeletedDocs++;
                         }
-                        // search for the existance of a recovery file
+                        // search for the existence of a recovery file
                         else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
                             // store the transient directory in case it's not empty
                             restoreDocFiles << *it;
