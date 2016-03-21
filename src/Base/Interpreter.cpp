@@ -105,22 +105,25 @@ SystemExitException::SystemExitException()
     std::string errMsg  = "System exit";
     PyObject  *type, *value, *traceback, *code;
 
+    PyGILStateLocker locker;
     PyErr_Fetch(&type, &value, &traceback);
     PyErr_NormalizeException(&type, &value, &traceback);
 
-    code = PyObject_GetAttrString(value, "code");
-    if (code != NULL && value != Py_None) {
-       Py_DECREF(value);
-       value = code;
-    }
+    if (value) {
+        code = PyObject_GetAttrString(value, "code");
+        if (code != NULL && value != Py_None) {
+           Py_DECREF(value);
+           value = code;
+        }
 
-    if (PyInt_Check(value)) {
-        errCode = PyInt_AsLong(value);
-    }
-    else {
-        const char *str = PyString_AsString(value);
-        if (str)
-            errMsg = errMsg + ": " + str;
+        if (PyInt_Check(value)) {
+            errCode = PyInt_AsLong(value);
+        }
+        else {
+            const char *str = PyString_AsString(value);
+            if (str)
+                errMsg = errMsg + ": " + str;
+        }
     }
 
     _sErrMsg  = errMsg;
@@ -128,7 +131,7 @@ SystemExitException::SystemExitException()
 }
 
 SystemExitException::SystemExitException(const SystemExitException &inst)
-        : Exception(inst)
+  : Exception(inst)
 {
 }
 
