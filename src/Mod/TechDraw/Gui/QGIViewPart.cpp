@@ -287,12 +287,13 @@ void QGIViewPart::drawViewPart()
 
     prepareGeometryChange();
 
+#if MOD_TECHDRAW_HANDLE_FACES
     // Draw Faces
     const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
     std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
     QPen facePen;
     facePen.setCosmetic(true);
-    QBrush faceBrush;
+    //QBrush faceBrush;
     for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
         QGIFace* newFace = drawFace(*fit);
         newFace->setPen(facePen);
@@ -303,6 +304,7 @@ void QGIViewPart::drawViewPart()
     //std::stringstream faceId;
     //faceId << "facePath" << i;
     //_dumpPath(faceId.str().c_str(),facePath);
+#endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     // Draw Hatches
     std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
@@ -433,7 +435,7 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f)
     addToGroup(gFace);
     gFace->setPos(0.0,0.0);
     gFace->setPath(facePath);
-    _dumpPath("QGIVP.facePath",facePath);
+    //_dumpPath("QGIVP.facePath",facePath);
 
     //gFace->setFlag(QGraphicsItem::ItemIsSelectable, true);   ???
     return gFace;

@@ -109,11 +109,16 @@ public:
     void dumpVertexes(const char* text, const TopoDS_Shape& s);
 
 protected:
+    TechDrawGeometry::GeometryObject *geometryObject;
+    Base::BoundBox3d bbox;
+
     void onChanged(const App::Property* prop);
     Base::Vector3d getValidXDir() const;
     void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
-    TechDrawGeometry::GeometryObject *geometryObject;
-    Base::BoundBox3d bbox;
+    void extractFaces();
+    std::vector<TopoDS_Wire> connectEdges (std::vector<TopoDS_Edge>& edges);
+    std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
+    class wireCompare;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

@@ -78,11 +78,6 @@ public:
     const std::vector<int> & getFaceRefs()   const { return faceReferences; };
 
 //begin obs?
-    void projectSurfaces(const TopoDS_Shape   &face,
-                         const TopoDS_Shape   &support,
-                         const Base::Vector3d &direction,
-                         const Base::Vector3d &xaxis,
-                         std::vector<TechDrawGeometry::Face *> &result) const;
     BaseGeom* projectEdge(const TopoDS_Shape &edge,
                           const TopoDS_Shape &support,
                           const Base::Vector3d &direction,
@@ -99,6 +94,8 @@ public:
                                  const Base::Vector3d &xAxis);
     void extractGeometry(edgeClass category, bool visible);
     void update3DRefs();
+    void addFaceGeom(Face * f);
+    void clearFaceGeom();
 
 protected:
     //HLR output

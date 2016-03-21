@@ -332,7 +332,17 @@ void GeometryObject::update3DRefs()
 {
 }
 
+//! empty Face geometry
+void GeometryObject::clearFaceGeom()
+{
+    faceGeom.clear();
+}
 
+//! add a Face to Face Geometry
+void GeometryObject::addFaceGeom(Face* f)
+{
+    faceGeom.push_back(f);
+}
 
 /////////////// bbox routines
 
@@ -664,54 +674,6 @@ TechDrawGeometry::Vertex * GeometryObject::projectVertex(const TopoDS_Shape &ver
     projector.Project(BRep_Tool::Pnt(refVert), prjPnt);
     TechDrawGeometry::Vertex *myVert = new Vertex(prjPnt.X(), prjPnt.Y());
     return myVert;
-#endif
-}
-
-//!only used by DrawViewSection, but code is #if 0, so obs?
-//don't need anything projected. DVS already has Compound of section faces. just need to turn those into
-// BaseGeom::Face with tag for shading? like addGeomFromCompound without verts
-void GeometryObject::projectSurfaces(const TopoDS_Shape &face,
-                                     const TopoDS_Shape &support,
-                                     const Base::Vector3d &direction,
-                                     const Base::Vector3d &xaxis,
-                                     std::vector<TechDrawGeometry::Face *> &projFaces) const
-{
-    if(face.IsNull()) {
-        throw Base::Exception("Projected shape is null");
-        return;
-    }
-#if 0
-    gp_Pnt supportCentre = findCentroid(support, direction, xaxis);
-
-    // TODO: We used to invert Y twice here, make sure that wasn't intentional
-    gp_Trsf mat;
-    mat.SetMirror(gp_Ax2(supportCentre, gp_Dir(0, 1, 0)));
-    gp_Trsf matScale;
-    matScale.SetScale(supportCentre, Scale);
-    mat.Multiply(matScale);
-
-    BRepBuilderAPI_Transform mkTrfScale(face, mat);
-
-    gp_Ax2 transform;
-    transform = gp_Ax2(supportCentre,
-                       gp_Dir(direction.x, direction.y, direction.z),
-                       gp_Dir(xaxis.x, xaxis.y, xaxis.z));
-
-    HLRBRep_Algo *brep_hlr = new HLRBRep_Algo();
-    brep_hlr->Add(mkTrfScale.Shape());
-
-    HLRAlgo_Projector projector( transform );
-    brep_hlr->Projector(projector);
-    brep_hlr->Update();
-    brep_hlr->Hide();
-
-    Base::Console().Log("GeometryObject::projectSurfaces - projecting face\n");
-
-    // Extract Faces
-    std::vector<int> projFaceRefs;
-
-    extractFaces(brep_hlr, mkTrfScale.Shape(), true, WithSmooth, projFaces, projFaceRefs);
-    delete brep_hlr;
 #endif
 }
 

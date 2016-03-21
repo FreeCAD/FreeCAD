@@ -45,9 +45,9 @@ using namespace TechDrawGui;
 
 QGIFace::QGIFace(int ref) :
     reference(ref),
-    //m_fill(Qt::NoBrush)
+    m_fill(Qt::NoBrush)
     //m_fill(Qt::CrossPattern)
-    m_fill(Qt::Dense3Pattern)
+    //m_fill(Qt::Dense3Pattern)
     //m_fill(Qt::Dense6Pattern)
 {
     setCacheMode(QGraphicsItem::NoCache);
@@ -63,7 +63,7 @@ QGIFace::QGIFace(int ref) :
     m_colPre = fcColor.asQColor();
 
     //m_pen.setStyle(Qt::NoPen);
-    m_brush.setStyle(m_fill);
+    //m_brush.setStyle(m_fill);
     setPrettyNormal();
 }
 
@@ -95,23 +95,23 @@ void QGIFace::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIFace::setPrettyNormal() {
     m_pen.setColor(m_colNormal);
-    m_brush.setColor(m_colNormal);
+    //m_brush.setColor(m_colNormal);
     setPen(m_pen);
-    setBrush(m_brush);
+    //setBrush(m_brush);
 }
 
 void QGIFace::setPrettyPre() {
     m_pen.setColor(m_colPre);
-    m_brush.setColor(m_colPre);
+    //m_brush.setColor(m_colPre);
     setPen(m_pen);
-    setBrush(m_brush);
+    //setBrush(m_brush);
 }
 
 void QGIFace::setPrettySel() {
     m_pen.setColor(m_colSel);
-    m_brush.setColor(m_colSel);
+    //m_brush.setColor(m_colSel);
     setPen(m_pen);
-    setBrush(m_brush);
+    //setBrush(m_brush);
 }
 
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
@@ -119,8 +119,7 @@ void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     //myOption.state &= ~QStyle::State_Selected;   //temp for debugging
 
     //m_pen.setColor(m_colCurrent);
-    setPen(m_pen);
-    setBrush(m_brush);
+    //setPen(m_pen);
+    //setBrush(m_brush);
     QGraphicsPathItem::paint (painter, &myOption, widget);
 }
-
