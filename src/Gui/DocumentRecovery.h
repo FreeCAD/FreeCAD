@@ -50,7 +50,13 @@ public:
 
 protected:
     void closeEvent(QCloseEvent*);
+    void contextMenuEvent(QContextMenuEvent*);
     QString createProjectFile(const QString&);
+    void clearDirectory(const QFileInfo&);
+
+protected Q_SLOTS:
+    void on_buttonCleanup_clicked();
+    void onDeleteSection();
 
 private:
     static std::string doctools;
