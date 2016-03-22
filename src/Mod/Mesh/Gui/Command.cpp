@@ -1665,7 +1665,9 @@ void CmdMeshMerge::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
         const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
-        newMesh->addMesh(mesh);
+        MeshCore::MeshKernel kernel = mesh.getKernel();
+        kernel.Transform(mesh.getTransform());
+        newMesh->addMesh(kernel);
     }
 
     pcFeature->Mesh.finishEditing();
