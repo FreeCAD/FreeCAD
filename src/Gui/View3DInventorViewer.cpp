@@ -475,7 +475,7 @@ void View3DInventorViewer::init()
     // Settings
     setSeekTime(0.4f);
 
-    if(isSeekValuePercentage() == false)
+    if (isSeekValuePercentage() == false)
         setSeekValueAsPercentage(true);
 
     setSeekDistance(100);
@@ -608,12 +608,10 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     }
 
     SoSeparator* fore = pcProvider->getFrontRoot();
-
     if (fore)
         foregroundroot->addChild(fore);
 
     SoSeparator* back = pcProvider->getBackRoot();
-
     if (back)
         backgroundroot->addChild(back);
 
@@ -634,12 +632,10 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     }
 
     SoSeparator* fore = pcProvider->getFrontRoot();
-
     if (fore)
         foregroundroot->removeChild(fore);
 
     SoSeparator* back = pcProvider->getBackRoot();
-
     if (back)
         backgroundroot->removeChild(back);
 
@@ -742,7 +738,7 @@ void View3DInventorViewer::setGradientBackground(bool on)
 {
     if (on && backgroundroot->findChild(pcBackGround) == -1)
         backgroundroot->addChild(pcBackGround);
-    else if(!on && backgroundroot->findChild(pcBackGround) != -1)
+    else if (!on && backgroundroot->findChild(pcBackGround) != -1)
         backgroundroot->removeChild(pcBackGround);
 }
 
@@ -811,12 +807,15 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
         return; // nothing to do
 
     Base::BaseClass* base = static_cast<Base::BaseClass*>(t.createInstance());
-
     if (!base)
         return;
 
     if (!base->getTypeId().isDerivedFrom(NavigationStyle::getClassTypeId())) {
         delete base;
+#if FC_DEBUG
+        SoDebugError::postWarning("View3DInventorViewer::setNavigationType",
+                                  "Navigation object must be of type NavigationStyle.");
+#endif // FC_DEBUG
         return;
     }
 
@@ -850,6 +849,11 @@ SbBool View3DInventorViewer::isBacklight(void) const
 void View3DInventorViewer::setSceneGraph(SoNode* root)
 {
     inherited::setSceneGraph(root);
+    if (!root) {
+        _ViewProviderSet.clear();
+        _ViewProviderMap.clear();
+        editViewProvider = 0;
+    }
 
     SoSearchAction sa;
     sa.setNode(this->backlight);
@@ -1093,7 +1097,6 @@ std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(const std::vector<SbVec2
     float fRatio = vp.getViewportAspectRatio();
 
     std::vector<SbVec2f> poly;
-
     for (std::vector<SbVec2s>::const_iterator it = pnts.begin(); it != pnts.end(); ++it) {
         SbVec2s loc = *it - op;
         SbVec2f pos((float)loc[0]/(float)sp[0], (float)loc[1]/(float)sp[1]);
@@ -1106,7 +1109,7 @@ std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(const std::vector<SbVec2
             pX = (pX - 0.5f*dX) * fRatio + 0.5f*dX;
             pos.setValue(pX,pY);
         }
-        else if(fRatio < 1.0f) {
+        else if (fRatio < 1.0f) {
             pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
             pos.setValue(pX,pY);
         }
@@ -1136,7 +1139,7 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
         if (fi.hasExtension("svg")) {
             vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
         }
-        else if(fi.hasExtension("idtf")) {
+        else if (fi.hasExtension("idtf")) {
             vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
         }
         else {
@@ -1144,7 +1147,6 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
         }
 
         SoVectorOutput* out = vo->getOutput();
-
         if (!out || !out->openFile(filename)) {
             std::ostringstream a_out;
             a_out << "Cannot open file '" << filename << "'";
@@ -1207,9 +1209,8 @@ std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItems() const
 std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItemsOfType(const Base::Type& type) const
 {
     std::list<GLGraphicsItem*> items;
-
-    for(std::list<GLGraphicsItem*>::const_iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it) {
-        if((*it)->isDerivedFrom(type))
+    for (std::list<GLGraphicsItem*>::const_iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it) {
+        if ((*it)->isDerivedFrom(type))
             items.push_back(*it);
     }
 
@@ -1329,14 +1330,14 @@ void View3DInventorViewer::renderFramebuffer()
     glColor3f(1.0, 1.0, 1.0);
 
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex2f(-1.0, -1.0f);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex2f(1.0f, -1.0f);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex2f(1.0f, 1.0f);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex2f(-1.0f, 1.0f);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex2f(-1.0, -1.0f);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex2f(1.0f, -1.0f);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex2f(1.0f, 1.0f);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex2f(-1.0f, 1.0f);
     glEnd();
 
     printDimension();
@@ -1513,7 +1514,7 @@ void View3DInventorViewer::printDimension()
 
         if (dimX > dimY)
             fWidth *= ((float)dimX)/((float)dimY);
-        else if(dimX < dimY)
+        else if (dimX < dimY)
             fHeight *= ((float)dimY)/((float)dimX);
 
         float fLog = float(log10(fWidth)), fFac;
@@ -1621,7 +1622,6 @@ void View3DInventorViewer::setViewDirection(SbVec3f dir)
         cam->orientation.setValue(SbRotation(SbVec3f(0, 0, -1), dir));
 }
 
-
 SbVec3f View3DInventorViewer::getUpDirection() const
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
@@ -1663,7 +1663,7 @@ SbVec3f View3DInventorViewer::getPointOnScreen(const SbVec2s& pnt) const
     if (fRatio > 1.0f) {
         pX = (pX - 0.5f*dX) * fRatio + 0.5f*dX;
     }
-    else if(fRatio < 1.0f) {
+    else if (fRatio < 1.0f) {
         pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
     }
 
@@ -1933,7 +1933,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     }
     else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())) {
         float movelength = sphere.getRadius()/float(tan(static_cast<SoPerspectiveCamera*>
-                           (cam)->heightAngle.getValue() / 2.0));
+            (cam)->heightAngle.getValue() / 2.0));
         pos = box.getCenter() - direction * movelength;
     }
 
@@ -2088,7 +2088,7 @@ void View3DInventorViewer::viewSelection()
     SoGroup* root = new SoGroup();
     root->ref();
 
-    for(int i=0; i<countPaths; i++) {
+    for (int i=0; i<countPaths; i++) {
         SoPath* path = paths[i];
         SoNode* node = path->getTail();
 
@@ -2109,10 +2109,8 @@ void View3DInventorViewer::viewSelection()
     root->ref();
 
     std::vector<App::DocumentObject*> selection = Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-
     for (std::vector<App::DocumentObject*>::iterator it = selection.begin(); it != selection.end(); ++it) {
         ViewProvider* vp = Application::Instance->getViewProvider(*it);
-
         if (vp) {
             root->addChild(vp->getRoot());
         }
@@ -2260,13 +2258,12 @@ void View3DInventorViewer::afterRealizeHook(void)
 // to make sure the mouse pointer cursor is updated.
 void View3DInventorViewer::setViewing(SbBool enable)
 {
-
     if (this->isViewing() == enable) {
         return;
     }
 
     navigation->setViewingMode(enable ?
-                               NavigationStyle::IDLE : NavigationStyle::INTERACT);
+        NavigationStyle::IDLE : NavigationStyle::INTERACT);
     inherited::setViewing(enable);
 }
 
@@ -2606,7 +2603,6 @@ void View3DInventorViewer::setComponentCursor(QCursor cursor)
 void View3DInventorViewer::selectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
-
     if (vp && vp->useNewSelectionModel()) {
     }
 }
@@ -2614,7 +2610,6 @@ void View3DInventorViewer::selectCB(void* viewer, SoPath* path)
 void View3DInventorViewer::deselectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
-
     if (vp && vp->useNewSelectionModel()) {
     }
 }
@@ -2622,7 +2617,6 @@ void View3DInventorViewer::deselectCB(void* viewer, SoPath* path)
 SoPath* View3DInventorViewer::pickFilterCB(void* viewer, const SoPickedPoint* pp)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(pp->getPath());
-
     if (vp && vp->useNewSelectionModel()) {
         std::string e = vp->getElement(pp->getDetail());
         vp->getSelectionShape(e.c_str());
@@ -2652,10 +2646,9 @@ void View3DInventorViewer::removeEventCallback(SoType eventtype, SoEventCallback
 ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 {
     // FIXME Use the viewprovider map introduced for the selection
-    for(std::set<ViewProvider*>::const_iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it) {
-        for(int i = 0; i<path->getLength(); i++) {
+    for (std::set<ViewProvider*>::const_iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it) {
+        for (int i = 0; i<path->getLength(); i++) {
             SoNode* node = path->getNode(i);
-
             if ((*it)->getRoot() == node) {
                 return (*it);
             }
@@ -2668,12 +2661,11 @@ ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) const
 {
     // Make sure I'm the lowest LocHL in the pick path!
-    for(int i = 0; i < path->getLength(); i++) {
+    for (int i = 0; i < path->getLength(); i++) {
         SoNode* node = path->getNodeFromTail(i);
 
         if (node->isOfType(SoSeparator::getClassTypeId())) {
             std::map<SoSeparator*,ViewProvider*>::const_iterator it = _ViewProviderMap.find(static_cast<SoSeparator*>(node));
-
             if (it != _ViewProviderMap.end()) {
                 return it->second;
             }
@@ -2686,9 +2678,8 @@ ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) 
 std::vector<ViewProvider*> View3DInventorViewer::getViewProvidersOfType(const Base::Type& typeId) const
 {
     std::vector<ViewProvider*> views;
-
-    for(std::set<ViewProvider*>::const_iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it) {
-        if((*it)->getTypeId().isDerivedFrom(typeId)) {
+    for (std::set<ViewProvider*>::const_iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(typeId)) {
             views.push_back(*it);
         }
     }
