@@ -352,7 +352,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>License...</source>
-        <translation>許可證...</translation>
+        <translation>授權...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
@@ -1583,11 +1583,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>License information:</source>
-        <translation>版權資訊:</translation>
+        <translation>授權申明：</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation>版權URL</translation>
+        <translation>授權連結</translation>
     </message>
     <message>
         <source>Open in browser</source>
@@ -1797,14 +1797,6 @@ Specify another directory, please.</source>
         <translation>相機類型</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">正視圖角度的彩現</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">透視彩現</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1874,18 +1866,18 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>以正視算繪(&amp;t)</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>以透視算繪(&amp;g)</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 導航</translation>
+        <translation type="obsolete">%1 導航</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -2059,7 +2051,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation>授權及版權</translation>
+        <translation>創作及授權</translation>
     </message>
     <message>
         <source>Author name</source>
@@ -2131,7 +2123,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>License URL</source>
-        <translation>版權URL</translation>
+        <translation>授權連結</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
@@ -3532,7 +3524,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF 檔</translation>
     </message>
 </context>
 <context>
@@ -3772,7 +3764,7 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>There is a rendering issue on MacOS.</source>
-        <translation>於 MacOS 上有渲染的問題</translation>
+        <translation>於 MacOS 上有算繪的問題</translation>
     </message>
     <message>
         <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
@@ -4071,7 +4063,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
 </context>
 <context>
@@ -4335,15 +4327,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF 檔</translation>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>開啟檔案失敗</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>無法開啟並寫入檔案 &apos;%1&apos; </translation>
     </message>
 </context>
 <context>
@@ -4807,7 +4799,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 導航</translation>
+        <translation type="obsolete">%1 導航</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -5256,7 +5248,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Please select first the objects you want to export.</source>
-        <translation>請選擇您想輸出之第一個物件</translation>
+        <translation>請選擇您想匯出之第一個物件</translation>
     </message>
 </context>
 <context>

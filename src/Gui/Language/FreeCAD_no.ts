@@ -1800,14 +1800,6 @@ Vennligst angi en annen mappe.</translation>
         <translation>Kameratype</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ortografisk presentasjonsgjengivelse</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektiv presentasjonsgjengivelse</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1877,18 +1869,18 @@ Vennligst angi en annen mappe.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1navigasjon</translation>
+        <translation type="obsolete">%1navigasjon</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4821,7 +4813,7 @@ Vær oppmerksom på at punktet hvor du klikker betyr noe.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1navigasjon</translation>
+        <translation type="obsolete">%1navigasjon</translation>
     </message>
     <message>
         <source>Move annotation</source>

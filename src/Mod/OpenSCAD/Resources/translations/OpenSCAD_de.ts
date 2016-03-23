@@ -126,7 +126,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>Debug Informationen in der Konsole ausgeben</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="InitGui.py" line="131"/>
+      <location filename="InitGui.py" line="80"/>
       <source>OpenSCAD Part tools</source>
       <translation>OpenSCAD Part-Werkzeuge</translation>
     </message>
@@ -354,7 +354,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="129"/>
+      <location filename="InitGui.py" line="78"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCADTools</translation>
     </message>

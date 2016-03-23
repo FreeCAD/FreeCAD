@@ -682,42 +682,54 @@ void ManualAlignment::setViewingDirections(const Base::Vector3d& view1, const Ba
         return;
 
     {
-        SbRotation rot;
-        rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), SbVec3f(-view1.x,-view1.y,-view1.z));
+        SbVec3f vz(-view1.x, -view1.y, -view1.z);
+        vz.normalize();
+        SbVec3f vy(up1.x, up1.y, up1.z);
+        vy.normalize();
+        SbVec3f vx = vy.cross(vz);
+        vy = vz.cross(vx);
 
-        SbRotation rot2;
-        SbVec3f up(0.0f, 1.0f, 0.0f);
-        rot.multVec(up, up);
+        SbMatrix rot = SbMatrix::identity();
+        rot[0][0] = vx[0];
+        rot[0][1] = vx[1];
+        rot[0][2] = vx[2];
 
-        // avoid possible problems with roundoff errors
-        SbVec3f upDir(up1.x, up1.y, up1.z);
-        float dot = up.dot(upDir);
-        if (dot < -0.99f) {
-            up = -upDir;
-        }
+        rot[1][0] = vy[0];
+        rot[1][1] = vy[1];
+        rot[1][2] = vy[2];
 
-        rot2.setValue(up, upDir);
-        myViewer->getViewer(0)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
+        rot[2][0] = vz[0];
+        rot[2][1] = vz[1];
+        rot[2][2] = vz[2];
+
+        SbRotation total(rot);
+        myViewer->getViewer(0)->getSoRenderManager()->getCamera()->orientation.setValue(total);
         myViewer->getViewer(0)->viewAll();
     }
 
     {
-        SbRotation rot;
-        rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), SbVec3f(-view2.x,-view2.y,-view2.z));
+        SbVec3f vz(-view2.x, -view2.y, -view2.z);
+        vz.normalize();
+        SbVec3f vy(up2.x, up2.y, up2.z);
+        vy.normalize();
+        SbVec3f vx = vy.cross(vz);
+        vy = vz.cross(vx);
 
-        SbRotation rot2;
-        SbVec3f up(0.0f, 1.0f, 0.0f);
-        rot.multVec(up, up);
+        SbMatrix rot = SbMatrix::identity();
+        rot[0][0] = vx[0];
+        rot[0][1] = vx[1];
+        rot[0][2] = vx[2];
 
-        // avoid possible problems with roundoff errors
-        SbVec3f upDir(up2.x, up2.y, up2.z);
-        float dot = up.dot(upDir);
-        if (dot < -0.99f) {
-            up = -upDir;
-        }
+        rot[1][0] = vy[0];
+        rot[1][1] = vy[1];
+        rot[1][2] = vy[2];
 
-        rot2.setValue(up, upDir);
-        myViewer->getViewer(1)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
+        rot[2][0] = vz[0];
+        rot[2][1] = vz[1];
+        rot[2][2] = vz[2];
+
+        SbRotation total(rot);
+        myViewer->getViewer(1)->getSoRenderManager()->getCamera()->orientation.setValue(total);
         myViewer->getViewer(1)->viewAll();
     }
 }

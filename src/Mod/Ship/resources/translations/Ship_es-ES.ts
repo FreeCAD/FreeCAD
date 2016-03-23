@@ -285,7 +285,7 @@
     <message>
       <location filename="TankInstance.py" line="129"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>La operación de volumen del tanque falló. La herramienta está intentarlo mover ligeramente la posición de superficie libre</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="133"/>
@@ -355,7 +355,7 @@
     <message>
       <location filename="Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Operación booleana falló al intentar conseguir el lado bajo el agua. La herramienta está intentando ejecutar esa operación moviendo ligeramente la posición de superficie libre</translation>
     </message>
     <message>
       <location filename="Tools.py" line="198"/>
@@ -466,7 +466,7 @@
     <message>
       <location filename="TaskPanel.py" line="267"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>El barco será rotado al ángulo de compensación de equilibrio para cada ángulo de balanceo. Esto incrementará significativamente el tiempo de cálculo requerido</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="294"/>

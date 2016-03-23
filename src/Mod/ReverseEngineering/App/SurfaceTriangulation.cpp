@@ -49,6 +49,7 @@
 #include <pcl/surface/ear_clipping.h>
 #include <pcl/common/common.h>
 #include <boost/random.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #ifndef PCL_REVISION_VERSION
 #define PCL_REVISION_VERSION 0
@@ -79,7 +80,8 @@ void SurfaceTriangulation::perform(int ksearch)
 
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+            cloud->push_back(PointXYZ(it->x, it->y, it->z));
     }
 
     // Create search tree
@@ -142,14 +144,16 @@ void SurfaceTriangulation::perform(const std::vector<Base::Vector3f>& normals)
     for (std::size_t index=0; index<num_points; index++) {
         const Base::Vector3f& p = points[index];
         const Base::Vector3f& n = normals[index];
-        PointNormal pn;
-        pn.x = p.x;
-        pn.y = p.y;
-        pn.z = p.z;
-        pn.normal_x = n.x;
-        pn.normal_y = n.y;
-        pn.normal_z = n.z;
-        cloud_with_normals->push_back(pn);
+        if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+            PointNormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            cloud_with_normals->push_back(pn);
+        }
     }
 
     // Create search tree
@@ -204,7 +208,8 @@ void PoissonReconstruction::perform(int ksearch)
 
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+            cloud->push_back(PointXYZ(it->x, it->y, it->z));
     }
 
     // Create search tree
@@ -261,14 +266,16 @@ void PoissonReconstruction::perform(const std::vector<Base::Vector3f>& normals)
     for (std::size_t index=0; index<num_points; index++) {
         const Base::Vector3f& p = points[index];
         const Base::Vector3f& n = normals[index];
-        PointNormal pn;
-        pn.x = p.x;
-        pn.y = p.y;
-        pn.z = p.z;
-        pn.normal_x = n.x;
-        pn.normal_y = n.y;
-        pn.normal_z = n.z;
-        cloud_with_normals->push_back(pn);
+        if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+            PointNormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            cloud_with_normals->push_back(pn);
+        }
     }
 
     // Create search tree
@@ -312,7 +319,8 @@ void GridReconstruction::perform(int ksearch)
 
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+            cloud->push_back(PointXYZ(it->x, it->y, it->z));
     }
 
     // Create search tree
@@ -367,14 +375,16 @@ void GridReconstruction::perform(const std::vector<Base::Vector3f>& normals)
     for (std::size_t index=0; index<num_points; index++) {
         const Base::Vector3f& p = points[index];
         const Base::Vector3f& n = normals[index];
-        PointNormal pn;
-        pn.x = p.x;
-        pn.y = p.y;
-        pn.z = p.z;
-        pn.normal_x = n.x;
-        pn.normal_y = n.y;
-        pn.normal_z = n.z;
-        cloud_with_normals->push_back(pn);
+        if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+            PointNormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            cloud_with_normals->push_back(pn);
+        }
     }
 
     // Create search tree
@@ -411,7 +421,7 @@ ImageTriangulation::ImageTriangulation(int width, int height, const Points::Poin
 
 void ImageTriangulation::perform()
 {
-    if (myPoints.size() != width * height)
+    if (myPoints.size() != static_cast<std::size_t>(width * height))
         throw Base::RuntimeError("Number of points doesn't match with given width and height");
 
     //construct dataset
@@ -495,7 +505,8 @@ void Reen::MarchingCubesRBF::perform(int ksearch)
 
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+            cloud->push_back(PointXYZ(it->x, it->y, it->z));
     }
 
     // Create search tree
@@ -551,14 +562,16 @@ void Reen::MarchingCubesRBF::perform(const std::vector<Base::Vector3f>& normals)
     for (std::size_t index=0; index<num_points; index++) {
         const Base::Vector3f& p = points[index];
         const Base::Vector3f& n = normals[index];
-        PointNormal pn;
-        pn.x = p.x;
-        pn.y = p.y;
-        pn.z = p.z;
-        pn.normal_x = n.x;
-        pn.normal_y = n.y;
-        pn.normal_z = n.z;
-        cloud_with_normals->push_back(pn);
+        if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+            PointNormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            cloud_with_normals->push_back(pn);
+        }
     }
 
     // Create search tree
@@ -602,7 +615,8 @@ void Reen::MarchingCubesHoppe::perform(int ksearch)
 
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        cloud->push_back(PointXYZ(it->x, it->y, it->z));
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
+            cloud->push_back(PointXYZ(it->x, it->y, it->z));
     }
 
     // Create search tree
@@ -657,14 +671,16 @@ void Reen::MarchingCubesHoppe::perform(const std::vector<Base::Vector3f>& normal
     for (std::size_t index=0; index<num_points; index++) {
         const Base::Vector3f& p = points[index];
         const Base::Vector3f& n = normals[index];
-        PointNormal pn;
-        pn.x = p.x;
-        pn.y = p.y;
-        pn.z = p.z;
-        pn.normal_x = n.x;
-        pn.normal_y = n.y;
-        pn.normal_z = n.z;
-        cloud_with_normals->push_back(pn);
+        if (!boost::math::isnan(p.x) && !boost::math::isnan(p.y) && !boost::math::isnan(p.z)) {
+            PointNormal pn;
+            pn.x = p.x;
+            pn.y = p.y;
+            pn.z = p.z;
+            pn.normal_x = n.x;
+            pn.normal_y = n.y;
+            pn.normal_z = n.z;
+            cloud_with_normals->push_back(pn);
+        }
     }
 
     // Create search tree

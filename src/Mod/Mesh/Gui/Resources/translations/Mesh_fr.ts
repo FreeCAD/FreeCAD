@@ -858,7 +858,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>
@@ -1392,7 +1392,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Import-Export</source>
-        <translation>Import-Export</translation>
+        <translation>Importer-Exporter</translation>
     </message>
 </context>
 <context>

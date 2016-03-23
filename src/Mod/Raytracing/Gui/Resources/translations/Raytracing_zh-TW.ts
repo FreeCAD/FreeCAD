@@ -119,12 +119,12 @@
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation>彩現(&amp;)</translation>
+        <translation>算繪(&amp;)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation>以外部彩現器彩現目前的光線追蹤專案</translation>
+        <translation>以外部算繪器算繪目前的光線追蹤專案</translation>
     </message>
 </context>
 <context>
@@ -365,7 +365,7 @@ Do you want to continue?</source>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -400,7 +400,7 @@ Do you want to continue?</source>
         <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
-        <translation>彩現影像</translation>
+        <translation>算繪影像</translation>
     </message>
     <message>
         <source>No Povray project to insert</source>
@@ -429,7 +429,7 @@ Do you want to continue?</source>
     <message>
         <location line="+103"/>
         <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation>若您想要於FreeCAD中執行彩現，請輸入 POV-Ray 執行檔之路徑</translation>
+        <translation>若您想要於FreeCAD中執行算繪，請輸入 POV-Ray 執行檔之路徑</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -444,7 +444,7 @@ Do you want to continue?</source>
     <message>
         <location line="+9"/>
         <source>The POV-Ray parameters to be passed to the render.</source>
-        <translation>POV-Ray 參數傳被送至彩現器</translation>
+        <translation>POV-Ray 參數傳被送至算繪器</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -462,9 +462,14 @@ Do you want to continue?</source>
         <translation>攝影機檔案名稱:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation>網格最大誤差：</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
-        <translation>彩現</translation>
+        <translation>算繪</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -479,7 +484,7 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source>The width of the rendered image</source>
-        <translation>彩現影像之寬度</translation>
+        <translation>算繪影像之寬度</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -489,7 +494,7 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source>The height of the rendered image</source>
-        <translation>彩現影像之高度</translation>
+        <translation>算繪影像之高度</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -529,12 +534,11 @@ Do you want to continue?</source>
         <translation>網格匯出設定</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>最大網格偏差：</translation>
+        <translation type="obsolete">最大網格偏差：</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>不計算頂點法線</translation>
     </message>

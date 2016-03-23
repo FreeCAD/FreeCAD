@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru" sourcelanguage="en">
+<TS version="2.1" language="ru" sourcelanguage="en">
   <context>
     <name>Active</name>
     <message>
@@ -166,22 +166,6 @@
     </message>
   </context>
   <context>
-    <name>Machine Name</name>
-    <message>
-      <location filename="PathMachine.py" line="44"/>
-      <source>Name of the Machine that will use the CNC program</source>
-      <translation>Имя станка, который будет использовать УП</translation>
-    </message>
-  </context>
-  <context>
-    <name>Machine Units</name>
-    <message>
-      <location filename="PathMachine.py" line="48"/>
-      <source>Units that the machine works in, ie Metric or Inch</source>
-      <translation>Режим работы станка, в Метрической или Дюймовой системе</translation>
-    </message>
-  </context>
-  <context>
     <name>OffsetExtra</name>
     <message>
       <location filename="PathProfile.py" line="90"/>
@@ -206,34 +190,31 @@
     </message>
   </context>
   <context>
-    <name>Pat_hHop</name>
-  </context>
-  <context>
     <name>Path</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="85"/>
       <source>Project Setup</source>
       <translation>Настройка проекта</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
-      <source>Path Modification</source>
-      <translation>Изменения траектории</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="114"/>
+      <location filename="InitGui.py" line="86"/>
       <source>Partial Commands</source>
       <translation type="unfinished">Partial Commands</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="87"/>
       <source>New Operations</source>
-      <translation type="unfinished">New Operations</translation>
+      <translation>Новые операции</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="88"/>
+      <source>Path Modification</source>
+      <translation>Изменения траектории</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="88"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Путь</translation>
     </message>
   </context>
   <context>
@@ -307,19 +288,6 @@
       <location filename="PathInspect.py" line="131"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
       <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathMachine</name>
-    <message>
-      <location filename="PathMachine.py" line="202"/>
-      <source>Machine Object</source>
-      <translation>Машинный объект</translation>
-    </message>
-    <message>
-      <location filename="PathMachine.py" line="210"/>
-      <source>Create a Machine object</source>
-      <translation>Создать машинный объект</translation>
     </message>
   </context>
   <context>
@@ -487,7 +455,7 @@
     <message>
       <location filename="PathCopy.py" line="92"/>
       <source>Create Copy</source>
-      <translation type="unfinished">Create Copy</translation>
+      <translation>Создать копию</translation>
     </message>
   </context>
   <context>
@@ -748,6 +716,64 @@
     </message>
   </context>
   <context>
+    <name>Path_Machine</name>
+    <message>
+      <location filename="PathMachine.py" line="44"/>
+      <source>Name of the Machine that will use the CNC program</source>
+      <translation type="unfinished">Name of the Machine that will use the CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="46"/>
+      <source>Select the Post Processor file for this machine</source>
+      <translation type="unfinished">Select the Post Processor file for this machine</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="48"/>
+      <source>Units that the machine works in, ie Metric or Inch</source>
+      <translation type="unfinished">Units that the machine works in, ie Metric or Inch</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="51"/>
+      <source>The tooltable used for this CNC program</source>
+      <translation type="unfinished">The tooltable used for this CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="55"/>
+      <source>The Maximum distance in X the machine can travel</source>
+      <translation type="unfinished">The Maximum distance in X the machine can travel</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="59"/>
+      <source>The Minimum distance in X the machine can travel</source>
+      <translation type="unfinished">The Minimum distance in X the machine can travel</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="61"/>
+      <source>Home position of machine, in X (mainly for visualization)</source>
+      <translation type="unfinished">Home position of machine, in X (mainly for visualization)</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="62"/>
+      <source>Home position of machine, in Y (mainly for visualization)</source>
+      <translation type="unfinished">Home position of machine, in Y (mainly for visualization)</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="63"/>
+      <source>Home position of machine, in Z (mainly for visualization)</source>
+      <translation type="unfinished">Home position of machine, in Z (mainly for visualization)</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="202"/>
+      <source>Machine Object</source>
+      <translation type="unfinished">Machine Object</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="210"/>
+      <source>Create a Machine object</source>
+      <translation type="unfinished">Create a Machine object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Plane</name>
     <message>
       <location filename="PathPlane.py" line="114"/>
@@ -850,7 +876,7 @@
     <message>
       <location filename="PathProject.py" line="135"/>
       <source>Create Project</source>
-      <translation type="unfinished">Create Project</translation>
+      <translation>Создать проект</translation>
     </message>
   </context>
   <context>
@@ -936,14 +962,6 @@
       <location filename="PathDrilling.py" line="54"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
       <translation>инкрементальный шаг заглубления сверла для вывода стружки</translation>
-    </message>
-  </context>
-  <context>
-    <name>Post Processor</name>
-    <message>
-      <location filename="PathMachine.py" line="46"/>
-      <source>Select the Post Processor file for this machine</source>
-      <translation>Выберите файл постпроцессора для вашего станка</translation>
     </message>
   </context>
   <context>
@@ -1071,14 +1089,6 @@
       <location filename="PathLoadTool.py" line="42"/>
       <source>The active tool</source>
       <translation>Установленный инструмент</translation>
-    </message>
-  </context>
-  <context>
-    <name>Tool Table</name>
-    <message>
-      <location filename="PathMachine.py" line="51"/>
-      <source>The tooltable used for this CNC program</source>
-      <translation>Таблица инструмента, используемая для этой ЧПУ программы</translation>
     </message>
   </context>
   <context>
@@ -1264,14 +1274,14 @@
       <translation>Диаметр</translation>
     </message>
     <message>
-      <location filename="TooltableEditor.py" line="435"/>
-      <source>mm</source>
-      <translation>мм</translation>
-    </message>
-    <message>
       <location filename="TooltableEditor.py" line="426"/>
       <source>Length offset</source>
       <translation>Длина смещения</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="435"/>
+      <source>mm</source>
+      <translation>мм</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="428"/>
@@ -1401,62 +1411,6 @@
     </message>
   </context>
   <context>
-    <name>X Home Position</name>
-    <message>
-      <location filename="PathMachine.py" line="61"/>
-      <source>Home position of machine, in X (mainly for visualization)</source>
-      <translation>Начальная позиция станка, по оси X (в основном для визуализации)</translation>
-    </message>
-  </context>
-  <context>
-    <name>X Maximum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="53"/>
-      <source>The Maximum distance in X the machine can travel</source>
-      <translation>Максимальный размер перемещения станка по оси X</translation>
-    </message>
-  </context>
-  <context>
-    <name>X Minimum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="57"/>
-      <source>The Minimum distance in X the machine can travel</source>
-      <translation>Минимальный размер перемещения станка по оси X</translation>
-    </message>
-  </context>
-  <context>
-    <name>Y Home Position</name>
-    <message>
-      <location filename="PathMachine.py" line="62"/>
-      <source>Home position of machine, in Y (mainly for visualization)</source>
-      <translation>Начальная позиция станка, по оси Y (в основном для визуализации)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Y Maximum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="55"/>
-      <source>The Maximum distance in X the machine can travel</source>
-      <translation>Максимальный размер перемещения станка по оси X</translation>
-    </message>
-  </context>
-  <context>
-    <name>Y Minimum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="59"/>
-      <source>The Minimum distance in X the machine can travel</source>
-      <translation>Минимальный размер перемещения станка по оси X</translation>
-    </message>
-  </context>
-  <context>
-    <name>Z Home Position</name>
-    <message>
-      <location filename="PathMachine.py" line="63"/>
-      <source>Home position of machine, in Z (mainly for visualization)</source>
-      <translation>Начальная позиция станка, по оси Z (в основном для визуализации)</translation>
-    </message>
-  </context>
-  <context>
     <name>extend at end</name>
     <message>
       <location filename="PathProfile.py" line="79"/>
@@ -1486,6 +1440,158 @@
       <location filename="PathProfile.py" line="80"/>
       <source>length of straight segment of toolpath that comes in at angle to last part edge</source>
       <translation>длина прямого сегмента пути начинается на углу первой грани</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPathCompound</name>
+    <message>
+      <location filename="../../Command.cpp" line="53"/>
+      <source>Path</source>
+      <translation>Путь</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="54"/>
+      <source>Compound</source>
+      <translation>Соединить</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="55"/>
+      <source>Creates a compound from selected paths</source>
+      <translation type="unfinished">Creates a compound from selected paths</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPathShape</name>
+    <message>
+      <location filename="../../Command.cpp" line="107"/>
+      <source>Path</source>
+      <translation>Путь</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="108"/>
+      <source>From Shape</source>
+      <translation type="unfinished">From Shape</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="109"/>
+      <source>Creates a path from a selected shape</source>
+      <translation type="unfinished">Creates a path from a selected shape</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgProcessorChooser</name>
+    <message>
+      <location filename="../../DlgProcessorChooser.ui" line="14"/>
+      <source>Choose a processor</source>
+      <translation type="unfinished">Choose a processor</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPath</name>
+    <message>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="14"/>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="26"/>
+      <source>General Path settings</source>
+      <translation type="unfinished">General Path settings</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
+      <source>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</source>
+      <translation type="unfinished">If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="37"/>
+      <source>Automatic project handling</source>
+      <translation type="unfinished">Automatic project handling</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui::DlgProcessorChooser</name>
+    <message>
+      <location filename="../../DlgProcessorChooser.cpp" line="49"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="66"/>
+      <source>None</source>
+      <translation>Ничего</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui::DlgSettingsPathColor</name>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="14"/>
+      <source>Path colors</source>
+      <translation type="unfinished">Path colors</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="20"/>
+      <source>Default Path colors</source>
+      <translation type="unfinished">Default Path colors</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="34"/>
+      <source>Default normal path color</source>
+      <translation type="unfinished">Default normal path color</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="41"/>
+      <source>The default color for new shapes</source>
+      <translation>Цвет по умолчанию для новой формы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="67"/>
+      <source>Default pathline width</source>
+      <translation type="unfinished">Default pathline width</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="74"/>
+      <source>The default line thickness for new shapes</source>
+      <translation>Толщина линии по умолчанию для новой формы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="77"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="102"/>
+      <source>Default path marker color</source>
+      <translation type="unfinished">Default path marker color</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="109"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="142"/>
+      <source>The default line color for new shapes</source>
+      <translation>Цвет линий по умолчанию для новой формы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="135"/>
+      <source>Rapid path color</source>
+      <translation type="unfinished">Rapid path color</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="162"/>
+      <source>Machine extents color</source>
+      <translation type="unfinished">Machine extents color</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui::TaskWidgetPathCompound</name>
+    <message>
+      <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
+      <source>Compound paths</source>
+      <translation type="unfinished">Compound paths</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskDlgPathCompound</name>
+    <message>
+      <location filename="../../TaskDlgPathCompound.ui" line="14"/>
+      <source>Paths list</source>
+      <translation type="unfinished">Paths list</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDlgPathCompound.ui" line="20"/>
+      <source>Reorder children by dragging and dropping them to their correct location</source>
+      <translation type="unfinished">Reorder children by dragging and dropping them to their correct location</translation>
     </message>
   </context>
 </TS>

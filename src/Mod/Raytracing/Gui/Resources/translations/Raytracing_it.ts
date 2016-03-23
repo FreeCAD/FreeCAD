@@ -462,7 +462,12 @@ Do you want to continue?</source>
         <translation>Nome del file della telecamera:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation>Deviazione massima della maglia:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Render</translation>
     </message>
@@ -529,12 +534,11 @@ Do you want to continue?</source>
         <translation>Impostazioni di esportazione mesh</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Massima deviazione della mesh:</translation>
+        <translation type="obsolete">Massima deviazione della mesh:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Non calcolare le normali ai vertici</translation>
     </message>

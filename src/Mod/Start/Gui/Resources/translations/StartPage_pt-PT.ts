@@ -164,11 +164,6 @@
       <translation>Últimos Vídeos</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>Últimas Notícias</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="55"/>
       <source>On the web</source>
       <translation>Na Web</translation>
@@ -302,6 +297,26 @@
       <location filename="StartPage.py" line="109"/>
       <source>Load an FEM example analysis</source>
       <translation>Carregar um exemplo de análise FEM (Finite Element Method)</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>Últimos commits</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>Obter uma versão de desenvolvimento</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>&lt;b&gt;Versões em desenvolvimento&lt;/b&gt; são disponibilizados de vez em quando por membros da comunidade e geralmente contêm as alterações mais recentes, mas são mais susceptíveis de conter bugs.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>Ver todos os commits</translation>
     </message>
   </context>
 </TS>

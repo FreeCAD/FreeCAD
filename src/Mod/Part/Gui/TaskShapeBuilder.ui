@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>182</width>
-    <height>263</height>
+    <width>200</width>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,42 +20,42 @@
       <string>Create shape</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" colspan="2">
+      <item row="0" column="0">
        <widget class="QRadioButton" name="radioButtonEdgeFromVertex">
         <property name="text">
          <string>Edge from vertices</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
+      <item row="1" column="0">
        <widget class="QRadioButton" name="radioButtonFaceFromVertex">
         <property name="text">
          <string>Face from vertices</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item row="2" column="0">
        <widget class="QRadioButton" name="radioButtonFaceFromEdge">
         <property name="text">
          <string>Face from edges</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="3" column="0">
        <widget class="QRadioButton" name="radioButtonShellFromFace">
         <property name="text">
          <string>Shell from faces</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0" colspan="2">
+      <item row="4" column="0">
        <widget class="QRadioButton" name="radioButtonSolidFromShell">
         <property name="text">
          <string>Solid from shell</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2">
+      <item row="5" column="0">
        <widget class="Line" name="line">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -69,14 +69,24 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="7" column="0">
+       <widget class="QCheckBox" name="checkRefine">
+        <property name="text">
+         <string>Refine shape</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
        <widget class="QCheckBox" name="checkFaces">
         <property name="text">
          <string>All faces</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
+      <item row="9" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <spacer name="horizontalSpacer_2">
@@ -128,11 +138,12 @@
  <tabstops>
   <tabstop>radioButtonEdgeFromVertex</tabstop>
   <tabstop>radioButtonFaceFromVertex</tabstop>
-  <tabstop>checkPlanar</tabstop>
   <tabstop>radioButtonFaceFromEdge</tabstop>
   <tabstop>radioButtonShellFromFace</tabstop>
-  <tabstop>checkFaces</tabstop>
   <tabstop>radioButtonSolidFromShell</tabstop>
+  <tabstop>checkPlanar</tabstop>
+  <tabstop>checkRefine</tabstop>
+  <tabstop>checkFaces</tabstop>
   <tabstop>createButton</tabstop>
  </tabstops>
  <resources/>

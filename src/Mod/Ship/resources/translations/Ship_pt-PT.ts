@@ -345,12 +345,12 @@
     <message>
       <location filename="Tools.py" line="302"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Tanque inválido! (o objeto rotulado como '{}' não é um tanque)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Calculando curvas de capacidade</translation>
     </message>
     <message>
       <location filename="Tools.py" line="122"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Ângulo máximo</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>

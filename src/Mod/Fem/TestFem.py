@@ -97,7 +97,7 @@ class FemTest(unittest.TestCase):
     def create_new_material(self):
         self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
         mat = self.new_material_object.Material
-        mat['Name'] = "Steel"
+        mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
         mat['Density'] = "7900 kg/m^3"
@@ -109,16 +109,16 @@ class FemTest(unittest.TestCase):
 
     def create_force_constraint(self):
         self.force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
-        self.force_constraint.References = [(self.box, "Face2")]
-        self.force_constraint.Force = 10.000000
+        self.force_constraint.References = [(self.box, "Face6")]
+        self.force_constraint.Force = 40000.0
         self.force_constraint.Direction = (self.box, ["Edge5"])
         self.force_constraint.Reversed = True
 
     def create_pressure_constraint(self):
         self.pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
         self.pressure_constraint.References = [(self.box, "Face2")]
-        self.pressure_constraint.Pressure = 10.000000
-        self.pressure_constraint.Reversed = True
+        self.pressure_constraint.Pressure = 1000.0
+        self.pressure_constraint.Reversed = False
 
     def force_unix_line_ends(self, line_list):
         new_line_list = []
@@ -306,3 +306,84 @@ class FemTest(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
+
+
+# helpers
+def open_cube_test():
+    cube_file = test_file_dir + '/cube.fcstd'
+    FreeCAD.open(cube_file)
+
+
+def create_cube_test_results():
+    import os
+    import shutil
+    cube_file = test_file_dir + '/cube.fcstd'
+
+    FreeCAD.open(cube_file)
+    import FemGui
+    FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.MechanicalAnalysis)
+    import FemTools
+    fea = FemTools.FemTools()
+
+    # static
+    fea.reset_all()
+    fea.run()
+
+    fea.load_results()
+    stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
+    stats_static = []  # we only have one result object so we are fine
+    for s in stat_types:
+        stats_static.append("{}: {}\n".format(s, fea.get_stats(s)))
+    static_expected_values_file = temp_dir + '/cube_static_expected_values'
+    f = open(static_expected_values_file, 'w')
+    for s in stats_static:
+        f.write(s)
+    f.close()
+
+    # could be added in FemTools to the self object as an Attribut
+    frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
+    dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
+
+    frd_static_test_result_file = temp_dir + '/cube_static.frd'
+    dat_static_test_result_file = temp_dir + '/cube_static.dat'
+    shutil.copyfile(frd_result_file, frd_static_test_result_file)
+    shutil.copyfile(dat_result_file, dat_static_test_result_file)
+
+    # frequency
+    fea.reset_all()
+    fea.set_analysis_type('frequency')
+    fea.set_eigenmode_parameters(1)  # we should only have one result object
+    fea.run()
+
+    fea.load_results()
+    stats_frequency = []  # since we set eigenmodeno. we only have one result object so we are fine
+    for s in stat_types:
+        stats_frequency.append("{}: {}\n".format(s, fea.get_stats(s)))
+    frequency_expected_values_file = temp_dir + '/cube_frequency_expected_values'
+    f = open(frequency_expected_values_file, 'w')
+    for s in stats_frequency:
+        f.write(s)
+    f.close()
+
+    frd_frequency_test_result_file = temp_dir + '/cube_frequency.frd'
+    dat_frequency_test_result_file = temp_dir + '/cube_frequency.dat'
+    shutil.copyfile(frd_result_file, frd_frequency_test_result_file)
+    shutil.copyfile(dat_result_file, dat_frequency_test_result_file)
+
+    print('Results copied to: ' + temp_dir)
+
+
+'''
+update the results in FEM untit tests:
+start FreeCAD
+
+import TestFem
+TestFem.create_cube_test_results()
+
+copy result files from /tmp into the src dirctory
+run make
+start FreeCAD and run FEM unit test
+if FEM unit test is fine --> commit new FEM unit test results
+
+TODO compare the inp file of the helper with the inp file of FEM unit tests
+'''

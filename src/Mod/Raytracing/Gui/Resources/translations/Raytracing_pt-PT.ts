@@ -461,7 +461,12 @@ Do you want to continue?</source>
         <translation>Nome do ficheiro da câmara:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation>Desvio Max. de malha:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Processador</translation>
     </message>
@@ -528,12 +533,11 @@ Do you want to continue?</source>
         <translation>Definições de Exportação da Malha</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Desvio máximo da malha:</translation>
+        <translation type="obsolete">Desvio máximo da malha:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Não calcular vértice normal</translation>
     </message>

@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished">Merge</translation>
+        <translation>Egyesítés</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished">Merges selected meshes into one</translation>
+        <translation>Egyesíti a kiválasztott hálótesteket</translation>
     </message>
 </context>
 <context>
@@ -465,11 +465,11 @@
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Trim mesh with a plane</translation>
+        <translation>Egy síkkal metszi a hálótestet</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Trims a mesh with a plane</translation>
+        <translation>Egy síkkal metsz egy hálótestet</translation>
     </message>
 </context>
 <context>
@@ -585,7 +585,7 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation>Nem szthatók</translation>
+        <translation>Nem szétágazó</translation>
     </message>
     <message>
         <source>Self-intersections</source>
@@ -632,7 +632,7 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation>Nem szthatók</translation>
+        <translation>Nem szétágazó</translation>
     </message>
     <message>
         <source>Cannot remove non-manifolds</source>
@@ -648,7 +648,7 @@
     </message>
     <message>
         <source>%1 flipped normals</source>
-        <translation>%1 tükrözött normalisok</translation>
+        <translation>%1 tükrözött normálisok</translation>
     </message>
     <message>
         <source>No non-manifolds</source>
@@ -730,7 +730,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>%1 folds on surface</source>
-        <translation>%1 felület hajlítása</translation>
+        <translation>%1 hajlítás a felületen</translation>
     </message>
     <message>
         <source>Folds</source>
@@ -839,7 +839,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
         <source>Mesh Formats</source>
-        <translation type="unfinished">Mesh Formats</translation>
+        <translation>Hálótest formátumok</translation>
     </message>
     <message>
         <source>Export</source>
@@ -855,11 +855,11 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Maximum mesh deviation</source>
-        <translation type="unfinished">Maximum mesh deviation</translation>
+        <translation>Maximális hálótest eltérés</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>
@@ -965,7 +965,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation>Csak kiválasztott</translation>
     </message>
 </context>
 <context>
@@ -1150,7 +1150,7 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation>Kérjük válasszon egy síkot, mellyel kimetszi a hálótestet.</translation>
     </message>
 </context>
 <context>
@@ -1256,7 +1256,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>The mesh &apos;%1&apos; is a solid.</source>
-        <translation>A(z)&apos;%1&apos; háló egy szilárd test.</translation>
+        <translation>A(z) &apos;%1&apos; háló egy szilárd test.</translation>
     </message>
     <message>
         <source>The mesh &apos;%1&apos; is not a solid.</source>
@@ -1328,39 +1328,39 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Összetevők megjelenítése</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished">All Mesh Files</translation>
+        <translation>Minden hálótest fájl</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished">Binary STL</translation>
+        <translation>Bináris STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished">ASCII STL</translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished">Binary Mesh</translation>
+        <translation>Bináris hálótest</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
-        <translation type="unfinished">Alias Mesh</translation>
+        <translation>Autodesk álnév hálótest</translation>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished">Object File Format</translation>
+        <translation>Tárgy fájl formátum</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished">Inventor V2.1 ascii</translation>
+        <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished">Stanford Polygon</translation>
+        <translation>Stanford sokszög</translation>
     </message>
     <message>
         <source>All Files</source>
@@ -1368,31 +1368,31 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
-        <translation type="unfinished">X3D Extensible 3D</translation>
+        <translation>X3D bővíthető 3D</translation>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished">VRML V2.0</translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished">Compressed VRML 2.0</translation>
+        <translation>Tömörített VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
-        <translation type="unfinished">Nastran</translation>
+        <translation>Nastran</translation>
     </message>
     <message>
         <source>Python module def</source>
-        <translation type="unfinished">Python module def</translation>
+        <translation>Python modul def</translation>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
-        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+        <translation>[Pontok: %1, élek: %2, felületek: %3]</translation>
     </message>
     <message>
         <source>Import-Export</source>
-        <translation type="unfinished">Import-Export</translation>
+        <translation>Importálás-Exportálás</translation>
     </message>
 </context>
 <context>

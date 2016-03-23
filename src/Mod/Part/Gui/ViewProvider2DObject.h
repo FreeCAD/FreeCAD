@@ -39,42 +39,44 @@ namespace PartGui {
 
 class PartGuiExport ViewProvider2DObject: public PartGui::ViewProviderPart
 {
-  PROPERTY_HEADER(PartGui::ViewProvider2DObject);
+    PROPERTY_HEADER(PartGui::ViewProvider2DObject);
 
 public:
-  /// constructor
-  ViewProvider2DObject();
-  /// destructor
-  virtual ~ViewProvider2DObject();
+    /// constructor
+    ViewProvider2DObject();
+    /// destructor
+    virtual ~ViewProvider2DObject();
 
-  /// Property to switch the grid on and off
-  App::PropertyBool ShowGrid;
-  App::PropertyDistance GridSize;
-  App::PropertyEnumeration GridStyle;
-  App::PropertyBool TightGrid;
-  App::PropertyBool GridSnap;
+    /// Property to switch the grid on and off
+    App::PropertyBool ShowGrid;
+    App::PropertyLength GridSize;
+    App::PropertyEnumeration GridStyle;
+    App::PropertyBool TightGrid;
+    App::PropertyBool GridSnap;
 
-  virtual void attach(App::DocumentObject *);
-  virtual void updateData(const App::Property*);
-  virtual std::vector<std::string> getDisplayModes(void) const;
-  virtual const char* getDefaultDisplayMode() const;
+    virtual void attach(App::DocumentObject *);
+    virtual void updateData(const App::Property*);
+    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual const char* getDefaultDisplayMode() const;
 
-  /// creates the grid
-  SoSeparator* createGrid(void); 
+    /// creates the grid
+    SoSeparator* createGrid(void); 
 
 protected:
-  virtual bool setEdit(int ModNum);
-  virtual void unsetEdit(int ModNum);
-  /// get called by the container whenever a property has been changed
-  virtual void onChanged(const App::Property* prop);
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    /// get called by the container whenever a property has been changed
+    virtual void onChanged(const App::Property* prop);
+    virtual void Restore(Base::XMLReader &reader);
 
-  SoSeparator  *GridRoot;
+    SoSeparator  *GridRoot;
 
-  float MinX;
-  float MaxX;
-  float MinY;
-  float MaxY;
-  static const char* GridStyleEnums[];
+    float MinX;
+    float MaxX;
+    float MinY;
+    float MaxY;
+    static const char* GridStyleEnums[];
+    static App::PropertyQuantityConstraint::Constraints GridSizeRange;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObjectPython;

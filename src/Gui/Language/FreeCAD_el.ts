@@ -1802,14 +1802,6 @@ Specify another directory, please.</source>
         <translation>Τύπος κάμερας</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Ορθογραφική αποτύπωση</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Προοπτική αποτύπωση</translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1879,18 +1871,18 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>Πλοήγηση %1</translation>
+        <translation type="obsolete">Πλοήγηση %1</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4832,7 +4824,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>Πλοήγηση %1</translation>
+        <translation type="obsolete">Πλοήγηση %1</translation>
     </message>
     <message>
         <source>Move annotation</source>

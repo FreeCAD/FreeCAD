@@ -375,7 +375,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Out Of Range</source>
-        <translation>Fora do Alcance</translation>
+        <translation>Fora do intervalo</translation>
     </message>
 </context>
 <context>
@@ -1799,14 +1799,6 @@ Por favor, indique outra pasta.</translation>
         <translation>Tipo de câmara</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Renderização Ortográfica</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Renderização de perspectiva</translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1876,18 +1868,18 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderização Or&amp;tográfica</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>Navegação %1</translation>
+        <translation type="obsolete">Navegação %1</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4815,7 +4807,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>Navegação %1</translation>
+        <translation type="obsolete">Navegação %1</translation>
     </message>
     <message>
         <source>Move annotation</source>

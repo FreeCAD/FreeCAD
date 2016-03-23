@@ -190,6 +190,15 @@ protected:
     std::string name; /**< Constant's name */
 };
 
+class AppExport BooleanExpression : public NumberExpression {
+    TYPESYSTEM_HEADER();
+public:
+    BooleanExpression(const App::DocumentObject *_owner = 0, bool _value = false);
+
+    virtual Expression * copy() const;
+
+};
+
 
 /**
   * Class implementing an infix expression.
@@ -430,7 +439,7 @@ public:
   Expression * expr;
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
-  int ivalue;
+  long long int ivalue;
   double fvalue;
   struct {
     std::string name;

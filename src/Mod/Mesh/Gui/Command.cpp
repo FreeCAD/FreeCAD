@@ -526,8 +526,11 @@ void CmdMeshFromGeometry::activated(int iMsg)
                 if (jt->first == "Shape" && jt->second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                     std::vector<Base::Vector3d> aPoints;
                     std::vector<Data::ComplexGeoData::Facet> aTopo;
-                    static_cast<App::PropertyComplexGeoData*>(jt->second)->getFaces(aPoints, aTopo,(float)tol);
-                    mesh.setFacets(aTopo, aPoints);
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(jt->second)->getComplexData();
+                    if (data) {
+                        data->getFaces(aPoints, aTopo,(float)tol);
+                        mesh.setFacets(aTopo, aPoints);
+                    }
                 }
             }
 
@@ -1662,7 +1665,9 @@ void CmdMeshMerge::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
         const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
-        newMesh->addMesh(mesh);
+        MeshCore::MeshKernel kernel = mesh.getKernel();
+        kernel.Transform(mesh.getTransform());
+        newMesh->addMesh(kernel);
     }
 
     pcFeature->Mesh.finishEditing();

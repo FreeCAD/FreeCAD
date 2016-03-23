@@ -200,7 +200,11 @@ public:
 
     /** @name Getting basic geometric entities */
     //@{
-    void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
+    /** Get points from object with given accuracy */
+    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+        std::vector<Base::Vector3d> &Normals,
+        float Accuracy, uint16_t flags=0) const;
+    virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
         float Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
                   const std::vector<Facet> &faces, float Accuracy=1.0e-06);

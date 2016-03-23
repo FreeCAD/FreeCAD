@@ -319,7 +319,13 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     }
     temp[i] = '\0';
 
-    ret_val = atof( temp );
+    errno = 0;
+    ret_val = strtod( temp, NULL );
+    if (ret_val == 0 && errno == ERANGE)
+        throw Base::Exception("Number underflow.");
+    if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
+        throw Base::Exception("Number overflow.");
+
     return ret_val;
 }
 
@@ -359,12 +365,6 @@ static void initParser(const App::DocumentObject *owner)
     Spreadsheet::ExpressionParser::DocumentObject = owner;
     labels = std::stack<std::string>();
     unitExpression = valueExpression = false;
-
-#ifdef FC_DEBUG
-    yydebug = 1;
-#else
-    yydebug = 0;
-#endif
 
     if (!has_registered_functions) {
         registered_functions["acos"] = FunctionExpression::ACOS;

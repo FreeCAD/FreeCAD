@@ -620,15 +620,20 @@ void Command::applyCommandData(const char* context, Action* action)
 
 const char* Command::keySequenceToAccel(int sk) const
 {
+    /* Local class to ensure free()'ing the strings allocated below */
+    typedef std::map<int, std::string> StringMap;
+    static StringMap strings;
+    StringMap::iterator i = strings.find(sk);
+
+    if (i != strings.end())
+        return i->second.c_str();
+
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
     QByteArray data = qs.toLatin1();
-#if defined (_MSC_VER)
-    return _strdup((const char*)data);
-#else
-    return strdup((const char*)data);
-#endif
+
+    return (strings[sk] = static_cast<const char*>(data)).c_str();
 }
 
 void Command::adjustCameraPosition()

@@ -87,6 +87,7 @@ public:
 
     void setReadOnly(bool);
     bool isReadOnly() const;
+    bool testStatus(App::Property::Status pos) const;
     void setDecimals(int);
     int decimals() const;
 

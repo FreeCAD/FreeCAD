@@ -131,6 +131,22 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
         openPersistentEditor(model()->buddy(current));
 }
 
+void PropertyEditor::reset()
+{
+    QTreeView::reset();
+
+    QModelIndex index;
+    int numRows = propertyModel->rowCount(index);
+    if (numRows > 0)
+        setEditorMode(index, 0, numRows-1);
+}
+
+void PropertyEditor::rowsInserted (const QModelIndex & parent, int start, int end)
+{
+    QTreeView::rowsInserted(parent, start, end);
+    setEditorMode(parent, start, end);
+}
+
 void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const
 {
     QTreeView::drawBranches(painter, rect, index);
@@ -176,6 +192,61 @@ void PropertyEditor::updateProperty(const App::Property& prop)
     // forward this to the model if the property is changed from outside
     if (!committing)
         propertyModel->updateProperty(prop);
+}
+
+void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int end)
+{
+    int column = 1;
+    for (int i=start; i<=end; i++) {
+        QModelIndex item = propertyModel->index(i, column, parent);
+        PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
+        if (propItem && propItem->testStatus(App::Property::Hidden)) {
+            setRowHidden (i, parent, true);
+        }
+    }
+}
+
+void PropertyEditor::updateEditorMode(const App::Property& prop)
+{
+    // check if the parent object is selected
+    std::string editor = prop.getEditorName();
+    if (editor.empty())
+        return;
+
+    bool hidden = prop.testStatus(App::Property::Hidden);
+    bool readOnly = prop.testStatus(App::Property::ReadOnly);
+
+    int column = 1;
+    int numRows = propertyModel->rowCount();
+    for (int i=0; i<numRows; i++) {
+        QModelIndex item = propertyModel->index(i, column);
+        PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
+        if (propItem && propItem->hasProperty(&prop)) {
+            setRowHidden (i, QModelIndex(), hidden);
+
+            propItem->updateData();
+            if (item.isValid()) {
+                updateItemEditor(!readOnly, column, item);
+                dataChanged(item, item);
+            }
+            break;
+        }
+    }
+}
+
+void PropertyEditor::updateItemEditor(bool enable, int column, const QModelIndex& parent)
+{
+    QWidget* editor = indexWidget(parent);
+    if (editor)
+        editor->setEnabled(enable);
+
+    int numRows = propertyModel->rowCount(parent);
+    for (int i=0; i<numRows; i++) {
+        QModelIndex item = propertyModel->index(i, column, parent);
+        if (item.isValid()) {
+            updateItemEditor(enable, column, item);
+        }
+    }
 }
 
 void PropertyEditor::appendProperty(const App::Property& prop)

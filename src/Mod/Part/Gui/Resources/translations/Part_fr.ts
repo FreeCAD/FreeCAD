@@ -394,12 +394,12 @@
     <message>
         <location line="+1"/>
         <source>Join objects...</source>
-        <translation>Joindre objets..</translation>
+        <translation>Joindre les objets...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join walled objects</source>
-        <translation>Joindre objets fortifiés</translation>
+        <translation>Joindre les objets à paroi</translation>
     </message>
 </context>
 <context>
@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Chanfreiner des arêtes</translation>
     </message>
@@ -1189,17 +1189,17 @@
         <translation>Direction</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+6"/>
         <source>Along normal</source>
         <translation>Le long de la normale</translation>
     </message>
     <message>
-        <location line="-34"/>
+        <location line="+117"/>
         <source>Length:</source>
         <translation>Longueur :</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="-110"/>
         <source>3D view</source>
         <translation>Vue 3D</translation>
     </message>
@@ -1209,7 +1209,7 @@
         <translation>Remarque : cette option ne fonctionne que pour les plans</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+127"/>
         <source>Create solid</source>
         <translation>Créer le solide</translation>
     </message>
@@ -1219,7 +1219,7 @@
         <translation>Angle de dépouille externe</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+41"/>
         <source>Shape</source>
         <translation>Forme</translation>
     </message>
@@ -1228,7 +1228,7 @@
         <translation> </translation>
     </message>
     <message>
-        <location line="-199"/>
+        <location line="-168"/>
         <source>X:</source>
         <translation>X :</translation>
     </message>
@@ -1278,22 +1278,27 @@
         <translation>Paramètres de congé</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+91"/>
         <source>Radius:</source>
         <translation>Rayon :</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-69"/>
         <source>Select faces</source>
         <translation>Sélectionnez les faces</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
+        <source>Selection</source>
+        <translation>Sélection</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Select edges</source>
         <translation>Sélectionnez les arêtes</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="+47"/>
         <source>Fillet type:</source>
         <translation>Type de congé :</translation>
     </message>
@@ -1308,7 +1313,7 @@
         <translation>Rayon variable</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-103"/>
         <source>Shape</source>
         <translation>Forme</translation>
     </message>
@@ -1323,7 +1328,7 @@
         <translation>Aucune sélection</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Longueur :</translation>
     </message>
@@ -1344,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+520"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation>Longueur de départ</translation>
     </message>
     <message>
-        <location line="-519"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation>Longueur finale</translation>
     </message>
@@ -1360,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+517"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Rayon initial</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Rayon final</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Longueur</translation>
     </message>
@@ -1391,17 +1396,17 @@ Please check one or more edge entities first.</source>
         <translation>Aucune arête n&apos;est sélectionnée pour le congé. Veuillez d&apos;abord cocher une ou plusieurs arêtes.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+101"/>
+        <location filename="../../DlgFilletEdges.ui" line="+40"/>
         <source>All</source>
         <translation>Tous</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+7"/>
         <source>None</source>
         <translation>Aucun</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-248"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Arête%1</translation>
@@ -1458,7 +1463,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation>Groupes de surfaces (type 144)</translation>
+        <translation>Groupes de surfaces découpées (type 144)</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1515,7 +1520,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation>Unités pour l&apos;exportation vers STEP</translation>
+        <translation>Unités pour l&apos;exportation de STEP</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1566,7 +1571,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Définition de boîte</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+71"/>
         <source>X:</source>
         <translation>X :</translation>
     </message>
@@ -1594,7 +1599,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Taille :</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+51"/>
         <source>Height:</source>
         <translation>Hauteur :</translation>
     </message>
@@ -1609,12 +1614,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Longueur :</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-154"/>
         <source>Position:</source>
         <translation>Position :</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Direction:</source>
         <translation>Direction :</translation>
     </message>
@@ -1627,7 +1632,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Définition du cylindre</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+95"/>
         <source>Parameter</source>
         <translation>Paramètre</translation>
     </message>
@@ -1642,7 +1647,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Rayon :</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-108"/>
         <source>Position:</source>
         <translation>Position :</translation>
     </message>
@@ -1846,7 +1851,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+519"/>
+        <location filename="../../DlgPrimitives.cpp" line="+542"/>
         <source>Wedge</source>
         <translation>Prisme</translation>
     </message>
@@ -2158,7 +2163,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Point de départ</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+193"/>
+        <location filename="../../DlgPrimitives.cpp" line="+190"/>
         <source>&amp;Create</source>
         <translation>&amp;Créer</translation>
     </message>
@@ -2175,7 +2180,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">Alt+F</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-485"/>
         <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
@@ -2220,12 +2225,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>X :</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+17"/>
         <source>Angle:</source>
         <translation>Angle :</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Z:</source>
         <translation>Z :</translation>
     </message>
@@ -2235,7 +2240,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Axe :</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Shape</source>
         <translation>Forme</translation>
     </message>
@@ -2250,7 +2255,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Créer solide</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+177"/>
+        <location filename="../../DlgRevolution.cpp" line="+178"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Sélectionnez d&apos;abord une forme à révolutionner.</translation>
     </message>
@@ -2384,7 +2389,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation>Affiner automatiquement le modèle après une opération avec une esquisse</translation>
+        <translation>Affiner automatiquement le modèle après une opération d&apos;esquisse</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2412,7 +2417,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation>Couleurs de pièces par défaut</translation>
+        <translation>Couleurs de pièce par défaut</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2422,7 +2427,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>The default color for new shapes</source>
-        <translation>Couleur par défaut pour les nouvelles formes</translation>
+        <translation>La couleur par défaut pour les nouvelles formes</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2433,7 +2438,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line color for new shapes</source>
-        <translation>Couleur de ligne par défaut pour les nouvelles formes</translation>
+        <translation>La couleur de ligne par défaut pour les nouvelles formes</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -2444,7 +2449,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line thickness for new shapes</source>
-        <translation>Épaisseur de ligne par défaut pour les nouvelles formes</translation>
+        <translation>L&apos;épaisseur de ligne par défaut pour les nouvelles formes</translation>
     </message>
     <message>
         <location line="-65"/>
@@ -2455,12 +2460,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-43"/>
         <source>Default vertex color</source>
-        <translation>Couleur des points par défaut</translation>
+        <translation>Couleur de point par défaut</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Default vertex size</source>
-        <translation>Taille des points par défaut</translation>
+        <translation>Taille de point par défaut</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -2524,7 +2529,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location filename="../../TaskLoft.cpp" line="+73"/>
         <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation>Sommet/arête/ligne/face</translation>
+        <translation>Sommet/Arête/Ligne/Face</translation>
     </message>
     <message>
         <location line="-144"/>
@@ -2540,7 +2545,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation>Au moins deux sommets,  arêtes, courbe ou faces sont nécessaires.</translation>
+        <translation>Au moins deux sommets, arêtes, courbes ou faces sont nécessaires.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2590,26 +2595,30 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+8"/>
-        <source>Base point:</source>
-        <translation>Point de départ :</translation>
+        <source>Base point</source>
+        <translation>Point de base</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <source>Base point:</source>
+        <translation type="obsolete">Point de départ :</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>y</source>
         <translation>y</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>z</source>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+122"/>
+        <location filename="../../Mirroring.cpp" line="+123"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Sélectionner d&apos;abord une forme à mettre en miroir.</translation>
     </message>
@@ -2622,7 +2631,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+165"/>
+        <location filename="../../TaskOffset.cpp" line="+166"/>
         <source>Input error</source>
         <translation>Erreur de saisie</translation>
     </message>
@@ -2653,12 +2662,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Sélection invalide</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Sélectionnez deux sommets</translation>
@@ -2683,32 +2692,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Sélectionnez au moins deux faces</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Sélectionnez seulement un objet pièce</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Sélectionner deux sommets pour créer une arête</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>Sélectionnez une liste de sommets</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Sélectionner un ensemble fermé d&apos;arêtes</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Sélectionner les faces adjacentes</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Tous les types de forme peuvent être sélectionnés</translation>
     </message>
@@ -2729,7 +2738,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation>Sommet/arête/ligne/face</translation>
+        <translation>Sommet/Arête/Ligne/Face</translation>
     </message>
     <message>
         <location line="+129"/>
@@ -2745,7 +2754,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation>Sélectionnez une ou plusieurs arêtes connectés le long desquels passe le balayage.</translation>
+        <translation>Sélectionnez une ou plusieurs arêtes connectées le long desquelles passe le balayage.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2780,7 +2789,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation>Sélectionnez une ou plusieurs arêtes connectées dans la vue 3d et appuyez sur « Fait »</translation>
+        <translation>Sélectionnez une ou plusieurs arêtes connectées dans la vue 3D et appuyez sur « Fait »</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -3064,7 +3073,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Décalage</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Mode</source>
         <translation>Mode</translation>
     </message>
@@ -3107,7 +3116,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Self-intersection</source>
-        <translation>Croisement sur soi</translation>
+        <translation>Auto-intersection</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3164,7 +3173,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Solide depuis une coque</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation>Affiner la forme</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Créer</translation>
     </message>
@@ -3331,7 +3345,7 @@ Voulez-vous continuer ?</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation>Import-Export</translation>
+        <translation>Importer-Exporter</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3347,7 +3361,7 @@ Voulez-vous continuer ?</translation>
     <message>
         <location line="+387"/>
         <source>All CAD Files</source>
-        <translation>Tous les fichiers de CAO</translation>
+        <translation>Tous les fichiers CAO</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3467,12 +3481,12 @@ Voulez-vous continuer ?</translation>
     <message>
         <location line="+1"/>
         <source>Invalid Same Range Flag</source>
-        <translation>L&apos;indicateur de même plage est invalide</translation>
+        <translation>L&apos;indicateur de plage invalide</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Same Parameter Flag</source>
-        <translation>L&apos;indicateur de même paramètre est invalide</translation>
+        <translation>Indicateur de paramètre invalide</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3670,7 +3684,7 @@ Voulez-vous continuer ?</translation>
     <message>
         <location line="-265"/>
         <source>Reset Dialog</source>
-        <translation>Réinitialiser la boîte de dialogue</translation>
+        <translation>Réinitialiser la fenêtre</translation>
     </message>
     <message>
         <location line="+4"/>

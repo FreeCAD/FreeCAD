@@ -165,11 +165,6 @@
       <translation>最新の動画</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>最新ニュース</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="55"/>
       <source>On the web</source>
       <translation>Webにて</translation>
@@ -302,7 +297,27 @@
     <message>
       <location filename="StartPage.py" line="109"/>
       <source>Load an FEM example analysis</source>
-      <translation type="unfinished">Load an FEM example analysis</translation>
+      <translation>FEMの解析例を読み込み</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>最新のコミット</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>開発版を入手</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>&lt;b&gt;開発版&lt;/b&gt; はコミュニティ メンバーによって随時提供され、通常は最新の変更が含まれていますが不具合を含んでいる可能性が高いです。</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>全てのコミットを見る</translation>
     </message>
   </context>
 </TS>

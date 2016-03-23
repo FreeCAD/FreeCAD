@@ -106,9 +106,9 @@ FreeCAD UnitTest es parte de FreeCAD y admite la escritura de pruebas unitarias 
         <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation>Escriba el nombre de un objeto que se puede llamar, cuando se le llama, vuelve a empezar &apos;una TestCase.Click, y la prueba así producida se llevará a cabo.
+        <translation>Escriba el nombre de un objeto que se pueda llamar, el cual cuando sea invocado, devolverá un TestCase. Haga clic en &apos;Iniciar&apos;, y la prueba así producida se llevará a cabo.
 
-Haga doble clic en un error en la vista en árbol para ver más información al respecto, incluido el seguimiento de la pila.</translation>
+Haga doble clic en un error en la vista de árbol para ver más información al respecto, incluyendo el informe de la pila.</translation>
     </message>
 </context>
 </TS>

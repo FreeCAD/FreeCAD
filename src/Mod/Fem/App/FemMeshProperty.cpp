@@ -91,13 +91,6 @@ void PropertyFemMesh::transformGeometry(const Base::Matrix4D &rclMat)
     hasSetValue();
 }
 
-void PropertyFemMesh::getFaces(std::vector<Base::Vector3d> &aPoints,
-                               std::vector<Data::ComplexGeoData::Facet> &aTopo,
-                               float accuracy, uint16_t flags) const
-{
-    _FemMesh->getFaces(aPoints, aTopo, accuracy, flags);
-}
-
 PyObject *PropertyFemMesh::getPyObject(void)
 {
     FemMeshPy* mesh = new FemMeshPy(&*_FemMesh);

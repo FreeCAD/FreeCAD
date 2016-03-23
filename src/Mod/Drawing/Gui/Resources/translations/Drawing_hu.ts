@@ -265,7 +265,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;High Quality Antialiasing</source>
-        <translation>&amp;Magas minőségű Antialiasing &amp;H</translation>
+        <translation>Magas minőségű élsimítás</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -363,7 +363,7 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation>Nem lehet megnyitni a &quot;%1&quot; fájlt írásra.</translation>
+        <translation>Nem lehet megnyitni a &apos;%1&apos; fájlt írásra.</translation>
     </message>
 </context>
 <context>

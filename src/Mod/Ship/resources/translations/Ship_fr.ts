@@ -451,7 +451,7 @@
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Angle maximal</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>

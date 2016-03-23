@@ -2,16 +2,36 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="zh-TW" sourcelanguage="en">
 <context>
+    <name>CmdPointsConvert</name>
+    <message>
+        <location filename="../../Command.cpp" line="+184"/>
+        <source>Points</source>
+        <translation>點</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Convert to points...</source>
+        <translation>轉換為點...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Convert to points</source>
+        <translation>轉換為點</translation>
+    </message>
+</context>
+<context>
     <name>CmdPointsExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+108"/>
+        <location line="-78"/>
         <source>Points</source>
         <translation>點</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export points...</source>
-        <translation>輸出點...</translation>
+        <translation>匯出點...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -44,7 +64,7 @@
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location line="+117"/>
+        <location line="+203"/>
         <source>Points</source>
         <translation>點</translation>
     </message>
@@ -64,7 +84,7 @@
 <context>
     <name>CmdPointsTransform</name>
     <message>
-        <location line="-39"/>
+        <location line="-125"/>
         <source>Points</source>
         <translation>點</translation>
     </message>
@@ -242,7 +262,17 @@
         <location line="-49"/>
         <location line="+49"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <source>Distance</source>
+        <translation>距離</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter maximum distance:</source>
+        <translation>輸入最大距離：</translation>
     </message>
 </context>
 <context>

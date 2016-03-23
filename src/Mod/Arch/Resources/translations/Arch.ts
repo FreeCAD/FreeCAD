@@ -168,22 +168,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="744"/>
+        <location filename="ArchRoof.py" line="714"/>
         <source>Roof</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="130"/>
+        <location filename="ArchRoof.py" line="135"/>
         <source>Create Roof</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="137"/>
+        <location filename="ArchRoof.py" line="577"/>
         <source>Unable to create a roof</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="155"/>
+        <location filename="ArchRoof.py" line="160"/>
         <source>The face number of the base object used to build this roof</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,7 +238,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="523"/>
+        <location filename="ArchStructure.py" line="525"/>
         <source>Axes systems this structure is built on</source>
         <translation type="unfinished"></translation>
     </message>
@@ -248,7 +248,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="524"/>
+        <location filename="ArchStructure.py" line="526"/>
         <source>The element numbers to exclude when this structure is based on axes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -618,7 +618,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="576"/>
+        <location filename="ArchStructure.py" line="578"/>
         <source>Couldn&apos;t compute a shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -907,7 +907,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="745"/>
+        <location filename="ArchRoof.py" line="715"/>
         <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -922,12 +922,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="746"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="746"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>IdRel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1083,57 +1083,57 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="149"/>
+        <location filename="ArchRoof.py" line="154"/>
         <source>A list of angles for each roof pane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="150"/>
+        <location filename="ArchRoof.py" line="155"/>
         <source>A list of horizontal length projections for each roof pane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="151"/>
+        <location filename="ArchRoof.py" line="156"/>
         <source>A list of IDs of relative profiles for each roof pane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="152"/>
+        <location filename="ArchRoof.py" line="157"/>
         <source>A list of thicknesses for each roof pane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="153"/>
+        <location filename="ArchRoof.py" line="158"/>
         <source>A list of overhangs for each roof pane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="154"/>
+        <location filename="ArchRoof.py" line="159"/>
         <source>A list of calculated heights for each roof pane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="746"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>Angle (deg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="746"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>Run (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="746"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>Thickness (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="746"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>Overhang (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="746"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>Height (mm)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1348,7 +1348,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="400"/>
+        <location filename="ArchStructure.py" line="402"/>
         <source>Unable to extrude the base shape
 </source>
         <translation type="unfinished"></translation>
@@ -1754,12 +1754,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_Roof</name>
     <message>
-        <location filename="ArchRoof.py" line="106"/>
+        <location filename="ArchRoof.py" line="111"/>
         <source>Roof</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="108"/>
+        <location filename="ArchRoof.py" line="113"/>
         <source>Creates a roof object from the selected wire.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2674,17 +2674,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="InitGui.py" line="109"/>
+        <location filename="InitGui.py" line="73"/>
         <source>Arch tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="110"/>
+        <location filename="InitGui.py" line="74"/>
         <source>Draft tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="111"/>
+        <location filename="InitGui.py" line="75"/>
         <source>Draft mod tools</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2692,22 +2692,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>arch</name>
     <message>
-        <location filename="InitGui.py" line="113"/>
+        <location filename="InitGui.py" line="77"/>
         <source>&amp;Architecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="116"/>
+        <location filename="InitGui.py" line="80"/>
         <source>&amp;Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="115"/>
+        <location filename="InitGui.py" line="79"/>
         <source>Utilities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="116"/>
+        <location filename="InitGui.py" line="80"/>
         <source>Snapping</source>
         <translation type="unfinished"></translation>
     </message>

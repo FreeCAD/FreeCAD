@@ -140,7 +140,7 @@
     </message>
     <message>
         <source>Result:</source>
-        <translation>Résultat :</translation>
+        <translation>Résultat:</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
@@ -1801,14 +1801,6 @@ Veuillez spécifier un autre répertoire.</translation>
         <translation>Type de caméra</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Rendu orthographique</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Rendu en perspective</translation>
-    </message>
-    <message>
         <source></source>
         <translation>Texte source</translation>
     </message>
@@ -1878,18 +1870,18 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue isométrique</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue en perspective</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 de navigation</translation>
+        <translation type="obsolete">%1 de navigation</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4820,7 +4812,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 de navigation</translation>
+        <translation type="obsolete">%1 de navigation</translation>
     </message>
     <message>
         <source>Move annotation</source>

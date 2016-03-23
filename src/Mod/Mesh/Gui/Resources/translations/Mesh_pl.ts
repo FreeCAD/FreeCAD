@@ -76,7 +76,7 @@
     </message>
     <message>
         <source>Face info</source>
-        <translation>Dane fasetki</translation>
+        <translation>Dane powierzchni</translation>
     </message>
     <message>
         <source>Information about face</source>
@@ -229,7 +229,7 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation>Utwórz siatkę z obwiedni...</translation>
+        <translation>Utwórz siatkę z kształtu...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished">Merge</translation>
+        <translation>Scal</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished">Merges selected meshes into one</translation>
+        <translation>Scala wybrane siatki w jedną</translation>
     </message>
 </context>
 <context>
@@ -565,7 +565,7 @@
     </message>
     <message>
         <source>Degenerated faces</source>
-        <translation>Fasetki zniekształcone</translation>
+        <translation>Powierzchnie zniekształcone</translation>
     </message>
     <message>
         <source>Face indices</source>
@@ -577,7 +577,7 @@
     </message>
     <message>
         <source>Duplicated faces</source>
-        <translation>Zduplikowane fasetki</translation>
+        <translation>Zduplikowane powierzchnie</translation>
     </message>
     <message>
         <source>Duplicated points</source>
@@ -700,7 +700,7 @@
     </message>
     <message>
         <source>Duplicated faces</source>
-        <translation>Zduplikowane fasetki</translation>
+        <translation>Zduplikowane powierzchnie</translation>
     </message>
     <message>
         <source>No self-intersections</source>
@@ -838,7 +838,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
         <source>Mesh Formats</source>
-        <translation type="unfinished">Mesh Formats</translation>
+        <translation>Formaty siatek</translation>
     </message>
     <message>
         <source>Export</source>
@@ -854,11 +854,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Maximum mesh deviation</source>
-        <translation type="unfinished">Maximum mesh deviation</translation>
+        <translation>Odchylenie maksymalne siatki</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>
@@ -1306,11 +1306,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Delete selected faces</source>
-        <translation>Usuń zaznaczone fasetki</translation>
+        <translation>Usuń zaznaczone powierzchnie</translation>
     </message>
     <message>
         <source>Clear selected faces</source>
-        <translation>Wyczyść zaznaczone fasetki</translation>
+        <translation>Wyczyść zaznaczone powierzchnie</translation>
     </message>
     <message>
         <source>Annotation</source>
@@ -1326,23 +1326,23 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Wyświetl komponenty</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished">All Mesh Files</translation>
+        <translation>Wszystkie pliki siatek</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished">Binary STL</translation>
+        <translation>Binarny STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished">ASCII STL</translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished">Binary Mesh</translation>
+        <translation>Binarny plik siatki</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
@@ -1350,19 +1350,19 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished">Object File Format</translation>
+        <translation>Format pliku obiektu</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished">Inventor V2.1 ascii</translation>
+        <translation>Inventor V2.1 w ASCII</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished">Stanford Polygon</translation>
+        <translation>Stanford Polygon</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
@@ -1370,11 +1370,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished">VRML V2.0</translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished">Compressed VRML 2.0</translation>
+        <translation>Skompresowany VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
@@ -1386,7 +1386,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
-        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+        <translation>[Punktów: %1, Krawędzi: %2, Powierzchni: %3]</translation>
     </message>
     <message>
         <source>Import-Export</source>

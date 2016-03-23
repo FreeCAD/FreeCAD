@@ -128,7 +128,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
             ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
              (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)))
             // hide negative sign
-            init_val.setValue(std::abs(datum));
+            init_val.setValue(datum);
 
         else // show negative sign
             init_val.setValue(datum);
@@ -145,15 +145,6 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                 ui_ins_datum.labelEdit->pushToHistory();
 
                 double newDatum = newQuant.getValue();
-                if (Constr->Type == Sketcher::Angle ||
-                    ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-                     (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))) {
-                    // Permit negative values to flip the sign of the constraint
-                    if (newDatum >= 0) // keep the old sign
-                        newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
-                    else // flip sign
-                        newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
-                }
 
                 try {
                     if (ui_ins_datum.labelEdit->hasExpression())
@@ -1267,11 +1258,34 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         PosId1 = Sketcher::start;
     }
 
+    if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
+        if (GeoId1 < 0 && GeoId1 >= -2) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                            QObject::tr("Cannot add a horizontal length constraint on an axis!"));
+            return;
+        }
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
+        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            //convert to as if two endpoints of the line have been selected
+            PosId1 = Sketcher::start;
+            GeoId2 = GeoId1;
+            PosId2 = Sketcher::end;
+        }
+    }
     if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // point to point horizontal distance
 
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
         double ActLength = pnt2.x-pnt1.x;
+
+        //negative sign avoidance: swap the points to make value positive
+        if (ActLength < -Precision::Confusion()) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
+            std::swap(pnt1, pnt2);
+            ActLength = -ActLength;
+        }
 
         openCommand("add point to point horizontal distance constraint");
         Gui::Command::doCommand(
@@ -1289,38 +1303,6 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             finishDistanceConstraint(this, Obj,true);
 
         return;
-    }
-    else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
-
-        if (GeoId1 < 0 && GeoId1 >= -2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Cannot add a horizontal length constraint on an axis!"));
-            return;
-        }
-
-        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *lineSeg;
-            lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
-            double ActLength = lineSeg->getEndPoint().x-lineSeg->getStartPoint().x;
-
-            openCommand("add horizontal length constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,ActLength);
-
-            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
-                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-                
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                selection[0].getFeatName(),ConStr.size()-1,"False");
-                finishDistanceConstraint(this, Obj,false);
-            }
-            else
-                finishDistanceConstraint(this, Obj,true);
-            
-            return;
-        }
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed x-coordinate
 
@@ -1430,11 +1412,35 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     else if (GeoId1 == -1 && PosId1 == Sketcher::none)
         PosId1 = Sketcher::start;
 
+    if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
+        if (GeoId1 < 0 && GeoId1 >= -2) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                        QObject::tr("Cannot add a vertical length constraint on an axis!"));
+            return;
+        }
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
+        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            //convert to as if two endpoints of the line have been selected
+            PosId1 = Sketcher::start;
+            GeoId2 = GeoId1;
+            PosId2 = Sketcher::end;
+        }
+    }
+
     if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // point to point vertical distance
 
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
         double ActLength = pnt2.y-pnt1.y;
+
+        //negative sign avoidance: swap the points to make value positive
+        if (ActLength < -Precision::Confusion()) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
+            std::swap(pnt1, pnt2);
+            ActLength = -ActLength;
+        }
 
         openCommand("add point to point vertical distance constraint");
         Gui::Command::doCommand(
@@ -1452,38 +1458,6 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             finishDistanceConstraint(this, Obj,true);
         
         return;
-    }
-    else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
-
-        if (GeoId1 < 0 && GeoId1 >= -2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                        QObject::tr("Cannot add a vertical length constraint on an axis!"));
-            return;
-        }
-
-        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *lineSeg;
-            lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
-            double ActLength = lineSeg->getEndPoint().y-lineSeg->getStartPoint().y;
-
-            openCommand("add vertical length constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,ActLength);
-
-            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
-                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-                
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                selection[0].getFeatName(),ConStr.size()-1,"False");
-                finishDistanceConstraint(this, Obj,false);
-            }
-            else
-                finishDistanceConstraint(this, Obj,true);
-            
-            return;
-        }
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed y-coordinate
 
@@ -2622,6 +2596,13 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             //DeepSOIC: this may be slow, but I wanted to reuse the conversion from Geometry to GCS shapes that is done in Sketch
             Base::Vector3d p = Obj->getPoint(GeoId3, PosId3 );
             ActAngle = Obj->calculateAngleViaPoint(GeoId1,GeoId2,p.x,p.y);
+
+            //negative constraint value avoidance
+            if (ActAngle < -Precision::Angular()){
+                std::swap(GeoId1, GeoId2);
+                std::swap(PosId1, PosId2);
+                ActAngle = -ActAngle;
+            }
 
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",

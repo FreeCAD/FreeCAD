@@ -30,6 +30,7 @@
 # include <QDir>
 # include <QFileInfo>
 # include <QImage>
+# include <QGLContext>
 # include <QGLFramebufferObject>
 # include <QGLPixelBuffer>
 # include <Inventor/SbViewVolume.h>
@@ -668,6 +669,11 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 
 void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
 {
+    const QGLContext* context = QGLContext::currentContext();
+    if (!context) {
+        Base::Console().Warning("createImageFromFramebuffer failed because no context is active\n");
+        return;
+    }
 #if QT_VERSION >= 0x040600
     QGLFramebufferObjectFormat format;
     format.setSamples(8);

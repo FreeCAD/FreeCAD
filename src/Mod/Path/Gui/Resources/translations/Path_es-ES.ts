@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es-ES" sourcelanguage="en">
+<TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
     <name>Active</name>
     <message>
@@ -166,22 +166,6 @@
     </message>
   </context>
   <context>
-    <name>Machine Name</name>
-    <message>
-      <location filename="PathMachine.py" line="44"/>
-      <source>Name of the Machine that will use the CNC program</source>
-      <translation>Nombre de la máquina que va a utilizar el programa CNC</translation>
-    </message>
-  </context>
-  <context>
-    <name>Machine Units</name>
-    <message>
-      <location filename="PathMachine.py" line="48"/>
-      <source>Units that the machine works in, ie Metric or Inch</source>
-      <translation>Unidades que trabaja la máquina, es decir, métrico o pulgadas</translation>
-    </message>
-  </context>
-  <context>
     <name>OffsetExtra</name>
     <message>
       <location filename="PathProfile.py" line="90"/>
@@ -206,34 +190,31 @@
     </message>
   </context>
   <context>
-    <name>Pat_hHop</name>
-  </context>
-  <context>
     <name>Path</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="85"/>
       <source>Project Setup</source>
       <translation>Configuración del proyecto</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
-      <source>Path Modification</source>
-      <translation>Modificación de ruta</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="114"/>
+      <location filename="InitGui.py" line="86"/>
       <source>Partial Commands</source>
       <translation>Comandos Parciales</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="87"/>
       <source>New Operations</source>
       <translation>Nuevas Operaciones</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="88"/>
+      <source>Path Modification</source>
+      <translation>Modificación de ruta</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="88"/>
       <source>Path</source>
-      <translation>Ruta</translation>
+      <translation>Trayectoria</translation>
     </message>
   </context>
   <context>
@@ -249,7 +230,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="44"/>
       <source>An optional description of this compounded operation</source>
-      <translation>Una descripción opcional de la operación compuesta</translation>
+      <translation>Una descripción opcional de esta operación compuesta</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="47"/>
@@ -307,19 +288,6 @@
       <location filename="PathInspect.py" line="131"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
       <translation>&lt;b&gt;Nota:&lt;/b&gt;: Al pulsar Aceptar se realizará cualquier cambio que haga en el objeto, pero si el objeto es paramétrico, estos cambios serán anulados al recalcular.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathMachine</name>
-    <message>
-      <location filename="PathMachine.py" line="202"/>
-      <source>Machine Object</source>
-      <translation>Objeto máquina</translation>
-    </message>
-    <message>
-      <location filename="PathMachine.py" line="210"/>
-      <source>Create a Machine object</source>
-      <translation>Crear un objeto de la máquina</translation>
     </message>
   </context>
   <context>
@@ -432,7 +400,7 @@
       <location filename="PathArray.py" line="120"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
+      <translation>Por favor seleccione exactamente un objeto de trayectoria
 </translation>
     </message>
   </context>
@@ -513,7 +481,7 @@
     <message>
       <location filename="PathDressup.py" line="100"/>
       <source>Creates a Path Dess-up object from a selected path</source>
-      <translation type="unfinished">Creates a Path Dess-up object from a selected path</translation>
+      <translation>Crea un objeto Dress-up de ruta con la trayectoria seleccionada</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="110"/>
@@ -568,27 +536,27 @@
     <message>
       <location filename="PathFacePocket.py" line="143"/>
       <source>Creates a pocket inside a loop of edges or a face</source>
-      <translation type="unfinished">Creates a pocket inside a loop of edges or a face</translation>
+      <translation>Crea un barreno dentro de un bucle de aristas o una cara</translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="156"/>
       <source>Please select an edges loop from one object, or a single face
 </source>
-      <translation type="unfinished">Please select an edges loop from one object, or a single face
+      <translation>Por favor seleccione un bucle de aristas de un objeto, o una sola cara
 </translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="161"/>
       <source>Please select only edges or a single face
 </source>
-      <translation type="unfinished">Please select only edges or a single face
+      <translation>Por favor, seleccione sólo los bordes o una sola cara
 </translation>
     </message>
     <message>
       <location filename="PathFacePocket.py" line="168"/>
       <source>The selected edges don't form a loop
 </source>
-      <translation type="unfinished">The selected edges don't form a loop
+      <translation>Los bordes seleccionados no forman un bucle
 </translation>
     </message>
   </context>
@@ -636,12 +604,12 @@
     <message>
       <location filename="PathFixture.py" line="121"/>
       <source>Creates a Fixture Offset object</source>
-      <translation type="unfinished">Creates a Fixture Offset object</translation>
+      <translation>Crea un objeto de fijación desfasado</translation>
     </message>
     <message>
       <location filename="PathFixture.py" line="127"/>
       <source>Create a Fixture Offset</source>
-      <translation type="unfinished">Create a Fixture Offset</translation>
+      <translation>Crea una fijación desfasada</translation>
     </message>
   </context>
   <context>
@@ -717,7 +685,7 @@
       <location filename="PathInspect.py" line="181"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
+      <translation>Por favor seleccione exactamente un objeto de trayectoria
 </translation>
     </message>
   </context>
@@ -745,6 +713,64 @@
       <location filename="PathLoadTool.py" line="132"/>
       <source>Tool Number to Load</source>
       <translation>Número de herramienta a carga</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Machine</name>
+    <message>
+      <location filename="PathMachine.py" line="44"/>
+      <source>Name of the Machine that will use the CNC program</source>
+      <translation>Nombre de la máquina que va a utilizar el programa CNC</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="46"/>
+      <source>Select the Post Processor file for this machine</source>
+      <translation>Seleccione el archivo de Post procesador para esta máquina</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="48"/>
+      <source>Units that the machine works in, ie Metric or Inch</source>
+      <translation>Unidades que trabaja la máquina, es decir, métrico o pulgadas</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="51"/>
+      <source>The tooltable used for this CNC program</source>
+      <translation>La mesa de herramientas utilizada para este programa CNC</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="55"/>
+      <source>The Maximum distance in X the machine can travel</source>
+      <translation>Distancia máxima que la máquina puede recorrer en X</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="59"/>
+      <source>The Minimum distance in X the machine can travel</source>
+      <translation>Distancia mínima que la máquina puede recorrer en X</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="61"/>
+      <source>Home position of machine, in X (mainly for visualization)</source>
+      <translation>Posición inicial de la máquina, en X (principalmente para la visualización)</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="62"/>
+      <source>Home position of machine, in Y (mainly for visualization)</source>
+      <translation>Posición inicial de la máquina, en Y (principalmente para la visualización)</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="63"/>
+      <source>Home position of machine, in Z (mainly for visualization)</source>
+      <translation>Posición inicial de la máquina, en Z (principalmente para la visualización)</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="202"/>
+      <source>Machine Object</source>
+      <translation>Objeto máquina</translation>
+    </message>
+    <message>
+      <location filename="PathMachine.py" line="210"/>
+      <source>Create a Machine object</source>
+      <translation>Crear un objeto máquina</translation>
     </message>
   </context>
   <context>
@@ -776,21 +802,21 @@
       <location filename="PathPocket.py" line="280"/>
       <source>Please select an edges loop from one object, or a single face
 </source>
-      <translation type="unfinished">Please select an edges loop from one object, or a single face
+      <translation>Por favor seleccione un bucle de aristas de un objeto, o una sola cara
 </translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="285"/>
       <source>Please select only edges or a single face
 </source>
-      <translation type="unfinished">Please select only edges or a single face
+      <translation>Por favor, seleccione sólo los bordes o una sola cara
 </translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="292"/>
       <source>The selected edges don't form a loop
 </source>
-      <translation type="unfinished">The selected edges don't form a loop
+      <translation>Los bordes seleccionados no forman un bucle
 </translation>
     </message>
     <message>
@@ -850,7 +876,7 @@
     <message>
       <location filename="PathProject.py" line="135"/>
       <source>Create Project</source>
-      <translation type="unfinished">Create Project</translation>
+      <translation>Crea un proyecto</translation>
     </message>
   </context>
   <context>
@@ -858,18 +884,18 @@
     <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Copia simple</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="47"/>
       <source>Creates a non-parametric copy of another path</source>
-      <translation type="unfinished">Creates a non-parametric copy of another path</translation>
+      <translation>Crea una copia no-paramétrica de otra trayectoria</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="59"/>
       <source>Please select exactly one path object
 </source>
-      <translation type="unfinished">Please select exactly one path object
+      <translation>Por favor seleccione exactamente un objeto de trayectoria
 </translation>
     </message>
   </context>
@@ -891,12 +917,12 @@
     <message>
       <location filename="PathToolChange.py" line="63"/>
       <source>Tool Change</source>
-      <translation type="unfinished">Tool Change</translation>
+      <translation>Cambio de herramienta</translation>
     </message>
     <message>
       <location filename="PathToolChange.py" line="64"/>
       <source>Changes the current tool</source>
-      <translation type="unfinished">Changes the current tool</translation>
+      <translation>Cambia la herramienta actual</translation>
     </message>
   </context>
   <context>
@@ -904,12 +930,12 @@
     <message>
       <location filename="PathToolLenOffset.py" line="126"/>
       <source>Tool Length Offset</source>
-      <translation type="unfinished">Tool Length Offset</translation>
+      <translation>Desface por la longitud de la herramienta</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="128"/>
       <source>Create a Tool Length Offset object</source>
-      <translation type="unfinished">Create a Tool Length Offset object</translation>
+      <translation>Crea un objeto Desface por la longitud de la herramienta</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="134"/>
@@ -922,12 +948,12 @@
     <message>
       <location filename="PathToolTableEdit.py" line="40"/>
       <source>EditToolTable</source>
-      <translation type="unfinished">EditToolTable</translation>
+      <translation>Editar tabla de herramientas</translation>
     </message>
     <message>
       <location filename="PathToolTableEdit.py" line="48"/>
       <source>Edits a Tool Table in a selected Project</source>
-      <translation type="unfinished">Edits a Tool Table in a selected Project</translation>
+      <translation>Edita una tabla de herramientas en un proyecto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -936,14 +962,6 @@
       <location filename="PathDrilling.py" line="54"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
       <translation>Profundidad de taladrado incremental antes de retraerse para limpiar las virutas</translation>
-    </message>
-  </context>
-  <context>
-    <name>Post Processor</name>
-    <message>
-      <location filename="PathMachine.py" line="46"/>
-      <source>Select the Post Processor file for this machine</source>
-      <translation>Seleccione el archivo de Post procesador para esta máquina</translation>
     </message>
   </context>
   <context>
@@ -996,7 +1014,7 @@
     <message>
       <location filename="PathFromShape.py" line="44"/>
       <source>The base Shape of this toolpath</source>
-      <translation>La forma base de esta ruta de herramienta</translation>
+      <translation>La Forma base de esta trayectoria de herramienta</translation>
     </message>
   </context>
   <context>
@@ -1071,14 +1089,6 @@
       <location filename="PathLoadTool.py" line="42"/>
       <source>The active tool</source>
       <translation>La herramienta activa</translation>
-    </message>
-  </context>
-  <context>
-    <name>Tool Table</name>
-    <message>
-      <location filename="PathMachine.py" line="51"/>
-      <source>The tooltable used for this CNC program</source>
-      <translation>La mesa de herramientas utilizada para este programa CNC</translation>
     </message>
   </context>
   <context>
@@ -1171,7 +1181,7 @@
     <message>
       <location filename="TooltableEditor.py" line="405"/>
       <source>Counter Bore</source>
-      <translation>Contrataladro</translation>
+      <translation>Avellanado</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="406"/>
@@ -1264,14 +1274,14 @@
       <translation>Diámetro</translation>
     </message>
     <message>
-      <location filename="TooltableEditor.py" line="435"/>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
       <location filename="TooltableEditor.py" line="426"/>
       <source>Length offset</source>
       <translation>Longitud de desplazamiento</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="435"/>
+      <source>mm</source>
+      <translation>mm</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="428"/>
@@ -1401,62 +1411,6 @@
     </message>
   </context>
   <context>
-    <name>X Home Position</name>
-    <message>
-      <location filename="PathMachine.py" line="61"/>
-      <source>Home position of machine, in X (mainly for visualization)</source>
-      <translation>Posición inicial de la máquina, en X (principalmente para la visualización)</translation>
-    </message>
-  </context>
-  <context>
-    <name>X Maximum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="53"/>
-      <source>The Maximum distance in X the machine can travel</source>
-      <translation>Distancia máxima que la máquina puede recorrer en X</translation>
-    </message>
-  </context>
-  <context>
-    <name>X Minimum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="57"/>
-      <source>The Minimum distance in X the machine can travel</source>
-      <translation>Distancia mínima que la máquina puede recorrer en X</translation>
-    </message>
-  </context>
-  <context>
-    <name>Y Home Position</name>
-    <message>
-      <location filename="PathMachine.py" line="62"/>
-      <source>Home position of machine, in Y (mainly for visualization)</source>
-      <translation>Posición inicial de la máquina, en Y (principalmente para la visualización)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Y Maximum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="55"/>
-      <source>The Maximum distance in X the machine can travel</source>
-      <translation>Distancia máxima que la máquina puede recorrer en X</translation>
-    </message>
-  </context>
-  <context>
-    <name>Y Minimum Limit</name>
-    <message>
-      <location filename="PathMachine.py" line="59"/>
-      <source>The Minimum distance in X the machine can travel</source>
-      <translation>Distancia mínima que la máquina puede recorrer en X</translation>
-    </message>
-  </context>
-  <context>
-    <name>Z Home Position</name>
-    <message>
-      <location filename="PathMachine.py" line="63"/>
-      <source>Home position of machine, in Z (mainly for visualization)</source>
-      <translation>Posición inicial de la máquina, en Z (principalmente para la visualización)</translation>
-    </message>
-  </context>
-  <context>
     <name>extend at end</name>
     <message>
       <location filename="PathProfile.py" line="79"/>
@@ -1486,6 +1440,158 @@
       <location filename="PathProfile.py" line="80"/>
       <source>length of straight segment of toolpath that comes in at angle to last part edge</source>
       <translation>longitud del segmento de recta de la herramienta de trayectoria que está en el ángulo para la última parte de la arista</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPathCompound</name>
+    <message>
+      <location filename="../../Command.cpp" line="53"/>
+      <source>Path</source>
+      <translation>Trayectoria</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="54"/>
+      <source>Compound</source>
+      <translation>Compuesto</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="55"/>
+      <source>Creates a compound from selected paths</source>
+      <translation>Crea una combinación de las trayectorias seleccionadas</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPathShape</name>
+    <message>
+      <location filename="../../Command.cpp" line="107"/>
+      <source>Path</source>
+      <translation>Trayectoria</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="108"/>
+      <source>From Shape</source>
+      <translation>Desde Forma</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="109"/>
+      <source>Creates a path from a selected shape</source>
+      <translation>Crea una trayectoria desde una forma seleccionada</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgProcessorChooser</name>
+    <message>
+      <location filename="../../DlgProcessorChooser.ui" line="14"/>
+      <source>Choose a processor</source>
+      <translation>Seleccione un processador</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPath</name>
+    <message>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="14"/>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="26"/>
+      <source>General Path settings</source>
+      <translation>Ajustes generales de trayectoria</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
+      <source>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</source>
+      <translation>Si está opción está activada, las trayectorias nuevas serán automáticamente colocadas en el proyecto activo, el cual será creado si es necesario.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/DlgSettingsPath.ui" line="37"/>
+      <source>Automatic project handling</source>
+      <translation>Manejo automático del proyecto</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui::DlgProcessorChooser</name>
+    <message>
+      <location filename="../../DlgProcessorChooser.cpp" line="49"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="66"/>
+      <source>None</source>
+      <translation>Ninguno</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui::DlgSettingsPathColor</name>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="14"/>
+      <source>Path colors</source>
+      <translation>Colores de trayectoria</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="20"/>
+      <source>Default Path colors</source>
+      <translation>Colores de trayectoria predeterminados</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="34"/>
+      <source>Default normal path color</source>
+      <translation>Color de trayectoria normal predeterminado</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="41"/>
+      <source>The default color for new shapes</source>
+      <translation>Color predeterminado para nuevos cuerpos</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="67"/>
+      <source>Default pathline width</source>
+      <translation>Ancho de línea de trayectoria predeterminado</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="74"/>
+      <source>The default line thickness for new shapes</source>
+      <translation>Grosor de arista por defecto para nuevos cuerpos</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="77"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="102"/>
+      <source>Default path marker color</source>
+      <translation>Color de marca de trayectoria predeterminado</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="109"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="142"/>
+      <source>The default line color for new shapes</source>
+      <translation>Color de arista por defecto para nuevos cuerpos</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="135"/>
+      <source>Rapid path color</source>
+      <translation>Color de trayectoria rápida</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="162"/>
+      <source>Machine extents color</source>
+      <translation>Color del alcance de la máquina</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui::TaskWidgetPathCompound</name>
+    <message>
+      <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
+      <source>Compound paths</source>
+      <translation>Trayectorias compuestas</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskDlgPathCompound</name>
+    <message>
+      <location filename="../../TaskDlgPathCompound.ui" line="14"/>
+      <source>Paths list</source>
+      <translation>Lista de trayectorias</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDlgPathCompound.ui" line="20"/>
+      <source>Reorder children by dragging and dropping them to their correct location</source>
+      <translation>Reordenar hijos arrastrando y soltando en su ubicación correcta</translation>
     </message>
   </context>
 </TS>

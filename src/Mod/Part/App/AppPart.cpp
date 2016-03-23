@@ -106,13 +106,6 @@ PyObject* Part::PartExceptionOCCDimensionError;
 
 PyMODINIT_FUNC initPart()
 {
-    std::stringstream str;
-    str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
-#ifdef OCC_VERSION_DEVELOPMENT
-    str << "." OCC_VERSION_DEVELOPMENT;
-#endif
-    App::Application::Config()["OCC_VERSION"] = str.str();
-
     Base::Console().Log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it

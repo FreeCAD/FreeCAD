@@ -297,8 +297,34 @@ bool OperatorExpression::isTouched() const
     return left->isTouched() || right->isTouched();
 }
 
+/* The following definitions are from The art of computer programming by Knuth
+ * (copied from http://stackoverflow.com/questions/17333/most-effective-way-for-float-and-double-comparison)
+ */
+
+/*
+static bool approximatelyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+*/
+
+static bool essentiallyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+static bool definitelyGreaterThan(double a, double b, double epsilon)
+{
+    return (a - b) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+static bool definitelyLessThan(double a, double b, double epsilon)
+{
+    return (b - a) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
 /**
-  * Evalutate the expression. Returns a new NumberExpression with the result, or throws
+  * Evalutate the expression. Returns a new Expression with the result, or throws
   * an exception if something is wrong, i.e the expression cannot be evaluated.
   */
 
@@ -308,7 +334,8 @@ Expression * OperatorExpression::eval() const
     NumberExpression * v1;
     std::auto_ptr<Expression> e2(right->eval());
     NumberExpression * v2;
-    NumberExpression * output;
+    Expression * output;
+    const double epsilon = std::numeric_limits<double>::epsilon();
 
     v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
@@ -339,33 +366,35 @@ Expression * OperatorExpression::eval() const
         break;
     case EQ:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) < 1e-7));
+            throw ExpressionError("Incompatible units for the = operator");
+        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case NEQ:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) > 1e-7));
+            throw ExpressionError("Incompatible units for the != operator");
+        output = new BooleanExpression(owner, !essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LT:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() < v2->getValue()));
+            throw ExpressionError("Incompatible units for the < operator");
+        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case GT:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() > v2->getValue()));
+            throw ExpressionError("Incompatible units for the > operator");
+        output = new BooleanExpression(owner, definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LTE:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() - v2->getValue() < 1e-7));
+            throw ExpressionError("Incompatible units for the <= operator");
+        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) ||
+                                       essentiallyEqual(v1->getValue(), v2->getValue(), epsilon));
         break;
     case GTE:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v2->getValue() - v1->getValue()) < 1e-7);
+            throw ExpressionError("Incompatible units for the >= operator");
+        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) ||
+                                       definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon));
         break;
     case NEG:
         output = new NumberExpression(owner, -v1->getQuantity() );
@@ -1262,6 +1291,18 @@ Expression *ConstantExpression::copy() const
     return new ConstantExpression(owner, name.c_str(), quantity);
 }
 
+TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
+
+BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
+    : NumberExpression(owner, _value ? 1.0 : 0.0)
+{
+}
+
+Expression *BooleanExpression::copy() const
+{
+    return new BooleanExpression(owner, getValue() > 0.5 ? true : false);
+}
+
 namespace App {
 
 namespace ExpressionParser {
@@ -1293,7 +1334,13 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     }
     temp[i] = '\0';
 
-    ret_val = atof( temp );
+    errno = 0;
+    ret_val = strtod( temp, NULL );
+    if (ret_val == 0 && errno == ERANGE)
+        throw Base::Exception("Number underflow.");
+    if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
+        throw Base::Exception("Number overflow.");
+
     return ret_val;
 }
 
@@ -1368,8 +1415,13 @@ std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &st
     int token;
 
     column = 0;
-    while ( (token  = ExpressionParserlex()) != 0)
-        result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+    try {
+        while ( (token  = ExpressionParserlex()) != 0)
+            result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+    }
+    catch (...) {
+        // Ignore all exceptions
+    }
 
     ExpressionParser_delete_buffer(buf);
     return result;
@@ -1396,8 +1448,6 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
 
     initParser(owner);
-
-    yydebug = 0;
 
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();

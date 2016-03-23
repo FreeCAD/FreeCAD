@@ -127,12 +127,12 @@
     <message>
         <location line="+1"/>
         <source>MultiTransform</source>
-        <translation>MultiTrasformazione</translation>
+        <translation>Trasformazione multipla</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a multitransform feature</source>
-        <translation>Crea una funzione di multitrasformazione</translation>
+        <translation>crea una funzione di trasformazione multipla</translation>
     </message>
 </context>
 <context>

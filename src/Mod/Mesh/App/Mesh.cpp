@@ -252,6 +252,35 @@ MeshPoint MeshObject::getPoint(unsigned long index) const
     return point;
 }
 
+void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
+                           std::vector<Base::Vector3d> &Normals,
+                           float Accuracy, uint16_t flags) const
+{
+    Base::Matrix4D mat = _Mtrx;
+
+    unsigned long ctpoints = _kernel.CountPoints();
+    Points.reserve(ctpoints);
+    for (unsigned long i=0; i<ctpoints; i++) {
+        Base::Vector3f vertf = _kernel.GetPoint(i);
+        Base::Vector3d vertd(vertf.x, vertf.y, vertf.z);
+        vertd = mat * vertd;
+        Points.push_back(vertd);
+    }
+
+    // nullify translation part
+    mat[0][3] = 0.0;
+    mat[1][3] = 0.0;
+    mat[2][3] = 0.0;
+    Normals.reserve(ctpoints);
+    MeshCore::MeshRefNormalToPoints ptNormals(_kernel);
+    for (unsigned long i=0; i<ctpoints; i++) {
+        Base::Vector3f normalf = ptNormals[i];
+        Base::Vector3d normald(normalf.x, normalf.y, normalf.z);
+        normald = mat * normald;
+        Normals.push_back(normald);
+    }
+}
+
 Mesh::Facet MeshObject::getFacet(unsigned long index) const
 {
     Mesh::Facet face(_kernel.GetFacets()[index], const_cast<MeshObject*>(this), index);

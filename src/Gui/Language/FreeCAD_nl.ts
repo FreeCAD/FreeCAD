@@ -1799,14 +1799,6 @@ Kies een andere map, alstublieft.</translation>
         <translation>Cameratype</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Orthogonale projectie</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspectiefreproductie</translation>
-    </message>
-    <message>
         <source></source>
         <translation>&apos;&apos;</translation>
     </message>
@@ -1876,18 +1868,18 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigatie</translation>
+        <translation type="obsolete">%1 navigatie</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4817,7 +4809,7 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigatie</translation>
+        <translation type="obsolete">%1 navigatie</translation>
     </message>
     <message>
         <source>Move annotation</source>

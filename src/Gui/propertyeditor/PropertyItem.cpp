@@ -210,6 +210,16 @@ bool PropertyItem::isReadOnly() const
     return readonly;
 }
 
+bool PropertyItem::testStatus(App::Property::Status pos) const
+{
+    std::vector<App::Property*>::const_iterator it;
+    for (it = propertyItems.begin(); it != propertyItems.end(); ++it) {
+        if ((*it)->testStatus(pos))
+            return true;
+    }
+    return false;
+}
+
 void PropertyItem::setDecimals(int prec)
 {
     precision = prec;

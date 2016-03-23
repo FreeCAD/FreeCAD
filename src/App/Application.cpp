@@ -443,10 +443,15 @@ Document* Application::openDocument(const char * FileName)
 
     newDoc->FileName.setValue(File.filePath());
 
-    // read the document
-    newDoc->restore();
-
-    return newDoc;
+    try {
+        // read the document
+        newDoc->restore();
+        return newDoc;
+    }
+    catch (...) {
+        closeDocument(newDoc->getName());
+        throw;
+    }
 }
 
 Document* Application::getActiveDocument(void) const
@@ -917,6 +922,7 @@ void Application::destruct(void)
     ScriptFactorySingleton::Destruct();
     InterpreterSingleton::Destruct();
     Base::Type::destruct();
+    ParameterManager::Terminate();
 }
 
 void Application::destructObserver(void)
@@ -1134,7 +1140,7 @@ void Application::initTypes(void)
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
-
+    App ::BooleanExpression         ::init();
 }
 
 void Application::initConfig(int argc, char ** argv)

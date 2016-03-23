@@ -145,7 +145,7 @@
     <message>
         <location line="+1"/>
         <source>Pad</source>
-        <translation>Występ</translation>
+        <translation>Wyciągnij</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -848,7 +848,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+4"/>
         <source>Move down</source>
-        <translation>Przenieś w dół</translation>
+        <translation>Przesuń w dół</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -972,7 +972,7 @@ Please check one or more edge entities first.</source>
         <location line="-293"/>
         <location line="+294"/>
         <source>Up to face</source>
-        <translation>Do płaszczyzny</translation>
+        <translation>Do powierzchni</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -1089,7 +1089,7 @@ Please check one or more edge entities first.</source>
         <location line="-279"/>
         <location line="+281"/>
         <source>Up to face</source>
-        <translation>Do płaszczyzny</translation>
+        <translation>Do powierzchni</translation>
     </message>
     <message>
         <location line="-287"/>
@@ -1367,7 +1367,7 @@ Please check one or more edge entities first.</source>
         <location line="-481"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished">No valid sketches selected</translation>
+        <translation>Nie wybrano szkiców</translation>
     </message>
     <message>
         <location line="-157"/>

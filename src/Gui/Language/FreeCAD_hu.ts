@@ -148,7 +148,7 @@
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -250,7 +250,7 @@
     </message>
     <message>
         <source>Unable to launch Qt Assistant (%1)</source>
-        <translation>Nem lehet elindítani a Qt támogatást(%1)</translation>
+        <translation>Nem lehet elindítani a Qt támogatást (%1)</translation>
     </message>
 </context>
 <context>
@@ -371,7 +371,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
         <source>Button %1</source>
-        <translation>Gomb % 1</translation>
+        <translation>%1 billentyű</translation>
     </message>
     <message>
         <source>Out Of Range</source>
@@ -622,7 +622,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Sorry, couldn&apos;t find macro file &apos;%1&apos;.</source>
-        <translation>Sajnáljuk, nem található makró fájl&apos;%1&apos;.</translation>
+        <translation>Sajnáljuk, nem található a &apos;%1&apos; makró fájl.</translation>
     </message>
     <message>
         <source>Empty macro</source>
@@ -754,7 +754,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>The shortcut &apos;%1&apos; is defined more than once. This could result into unexpected behaviour.</source>
-        <translation>Az &apos;%1&apos; elérési út többszőr lett definiálva. Ez nem megfelelő működéshez vezethet.</translation>
+        <translation>Az &apos;%1&apos; elérési út többször lett definiálva. Ez nem megfelelő működéshez vezethet.</translation>
     </message>
     <message>
         <source>Already defined shortcut</source>
@@ -1204,7 +1204,7 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
         <source>Extra large (%1 x %1)</source>
-        <translation>Extra nagy (%1 x%1)</translation>
+        <translation>Extra nagy (%1 x %1)</translation>
     </message>
     <message>
         <source>No style sheet</source>
@@ -1293,7 +1293,8 @@ Kérem másik elérési utat definiálni.</translation>
     <message>
         <source>&apos;%1&apos;.
 This file already exists.</source>
-        <translation>&apos;%1&apos;. Ez a fájl már létezik.</translation>
+        <translation>&apos;%1&apos;. 
+Ez a fájl már létezik.</translation>
     </message>
     <message>
         <source>Delete macro</source>
@@ -1301,7 +1302,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Do you really want to delete the macro &apos;%1&apos;?</source>
-        <translation>Valóban törölni szeretné a &quot;&apos;%1&apos;&quot; nevű makrót?</translation>
+        <translation>Valóban törölni szeretné a &apos;%1&apos; nevű makrót?</translation>
     </message>
     <message>
         <source>Cannot create file</source>
@@ -1801,14 +1802,6 @@ Kérem válasszon másik könyvtárat.</translation>
         <translation>Kamera típus</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Függőleges vetület leképezés</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektivikus leképezés</translation>
-    </message>
-    <message>
         <source></source>
         <translation>Program infó</translation>
     </message>
@@ -1854,7 +1847,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation>Élsimítás</translation>
+        <translation>Ellen-Élsimítás</translation>
     </message>
     <message>
         <source>None</source>
@@ -1878,22 +1871,22 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyenesvonalú leképzés</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Perspektivikus leképezés</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigáció</translation>
+        <translation type="obsolete">%1 navigáció</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
-        <translation>Élsimítás</translation>
+        <translation>Ellen-Élsimítás</translation>
     </message>
     <message>
         <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
@@ -2084,7 +2077,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished">Company</translation>
+        <translation>Vállalat</translation>
     </message>
     <message>
         <source>Default license</source>
@@ -2132,7 +2125,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Other</translation>
+        <translation>Egyéb</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -2749,7 +2742,7 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Letöltés meghiusult: %1.</translation>
+        <translation>Letöltés sikertelen: %1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
@@ -3442,7 +3435,7 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Letöltés meghiusult: %1.</translation>
+        <translation>Letöltés sikertelen: %1.</translation>
     </message>
     <message>
         <source>Previous</source>
@@ -4108,7 +4101,7 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
         <source>The file &apos;%1&apos; cannot be opened.</source>
-        <translation>A fájl nem nyitható meg (&apos;%1&apos;).</translation>
+        <translation>A &apos;%1&apos; fájl nem nyitható meg.</translation>
     </message>
 </context>
 <context>
@@ -4163,8 +4156,8 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
         <source>The directory &apos;%1&apos; does not exist.
 
 Do you want to specify an existing directory?</source>
-        <translation>A könyvtár &apos;%1&apos; nem létezik.
-Szeretne megadni egy létező könyvtár?</translation>
+        <translation>A &apos;%1&apos; könyvtár nem létezik.
+Szeretne megadni egy létező könyvtárat?</translation>
     </message>
     <message>
         <source>Missing permission</source>
@@ -4356,7 +4349,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation>Nem lehet megnyitni a &quot;%1&quot; fájlt írásra.</translation>
+        <translation>Nem lehet megnyitni a &apos;%1&apos; fájlt írásra.</translation>
     </message>
 </context>
 <context>
@@ -4600,7 +4593,7 @@ Folytatni kívánja?</translation>
     </message>
     <message>
         <source>Cannot open file &apos;%1&apos;.</source>
-        <translation>Nem lehet megnyitni a fájlt (%1).</translation>
+        <translation>Nem lehet megnyitni a &apos;%1&apos; fájlt.</translation>
     </message>
     <message>
         <source>Docked</source>
@@ -4668,7 +4661,7 @@ Folytatni kívánja?</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; cannot be renamed.</source>
-        <translation>A csoport (%1) nem nevezhető át.</translation>
+        <translation>A &apos;%1&apos; csoport nem nevezhető át.</translation>
     </message>
     <message>
         <source>Existing group</source>
@@ -4676,7 +4669,7 @@ Folytatni kívánja?</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; already exists.</source>
-        <translation>A csoport &apos;%1&apos; már létezik.</translation>
+        <translation>A &apos;%1&apos; csoport már létezik.</translation>
     </message>
     <message>
         <source>Change value</source>
@@ -4806,7 +4799,7 @@ A betöltéshez Qt 4.4 vagy magasabb verzió szükséges.</translation>
     <message>
         <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation>Csak egy objektum van kiválasztva.Kérjük válasszon ki két objektumot.
+        <translation>Csak egy objektum van kiválasztva. Kérjük válasszon ki két objektumot.
 Legyen körültekintő, számít melyik pontra kattint.</translation>
     </message>
     <message>
@@ -4825,7 +4818,7 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navigáció</translation>
+        <translation type="obsolete">%1 navigáció</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -5202,7 +5195,7 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source>Panels</source>
-        <translation type="unfinished">Panels</translation>
+        <translation>Panelek</translation>
     </message>
     <message>
         <source>List of available dock panels</source>
@@ -5274,7 +5267,7 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source>Please select first the objects you want to export.</source>
-        <translation>Az exportáláshoz előszőr vállasszon ki tárgyat.</translation>
+        <translation>Az exportáláshoz először válasszon ki tárgyat.</translation>
     </message>
 </context>
 <context>
@@ -6423,11 +6416,11 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
         <source>Stereo quad buffer</source>
-        <translation>Sztereo négyszeres tároló</translation>
+        <translation>Sztereó négyszeres tároló</translation>
     </message>
     <message>
         <source>Switch stereo viewing to quad buffer</source>
-        <translation>Sztereó nézet váltása: négyszeres tároló</translation>
+        <translation>Sztereó nézet váltása 4-szeres tárolóra</translation>
     </message>
 </context>
 <context>

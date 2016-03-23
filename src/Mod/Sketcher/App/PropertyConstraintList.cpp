@@ -386,7 +386,7 @@ bool PropertyConstraintList::scanGeometry(const std::vector<Part::Geometry *> &G
 
 string PropertyConstraintList::getConstraintName(const std::string & name, int i)
 {
-    if (name != "")
+    if (!name.empty())
         return name;
     else
         return getConstraintName(i);

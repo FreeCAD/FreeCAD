@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+42"/>
         <source>Complete</source>
-        <translation>Completado</translation>
+        <translation>Completa</translation>
     </message>
     <message>
         <location line="+1"/>

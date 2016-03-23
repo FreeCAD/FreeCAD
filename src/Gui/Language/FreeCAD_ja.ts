@@ -1801,14 +1801,6 @@ Specify another directory, please.</source>
         <translation>カメラの種類</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">正射投影レンダリング</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">透視投影レンダリング</translation>
-    </message>
-    <message>
         <source></source>
         <translation>[empty string]</translation>
     </message>
@@ -1878,18 +1870,18 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 ナビゲーション</translation>
+        <translation type="obsolete">%1 ナビゲーション</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4820,7 +4812,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 ナビゲーション</translation>
+        <translation type="obsolete">%1 ナビゲーション</translation>
     </message>
     <message>
         <source>Move annotation</source>

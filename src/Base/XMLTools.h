@@ -114,6 +114,8 @@ public :
     /// string which holds the UTF-8 form
     std::string  str;
 
+    static void terminate();
+
 private :
     static std::auto_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;
     //  This is the local code page form of the string.
@@ -230,6 +232,8 @@ public :
 
     /// Getter method
     const XMLCh* unicodeForm() const;
+
+    static void terminate();
 
 private :
     std::basic_string<XMLCh>  str;

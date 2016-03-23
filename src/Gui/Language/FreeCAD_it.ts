@@ -1802,14 +1802,6 @@ Specificare un&apos;altra cartella.</translation>
         <translation>Tipo di camera</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Render ortografico</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Render prospettico</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1879,18 +1871,18 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista &amp;ortografica</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista in &amp;prospettiva</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>Navigazione %1</translation>
+        <translation type="obsolete">Navigazione %1</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4826,7 +4818,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>Navigazione %1</translation>
+        <translation type="obsolete">Navigazione %1</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -5471,7 +5463,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>Debug macro</source>
-        <translation>Debug macro</translation>
+        <translation>Debug della macro</translation>
     </message>
     <message>
         <source>Start debugging of macro</source>
@@ -5523,11 +5515,11 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>S&amp;top macro recording</source>
-        <translation>In&amp;terrompi la registrazione della macro</translation>
+        <translation>In&amp;terrompi la registrazione</translation>
     </message>
     <message>
         <source>Stop the macro recording session</source>
-        <translation>Interrompe la sessione di registrazione macro in corso</translation>
+        <translation>Interrompe la sessione di registrazione della macro in corso</translation>
     </message>
 </context>
 <context>

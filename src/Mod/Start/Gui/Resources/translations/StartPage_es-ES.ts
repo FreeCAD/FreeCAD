@@ -86,7 +86,7 @@
     <message>
       <location filename="StartPage.py" line="69"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>El banco de trabajo &lt;b&gt;Diseño de Piezas&lt;/b&gt; ha sido diseñado para crear piezas complejas basadas en restricciones de bocetos en 2D. Úselas para dibujar formas en 2D, restringir algunos de sus elementos y extrusionar para formar piezas 3D.</translation>
+      <translation>El banco de trabajo &lt;b&gt;Diseño de Piezas&lt;/b&gt; ha sido diseñado para crear piezas complejas basadas en restricciones de bocetos en 2D. Úselas para dibujar formas en 2D, restringir algunos de sus elementos y extruir para formar piezas 3D.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="70"/>
@@ -162,11 +162,6 @@
       <location filename="StartPage.py" line="53"/>
       <source>Latest videos</source>
       <translation>Últimos vídeos</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>Últimas noticias</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="55"/>
@@ -302,6 +297,26 @@
       <location filename="StartPage.py" line="109"/>
       <source>Load an FEM example analysis</source>
       <translation>Cargar un ejemplo de análisis FEM</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>Últimos cambios</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>Obtener una versión en desarrollo</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>Las &lt;b&gt;versiones en desarrollo&lt;/b&gt; se ponen disponibles por miembros de la comunidad de manera ocasional y generalmente contienen los últimos cambios, pero son más susceptibles de contener errores.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>Ver todos los cambios</translation>
     </message>
   </context>
 </TS>

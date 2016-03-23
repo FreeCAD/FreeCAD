@@ -87,6 +87,10 @@ public:
     SystemExitException(void);
     SystemExitException(const SystemExitException &inst);
     virtual ~SystemExitException() throw() {}
+    const long getExitCode(void) const { return _exitCode;}
+
+protected:
+    long int _exitCode;
 };
 
 /** If the application starts we release immediately the global interpreter lock

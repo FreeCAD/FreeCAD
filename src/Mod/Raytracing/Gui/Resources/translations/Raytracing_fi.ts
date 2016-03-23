@@ -464,7 +464,12 @@ Haluatko jatkaa?</translation>
         <translation>Kameran tiedostonimi:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Mallinna/render</translation>
     </message>
@@ -531,12 +536,11 @@ Haluatko jatkaa?</translation>
         <translation>Verkkopinnan vientiasetukset</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Suurin verkkopinnan poikkeama:</translation>
+        <translation type="obsolete">Suurin verkkopinnan poikkeama:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Älä laske normaaleja kärkipisteitä</translation>
     </message>

@@ -65,12 +65,12 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>邊緣至軌跡...</translation>
+        <translation>邊至軌跡...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Generate a Trajectory from a set of edges</source>
-        <translation>由一組邊緣產生軌跡</translation>
+        <translation>由一組邊產生軌跡</translation>
     </message>
 </context>
 <context>
@@ -415,7 +415,7 @@
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -776,22 +776,22 @@
     <message>
         <location line="+18"/>
         <source>Edges: 0</source>
-        <translation>邊緣： 0</translation>
+        <translation>邊： 0</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Cluster: 0</source>
-        <translation>群組:0</translation>
+        <translation>群組：0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Sizing Value:</source>
-        <translation>尺寸值:</translation>
+        <translation>尺寸值：</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Use orientation of edge</source>
-        <translation>使用邊緣之方向</translation>
+        <translation>使用邊之方向</translation>
     </message>
     <message>
         <source>TaskEdge2TracParameter</source>

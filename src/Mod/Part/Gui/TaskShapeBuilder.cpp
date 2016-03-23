@@ -349,12 +349,22 @@ void ShapeBuilderWidget::createShellFromFace()
     }
 
     QString cmd;
-    cmd = QString::fromLatin1(
-        "_=Part.Shell(%1)\n"
-        "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
-        "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
-        "del _\n"
-    ).arg(list);
+    if (d->ui.checkRefine->isEnabled() && d->ui.checkRefine->isChecked()) {
+        cmd = QString::fromLatin1(
+            "_=Part.Shell(%1)\n"
+            "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
+            "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
+            "del _\n"
+        ).arg(list);
+    }
+    else {
+        cmd = QString::fromLatin1(
+            "_=Part.Shell(%1)\n"
+            "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
+            "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_\n"
+            "del _\n"
+        ).arg(list);
+    }
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Shell");
@@ -387,14 +397,26 @@ void ShapeBuilderWidget::createSolidFromShell()
     }
 
     QString cmd;
-    cmd = QString::fromLatin1(
-        "shell=%1\n"
-        "if shell.ShapeType != 'Shell': raise RuntimeError('Part object is not a shell')\n"
-        "_=Part.Solid(shell)\n"
-        "if _.isNull(): raise RuntimeError('Failed to create solid')\n"
-        "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
-        "del _\n"
-    ).arg(line);
+    if (d->ui.checkRefine->isEnabled() && d->ui.checkRefine->isChecked()) {
+        cmd = QString::fromLatin1(
+            "shell=%1\n"
+            "if shell.ShapeType != 'Shell': raise RuntimeError('Part object is not a shell')\n"
+            "_=Part.Solid(shell)\n"
+            "if _.isNull(): raise RuntimeError('Failed to create solid')\n"
+            "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
+            "del _\n"
+        ).arg(line);
+    }
+    else {
+        cmd = QString::fromLatin1(
+            "shell=%1\n"
+            "if shell.ShapeType != 'Shell': raise RuntimeError('Part object is not a shell')\n"
+            "_=Part.Solid(shell)\n"
+            "if _.isNull(): raise RuntimeError('Failed to create solid')\n"
+            "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_\n"
+            "del _\n"
+        ).arg(line);
+    }
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Solid");
@@ -415,30 +437,35 @@ void ShapeBuilderWidget::switchMode(int mode)
         d->ui.label->setText(tr("Select two vertices to create an edge"));
         d->ui.checkPlanar->setEnabled(false);
         d->ui.checkFaces->setEnabled(false);
+        d->ui.checkRefine->setEnabled(false);
     }
     else if (mode == 1) {
         d->gate->setMode(ShapeSelection::VERTEX);
         d->ui.label->setText(tr("Select a list of vertices"));
         d->ui.checkPlanar->setEnabled(true);
         d->ui.checkFaces->setEnabled(false);
+        d->ui.checkRefine->setEnabled(false);
     }
     else if (mode == 2) {
         d->gate->setMode(ShapeSelection::EDGE);
         d->ui.label->setText(tr("Select a closed set of edges"));
         d->ui.checkPlanar->setEnabled(true);
         d->ui.checkFaces->setEnabled(false);
+        d->ui.checkRefine->setEnabled(false);
     }
     else if (mode == 3) {
         d->gate->setMode(ShapeSelection::FACE);
         d->ui.label->setText(tr("Select adjacent faces"));
         d->ui.checkPlanar->setEnabled(false);
         d->ui.checkFaces->setEnabled(true);
+        d->ui.checkRefine->setEnabled(true);
     }
     else {
         d->gate->setMode(ShapeSelection::ALL);
         d->ui.label->setText(tr("All shape types can be selected"));
         d->ui.checkPlanar->setEnabled(false);
         d->ui.checkFaces->setEnabled(false);
+        d->ui.checkRefine->setEnabled(true);
     }
 }
 

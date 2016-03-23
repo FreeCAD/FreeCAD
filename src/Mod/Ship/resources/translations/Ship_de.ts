@@ -51,7 +51,7 @@
     <message>
       <location filename="Instance.py" line="110"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>Gruppe von Beladungszuständen</translation>
     </message>
   </context>
   <context>
@@ -290,82 +290,82 @@
     <message>
       <location filename="TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Belastungszustand-Instanz muss aktiviert sein, bevor Sie mit diesem Tool arbeiten (keine Objekte ausgewählt)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="197"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>Falsche Schiffsbezeichnung! (keine Instanzen, die mit der Bezeichnung '{}' gefunden)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="206"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>Mehrdeutige Schiffsbezeichnung! ({} Instanzen mit der Bezeichnung '{}' gefunden)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="185"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>Mehr als ein Beladungszustand wurden ausgewählt (die zusätzlichen Beladungszustände werden ignoriert)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="196"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>Beladungszustand Instanz muss aktiviert sein, bevor Sie mit diesem Tool arbeiten (keine gültiger Beladungszustand für die ausgewählten Objekte gefunden)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>Zu viel Gewicht! Das Schiff wird nie genug Wasser verdrängen</translation>
     </message>
     <message>
       <location filename="Tools.py" line="232"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>Falsche Gewichtsbezeichnung! (keine Instanzen, die mit der Bezeichnung '{}' gefunden)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="241"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>Mehrdeutige Gewichtsbezeichnung! ({} Instanzen mit der Bezeichnung '{}' gefunden)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="254"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>UngültigesGewicht! (das Objekt mit der Bezeichnung '{}' ist kein Gewicht)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="280"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>Falsche Tankbezeichnung! (keine Instanzen, die mit der Bezeichnung '{}' gefunden)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="289"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>Mehrdeutige Tankbezeichnung! ({} Instanzen mit der Bezeichnung '{}' gefunden)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="302"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Ungültiger Tank! (das Objekt mit der Bezeichnung '{}' ist kein Tank)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Kapazität Kurven Berechnung</translation>
     </message>
     <message>
       <location filename="Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Boolesche Operation ist fehlgeschlagen beim Versuch die Unterwasser Seite zu erhalten. Das Tool versucht es nochmals mit einer leicht Verschiebung der freien Oberfläche</translation>
     </message>
     <message>
       <location filename="Tools.py" line="198"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: transversale Flächenberechnung fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="Tools.py" line="275"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>ZeroDivisionError: Null Volumen bei der Verschiebungsberechnung gefunden!</translation>
     </message>
     <message>
       <location filename="Tools.py" line="377"/>
@@ -380,7 +380,7 @@
     <message>
       <location filename="Tools.py" line="466"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: Haupt Rahmen Fläche kann nicht berechnet werden</translation>
     </message>
     <message>
       <location filename="Tools.py" line="480"/>
@@ -441,12 +441,12 @@
     <message>
       <location filename="ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>Berechnung der GZ-Kurve</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>Die GZ-Kurve zeichnen</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="249"/>
@@ -471,12 +471,12 @@
     <message>
       <location filename="TaskPanel.py" line="294"/>
       <source>GZ curve tool angle selected [deg]</source>
-      <translation type="unfinished">GZ curve tool angle selected [deg]</translation>
+      <translation>Winkel [deg] mit GZ-Kurvenwerkzeug ausgewählt</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="310"/>
       <source>GZ curve tool number of points selected</source>
-      <translation type="unfinished">GZ curve tool number of points selected</translation>
+      <translation>Anzahl von Punkten mit GZ-Kurvenwerkzeug ausgewählt</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="326"/>
@@ -550,12 +550,12 @@
     <message>
       <location filename="ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Erstelle neuen Beladungszustand</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>Erstelle eine neue Kalkulationstabelle für Beladungszustand</translation>
     </message>
   </context>
   <context>
@@ -724,7 +724,7 @@
     <message>
       <location filename="WeightInstance.py" line="76"/>
       <source>Area density [kg / m^2]</source>
-      <translation type="unfinished">Area density [kg / m^2]</translation>
+      <translation>Flächenbezogene Masse [kg / m^2]</translation>
     </message>
   </context>
 </TS>

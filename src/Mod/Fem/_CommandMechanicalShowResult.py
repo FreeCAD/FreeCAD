@@ -37,9 +37,9 @@ class _CommandMechanicalShowResult(FemCommands):
     def __init__(self):
         super(_CommandMechanicalShowResult, self).__init__()
         self.resources = {'Pixmap': 'fem-result',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Show result"),
                           'Accel': "S, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Result", "Show result information of an analysis")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Show result information of an analysis")}
         self.is_active = 'with_results'
 
     def Activated(self):

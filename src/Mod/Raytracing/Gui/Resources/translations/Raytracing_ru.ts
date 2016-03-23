@@ -462,7 +462,12 @@ Do you want to continue?</source>
         <translation>Название фото-файла:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Визуализация</translation>
     </message>
@@ -529,12 +534,11 @@ Do you want to continue?</source>
         <translation>Экспорт настроек сетки</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>максимальное отклонение сетки:</translation>
+        <translation type="obsolete">максимальное отклонение сетки:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Не вычислять нормалей вершины</translation>
     </message>

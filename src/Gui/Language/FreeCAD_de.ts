@@ -1260,15 +1260,15 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished">User macros</translation>
+        <translation>Benutzermakros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished">System macros</translation>
+        <translation>Systemmakros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished">User macros location:</translation>
+        <translation>Speicher-Ort der Benutzer-Makros:</translation>
     </message>
 </context>
 <context>
@@ -1313,7 +1313,7 @@ Diese Datei ist bereits vorhanden.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished">Read-only</translation>
+        <translation>Nur Lesezugriff</translation>
     </message>
 </context>
 <context>
@@ -1801,14 +1801,6 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
         <translation>Kameratyp</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Orthographische Darstellung</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Perspektivische Darstellung</translation>
-    </message>
-    <message>
         <source></source>
         <translation>Text source</translation>
     </message>
@@ -1878,18 +1870,18 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Or&amp;thographische Darstellung</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Perspektivische Darstellun&amp;g</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 Navigation</translation>
+        <translation type="obsolete">%1 Navigation</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4826,7 +4818,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 Navigation</translation>
+        <translation type="obsolete">%1 Navigation</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -4870,7 +4862,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+        <translation>Keine Erlaubnis, die systemweiten Makros zu löschen</translation>
     </message>
 </context>
 <context>

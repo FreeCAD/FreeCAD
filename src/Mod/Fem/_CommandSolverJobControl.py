@@ -37,9 +37,9 @@ class _CommandSolverJobControl(FemCommands):
     def __init__(self):
         super(_CommandSolverJobControl, self).__init__()
         self.resources = {'Pixmap': 'fem-new-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Start solver job control"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverJobControl", "Start solver job control"),
                           'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the selected solver")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverJobControl", "Dialog to start the calculation of the selected solver")}
         self.is_active = 'with_solver'
 
     def Activated(self):

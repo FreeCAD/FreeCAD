@@ -1802,14 +1802,6 @@ Especifique otro directorio, por favor.</translation>
         <translation>Tipo de cámara</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="obsolete">Renderizado ortográfico</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="obsolete">Renderizado en perspectiva</translation>
-    </message>
-    <message>
         <source></source>
         <translation>(Vacio)</translation>
     </message>
@@ -1879,18 +1871,18 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Or&amp;thographic rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderizado ortogonal</translation>
     </message>
     <message>
         <source>Perspective renderin&amp;g</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderizado en perspectiva</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navegación</translation>
+        <translation type="obsolete">%1 navegación</translation>
     </message>
     <message>
         <source>Anti-aliasing</source>
@@ -4822,7 +4814,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>%1 navigation</source>
-        <translation>%1 navegación</translation>
+        <translation type="obsolete">%1 navegación</translation>
     </message>
     <message>
         <source>Move annotation</source>

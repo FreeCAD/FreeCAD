@@ -461,7 +461,12 @@ Do you want to continue?</source>
         <translation>Nom du fichier caméra :</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Rendu</translation>
     </message>
@@ -528,12 +533,11 @@ Do you want to continue?</source>
         <translation>Paramètres d&apos;exportation de maillage</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>écart maximum des maillages :</translation>
+        <translation type="obsolete">écart maximum des maillages :</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Ne pas calculer les normales des sommets</translation>
     </message>

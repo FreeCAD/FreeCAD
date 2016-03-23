@@ -39,9 +39,9 @@ class _CommandMechanicalMaterial(FemCommands):
     def __init__(self):
         super(_CommandMechanicalMaterial, self).__init__()
         self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Mechanical material..."),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Mechanical material..."),
                           'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates or edit the mechanical material definition.")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Creates or edit the mechanical material definition.")}
         self.is_active = 'with_analysis'
 
     def Activated(self):

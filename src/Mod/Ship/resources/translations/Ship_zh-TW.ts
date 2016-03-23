@@ -519,12 +519,12 @@
     <message>
       <location filename="TaskPanel.py" line="434"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool minimum draft selected [m]</translation>
+      <translation>選取流體靜力學最小吃水量 [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="448"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool maximum draft selected [m]</translation>
+      <translation>選取流體靜力學最大吃水量 [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="462"/>

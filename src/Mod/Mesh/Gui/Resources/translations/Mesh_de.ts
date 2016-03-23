@@ -839,7 +839,7 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
         <source>Mesh Formats</source>
-        <translation type="unfinished">Mesh Formats</translation>
+        <translation>Netz-Formate</translation>
     </message>
     <message>
         <source>Export</source>
@@ -855,11 +855,11 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
         <source>Maximum mesh deviation</source>
-        <translation type="unfinished">Maximum mesh deviation</translation>
+        <translation>Maximale Netz Abweichung</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation>mm</translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>

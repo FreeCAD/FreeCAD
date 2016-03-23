@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Dress-up trajectory...</translation>
+        <translation>Pálya alapértékek megváltoztatása...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+        <translation>Felülír egyes pálya aspektust a pálya alapértékek megváltoztatásával</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -409,7 +409,7 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished">KRL file</translation>
+        <translation>KRL fájl</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -487,7 +487,7 @@
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Válassza ki a Trayectory-t a felöltöztetéshez.</translation>
+        <translation>Válassza ki a megváltoztatni kívánt pályát.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>
