@@ -73,10 +73,9 @@
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
+#include <Gui/propertyeditor/PropertyItem.h>
 
 using namespace PartGui;
-
-Q_DECLARE_METATYPE(Base::Quantity)
 
 FilletRadiusDelegate::FilletRadiusDelegate(QObject *parent) : QItemDelegate(parent)
 {
