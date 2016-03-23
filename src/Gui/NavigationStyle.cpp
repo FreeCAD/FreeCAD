@@ -1170,7 +1170,12 @@ void NavigationStyle::startSelection(AbstractMouseSelection* mouse)
 {
     if (!mouse)
         return;
-  
+
+    if (mouseSelection) {
+        SoDebugError::postWarning("NavigationStyle::startSelection",
+                                  "Set new mouse selection while an old is still active.");
+    }
+
     mouseSelection = mouse;
     mouseSelection->grabMouseModel(viewer);
 }
