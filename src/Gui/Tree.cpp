@@ -97,7 +97,11 @@ TreeWidget::TreeWidget(QWidget* parent)
     labels << tr("Labels & Attributes");
     this->setHeaderLabels(labels);
     // make sure to show a horizontal scrollbar if needed
+#if QT_VERSION >= 0x050000
+    this->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+#else
     this->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+#endif
     this->header()->setStretchLastSection(false);
 
     // Add the first main label

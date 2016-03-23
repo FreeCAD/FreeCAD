@@ -106,7 +106,11 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
     commandTreeWidget->setHeaderLabels(labels);
     commandTreeWidget->header()->hide();
     commandTreeWidget->setIconSize(QSize(32, 32));
+#if QT_VERSION >= 0x050000
+    commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+#else
     commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+#endif
 
     assignedTreeWidget->setHeaderLabels(labels);
     assignedTreeWidget->header()->hide();

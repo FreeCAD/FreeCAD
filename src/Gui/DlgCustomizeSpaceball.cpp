@@ -628,7 +628,11 @@ void DlgCustomizeSpaceball::goPrint()
 {
     QTableView *view = new QTableView(this);
     PrintModel *model = new PrintModel(this, buttonModel, commandModel);
+#if QT_VERSION >= 0x050000
+    view->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+#else
     view->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+#endif
     view->setModel(model);
     view->horizontalHeader()->resizeSection(0, 150);
     view->horizontalHeader()->resizeSection(1, 300);

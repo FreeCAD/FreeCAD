@@ -71,7 +71,11 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     paramValue = new ParameterValue(splitter3);
     paramValue->setHeaderLabels(valueLabels);
     paramValue->setRootIsDecorated(false);
+#if QT_VERSION >= 0x050000
+    paramValue->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+#else
     paramValue->header()->setResizeMode(0, QHeaderView::Stretch);
+#endif
   
     QSizePolicy policy = paramValue->sizePolicy();
     policy.setHorizontalStretch(3);
