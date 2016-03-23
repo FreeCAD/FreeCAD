@@ -99,10 +99,8 @@ void iisTaskHeader::paintEvent ( QPaintEvent * event )
 {
 	QPainter p(this);
 
-#if QT_VERSION >= 0x040203
 	if (myScheme->headerAnimation)
 		p.setOpacity(m_opacity+0.7);
-#endif
 
 	p.setPen(myScheme->headerBorder);
 	p.setBrush(myScheme->headerBackground);

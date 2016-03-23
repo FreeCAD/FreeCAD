@@ -36,11 +36,9 @@
 # include <QPrintDialog>
 # include <QScrollBar>
 # include <QMouseEvent>
-# if QT_VERSION >= 0x040400
 # include <QWebFrame>
 # include <QWebView>
 # include <QWebSettings>
-# endif
 # include <QStatusBar>
 # include <QTextBlock>
 # include <QTextCodec>

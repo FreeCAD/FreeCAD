@@ -570,14 +570,9 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
 
     viewport.setWindowSize(width, height);
 
-#if QT_VERSION >= 0x040600
     QGLFramebufferObjectFormat fmt;
     fmt.setSamples(samples);
     fmt.setAttachment(QGLFramebufferObject::Depth);
-#else
-    QGLFramebufferObject::Attachment fmt;
-    fmt = QGLFramebufferObject::Depth;
-#endif
 
     framebuffer = new QGLFramebufferObject(width, height, fmt);
     cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure

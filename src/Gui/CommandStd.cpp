@@ -27,10 +27,8 @@
 # include <QMessageBox>
 # include <QSharedPointer>
 # include <QWhatsThis>
-#if QT_VERSION >= 0x040200
 # include <QDesktopServices>
 # include <QUrl>
-#endif
 #endif
 
 #include <boost/scoped_ptr.hpp>

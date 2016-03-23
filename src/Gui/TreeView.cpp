@@ -47,10 +47,7 @@ TreeView::TreeView(QWidget* parent)
     this->setDropIndicatorShown(false);
     this->setRootIsDecorated(false);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-#if QT_VERSION >= 0x040200
-    // causes unexpected drop events (possibly only with Qt4.1.x)
     this->setMouseTracking(true); // needed for itemEntered() to work
-#endif
 }
 
 TreeView::~TreeView()

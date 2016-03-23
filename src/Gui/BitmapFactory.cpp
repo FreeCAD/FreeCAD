@@ -151,9 +151,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
         filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*it).toLower());
 
     QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
-#if QT_VERSION >= 0x040500
     paths.removeDuplicates();
-#endif
     for (QStringList::ConstIterator pt = paths.begin(); pt != paths.end(); ++pt) {
         QDir d(*pt);
         d.setNameFilters(filters);
@@ -162,9 +160,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
             files << it->absoluteFilePath();
     }
 
-#if QT_VERSION >= 0x040500
     files.removeDuplicates();
-#endif
     return files;
 }
 
@@ -311,7 +307,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
 #ifdef QTWEBKIT
     // There is a crash when using the Webkit engine in debug mode
     // for a couple of SVG files. Thus, use the qsvg plugin.
-#if QT_VERSION < 0x040800 || !defined(_DEBUG)
+#if !defined(_DEBUG)
     QWebView webView;
     QPalette pal = webView.palette();
     pal.setColor(QPalette::Background, Qt::transparent);
@@ -352,7 +348,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     p.end();
 
     return QPixmap::fromImage(image);
-#else // QT_VERSION
+#else // !defined(_DEBUG)
     QWebPage webPage;
     QPalette pal = webPage.palette();
     pal.setColor(QPalette::Background, Qt::transparent);
@@ -391,7 +387,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     p.end();
 
     return QPixmap::fromImage(image);
-#endif // QT_VERSION
+#endif // !defined(_DEBUG)
 #else //QTWEBKIT
     QImage image(size, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);

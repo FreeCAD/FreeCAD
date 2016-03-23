@@ -563,14 +563,11 @@ void View3DInventor::print(QPrinter* printer)
 
 void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
 {
-#if QT_VERSION >= 0x040600
     QGLFramebufferObjectFormat format;
     format.setSamples(8);
     format.setAttachment(QGLFramebufferObject::Depth);
     QGLFramebufferObject fbo(rect.width(), rect.height(), format);
-#else
-    QGLFramebufferObject fbo(rect.width(), rect.height(), QGLFramebufferObject::Depth);
-#endif
+
     const QColor col = _viewer->backgroundColor();
     bool on = _viewer->hasGradientBackground();
     _viewer->setBackgroundColor(QColor(255,255,255));

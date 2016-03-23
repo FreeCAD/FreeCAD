@@ -106,10 +106,7 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->rootItem->setFlags(Qt::ItemIsEnabled);
     this->expandItem(this->rootItem);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-#if QT_VERSION >= 0x040200
-    // causes unexpected drop events (possibly only with Qt4.1.x)
     this->setMouseTracking(true); // needed for itemEntered() to work
-#endif
 
     this->statusTimer = new QTimer(this);
 
@@ -1323,20 +1320,12 @@ void DocumentObjectItem::testStatus()
         // to black which will lead to unreadable text if the system background
         // hss already a dark color.
         // However, it works if we set the appropriate role to an empty QVariant().
-#if QT_VERSION >= 0x040200
         this->setData(0, Qt::ForegroundRole,QVariant());
-#else
-        this->setData(0, Qt::TextColorRole,QVariant());
-#endif
     }
     else { // invisible
         QStyleOptionViewItem opt;
         opt.initFrom(this->treeWidget());
-#if QT_VERSION >= 0x040200
         this->setForeground(0, opt.palette.color(QPalette::Disabled,QPalette::Text));
-#else
-        this->setTextColor(0, opt.palette.color(QPalette::Disabled,QPalette::Text);
-#endif
         mode = QIcon::Disabled;
     }
 

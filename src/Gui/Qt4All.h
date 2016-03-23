@@ -64,9 +64,7 @@
 #include <qcolordialog.h>
 #include <qcombobox.h>
 #include <qcursor.h>
-#if QT_VERSION >= 0x040200
 #include <QDesktopServices>
-#endif
 #include <QDesktopWidget>
 #include <QDialogButtonBox>
 #include <QDockWidget>
@@ -154,9 +152,7 @@
 #include <QTcpSocket>
 // QtOpenGL
 #include <qgl.h>
-#if QT_VERSION >= 0x040200
 #include <QGLFramebufferObject>
-#endif
 #include <QGLPixelBuffer>
 // QtSvg
 #include <QSvgRenderer>
@@ -166,12 +162,10 @@
 #include <QtDesigner/QFormBuilder>
 
 // QtWebKit
-#if QT_VERSION >= 0x040400
 // Only needed in Web module
 //#include <QWebFrame>
 //#include <QWebView>
 //#include <QWebSettings>
-#endif
 
 #include "qmath.h"
 #include <QGraphicsView>

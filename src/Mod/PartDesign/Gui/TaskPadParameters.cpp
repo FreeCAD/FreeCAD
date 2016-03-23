@@ -125,9 +125,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
-#if QT_VERSION >= 0x040700
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
     ui->lineFaceName->setText(faceId >= 0 ?
                               tr("Face") + QString::number(faceId) :
                               QString());
@@ -440,9 +438,7 @@ void TaskPadParameters::changeEvent(QEvent *e)
         if (upToFace.indexOf("Face") == 0) {
             faceId = upToFace.remove(0,4).toInt(&ok);
         }
-#if QT_VERSION >= 0x040700
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
         ui->lineFaceName->setText(ok ?
                                   tr("Face") + QString::number(faceId) :
                                   QString());

@@ -66,13 +66,6 @@ void Assistant::showDocumentation(const QString &page)
 
 bool Assistant::startAssistant()
 {
-#if QT_VERSION < 0x040400
-    QMessageBox::critical(0, QObject::tr("Help"),
-    QObject::tr("Unable to load documentation.\n"
-    "In order to load it Qt 4.4 or higher is required."));
-    return false;
-#endif
-
     if (!proc) {
         proc = new QProcess();
         connect(proc, SIGNAL(readyReadStandardOutput()),

@@ -37,9 +37,7 @@
 # include <QPointer>
 # include <QGLFormat>
 # include <QGLPixelBuffer>
-#if QT_VERSION >= 0x040200
 # include <QGLFramebufferObject>
-#endif
 # include <QSessionManager>
 # include <QStatusBar>
 # include <QTextStream>
@@ -1602,22 +1600,17 @@ void Application::runApplication(void)
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
         throw Base::Exception("This system does not support OpenGL");
     }
-#if QT_VERSION >= 0x040200
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         Base::Console().Log("This system does not support framebuffer objects\n");
     }
-#endif
     if (!QGLPixelBuffer::hasOpenGLPbuffers()) {
         Base::Console().Log("This system does not support pbuffers\n");
     }
 
     QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags ();
-#if QT_VERSION >= 0x040500
     if (version & QGLFormat::OpenGL_Version_3_0)
         Base::Console().Log("OpenGL version 3.0 or higher is present\n");
-    else
-#endif
-    if (version & QGLFormat::OpenGL_Version_2_1)
+    else if (version & QGLFormat::OpenGL_Version_2_1)
         Base::Console().Log("OpenGL version 2.1 or higher is present\n");
     else if (version & QGLFormat::OpenGL_Version_2_0)
         Base::Console().Log("OpenGL version 2.0 or higher is present\n");

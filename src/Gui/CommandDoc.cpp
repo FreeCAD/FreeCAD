@@ -454,9 +454,7 @@ StdCmdSaveAs::StdCmdSaveAs()
   sToolTipText  = QT_TR_NOOP("Save the active document under a new file name");
   sWhatsThis    = "Std_SaveAs";
   sStatusTip    = QT_TR_NOOP("Save the active document under a new file name");
-#if QT_VERSION >= 0x040200
   sPixmap       = "document-save-as";
-#endif
   sAccel        = keySequenceToAccel(QKeySequence::SaveAs);
 }
 
@@ -561,9 +559,7 @@ StdCmdProjectInfo::StdCmdProjectInfo()
   sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
   sWhatsThis    = "Std_ProjectInfo";
   sStatusTip    = QT_TR_NOOP("Show details of the currently active project");
-#if QT_VERSION >= 0x040200
   sPixmap       = "document-properties";
-#endif
 }
 
 void StdCmdProjectInfo::activated(int iMsg)
@@ -705,9 +701,7 @@ StdCmdQuit::StdCmdQuit()
   sToolTipText  = QT_TR_NOOP("Quits the application");
   sWhatsThis    = "Std_Quit";
   sStatusTip    = QT_TR_NOOP("Quits the application");
-#if QT_VERSION >= 0x040200
   sPixmap       = "application-exit";
-#endif
   sAccel        = "Alt+F4";
 }
 
@@ -990,9 +984,7 @@ StdCmdSelectAll::StdCmdSelectAll()
     sToolTipText  = QT_TR_NOOP("Select all");
     sWhatsThis    = "Std_SelectAll";
     sStatusTip    = QT_TR_NOOP("Select all");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-select-all";
-#endif
     //sAccel        = "Ctrl+A"; // superseeds shortcuts for text edits
 }
 
@@ -1022,9 +1014,7 @@ StdCmdDelete::StdCmdDelete()
   sToolTipText  = QT_TR_NOOP("Deletes the selected objects");
   sWhatsThis    = "Std_Delete";
   sStatusTip    = QT_TR_NOOP("Deletes the selected objects");
-#if QT_VERSION >= 0x040200
   sPixmap       = "edit-delete";
-#endif
   sAccel        = keySequenceToAccel(QKeySequence::Delete);
   eType         = ForEdit;
 }
@@ -1321,9 +1311,7 @@ StdCmdEdit::StdCmdEdit()
     sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
     sWhatsThis    = "Std_Edit";
     sStatusTip    = QT_TR_NOOP("Enters or leaves the selected object's edit mode");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-edit";
-#endif
     eType         = ForEdit;
 }
 

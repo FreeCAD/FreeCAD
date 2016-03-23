@@ -154,10 +154,8 @@ public:
     {
         menu = new QMenu(this);
         // For Qt 4.2.x the tabs might be very wide
-#if QT_VERSION >= 0x040200
         setDrawBase(false);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-#endif
     }
 
     ~MDITabbar()
@@ -250,21 +248,15 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Create the layout containing the workspace and a tab bar
     d->mdiArea = new QMdiArea();
-#if QT_VERSION >= 0x040500
     d->mdiArea->setTabPosition(QTabWidget::South);
     d->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = d->mdiArea->findChild<QTabBar*>();
     if (tab) {
         // 0000636: Two documents close
-#if QT_VERSION < 0x040800
-        connect(tab, SIGNAL(tabCloseRequested(int)),
-                this, SLOT(tabCloseRequested(int)));
-#endif
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
     }
-#endif
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation, false);
@@ -353,13 +345,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     pcCombiView->setMinimumWidth(150);
     pDockMgr->registerDockWindow("Std_CombiView", pcCombiView);
 
-#if QT_VERSION < 0x040500
-    // Report view
-    Gui::DockWnd::ReportView* pcReport = new Gui::DockWnd::ReportView(this);
-    pcReport->setObjectName
-        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
-    pDockMgr->registerDockWindow("Std_ReportView", pcReport);
-#else
     // Report view (must be created before PythonConsole!)
     ReportOutput* pcReport = new ReportOutput(this);
     pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
@@ -391,7 +376,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         connect(result, SIGNAL(currentChanged(int)), l, SLOT(tabChanged()));
         l->unusedTabBars << result;
     }
-#endif
 #endif
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
@@ -987,16 +971,6 @@ void MainWindow::hideEvent(QHideEvent  * /*e*/)
 
 void MainWindow::showMainWindow()
 {
-    // Under certain circumstances it can happen that at startup the main window
-    // appears for a short moment and disappears immediately. The workaround
-    // starts a timer to check for the visibility of the main window and call
-    // ShowWindow() if needed.
-    // So far, this phenomena only appeared with Qt4.1.4
-#if defined(Q_WS_WIN) && (QT_VERSION == 0x040104)
-    WId id = this->winId();
-    ShowWindow(id, SW_SHOW);
-    std::cout << "Force to show main window" << std::endl;
-#endif
 }
 
 void MainWindow::processMessages(const QList<QByteArray> & msg)
@@ -1522,16 +1496,12 @@ void MainWindow::showMessage (const QString& message, int timeout)
 {
     QFontMetrics fm(statusBar()->font());
     QString msg = fm.elidedText(message, Qt::ElideMiddle, this->width()/2);
-#if QT_VERSION <= 0x040600
-    this->statusBar()->showMessage(msg, timeout);
-#else
     //#0000665: There is a crash under Ubuntu 12.04 (Qt 4.8.1)
     QMetaObject::invokeMethod(statusBar(), "showMessage",
         Qt::QueuedConnection,
         QGenericReturnArgument(),
         Q_ARG(QString,msg),
         Q_ARG(int, timeout));
-#endif
 }
 
 // -------------------------------------------------------------

@@ -255,10 +255,8 @@ static QString getOperatingSystem()
             return QString::fromLatin1("Windows Vista");
         case QSysInfo::WV_WINDOWS7:
             return QString::fromLatin1("Windows 7");
-#if QT_VERSION >= 0x040800
         case QSysInfo::WV_WINDOWS8:
             return QString::fromLatin1("Windows 8");
-#endif
 #if ((QT_VERSION >= 0x050200) || (QT_VERSION >= 0x040806 && QT_VERSION < 0x050000))
         case QSysInfo::WV_WINDOWS8_1:
             return QString::fromLatin1("Windows 8.1");
@@ -279,18 +277,14 @@ static QString getOperatingSystem()
             return QString::fromLatin1("Mac OS X 10.4");
         case QSysInfo::MV_10_5:
             return QString::fromLatin1("Mac OS X 10.5");
-#if QT_VERSION >= 0x040700
         case QSysInfo::MV_10_6:
             return QString::fromLatin1("Mac OS X 10.6");
-#endif
-#if QT_VERSION >= 0x040800
         case QSysInfo::MV_10_7:
             return QString::fromLatin1("Mac OS X 10.7");
         case QSysInfo::MV_10_8:
             return QString::fromLatin1("Mac OS X 10.8");
         case QSysInfo::MV_10_9:
             return QString::fromLatin1("Mac OS X 10.9");
-#endif
         default:
             return QString::fromLatin1("Mac OS X");
     }
