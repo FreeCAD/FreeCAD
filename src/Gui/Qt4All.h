@@ -40,6 +40,9 @@
 #include <qrunnable.h>
 #include <QSet>
 #include <QSignalMapper>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#endif
 #include <QTemporaryFile>
 #include <qtextcodec.h>
 #include <qtextstream.h>

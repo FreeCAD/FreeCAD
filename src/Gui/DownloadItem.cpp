@@ -40,6 +40,9 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QTextDocument>
+#if QT_VERSION >= 0x050000
+# include <QStandardPaths>
+#endif
 
 #include <App/Document.h>
 
@@ -167,7 +170,11 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent)
             SLOT(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
 
     QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+#if QT_VERSION >= 0x050000
+    QString location = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+#else
     QString location = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
+#endif
     diskCache->setCacheDirectory(location);
     setCache(diskCache);
 }
@@ -272,7 +279,11 @@ void DownloadItem::init()
 QString DownloadItem::getDownloadDirectory() const
 {
     QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
+#if QT_VERSION >= 0x050000
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+#else
     QString path = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+#endif
     QString dirPath = QDir(path).filePath(exe);
     Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("Preferences")->GetGroup("General");
@@ -293,7 +304,6 @@ void DownloadItem::getFileName()
 {
     QSettings settings;
     settings.beginGroup(QLatin1String("downloadmanager"));
-    //QString defaultLocation = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
     QString defaultLocation = getDownloadDirectory();
     QString downloadDirectory = settings.value(QLatin1String("downloadDirectory"), defaultLocation).toString();
     if (!downloadDirectory.isEmpty())
