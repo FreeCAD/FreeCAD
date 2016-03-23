@@ -1419,7 +1419,7 @@ void View3DInventorViewer::renderScene(void)
         // Render normal scenegraph.
         inherited::actualRedraw();
     }
-    catch(const Base::MemoryException&) {
+    catch (const Base::MemoryException&) {
         // FIXME: If this exception appears then the background and camera position get broken somehow. (Werner 2006-02-01)
         for (std::set<ViewProvider*>::iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it)
             (*it)->hide();
@@ -1569,13 +1569,12 @@ void View3DInventorViewer::selectAll()
         Gui::Selection().setSelection(objs.front()->getDocument()->getName(), objs);
 }
 
-
 bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 {
     if (isRedirectedToSceneGraph()) {
         SbBool processed = inherited::processSoEvent(ev);
 
-        if(!processed)
+        if (!processed)
             processed = navigation->processEvent(ev);
 
         return processed;
@@ -1585,7 +1584,7 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
         // filter out 'Q' and 'ESC' keys
         const SoKeyboardEvent* const ke = static_cast<const SoKeyboardEvent*>(ev);
 
-        switch(ke->getKey()) {
+        switch (ke->getKey()) {
         case SoKeyboardEvent::ESCAPE:
         case SoKeyboardEvent::Q: // ignore 'Q' keys (to prevent app from being closed)
             return inherited::processSoEvent(ev);
@@ -2034,7 +2033,7 @@ void View3DInventorViewer::viewAll(float factor)
         sa.apply(this->getSoRenderManager()->getSceneGraph());
         const SoPathList& pathlist = sa.getPaths();
 
-        for(int i = 0; i < pathlist.getLength(); i++) {
+        for (int i = 0; i < pathlist.getLength(); i++) {
             SoPath* path = pathlist[i];
             SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
             group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
@@ -2313,7 +2312,7 @@ void View3DInventorViewer::drawAxisCross(void)
 
     const float NEARVAL = 0.1f;
     const float FARVAL = 10.0f;
-    const float dim = NEARVAL * float(tan(M_PI / 8.0)); // FOV is 45? (45/360 = 1/8)
+    const float dim = NEARVAL * float(tan(M_PI / 8.0)); // FOV is 45 deg (45/360 = 1/8)
     glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
 
 
@@ -2382,11 +2381,11 @@ void View3DInventorViewer::drawAxisCross(void)
 
         assert((val[0] >= val[1]) && (val[1] >= val[2])); // Just checking..
 
-        for(int i=0; i < 3; i++) {
+        for (int i=0; i < 3; i++) {
             glPushMatrix();
 
             if (idx[i] == XAXIS) {                        // X axis.
-                if(stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
+                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
                     glColor3f(0.500f, 0.5f, 0.5f);
                 else
                     glColor3f(0.500f, 0.125f, 0.125f);
@@ -2399,7 +2398,7 @@ void View3DInventorViewer::drawAxisCross(void)
                 else
                     glColor3f(0.125f, 0.500f, 0.125f);
             }
-            else {                                       // Z axis.
+            else {                                        // Z axis.
                 glRotatef(-90, 0, 1, 0);
 
                 if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
@@ -2536,10 +2535,10 @@ void View3DInventorViewer::setCursorRepresentation(int modearg)
     if (w && w->rect().contains(QCursor::pos()))
         w->setAttribute(Qt::WA_UnderMouse);
 
-    switch(modearg) {
+    switch (modearg) {
     case NavigationStyle::IDLE:
     case NavigationStyle::INTERACT:
-        if(isEditing())
+        if (isEditing())
             this->getWidget()->setCursor(this->editCursor);
         else
             this->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
@@ -2552,28 +2551,22 @@ void View3DInventorViewer::setCursorRepresentation(int modearg)
         break;
 
     case NavigationStyle::ZOOMING:
-    {
         this->getWidget()->setCursor(zoomCursor);
-    }
-    break;
+        break;
 
     case NavigationStyle::SEEK_MODE:
     case NavigationStyle::SEEK_WAIT_MODE:
     case NavigationStyle::BOXZOOM:
-    {
         this->getWidget()->setCursor(Qt::CrossCursor);
-    }
-    break;
+        break;
 
     case NavigationStyle::PANNING:
         this->getWidget()->setCursor(panCursor);
         break;
 
     case NavigationStyle::SELECTION:
-    {
         this->getWidget()->setCursor(Qt::PointingHandCursor);
-    }
-    break;
+        break;
 
     default:
         assert(0);
@@ -2588,17 +2581,16 @@ void View3DInventorViewer::setEditing(SbBool edit)
     this->editCursor = QCursor();
 }
 
+void View3DInventorViewer::setComponentCursor(const QCursor& cursor)
+{
+    this->getWidget()->setCursor(cursor);
+}
+
 void View3DInventorViewer::setEditingCursor(const QCursor& cursor)
 {
     this->getWidget()->setCursor(cursor);
     this->editCursor = this->getWidget()->cursor();
 }
-
-void View3DInventorViewer::setComponentCursor(QCursor cursor)
-{
-    this->getWidget()->setCursor(cursor);
-}
-
 
 void View3DInventorViewer::selectCB(void* viewer, SoPath* path)
 {
