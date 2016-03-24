@@ -32,6 +32,8 @@
 #include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+#include <Base/Parameter.h>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <boost/regex.hpp>
@@ -70,7 +72,16 @@ DrawPage::DrawPage(void)
 
     // Projection Properties
     ProjectionType.setEnums(ProjectionTypeEnums);
-    ADD_PROPERTY(ProjectionType, ((long)0));
+    //ADD_PROPERTY(ProjectionType, ((long)0));
+    Base::Reference<ParameterGrp> hGrp =
+                        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+    int projType = hGrp->GetInt("ProjectionAngle", 0x01);    //in prefs, 1 -> FirstAngle 2 -> ThirdAngle
+    if (projType == 2) {
+        ADD_PROPERTY(ProjectionType, ((long)1));
+    } else {
+        ADD_PROPERTY(ProjectionType, ((long)0));
+    }
+
     ADD_PROPERTY_TYPE(Scale ,(1.0), group, App::Prop_None, "Scale factor for this Page");
     //TODO: Page should create itself with default Template instead of Cmd figuring it out?
 }

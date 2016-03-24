@@ -62,12 +62,16 @@ QGIEdge::QGIEdge(int index) :
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
     m_colNormal = fcColor.asQColor();
+    m_defNormal = m_colNormal;
     fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
     m_colSel = fcColor.asQColor();
     fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
     m_colPre = fcColor.asQColor();
     fcColor.setPackedValue(hGrp->GetUnsigned("HiddenColor", 0x08080800));
     m_colHid = fcColor.asQColor();
+
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+    m_styleHid = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",2));
 
     m_pen.setStyle(Qt::SolidLine);
     m_pen.setCapStyle(Qt::RoundCap);
@@ -137,11 +141,7 @@ void QGIEdge::setHighlighted(bool b)
 }
 
 void QGIEdge::setPrettyNormal() {
-    if (isHiddenEdge) {
-        m_colCurrent = m_colHid;
-    } else {
-        m_colCurrent = m_colNormal;
-    }
+    m_colCurrent = m_colNormal;
     update();
 }
 
@@ -160,10 +160,15 @@ void QGIEdge::setStrokeWidth(float width) {
     update();
 }
 
-//TODO: obs? we never change an existing edge's visibility.
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
-    if (b) m_colCurrent = m_colHid;
+    if (b) {
+        m_pen.setStyle(m_styleHid);
+        m_colNormal = m_colHid;
+    } else {
+        m_pen.setStyle(Qt::SolidLine);
+        m_colNormal = m_defNormal;
+    }
     update();
 }
 

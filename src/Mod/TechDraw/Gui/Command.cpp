@@ -104,16 +104,11 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/Templates";
-    QString templateDir = QString::fromStdString(hGrp->GetASCII("TemplateDir", defaultDir.c_str()));
-    if (templateDir.isEmpty()) {                                         //preference key can be present, but have null value
-        templateDir = QString::fromStdString(defaultDir);
-    }
-    std::string defaultFileName = "A4_Landscape.svg";
+    std::string defaultFileName = defaultDir + "A4_Landscape.svg";
     QString templateFileName = QString::fromStdString(hGrp->GetASCII("TemplateFile",defaultFileName.c_str()));
     if (templateFileName.isEmpty()) {
         templateFileName = QString::fromStdString(defaultFileName);
     }
-    templateFileName = templateDir + QString::fromUtf8("/")  + templateFileName;
 
     std::string PageName = getUniqueObjectName("Page");
     std::string TemplateName = getUniqueObjectName("Template");
@@ -141,8 +136,7 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
         else {
             Base::Console().Log("INFO - Template: %s for Page: %s NOT Found\n", PageName.c_str(),TemplateName.c_str());
         }
-    }
-    else {
+    } else {
         QMessageBox::critical(Gui::getMainWindow(),
             QLatin1String("No template"),
             QLatin1String("No default template found"));
