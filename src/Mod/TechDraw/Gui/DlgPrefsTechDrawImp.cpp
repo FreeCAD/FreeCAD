@@ -48,8 +48,12 @@ void DlgPrefsTechDrawImp::saveSettings()
     pcb_PreSelect->onSave();
     pcb_Hidden->onSave();
     le_LabelFont->onSave();
-    le_DefTemplate->onSave();
+    pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
+    cb_HidLine->onSave();
+    cb_Angle->onSave();
+    pfc_HatchFile->onSave();
+    pfc_HatchDir->onSave();
 }
 
 void DlgPrefsTechDrawImp::loadSettings()
@@ -59,8 +63,12 @@ void DlgPrefsTechDrawImp::loadSettings()
     pcb_PreSelect->onRestore();
     pcb_Hidden->onRestore();
     le_LabelFont->onRestore();
-    le_DefTemplate->onRestore();
+    pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();
+    cb_HidLine->onRestore();
+    cb_Angle->onRestore();
+    pfc_HatchFile->onRestore();
+    pfc_HatchDir->onRestore();
 }
 
 /**

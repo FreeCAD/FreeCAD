@@ -88,6 +88,8 @@ private:
     QColor m_colPre;
     QColor m_colSel;
     QColor m_colHid;
+    QColor m_defNormal;
+    Qt::PenStyle m_styleHid;
 };
 
 } // namespace MDIViewPageGui
