@@ -34,7 +34,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>279</height>
+        <height>314</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -99,7 +99,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>279</height>
+        <height>314</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -146,7 +146,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>279</height>
+        <height>314</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -187,60 +187,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>304</width>
-        <height>279</height>
-       </rect>
-      </property>
-      <attribute name="icon">
-       <iconset resource="../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/document-save-as.svg</normaloff>:/icons/FreeCAD-default/scalable/document-save-as.svg</iconset>
-      </attribute>
-      <attribute name="label">
-       <string>Speeds</string>
-      </attribute>
-      <layout class="QFormLayout" name="formLayout_4">
-       <item row="0" column="0">
-        <widget class="Gui::InputField" name="horizFeed">
-         <property name="unit" stdset="0">
-          <string>mm/(s)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Horiz Feed</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="Gui::InputField" name="vertFeed">
-         <property name="unit" stdset="0">
-          <string notr="true">mm/(s)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Vert Feed</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="page_3">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>279</height>
+        <height>314</height>
        </rect>
       </property>
       <attribute name="icon">

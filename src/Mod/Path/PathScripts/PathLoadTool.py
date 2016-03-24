@@ -44,6 +44,9 @@ class LoadTool:
         obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool","The speed of the cutting spindle in RPM")
         obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool","Direction of spindle rotation")
         obj.SpindleDir = ['Forward','Reverse']
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed",translate("Path","Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",translate("Path","Feed rate for horizontal moves"))
+
         obj.Proxy = self
         mode = 2
         obj.setEditorMode('Placement',mode)

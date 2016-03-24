@@ -152,6 +152,8 @@ class CommandProject:
         #create a machine obj
         import PathScripts
         PathScripts.PathMachine.CommandPathMachine.Create()
+        PLT = PathScripts.PathLoadTool.CommandPathLoadTool()
+        PLT.Activated()
 
         return obj
 
