@@ -255,6 +255,21 @@ def profile(curve,side_of_line,radius=1.0,vertfeed=0.0,horizfeed=0.0,offset_extr
 
     return output
 
+def make_smaller( curve, start = None, finish = None, end_beyond = False ):
+    if start != None:
+        curve.ChangeStart(curve.NearestPoint(start))
+
+    if finish != None:
+        if end_beyond:
+            curve2 = area.Curve(curve)
+            curve2.ChangeEnd(curve2.NearestPoint(finish))
+            first = True
+            for vertex in curve2.getVertices():
+                if first == False: curve.append(vertex)
+                first = False
+        else:
+            curve.ChangeEnd(curve.NearestPoint(finish))
+
 # def makePath(edges,side,radius,vertfeed,horizfeed,offset_extra,rapid_safety_space,clearance,start_depth,step_down,final_depth,use_CRC,direction,startpt=None,endpt=None):
 
 #     curve = makeAreaCurve(edges,direction,startpt, endpt)

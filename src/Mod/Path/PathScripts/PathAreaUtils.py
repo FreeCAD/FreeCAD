@@ -99,29 +99,29 @@ def cut_curvelist1(curve_list, rapid_safety_space, current_start_depth, depth, c
 
     rapid(z = clearance_height)
 
-# def cut_curvelist2(curve_list, rapid_safety_space, current_start_depth, depth, clearance_height, keep_tool_down_if_poss,start_point):
-#     p = area.Point(0, 0)
-#     start_x,start_y=start_point
-#     first = True
-#     for curve in curve_list:
-#         need_rapid = True
-#         if first == True:
-#             direction = "on";radius = 0.0;offset_extra = 0.0; roll_radius = 0.0;roll_on = 0.0; roll_off = 0.0; rapid_safety_space; step_down = math.fabs(depth);extend_at_start = 0.0;extend_at_end = 0.0
-#             kurve_funcs.make_smaller( curve, start = area.Point(start_x,start_y))
-#             kurve_funcs.profile(curve, direction, radius , offset_extra, roll_radius, roll_on, roll_off, rapid_safety_space , clearance_height, current_start_depth, step_down , depth, extend_at_start, extend_at_end)
-#         else:
-#             s = curve.FirstVertex().p
-#             if keep_tool_down_if_poss == True:
+def cut_curvelist2(curve_list, rapid_safety_space, current_start_depth, depth, clearance_height, keep_tool_down_if_poss,start_point):
+    p = area.Point(0, 0)
+    start_x,start_y=start_point
+    first = True
+    for curve in curve_list:
+        need_rapid = True
+        if first == True:
+            direction = "On";radius = 0.0;offset_extra = 0.0; roll_radius = 0.0;roll_on = 0.0; roll_off = 0.0; rapid_safety_space; step_down = math.fabs(depth);extend_at_start = 0.0;extend_at_end = 0.0
+            PathKurveUtils.make_smaller( curve, start = area.Point(start_x,start_y))
+            PathKurveUtils.profile(curve, direction, radius , offset_extra, roll_radius, roll_on, roll_off, rapid_safety_space , clearance_height, current_start_depth, step_down , depth, extend_at_start, extend_at_end)
+        else:
+            s = curve.FirstVertex().p
+            if keep_tool_down_if_poss == True:
 
-#                 # see if we can feed across
-#                 if feed_possible(p, s):
-#                     need_rapid = False
-#             elif s.x == p.x and s.y == p.y:
-#                 need_rapid = False
+                # see if we can feed across
+                if feed_possible(p, s):
+                    need_rapid = False
+            elif s.x == p.x and s.y == p.y:
+                need_rapid = False
 
-#         cut_curve(curve, need_rapid, p, rapid_safety_space, current_start_depth, depth)
-#         first = False #change to True if you want to rapid back to start side before zigging again with unidirectional set
-#     rapid(z = clearance_height)
+        cut_curve(curve, need_rapid, p, rapid_safety_space, current_start_depth, depth)
+        first = False #change to True if you want to rapid back to start side before zigging again with unidirectional set
+    rapid(z = clearance_height)
 
 def recur(arealist, a1, stepover, from_center):
     # this makes arealist by recursively offsetting a1 inwards
@@ -429,8 +429,8 @@ def pocket(a,tool_radius, extra_offset, stepover, depthparams, from_center, keep
 
     else:
         print "PathAreaUtils:438  I guess it IS used.  Who knew?"
-        # for depth in depths:
-        #     cut_curvelist2(curve_list, depthparams.rapid_safety_space, current_start_depth, depth, depthparams.clearance_height, keep_tool_down_if_poss, start_point)
-        #     current_start_depth = depth
+        for depth in depths:
+            cut_curvelist2(curve_list, depthparams.rapid_safety_space, current_start_depth, depth, depthparams.clearance_height, keep_tool_down_if_poss, start_point)
+            current_start_depth = depth
 
 

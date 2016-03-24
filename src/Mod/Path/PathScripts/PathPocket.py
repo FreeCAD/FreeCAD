@@ -99,7 +99,11 @@ class ObjectPocket:
         obj.HelixSize = (0.0, 0.01, 100.0, 0.5)
         obj.addProperty("App::PropertyFloatConstraint", "RampAngle", "Entry", translate("PathProject","The Angle of the ramp entry."))
         obj.RampAngle = (0.0, 0.01, 100.0, 0.5)
-        
+
+        #Start Point Properties
+        obj.addProperty("App::PropertyVector","StartPoint","Start Point",translate("PathProject","The start point of this path"))
+        obj.addProperty("App::PropertyBool","UseStartPoint","Start Point",translate("PathProject","make True, if specifying a Start Point")) 
+
         obj.Proxy = self
 
     def onChanged(self,obj,prop):
@@ -157,14 +161,15 @@ class ObjectPocket:
         PathAreaUtils.output('mem')
         PathAreaUtils.feedrate_hv(obj.HorizFeed.Value, obj.VertFeed.Value)
 
+        if obj.UseStartPoint:
+            start_point = (obj.StartPoint.x,obj.StartPoint.y)
+
 
         print "a," + str(self.radius) + "," + str(extraoffset) + "," + str(stepover) + ",depthparams, " + str(from_center) + "," + str(keep_tool_down) + "," + str(use_zig_zag) + "," + str(zig_angle) + "," + str(zig_unidirectional) + "," + str(start_point) + "," + str(cut_mode)
 
         PathAreaUtils.pocket(a,self.radius,extraoffset, stepover,depthparams,from_center,keep_tool_down,use_zig_zag,zig_angle,zig_unidirectional,start_point,cut_mode)
 
         return PathAreaUtils.retrieve_gcode()
-
-
 
 
     def buildpathocc(self, obj, shape):
@@ -554,6 +559,22 @@ class ObjectPocket:
                 obj.Path = path
                 obj.ViewObject.Visibility = False
 
+class _CommandSetPocketStartPoint:
+    def GetResources(self):
+        return {'Pixmap'  : 'Path-StartPoint',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPocket","Pick Start Point"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket","Pick Start Point")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+    
+    def setpoint(self,point,o):
+        obj=FreeCADGui.Selection.getSelection()[0]
+        obj.StartPoint.x = point.x
+        obj.StartPoint.y = point.y
+    def Activated(self):
+
+        FreeCADGui.Snapper.getPoint(callback=self.setpoint)
 
 class ViewProviderPocket:
 
@@ -563,6 +584,17 @@ class ViewProviderPocket:
     def attach(self,vobj):
         self.Object = vobj.Object
         return
+
+    def setEdit(self,vobj,mode=0):
+        import PocketEdit
+        FreeCADGui.Control.closeDialog()
+        taskd = QtGui.QWidget()
+        taskd = PocketEdit.Ui_Dialog()
+        taskd.obj = vobj.Object
+        #taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+
+        return True
 
     def getIcon(self):
         return ":/icons/Path-Pocket.svg"
@@ -660,5 +692,7 @@ class CommandPathPocket:
 if FreeCAD.GuiUp: 
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Pocket',CommandPathPocket())
+    FreeCADGui.addCommand('Set_PocketStartPoint',_CommandSetPocketStartPoint())
+
 
 FreeCAD.Console.PrintLog("Loading PathPocket... done\n")
