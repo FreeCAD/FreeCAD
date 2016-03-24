@@ -55,5 +55,42 @@ def check_clockwise(poly):
     return clockwise
 
 
+class FGate:
+    def allow(self,doc,obj,sub):
+        return (sub[0:4] == 'Face')
+
+class VGate:
+    def allow(self,doc,obj,sub):
+        return (sub[0:6] == 'Vertex')
+
+class EGate:
+    def allow(self,doc,obj,sub):
+        return (sub[0:4] == 'Edge')
+
+class ENGRAVEGate:
+    def allow(self,doc,obj,sub):
+        return (obj.Name[0:11] == 'ShapeString')
+
+
+def fselect():
+    FreeCADGui.Selection.addSelectionGate(FGate())
+    FreeCAD.Console.PrintWarning("Face Select Mode\n")
+
+def vselect():
+    FreeCADGui.Selection.addSelectionGate(VGate())
+    FreeCAD.Console.PrintWarning("Vertex Select Mode\n")
+
+def eselect():
+    FreeCADGui.Selection.addSelectionGate(EGate())
+    FreeCAD.Console.PrintWarning("Edge Select Mode\n")
+
+
+def engraveselect():
+    FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
+    FreeCAD.Console.PrintWarning("ShapeString Select Mode\n")
+
+def clear():
+    FreeCADGui.Selection.removeSelectionGate()
+    FreeCAD.Console.PrintWarning("Free Select\n")
 
 

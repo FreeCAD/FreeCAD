@@ -22,7 +22,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,FreeCADGui,Path,PathGui,Draft
+
 from PySide import QtCore,QtGui
 
 """Path Engrave object and FreeCAD command"""
@@ -41,7 +42,7 @@ class ObjectPathEngrave:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkSub","Base","Path","The base geometry of this object")
+        obj.addProperty("App::PropertyLinkSubList","Base","Path","The base geometry of this object")
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm",translate("Path", "The library or Algorithm used to generate the path"))
         obj.Algorithm = ['OCC Native']
@@ -56,6 +57,8 @@ class ObjectPathEngrave:
         obj.addProperty("App::PropertySpeed", "VertFeed", "Feed",translate("Path","Feed rate for vertical moves in Z"))
         obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",translate("Path","Feed rate for horizontal moves"))
 
+        if FreeCAD.GuiUp:
+            _ViewProviderEngrave(obj.ViewObject)
 
         obj.Proxy = self
 
@@ -66,17 +69,22 @@ class ObjectPathEngrave:
         return None
         
     def execute(self,obj):
-        if obj.Base:  
-            # we only consider the outer wire if this is a Face
-            wires = obj.Base[0].Shape.Wires
+        output = ""
+        if obj.Base:
+            for o in obj.Base:
+                output += "G0 " + str(obj.ClearanceHeight.Value)+"\n"
+                # we only consider the outer wire if this is a Face
+                wires = o[0].Shape.Wires
 
-            output = ""
-            if obj.Algorithm == "OCC Native":
-                output += self.buildpathocc(obj, wires)
+                if obj.Algorithm == "OCC Native":
+                    output += self.buildpathocc(obj, wires)
 
-            #print output
-            path = Path.Path(output)
-            obj.Path = path
+        #print output
+        if output == "":
+            #output += "G0 Z" + str(obj.ClearanceHeight.Value)
+            output +="G0"
+        path = Path.Path(output)
+        obj.Path = path
 
     def buildpathocc(self, obj, wires):
         import Part,DraftGeomUtils
@@ -127,8 +135,45 @@ class ObjectPathEngrave:
             output += "G0 Z " + str(obj.SafeHeight.Value)
         return output
 
-class CommandPathEngrave:
+    def addShapeString(self, obj, ss):
+        baselist = obj.Base
+        item = (ss, "")
+        if item in baselist:
+            FreeCAD.Console.PrintWarning("ShapeString already in the Engraving list"+ "\n")
 
+        else:
+            baselist.append (item)
+        obj.Base = baselist
+        self.execute(obj)
+
+
+class _ViewProviderEngrave:
+
+    def __init__(self,vobj):
+        vobj.Proxy = self
+
+    def attach(self,vobj):
+        self.Object = vobj.Object
+        return
+
+    def setEdit(self,vobj,mode=0):
+        FreeCADGui.Control.closeDialog()
+        taskd = TaskPanel()
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        taskd.setupUi()
+        return True
+
+    def getIcon(self):
+        return ":/icons/Path-Profile.svg"
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+class CommandPathEngrave:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Engrave',
@@ -139,36 +184,156 @@ class CommandPathEngrave:
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
-        import Draft
-        # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelectionEx()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_Engrave","Please select one ShapeString\n"))
-            return
-        if len(selection[0].SubObjects) != 0:
-            FreeCAD.Console.PrintError(translate("Path_Engrave","Please select one ShapeString\n"))
-            return
-        if not Draft.getType(selection[0].Object) == "ShapeString":
-            FreeCAD.Console.PrintError(translate("Path_Engrave","Please select one ShapeString\n"))
-            return
         
         # if everything is ok, execute and register the transaction in the undo/redo stack
+
         FreeCAD.ActiveDocument.openTransaction("Create Engrave Path")
         FreeCADGui.addModule("PathScripts.PathFaceProfile")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","PathEngrave")')
         FreeCADGui.doCommand('PathScripts.PathEngrave.ObjectPathEngrave(obj)')
-        FreeCADGui.doCommand('obj.Base = (FreeCAD.ActiveDocument.'+selection[0].ObjectName+',[])')
+
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')
         FreeCADGui.doCommand('obj.StartDepth= 0')
         FreeCADGui.doCommand('obj.FinalDepth= -0.1' )
         FreeCADGui.doCommand('obj.SafeHeight= 5.0' )
 
-        FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
+        #FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
+class TaskPanel:
+    def __init__(self):
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/EngraveEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(":/gui/EngraveEdit.ui")
+
+    def accept(self):
+        self.getFields()
+
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s) 
+
+    def reject(self):
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s) 
+
+    def getFields(self):    
+        if self.obj:
+            if hasattr(self.obj,"StartDepth"):
+                self.obj.StartDepth = self.form.startDepth.text()
+            if hasattr(self.obj,"FinalDepth"):
+                self.obj.FinalDepth = self.form.finalDepth.text()
+            if hasattr(self.obj,"SafeHeight"):
+                self.obj.SafeHeight = self.form.safeHeight.text()
+            if hasattr(self.obj,"ClearanceHeight"):
+                self.obj.ClearanceHeight = self.form.clearanceHeight.text()
+            if hasattr(self.obj,"VertFeed"):
+                self.obj.VertFeed= self.form.vertFeed.text()
+            if hasattr(self.obj,"HorizFeed"):
+                self.obj.HorizFeed = self.form.horizFeed.text()
+
+        self.obj.Proxy.execute(self.obj)
+
+    def open(self):
+        self.s =SelObserver()
+        # install the function mode resident
+        FreeCADGui.Selection.addObserver(self.s)   
+
+    def addBase(self):
+         # check that the selection contains exactly what we want
+        selection = FreeCADGui.Selection.getSelectionEx()
+
+        if not len(selection) >= 1:
+            FreeCAD.Console.PrintError(translate("Path_Engrave","Please select at least one ShapeString\n"))
+            return
+        for s in selection:
+            if not Draft.getType(s.Object) == "ShapeString":
+                FreeCAD.Console.PrintError(translate("Path_Engrave","Please select at least one ShapeString\n"))
+                return
+            self.obj.Proxy.addShapeString(self.obj, s.Object)
+
+        self.form.baseList.clear()
+        for i in self.obj.Base:         
+            self.form.baseList.addItem(i[0].Name)
+
+    def deleteBase(self):
+        dlist = self.form.baseList.selectedItems()
+        for d in dlist:
+            newlist = []
+            for i in self.obj.Base:
+                if not i[0].Name == d.text():
+                    newlist.append (i)
+            self.obj.Base = newlist
+        self.form.baseList.takeItem(self.form.baseList.row(d))
+        # self.obj.Proxy.execute(self.obj)
+        # FreeCAD.ActiveDocument.recompute()
+
+    def itemActivated(self):
+        FreeCADGui.Selection.clearSelection()
+        slist = self.form.baseList.selectedItems()
+        for i in slist:
+            o = FreeCAD.ActiveDocument.getObject(i.text())
+            FreeCADGui.Selection.addSelection(o)
+        FreeCADGui.updateGui()
+
+    def reorderBase(self):
+        newlist = []
+        for i in range(self.form.baseList.count()):
+	    s = self.form.baseList.item(i).text()
+            obj = FreeCAD.ActiveDocument.getObject(s)
+            newlist.append(obj)
+        self.obj.Base=newlist
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.recompute()
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok)
+
+    def setupUi(self):
+        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
+        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
+        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
+        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
+        self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
+        self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
+
+        for i in self.obj.Base:         
+            self.form.baseList.addItem(i[0].Name)
+
+        #Connect Signals and Slots
+        self.form.startDepth.editingFinished.connect(self.getFields) #This is newer syntax
+        #QtCore.QObject.connect(self.form.startDepth, QtCore.SIGNAL("editingFinished()"), self.getFields)
+        QtCore.QObject.connect(self.form.finalDepth, QtCore.SIGNAL("editingFinished()"), self.getFields)
+        QtCore.QObject.connect(self.form.horizFeed, QtCore.SIGNAL("editingFinished()"), self.getFields)
+        QtCore.QObject.connect(self.form.vertFeed, QtCore.SIGNAL("editingFinished()"), self.getFields)
+        QtCore.QObject.connect(self.form.safeHeight, QtCore.SIGNAL("editingFinished()"), self.getFields)
+        QtCore.QObject.connect(self.form.clearanceHeight, QtCore.SIGNAL("editingFinished()"), self.getFields)
+
+        QtCore.QObject.connect(self.form.addBase, QtCore.SIGNAL("clicked()"), self.addBase)
+        QtCore.QObject.connect(self.form.deleteBase, QtCore.SIGNAL("clicked()"), self.deleteBase)
+        QtCore.QObject.connect(self.form.reorderBase, QtCore.SIGNAL("clicked()"), self.reorderBase)
+
+        QtCore.QObject.connect(self.form.baseList, QtCore.SIGNAL("itemSelectionChanged()"), self.itemActivated)
+
+
+
+class SelObserver:
+    def __init__(self):
+        import PathScripts.PathSelection as PST 
+        PST.engraveselect()
+
+    def __del__(self):
+        import PathScripts.PathSelection as PST 
+        PST.clear()
+
+    def addSelection(self,doc,obj,sub,pnt):               # Selection object
+        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj +')')
+        FreeCADGui.updateGui()
 
 if FreeCAD.GuiUp: 
     # register the FreeCAD command
