@@ -173,7 +173,9 @@ short DrawViewPart::mustExecute() const
             ScaleType.isTouched() ||
             ShowHiddenLines.isTouched() ||
             ShowSmoothLines.isTouched() ||
-            ShowSeamLines.isTouched());
+            ShowSeamLines.isTouched()   ||
+            LineWidth.isTouched()       ||
+            HiddenWidth.isTouched());
     return result;
 }
 
@@ -187,7 +189,9 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &ScaleType ||
             prop == &ShowHiddenLines ||
             prop == &ShowSmoothLines ||
-            prop == &ShowSeamLines) {
+            prop == &ShowSeamLines  ||
+            prop == &LineWidth       ||
+            prop == &HiddenWidth     ) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
