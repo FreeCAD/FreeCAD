@@ -98,6 +98,17 @@ App::DocumentObjectExecReturn *DrawView::recompute(void)
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+    //right way to handle this?  can't do it at creation since don't have a parent.
+    if (ScaleType.isValue("Document")) {
+        TechDraw::DrawPage *page = findParentPage();
+        if(page) {
+            if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+                Scale.setValue(page->Scale.getValue());
+                Scale.touch();
+            }
+        }
+    }
+
     return App::DocumentObject::execute();
 }
 
@@ -105,11 +116,9 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &ScaleType) {
-            if (ScaleType.isValue("Document") &&
-                !Scale.testStatus(App::Property::ReadOnly)) {
-                Scale.setStatus(App::Property::ReadOnly,true);
-                App::GetApplication().signalChangePropertyEditor(Scale);
+        if (prop == &ScaleType ||
+            prop == &Scale) {
+            if (ScaleType.isValue("Document")) {
                 TechDraw::DrawPage *page = findParentPage();
                 if(page) {
                     if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
@@ -117,11 +126,14 @@ void DrawView::onChanged(const App::Property* prop)
                         Scale.touch();
                     }
                 }
+                Scale.setStatus(App::Property::ReadOnly,true);
+                App::GetApplication().signalChangePropertyEditor(Scale);
             } else if (ScaleType.isValue("Custom") &&
                 Scale.testStatus(App::Property::ReadOnly)) {
                 Scale.setStatus(App::Property::ReadOnly,false);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             }
+            //TODO else if (ScaleType.isValue("Automatic"))...
             DrawView::execute();
         } else if (prop == &X ||
                    prop == &Y ||
