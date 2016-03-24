@@ -265,6 +265,7 @@ void QGIViewPart::updateView(bool update)
                 edge->setStrokeWidth(viewPart->LineWidth.getValue() * lineScaleFactor);
             }
         }
+        draw();
     }
 }
 
@@ -381,15 +382,17 @@ void QGIViewPart::drawViewPart()
             item->setReference(refs.at(i));
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);
+            item->setPath(drawPainterPath(*itEdge));
             item->setStrokeWidth(lineWidth);
+            item->setZValue(ZVALUE::EDGE);
+            item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+            item->setAcceptHoverEvents(true);
             if(!(*itEdge)->visible) {
                 item->setStrokeWidth(lineWidthHid);
                 item->setHiddenEdge(true);
+                item->setZValue(ZVALUE::HIDEDGE);
             }
-            item->setPath(drawPainterPath(*itEdge));
-            item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-            item->setAcceptHoverEvents(true);
-            item->setZValue(ZVALUE::EDGE);
+            item->setPrettyNormal();
             //debug a path
             //QPainterPath edgePath=drawPainterPath(*itEdge);
             //std::stringstream edgeId;

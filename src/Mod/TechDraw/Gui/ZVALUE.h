@@ -7,6 +7,7 @@ namespace ZVALUE {
     const int SECTIONFACE = 10;
     const int FACE = 20;
     const int HATCH = 25;
+    const int HIDEDGE = 27;
     const int EDGE = 30;
     const int VERTEX = 40;
     const int DIMENSION = 50;
