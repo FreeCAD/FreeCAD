@@ -62,7 +62,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 // TechDraw_NewHatch
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewHatch);
+DEF_STD_CMD_A(CmdTechDrawNewHatch);
 
 CmdTechDrawNewHatch::CmdTechDrawNewHatch()
   : Command("TechDraw_NewHatch")
@@ -120,11 +120,17 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+bool CmdTechDrawNewHatch::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // TechDraw_ToggleFrame
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawToggleFrame);
+DEF_STD_CMD_A(CmdTechDrawToggleFrame);
 
 CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
   : Command("TechDraw_ToggleFrame")
@@ -171,6 +177,12 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
             QObject::tr("Need a TechDraw Page for this command"));
         return;
     }
+}
+
+bool CmdTechDrawToggleFrame::isActive(void)
+{
+    // TODO: Also ensure that there's a page displayed?
+    return hasActiveDocument();
 }
 
 void CreateTechDrawCommandsDecorate(void)

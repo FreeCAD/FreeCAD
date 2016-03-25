@@ -84,7 +84,7 @@ bool isDrawingPageActive(Gui::Document *doc)
 // TechDraw_NewPageDef (default template)
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewPageDef);
+DEF_STD_CMD_A(CmdTechDrawNewPageDef);
 
 CmdTechDrawNewPageDef::CmdTechDrawNewPageDef()
   : Command("TechDraw_NewPageDef")
@@ -143,11 +143,16 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
     }
 }
 
+bool CmdTechDrawNewPageDef::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // TechDraw_NewPage (with template choice)
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewPage);
+DEF_STD_CMD_A(CmdTechDrawNewPage);
 
 CmdTechDrawNewPage::CmdTechDrawNewPage()
   : Command("TechDraw_NewPage")
@@ -219,11 +224,16 @@ void CmdTechDrawNewPage::activated(int iMsg)
     }
 }
 
+bool CmdTechDrawNewPage::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // TechDraw_NewView
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewView);
+DEF_STD_CMD_A(CmdTechDrawNewView);
 
 CmdTechDrawNewView::CmdTechDrawNewView()
   : Command("TechDraw_NewView")
@@ -301,11 +311,18 @@ void CmdTechDrawNewView::activated(int iMsg)
     updateActive();
     commitCommand();
 }
+
+bool CmdTechDrawNewView::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // TechDraw_NewViewSection
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewViewSection);
+DEF_STD_CMD_A(CmdTechDrawNewViewSection);
 
 CmdTechDrawNewViewSection::CmdTechDrawNewViewSection()
   : Command("TechDraw_NewViewSection")
@@ -354,6 +371,11 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     commitCommand();
 }
 
+bool CmdTechDrawNewViewSection::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
 
 //===========================================================================
 // TechDraw_ProjGroup
@@ -433,7 +455,7 @@ void CmdTechDrawProjGroup::activated(int iMsg)
 
 bool CmdTechDrawProjGroup::isActive(void)
 {
-    if (Gui::Control().activeDialog())
+    if ( !hasActiveDocument() || Gui::Control().activeDialog())
         return false;
     return true;
 }
@@ -479,7 +501,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
 
 bool CmdTechDrawAnnotation::isActive(void)
 {
-    return (getActiveGuiDocument() ? true : false);
+    return hasActiveDocument();
 }
 
 
@@ -527,7 +549,7 @@ void CmdTechDrawClip::activated(int iMsg)
 
 bool CmdTechDrawClip::isActive(void)
 {
-    return (getActiveGuiDocument() ? true : false);
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -597,7 +619,7 @@ void CmdTechDrawClipPlus::activated(int iMsg)
 
 bool CmdTechDrawClipPlus::isActive(void)
 {
-    return (getActiveGuiDocument() ? true : false);
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -666,7 +688,7 @@ void CmdTechDrawClipMinus::activated(int iMsg)
 
 bool CmdTechDrawClipMinus::isActive(void)
 {
-    return (getActiveGuiDocument() ? true : false);
+    return hasActiveDocument();
 }
 
 
@@ -721,7 +743,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
 
 bool CmdTechDrawSymbol::isActive(void)
 {
-    return (getActiveGuiDocument() ? true : false);
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -779,7 +801,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
 
 bool CmdTechDrawDraftView::isActive(void)
 {
-    return (getActiveGuiDocument() ? true : false);
+    return hasActiveDocument();
 }
 
 
@@ -838,7 +860,7 @@ void CmdTechDrawExportPage::activated(int iMsg)
 
 bool CmdTechDrawExportPage::isActive(void)
 {
-    return (getActiveGuiDocument() ? true : false);
+    return hasActiveDocument();
 }
 
 

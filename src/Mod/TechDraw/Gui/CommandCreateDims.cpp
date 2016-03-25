@@ -79,7 +79,7 @@ enum EdgeType{
 // TechDraw_NewDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDimension);
 
 CmdTechDrawNewDimension::CmdTechDrawNewDimension()
   : Command("TechDraw_NewDimension")
@@ -199,11 +199,17 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+bool CmdTechDrawNewDimension::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // TechDraw_NewRadiusDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewRadiusDimension);
+DEF_STD_CMD_A(CmdTechDrawNewRadiusDimension);
 
 CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
   : Command("TechDraw_NewRadiusDimension")
@@ -279,11 +285,17 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+bool CmdTechDrawNewRadiusDimension::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // TechDraw_NewDiameterDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewDiameterDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDiameterDimension);
 
 CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
   : Command("TechDraw_NewDiameterDimension")
@@ -360,12 +372,17 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+bool CmdTechDrawNewDiameterDimension::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
 
 //===========================================================================
 // TechDraw_NewLengthDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewLengthDimension);
+DEF_STD_CMD_A(CmdTechDrawNewLengthDimension);
 
 CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
   : Command("TechDraw_NewLengthDimension")
@@ -448,11 +465,17 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+bool CmdTechDrawNewLengthDimension::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // TechDraw_NewDistanceXDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewDistanceXDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDistanceXDimension);
 
 CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
   : Command("TechDraw_NewDistanceXDimension")
@@ -533,12 +556,17 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+bool CmdTechDrawNewDistanceXDimension::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
 
 //===========================================================================
 // TechDraw_NewDistanceYDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewDistanceYDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDistanceYDimension);
 
 CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
   : Command("TechDraw_NewDistanceYDimension")
@@ -618,12 +646,17 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
+bool CmdTechDrawNewDistanceYDimension::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
+}
 
 //===========================================================================
 // TechDraw_NewAngleDimension
 //===========================================================================
 
-DEF_STD_CMD(CmdTechDrawNewAngleDimension);
+DEF_STD_CMD_A(CmdTechDrawNewAngleDimension);
 
 CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
   : Command("TechDraw_NewAngleDimension")
@@ -691,6 +724,12 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
     objFeat->X.setValue(x);
+}
+
+bool CmdTechDrawNewAngleDimension::isActive(void)
+{
+    // TODO: Also ensure that there's a part selected?
+    return hasActiveDocument();
 }
 
 void CreateTechDrawCommandsDims(void)
