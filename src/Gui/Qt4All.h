@@ -31,6 +31,9 @@
 #include <qeventloop.h>
 #include <qfile.h>
 #include <QLibraryInfo>
+#if QT_VERSION >= 0x050000
+#include <QMessageLogContext>
+#endif
 #include <QMutex>
 #include <qnamespace.h>
 #include <QPointer>
