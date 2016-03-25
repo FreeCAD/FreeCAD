@@ -129,7 +129,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     void setUnit(const Base::Quantity &_quantity);
 
@@ -165,7 +165,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     void negate();
 
@@ -183,7 +183,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     std::string getName() const { return name; }
 
@@ -344,7 +344,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
@@ -382,7 +382,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
@@ -425,7 +425,7 @@ public:
 
     virtual std::string getText() const { return text; }
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual Expression * copy() const;
 
@@ -449,7 +449,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual void getDeps(std::set<App::ObjectIdentifier> &props) const;
 
