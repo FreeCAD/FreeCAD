@@ -207,6 +207,11 @@ Expression *UnitExpression::copy() const
     return new UnitExpression(owner, quantity, unitStr);
 }
 
+int UnitExpression::priority() const
+{
+    return 20;
+}
+
 //
 // NumberExpression class
 //
@@ -244,6 +249,11 @@ Expression *NumberExpression::simplify() const
 Expression *NumberExpression::copy() const
 {
     return new NumberExpression(owner, quantity);
+}
+
+int NumberExpression::priority() const
+{
+    return 20;
 }
 
 /**
@@ -529,21 +539,27 @@ Expression *OperatorExpression::copy() const
 int OperatorExpression::priority() const
 {
     switch (op) {
+    case EQ:
+    case NEQ:
+    case LT:
+    case GT:
+    case LTE:
+    case GTE:
+        return 1;
     case ADD:
-        return 5;
     case SUB:
-        return 5;
+        return 3;
     case MUL:
-    case UNIT:
-        return 10;
     case DIV:
-        return 10;
+        return 4;
     case POW:
-        return 10;
+        return 5;
+    case UNIT:
     case NEG:
     case POS:
-        return 15;
+        return 6;
     default:
+        assert(false);
         return 0;
     }
 }
@@ -1177,6 +1193,11 @@ Expression *FunctionExpression::copy() const
     return new FunctionExpression(owner, f, a);
 }
 
+int FunctionExpression::priority() const
+{
+    return 20;
+}
+
 /**
   * Compute the dependecy set of the expression. The set contains the names
   * of all Property objects this expression relies on.
@@ -1347,6 +1368,11 @@ Expression *VariableExpression::copy() const
     return new VariableExpression(owner, var);
 }
 
+int VariableExpression::priority() const
+{
+    return 20;
+}
+
 /**
   * Compute the dependecy of the expression. In this case \a props
   * is a set of strings, i.e the names of the Property objects, and
@@ -1419,6 +1445,11 @@ Expression *StringExpression::simplify() const
 std::string StringExpression::toString() const
 {
     return quote(text);
+}
+
+int StringExpression::priority() const
+{
+    return 20;
 }
 
 /**
@@ -1528,6 +1559,11 @@ Expression *ConstantExpression::copy() const
     return new ConstantExpression(owner, name.c_str(), quantity);
 }
 
+int ConstantExpression::priority() const
+{
+    return 20;
+}
+
 TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
 
 BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
@@ -1575,6 +1611,11 @@ std::string RangeExpression::toString() const
 Expression *RangeExpression::copy() const
 {
     return new RangeExpression(owner, range.fromCellString(), range.toCellString());
+}
+
+int RangeExpression::priority() const
+{
+    return 20;
 }
 
 void RangeExpression::getDeps(std::set<ObjectIdentifier> &props) const
