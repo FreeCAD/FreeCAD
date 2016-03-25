@@ -34,6 +34,7 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -4721,15 +4722,17 @@ public:
             float dy = onSketchPos.fY - StartPos.fY;
 
             lx=0;ly=0;a=0;
-            if(fabs(dx) > fabs(dy)){
+            double rev = 0;
+            if (fabs(dx) > fabs(dy)) {
                 lx = dx;
                 r = dy;
-                rev = dx/fabs(dx);
-            }else{
+                rev = Base::sgn(dx);
+            }
+            else {
                 ly = dy;
                 r = dx;
                 a = 8;
-                rev = dy/fabs(dy);
+                rev = Base::sgn(dy);
             }
 
             for (int i=0; i < 17; i++) {
@@ -4881,7 +4884,7 @@ public:
 protected:
     BoxMode Mode;
     Base::Vector2D StartPos;
-    double lx,ly,r,a,rev;
+    double lx,ly,r,a;
     std::vector<Base::Vector2D> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
