@@ -191,7 +191,11 @@ void NetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthent
     dialog.adjustSize();
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
+#if QT_VERSION >= 0x050000
+    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped()).arg(QString(reply->url().toString()).toHtmlEscaped());
+#else
     introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString()));
+#endif
     passwordDialog.siteDescription->setText(introMessage);
     passwordDialog.siteDescription->setWordWrap(true);
 
@@ -213,7 +217,11 @@ void NetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy &prox
     dialog.adjustSize();
 
     QString introMessage = tr("<qt>Connect to proxy \"%1\" using:</qt>");
+#if QT_VERSION >= 0x050000
+    introMessage = introMessage.arg(QString(proxy.hostName()).toHtmlEscaped());
+#else
     introMessage = introMessage.arg(Qt::escape(proxy.hostName()));
+#endif
     proxyDialog.siteDescription->setText(introMessage);
     proxyDialog.siteDescription->setWordWrap(true);
 
