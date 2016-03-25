@@ -54,6 +54,9 @@
 #include <qtimer.h>
 #include <qtranslator.h>
 #include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include <qvariant.h>
 #include <QWaitCondition>
 // QtGui

@@ -34,6 +34,9 @@
 #include <QSettings>
 #include <QFileIconProvider>
 #include <QWebSettings>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 
 #include "DownloadItem.h"
 #include "DownloadManager.h"
@@ -114,6 +117,24 @@ QUrl DownloadManager::redirectUrl(const QUrl& url) const
 {
     QUrl redirectUrl = url;
     if (url.host() == QLatin1String("www.dropbox.com")) {
+#if QT_VERSION >= 0x050000
+        QUrlQuery urlQuery(url);
+        QList< QPair<QString, QString> > query = urlQuery.queryItems();
+        for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
+            if (it->first == QLatin1String("dl")) {
+                if (it->second == QLatin1String("0\r\n")) {
+                    urlQuery.removeQueryItem(QLatin1String("dl"));
+                    urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
+                }
+                else if (it->second == QLatin1String("0")) {
+                    urlQuery.removeQueryItem(QLatin1String("dl"));
+                    urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1"));
+                }
+                break;
+            }
+        redirectUrl.setQuery(urlQuery.toString());
+        }
+#else
         QList< QPair<QString, QString> > query = url.queryItems();
         for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
             if (it->first == QLatin1String("dl")) {
@@ -128,6 +149,7 @@ QUrl DownloadManager::redirectUrl(const QUrl& url) const
                 break;
             }
         }
+#endif
     }
     else {
         // When the url comes from drag and drop it may end with CR+LF. This may cause problems
