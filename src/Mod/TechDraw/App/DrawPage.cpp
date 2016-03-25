@@ -59,30 +59,33 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawPage, App::DocumentObject)
 
-const char* DrawPage::ProjectionTypeEnums[]= {"First Angle",
-                                                 "Third Angle",
-                                                 NULL};
+const char* DrawPage::ProjectionTypeEnums[] = { "First Angle",
+                                                "Third Angle",
+                                                NULL };
 
 DrawPage::DrawPage(void)
 {
     static const char *group = "Page";
 
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
-    ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None),"Attached Views");
+    ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
 
     // Projection Properties
     ProjectionType.setEnums(ProjectionTypeEnums);
-    //ADD_PROPERTY(ProjectionType, ((long)0));
+
     Base::Reference<ParameterGrp> hGrp =
                         App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    int projType = hGrp->GetInt("ProjectionAngle", 0x01);    //in prefs, 1 -> FirstAngle 2 -> ThirdAngle
-    if (projType == 2) {
-        ADD_PROPERTY(ProjectionType, ((long)1));
+
+    // In preferences, 0 -> First Angle 1 -> Third Angle
+    int projType = hGrp->GetInt("ProjectionAngle", -1);
+
+    if (projType == -1) {
+        ADD_PROPERTY(ProjectionType, ((long)0)); // Default to first angle
     } else {
-        ADD_PROPERTY(ProjectionType, ((long)0));
+        ADD_PROPERTY(ProjectionType, ((long)projType));
     }
 
-    ADD_PROPERTY_TYPE(Scale ,(1.0), group, App::Prop_None, "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor for this Page");
     //TODO: Page should create itself with default Template instead of Cmd figuring it out?
 }
 
