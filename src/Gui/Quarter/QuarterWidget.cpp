@@ -680,6 +680,9 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
     SbViewportRegion vp(event->size().width(), event->size().height());
     PRIVATE(this)->sorendermanager->setViewportRegion(vp);
     PRIVATE(this)->soeventmanager->setViewportRegion(vp);
+    if (scene())
+        scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
+    QGraphicsView::resizeEvent(event);
 }
 
 /*!
