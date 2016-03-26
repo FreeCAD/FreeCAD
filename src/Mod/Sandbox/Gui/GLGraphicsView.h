@@ -27,6 +27,7 @@
 #include <QGraphicsScene>
 #include <QTime>
 #include <Gui/MDIView.h>
+#include <Base/Parameter.h>
 
 class QGraphicsView;
 class QDialog;
@@ -46,13 +47,7 @@ public:
 
     void drawBackground(QPainter *painter, const QRectF &rect);
 
-    void enableWireframe(bool enabled);
-    void enableNormals(bool enabled);
-    void setModelColor();
-    void setBackgroundColor();
-    void loadModel();
-    void loadModel(const QString &filePath);
-    void modelLoaded();
+    void setBackgroundColor(const QColor&);
     void viewAll();
     SoSeparator* getSceneGraph() const;
 
@@ -65,10 +60,6 @@ protected:
 private:
     QDialog *createDialog(const QString &windowTitle) const;
 
-    bool m_wireframeEnabled;
-    bool m_normalsEnabled;
-
-    QColor m_modelColor;
     QColor m_backgroundColor;
 
     QTime m_time;
@@ -88,6 +79,7 @@ private:
 };
 
 class /*GuiExport*/ GraphicsView3D : public Gui::MDIView
+                                   , public ParameterGrp::ObserverType
 {
     Q_OBJECT
 
@@ -95,11 +87,14 @@ public:
     GraphicsView3D(Gui::Document* doc, QWidget* parent = 0);
     virtual ~GraphicsView3D();
     GraphicsScene* getScene()
-    { return m_Scene; }
+    { return m_scene; }
+
+    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
 
 private:
-    GraphicsScene *m_Scene;
+    GraphicsScene *m_scene;
     QGraphicsView *m_view;
+    ParameterGrp::handle hGrp;
 };
 
 } // namespace Gui
