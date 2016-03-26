@@ -69,10 +69,13 @@ public:
     virtual PyObject *getPyObject(void);
 
     DrawPage* findParentPage() const;
+    bool allowAutoPos() {return autoPos;};
+    void setAutoPos(bool state) {autoPos = state;};
 
 protected:
     void onChanged(const App::Property* prop);
     std::string pageFeatName;
+    bool autoPos;
 
 private:
     static const char* ScaleTypeEnums[];

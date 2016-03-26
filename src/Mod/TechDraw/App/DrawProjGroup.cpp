@@ -117,18 +117,7 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
 
 TechDraw::DrawPage * DrawProjGroup::getPage(void) const
 {
-    //TODO: DrawView already has DrawPage* findParentPage()
     return findParentPage();
-    //TechDraw::DrawPage *ret = NULL;
-
-    //std::vector<App::DocumentObject*> parent = getInList();
-    //for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-    //    if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-    //        ret = static_cast<DrawPage *>(*it);
-    //    }
-    //}
-
-    //return ret;
 }
 
 // Function provided by Joe Dowsett, 2014
@@ -203,11 +192,13 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
     //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones dont... Or vice-versa.
-    if ( prop == &ProjectionType ||
-         prop == &ScaleType ||
-         prop == &viewOrientationMatrix ||
-         prop == &Scale ) {
-        if (!isRestoring()) {
+    if (!isRestoring()) {
+        if ( prop == &ProjectionType ) {
+            resetPositions();
+            execute();
+        } else if (prop == &ScaleType ||
+            prop == &viewOrientationMatrix ||
+            prop == &Scale ) {
             execute();
         }
     }
@@ -494,45 +485,45 @@ bool DrawProjGroup::distributeProjections()
     double xSpacing = spacingX.getValue();    //in mm
     double ySpacing = spacingY.getValue();    //in mm
 
-    if (viewPtrs[0]) {
+    if (viewPtrs[0] && viewPtrs[0]->allowAutoPos()) {
         double displace = std::max(bboxes[0].LengthX() + bboxes[4].LengthX(),
                                    bboxes[0].LengthY() + bboxes[4].LengthY());
         viewPtrs[0]->X.setValue(displace / -2.0 - xSpacing);
         viewPtrs[0]->Y.setValue(displace / 2.0 + ySpacing);
     }
-    if (viewPtrs[1]) {
+    if (viewPtrs[1] && viewPtrs[1]->allowAutoPos()) {
         viewPtrs[1]->Y.setValue((bboxes[1].LengthY() + bboxes[4].LengthY()) / 2.0 + ySpacing);
     }
-    if (viewPtrs[2]) {
+    if (viewPtrs[2] && viewPtrs[2]->allowAutoPos()) {
         double displace = std::max(bboxes[2].LengthX() + bboxes[4].LengthX(),
                                    bboxes[2].LengthY() + bboxes[4].LengthY());
         viewPtrs[2]->X.setValue(displace / 2.0 + xSpacing);
         viewPtrs[2]->Y.setValue(displace / 2.0 + ySpacing);
     }
-    if (viewPtrs[3]) {
+    if (viewPtrs[3] && viewPtrs[3]->allowAutoPos()) {
         viewPtrs[3]->X.setValue((bboxes[3].LengthX() + bboxes[4].LengthX()) / -2.0 - xSpacing);
     }
     if (viewPtrs[4]) {  // TODO: Move this check above, and figure out a sane bounding box based on other existing views
     }
-    if (viewPtrs[5]) {
+    if (viewPtrs[5] && viewPtrs[5]->allowAutoPos()) {
         viewPtrs[5]->X.setValue((bboxes[5].LengthX() + bboxes[4].LengthX()) / 2.0 + xSpacing);
     }
-    if (viewPtrs[6]) {
+    if (viewPtrs[6] && viewPtrs[6]->allowAutoPos()) {    //"Rear"
         if (viewPtrs[5])
-            viewPtrs[6]->X.setValue((bboxes[6].LengthX() + bboxes[4].LengthX()) / 2.0 + bboxes[5].LengthX() + 2 * xSpacing);
+            viewPtrs[6]->X.setValue(viewPtrs[5]->X.getValue() + bboxes[5].LengthX()/2.0 + xSpacing + bboxes[6].LengthX() / 2.0 );
         else
             viewPtrs[6]->X.setValue((bboxes[6].LengthX() + bboxes[4].LengthX()) / 2.0 + xSpacing);
     }
-    if (viewPtrs[7]) {
+    if (viewPtrs[7] && viewPtrs[7]->allowAutoPos()) {
         double displace = std::max(bboxes[7].LengthX() + bboxes[4].LengthX(),
                                    bboxes[7].LengthY() + bboxes[4].LengthY());
         viewPtrs[7]->X.setValue(displace / -2.0 - xSpacing);
         viewPtrs[7]->Y.setValue(displace / -2.0 - ySpacing);
     }
-    if (viewPtrs[8]) {
+    if (viewPtrs[8] && viewPtrs[8]->allowAutoPos()) {
         viewPtrs[8]->Y.setValue((bboxes[8].LengthY() + bboxes[4].LengthY()) / -2.0 - ySpacing);
     }
-    if (viewPtrs[9]) {
+    if (viewPtrs[9] && viewPtrs[9]->allowAutoPos()) {
         double displace = std::max(bboxes[9].LengthX() + bboxes[4].LengthX(),
                                    bboxes[9].LengthY() + bboxes[4].LengthY());
         viewPtrs[9]->X.setValue(displace / 2.0 + xSpacing);
@@ -540,6 +531,17 @@ bool DrawProjGroup::distributeProjections()
     }
 
     return true;
+}
+
+void DrawProjGroup::resetPositions(void)
+{
+    const std::vector<App::DocumentObject *> &views = Views.getValues();
+    for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+        DrawView *view = dynamic_cast<DrawView *>(*it);
+        if(view->getTypeId() == DrawProjGroupItem::getClassTypeId()) {
+            view->setAutoPos(true);
+        }
+     }
 }
 
 //TODO: Turn this into a command so it can be issued from python
