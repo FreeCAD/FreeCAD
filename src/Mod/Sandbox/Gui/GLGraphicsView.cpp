@@ -26,6 +26,19 @@
 #ifndef _PreComp_
 #endif
 
+#include <Inventor/SoEventManager.h>
+#include <Inventor/SoRenderManager.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/scxml/ScXML.h>
+#include <Inventor/scxml/SoScXMLStateMachine.h>
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QColorDialog>
@@ -41,39 +54,232 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsProxyWidget>
+#include <QUrl>
 
 #include "GLGraphicsView.h"
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
+#include <Quarter/devices/Mouse.h>
+#include <Quarter/devices/Keyboard.h>
+#include <Quarter/devices/SpaceNavigatorDevice.h>
+
 using namespace Gui;
-
-// http://doc.qt.digia.com/qq/qq26-openglcanvas.html
-
-class GraphicsView : public QGraphicsView
-{
-public:
-    GraphicsView()
-    {
-    }
-
-protected:
-    void resizeEvent(QResizeEvent *event) {
-        if (scene())
-            scene()->setSceneRect(
-                QRect(QPoint(0, 0), event->size()));
-        QGraphicsView::resizeEvent(event);
-    }
-};
-
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
 #endif
 
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
+// http://doc.qt.digia.com/qq/qq26-openglcanvas.html
+
+GraphicsView::GraphicsView()
+{
+}
+
+GraphicsView::~GraphicsView()
+{
+}
+
+void GraphicsView::resizeEvent(QResizeEvent *event)
+{
+    if (scene())
+        scene()->setSceneRect(
+            QRect(QPoint(0, 0), event->size()));
+    QGraphicsView::resizeEvent(event);
+}
+
+// ----------------------------------------------------------------------------
+
+class SceneEventFilter::Private
+{
+public:
+    QList<SIM::Coin3D::Quarter::InputDevice *> devices;
+    GraphicsScene * scene;
+    QPoint globalmousepos;
+    SbVec2s windowsize;
+
+    void trackWindowSize(QResizeEvent * event)
+    {
+        this->windowsize = SbVec2s(event->size().width(),
+                                   event->size().height());
+
+        Q_FOREACH(SIM::Coin3D::Quarter::InputDevice * device, this->devices) {
+            device->setWindowSize(this->windowsize);
+        }
+    }
+
+    void trackPointerPosition(QMouseEvent * event)
+    {
+        assert(this->windowsize[1] != -1);
+        this->globalmousepos = event->globalPos();
+
+        SbVec2s mousepos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
+        Q_FOREACH(SIM::Coin3D::Quarter::InputDevice * device, this->devices) {
+            device->setMousePosition(mousepos);
+        }
+    }
+};
+
+#define PRIVATE(obj) obj->pimpl
+
+SceneEventFilter::SceneEventFilter(QObject * parent)
+  : QObject(parent)
+{
+    PRIVATE(this) = new Private;
+
+    PRIVATE(this)->scene = dynamic_cast<GraphicsScene *>(parent);
+    assert(PRIVATE(this)->scene);
+
+    PRIVATE(this)->windowsize = SbVec2s(PRIVATE(this)->scene->width(),
+                                        PRIVATE(this)->scene->height());
+
+    PRIVATE(this)->devices += new SIM::Coin3D::Quarter::Mouse;
+    PRIVATE(this)->devices += new SIM::Coin3D::Quarter::Keyboard;
+
+#ifdef HAVE_SPACENAV_LIB
+    PRIVATE(this)->devices += new SpaceNavigatorDevice;
+#endif // HAVE_SPACENAV_LIB
+
+}
+
+SceneEventFilter::~SceneEventFilter()
+{
+    qDeleteAll(PRIVATE(this)->devices);
+    delete PRIVATE(this);
+}
+
+/*!
+  Adds a device for event translation
+ */
+void 
+SceneEventFilter::registerInputDevice(SIM::Coin3D::Quarter::InputDevice * device)
+{
+    PRIVATE(this)->devices += device;
+}
+
+/*!
+  Removes a device from event translation
+ */
+void 
+SceneEventFilter::unregisterInputDevice(SIM::Coin3D::Quarter::InputDevice * device)
+{
+    int i = PRIVATE(this)->devices.indexOf(device);
+    if (i != -1) {
+        PRIVATE(this)->devices.removeAt(i);
+    }
+}
+
+/*! Translates Qt Events into Coin events and passes them on to the
+  event QuarterWidget for processing. If the event can not be
+  translated or processed, it is forwarded to Qt and the method
+  returns false.
+ */
+bool
+SceneEventFilter::eventFilter(QObject * obj, QEvent * qevent)
+{
+    // Convert the scene event back to a standard event
+    std::auto_ptr<QEvent> sceneev;
+    switch (qevent->type()) {
+    //GraphicsSceneContextMenu = 159,
+    //GraphicsSceneHoverEnter = 160,
+    //GraphicsSceneHoverMove = 161,
+    //GraphicsSceneHoverLeave = 162,
+    //GraphicsSceneHelp = 163,
+    //GraphicsSceneDragEnter = 164,
+    //GraphicsSceneDragMove = 165,
+    //GraphicsSceneDragLeave = 166,
+    //GraphicsSceneDrop = 167,
+    //GraphicsSceneMove  = 182,
+    case QEvent::GraphicsSceneMouseMove:
+        {
+            QGraphicsSceneMouseEvent* ev = static_cast<QGraphicsSceneMouseEvent*>(qevent);
+            sceneev.reset(new QMouseEvent(QEvent::MouseMove, ev->pos().toPoint(),
+                ev->button(), ev->buttons(), ev->modifiers()));
+            qevent = sceneev.get();
+            break;
+        }
+    case QEvent::GraphicsSceneMousePress:
+        {
+            QGraphicsSceneMouseEvent* ev = static_cast<QGraphicsSceneMouseEvent*>(qevent);
+            sceneev.reset(new QMouseEvent(QEvent::MouseButtonPress, ev->pos().toPoint(),
+                ev->button(), ev->buttons(), ev->modifiers()));
+            qevent = sceneev.get();
+            break;
+        }
+    case QEvent::GraphicsSceneMouseRelease:
+        {
+            QGraphicsSceneMouseEvent* ev = static_cast<QGraphicsSceneMouseEvent*>(qevent);
+            sceneev.reset(new QMouseEvent(QEvent::MouseButtonRelease, ev->pos().toPoint(),
+                ev->button(), ev->buttons(), ev->modifiers()));
+            qevent = sceneev.get();
+            break;
+        }
+    case QEvent::GraphicsSceneMouseDoubleClick:
+        {
+            QGraphicsSceneMouseEvent* ev = static_cast<QGraphicsSceneMouseEvent*>(qevent);
+            sceneev.reset(new QMouseEvent(QEvent::MouseButtonDblClick, ev->pos().toPoint(),
+                ev->button(), ev->buttons(), ev->modifiers()));
+            qevent = sceneev.get();
+            break;
+        }
+    case QEvent::GraphicsSceneWheel:
+        {
+            QGraphicsSceneWheelEvent* ev = static_cast<QGraphicsSceneWheelEvent*>(qevent);
+            sceneev.reset(new QWheelEvent(ev->pos().toPoint(), ev->delta(), ev->buttons(),
+                ev->modifiers(), ev->orientation()));
+            qevent = sceneev.get();
+            break;
+        }
+    case QEvent::GraphicsSceneResize:
+        {
+            QGraphicsSceneResizeEvent* ev = static_cast<QGraphicsSceneResizeEvent*>(qevent);
+            sceneev.reset(new QResizeEvent(ev->newSize().toSize(), ev->oldSize().toSize()));
+            qevent = sceneev.get();
+            break;
+        }
+    default:
+        break;
+    }
+
+    // make sure every device has updated screen size and mouse position
+    // before translating events
+    switch (qevent->type()) {
+    case QEvent::MouseMove:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+        PRIVATE(this)->trackPointerPosition(dynamic_cast<QMouseEvent *>(qevent));
+        break;
+    case QEvent::Resize:
+        PRIVATE(this)->trackWindowSize(dynamic_cast<QResizeEvent *>(qevent));
+        break;
+    default:
+        break;
+    }
+
+    // translate QEvent into SoEvent and see if it is handled by scene
+    // graph
+    Q_FOREACH(SIM::Coin3D::Quarter::InputDevice * device, PRIVATE(this)->devices) {
+        const SoEvent * soevent = device->translateEvent(qevent);
+        if (soevent && PRIVATE(this)->scene->processSoEvent(soevent)) {
+            //return true;
+        }
+    }
+    return false;
+}
+
+/*!
+  Returns mouse position in global coordinates
+ */
+const QPoint &
+SceneEventFilter::globalMousePosition(void) const
+{
+    return PRIVATE(this)->globalmousepos;
+}
+
+#undef PRIVATE
+
+// ----------------------------------------------------------------------------
 
 QDialog *GraphicsScene::createDialog(const QString &windowTitle) const
 {
@@ -91,14 +297,10 @@ GraphicsScene::GraphicsScene()
     , m_lastTime(0)
     , m_distance(1.4f)
 {
-    rootNode = new SoSeparator();
-    rootNode->ref();
-    sceneCamera = new SoOrthographicCamera();
-    rootNode->addChild(sceneCamera);
-    rootNode->addChild(new SoDirectionalLight());
+    headlight = new SoDirectionalLight();
+    headlight->ref();
     sceneNode = new SoSeparator();
     sceneNode->ref();
-    rootNode->addChild(sceneNode);
 
     this->addEllipse(20,20, 120, 60);
     QWidget *controls = createDialog(tr("Controls"));
@@ -134,38 +336,252 @@ GraphicsScene::GraphicsScene()
         pos += QPointF(0, 10 + rect.height());
     }
 
-    //QRadialGradient gradient(40, 40, 40, 40, 40);
-    //gradient.setColorAt(0.2, Qt::yellow);
-    //gradient.setColorAt(1, Qt::transparent);
-
-    //m_lightItem = new QGraphicsRectItem(0, 0, 80, 80);
-    //m_lightItem->setPen(Qt::NoPen);
-    //m_lightItem->setBrush(gradient);
-    //m_lightItem->setFlag(QGraphicsItem::ItemIsMovable);
-    //m_lightItem->setPos(800, 200);
-    //addItem(m_lightItem);
-
     m_time.start();
+    sorendermanager = new SoRenderManager;
+
+    sorendermanager->setAutoClipping(SoRenderManager::VARIABLE_NEAR_PLANE);
+  //sorendermanager->setRenderCallback(QuarterWidgetP::rendercb, this);
+    sorendermanager->setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f, 0.0f));
+    sorendermanager->activate();
+  //sorendermanager->addPreRenderCallback(QuarterWidgetP::prerendercb, PRIVATE(this));
+  //sorendermanager->addPostRenderCallback(QuarterWidgetP::postrendercb, PRIVATE(this));
+
+    soeventmanager = new SoEventManager;
+    soeventmanager->setNavigationState(SoEventManager::MIXED_NAVIGATION);
+
+    eventfilter = new SceneEventFilter(this);
+    this->installEventFilter(eventfilter);
+
+    connect(this, SIGNAL(sceneRectChanged(const QRectF&)),
+            this, SLOT(onSceneRectChanged(const QRectF&)));
 }
 
 GraphicsScene::~GraphicsScene()
 {
+    headlight->unref();
     sceneNode->unref();
-    rootNode->unref();
+    delete sorendermanager;
+    delete soeventmanager;
+    delete eventfilter;
 }
 
 void GraphicsScene::viewAll()
 {
-    sceneCamera->viewAll(rootNode, SbViewportRegion(width(),height()));
+    SoCamera* cam = sorendermanager->getCamera();
+    if (cam)
+        cam->viewAll(sceneNode, sorendermanager->getViewportRegion());
 }
 
-SoSeparator* GraphicsScene::getSceneGraph() const
+SceneEventFilter *
+GraphicsScene::getEventFilter(void) const
+{
+    return eventfilter;
+}
+
+bool
+GraphicsScene::processSoEvent(const SoEvent * event)
+{
+    return event && soeventmanager &&
+           soeventmanager->processEvent(event);
+}
+
+void
+GraphicsScene::addStateMachine(SoScXMLStateMachine * statemachine)
+{
+    SoEventManager * em = this->getSoEventManager();
+    em->addSoScXMLStateMachine(statemachine);
+    statemachine->setSceneGraphRoot(this->getSoRenderManager()->getSceneGraph());
+    statemachine->setActiveCamera(this->getSoRenderManager()->getCamera());
+  //statemachine->addStateChangeCallback(QuarterWidgetP::statechangecb, PRIVATE(this));
+}
+
+void
+GraphicsScene::removeStateMachine(SoScXMLStateMachine * statemachine)
+{
+    SoEventManager * em = this->getSoEventManager();
+    statemachine->setSceneGraphRoot(NULL);
+    statemachine->setActiveCamera(NULL);
+    em->removeSoScXMLStateMachine(statemachine);
+}
+
+void
+GraphicsScene::setNavigationModeFile(const QUrl & url)
+{
+    QString filename;
+
+    if (url.scheme()== QLatin1String("coin")) {
+        filename = url.path();
+        //FIXME: This conditional needs to be implemented when the
+        //CoinResources systems if working
+        //Workaround for differences between url scheme, and Coin internal
+        //scheme in Coin 3.0.
+        if (filename[0] == QLatin1Char('/')) {
+            filename.remove(0,1);
+        }
+        filename = url.scheme() + QLatin1Char(':') + filename;
+    }
+    else if (url.scheme() == QLatin1String("file"))
+        filename = url.toLocalFile();
+    else if (url.isEmpty()) {
+        //if (PRIVATE(this)->currentStateMachine) {
+        //    this->removeStateMachine(PRIVATE(this)->currentStateMachine);
+        //    delete PRIVATE(this)->currentStateMachine;
+        //    PRIVATE(this)->currentStateMachine = NULL;
+        //    PRIVATE(this)->navigationModeFile = url;
+        //}
+        return;
+    }
+    else {
+        //qDebug() << url.scheme() << "is not recognized";
+        return;
+    }
+
+    QByteArray filenametmp = filename.toLocal8Bit();
+    ScXMLStateMachine * stateMachine = NULL;
+
+    if (filenametmp.startsWith("coin:")){
+        stateMachine = ScXML::readFile(filenametmp.data());
+    }
+    else {
+        //Use Qt to read the file in case it is a Qt resource
+        QFile file(QString::fromLatin1(filenametmp));
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray fileContents = file.readAll();
+#if COIN_MAJOR_VERSION >= 4
+            stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
+#else
+            stateMachine = ScXML::readBuffer(fileContents.constData());
+#endif
+            file.close();
+        }
+    }
+
+    if (stateMachine && stateMachine->isOfType(SoScXMLStateMachine::getClassTypeId())) {
+        SoScXMLStateMachine * newsm = static_cast<SoScXMLStateMachine *>(stateMachine);
+        //if (PRIVATE(this)->currentStateMachine) {
+            //this->removeStateMachine(PRIVATE(this)->currentStateMachine);
+            //delete PRIVATE(this)->currentStateMachine;
+        //}
+        this->addStateMachine(newsm);
+        newsm->initialize();
+      //PRIVATE(this)->currentStateMachine = newsm;
+    }
+    else {
+        if (stateMachine)
+            delete stateMachine;
+        //qDebug() << filename;
+        //qDebug() << "Unable to load" << url;
+        return;
+    }
+#if 0
+    //If we have gotten this far, we have successfully loaded the
+    //navigation file, so we set the property
+    PRIVATE(this)->navigationModeFile = url;
+
+    if (QUrl(DEFAULT_NAVIGATIONFILE) == PRIVATE(this)->navigationModeFile ) {
+
+        // set up default cursors for the examiner navigation states
+        //FIXME: It may be overly restrictive to not do this for arbitrary
+        //navigation systems? - BFG 20090117
+        this->setStateCursor("interact", Qt::ArrowCursor);
+        this->setStateCursor("idle", Qt::OpenHandCursor);
+#if QT_VERSION >= 0x040200
+        this->setStateCursor("rotate", Qt::ClosedHandCursor);
+#endif
+        this->setStateCursor("pan", Qt::SizeAllCursor);
+        this->setStateCursor("zoom", Qt::SizeVerCursor);
+        this->setStateCursor("dolly", Qt::SizeVerCursor);
+        this->setStateCursor("seek", Qt::CrossCursor);
+        this->setStateCursor("spin", Qt::OpenHandCursor);
+    }
+#endif
+}
+
+SoNode* GraphicsScene::getSceneGraph() const
 {
     return sceneNode;
 }
 
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+SoCamera *
+GraphicsScene::searchForCamera(SoNode * root)
+{
+    SoSearchAction sa;
+    sa.setInterest(SoSearchAction::FIRST);
+    sa.setType(SoCamera::getClassTypeId());
+    sa.apply(root);
+
+    if (sa.getPath()) {
+        SoNode * node = sa.getPath()->getTail();
+        if (node && node->isOfType(SoCamera::getClassTypeId())) {
+            return (SoCamera *) node;
+        }
+    }
+    return NULL;
+}
+
+void GraphicsScene::setSceneGraph(SoNode * node)
+{
+    if (node == sceneNode) {
+        return;
+    }
+
+    if (sceneNode) {
+        sceneNode->unref();
+        sceneNode = NULL;
+    }
+
+    SoCamera * camera = NULL;
+    SoSeparator * superscene = NULL;
+    bool viewall = false;
+
+    if (node) {
+        sceneNode = node;
+        sceneNode->ref();
+
+        superscene = new SoSeparator;
+        superscene->addChild(headlight);
+
+        // if the scene does not contain a camera, add one
+        if (!(camera = searchForCamera(node))) {
+            camera = new SoOrthographicCamera;
+            superscene->addChild(camera);
+            viewall = true;
+        }
+
+        superscene->addChild(node);
+    }
+
+    soeventmanager->setCamera(camera);
+    sorendermanager->setCamera(camera);
+    soeventmanager->setSceneGraph(superscene);
+    sorendermanager->setSceneGraph(superscene);
+
+    if (viewall) {
+        this->viewAll();
+    }
+    if (superscene) {
+        superscene->touch();
+    }
+}
+
+SoRenderManager *
+GraphicsScene::getSoRenderManager(void) const
+{
+    return sorendermanager;
+}
+
+SoEventManager *
+GraphicsScene::getSoEventManager(void) const
+{
+    return soeventmanager;
+}
+
+void GraphicsScene::onSceneRectChanged(const QRectF & rect)
+{
+    SbViewportRegion vp(rect.width(), rect.height());
+    sorendermanager->setViewportRegion(vp);
+    soeventmanager->setViewportRegion(vp);
+}
 
 void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 {
@@ -180,7 +596,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //glDepthRange(0.1,1.0); //
-
+#if 0
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -189,7 +605,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-
+#endif
     //const float pos[] = { m_lightItem->x() - width() / 2, height() / 2 - m_lightItem->y(), 512, 0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, pos);
     //glColor4f(m_modelColor.redF(), m_modelColor.greenF(), m_modelColor.blueF(), 1.0f);
@@ -205,7 +621,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     //glEnable(GL_MULTISAMPLE);
     //m_model->render(m_wireframeEnabled, m_normalsEnabled);
     //glDisable(GL_MULTISAMPLE);
-
+#if 0
     glPopMatrix();
 
     glMatrixMode(GL_PROJECTION);
@@ -225,11 +641,11 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
+#endif
 
-
-    SoGLRenderAction gl(SbViewportRegion(width(),height()));
-    gl.apply(rootNode);
-
+    sorendermanager->render(true/*PRIVATE(this)->clearwindow*/,
+                            false/*PRIVATE(this)->clearzbuffer*/);
+#if 0
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -243,6 +659,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glVertex3i(0, 0, 0);
         glVertex3i(400, 400, 0);
     glEnd();
+#endif
 /**/
 
     painter->save();
@@ -258,6 +675,13 @@ void GraphicsScene::setBackgroundColor(const QColor& color)
     if (color.isValid()) {
         m_backgroundColor = color;
         update();
+
+        SbColor4f bgcolor(SbClamp(color.red()   / 255.0, 0.0, 1.0),
+                          SbClamp(color.green() / 255.0, 0.0, 1.0),
+                          SbClamp(color.blue()  / 255.0, 0.0, 1.0),
+                          SbClamp(color.alpha() / 255.0, 0.0, 1.0));
+        sorendermanager->setBackgroundColor(bgcolor);
+        sorendermanager->scheduleRedraw();
     }
 }
 
@@ -312,17 +736,24 @@ void GraphicsScene::wheelEvent(QGraphicsSceneWheelEvent *event)
     update();
 }
 
+// ----------------------------------------------------------------------------
 
 GraphicsView3D::GraphicsView3D(Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent), m_scene(new GraphicsScene()), m_view(new GraphicsView)
 {
-    m_view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+    QGLFormat f;
+    f.setSampleBuffers(true);
+    f.setSamples(8);
+    m_view->setViewport(new QGLWidget(f));
     m_view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     m_view->setScene(m_scene);
+    m_scene->setNavigationModeFile(QUrl(QString::fromLatin1("coin:///scxml/navigation/examiner.xml")));
 
     std::vector<ViewProvider*> v = doc->getViewProvidersOfType(ViewProvider::getClassTypeId());
+    SoSeparator* root = new SoSeparator();
     for (std::vector<ViewProvider*>::iterator it = v.begin(); it != v.end(); ++it)
-        m_scene->getSceneGraph()->addChild((*it)->getRoot());
+        root->addChild((*it)->getRoot());
+    m_scene->setSceneGraph(root);
     setCentralWidget(m_view);
     m_scene->viewAll();
 
@@ -336,6 +767,8 @@ GraphicsView3D::GraphicsView3D(Gui::Document* doc, QWidget* parent)
 GraphicsView3D::~GraphicsView3D()
 {
     hGrp->Detach(this);
+    delete m_view;
+    delete m_scene;
 }
 
 void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
