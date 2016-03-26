@@ -6,7 +6,7 @@
 
 %{
 
-#define YYSTYPE semantic_type
+#define YYSTYPE App::ExpressionParser::semantic_type
 
 std::stack<FunctionExpression::Function> functions;                /**< Function identifier */
 
@@ -39,6 +39,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %type <constant> CONSTANT
      %type <expr> num
      %type <expr> basic_num
+     %type <expr> range
      %type <path> identifier
      %type <components> path subpath
      %type <func> FUNC
@@ -81,7 +82,7 @@ exp:      num                			{ $$ = $1;                                      
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '^' exp %prec EXPONENT            { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | '(' exp ')'     			{ $$ = $2;                                                                        }
-        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1, $2);                            }
+        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1, $2);                   }
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
         ;
 
@@ -97,9 +98,18 @@ num: basic_num                                  { $$ = $1; }
    ;
 
 args: exp                                       { $$.push_back($1);                                                               }
+    | range                                     { $$.push_back($1);                                                               }
     | args ',' exp                              { $1.push_back($3);  $$ = $1;                                                     }
     | args ';' exp                              { $1.push_back($3);  $$ = $1;                                                     }
+    | args ',' range                            { $1.push_back($3);  $$ = $1;                                                     }
+    | args ';' range                            { $1.push_back($3);  $$ = $1;                                                     }
     ;
+
+range: CELLADDRESS ':' CELLADDRESS              { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
+     | CELLADDRESS ':' IDENTIFIER               { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
+     | IDENTIFIER ':' CELLADDRESS               { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
+     | IDENTIFIER ':' IDENTIFIER                { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
+     ;
 
 cond: exp EQ exp                                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::EQ, $3);    }
     | exp NEQ exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::NEQ, $3);   }
