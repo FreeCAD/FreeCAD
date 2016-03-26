@@ -82,7 +82,7 @@ public:
 
     /// Automatically position child views
     bool distributeProjections(void);
-
+    void resetPositions(void);
     /// Changes child views' coordinate space
     /*!
      * Used to set the Direction and XAxisDirection in child views

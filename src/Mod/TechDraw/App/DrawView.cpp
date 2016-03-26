@@ -77,6 +77,8 @@ DrawView::DrawView(void)
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
     Scale.setStatus(App::Property::ReadOnly,true);
 
+    autoPos = true;
+
 }
 
 DrawView::~DrawView()
@@ -136,9 +138,11 @@ void DrawView::onChanged(const App::Property* prop)
             //TODO else if (ScaleType.isValue("Automatic"))...
             DrawView::execute();
         } else if (prop == &X ||
-                   prop == &Y ||
-                   prop == &Rotation) {
-            DrawView::execute();                                       //trigger stuff to happen on Gui side
+                   prop == &Y) {
+            setAutoPos(false);
+            DrawView::execute();
+        } else if (prop == &Rotation) {
+            DrawView::execute();
         }
     }
 

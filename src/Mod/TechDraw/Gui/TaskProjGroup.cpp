@@ -62,10 +62,11 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView) : ui(new Ui_Task
 
     blockUpdate = true;
 
-    setFractionalScale(multiView->Scale.getValue());
+    ui->projection->setCurrentIndex(multiView->ProjectionType.getValue());
 
+    setFractionalScale(multiView->Scale.getValue());
     ui->cmbScaleType->setCurrentIndex(multiView->ScaleType.getValue());
-    
+
     // Initially toggle view checkboxes if needed
     setupViewCheckboxes(true);
 
@@ -357,7 +358,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
         if (addConnections) {
             connect(box, SIGNAL(toggled(bool)), this, SLOT(viewToggled(bool)));
         }
-        
+
         const char *viewStr = viewChkIndexToCStr(i);
         if ( viewStr != NULL && multiView->hasProjection(viewStr) ) {
             box->setCheckState(Qt::Checked);
@@ -369,7 +370,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO: Do we really need to hang on to the TaskDlgProjGroup in this class? IR
-TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView) : TaskDialog(), 
+TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView) : TaskDialog(),
                                                                                                  multiView(featView)
 {
     viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
@@ -410,4 +411,3 @@ bool TaskDlgProjGroup::reject()
 
 
 #include "moc_TaskProjGroup.cpp"
-
