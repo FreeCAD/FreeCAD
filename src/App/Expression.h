@@ -33,6 +33,7 @@
 #include <Base/Quantity.h>
 #include <set>
 #include <deque>
+#include <App/Range.h>
 
 namespace App  {
 
@@ -314,6 +315,18 @@ public:
         TRUNC,
         CEIL,
         FLOOR,
+
+        // Aggregates
+        AGGREGATES,
+
+        SUM,
+        AVERAGE,
+        STDDEV,
+        COUNT,
+        MIN,
+        MAX,
+
+        // Last one
         LAST,
     };
 
@@ -338,6 +351,8 @@ public:
     virtual void visit(ExpressionVisitor & v);
 
 protected:
+    Expression *evalAggregate() const;
+
     Function f;        /**< Function to execute */
     std::vector<Expression *> args; /** Arguments to function*/
 };
@@ -419,6 +434,35 @@ protected:
     std::string text; /**< Text string */
 };
 
+class AppExport RangeExpression : public App::Expression {
+    TYPESYSTEM_HEADER();
+public:
+    RangeExpression(const App::DocumentObject * _owner = 0, const std::string & begin = std::string(), const std::string & end = std::string());
+
+    virtual ~RangeExpression() { }
+
+    virtual bool isTouched() const;
+
+    virtual Expression * eval() const;
+
+    virtual std::string toString() const;
+
+    virtual Expression * copy() const;
+
+    virtual int priority() const { return 20; }
+
+    virtual void getDeps(std::set<App::ObjectIdentifier> &props) const;
+
+    virtual App::Expression * simplify() const;
+
+    Range getRange() const { return range; }
+
+    void setRange(const Range & r);
+
+protected:
+    Range range;
+};
+
 namespace ExpressionParser {
 AppExport Expression * parse(const App::DocumentObject *owner, const char *buffer);
 AppExport UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
@@ -446,6 +490,7 @@ public:
     double fvalue;
   } constant;
   std::vector<Expression*> arguments;
+  std::vector<Expression*> list;
   std::string string;
   FunctionExpression::Function func;
   ObjectIdentifier::String string_or_identifier;

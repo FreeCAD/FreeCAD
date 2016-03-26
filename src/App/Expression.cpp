@@ -581,18 +581,50 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     , args(_args)
 {
     switch (f) {
-    case NONE:
-        throw ExpressionError("Unknown function");
+    case ACOS:
+    case ASIN:
+    case ATAN:
+    case ABS:
+    case EXP:
+    case LOG:
+    case LOG10:
+    case SIN:
+    case SINH:
+    case TAN:
+    case TANH:
+    case SQRT:
+    case COS:
+    case COSH:
+    case ROUND:
+    case TRUNC:
+    case CEIL:
+    case FLOOR:
+        if (args.size() != 1)
+            throw ExpressionError("Invalid number of arguments: exactly one required.");
+        break;
     case MOD:
     case ATAN2:
     case POW:
         if (args.size() != 2)
-            throw ExpressionError("Invalid number of arguments.");
+            throw ExpressionError("Invalid number of arguments: eaxctly two required.");
         break;
+    case STDDEV:
+        if (args.size() < 2)
+            throw ExpressionError("Invalid number of arguments: at least two required.");
+        break;
+    case SUM:
+    case AVERAGE:
+    case COUNT:
+    case MIN:
+    case MAX:
+        if (args.size() == 0)
+            throw ExpressionError("Invalid number of arguments: at least one required.");
+        break;
+    case NONE:
+    case AGGREGATES:
+    case LAST:
     default:
-        if (args.size() != 1)
-            throw ExpressionError("Invalid number of arguments.");
-        break;
+        throw ExpressionError("Unknown function");
     }
 }
 
@@ -625,6 +657,136 @@ bool FunctionExpression::isTouched() const
     return false;
 }
 
+Expression * FunctionExpression::evalAggregate() const
+{
+
+    class Collector {
+
+    public:
+
+        Collector(Function _f)
+            : f(_f)
+            , first(true)
+            , n(0) {
+
+        }
+
+        void collect(Quantity value) {
+            if (first) {
+                q.setUnit(value.getUnit());
+                mean.setUnit(value.getUnit());
+                M2.setUnit(value.getUnit());
+            }
+
+            switch (f) {
+            case AVERAGE:
+                n++;
+            case SUM:
+                q = q + value;
+                break;
+            case STDDEV: {
+                n++;
+
+                const Quantity delta = value - mean;
+                mean = mean + delta / n;
+                M2 = M2 + delta * (value - mean);
+                break;
+            }
+            case COUNT:
+                q = q + 1;
+                break;
+            case MIN:
+                if (first || value < q)
+                    q = value;
+                break;
+            case MAX:
+                if (first || value > q)
+                    q = value;
+                break;
+            default:
+                break;
+            }
+
+            first = false;
+
+        }
+
+        Quantity getQuantity() const {
+            switch (static_cast<Function>(f)) {
+            case AVERAGE:
+                return q / (double)n;
+            case STDDEV:
+                if (n < 2)
+                    return Quantity();
+                else
+                    return (M2 / (n - 1.0)).pow(Quantity(0.5));
+            default:
+                break;
+            }
+
+            return q;
+        }
+
+    private:
+        Function f;
+        bool first;
+        int n;
+        Quantity q;
+        Quantity mean;
+        Quantity M2;
+    };
+
+    switch (f) {
+    case SUM:
+    case AVERAGE:
+    case STDDEV:
+    case COUNT:
+    case MIN:
+    case MAX: {
+        Collector c(f);
+
+        for (size_t i = 0; i< args.size(); ++i) {
+
+            if (args[i]->isDerivedFrom(RangeExpression::getClassTypeId())) {
+                RangeExpression * v = static_cast<RangeExpression*>(args[i]);
+                Range range(v->getRange());
+
+                do {
+                    Property * p = owner->getPropertyByName(range.address().c_str());
+                    PropertyQuantity * qp;
+                    PropertyFloat * fp;
+
+                    if (!p)
+                        continue;
+
+                    if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != 0)
+                        c.collect(qp->getQuantityValue());
+                    else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
+                        c.collect(fp->getValue());
+                    else
+                        throw Exception("Invalid property type for aggregate");
+                } while (range.next());
+            }
+            else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+                std::auto_ptr<Expression> e(args[i]->eval());
+                NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
+
+                if (n)
+                    c.collect(n->getQuantity());
+            }
+            else if (args[i]->isDerivedFrom(App::NumberExpression::getClassTypeId())) {
+                c.collect(static_cast<NumberExpression*>(args[i])->getQuantity());
+            }
+        }
+
+        return new NumberExpression(owner, c.getQuantity());
+    }
+    default:
+        assert(0);
+        return 0;
+    }
+}
+
 /**
   * Evaluate function. Returns a NumberExpression if evaluation is successfuly.
   * Throws an ExpressionError exception if something fails.
@@ -634,6 +796,10 @@ bool FunctionExpression::isTouched() const
 
 Expression * FunctionExpression::eval() const
 {
+    // Handle aggregate functions
+    if (f > AGGREGATES)
+        return evalAggregate();
+
     std::auto_ptr<Expression> e1(args[0]->eval());
     std::auto_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
     NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
@@ -873,49 +1039,69 @@ Expression *FunctionExpression::simplify() const
 
 std::string FunctionExpression::toString() const
 {
+    std::stringstream ss;
+
+    for (size_t i = 0; i < args.size(); ++i) {
+        ss << args[i]->toString();
+        if (i != args.size() - 1)
+            ss << "; ";
+    }
+
     switch (f) {
     case ACOS:
-        return "acos(" + args[0]->toString() + ")";
+        return "acos(" + ss.str() + ")";
     case ASIN:
-        return "asin(" + args[0]->toString() + ")";
+        return "asin(" + ss.str() + ")";
     case ATAN:
-        return "atan(" + args[0]->toString() + ")";
+        return "atan(" + ss.str() + ")";
     case ABS:
-        return "abs(" + args[0]->toString() + ")";
+        return "abs(" + ss.str() + ")";
     case EXP:
-        return "exp(" + args[0]->toString() + ")";
+        return "exp(" + ss.str() + ")";
     case LOG:
-        return "log(" + args[0]->toString() + ")";
+        return "log(" + ss.str() + ")";
     case LOG10:
-        return "log10(" + args[0]->toString() + ")";
+        return "log10(" + ss.str() + ")";
     case SIN:
-        return "sin(" + args[0]->toString() + ")";
+        return "sin(" + ss.str() + ")";
     case SINH:
-        return "sinh(" + args[0]->toString() + ")";
+        return "sinh(" + ss.str() + ")";
     case TAN:
-        return "tan(" + args[0]->toString() + ")";
+        return "tan(" + ss.str() + ")";
     case TANH:
-        return "tanh(" + args[0]->toString() + ")";
+        return "tanh(" + ss.str() + ")";
     case SQRT:
-        return "sqrt(" + args[0]->toString() + ")";
+        return "sqrt(" + ss.str() + ")";
     case COS:
-        return "cos(" + args[0]->toString() + ")";
+        return "cos(" + ss.str() + ")";
     case COSH:
-        return "cosh(" + args[0]->toString() + ")";
+        return "cosh(" + ss.str() + ")";
     case MOD:
-        return "mod(" + args[0]->toString() + ", " + args[1]->toString() + ")";
+        return "mod(" + ss.str() + ")";
     case ATAN2:
-        return "atan2(" + args[0]->toString() + ", " + args[1]->toString() +  ")";
+        return "atan2(" + ss.str() + ")";
     case POW:
-        return "pow(" + args[0]->toString() + ", " + args[1]->toString() +  ")";
+        return "pow(" + ss.str() + ")";
     case ROUND:
-        return "round(" + args[0]->toString() + ")";
+        return "round(" + ss.str() + ")";
     case TRUNC:
-        return "trunc(" + args[0]->toString() + ")";
+        return "trunc(" + ss.str() + ")";
     case CEIL:
-        return "ceil(" + args[0]->toString() + ")";
+        return "ceil(" + ss.str() + ")";
     case FLOOR:
-        return "floor(" + args[0]->toString() + ")";
+        return "floor(" + ss.str() + ")";
+    case SUM:
+        return "sum(" + ss.str() + ")";
+    case COUNT:
+        return "count(" + ss.str() + ")";
+    case AVERAGE:
+        return "average(" + ss.str() + ")";
+    case STDDEV:
+        return "stddev(" + ss.str() + ")";
+    case MIN:
+        return "min(" + ss.str() + ")";
+    case MAX:
+        return "max(" + ss.str() + ")";
     default:
         assert(0);
         return std::string();
@@ -1303,6 +1489,62 @@ Expression *BooleanExpression::copy() const
     return new BooleanExpression(owner, getValue() > 0.5 ? true : false);
 }
 
+TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression);
+
+RangeExpression::RangeExpression(const DocumentObject *_owner, const std::string &begin, const std::string &end)
+    : Expression(_owner)
+    , range((begin + ":" + end).c_str())
+{
+}
+
+bool RangeExpression::isTouched() const
+{
+    Range i(range);
+
+    do {
+        Property * prop = owner->getPropertyByName(i.address().c_str());
+
+        if (prop && prop->isTouched())
+            return true;
+    } while (i.next());
+
+    return false;
+}
+
+Expression *RangeExpression::eval() const
+{
+    throw Exception("Range expression cannot be evaluated");
+}
+
+std::string RangeExpression::toString() const
+{
+    return range.rangeString();
+}
+
+Expression *RangeExpression::copy() const
+{
+    return new RangeExpression(owner, range.fromCellString(), range.toCellString());
+}
+
+void RangeExpression::getDeps(std::set<ObjectIdentifier> &props) const
+{
+    Range i(range);
+
+    do {
+        props.insert(ObjectIdentifier(owner, i.address()));
+    } while (i.next());
+}
+
+Expression *RangeExpression::simplify() const
+{
+    return copy();
+}
+
+void RangeExpression::setRange(const Range &r)
+{
+    range = r;
+}
+
 namespace App {
 
 namespace ExpressionParser {
@@ -1311,7 +1553,7 @@ namespace ExpressionParser {
  * Error function for parser. Throws a generic Base::Exception with the parser error.
  */
 
-void ExpressionParser_yyerror(char *errorinfo)
+void ExpressionParser_yyerror(const char *errorinfo)
 {
 }
 
@@ -1403,6 +1645,14 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["trunc"] = FunctionExpression::TRUNC;
         registered_functions["ceil"] = FunctionExpression::CEIL;
         registered_functions["floor"] = FunctionExpression::FLOOR;
+
+        // Aggregates
+        registered_functions["sum"] = FunctionExpression::SUM;
+        registered_functions["count"] = FunctionExpression::COUNT;
+        registered_functions["average"] = FunctionExpression::AVERAGE;
+        registered_functions["stddev"] = FunctionExpression::STDDEV;
+        registered_functions["min"] = FunctionExpression::MIN;
+        registered_functions["max"] = FunctionExpression::MAX;
 
         has_registered_functions = true;
     }

@@ -5615,7 +5615,7 @@ extern std::stack<FunctionExpression::Function> functions;                /**< F
 extern int last_column;
 extern int column;
 
-#define COUNT do { last_column = column; column += ExpressionParserleng; } while (0)
+#define COUNTCHARS do { last_column = column; column += ExpressionParserleng; } while (0)
 
 /*** Flex Declarations and Options ***/
 /* change the name of the scanner class. */
@@ -5892,7 +5892,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 144 "ExpressionParser.l"
-COUNT;
+COUNTCHARS;
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
@@ -5904,407 +5904,407 @@ case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
 #line 147 "ExpressionParser.l"
-COUNT; yylval.string = unquote(ExpressionParsertext); return STRING;
+COUNTCHARS; yylval.string = unquote(ExpressionParsertext); return STRING;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 149 "ExpressionParser.l"
-COUNT; return *ExpressionParsertext;
+COUNTCHARS; return *ExpressionParsertext;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 151 "ExpressionParser.l"
-COUNT; return EQ;
+COUNTCHARS; return EQ;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 152 "ExpressionParser.l"
-COUNT; return NEQ;
+COUNTCHARS; return NEQ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 153 "ExpressionParser.l"
-COUNT; return GT;
+COUNTCHARS; return GT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 154 "ExpressionParser.l"
-COUNT; return LT;
+COUNTCHARS; return LT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 155 "ExpressionParser.l"
-COUNT; return GTE;
+COUNTCHARS; return GTE;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 156 "ExpressionParser.l"
-COUNT; return LTE;
+COUNTCHARS; return LTE;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 158 "ExpressionParser.l"
-COUNT; return MINUSSIGN;
+COUNTCHARS; return MINUSSIGN;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 159 "ExpressionParser.l"
-COUNT; return MINUSSIGN;
+COUNTCHARS; return MINUSSIGN;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 161 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::NanoMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // nano meter
+COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // nano meter
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 162 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro meter
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro meter
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 163 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro meter    (greek micro in UTF8)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro meter    (greek micro in UTF8)
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 164 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli meter    (internal standard length)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli meter    (internal standard length)
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 165 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // centi meter
+COUNTCHARS; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // centi meter
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 166 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // deci meter
+COUNTCHARS; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // deci meter
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 167 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // metre
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // metre
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 168 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo meter
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo meter
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 170 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Liter      dm^3
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Liter      dm^3
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 172 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro gram
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro gram
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 173 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro gram
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro gram
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 174 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MilliGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli gram
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli gram
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 175 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Gram;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // gram
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Gram;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // gram
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 176 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::KiloGram;            yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo gram      (internal standard for mass)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloGram;            yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo gram      (internal standard for mass)
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 177 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Ton;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Metric Tonne
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Ton;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Metric Tonne
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 179 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Second;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // second         (internal standard time)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Second;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // second         (internal standard time)
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 180 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Minute;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // minute
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Minute;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // minute
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 181 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // hour
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // hour
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 183 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Ampere         (internal standard electric current)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Ampere         (internal standard electric current)
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 184 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli Ampere
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli Ampere
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 185 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo Ampere
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo Ampere
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 186 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Mega Ampere
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Mega Ampere
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 188 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin         (internal standard thermodynamic temperature)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin         (internal standard thermodynamic temperature)
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 189 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 190 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 191 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 193 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Mole           (internal standard amount of substance)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Mole           (internal standard amount of substance)
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 195 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Candela        (internal standard luminous intensity)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Candela        (internal standard luminous intensity)
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 197 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // inch
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // inch
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 198 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // inch
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // inch
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 199 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // foot
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // foot
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 200 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // foot
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // foot
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 201 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // thou (in/1000)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // thou (in/1000)
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 202 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // mil  (the thou in US)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // mil  (the thou in US)
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 203 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // yard
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // yard
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 204 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // mile
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // mile
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 208 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 209 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 210 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Ounce;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // ounce
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Ounce;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // ounce
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
 #line 211 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Stone;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Stone
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Stone;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Stone
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
 #line 212 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Hundredweights;      yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // hundredweights
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Hundredweights;      yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // hundredweights
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
 #line 214 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
+COUNTCHARS; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
 #line 216 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton (kg*m/s^2)a-za-za-z
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton (kg*m/s^2)a-za-za-z
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
 #line 217 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
 #line 218 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
 #line 219 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
 #line 221 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
 #line 222 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
 #line 223 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
 #line 224 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
+COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
 #line 226 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Torr;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // portion of Pascal ( 101325/760 )
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Torr;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // portion of Pascal ( 101325/760 )
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
 #line 227 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::mTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+COUNTCHARS; yylval.quantity.scaler  = Quantity::mTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
 #line 228 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
 #line 229 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 231 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::PSI;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pounds/in^2
+COUNTCHARS; yylval.quantity.scaler  = Quantity::PSI;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pounds/in^2
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
 #line 232 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // 1000 x pounds/in^2
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // 1000 x pounds/in^2
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
 #line 234 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Watt (kg*m^2/s^3)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Watt (kg*m^2/s^3)
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
 #line 235 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // VoltAmpere (kg*m^2/s^3)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // VoltAmpere (kg*m^2/s^3)
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
 #line 237 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Joule (kg*m^2/s^2)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Joule (kg*m^2/s^2)
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
 #line 238 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // N*m = Joule
+COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // N*m = Joule
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
 #line 239 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // V*A*s = Joule
+COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // V*A*s = Joule
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
 #line 240 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
 #line 241 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // W*s = Joule
+COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // W*s = Joule
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 243 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // degree         (internal standard angle)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
 #line 244 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // degree         (internal standard angle)
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
 #line 245 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // radian
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // radian
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
 #line 246 "ExpressionParser.l"
-COUNT; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // gon
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // gon
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
 #line 248 "ExpressionParser.l"
-COUNT; yylval.fvalue = num_change(ExpressionParsertext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
+COUNTCHARS; yylval.fvalue = num_change(ExpressionParsertext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
 #line 249 "ExpressionParser.l"
-COUNT; yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
+COUNTCHARS; yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
 #line 250 "ExpressionParser.l"
-COUNT; yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
+COUNTCHARS; yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
 #line 251 "ExpressionParser.l"
-{ COUNT;
+{ COUNTCHARS;
                                yylval.ivalue = strtoll( ExpressionParsertext, NULL, 0 );
                                if (yylval.ivalue == LLONG_MIN)
                                   throw Base::Exception("Integer underflow");
@@ -6316,33 +6316,33 @@ YY_RULE_SETUP
 case 84:
 YY_RULE_SETUP
 #line 260 "ExpressionParser.l"
-COUNT; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
+COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
 #line 261 "ExpressionParser.l"
-COUNT; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
+COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
 #line 263 "ExpressionParser.l"
-COUNT; yylval.string = ExpressionParsertext; return CELLADDRESS;
+COUNTCHARS; yylval.string = ExpressionParsertext; return CELLADDRESS;
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
 #line 264 "ExpressionParser.l"
-COUNT; yylval.string = ExpressionParsertext; return CELLADDRESS;
+COUNTCHARS; yylval.string = ExpressionParsertext; return CELLADDRESS;
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
 #line 265 "ExpressionParser.l"
-COUNT; yylval.string = ExpressionParsertext; return CELLADDRESS;
+COUNTCHARS; yylval.string = ExpressionParsertext; return CELLADDRESS;
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
 #line 267 "ExpressionParser.l"
 {
-                            COUNT;
+                            COUNTCHARS;
                             std::string s = ExpressionParsertext;
                             size_t i = s.size() - 2;
                             while (isspace(s[i]))
@@ -6359,7 +6359,7 @@ YY_RULE_SETUP
 case 90:
 YY_RULE_SETUP
 #line 282 "ExpressionParser.l"
-COUNT; yylval.string = ExpressionParsertext; return IDENTIFIER;
+COUNTCHARS; yylval.string = ExpressionParsertext; return IDENTIFIER;
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
