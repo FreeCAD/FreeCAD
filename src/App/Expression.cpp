@@ -452,19 +452,33 @@ Expression *OperatorExpression::simplify() const
 std::string OperatorExpression::toString() const
 {
     std::stringstream s;
+    bool needsParens;
+    Operator leftOperator(NONE), rightOperator(NONE);
 
     switch (op) {
     case NEG:
-        s << "-";
-        break;
+        s << "-" << left->toString();
+        return s.str();
     case POS:
-        s << "+";
-        break;
+        s << "+" << left->toString();
+        return s.str();
     default:
         break;
     }
 
-    if (left->priority() < priority())
+    needsParens = false;
+    if (freecad_dynamic_cast<OperatorExpression>(left))
+        leftOperator = static_cast<OperatorExpression*>(left)->op;
+    if (left->priority() < priority()) // Check on operator priority first
+        needsParens = true;
+    else if (leftOperator == op) { // Equal priority?
+        if (!isLeftAssociative())
+            needsParens = true;
+        //else if (!isCommutative())
+        //    needsParens = true;
+    }
+
+    if (needsParens)
         s << "(" << left->toString() << ")";
     else
         s << left->toString();
@@ -505,14 +519,23 @@ std::string OperatorExpression::toString() const
         break;
     case UNIT:
         break;
-    case POS:
-    case NEG:
-        return s.str();
     default:
         assert(0);
     }
 
-    if (right->priority() < priority())
+    needsParens = false;
+    if (freecad_dynamic_cast<OperatorExpression>(right))
+        rightOperator = static_cast<OperatorExpression*>(right)->op;
+    if (right->priority() < priority()) // Check on operator priority first
+        needsParens = true;
+    else if (rightOperator == op) { // Equal priority?
+        if (!isRightAssociative())
+            needsParens = true;
+        else if (!isCommutative())
+            needsParens = true;
+    }
+
+    if (needsParens)
         s << "(" << right->toString() << ")";
     else
         s << right->toString();
@@ -583,6 +606,35 @@ void OperatorExpression::visit(ExpressionVisitor &v)
     if (right)
         right->visit(v);
     v.visit(this);
+}
+
+bool OperatorExpression::isCommutative() const
+{
+    switch (op) {
+    case EQ:
+    case NEQ:
+    case ADD:
+    case MUL:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool OperatorExpression::isLeftAssociative() const
+{
+    return true;
+}
+
+bool OperatorExpression::isRightAssociative() const
+{
+    switch (op) {
+    case ADD:
+    case MUL:
+        return true;
+    default:
+        return false;
+    }
 }
 
 //
