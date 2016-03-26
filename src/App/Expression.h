@@ -253,6 +253,13 @@ public:
     Expression * getRight() const { return right; }
 
 protected:
+
+    virtual bool isCommutative() const;
+
+    virtual bool isLeftAssociative() const;
+
+    virtual bool isRightAssociative() const;
+
     Operator op;        /**< Operator working on left and right */
     Expression * left;  /**< Left operand */
     Expression * right; /**< Right operand */
