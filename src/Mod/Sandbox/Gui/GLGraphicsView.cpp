@@ -40,6 +40,7 @@
 #include <QPaintEngine>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsProxyWidget>
 
 #include "GLGraphicsView.h"
 #include <Gui/Document.h>
@@ -76,7 +77,7 @@ protected:
 
 QDialog *GraphicsScene::createDialog(const QString &windowTitle) const
 {
-    QDialog *dialog = new QDialog(0, Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    QDialog *dialog = new QDialog(0, Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
     dialog->setWindowOpacity(0.8);
     dialog->setWindowTitle(windowTitle);
@@ -86,10 +87,7 @@ QDialog *GraphicsScene::createDialog(const QString &windowTitle) const
 }
 
 GraphicsScene::GraphicsScene()
-    : m_wireframeEnabled(false)
-    , m_normalsEnabled(false)
-    , m_modelColor(153, 255, 0)
-    , m_backgroundColor(0, 170, 255)
+    : m_backgroundColor(0, 170, 255)
     , m_lastTime(0)
     , m_distance(1.4f)
 {
@@ -105,10 +103,6 @@ GraphicsScene::GraphicsScene()
     this->addEllipse(20,20, 120, 60);
     QWidget *controls = createDialog(tr("Controls"));
 
-    m_modelButton = new QPushButton(tr("Load model"));
-    //connect(m_modelButton, SIGNAL(clicked()), this, SLOT(loadModel()));
-    controls->layout()->addWidget(m_modelButton);
-
     QCheckBox *wireframe = new QCheckBox(tr("Render as wireframe"));
     //connect(wireframe, SIGNAL(toggled(bool)), this, SLOT(enableWireframe(bool)));
     controls->layout()->addWidget(wireframe);
@@ -118,28 +112,17 @@ GraphicsScene::GraphicsScene()
     controls->layout()->addWidget(normals);
 
     QPushButton *colorButton = new QPushButton(tr("Choose model color"));
-    //connect(colorButton, SIGNAL(clicked()), this, SLOT(setModelColor()));
     controls->layout()->addWidget(colorButton);
-
-    QPushButton *backgroundButton = new QPushButton(tr("Choose background color"));
-    //connect(backgroundButton, SIGNAL(clicked()), this, SLOT(setBackgroundColor()));
-    controls->layout()->addWidget(backgroundButton);
-
-    QWidget *statistics = createDialog(tr("Model info"));
-    statistics->layout()->setMargin(20);
-
-    for (int i = 0; i < 4; ++i) {
-        m_labels[i] = new QLabel;
-        statistics->layout()->addWidget(m_labels[i]);
-    }
 
     QWidget *instructions = createDialog(tr("Instructions"));
     instructions->layout()->addWidget(new QLabel(tr("Use mouse wheel to zoom model, and click and drag to rotate model")));
     instructions->layout()->addWidget(new QLabel(tr("Move the sun around to change the light position")));
 
-    addWidget(instructions);
-    addWidget(controls);
-    addWidget(statistics);
+    QGraphicsProxyWidget* g1 = addWidget(instructions);
+    g1->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    QGraphicsProxyWidget* g2 = addWidget(controls);
+    g2->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    controls->setAttribute(Qt::WA_TranslucentBackground);
 
     QPointF pos(10, 10);
     Q_FOREACH (QGraphicsItem *item, items()) {
@@ -162,7 +145,6 @@ GraphicsScene::GraphicsScene()
     //m_lightItem->setPos(800, 200);
     //addItem(m_lightItem);
 
-    loadModel(QLatin1String("qt.obj"));
     m_time.start();
 }
 
@@ -187,7 +169,7 @@ SoSeparator* GraphicsScene::getSceneGraph() const
 
 void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 {
-    if (painter->paintEngine()->type() != QPaintEngine::OpenGL) {
+    if (painter->paintEngine()->type() != QPaintEngine::OpenGL && painter->paintEngine()->type() != QPaintEngine::OpenGL2) {
         qWarning("GraphicsScene: drawBackground needs a QGLWidget to be set as viewport on the graphics view");
         return;
     }
@@ -210,7 +192,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 
     //const float pos[] = { m_lightItem->x() - width() / 2, height() / 2 - m_lightItem->y(), 512, 0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, pos);
-    glColor4f(m_modelColor.redF(), m_modelColor.greenF(), m_modelColor.blueF(), 1.0f);
+    //glColor4f(m_modelColor.redF(), m_modelColor.greenF(), m_modelColor.blueF(), 1.0f);
 
     const int delta = m_time.elapsed() - m_lastTime;
     m_lastTime += delta;
@@ -271,51 +253,8 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     QTimer::singleShot(20, this, SLOT(update()));
 }
 
-void GraphicsScene::loadModel()
+void GraphicsScene::setBackgroundColor(const QColor& color)
 {
-    loadModel(QFileDialog::getOpenFileName(0, tr("Choose model"), QString(), QLatin1String("*.obj")));
-}
-
-void GraphicsScene::loadModel(const QString &filePath)
-{
-    if (filePath.isEmpty())
-        return;
-
-    m_modelButton->setEnabled(false);
-    QApplication::setOverrideCursor(Qt::BusyCursor);
-    modelLoaded();
-}
-
-void GraphicsScene::modelLoaded()
-{
-    m_modelButton->setEnabled(true);
-    QApplication::restoreOverrideCursor();
-}
-
-void GraphicsScene::enableWireframe(bool enabled)
-{
-    m_wireframeEnabled = enabled;
-    update();
-}
-
-void GraphicsScene::enableNormals(bool enabled)
-{
-    m_normalsEnabled = enabled;
-    update();
-}
-
-void GraphicsScene::setModelColor()
-{
-    const QColor color = QColorDialog::getColor(m_modelColor);
-    if (color.isValid()) {
-        m_modelColor = color;
-        update();
-    }
-}
-
-void GraphicsScene::setBackgroundColor()
-{
-    const QColor color = QColorDialog::getColor(m_backgroundColor);
     if (color.isValid()) {
         m_backgroundColor = color;
         update();
@@ -375,21 +314,203 @@ void GraphicsScene::wheelEvent(QGraphicsSceneWheelEvent *event)
 
 
 GraphicsView3D::GraphicsView3D(Gui::Document* doc, QWidget* parent)
-  : Gui::MDIView(doc, parent), m_Scene(new GraphicsScene()), m_view(new GraphicsView)
+  : Gui::MDIView(doc, parent), m_scene(new GraphicsScene()), m_view(new GraphicsView)
 {
     m_view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     m_view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    m_view->setScene(m_Scene);
+    m_view->setScene(m_scene);
 
     std::vector<ViewProvider*> v = doc->getViewProvidersOfType(ViewProvider::getClassTypeId());
     for (std::vector<ViewProvider*>::iterator it = v.begin(); it != v.end(); ++it)
-        m_Scene->getSceneGraph()->addChild((*it)->getRoot());
+        m_scene->getSceneGraph()->addChild((*it)->getRoot());
     setCentralWidget(m_view);
-    m_Scene->viewAll();
+    m_scene->viewAll();
+
+    // attach parameter Observer
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    hGrp->Attach(this);
+
+    OnChange(*hGrp,"BackgroundColor");
 }
 
 GraphicsView3D::~GraphicsView3D()
 {
+    hGrp->Detach(this);
+}
+
+void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
+{
+    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+#if 0
+    if (strcmp(Reason,"HeadlightColor") == 0) {
+        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
+        float transparency;
+        SbColor headlightColor;
+        headlightColor.setPackedValue((uint32_t)headlight, transparency);
+        _viewer->getHeadlight()->color.setValue(headlightColor);
+    }
+    else if (strcmp(Reason,"HeadlightDirection") == 0) {
+        std::string pos = rGrp.GetASCII("HeadlightDirection");
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
+        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
+            float x = rx.cap(1).toFloat();
+            float y = rx.cap(2).toFloat();
+            float z = rx.cap(3).toFloat();
+            _viewer->getHeadlight()->direction.setValue(x,y,z);
+        }
+    }
+    else if (strcmp(Reason,"HeadlightIntensity") == 0) {
+        long value = rGrp.GetInt("HeadlightIntensity", 100);
+        _viewer->getHeadlight()->intensity.setValue((float)value/100.0f);
+    }
+    else if (strcmp(Reason,"EnableBacklight") == 0) {
+        _viewer->setBacklight(rGrp.GetBool("EnableBacklight", false));
+    }
+    else if (strcmp(Reason,"BacklightColor") == 0) {
+        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
+        float transparency;
+        SbColor backlightColor;
+        backlightColor.setPackedValue((uint32_t)backlight, transparency);
+        _viewer->getBacklight()->color.setValue(backlightColor);
+    }
+    else if (strcmp(Reason,"BacklightDirection") == 0) {
+        std::string pos = rGrp.GetASCII("BacklightDirection");
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
+        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
+            float x = rx.cap(1).toFloat();
+            float y = rx.cap(2).toFloat();
+            float z = rx.cap(3).toFloat();
+            _viewer->getBacklight()->direction.setValue(x,y,z);
+        }
+    }
+    else if (strcmp(Reason,"BacklightIntensity") == 0) {
+        long value = rGrp.GetInt("BacklightIntensity", 100);
+        _viewer->getBacklight()->intensity.setValue((float)value/100.0f);
+    }
+    else if (strcmp(Reason,"EnablePreselection") == 0) {
+        const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
+        SoFCEnableHighlightAction cAct(rclGrp.GetBool("EnablePreselection", true));
+        cAct.apply(_viewer->getSceneGraph());
+    }
+    else if (strcmp(Reason,"EnableSelection") == 0) {
+        const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
+        SoFCEnableSelectionAction cAct(rclGrp.GetBool("EnableSelection", true));
+        cAct.apply(_viewer->getSceneGraph());
+    }
+    else if (strcmp(Reason,"HighlightColor") == 0) {
+        float transparency;
+        SbColor highlightColor(0.8f, 0.1f, 0.1f);
+        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        highlight = rGrp.GetUnsigned("HighlightColor", highlight);
+        highlightColor.setPackedValue((uint32_t)highlight, transparency);
+        SoSFColor col; col.setValue(highlightColor);
+        SoFCHighlightColorAction cAct(col);
+        cAct.apply(_viewer->getSceneGraph());
+    }
+    else if (strcmp(Reason,"SelectionColor") == 0) {
+        float transparency;
+        SbColor selectionColor(0.1f, 0.8f, 0.1f);
+        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        selection = rGrp.GetUnsigned("SelectionColor", selection);
+        selectionColor.setPackedValue((uint32_t)selection, transparency);
+        SoSFColor col; col.setValue(selectionColor);
+        SoFCSelectionColorAction cAct(col);
+        cAct.apply(_viewer->getSceneGraph());
+    }
+    else if (strcmp(Reason,"NavigationStyle") == 0) {
+        // check whether the simple or the full mouse model is used
+        std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
+        Base::Type type = Base::Type::fromName(model.c_str());
+        _viewer->setNavigationType(type);
+    }
+    else if (strcmp(Reason,"OrbitStyle") == 0) {
+        int style = rGrp.GetInt("OrbitStyle",1);
+        _viewer->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
+    }
+    else if (strcmp(Reason,"Sensitivity") == 0) {
+        float val = rGrp.GetFloat("Sensitivity",2.0f);
+        _viewer->navigationStyle()->setSensitivity(val);
+    }
+    else if (strcmp(Reason,"ResetCursorPosition") == 0) {
+        bool on = rGrp.GetBool("ResetCursorPosition",false);
+        _viewer->navigationStyle()->setResetCursorPosition(on);
+    }
+    else if (strcmp(Reason,"InvertZoom") == 0) {
+        bool on = rGrp.GetBool("InvertZoom", false);
+        _viewer->navigationStyle()->setZoomInverted(on);
+    }
+    else if (strcmp(Reason,"ZoomAtCursor") == 0) {
+        bool on = rGrp.GetBool("ZoomAtCursor", true);
+        _viewer->navigationStyle()->setZoomAtCursor(on);
+    }
+    else if (strcmp(Reason,"ZoomStep") == 0) {
+        float val = rGrp.GetFloat("ZoomStep", 0.0f);
+        _viewer->navigationStyle()->setZoomStep(val);
+    }
+    else if (strcmp(Reason,"EyeDistance") == 0) {
+        _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
+    }
+    else if (strcmp(Reason,"CornerCoordSystem") == 0) {
+        _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
+    }
+    else if (strcmp(Reason,"UseAutoRotation") == 0) {
+        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",true));
+    }
+    else if (strcmp(Reason,"Gradient") == 0) {
+        _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));
+    }
+    else if (strcmp(Reason,"ShowFPS") == 0) {
+        _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
+    }
+    else if (strcmp(Reason,"Orthographic") == 0) {
+        // check whether a perspective or orthogrphic camera should be set
+        if (rGrp.GetBool("Orthographic", true))
+            _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
+        else
+            _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+    }
+    else if (strcmp(Reason, "DimensionsVisible") == 0)
+    {
+      if (rGrp.GetBool("DimensionsVisible", true))
+        _viewer->turnAllDimensionsOn();
+      else
+        _viewer->turnAllDimensionsOff();
+    }
+    else if (strcmp(Reason, "Dimensions3dVisible") == 0)
+    {
+      if (rGrp.GetBool("Dimensions3dVisible", true))
+        _viewer->turn3dDimensionsOn();
+      else
+        _viewer->turn3dDimensionsOff();
+    }
+    else if (strcmp(Reason, "DimensionsDeltaVisible") == 0)
+    {
+      if (rGrp.GetBool("DimensionsDeltaVisible", true))
+        _viewer->turnDeltaDimensionsOn();
+      else
+        _viewer->turnDeltaDimensionsOff();
+    }
+    else
+#endif
+    if (strcmp(Reason, "BackgroundColor") == 0)
+    {
+        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
+        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
+        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
+        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
+        float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
+        r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
+        r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
+        r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
+        r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
+        m_scene->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
+        //if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
+        //    _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
+        //else
+        //    _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4));
+    }
 }
 
 #include "moc_GLGraphicsView.cpp"
