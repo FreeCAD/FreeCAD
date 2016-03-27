@@ -53,7 +53,9 @@ public:
     //@{
     Quantity operator *(const Quantity &p) const;
     Quantity operator +(const Quantity &p) const;
+    Quantity& operator +=(const Quantity &p);
     Quantity operator -(const Quantity &p) const;
+    Quantity& operator -=(const Quantity &p);
     Quantity operator -(void) const;
     Quantity operator /(const Quantity &p) const;
     bool operator ==(const Quantity&) const;
