@@ -754,27 +754,56 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 }
 
 bool QuarterWidget::viewportEvent(QEvent* event)
-{    
-     if( event->type() == QEvent::Paint || event->type() == QEvent::Resize) {
+{
+    //TODO: After 0.16 is out activate the code below.
+#if 1
+    if (event->type() == QEvent::Paint || event->type() == QEvent::Resize) {
         return QGraphicsView::viewportEvent(event);
-     }
-     else if(event->type() == QEvent::MouseMove
-            || event->type() == QEvent::Wheel
-            || event->type() == QEvent::MouseButtonDblClick
-            || event->type() == QEvent::MouseButtonRelease
-            || event->type() == QEvent::MouseButtonPress) {
-        
-          QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
-          QGraphicsItem *item = itemAt(mouse->pos());
-          if(!item) {
-              return false;
-          }
-          return QGraphicsView::viewportEvent(event);
+    }
+    else if (event->type() == QEvent::MouseMove ||
+             event->type() == QEvent::Wheel ||
+             event->type() == QEvent::MouseButtonDblClick ||
+             event->type() == QEvent::MouseButtonRelease ||
+             event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
+        QGraphicsItem *item = itemAt(mouse->pos());
+        if (!item) {
+            return false;
+        }
+
+        return QGraphicsView::viewportEvent(event);
       }
+
      //if we return false the events get processed normally, this means they get passed to the quarter
      //event filters for processing in the scene graph. If we return true event processing stops here.
      return false;
-        
+#else
+    // If no item is selected still let the graphics scene handle it but
+    // additionally handle it by this viewer. This is e.g. needed when
+    // resizing a widget item because the cursor may already be outside
+    // this widget.
+    if (event->type() == QEvent::Wheel ||
+        event->type() == QEvent::MouseButtonDblClick ||
+        event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
+        QGraphicsItem *item = itemAt(mouse->pos());
+        if (!item) {
+            QGraphicsView::viewportEvent(event);
+            return false;
+        }
+    }
+    else if (event->type() == QEvent::MouseMove ||
+             event->type() == QEvent::MouseButtonRelease) {
+        QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
+        QGraphicsScene* glScene = this->scene();
+        if (!(glScene && glScene->mouseGrabberItem())) {
+            QGraphicsView::viewportEvent(event);
+            return false;
+        }
+    }
+
+    return QGraphicsView::viewportEvent(event);
+#endif
 }
 
 /*!
