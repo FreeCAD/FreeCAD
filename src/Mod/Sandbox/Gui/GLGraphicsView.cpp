@@ -80,6 +80,29 @@ GraphicsView::~GraphicsView()
 {
 }
 
+bool GraphicsView::viewportEvent(QEvent* event)
+{
+    if (event->type() == QEvent::Paint || event->type() == QEvent::Resize) {
+        return QGraphicsView::viewportEvent(event);
+    }
+    else if (event->type() == QEvent::MouseMove ||
+             event->type() == QEvent::Wheel ||
+             event->type() == QEvent::MouseButtonDblClick ||
+             event->type() == QEvent::MouseButtonRelease ||
+             event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
+        QGraphicsItem *item = itemAt(mouse->pos());
+        if (!item) {
+            QGraphicsView::viewportEvent(event);
+            return false;
+        }
+
+        return QGraphicsView::viewportEvent(event);
+    }
+
+    return QGraphicsView::viewportEvent(event);
+}
+
 void GraphicsView::resizeEvent(QResizeEvent *event)
 {
     if (scene())
@@ -350,7 +373,7 @@ GraphicsScene::GraphicsScene()
     soeventmanager->setNavigationState(SoEventManager::MIXED_NAVIGATION);
 
     eventfilter = new SceneEventFilter(this);
-    this->installEventFilter(eventfilter);
+    //this->installEventFilter(eventfilter);
 
     connect(this, SIGNAL(sceneRectChanged(const QRectF&)),
             this, SLOT(onSceneRectChanged(const QRectF&)));
@@ -381,8 +404,11 @@ GraphicsScene::getEventFilter(void) const
 bool
 GraphicsScene::processSoEvent(const SoEvent * event)
 {
-    return event && soeventmanager &&
-           soeventmanager->processEvent(event);
+    if (event) {
+        return soeventmanager && soeventmanager->processEvent(event);
+    }
+
+    return false;
 }
 
 void
@@ -741,6 +767,7 @@ void GraphicsScene::wheelEvent(QGraphicsSceneWheelEvent *event)
 GraphicsView3D::GraphicsView3D(Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent), m_scene(new GraphicsScene()), m_view(new GraphicsView)
 {
+    m_view->installEventFilter(m_scene->getEventFilter());
     QGLFormat f;
     f.setSampleBuffers(true);
     f.setSamples(8);
