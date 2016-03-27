@@ -1833,6 +1833,20 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
 
     // Simplify expression
     Expression * simplified = ScanResult->simplify();
+
+    if (!unitExpression) {
+        OperatorExpression * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
+
+        if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
+            NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+            UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+            const double epsilon = std::numeric_limits<double>::epsilon();
+
+            // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
+            if (denom && nom && essentiallyEqual(nom->getValue(), 1.0, epsilon))
+                unitExpression = true;
+        }
+    }
     delete ScanResult;
 
     if (unitExpression) {
