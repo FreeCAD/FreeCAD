@@ -657,134 +657,185 @@ bool FunctionExpression::isTouched() const
     return false;
 }
 
+/* Various collectors for aggregate functions */
+
+class Collector {
+public:
+    Collector() : first(true) { }
+    virtual void collect(Quantity value) {
+        if (first)
+            value.setUnit(value.getUnit());
+    }
+    virtual Quantity getQuantity() const {
+        return q;
+    }
+protected:
+    bool first;
+    Quantity q;
+};
+
+class SumCollector : public Collector {
+public:
+    SumCollector() : Collector() { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        q += value;
+        first = false;
+    }
+
+};
+
+class AverageCollector : public Collector {
+public:
+    AverageCollector() : Collector(), n(0) { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        q += value;
+        ++n;
+        first = false;
+    }
+
+    virtual Quantity getQuantity() const { return q/(double)n; }
+
+private:
+    unsigned int n;
+};
+
+class StdDevCollector : public Collector {
+public:
+    StdDevCollector() : Collector() { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        if (first) {
+            M2 = Quantity(0, value.getUnit());
+            mean = Quantity(0, value.getUnit());
+            n = 0;
+        }
+
+        const Quantity delta = value - mean;
+        ++n;
+        mean = mean + delta / n;
+        M2 = M2 + delta * (value - mean);
+        first = false;
+    }
+
+    virtual Quantity getQuantity() const {
+        if (n < 2)
+            return Quantity();
+        else
+            return (M2 / (n - 1.0)).pow(Quantity(0.5));
+    }
+
+private:
+    unsigned int n;
+    Quantity mean;
+    Quantity M2;
+};
+
+class CountCollector : public Collector {
+public:
+    CountCollector() : Collector(), n(0) { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        ++n;
+        first = false;
+    }
+
+    virtual Quantity getQuantity() const { return n; }
+
+private:
+    unsigned int n;
+};
+
+class MinCollector : public Collector {
+public:
+    MinCollector() : Collector() { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        if (first || value < q)
+            q = value;
+        first = false;
+    }
+};
+
+class MaxCollector : public Collector {
+public:
+    MaxCollector() : Collector() { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        if (first || value > q)
+            q = value;
+        first = false;
+    }
+};
+
 Expression * FunctionExpression::evalAggregate() const
 {
-
-    class Collector {
-
-    public:
-
-        Collector(Function _f)
-            : f(_f)
-            , first(true)
-            , n(0) {
-
-        }
-
-        void collect(Quantity value) {
-            if (first) {
-                q.setUnit(value.getUnit());
-                mean.setUnit(value.getUnit());
-                M2.setUnit(value.getUnit());
-            }
-
-            switch (f) {
-            case AVERAGE:
-                n++;
-            case SUM:
-                q = q + value;
-                break;
-            case STDDEV: {
-                n++;
-
-                const Quantity delta = value - mean;
-                mean = mean + delta / n;
-                M2 = M2 + delta * (value - mean);
-                break;
-            }
-            case COUNT:
-                q = q + 1;
-                break;
-            case MIN:
-                if (first || value < q)
-                    q = value;
-                break;
-            case MAX:
-                if (first || value > q)
-                    q = value;
-                break;
-            default:
-                break;
-            }
-
-            first = false;
-
-        }
-
-        Quantity getQuantity() const {
-            switch (static_cast<Function>(f)) {
-            case AVERAGE:
-                return q / (double)n;
-            case STDDEV:
-                if (n < 2)
-                    return Quantity();
-                else
-                    return (M2 / (n - 1.0)).pow(Quantity(0.5));
-            default:
-                break;
-            }
-
-            return q;
-        }
-
-    private:
-        Function f;
-        bool first;
-        int n;
-        Quantity q;
-        Quantity mean;
-        Quantity M2;
-    };
+    boost::shared_ptr<Collector> c;
 
     switch (f) {
     case SUM:
+        c = boost::shared_ptr<Collector>(new SumCollector());
+        break;
     case AVERAGE:
+        c = boost::shared_ptr<Collector>(new AverageCollector());
+        break;
     case STDDEV:
+        c = boost::shared_ptr<Collector>(new StdDevCollector());
+        break;
     case COUNT:
+        c = boost::shared_ptr<Collector>(new CountCollector());
+        break;
     case MIN:
-    case MAX: {
-        Collector c(f);
-
-        for (size_t i = 0; i< args.size(); ++i) {
-
-            if (args[i]->isDerivedFrom(RangeExpression::getClassTypeId())) {
-                RangeExpression * v = static_cast<RangeExpression*>(args[i]);
-                Range range(v->getRange());
-
-                do {
-                    Property * p = owner->getPropertyByName(range.address().c_str());
-                    PropertyQuantity * qp;
-                    PropertyFloat * fp;
-
-                    if (!p)
-                        continue;
-
-                    if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != 0)
-                        c.collect(qp->getQuantityValue());
-                    else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
-                        c.collect(fp->getValue());
-                    else
-                        throw Exception("Invalid property type for aggregate");
-                } while (range.next());
-            }
-            else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
-                std::auto_ptr<Expression> e(args[i]->eval());
-                NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
-
-                if (n)
-                    c.collect(n->getQuantity());
-            }
-            else if (args[i]->isDerivedFrom(App::NumberExpression::getClassTypeId())) {
-                c.collect(static_cast<NumberExpression*>(args[i])->getQuantity());
-            }
-        }
-
-        return new NumberExpression(owner, c.getQuantity());
-    }
+        c = boost::shared_ptr<Collector>(new MinCollector());
+        break;
+    case MAX:
+        c = boost::shared_ptr<Collector>(new MaxCollector());
+        break;
     default:
-        assert(0);
-        return 0;
+        assert(false);
     }
+
+    for (size_t i = 0; i< args.size(); ++i) {
+        if (args[i]->isDerivedFrom(RangeExpression::getClassTypeId())) {
+            RangeExpression * v = static_cast<RangeExpression*>(args[i]);
+            Range range(v->getRange());
+
+            do {
+                Property * p = owner->getPropertyByName(range.address().c_str());
+                PropertyQuantity * qp;
+                PropertyFloat * fp;
+
+                if (!p)
+                    continue;
+
+                if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != 0)
+                    c->collect(qp->getQuantityValue());
+                else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
+                    c->collect(fp->getValue());
+                else
+                    throw Exception("Invalid property type for aggregate");
+            } while (range.next());
+        }
+        else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+            std::auto_ptr<Expression> e(args[i]->eval());
+            NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
+
+            if (n)
+                c->collect(n->getQuantity());
+        }
+        else if (args[i]->isDerivedFrom(App::NumberExpression::getClassTypeId())) {
+            c->collect(static_cast<NumberExpression*>(args[i])->getQuantity());
+        }
+    }
+
+    return new NumberExpression(owner, c->getQuantity());
 }
 
 /**
