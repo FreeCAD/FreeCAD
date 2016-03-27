@@ -1842,6 +1842,7 @@ void Application::checkForPreviousCrashes()
                 }
                 else {
                     int countDeletedDocs = 0;
+                    QString recovery_files = QString::fromLatin1("fc_recovery_files");
                     for (QList<QFileInfo>::iterator it = dirs.begin(); it != dirs.end(); ++it) {
                         QDir doc_dir(it->absoluteFilePath());
                         doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
@@ -1856,6 +1857,17 @@ void Application::checkForPreviousCrashes()
                         else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
                             // store the transient directory in case it's not empty
                             restoreDocFiles << *it;
+                        }
+                        // search for the 'fc_recovery_files' sub-directory and check that it's the only entry
+                        else if (entries == 1 && doc_dir.exists(recovery_files)) {
+                            // if the sub-directory is empty delete the transient directory
+                            QDir rec_dir(doc_dir.absoluteFilePath(recovery_files));
+                            rec_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
+                            if (rec_dir.entryList().isEmpty()) {
+                                doc_dir.rmdir(recovery_files);
+                                if (tmp.rmdir(it->filePath()))
+                                    countDeletedDocs++;
+                            }
                         }
                     }
 
