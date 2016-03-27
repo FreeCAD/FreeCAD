@@ -246,6 +246,12 @@ public:
 
     virtual void visit(ExpressionVisitor & v);
 
+    Operator getOperator() const { return op; }
+
+    Expression * getLeft() const { return left; }
+
+    Expression * getRight() const { return right; }
+
 protected:
     Operator op;        /**< Operator working on left and right */
     Expression * left;  /**< Left operand */
