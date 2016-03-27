@@ -137,6 +137,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event);
+    bool viewportEvent(QEvent* event);
 };
 
 class /*GuiExport*/ GraphicsView3D : public Gui::MDIView
