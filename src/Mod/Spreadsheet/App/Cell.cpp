@@ -364,8 +364,10 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        std::auto_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
+        boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
+        if (!e)
+            throw Base::Exception("Invalid unit");
         newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
     }
 
