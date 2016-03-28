@@ -470,7 +470,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         # Try to find Homebrew path
         find_program(HOMEBREW_EXECUTABLE brew)
         if(EXISTS ${HOMEBREW_EXECUTABLE})
-            set(HOMEBREW_PREFIX "/usr/local")
+            string(REPLACE "/bin/brew" ""
+                   HOMEBREW_PREFIX ${HOMEBREW_EXECUTABLE})
             message(STATUS "Detected Homebrew install at ${HOMEBREW_PREFIX}")
         endif()
 

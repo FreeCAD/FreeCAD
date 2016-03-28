@@ -38,34 +38,34 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 if(MSVC)
-	if(BUILD_FEM_NETGEN)
-		set(SMESH_LIBS
-			debug     MSVCRTD.LIB
-			debug     MSVCPRTD.LIB
-			optimized MSVCRT.LIB
-			optimized MSVCPRT.LIB
-			Rpcrt4.lib
-			${NGLIB_LIBRARIES}
-			${NGLIB_DEBUG_LIBRARIES}
-			${OCC_LIBRARIES}
-			${OCC_DEBUG_LIBRARIES}
-			${OCC_OCAF_DEBUG_LIBRARIES}
-			${OCC_OCAF_LIBRARIES}
-		)
-	else(BUILD_FEM_NETGEN)
-		set(SMESH_LIBS
-			debug     MSVCRTD.LIB
-			debug     MSVCPRTD.LIB
-			optimized MSVCRT.LIB
-			optimized MSVCPRT.LIB
-			Rpcrt4.lib
-			${OCC_LIBRARIES}
-			${OCC_DEBUG_LIBRARIES}
-			${OCC_OCAF_DEBUG_LIBRARIES}
-			${OCC_OCAF_LIBRARIES}
-		)
-	endif(BUILD_FEM_NETGEN)
-	
+    if(BUILD_FEM_NETGEN)
+        set(SMESH_LIBS
+            debug     MSVCRTD.LIB
+            debug     MSVCPRTD.LIB
+            optimized MSVCRT.LIB
+            optimized MSVCPRT.LIB
+            Rpcrt4.lib
+            ${NGLIB_LIBRARIES}
+            ${NGLIB_DEBUG_LIBRARIES}
+            ${OCC_LIBRARIES}
+            ${OCC_DEBUG_LIBRARIES}
+            ${OCC_OCAF_DEBUG_LIBRARIES}
+            ${OCC_OCAF_LIBRARIES}
+        )
+        ADD_DEFINITIONS(${NETGEN_DEFINITIONS})
+    else(BUILD_FEM_NETGEN)
+        set(SMESH_LIBS
+            debug     MSVCRTD.LIB
+            debug     MSVCPRTD.LIB
+            optimized MSVCRT.LIB
+            optimized MSVCPRT.LIB
+            Rpcrt4.lib
+            ${OCC_LIBRARIES}
+            ${OCC_DEBUG_LIBRARIES}
+            ${OCC_OCAF_DEBUG_LIBRARIES}
+            ${OCC_OCAF_LIBRARIES}
+        )
+    endif(BUILD_FEM_NETGEN)
 else(MSVC)
     if(BUILD_FEM_NETGEN)
         set(SMESH_LIBS
@@ -73,6 +73,7 @@ else(MSVC)
             ${OCC_LIBRARIES}
             ${OCC_OCAF_LIBRARIES}
         )
+        ADD_DEFINITIONS(${NETGEN_DEFINITIONS})
     else(BUILD_FEM_NETGEN)
         set(SMESH_LIBS
             ${OCC_LIBRARIES}
