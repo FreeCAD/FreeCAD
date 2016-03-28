@@ -29,13 +29,11 @@
 # include <QFileDialog>
 # include <QGLWidget>
 # include <QGraphicsScene>
-# include <QGraphicsSvgItem>
 # include <QGraphicsEffect>
 # include <QMouseEvent>
 # include <QPainter>
 # include <QPaintEvent>
-# include <QSvgRenderer>
-# include <QSvgWidget>
+# include <QSvgGenerator>
 # include <QWheelEvent>
 # include <strstream>
 # include <cmath>
@@ -489,6 +487,51 @@ void QGVPage::toggleEdit(bool enable)
     scene()->update();
     update();
     viewport()->repaint();
+}
+
+void QGVPage::saveSvg(QString filename)
+{
+    // TODO: We only have pageGui because constructor gets passed a view provider...
+    TechDraw::DrawPage *page( pageGui->getPageObject() );
+
+    const QString docName( QString::fromUtf8(page->getDocument()->getName()) );
+    const QString pageName( QString::fromUtf8(page->getNameInDocument()) );
+    QString svgDescription = tr("Drawing page: ") +
+                             pageName +
+                             tr(" exported from FreeCAD document: ") +
+                             docName;
+
+    //Base::Console().Message("TRACE - saveSVG - page width: %d height: %d\n",width,height);    //A4 297x210
+    QSvgGenerator svgGen;
+    svgGen.setFileName(filename);
+    svgGen.setSize(QSize((int) page->getPageWidth(), (int)page->getPageHeight()));
+    svgGen.setViewBox(QRect(0, 0, page->getPageWidth(), page->getPageHeight()));
+    //TODO: Exported Svg file is not quite right. <svg width="301.752mm" height="213.36mm" viewBox="0 0 297 210"... A4: 297x210
+    //      Page too small (A4 vs Letter? margins?)
+    //TODO: text in Qt is in mm (actually scene units).  text in SVG is points(?). fontsize in export file is too small by 1/2.835.
+    //      resize all textItem before export?
+    //      postprocess generated file to mult all font-size attrib by 2.835 to get pts?
+    //      duplicate all textItems and only show the appropriate one for screen/print vs export?
+    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI
+    //svgGen.setResolution(600);    // resulting page is ~12.5x9mm
+    //svgGen.setResolution(96);     // page is ~78x55mm
+    svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
+    svgGen.setDescription(svgDescription);
+
+    Gui::Selection().clearSelection();
+
+    toggleEdit(false);             //fiddle cache, cosmetic lines, vertices, etc
+    scene()->update();
+
+    Gui::Selection().clearSelection();
+    QPainter p;
+
+    p.begin(&svgGen);
+    scene()->render(&p);
+    p.end();
+
+    toggleEdit(true);
+    scene()->update();
 }
 
 

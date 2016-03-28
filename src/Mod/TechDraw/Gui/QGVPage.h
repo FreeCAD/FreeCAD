@@ -83,6 +83,8 @@ public:
 
     void toggleEdit(bool enable);
 
+    /// Renders the page to SVG with filename.
+    void saveSvg(QString filename);
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
