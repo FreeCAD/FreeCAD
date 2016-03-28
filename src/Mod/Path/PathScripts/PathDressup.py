@@ -97,7 +97,7 @@ class CommandPathDressup:
         return {'Pixmap'  : 'Path-Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Dressup","Dress-up"),
                 'Accel': "P, S",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Dressup","Creates a Path Dess-up object from a selected path")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Dressup","Creates a Path Dress-up object from a selected path")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
