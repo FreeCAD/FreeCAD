@@ -31,8 +31,12 @@ __doc__ = '''This utility prints information about a given FreeCAD file (*.FCStd
 on screen, including document properties, number of included objects 
 and object sizes. 
 
-It can be used as a textconv tool for git diff by adding this utility to 
-your exec path andadding this entry to .gitattributes: *.fcstd diff=fcinfo
+It can be used as a textconv tool for git diff by configuring your git folder as follows:
+ 1) add to .gitattributes: 
+     *.fcstd diff=fcinfo
+ 2) add to .git/config (or .gitconfig for user-wide):
+     [diff "fcinfo"]
+         textconv = /path/to/fcinfo
 
 Usage: fcinfo myfile.FCStd'''
 
