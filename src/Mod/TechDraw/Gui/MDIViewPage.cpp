@@ -48,9 +48,6 @@
 # include <QScrollArea>
 # include <QSlider>
 # include <QStatusBar>
-# include <QSvgRenderer>
-# include <QSvgGenerator>
-# include <QSvgWidget>
 # include <QWheelEvent>
 # include <strstream>
 # include <cmath>
@@ -1039,50 +1036,9 @@ void MDIViewPage::saveSVG()
     if (fn.isEmpty()) {
       return;
     }
-
-    TechDraw::DrawPage *page = pageGui->getPageObject();
-    const QString docName = QString::fromUtf8(page->getDocument()->getName());
-    const QString pageName = QString::fromUtf8(page->getNameInDocument());
-    QString svgDescription = tr("Drawing page: ") +
-                             pageName +
-                             tr(" exported from FreeCAD document: ") +
-                             docName;
-
-    //int width  =  page->getPageWidth();
-    //int height =  page->getPageHeight();
-    //Base::Console().Message("TRACE - saveSVG - page width: %d height: %d\n",width,height);    //A4 297x210
-    QSvgGenerator svgGen;
-    svgGen.setFileName(fn);
-    svgGen.setSize(QSize((int) page->getPageWidth(), (int)page->getPageHeight()));
-    svgGen.setViewBox(QRect(0, 0, page->getPageWidth(), page->getPageHeight()));
-    //TODO: Exported Svg file is not quite right. <svg width="301.752mm" height="213.36mm" viewBox="0 0 297 210"... A4: 297x210
-    //      Page too small (A4 vs Letter? margins?)
-    //TODO: text in Qt is in mm (actually scene units).  text in SVG is points(?). fontsize in export file is too small by 1/2.835.
-    //      resize all textItem before export?
-    //      postprocess generated file to mult all font-size attrib by 2.835 to get pts?
-    //      duplicate all textItems and only show the appropriate one for screen/print vs export?
-    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI
-    //svgGen.setResolution(600);    // resulting page is ~12.5x9mm
-    //svgGen.setResolution(96);     // page is ~78x55mm
-    svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
-    svgGen.setDescription(svgDescription);
-
-    //bool block =
     static_cast<void> (blockConnection(true)); // avoid to be notified by itself
-    Gui::Selection().clearSelection();
 
-    m_view->toggleEdit(false);             //fiddle cache, cosmetic lines, vertices, etc
-    m_view->scene()->update();
-
-    Gui::Selection().clearSelection();
-    QPainter p;
-
-    p.begin(&svgGen);
-    m_view->scene()->render(&p);
-    p.end();
-
-    m_view->toggleEdit(true);
-    m_view->scene()->update();
+    m_view->saveSvg(fn);
 }
 
 void MDIViewPage::setFrameState(bool state)
