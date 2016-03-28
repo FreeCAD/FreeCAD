@@ -25,7 +25,9 @@
 #define GUI_APPLICATION_H
 
 #include "GuiApplicationNativeEventAware.h"
+#include <Base/Interpreter.h> // For Base::SystemExitException
 #include <QList>
+#include <boost/shared_ptr.hpp>
 
 class QSessionManager;
 
@@ -39,7 +41,7 @@ class GUIApplication : public GUIApplicationNativeEventAware
     Q_OBJECT
 
 public:
-    explicit GUIApplication(int & argc, char ** argv, int exitcode);
+    explicit GUIApplication(int & argc, char ** argv);
     virtual ~GUIApplication();
 
     /**
@@ -49,11 +51,11 @@ public:
     bool notify (QObject * receiver, QEvent * event);
     void commitData(QSessionManager &manager);
 
+    /// Pointer to exceptions caught in Qt event handler
+    boost::shared_ptr<Base::SystemExitException> caughtException;
+
 protected:
     bool event(QEvent * event);
-
-private:
-    int systemExit;
 };
 
 class GUISingleApplication : public GUIApplication
@@ -61,7 +63,7 @@ class GUISingleApplication : public GUIApplication
     Q_OBJECT
 
 public:
-    explicit GUISingleApplication(int & argc, char ** argv, int exitcode);
+    explicit GUISingleApplication(int & argc, char ** argv);
     virtual ~GUISingleApplication();
 
     bool isRunning() const;

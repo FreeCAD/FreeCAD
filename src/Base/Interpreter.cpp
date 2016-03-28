@@ -131,7 +131,7 @@ SystemExitException::SystemExitException()
 }
 
 SystemExitException::SystemExitException(const SystemExitException &inst)
-  : Exception(inst)
+  : Exception(inst), _exitCode(inst._exitCode)
 {
 }
 
