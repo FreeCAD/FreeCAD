@@ -125,8 +125,8 @@ int main( int argc, char ** argv )
     try {
         Application::runApplication();
     }
-    catch (const Base::SystemExitException&) {
-        exit(0);
+    catch (const Base::SystemExitException &e) {
+        exit(e.getExitCode());
     }
     catch (const Base::Exception& e) {
         e.ReportException();
