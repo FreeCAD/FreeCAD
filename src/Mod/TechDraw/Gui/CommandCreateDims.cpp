@@ -687,9 +687,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     std::vector<std::string> subs;
 
     //All Dimensions start as Projected
-    //bool trueDimAllowed = _isTrueAllowed(objFeat,SubNames);
-    //int edgeType = _isValidSingleEdge(this,trueDimAllowed);
-    int edgeType = _isValidSingleEdge(this,false);
+    int edgeType = _isValidEdgeToEdge(this,false);
     if (edgeType == isAngle) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
