@@ -533,6 +533,7 @@ bool DrawProjGroup::distributeProjections()
     return true;
 }
 
+//!allow child DPGI's to be automatically positioned
 void DrawProjGroup::resetPositions(void)
 {
     const std::vector<App::DocumentObject *> &views = Views.getValues();
@@ -540,6 +541,7 @@ void DrawProjGroup::resetPositions(void)
         DrawView *view = dynamic_cast<DrawView *>(*it);
         if(view->getTypeId() == DrawProjGroupItem::getClassTypeId()) {
             view->setAutoPos(true);
+            //X,Y == 0??
         }
      }
 }
@@ -571,21 +573,19 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
             // Set this Scale
             Scale.setValue(autoScale);
 
-            //Rebuild the view
+            //Rebuild the DPGI's
             const std::vector<App::DocumentObject *> &views = Views.getValues();
             for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
                 App::DocumentObject *docObj = *it;
-                if(docObj->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
-                    DrawView *view = dynamic_cast<DrawView *>(*it);
-
-                    //Set scale factor of each view
+                if(docObj->getTypeId().isDerivedFrom(DrawProjGroupItem::getClassTypeId())) {
+                    DrawProjGroupItem *view = dynamic_cast<DrawProjGroupItem *>(*it);
                     view->ScaleType.setValue("Custom");
                     view->Scale.setValue(autoScale);
-                    view->Scale.touch();
                     view->Scale.setStatus(App::Property::ReadOnly,true);
                     view->touch();
                 }
             }
+            resetPositions();
         }
     }
 
