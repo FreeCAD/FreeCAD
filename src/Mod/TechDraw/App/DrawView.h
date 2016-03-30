@@ -69,7 +69,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     DrawPage* findParentPage() const;
-    bool allowAutoPos() {return autoPos;};
+    bool allowAutoPos() {return autoPos;};                //sb in DPGI??
     void setAutoPos(bool state) {autoPos = state;};
 
 protected:
