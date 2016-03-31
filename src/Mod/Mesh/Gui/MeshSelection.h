@@ -69,6 +69,7 @@ public:
     std::vector<App::DocumentObject*> getObjects() const;
 
 protected:
+    void setCallback(SoEventCallbackCB *cb);
     std::list<ViewProviderMesh*> getViewProviders() const;
     Gui::View3DInventorViewer* getViewer() const;
     void prepareBrushSelection(bool,SoEventCallbackCB *cb);
@@ -83,7 +84,8 @@ private:
 private:
     bool onlyPointToUserTriangles, onlyVisibleTriangles;
     bool addToSelection, addComponent, removeComponent;
-    SoEventCallbackCB *_activeCB;
+    SoEventCallbackCB *activeCB;
+    SoEventCallbackCB *selectionCB;
     mutable std::vector<Gui::SelectionObject> meshObjects;
 
     static unsigned char cross_bitmap[];

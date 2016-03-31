@@ -76,17 +76,26 @@ unsigned char MeshSelection::cross_mask_bitmap[] = {
 };
 
 MeshSelection::MeshSelection()
-  : onlyPointToUserTriangles(false), onlyVisibleTriangles(false), _activeCB(0)
+  : onlyPointToUserTriangles(false)
+  , onlyVisibleTriangles(false)
+  , activeCB(0)
+  , selectionCB(0)
 {
+    setCallback(selectGLCallback);
 }
 
 MeshSelection::~MeshSelection()
 {
-    if (_activeCB) {
+    if (this->activeCB) {
         Gui::View3DInventorViewer* viewer = this->getViewer();
         if (viewer)
             stopInteractiveCallback(viewer);
     }
+}
+
+void MeshSelection::setCallback(SoEventCallbackCB *cb)
+{
+    selectionCB = cb;
 }
 
 void MeshSelection::setObjects(const std::vector<Gui::SelectionObject>& obj)
@@ -145,22 +154,20 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
 
 void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer,SoEventCallbackCB *cb)
 {
-    if (this->_activeCB)
+    if (this->activeCB)
         return;
     viewer->setEditing(true);
     viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), cb, this);
-    this->_activeCB = cb;
+    this->activeCB = cb;
 }
 
 void MeshSelection::stopInteractiveCallback(Gui::View3DInventorViewer* viewer)
 {
-    if (!this->_activeCB)
+    if (!this->activeCB)
         return;
-    if (viewer->isEditing()) {
-        viewer->setEditing(false);
-        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), this->_activeCB, this);
-        this->_activeCB = 0;
-    }
+    viewer->setEditing(false);
+    viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), this->activeCB, this);
+    this->activeCB = 0;
 }
 
 void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
@@ -168,6 +175,8 @@ void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
     // a rubberband to select a rectangle area of the meshes
     Gui::View3DInventorViewer* viewer = this->getViewer();
     if (viewer) {
+        // Note: It is possible that the mouse selection mode can be stopped
+        // but then the callback function is still active.
         stopInteractiveCallback(viewer);
         startInteractiveCallback(viewer, cb);
         viewer->navigationStyle()->stopSelection();
@@ -189,12 +198,12 @@ void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
 
 void MeshSelection::startSelection()
 {
-    prepareBrushSelection(true, selectGLCallback);
+    prepareBrushSelection(true, selectionCB);
 }
 
 void MeshSelection::startDeselection()
 {
-    prepareBrushSelection(false, selectGLCallback);
+    prepareBrushSelection(false, selectionCB);
 }
 
 void MeshSelection::stopSelection()
