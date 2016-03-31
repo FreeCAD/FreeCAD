@@ -258,6 +258,7 @@ class Snapper:
                 s = self.snapToVertex(self.snapInfo)
                 if s:
                     point = s[0]
+                    snaps = [s]
                 
                 # active snapping
                 comp = self.snapInfo['Component']
@@ -784,7 +785,7 @@ class Snapper:
     def snapToVertex(self,info,active=False):
         p = Vector(info['x'],info['y'],info['z'])
         if active:
-            if self.isEnabled("endpoint"):
+            if self.isEnabled("passive"):
                 return [p,'endpoint',p]
             else:
                 return []
@@ -976,7 +977,7 @@ class Snapper:
                 self.constrainLine.on()
             else:
                 self.constrainLine.off()
-		
+
         return npoint       
 
     def unconstrain(self):
