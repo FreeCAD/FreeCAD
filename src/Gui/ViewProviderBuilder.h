@@ -40,6 +40,7 @@ namespace Gui
 {
 
 class ViewProvider;
+class SoFCSelection;
 class GuiExport ViewProviderBuilder
 {
 public:
@@ -50,6 +51,7 @@ public:
 
     static void add(const Base::Type&, const Base::Type&);
     static ViewProvider* create(const Base::Type&);
+    static SoFCSelection* createSelection();
 
 private:
     static std::map<Base::Type, Base::Type> _prop_to_view;

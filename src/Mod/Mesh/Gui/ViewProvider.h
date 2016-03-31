@@ -184,7 +184,6 @@ protected:
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
-    Gui::SoFCSelection* createFromSettings() const;
 
 public:
     static void faceInfoCallback(void * ud, SoEventCallback * n);
