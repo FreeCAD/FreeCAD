@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
+# include <QAbstractItemView>
 # include <QActionEvent>
 # include <QApplication>
 # include <QDesktopWidget>
