@@ -25,6 +25,7 @@
 #include <Base/Exception.h>
 #include <assert.h>
 #include <string.h>
+#include <sstream>
 #include <boost/regex.hpp>
 
 using namespace App;
