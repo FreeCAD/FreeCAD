@@ -25,6 +25,7 @@
 import FreeCAD,FreeCADGui,Path,PathGui,Draft
 
 from PySide import QtCore,QtGui
+from PathScripts import PathUtils,PathProject
 
 """Path Engrave object and FreeCAD command"""
 
@@ -46,6 +47,10 @@ class ObjectPathEngrave:
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm",translate("Path", "The library or Algorithm used to generate the path"))
         obj.Algorithm = ['OCC Native']
+        
+        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("Path","The tool number in use"))
+        obj.ToolNumber = (0,0,1000,1) 
+        obj.setEditorMode('ToolNumber',1) #make this read only
 
         #Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("Path","The height needed to clear clamps and obstructions"))
@@ -54,8 +59,6 @@ class ObjectPathEngrave:
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("Path","Final Depth of Tool- lowest value in Z"))
         obj.addProperty("App::PropertyInteger","StartVertex","Path","The vertex index to start the path from")
         #Feed Properties
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed",translate("Path","Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",translate("Path","Feed rate for horizontal moves"))
 
         if FreeCAD.GuiUp:
             _ViewProviderEngrave(obj.ViewObject)
@@ -70,6 +73,20 @@ class ObjectPathEngrave:
         
     def execute(self,obj):
         output = ""
+        
+        toolLoad = PathUtils.getLastToolLoad(obj)
+        if toolLoad == None:
+            self.vertFeed = 100
+            self.horizFeed = 100
+            radius = 0.25
+            obj.ToolNumber= 0   
+        else:
+            self.vertFeed = toolLoad.VertFeed.Value
+            self.horizFeed = toolLoad.HorizFeed.Value
+            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            radius = tool.Diameter/2
+            obj.ToolNumber= toolLoad.ToolNumber   
+
         if obj.Base:
             for o in obj.Base:
                 output += "G0 " + str(obj.ClearanceHeight.Value)+"\n"
@@ -81,7 +98,6 @@ class ObjectPathEngrave:
 
         #print output
         if output == "":
-            #output += "G0 Z" + str(obj.ClearanceHeight.Value)
             output +="G0"
         path = Path.Path(output)
         obj.Path = path
@@ -106,7 +122,7 @@ class ObjectPathEngrave:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
                     output += "G0" + " X" + str("%f" % last.x) + " Y" + str("%f" % last.y) #Rapid sto starting position
-                    output += "G1" + " Z" + str("%f" % last.z) +"F " + str(obj.VertFeed.Value)+ "\n" #Vertical feed to depth
+                    output += "G1" + " Z" + str("%f" % last.z) +"F " + str(self.vertFeed)+ "\n" #Vertical feed to depth
                 if isinstance(edge.Curve,Part.Circle):
                     point = edge.Vertexes[-1].Point
                     if point == last: # edges can come flipped
@@ -121,7 +137,7 @@ class ObjectPathEngrave:
                         output += "G3"
                     output += " X" + str("%f" % point.x) + " Y" + str("%f" % point.y) + " Z" + str("%f" % point.z)
                     output += " I" + str("%f" % relcenter.x) + " J" + str("%f" % relcenter.y) + " K" + str("%f" % relcenter.z)
-                    output +=  " F " + str(obj.HorizFeed.Value)
+                    output +=  " F " + str(self.horizFeed)
                     output += "\n"
                     last = point
                 else:
@@ -129,7 +145,7 @@ class ObjectPathEngrave:
                     if point == last: # edges can come flipped
                         point = edge.Vertexes[0].Point
                     output += "G1 X" + str("%f" % point.x) + " Y" + str("%f" % point.y) + " Z" + str("%f" % point.z)
-                    output +=  " F " + str(obj.HorizFeed.Value)
+                    output +=  " F " + str(self.horizFeed)
                     output +=  "\n"
                     last = point
             output += "G0 Z " + str(obj.SafeHeight.Value)
@@ -232,10 +248,7 @@ class TaskPanel:
                 self.obj.SafeHeight = self.form.safeHeight.text()
             if hasattr(self.obj,"ClearanceHeight"):
                 self.obj.ClearanceHeight = self.form.clearanceHeight.text()
-            if hasattr(self.obj,"VertFeed"):
-                self.obj.VertFeed= self.form.vertFeed.text()
-            if hasattr(self.obj,"HorizFeed"):
-                self.obj.HorizFeed = self.form.horizFeed.text()
+
 
         self.obj.Proxy.execute(self.obj)
 
@@ -299,8 +312,7 @@ class TaskPanel:
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
         self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
-        self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
+
 
         for i in self.obj.Base:         
             self.form.baseList.addItem(i[0].Name)
@@ -309,8 +321,6 @@ class TaskPanel:
         self.form.startDepth.editingFinished.connect(self.getFields) #This is newer syntax
         #QtCore.QObject.connect(self.form.startDepth, QtCore.SIGNAL("editingFinished()"), self.getFields)
         QtCore.QObject.connect(self.form.finalDepth, QtCore.SIGNAL("editingFinished()"), self.getFields)
-        QtCore.QObject.connect(self.form.horizFeed, QtCore.SIGNAL("editingFinished()"), self.getFields)
-        QtCore.QObject.connect(self.form.vertFeed, QtCore.SIGNAL("editingFinished()"), self.getFields)
         QtCore.QObject.connect(self.form.safeHeight, QtCore.SIGNAL("editingFinished()"), self.getFields)
         QtCore.QObject.connect(self.form.clearanceHeight, QtCore.SIGNAL("editingFinished()"), self.getFields)
 

@@ -71,6 +71,99 @@ class ENGRAVEGate:
     def allow(self,doc,obj,sub):
         return (obj.Name[0:11] == 'ShapeString')
 
+class DRILLGate:
+    def allow(self,doc,obj,sub):
+        import Part
+        drillable = False
+        try:
+            obj = obj.Shape
+        except:
+            return False
+        if obj.ShapeType == 'Vertex': 
+                drillable = True
+        elif obj.ShapeType == 'Edge': 
+            if isinstance(obj.Curve, Part.Circle):
+                drillable = True          
+        elif obj.ShapeType == 'Face': 
+            if isinstance(obj.Edges[0].Curve, Part.Circle):
+                drillable = True            
+        elif obj.ShapeType == 'Wire': 
+            if isinstance(obj.Edges[0].Curve, Part.Circle):
+                drillable = True
+        elif obj.ShapeType == 'Solid':
+            if sub[0:4] == 'Face':
+                o = obj.getElement(sub)
+                drillable = isinstance(o.Edges[0].Curve, Part.Circle)
+            if sub[0:4] == 'Edge':
+                o = obj.getElement(sub)
+                drillable = isinstance(o.Curve, Part.Circle)
+
+        return drillable
+
+class PROFILEGate:
+    def allow(self,doc,obj,sub):
+        import Part
+
+        profileable = False
+        try:
+            obj = obj.Shape
+        except:
+            return False
+
+
+        if obj.ShapeType == 'Edge': 
+            profileable = True
+
+        elif obj.ShapeType == 'Face':
+            profileable = True
+
+        elif obj.ShapeType == 'Solid':
+            if sub[0:4] == 'Face':
+                profileable = True
+
+            if sub[0:4] == 'Edge':
+                profileable = True
+
+        elif obj.ShapeType == 'Wire': 
+            profileable = True
+ 
+        if sub[0:6] == 'Vertex':
+            print "might be fun to try to derive the loop by hovering near a vertex"
+      
+        return profileable
+
+class POCKETGate:
+    def allow(self,doc,obj,sub):
+        import Part
+
+        pocketable = False
+        try:
+            obj = obj.Shape
+        except:
+            return False
+
+
+        if obj.ShapeType == 'Edge': 
+            pocketable = False
+
+        elif obj.ShapeType == 'Face':
+            pocketable = True
+
+        elif obj.ShapeType == 'Solid':
+            if sub[0:4] == 'Face':
+                pocketable = True
+
+            # if sub[0:4] == 'Edge':
+            #     pocketable = True
+
+        # elif obj.ShapeType == 'Wire': 
+            # pocketable = True
+ 
+        # if sub[0:6] == 'Vertex':
+            # print "might be fun to try to derive the loop by hovering near a vertex"
+      
+        return pocketable
+
 
 def fselect():
     FreeCADGui.Selection.addSelectionGate(FGate())
@@ -84,10 +177,22 @@ def eselect():
     FreeCADGui.Selection.addSelectionGate(EGate())
     FreeCAD.Console.PrintWarning("Edge Select Mode\n")
 
+def drillselect():
+    FreeCADGui.Selection.addSelectionGate(DRILLGate())
+    FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
 
 def engraveselect():
     FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
-    FreeCAD.Console.PrintWarning("ShapeString Select Mode\n")
+    FreeCAD.Console.PrintWarning("Engrave Select Mode\n")
+
+def profileselect():
+    FreeCADGui.Selection.addSelectionGate(PROFILEGate())
+    FreeCAD.Console.PrintWarning("Profile Select Mode\n")
+
+def pocketselect():
+    FreeCADGui.Selection.addSelectionGate(POCKETGate())
+    FreeCAD.Console.PrintWarning("Pocket Select Mode\n")
+
 
 def clear():
     FreeCADGui.Selection.removeSelectionGate()
