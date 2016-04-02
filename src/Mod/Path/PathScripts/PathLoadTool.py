@@ -70,11 +70,11 @@ class LoadTool:
     def onChanged(self,obj,prop):
         mode = 2
         obj.setEditorMode('Placement',mode)
-        if prop == "ToolNumber":
-            proj = PathUtils.findProj()            
-            for g in proj.Group:
-                if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
-                    g.touch()      
+        #if prop == "ToolNumber":
+        proj = PathUtils.findProj()            
+        for g in proj.Group:
+            if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
+                g.touch()      
       
                 
 class _ViewProviderLoadTool:
@@ -110,9 +110,9 @@ class _ViewProviderLoadTool:
         vobj.setEditorMode('DisplayMode',mode)
         vobj.setEditorMode('BoundingBox',mode)
         vobj.setEditorMode('Selectable',mode)
-        vobj.setEditorMode('ShapeColor',mode)
-        vobj.setEditorMode('Transparency',mode)
-        vobj.setEditorMode('Visibility',mode)
+        #vobj.setEditorMode('ShapeColor',mode)
+        #vobj.setEditorMode('Transparency',mode)
+        #vobj.setEditorMode('Visibility',mode)
 
     def updateData(self,vobj,prop): #optional
         # this is executed when a property of the APP OBJECT changes
@@ -137,15 +137,12 @@ class CommandPathLoadTool:
         return not FreeCAD.ActiveDocument is None
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Current Tool","Tool Number to Load"))
-        FreeCADGui.addModule("PathScripts.PathLoadTool")
         snippet = '''
-import Path
-import PathScripts
-from PathScripts import PathProject, PathUtils
-prjexists = False
+import Path, PathScripts
+from PathScripts import PathUtils, PathLoadTool
+
 obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Tool")
 PathScripts.PathLoadTool.LoadTool(obj)
-
 PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
 
 PathUtils.addToProject(obj)
@@ -153,6 +150,18 @@ PathUtils.addToProject(obj)
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
+    @staticmethod
+    def Create():
+        #FreeCADGui.addModule("PathScripts.PathLoadTool")
+        import Path, PathScripts, PathUtils
+
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Tool")
+        PathScripts.PathLoadTool.LoadTool(obj)
+        PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
+
+        PathUtils.addToProject(obj)
+       
 
 if FreeCAD.GuiUp: 
     # register the FreeCAD command

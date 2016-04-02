@@ -22,7 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,FreeCADGui,Path,PathGui, PathUtils
 from PySide import QtCore,QtGui
 
 """Path Compound Extended object and FreeCAD command"""
@@ -53,6 +53,13 @@ class ObjectCompoundExtended:
 
     def __setstate__(self,state):
         return None
+
+    def onChanged(self,obj,prop):
+        if prop == "Group":
+            print 'check order'
+        for child in obj.Group:
+            if child.isDerivedFrom("Path::Feature"):
+                child.touch()    
 
     def execute(self,obj):
         cmds = []

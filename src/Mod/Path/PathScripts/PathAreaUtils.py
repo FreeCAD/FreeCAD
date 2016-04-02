@@ -378,12 +378,9 @@ def pocket(a,tool_radius, extra_offset, stepover, depthparams, from_center, keep
     use_internal_function = (area.holes_linked() == False) # use internal function, if area module is the Clipper library
 
     if use_internal_function:
-        print "using internal. PathAreaUtils:382 "
         curve_list = a.MakePocketToolpath(tool_radius, extra_offset, stepover, from_center, use_zig_zag, zig_angle)
 
     else:
-        print "not using internal. PathAreaUtils:386 "
-
         global sin_angle_for_zigs
         global cos_angle_for_zigs
         global sin_minus_angle_for_zigs
@@ -421,14 +418,12 @@ def pocket(a,tool_radius, extra_offset, stepover, depthparams, from_center, keep
             
     depths = depthparams.get_depths()
     current_start_depth = depthparams.start_depth
-    print "Startpoint: " + str(start_point) 
     if start_point==None:
         for depth in depths:
             cut_curvelist1(curve_list, depthparams.rapid_safety_space, current_start_depth, depth, depthparams.clearance_height, keep_tool_down_if_poss)
             current_start_depth = depth
 
     else:
-        print "PathAreaUtils:438  I guess it IS used.  Who knew?"
         for depth in depths:
             cut_curvelist2(curve_list, depthparams.rapid_safety_space, current_start_depth, depth, depthparams.clearance_height, keep_tool_down_if_poss, start_point)
             current_start_depth = depth

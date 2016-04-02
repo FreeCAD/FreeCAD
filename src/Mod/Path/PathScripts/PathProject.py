@@ -141,6 +141,11 @@ class CommandProject:
     def Create(pathChildren = []):
         """Code to create a project"""
         #FreeCADGui.addModule("PathScripts.PathProject")
+        import PathScripts.PathUtils as PU
+        if not PU.findProj() == None:
+            FreeCAD.Console.PrintError("A Path project already exists in this document\n")
+            return
+
         obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython","Project")
         ObjectPathProject(obj)
         if pathChildren:
@@ -152,8 +157,7 @@ class CommandProject:
         #create a machine obj
         import PathScripts
         PathScripts.PathMachine.CommandPathMachine.Create()
-        PLT = PathScripts.PathLoadTool.CommandPathLoadTool()
-        PLT.Activated()
+        PathScripts.PathLoadTool.CommandPathLoadTool.Create()
 
         return obj
 
