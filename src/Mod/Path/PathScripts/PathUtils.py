@@ -324,7 +324,6 @@ def changeTool(obj,proj):
                 if g == obj:
                     return tlnum
 
-
 def getLastTool(obj):
     toolNum = obj.ToolNumber
     if obj.ToolNumber == 0:
@@ -333,6 +332,44 @@ def getLastTool(obj):
         toolNum = changeTool(obj, proj)
     return getTool(obj, toolNum)
 
+def getLastToolLoad(obj):
+    #This walks up the hierarchy and tries to find the closest preceding toolchange.
+    
+    import PathScripts
+    tc = None
+    lastfound = None
+
+    try:
+        child = obj
+        parent = obj.InList[0]
+    except:
+        parent = None
+
+    while parent != None:
+
+        sibs = parent.Group
+        for g in sibs:
+            if isinstance(g.Proxy,PathScripts.PathLoadTool.LoadTool):
+                lastfound = g
+            if g == child:
+                tc = lastfound
+
+        if tc == None:
+            try:
+                child = parent
+                parent = parent.InList[0]
+            except:
+                parent = None
+        else:
+            return tc
+
+    if tc == None:
+        for g in FreeCAD.ActiveDocument.Objects: #top level object 
+            if isinstance(g.Proxy,PathScripts.PathLoadTool.LoadTool):
+                lastfound = g
+            if g == obj:
+                tc = lastfound
+    return tc
 
 def getTool(obj,number=0):
     "retrieves a tool from a hosting object with a tooltable, if any"
@@ -419,7 +456,6 @@ class depth_params:
         self.user_depths = user_depths
         
     def get_depths(self):
-        print "in function"
         depths = []
         if self.user_depths != None:
             depths = self.user_depths

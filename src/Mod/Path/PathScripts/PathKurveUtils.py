@@ -57,8 +57,8 @@ def makeAreaCurve(edges,direction,startpt=None,endpt=None):
 
     cleanededges = Part.__sortEdges__(PathUtils.cleanedges(edges, 0.01))
     
-    for e in cleanededges:
-        print str(e.valueAt(e.FirstParameter)) + "," + str(e.valueAt(e.LastParameter))
+    #for e in cleanededges:
+        #print str(e.valueAt(e.FirstParameter)) + "," + str(e.valueAt(e.LastParameter))
     edgelist=[]
     
     if len(cleanededges) == 1: #user selected a single edge.
@@ -270,31 +270,12 @@ def make_smaller( curve, start = None, finish = None, end_beyond = False ):
         else:
             curve.ChangeEnd(curve.NearestPoint(finish))
 
-# def makePath(edges,side,radius,vertfeed,horizfeed,offset_extra,rapid_safety_space,clearance,start_depth,step_down,final_depth,use_CRC,direction,startpt=None,endpt=None):
-
-#     curve = makeAreaCurve(edges,direction,startpt, endpt)
-#     path = profile(curve,side,radius,vertfeed,horizfeed,offset_extra,rapid_safety_space,clearance,start_depth,step_down,final_depth,use_CRC)
-#     del curve
-#     return path
-
-# def edgedumper (mylist):
-#     import Part, PathUtils
-#     print "The amazing edgedumper"
-#     print "mylist: " + str(mylist)
-#     edgs = PathUtils.cleanedges(mylist, 0.01)
-#     edgs = Part.Wire(edgs)
-#     for i in edgs.Edges:
-#         mystring = str(i)
-#         for v in i.Vertexes:
-#             mystring = mystring +  " : " + str(v.Point) 
-#         print mystring
 
 '''The following procedures are copied almost directly from heekscnc kurve_funcs.py.  They depend on nc directory existing below PathScripts and have not been
 throughly optimized, understood, or tested for FreeCAD.'''
 
 
 def profile2(curve, direction = "on", radius = 1.0, vertfeed=0.0,horizfeed=0.0, offset_extra = 0.0, roll_radius = 2.0, roll_on = None, roll_off = None, depthparams = None, extend_at_start = 0.0, extend_at_end = 0.0, lead_in_line_len=0.0,lead_out_line_len= 0.0):
-    print "we're in"
     from PathScripts.nc.nc import *
     global tags
     direction = direction.lower()
