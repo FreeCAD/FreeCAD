@@ -145,8 +145,6 @@ void ViewProviderPage::updateData(const App::Property* prop)
 bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
     if (!view.isNull()) {
-        // TODO: if DrawingPage has children, they should be deleted too, since they are useless without the page.
-        //       logic is in the "this object has links are you sure" dialog
         Gui::getMainWindow()->removeWindow(view);
         Gui::getMainWindow()->activatePreviousWindow();
         view->deleteLater(); // Delete the drawing view;
