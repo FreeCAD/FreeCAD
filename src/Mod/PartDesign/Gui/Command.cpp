@@ -624,6 +624,7 @@ void CmdPartDesignFillet::activated(int iMsg)
     openCommand("Make Fillet");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Fillet\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
+    doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",selection[0].getFeatName());
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     App::DocumentObjectGroup* grp = base->getGroup();
@@ -776,6 +777,7 @@ void CmdPartDesignChamfer::activated(int iMsg)
     openCommand("Make Chamfer");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Chamfer\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
+    doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",selection[0].getFeatName());
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     App::DocumentObjectGroup* grp = base->getGroup();

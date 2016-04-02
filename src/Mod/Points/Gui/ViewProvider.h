@@ -95,7 +95,6 @@ public:
     static void clipPointsCallback(void * ud, SoEventCallback * n);
 
 protected:
-    Gui::SoFCSelection* createFromSettings() const;
     void onChanged(const App::Property* prop);
     void setVertexColorMode(App::PropertyColorList*);
     void setVertexGreyvalueMode(Points::PropertyGreyValueList*);

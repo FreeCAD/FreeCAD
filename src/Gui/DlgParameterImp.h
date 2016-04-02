@@ -24,7 +24,6 @@
 #ifndef GUI_DIALOG_DLGPARAMETER_H
 #define GUI_DIALOG_DLGPARAMETER_H
 
-#include "ui_DlgParameter.h"
 #include <Base/Parameter.h>
 
 #include <QTreeWidgetItem>
@@ -33,11 +32,13 @@
 namespace Gui {
 namespace Dialog {
 
+class Ui_DlgParameter;
+
 /**
  * The DlgParameterImp class implements a dialog showing all parameters in a list view.
  * \author Jürgen Riegel
  */
-class DlgParameterImp : public QDialog, public Ui_DlgParameter
+class GuiExport DlgParameterImp : public QDialog
 { 
     Q_OBJECT
 
@@ -63,6 +64,7 @@ protected:
 protected:
     QTreeWidget* paramGroup;
     QTreeWidget* paramValue;
+    Ui_DlgParameter* ui;
 };
 
 // --------------------------------------------------------------------

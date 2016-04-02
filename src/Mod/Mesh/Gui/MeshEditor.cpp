@@ -61,7 +61,6 @@
 #include <Gui/View3DInventorViewer.h>
 
 using namespace MeshGui;
-using namespace Quarter;
 
 PROPERTY_SOURCE(MeshGui::ViewProviderFace, Gui::ViewProviderDocumentObject)
 

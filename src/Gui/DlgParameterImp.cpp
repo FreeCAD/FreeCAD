@@ -33,6 +33,7 @@
 # include <QTreeWidget>
 #endif
 
+#include "ui_DlgParameter.h"
 #include "DlgParameterImp.h"
 #include "DlgInputDialogImp.h"
 #include "BitmapFactory.h"
@@ -57,18 +58,19 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
-  : QDialog( parent, fl|Qt::WindowMinMaxButtonsHint )
+  : QDialog(parent, fl|Qt::WindowMinMaxButtonsHint)
+  , ui(new Ui_DlgParameter)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
     QStringList groupLabels; 
     groupLabels << tr( "Group" );
-    paramGroup = new ParameterGroup(splitter3);
+    paramGroup = new ParameterGroup(ui->splitter3);
     paramGroup->setHeaderLabels(groupLabels);
     paramGroup->setRootIsDecorated(false);
 
     QStringList valueLabels; 
     valueLabels << tr( "Name" ) << tr( "Type" ) << tr( "Value" );
-    paramValue = new ParameterValue(splitter3);
+    paramValue = new ParameterValue(ui->splitter3);
     paramValue->setHeaderLabels(valueLabels);
     paramValue->setRootIsDecorated(false);
 #if QT_VERSION >= 0x050000
@@ -90,16 +92,16 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     const std::map<std::string,ParameterManager *>& rcList = App::GetApplication().GetParameterSetList();
     for (std::map<std::string,ParameterManager *>::const_iterator it= rcList.begin();it!=rcList.end();++it) {
         if (it->second != sys) // for now ignore system parameters because they are nowhere used
-            parameterSet->addItem(tr(it->first.c_str()), QVariant(QByteArray(it->first.c_str())));
+            ui->parameterSet->addItem(tr(it->first.c_str()), QVariant(QByteArray(it->first.c_str())));
     }
 
     QByteArray cStr("User parameter");
-    parameterSet->setCurrentIndex(parameterSet->findData(cStr));
-    onChangeParameterSet(parameterSet->currentIndex());
-    if (parameterSet->count() < 2)
-        parameterSet->hide();
+    ui->parameterSet->setCurrentIndex(ui->parameterSet->findData(cStr));
+    onChangeParameterSet(ui->parameterSet->currentIndex());
+    if (ui->parameterSet->count() < 2)
+        ui->parameterSet->hide();
 
-    connect(parameterSet, SIGNAL(activated(int)), 
+    connect(ui->parameterSet, SIGNAL(activated(int)), 
             this, SLOT(onChangeParameterSet(int)));
     connect(paramGroup, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), 
             this, SLOT(onGroupSelected(QTreeWidgetItem*)));
@@ -112,6 +114,7 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
 DlgParameterImp::~DlgParameterImp()
 {
     // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 /**
@@ -121,7 +124,7 @@ DlgParameterImp::~DlgParameterImp()
 void DlgParameterImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
         paramGroup->headerItem()->setText( 0, tr( "Group" ) );
         paramValue->headerItem()->setText( 0, tr( "Name" ) );
         paramValue->headerItem()->setText( 1, tr( "Type" ) );
@@ -241,16 +244,16 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
 /** Switches the type of parameters either to user or system parameters. */
 void DlgParameterImp::onChangeParameterSet(int index)
 {
-    ParameterManager* rcParMngr = App::GetApplication().GetParameterSet(parameterSet->itemData(index).toByteArray());
+    ParameterManager* rcParMngr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(index).toByteArray());
     if (!rcParMngr)
         return;
 
     if (rcParMngr == App::GetApplication().GetParameterSet("System parameter"))
-        buttonSaveToDisk->setEnabled(true);
+        ui->buttonSaveToDisk->setEnabled(true);
     else if (rcParMngr == App::GetApplication().GetParameterSet("User parameter"))
-        buttonSaveToDisk->setEnabled(true);
+        ui->buttonSaveToDisk->setEnabled(true);
     else
-        buttonSaveToDisk->setEnabled(false);
+        ui->buttonSaveToDisk->setEnabled(false);
 
     // remove all labels
     paramGroup->clear();
@@ -301,8 +304,8 @@ void DlgParameterImp::onChangeParameterSet(int index)
 
 void DlgParameterImp::on_buttonSaveToDisk_clicked()
 {
-    int index = parameterSet->currentIndex();
-    ParameterManager* parmgr = App::GetApplication().GetParameterSet(parameterSet->itemData(index).toByteArray());
+    int index = ui->parameterSet->currentIndex();
+    ParameterManager* parmgr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(index).toByteArray());
     if (!parmgr) return;
     if (parmgr == App::GetApplication().GetParameterSet("System parameter"))
         parmgr->SaveDocument(App::Application::Config()["SystemParameter"].c_str());
@@ -666,7 +669,7 @@ void ParameterValue::onCreateIntItem()
     }
 
     int val = QInputDialog::getInt(this, QObject::tr("New integer item"), QObject::tr("Enter your number:"),
-                                       0, -2147483647, 2147483647, 1, &ok);
+                                   0, -2147483647, 2147483647, 1, &ok);
 
     if ( ok )
     {
@@ -950,7 +953,7 @@ void ParameterInt::changeValue()
 {
     bool ok;
     int num = QInputDialog::getInt(treeWidget(), QObject::tr("Change value"), QObject::tr("Enter your number:"),
-                                       text(2).toInt(), -2147483647, 2147483647, 1, &ok);
+                                   text(2).toInt(), -2147483647, 2147483647, 1, &ok);
     if ( ok )
     {
         setText(2, QString::fromLatin1("%1").arg(num));

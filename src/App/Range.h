@@ -23,9 +23,57 @@
 #ifndef RANGE_H
 #define RANGE_H
 
-#include "Utils.h"
+#include <string>
 
-namespace Spreadsheet {
+namespace App {
+
+struct CellAddress;
+
+AppExport CellAddress stringToAddress(const char *strAddress);
+AppExport int decodeColumn(const std::string &colstr);
+AppExport int decodeRow(const std::string &rowstr);
+AppExport int validColumn(const std::string &colstr);
+AppExport int validRow(const std::string &rowstr);
+
+struct AppExport CellAddress {
+
+    CellAddress(int row = -1, int col = -1) : _row(row), _col(col) { }
+
+    CellAddress(const char * address) {
+        *this = stringToAddress(address);
+    }
+
+    CellAddress(const std::string & address) {
+        *this = stringToAddress(address.c_str());
+    }
+
+    inline int row() const { return _row; }
+
+    inline int col() const { return _col; }
+
+    inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
+
+    inline bool operator==(const CellAddress & other) const { return asInt() == other.asInt(); }
+
+    inline bool operator!=(const CellAddress & other) const { return asInt() != other.asInt(); }
+
+    inline bool isValid() { return (row() >=0 && row() < MAX_ROWS && col() >= 0 && col() < MAX_COLUMNS); }
+
+    std::string toString() const;
+
+    // Static members
+
+    static const int MAX_ROWS;
+
+    static const int MAX_COLUMNS;
+
+protected:
+
+    inline unsigned int asInt() const { return ((_row << 16) | _col); }
+
+    short _row;
+    short _col;
+};
 
 /**
  * @brief The Range class is a spreadsheet range iterator. It takes
@@ -39,7 +87,7 @@ namespace Spreadsheet {
  *
  */
 
-class SpreadsheetExport Range {
+class AppExport Range {
 public:
     Range(const char *range);
 

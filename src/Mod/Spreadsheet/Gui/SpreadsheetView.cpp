@@ -37,9 +37,8 @@
 
 #include "SpreadsheetView.h"
 #include "SpreadsheetDelegate.h"
-#include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include <Mod/Spreadsheet/App/Range.h>
+#include <App/Range.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -57,6 +56,7 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Gui;
+using namespace App;
 
 /* TRANSLATOR SpreadsheetGui::SheetView */
 
@@ -120,7 +120,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 
 SheetView::~SheetView()
 {
-    Application::Instance->detachView(this);
+    Gui::Application::Instance->detachView(this);
     //delete delegate;
 }
 

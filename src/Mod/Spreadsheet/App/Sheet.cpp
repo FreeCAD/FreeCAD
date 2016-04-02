@@ -38,11 +38,9 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
-#include "SpreadsheetExpression.h"
 #include "Sheet.h"
 #include "SheetObserver.h"
 #include "Utils.h"
-#include "Range.h"
 #include "SheetPy.h"
 #include <ostream>
 #include <fstream>

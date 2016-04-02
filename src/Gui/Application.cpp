@@ -1576,8 +1576,7 @@ void Application::runApplication(void)
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
-    int systemExit = 1000;
-    GUISingleApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+    GUISingleApplication mainApp(argc, App::Application::GetARGV());
 
     // check if a single or multiple instances can run
     it = cfg.find("SingleInstance");
@@ -1804,9 +1803,11 @@ void Application::runApplication(void)
         boost::interprocess::file_lock flock(s.str().c_str());
         flock.lock();
 
-        int ret = mainApp.exec();
-        if (ret == systemExit)
-            throw Base::SystemExitException();
+        mainApp.exec();
+        // Qt can't handle exceptions thrown from event handlers, so we need
+        // to manually rethrow SystemExitExceptions.
+        if(mainApp.caughtException.get())
+            throw Base::SystemExitException(*mainApp.caughtException.get());
 
         // close the lock file, in case of a crash we can see the existing lock file
         // on the next restart and try to repair the documents, if needed.
@@ -1860,6 +1861,7 @@ void Application::checkForPreviousCrashes()
                 }
                 else {
                     int countDeletedDocs = 0;
+                    QString recovery_files = QString::fromLatin1("fc_recovery_files");
                     for (QList<QFileInfo>::iterator it = dirs.begin(); it != dirs.end(); ++it) {
                         QDir doc_dir(it->absoluteFilePath());
                         doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
@@ -1874,6 +1876,17 @@ void Application::checkForPreviousCrashes()
                         else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
                             // store the transient directory in case it's not empty
                             restoreDocFiles << *it;
+                        }
+                        // search for the 'fc_recovery_files' sub-directory and check that it's the only entry
+                        else if (entries == 1 && doc_dir.exists(recovery_files)) {
+                            // if the sub-directory is empty delete the transient directory
+                            QDir rec_dir(doc_dir.absoluteFilePath(recovery_files));
+                            rec_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
+                            if (rec_dir.entryList().isEmpty()) {
+                                doc_dir.rmdir(recovery_files);
+                                if (tmp.rmdir(it->filePath()))
+                                    countDeletedDocs++;
+                            }
                         }
                     }
 

@@ -2530,10 +2530,17 @@ void View3DInventorViewer::setCursorRepresentation(int modearg)
     // won't be changed as long as the user doesn't leave and enter
     // the canvas. To fix this we explicitly set Qt::WA_UnderMouse
     // if the mouse is inside the canvas.
-    QWidget* w = this->getGLWidget();
+    QWidget* glWindow = this->getGLWidget();
 
-    if (w && w->rect().contains(QCursor::pos()))
-        w->setAttribute(Qt::WA_UnderMouse);
+    // When a widget is added to the QGraphicsScene and the user
+    // hovered over it the 'WA_SetCursor' attribute is set to the
+    // GL widget but never reset and thus would cause that the
+    // cursor on this widget won't be set.
+    if (glWindow)
+        glWindow->setAttribute(Qt::WA_SetCursor, false);
+
+    if (glWindow && glWindow->rect().contains(QCursor::pos()))
+        glWindow->setAttribute(Qt::WA_UnderMouse);
 
     switch (modearg) {
     case NavigationStyle::IDLE:

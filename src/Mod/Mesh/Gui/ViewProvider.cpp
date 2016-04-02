@@ -244,7 +244,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     ADD_PROPERTY(LineColor,(0,0,0));
 
     // Create the selection node
-    pcHighlight = createFromSettings();
+    pcHighlight = Gui::ViewProviderBuilder::createSelection();
     pcHighlight->ref();
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
@@ -323,40 +323,6 @@ ViewProviderMesh::~ViewProviderMesh()
     pShapeHints->unref();
     pcMatBinding->unref();
     pLineColor->unref();
-}
-
-Gui::SoFCSelection* ViewProviderMesh::createFromSettings() const
-{
-    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
-
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    bool enablePre = hGrp->GetBool("EnablePreselection", true);
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    if (!enablePre) {
-        sel->highlightMode = Gui::SoFCSelection::OFF;
-    }
-    else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = sel->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        sel->colorHighlight.setValue(highlightColor);
-    }
-    if (!enableSel || !Selectable.getValue()) {
-        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    }
-    else {
-        // Do the same with the selection color
-        SbColor selectionColor = sel->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        sel->colorSelection.setValue(selectionColor);
-    }
-
-    return sel;
 }
 
 void ViewProviderMesh::onChanged(const App::Property* prop)
@@ -474,7 +440,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
     // faces+wires
-    Gui::SoFCSelection* selGroup = createFromSettings();
+    Gui::SoFCSelection* selGroup = Gui::ViewProviderBuilder::createSelection();
     selGroup->objectName = getObject()->getNameInDocument();
     selGroup->documentName = getObject()->getDocument()->getName();
     selGroup->subElementName = "Main";

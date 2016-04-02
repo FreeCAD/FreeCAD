@@ -30,7 +30,7 @@
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include "SpreadsheetExpression.h"
+#include <App/Expression.h>
 #include "Sheet.h"
 #include <iomanip>
 
@@ -38,6 +38,7 @@
 #define __func__ __FUNCTION__
 #endif
 
+using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
@@ -216,12 +217,11 @@ void Cell::setContent(const char * value)
     if (value != 0) {
         if (*value == '=') {
             try {
-                expr = Spreadsheet::ExpressionParser::parse(owner->sheet(), value + 1);
+                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
             }
             catch (Base::Exception & e) {
-                QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
                 expr = new App::StringExpression(owner->sheet(), value);
-                setUsed(PARSE_EXCEPTION_SET);
+                setParseException(e.what());
             }
         }
         else if (*value == '\'')
@@ -365,8 +365,10 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        std::auto_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
+        boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
+        if (!e)
+            throw Base::Exception("Invalid unit");
         newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
     }
 

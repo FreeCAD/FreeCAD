@@ -33,6 +33,7 @@
 #include <Base/Quantity.h>
 #include <set>
 #include <deque>
+#include <App/Range.h>
 
 namespace App  {
 
@@ -128,7 +129,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     void setUnit(const Base::Quantity &_quantity);
 
@@ -164,7 +165,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     void negate();
 
@@ -182,7 +183,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     std::string getName() const { return name; }
 
@@ -245,7 +246,20 @@ public:
 
     virtual void visit(ExpressionVisitor & v);
 
+    Operator getOperator() const { return op; }
+
+    Expression * getLeft() const { return left; }
+
+    Expression * getRight() const { return right; }
+
 protected:
+
+    virtual bool isCommutative() const;
+
+    virtual bool isLeftAssociative() const;
+
+    virtual bool isRightAssociative() const;
+
     Operator op;        /**< Operator working on left and right */
     Expression * left;  /**< Left operand */
     Expression * right; /**< Right operand */
@@ -314,6 +328,18 @@ public:
         TRUNC,
         CEIL,
         FLOOR,
+
+        // Aggregates
+        AGGREGATES,
+
+        SUM,
+        AVERAGE,
+        STDDEV,
+        COUNT,
+        MIN,
+        MAX,
+
+        // Last one
         LAST,
     };
 
@@ -331,13 +357,15 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
     virtual void visit(ExpressionVisitor & v);
 
 protected:
+    Expression *evalAggregate() const;
+
     Function f;        /**< Function to execute */
     std::vector<Expression *> args; /** Arguments to function*/
 };
@@ -367,7 +395,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
@@ -410,13 +438,42 @@ public:
 
     virtual std::string getText() const { return text; }
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual Expression * copy() const;
 
 protected:
 
     std::string text; /**< Text string */
+};
+
+class AppExport RangeExpression : public App::Expression {
+    TYPESYSTEM_HEADER();
+public:
+    RangeExpression(const App::DocumentObject * _owner = 0, const std::string & begin = std::string(), const std::string & end = std::string());
+
+    virtual ~RangeExpression() { }
+
+    virtual bool isTouched() const;
+
+    virtual Expression * eval() const;
+
+    virtual std::string toString() const;
+
+    virtual Expression * copy() const;
+
+    virtual int priority() const;
+
+    virtual void getDeps(std::set<App::ObjectIdentifier> &props) const;
+
+    virtual App::Expression * simplify() const;
+
+    Range getRange() const { return range; }
+
+    void setRange(const Range & r);
+
+protected:
+    Range range;
 };
 
 namespace ExpressionParser {
@@ -446,6 +503,7 @@ public:
     double fvalue;
   } constant;
   std::vector<Expression*> arguments;
+  std::vector<Expression*> list;
   std::string string;
   FunctionExpression::Function func;
   ObjectIdentifier::String string_or_identifier;
