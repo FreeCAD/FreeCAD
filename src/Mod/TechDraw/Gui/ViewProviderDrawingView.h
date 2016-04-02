@@ -63,7 +63,6 @@ public:
     virtual void startRestoring();
     virtual void finishRestoring();
     //@}
-    virtual bool onDelete(const std::vector<std::string> &items);
     TechDraw::DrawView* getViewObject() const;
 };
 

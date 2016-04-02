@@ -135,10 +135,3 @@ TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
 }
 
-bool ViewProviderDrawingView::onDelete(const std::vector<std::string> &items)
-{
-    //int viewCount =
-    static_cast<void> (getViewObject()->findParentPage()->removeView(getViewObject()));
-    Gui::Selection().clearSelection();
-    return ViewProviderDocumentObject::onDelete(items);
-}

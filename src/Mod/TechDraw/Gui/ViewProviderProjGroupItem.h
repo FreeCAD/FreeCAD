@@ -52,8 +52,6 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
     virtual void updateData(const App::Property*);
 
-    bool onDelete(const std::vector<std::string> &subList);
-
     TechDraw::DrawProjGroupItem* getObject() const;
     void unsetEdit(int ModNum);
 

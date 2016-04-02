@@ -141,16 +141,6 @@ bool ViewProviderProjGroupItem::doubleClicked(void)
     return true;
 }
 
-bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &subList)
-{
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")"
-                                             ,getObject()->getNameInDocument());
-    Gui::Command::commitCommand();
-    Gui::Command::updateActive();
-    return false;
-
-}
 
 TechDraw::DrawProjGroupItem* ViewProviderProjGroupItem::getObject() const
 {
