@@ -252,6 +252,14 @@
       <layout class="QGridLayout" name="gridLayout_3"/>
      </widget>
      <widget class="QWidget" name="Pattern">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>334</width>
+        <height>327</height>
+       </rect>
+      </property>
       <attribute name="label">
        <string>Pattern</string>
       </attribute>
@@ -266,8 +274,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/user.svg</normaloff>:/icons/FreeCAD-default/scalable/user.svg</iconset>
+       <iconset resource="Resources/Path.qrc">
+        <normaloff>:/icons/Path-Hamburger.svg</normaloff>:/icons/Path-Hamburger.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Operation</string>
@@ -368,6 +376,7 @@
  </customwidgets>
  <resources>
   <include location="../../../Gui/Icons/resource.qrc"/>
+  <include location="Resources/Path.qrc"/>
  </resources>
  <connections/>
 </ui>

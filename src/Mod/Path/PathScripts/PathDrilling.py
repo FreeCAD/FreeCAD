@@ -24,7 +24,7 @@
 
 import FreeCAD,Path
 from PySide import QtCore,QtGui
-from PathScripts import PathUtils,PathSelection,PathProject
+from PathScripts import PathUtils
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -43,25 +43,25 @@ except AttributeError:
 
 
 class ObjectDrilling:
-    
+
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkSubList","Base","Path",translate("Parent Object(s)","The base geometry of this toolpath"))
-        obj.addProperty("App::PropertyVectorList","locations","Path","The drilling locations")
+        obj.addProperty("App::PropertyLinkSubList","Base","Path",translate("PathProject","The base geometry of this toolpath"))
+        obj.addProperty("App::PropertyBool","Active","Path",translate("PathProject","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString","Comment","Path",translate("PathProject","An optional comment for this profile"))
 
         obj.addProperty("App::PropertyLength", "PeckDepth", "Depth", translate("PathProject","Incremental Drill depth before retracting to clear chips"))
         obj.addProperty("App::PropertyLength", "StartDepth", "Depth", translate("PathProject","Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("PathProject","The height needed to clear clamps and obstructions"))
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("PathProject","Final Depth of Tool- lowest value in Z"))
         obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", translate("PathProject","Height to clear top of materil"))
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", translate("Retract Height","The height where feed starts and height during retract tool when path is finished"))
-        #obj.addProperty("App::PropertyLength", "VertFeed", "Feed",translate("Vert Feed","Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertyString","Comment","Path",translate("PathProject","An optional comment for this profile"))
-        obj.addProperty("App::PropertyBool","Active","Path",translate("Active","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", translate("PathProject","The height where feed starts and height during retract tool when path is finished"))
+
+        #Tool Properties
         obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("PathProfile","The tool number in use"))
-        obj.ToolNumber = (0,0,1000,1) 
+        obj.ToolNumber = (0,0,1000,1)
         obj.setEditorMode('ToolNumber',1) #make this read only
-        
+
         obj.Proxy = self
 
     def __getstate__(self):
@@ -69,26 +69,24 @@ class ObjectDrilling:
 
     def __setstate__(self,state):
         return None
-        
+
     def execute(self,obj):
         output = ""
         toolLoad = PathUtils.getLastToolLoad(obj)
         if toolLoad == None:
             self.vertFeed = 100
             self.horizFeed = 100
-            radius = 0.25
-            obj.ToolNumber= 0   
+            obj.ToolNumber= 0
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            radius = tool.Diameter/2
-            obj.ToolNumber= toolLoad.ToolNumber   
+            obj.ToolNumber= toolLoad.ToolNumber
         if obj.Base:
             locations = []
             for loc in obj.Base:
 
-                if "Face" in loc[1] or "Edge" in loc[1]:    
+                if "Face" in loc[1] or "Edge" in loc[1]:
                     s = getattr(loc[0].Shape,loc[1])
                 else:
                     s = loc[0].Shape
@@ -131,6 +129,26 @@ class ObjectDrilling:
     def addDrillableLocation(self, obj, ss, sub=""):
         baselist = obj.Base
         item = (ss, sub)
+        if len(baselist) == 0: #When adding the first base object, guess at heights
+            try:
+                bb = ss.Shape.BoundBox  #parent boundbox
+                subobj = ss.Shape.getElement(sub)
+                fbb = subobj.BoundBox #feature boundbox
+                obj.StartDepth = bb.ZMax
+                obj.ClearanceHeight = bb.ZMax + 5.0
+                obj.SafeHeight = bb.ZMax + 3.0
+                obj.RetractHeight = bb.ZMax + 1.0
+
+                if fbb.ZMax < bb.ZMax:
+                    obj.FinalDepth = fbb.ZMax
+                else:
+                    obj.FinalDepth = bb.ZMin
+            except:
+                obj.StartDepth = 5.0
+                obj.ClearanceHeight = 10.0
+                obj.SafeHeight = 8.0
+                obj.RetractHeight = 6.0
+
         if item in baselist:
             FreeCAD.Console.PrintWarning("Drillable location already in the list"+ "\n")
         else:
@@ -150,10 +168,6 @@ class _ViewProviderDrill:
 
     def getIcon(self): #optional
         return ":/icons/Path-Drilling.svg"
-
-#    def attach(self): #optional
-#        # this is executed on object creation and object load from file
-#        pass
 
     def onChanged(self,obj,prop): #optional
         # this is executed when a property of the VIEW PROVIDER changes
@@ -188,8 +202,6 @@ class CommandPathDrilling:
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        import Path, Part
-
 
         # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Drilling","Create Drilling"))
@@ -221,14 +233,14 @@ class TaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s) 
+        FreeCADGui.Selection.removeObserver(self.s)
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s) 
+        FreeCADGui.Selection.removeObserver(self.s)
 
-    def getFields(self):    
+    def getFields(self):
         if self.obj:
             if hasattr(self.obj,"StartDepth"):
                 self.obj.StartDepth = self.form.startDepth.text()
@@ -248,7 +260,7 @@ class TaskPanel:
     def open(self):
         self.s =SelObserver()
         # install the function mode resident
-        FreeCADGui.Selection.addObserver(self.s)   
+        FreeCADGui.Selection.addObserver(self.s)
 
     def addBase(self):
          # check that the selection contains exactly what we want
@@ -261,14 +273,15 @@ class TaskPanel:
             if s.HasSubObjects:
                 for i in s.SubElementNames:
                     self.obj.Proxy.addDrillableLocation(self.obj, s.Object, i)
-            else:      
+            else:
                 self.obj.Proxy.addDrillableLocation(self.obj, s.Object)
 
+        self.setupUi() #defaults may have changed.  Reload.
         self.form.baseList.clear()
-        for i in self.obj.Base:         
+        for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
 
-         
+
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
         for d in dlist:
@@ -288,7 +301,7 @@ class TaskPanel:
             objstring = i.text().partition(".")
             obj = FreeCAD.ActiveDocument.getObject(objstring[0])
           #  sub = o.Shape.getElement(objstring[2])
-            if objstring[2] != "": 
+            if objstring[2] != "":
                 FreeCADGui.Selection.addSelection(obj,objstring[2])
             else:
                 FreeCADGui.Selection.addSelection(obj)
@@ -321,29 +334,28 @@ class TaskPanel:
         self.form.retractHeight.setText(str(self.obj.RetractHeight.Value))
 
 
-        for i in self.obj.Base:         
+        for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
 
         #Connect Signals and Slots
         self.form.startDepth.editingFinished.connect(self.getFields) #This is newer syntax
-        #QtCore.QObject.connect(self.form.startDepth, QtCore.SIGNAL("editingFinished()"), self.getFields)
-        QtCore.QObject.connect(self.form.finalDepth, QtCore.SIGNAL("editingFinished()"), self.getFields)
-        QtCore.QObject.connect(self.form.safeHeight, QtCore.SIGNAL("editingFinished()"), self.getFields)
-        QtCore.QObject.connect(self.form.clearanceHeight, QtCore.SIGNAL("editingFinished()"), self.getFields)
+        self.form.finalDepth.editingFinished.connect(self.getFields)
+        self.form.safeHeight.editingFinished.connect(self.getFields)
+        self.form.clearanceHeight.editingFinished.connect(self.getFields)
 
-        QtCore.QObject.connect(self.form.addBase, QtCore.SIGNAL("clicked()"), self.addBase)
-        QtCore.QObject.connect(self.form.deleteBase, QtCore.SIGNAL("clicked()"), self.deleteBase)
-        QtCore.QObject.connect(self.form.reorderBase, QtCore.SIGNAL("clicked()"), self.reorderBase)
+        self.form.addBase.clicked.connect(self.addBase)
+        self.form.deleteBase.clicked.connect(self.deleteBase)
+        self.form.reorderBase.clicked.connect(self.reorderBase)
 
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
 
 class SelObserver:
     def __init__(self):
-        import PathScripts.PathSelection as PST 
+        import PathScripts.PathSelection as PST
         PST.drillselect()
 
     def __del__(self):
-        import PathScripts.PathSelection as PST 
+        import PathScripts.PathSelection as PST
         PST.clear()
 
     def addSelection(self,doc,obj,sub,pnt):               # Selection object
@@ -351,7 +363,7 @@ class SelObserver:
         FreeCADGui.updateGui()
 
 
-if FreeCAD.GuiUp: 
+if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Drilling',CommandPathDrilling())
 
