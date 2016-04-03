@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>564</height>
+    <height>579</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -407,6 +407,29 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_9">
+          <property name="toolTip">
+           <string>When exporting objects without UID, the generated UID will be stored inside the FreeCAD object for reuse next time that object is exported, which gives smaller diffs between versions</string>
+          </property>
+          <property name="text">
+           <string>Store IFC universal ID in FreeCAD objects</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcStoreUid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -434,13 +457,13 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
