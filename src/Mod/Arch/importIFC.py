@@ -124,7 +124,7 @@ def getPreferences():
     global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
-    global FORCE_BREP, IMPORT_PROPERTIES
+    global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")   
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -146,6 +146,7 @@ def getPreferences():
     CREATE_CLONES = p.GetBool("ifcCreateClones",True)
     FORCE_BREP = p.GetBool("ifcExportAsBrep",False)
     IMPORT_PROPERTIES = p.GetBool("ifcImportProperties",False)
+    STORE_UID = p.GetBool("ifcStoreUid",True)
 
 
 def explore(filename=None):
@@ -262,9 +263,11 @@ def explore(filename=None):
                                     t = "Entity #" + str(argvalue.id()) + ": " + str(argvalue.is_a())
                             elif isinstance(argvalue,list):
                                 t = ""
+                            elif isinstance(argvalue,str) or isinstance(argvalue,unicode):
+                                t = argvalue.encode("latin1")
                             else:
                                 t = str(argvalue)
-                            t = "    " + str(argname) + " : " + str(t)
+                            t = "    " + str(argname.encode("utf8")) + " : " + str(t)
                             item = QtGui.QTreeWidgetItem(tree)
                             item.setText(2,str(t))
                             if colored:
@@ -910,6 +913,11 @@ def export(exportList,filename):
                 uid = str(obj.IfcAttributes["IfcUID"])
         if not uid:
             uid = ifcopenshell.guid.compress(uuid.uuid1().hex)
+            # storing the uid for further use
+            if STORE_UID and hasattr(obj,"IfcAttributes"):
+                d = obj.IfcAttributes
+                d["IfcUID"] = uid
+                obj.IfcAttributes = d
 
         # setting the IFC type + name conversions
         if hasattr(obj,"Role"):
@@ -1142,6 +1150,10 @@ def export(exportList,filename):
     filename = decode(filename)
 
     ifcfile.write(filename)
+    
+    if STORE_UID:
+        # some properties might have been changed
+        FreeCAD.ActiveDocument.recompute()
 
 
 def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1):
