@@ -64,13 +64,14 @@ class PathWorkbench ( Workbench ):
         from PathScripts import PathSimpleCopy
         from PathScripts import PathEngrave
         from PathScripts import PathSurface
+        from PathScripts import PathRemote
 
         # build commands list
         projcmdlist = ["Path_Project", "Path_ToolTableEdit","Path_Post","Path_Inspect"]
         prepcmdlist = ["Path_Plane","Path_Fixture","Path_LoadTool","Path_ToolLenOffset","Path_Comment","Path_Stop","Path_FaceProfile","Path_FacePocket","Path_Custom","Path_FromShape"]
         opcmdlist = ["Path_Profile","Path_Pocket","Path_Drilling","Path_Engrave","Path_Surfacing"]
         modcmdlist = ["Path_Copy","Path_CompoundExtended","Path_Dressup","Path_Hop","Path_Array","Path_SimpleCopy"]
-
+        remotecmdlist = ["Path_Remote"]
 
         # Add commands to menu and toolbar
         def QT_TRANSLATE_NOOP(scope, text): 
@@ -86,6 +87,7 @@ class PathWorkbench ( Workbench ):
         self.appendMenu([translate("Path","Path"),translate("Path","Partial Commands")],prepcmdlist)
         self.appendMenu([translate("Path","Path"),translate("Path","New Operations")],opcmdlist)
         self.appendMenu([translate("Path","Path"),translate("Path","Path Modification")],modcmdlist)
+        self.appendMenu([translate("Path","Path"),translate("Path","Remote Operations")],remotecmdlist)
         
         # Add preferences pages
         import os
@@ -112,7 +114,8 @@ class PathWorkbench ( Workbench ):
                     self.appendContextMenu("",["Add_Tag"])
                     self.appendContextMenu("",["Set_StartPoint"])
                     self.appendContextMenu("",["Set_EndPoint"])
-
+                if "Remote" in  FreeCADGui.Selection.getSelection()[0].Name:
+                    self.appendContextMenu("",["Refresh_Path"])
 
 Gui.addWorkbench(PathWorkbench())
 

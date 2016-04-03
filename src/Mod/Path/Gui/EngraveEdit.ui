@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>322</width>
-    <height>452</height>
+    <height>517</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -34,7 +34,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>284</height>
+        <height>349</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -45,16 +45,6 @@
        <string>Base Geometry</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="addBase">
-         <property name="toolTip">
-          <string>Add item selected in window.</string>
-         </property>
-         <property name="text">
-          <string>add</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0" colspan="3">
         <widget class="QListWidget" name="baseList">
          <property name="toolTip">
@@ -71,13 +61,13 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="reorderBase">
+       <item row="1" column="0">
+        <widget class="QPushButton" name="addBase">
          <property name="toolTip">
-          <string>Update the path with the removed and reordered items.</string>
+          <string>Add item selected in window.</string>
          </property>
          <property name="text">
-          <string>Update</string>
+          <string>add</string>
          </property>
         </widget>
        </item>
@@ -91,6 +81,29 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="reorderBase">
+         <property name="toolTip">
+          <string>Update the path with the removed and reordered items.</string>
+         </property>
+         <property name="text">
+          <string>Update</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="3">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>All objects will be processed using the same operation properties.</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="Depths">
@@ -99,7 +112,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>284</height>
+        <height>349</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -146,7 +159,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>284</height>
+        <height>349</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -193,7 +206,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>284</height>
+        <height>349</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -240,7 +253,7 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>284</height>
+        <height>349</height>
        </rect>
       </property>
       <attribute name="icon">
