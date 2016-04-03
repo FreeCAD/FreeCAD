@@ -44,12 +44,12 @@ except AttributeError:
 
 
 class ObjectPocket:
-    
 
     def __init__(self,obj):
         obj.addProperty("App::PropertyLinkSubList","Base","Path",translate("PathProject","The base geometry of this object"))
         obj.addProperty("App::PropertyBool","Active","Path",translate("PathProject","Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString","Comment","Path",translate("PathProject","An optional comment for this profile"))
+
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm",translate("PathProject", "The library to use to generate the path"))
         obj.Algorithm = ['OCC Native','libarea']
 
@@ -113,19 +113,35 @@ class ObjectPocket:
         return None
 
     def addpocketbase(self, obj, ss, sub=""):
-        #sublist = []
-        #sublist.append(sub)
         baselist = obj.Base
         if baselist == None:
             baselist = []
+        if len(baselist) == 0: #When adding the first base object, guess at heights
+            try:
+                bb = ss.Shape.BoundBox  #parent boundbox
+                subobj = ss.Shape.getElement(sub)
+                fbb = subobj.BoundBox #feature boundbox
+                obj.StartDepth = bb.ZMax
+                obj.ClearanceHeight = bb.ZMax + 5.0
+                obj.SafeHeight = bb.ZMax + 3.0
+
+                if fbb.ZMax < bb.ZMax:
+                    obj.FinalDepth = fbb.ZMax
+                else:
+                    obj.FinalDepth = bb.ZMin
+            except:
+                obj.StartDepth = 5.0
+                obj.ClearanceHeight = 10.0
+                obj.SafeHeight = 8.0
+
         item = (ss, sub)
         if item in baselist:
             FreeCAD.Console.PrintWarning("this object already in the list"+ "\n")
         else:
             baselist.append (item)
         obj.Base = baselist
-        print "this base is: " + str(baselist) 
-        self.execute(obj)        
+        print "this base is: " + str(baselist)
+        self.execute(obj)
 
     def getStock(self,obj):
         "retrieves a stock object from hosting project if any"
@@ -140,16 +156,14 @@ class ObjectPocket:
         return None
 
     def buildpathlibarea(self, obj, a):
-        import PathScripts.PathUtils as PathUtils
         import PathScripts.PathAreaUtils as PathAreaUtils
         from PathScripts.PathUtils import depth_params
         import area
- 
+
         FreeCAD.Console.PrintMessage(translate("PathPocket","Generating toolpath with libarea offsets.\n"))
-        
+
         depthparams = depth_params (obj.ClearanceHeight.Value, obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown, obj.FinishDepth.Value, obj.FinalDepth.Value)
-        
-        horizfeed = self.horizFeed
+
         extraoffset = obj.MaterialAllowance.Value
         stepover = obj.StepOver
         use_zig_zag = obj.UseZigZag
@@ -159,7 +173,7 @@ class ObjectPocket:
         zig_unidirectional = obj.ZigUnidirectional
         start_point = None
         cut_mode = obj.CutMode
-        
+
         PathAreaUtils.flush_nc()
         PathAreaUtils.output('mem')
         PathAreaUtils.feedrate_hv(self.horizFeed, self.vertFeed)
@@ -214,7 +228,7 @@ class ObjectPocket:
                 retstr += str("%.4f" % self.horizFeed)
             else:
                 retstr += str("%.4f" % self.vertFeed)
-            
+
             if (x != None) or (y != None) or (z != None):
                 if (x != None):
                     retstr += " X" + str("%.4f" % x)
@@ -235,7 +249,7 @@ class ObjectPocket:
             if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
                 print "ERROR: Illegal arc: Stand and end radii not equal"
                 return ""
-            
+
             #Set [C]CW and feed
             retstr = ""
             if ccw:
@@ -243,17 +257,17 @@ class ObjectPocket:
             else:
                 retstr += "G02 F"
             retstr += str(self.horizFeed)
-            
+
             #End location
             retstr += " X" + str("%.4f" % ex) + " Y" + str("%.4f" % ey)
-            
+
             #Helix if requested
             if ez != None:
                 retstr += " Z" + str("%.4f" % ez)
-            
+
             #Append center offsets
             retstr += " I" + str("%.4f" % (cx - sx)) + " J" + str("%.4f" % (cy - sy))
-            
+
             return retstr + "\n"
 
         def helicalPlunge(plungePos, rampangle, destZ, startZ):
@@ -270,14 +284,14 @@ class ObjectPocket:
 
             helixX = plungePos.x + tool.Diameter/2. * plungeR
             helixY = plungePos.y;
-            
+
             helixCirc = math.pi * tool.Diameter * plungeR
             dzPerRev = math.sin(rampangle/180. * math.pi) * helixCirc
 
             #Go to the start of the helix position
             helixCmds += rapid(helixX, helixY)
             helixCmds += rapid(z=startZ)
-            
+
             #Helix as required to get to the requested depth
             lastZ = startZ
             curZ = max(startZ-dzPerRev, destZ)
@@ -286,14 +300,14 @@ class ObjectPocket:
                 done = (curZ == destZ)
                 #NOTE: FreeCAD doesn't render this, but at least LinuxCNC considers it valid
                 #helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX, helixY, ez = curZ, ccw=True)
-                
+
                 #Use two half-helixes; FreeCAD renders that correctly,
                 #and it fits with the other code breaking up 360-degree arcs
                 helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX - tool.Diameter * plungeR, helixY, ez = (curZ + lastZ)/2., ccw=True)
                 helixCmds += arc(plungePos.x, plungePos.y, helixX - tool.Diameter * plungeR, helixY, helixX, helixY, ez = curZ, ccw=True)
                 lastZ = curZ
                 curZ = max(curZ - dzPerRev, destZ)
-            
+
             return helixCmds
 
         def rampPlunge(edge, rampangle, destZ, startZ):
@@ -310,8 +324,8 @@ class ObjectPocket:
                 return None
             if(not tool):
                 raise Error("Ramp plunging requires a tool!")
-            
-            
+
+
             sPoint = edge.Vertexes[0].Point
             ePoint = edge.Vertexes[1].Point
             #Evidently edges can get flipped- pick the right one in this case
@@ -320,21 +334,21 @@ class ObjectPocket:
                 #print "FLIP"
                 ePoint = edge.Vertexes[-1].Point
             #print "Start: " + str(sPoint) + " End: " + str(ePoint) + " Zhigh: " + prnt(startZ) + " ZLow: " + prnt(destZ)
-            
+
             rampDist = edge.Length
             rampDZ = math.sin(rampangle/180. * math.pi) * rampDist
-            
+
             rampCmds += rapid(sPoint.x, sPoint.y)
             rampCmds += rapid(z=startZ)
-            
+
             #Ramp down to the requested depth
             #FIXME: This might be an arc, so handle that as well
-            lastZ = startZ
+
             curZ = max(startZ-rampDZ, destZ)
             done = False
             while not done:
                 done = (curZ == destZ)
-                
+
                 #If it's an arc, handle it!
                 if isinstance(edge.Curve,Part.Circle):
                     raise Error("rampPlunge: Screw it, not handling an arc.")
@@ -343,12 +357,9 @@ class ObjectPocket:
                     rampCmds += feed(ePoint.x, ePoint.y, curZ)
                     rampCmds += feed(sPoint.x, sPoint.y)
 
-                lastZ = curZ
                 curZ = max(curZ - rampDZ, destZ)
-            
-            return rampCmds
-        
 
+            return rampCmds
 
         output = ""
         offsets = []
@@ -360,12 +371,12 @@ class ObjectPocket:
             offsets.extend(result)
             nextradius += self.radius
             result = DraftGeomUtils.pocket2d(shape,nextradius)
-        
+
         # first move will be rapid, subsequent will be at feed rate
         first = True
         startPoint = None
         fastZPos = max(obj.StartDepth.Value + 2, obj.ClearanceHeight.Value)
-        
+
         # revert the list so we start with the outer wires
         if obj.StartAt != 'Edge':
             offsets.reverse()
@@ -378,7 +389,7 @@ class ObjectPocket:
 
         #Fraction of tool radius our plunge helix is to be
         plungeR = obj.HelixSize
-        
+
         #(minimum) Fraction of tool DIAMETER to go back and forth while ramp-plunging
         #FIXME: The ramp plunging should maybe even be limited to this distance; I don't know what's best
         rampD = obj.RampSize
@@ -386,8 +397,8 @@ class ObjectPocket:
         #Total offset from the desired pocket edge is tool radius plus the plunge helix radius
         #Any point on these curves could be the center of a plunge
         helixBounds = DraftGeomUtils.pocket2d(shape, self.radius * (1 + plungeR))
-        
-        
+
+
         #Try to find a location to nicely plunge, starting with a helix, then ramp
         #Can't do it without knowledge of a tool
         plungePos = None
@@ -400,7 +411,7 @@ class ObjectPocket:
             #Since we're going to start machining either the inner-most
             #edge or the outer (depending on StartAt setting), try to
             #plunge near that location
-            
+
             if helixBounds and obj.UseEntry:
                 #Edge is easy- pick a point on helixBounds and go with it
                 if obj.StartAt == 'Edge':
@@ -408,7 +419,7 @@ class ObjectPocket:
                 #Center is harder- use a point from the first offset, check if it works
                 else:
                     plungePos = offsets[0].Edges[0].Vertexes[0].Point
-                    
+
                     #If it turns out this is invalid for some reason, nuke plungePos
                     [perp,idx] = DraftGeomUtils.findPerpendicular(plungePos, shape.Edges)
                     if not perp or perp.Length < self.radius * (1 + plungeR):
@@ -416,8 +427,7 @@ class ObjectPocket:
                     #FIXME: Really need to do a point-in-polygon operation to make sure this is within helixBounds
                     #Or some math to prove that it has to be (doubt that's true)
                     #Maybe reverse helixBounds and pick off that?
-            
-            
+
             #If we didn't find a place to helix, how about a ramp?
             if not plungePos and obj.UseEntry:
                 #Check first edge of our offsets
@@ -429,7 +439,6 @@ class ObjectPocket:
                 else:
                     print "Neither edge works: " + str(offsets[0].Edges[0]) + ", " + str(offsets[0].Edges[-1])
                 #FIXME: There's got to be a smarter way to find a place to ramp
-            
 
         #For helix-ing/ramping, know where we were last time
         #FIXME: Can probably get this from the "machine"?
@@ -509,13 +518,13 @@ class ObjectPocket:
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             self.radius = tool.Diameter/2
-            obj.ToolNumber= toolLoad.ToolNumber   
+            obj.ToolNumber= toolLoad.ToolNumber
 
 
         if obj.Base:
             for b in obj.Base:
                 print "object base: " + str(b)
-                import Part, PathScripts.PathKurveUtils, DraftGeomUtils
+                import Part, PathScripts.PathKurveUtils
                 if "Face" in b[1]:
                     print "inside"
                     shape = getattr(b[0].Shape,b[1])
@@ -528,7 +537,6 @@ class ObjectPocket:
                     wire = Part.Wire(edges)
                     shape = None
 
-                        
                 # output = ""
                 if obj.Algorithm == "OCC Native":
                     if shape == None:
@@ -540,7 +548,7 @@ class ObjectPocket:
                     except:
                         FreeCAD.Console.PrintError(translate("PathKurve","libarea needs to be installed for this command to work.\n"))
                         return
-                    
+
                     a = area.Area()
                     if shape == None:
                         c = PathScripts.PathKurveUtils.makeAreaCurve(wire.Edges, 'CW')
@@ -564,8 +572,7 @@ class ObjectPocket:
                     ##This puts out some interesting information from libarea
                     print a.text()
                     ########
-                    
-                    
+
                     a.Reorder()
                     output += self.buildpathlibarea(obj, a)
 
@@ -587,7 +594,7 @@ class _CommandSetPocketStartPoint:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-    
+
     def setpoint(self,point,o):
         obj=FreeCADGui.Selection.getSelection()[0]
         obj.StartPoint.x = point.x
@@ -636,7 +643,7 @@ class CommandPathPocket:
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        
+
         # check that the selection contains exactly what we want
         # selection = FreeCADGui.Selection.getSelectionEx()
         # if len(selection) != 1:
@@ -672,18 +679,18 @@ class CommandPathPocket:
 
         zbottom = 0.0
         ztop = 10.0
-        
+
         # if everything is ok, execute and register the transaction in the undo/redo stack
         FreeCAD.ActiveDocument.openTransaction(translate("PathPocket","Create Pocket"))
         FreeCADGui.addModule("PathScripts.PathPocket")
-        
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Pocket")') 
+
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Pocket")')
         FreeCADGui.doCommand('PathScripts.PathPocket.ObjectPocket(obj)')
 
         FreeCADGui.doCommand('obj.Active = True')
 
         FreeCADGui.doCommand('PathScripts.PathPocket.ViewProviderPocket(obj.ViewObject)')
-        
+
         FreeCADGui.doCommand('from PathScripts import PathUtils')
 
         FreeCADGui.doCommand('obj.StepOver = 1.0')
@@ -698,7 +705,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.HelixSize = 0.75')
 
         FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
-    
+
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
@@ -716,14 +723,14 @@ class TaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s) 
+        FreeCADGui.Selection.removeObserver(self.s)
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s) 
+        FreeCADGui.Selection.removeObserver(self.s)
 
-    def getFields(self):    
+    def getFields(self):
         if self.obj:
             if hasattr(self.obj,"StartDepth"):
                 self.obj.StartDepth = self.form.startDepth.text()
@@ -748,7 +755,7 @@ class TaskPanel:
     def open(self):
         self.s =SelObserver()
         # install the function mode resident
-        FreeCADGui.Selection.addObserver(self.s)   
+        FreeCADGui.Selection.addObserver(self.s)
 
     def addBase(self):
          # check that the selection contains exactly what we want
@@ -761,13 +768,14 @@ class TaskPanel:
             if s.HasSubObjects:
                 for i in s.SubElementNames:
                     self.obj.Proxy.addpocketbase(self.obj, s.Object, i)
-            else:      
+            else:
                 self.obj.Proxy.addpocketbase(self.obj, s.Object)
 
+        self.setupUi() #defaults may have changed.  Reload.
         self.form.baseList.clear()
-        for i in self.obj.Base:         
+        for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
-         
+
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
         newlist = []
@@ -787,7 +795,7 @@ class TaskPanel:
             objstring = i.text().partition(".")
             obj = FreeCAD.ActiveDocument.getObject(objstring[0])
           #  sub = o.Shape.getElement(objstring[2])
-            if objstring[2] != "": 
+            if objstring[2] != "":
                 FreeCADGui.Selection.addSelection(obj,objstring[2])
             else:
                 FreeCADGui.Selection.addSelection(obj)
@@ -829,7 +837,7 @@ class TaskPanel:
         if index >= 0:
             self.form.algorithmSelect.setCurrentIndex(index)
 
-        for i in self.obj.Base:         
+        for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
 
         #Connect Signals and Slots
@@ -840,35 +848,35 @@ class TaskPanel:
         self.form.reorderBase.clicked.connect(self.reorderBase)
 
         #Depths
-        self.form.startDepth.editingFinished.connect(self.getFields) 
+        self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.stepDown.editingFinished.connect(self.getFields)
-        
+
         #Heights
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
-        
+
         #operation
         self.form.algorithmSelect.currentIndexChanged.connect(self.getFields)
         self.form.cutMode.currentIndexChanged.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
-        
+
 
 class SelObserver:
     def __init__(self):
-        import PathScripts.PathSelection as PST 
+        import PathScripts.PathSelection as PST
         PST.pocketselect()
 
     def __del__(self):
-        import PathScripts.PathSelection as PST 
+        import PathScripts.PathSelection as PST
         PST.clear()
 
     def addSelection(self,doc,obj,sub,pnt):               # Selection object
         FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj +')')
         FreeCADGui.updateGui()
 
-if FreeCAD.GuiUp: 
+if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Pocket',CommandPathPocket())
     FreeCADGui.addCommand('Set_PocketStartPoint',_CommandSetPocketStartPoint())

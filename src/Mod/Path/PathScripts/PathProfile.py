@@ -59,10 +59,10 @@ class ObjectProfile:
         obj.addProperty("App::PropertyString","Comment","Path",translate("Path","An optional comment for this profile"))
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm",translate("Path", "The library or algorithm used to generate the path"))
-        obj.Algorithm = ['OCC Native','libareal']
+        obj.Algorithm = ['OCC Native','libarea']
 
         obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("Path","The tool number in use"))
-        obj.ToolNumber = (0,0,1000,1) 
+        obj.ToolNumber = (0,0,1000,1)
         obj.setEditorMode('ToolNumber',1) #make this read only
 
         #Depth Properties
@@ -72,7 +72,7 @@ class ObjectProfile:
         obj.StepDown = (1,0.01,1000,0.5)
         obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", translate("Path","Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("Path","Final Depth of Tool- lowest value in Z"))
-      
+
         #Start Point Properties
         obj.addProperty("App::PropertyVector","StartPoint","Start Point",translate("Path_Profile","The start point of this path"))
         obj.addProperty("App::PropertyBool","UseStartPoint","Start Point",translate("Path_Profile","make True, if specifying a Start Point"))
@@ -121,6 +121,24 @@ class ObjectProfile:
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
+        if len(baselist) == 0: #When adding the first base object, guess at heights
+            try:
+                bb = ss.Shape.BoundBox  #parent boundbox
+                subobj = ss.Shape.getElement(sub)
+                fbb = subobj.BoundBox #feature boundbox
+                obj.StartDepth = bb.ZMax
+                obj.ClearanceHeight = bb.ZMax + 5.0
+                obj.SafeHeight = bb.ZMax + 3.0
+
+                if fbb.ZMax < bb.ZMax:
+                    obj.FinalDepth = fbb.ZMax
+                else:
+                    obj.FinalDepth = bb.ZMin
+            except:
+                obj.StartDepth = 5.0
+                obj.ClearanceHeight = 10.0
+                obj.SafeHeight = 8.0
+
         item = (ss, sub)
         if item in baselist:
             FreeCAD.Console.PrintWarning("this object already in the list"+ "\n")
@@ -164,7 +182,7 @@ class ObjectProfile:
         output = ""
 
         if obj.StartPoint and obj.UseStartPoint:
-            startpoint = obj.StartPoint                
+            startpoint = obj.StartPoint
         else:
             startpoint = None
 
@@ -198,7 +216,7 @@ print "y - " + str(point.y)
         extend_at_end = 0.0
         lead_in_line_len=0.0
         lead_out_line_len= 0.0
-        
+
         '''
 
         Right here, I need to know the Holding Tags group from the tree that refers to this profile operation and build up the tags for PathKurve Utils.
@@ -212,7 +230,7 @@ print "y - " + str(point.y)
             l = obj.lengths[i]
             a = math.radians(obj.angles[i])
             PathKurveUtils.add_tag(area.Point(tag.x,tag.y), l, a, h)
-            
+
         depthparams = depth_params (obj.ClearanceHeight.Value, obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown, 0.0, obj.FinalDepth.Value, None)
 
         PathKurveUtils.profile2(curve, \
@@ -241,17 +259,17 @@ print "y - " + str(point.y)
             self.vertFeed = 100
             self.horizFeed = 100
             self.radius = 0.25
-            obj.ToolNumber= 0   
+            obj.ToolNumber= 0
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             self.radius = tool.Diameter/2
-            obj.ToolNumber= toolLoad.ToolNumber   
+            obj.ToolNumber= toolLoad.ToolNumber
 
         if obj.Base:
             for b in obj.Base:
-                
+
             # we only consider the outer wire if this is a Face
             #shape = getattr(obj.Base[0][0].Shape,obj.Base[0][1])
                 shape = getattr(b[0].Shape,b[1])
@@ -259,7 +277,7 @@ print "y - " + str(point.y)
                 if shape.ShapeType in ["Edge"]:
                     edges = [getattr(obj.Base[0].Shape,sub) for sub in obj.Base[1]]
                     wire = Part.Wire(edges)
-                
+
                     if not wire.Edges[0].isSame(shape):
                         wire.Edges.reverse()
 
@@ -268,10 +286,10 @@ print "y - " + str(point.y)
 
                 edgelist = wire.Edges
                 edgelist = Part.__sortEdges__(edgelist)
-            
+
                 if obj.Algorithm == "OCC Native":
                     output += self._buildPathOCC(obj, wire)
-               
+
                 else:
                     try:
                         import area
@@ -325,7 +343,7 @@ class _CommandAddTag:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-    
+
     def setpoint(self,point,o):
         obj=FreeCADGui.Selection.getSelection()[0]
         obj.StartPoint.x = point.x
@@ -334,7 +352,7 @@ class _CommandAddTag:
         h = obj.heights
         l = obj.lengths
         a = obj.angles
-        
+
         x =  point.x
         y =  point.y
         z =  float(0.0)
@@ -360,7 +378,7 @@ class _CommandSetStartPoint:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-    
+
     def setpoint(self,point,o):
         obj=FreeCADGui.Selection.getSelection()[0]
         obj.StartPoint.x = point.x
@@ -377,7 +395,7 @@ class _CommandSetEndPoint:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-    
+
     def setpoint(self,point,o):
         obj=FreeCADGui.Selection.getSelection()[0]
         obj.EndPoint.x = point.x
@@ -396,7 +414,7 @@ class CommandPathProfile:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         #import Path
         #from PathScripts import PathProject, PathUtils, PathKurveUtils
@@ -416,7 +434,7 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.StepDown = 1.0')
         FreeCADGui.doCommand('obj.StartDepth= ' + str(ztop))
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
-        
+
         FreeCADGui.doCommand('obj.SafeHeight = '+ str(ztop + 2.0))
         FreeCADGui.doCommand('obj.Side = "Left"')
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
@@ -441,14 +459,14 @@ class TaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s) 
+        FreeCADGui.Selection.removeObserver(self.s)
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s) 
+        FreeCADGui.Selection.removeObserver(self.s)
 
-    def getFields(self):    
+    def getFields(self):
         if self.obj:
             if hasattr(self.obj,"StartDepth"):
                 self.obj.StartDepth = self.form.startDepth.text()
@@ -483,7 +501,7 @@ class TaskPanel:
     def open(self):
         self.s =SelObserver()
         # install the function mode resident
-        FreeCADGui.Selection.addObserver(self.s)   
+        FreeCADGui.Selection.addObserver(self.s)
 
     def addBase(self):
          # check that the selection contains exactly what we want
@@ -496,13 +514,13 @@ class TaskPanel:
             if s.HasSubObjects:
                 for i in s.SubElementNames:
                     self.obj.Proxy.addprofilebase(self.obj, s.Object, i)
-            else:      
+            else:
                 self.obj.Proxy.addprofilebase(self.obj, s.Object)
-
+        self.setupUi() #defaults may have changed.  Reload.
         self.form.baseList.clear()
-        for i in self.obj.Base:         
+        for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
-         
+
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
         newlist = []
@@ -522,7 +540,7 @@ class TaskPanel:
             objstring = i.text().partition(".")
             obj = FreeCAD.ActiveDocument.getObject(objstring[0])
           #  sub = o.Shape.getElement(objstring[2])
-            if objstring[2] != "": 
+            if objstring[2] != "":
                 FreeCADGui.Selection.addSelection(obj,objstring[2])
             else:
                 FreeCADGui.Selection.addSelection(obj)
@@ -557,7 +575,7 @@ class TaskPanel:
         h = []
         l = []
         a = []
-        
+
         for i in range(self.form.tagTree.topLevelItemCount()):
             it = self.form.tagTree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
             if (remove == None) or (remove != i):
@@ -655,7 +673,7 @@ class TaskPanel:
             self.form.direction.setCurrentIndex(index)
 
 
-        for i in self.obj.Base:         
+        for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
 
         for i in range(len(self.obj.locs)):
@@ -677,14 +695,14 @@ class TaskPanel:
         self.form.reorderBase.clicked.connect(self.reorderBase)
 
         #Depths
-        self.form.startDepth.editingFinished.connect(self.getFields) 
+        self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.stepDown.editingFinished.connect(self.getFields)
-        
+
         #Heights
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
-        
+
         #operation
         self.form.algorithmSelect.currentIndexChanged.connect(self.getFields)
         self.form.cutSide.currentIndexChanged.connect(self.getFields)
@@ -695,7 +713,7 @@ class TaskPanel:
         self.form.extraOffset.editingFinished.connect(self.getFields)
         self.form.segLen.editingFinished.connect(self.getFields)
         self.form.rollRadius.editingFinished.connect(self.getFields)
-        
+
         #Tag Form
         QtCore.QObject.connect(self.form.tagTree, QtCore.SIGNAL("itemChanged(QTreeWidgetItem *, int)"), self.edit)
         self.form.addTag.clicked.connect(self.addElement)
@@ -704,11 +722,11 @@ class TaskPanel:
 
 class SelObserver:
     def __init__(self):
-        import PathScripts.PathSelection as PST 
+        import PathScripts.PathSelection as PST
         PST.profileselect()
 
     def __del__(self):
-        import PathScripts.PathSelection as PST 
+        import PathScripts.PathSelection as PST
         PST.clear()
 
     def addSelection(self,doc,obj,sub,pnt):               # Selection object
@@ -716,7 +734,7 @@ class SelObserver:
         FreeCADGui.updateGui()
 
 
-if FreeCAD.GuiUp: 
+if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Profile',CommandPathProfile())
     FreeCADGui.addCommand('Add_Tag',_CommandAddTag())
