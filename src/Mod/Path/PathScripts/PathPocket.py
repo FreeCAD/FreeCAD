@@ -276,10 +276,10 @@ class ObjectPocket:
         #startZ is the height we can safely feed down to before helix-ing
             helixCmds = "(START HELICAL PLUNGE)\n"
             if(plungePos == None):
-                raise Error("Helical plunging requires a position!")
+                raise Exception("Helical plunging requires a position!")
                 return None
             if(not tool):
-                raise Error("Helical plunging requires a tool!")
+                raise Exception("Helical plunging requires a tool!")
                 return None
 
             helixX = plungePos.x + tool.Diameter/2. * plungeR
@@ -320,10 +320,10 @@ class ObjectPocket:
 
             rampCmds = "(START RAMP PLUNGE)\n"
             if(edge == None):
-                raise Error("Ramp plunging requires an edge!")
+                raise Exception("Ramp plunging requires an edge!")
                 return None
             if(not tool):
-                raise Error("Ramp plunging requires a tool!")
+                raise Exception("Ramp plunging requires a tool!")
 
 
             sPoint = edge.Vertexes[0].Point
@@ -351,7 +351,7 @@ class ObjectPocket:
 
                 #If it's an arc, handle it!
                 if isinstance(edge.Curve,Part.Circle):
-                    raise Error("rampPlunge: Screw it, not handling an arc.")
+                    raise Exception("rampPlunge: Screw it, not handling an arc.")
                 #Straight feed! Easy!
                 else:
                     rampCmds += feed(ePoint.x, ePoint.y, curZ)
@@ -405,7 +405,7 @@ class ObjectPocket:
         rampEdge = None
         tool = PathUtils.getTool(obj,obj.ToolNumber)
         if not tool:
-                raise Error("Ramp plunge location-finding requires a tool")
+                raise Exception("Ramp plunge location-finding requires a tool")
                 return
         else:
             #Since we're going to start machining either the inner-most
