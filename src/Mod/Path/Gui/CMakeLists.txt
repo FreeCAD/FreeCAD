@@ -87,7 +87,6 @@ SET(PathGui_SRCS
 add_library(PathGui SHARED ${PathGui_SRCS})
 target_link_libraries(PathGui ${PathGui_LIBS})
 
-
 fc_target_copy_resource(PathGui
     ${CMAKE_SOURCE_DIR}/src/Mod/Path
     ${CMAKE_BINARY_DIR}/Mod/Path
