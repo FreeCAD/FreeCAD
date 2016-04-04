@@ -247,7 +247,7 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="Resources/Path.qrc">
+       <iconset>
         <normaloff>:/icons/Path-Hamburger.svg</normaloff>:/icons/Path-Hamburger.svg</iconset>
       </attribute>
       <attribute name="label">
