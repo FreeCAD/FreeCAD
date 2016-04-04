@@ -23,10 +23,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
+# include <TopTools_ListOfShape.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -94,6 +96,12 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
+
+        TopTools_ListOfShape aLarg;
+        aLarg.Append(baseShape._Shape);
+        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
 
         this->Shape.setValue(shape);
         return App::DocumentObject::StdReturn;
