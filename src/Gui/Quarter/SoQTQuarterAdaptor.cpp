@@ -284,6 +284,16 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const So
     out->height = 2.0f * focaldist * (float)tan(in->heightAngle.getValue() / 2.0);
 }
 
+SoCamera* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCamera(void) const
+{
+    return getSoRenderManager()->getCamera();
+}
+
+const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRegion(void) const
+{
+    return getSoRenderManager()->getViewportRegion();
+}
+
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
 {
 
