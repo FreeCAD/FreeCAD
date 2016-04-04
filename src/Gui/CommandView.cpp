@@ -103,7 +103,9 @@ void StdOrthographicCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
         View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        if (view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() != SoOrthographicCamera::getClassTypeId())
+        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
+        if (!cam || cam->getTypeId() != SoOrthographicCamera::getClassTypeId())
+
             doCommand(Command::Gui,"Gui.activeDocument().activeView().setCameraType(\"Orthographic\")");
     }
 }
@@ -114,7 +116,9 @@ bool StdOrthographicCamera::isActive(void)
     if (view) {
         // update the action group if needed
         bool check = _pcAction->isChecked();
-        bool mode = view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() == SoOrthographicCamera::getClassTypeId();
+        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
+        bool mode = cam ? cam->getTypeId() == SoOrthographicCamera::getClassTypeId() : false;
+
         if (mode != check)
             _pcAction->setChecked(mode);
         return true;
@@ -149,7 +153,9 @@ void StdPerspectiveCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
         View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        if (view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() != SoPerspectiveCamera::getClassTypeId())
+        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
+        if (!cam || cam->getTypeId() != SoPerspectiveCamera::getClassTypeId())
+
             doCommand(Command::Gui,"Gui.activeDocument().activeView().setCameraType(\"Perspective\")");
     }
 }
@@ -160,7 +166,9 @@ bool StdPerspectiveCamera::isActive(void)
     if (view) {
         // update the action group if needed
         bool check = _pcAction->isChecked();
-        bool mode = view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() == SoPerspectiveCamera::getClassTypeId();
+        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
+        bool mode = cam ? cam->getTypeId() == SoPerspectiveCamera::getClassTypeId() : false;
+
         if (mode != check)
             _pcAction->setChecked(mode);
 
