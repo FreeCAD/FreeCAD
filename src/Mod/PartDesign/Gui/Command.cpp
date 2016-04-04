@@ -197,8 +197,8 @@ void CmdPartDesignPad::activated(int iMsg)
     Gui::validateSketches(sketches, false);
     if (sketches.size() == 0) {
         if (bNoSketchWasSelected) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document."),
+                QObject::tr("Please create a sketch or 2D object first."));
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches selected"),
                 QObject::tr("None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature."));
@@ -264,7 +264,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pocket");
-    sToolTipText  = QT_TR_NOOP("create a pocket with the selected sketch");
+    sToolTipText  = QT_TR_NOOP("Create a pocket with the selected sketch");
     sWhatsThis    = "PartDesign_Pocket";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pocket";
@@ -281,7 +281,7 @@ void CmdPartDesignPocket::activated(int iMsg)
         sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
         Gui::validateSketches(sketches, true);
         if (sketches.size() == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document."),
                 QObject::tr("Please create a sketch or 2D object first. It must have a support face on a solid"));
             return;
         }
@@ -355,8 +355,8 @@ void CmdPartDesignRevolution::activated(int iMsg)
     Gui::validateSketches(sketches, false);
     if (sketches.size() == 0) {
         if (bNoSketchWasSelected) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document."),
+                QObject::tr("Please create a sketch or 2D object first."));
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches selected"),
                 QObject::tr("None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature."));
@@ -439,8 +439,8 @@ void CmdPartDesignGroove::activated(int iMsg)
         sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
         Gui::validateSketches(sketches, true);
         if (sketches.size() == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first. It must have a support face on a solid"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document."),
+                QObject::tr("Please create a sketch or 2D object first. It must have a support face on a solid."));
             return;
         }
     }
@@ -923,7 +923,7 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Mirrored");
-    sToolTipText  = QT_TR_NOOP("create a mirrored feature");
+    sToolTipText  = QT_TR_NOOP("Create a mirrored feature");
     sWhatsThis    = "PartDesign_Mirrored";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
@@ -947,8 +947,8 @@ void CmdPartDesignMirrored::activated(int iMsg)
             if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
                 return; // Cancelled or nothing selected
         } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document."),
+                QObject::tr("Please create a subtractive or additive feature first."));
             return;
         }
     }
@@ -999,7 +999,7 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("LinearPattern");
-    sToolTipText  = QT_TR_NOOP("create a linear pattern feature");
+    sToolTipText  = QT_TR_NOOP("Create a linear pattern feature");
     sWhatsThis    = "PartDesign_LinearPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_LinearPattern";
@@ -1023,8 +1023,8 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
             if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
                 return; // Cancelled or nothing selected
         } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document."),
+                QObject::tr("Please create a subtractive or additive feature first."));
             return;
         }
     }
@@ -1082,7 +1082,7 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("PolarPattern");
-    sToolTipText  = QT_TR_NOOP("create a polar pattern feature");
+    sToolTipText  = QT_TR_NOOP("Create a polar pattern feature");
     sWhatsThis    = "PartDesign_PolarPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_PolarPattern";
@@ -1106,8 +1106,8 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
             if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
                 return; // Cancelled or nothing selected
         } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document."),
+                QObject::tr("Please create a subtractive or additive feature first."));
             return;
         }
     }
@@ -1165,7 +1165,7 @@ CmdPartDesignScaled::CmdPartDesignScaled()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Scaled");
-    sToolTipText  = QT_TR_NOOP("create a scaled feature");
+    sToolTipText  = QT_TR_NOOP("Create a scaled feature");
     sWhatsThis    = "PartDesign_Scaled";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Scaled";
@@ -1189,8 +1189,8 @@ void CmdPartDesignScaled::activated(int iMsg)
             if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
                 return; // Cancelled or nothing selected
         } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document."),
+                QObject::tr("Please create a subtractive or additive feature first."));
             return;
         }
     }
@@ -1237,7 +1237,7 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("MultiTransform");
-    sToolTipText  = QT_TR_NOOP("create a multitransform feature");
+    sToolTipText  = QT_TR_NOOP("Create a multitransform feature");
     sWhatsThis    = "PartDesign_MultiTransform";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MultiTransform";
@@ -1261,8 +1261,8 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
             if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
                 return; // Cancelled or nothing selected
         } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document."),
+                QObject::tr("Please create a subtractive or additive feature first."));
             return;
         }
     }
