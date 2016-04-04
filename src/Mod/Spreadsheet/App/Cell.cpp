@@ -88,6 +88,7 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     , foregroundColor(0, 0, 0, 1)
     , backgroundColor(1, 1, 1, 0)
     , displayUnit()
+    , alias()
     , computedUnit()
     , rowSpan(1)
     , colSpan(1)
@@ -96,14 +97,9 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     assert(address.isValid());
 }
 
-/**
-  * Destroy a CellContent object.
-  *
-  */
-
-Cell::Cell(const Cell &other)
+Cell::Cell(PropertySheet *_owner, const Cell &other)
     : address(other.address)
-    , owner(other.owner)
+    , owner(_owner)
     , used(other.used)
     , expression(other.expression ? other.expression->copy() : 0)
     , alignment(other.alignment)
@@ -111,31 +107,39 @@ Cell::Cell(const Cell &other)
     , foregroundColor(other.foregroundColor)
     , backgroundColor(other.backgroundColor)
     , displayUnit(other.displayUnit)
+    , alias(other.alias)
     , computedUnit(other.computedUnit)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
 {
+    setUsed(MARK_SET, false);
 }
 
 Cell &Cell::operator =(const Cell &rhs)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
-    used = 0;
     address = rhs.address;
-    owner = rhs.owner;
 
     setExpression(rhs.expression ? rhs.expression->copy() : 0);
-    setStyle(rhs.style);
     setAlignment(rhs.alignment);
-    setForeground(rhs.foregroundColor);
+    setStyle(rhs.style);
     setBackground(rhs.backgroundColor);
+    setForeground(rhs.foregroundColor);
     setDisplayUnit(rhs.displayUnit.stringRep);
     setComputedUnit(rhs.computedUnit);
+    setAlias(rhs.alias);
     setSpans(rhs.rowSpan, rhs.colSpan);
+
+    setUsed(MARK_SET, false);
 
     return *this;
 }
+
+/**
+  * Destroy a CellContent object.
+  *
+  */
 
 Cell::~Cell()
 {
