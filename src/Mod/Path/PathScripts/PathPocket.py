@@ -712,8 +712,8 @@ class CommandPathPocket:
 
 class TaskPanel:
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/PocketEdit.ui")
-        #self.form = FreeCADGui.PySideUic.loadUi(":/PocketEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/PocketEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/PocketEdit.ui")
         self.updating = False
 
 

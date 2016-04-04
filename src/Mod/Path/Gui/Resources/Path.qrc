@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/preferences-path.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-Compound.svg</file>
@@ -59,6 +59,11 @@
         <file>translations/Path_sk.qm</file>
         <file>translations/Path_tr.qm</file>
         <file>translations/Path_sl.qm</file>
-        <file>../EngraveEdit.ui</file>
+        <file>panels/EngraveEdit.ui</file>
+        <file>panels/DrillingEdit.ui</file>
+        <file>panels/PocketEdit.ui</file>
+        <file>panels/ProfileEdit.ui</file>
+        <file>panels/SurfaceEdit.ui</file>
+        <file>panels/RemoteEdit.ui</file>
     </qresource>
-</RCC> 
+</RCC>

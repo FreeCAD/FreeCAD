@@ -399,8 +399,8 @@ class CommandPathSurfacing:
 
 class TaskPanel:
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/SurfaceEdit.ui")
-        #self.form = FreeCADGui.PySideUic.loadUi(":/SurfaceEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/SurfaceEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/SurfaceEdit.ui")
 
     def accept(self):
         self.getFields()

@@ -243,7 +243,7 @@ class CommandPathEngrave:
 class TaskPanel:
     def __init__(self):
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/EngraveEdit.ui")
-        self.form = FreeCADGui.PySideUic.loadUi(":/EngraveEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/EngraveEdit.ui")
 
     def accept(self):
         self.getFields()

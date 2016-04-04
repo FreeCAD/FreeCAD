@@ -123,6 +123,14 @@ class ObjectRemote:
                 response = urllib2.urlopen(url)
             except:
                 print "service not defined or not responding"
+                print "len: " + str(len(obj.proplist))
+                if len(obj.proplist) != 0:
+                    for prop in obj.proplist:
+                        print "removing: " + str(prop)
+                        obj.removeProperty(prop)
+                    pl = obj.proplist
+                    pl = []
+                    obj.proplist = pl
                 return
 
             data = json.load(response)
@@ -298,8 +306,8 @@ class CommandPathRemote:
 
 class TaskPanel:
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/RemoteEdit.ui")
-        #self.form = FreeCADGui.PySideUic.loadUi(":/RemoteEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/RemoteEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/RemoteEdit.ui")
 
     def accept(self):
         self.getFields()
@@ -317,6 +325,16 @@ class TaskPanel:
     def getRemoteFields(self):
         self.getFields()
         self.obj.URL = self.form.remoteURL.text()
+        print "getRemote:320"
+
+        #self.form.label_a = QtGui.QLabel(self.form.remoteProperties)
+        #self.form.label_a.setObjectName("label_a")
+        #self.form.formLayoutREMOTE.setWidget(0, QtGui.QFormLayout.LabelRole, self.form.label_a)
+        #self.form.sampleLE = QtGui.QLineEdit(self.form.remoteProperties)
+        #self.form.sampleLE.setObjectName("sampleLE")
+        #self.form.formLayoutREMOTE.setWidget(0, QtGui.QFormLayout.FieldRole, self.form.sampleLE)
+        ##self.formLayout_2.setWidget(1, QtGui.QFormLayout.SpanningRole, self.remoteProperties)
+
 
     def getFields(self):
         if self.obj:
@@ -390,6 +408,19 @@ class TaskPanel:
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
 
+    def changeURL(self):
+        from urlparse import urlparse
+        t = self.form.remoteURL.text()
+        if t == '' and self.obj.URL != '': #if the url was deleted, cleanup.
+            self.obj.URL = ''
+
+        if urlparse(t).scheme != '' and t != self.obj.URL: #validate new url.
+            self.obj.URL = t
+        #next make sure the property fields reflect the current attached service
+        for p in self.obj.proplist:
+            print p
+
+
     def setupUi(self):
         self.form.startDepth.setText(str(self.obj.StartDepth))
         self.form.finalDepth.setText(str(self.obj.FinalDepth))
@@ -405,13 +436,14 @@ class TaskPanel:
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
-        self.form.remoteURL.editingFinished.connect(self.getRemoteFields)
 
         self.form.addBase.clicked.connect(self.addBase)
+        self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
         self.form.deleteBase.clicked.connect(self.deleteBase)
         self.form.reorderBase.clicked.connect(self.reorderBase)
 
-        self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
+        self.form.remoteURL.editingFinished.connect(self.changeURL)
+        #self.form.remoteURL.returnPressed.connect(self.testOne)
 
 class SelObserver:
     def __init__(self):

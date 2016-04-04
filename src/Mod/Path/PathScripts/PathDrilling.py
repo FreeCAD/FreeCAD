@@ -224,8 +224,8 @@ class CommandPathDrilling:
 
 class TaskPanel:
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DrillingEdit.ui")
-        #self.form = FreeCADGui.PySideUic.loadUi(":/DrillingEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DrillingEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/DrillingEdit.ui")
 
     def accept(self):
         self.getFields()

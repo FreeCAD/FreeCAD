@@ -448,8 +448,8 @@ class CommandPathProfile:
 
 class TaskPanel:
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ProfileEdit.ui")
-        #self.form = FreeCADGui.PySideUic.loadUi(":/ProfileEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ProfileEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ProfileEdit.ui")
         self.updating = False
 
 

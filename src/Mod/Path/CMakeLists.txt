@@ -58,6 +58,7 @@ SET(PathScripts_SRCS
     PathScripts/PathSimpleCopy.py
     PathScripts/PathEngrave.py
     PathScripts/PathSurface.py
+    PathScripts/PathRemote.py
 
 )
 
