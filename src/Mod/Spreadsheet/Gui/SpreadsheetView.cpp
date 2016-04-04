@@ -130,14 +130,14 @@ bool SheetView::onMsg(const char *pMsg, const char **ppReturn)
         getGuiDocument()->undo(1);
         App::Document* doc = getAppDocument();
         if (doc)
-            doc->recomputeFeature(sheet);
+            doc->recompute();
         return true;
     }
     else  if(strcmp("Redo",pMsg) == 0 ) {
         getGuiDocument()->redo(1);
         App::Document* doc = getAppDocument();
         if (doc)
-            doc->recomputeFeature(sheet);
+            doc->recompute();
         return true;
     }
     else if (strcmp("Save",pMsg) == 0) {
