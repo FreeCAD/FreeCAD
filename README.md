@@ -37,6 +37,18 @@ software center application.
 
 Other options are described at http://www.freecadweb.org/wiki/index.php?title=Download
 
+Build Status <img src="https://cdn.travis-ci.org/images/travis-mascot-150-3791701416eeee8479e23fe4bb7edf4f.png" height="30"/>
+------------
+
+| Master | 0.16 |
+|:------:|:----:|
+|[![Master][freecad-master-status]][travis-branches]|[![0.16][freecad-0.16-status]][travis-branches]|
+
+[freecad-0.16-status]: https://travis-ci-org/FreeCAD/FreeCAD.svg?branch=0.16
+[freecad-master-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=master
+[travis-branches]: https://travis-ci.org/FreeCAD/FreeCAD/branches
+[travis-builds]: https://travis-ci.org/FreeCAD/FreeCAD/builds
+
 Compiling
 ---------
 
