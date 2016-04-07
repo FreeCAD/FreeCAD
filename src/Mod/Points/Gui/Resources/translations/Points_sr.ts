@@ -11,14 +11,14 @@
     <message>
         <location line="+1"/>
         <source>Convert to points...</source>
-        <translation type="unfinished">Convert to points...</translation>
+        <translation>Претвори у тачке...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Convert to points</source>
-        <translation type="unfinished">Convert to points</translation>
+        <translation>Претвори у тачке</translation>
     </message>
 </context>
 <context>
@@ -256,7 +256,7 @@
         <location filename="../../Command.cpp" line="-78"/>
         <location line="+49"/>
         <source>Ascii Points</source>
-        <translation type="unfinished">Ascii Points</translation>
+        <translation>Ascii Тачке</translation>
     </message>
     <message>
         <location line="-49"/>
@@ -272,7 +272,7 @@
     <message>
         <location line="+1"/>
         <source>Enter maximum distance:</source>
-        <translation type="unfinished">Enter maximum distance:</translation>
+        <translation>Унеcите макcималну удаљеноcт:</translation>
     </message>
 </context>
 <context>

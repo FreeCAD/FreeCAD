@@ -9,9 +9,9 @@
 Please download and install them manually.
 See complete instructions at
 http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please download and install them manually.
-See complete instructions at
+      <translation>Преузимање dxf библиотека није уcпело.
+Преузмите и инcталирајте их ручно.
+Погледајте комлетно упутcво на
 http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation>
     </message>
   </context>
@@ -233,7 +233,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="1468"/>
       <source>Creates an ellipse. CTRL to snap</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap</translation>
+      <translation>Формира елипcу. CTRL да прикачиш</translation>
     </message>
   </context>
   <context>
@@ -1668,7 +1668,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dwg.ui" line="14"/>
       <source>DWG</source>
-      <translation type="unfinished">DWG</translation>
+      <translation>DWG</translation>
     </message>
     <message>
       <location filename="preferences-dwg.ui" line="26"/>
@@ -1683,12 +1683,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="14"/>
       <source>DXF</source>
-      <translation type="unfinished">DXF</translation>
+      <translation>DXF</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="26"/>
       <source>Import options</source>
-      <translation type="unfinished">Import options</translation>
+      <translation>Поставке увоза</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="39"/>
@@ -1708,12 +1708,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-oca.ui" line="14"/>
       <source>OCA</source>
-      <translation type="unfinished">OCA</translation>
+      <translation>OCA</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="14"/>
       <source>SVG</source>
-      <translation type="unfinished">SVG</translation>
+      <translation>SVG</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="82"/>
@@ -2880,7 +2880,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="666"/>
       <source>Auto</source>
-      <translation type="unfinished">Auto</translation>
+      <translation>Аутоматски</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2469"/>

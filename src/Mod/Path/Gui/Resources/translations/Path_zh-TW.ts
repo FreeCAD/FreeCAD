@@ -287,7 +287,7 @@
     <message>
       <location filename="PathInspect.py" line="131"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</translation>
+      <translation>&lt;b&gt;注意&lt;/b&gt;：按下確認將會執行您之前對物件所作的修改，但如果為參數化物件時，則可以藉由重新計算來覆寫。</translation>
     </message>
   </context>
   <context>
@@ -348,12 +348,12 @@
     <message>
       <location filename="PathPocket.py" line="93"/>
       <source>Amount of material to leave</source>
-      <translation type="unfinished">Amount of material to leave</translation>
+      <translation>材料保留量</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="94"/>
       <source>Maximum material removed on final pass.</source>
-      <translation type="unfinished">Maximum material removed on final pass.</translation>
+      <translation>通過最後檢查之最大移除材料量</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="96"/>
@@ -1217,7 +1217,7 @@
     <message>
       <location filename="TooltableEditor.py" line="414"/>
       <source>Material</source>
-      <translation>材料</translation>
+      <translation>材質</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="416"/>

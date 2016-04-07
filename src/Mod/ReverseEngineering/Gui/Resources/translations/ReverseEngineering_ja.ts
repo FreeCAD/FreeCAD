@@ -92,7 +92,7 @@
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>U方向</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>V方向</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -185,7 +185,7 @@
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>パラメーター</translation>
     </message>
     <message>
         <location line="+6"/>

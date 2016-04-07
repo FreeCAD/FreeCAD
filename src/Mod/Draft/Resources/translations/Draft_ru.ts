@@ -1603,12 +1603,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-drafttexts.ui" line="26"/>
       <source>Text settings</source>
-      <translation type="unfinished">Text settings</translation>
+      <translation>Настройки текста</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="34"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Шрифт</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="76"/>
@@ -1623,7 +1623,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-drafttexts.ui" line="124"/>
       <source>Display mode</source>
-      <translation type="unfinished">Display mode</translation>
+      <translation>Режим отображения</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="161"/>
@@ -1633,22 +1633,22 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-drafttexts.ui" line="197"/>
       <source>Arrows style</source>
-      <translation type="unfinished">Arrows style</translation>
+      <translation>Стиль стрелки</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="233"/>
       <source>Arrows size</source>
-      <translation type="unfinished">Arrows size</translation>
+      <translation>Размер стрелки</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="266"/>
       <source>Text orientation</source>
-      <translation type="unfinished">Text orientation</translation>
+      <translation>Ориентация текста</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="300"/>
       <source>Text spacing</source>
-      <translation type="unfinished">Text spacing</translation>
+      <translation>Интервал текста</translation>
     </message>
     <message>
       <location filename="preferences-drafttexts.ui" line="354"/>

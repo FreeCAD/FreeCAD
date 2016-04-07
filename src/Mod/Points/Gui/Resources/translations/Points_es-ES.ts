@@ -11,14 +11,14 @@
     <message>
         <location line="+1"/>
         <source>Convert to points...</source>
-        <translation type="unfinished">Convert to points...</translation>
+        <translation>Convertir en puntos...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Convert to points</source>
-        <translation type="unfinished">Convert to points</translation>
+        <translation>Convertir en puntos</translation>
     </message>
 </context>
 <context>
@@ -272,7 +272,7 @@
     <message>
         <location line="+1"/>
         <source>Enter maximum distance:</source>
-        <translation type="unfinished">Enter maximum distance:</translation>
+        <translation>Ponga la distancia máxima:</translation>
     </message>
 </context>
 <context>

@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+325"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Määrittämätön tyyppi väriavaruudesta kuvien katseluun</translation>
     </message>

@@ -794,7 +794,7 @@
     <message>
       <location filename="PathPocket.py" line="267"/>
       <source>Creates a Path Pocket object from a loop of edges or a face</source>
-      <translation type="unfinished">Creates a Path Pocket object from a loop of edges or a face</translation>
+      <translation>Crée un objet poche de parcours à partir d'une boucle d'arêtes ou d'une surface</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="280"/>
@@ -851,7 +851,7 @@
     <message>
       <location filename="PathProfile.py" line="205"/>
       <source>Creates a Path Profile object from selected faces</source>
-      <translation type="unfinished">Creates a Path Profile object from selected faces</translation>
+      <translation>Crée un objet profil de parcours à partir des surfaces sélectionnées</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="220"/>
@@ -869,7 +869,7 @@
     <message>
       <location filename="PathProject.py" line="124"/>
       <source>Creates a Path Project object</source>
-      <translation type="unfinished">Creates a Path Project object</translation>
+      <translation>Crée un objet projet de parcours d'outil</translation>
     </message>
     <message>
       <location filename="PathProject.py" line="135"/>
@@ -927,12 +927,12 @@
     <message>
       <location filename="PathToolLenOffset.py" line="126"/>
       <source>Tool Length Offset</source>
-      <translation type="unfinished">Tool Length Offset</translation>
+      <translation>Domaine de longueur d'outil</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="128"/>
       <source>Create a Tool Length Offset object</source>
-      <translation type="unfinished">Create a Tool Length Offset object</translation>
+      <translation>Crée un domaine de longueur</translation>
     </message>
     <message>
       <location filename="PathToolLenOffset.py" line="134"/>
@@ -945,12 +945,12 @@
     <message>
       <location filename="PathToolTableEdit.py" line="40"/>
       <source>EditToolTable</source>
-      <translation type="unfinished">EditToolTable</translation>
+      <translation>Tableau d'outil d'edition</translation>
     </message>
     <message>
       <location filename="PathToolTableEdit.py" line="48"/>
       <source>Edits a Tool Table in a selected Project</source>
-      <translation type="unfinished">Edits a Tool Table in a selected Project</translation>
+      <translation>Tableau d'outil d'edition dans le projet en cours</translation>
     </message>
   </context>
   <context>
@@ -1467,7 +1467,7 @@
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>From Shape</source>
-      <translation type="unfinished">From Shape</translation>
+      <translation>À partir du chemin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="109"/>
@@ -1480,7 +1480,7 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Choose a processor</source>
-      <translation type="unfinished">Choose a processor</translation>
+      <translation>Choisissez le processeur</translation>
     </message>
   </context>
   <context>
@@ -1489,7 +1489,7 @@
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="14"/>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="26"/>
       <source>General Path settings</source>
-      <translation type="unfinished">General Path settings</translation>
+      <translation>Réglages généraux des chemins</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/DlgSettingsPath.ui" line="34"/>
@@ -1521,12 +1521,12 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="20"/>
       <source>Default Path colors</source>
-      <translation type="unfinished">Default Path colors</translation>
+      <translation>Couleurs par défaut du chemin</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="34"/>
       <source>Default normal path color</source>
-      <translation type="unfinished">Default normal path color</translation>
+      <translation>Couleur par défaut du chemin normal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="41"/>
@@ -1536,7 +1536,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="67"/>
       <source>Default pathline width</source>
-      <translation type="unfinished">Default pathline width</translation>
+      <translation>Largeur de la ligne par défaut</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="74"/>
@@ -1551,7 +1551,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="102"/>
       <source>Default path marker color</source>
-      <translation type="unfinished">Default path marker color</translation>
+      <translation>Couleur par défaut du constructeur du chemin</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="109"/>
@@ -1562,12 +1562,12 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="135"/>
       <source>Rapid path color</source>
-      <translation type="unfinished">Rapid path color</translation>
+      <translation>Couleur rapide du chemin</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="162"/>
       <source>Machine extents color</source>
-      <translation type="unfinished">Machine extents color</translation>
+      <translation>Couleur prolongé de la machine</translation>
     </message>
   </context>
   <context>
@@ -1588,7 +1588,7 @@
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>
       <source>Reorder children by dragging and dropping them to their correct location</source>
-      <translation type="unfinished">Reorder children by dragging and dropping them to their correct location</translation>
+      <translation>Réordonnez des enfants en les glissant-déposer à leur emplacement correct</translation>
     </message>
   </context>
 </TS>

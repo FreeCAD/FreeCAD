@@ -169,7 +169,7 @@
       <translation>La hauteur de cet étage</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="712"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Toiture</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Création d'une toiture</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="575"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Impossible de créer une toiture</translation>
     </message>
@@ -917,7 +917,7 @@
       <translation>Le décalage entre ce panneau et sa ligne de base</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="713"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -942,12 +942,12 @@ Si Angle = 0 alors l'angle est calculé de sorte que la hauteur soit la même qu
 Si Largeur = 0 alors la largeur est calculée de façon à ce que la hauteur du profil soit la même que celle du profil relatif.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1134,27 +1134,27 @@ Si Largeur = 0 alors la largeur est calculée de façon à ce que la hauteur du 
       <translation>Une liste des hauteurs calculées pour chaque pan de toit</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Angle (deg)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
       <translation>Largeur (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Épaisseur (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation>Débord (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
       <translation>Hauteur (mm)</translation>
     </message>

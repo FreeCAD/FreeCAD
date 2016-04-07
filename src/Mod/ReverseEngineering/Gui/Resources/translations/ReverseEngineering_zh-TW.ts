@@ -87,12 +87,12 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished">Fit B-Spline surface</translation>
+        <translation>批配 B-Spline 面</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>u 方向</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>v 方向</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -124,7 +124,7 @@
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>尺寸因子</translation>
     </message>
     <message>
         <location line="+29"/>

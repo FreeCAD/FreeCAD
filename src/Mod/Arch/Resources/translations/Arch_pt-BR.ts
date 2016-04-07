@@ -169,7 +169,7 @@
       <translation>A altura deste pavimento</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="712"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Telhado</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Criar telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="575"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Não foi possível criar um telhado</translation>
     </message>
@@ -842,7 +842,7 @@
     <message>
       <location filename="ArchCutPlane.py" line="93"/>
       <source>Cutting</source>
-      <translation>Corte</translation>
+      <translation>Cortando</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="176"/>
@@ -920,7 +920,7 @@
       <translation>O deslocamento entre este painel e sua linha de base</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="713"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -945,12 +945,12 @@ Se ângulo = 0, então o ângulo é calculado para que a altura seja a mesma que
 Se comprimento = 0, então o comprimento é calculado para que a altura seja a mesma que do perfil relativo.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1137,27 +1137,27 @@ Se comprimento = 0, então o comprimento é calculado para que a altura seja a m
       <translation>Uma lista de alturas calculadas para cada lado do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Ângulo (graus)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
       <translation>Comprimento (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Espessura (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation>Saliência (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
       <translation>Altura (mm)</translation>
     </message>

@@ -508,12 +508,12 @@ Do you want to continue?</source>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation>檢視自:</translation>
+        <translation>檢視自：</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation>對齊軸右側</translation>
+        <translation>對齊軸右側：</translation>
     </message>
     <message>
         <source>Primary View</source>

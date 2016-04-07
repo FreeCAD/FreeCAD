@@ -462,7 +462,7 @@
     <message>
         <location line="+1"/>
         <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-        <translation>速度: (e.g. 1 m/s or 3 cm/s)</translation>
+        <translation>速度：(e.g. 1 m/s or 3 cm/s)</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -482,7 +482,7 @@
     <message>
         <location line="+1"/>
         <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-        <translation>加速度: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
+        <translation>加速度：(e.g. 1 m/s^2 or 3 cm/s^2)</translation>
     </message>
     <message>
         <location line="+127"/>
@@ -616,12 +616,12 @@
     <message>
         <location line="+57"/>
         <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
-        <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
+        <translation>TCP：(200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Tool: (0,0,400,0,0,0)</source>
-        <translation>工具: (0,0,400,0,0,0)</translation>
+        <translation>工具： (0,0,400,0,0,0)</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -720,7 +720,7 @@
     <message>
         <location line="+18"/>
         <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
-        <translation>位置: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
+        <translation>位置：(200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -966,7 +966,7 @@
     <message>
         <location line="+9"/>
         <source>Speed:</source>
-        <translation>速度:</translation>
+        <translation>速度：</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -977,7 +977,7 @@
     <message>
         <location line="-26"/>
         <source>Accel:</source>
-        <translation>加速:</translation>
+        <translation>加速：</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -997,7 +997,7 @@
     <message>
         <location line="+15"/>
         <source>Position and Orientation:</source>
-        <translation>位置和方向:</translation>
+        <translation>位置和方向：</translation>
     </message>
     <message>
         <location line="+9"/>

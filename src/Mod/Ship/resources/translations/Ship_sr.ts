@@ -451,7 +451,7 @@
     <message>
       <location filename="TaskPanel.py" line="249"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Макcимални угао</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="255"/>
@@ -537,7 +537,7 @@
     <message>
       <location filename="TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">Load example ship</translation>
+      <translation>Учитај пример брода</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="111"/>

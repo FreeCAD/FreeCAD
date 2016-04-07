@@ -89,12 +89,12 @@
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation>Definito dall&apos;utente</translation>
+        <translation>Definita dall&apos;utente</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation>Classe dimensione mesh:</translation>
+        <translation>Dimensione mesh:</translation>
     </message>
     <message>
         <location line="+29"/>

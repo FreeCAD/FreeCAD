@@ -169,7 +169,7 @@
       <translation>Tämän kerroksen korkeus</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="712"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Katto</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Luo katto</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="575"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Kattoa ei voi luoda</translation>
     </message>
@@ -924,7 +924,7 @@ Pidä 0 automaattiseen toimintoon.</translation>
       <translation>Tämä paneelin ja sen peruslinjan siirtymä</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="713"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -949,12 +949,12 @@ Jos kulma = 0 sitten kulma lasketaan niin, että korkeus on sama kuin suhteellin
 Jos juoksu = 0 sitten juoksu lasketaan siten, että korkeus on sama kuin suhteellinen profiili.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>Tunnus</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1141,27 +1141,27 @@ Jos juoksu = 0 sitten juoksu lasketaan siten, että korkeus on sama kuin suhteel
       <translation>Laskennallisten korkeuksien luettelo jokaiselle katto-osiolle</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Kulma (astetta)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
       <translation>Juoksu (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Paksuus (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation>Ylitys (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
       <translation>Korkeus (mm)</translation>
     </message>

@@ -141,17 +141,17 @@
     <message>
       <location filename="StartPage.py" line="82"/>
       <source>file size:</source>
-      <translation>檔案大小:</translation>
+      <translation>檔案大小：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="83"/>
       <source>creation time:</source>
-      <translation>製作時間:</translation>
+      <translation>製作時間：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="84"/>
       <source>last modified:</source>
-      <translation>最後變更:</translation>
+      <translation>最後變更：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="81"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="StartPage.py" line="85"/>
       <source>location:</source>
-      <translation>位置:</translation>
+      <translation>位置：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="86"/>

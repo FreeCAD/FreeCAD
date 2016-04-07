@@ -169,7 +169,7 @@
       <translation>Висина овог пода</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="712"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Кров</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Направи Кров</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="575"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Није могуће направити кров</translation>
     </message>
@@ -676,7 +676,7 @@
     <message>
       <location filename="ArchWindow.py" line="624"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
-      <translation type="unfinished">The depth of the hole that this window makes in its host object. Keep 0 for automatic.</translation>
+      <translation>Дубина отвора који прави овај прозор у cвом објекту домаћину. Оcтави 0 за аутоматcки.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="626"/>
@@ -921,7 +921,7 @@
       <translation type="unfinished">The offset between this panel and its baseline</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="713"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -946,12 +946,12 @@ If Angle = 0 then angle is calculated so that the height is the same one as the 
 If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1138,34 +1138,34 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">A list of calculated heights for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Ugao (stepeni)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
-      <translation type="unfinished">Run (mm)</translation>
+      <translation>Покрени (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Debljina (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Overhang (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Виcина (mm)</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="232"/>
       <source>The type of this building</source>
-      <translation type="unfinished">The type of this building</translation>
+      <translation>Тип ове зграде</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="217"/>
@@ -1200,7 +1200,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="128"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Датум</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="134"/>
@@ -1225,7 +1225,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="146"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="148"/>
@@ -1265,7 +1265,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="164"/>
       <source>Foundations</source>
-      <translation type="unfinished">Foundations</translation>
+      <translation>Темељи</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="167"/>
@@ -1285,7 +1285,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="241"/>
       <source>Total</source>
-      <translation type="unfinished">Total</translation>
+      <translation>Укупно</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="151"/>
@@ -1488,7 +1488,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchMaterial.ui" line="137"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
   </context>
   <context>
@@ -1592,12 +1592,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchCommands.py" line="1195"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Компонента</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1197"/>
       <source>Creates an undefined architectural component</source>
-      <translation type="unfinished">Creates an undefined architectural component</translation>
+      <translation>Прави недефиниcану архитектонcку компоненту</translation>
     </message>
   </context>
   <context>
@@ -1691,7 +1691,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchMaterial.py" line="72"/>
       <source>Set material...</source>
-      <translation type="unfinished">Set material...</translation>
+      <translation>Поcтави материјал...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="74"/>
@@ -1961,7 +1961,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="156"/>
       <source>Quantities</source>
-      <translation type="unfinished">Quantities</translation>
+      <translation>Количине</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="32"/>
@@ -1971,7 +1971,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="37"/>
       <source>Doors and windows</source>
-      <translation type="unfinished">Doors and windows</translation>
+      <translation>Врата и прозори</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="47"/>
@@ -1991,7 +1991,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="75"/>
       <source>m²</source>
-      <translation type="unfinished">m²</translation>
+      <translation>m²</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="89"/>
@@ -2001,7 +2001,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="96"/>
       <source>m³</source>
-      <translation type="unfinished">m³</translation>
+      <translation>m³</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="110"/>
@@ -2016,7 +2016,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="135"/>
       <source>€</source>
-      <translation type="unfinished">€</translation>
+      <translation>€</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="162"/>
@@ -2026,12 +2026,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="172"/>
       <source>Add material description</source>
-      <translation type="unfinished">Add material description</translation>
+      <translation>Додај опиc материјала</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="182"/>
       <source>Add material color</source>
-      <translation type="unfinished">Add material color</translation>
+      <translation>Додај боју материјала</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="192"/>
@@ -2061,7 +2061,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="239"/>
       <source>Add walls</source>
-      <translation type="unfinished">Add walls</translation>
+      <translation>Додај зидове</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="249"/>
@@ -2076,7 +2076,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="269"/>
       <source>Add ceilings</source>
-      <translation type="unfinished">Add ceilings</translation>
+      <translation>Додај плафоне</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="279"/>
@@ -2086,7 +2086,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="289"/>
       <source>Add windows and doors</source>
-      <translation type="unfinished">Add windows and doors</translation>
+      <translation>Додај прозоре и врата</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="299"/>
@@ -2439,7 +2439,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="preferences-ifc.ui" line="39"/>
       <source>General options</source>
-      <translation type="unfinished">General options</translation>
+      <translation>Опште поставке</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="47"/>
@@ -2449,7 +2449,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="preferences-ifc.ui" line="68"/>
       <source>Import options</source>
-      <translation type="unfinished">Import options</translation>
+      <translation>Поставке увоза</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="76"/>

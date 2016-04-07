@@ -257,7 +257,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="417"/>
       <source>Hull</source>
-      <translation type="unfinished">Hull</translation>
+      <translation>Труп</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="419"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="438"/>
       <source>Minkowski</source>
-      <translation type="unfinished">Minkowski</translation>
+      <translation>Минковcки</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="440"/>

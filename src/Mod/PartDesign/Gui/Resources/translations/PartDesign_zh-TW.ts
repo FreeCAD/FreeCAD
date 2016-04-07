@@ -12,7 +12,7 @@
         <translation type="obsolete">Chamfer...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+654"/>
+        <location filename="../../Command.cpp" line="+655"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-305"/>
+        <location line="-307"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+573"/>
+        <location line="+575"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -95,8 +95,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a linear pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a linear pattern feature</source>
-        <translation>建立一個線性特徵</translation>
+        <translation type="obsolete">建立一個線性特徵</translation>
     </message>
 </context>
 <context>
@@ -113,8 +117,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>建立一個鏡像特徵</translation>
+        <translation type="obsolete">建立一個鏡像特徵</translation>
     </message>
 </context>
 <context>
@@ -131,14 +139,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a multitransform feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a multitransform feature</source>
-        <translation>建立一個多重效果特徵</translation>
+        <translation type="obsolete">建立一個多重效果特徵</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1059"/>
+        <location line="-1061"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -167,14 +179,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a pocket with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a pocket with the selected sketch</source>
-        <translation>以選定草圖產生凹陷</translation>
+        <translation type="obsolete">以選定草圖產生凹陷</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+814"/>
+        <location line="+816"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -185,14 +201,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a polar pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a polar pattern feature</source>
-        <translation>建立一個環形特徵</translation>
+        <translation type="obsolete">建立一個環形特徵</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-746"/>
+        <location line="-748"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -210,7 +230,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+825"/>
+        <location line="+827"/>
         <source>PartDesign</source>
         <translation>零件設計</translation>
     </message>
@@ -221,8 +241,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a scaled feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a scaled feature</source>
-        <translation>建立一個縮放的特徵</translation>
+        <translation type="obsolete">建立一個縮放的特徵</translation>
     </message>
 </context>
 <context>
@@ -253,7 +277,7 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation>牙之數量:</translation>
+        <translation>牙之數量：</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -396,7 +420,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Size:</source>
-        <translation>尺寸:</translation>
+        <translation>尺寸：</translation>
     </message>
     <message>
         <location filename="../../TaskChamferParameters.cpp" line="+52"/>
@@ -555,7 +579,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Radius:</source>
-        <translation>半徑:</translation>
+        <translation>半徑：</translation>
     </message>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="-86"/>
@@ -641,7 +665,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+12"/>
         <source>Size:</source>
-        <translation>尺寸:</translation>
+        <translation>尺寸：</translation>
     </message>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
@@ -912,7 +936,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
         <source>Length:</source>
-        <translation type="obsolete">長度:</translation>
+        <translation type="obsolete">長度：</translation>
     </message>
     <message>
         <source>Mirrored extent</source>
@@ -1282,13 +1306,13 @@ Please check one or more edge entities first.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-650"/>
+        <location filename="../../Command.cpp" line="-652"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1307,7 +1331,7 @@ Please check one or more edge entities first.</translation>
         <translation type="obsolete">所選物件之造型非為線</translation>
     </message>
     <message>
-        <location line="-661"/>
+        <location line="-663"/>
         <location line="+84"/>
         <location line="+74"/>
         <location line="+84"/>
@@ -1315,58 +1339,54 @@ Please check one or more edge entities first.</translation>
         <translation>檔案中無有效之草圖</translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>請先建立一個草圖或2D物件</translation>
+        <translation type="obsolete">請先建立一個草圖或2D物件</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>請先建立一個草圖或2D物件，其必須於實體上有一基礎面</translation>
+        <translation type="obsolete">請先建立一個草圖或2D物件，其必須於實體上有一基礎面</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+151"/>
+        <location line="+75"/>
+        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>請選取邊、面或實體，但僅允許選取一個實體。</translation>
     </message>
     <message>
-        <location line="-146"/>
-        <location line="+151"/>
+        <location line="-147"/>
         <location line="+152"/>
+        <location line="+153"/>
         <source>Wrong object type</source>
         <translation>物件種類錯誤</translation>
     </message>
     <message>
-        <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>圓角特徵僅能用於實體</translation>
+        <translation type="obsolete">圓角特徵僅能用於實體</translation>
     </message>
     <message>
-        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>所選零件無造型</translation>
+        <translation type="obsolete">所選零件無造型</translation>
     </message>
     <message>
-        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>所選之面/邊無法產生圓角</translation>
+        <translation type="obsolete">所選之面/邊無法產生圓角</translation>
     </message>
     <message>
-        <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>倒角僅能用於零件上</translation>
+        <translation type="obsolete">倒角僅能用於零件上</translation>
     </message>
     <message>
-        <location line="-142"/>
-        <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>所選零件無造型</translation>
+        <translation type="obsolete">所選零件無造型</translation>
     </message>
     <message>
-        <location line="-481"/>
+        <location line="-626"/>
+        <location line="+158"/>
+        <source>Please create a sketch or 2D object first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-156"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
         <translation>未選取有效草圖</translation>
@@ -1377,32 +1397,85 @@ Please check one or more edge entities first.</translation>
         <translation>未選取有效可進行填充之草圖或2D物件，請選取尚未被其他功能所使用之草圖或2D物件。</translation>
     </message>
     <message>
+        <location line="+81"/>
         <location line="+158"/>
+        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-81"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
         <translation>未選取有效可進行旋轉之草圖或2D物件，請選取尚未被其他功能所使用之草圖或2D物件。</translation>
     </message>
     <message>
-        <location line="+393"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>所選之面/邊無法產生倒角</translation>
+        <location line="+161"/>
+        <source>Fillet works only on parts.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+9"/>
+        <location line="+153"/>
+        <source>Shape of selected part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-82"/>
+        <source>No fillet possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Chamfer works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>No chamfer possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Draft works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Shape of selected Part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>No draft possible on selected faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
+        <location line="+72"/>
+        <source>Please create a subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No chamfer possible on selected faces/edges</source>
+        <translation type="obsolete">所選之面/邊無法產生倒角</translation>
+    </message>
+    <message>
+        <location line="-443"/>
         <source>Select one or more faces.</source>
         <translation>選擇一或多個面</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>拔模特徵僅能運作於零件上</translation>
+        <translation type="obsolete">拔模特徵僅能運作於零件上</translation>
     </message>
     <message>
-        <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>於所選面上無法製作拔模角</translation>
+        <translation type="obsolete">於所選面上無法製作拔模角</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+128"/>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1411,17 +1484,12 @@ Please check one or more edge entities first.</translation>
         <translation>於此檔中無有效特徵</translation>
     </message>
     <message>
-        <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation>請先建立一個刪減或添加的特徵</translation>
+        <translation type="obsolete">請先建立一個刪減或添加的特徵</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>請先建立一個刪除或增加特徵</translation>
+        <translation type="obsolete">請先建立一個刪除或增加特徵</translation>
     </message>
     <message>
         <source>No Support</source>

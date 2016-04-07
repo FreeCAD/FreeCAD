@@ -1881,10 +1881,6 @@ Määritä toinen hakemisto, ole hyvä.</translation>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigointi</translation>
-    </message>
-    <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished">Anti-aliasing</translation>
     </message>
@@ -2707,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Finish</source>
         <translation>Valmis</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Poista</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4812,10 +4844,6 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     <message>
         <source>Navigation styles</source>
         <translation>Navigointi tyylit</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigointi</translation>
     </message>
     <message>
         <source>Move annotation</source>
