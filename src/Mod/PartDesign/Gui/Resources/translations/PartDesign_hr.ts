@@ -12,7 +12,7 @@
         <translation type="obsolete">Zarubi...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+654"/>
+        <location filename="../../Command.cpp" line="+655"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-305"/>
+        <location line="-307"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+573"/>
+        <location line="+575"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -95,8 +95,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a linear pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a linear pattern feature</source>
-        <translation>stvori značajku linearnog uzorka</translation>
+        <translation type="obsolete">stvori značajku linearnog uzorka</translation>
     </message>
 </context>
 <context>
@@ -113,8 +117,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>stvoriti zrcalni uzorak</translation>
+        <translation type="obsolete">stvoriti zrcalni uzorak</translation>
     </message>
 </context>
 <context>
@@ -131,14 +139,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a multitransform feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a multitransform feature</source>
-        <translation>Kreiraj uzorak višestruke transformacije</translation>
+        <translation type="obsolete">Kreiraj uzorak višestruke transformacije</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1059"/>
+        <location line="-1061"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -167,14 +179,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a pocket with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a pocket with the selected sketch</source>
-        <translation>stvoriti džep s odabranom skicom</translation>
+        <translation type="obsolete">stvoriti džep s odabranom skicom</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+814"/>
+        <location line="+816"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -185,14 +201,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a polar pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a polar pattern feature</source>
-        <translation>stvori polarni uzorak</translation>
+        <translation type="obsolete">stvori polarni uzorak</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-746"/>
+        <location line="-748"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -210,7 +230,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+825"/>
+        <location line="+827"/>
         <source>PartDesign</source>
         <translation>Oblikovanje tijela</translation>
     </message>
@@ -221,8 +241,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a scaled feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a scaled feature</source>
-        <translation>stvori skalirani uzorak</translation>
+        <translation type="obsolete">stvori skalirani uzorak</translation>
     </message>
 </context>
 <context>
@@ -1280,13 +1304,13 @@ Please check one or more edge entities first.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-650"/>
+        <location filename="../../Command.cpp" line="-652"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1305,7 +1329,7 @@ Please check one or more edge entities first.</source>
         <translation type="obsolete">Oblik odabranog objekta nije žica.</translation>
     </message>
     <message>
-        <location line="-661"/>
+        <location line="-663"/>
         <location line="+84"/>
         <location line="+74"/>
         <location line="+84"/>
@@ -1313,58 +1337,54 @@ Please check one or more edge entities first.</source>
         <translation>Nema valjanih skica u dokumentu</translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Molimo kreiraj skicu ili 2D objekt prvo</translation>
+        <translation type="obsolete">Molimo kreiraj skicu ili 2D objekt prvo</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Molimo kreiraj skicu ili 2D objekt prvo. Mora postojati ploha kao osnova</translation>
+        <translation type="obsolete">Molimo kreiraj skicu ili 2D objekt prvo. Mora postojati ploha kao osnova</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+151"/>
+        <location line="+75"/>
+        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>Odaberite rub, plohu ili tijelo. Samo jedno tijelo je dozvoljeno.</translation>
     </message>
     <message>
-        <location line="-146"/>
-        <location line="+151"/>
+        <location line="-147"/>
         <location line="+152"/>
+        <location line="+153"/>
         <source>Wrong object type</source>
         <translation>Pogrešan tip objekta</translation>
     </message>
     <message>
-        <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>Rubove možete zaobliti samo na tijelima</translation>
+        <translation type="obsolete">Rubove možete zaobliti samo na tijelima</translation>
     </message>
     <message>
-        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>Odabrano tijelo nema oblik</translation>
+        <translation type="obsolete">Odabrano tijelo nema oblik</translation>
     </message>
     <message>
-        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Zaobljenje nije moguće na odabranim površinama/rubovima</translation>
+        <translation type="obsolete">Zaobljenje nije moguće na odabranim površinama/rubovima</translation>
     </message>
     <message>
-        <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>Zarubiti možete samo tijela</translation>
+        <translation type="obsolete">Zarubiti možete samo tijela</translation>
     </message>
     <message>
-        <location line="-142"/>
-        <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>Oblik odabranog tijela je prazan</translation>
+        <translation type="obsolete">Oblik odabranog tijela je prazan</translation>
     </message>
     <message>
-        <location line="-481"/>
+        <location line="-626"/>
+        <location line="+158"/>
+        <source>Please create a sketch or 2D object first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-156"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
         <translation type="unfinished">No valid sketches selected</translation>
@@ -1375,32 +1395,85 @@ Please check one or more edge entities first.</source>
         <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
+        <location line="+81"/>
         <location line="+158"/>
+        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-81"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
         <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
-        <location line="+393"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>Zarubljenje nije moguće na odabranim površinama/rubovima</translation>
+        <location line="+161"/>
+        <source>Fillet works only on parts.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+9"/>
+        <location line="+153"/>
+        <source>Shape of selected part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-82"/>
+        <source>No fillet possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Chamfer works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>No chamfer possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Draft works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Shape of selected Part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>No draft possible on selected faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
+        <location line="+72"/>
+        <source>Please create a subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No chamfer possible on selected faces/edges</source>
+        <translation type="obsolete">Zarubljenje nije moguće na odabranim površinama/rubovima</translation>
+    </message>
+    <message>
+        <location line="-443"/>
         <source>Select one or more faces.</source>
         <translation>Odaberi jednu ili više ploha.</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Crtež radi samo na tijelima</translation>
+        <translation type="obsolete">Crtež radi samo na tijelima</translation>
     </message>
     <message>
-        <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Crtež nije moguć na odabranim plohama</translation>
+        <translation type="obsolete">Crtež nije moguć na odabranim plohama</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+128"/>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1409,17 +1482,12 @@ Please check one or more edge entities first.</source>
         <translation>Nema valjanih značajki u ovom dokumentu</translation>
     </message>
     <message>
-        <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
+        <translation type="obsolete">Please create a subtractive or additive feature first</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Prvo kreiraj značajku</translation>
+        <translation type="obsolete">Prvo kreiraj značajku</translation>
     </message>
     <message>
         <source>No Support</source>

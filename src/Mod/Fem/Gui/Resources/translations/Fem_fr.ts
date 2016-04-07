@@ -19,12 +19,12 @@
     <message>
       <location filename="FemCommands.py" line="39"/>
       <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
+      <translation>Commande par défaut du texte de menu</translation>
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
+      <translation>Commande par défaut du de l'infobulle</translation>
     </message>
   </context>
   <context>

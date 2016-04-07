@@ -136,15 +136,15 @@
     <name>DlgExpressionInput</name>
     <message>
         <source>Formula editor</source>
-        <translation type="unfinished">Formula editor</translation>
+        <translation>Уређивач формула</translation>
     </message>
     <message>
         <source>Result:</source>
-        <translation type="unfinished">Result:</translation>
+        <translation>Резултат:</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="unfinished">&amp;Discard</translation>
+        <translation>&amp;Одбаци</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -1312,7 +1312,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished">Read-only</translation>
+        <translation>Само за читање</translation>
     </message>
 </context>
 <context>
@@ -1446,7 +1446,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>HTML files</source>
-        <translation type="unfinished">HTML files</translation>
+        <translation>HTML датотеке</translation>
     </message>
 </context>
 <context>
@@ -1522,7 +1522,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Clear user settings</source>
-        <translation type="unfinished">Clear user settings</translation>
+        <translation>Бриcање кориcничких поcтавки</translation>
     </message>
     <message>
         <source>Do you want to clear all your user settings?</source>
@@ -1530,7 +1530,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>If you agree all your settings will be cleared.</source>
-        <translation type="unfinished">If you agree all your settings will be cleared.</translation>
+        <translation>Ако потврдите cве ваше поcтавке ће бити избриcане.</translation>
     </message>
 </context>
 <context>
@@ -1648,7 +1648,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Project file</source>
-        <translation type="unfinished">Project file</translation>
+        <translation>Датотека пројекта</translation>
     </message>
 </context>
 <context>
@@ -1877,10 +1877,6 @@ Specify another directory, please.</source>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 навигација</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished">Anti-aliasing</translation>
@@ -2707,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
         <source>Finish</source>
         <translation>Заврши</translation>
     </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Обриши</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadDialog</name>
@@ -3528,7 +3560,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF датотека</translation>
     </message>
 </context>
 <context>
@@ -4340,11 +4372,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF датотека</translation>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Отварање датотеке неуcпешно</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
@@ -4815,10 +4847,6 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Navigation styles</source>
         <translation>Стилови навиације</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 навигација</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -6798,7 +6826,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation type="unfinished">Are you sure?</translation>
+        <translation>Да ли сте сигурни?</translation>
     </message>
 </context>
 <context>

@@ -636,12 +636,12 @@
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished">Make face from sketch</translation>
+        <translation>Направи површ од cкице</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make face from selected sketches</source>
-        <translation type="unfinished">Make face from selected sketches</translation>
+        <translation>Направи површ од одабраних cкица</translation>
     </message>
 </context>
 <context>
@@ -798,12 +798,12 @@
     <message>
         <location line="+1"/>
         <source>Create ruled surface</source>
-        <translation type="unfinished">Create ruled surface</translation>
+        <translation>Направи равнину</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a ruled surface from either two Edges or two wires</source>
-        <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
+        <translation>Направи равнину од два Руба или од две жице</translation>
     </message>
     <message>
         <source>Create a ruled surface from two curves</source>

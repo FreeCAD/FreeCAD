@@ -1878,10 +1878,6 @@ Kies een andere map, alstublieft.</translation>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigatie</translation>
-    </message>
-    <message>
         <source>Anti-aliasing</source>
         <translation>Anti-aliasing</translation>
     </message>
@@ -2704,6 +2700,42 @@ De kolom &apos;Status&apos; toont als het document kan hersteld worden.</transla
     <message>
         <source>Finish</source>
         <translation>Voltooien</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4806,10 +4838,6 @@ Let op, het maakt uit waar je klikt.</translation>
     <message>
         <source>Navigation styles</source>
         <translation>Navigatie stijlen</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigatie</translation>
     </message>
     <message>
         <source>Move annotation</source>

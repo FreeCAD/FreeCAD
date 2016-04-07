@@ -318,7 +318,7 @@ Do you want to continue?</source>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished">Luxrender</translation>
+        <translation>Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -466,7 +466,7 @@ Do you want to continue?</source>
     <message>
         <location line="-216"/>
         <source>Max mesh deviation:</source>
-        <translation type="unfinished">Max mesh deviation:</translation>
+        <translation>Макcимална одcтупања мреже:</translation>
     </message>
     <message>
         <location line="+57"/>

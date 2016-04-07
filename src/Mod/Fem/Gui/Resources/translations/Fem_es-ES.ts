@@ -19,12 +19,12 @@
     <message>
       <location filename="FemCommands.py" line="39"/>
       <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
+      <translation>Texto de menú por defecto de comando Fem</translation>
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
+      <translation>Descripción emergente por defecto de comando Fem</translation>
     </message>
   </context>
   <context>
@@ -136,7 +136,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Iniciar el control del trabajo del solucionador</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
@@ -162,7 +162,7 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Iniciar el control del trabajo del solucionador</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
@@ -415,7 +415,7 @@
       <location filename="../../Command.cpp" line="664"/>
       <location filename="../../Command.cpp" line="666"/>
       <source>Create node set by Poly</source>
-      <translation>Crear conjunto de nodos por Poly</translation>
+      <translation>Crear conjunto de nodos por Polígonos</translation>
     </message>
   </context>
   <context>

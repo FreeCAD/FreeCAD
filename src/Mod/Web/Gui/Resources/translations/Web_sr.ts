@@ -16,7 +16,7 @@
     <message>
         <location filename="../../Command.cpp" line="77"/>
         <source>Go back to the previous page</source>
-        <translation>Иди назад на претходну cтраницу</translation>
+        <translation>Назад на претходну cтраницу</translation>
     </message>
 </context>
 <context>

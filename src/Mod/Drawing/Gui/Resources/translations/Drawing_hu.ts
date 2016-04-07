@@ -213,7 +213,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation>A kiválasztott számolótábla-nézetet illeszt be az aktív rajzba</translation>
+        <translation>Alkatrészlista beillesztése az aktív rajzba</translation>
     </message>
 </context>
 <context>

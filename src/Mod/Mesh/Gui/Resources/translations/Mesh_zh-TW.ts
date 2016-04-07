@@ -545,7 +545,7 @@
     </message>
     <message>
         <source>Number of edges:</source>
-        <translation>邊之數目:</translation>
+        <translation>邊之數目：</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -585,7 +585,7 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation>非流形</translation>
+        <translation>非重疊網格</translation>
     </message>
     <message>
         <source>Self-intersections</source>
@@ -632,11 +632,11 @@
     </message>
     <message>
         <source>Non-manifolds</source>
-        <translation>非流形</translation>
+        <translation>非重疊網格</translation>
     </message>
     <message>
         <source>Cannot remove non-manifolds</source>
-        <translation>無法移除非流形</translation>
+        <translation>無法移除非重疊網格</translation>
     </message>
     <message>
         <source>No selection</source>
@@ -652,11 +652,11 @@
     </message>
     <message>
         <source>No non-manifolds</source>
-        <translation>無非流形</translation>
+        <translation>無非重疊網格</translation>
     </message>
     <message>
         <source>%1 non-manifolds</source>
-        <translation>%1非流形</translation>
+        <translation>%1非重疊網格</translation>
     </message>
     <message>
         <source>No invalid indices</source>
@@ -760,7 +760,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Solid:</source>
-        <translation>實體:</translation>
+        <translation>實體：</translation>
     </message>
     <message>
         <source>Cube</source>
@@ -808,11 +808,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Sampling:</source>
-        <translation>採樣:</translation>
+        <translation>採樣：</translation>
     </message>
     <message>
         <source>Edge length:</source>
-        <translation>邊長:</translation>
+        <translation>邊長：</translation>
     </message>
     <message>
         <source>Radius 1:</source>
@@ -881,7 +881,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;這是介於兩個面法線間計算平面陰影的最小角&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;若介於兩個相鄰面法線間之夾角小於界限角度,將會使其共用邊平滑化陰影&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;這是介於兩個面法線間計算平面陰影的最小角&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;若介於兩個相鄰面法線間之夾角小於界限角度，將會使其共用邊平滑化陰影&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Crease angle</source>
@@ -889,7 +889,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat /Phong 著色法&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;定義表面之表現方式&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;當使用flat著色法時，將不會對每個頂點定義面之法線，並且導致曲面不夠真實。當使用Phong著色法則能有更平滑的表現。 &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;若勾選時為Phong著色法，反之為flat著色法。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Define normal per vertex</source>
@@ -952,15 +952,15 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Iterations:</source>
-        <translation>迭代:</translation>
+        <translation>迭代：</translation>
     </message>
     <message>
         <source>Lambda:</source>
-        <translation>Lambda:</translation>
+        <translation>Lambda：</translation>
     </message>
     <message>
         <source>Mu:</source>
-        <translation>Mu:</translation>
+        <translation>Mu：</translation>
     </message>
     <message>
         <source>Only selection</source>
@@ -1200,7 +1200,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Fill holes with maximum number of edges:</source>
-        <translation>填充開口藉由最多邊之數量:</translation>
+        <translation>填充開口藉由最多邊之數量：</translation>
     </message>
     <message>
         <source>Binary STL (*.stl)</source>
@@ -1280,7 +1280,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Index: %1</source>
-        <translation>索引: %1</translation>
+        <translation>索引：%1</translation>
     </message>
     <message>
         <source>Leave hole-filling mode</source>
@@ -1388,7 +1388,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
-        <translation>[點: %1, 線: %2, 面: %3]</translation>
+        <translation>[點：%1, 線：%2, 面：%3]</translation>
     </message>
     <message>
         <source>Import-Export</source>

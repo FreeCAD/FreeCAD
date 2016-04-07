@@ -1749,7 +1749,7 @@ Values with differences below this value will be treated as same.</source>
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="DraftSnap.py" line="1077"/>
+        <location filename="DraftSnap.py" line="1078"/>
         <source>Draft Snap</source>
         <translation type="unfinished"></translation>
     </message>

@@ -238,12 +238,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>Crea un vincolo di posizione FEM</translation>
+      <translation>Crea un vincolo di dislocamento FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation>Crea un vincolo FEM di posizione su una faccia</translation>
+      <translation>Crea un vincolo FEM di dislocamento che agisce su una faccia</translation>
     </message>
   </context>
   <context>
@@ -1551,7 +1551,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation>Posizione prescritta</translation>
+      <translation>Dislocamento prescritto</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
@@ -1571,7 +1571,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation>Posizione x</translation>
+      <translation>Dislocamento x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -1596,12 +1596,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation>Posizione y</translation>
+      <translation>Dislocamento y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation>Posizione z</translation>
+      <translation>Dislocamento z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>

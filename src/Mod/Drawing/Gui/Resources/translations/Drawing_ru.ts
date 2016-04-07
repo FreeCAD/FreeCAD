@@ -359,7 +359,7 @@ Do you want to continue?</source>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Ошибка при открытии файла</translation>
     </message>
     <message>
         <location line="+1"/>

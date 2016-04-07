@@ -12,7 +12,7 @@
         <translation type="obsolete">Fas...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+654"/>
+        <location filename="../../Command.cpp" line="+655"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-305"/>
+        <location line="-307"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+573"/>
+        <location line="+575"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -95,8 +95,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a linear pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a linear pattern feature</source>
-        <translation>opprett et lineært mønster</translation>
+        <translation type="obsolete">opprett et lineært mønster</translation>
     </message>
 </context>
 <context>
@@ -113,8 +117,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>Legg til en speilet detalj</translation>
+        <translation type="obsolete">Legg til en speilet detalj</translation>
     </message>
 </context>
 <context>
@@ -131,14 +139,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a multitransform feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a multitransform feature</source>
-        <translation>opprett en multitransform detalj</translation>
+        <translation type="obsolete">opprett en multitransform detalj</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1059"/>
+        <location line="-1061"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -167,14 +179,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a pocket with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a pocket with the selected sketch</source>
-        <translation>lag en lomme med valgte skisse</translation>
+        <translation type="obsolete">lag en lomme med valgte skisse</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+814"/>
+        <location line="+816"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -185,14 +201,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a polar pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a polar pattern feature</source>
-        <translation>opprett et polar mønster</translation>
+        <translation type="obsolete">opprett et polar mønster</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-746"/>
+        <location line="-748"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -210,7 +230,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+825"/>
+        <location line="+827"/>
         <source>PartDesign</source>
         <translation>Komponentdesign</translation>
     </message>
@@ -221,8 +241,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a scaled feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a scaled feature</source>
-        <translation>Lag skalert detalj</translation>
+        <translation type="obsolete">Lag skalert detalj</translation>
     </message>
 </context>
 <context>
@@ -1282,13 +1306,13 @@ Merk en eller flere kanter først.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-650"/>
+        <location filename="../../Command.cpp" line="-652"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1307,7 +1331,7 @@ Merk en eller flere kanter først.</translation>
         <translation type="obsolete">Formen på det valgte objektet er ikke en tråd.</translation>
     </message>
     <message>
-        <location line="-661"/>
+        <location line="-663"/>
         <location line="+84"/>
         <location line="+74"/>
         <location line="+84"/>
@@ -1315,58 +1339,54 @@ Merk en eller flere kanter først.</translation>
         <translation>Ingen gyldig skisser i dette dokumentet</translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Opprett en skisse eller 2D objektet først</translation>
+        <translation type="obsolete">Opprett en skisse eller 2D objektet først</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Opprett en skisse eller 2D objektet først. Det må ha støtte i en solid&apos;s flate</translation>
+        <translation type="obsolete">Opprett en skisse eller 2D objektet først. Det må ha støtte i en solid&apos;s flate</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+151"/>
+        <location line="+75"/>
+        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>Velg en kant, flate eller komponent. Kun en komponent er tillatt.</translation>
     </message>
     <message>
-        <location line="-146"/>
-        <location line="+151"/>
+        <location line="-147"/>
         <location line="+152"/>
+        <location line="+153"/>
         <source>Wrong object type</source>
         <translation>Feil objekttype</translation>
     </message>
     <message>
-        <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>Avrunding fungerer bare på komponenter</translation>
+        <translation type="obsolete">Avrunding fungerer bare på komponenter</translation>
     </message>
     <message>
-        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>Formen på valgte Del er tom</translation>
+        <translation type="obsolete">Formen på valgte Del er tom</translation>
     </message>
     <message>
-        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Avrunding av valgte flater/kanter er ikke mulig</translation>
+        <translation type="obsolete">Avrunding av valgte flater/kanter er ikke mulig</translation>
     </message>
     <message>
-        <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>Skråkant/fase fungerer bare på deler</translation>
+        <translation type="obsolete">Skråkant/fase fungerer bare på deler</translation>
     </message>
     <message>
-        <location line="-142"/>
-        <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>Formen på den valgte delen er tom</translation>
+        <translation type="obsolete">Formen på den valgte delen er tom</translation>
     </message>
     <message>
-        <location line="-481"/>
+        <location line="-626"/>
+        <location line="+158"/>
+        <source>Please create a sketch or 2D object first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-156"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
         <translation>Ingen gyldig skisser valgt</translation>
@@ -1377,32 +1397,85 @@ Merk en eller flere kanter først.</translation>
         <translation>Ingen valgte skisser/2D objekter er gyldig for utfylling. Velg en gyldig skisse eller 2D-objekt som ikke brukes av en annen funksjon.</translation>
     </message>
     <message>
+        <location line="+81"/>
         <location line="+158"/>
+        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-81"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
         <translation>Ingen valgte skisser/2D objekter er gyldig for utfylling. Velg en gyldig skisse eller 2D-objekt som ikke brukes av en annen funksjon.</translation>
     </message>
     <message>
-        <location line="+393"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>Skråkant/fase er ikke mulig på valgte flater/kanter</translation>
+        <location line="+161"/>
+        <source>Fillet works only on parts.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+9"/>
+        <location line="+153"/>
+        <source>Shape of selected part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-82"/>
+        <source>No fillet possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Chamfer works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>No chamfer possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Draft works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Shape of selected Part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>No draft possible on selected faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
+        <location line="+72"/>
+        <source>Please create a subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No chamfer possible on selected faces/edges</source>
+        <translation type="obsolete">Skråkant/fase er ikke mulig på valgte flater/kanter</translation>
+    </message>
+    <message>
+        <location line="-443"/>
         <source>Select one or more faces.</source>
         <translation>Velg én eller flere ansikter.</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Skissering virker kun på deler</translation>
+        <translation type="obsolete">Skissering virker kun på deler</translation>
     </message>
     <message>
-        <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Skissering er ikke mulig på valgte flater</translation>
+        <translation type="obsolete">Skissering er ikke mulig på valgte flater</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+128"/>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1411,17 +1484,12 @@ Merk en eller flere kanter først.</translation>
         <translation>Ingen gyldige detaljer i dette dokumentet</translation>
     </message>
     <message>
-        <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation>Lag først et tilleg eller fratreks detalj</translation>
+        <translation type="obsolete">Lag først et tilleg eller fratreks detalj</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Lag først et tilleg eller fratreks detalj</translation>
+        <translation type="obsolete">Lag først et tilleg eller fratreks detalj</translation>
     </message>
     <message>
         <source>No Support</source>

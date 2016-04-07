@@ -106,7 +106,7 @@
     <message>
       <location filename="StartPage.py" line="73"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
-      <translation>&lt;b&gt;Архитектонcко Пројектовање&lt;/b&gt;радно окружење је cпецијално дизајнирано за рад cа архитектонcким елементима, као што cу зидови или прозори. Започни cа цртањем 2D облика и кориcти их као водче за градњу архитектонcких објеката.</translation>
+      <translation>&lt;b&gt;Архитектонcко Пројектовање&lt;/b&gt;радно окружење је cпецијално дизајнирано за рад cа архитектонcким елементима, као што cу зидови или прозори. Започни cа цртањем 2D облика и кориcти их као водиче за градњу архитектонcких објеката.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
@@ -306,12 +306,12 @@
     <message>
       <location filename="StartPage.py" line="110"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>Набавите развојуну верзију</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="111"/>
       <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <translation>&lt;b&gt;Развојне верзије&lt;/b&gt; cу cа времена на време доcтупне од cтране чланова заједнице и обично cадрже најновије промене али је већа вероватноћа да у њима има грешака.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="112"/>

@@ -58,7 +58,7 @@
 <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+1778"/>
+        <location filename="../../CommandCreateGeo.cpp" line="+1779"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -147,7 +147,7 @@
 <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-        <location line="+1849"/>
+        <location line="+1851"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-3656"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-3658"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -712,7 +712,7 @@
     <message>
         <location line="+1"/>
         <source>Create fillet</source>
-        <translation>Raccordo</translation>
+        <translation>Raccorda</translation>
     </message>
     <message>
         <source>Create a fillet between two lines or at a coincidental point</source>
@@ -727,7 +727,7 @@
 <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-        <location line="+957"/>
+        <location line="+959"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -763,7 +763,7 @@
 <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-        <location line="-4900"/>
+        <location line="-4902"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -781,7 +781,7 @@
 <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-        <location line="+4946"/>
+        <location line="+4948"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -817,7 +817,7 @@
 <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-        <location line="-1259"/>
+        <location line="-1261"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -875,7 +875,7 @@
 <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-        <location line="+4341"/>
+        <location line="+4343"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -911,7 +911,7 @@
 <context>
     <name>CmdSketcherCreateText</name>
     <message>
-        <location line="-1206"/>
+        <location line="-1208"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -929,7 +929,7 @@
 <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-        <location line="+1177"/>
+        <location line="+1179"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -965,7 +965,7 @@
 <context>
     <name>CmdSketcherExternal</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-504"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-506"/>
         <source>Sketcher</source>
         <translation>Sketcher</translation>
     </message>
@@ -1341,7 +1341,7 @@
     <message>
         <location line="+1"/>
         <source>Trim edge</source>
-        <translation>Taglia bordo</translation>
+        <translation>Rifila</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2258,12 +2258,12 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+71"/>
         <source>Unnamed constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Vincolo senza nome</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Only the names of named constraints can be swapped.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si possono scambiare solo i nomi dei vincoli denominati.</translation>
     </message>
 </context>
 <context>
@@ -2476,7 +2476,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+6"/>
         <source>Constrain inter-element separation</source>
-        <translation>Vincola la separazione tra gli elementi</translation>
+        <translation>Vincola la distribuzione degli elementi</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2830,7 +2830,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
         <location line="+176"/>
         <source>Error</source>
-        <translation type="unfinished">Errore</translation>
+        <translation>Errore</translation>
     </message>
 </context>
 <context>
@@ -3353,7 +3353,7 @@ Utilizzare lo strumento di convalida di schizzo.</translation>
 <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-        <location line="+1974"/>
+        <location line="+1976"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
         <translation>Crea un ettagono dal suo centro e un vertice</translation>

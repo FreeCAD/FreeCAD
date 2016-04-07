@@ -1877,10 +1877,6 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigace</translation>
-    </message>
-    <message>
         <source>Anti-aliasing</source>
         <translation>Anti-aliasing</translation>
     </message>
@@ -2704,6 +2700,42 @@ Sloupec &quot;Status&quot; zobrazuje, jestli může být dokument obnoven.</tran
     <message>
         <source>Finish</source>
         <translation>Dokončit</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Odstranit</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4807,10 +4839,6 @@ Dejte si pozor na místo, kam klikáte.</translation>
     <message>
         <source>Navigation styles</source>
         <translation>Styly navigace</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigace</translation>
     </message>
     <message>
         <source>Move annotation</source>

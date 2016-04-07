@@ -12,7 +12,7 @@
         <translation type="obsolete">Chamfer...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+654"/>
+        <location filename="../../Command.cpp" line="+655"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-305"/>
+        <location line="-307"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+573"/>
+        <location line="+575"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -95,8 +95,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a linear pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a linear pattern feature</source>
-        <translation>Crea una serie rettangolare</translation>
+        <translation type="obsolete">Crea una serie rettangolare</translation>
     </message>
 </context>
 <context>
@@ -113,8 +117,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>Crea una funzione di specchiatura</translation>
+        <translation type="obsolete">Crea una funzione di specchiatura</translation>
     </message>
 </context>
 <context>
@@ -131,14 +139,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a multitransform feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a multitransform feature</source>
-        <translation>crea una funzione di trasformazione multipla</translation>
+        <translation type="obsolete">crea una funzione di trasformazione multipla</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1059"/>
+        <location line="-1061"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -167,14 +179,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a pocket with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a pocket with the selected sketch</source>
-        <translation>Crea una cavità o tasca usando lo schizzo selezionato</translation>
+        <translation type="obsolete">Crea una cavità o tasca usando lo schizzo selezionato</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+814"/>
+        <location line="+816"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -185,14 +201,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a polar pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a polar pattern feature</source>
-        <translation>Crea una serie polare</translation>
+        <translation type="obsolete">Crea una serie polare</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-746"/>
+        <location line="-748"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -210,7 +230,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+825"/>
+        <location line="+827"/>
         <source>PartDesign</source>
         <translation>PartDesign</translation>
     </message>
@@ -221,8 +241,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a scaled feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a scaled feature</source>
-        <translation>crea una feature in scalatura</translation>
+        <translation type="obsolete">crea una feature in scalatura</translation>
     </message>
 </context>
 <context>
@@ -1282,13 +1306,13 @@ Selezionare prima una o più entità spigolo.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-650"/>
+        <location filename="../../Command.cpp" line="-652"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1307,7 +1331,7 @@ Selezionare prima una o più entità spigolo.</translation>
         <translation type="obsolete">La forma dell&apos;oggetto selezionato non è un wire.</translation>
     </message>
     <message>
-        <location line="-661"/>
+        <location line="-663"/>
         <location line="+84"/>
         <location line="+74"/>
         <location line="+84"/>
@@ -1315,58 +1339,54 @@ Selezionare prima una o più entità spigolo.</translation>
         <translation>Questo documento non contiene nessuno schizzo valido </translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Si prega di creare prima uno schizzo o un oggetto 2D</translation>
+        <translation type="obsolete">Si prega di creare prima uno schizzo o un oggetto 2D</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Prima si deve creare uno schizzo o un oggetto 2D. Deve essere posizionato su una faccia di supporto di un solido</translation>
+        <translation type="obsolete">Prima si deve creare uno schizzo o un oggetto 2D. Deve essere posizionato su una faccia di supporto di un solido</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+151"/>
+        <location line="+75"/>
+        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>Selezionare uno spigolo, una faccia o un corpo. È consentito un solo corpo.</translation>
     </message>
     <message>
-        <location line="-146"/>
-        <location line="+151"/>
+        <location line="-147"/>
         <location line="+152"/>
+        <location line="+153"/>
         <source>Wrong object type</source>
         <translation>Tipo di oggetto errato</translation>
     </message>
     <message>
-        <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>La funzione Raccordo funziona solo sulle parti</translation>
+        <translation type="obsolete">La funzione Raccordo funziona solo sulle parti</translation>
     </message>
     <message>
-        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>La forma della parte selezionata è vuota</translation>
+        <translation type="obsolete">La forma della parte selezionata è vuota</translation>
     </message>
     <message>
-        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Sulle facce e spigoli selezionati non è possibile creare nessun raccordo</translation>
+        <translation type="obsolete">Sulle facce e spigoli selezionati non è possibile creare nessun raccordo</translation>
     </message>
     <message>
-        <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>L&apos;operazione smusso funziona solo sulle parti</translation>
+        <translation type="obsolete">L&apos;operazione smusso funziona solo sulle parti</translation>
     </message>
     <message>
-        <location line="-142"/>
-        <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>La forma della parte selezionata è vuota</translation>
+        <translation type="obsolete">La forma della parte selezionata è vuota</translation>
     </message>
     <message>
-        <location line="-481"/>
+        <location line="-626"/>
+        <location line="+158"/>
+        <source>Please create a sketch or 2D object first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-156"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
         <translation>Gli schizzi selezionati non sono validi</translation>
@@ -1377,32 +1397,85 @@ Selezionare prima una o più entità spigolo.</translation>
         <translation>Nessuno degli schizzi o degli oggetti 2D selezionati è valido per creare un prisma o Pad. Si prega di selezionare uno schizzo valido o un oggetto 2D che non sia utilizzato per nessuna altra funzione.</translation>
     </message>
     <message>
+        <location line="+81"/>
         <location line="+158"/>
+        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-81"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
         <translation>Nessuno degli schizzi o degli oggetti 2D selezionati è valido per creare una rivoluzione. Si prega di selezionare uno schizzo valido o un oggetto 2D che non sia utilizzato per nessuna altra funzione.</translation>
     </message>
     <message>
-        <location line="+393"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>Sulle facce e spigoli selezionati non è possibile creare nessuno smusso</translation>
+        <location line="+161"/>
+        <source>Fillet works only on parts.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+9"/>
+        <location line="+153"/>
+        <source>Shape of selected part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-82"/>
+        <source>No fillet possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Chamfer works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>No chamfer possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Draft works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Shape of selected Part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>No draft possible on selected faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
+        <location line="+72"/>
+        <source>Please create a subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No chamfer possible on selected faces/edges</source>
+        <translation type="obsolete">Sulle facce e spigoli selezionati non è possibile creare nessuno smusso</translation>
+    </message>
+    <message>
+        <location line="-443"/>
         <source>Select one or more faces.</source>
         <translation>Selezionare una o più facce.</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Lo sformo funziona solo su parti</translation>
+        <translation type="obsolete">Lo sformo funziona solo su parti</translation>
     </message>
     <message>
-        <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Sulle facce e spigoli selezionati non è possibile creare nessuno sformo</translation>
+        <translation type="obsolete">Sulle facce e spigoli selezionati non è possibile creare nessuno sformo</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+128"/>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1411,17 +1484,12 @@ Selezionare prima una o più entità spigolo.</translation>
         <translation>Questo documento non contiene nessuna funzione valida</translation>
     </message>
     <message>
-        <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation>Prima deve essere creata una funzione additiva o sottrattiva</translation>
+        <translation type="obsolete">Prima deve essere creata una funzione additiva o sottrattiva</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Creare prima una funzione additiva o sottrattiva</translation>
+        <translation type="obsolete">Creare prima una funzione additiva o sottrattiva</translation>
     </message>
     <message>
         <source>No Support</source>

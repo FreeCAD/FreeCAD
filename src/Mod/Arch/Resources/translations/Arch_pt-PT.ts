@@ -169,7 +169,7 @@
       <translation>A altura deste piso</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="712"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Telhado</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Criar Telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="575"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Não é possível criar um telhado</translation>
     </message>
@@ -921,7 +921,7 @@
       <translation>O desvio entre este painel e sua linha de base</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="713"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -936,12 +936,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Parâmetros dos perfis do telhado: * Ângulo: inclinação em graus em relação à horizontal. * comprimento: distância entre a parede e o cume. * Espessura: espessura da água do telhado. Projeção do beirado: distancia entre a parede e o limite do beirado. * Altura: altura do cume (calculado automaticamente) * IdRel: Id relativo para cálculos automáticos. ---Se ângulo = 0 e comprimento = 0, então seu perfil é idêntico ao perfil relativo. Se ângulo = 0, então o ângulo é calculado para que a altura seja a mesma que o perfil relativo. Se comprimento = 0 então o comprimento é calculado para que a altura seja a mesma que o perfil relativo.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1128,27 +1128,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Lista de alturas calculadas para cada água do telhado</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Ângulo (graus)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
       <translation>comprimento (água) (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Espessura (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation>Projeção do beirado (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
       <translation>Altura (mm)</translation>
     </message>

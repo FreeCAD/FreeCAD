@@ -169,7 +169,7 @@
       <translation>Wysokość obecnego piętra</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="712"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Dach</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Tworzenie dachu</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="575"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Nie można utworzyć dachu</translation>
     </message>
@@ -917,7 +917,7 @@
       <translation>Przesunięcie pomiędzy tym panelem i jej wyjściową</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="713"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -943,12 +943,12 @@ Jeśli Kąt = 0, wtedy kąt jest obliczany tak, że wysokość jest taka sama, j
 Jeśli Bieg = 0, wtedy bieg jest obliczany tak, że wysokość jest taka sama, jako względnej profilu.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>Numer ID</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1135,27 +1135,27 @@ Jeśli Bieg = 0, wtedy bieg jest obliczany tak, że wysokość jest taka sama, j
       <translation>Wykaz wysokości obliczonych dla wszystkich połaci dachu</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Kąt (stopnie)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
       <translation>Wymiar poziomy (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Grubość (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation>Nawis (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
       <translation>Wysokość (mm)</translation>
     </message>

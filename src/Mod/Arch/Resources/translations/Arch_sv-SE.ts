@@ -169,7 +169,7 @@
       <translation>Höjden på denna våningen</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="712"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Tak</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Skapa tak</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="575"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Det gick inte att skapa ett tak</translation>
     </message>
@@ -922,7 +922,7 @@
       <translation>Förskjutningen mellan denna panelen och dess baslinje</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="713"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -947,12 +947,12 @@ If Angle = 0 then angle is calculated so that the height is the same one as the 
 If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1039,7 +1039,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSpace.py" line="367"/>
       <source>The justification of the text</source>
-      <translation type="unfinished">The justification of the text</translation>
+      <translation>Motiveringen av texten</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="368"/>
@@ -1139,27 +1139,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>En lista över beräknade höjder för varje takpanna</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Vinkel (grader)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Run (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Tjocklek (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation>Överhäng (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="714"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
       <translation>Höjd (mm)</translation>
     </message>
@@ -1201,7 +1201,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="128"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Datum</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="134"/>
@@ -1388,7 +1388,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchCommands.py" line="1223"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Nyckel</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1225"/>

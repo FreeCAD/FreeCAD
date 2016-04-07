@@ -1048,7 +1048,7 @@
     <message>
         <location line="+9"/>
         <source>Count</source>
-        <translation>Conta</translation>
+        <translation>Num. di sezioni</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1285,7 +1285,7 @@
     <message>
         <location line="-69"/>
         <source>Select faces</source>
-        <translation>Selezionare facce</translation>
+        <translation>Seleziona facce</translation>
     </message>
     <message>
         <location line="-16"/>
@@ -1295,7 +1295,7 @@
     <message>
         <location line="+6"/>
         <source>Select edges</source>
-        <translation>Selezionare spigoli</translation>
+        <translation>Seleziona spigoli</translation>
     </message>
     <message>
         <location line="+47"/>
@@ -2333,7 +2333,7 @@ Selezionare prima una forma valida dal menù a tendina.</translation>
     <message>
         <location line="+3"/>
         <source>Maximum deviation depending on the model bounding box</source>
-        <translation>Massima deviazione dipendente dal riquadro di delimitazione del modello</translation>
+        <translation>Deviazione massima secondo il riquadro di delimitazione del modello</translation>
     </message>
     <message>
         <location line="-34"/>

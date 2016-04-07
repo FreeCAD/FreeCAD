@@ -225,7 +225,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation>Criar uma restrição FEM para um rolamento</translation>
+      <translation>Criar restrição MEF para um rolamento</translation>
     </message>
   </context>
   <context>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>Criar uma restrição fixa</translation>
+      <translation>Criar restrição fixa MEF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>

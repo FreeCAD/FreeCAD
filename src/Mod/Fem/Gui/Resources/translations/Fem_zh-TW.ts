@@ -45,12 +45,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>機械材料......</translation>
+      <translation>機械材質......</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation>建立或編輯機械材料定義</translation>
+      <translation>建立或編輯機械材質定義</translation>
     </message>
   </context>
   <context>
@@ -136,12 +136,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation>開始求解器執行控制</translation>
+      <translation>開始設定求解器任務</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>啟動所選求解器運算之對話窗</translation>
+      <translation>啟動所選求解器運算之設定對話窗</translation>
     </message>
   </context>
   <context>
@@ -162,12 +162,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation>開始求解器執行控制</translation>
+      <translation>開始設定求解器任務</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation>啟動所選求解器運算之對話窗</translation>
+      <translation>啟動所選求解器運算之設定對話窗</translation>
     </message>
   </context>
   <context>
@@ -175,12 +175,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>機械材料......</translation>
+      <translation>機械材質......</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation>建立或編輯機械材料定義</translation>
+      <translation>建立或編輯機械材質定義</translation>
     </message>
   </context>
   <context>
@@ -220,12 +220,12 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Create FEM bearing constraint</source>
-      <translation>建立一個FEM軸承拘束</translation>
+      <translation>建立FEM軸承拘束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation>建立一個FEM對軸承之拘束</translation>
+      <translation>建立FEM對軸承之拘束</translation>
     </message>
   </context>
   <context>
@@ -238,12 +238,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>建立一個FEM位移拘束</translation>
+      <translation>建立FEM位移拘束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation>對面建立一個FEM位移拘束</translation>
+      <translation>對面建立FEM位移拘束</translation>
     </message>
   </context>
   <context>
@@ -256,12 +256,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>建立一個FEM固定拘束</translation>
+      <translation>建立FEM固定拘束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation>對一個固定的幾合實體建立FEM拘束</translation>
+      <translation>建立FEM固定拘束</translation>
     </message>
   </context>
   <context>
@@ -274,12 +274,12 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Create FEM force constraint</source>
-      <translation>建立一個力量拘束</translation>
+      <translation>建立力量拘束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Create FEM constraint for a force acting on a geometric entity</source>
-      <translation>對一個受立作用的幾合實體建立FEM拘束</translation>
+      <translation>建立力量拘束</translation>
     </message>
   </context>
   <context>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation>對一個齒輪建立FEM拘束</translation>
+      <translation>建立FEM齒輪拘束</translation>
     </message>
   </context>
   <context>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation>建立一個FEM滑輪拘束</translation>
+      <translation>建立FEM滑輪拘束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation>對一個滑輪建立FEM拘束</translation>
+      <translation>建立FEM滑輪拘束</translation>
     </message>
   </context>
   <context>
@@ -607,7 +607,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
       <source>Please specify a force greater than 0</source>
-      <translation>請指定一個大於0的力</translation>
+      <translation>請指定一個大於 0 的力</translation>
     </message>
   </context>
   <context>
@@ -629,7 +629,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
       <source>Please specify a pressure greater than 0</source>
-      <translation>請指定一個大於0的壓力</translation>
+      <translation>請指定一個大於 0 的壓力</translation>
     </message>
   </context>
   <context>
@@ -736,13 +736,13 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation>尚未選取!</translation>
+      <translation>尚未選取 !</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation>所選之物件並非零件!</translation>
+      <translation>所選之物件並非零件 !</translation>
     </message>
   </context>
   <context>
@@ -907,7 +907,7 @@
     <message>
       <location filename="../../TaskTetParameter.cpp" line="52"/>
       <source>Tet Parameter</source>
-      <translation>Tet 參數</translation>
+      <translation>四面體參數</translation>
     </message>
   </context>
   <context>
@@ -959,19 +959,19 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
       <source>References</source>
-      <translation>參考資料</translation>
+      <translation>參考</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
       <source>Leave references blank </source>
-      <translation>將參考資料保持空白</translation>
+      <translation>將參考保持空白</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation>選取剩下之造型</translation>
+      <translation>則選取所有剩下之造型</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
@@ -1053,12 +1053,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
-      <translation>機械材料</translation>
+      <translation>機械材質</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="26"/>
       <source>Material</source>
-      <translation>材料</translation>
+      <translation>材質</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>
@@ -1073,17 +1073,17 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
       <source>References</source>
-      <translation>參考資料</translation>
+      <translation>參考</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
       <source>Leave references blank </source>
-      <translation>將參考資料保持空白</translation>
+      <translation>將參考保持空白</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation>選取剩下之造型</translation>
+      <translation>則選取所有剩下之造型</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
@@ -1103,7 +1103,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="148"/>
       <source>Poisson Ratio:</source>
-      <translation>泊松比(Poisson Ratio):</translation>
+      <translation>泊松比(Poisson Ratio)：</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="186"/>
@@ -1113,7 +1113,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
       <source>External material resources</source>
-      <translation>外部材料特性資源</translation>
+      <translation>外部材質特性資源</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
@@ -1247,7 +1247,7 @@
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation>[點: %1, 線: %2, 面: %3, 多邊形: %4, 體積: %5, 多面體: %6]</translation>
+      <translation>[點：%1, 線：%2, 面：%3, 多邊形：%4, 體積：%5, 多面體：%6]</translation>
     </message>
   </context>
   <context>
@@ -1325,7 +1325,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
-      <translation>最大滑動：</translation>
+      <translation>變化最大值：</translation>
     </message>
     <message>
       <source>Colors</source>
@@ -1611,17 +1611,17 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation>依x軸旋轉</translation>
+      <translation>依 x 軸旋轉</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation>依y軸旋轉</translation>
+      <translation>依 y 軸旋轉</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation>依z軸旋轉</translation>
+      <translation>依 z 軸旋轉</translation>
     </message>
   </context>
   <context>
@@ -1776,7 +1776,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>節點數量:</translation>
+      <translation>節點數量：</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>

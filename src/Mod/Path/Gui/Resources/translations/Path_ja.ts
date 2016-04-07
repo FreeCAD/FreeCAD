@@ -14,7 +14,7 @@
     <message>
       <location filename="PathProfile.py" line="59"/>
       <source>The height needed to clear clamps and obstructions</source>
-      <translation type="unfinished">The height needed to clear clamps and obstructions</translation>
+      <translation>クランプ治具や障害物をかわすために必要な高さ</translation>
     </message>
   </context>
   <context>
@@ -35,7 +35,7 @@
     <message>
       <location filename="PathLoadTool.py" line="137"/>
       <source>Tool Number to Load</source>
-      <translation type="unfinished">Tool Number to Load</translation>
+      <translation>読み込む工具番号</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="PathProfile.py" line="86"/>
       <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</translation>
+      <translation>加工方向 (時計回り(CW) / 反時計回り(CCW))</translation>
     </message>
   </context>
   <context>
@@ -51,7 +51,7 @@
     <message>
       <location filename="PathProfile.py" line="49"/>
       <source>First Selected Edge to help determine which geometry to make a toolpath around</source>
-      <translation type="unfinished">First Selected Edge to help determine which geometry to make a toolpath around</translation>
+      <translation>パスを生成する領域を決定するための、最初の選択エッジ</translation>
     </message>
   </context>
   <context>
@@ -59,7 +59,7 @@
     <message>
       <location filename="PathProfile.py" line="50"/>
       <source>Second Selected Edge to help determine which geometry to make a toolpath around</source>
-      <translation type="unfinished">Second Selected Edge to help determine which geometry to make a toolpath around</translation>
+      <translation>パスを生成する領域を決定するための、2番目の選択エッジ</translation>
     </message>
   </context>
   <context>
@@ -313,7 +313,7 @@
     <message>
       <location filename="PathPocket.py" line="82"/>
       <source>The height needed to clear clamps and obstructions</source>
-      <translation type="unfinished">The height needed to clear clamps and obstructions</translation>
+      <translation>クランプ治具や障害物をかわすために必要な高さ</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="83"/>
@@ -343,7 +343,7 @@
     <message>
       <location filename="PathPocket.py" line="91"/>
       <source>The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW</translation>
+      <translation>加工方向 (時計回り(CW) / 反時計回り(CCW))</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="93"/>
@@ -414,12 +414,12 @@
     <message>
       <location filename="PathComment.py" line="111"/>
       <source>Add a Comment to your CNC program</source>
-      <translation type="unfinished">Add a Comment to your CNC program</translation>
+      <translation>CNCプログラムにコメントを追加する</translation>
     </message>
     <message>
       <location filename="PathComment.py" line="117"/>
       <source>Create a Comment in your CNC program</source>
-      <translation type="unfinished">Create a Comment in your CNC program</translation>
+      <translation>CNCプログラムにコメントを作成する</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="97"/>
       <source>Creates a Path Compound object</source>
-      <translation type="unfinished">Creates a Path Compound object</translation>
+      <translation>複合オブジェクトにパスを作成する</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="104"/>
@@ -500,7 +500,7 @@
     <message>
       <location filename="PathDressup.py" line="116"/>
       <source>Please select a Path object</source>
-      <translation type="unfinished">Please select a Path object</translation>
+      <translation>パスオブジェクトを選択して下さい</translation>
     </message>
     <message>
       <location filename="PathDressup.py" line="120"/>
@@ -523,7 +523,7 @@
     <message>
       <location filename="PathDrilling.py" line="168"/>
       <source>Create Drilling</source>
-      <translation type="unfinished">Create Drilling</translation>
+      <translation>ドリル加工を作成する</translation>
     </message>
   </context>
   <context>
@@ -712,7 +712,7 @@
     <message>
       <location filename="PathLoadTool.py" line="132"/>
       <source>Tool Number to Load</source>
-      <translation type="unfinished">Tool Number to Load</translation>
+      <translation>読み込む工具番号</translation>
     </message>
   </context>
   <context>

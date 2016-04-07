@@ -480,7 +480,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4276"/>
       <source>Shows Draft snap toolbar</source>
-      <translation type="unfinished">Shows Draft snap toolbar</translation>
+      <translation>Toont Draft snap werkbalk</translation>
     </message>
   </context>
   <context>
@@ -519,7 +519,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4695"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
-      <translation type="unfinished">Shows temporary dimensions when snapping to Arch objects</translation>
+      <translation>Toont tijdelijke bemating terwijl men snapt aan Arch objecten</translation>
     </message>
   </context>
   <context>
@@ -532,7 +532,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4623"/>
       <source>Snaps to endpoints of edges</source>
-      <translation type="unfinished">Snaps to endpoints of edges</translation>
+      <translation>Snapt aan eindpunten van ribbes</translation>
     </message>
   </context>
   <context>
@@ -545,7 +545,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4659"/>
       <source>Snaps to extension of edges</source>
-      <translation type="unfinished">Snaps to extension of edges</translation>
+      <translation>Snapt aan het verlengde van ribbes</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4611"/>
       <source>Snaps to parallel directions of edges</source>
-      <translation type="unfinished">Snaps to parallel directions of edges</translation>
+      <translation>Snapt aan parallelen richtingen van ribbes</translation>
     </message>
   </context>
   <context>
@@ -649,7 +649,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4575"/>
       <source>Snaps to perpendicular points on edges</source>
-      <translation type="unfinished">Snaps to perpendicular points on edges</translation>
+      <translation>Snapt aan rechthoekige punten aan ribbes</translation>
     </message>
   </context>
   <context>
@@ -662,7 +662,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4707"/>
       <source>Restricts the snapped point to the current working plane</source>
-      <translation type="unfinished">Restricts the snapped point to the current working plane</translation>
+      <translation>Beperkt het gesnapte punt tot beweging in het huidige werkvlak</translation>
     </message>
   </context>
   <context>
@@ -696,7 +696,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="3227"/>
       <source>Toggle Continue Mode</source>
-      <translation type="unfinished">Toggle Continue Mode</translation>
+      <translation>Schakel Continue Modus</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="3228"/>
@@ -727,7 +727,7 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4321"/>
       <source>Toggles the Draft grid on/off</source>
-      <translation type="unfinished">Toggles the Draft grid on/off</translation>
+      <translation>Schakel draft raster aan/uit</translation>
     </message>
   </context>
   <context>
@@ -774,12 +774,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4403"/>
       <source>VisGroup</source>
-      <translation type="unfinished">VisGroup</translation>
+      <translation>Visuele Groep</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4404"/>
       <source>Adds a VisGroup</source>
-      <translation type="unfinished">Adds a VisGroup</translation>
+      <translation>Voeg toe aan Visuele Groep</translation>
     </message>
   </context>
   <context>

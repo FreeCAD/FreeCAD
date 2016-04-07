@@ -58,7 +58,7 @@
 <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+1778"/>
+        <location filename="../../CommandCreateGeo.cpp" line="+1779"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -147,7 +147,7 @@
 <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-        <location line="+1849"/>
+        <location line="+1851"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-3656"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-3658"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -727,7 +727,7 @@
 <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-        <location line="+957"/>
+        <location line="+959"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -763,7 +763,7 @@
 <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-        <location line="-4900"/>
+        <location line="-4902"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -781,7 +781,7 @@
 <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-        <location line="+4946"/>
+        <location line="+4948"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -817,7 +817,7 @@
 <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-        <location line="-1259"/>
+        <location line="-1261"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -875,7 +875,7 @@
 <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-        <location line="+4341"/>
+        <location line="+4343"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -911,7 +911,7 @@
 <context>
     <name>CmdSketcherCreateText</name>
     <message>
-        <location line="-1206"/>
+        <location line="-1208"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -929,7 +929,7 @@
 <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-        <location line="+1177"/>
+        <location line="+1179"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -965,7 +965,7 @@
 <context>
     <name>CmdSketcherExternal</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-504"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-506"/>
         <source>Sketcher</source>
         <translation>Esquisseur</translation>
     </message>
@@ -2258,12 +2258,12 @@ Combinaisons acceptés : deux courbes; un point d&apos;extrémité et une courbe
     <message>
         <location line="+71"/>
         <source>Unnamed constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrainte non nommée</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Only the names of named constraints can be swapped.</source>
-        <translation type="unfinished"></translation>
+        <translation>Seuls les noms des contraintes nommées peuvent être permutés.</translation>
     </message>
 </context>
 <context>
@@ -2830,7 +2830,7 @@ Toutefois, aucune contrainte liée aux extrémités n&apos;a été trouvée.</tr
     <message>
         <location line="+176"/>
         <source>Error</source>
-        <translation type="unfinished">Erreur</translation>
+        <translation>Erreur</translation>
     </message>
 </context>
 <context>
@@ -3353,7 +3353,7 @@ Utilisez l&apos;outil de validation d&apos;esquisse.</translation>
 <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-        <location line="+1974"/>
+        <location line="+1976"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
         <translation>Créer un heptagone avec son centre et un sommet</translation>

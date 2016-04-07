@@ -491,7 +491,7 @@
     </message>
     <message>
         <source>Calculates the curvature of the vertices of a mesh</source>
-        <translation>Израчунава закривљеност темена мрњже</translation>
+        <translation>Израчунава закривљеност темена мреже</translation>
     </message>
     <message>
         <source>Curvature plot</source>
@@ -1357,7 +1357,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished">Inventor V2.1 ascii</translation>
+        <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>

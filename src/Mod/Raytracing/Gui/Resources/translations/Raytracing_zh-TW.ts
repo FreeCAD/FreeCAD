@@ -454,12 +454,12 @@ Do you want to continue?</source>
     <message>
         <location line="+53"/>
         <source>Default Project dir:</source>
-        <translation>預設專案目錄:</translation>
+        <translation>預設專案目錄：</translation>
     </message>
     <message>
         <location line="-26"/>
         <source>Camera file name:</source>
-        <translation>攝影機檔案名稱:</translation>
+        <translation>攝影機檔案名稱：</translation>
     </message>
     <message>
         <location line="-216"/>
@@ -479,7 +479,7 @@ Do you want to continue?</source>
     <message>
         <location line="+13"/>
         <source>+W: </source>
-        <translation>+W: </translation>
+        <translation>+W：</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -499,7 +499,7 @@ Do you want to continue?</source>
     <message>
         <location line="+21"/>
         <source>Luxrender executable:</source>
-        <translation>Luxrender 執行檔:</translation>
+        <translation>Luxrender 執行檔：</translation>
     </message>
     <message>
         <location line="+7"/>

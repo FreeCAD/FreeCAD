@@ -46,7 +46,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>如果fn大於多邊形、 棱形或錐形面之最大數目,物件將認為是一圓形。設定0表示沒有限制。</translation>
+      <translation>如果fn大於多邊形、 棱形或錐形面之最大數目，物件將認為是一圓形。設定0表示沒有限制。</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="133"/>
