@@ -33,6 +33,8 @@ import DraftVecUtils
 import PathScripts
 from PathScripts import PathProject
 
+
+
 def cleanedges(splines,precision):
     '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
     Returns Lines as is. Filters Circle and Arcs for over 180 degrees. Discretizes Ellipses. Ignores other geometry. '''
@@ -51,18 +53,18 @@ def cleanedges(splines,precision):
 
         elif geomType(spline)=="Ellipse":
             edges = curvetowire(spline, 1.0) #fixme hardcoded value
-                        
+
         elif geomType(spline)=="Circle":
             arcs=filterArcs(spline)
             for i in arcs:
                 edges.append(Part.Edge(i))
-                                     
+
         elif geomType(spline)=="Line":
             edges.append(spline)
- 
+
         else:
             pass
-               
+
     return edges
 
 def curvetowire(obj,steps):
@@ -244,7 +246,7 @@ def SortPath(wire,Side,radius,clockwise,firstedge=None,SegLen =0.5):
             preoffset= []
             for e in newedgelist:
                 if  clockwise:
-                    r = reverseEdge(e) 
+                    r = reverseEdge(e)
                     preoffset.append(r)
                 else:
                     preoffset.append(e)
@@ -334,7 +336,7 @@ def getLastTool(obj):
 
 def getLastToolLoad(obj):
     #This walks up the hierarchy and tries to find the closest preceding toolchange.
-    
+
     import PathScripts
     tc = None
     lastfound = None
@@ -364,7 +366,7 @@ def getLastToolLoad(obj):
             return tc
 
     if tc == None:
-        for g in FreeCAD.ActiveDocument.Objects: #top level object 
+        for g in FreeCAD.ActiveDocument.Objects: #top level object
             if isinstance(g.Proxy,PathScripts.PathLoadTool.LoadTool):
                 lastfound = g
             if g == obj:
@@ -454,7 +456,7 @@ class depth_params:
         self.z_finish_depth = math.fabs(z_finish_depth)
         self.final_depth = final_depth
         self.user_depths = user_depths
-        
+
     def get_depths(self):
         depths = []
         if self.user_depths != None:
@@ -473,5 +475,3 @@ class depth_params:
                         depths.append(depth)
         depths.reverse()
         return depths
-
-
