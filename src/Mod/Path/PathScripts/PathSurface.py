@@ -249,9 +249,13 @@ class ObjectSurface:
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            self.radius = tool.Diameter/2
             obj.ToolNumber= toolLoad.ToolNumber
+
+            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            if tool == None:
+                self.radius = 0.25
+            else:
+                self.radius = tool.Diameter/2
 
         if obj.Base:
             for b in obj.Base:

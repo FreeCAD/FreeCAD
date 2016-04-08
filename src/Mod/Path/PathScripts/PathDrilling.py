@@ -76,12 +76,19 @@ class ObjectDrilling:
         if toolLoad == None:
             self.vertFeed = 100
             self.horizFeed = 100
+            self.radius = 0.25
             obj.ToolNumber= 0
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             obj.ToolNumber= toolLoad.ToolNumber
+
+            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            if tool == None:
+                self.radius = 0.25
+            else:
+                self.radius = tool.Diameter/2
+
         if obj.Base:
             locations = []
             for loc in obj.Base:
