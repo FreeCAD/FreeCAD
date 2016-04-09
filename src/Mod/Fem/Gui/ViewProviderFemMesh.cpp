@@ -1097,6 +1097,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 	// iterate all element faces, allways assure CLOCKWISE triangle ordering to allow backface culling
     for(int l=0; l< FaceSize;l++){
         if(! facesHelper[l].hide){
+
             switch( facesHelper[l].Element->NbNodes()){
                 case 3: // Face 3
                     switch (facesHelper[l].FaceNo){
@@ -1193,7 +1194,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
                             break;    }
                         default: assert(0);
-
                     }
                     break;
                 case 6: // face 6
@@ -1513,10 +1513,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
                             break;    }
                         default: assert(0);
-
                     }
                     break;
-
                 //default:assert(0); // not implemented node
                 default: throw std::runtime_error("only display mode nodes is supported for this element");
 
