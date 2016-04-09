@@ -765,7 +765,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     int i=0;
 
-    Base::Console().Log("    NumFaces (before faces faces):%i\n",facesHelper.size());
     if (ShowFaces){
         SMDS_FaceIteratorPtr aFaceIter = data->facesIterator();
         for (;aFaceIter->more();) {
@@ -797,7 +796,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }
     else{
 
-        Base::Console().Log("    NumFaces (before volumes faces):%i\n",facesHelper.size());
         // iterate all volumes
         SMDS_VolumeIteratorPtr aVolIter = data->volumesIterator();
         for (; aVolIter->more();) {
@@ -917,7 +915,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
     }
     int FaceSize = facesHelper.size();
-    Base::Console().Log("    NumFaces:%i\n",facesHelper.size());
 
 
     if( FaceSize < 5000){
@@ -1052,7 +1049,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     int triangleCount=0;
     for (int l = 0; l < FaceSize; l++){
         if (!facesHelper[l].hide)
-            Base::Console().Log("    triangle of this face.Size:%i\n",facesHelper[l].Size);
             switch (facesHelper[l].Size){
             case 3:triangleCount++; break;     // 3-node triangle face   --> 1 triangle
             case 4:triangleCount += 2; break;  // 4-node quadrangle face --> 2 triangles
@@ -1100,19 +1096,13 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     int32_t* indices = faces->coordIndex.startEditing();
     // iterate all not hided element faces, allways assure CLOCKWISE triangle ordering to allow backface culling
     for(int l=0; l< FaceSize;l++){
-        Base::Console().Log("    NumNodes (hided and not hided faces!):%i\n",facesHelper[l].Element->NbNodes());
         if(! facesHelper[l].hide){
             switch( facesHelper[l].Element->NbNodes()){
-                Base::Console().Log("    NumNodes of faced to be shown (not hided):%i\n",facesHelper[l].Element->NbNodes());
                 // 3 nodes
                 case 3:
                     // tria3 face
-                    Base::Console().Log("    %f: Start build up triangle vector for 3 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch (facesHelper[l].FaceNo){
                         case 0: { // tria3 face, 3-node triangle
-                            Base::Console().Log("    %f: Start build up triangle vector for tria3 face\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    FaceNo:%i\n",facesHelper[l].FaceNo);
                             // prefeche all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1137,12 +1127,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 case 4:
                     // quad4 face
                     // tetra4 volume, four 3-node triangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 4 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch (facesHelper[l].FaceNo){
                         case 0: { // quad4 face, 4-node quadrangle
-                            Base::Console().Log("    %f: Start build up triangle vector for quad4 face\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    FaceNo:%i\n",facesHelper[l].FaceNo);
                             // prefeche all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1169,8 +1155,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             break;    }
                         case 1: { // tetra4 volume: face 1, 3-node triangle
-                            Base::Console().Log("    %f: Start build up triangle vector for tetra4 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    FaceNo:%i\n",facesHelper[l].FaceNo);
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1228,12 +1212,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // 5 nodes
                 case 5:
                     // pyra5 volume, one 4-node quadrangle and four 3-node triangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 5 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch (facesHelper[l].FaceNo){
                         case 1: { // pyra5 volume: face 1, 4-node quadrangle
-                            Base::Console().Log("    %f: Start build up triangle vector for penta6 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1312,12 +1292,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 case 6:
                     // tria6 face
                     // penta6 volume, two 3-node triangle and three 4-node qudrangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 6 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch (facesHelper[l].FaceNo){
                         case 0: { // tria6 face, 6-node triangle
-                            Base::Console().Log("    %f: Start build up triangle vector for tria6 face\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             // prefeche all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
@@ -1360,8 +1336,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             // this triangle has no edge (inner triangle).
                             break;    }
                         case 1: { // penta6 volume: face 1, 3-node triangle
-                            Base::Console().Log("    %f: Start build up triangle vector for penta6 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1454,12 +1428,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 case 8:
                     // quad8 face
                     // hexa8 volume, six 4-node quadrangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 8 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch(facesHelper[l].FaceNo){
                         case 0: { // quad8 face, 8-node quadrangle
-                            Base::Console().Log("    %f: Start build up triangle vector for quad8 face\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             // prefeche all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
@@ -1518,8 +1488,6 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             // this triangle has no edge (inner triangle)
                             break;    }
                         case 1: { // hexa8 volume: face 1, 4-node quadrangle
-                            Base::Console().Log("    %f: Start build up triangle vector for hexa8 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1645,12 +1613,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // 10 nodes
                 case 10:
                     // tetra10 volume, four 6-node triangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 10 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch(facesHelper[l].FaceNo){
                         case 1: { // tetra10 volume: face 1, 6-node triangle
-                            Base::Console().Log("    %f: Start build up triangle vector for tetra10 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1788,12 +1752,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // 13 nodes
                 case 13:
                     // pyra13 volume, four 6-node triangle and one 8-node qudrangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 13 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch(facesHelper[l].FaceNo){
                         case 1: { // pyra13 volume: face 1, 8-node qudrangles
-                            Base::Console().Log("    %f: Start build up triangle vector for pyra13 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1977,12 +1937,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // 15 nodes
                 case 15:
                     // penta15 volume, two 6-node triangles and three 8-node qudrangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 15 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch(facesHelper[l].FaceNo){
                         case 1: { // penta15 volume: face 1, 6-node triangle
-                            Base::Console().Log("    %f: Start build up triangle vector for penta15 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -2192,12 +2148,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // 20 nodes
                 case 20:
                     // hexa20 volume, six 8-node qudrangles
-                    Base::Console().Log("    %f: Start build up triangle vector for 20 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch(facesHelper[l].FaceNo){
                         case 1: { // hexa20 volume: face 1
-                            Base::Console().Log("    %f: Start build up triangle vector for hexa20 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
