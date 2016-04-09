@@ -1120,16 +1120,16 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             // create triangle number 1 ----------------------------------------------
                             // fill in the node indexes in CLOCKWISE order
-                            indices[index++] = nIdx2;
                             indices[index++] = nIdx0;
                             indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
                             indices[index++] = SO_END_FACE_INDEX;
                             // add the three edge segments for that triangle
                             insEdgeVec(EdgeMap, nIdx0, nIdx1);
                             insEdgeVec(EdgeMap, nIdx1, nIdx2);
                             insEdgeVec(EdgeMap, nIdx2, nIdx0);
                             // rember the element and face number for that triangle
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             break;    }
                         default: assert(0);
                     }
