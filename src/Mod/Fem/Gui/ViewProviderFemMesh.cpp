@@ -861,14 +861,14 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 break;
             //tetra10 volume
             case 10:
-                // face 1 = N1, N2, N3, N5,  N6,  N7
-                // face 2 = N1, N4, N2, N8,  N9,  N5
-                // face 3 = N2, N4, N3, N9,  N10, N6
-                // face 4 = N3, N4, N1, N10, N8,  N7
-                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(1), aVol->GetNode(2), aVol->GetNode(4), aVol->GetNode(5), aVol->GetNode(6)));
-                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 2, aVol->GetNode(0), aVol->GetNode(3), aVol->GetNode(1), aVol->GetNode(7), aVol->GetNode(8), aVol->GetNode(4)));
-                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 3, aVol->GetNode(1), aVol->GetNode(3), aVol->GetNode(2), aVol->GetNode(8), aVol->GetNode(9), aVol->GetNode(5)));
-                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 4, aVol->GetNode(2), aVol->GetNode(3), aVol->GetNode(0), aVol->GetNode(9), aVol->GetNode(7), aVol->GetNode(6)));
+                // face 1 = N1, N5,  N2, N6,  N3, N7
+                // face 2 = N1, N8,  N4, N9,  N2, N5
+                // face 3 = N2, N9,  N4, N10, N3, N6
+                // face 4 = N3, N10, N4, N8,  N1, N7
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 1, aVol->GetNode(0), aVol->GetNode(4), aVol->GetNode(1), aVol->GetNode(5), aVol->GetNode(2), aVol->GetNode(6)));
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 2, aVol->GetNode(0), aVol->GetNode(7), aVol->GetNode(3), aVol->GetNode(8), aVol->GetNode(1), aVol->GetNode(4)));
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 3, aVol->GetNode(1), aVol->GetNode(8), aVol->GetNode(3), aVol->GetNode(9), aVol->GetNode(2), aVol->GetNode(5)));
+                BndBox.Add(facesHelper[i++].set(6, aVol, aVol->GetID(), 4, aVol->GetNode(2), aVol->GetNode(9), aVol->GetNode(3), aVol->GetNode(7), aVol->GetNode(0), aVol->GetNode(6)));
                 break;
             //pyra13 volume
             case 13:
@@ -1400,154 +1400,143 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     break;
                 // 10 nodes
                 case 10:
+                    // tetra10 volume, four 6-node triangles
                     Base::Console().Log("    %f: Start build up triangle vector for 10 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
                     Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
                     switch(facesHelper[l].FaceNo){
-                        case 1: { // tetra10 volume: face 1
+                        case 1: { // tetra10 volume: face 1, 6-node triangle
                             Base::Console().Log("    %f: Start build up triangle vector for tetra10 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
                             Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
-                            // prefeche all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
-                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
-                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                            int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = nIdx5;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx5, nIdx0);
+                            insEdgeVec(EdgeMap, nIdx0, nIdx1);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx3;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                            insEdgeVec(EdgeMap, nIdx2, nIdx3);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx4;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx3, nIdx4);
+                            insEdgeVec(EdgeMap, nIdx4, nIdx5);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 2: { // tetra10 volume: face 2, 6-node triangle
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = nIdx5;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx5, nIdx0);
+                            insEdgeVec(EdgeMap, nIdx0, nIdx1);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx3;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                            insEdgeVec(EdgeMap, nIdx2, nIdx3);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx4;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx3, nIdx4);
+                            insEdgeVec(EdgeMap, nIdx4, nIdx5);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 3: { // tetra10 volume: face 3, 6-node triangle
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
-                            int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
-                            // create triangle number 1 ----------------------------------------------
-                            // fill in the node indexes in CLOCKWISE order
-                            indices[index++] = nIdx6;
+                            indices[index++] = nIdx5;
                             indices[index++] = nIdx0;
-                            indices[index++] = nIdx4;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            // add the two edge segments for that triangle
-                            insEdgeVec(EdgeMap,nIdx0,nIdx6);
-                            insEdgeVec(EdgeMap,nIdx0,nIdx4);
-                            // rember the element and face number for that triangle
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
-                            // create triangle number 2 ----------------------------------------------
-                            indices[index++] = nIdx2;
-                            indices[index++] = nIdx6;
-                            indices[index++] = nIdx5;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx2,nIdx6);
-                            insEdgeVec(EdgeMap,nIdx2,nIdx5);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
-                            // create triangle number 3 ----------------------------------------------
                             indices[index++] = nIdx1;
-                            indices[index++] = nIdx5;
-                            indices[index++] = nIdx4;
                             indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx1,nIdx5);
-                            insEdgeVec(EdgeMap,nIdx1,nIdx4);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
-                            // create triangle number 4 ----------------------------------------------
-                            indices[index++] = nIdx6;
-                            indices[index++] = nIdx4;
-                            indices[index++] = nIdx5;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            // this triangle has no edge (inner triangle).
-                            break;    }
-                        case 2: { // tetra10 volume: face 2
-                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
-                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
-                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
-                            int nIdx7 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
-                            int nIdx8 = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
-                            indices[index++] = nIdx4;
-                            indices[index++] = nIdx0;
-                            indices[index++] = nIdx7;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx0,nIdx7);
-                            insEdgeVec(EdgeMap,nIdx0,nIdx4);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
+                            insEdgeVec(EdgeMap, nIdx5, nIdx0);
+                            insEdgeVec(EdgeMap, nIdx0, nIdx1);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
                             indices[index++] = nIdx1;
-                            indices[index++] = nIdx4;
-                            indices[index++] = nIdx8;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx1,nIdx8);
-                            insEdgeVec(EdgeMap,nIdx1,nIdx4);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
-                            indices[index++] = nIdx3;
-                            indices[index++] = nIdx8;
-                            indices[index++] = nIdx7;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx3,nIdx7);
-                            insEdgeVec(EdgeMap,nIdx3,nIdx8);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
-                            indices[index++] = nIdx8;
-                            indices[index++] = nIdx4;
-                            indices[index++] = nIdx7;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
-                            break;    }
-                        case 3: { // tetra10 volume: face 3
-                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
-                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
-                            int nIdx8 = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
-                            int nIdx9 = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
-                            indices[index++] = nIdx5;
-                            indices[index++] = nIdx1;
-                            indices[index++] = nIdx8;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx1,nIdx5);
-                            insEdgeVec(EdgeMap,nIdx1,nIdx8);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
                             indices[index++] = nIdx2;
-                            indices[index++] = nIdx5;
-                            indices[index++] = nIdx9;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx2,nIdx5);
-                            insEdgeVec(EdgeMap,nIdx2,nIdx9);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
-                            indices[index++] = nIdx3;
-                            indices[index++] = nIdx9;
-                            indices[index++] = nIdx8;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx3,nIdx9);
-                            insEdgeVec(EdgeMap,nIdx3,nIdx8);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
-                            indices[index++] = nIdx9;
-                            indices[index++] = nIdx5;
-                            indices[index++] = nIdx8;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
-                            break;    }
-                        case 4: { // tetra10 volume: face 4
-                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
-                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
-                            int nIdx7 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
-                            int nIdx9 = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
-                            indices[index++] = nIdx0;
-                            indices[index++] = nIdx6;
-                            indices[index++] = nIdx7;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx0,nIdx6);
-                            insEdgeVec(EdgeMap,nIdx0,nIdx7);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
-                            indices[index++] = nIdx6;
-                            indices[index++] = nIdx2;
-                            indices[index++] = nIdx9;
-                            indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx2,nIdx6);
-                            insEdgeVec(EdgeMap,nIdx2,nIdx9);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
-                            indices[index++] = nIdx7;
-                            indices[index++] = nIdx9;
                             indices[index++] = nIdx3;
                             indices[index++] = SO_END_FACE_INDEX;
-                            insEdgeVec(EdgeMap,nIdx3,nIdx9);
-                            insEdgeVec(EdgeMap,nIdx3,nIdx7);
-                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
-                            indices[index++] = nIdx7;
-                            indices[index++] = nIdx6;
-                            indices[index++] = nIdx9;
+                            insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                            insEdgeVec(EdgeMap, nIdx2, nIdx3);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx4;
+                            indices[index++] = nIdx5;
                             indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx3, nIdx4);
+                            insEdgeVec(EdgeMap, nIdx4, nIdx5);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 4: { // tetra10 volume: face 4, 6-node triangle
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = nIdx5;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx5, nIdx0);
+                            insEdgeVec(EdgeMap, nIdx0, nIdx1);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx3;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                            insEdgeVec(EdgeMap, nIdx2, nIdx3);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx4;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx3, nIdx4);
+                            insEdgeVec(EdgeMap, nIdx4, nIdx5);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
                             break;    }
                         default: assert(0);
                     }
