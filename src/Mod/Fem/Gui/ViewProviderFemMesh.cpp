@@ -1101,58 +1101,57 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 case 3:
                     // tria3 face
                     switch (facesHelper[l].FaceNo){
-                    case 0: { // tria3 face, 3-node triangle
-                        // prefeche all node indexes of this face
-                        int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
-                        int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
-                        int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                        // create triangle number 1 ----------------------------------------------
-                        // fill in the node indexes in CLOCKWISE order
-                        indices[index++] = nIdx2;
-                        indices[index++] = nIdx0;
-                        indices[index++] = nIdx1;
-                        indices[index++] = SO_END_FACE_INDEX;
+                        case 0: { // tria3 face, 3-node triangle
+                            // prefeche all node indexes of this face
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            // create triangle number 1 ----------------------------------------------
+                            // fill in the node indexes in CLOCKWISE order
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = SO_END_FACE_INDEX;
                             // add the three edge segments for that triangle
-                        insEdgeVec(EdgeMap, nIdx0, nIdx1);
-                        insEdgeVec(EdgeMap, nIdx1, nIdx2);
-                        insEdgeVec(EdgeMap, nIdx2, nIdx0);
-                        // rember the element and face number for that triangle
-                        vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
-
-                        break;    }
-                    default: assert(0);
+                            insEdgeVec(EdgeMap, nIdx0, nIdx1);
+                            insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                            insEdgeVec(EdgeMap, nIdx2, nIdx0);
+                            // rember the element and face number for that triangle
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
+                            break;    }
+                        default: assert(0);
                     }
                     break;
                 // 4 nodes
                 case 4:
                     switch (facesHelper[l].FaceNo){
-                    case 0: { // quad4 face
-                        int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
-                        int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
-                        int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                        int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                        indices[index++] = nIdx2;
-                        indices[index++] = nIdx0;
-                        indices[index++] = nIdx1;
-                        indices[index++] = SO_END_FACE_INDEX;
-                        insEdgeVec(EdgeMap, nIdx0, nIdx1);
-                        insEdgeVec(EdgeMap, nIdx1, nIdx2);
-                        vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
-                        indices[index++] = nIdx3;
-                        indices[index++] = nIdx0;
-                        indices[index++] = nIdx2;
-                        indices[index++] = SO_END_FACE_INDEX;
-                        insEdgeVec(EdgeMap, nIdx2, nIdx3);
-                        insEdgeVec(EdgeMap, nIdx3, nIdx0);
-                        vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
-                        break;    }
-                    case 1: { // tetra4 volume: face 1
+                        case 0: { // quad4 face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                            indices[index++] = nIdx2;     
-                            indices[index++] = nIdx0;     
-                            indices[index++] = nIdx1;     
+                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx0, nIdx1);
+                            insEdgeVec(EdgeMap, nIdx1, nIdx2);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx2;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx2, nIdx3);
+                            insEdgeVec(EdgeMap, nIdx3, nIdx0);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
+                            break;    }
+                        case 1: { // tetra4 volume: face 1
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
                             insEdgeVec(EdgeMap,nIdx0,nIdx2);
@@ -1204,48 +1203,48 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                 // 6 nodes
                 case 6:
                     switch (facesHelper[l].FaceNo){
-                    case 0: { // tria6 face
-                        // prefeche all node indexes of this face
-                        int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
-                        int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
-                        int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                        int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                        int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
-                        int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
-                        // create triangle number 1 ----------------------------------------------
-                        // fill in the node indexes in CLOCKWISE order
-                        indices[index++] = nIdx0;
-                        indices[index++] = nIdx3;
-                        indices[index++] = nIdx5;
-                        indices[index++] = SO_END_FACE_INDEX;
-                        // add the two edge segments for that triangle
-                        insEdgeVec(EdgeMap, nIdx0, nIdx3);
-                        insEdgeVec(EdgeMap, nIdx0, nIdx5);
-                        // rember the element and face number for that triangle
-                        vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
-                        // create triangle number 2 ----------------------------------------------
-                        indices[index++] = nIdx3;
-                        indices[index++] = nIdx1;
-                        indices[index++] = nIdx4;
-                        indices[index++] = SO_END_FACE_INDEX;
-                        insEdgeVec(EdgeMap, nIdx3, nIdx1);
-                        insEdgeVec(EdgeMap, nIdx1, nIdx4);
-                        vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
-                        // create triangle number 3 ----------------------------------------------
-                        indices[index++] = nIdx4;
-                        indices[index++] = nIdx2;
-                        indices[index++] = nIdx5;
-                        indices[index++] = SO_END_FACE_INDEX;
-                        insEdgeVec(EdgeMap, nIdx4, nIdx2);
-                        insEdgeVec(EdgeMap, nIdx2, nIdx5);
-                        vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
-                        // create triangle number 4 ----------------------------------------------
-                        indices[index++] = nIdx5;
-                        indices[index++] = nIdx3;
-                        indices[index++] = nIdx4;
-                        indices[index++] = SO_END_FACE_INDEX;
-                        // this triangle has no edge (inner triangle).
-                        break;    }
+                        case 0: { // tria6 face
+                            // prefeche all node indexes of this face
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            // create triangle number 1 ----------------------------------------------
+                            // fill in the node indexes in CLOCKWISE order
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            // add the two edge segments for that triangle
+                            insEdgeVec(EdgeMap, nIdx0, nIdx3);
+                            insEdgeVec(EdgeMap, nIdx0, nIdx5);
+                            // rember the element and face number for that triangle
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
+                            // create triangle number 2 ----------------------------------------------
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx4;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx3, nIdx1);
+                            insEdgeVec(EdgeMap, nIdx1, nIdx4);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
+                            // create triangle number 3 ----------------------------------------------
+                            indices[index++] = nIdx4;
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx5;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap, nIdx4, nIdx2);
+                            insEdgeVec(EdgeMap, nIdx2, nIdx5);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
+                            // create triangle number 4 ----------------------------------------------
+                            indices[index++] = nIdx5;
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx4;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            // this triangle has no edge (inner triangle).
+                            break;    }
                     }
                     break;
                 // 8 nodes
