@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
@@ -30,6 +31,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -103,6 +105,12 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
+
+        TopTools_ListOfShape aLarg;
+        aLarg.Append(baseShape._Shape);
+        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
 
         this->Shape.setValue(shape);
         return App::DocumentObject::StdReturn;
