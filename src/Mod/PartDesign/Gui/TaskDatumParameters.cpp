@@ -896,7 +896,7 @@ bool TaskDlgDatumParameters::accept()
     //the user has to decide which option we should take if external references are used
     bool ext = false;
     for(App::DocumentObject* obj : pcDatum->Support.getValues()) {
-        if(!pcActiveBody->hasFeature(obj))
+        if(!pcActiveBody->hasFeature(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
             ext = true;
     }
     if(ext) {
@@ -915,7 +915,7 @@ bool TaskDlgDatumParameters::accept()
             int index = 0;
             for(App::DocumentObject* obj : pcDatum->Support.getValues()) {
 
-                if(!pcActiveBody->hasFeature(obj)) {
+                if(!pcActiveBody->hasFeature(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                     objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked()));
                     copies.push_back(objs.back());
                     subs[index] = "";
