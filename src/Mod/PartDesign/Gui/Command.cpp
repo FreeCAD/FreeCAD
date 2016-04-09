@@ -1254,7 +1254,7 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     cmd->openCommand((std::string("Make ") + which).c_str());
     cmd->doCommand(cmd->Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",which.c_str(), FeatName.c_str());
     cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
-    doCommand(Gui,"Gui.Selection.clearSelection()");
+    cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     finishFeature(cmd, FeatName, base);
 }
 
