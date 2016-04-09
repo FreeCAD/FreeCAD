@@ -755,8 +755,10 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
 bool QuarterWidget::viewportEvent(QEvent* event)
 {
-    //TODO: After 0.16 is out activate the code below.
-#if 1
+    // Disable the old implementation of this method as it show
+    // problems with panning and rotations when a widget item is
+    // added to the scene.
+#if 0
     if (event->type() == QEvent::Paint || event->type() == QEvent::Resize) {
         return QGraphicsView::viewportEvent(event);
     }
