@@ -1238,8 +1238,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                         indices[index++] = SO_END_FACE_INDEX;
                         // this triangle has no edge (inner triangle).
                         break;    }
-                     break;
                     }
+                    break;
                 case 8: // Hex 8
                     switch(facesHelper[l].FaceNo){
                         case 1: {
