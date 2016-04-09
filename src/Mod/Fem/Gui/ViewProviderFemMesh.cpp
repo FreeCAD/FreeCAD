@@ -1225,6 +1225,89 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                         default: assert(0);
                     }
                     break;
+                // 5 nodes
+                case 5:
+                    // pyra5 volume, one 4-node quadrangle and four 3-node triangles
+                    Base::Console().Log("    %f: Start build up triangle vector for 5 nodes object\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+                    Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
+                    switch (facesHelper[l].FaceNo){
+                        case 1: { // pyra5 volume: face 1, 4-node quadrangle
+                            Base::Console().Log("    %f: Start build up triangle vector for penta6 --> face1\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+                            Base::Console().Log("    NumNodes:%i\n",facesHelper[l].Element->NbNodes());
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap,nIdx0,nIdx1);
+                            insEdgeVec(EdgeMap,nIdx1,nIdx2);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
+                            indices[index++] = nIdx2;
+                            indices[index++] = nIdx3;
+                            indices[index++] = nIdx0;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap,nIdx2,nIdx3);
+                            insEdgeVec(EdgeMap,nIdx3,nIdx0);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
+                            break;    }
+                        case 2: { // pyra5 volume: face 2, 3-node triangle
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap,nIdx0,nIdx1);
+                            insEdgeVec(EdgeMap,nIdx1,nIdx2);
+                            insEdgeVec(EdgeMap,nIdx2,nIdx0);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
+                            break;    }
+                        case 3: { // pyra5 volume: face 3, 3-node triangle
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap,nIdx0,nIdx1);
+                            insEdgeVec(EdgeMap,nIdx1,nIdx2);
+                            insEdgeVec(EdgeMap,nIdx2,nIdx0);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
+                            break;    }
+                        case 4: { // pyra5 volume: face 4, 3-node triangle
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap,nIdx0,nIdx1);
+                            insEdgeVec(EdgeMap,nIdx1,nIdx2);
+                            insEdgeVec(EdgeMap,nIdx2,nIdx0);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
+                            break;    }
+                        case 5: { // pyra5 volume: face 5, 3-node triangle
+                            int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx2;
+                            indices[index++] = SO_END_FACE_INDEX;
+                            insEdgeVec(EdgeMap,nIdx0,nIdx1);
+                            insEdgeVec(EdgeMap,nIdx1,nIdx2);
+                            insEdgeVec(EdgeMap,nIdx2,nIdx0);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,4);
+                            break;    }
+                        default: assert(0);
+                    }
+                    break;
                 // 6 nodes
                 case 6:
                     // tria6 face
