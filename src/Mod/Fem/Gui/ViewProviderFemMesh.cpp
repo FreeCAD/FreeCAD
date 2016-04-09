@@ -1055,7 +1055,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             case 6:triangleCount += 4; break;
             // case 8:triangleCount += 6; break;  //quad8 face -> 6 triangle but no further implementation is done
             default: throw std::runtime_error("only display mode nodes is supported for this element");
-            //default:assert(0); 
+            //default:assert(0);
         }
     }
     // edge map collect and sort edges of the faces to be shown. 
@@ -1157,9 +1157,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            indices[index++] = nIdx1;   
-                            indices[index++] = nIdx0;   
-                            indices[index++] = nIdx3;   
+                            indices[index++] = nIdx1;
+                            indices[index++] = nIdx0;
+                            indices[index++] = nIdx3;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
                             insEdgeVec(EdgeMap,nIdx0,nIdx3);
