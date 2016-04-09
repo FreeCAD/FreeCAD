@@ -52,6 +52,12 @@ public:
     //visual properties, not the features. Hence setting body mode to true will hide most 
     //viewprovider properties.
     void setBodyMode(bool bodymode);
+    
+    //makes this viewprovider visible in the scene graph without chaning any properties,
+    //not the visibility one and also not the display mode. This can be used to show the 
+    //shape of this viewprovider from other viewproviders without doing anything to the 
+    //document and properties.
+    void makeTemporaryVisible(bool);
 
 protected:
     virtual bool setEdit(int ModNum);
