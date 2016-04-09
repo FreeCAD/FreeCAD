@@ -1050,12 +1050,11 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     for (int l = 0; l < FaceSize; l++){
         if (!facesHelper[l].hide)
             switch (facesHelper[l].Size){
-            case 3:triangleCount++; break;
-            case 4:triangleCount += 2; break;
-            case 6:triangleCount += 4; break;
-            // case 8:triangleCount += 6; break;  //quad8 face -> 6 triangle but no further implementation is done
-            default: throw std::runtime_error("only display mode nodes is supported for this element");
-            //default:assert(0);
+            case 3:triangleCount++; break;     // 3-node triangle face   --> 1 triangle
+            case 4:triangleCount += 2; break;  // 4-node quadrangle face --> 2 triangles
+            case 6:triangleCount += 4; break;  // 6-node triangle face   --> 4 triangles
+            case 8:triangleCount += 6; break;  // 8-node quadrangle face --> 6 triangles
+            default: throw std::runtime_error("Face with unknown node count found, only display mode nodes is supported for this element (tiangleCount)");
         }
     }
     // edge map collect and sort edges of the faces to be shown. 
@@ -1094,34 +1093,40 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     vFaceElementIdx.resize(triangleCount);
     int index=0,indexIdx=0;
     int32_t* indices = faces->coordIndex.startEditing();
-	// iterate all element faces, allways assure CLOCKWISE triangle ordering to allow backface culling
+    // iterate all not hided element faces, allways assure CLOCKWISE triangle ordering to allow backface culling
     for(int l=0; l< FaceSize;l++){
         if(! facesHelper[l].hide){
-
             switch( facesHelper[l].Element->NbNodes()){
-                case 3: // Face 3
+                // 3 nodes
+                case 3:
+                    // tria3 face
                     switch (facesHelper[l].FaceNo){
-                    case 0: { // case for quad faces
+                    case 0: { // tria3 face, 3-node triangle
+                        // prefeche all node indexes of this face
                         int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                         int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                         int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                        // create triangle number 1 ----------------------------------------------
+                        // fill in the node indexes in CLOCKWISE order
                         indices[index++] = nIdx2;
                         indices[index++] = nIdx0;
                         indices[index++] = nIdx1;
                         indices[index++] = SO_END_FACE_INDEX;
+                            // add the three edge segments for that triangle
                         insEdgeVec(EdgeMap, nIdx0, nIdx1);
                         insEdgeVec(EdgeMap, nIdx1, nIdx2);
                         insEdgeVec(EdgeMap, nIdx2, nIdx0);
-
+                        // rember the element and face number for that triangle
                         vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
 
                         break;    }
                     default: assert(0);
                     }
                     break;
-                case 4: // Tet 4
+                // 4 nodes
+                case 4:
                     switch (facesHelper[l].FaceNo){
-                    case 0: { // case for quad faces
+                    case 0: { // quad4 face
                         int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                         int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                         int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1141,7 +1146,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                         insEdgeVec(EdgeMap, nIdx3, nIdx0);
                         vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber, 0);
                         break;    }
-                    case 1: { // face 1 of Tet10
+                    case 1: { // tetra4 volume: face 1
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1154,7 +1159,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx1,nIdx2);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             break;    }
-                        case 2: {
+                        case 2: { // tetra4 volume: face 2
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
@@ -1167,7 +1172,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx1,nIdx3);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
                             break;    }
-                        case 3: {
+                        case 3: { // tetra4 volume: face 3
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
@@ -1180,7 +1185,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx2,nIdx3);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
                             break;    }
-                        case 4: {
+                        case 4: { // tetra4 volume: face 4
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
@@ -1196,9 +1201,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                         default: assert(0);
                     }
                     break;
-                case 6: // face 6
+                // 6 nodes
+                case 6:
                     switch (facesHelper[l].FaceNo){
-                    case 0: { // element face number 0
+                    case 0: { // tria6 face
                         // prefeche all node indexes of this face
                         int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                         int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1242,9 +1248,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                         break;    }
                     }
                     break;
-                case 8: // Hex 8
+                // 8 nodes
+                case 8:
                     switch(facesHelper[l].FaceNo){
-                        case 1: {
+                        case 1: { // hexa8 volume: face 1
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1264,7 +1271,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx2,nIdx3);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             break;    }
-                        case 2: {
+                        case 2: { // hexa8 volume: face 2
                             int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
                             int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
                             int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
@@ -1284,7 +1291,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx6,nIdx7);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
                             break;    }
-                        case 3: {
+                        case 3: { // hexa8 volume: face 3
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
@@ -1304,7 +1311,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx4,nIdx5);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
                             break;    }
-                        case 4: {
+                        case 4: { // hexa8 volume: face 4
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
@@ -1324,7 +1331,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx6,nIdx2);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
                             break;    }
-                        case 5: {
+                        case 5: { // hexa8 volume: face 5
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
                             int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
@@ -1344,7 +1351,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             insEdgeVec(EdgeMap,nIdx6,nIdx7);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,4);
                             break;    }
-                        case 6: {
+                        case 6: { // hexa8 volume: face 6
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
                             int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
@@ -1366,9 +1373,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             break;    }
                     }
                     break;
-                case 10: // Tet 10
+                // 10 nodes
+                case 10:
                     switch(facesHelper[l].FaceNo){
-                        case 1: { // element face number 1
+                        case 1: { // tetra10 volume: face 1
                             // prefeche all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1410,7 +1418,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             indices[index++] = SO_END_FACE_INDEX;
                             // this triangle has no edge (inner triangle).
                             break;    }
-                        case 2: {
+                        case 2: { // tetra10 volume: face 2
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
@@ -1444,7 +1452,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             indices[index++] = SO_END_FACE_INDEX;
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
                             break;    }
-                        case 3: {
+                        case 3: { // tetra10 volume: face 3
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
@@ -1478,7 +1486,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                             indices[index++] = SO_END_FACE_INDEX;
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
                             break;    }
-                        case 4: {
+                        case 4: { // tetra10 volume: face 4
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
@@ -1515,9 +1523,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                         default: assert(0);
                     }
                     break;
-                //default:assert(0); // not implemented node
-                default: throw std::runtime_error("only display mode nodes is supported for this element");
-
+                // not implemented elements
+                default: throw std::runtime_error("Element with unknown node count found (may be not implemented), only display mode nodes is supported for this element (NodeCount)");
             }
         }
     }
