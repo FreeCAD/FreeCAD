@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+#include <Inventor/nodes/SoSwitch.h>
 #endif
 
 #include <Gui/Command.h>
@@ -236,4 +237,13 @@ void ViewProvider::setBodyMode(bool bodymode) {
         
         prop->setStatus(App::Property::Hidden, bodymode);
     }
+}
+
+void ViewProvider::makeTemporaryVisible(bool onoff)
+{
+    //make sure to not use the overridden versions, as they change proeprties
+    if(onoff)
+        Gui::ViewProvider::show();
+    else 
+        Gui::ViewProvider::hide();
 }

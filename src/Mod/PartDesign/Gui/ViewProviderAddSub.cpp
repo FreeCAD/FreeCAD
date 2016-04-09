@@ -34,6 +34,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Document.h>
 #include <Base/Console.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -282,4 +283,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     if(!onoff) {
         setDisplayMaskMode(displayMode.c_str());
     }
+    
+    App::DocumentObject* obj = static_cast<PartDesign::Feature*>(getObject())->BaseFeature.getValue();
+    if(obj)
+        static_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(obj))->makeTemporaryVisible(onoff);
 }

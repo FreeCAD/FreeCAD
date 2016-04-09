@@ -621,10 +621,7 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     //make sure the relevant things are visible
     cs_visibility = vp->isVisible();
     vp->Visibility.setValue(true);
-    if(prm->BaseFeature.getValue()) {
-        Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(true); 
-    }        
-    
+      
     parameter  = new TaskDatumParameters(vp);
     Content.push_back(parameter);
     
@@ -659,12 +656,7 @@ bool TaskPrimitiveParameters::accept()
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     vp->setVisible(cs_visibility);
-    
-    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(vp_prm->getObject());
-    if(prm->BaseFeature.getValue()) {
-        Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
-    }
-    
+      
     connection.disconnect();    
     return true;
 }
@@ -679,15 +671,9 @@ bool TaskPrimitiveParameters::reject() {
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     
-    if(vp) {
+    if(vp)
         vp->setVisible(cs_visibility);
-    
-        auto* prm = static_cast<PartDesign::FeaturePrimitive*>(vp_prm->getObject());
-        if(prm->BaseFeature.getValue()) {
-            Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
-        }
-    }
-    
+       
     connection.disconnect();
     return true;
 }
