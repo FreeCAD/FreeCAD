@@ -325,11 +325,19 @@ ViewProviderPartExt::~ViewProviderPartExt()
 
 void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
+    Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
+    
     if (prop == &Deviation) {
-        VisualTouched = true;
+        if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
+            updateVisual(feature->Shape.getValue());
+        else
+            VisualTouched = true;
     }
     if (prop == &AngularDeflection) {
-        VisualTouched = true;
+        if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
+            updateVisual(feature->Shape.getValue());
+        else
+            VisualTouched = true;
     }
     if (prop == &LineWidth) {
         pcLineStyle->lineWidth = LineWidth.getValue();
@@ -479,7 +487,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else {
         // if the object was invisible and has been changed, recreate the visual
         if (prop == &Visibility && Visibility.getValue() && VisualTouched) {
-            updateVisual(dynamic_cast<Part::Feature*>(pcObject)->Shape.getValue());
+            updateVisual(feature->Shape.getValue());
             // The material has to be checked again (#0001736)
             onChanged(&DiffuseColor);
         }
