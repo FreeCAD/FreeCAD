@@ -534,7 +534,7 @@ def loadTexture(filename,size=None):
             #else:   
             #    p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
-            buffersize = p.numBytes()
+            buffersize = p.byteCount()
             numcomponents = int (float(buffersize) / ( size[0] * size[1] ))
 
             img = coin.SoSFImage()
