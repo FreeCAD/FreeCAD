@@ -69,6 +69,7 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 #ifdef Q_WS_WIN
     if (gMouseInput == this) {
         gMouseInput = 0;
+        Base::Console().Log("3Dconnexion device detached.\n");
     }
 #endif
 //mac
@@ -111,9 +112,14 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
         if (InitializeRawInput(mainWindow->winId())){
             gMouseInput = this;
             qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
+            Base::Console().Log("3Dconnexion device initialized.\n");
+        } else {
+            Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");
         }
+    } else {
+        Base::Console().Log("3Dconnexion device not attached.\n");
     }
-#endif
+#endif // #ifdef Q_WS_WIN
 //mac
 #ifdef Q_WS_MACX
     OSStatus err;
