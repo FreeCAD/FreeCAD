@@ -16,19 +16,28 @@
 ##
 env:
   global:
-   - FREECAD_RELEASE="0.16"
+   - FREECAD_RELEASE="0.17"
    - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
    - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
    - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
 
-os:
-   - linux
-   - osx
+language: cpp
+
+matrix:
+   include:
+     - os: linux
+       dist: trusty
+       sudo: required
+       compiler: clang
+     - os: osx
+       osx_image: beta-xcode6.2
+       compiler: clang
+   exclude:
+     - os: linux
+       dist: precise
 
 git:
-  depth: 800
-
-language: cpp
+  depth: 200
 
 before_install:
 - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
@@ -37,47 +46,45 @@ before_install:
 
    "linux")
        sudo apt-get update -qq
-       sudo apt-get install -y doxygen                        \
-                               libboost-dev                   \
-                               libboost-filesystem-dev        \
-                               libboost-program-options-dev   \
-                               libboost-python-dev            \
-                               libboost-regex-dev             \
-                               libboost-signals-dev           \
-                               libboost-system-dev            \
-                               libboost-thread-dev            \
-                               libcoin60                      \
-                               libcoin60-dev                  \
-                               libeigen3-dev                  \
-                               liboce-foundation-dev          \
-                               liboce-foundation1             \
-                               liboce-modeling-dev            \
-                               liboce-modeling1               \
-                               liboce-ocaf-dev                \
-                               liboce-ocaf-lite-dev           \
-                               liboce-ocaf-lite1              \
-                               liboce-ocaf1                   \
-                               liboce-visualization-dev       \
-                               liboce-visualization1          \
-                               libopencascade-modeling-6.5.0  \
-                               libpyside-dev                  \
-                               libqtcore4                     \
-                               libshiboken-dev                \
-                               libxerces-c-dev                \
-                               libxmu-dev                     \
-                               libxmu-headers                 \
-                               libxmu6                        \
-                               libxmuu-dev                    \
-                               libxmuu1                       \
-                               oce-draw                       \
-                               pyside-tools                   \
-                               python-dev                     \
-                               python-pyside                  \
-                               python-matplotlib              \
-                               qt4-dev-tools                  \
-                               qt4-qmake                      \
-                               shiboken                       \
+       sudo apt-get install -y doxygen                          \
+                               libboost1.55-dev                 \
+                               libboost-filesystem1.55-dev      \
+                               libboost-program-options1.55-dev \
+                               libboost-python1.55-dev          \
+                               libboost-regex1.55-dev           \
+                               libboost-signals1.55-dev         \
+                               libboost-system1.55-dev          \
+                               libboost-thread1.55-dev          \
+                               libcoin80                        \
+                               libcoin80-dev                    \
+                               libeigen3-dev                    \
+                               liboce-foundation-dev            \
+                               liboce-modeling-dev              \
+                               liboce-ocaf-dev                  \
+                               liboce-ocaf-lite-dev             \
+                               liboce-visualization-dev         \
+                               libpyside-dev                    \
+                               libqtcore4                       \
+                               libshiboken-dev                  \
+                               libxerces-c-dev                  \
+                               libxmu-dev                       \
+                               libxmu-headers                   \
+                               libxmu6                          \
+                               libxmuu-dev                      \
+                               libxmuu1                         \
+                               oce-draw                         \
+                               pyside-tools                     \
+                               python-dev                       \
+                               python-pyside                    \
+                               python-matplotlib                \
+                               qt4-dev-tools                    \
+                               qt4-qmake                        \
+                               shiboken                         \
                                swig
+
+       #Temporary hack - remove older Python (find a supported way to do this)
+       sudo rm -rf /opt/python/2.6.9
+       sudo rm -rf /opt/python/2.7.10
 
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
