@@ -306,7 +306,7 @@
     <message>
       <location filename="StartPage.py" line="110"/>
       <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <translation>Версии для разработчиков</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="111"/>

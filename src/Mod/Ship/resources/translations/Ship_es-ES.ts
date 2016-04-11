@@ -481,7 +481,7 @@
     <message>
       <location filename="TaskPanel.py" line="326"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>Selección del ángulo de ajuste variable de la herramienta de la curva GZ</translation>
     </message>
   </context>
   <context>

@@ -636,7 +636,7 @@
     <message>
         <location line="+1"/>
         <source>Make face from sketch</source>
-        <translation type="unfinished">Make face from sketch</translation>
+        <translation>Создать грань из эскиза</translation>
     </message>
     <message>
         <location line="+1"/>

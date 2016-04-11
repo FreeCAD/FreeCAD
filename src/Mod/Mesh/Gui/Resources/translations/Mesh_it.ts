@@ -854,7 +854,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Maximum mesh deviation</source>
-        <translation>Deviazione massima della maglia</translation>
+        <translation>Massima deviazione della maglia</translation>
     </message>
     <message>
         <source>mm</source>
@@ -1013,7 +1013,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>&lt; faces than</source>
-        <translation>Facce minori di</translation>
+        <translation>Meno facce di</translation>
     </message>
     <message>
         <source>Region</source>
@@ -1037,7 +1037,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>&gt; faces than</source>
-        <translation>Facce maggiori di</translation>
+        <translation>Più facce di</translation>
     </message>
     <message>
         <source>Region options</source>
@@ -1045,11 +1045,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation>Rispetta solo i triangoli con le normali in direzione dello schermo</translation>
+        <translation>Solo i triangoli con le normali in direzione dello schermo</translation>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation>Rispetta solo i triangoli visibili</translation>
+        <translation>Seleziona solo i triangoli visibili</translation>
     </message>
 </context>
 <context>
@@ -1115,11 +1115,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Respect only visible triangles</source>
-        <translation>Rispetta solo i triangoli visibili</translation>
+        <translation>Seleziona solo i triangoli visibili</translation>
     </message>
     <message>
         <source>Respect only triangles with normals facing screen</source>
-        <translation>Rispetta solo i triangoli con le normali in direzione dello schermo</translation>
+        <translation>Solo i triangoli con le normali in direzione dello schermo</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
@@ -1199,7 +1199,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Fill holes with maximum number of edges:</source>
-        <translation>Riempi i fori con il numero massimo di spigoli:</translation>
+        <translation>Numero massimo di spigoli per riempire i fori:</translation>
     </message>
     <message>
         <source>Binary STL (*.stl)</source>
@@ -1275,7 +1275,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Leave info mode</source>
-        <translation>Permetti modo info</translation>
+        <translation>Esci dalla modalità info</translation>
     </message>
     <message>
         <source>Index: %1</source>
@@ -1283,11 +1283,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Leave hole-filling mode</source>
-        <translation>Permetti modo riempimento fori</translation>
+        <translation>Esci dalla modalità riempimento di fori</translation>
     </message>
     <message>
         <source>Leave removal mode</source>
-        <translation>permetti modo rimozione</translation>
+        <translation>Esci dalla modalità rimozione</translation>
     </message>
     <message>
         <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>

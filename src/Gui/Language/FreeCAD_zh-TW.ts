@@ -97,7 +97,7 @@
     </message>
     <message>
         <source>Global Sensitivity:  </source>
-        <translation>全域有效地：</translation>
+        <translation>全域有效：</translation>
     </message>
     <message>
         <source>Dominant Mode</source>
@@ -942,7 +942,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Material</source>
-        <translation>材料</translation>
+        <translation>材質</translation>
     </message>
     <message>
         <source>...</source>
@@ -966,19 +966,19 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Line color:</source>
-        <translation>線條顏色：</translation>
+        <translation>線條色彩：</translation>
     </message>
     <message>
         <source>Shape color:</source>
-        <translation>形狀的顏色：</translation>
+        <translation>形狀色彩：</translation>
     </message>
     <message>
         <source>Color plot:</source>
-        <translation>彩色:</translation>
+        <translation>圖形色彩：</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation>檔案視窗:</translation>
+        <translation>檔案視窗：</translation>
     </message>
 </context>
 <context>
@@ -1120,7 +1120,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Size:</source>
-        <translation>尺寸:</translation>
+        <translation>尺寸：</translation>
     </message>
     <message>
         <source>Preview:</source>
@@ -1175,7 +1175,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Size of toolbar icons:</source>
-        <translation>工具列圖示尺寸:</translation>
+        <translation>工具列圖示尺寸：</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
@@ -1380,11 +1380,11 @@ This file already exists.</source>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
         <source>Material properties</source>
-        <translation>材料特性</translation>
+        <translation>材質特性</translation>
     </message>
     <message>
         <source>Material</source>
-        <translation>材料</translation>
+        <translation>材質</translation>
     </message>
     <message>
         <source>Diffuse color:</source>
@@ -1412,7 +1412,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Emissive color:</source>
-        <translation>自發光顏色：</translation>
+        <translation>自發光色彩：</translation>
     </message>
 </context>
 <context>
@@ -1551,11 +1551,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Path:</source>
-        <translation>路徑:</translation>
+        <translation>路徑：</translation>
     </message>
     <message>
         <source>&amp;Last modified by:</source>
-        <translation>&amp;L最後修改：</translation>
+        <translation>最後修改(&amp;L)：</translation>
     </message>
     <message>
         <source>Created &amp;by:</source>
@@ -1579,7 +1579,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>UUID:</source>
-        <translation>UUID:</translation>
+        <translation>UUID：</translation>
     </message>
     <message>
         <source>License information:</source>
@@ -1876,10 +1876,6 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 導航</translation>
-    </message>
-    <message>
         <source>Anti-aliasing</source>
         <translation>反鋸齒</translation>
     </message>
@@ -1960,7 +1956,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Mi&amp;nimum:</source>
-        <translation>&amp;N最小化:</translation>
+        <translation>最小化(&amp;n)：</translation>
     </message>
     <message>
         <source>Ma&amp;ximum:</source>
@@ -2059,7 +2055,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用做檔案創作者之名稱&lt;/p&gt;&lt;p&gt;留白則為匿名&lt;/p&gt;&lt;p&gt;您可以使用此種格式:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用做檔案創作者之名稱&lt;/p&gt;&lt;p&gt;留白則為匿名&lt;/p&gt;&lt;p&gt;您可以使用此種格式：&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
@@ -2221,7 +2217,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Back&amp;ground:</source>
-        <translation>&amp;G背景：</translation>
+        <translation>背景(&amp;G)：</translation>
     </message>
     <message>
         <source>Current</source>
@@ -2349,7 +2345,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Aspect ratio:</source>
-        <translation>長寬比:</translation>
+        <translation>長寬比：</translation>
     </message>
     <message>
         <source>&amp;Screen</source>
@@ -2475,7 +2471,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>User system:</source>
-        <translation>使用者系統:</translation>
+        <translation>使用者系統：</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
@@ -2703,6 +2699,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Finish</source>
         <translation>結束</translation>
     </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">刪除</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadDialog</name>
@@ -2736,7 +2768,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>下載失敗: %1。</translation>
+        <translation>下載失敗：%1。</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
@@ -2755,7 +2787,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation>已取消下載: %1</translation>
+        <translation>已取消下載：%1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
@@ -2763,15 +2795,15 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation>開啟儲存檔案錯誤: %1</translation>
+        <translation>開啟儲存檔案錯誤：%1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation>儲存錯誤: %1</translation>
+        <translation>儲存錯誤：%1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation>網路錯誤: %1</translation>
+        <translation>網路錯誤：%1</translation>
     </message>
     <message>
         <source>seconds</source>
@@ -2875,15 +2907,15 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Z:</source>
-        <translation>Z:</translation>
+        <translation>Z：</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation>Y:</translation>
+        <translation>Y：</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation>X:</translation>
+        <translation>X：</translation>
     </message>
 </context>
 <context>
@@ -3042,15 +3074,15 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Z:</source>
-        <translation>Z:</translation>
+        <translation>Z：</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation>Y:</translation>
+        <translation>Y：</translation>
     </message>
     <message>
         <source>X:</source>
-        <translation>X:</translation>
+        <translation>X：</translation>
     </message>
     <message>
         <source>Rotation:</source>
@@ -3429,7 +3461,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>下載失敗: %1。</translation>
+        <translation>下載失敗：%1。</translation>
     </message>
     <message>
         <source>Previous</source>
@@ -3599,7 +3631,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
+        <translation>捏(將兩指置於螢幕並分開或靠近)、轉動滑鼠中鍵或是鍵盤上的PgUp/PgDown。</translation>
     </message>
 </context>
 <context>
@@ -3701,15 +3733,15 @@ Do you want to save your changes?</source>
     <name>Gui::LocationWidget</name>
     <message>
         <source>X:</source>
-        <translation>X:</translation>
+        <translation>X：</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation>Y:</translation>
+        <translation>Y：</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation>Z:</translation>
+        <translation>Z：</translation>
     </message>
     <message>
         <source>Direction:</source>
@@ -3877,7 +3909,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-        <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
+        <translation>捏(將兩指置於螢幕並分開或靠近)、轉動滑鼠中鍵、按住ALT加上滑鼠右鍵或是鍵盤上的PgUp/PgDown。</translation>
     </message>
 </context>
 <context>
@@ -4214,7 +4246,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Document window:</source>
-        <translation>檔案視窗:</translation>
+        <translation>檔案視窗：</translation>
     </message>
 </context>
 <context>
@@ -4364,15 +4396,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>X:</source>
-        <translation>X:</translation>
+        <translation>X：</translation>
     </message>
     <message>
         <source>Y:</source>
-        <translation>Y:</translation>
+        <translation>Y：</translation>
     </message>
     <message>
         <source>Z:</source>
-        <translation>Z:</translation>
+        <translation>Z：</translation>
     </message>
     <message>
         <source>0.1 mm</source>
@@ -4796,10 +4828,6 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Navigation styles</source>
         <translation>導航模式</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 導航</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -6861,7 +6889,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;&quot;&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;

@@ -69,13 +69,13 @@
     <message>
         <location line="+1"/>
         <source>Structured point clouds</source>
-        <translation type="unfinished">Structured point clouds</translation>
+        <translation>Cтруктурирани облаци тачака</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Triangulation of structured point clouds</source>
-        <translation type="unfinished">Triangulation of structured point clouds</translation>
+        <translation>Триангулација cтруктурираних облака тачака</translation>
     </message>
     <message>
         <source>View triangulation</source>
@@ -98,13 +98,13 @@
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished">Degree</translation>
+        <translation>Cтепени</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>Контролне тачке</translation>
     </message>
     <message>
         <location line="-35"/>
@@ -124,7 +124,7 @@
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>Фактор величине</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -134,7 +134,7 @@
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished">Total Weight</translation>
+        <translation>Укупна Тежина</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -185,7 +185,7 @@
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>Параметри</translation>
     </message>
     <message>
         <location line="+6"/>

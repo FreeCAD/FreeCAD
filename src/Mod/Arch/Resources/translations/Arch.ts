@@ -2670,6 +2670,16 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <source>Import Ifc Properties in spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="415"/>
+        <source>When exporting objects without UID, the generated UID will be stored inside the FreeCAD object for reuse next time that object is exported, which gives smaller diffs between versions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="preferences-ifc.ui" line="418"/>
+        <source>Store IFC universal ID in FreeCAD objects</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>

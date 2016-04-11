@@ -333,10 +333,13 @@ void StdCmdMergeProjects::activated(int iMsg)
             return;
         }
 
+        doc->openTransaction("Merge project");
         Base::FileInfo fi((const char*)project.toUtf8());
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments md(doc);
         md.importObjects(str);
+        str.close();
+        doc->commitTransaction();
     }
 }
 

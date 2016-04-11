@@ -124,12 +124,12 @@ http://www.freecadweb.org/wiki/index.php?title=Dxf_Importer_Install</translation
     <message>
       <location filename="DraftTools.py" line="4289"/>
       <source>Clone</source>
-      <translation>複製</translation>
+      <translation>完全複製</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4290"/>
       <source>Clones the selected object(s)</source>
-      <translation>複製所選物件</translation>
+      <translation>完全複製所選物件</translation>
     </message>
   </context>
   <context>
@@ -1027,7 +1027,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-draft.ui" line="57"/>
       <source>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</source>
-      <translation>此為底圖模組之使用者介面模式,可執行:工具列模式將含有所有底圖設定於各別之工具列,工作列模式則對所有使用者介面採用FreeCAD工作視圖</translation>
+      <translation>此為底圖模組之使用者介面模式，可執行：工具列模式將含有所有底圖設定於各別之工具列，工作列模式則對所有使用者介面採用FreeCAD工作視圖</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="70"/>
@@ -1492,7 +1492,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="414"/>
       <source>Max Spline Segment: </source>
-      <translation>最大Spline片段:</translation>
+      <translation>最大Spline片段：</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="120"/>
@@ -1507,7 +1507,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;勾選時, 您將允許FreeCAD下載並更新&lt;/p&gt;&lt;p&gt;匯入及匯出DXF所需之元件，您也可以手動&lt;/p&gt;&lt;p&gt;至https://github.com/yorikvanhavre/Draft-dxf-importer下載&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;勾選時， 您將允許FreeCAD下載並更新&lt;/p&gt;&lt;p&gt;匯入及匯出DXF所需之元件，您也可以手動&lt;/p&gt;&lt;p&gt;至https://github.com/yorikvanhavre/Draft-dxf-importer下載&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="69"/>
@@ -1737,7 +1737,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="99"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation type="unfinished">Note: Not all the options below are used by the new importer yet</translation>
+      <translation>請注意：並非下列所有選項皆可被新的匯入功能所使用</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="26"/>
@@ -1747,7 +1747,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="preferences-dxf.ui" line="58"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation type="unfinished">Automatic update (legacy importer only)</translation>
+      <translation>自動更新(僅適用於舊的匯入器)</translation>
     </message>
   </context>
   <context>
@@ -2018,7 +2018,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="676"/>
       <source>Full path to font file:</source>
-      <translation>字型檔完整路徑:</translation>
+      <translation>字型檔完整路徑：</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="677"/>
@@ -2195,7 +2195,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="2889"/>
       <source>Found groups: closing each open object inside
 </source>
-      <translation>找到群組:封閉內部各開放物件</translation>
+      <translation>找到群組：封閉內部各開放物件</translation>
     </message>
     <message>
       <location filename="Draft.py" line="2894"/>
@@ -2214,19 +2214,19 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="2907"/>
       <source>Found 2 objects: fusing them
 </source>
-      <translation>找到兩個物件:將其融合</translation>
+      <translation>找到兩個物件：將其融合</translation>
     </message>
     <message>
       <location filename="Draft.py" line="2922"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
-      <translation>找到一個未參數化物件:編輯此物件</translation>
+      <translation>找到一個未參數化物件：編輯此物件</translation>
     </message>
     <message>
       <location filename="Draft.py" line="2953"/>
       <source>Found 1 open wire: closing it
 </source>
-      <translation>找到一開放線條:將其封閉</translation>
+      <translation>找到一開放線條：將其封閉</translation>
     </message>
     <message>
       <location filename="Draft.py" line="2958"/>
@@ -2257,25 +2257,25 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="3140"/>
       <source>Found 1 parametric object: breaking its dependencies
 </source>
-      <translation>找到一參數化物件:分離其相依性</translation>
+      <translation>找到一參數化物件：分離其相依性</translation>
     </message>
     <message>
       <location filename="Draft.py" line="3147"/>
       <source>Found 2 objects: subtracting them
 </source>
-      <translation>找到兩個物件:取其差集</translation>
+      <translation>找到兩個物件：取其差集</translation>
     </message>
     <message>
       <location filename="Draft.py" line="3154"/>
       <source>Found several faces: splitting them
 </source>
-      <translation>找到數個面:將其分割</translation>
+      <translation>找到數個面：將其分割</translation>
     </message>
     <message>
       <location filename="Draft.py" line="3159"/>
       <source>Found several objects: subtracting them from the first one
 </source>
-      <translation>找到數個物件:由第一個進行差集</translation>
+      <translation>找到數個物件：由第一個進行差集</translation>
     </message>
     <message>
       <location filename="Draft.py" line="3164"/>
@@ -2423,7 +2423,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="1146"/>
       <source>Pick aperture:
 </source>
-      <translation>選擇孔徑:</translation>
+      <translation>選擇孔徑：</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="1168"/>
@@ -2709,7 +2709,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="4297"/>
       <source>Select an object to clone
 </source>
-      <translation>選擇一個要複製的物件</translation>
+      <translation>選擇一個要完全複製的物件</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4368"/>

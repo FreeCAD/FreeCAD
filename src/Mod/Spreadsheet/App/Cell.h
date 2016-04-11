@@ -47,12 +47,13 @@ class PropertySheet;
 class DisplayUnit;
 
 class SpreadsheetExport Cell {
-
+private:
+    Cell(const Cell & other);
 public:
 
     Cell(const App::CellAddress & _address, PropertySheet * _owner);
 
-    Cell(const Cell & other);
+    Cell(PropertySheet * _owner, const Cell & other);
 
     Cell& operator=( const Cell& rhs );
 

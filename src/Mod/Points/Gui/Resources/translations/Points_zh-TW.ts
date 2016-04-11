@@ -106,12 +106,12 @@
     <message>
         <location filename="../../DlgPointsRead.ui" line="+14"/>
         <source>ASCII points import</source>
-        <translation>匯入ASCII點</translation>
+        <translation>匯入 ASCII 點</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Template:</source>
-        <translation>模板:</translation>
+        <translation>模板：</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -131,12 +131,12 @@
     <message>
         <location line="-21"/>
         <source>Cluster by lines starting with:</source>
-        <translation>群組開始由行:</translation>
+        <translation>群組開始由行：</translation>
     </message>
     <message>
         <location line="-7"/>
         <source>Ignore lines starting with:</source>
-        <translation>忽略開始由行:</translation>
+        <translation>忽略開始由行：</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -146,7 +146,7 @@
     <message>
         <location line="+78"/>
         <source>Number separator:</source>
-        <translation>分隔符號數量</translation>
+        <translation>分隔符號數量：</translation>
     </message>
     <message>
         <location line="+98"/>
@@ -158,7 +158,7 @@
         <location line="+7"/>
         <location line="+7"/>
         <source>Next block:</source>
-        <translation>下一個區塊:</translation>
+        <translation>下一個區塊：</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -243,7 +243,7 @@
     <message>
         <location line="+231"/>
         <source>Number of previewed lines:</source>
-        <translation>預覽行數</translation>
+        <translation>預覽行數：</translation>
     </message>
 </context>
 <context>

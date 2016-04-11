@@ -1879,10 +1879,6 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">Навигация в стиле %1</translation>
-    </message>
-    <message>
         <source>Anti-aliasing</source>
         <translation>Сглаживание</translation>
     </message>
@@ -2707,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Finish</source>
         <translation>Завершить</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Удалить</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4340,7 +4372,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Ошибка при открытии файла</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
@@ -4806,10 +4838,6 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Navigation styles</source>
         <translation>Стили навигации</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">Навигация в стиле %1</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -6426,7 +6454,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
+        <translation>Режим стерео - красный/синий</translation>
     </message>
 </context>
 <context>

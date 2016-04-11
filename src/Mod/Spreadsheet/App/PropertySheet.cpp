@@ -212,13 +212,20 @@ PropertySheet::PropertySheet(const PropertySheet &other)
     , mergedCells(other.mergedCells)
     , owner(other.owner)
     , propertyNameToCellMap(other.propertyNameToCellMap)
+    , cellToPropertyNameMap(other.cellToPropertyNameMap)
     , documentObjectToCellMap(other.documentObjectToCellMap)
+    , cellToDocumentObjectMap(other.cellToDocumentObjectMap)
+    , docDeps(other.docDeps)
+    , documentObjectName(other.documentObjectName)
+    , documentName(other.documentName)
+    , aliasProp(other.aliasProp)
+    , revAliasProp(other.revAliasProp)
 {
     std::map<CellAddress, Cell* >::const_iterator i = other.data.begin();
 
     /* Copy cells */
     while (i != other.data.end()) {
-        data[i->first] = new Cell(*i->second);
+        data[i->first] = new Cell(this, *i->second);
         ++i;
     }
 }
@@ -256,7 +263,7 @@ void PropertySheet::Paste(const Property &from)
             recomputeDependencies(ifrom->first);
         }
         else {
-            data[ifrom->first] = new Cell(*(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
+            data[ifrom->first] = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
         }
 
         /* Set dirty */

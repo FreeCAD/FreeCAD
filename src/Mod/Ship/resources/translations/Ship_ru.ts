@@ -315,7 +315,7 @@
     <message>
       <location filename="Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>Слишком большой вес! Недостаточное водоизмещение</translation>
     </message>
     <message>
       <location filename="Tools.py" line="232"/>

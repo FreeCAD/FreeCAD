@@ -1881,10 +1881,6 @@ Kérem válasszon másik könyvtárat.</translation>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigáció</translation>
-    </message>
-    <message>
         <source>Anti-aliasing</source>
         <translation>Ellen-Élsimítás</translation>
     </message>
@@ -2708,6 +2704,42 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     <message>
         <source>Finish</source>
         <translation>Befejezés</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Törlés</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4815,10 +4847,6 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
         <source>Navigation styles</source>
         <translation>Navigációs stílusok</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="obsolete">%1 navigáció</translation>
     </message>
     <message>
         <source>Move annotation</source>

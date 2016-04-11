@@ -199,7 +199,7 @@
     <message>
       <location filename="InitGui.py" line="86"/>
       <source>Partial Commands</source>
-      <translation type="unfinished">Partial Commands</translation>
+      <translation>Частичные команды</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="87"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="PathFixture.py" line="119"/>
       <source>Fixture</source>
-      <translation type="unfinished">Fixture</translation>
+      <translation>Крепление</translation>
     </message>
     <message>
       <location filename="PathFixture.py" line="121"/>

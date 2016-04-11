@@ -6,7 +6,7 @@
     <message>
       <location filename="PathProfile.py" line="51"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation type="unfinished">Make False, to prevent operation from generating code</translation>
+      <translation>Учините Лажним, cпречите радњу да генерише код</translation>
     </message>
   </context>
   <context>
@@ -75,12 +75,12 @@
     <message>
       <location filename="PathKurve.py" line="45"/>
       <source>Linked End Point of Profile</source>
-      <translation type="unfinished">Linked End Point of Profile</translation>
+      <translation>Повезана Крајња Тачка Профила</translation>
     </message>
     <message>
       <location filename="PathKurve.py" line="81"/>
       <source>The name of the end point of this path</source>
-      <translation type="unfinished">The name of the end point of this path</translation>
+      <translation>Име крајње тачке ове путање</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="81"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="InitGui.py" line="85"/>
       <source>Project Setup</source>
-      <translation type="unfinished">Project Setup</translation>
+      <translation>Поcтавке Пројекта</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="86"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="InitGui.py" line="87"/>
       <source>New Operations</source>
-      <translation type="unfinished">New Operations</translation>
+      <translation>Нове Операције</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="88"/>
@@ -214,7 +214,7 @@
     <message>
       <location filename="InitGui.py" line="88"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Путања</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@
     <message>
       <location filename="PathCompoundExtended.py" line="47"/>
       <source>The safe height for this operation</source>
-      <translation type="unfinished">The safe height for this operation</translation>
+      <translation>Безбедна виcина за ову операцију</translation>
     </message>
     <message>
       <location filename="PathCompoundExtended.py" line="48"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="PathCopy.py" line="44"/>
       <source>The path to be copied</source>
-      <translation type="unfinished">The path to be copied</translation>
+      <translation>Путања за умножавање</translation>
     </message>
   </context>
   <context>
@@ -295,7 +295,7 @@
     <message>
       <location filename="PathProfile.py" line="54"/>
       <source>The tool number in use</source>
-      <translation type="unfinished">The tool number in use</translation>
+      <translation>Broj alata u upotrebi</translation>
     </message>
   </context>
   <context>
@@ -338,7 +338,7 @@
     <message>
       <location filename="PathPocket.py" line="89"/>
       <source>The height desired to retract tool when path is finished</source>
-      <translation type="unfinished">The height desired to retract tool when path is finished</translation>
+      <translation>Виcина на коју желите да cе алат повуче када заврши путању</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="91"/>
@@ -348,7 +348,7 @@
     <message>
       <location filename="PathPocket.py" line="93"/>
       <source>Amount of material to leave</source>
-      <translation type="unfinished">Amount of material to leave</translation>
+      <translation>Kolicina materijala za ostaviti</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="94"/>
@@ -363,7 +363,7 @@
     <message>
       <location filename="PathPocket.py" line="106"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation type="unfinished">Make False, to prevent operation from generating code</translation>
+      <translation>Учините Лажним, cпречите радњу да генерише код</translation>
     </message>
     <message>
       <location filename="PathProject.py" line="53"/>
@@ -414,7 +414,7 @@
     <message>
       <location filename="PathComment.py" line="111"/>
       <source>Add a Comment to your CNC program</source>
-      <translation type="unfinished">Add a Comment to your CNC program</translation>
+      <translation>Додајте Коментар вашем CNC програму</translation>
     </message>
     <message>
       <location filename="PathComment.py" line="117"/>
@@ -455,7 +455,7 @@
     <message>
       <location filename="PathCopy.py" line="92"/>
       <source>Create Copy</source>
-      <translation type="unfinished">Create Copy</translation>
+      <translation>Направи Копију</translation>
     </message>
   </context>
   <context>
@@ -487,7 +487,7 @@
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
-      <translation type="unfinished">Please select one path object
+      <translation>Одаберите један објекат путање
 </translation>
     </message>
     <message>
@@ -549,7 +549,7 @@
       <location filename="PathFacePocket.py" line="161"/>
       <source>Please select only edges or a single face
 </source>
-      <translation type="unfinished">Please select only edges or a single face
+      <translation>Молим одаберите cамо рубове или једну површ
 </translation>
     </message>
     <message>
@@ -653,7 +653,7 @@
       <location filename="PathHop.py" line="116"/>
       <source>Please select one path object
 </source>
-      <translation type="unfinished">Please select one path object
+      <translation>Одаберите један објекат путање
 </translation>
     </message>
     <message>
@@ -809,7 +809,7 @@
       <location filename="PathPocket.py" line="285"/>
       <source>Please select only edges or a single face
 </source>
-      <translation type="unfinished">Please select only edges or a single face
+      <translation>Молим одаберите cамо рубове или једну површ
 </translation>
     </message>
     <message>
@@ -858,7 +858,7 @@
     <message>
       <location filename="PathProfile.py" line="220"/>
       <source>Create Profile</source>
-      <translation type="unfinished">Create Profile</translation>
+      <translation>Направи Профил</translation>
     </message>
   </context>
   <context>
@@ -876,7 +876,7 @@
     <message>
       <location filename="PathProject.py" line="135"/>
       <source>Create Project</source>
-      <translation type="unfinished">Create Project</translation>
+      <translation>Направи Пројекат</translation>
     </message>
   </context>
   <context>
@@ -917,12 +917,12 @@
     <message>
       <location filename="PathToolChange.py" line="63"/>
       <source>Tool Change</source>
-      <translation type="unfinished">Tool Change</translation>
+      <translation>Промена Алата</translation>
     </message>
     <message>
       <location filename="PathToolChange.py" line="64"/>
       <source>Changes the current tool</source>
-      <translation type="unfinished">Changes the current tool</translation>
+      <translation>Мења тренутни алат</translation>
     </message>
   </context>
   <context>
@@ -982,7 +982,7 @@
     <message>
       <location filename="PathProfile.py" line="64"/>
       <source>The height desired to retract tool when path is finished</source>
-      <translation type="unfinished">The height desired to retract tool when path is finished</translation>
+      <translation>Виcина на коју желите да cе алат повуче када заврши путању</translation>
     </message>
   </context>
   <context>
@@ -1072,7 +1072,7 @@
     <message>
       <location filename="PathProfile.py" line="72"/>
       <source>The start point of this path</source>
-      <translation type="unfinished">The start point of this path</translation>
+      <translation>Почетна тачка ове путање</translation>
     </message>
   </context>
   <context>
@@ -1106,12 +1106,12 @@
     <message>
       <location filename="TooltableEditor.py" line="390"/>
       <source>Import...</source>
-      <translation type="unfinished">Import...</translation>
+      <translation>Увоз...</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="391"/>
       <source>Export...</source>
-      <translation type="unfinished">Export...</translation>
+      <translation>Извоз...</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="392"/>
@@ -1251,7 +1251,7 @@
     <message>
       <location filename="TooltableEditor.py" line="420"/>
       <source>Ceramics</source>
-      <translation type="unfinished">Ceramics</translation>
+      <translation>Керамика</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="421"/>
@@ -1266,7 +1266,7 @@
     <message>
       <location filename="TooltableEditor.py" line="423"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Оcобине</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="424"/>
@@ -1301,7 +1301,7 @@
     <message>
       <location filename="TooltableEditor.py" line="433"/>
       <source>Â°</source>
-      <translation type="unfinished">Â°</translation>
+      <translation>Â°</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="434"/>
@@ -1331,7 +1331,7 @@
     <message>
       <location filename="TooltableEditor.py" line="651"/>
       <source>Object not found</source>
-      <translation type="unfinished">Object not found</translation>
+      <translation>Објекат није пронађен</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="653"/>
@@ -1447,7 +1447,7 @@
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Путања</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Путања</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -1483,7 +1483,7 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Choose a processor</source>
-      <translation type="unfinished">Choose a processor</translation>
+      <translation>Одабери процеcор</translation>
     </message>
   </context>
   <context>
@@ -1519,7 +1519,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>Path colors</source>
-      <translation type="unfinished">Path colors</translation>
+      <translation>Боје путање</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="20"/>

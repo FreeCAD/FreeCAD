@@ -54,7 +54,7 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation>最大邊之長度:</translation>
+        <translation>最大邊之長度：</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -94,17 +94,17 @@
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation>網格尺寸分級:</translation>
+        <translation>網格尺寸分級：</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation>每個邊多少元素:</translation>
+        <translation>每個邊多少元素：</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation>每個曲率半徑多少元素:</translation>
+        <translation>每個曲率半徑多少元素：</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -128,7 +128,7 @@
     <message>
         <location line="-246"/>
         <source>Surface deviation:</source>
-        <translation>表面偏差:</translation>
+        <translation>表面偏差：</translation>
     </message>
     <message>
         <source>Max. edge length:</source>

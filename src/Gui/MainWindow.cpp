@@ -1072,17 +1072,21 @@ void MainWindow::loadWindowSettings()
 {
     QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
     QString application = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-    QString version = QString::fromLatin1(App::Application::Config()["ExeVersion"].c_str());
     int major = (QT_VERSION >> 0x10) & 0xff;
     int minor = (QT_VERSION >> 0x08) & 0xff;
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    config.beginGroup(version);
-    config.beginGroup(qtver);
-    this->resize(config.value(QString::fromLatin1("Size"), this->size()).toSize());
-    QPoint pos = config.value(QString::fromLatin1("Position"), this->pos()).toPoint();
     QRect rect = QApplication::desktop()->availableGeometry();
+    int maxHeight = rect.height();
+    int maxWidth = rect.width();
+
+    config.beginGroup(qtver);
+    QPoint pos = config.value(QString::fromLatin1("Position"), this->pos()).toPoint();
+    maxWidth -= pos.x();
+    maxHeight -= pos.y();
+    this->resize(config.value(QString::fromLatin1("Size"), QSize(maxWidth, maxHeight)).toSize());
+
     int x1,x2,y1,y2;
     // make sure that the main window is not totally out of the visible rectangle
     rect.getCoords(&x1, &y1, &x2, &y2);
@@ -1101,7 +1105,6 @@ void MainWindow::loadWindowSettings()
 
     statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
     config.endGroup();
-    config.endGroup();
 
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
@@ -1111,20 +1114,17 @@ void MainWindow::saveWindowSettings()
 {
     QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
     QString application = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-    QString version = QString::fromLatin1(App::Application::Config()["ExeVersion"].c_str());
     int major = (QT_VERSION >> 0x10) & 0xff;
     int minor = (QT_VERSION >> 0x08) & 0xff;
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    config.beginGroup(version);
     config.beginGroup(qtver);
     config.setValue(QString::fromLatin1("Size"), this->size());
     config.setValue(QString::fromLatin1("Position"), this->pos());
     config.setValue(QString::fromLatin1("Maximized"), this->isMaximized());
     config.setValue(QString::fromLatin1("MainWindowState"), this->saveState());
     config.setValue(QString::fromLatin1("StatusBar"), this->statusBar()->isVisible());
-    config.endGroup();
     config.endGroup();
 
     DockWindowManager::instance()->saveState();

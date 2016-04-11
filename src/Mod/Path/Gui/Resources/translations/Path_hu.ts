@@ -1116,7 +1116,7 @@
     <message>
       <location filename="TooltableEditor.py" line="392"/>
       <source>Slot</source>
-      <translation>Horony</translation>
+      <translation>Szerszám száma</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="393"/>
