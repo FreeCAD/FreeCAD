@@ -249,7 +249,9 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     }
     else if (PyTuple_Check(value) || PyList_Check(value)) {
         Py::Sequence seq(value);
-        if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
+        if(seq.size() == 0)
+            setValue(NULL);
+        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
             DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
