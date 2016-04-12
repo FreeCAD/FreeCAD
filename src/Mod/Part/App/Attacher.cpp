@@ -985,7 +985,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
 
             Handle (Geom_Curve) hCurve = BRep_Tool::Curve(path, u1, u2);
 
-            GeomAPI_ProjectPointOnCurve projector = GeomAPI_ProjectPointOnCurve (p_in, hCurve);
+            GeomAPI_ProjectPointOnCurve projector (p_in, hCurve);
             u = projector.LowerDistanceParameter();
         } else {
             u = u1  +  this->attachParameter * (u2 - u1);
