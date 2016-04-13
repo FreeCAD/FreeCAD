@@ -91,26 +91,11 @@ private:
         if (! PyArg_ParseTuple(args.ptr(), "ss|s",&HtmlCode,&BaseUrl,&TabName))
             throw Py::Exception();
 
-        QMdiSubWindow* browserView = 0;
-        QMdiArea* mdiArea = Gui::getMainWindow()->findChild<QMdiArea*>();
-        QList<QMdiSubWindow *> mdiViews = mdiArea->subWindowList();
-        for (QList<QMdiSubWindow *>::iterator it = mdiViews.begin(); it != mdiViews.end(); ++it) {
-            if (qobject_cast<WebGui::BrowserView*>((*it)->widget())) {
-                browserView = *it;
-                break;
-            }
-        }
-
-        if (!browserView) {
-            WebGui::BrowserView* pcBrowserView = 0;
-            pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
-            pcBrowserView->resize(400, 300);
-            pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)),QString::fromUtf8(TabName));
-            Gui::getMainWindow()->addWindow(pcBrowserView);
-        }
-        else {
-            mdiArea->setActiveSubWindow(browserView);
-        }
+        WebGui::BrowserView* pcBrowserView = 0;
+        pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
+        pcBrowserView->resize(400, 300);
+        pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)),QString::fromUtf8(TabName));
+        Gui::getMainWindow()->addWindow(pcBrowserView);
 
         return Py::None();
     }
