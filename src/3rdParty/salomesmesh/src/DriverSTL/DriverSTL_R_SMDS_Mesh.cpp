@@ -157,9 +157,6 @@ Driver_Mesh::Status DriverSTL_R_SMDS_Mesh::Perform()
 
 // static methods
 
-#pragma warning(push)
-#pragma warning(disable : 4805)
-
 static Standard_Real readFloat(OSD_File& theFile)
 {
   union {
@@ -179,7 +176,6 @@ static Standard_Real readFloat(OSD_File& theFile)
 
   return u.f;
 }
-#pragma warning(pop)
 
 static SMDS_MeshNode* addNode(const gp_Pnt& P,
                               DriverSTL_DataMapOfPntNodePtr& uniqnodes,
