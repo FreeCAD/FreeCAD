@@ -1088,22 +1088,14 @@ Py::Object PyResource::value(const Py::Tuple& args)
             int nSize = str.count();
             Py::List slist(nSize);
             for (int i=0; i<nSize;++i) {
-#if PY_MAJOR_VERSION >= 3
-                slist.setItem(i, Py::Unicode(str[i].toLatin1()));
-#else
                 slist.setItem(i, Py::String(str[i].toLatin1()));
-#endif
             }
             item = slist;
         }   break;
     case QVariant::ByteArray:
         break;
     case QVariant::String:
-#if PY_MAJOR_VERSION >= 3
-        item = Py::Unicode(v.toString().toLatin1());
-#else
         item = Py::String(v.toString().toLatin1());
-#endif
         break;
     case QVariant::Double:
         item = Py::Float(v.toDouble());

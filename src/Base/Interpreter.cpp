@@ -115,7 +115,16 @@ SystemExitException::SystemExitException()
            Py_DECREF(value);
            value = code;
         }
-
+#if PY_MAJOR_VERSION >= 3
+        if (PyLong_Check(value)) {
+            errCode = PyLong_AsLong(value);
+        }
+        else {
+            const char *str = PyUnicode_AsUTF8(value);
+            if (str)
+                errMsg = errMsg + ": " + str;
+        }
+#else
         if (PyInt_Check(value)) {
             errCode = PyInt_AsLong(value);
         }
@@ -124,6 +133,7 @@ SystemExitException::SystemExitException()
             if (str)
                 errMsg = errMsg + ": " + str;
         }
+#endif
     }
 
     _sErrMsg  = errMsg;

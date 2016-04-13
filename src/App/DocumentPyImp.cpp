@@ -334,6 +334,15 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
     if (!PyArg_ParseTuple(args, "|O",&value))
         return NULL;    // NULL triggers exception
     std::string cmd;
+
+
+#if PY_MAJOR_VERSION >= 3
+    if (PyUnicode_Check(value)) {
+        PyObject* unicode = PyUnicode_AsLatin1String(value);
+        cmd = PyUnicode_AsUTF8(unicode);
+        Py_DECREF(unicode);
+    }
+#else
     if (PyUnicode_Check(value)) {
         PyObject* unicode = PyUnicode_AsLatin1String(value);
         cmd = PyString_AsString(unicode);
@@ -342,7 +351,8 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
     else if (PyString_Check(value)) {
         cmd = PyString_AsString(value);
     }
-    getDocumentPtr()->openTransaction(cmd.c_str());
+#endif
+    getDocumentPtr()->openTransaction(cmd.c_str()); 
     Py_Return; 
 }
 

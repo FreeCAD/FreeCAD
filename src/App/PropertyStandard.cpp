@@ -1258,7 +1258,7 @@ void PropertyFloatList::setPyObject(PyObject *value)
             PyObject* item = PyList_GetItem(value, i);
             if (PyFloat_Check(item)) {
                 values[i] = PyFloat_AsDouble(item);
-#if PYTHON_VERSION_MAJOR >= 3
+#if PY_MAJOR_VERSION >= 3
             } else if (PyLong_Check(item)) {
                 values[i] = static_cast<double>(PyLong_AsLong(item));
 #else
