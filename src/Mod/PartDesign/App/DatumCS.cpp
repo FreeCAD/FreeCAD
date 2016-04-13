@@ -31,6 +31,7 @@
 #include "DatumCS.h"
 
 using namespace PartDesign;
+using namespace Attacher;
 
 
 // ============================================================================

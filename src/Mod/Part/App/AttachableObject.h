@@ -42,8 +42,6 @@
 
 #include <gp_Vec.hxx>
 
-using namespace Attacher;
-
 namespace Part
 {
 
@@ -69,8 +67,8 @@ public:
      * destroyed, or when a new attacher is set. The default attacher is AttachEngine3D.
      * @param attacher. AttachableObject takes ownership and will delete it eventually.
      */
-    virtual void setAttacher(AttachEngine* attacher);
-    AttachEngine &attacher(void) const {return *_attacher;}
+    virtual void setAttacher(Attacher::AttachEngine* attacher);
+    Attacher::AttachEngine &attacher(void) const {return *_attacher;}
 
     /// if the 2DObject lies on the Face of an other object this links to it
     App::PropertyLinkSubList    Support;
@@ -101,7 +99,7 @@ public:
     void updateAttacherVals();
 
 private:
-    AttachEngine* _attacher;
+    Attacher::AttachEngine* _attacher;
 };
 
 

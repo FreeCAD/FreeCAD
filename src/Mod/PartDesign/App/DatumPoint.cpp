@@ -72,6 +72,7 @@
 #endif
 
 using namespace PartDesign;
+using namespace Attacher;
 
 // ============================================================================
 

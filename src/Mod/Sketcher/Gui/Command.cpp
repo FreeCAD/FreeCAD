@@ -56,6 +56,7 @@
 using namespace std;
 using namespace SketcherGui;
 using namespace Part;
+using namespace Attacher;
 
 
 namespace SketcherGui {
