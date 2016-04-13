@@ -141,7 +141,7 @@ struct DocumentP
     std::map<int,Transaction*> mTransactions;
     std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
-    bool undoing; ///< document in the midle of undo or redo
+    bool undoing; ///< document in the middle of undo or redo
     bool closable;
     bool keepTrailingDigits;
     int iUndoMode;
