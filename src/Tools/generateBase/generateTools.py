@@ -80,7 +80,10 @@ class copier:
                 exec(stat, self.globals, self.locals)
                 i=j+1
             else:       # normal line, just copy with substitution
-                self.ouf.write(self.regex.sub(repl,line).encode("utf8"))
+                try:
+                    self.ouf.write(self.regex.sub(repl, line).encode("utf8"))
+                except TypeError:
+                    self.ouf.write(self.regex.sub(repl, line))
                 i=i+1
     def __init__(self, regex=_never, dict={},
             restat=_never, restend=_never, recont=_never, 

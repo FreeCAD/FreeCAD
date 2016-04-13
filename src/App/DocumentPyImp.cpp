@@ -338,9 +338,7 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
 
 #if PY_MAJOR_VERSION >= 3
     if (PyUnicode_Check(value)) {
-        PyObject* unicode = PyUnicode_AsLatin1String(value);
-        cmd = PyUnicode_AsUTF8(unicode);
-        Py_DECREF(unicode);
+        cmd = PyUnicode_AsUTF8(value);
     }
 #else
     if (PyUnicode_Check(value)) {
