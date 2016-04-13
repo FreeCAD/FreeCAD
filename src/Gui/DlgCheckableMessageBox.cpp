@@ -48,16 +48,15 @@ namespace Gui {
 namespace Dialog {
 QByteArray toParamEntry(QString name)
 {
-    QString tmp = QString::fromLatin1(name.toLatin1());
-    name.replace(QString::fromLatin1(" "),QString::fromLatin1("_"));
+    name.replace(QString::fromLatin1(" "), QString::fromLatin1("_"));
     return name.toLatin1();
 }
 
-void DlgCheckableMessageBox::showMessage(QString header, QString message, bool check,QString checkText )
+void DlgCheckableMessageBox::showMessage(const QString& header, const QString& message, bool check, const QString& checkText)
 {
     bool checked = App::GetApplication().GetParameterGroupByPath( QByteArray("User parameter:BaseApp/CheckMessages"))->GetBool(toParamEntry(header));
 
-    if(!checked){
+    if (!checked) {
         DlgCheckableMessageBox *mb = new DlgCheckableMessageBox(Gui::getMainWindow());
         mb->setWindowTitle(header);
         mb->setIconPixmap(QMessageBox::standardIcon(QMessageBox::Warning));
@@ -97,11 +96,11 @@ DlgCheckableMessageBox::~DlgCheckableMessageBox()
     delete m_d;
 }
 
-void DlgCheckableMessageBox::setPrefEntry( const QString& entry )
+void DlgCheckableMessageBox::setPrefEntry(const QString& entry)
 {
-  paramEntry = toParamEntry(entry);
-  bool checked = App::GetApplication().GetParameterGroupByPath( QByteArray("User parameter:BaseApp/CheckMessages"))->GetBool(paramEntry);
-  setChecked(checked);
+    paramEntry = toParamEntry(entry);
+    bool checked = App::GetApplication().GetParameterGroupByPath(QByteArray("User parameter:BaseApp/CheckMessages"))->GetBool(paramEntry);
+    setChecked(checked);
 }
 
 

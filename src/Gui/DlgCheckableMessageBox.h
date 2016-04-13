@@ -51,7 +51,7 @@ class GuiExport DlgCheckableMessageBox : public QDialog
     Q_PROPERTY(QString text READ text WRITE setText)
     Q_PROPERTY(QPixmap iconPixmap READ iconPixmap WRITE setIconPixmap)
     Q_PROPERTY(bool isChecked READ isChecked WRITE setChecked)
-    Q_PROPERTY(QString prefEntry WRITE setPrefEntry)
+  //Q_PROPERTY(QString prefEntry WRITE setPrefEntry) // Must have a READ accessor!
     Q_PROPERTY(QString checkBoxText READ checkBoxText WRITE setCheckBoxText)
     Q_PROPERTY(QDialogButtonBox::StandardButtons buttons READ standardButtons WRITE setStandardButtons)
     Q_PROPERTY(QDialogButtonBox::StandardButton defaultButton READ defaultButton WRITE setDefaultButton)
@@ -71,7 +71,7 @@ public:
     QString text() const;
     void setText(const QString &);
 
-    void setPrefEntry( const QString& entry );
+    void setPrefEntry(const QString& entry);
 
     virtual void accept();
     virtual void reject();
@@ -99,8 +99,8 @@ public:
    // Conversion convenience
    static QMessageBox::StandardButton dialogButtonBoxToMessageBoxButton(QDialogButtonBox::StandardButton);
 
-   // conviniant show method
-   static void showMessage(QString haeder, QString message, bool check=false,QString checkText = QString::fromLatin1("Don't show me again"));
+   // convenient show method
+   static void showMessage(const QString& haeder, const QString& message, bool check=false, const QString& checkText = QString::fromLatin1("Don't show me again"));
 
 private Q_SLOTS:
    void slotClicked(QAbstractButton *b);
