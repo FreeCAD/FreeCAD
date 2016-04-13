@@ -278,14 +278,14 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
     eMapMode bestMatchType = mmDeactivated;
     int bestMatchScore = -1;
     msg = srNoModesFit;
-    for(int iMode = 0  ;  iMode < this->modeRefTypes.size()  ;  ++iMode){
+    for (std::size_t iMode = 0; iMode < this->modeRefTypes.size(); ++iMode) {
         if (! this->modeEnabled[iMode])
             continue;
         const refTypeStringList &listStrings = modeRefTypes[iMode];
-        for( int iStr = 0  ;  iStr < listStrings.size()  ;  ++iStr ){
+        for (std::size_t iStr = 0; iStr < listStrings.size(); ++iStr) {
             int score = 1; //-1 = topo incompatible, 0 = topo compatible, geom incompatible; 1+ = compatible (the higher - the more specific is the mode for the support)
             const refTypeString &str = listStrings[iStr];
-            for (int iChr = 0  ;  iChr < str.size() && iChr < typeStr.size()  ;  ++iChr ){
+            for (std::size_t iChr = 0; iChr < str.size() && iChr < typeStr.size(); ++iChr) {
                 int match = AttachEngine::isShapeOfType(typeStr[iChr], str[iChr]);
                 switch(match){
                 case -1:
@@ -343,7 +343,7 @@ void AttachEngine::EnableAllSupportedModes()
 {
     this->modeEnabled.resize(mmDummy_NumberOfModes,false);
     assert(modeRefTypes.size() > 0);
-    for(  int i = 0  ;  i < this->modeEnabled.size()  ;  i++  ){
+    for (std::size_t i = 0; i < this->modeEnabled.size(); i++) {
         modeEnabled[i] = modeRefTypes[i].size() > 0;
     }
 }
@@ -384,32 +384,26 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
         switch(surf.GetType()) {
         case GeomAbs_Plane:
             return rtFlatFace;
-        break;
         case GeomAbs_Cylinder:
             return rtCylindricalFace;
-        break;
         case GeomAbs_Cone:
             return rtConicalFace;
-        break;
         case GeomAbs_Sphere:
             return rtSphericalFace;
-        break;
         case GeomAbs_Torus:
             return rtToroidalFace;
-        break;
         case GeomAbs_BezierSurface:
-        break;
+            break;
         case GeomAbs_BSplineSurface:
-        break;
+            break;
         case GeomAbs_SurfaceOfRevolution:
             return rtSurfaceRev;
-        break;
         case GeomAbs_SurfaceOfExtrusion:
-        break;
+            break;
         case GeomAbs_OffsetSurface:
-        break;
+            break;
         case GeomAbs_OtherSurface:
-        break;
+            break;
         }
         return rtFace;
     }break;
@@ -419,32 +413,24 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
         switch (crv.GetType()){
         case GeomAbs_Line:
             return rtLine;
-        break;
         case GeomAbs_Circle:
             return rtCircle;
-        break;
         case GeomAbs_Ellipse:
             return rtEllipse;
-        break;
         case GeomAbs_Hyperbola:
             return rtHyperbola;
-        break;
         case GeomAbs_Parabola:
             return rtParabola;
-        break;
         case GeomAbs_BezierCurve:
         case GeomAbs_BSplineCurve:
         case GeomAbs_OtherCurve:
             return rtCurve;
-        break;
         }
     }break;
     case TopAbs_WIRE:
         return rtWire;
-    break;
     case TopAbs_VERTEX:
         return rtVertex;
-    break;
     default:
         throw Base::Exception("AttachEngine::getShapeType: unexpected TopoDS_Shape::ShapeType");
     }//switch shapetype
@@ -478,40 +464,31 @@ eRefType AttachEngine::downgradeType(eRefType type)
     case rtEdge:
     case rtFace:
         return rtAnything;
-    break;
     case rtAnything:
         return rtAnything;
-    break;
     case rtLine:
     case rtCurve:
         return rtEdge;
-    break;
     case rtConic:
     case rtCircle:
         return rtCurve;
-    break;
     case rtEllipse:
     case rtParabola:
     case rtHyperbola:
         return rtConic;
-    break;
     case rtFlatFace:
     case rtSphericalFace:
     case rtSurfaceRev:
         return rtFace;
-    break;
     case rtCylindricalFace:
     case rtToroidalFace:
     case rtConicalFace:
         return rtSurfaceRev;
-    break;
     case rtSolid:
     case rtWire:
         return rtPart;
-    break;
     case rtPart:
         return rtAnything;
-    break;
     default:
         throw Base::Exception("AttachEngine::downgradeType: unknown type");
     }
@@ -534,9 +511,10 @@ int AttachEngine::getTypeRank(eRefType type)
 int AttachEngine::isShapeOfType(eRefType shapeType, eRefType requirement)
 {
     //first up, check for hasplacement flag
-    if (requirement & rtFlagHasPlacement)
+    if (requirement & rtFlagHasPlacement) {
         if(! (shapeType & rtFlagHasPlacement))
             return -1;
+    }
 
     //get rid of hasplacement flags, to simplify the rest
     shapeType = eRefType(shapeType & (rtFlagHasPlacement - 1));
@@ -574,7 +552,8 @@ int AttachEngine::isShapeOfType(eRefType shapeType, eRefType requirement)
  * \brief AttachEngine3D::readLinks
  * \param parts
  * \param shapes
- * \param storage is a buffer storing what some of the pointers in shapes point to. It is needed, since subshapes are copied in the process (but copying a whole shape of an object can potentially be slow).
+ * \param storage is a buffer storing what some of the pointers in shapes point to. It is needed, since
+ * subshapes are copied in the process (but copying a whole shape of an object can potentially be slow).
  */
 void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
                              std::vector<App::GeoFeature*> &geofs,
@@ -588,8 +567,8 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
     storage.reserve(objs.size());
     shapes.resize(objs.size());
     types.resize(objs.size());
-    for( int i = 0  ;  i < objs.size()  ;  i++){
-        if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())){
+    for (std::size_t i = 0; i < objs.size(); i++) {
+        if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
             throw Base::Exception("AttachEngine3D: link points to something that is not App::GeoFeature");
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
@@ -792,7 +771,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
     switch (mmode) {
     case mmDeactivated:
         //should have been filtered out already!
-    break;
+        break;
     case mmTranslate:{
         if (shapes.size() < 1)
             throw Base::Exception("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (need one vertex).");
@@ -854,15 +833,17 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         case mmObjectXY:
             SketchNormal = dirZ;
             SketchXAxis = gp_Vec(dirX);
-        break;
+            break;
         case mmObjectXZ:
             SketchNormal = dirY.Reversed();
             SketchXAxis = gp_Vec(dirX);
-        break;
+            break;
         case mmObjectYZ:
             SketchNormal = dirX;
             SketchXAxis = gp_Vec(dirY);
-        break;
+            break;
+        default:
+            break;
         }
 
     } break;
@@ -1034,20 +1015,20 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
             case mmRevolutionSection:
                 SketchNormal = T.Reversed();//to avoid sketches upside-down for regular curves like circles
                 SketchXAxis = N.Reversed();
-            break;
+                break;
             case mmFrenetTN:
             case mmConcentric:
                 if (N.Magnitude() == 0.0)
                     throw Base::Exception("AttachEngine3D::calculateAttachedPlacement: Frenet-Serret normal is undefined. Can't align to TN plane.");
                 SketchNormal = B;
                 SketchXAxis = T;
-            break;
+                break;
             case mmFrenetTB:
                 if (N.Magnitude() == 0.0)
                     throw Base::Exception("AttachEngine3D::calculateAttachedPlacement: Frenet-Serret normal is undefined. Can't align to TB plane.");
                 SketchNormal = N.Reversed();//it is more convenient to sketch on something looking it it so it is convex.
                 SketchXAxis = T;
-            break;
+                break;
             default:
                 assert(0);//mode forgotten?
             }
@@ -1073,7 +1054,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
 
         std::vector<gp_Pnt> points;
 
-        for(  int i = 0  ;  i < shapes.size()  ;  i++){
+        for (std::size_t i = 0; i < shapes.size(); i++) {
             const TopoDS_Shape &sh = *shapes[i];
             if (sh.IsNull())
                 throw Base::Exception("Null shape in AttachEngine3D::calculateAttachedPlacement()!");
@@ -1211,7 +1192,9 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
                 );
 
         gp_Vec norm = dirs[1].Crossed(dirs[2]);
-        norm.Rotate(gp_Ax1(gp_Pnt(),gp_Dir(dirs[1])),-ang);//rotation direction: when angle is positive, rotation is CCW when observing the vector so that the axis is pointing at you. Hence angle is negated here.
+        //rotation direction: when angle is positive, rotation is CCW when observing the vector so
+        //that the axis is pointing at you. Hence angle is negated here.
+        norm.Rotate(gp_Ax1(gp_Pnt(),gp_Dir(dirs[1])),-ang);
         SketchNormal = norm.Reversed();
 
         SketchXAxis = dirs[1];
@@ -1255,7 +1238,6 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
     if (fabs(ra) < Precision::Confusion())
         throw Base::Exception("calculateFoldAngle: axisA and edgeA are parallel, folding can't be computed.");
     double b = edB.Dot(axB);
-    double rb = edB.Crossed(axB).Magnitude();
     double costheta = axB.Dot(axA);
     double sintheta = axA.Crossed(axB).Dot(norm);
     double singama = -costheta;
@@ -1383,7 +1365,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         case mm1TwoPoints:{
             std::vector<gp_Pnt> points;
 
-            for(  int i = 0  ;  i < shapes.size()  ;  i++){
+            for (std::size_t i = 0; i < shapes.size(); i++) {
                 const TopoDS_Shape &sh = *shapes[i];
                 if (sh.IsNull())
                     throw Base::Exception("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
@@ -1554,14 +1536,14 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
     switch(mmode){
     case mm0Origin:
         mmode = mmObjectXY;
-    break;
+        break;
     case mm0CenterOfCurvature:
         mmode = mmRevolutionSection;
-    break;
+        break;
     case mm0OnEdge:
         //todo: prevent thruPoint
         mmode = mmNormalToPath;
-    break;
+        break;
     default:
         bReUsed = false;
     }

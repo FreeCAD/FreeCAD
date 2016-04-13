@@ -4482,13 +4482,15 @@ namespace SketcherGui {
                 switch(msg){
                 case Sketcher::SketchObject::rlCircularReference:
                     this->notAllowedReason = QT_TR_NOOP("Linking this will cause circular dependency.");
-                break;
+                    break;
                 case Sketcher::SketchObject::rlOtherDoc:
                     this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
-                break;
+                    break;
                 case Sketcher::SketchObject::rlOtherPart:
                     this->notAllowedReason = QT_TR_NOOP("This object belongs to another part or body, can't link. Hold Ctrl to allow crossreferences.");
-                break;
+                    break;
+                default:
+                    break;
                 }
                 return false;
             }

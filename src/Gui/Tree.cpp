@@ -539,7 +539,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // add object to group
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
-        App::DocumentObject* grp = vp->getObject();
         if (!vp->canDropObjects()) {
             return; // no group like object
         }
@@ -548,9 +547,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         dropObjects.reserve(idxs.size());
 
         // Open command
-        App::Document* doc = grp->getDocument();
-        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             Gui::ViewProviderDocumentObject* vpc = static_cast<DocumentObjectItem*>(*it)->object();
             App::DocumentObject* obj = vpc->getObject();

@@ -29,16 +29,16 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 
-#include <App/PartPy.h>
+//#include <App/PartPy.h>
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProviderDocumentObject.h>
+//#include <Gui/Application.h>
+//#include <Gui/Document.h>
+//#include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/PartDesign/App/BodyPy.h>
+//#include <Mod/PartDesign/App/BodyPy.h>
 
-#include "ViewProviderBody.h"
-#include "Utils.h"
+//#include "ViewProviderBody.h"
+//#include "Utils.h"
 
 
 //static PyObject * setActiveBody(PyObject *self, PyObject *args)

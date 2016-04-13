@@ -796,7 +796,6 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     }
     else if (event->type() == QEvent::MouseMove ||
              event->type() == QEvent::MouseButtonRelease) {
-        QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
         QGraphicsScene* glScene = this->scene();
         if (!(glScene && glScene->mouseGrabberItem())) {
             QGraphicsView::viewportEvent(event);
