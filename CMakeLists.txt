@@ -44,41 +44,42 @@ else(WIN32)
     set(PLATFORM_MK mkdir -p)
 endif(WIN32)
 
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+    set(CMAKE_COMPILER_IS_CLANGXX TRUE)
+endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+
 # ================================================================================
 
 # Issues with boost::any on older versions with C++11 enabled.
 set(BOOST_MIN_VERSION 1.55)
+IF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_COMPILER_VERSION VERSION_LESS 4.7)
+   UNSET(BOOST_MIN_VERSION) # For Ubuntu 12.04
+ENDIF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_COMPILER_VERSION VERSION_LESS 4.7)
 
-if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    set(CMAKE_COMPILER_IS_CLANGXX TRUE)
-    # make this an option because for older compilers C++11 doesn't work properly.
+# Enabled C++11 for Freecad 0.17 and later
+IF(FREECAD_VERSION VERSION_GREATER 0.16)
     OPTION(BUILD_ENABLE_CXX11 "Enable C++11 support." ON)
-    if (BUILD_ENABLE_CXX11)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    endif(BUILD_ENABLE_CXX11)
-endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+    IF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
+        MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  G++ must be 4.7 or later")
+    ELSEIF(CMAKE_COMPILER_IS_CLANGXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.3)
+        MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  Clang must be 3.3 or later")
+    ENDIF()
+ENDIF(FREECAD_VERSION VERSION_GREATER 0.16)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
-    set(CMAKE_CXX_FLAGS "-Wall -Wno-deprecated -Wno-write-strings -std=c++11 ${CMAKE_CXX_FLAGS}")
+    if(BUILD_ENABLE_CXX11)
+       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    endif(BUILD_ENABLE_CXX11)
+    set(CMAKE_CXX_FLAGS "-Wall -Wno-deprecated -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
     # get linker errors as soon as possible and not at runtime e.g. for modules
     if(UNIX)
     #    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
     endif(UNIX)
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-
-IF(CMAKE_COMPILER_IS_GNUCXX)
-    EXECUTE_PROCESS( COMMAND ${CMAKE_C_COMPILER} -dumpversion
-                     OUTPUT_VARIABLE GCC_VERSION )
-    IF(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    ELSE(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-        UNSET(BOOST_MIN_VERSION) # For Ubuntu 12.04
-    ENDIF(GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
-ENDIF()
 
 # ================================================================================
 # Output directories for install target
