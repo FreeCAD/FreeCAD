@@ -605,7 +605,7 @@ const string PropertyLinkSubList::getPyReprString()
 
     std::stringstream strm;
     strm << "[";
-    for (  int i = 0  ;  i < this->_lSubList.size()  ;  i++) {
+    for (std::size_t i = 0; i < this->_lSubList.size(); i++) {
         if (i>0)
             strm << ",(";
         else
@@ -628,7 +628,7 @@ DocumentObject *PropertyLinkSubList::getValue() const
 {
     App::DocumentObject* ret = 0;
     //FIXME: cache this to avoid iterating each time, to improve speed
-    for (int i = 0  ;  i < this->_lValueList.size()  ;  i++){
+    for (std::size_t i = 0; i < this->_lValueList.size(); i++) {
         if (ret == 0)
             ret = this->_lValueList[i];
         if (ret != this->_lValueList[i])

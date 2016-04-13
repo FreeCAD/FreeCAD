@@ -399,7 +399,7 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop)
     std::vector<Gui::SelectionObject> sel = this->getSelectionEx();
     std::vector<App::DocumentObject*> objs; objs.reserve(sel.size()*2);
     std::vector<std::string> subs; subs.reserve(sel.size()*2);
-    for(  int iobj = 0  ;  iobj < sel.size()  ;  iobj++  ){
+    for (std::size_t iobj = 0; iobj < sel.size(); iobj++) {
         Gui::SelectionObject &selitem = sel[iobj];
         App::DocumentObject* obj = selitem.getObject();
         const std::vector<std::string> &subnames = selitem.getSubNames();
@@ -407,7 +407,7 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop)
             objs.push_back(obj);
             subs.push_back(std::string());
         } else {
-            for(  int isub = 0  ;  isub < subnames.size()  ;  isub++  ){
+            for (std::size_t isub = 0; isub < subnames.size(); isub++) {
                 objs.push_back(obj);
                 subs.push_back(subnames[isub]);
             }

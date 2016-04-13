@@ -426,16 +426,16 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // For testing
     else if (prop == &DiffuseColor) {
         const std::vector<App::Color>& c = DiffuseColor.getValues();
-        unsigned int size = (int)c.size();
+        int size = static_cast<int>(c.size());
         if (size > 1 && size == this->faceset->partIndex.getNum()) {
             pcShapeBind->value = SoMaterialBinding::PER_PART;
             pcShapeMaterial->diffuseColor.setNum(size);
             SbColor* ca = pcShapeMaterial->diffuseColor.startEditing();
-            for (unsigned int i=0; i < size; i++)
+            for (int i=0; i < size; i++)
                 ca[i].setValue(c[i].r,c[i].g,c[i].b);
             pcShapeMaterial->diffuseColor.finishEditing();
         }
-        else if ((int)c.size() == 1) {
+        else if (c.size() == 1) {
             pcShapeBind->value = SoMaterialBinding::OVERALL;
             pcShapeMaterial->diffuseColor.setValue(c[0].r,c[0].g,c[0].b);
         }

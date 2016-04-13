@@ -264,7 +264,6 @@ set(Gui_MOC_HDRS
     TaskView/TaskView.h
     DAGView/DAGView.h
     DAGView/DAGModel.h
-    DAGView/DAGRectItem.h
 )
 #qt4_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})

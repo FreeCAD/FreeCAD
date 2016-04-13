@@ -111,32 +111,32 @@ enum eSuggestResult{
  * also AttachEngine::getShapeType(), AttachEngine::downgradeType(), TaskDatumParameters.cpp/getShTypeText()
  */
 enum eRefType {
-    //topo              //ranks: (number of times the type is downgradable)
-  rtAnything,              //0
-   rtVertex,            //1
-   rtEdge,              //1
-   rtFace,              //1
+    //topo             //ranks: (number of times the type is downgradable)
+    rtAnything,        //0
+    rtVertex,          //1
+    rtEdge,            //1
+    rtFace,            //1
     //edges:
-    rtLine,             //2
-    rtCurve,            //2
-     rtCircle,          //3
-     rtConic,           //3
-      rtEllipse,        //4
-      rtParabola,       //4
-      rtHyperbola,      //4
+    rtLine,            //2
+    rtCurve,           //2
+    rtCircle,          //3
+    rtConic,           //3
+    rtEllipse,         //4
+    rtParabola,        //4
+    rtHyperbola,       //4
     //faces:
-    rtFlatFace,         //2
-    rtSphericalFace,    //2//flatface, shericalface are also surfaces of revolution, but the axis isn't defined.
-    rtSurfaceRev,       //2
-     rtCylindricalFace, //3
-     rtToroidalFace,    //3
-     rtConicalFace,     //3
-   //shapes:
-   rtPart,              //1
-    rtSolid,            //2
-    rtWire,             //2
-  rtDummy_numberOfShapeTypes,//a value useful to check the validity of value
-  rtFlagHasPlacement = 0x0100 //indicates that the linked shape is a whole FreeCAD object that has placement available.
+    rtFlatFace,        //2
+    rtSphericalFace,   //2//flatface, shericalface are also surfaces of revolution, but the axis isn't defined.
+    rtSurfaceRev,      //2
+    rtCylindricalFace, //3
+    rtToroidalFace,    //3
+    rtConicalFace,     //3
+    //shapes:
+    rtPart,            //1
+    rtSolid,           //2
+    rtWire,            //2
+    rtDummy_numberOfShapeTypes,//a value useful to check the validity of value
+    rtFlagHasPlacement = 0x0100 //indicates that the linked shape is a whole FreeCAD object that has placement available.
 };
 
 
@@ -316,11 +316,35 @@ public: //members
     std::vector<refTypeStringList> modeRefTypes; //a complete data structure, containing info on which modes support what selection
 
 protected:
-    refTypeString cat(eRefType rt1){refTypeString ret; ret.push_back(rt1); return ret;}
-    refTypeString cat(eRefType rt1, eRefType rt2){refTypeString ret; ret.push_back(rt1); ret.push_back(rt2); return ret;}
-    refTypeString cat(eRefType rt1, eRefType rt2, eRefType rt3){refTypeString ret; ret.push_back(rt1); ret.push_back(rt2); ret.push_back(rt3); return ret;}
-    refTypeString cat(eRefType rt1, eRefType rt2, eRefType rt3, eRefType rt4){refTypeString ret; ret.push_back(rt1); ret.push_back(rt2); ret.push_back(rt3); ret.push_back(rt4); return ret;}
-    static void readLinks(const App::PropertyLinkSubList &references, std::vector<App::GeoFeature *> &geofs, std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage, std::vector<eRefType> &types);
+    refTypeString cat(eRefType rt1){
+        refTypeString ret;
+        ret.push_back(rt1);
+        return ret;
+    }
+    refTypeString cat(eRefType rt1, eRefType rt2){
+        refTypeString ret;
+        ret.push_back(rt1);
+        ret.push_back(rt2);
+        return ret;
+    }
+    refTypeString cat(eRefType rt1, eRefType rt2, eRefType rt3){
+        refTypeString ret;
+        ret.push_back(rt1);
+        ret.push_back(rt2);
+        ret.push_back(rt3);
+        return ret;
+    }
+    refTypeString cat(eRefType rt1, eRefType rt2, eRefType rt3, eRefType rt4){
+        refTypeString ret;
+        ret.push_back(rt1);
+        ret.push_back(rt2);
+        ret.push_back(rt3);
+        ret.push_back(rt4);
+        return ret;
+    }
+    static void readLinks(const App::PropertyLinkSubList &references, std::vector<App::GeoFeature *> &geofs,
+                          std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage,
+                          std::vector<eRefType> &types);
 
     static void throwWrongMode(eMapMode mmode);
 
