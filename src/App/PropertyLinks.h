@@ -288,7 +288,7 @@ public:
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
-    virtual void Restore_FromLinkSub(Base::XMLReader &reader);
+    virtual void RestoreFromLinkSub(Base::XMLReader &reader);
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
