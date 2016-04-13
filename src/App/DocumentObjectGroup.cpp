@@ -36,7 +36,7 @@ using namespace App;
 PROPERTY_SOURCE(App::DocumentObjectGroup, App::DocumentObject)
 
 
-DocumentObjectGroup::DocumentObjectGroup() 
+DocumentObjectGroup::DocumentObjectGroup()
 {
     ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
 }
@@ -63,20 +63,22 @@ void DocumentObjectGroup::addObject(DocumentObject* obj)
 
 void DocumentObjectGroup::removeObject(DocumentObject* obj)
 {
-    std::vector<DocumentObject*> grp = Group.getValues();
-    for (std::vector<DocumentObject*>::iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj) {
-            grp.erase(it);
-            Group.setValues(grp);
-            break;
-        }
+    const std::vector<DocumentObject*> & grp = Group.getValues();
+    std::vector<DocumentObject*> newGrp;
+
+    std::remove_copy (grp.begin(), grp.end(), std::back_inserter (newGrp), obj);
+    if (grp.size() != newGrp.size()) {
+        Group.setValues (newGrp);
     }
 }
 
 void DocumentObjectGroup::removeObjectsFromDocument()
 {
-    std::vector<DocumentObject*> grp = Group.getValues();
-    for (std::vector<DocumentObject*>::iterator it = grp.begin(); it != grp.end(); ++it) {
+    const std::vector<DocumentObject*> & grp = Group.getValues();
+    // Use set so iterate on each linked object exactly one time (in case of multiple links to the same document)
+    std::set<DocumentObject*> grpSet (grp.begin(), grp.end());
+
+    for (std::set<DocumentObject*>::iterator it = grpSet.begin(); it != grpSet.end(); ++it) {
         removeObjectFromDocument(*it);
     }
 }
@@ -85,11 +87,9 @@ void DocumentObjectGroup::removeObjectFromDocument(DocumentObject* obj)
 {
     // remove all children
     if (obj->getTypeId().isDerivedFrom(DocumentObjectGroup::getClassTypeId())) {
-        std::vector<DocumentObject*> grp = static_cast<DocumentObjectGroup*>(obj)->Group.getValues();
-        for (std::vector<DocumentObject*>::iterator it = grp.begin(); it != grp.end(); ++it) {
-            // recursive call to remove all subgroups
-            removeObjectFromDocument(*it);
-        }
+        DocumentObjectGroup *grp = static_cast<DocumentObjectGroup*>(obj);
+        // recursive call to remove all subgroups
+        grp->removeObjectsFromDocument();
     }
 
     this->getDocument()->remObject(obj->getNameInDocument());
@@ -103,12 +103,18 @@ DocumentObject *DocumentObjectGroup::getObject(const char *Name) const
     return 0;
 }
 
-bool DocumentObjectGroup::hasObject(const DocumentObject* obj) const
+bool DocumentObjectGroup::hasObject(const DocumentObject* obj, bool recursive) const
 {
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj)
+        if (*it == obj) {
             return true;
+        } else if ( recursive && (*it)->isDerivedFrom (App::DocumentObjectGroup::getTypeId()) ) {
+            App::DocumentObjectGroup *subGroup = static_cast<App::DocumentObjectGroup *> (*it);
+            if (subGroup->hasObject (obj, recursive)) {
+                return true;
+            }
+        }
     }
 
     return false;
@@ -162,7 +168,7 @@ DocumentObjectGroup* DocumentObjectGroup::getGroupOfObject(const DocumentObject*
 {
     const Document* doc = obj->getDocument();
     std::vector<DocumentObject*> grps = doc->getObjectsOfType(DocumentObjectGroup::getClassTypeId());
-    for (std::vector<DocumentObject*>::iterator it = grps.begin(); it != grps.end(); ++it) {
+    for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
         DocumentObjectGroup* grp = (DocumentObjectGroup*)(*it);
         if (grp->hasObject(obj))
             return grp;
@@ -177,7 +183,7 @@ PyObject *DocumentObjectGroup::getPyObject()
         // ref counter is set to 1
         PythonObject = Py::Object(new DocumentObjectGroupPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 // Python feature ---------------------------------------------------------

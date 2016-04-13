@@ -36,10 +36,13 @@
 
 #include "Workbench.h"
 #include "ViewProviderPocket.h"
+#include "ViewProviderBody.h"
+#include "ViewProviderSketchBased.h"
 #include "ViewProviderPad.h"
 #include "ViewProviderChamfer.h"
 #include "ViewProviderFillet.h"
 #include "ViewProviderDraft.h"
+#include "ViewProviderDressUp.h"
 #include "ViewProviderRevolution.h"
 #include "ViewProviderGroove.h"
 #include "ViewProviderMirrored.h"
@@ -47,9 +50,22 @@
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
+#include "ViewProviderTransformed.h"
+#include "ViewProviderDatumPoint.h"
+#include "ViewProviderDatumLine.h"
+#include "ViewProviderDatumPlane.h"
+#include "ViewProviderBoolean.h"
+#include "ViewProviderPrimitive.h"
+#include "ViewProviderDatumCS.h"
+#include "ViewProviderThickness.h"
+#include "ViewProviderPipe.h"
+#include "ViewProviderLoft.h"
+#include "ViewProviderShapeBinder.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
+void CreatePartDesignBodyCommands(void);
+void CreatePartDesignPrimitiveCommands(void);
 
 void loadPartDesignResource()
 {
@@ -102,21 +118,39 @@ PyMODINIT_FUNC initPartDesignGui()
 
     // instantiating the commands
     CreatePartDesignCommands();
+    CreatePartDesignBodyCommands();
+    CreatePartDesignPrimitiveCommands();
 
     PartDesignGui::Workbench                 ::init();
     PartDesignGui::ViewProvider              ::init();
+    PartDesignGui::ViewProviderBody          ::init();
+    PartDesignGui::ViewProviderSketchBased   ::init();
     PartDesignGui::ViewProviderPocket        ::init();
     PartDesignGui::ViewProviderPad           ::init();
     PartDesignGui::ViewProviderRevolution    ::init();
+    PartDesignGui::ViewProviderDressUp       ::init();
     PartDesignGui::ViewProviderGroove        ::init();
     PartDesignGui::ViewProviderChamfer       ::init();
     PartDesignGui::ViewProviderFillet        ::init();
     PartDesignGui::ViewProviderDraft         ::init();
+    PartDesignGui::ViewProviderThickness     ::init();
+    PartDesignGui::ViewProviderTransformed   ::init();
     PartDesignGui::ViewProviderMirrored      ::init();
     PartDesignGui::ViewProviderLinearPattern ::init();
     PartDesignGui::ViewProviderPolarPattern  ::init();
     PartDesignGui::ViewProviderScaled        ::init();
     PartDesignGui::ViewProviderMultiTransform::init();
+    PartDesignGui::ViewProviderDatum         ::init();
+    PartDesignGui::ViewProviderDatumPoint    ::init();
+    PartDesignGui::ViewProviderDatumLine     ::init();
+    PartDesignGui::ViewProviderDatumPlane    ::init();
+    PartDesignGui::ViewProviderDatumCoordinateSystem::init();
+    PartDesignGui::ViewProviderShapeBinder   ::init();
+    PartDesignGui::ViewProviderBoolean       ::init();
+    PartDesignGui::ViewProviderAddSub        ::init();
+    PartDesignGui::ViewProviderPrimitive     ::init();
+    PartDesignGui::ViewProviderPipe          ::init();
+    PartDesignGui::ViewProviderLoft          ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();

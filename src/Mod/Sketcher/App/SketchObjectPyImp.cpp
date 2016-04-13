@@ -31,12 +31,14 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>
 #include <Base/Tools.h>
 #include <Base/QuantityPy.h>
 #include <App/Document.h>
+#include <App/OriginFeature.h>
 #include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
@@ -374,23 +376,24 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
         return 0;
 
     // get the target object for the external link
-    App::DocumentObject * Obj = this->getSketchObjectPtr()->getDocument()->getObject(ObjectName);
+    Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
+    App::DocumentObject * Obj = skObj->getDocument()->getObject(ObjectName);
     if (!Obj) {
         std::stringstream str;
-        str << ObjectName << "does not exist in the document";
+        str << ObjectName << " does not exist in the document";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
-    // check if it belongs to the sketch support
-    if (this->getSketchObjectPtr()->Support.getValue() != Obj) {
+    // check if this type of external geometry is allowed
+    if (!skObj->isExternalAllowed(Obj->getDocument(), Obj)) {
         std::stringstream str;
-        str << ObjectName << "is not supported by this sketch";
+        str << ObjectName << " is not allowed as external geometry of this sketch";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
 
     // add the external
-    if (this->getSketchObjectPtr()->addExternal(Obj,SubName) < 0) {
+    if (skObj->addExternal(Obj,SubName) < 0) {
         std::stringstream str;
         str << "Not able to add external shape element";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -537,6 +540,8 @@ PyObject* SketchObjectPy::setDatum(PyObject *args)
             str << "Negative datum values are not valid for the constraint with index " << Index;
         else if (err == -5)
             str << "Zero is not a valid datum for the constraint with index " << Index;
+        else if (err == -6)
+            str << "Cannot set the datum because of invalid geometry";
         else
             str << "Unexpected problem at setting datum " << (const char*)Quantity.getUserString().toUtf8() << " for the constraint with index " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());

@@ -99,6 +99,7 @@
 #include <Gui/Inventor/MarkerBitmaps.h>
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Sketch.h>
 
@@ -492,7 +493,7 @@ void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec
     Base::Vector3d R0(0,0,0),RN(0,0,1),RX(1,0,0),RY(0,1,0);
 
     // move to position of Sketch
-    Base::Placement Plz = getSketchObject()->Placement.getValue();
+    Base::Placement Plz = getPlacement();
     R0 = Plz.getPosition() ;
     Base::Rotation tmp(Plz.getRotation());
     tmp.multVec(RN,RN);
@@ -1869,7 +1870,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     Sketcher::SketchObject *sketchObject = getSketchObject();
     App::Document *doc = sketchObject->getDocument();
 
-    Base::Placement Plm = sketchObject->Placement.getValue();
+    Base::Placement Plm = getPlacement();
 
     int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
     int extGeoCount = sketchObject->getExternalGeometryCount();
@@ -3950,7 +3951,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         Base::Vector3d RN(0,0,1);
 
         // move to position of Sketch
-        Base::Placement Plz = getSketchObject()->Placement.getValue();
+        Base::Placement Plz = getPlacement();
         Base::Rotation tmp(Plz.getRotation());
         tmp.multVec(RN,RN);
         Plz.setRotation(tmp);
@@ -4145,7 +4146,7 @@ void ViewProviderSketch::onChanged(const App::Property *prop)
 }
 
 void ViewProviderSketch::attach(App::DocumentObject *pcFeat)
-{
+{    
     ViewProviderPart::attach(pcFeat);
 }
 
@@ -4156,6 +4157,17 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
+    //find the Part and body object the feature belongs to for placement calculations
+    //TODO: this needs to be replaced with GRAPH methods to get the real stacked placement
+    parentBody = Part::BodyBase::findBodyOf(getSketchObject());
+    if(parentBody) 
+        parentPart = App::Part::getPartOfObject(parentBody);
+    else 
+        parentPart = App::Part::getPartOfObject(getSketchObject());
+    
+    // always change to sketcher WB, remember where we come from 
+    oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
+
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -4560,13 +4572,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
         delete edit;
         edit = 0;
-    }
 
-    try {
-        // and update the sketch
-        getSketchObject()->getDocument()->recompute();
-    }
-    catch (...) {
+        try {
+            // and update the sketch
+            getSketchObject()->getDocument()->recompute();
+        }
+        catch (...) {
+        }
     }
 
     // clear the selection and set the new/edited sketch(convenience)
@@ -4580,11 +4592,16 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
+
+    //Gui::Application::Instance->
+
+    // return to the WB before edeting the sketch
+    Gui::Command::assureWorkbench(oldWb.c_str());
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    Base::Placement plm = getSketchObject()->Placement.getValue();
+    Base::Placement plm = getPlacement();
     Base::Rotation tmp(plm.getRotation());
 
     SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
@@ -4867,5 +4884,18 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         return false;
     }
     // if not in edit delete the whole object
-    return true;
+    return PartGui::ViewProviderPart::onDelete(subList);
 }
+
+Base::Placement ViewProviderSketch::getPlacement() {
+    //TODO: use GRAPH placement handling, as this function right now only works with one parent 
+    //part object
+    Base::Placement Plz = getSketchObject()->Placement.getValue();
+    if(parentBody)
+        Plz = parentBody->Placement.getValue()*Plz;
+    if(parentPart)
+        Plz = parentPart->Placement.getValue()*Plz;
+    
+    return Plz;
+}
+

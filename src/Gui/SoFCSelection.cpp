@@ -917,4 +917,36 @@ SoFCSelection::isHighlighted(SoAction *action)
         *currenthighlight == *actionPath);
 }
 
+void SoFCSelection::applySettings ()
+{
+    // TODO Some view providers got copy of this code: make them use this (2015-09-03, Fat-Zer)
+    // Note: SoFCUnifiedSelection got the same code, keep in sync or think about a way to share it
+    float transparency;
+    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+    bool enablePre = hGrp->GetBool("EnablePreselection", true);
+    bool enableSel = hGrp->GetBool("EnableSelection", true);
+    if (!enablePre) {
+        this->highlightMode = Gui::SoFCSelection::OFF;
+    }
+    else {
+        // Search for a user defined value with the current color as default
+        SbColor highlightColor = this->colorHighlight.getValue();
+        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
+        highlightColor.setPackedValue((uint32_t)highlight, transparency);
+        this->colorHighlight.setValue(highlightColor);
+    }
+    if (!enableSel) {
+        this->selectionMode = Gui::SoFCSelection::SEL_OFF;
+    }
+    else {
+        // Do the same with the selection color
+        SbColor selectionColor = this->colorSelection.getValue();
+        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        selection = hGrp->GetUnsigned("SelectionColor", selection);
+        selectionColor.setPackedValue((uint32_t)selection, transparency);
+        this->colorSelection.setValue(selectionColor);
+    }
+}
+
 //#undef THIS

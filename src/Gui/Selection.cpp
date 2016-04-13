@@ -394,6 +394,30 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
     return temp;
 }
 
+int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop) const
+{
+    std::vector<Gui::SelectionObject> sel = this->getSelectionEx();
+    std::vector<App::DocumentObject*> objs; objs.reserve(sel.size()*2);
+    std::vector<std::string> subs; subs.reserve(sel.size()*2);
+    for(  int iobj = 0  ;  iobj < sel.size()  ;  iobj++  ){
+        Gui::SelectionObject &selitem = sel[iobj];
+        App::DocumentObject* obj = selitem.getObject();
+        const std::vector<std::string> &subnames = selitem.getSubNames();
+        if (subnames.size() == 0){//whole object is selected
+            objs.push_back(obj);
+            subs.push_back(std::string());
+        } else {
+            for(  int isub = 0  ;  isub < subnames.size()  ;  isub++  ){
+                objs.push_back(obj);
+                subs.push_back(subnames[isub]);
+            }
+        }
+    }
+    assert(objs.size()==subs.size());
+    prop.setValues(objs, subs);
+    return objs.size();
+}
+
 vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Type& typeId, const char* pDocName) const
 {
     std::vector<App::DocumentObject*> temp;
@@ -461,13 +485,21 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
             if (pObjectName) {
                 App::DocumentObject* pObject = pDoc->getObject(pObjectName);
                 if (!ActiveGate->allow(pDoc,pObject,pSubName)) {
-                    snprintf(buf,512,"Not allowed: %s.%s.%s ",pDocName
-                                                       ,pObjectName
-                                                       ,pSubName
-                                                       );
+                    QString msg;
+                    if (ActiveGate->notAllowedReason.length() > 0){
+                        msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+                    } else {
+                        msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
+                    }
+                    msg.append(
+                                QObject::tr(" %1.%2.%3 ")
+                               .arg(QString::fromAscii(pDocName))
+                               .arg(QString::fromAscii(pObjectName))
+                               .arg(QString::fromAscii(pSubName))
+                                );
 
                     if (getMainWindow()) {
-                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+                        getMainWindow()->showMessage(msg,3000);
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                         mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
@@ -641,10 +673,17 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         if (ActiveGate) {
             if (!ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)) {
                 if (getMainWindow()) {
-                    getMainWindow()->showMessage(QString::fromLatin1("Selection not allowed by filter"),5000);
+                    QString msg;
+                    if (ActiveGate->notAllowedReason.length() > 0) {
+                        msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+                    } else {
+                        msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
+                    }
+                    getMainWindow()->showMessage(msg,5000);
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                     mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }
+                ActiveGate->notAllowedReason.clear();
                 QApplication::beep();
                 return false;
             }

@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2012     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2012    *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,171 +25,58 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QApplication>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/details/SoLineDetail.h>
-#include "ViewProviderPlane.h"
-#include "Application.h"
-#include "Document.h"
-#include "View3DInventorViewer.h"
-#include "Inventor/SoAutoZoomTranslation.h"
-#include "SoAxisCrossKit.h"
-//#include <SoDepthBuffer.h>
+#include "ViewProviderOrigin.h"
 
-#include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
-#include <App/MeasureDistance.h>
-#include <Base/Console.h>
+#include "ViewProviderPlane.h"
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderOriginFeature)
 
 
-ViewProviderPlane::ViewProviderPlane() 
-{
- 
-    pMat = new SoMaterial();
-    pMat->ref();
+ViewProviderPlane::ViewProviderPlane()
+{ }
 
-    const float size = 2;
+ViewProviderPlane::~ViewProviderPlane()
+{ }
 
-    static const SbVec3f verts[4] =
-    {
-        SbVec3f(size,size,0), SbVec3f(size,-size,0),
+void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
+    ViewProviderOriginFeature::attach ( obj );
+    static const float size = ViewProviderOrigin::defaultSize ();
+
+    static const SbVec3f verts[4] = {
+        SbVec3f(size,size,0),   SbVec3f(size,-size,0),
         SbVec3f(-size,-size,0), SbVec3f(-size,size,0),
     };
 
     // indexes used to create the edges
-    static const int32_t lines[6] =
-    {
-        0,1,2,3,0,-1
-    };
+    static const int32_t lines[6] = { 0, 1, 2, 3, 0, -1 };
 
-    pMat->diffuseColor.setNum(1);
-    pMat->diffuseColor.set1Value(0, SbColor(1.0f, 1.0f, 1.0f));
+    SoSeparator *sep = getOriginFeatureRoot ();
 
-    pCoords = new SoCoordinate3();
-    pCoords->ref();
-    pCoords->point.setNum(4);
-    pCoords->point.setValues(0, 4, verts);
+    SoCoordinate3 *pCoords = new SoCoordinate3 ();
+    pCoords->point.setNum (4);
+    pCoords->point.setValues ( 0, 4, verts );
+    sep->addChild ( pCoords );
 
-    pLines  = new SoIndexedLineSet();
+    SoIndexedLineSet *pLines  = new SoIndexedLineSet ();
     pLines->ref();
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
-    sPixmap = "view-measurement";
+    sep->addChild ( pLines );
+
+    SoTranslation *textTranslation = new SoTranslation ();
+    textTranslation->ref ();
+    textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size * 9./10., 0 ) );
+    sep->addChild ( textTranslation );
+
+    sep->addChild ( getLabel () );
 }
-
-ViewProviderPlane::~ViewProviderPlane()
-{
-    pCoords->unref();
-    pLines->unref();
-    pMat->unref();
-}
-
-void ViewProviderPlane::onChanged(const App::Property* prop)
-{
-        ViewProviderGeometryObject::onChanged(prop);
-}
-
-std::vector<std::string> ViewProviderPlane::getDisplayModes(void) const
-{
-    // add modes
-    std::vector<std::string> StrList;
-    StrList.push_back("Base");
-    return StrList;
-}
-
-void ViewProviderPlane::setDisplayMode(const char* ModeName)
-{
-    if (strcmp(ModeName, "Base") == 0)
-        setDisplayMaskMode("Base");
-    ViewProviderGeometryObject::setDisplayMode(ModeName);
-}
-
-void ViewProviderPlane::attach(App::DocumentObject* pcObject)
-{
-    ViewProviderGeometryObject::attach(pcObject);
-
-    SoAnnotation *lineSep = new SoAnnotation();
-
-
-    SoAutoZoomTranslation *zoom = new SoAutoZoomTranslation;
-
-    SoDrawStyle* style = new SoDrawStyle();
-    style->lineWidth = 1.0f;
-
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
-    matBinding->value = SoMaterialBinding::PER_FACE;
-
-    lineSep->addChild(zoom);
-    lineSep->addChild(style);
-    lineSep->addChild(matBinding);
-    lineSep->addChild(pMat);
-    lineSep->addChild(pCoords);
-    lineSep->addChild(pLines);
- 
-    addDisplayMaskMode(lineSep, "Base");
-}
-
-void ViewProviderPlane::updateData(const App::Property* prop)
-{
-    ViewProviderGeometryObject::updateData(prop);
-}
-
-std::string ViewProviderPlane::getElement(const SoDetail* detail) const
-{
-    if (detail) {
-        if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-            const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getLineIndex();
-            if (edge == 0)
-            {
-                return std::string("Main");
-            }
-        }
-    }
-
-    return std::string("");
-}
-
-SoDetail* ViewProviderPlane::getDetail(const char* subelement) const
-{
-    SoLineDetail* detail = 0;
-    std::string subelem(subelement); 
-    int edge = -1;
-
-    if(subelem == "Main") edge = 0;
-
-    if(edge >= 0) {
-         detail = new SoLineDetail();
-         detail->setPartIndex(edge);
-    }
-
-    return detail;
-}
-
-bool ViewProviderPlane::isSelectable(void) const 
-{
-    return true;
-}
-// ----------------------------------------------------------------------------
-
-

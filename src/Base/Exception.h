@@ -27,6 +27,7 @@
 #define BASE_EXCEPTION_H
 
 #include <exception>
+#include <stdexcept>
 #include <string>
 #include <signal.h>
 #include "FileInfo.h"

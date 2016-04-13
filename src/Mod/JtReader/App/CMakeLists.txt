@@ -1,0 +1,55 @@
+if(MSVC)
+    add_definitions(-DFCAppImport -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
+else(MSVC)
+    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
+endif(MSVC)
+
+
+include_directories(
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${Boost_INCLUDE_DIRS}
+    ${OCC_INCLUDE_DIR}
+    ${ZLIB_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_PATH}
+    ${XERCESC_INCLUDE_DIR}
+    ${QT_INCLUDE_DIR}
+)
+
+link_directories(${OCC_LIBRARY_DIR})
+
+set(JtReader_LIBS
+    Mesh
+    #${OCC_OCAF_LIBRARIES}
+    #${OCC_OCAF_DEBUG_LIBRARIES}
+)
+
+SET(JtReader_SRCS
+    AppJtReader.cpp
+    AppJtReaderPy.cpp
+    PreCompiled.cpp
+    PreCompiled.h
+    TestJtReader.cpp
+    TestJtReader.h
+	FcLodHandler.h
+	FcLodHandler.cpp
+)
+
+FILE( GLOB JRJT_SRCS JrJt/*.cpp JrJt/*.h )
+
+SOURCE_GROUP("JrJt" FILES ${JRJT_SRCS}  )
+
+SOURCE_GROUP("Module" FILES ${JtReader_SRCS})
+
+add_library(JtReader SHARED ${JtReader_SRCS} ${JRJT_SRCS} )
+target_link_libraries(JtReader ${JtReader_LIBS})
+
+fc_target_copy_resource(JtReader 
+    ${CMAKE_SOURCE_DIR}/src/Mod/JtReader
+    ${CMAKE_BINARY_DIR}/Mod/JtReader
+    Init.py )
+
+SET_BIN_DIR(JtReader JtReader /Mod/JtReader)
+SET_PYTHON_PREFIX_SUFFIX(JtReader)
+
+INSTALL(TARGETS JtReader DESTINATION ${CMAKE_INSTALL_LIBDIR})

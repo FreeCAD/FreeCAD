@@ -124,7 +124,7 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
         if (ActiveDialog == dlg)
             return; // dialog is already defined
         ActiveDialog = dlg;
-        connect(dlg, SIGNAL(destroyed()), this, SLOT(closedDialog()));
+        connect(dlg, SIGNAL(aboutToBeDestroyed()), this, SLOT(closedDialog()));
     }
     // not all workbenches have the combo view enabled
     else if (!_taskPanel) {

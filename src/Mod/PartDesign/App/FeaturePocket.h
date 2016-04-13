@@ -25,12 +25,12 @@
 #define PARTDESIGN_Pocket_H
 
 #include <App/PropertyUnits.h>
-#include "FeatureSubtractive.h"
+#include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Pocket : public Subtractive
+class PartDesignExport Pocket : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Pocket);
 
@@ -39,7 +39,7 @@ public:
 
     App::PropertyEnumeration    Type;
     App::PropertyLength         Length;
-    App::PropertyLinkSub        UpToFace;
+    App::PropertyLength         Offset;
 
     /** @name methods override feature */
     //@{

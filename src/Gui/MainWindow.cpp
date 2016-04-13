@@ -98,6 +98,7 @@
 #include "CombiView.h"
 #include "PythonConsole.h"
 #include "TaskView/TaskView.h"
+#include "DAGView/DAGView.h"
 
 #include "DlgTipOfTheDayImp.h"
 #include "DlgUndoRedo.h"
@@ -374,6 +375,20 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     pcPython->setObjectName
         (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
     pDockMgr->registerDockWindow("Std_PythonView", pcPython);
+    
+    //Dag View.
+    //work through parameter.
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+    bool enabled = group->GetBool("Enabled", false);
+    group->SetBool("Enabled", enabled); //ensure entry exists.
+    if (enabled)
+    {
+      DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
+      dagDockWindow->setObjectName
+          (QString::fromAscii(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+      pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
+    }
 
 #if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
     // The MainWindowTabBar is used to show tabbed dock windows with icons
