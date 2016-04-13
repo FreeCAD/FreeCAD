@@ -64,8 +64,10 @@
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"
-#include "FemPostPipeline.h"
 #include "FemMeshPy.h"
+#ifdef FC_USE_VTK
+#include "FemPostPipeline.h"
+#endif
 
 #include <cstdlib>
 
