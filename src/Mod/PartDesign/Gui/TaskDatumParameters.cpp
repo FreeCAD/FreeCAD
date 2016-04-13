@@ -869,7 +869,7 @@ void TaskDlgDatumParameters::clicked(int)
 bool TaskDlgDatumParameters::accept()
 {
     std::string name = DatumView->getObject()->getNameInDocument();
-    Datum* pcDatum = static_cast<Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
     auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;

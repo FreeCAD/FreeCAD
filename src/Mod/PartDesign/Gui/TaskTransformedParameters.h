@@ -190,7 +190,7 @@ protected:
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
     void fillAxisCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
-    void fillPlanesCombo(ComboLinks &combolinks, Part2DObject *sketch);
+    void fillPlanesCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
 
 protected:
     QWidget* proxy;
