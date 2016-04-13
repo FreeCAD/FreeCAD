@@ -66,6 +66,7 @@
 #include "ui_DlgReference.h"
 
 using namespace std;
+using namespace Attacher;
 
 
 //===========================================================================
