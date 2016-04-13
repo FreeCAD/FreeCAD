@@ -16,28 +16,35 @@
 ##
 env:
   global:
-   - FREECAD_RELEASE="0.17"
-   - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
-   - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
-   - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
+    - FREECAD_RELEASE="0.17"
+    - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
+    - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
+    - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
+  matrix:
+    - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
 
 language: cpp
 
+compiler:
+   - clang
+   - gcc
+
+python: 2.7
+
+os:
+   - linux
+   - osx
+
+dist: trusty
+sudo: required
+
 matrix:
-   include:
-     - os: linux
-       dist: trusty
-       sudo: required
-       compiler: clang
-     - os: osx
-       osx_image: beta-xcode6.2
-       compiler: clang
    exclude:
-     - os: linux
-       dist: precise
+     - os: osx
+       compiler: gcc
 
 git:
-  depth: 200
+  depth: 800
 
 before_install:
 - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
@@ -72,6 +79,8 @@ before_install:
                                libxmu6                          \
                                libxmuu-dev                      \
                                libxmuu1                         \
+                               netgen                           \
+                               netgen-headers                   \
                                oce-draw                         \
                                pyside-tools                     \
                                python-dev                       \
@@ -82,16 +91,12 @@ before_install:
                                shiboken                         \
                                swig
 
-       #Temporary hack - remove older Python (find a supported way to do this)
-       sudo rm -rf /opt/python/2.6.9
-       sudo rm -rf /opt/python/2.7.10
-
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
-       CMAKE_ARGS=""
+       CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
        INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
        ;;
 
@@ -127,7 +132,7 @@ before_install:
        #Remove GDAL if installed because it results in non-existent dependent library exceptions
        if [ -e /usr/local/lib/libgdal.1.dylib ]; then brew unlink gdal; fi
 
-       CMAKE_ARGS="-DFREECAD_USE_EXTERNAL_KDL=ON -DBUILD_FEM_NETGEN=ON -DFREECAD_CREATE_MAC_APP=ON"
+       CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_CREATE_MAC_APP=ON"
        INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/bin/FreeCAD"
        ;;
 
@@ -164,7 +169,7 @@ after_success:
 - |
   if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" ]; then
      brew install jq node && npm install -g appdmg
-     export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h --git-SHA=$(git ls-remote origin master))
+     export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
      export DEPLOYMENT_ARCHIVE=${VSN}.dmg
      appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
      deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
