@@ -80,8 +80,9 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->labelOriginal->hide();
-    ui->lineOriginal->hide();
+    ui->buttonAddFeature->hide();
+    ui->buttonRemoveFeature->hide();
+    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
@@ -90,6 +91,14 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
 
 void TaskScaledParameters::setupUI()
 {
+    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
+    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetFeatures->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     connect(ui->spinFactor, SIGNAL(valueChanged(double)),
             this, SLOT(onFactor(double)));
     connect(ui->spinOccurrences, SIGNAL(valueChanged(uint)),
@@ -102,13 +111,10 @@ void TaskScaledParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcScaled->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
-        if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
-            break;
-        }
+        if ((*i) != NULL)
+            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 
@@ -142,9 +148,18 @@ void TaskScaledParameters::updateUI()
 void TaskScaledParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
-        App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
-        ui->lineOriginal->setText(QString::fromLatin1(selectedObject->getNameInDocument()));
+        if (selectionMode == addFeature)
+            ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
+        else
+            removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+        exitSelectionMode();
     }
+}
+
+void TaskScaledParameters::clearButtons()
+{
+    ui->buttonAddFeature->setChecked(false);
+    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskScaledParameters::onFactor(const double f)
@@ -175,6 +190,16 @@ void TaskScaledParameters::onUpdateView(bool on)
         pcScaled->Occurrences.setValue(getOccurrences());
         recomputeFeature();
     }
+}
+
+void TaskScaledParameters::onFeatureDeleted(void)
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    pcTransformed->Originals.setValues(originals);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    recomputeFeature();
 }
 
 const double TaskScaledParameters::getFactor(void) const
@@ -208,11 +233,6 @@ void TaskScaledParameters::apply()
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(), getFactor());
     ui->spinOccurrences->apply();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (!TransformedView->getObject()->isValid())
-        throw Base::Exception(TransformedView->getObject()->getStatusString());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
@@ -231,20 +251,10 @@ TaskDlgScaledParameters::TaskDlgScaledParameters(ViewProviderScaled *ScaledView)
 
 bool TaskDlgScaledParameters::accept()
 {
-    try {
-        //Gui::Command::openCommand("Scaled changed");
-        // Handle Originals
-        if (!TaskDlgTransformedParameters::accept())
-            return false;
 
         parameter->apply();
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
-        return false;
-    }
 
-    return true;
+    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskScaledParameters.cpp"

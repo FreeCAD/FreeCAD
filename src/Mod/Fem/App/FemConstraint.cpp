@@ -298,7 +298,7 @@ const bool Constraint::getCylinder(double &radius, double &height, Base::Vector3
         return false;
     App::DocumentObject* obj = Objects[0];
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
-    Part::TopoShape toposhape = feat->Shape.getShape();
+    const Part::TopoShape& toposhape = feat->Shape.getShape();
     if (toposhape.isNull())
         return false;
     TopoDS_Shape sh = toposhape.getSubShape(SubElements[0].c_str());

@@ -28,36 +28,11 @@
 
 #include "ViewProviderPolarPattern.h"
 #include "TaskPolarPatternParameters.h"
-#include <Mod/PartDesign/App/FeaturePolarPattern.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPolarPattern,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPolarPattern,PartDesignGui::ViewProviderTransformed)
 
-bool ViewProviderPolarPattern::setEdit(int ModNum)
-{
-    ViewProviderTransformed::setEdit(ModNum);
-
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgPolarPatternParameters *polarpatternDlg = NULL;
-
-        if (checkDlgOpen(polarpatternDlg)) {
-            // start the edit dialog
-            if (polarpatternDlg)
-                Gui::Control().showDialog(polarpatternDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgPolarPatternParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderPart::setEdit(ModNum);
-    }
+TaskDlgFeatureParameters *ViewProviderPolarPattern::getEditDialog() {
+    return new TaskDlgPolarPatternParameters (this);
 }

@@ -28,11 +28,28 @@
 # include <TopoDS_Face.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+#include <QDialog>
 #endif
 
+#include <App/OriginFeature.h>
+#include <App/GeoFeatureGroup.h>
+#include <App/Origin.h>
+#include <App/Part.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
+
+#include "Utils.h"
+
 #include "ReferenceSelection.h"
+#include "TaskFeaturePick.h"
+#include <ui_DlgReference.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -41,13 +58,85 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    // TODO review this function (2015-09-04, Fat-Zer)
+    PartDesign::Body *body;
+    App::GeoFeatureGroup *geoGroup;
+
+    if ( support ) {
+        body = PartDesign::Body::findBodyOf (support);
+    } else {
+        body = PartDesignGui::getBody (false);
+    }
+
+    if ( body ) { // Search for Part of the body
+        geoGroup = App::GeoFeatureGroup::getGroupOfObject ( body ) ;
+    } else if ( support ) { // if no body search part for support
+        geoGroup = App::GeoFeatureGroup::getGroupOfObject ( support ) ;
+    } else { // fallback to active part
+        geoGroup = PartDesignGui::getActivePart ( );
+    }
+
+    // Don't allow selection in other document
+    if ( support && pDoc != support->getDocument() ) {
+        return false;
+    }
+
+    // Enable selection from origin of current part/
+    if ( pObj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ) {
+        bool fits = false;
+        if ( plane && pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ) {
+            fits = true;
+        } else if ( edge && pObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId()) ) {
+            fits = true;
+        }
+
+        if (fits) { // check that it is actually belongs to the choosen body or part
+            try { // here are some throwers
+                if (body) {
+                    if (body->getOrigin ()->hasObject (pObj) ) {
+                        return true;
+                    }
+                } else if (geoGroup && geoGroup->isDerivedFrom ( App::OriginGroup::getClassTypeId () ) ) {
+                    if ( static_cast<App::OriginGroup *>(geoGroup)->getOrigin ()->hasObject (pObj) ) {
+                        return true;
+                    }
+                }
+            } catch (const Base::Exception)
+            { }
+        }
+        return false; // The Plane/Axis doesn't fits our needs
+    }
+
+    if (pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+
+        if (!body) { // Allow selecting Part::Datum features from the active Body
+            return false;
+        } else if (!allowOtherBody && !body->hasFeature(pObj)) {
+            return false;
+        }
+
+        if (plane && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
+            return true;
+        if (edge && (pObj->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())))
+            return true;
+        if (point && (pObj->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())))
+            return true;
+
+        return false;
+    }
+
+    // Handle selection of geometry elements
     if (!sSubName || sSubName[0] == '\0')
         return false;
-    if (pObj != support)
-        return false;
+    if (!allowOtherBody) {
+        if (support == NULL)
+            return false;
+        if (pObj != support)
+            return false;
+    }
     std::string subName(sSubName);
     if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(support)->Shape.getValue();
+        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
         TopoDS_Shape sh = shape.getSubShape(subName.c_str());
         const TopoDS_Edge& edge = TopoDS::Edge(sh);
         if (!edge.IsNull()) {
@@ -61,7 +150,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         }
     }
     if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(support)->Shape.getValue();
+        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
         TopoDS_Shape sh = shape.getSubShape(subName.c_str());
         const TopoDS_Face& face = TopoDS::Face(sh);
         if (!face.IsNull()) {
@@ -74,5 +163,149 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             }
         }
     }
+    if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
+        return true;
+    }
     return false;
+}
+
+namespace PartDesignGui
+{
+
+void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+                            App::DocumentObject*& selObj, std::vector<std::string>& selSub)
+{
+    if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
+        return;
+    
+    selObj = thisObj->getDocument()->getObject(msg.pObjectName);
+    if (selObj == thisObj)
+        return;
+    
+    std::string subname = msg.pSubName;
+    
+    //check if the selection is an external reference and ask the user what to do
+    //of course only if thisObj is in a body, as otherwise the old workflow would not 
+    //be supportet
+    PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
+    bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
+    if(!originfeature && body) {
+        PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
+        if(!selBody || body != selBody) {
+            
+            auto* pcActivePart = PartDesignGui::getPartFor(body, false);
+
+            QDialog* dia = new QDialog;
+            Ui_Dialog dlg;
+            dlg.setupUi(dia);
+            dia->setModal(true);
+            int result = dia->exec();
+            if(result == QDialog::DialogCode::Rejected) {
+                selObj = NULL;
+                return;
+            }
+            else if(!dlg.radioXRef->isChecked()) {
+
+                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
+                    if(selBody)
+                        body->addFeature(copy);
+                    else
+                        pcActivePart->addObject(copy);
+
+                    selObj = copy;
+                    subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
+                    subname.append("1");
+            }
+        
+        }
+    }
+
+    // Remove subname for planes and datum features
+    if (PartDesign::Feature::isDatum(selObj)) {
+        subname = "";
+    }
+
+    selSub = std::vector<std::string>(1,subname);
+}
+
+QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (obj == NULL)
+        return QString::fromAscii("");
+
+    if (PartDesign::Feature::isDatum(obj))
+        return QString::fromAscii(obj->getNameInDocument());
+    else if (sub.size()>0)
+        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") +
+               QString::fromAscii(sub.front().c_str());
+    else
+        return QString();
+}
+
+std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs)
+{
+    if ( obj == NULL)
+        return "None";
+
+    std::string result("[");
+
+    for (const auto & sub : subs)
+        result += "\"" + sub + "\",";
+    result += "]";
+
+    return result;
+}
+
+std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
+        const std::vector<std::string>& subs)
+{
+    if (obj == NULL)
+        return "None";
+
+    if (PartDesign::Feature::isDatum(obj))
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
+    else
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + subs.front() + "\"])";
+}
+
+std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & objs)
+{
+    if ( objs.empty() ) {
+        return "None";
+    }
+
+    std::string result("[");
+
+    for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
+        result += std::string("App.activeDocument().") + (*o)->getNameInDocument() + ",";
+    result += "]";
+
+    return result;
+}
+
+std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
+        const std::vector<std::string>& subs)
+{
+    if ( objs.empty() ) {
+        return "None";
+    }
+
+    std::string result("[");
+
+    assert (objs.size () == subs.size () );
+
+    for (size_t i=0, objs_sz=objs.size(); i < objs_sz; i++) {
+        if (objs[i] ) {
+            result += '(';
+            result += std::string("App.activeDocument().").append( objs[i]->getNameInDocument () );
+            result += ",\"";
+            result += subs[i];
+            result += "\"),";
+        }
+    }
+
+    result += "]";
+
+    return result;
+}
 }

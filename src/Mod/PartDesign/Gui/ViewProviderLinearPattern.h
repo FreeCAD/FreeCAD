@@ -30,14 +30,15 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderLinearPattern : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderLinearPattern);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderLinearPattern);
 public:
     ViewProviderLinearPattern()
         { featureName = std::string("LinearPattern");
           sPixmap = "PartDesign_LinearPattern.svg"; }
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
 
 };
 

@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/misc/SoState.h>
-# include <cmath>
+# include <math.h>
 # include <cfloat>
 #endif
 
@@ -138,7 +138,7 @@ void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 
 void SoAutoZoomTranslation::callback(SoCallbackAction * action)
 {
-    // Base::Console().Log("callback\n");
+   // Base::Console().Log("callback\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 

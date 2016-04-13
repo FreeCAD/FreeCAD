@@ -21,17 +21,23 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMGBLYGUI_PRECOMPILED_H
-#define ASSEMGBLYGUI_PRECOMPILED_H
+#ifndef ASSEMBLY_PRECOMPILED_H
+#define ASSEMBLY_PRECOMPILED_H
 
 #include <FCConfig.h>
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-# define AssemblyAppExport __declspec(dllimport)
-# define AssemblyGuiExport __declspec(dllexport)
+# define AssemblyExport         __declspec(dllimport)
+# define PartGuiExport          __declspec(dllimport)
+# define PartDesignGuiExport    __declspec(dllimport)
+# define PartExport             __declspec(dllimport)
+# define AssemblyGuiExport      __declspec(dllexport)
 #else // for Linux
-# define AssemblyAppExport
+# define AssemblyExport
+# define PartGuiExport
+# define PartDesignGuiExport
+# define PartExport 
 # define AssemblyGuiExport
 #endif
 

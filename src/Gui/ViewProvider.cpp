@@ -32,6 +32,8 @@
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/actions/SoGetMatrixAction.h>
+# include <Inventor/actions/SoSearchAction.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -60,9 +62,10 @@ using namespace Gui;
 
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
 
-ViewProvider::ViewProvider() 
+ViewProvider::ViewProvider()
     : pcAnnotation(0)
     , pyViewObject(0)
+    , overrideMode("As Is")
     , _iActualMode(-1)
     , _iEditMode(-1)
     , viewOverrideMode(-1)
@@ -142,6 +145,12 @@ bool ViewProvider::isUpdatesEnabled () const
 void ViewProvider::setUpdatesEnabled (bool enable)
 {
     _updateData = enable;
+}
+
+void highlight(const HighlightMode& high)
+{
+
+
 }
 
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
@@ -326,18 +335,26 @@ bool ViewProvider::isVisible() const
 }
 
 void ViewProvider::setOverrideMode(const std::string &mode)
-{
-    if (mode == "As Is")
+{    
+    if (mode == "As Is") {
         viewOverrideMode = -1;
+        overrideMode = mode;
+    }
     else {
         std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(mode);
         if (it == _sDisplayMaskModes.end())
             return; //view style not supported
         viewOverrideMode = (*it).second;
+        overrideMode = mode;
     }
     if (pcModeSwitch->whichChild.getValue() != -1)
         setModeSwitch();
 }
+
+const string ViewProvider::getOverrideMode() {
+    return overrideMode;
+}
+
 
 void ViewProvider::setModeSwitch()
 {
@@ -373,16 +390,32 @@ PyObject* ViewProvider::getPyObject()
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const
 {
-    // for convenience make a pick ray action to get the (potentially) picked entity in the provider
+    //first get the path to this node and calculate the current transformation
+    SoSearchAction sa;
+    sa.setNode(pcRoot);
+    sa.setSearchingAll(true);
+    sa.apply(viewer->getSoRenderManager()->getSceneGraph());
+    SoGetMatrixAction gm(viewer->getSoRenderManager()->getViewportRegion());
+    gm.apply(sa.getPath());
+
+    SoTransform* trans = new SoTransform;
+    trans->setMatrix(gm.getMatrix());
+    trans->ref();
+    
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+    // transformation
     SoSeparator* root = new SoSeparator;
     root->ref();
     root->addChild(viewer->getSoRenderManager()->getCamera());
+    root->addChild(trans);
     root->addChild(pcRoot);
 
+    //get the picked point
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
     rp.apply(root);
     root->unref();
+    trans->unref();
 
     SoPickedPoint* pick = rp.getPickedPoint();
     return (pick ? new SoPickedPoint(*pick) : 0);
@@ -392,9 +425,33 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir
 {
     // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
+    
+    //first get the path to this node and calculate the current setTransformation
+    SoSearchAction sa;
+    sa.setNode(pcRoot);
+    sa.setSearchingAll(true);
+    sa.apply(viewer->getSoRenderManager()->getSceneGraph());
+    SoGetMatrixAction gm(viewer->getSoRenderManager()->getViewportRegion());
+    gm.apply(sa.getPath());
+    
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+    // transformation
+    SoTransform* trans = new SoTransform;
+    trans->ref();
+    trans->setMatrix(gm.getMatrix());
+    
+    SoSeparator* root = new SoSeparator;
+    root->ref();
+    root->addChild(viewer->getSoRenderManager()->getCamera());
+    root->addChild(trans);
+    root->addChild(pcRoot);
+    
+    //get the picked point
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setRay(pos,dir);
-    rp.apply(pcRoot);
+    rp.apply(root);
+    root->unref();
+    trans->unref();
 
     // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();

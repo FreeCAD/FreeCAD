@@ -37,7 +37,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="labelLength">
        <property name="text">
         <string>Length</string>
        </property>
@@ -48,16 +48,21 @@
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>10.000000000000000</double>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="labelOffset">
+       <property name="text">
+        <string>Offset</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit"/>
      </item>
     </layout>
    </item>
@@ -81,7 +86,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="labelLength2">
        <property name="text">
         <string>2nd length</string>
        </property>
@@ -90,15 +95,6 @@
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
        <property name="minimum">
-        <double>0.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
         <double>0.000000000000000</double>
        </property>
       </widget>

@@ -16,6 +16,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
+    ${QT_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${FREETYPE_INCLUDE_DIRS}
@@ -40,6 +41,7 @@ endif(FREETYPE_FOUND)
 generate_from_xml(ArcPy)
 generate_from_xml(ArcOfCirclePy)
 generate_from_xml(ArcOfParabolaPy)
+generate_from_xml(BodyBasePy)
 generate_from_xml(CirclePy)
 generate_from_xml(ArcOfEllipsePy)
 generate_from_xml(EllipsePy)
@@ -134,6 +136,12 @@ SET(Features_SRCS
     FeatureGeometrySet.cpp
     CustomFeature.cpp
     CustomFeature.h
+	BodyBase.h
+	BodyBase.cpp
+	DatumFeature.cpp
+	DatumFeature.h
+    AttachableObject.h
+    AttachableObject.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -152,6 +160,8 @@ SET(Python_SRCS
     ArcOfCirclePyImp.cpp
     ArcOfParabolaPy.xml
     ArcOfParabolaPyImp.cpp
+    BodyBasePy.xml
+    BodyBasePyImp.cpp
     CirclePy.xml
     CirclePyImp.cpp
     ArcOfEllipsePy.xml
@@ -235,6 +245,8 @@ SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
+    Attacher.cpp
+    Attacher.h
     AppPart.cpp
     AppPartPy.cpp
     BSplineCurveBiArcs.cpp

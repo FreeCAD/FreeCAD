@@ -31,8 +31,10 @@
 #endif
 
 
+#include <App/OriginFeature.h>
 #include <Base/Exception.h>
 #include "FeatureMirrored.h"
+#include "DatumPlane.h"
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 
@@ -60,10 +62,8 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
     App::DocumentObject* refObject = MirrorPlane.getValue();
     if (refObject == NULL)
         throw Base::Exception("No mirror plane reference specified");
-    if (!refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::Exception("Mirror plane reference must be face of a feature");
     std::vector<std::string> subStrings = MirrorPlane.getSubValues();
-    if (subStrings.empty() || subStrings[0].empty())
+    if (subStrings.empty())
         throw Base::Exception("No mirror plane reference specified");
 
     gp_Pnt axbase;
@@ -88,11 +88,27 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else {
+    } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+        PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refObject);
+        Base::Vector3d base = plane->getBasePoint();
+        axbase = gp_Pnt(base.x, base.y, base.z);
+        Base::Vector3d dir = plane->getNormal();
+        axdir = gp_Dir(dir.x, dir.y, dir.z);
+    } else if (refObject->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        App::Plane* plane = static_cast<App::Plane*>(refObject);
+        Base::Vector3d base = plane->Placement.getValue().getPosition();
+        axbase = gp_Pnt(base.x, base.y, base.z);
+        Base::Rotation rot = plane->Placement.getValue().getRotation();
+        Base::Vector3d dir(0,0,1);
+        rot.multVec(dir, dir);
+        axdir = gp_Dir(dir.x, dir.y, dir.z);
+    } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (subStrings[0].empty())
+            throw Base::Exception("No direction reference specified");
         Part::TopoShape baseShape = static_cast<Part::Feature*>(refObject)->Shape.getShape();
         // TODO: Check for multiple mirror planes?
-
-        TopoDS_Face face = TopoDS::Face(baseShape.getSubShape(subStrings[0].c_str()));
+        TopoDS_Shape shape = baseShape.getSubShape(subStrings[0].c_str());
+        TopoDS_Face face = TopoDS::Face(shape);
         if (face.IsNull())
             throw Base::Exception("Failed to extract mirror plane");
         BRepAdaptor_Surface adapt(face);
@@ -101,7 +117,10 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
 
         axbase = getPointFromFace(face);
         axdir = adapt.Plane().Axis().Direction();
+    } else {
+        throw Base::Exception("Mirror plane reference must be a sketch axis, a face of a feature or a datum plane");
     }
+
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     axbase.Transform(invObjLoc.Transformation());
     axdir.Transform(invObjLoc.Transformation());

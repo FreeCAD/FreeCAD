@@ -52,6 +52,8 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
+#include "ActiveObjectList.h"
+
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -64,6 +66,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
 #include <CXX/Objects.hxx>
 
 using namespace Gui;
@@ -173,6 +176,9 @@ void View3DInventorPy::init_type()
         "Remove the DraggerCalback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
+    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object)\nadd or set a new active object");
+    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name)\nreturns the active object for the given type");
+
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -223,15 +229,22 @@ Py::Object View3DInventorPy::getattr(const char * attr)
         s_out << "Cannot access attribute '" << attr << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
-    else {
-        Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
-        if (PyCFunction_Check(obj.ptr())) {
-            PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
-            if (!pycxx_handler)
-                pycxx_handler = op->m_ml->ml_meth;
-            op->m_ml->ml_meth = method_varargs_ext_handler;
-        }
-        return obj;
+	else {
+		// see if a active object has the same name
+		App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
+		if (docObj){
+			return Py::Object(docObj->getPyObject(),true);
+		}else{
+			// else looking for a methode with the name and call it
+			Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
+			if (PyCFunction_Check(obj.ptr())) {
+				PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+				if (!pycxx_handler)
+					pycxx_handler = op->m_ml->ml_meth;
+				op->m_ml->ml_meth = method_varargs_ext_handler;
+			}
+			return obj;
+		}
     }
 }
 
@@ -464,7 +477,7 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir,float( M_PI/2));
+      SbRotation nrot(vdir, (float)M_PI/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -490,7 +503,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, float(-M_PI/2));
+      SbRotation nrot(vdir, (float)-M_PI/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -2116,47 +2129,83 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 {
-    PyObject* dragger;
-    char* type;
-    PyObject* method;
-    if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger,&type, &method))
-        throw Py::Exception();
+	PyObject* dragger;
+	char* type;
+	PyObject* method;
+	if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger, &type, &method))
+		throw Py::Exception();
 
-    //Check if dragger is a SoDragger object and cast
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
-    }
-    catch (const Base::Exception&) {
-        throw Py::Exception("The first argument must be of type SoDragger");
-    }
+	//Check if dragger is a SoDragger object and cast
+	void* ptr = 0;
+	try {
+		Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+	}
+	catch (const Base::Exception&) {
+		throw Py::Exception("The first argument must be of type SoDragger");
+	}
 
-    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
-    try {
-        if (strcmp(type,"addFinishCallback")==0) {
-            drag->removeFinishCallback(draggerCallback,method);
-        }
-        else if (strcmp(type,"addStartCallback")==0) {
-            drag->removeStartCallback(draggerCallback,method);
-        }
-        else if (strcmp(type,"addMotionCallback")==0) {
-            drag->removeMotionCallback(draggerCallback,method);
-        }
-        else if (strcmp(type,"addValueChangedCallback")==0) {
-            drag->removeValueChangedCallback(draggerCallback,method);
-        }
-        else {
-            std::string s;
-            std::ostringstream s_out;
-            s_out << type << " is not a valid dragger callback type";
-            throw Py::Exception(s_out.str());
-        }
+	SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+	try {
+		if (strcmp(type, "addFinishCallback") == 0) {
+			drag->removeFinishCallback(draggerCallback, method);
+		}
+		else if (strcmp(type, "addStartCallback") == 0) {
+			drag->removeStartCallback(draggerCallback, method);
+		}
+		else if (strcmp(type, "addMotionCallback") == 0) {
+			drag->removeMotionCallback(draggerCallback, method);
+		}
+		else if (strcmp(type, "addValueChangedCallback") == 0) {
+			drag->removeValueChangedCallback(draggerCallback, method);
+		}
+		else {
+			std::string s;
+			std::ostringstream s_out;
+			s_out << type << " is not a valid dragger callback type";
+			throw Py::Exception(s_out.str());
+		}
 
-        callbacks.remove(method);
-        Py_DECREF(method);
-        return Py::Callable(method, false);
-    }
-    catch (const Py::Exception&) {
-        throw;
-    }
+		callbacks.remove(method);
+		Py_DECREF(method);
+		return Py::Callable(method, false);
+	}
+	catch (const Py::Exception&) {
+		throw;
+	}
+}
+
+Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
+{
+	PyObject* docObject = 0;
+	char* name;
+	
+        //allow reset of active object by setting "None"
+        if( args.length() == 2 && args.back() == Py::None() ) {
+            PyArg_Parse(args.front().ptr(), "s", &name);
+            _view->setActiveObject(NULL, name);
+            return Py::None();
+        }
+        
+        if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
+		throw Py::Exception();
+                
+
+	if (docObject){
+		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+		_view->setActiveObject(obj, name);
+	}
+	return Py::None();
+}
+
+Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
+                throw Py::Exception();
+    
+    App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name);
+    if(!obj)
+        return Py::None();
+    
+    return Py::Object(obj->getPyObject());
 }

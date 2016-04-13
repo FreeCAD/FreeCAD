@@ -49,7 +49,9 @@
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
 #include "PartFeatures.h"
+#include "BodyBase.h"
 #include "PrimitiveFeature.h"
+#include "Attacher.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
 #include "TopoShapePy.h"
@@ -90,6 +92,7 @@
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
 #include "PropertyGeometryList.h"
+#include "DatumFeature.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -218,6 +221,8 @@ PyMODINIT_FUNC initPart()
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
+    Part::AttachableObject      ::init();
+    Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();
     Part::CustomFeature         ::init();
@@ -299,7 +304,7 @@ PyMODINIT_FUNC initPart()
     Part::GeomTrimmedSurface      ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
-
+    Part::Datum                   ::init();
 
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();
