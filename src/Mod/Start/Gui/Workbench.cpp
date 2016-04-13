@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qobject.h>
+# include <QCoreApplication>
 #endif
 
 #include "Workbench.h"
@@ -60,20 +60,23 @@ StartGui::Workbench::~Workbench()
 void StartGui::Workbench::activated()
 {
     // Ensure that we don't open the Start page multiple times
+    QString title = QCoreApplication::translate("Workbench", "Start page");
     QList<QWidget*> ch = Gui::getMainWindow()->windows();
-    for (QList<QWidget*>::const_iterator c = ch.begin(); c != ch.end(); c++)
-        if ((*c)->windowTitle() == QObject::tr("Start page"))
+    for (QList<QWidget*>::const_iterator c = ch.begin(); c != ch.end(); ++c) {
+        if ((*c)->windowTitle() == title)
             return;
+    }
 
     try {
+        QByteArray utf8Title = title.toUtf8();
         Gui::Command::doCommand(Gui::Command::Gui,"import WebGui");
         Gui::Command::doCommand(Gui::Command::Gui,"from StartPage import StartPage");
 #if defined(FC_OS_WIN32)
         Gui::Command::doCommand(Gui::Command::Gui,"WebGui.openBrowserHTML"
-        "(StartPage.handle(),App.getResourceDir() + 'Mod/Start/StartPage/','Start page')");
+        "(StartPage.handle(),App.getResourceDir() + 'Mod/Start/StartPage/','%s')", utf8Title.data());
 #else
         Gui::Command::doCommand(Gui::Command::Gui,"WebGui.openBrowserHTML"
-        "(StartPage.handle(),'file://' + App.getResourceDir() + 'Mod/Start/StartPage/','Start page')");
+        "(StartPage.handle(),'file://' + App.getResourceDir() + 'Mod/Start/StartPage/','%s')", utf8Title.data());
 #endif
     }
     catch (const Base::Exception& e) {
