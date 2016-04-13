@@ -43,9 +43,9 @@ RectItem::RectItem(QGraphicsItem* parent) : QGraphicsRectItem(parent)
 void RectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
   painter->save();
-  
+
   QStyleOptionViewItemV4 styleOption;
-  
+
   styleOption.backgroundBrush = backgroundBrush;
   if (editing)
     styleOption.backgroundBrush = editBrush;
@@ -69,10 +69,8 @@ void RectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     }
   }
   styleOption.rect = this->rect().toRect();
-  
+
   QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &styleOption, painter);
-  
+
   painter->restore();
 }
-
-#include <moc_DAGRectItem.cpp>
