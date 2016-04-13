@@ -42,8 +42,6 @@
 
 #include <gp_Vec.hxx>
 
-using namespace Part;
-
 namespace Attacher
 {
 

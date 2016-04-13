@@ -50,7 +50,7 @@ public:
     App::PropertyLinkSubList    Support;
 
     static void getFilterdReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
-    static TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
+    static Part::TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
 
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderShapeBinder";

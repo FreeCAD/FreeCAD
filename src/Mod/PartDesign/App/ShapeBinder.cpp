@@ -121,7 +121,7 @@ void ShapeBinder::getFilterdReferences(App::PropertyLinkSubList* prop, Part::Fea
 }
 
 
-TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector< std::string > subs) {
+Part::TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector< std::string > subs) {
 
     if(!obj)
         return TopoDS_Shape();
@@ -130,7 +130,7 @@ TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector
         return obj->Shape.getShape();
 
     //if we use multiple subshapes we build a shape from them by fusing them together
-    TopoShape base;
+    Part::TopoShape base;
     std::vector<TopoDS_Shape> operators;
     for(std::string sub : subs) {
 
@@ -141,8 +141,8 @@ TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::vector
     }
 
     try {
-    if(!operators.empty() && !base.isNull())
-        return base.multiFuse(operators);
+        if(!operators.empty() && !base.isNull())
+            return base.multiFuse(operators);
     }
     catch(...) {
         return base;

@@ -210,7 +210,7 @@ TopoDS_Face ProfileBased::getVerifiedFace(bool silent) const {
                 err = "Linked object has no subshape specified";
             else {
                 
-                const TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
+                const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
                 TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
                 if(sub.ShapeType() == TopAbs_FACE) 
                     return TopoDS::Face(sub);
