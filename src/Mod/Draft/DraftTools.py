@@ -720,7 +720,7 @@ class BezCurve(Line):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates a Bezier curve. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Line.Activated(self,name=translate("draft","BezCurve").decode("utf8"))
+        Line.Activated(self,name=translate("draft","BezCurve"))
         if self.doc:
             self.bezcurvetrack = bezcurveTracker()
 
