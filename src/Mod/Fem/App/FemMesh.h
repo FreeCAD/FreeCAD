@@ -106,9 +106,9 @@ public:
 
     /** @name Placement control */
     //@{
-    /// set the transformation 
+    /// set the transformation
     void setTransform(const Base::Matrix4D& rclTrf);
-    /// get the transformation 
+    /// get the transformation
     Base::Matrix4D getTransform(void) const;
     /// Bound box from the shape
     Base::BoundBox3d getBoundBox(void)const;
@@ -123,7 +123,7 @@ public:
     //@}
 
     struct FemMeshInfo {
-        int numFaces; 
+        int numFaces;
         int numNode;
         int numTria;
         int numQuad;

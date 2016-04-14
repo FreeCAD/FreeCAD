@@ -154,8 +154,8 @@ SET(FemBase_SRCS
     FemMeshProperty.h
 	)
 SOURCE_GROUP("Base types" FILES ${FemBase_SRCS})
-	
-	
+
+
 SET(FemSet_SRCS
     FemSetObject.cpp
     FemSetObject.h
@@ -169,7 +169,7 @@ SET(FemSet_SRCS
     FemSetGeometryObject.h
 	)
 SOURCE_GROUP("Set objects" FILES ${FemSet_SRCS})
-	
+
 SET(FemConstraints_SRCS
     FemConstraintBearing.h
     FemConstraintBearing.cpp
@@ -205,10 +205,10 @@ add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS})
 
 
-fc_target_copy_resource(Fem 
+fc_target_copy_resource(Fem
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
-	Init.py 
+	Init.py
     ${FemScripts_SRCS}
     ${FemTests_SRCS}
     )

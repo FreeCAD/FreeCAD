@@ -29,9 +29,9 @@
 #include <Gui/ViewProviderPythonFeature.h>
 
 class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
+class SoDrawStyle;
+class SoIndexedFaceSet;
+class SoIndexedLineSet;
 class SoShapeHints;
 class SoMaterialBinding;
 

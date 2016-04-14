@@ -256,13 +256,13 @@ bool TaskDlgFemConstraintPressure::accept()
     try {
         if (parameterPressure->getPressure()<=0)
         {
-          QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a pressure greater than 0"));  
+          QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a pressure greater than 0"));
             return false;
         }
         else
         {
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Pressure = %f",
-            name.c_str(), parameterPressure->getPressure()); 
+            name.c_str(), parameterPressure->getPressure());
         }
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s",
             name.c_str(), parameterPressure->getReverse() ? "True" : "False");

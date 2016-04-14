@@ -90,7 +90,7 @@ bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
 }
 
 #define ARROWLENGTH (4)
-#define ARROWHEADRADIUS (ARROWLENGTH/3) 
+#define ARROWHEADRADIUS (ARROWLENGTH/3)
 //#define USE_MULTIPLE_COPY //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so disable
 
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
@@ -119,7 +119,7 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
         }
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-#ifdef USE_MULTIPLE_COPY      
+#ifdef USE_MULTIPLE_COPY
         cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0)); //OvG: Use top cp
         cp->matrix.setNum(points.size());
         SbMatrix* matrices = cp->matrix.startEditing();

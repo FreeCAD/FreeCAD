@@ -69,7 +69,7 @@ void PropertyFemMesh::setValue(const FemMesh& sh)
     hasSetValue();
 }
 
-const FemMesh &PropertyFemMesh::getValue(void)const 
+const FemMesh &PropertyFemMesh::getValue(void)const
 {
     return *_FemMesh;
 }

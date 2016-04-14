@@ -120,22 +120,22 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         // Set up the nodes
         cpx->matrix.setNum(0);
         cpx->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cpy->matrix.setNum(0);
         cpy->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cpz->matrix.setNum(0);
         cpz->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cprotx->matrix.setNum(0);
         cprotx->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cproty->matrix.setNum(0);
         cproty->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cprotz->matrix.setNum(0);
         cprotz->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         pShapeSep->addChild(cpx);
         pShapeSep->addChild(cpy);
         pShapeSep->addChild(cpz);
@@ -156,27 +156,27 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         cpx = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cpx->matrix.setNum(points.size());
         SbMatrix* matricesx = cpx->matrix.startEditing();
-        
+
         cpy = static_cast<SoMultipleCopy*>(pShapeSep->getChild(1));
         cpy->matrix.setNum(points.size());
         SbMatrix* matricesy = cpy->matrix.startEditing();
-        
+
         cpz = static_cast<SoMultipleCopy*>(pShapeSep->getChild(2));
         cpz->matrix.setNum(points.size());
         SbMatrix* matricesz = cpz->matrix.startEditing();
-        
+
         cprotx = static_cast<SoMultipleCopy*>(pShapeSep->getChild(3));
         cprotx->matrix.setNum(points.size());
         SbMatrix* matricesrotx = cprotx->matrix.startEditing();
-        
+
         cproty = static_cast<SoMultipleCopy*>(pShapeSep->getChild(4));
         cproty->matrix.setNum(points.size());
         SbMatrix* matricesroty = cproty->matrix.startEditing();
-        
+
         cprotz = static_cast<SoMultipleCopy*>(pShapeSep->getChild(5));
         cprotz->matrix.setNum(points.size());
         SbMatrix* matricesrotz = cprotz->matrix.startEditing();
-        
+
         int idx = 0;
         int idy = 0;
         int idz = 0;
@@ -222,7 +222,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
 				matricesz[idz] = mz;
 				idz++;
 			}
-			
+
 			//OvG: Rotation indication
 			if(!rotxFree)
             {
@@ -268,7 +268,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
 				createDisplacement(sepz, scaledheight, scaledwidth); //OvG: Scaling
 				pShapeSep->addChild(sepz);
 			}
-			
+
 			//OvG: Rotation indication
 			if(!rotxFree)
             {
@@ -303,7 +303,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         cprotz->matrix.finishEditing();
 #endif
     }
-	
+
     // Gets called whenever a property of the attached object changes
     ViewProviderFemConstraint::updateData(prop);
 }
