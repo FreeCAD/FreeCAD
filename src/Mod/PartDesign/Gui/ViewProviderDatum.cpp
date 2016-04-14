@@ -194,7 +194,7 @@ std::string ViewProviderDatum::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderDatum::getDetail(const char* subelement) const
 {
-    QString subelem = QString::fromAscii(subelement);
+    QString subelem = QString::fromLatin1(subelement);
 
     if (subelem == QObject::tr("Line")) {
          SoLineDetail* detail = new SoLineDetail();

@@ -190,14 +190,14 @@ void ViewProviderLoft::highlightReferences(const bool on, bool auxillery)
 }
 
 QIcon ViewProviderLoft::getIcon(void) const {
-    QString str = QString::fromAscii("PartDesign_");
+    QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Loft*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromAscii("Additive_");
+        str += QString::fromLatin1("Additive_");
     else
-        str += QString::fromAscii("Subtractive_");
+        str += QString::fromLatin1("Subtractive_");
  
-    str += QString::fromAscii("Loft.svg");
+    str += QString::fromLatin1("Loft.svg");
     return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
 }
 

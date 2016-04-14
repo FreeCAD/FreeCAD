@@ -195,7 +195,7 @@ void TaskDraftParameters::onRefDeleted(void)
 void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     sub = std::vector<std::string>(1,"");
-    QStringList parts = ui->linePlane->text().split(QChar::fromAscii(':'));
+    QStringList parts = ui->linePlane->text().split(QChar::fromLatin1(':'));
     obj = DressUpView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
     if (parts.size() > 1)
         sub[0] = parts[1].toStdString();
@@ -204,7 +204,7 @@ void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::s
 void TaskDraftParameters::getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     sub = std::vector<std::string>(1,"");
-    QStringList parts = ui->lineLine->text().split(QChar::fromAscii(':'));
+    QStringList parts = ui->lineLine->text().split(QChar::fromLatin1(':'));
     obj = DressUpView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
     if (parts.size() > 1)
         sub[0] = parts[1].toStdString();

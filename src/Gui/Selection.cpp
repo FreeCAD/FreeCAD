@@ -493,9 +493,9 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                     }
                     msg.append(
                                 QObject::tr(" %1.%2.%3 ")
-                               .arg(QString::fromAscii(pDocName))
-                               .arg(QString::fromAscii(pObjectName))
-                               .arg(QString::fromAscii(pSubName))
+                               .arg(QString::fromLatin1(pDocName))
+                               .arg(QString::fromLatin1(pObjectName))
+                               .arg(QString::fromLatin1(pSubName))
                                 );
 
                     if (getMainWindow()) {

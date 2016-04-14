@@ -386,7 +386,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     {
       DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
       dagDockWindow->setObjectName
-          (QString::fromAscii(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+          (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
       pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
     }
 

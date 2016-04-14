@@ -49,7 +49,7 @@ using namespace Gui;
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName()).c_str()),
-              QString::fromAscii((DressUpView->featureName() + " parameters").c_str()),
+              QString::fromLatin1((DressUpView->featureName() + " parameters").c_str()),
               true,
               parent),
       DressUpView(DressUpView), allowFaces(selectFaces), allowEdges(selectEdges)
@@ -138,7 +138,7 @@ const std::vector<std::string> TaskDressUpParameters::getReferences() const
 // TODO: This code is identical with TaskTransformedParameters::removeItemFromListWidget()
 void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const char* itemstr)
 {
-    QList<QListWidgetItem*> items = widget->findItems(QString::fromAscii(itemstr), Qt::MatchExactly);
+    QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));

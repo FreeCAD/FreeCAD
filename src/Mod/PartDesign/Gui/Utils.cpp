@@ -208,8 +208,8 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         std::string Datum = doc->getUniqueObjectName("DatumPlane");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",
                 Datum.c_str());
-        QString refStr = QString::fromAscii("[(App.activeDocument().%1,'')]")
-            .arg ( QString::fromAscii ( plane->getNameInDocument () ) );
+        QString refStr = QString::fromLatin1("[(App.activeDocument().%1,'')]")
+            .arg ( QString::fromLatin1 ( plane->getNameInDocument () ) );
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
                 Datum.c_str(), refStr.toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",

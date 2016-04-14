@@ -72,21 +72,21 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     if (obj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
         obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
         // App::Plane, Liine or Datum feature
-        return QString::fromAscii(obj->getNameInDocument());
+        return QString::fromLatin1(obj->getNameInDocument());
 
     if ((sub.size() > 4) && (sub.substr(0,4) == "Face")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Face") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(subId);
     } else if ((sub.size() > 4) && (sub.substr(0,4) == "Edge")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Edge") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Edge") + QString::number(subId);
     } else if ((sub.size() > 6) && (sub.substr(0,6) == "Vertex")) {
         int subId = std::atoi(&sub[6]);
-        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Vertex") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Vertex") + QString::number(subId);
     } else {
         //something else that face/edge/vertex. Can be empty string.
-        return QString::fromAscii(obj->getNameInDocument())
-                + (sub.length()>0 ? QString::fromAscii(":") : QString())
+        return QString::fromLatin1(obj->getNameInDocument())
+                + (sub.length()>0 ? QString::fromLatin1(":") : QString())
                 + QString::fromLatin1(sub.c_str());
     }
 }
@@ -107,7 +107,7 @@ void TaskDatumParameters::makeRefStrings(std::vector<QString>& refstrings, std::
 }
 
 TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap((QString::fromAscii("PartDesign_") + DatumView->datumType).toLatin1()),
+    : TaskBox(Gui::BitmapFactory().pixmap((QString::fromLatin1("PartDesign_") + DatumView->datumType).toLatin1()),
               DatumView->datumType + tr(" parameters"), true, parent),
       DatumView(DatumView)
 {
@@ -276,7 +276,7 @@ const QString makeHintText(std::set<eRefType> hint)
     for (std::set<eRefType>::const_iterator t = hint.begin(); t != hint.end(); t++) {
         QString tText;
         tText = getShTypeText(*t);
-        result += QString::fromAscii(result.size() == 0 ? "" : "/") + tText;
+        result += QString::fromLatin1(result.size() == 0 ? "" : "/") + tText;
     }
 
     return result;
@@ -288,9 +288,9 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     if(!message.empty()) {
         ui->message->setText(QString::fromStdString(message));
         if(error)
-            ui->message->setStyleSheet(QString::fromAscii("QLabel{color: red;}"));
+            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         else
-            ui->message->setStyleSheet(QString::fromAscii("QLabel{color: green;}"));
+            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
     }
 
     ui->checkBoxFlip->setVisible(false);
@@ -593,9 +593,9 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
         return;
     }
 
-    QStringList parts = text.split(QChar::fromAscii(':'));
+    QStringList parts = text.split(QChar::fromLatin1(':'));
     if (parts.length() < 2)
-        parts.push_back(QString::fromAscii(""));
+        parts.push_back(QString::fromLatin1(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = DatumView->getObject()->getDocument()->getObject(parts[0].toLatin1());
     if (obj == NULL) return;
@@ -617,17 +617,17 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
         QRegExp rx;
         std::stringstream ss;
 
-        rx.setPattern(QString::fromAscii("^") + tr("Face") + QString::fromAscii("(\\d+)$"));
+        rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
         if (parts[1].indexOf(rx) >= 0) {
             int faceId = rx.cap(1).toInt();
             ss << "Face" << faceId;
         } else {
-            rx.setPattern(QString::fromAscii("^") + tr("Edge") + QString::fromAscii("(\\d+)$"));
+            rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
             if (parts[1].indexOf(rx) >= 0) {
                 int lineId = rx.cap(1).toInt();
                 ss << "Edge" << lineId;
             } else {
-                rx.setPattern(QString::fromAscii("^") + tr("Vertex") + QString::fromAscii("(\\d+)$"));
+                rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
                 if (parts[1].indexOf(rx) >= 0) {
                     int vertexId = rx.cap(1).toInt();
                     ss << "Vertex" << vertexId;
@@ -957,7 +957,7 @@ bool TaskDlgDatumParameters::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 
