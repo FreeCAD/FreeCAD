@@ -27,7 +27,7 @@ import FreeCAD
 sources = {
     "inet_arcor"    : "http://home.arcor.de/maschinenelemente2-din/DIN%20EN%2020273_Durchgangsl%F6cher%20fuer%20Schrauben.PDF",
     "inet_duckma"  : "http://www.duckma.de/mb14/SiteDocs/DIN%20Grundlagen%20Maschinenbau.pdf", 
-    "klein_14" : "Klein: Einf¸hrung in die DIN-Normen, 14. Auflage. Stuttgart, Teubner 2008"
+    "klein_14" : "Klein: Einf√ºhrung in die DIN-Normen, 14. Auflage. Stuttgart, Teubner 2008"
 }
 
 StandardYear = 0
@@ -37,13 +37,13 @@ StandardType = 3
 
 standards = {
 # "Standard name" : ("Year", "Title", "Source", "Type")
-    "DIN 13-1"   : ("1999", "Metrisches ISO-Gewinde allgemeiner Anwendung (Auszug); Nennmaﬂe f¸r Regelgewinde",  "klein_14",  "thread"), 
+    "DIN 13-1"   : ("1999", "Metrisches ISO-Gewinde allgemeiner Anwendung (Auszug); Nennma√üe f√ºr Regelgewinde",  "klein_14",  "thread"), 
     "DIN 74-A"   : ("2003",  "Senkungen fur Senkschrauben, ausgenommen Senkschrauben mit Kopfen nach DIN EN 27721; Form A",  "klein_14",  "countersink"), 
     "DIN 74-E"   : ("2003",  "Senkungen fur Senkschrauben, ausgenommen Senkschrauben mit Kopfen nach DIN EN 27721; Form E",  "klein_14",  "countersink"), 
     "DIN 74-F"   : ("2003",  "Senkungen fur Senkschrauben, ausgenommen Senkschrauben mit Kopfen nach DIN EN 27721; Form F",  "klein_14",  "countersink"), 
-    "DIN 76-2"  : ("1984",  "Gewindeausl‰ufe und Gewindefreistiche (Auszug); f¸r Metrisches ISO-Gewinde nach DIN 13; Innengewinde (Gewindegrundlˆcher)", "klein_14",  "threaded"), 
-    "DIN 974-1" : ("1991", "Senkdurchmesser f¸r Schrauben mit Zylinderkopf; Konstruktionsmaﬂe (Auszug)", "klein_14", "counterbore"), 
-    "DIN 974-2" : ("1991", "Senkdurchmesser fur Sechskantschrauben und Sechskantmuttern; Konstruktionsmaﬂe(Auszug)", "klein_14", "counterbore"), 
+    "DIN 76-2"  : ("1984",  "Gewindeausl√§ufe und Gewindefreistiche (Auszug); f√ºr Metrisches ISO-Gewinde nach DIN 13; Innengewinde (Gewindegrundl√∂cher)", "klein_14",  "threaded"), 
+    "DIN 974-1" : ("1991", "Senkdurchmesser f√ºr Schrauben mit Zylinderkopf; Konstruktionsma√üe (Auszug)", "klein_14", "counterbore"), 
+    "DIN 974-2" : ("1991", "Senkdurchmesser fur Sechskantschrauben und Sechskantmuttern; Konstruktionsma√üe(Auszug)", "klein_14", "counterbore"), 
     "ISO 273"     : ("1979", "Fasteners; Clearance holes for bolts and screws", "inet_arcor", "through"), 
     "ISO 15065" : ("2005",  "Senkungen fur Senkschrauben mit Kopfform nach ISO 7721",  "klein_14", "countersink")
 }

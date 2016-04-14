@@ -1,5 +1,5 @@
 /***************************************************************************
-*   (c) Jürgen Riegel (juergen.riegel@web.de) 2014                        *
+*   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2014                        *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -43,7 +43,7 @@ namespace Gui
 	* Its mainly used to points to something like the active Body or Part in a edit session.
 	* The class is used the viewer (editor) of a document.
 	* @see Gui::MDIViewer
-	* @author Jürgen Riegel
+	* @author JÃ¼rgen Riegel
 	*/
 	class GuiExport ActiveObjectList 
 	{
