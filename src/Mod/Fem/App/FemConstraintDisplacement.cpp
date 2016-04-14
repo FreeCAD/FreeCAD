@@ -78,7 +78,7 @@ App::DocumentObjectExecReturn *ConstraintDisplacement::execute(void)
 
 const char* ConstraintDisplacement::getViewProviderName(void) const
 {
-	return "FemGui::ViewProviderFemConstraintDisplacement";
+    return "FemGui::ViewProviderFemConstraintDisplacement";
 }
 
 void ConstraintDisplacement::onChanged(const App::Property* prop)

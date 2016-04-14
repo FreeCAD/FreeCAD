@@ -152,7 +152,7 @@ SET(FemBase_SRCS
     FemConstraint.h
     FemMeshProperty.cpp
     FemMeshProperty.h
-	)
+    )
 SOURCE_GROUP("Base types" FILES ${FemBase_SRCS})
 
 
@@ -167,7 +167,7 @@ SET(FemSet_SRCS
     FemSetFacesObject.h
     FemSetGeometryObject.cpp
     FemSetGeometryObject.h
-	)
+    )
 SOURCE_GROUP("Set objects" FILES ${FemSet_SRCS})
 
 SET(FemConstraints_SRCS
@@ -185,18 +185,18 @@ SET(FemConstraints_SRCS
     FemConstraintPulley.h
     FemConstraintDisplacement.h
     FemConstraintDisplacement.cpp
-	)
+    )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
 SET(FemResult_SRCS
-	)
+    )
 SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
 
 SET(Fem_SRCS
-	${FemBase_SRCS}
-	${FemSet_SRCS}
-	${FemConstraints_SRCS}
-	${FemResult_SRCS}
+    ${FemBase_SRCS}
+    ${FemSet_SRCS}
+    ${FemConstraints_SRCS}
+    ${FemResult_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
@@ -208,7 +208,7 @@ target_link_libraries(Fem ${Fem_LIBS})
 fc_target_copy_resource(Fem
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
-	Init.py
+    Init.py
     ${FemScripts_SRCS}
     ${FemTests_SRCS}
     )
