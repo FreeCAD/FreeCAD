@@ -61,4 +61,5 @@ PyMOD_INIT_FUNC(Points)
     Points::FeatureCustom         ::init();
     Points::StructuredCustom      ::init();
     Points::FeaturePython         ::init();
+    PyMOD_Return(pointsModule);
 }
