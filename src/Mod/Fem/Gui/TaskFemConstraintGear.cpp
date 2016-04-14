@@ -85,7 +85,7 @@ TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint *Constrai
     ui->checkReversed->blockSignals(true);
 
     // Get the feature data
-    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());    
+    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
     double dia = pcConstraint->Diameter.getValue();
     double force = pcConstraint->Force.getValue();
     double angle = pcConstraint->ForceAngle.getValue();

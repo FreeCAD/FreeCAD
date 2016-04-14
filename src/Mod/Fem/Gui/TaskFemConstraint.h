@@ -77,7 +77,7 @@ class TaskDlgFemConstraint : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    
+
     /// is called the TaskView when the dialog is opened
     void open();
     /*

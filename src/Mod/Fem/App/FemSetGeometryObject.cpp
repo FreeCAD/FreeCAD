@@ -55,6 +55,6 @@ PyObject *FemSetGeometryObject::getPyObject()
         // ref counter is set to 1
         PythonObject = Py::Object(new DocumentObjectPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 

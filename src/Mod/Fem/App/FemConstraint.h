@@ -44,7 +44,7 @@ public:
     App::PropertyLinkSubList References;
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVector NormalDirection;
-    
+
     //OvG: Scale
     App::PropertyInteger Scale;
 
@@ -55,7 +55,7 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemConstraint";
     }
-    
+
     //OvG: Allow automatic determination of scaling of constraint drawings, e.g. arrow length and size
     int calcDrawScaleFactor(double lparam) const;
     int calcDrawScaleFactor(double lvparam, double luparam) const;

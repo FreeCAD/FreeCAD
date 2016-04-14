@@ -44,8 +44,8 @@ App::Color calcColor(double value,double min, double max)
     if (max < 0) max = 0;
     if (min > 0) min = 0;
 
-    if (value < min) 
-        return App::Color (0.0,0.0,1.0);    
+    if (value < min)
+        return App::Color (0.0,0.0,1.0);
     if (value > max)
         return App::Color (1.0,0.0,0.0);
     if (value == 0.0)
@@ -281,7 +281,7 @@ PyObject *ViewProviderFemMeshPy::getCustomAttributes(const char* /*attr*/) const
 
 int ViewProviderFemMeshPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

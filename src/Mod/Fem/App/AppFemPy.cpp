@@ -220,7 +220,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "O!", &(FemMeshPy::Type), &pcObj))
             throw Py::Exception();
 
-        App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
+        App::Document *pcDoc = App::GetApplication().getActiveDocument();
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
 

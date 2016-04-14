@@ -726,7 +726,7 @@ void FemMesh::readNastran(const std::string &Filename)
 		{
 			tetra_element.clear();
 			//Lets extract the elements
-			//As each Element Line consists of two subsequent lines as well 
+			//As each Element Line consists of two subsequent lines as well
 			//we have to take care of that
 			//At a first step we only extract Quadratic Tetrahedral Elements
 			std::getline(inputfile,line2);
@@ -739,7 +739,7 @@ void FemMesh::readNastran(const std::string &Filename)
                 offset = 1;
             else if (id < 100000000)
                 offset = 2;
-            
+
 
 			element_id.push_back(id);
 			tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
@@ -764,7 +764,7 @@ void FemMesh::readNastran(const std::string &Filename)
 				continue;//Line does not include Nodal coordinates
 			nodal_id.push_back(atoi(token_results[1].c_str()));
 			current_node.x = atof(token_results[3].c_str());
-			current_node.y = atof(token_results[4].c_str());		
+			current_node.y = atof(token_results[4].c_str());
 			current_node.z = atof(token_results[5].c_str());
 			vertices.push_back(current_node);
 		}
@@ -772,7 +772,7 @@ void FemMesh::readNastran(const std::string &Filename)
 		{
 			tetra_element.clear();
 			//Lets extract the elements
-			//As each Element Line consists of two subsequent lines as well 
+			//As each Element Line consists of two subsequent lines as well
 			//we have to take care of that
 			//At a first step we only extract Quadratic Tetrahedral Elements
 			std::getline(inputfile,line2);
@@ -815,7 +815,7 @@ void FemMesh::readNastran(const std::string &Filename)
 
 	for(unsigned int i=0;i<all_elements.size();i++)
 	{
-		//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
+		//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
 		//Ansonsten ist eine konsistente Datenstruktur nicht möglich
 		//meshds->AddVolumeWithID
 		//(
@@ -855,11 +855,11 @@ void FemMesh::read(const char *FileName)
 {
     Base::FileInfo File(FileName);
     _Mtrx = Base::Matrix4D();
-  
+
     // checking on the file
     if (!File.isReadable())
         throw Base::Exception("File to load not existing or not readable");
-    
+
     if (File.hasExtension("unv") ) {
         // read UNV file
         myMesh->UNVToMesh(File.filePath().c_str());
@@ -1179,10 +1179,10 @@ void FemMesh::SaveDocFile (Base::Writer &writer) const
     Base::FileInfo fi(App::Application::getTempFileName().c_str());
 
     myMesh->ExportUNV(fi.filePath().c_str());
- 
+
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
     if (file){
-        unsigned long ulSize = 0; 
+        unsigned long ulSize = 0;
         std::streambuf* buf = file.rdbuf();
         if (buf) {
             unsigned long ulCurr;
@@ -1255,7 +1255,7 @@ Base::BoundBox3d FemMesh::getBoundBox(void) const
 	for (;aNodeIter->more();) {
 		const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
-        // Apply the matrix to hold the BoundBox in absolute space. 
+        // Apply the matrix to hold the BoundBox in absolute space.
         vec = _Mtrx * vec;
         box.Add(vec);
 	}
@@ -1281,7 +1281,7 @@ unsigned long FemMesh::countSubElements(const char* Type) const
 
 Data::Segment* FemMesh::getSubElement(const char* Type, unsigned long n) const
 {
-    // FIXME implement subelement interface 
+    // FIXME implement subelement interface
     //std::stringstream str;
     //str << Type << n;
     //std::string temp = str.str();
@@ -1312,7 +1312,7 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
 }
 //		for(unsigned int i=0;i<all_elements.size();i++)
 //		{
-//			//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
+//			//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
 //			//Ansonsten ist eine konsistente Datenstruktur nicht möglich
 //			meshds->AddVolumeWithID(
 //				meshds->FindNode(all_elements[i][0]),
@@ -1339,10 +1339,10 @@ Base::Quantity FemMesh::getVolume(void)const
 	Base::Vector3d a,b,c,a_b_product;
 	double volume = 0.0;
 
-	for (;aVolIter->more();) 
+	for (;aVolIter->more();)
 	{
         const SMDS_MeshVolume* aVol = aVolIter->next();
-        
+
         if ( aVol->NbNodes() != 10 ) continue;
 
         Base::Vector3d v1(aVol->GetNode(1)->X(),aVol->GetNode(1)->Y(),aVol->GetNode(1)->Z());
@@ -1405,7 +1405,7 @@ Base::Quantity FemMesh::getVolume(void)const
 		c = v3 -v7 ;
 		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
 		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-	
+
 	}
 
     return Base::Quantity(volume,Unit::Volume);

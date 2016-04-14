@@ -189,7 +189,7 @@ std::string ViewProviderFemConstraint::gethideMeshShowPartStr()
 
 bool ViewProviderFemConstraint::setEdit(int ModNum)
 {
-    Gui::Command::doCommand(Gui::Command::Doc,"%s",ViewProviderFemConstraint::gethideMeshShowPartStr().c_str()); 
+    Gui::Command::doCommand(Gui::Command::Doc,"%s",ViewProviderFemConstraint::gethideMeshShowPartStr().c_str());
     return Gui::ViewProviderGeometryObject::setEdit(ModNum);
 }
 

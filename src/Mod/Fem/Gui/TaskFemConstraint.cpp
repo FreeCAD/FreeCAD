@@ -116,7 +116,7 @@ const std::string TaskFemConstraint::getReferences(const std::vector<std::string
 }
 
 const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculated scale for constraint display
-{   
+{
     std::string result;
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
     result = boost::lexical_cast<std::string>(pcConstraint->Scale.getValue());
