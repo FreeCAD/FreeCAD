@@ -136,7 +136,7 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
     if (parts.length() < 2)
         parts.push_back(QString::fromAscii(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
-    App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(parts[0].toAscii());
+    App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(parts[0].toLatin1());
     if (obj == NULL)
         return QByteArray();
 

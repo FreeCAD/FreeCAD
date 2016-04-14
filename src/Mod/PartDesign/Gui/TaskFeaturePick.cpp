@@ -198,7 +198,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::getFeatures() {
     std::vector<App::DocumentObject*> result;
 
     for (std::vector<QString>::const_iterator s = features.begin(); s != features.end(); s++)
-        result.push_back(App::GetApplication().getActiveDocument()->getObject(s->toAscii().data()));
+        result.push_back(App::GetApplication().getActiveDocument()->getObject(s->toLatin1().data()));
 
     return result;
 }
@@ -217,7 +217,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
 
             QString t = item->text();
             t = t.left(t.indexOf(QString::fromAscii("(")) - 1);
-            auto obj = App::GetApplication().getActiveDocument()->getObject(t.toAscii().data());
+            auto obj = App::GetApplication().getActiveDocument()->getObject(t.toLatin1().data());
 
             //build the dependend copy or reference if wanted by the user
             if(*st == otherBody  ||
