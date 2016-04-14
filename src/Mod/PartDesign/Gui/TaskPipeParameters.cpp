@@ -90,10 +90,8 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, Q
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
-    //make sure th euser sees al important things: the base feature to select edges and the 
+    //make sure th euser sees al important things: the 
     //spine/auxillery spine he already selected 
-    if(pipe->BaseFeature.getValue())
-        doc->getViewProvider(pipe->BaseFeature.getValue())->show();
     if(pipe->Spine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->Spine.getValue());
         spineShow = svp->isShow();
@@ -156,10 +154,8 @@ TaskPipeParameters::~TaskPipeParameters()
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
-    //make sure th euser sees al important things: the base feature to select edges and the 
+    //make sure th euser sees al important things: the 
     //spine/auxillery spine he already selected 
-    if(pipe->BaseFeature.getValue())
-        doc->getViewProvider(pipe->BaseFeature.getValue())->hide();
     if(pipe->Spine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->Spine.getValue());
         svp->setVisible(spineShow);
