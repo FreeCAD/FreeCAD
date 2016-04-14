@@ -350,6 +350,8 @@ PyObject*  DocumentPy::openTransaction(PyObject *args)
         cmd = PyString_AsString(value);
     }
 #endif
+    else
+        return NULL;
     getDocumentPtr()->openTransaction(cmd.c_str()); 
     Py_Return; 
 }
