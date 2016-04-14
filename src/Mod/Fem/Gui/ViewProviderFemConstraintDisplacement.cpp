@@ -203,94 +203,94 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
             //OvG: Translation indication
             if(!xFree)
             {
-				SbMatrix mx;
-				mx.setTransform(base, rotx, SbVec3f(1,1,1));
-				matricesx[idx] = mx;
-				idx++;
-			}
-			if(!yFree)
+                SbMatrix mx;
+                mx.setTransform(base, rotx, SbVec3f(1,1,1));
+                matricesx[idx] = mx;
+                idx++;
+            }
+            if(!yFree)
             {
-				SbMatrix my;
-				my.setTransform(base, roty, SbVec3f(1,1,1));
-				matricesy[idy] = my;
-				idy++;
-			}
-			if(!zFree)
+                SbMatrix my;
+                my.setTransform(base, roty, SbVec3f(1,1,1));
+                matricesy[idy] = my;
+                idy++;
+            }
+            if(!zFree)
             {
-				SbMatrix mz;
-				mz.setTransform(base, rotz, SbVec3f(1,1,1));
-				matricesz[idz] = mz;
-				idz++;
-			}
+                SbMatrix mz;
+                mz.setTransform(base, rotz, SbVec3f(1,1,1));
+                matricesz[idz] = mz;
+                idz++;
+            }
 
-			//OvG: Rotation indication
-			if(!rotxFree)
+            //OvG: Rotation indication
+            if(!rotxFree)
             {
-				SbMatrix mrotx;
-				mrotx.setTransform(base, rotx, SbVec3f(1,1,1));
-				matricesrotx[idrotx] = mrotx;
-				idrotx++;
-			}
-			if(!rotyFree)
+                SbMatrix mrotx;
+                mrotx.setTransform(base, rotx, SbVec3f(1,1,1));
+                matricesrotx[idrotx] = mrotx;
+                idrotx++;
+            }
+            if(!rotyFree)
             {
-				SbMatrix mroty;
-				mroty.setTransform(base, roty, SbVec3f(1,1,1));
-				matricesroty[idroty] = mroty;
-				idroty++;
-			}
-			if(!rotzFree)
+                SbMatrix mroty;
+                mroty.setTransform(base, roty, SbVec3f(1,1,1));
+                matricesroty[idroty] = mroty;
+                idroty++;
+            }
+            if(!rotzFree)
             {
-				SbMatrix mrotz;
-				mrotz.setTransform(base, rotz, SbVec3f(1,1,1));
-				matricesrotz[idrotz] = mrotz;
-				idrotz++;
-			}
+                SbMatrix mrotz;
+                mrotz.setTransform(base, rotz, SbVec3f(1,1,1));
+                matricesrotz[idrotz] = mrotz;
+                idrotz++;
+            }
 #else
-			//OvG: Translation indication
-			if(!xFree)
+            //OvG: Translation indication
+            if(!xFree)
             {
-				SoSeparator* sepx = new SoSeparator();
-				createPlacement(sepx, base, rotx);
-				createDisplacement(sepx, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepx);
-			}
-			if(!yFree)
+                SoSeparator* sepx = new SoSeparator();
+                createPlacement(sepx, base, rotx);
+                createDisplacement(sepx, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepx);
+            }
+            if(!yFree)
             {
-				SoSeparator* sepy = new SoSeparator();
-				createPlacement(sepy, base, roty);
-				createDisplacement(sepy, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepy);
-			}
-			if(!zFree)
+                SoSeparator* sepy = new SoSeparator();
+                createPlacement(sepy, base, roty);
+                createDisplacement(sepy, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepy);
+            }
+            if(!zFree)
             {
-				SoSeparator* sepz = new SoSeparator();
-				createPlacement(sepz, base, rotz);
-				createDisplacement(sepz, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepz);
-			}
+                SoSeparator* sepz = new SoSeparator();
+                createPlacement(sepz, base, rotz);
+                createDisplacement(sepz, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepz);
+            }
 
-			//OvG: Rotation indication
-			if(!rotxFree)
+            //OvG: Rotation indication
+            if(!rotxFree)
             {
-				SoSeparator* sepx = new SoSeparator();
-				createPlacement(sepx, base, rotx);
-				createRotation(sepx, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepx);
-			}
-			if(!rotyFree)
+                SoSeparator* sepx = new SoSeparator();
+                createPlacement(sepx, base, rotx);
+                createRotation(sepx, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepx);
+            }
+            if(!rotyFree)
             {
-				SoSeparator* sepy = new SoSeparator();
-				createPlacement(sepy, base, roty);
-				createRotation(sepy, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepy);
-			}
-			if(!rotzFree)
+                SoSeparator* sepy = new SoSeparator();
+                createPlacement(sepy, base, roty);
+                createRotation(sepy, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepy);
+            }
+            if(!rotzFree)
             {
-				SoSeparator* sepz = new SoSeparator();
-				createPlacement(sepz, base, rotz);
-				createRotation(sepz, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepz);
-			}
+                SoSeparator* sepz = new SoSeparator();
+                createPlacement(sepz, base, rotz);
+                createRotation(sepz, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepz);
+            }
 #endif
             n++;
         }
