@@ -856,7 +856,7 @@ void Model::updateStates()
         else
           (*theGraph)[currentVertex].stateIcon->setPixmap(pendingPixmap);
       }
-      (*theGraph)[currentVertex].stateIcon->setToolTip(QString::fromAscii(record.DObject->getStatusString()));
+      (*theGraph)[currentVertex].stateIcon->setToolTip(QString::fromLatin1(record.DObject->getStatusString()));
       (*theGraph)[currentVertex].lastFeatureState = currentFeatureState;
     }
   }

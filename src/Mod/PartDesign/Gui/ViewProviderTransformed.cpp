@@ -144,7 +144,7 @@ void ViewProviderTransformed::recomputeFeature(void)
     unsigned rejected = 0;
     for (PartDesign::Transformed::rejectedMap::const_iterator r = rejected_trsf.begin(); r != rejected_trsf.end(); r++)
         rejected += r->second.size();
-    QString msg = QString::fromAscii("%1");
+    QString msg = QString::fromLatin1("%1");
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)

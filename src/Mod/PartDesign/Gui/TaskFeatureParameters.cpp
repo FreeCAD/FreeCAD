@@ -111,7 +111,7 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
         // Generally the only thing that should fail is feature->isValid() others should be fine
-        QMessageBox::warning( 0, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning( 0, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

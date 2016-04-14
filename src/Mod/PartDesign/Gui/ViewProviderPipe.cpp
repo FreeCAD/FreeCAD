@@ -190,14 +190,14 @@ void ViewProviderPipe::highlightReferences(const bool on, bool auxillery)
 }
 
 QIcon ViewProviderPipe::getIcon(void) const {
-    QString str = QString::fromAscii("PartDesign_");
+    QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Pipe*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromAscii("Additive_");
+        str += QString::fromLatin1("Additive_");
     else
-        str += QString::fromAscii("Subtractive_");
+        str += QString::fromLatin1("Subtractive_");
  
-    str += QString::fromAscii("Pipe.svg");
+    str += QString::fromLatin1("Pipe.svg");
     return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
 }
 

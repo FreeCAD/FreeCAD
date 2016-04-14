@@ -635,7 +635,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
             } catch (Base::Exception &) {
                 QMessageBox::warning( Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
                         QObject::tr("Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.").
-                        arg( QString::fromAscii( sketch->Label.getValue () ) ) );
+                        arg( QString::fromLatin1( sketch->Label.getValue () ) ) );
             }
         }
     }

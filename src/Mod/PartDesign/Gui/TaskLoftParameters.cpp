@@ -205,7 +205,7 @@ void TaskLoftParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
-        QStringList parts = ui->lineFaceName->text().split(QChar::fromAscii(':'));
+        QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
         QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
         int faceId = -1;
         bool ok = false;
@@ -216,7 +216,7 @@ void TaskLoftParameters::changeEvent(QEvent *e)
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 #endif
         ui->lineFaceName->setText(ok ?
-                                  parts[0] + QString::fromAscii(":") + tr("Face") + QString::number(faceId) :
+                                  parts[0] + QString::fromLatin1(":") + tr("Face") + QString::number(faceId) :
                                   tr("No face selected"));
         ui->spinOffset->blockSignals(false);
         ui->lengthEdit->blockSignals(false);

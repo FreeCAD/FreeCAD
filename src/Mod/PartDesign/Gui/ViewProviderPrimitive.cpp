@@ -135,41 +135,41 @@ std::vector< App::DocumentObject* > ViewProviderPrimitive::claimChildren(void) c
 
 QIcon ViewProviderPrimitive::getIcon(void) const {
     
-    QString str = QString::fromAscii("PartDesign_");
+    QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromAscii("Additive_");
+        str += QString::fromLatin1("Additive_");
     else
-        str += QString::fromAscii("Subtractive_");
+        str += QString::fromLatin1("Subtractive_");
     
     switch(prim->getPrimitiveType()) {
         
         case PartDesign::FeaturePrimitive::Box: 
-            str += QString::fromAscii("Box");
+            str += QString::fromLatin1("Box");
             break;
         case PartDesign::FeaturePrimitive::Cylinder: 
-            str += QString::fromAscii("Cylinder");
+            str += QString::fromLatin1("Cylinder");
             break;
         case PartDesign::FeaturePrimitive::Sphere: 
-            str += QString::fromAscii("Sphere");
+            str += QString::fromLatin1("Sphere");
             break;
        case PartDesign::FeaturePrimitive::Cone: 
-            str += QString::fromAscii("Cone");
+            str += QString::fromLatin1("Cone");
             break;
        case PartDesign::FeaturePrimitive::Ellipsoid: 
-            str += QString::fromAscii("Ellipsoid");
+            str += QString::fromLatin1("Ellipsoid");
             break;
       case PartDesign::FeaturePrimitive::Torus: 
-            str += QString::fromAscii("Torus");
+            str += QString::fromLatin1("Torus");
             break;
       case PartDesign::FeaturePrimitive::Prism: 
-            str += QString::fromAscii("Prism");
+            str += QString::fromLatin1("Prism");
             break;
       case PartDesign::FeaturePrimitive::Wedge: 
-            str += QString::fromAscii("Wedge");
+            str += QString::fromLatin1("Wedge");
             break;
     }
    
-    str += QString::fromAscii(".svg");
+    str += QString::fromLatin1(".svg");
     return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
 }

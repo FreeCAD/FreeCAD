@@ -74,7 +74,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
     std::vector<App::DocumentObject*> bodies = pcBoolean->Bodies.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
     {
-        ui->listWidgetBodies->insertItem(0, QString::fromAscii((*b)->getNameInDocument()));
+        ui->listWidgetBodies->insertItem(0, QString::fromLatin1((*b)->getNameInDocument()));
     }
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -331,7 +331,7 @@ bool TaskDlgBooleanParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Boolean: Accept: Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Boolean: Accept: Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

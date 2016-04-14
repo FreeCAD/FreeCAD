@@ -98,9 +98,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
     if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
-        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
+        ui->lineFaceName->setText(QString::fromLatin1(obj->getNameInDocument()));
     else if (faceId >= 0)
-        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + tr("Face") +
+        ui->lineFaceName->setText(QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + tr("Face") +
                                   QString::number(faceId));
     else
         ui->lineFaceName->setText(tr("No face selected"));
@@ -366,7 +366,7 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
-        QStringList parts = ui->lineFaceName->text().split(QChar::fromAscii(':'));
+        QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
         QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
         int faceId = -1;
         bool ok = false;
@@ -377,7 +377,7 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 #endif
         ui->lineFaceName->setText(ok ?
-                                  parts[0] + QString::fromAscii(":") + tr("Face") + QString::number(faceId) :
+                                  parts[0] + QString::fromLatin1(":") + tr("Face") + QString::number(faceId) :
                                   tr(""));
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);

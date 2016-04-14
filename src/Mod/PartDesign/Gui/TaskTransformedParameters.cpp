@@ -162,7 +162,7 @@ void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 
 void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, const char* itemstr)
 {
-    QList<QListWidgetItem*> items = widget->findItems(QString::fromAscii(itemstr), Qt::MatchExactly);
+    QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));

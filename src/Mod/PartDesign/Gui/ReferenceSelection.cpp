@@ -231,13 +231,13 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
 {
     if (obj == NULL)
-        return QString::fromAscii("");
+        return QString::fromLatin1("");
 
     if (PartDesign::Feature::isDatum(obj))
-        return QString::fromAscii(obj->getNameInDocument());
+        return QString::fromLatin1(obj->getNameInDocument());
     else if (sub.size()>0)
-        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") +
-               QString::fromAscii(sub.front().c_str());
+        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") +
+               QString::fromLatin1(sub.front().c_str());
     else
         return QString();
 }

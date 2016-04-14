@@ -71,17 +71,17 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
     App::DocumentObject* selObj = pcSketchBased->getDocument()->getObject(msg.pObjectName);
     if (selObj == pcSketchBased)
-        return QString::fromAscii("");
+        return QString::fromLatin1("");
     std::string subname = msg.pSubName;
     QString refStr;
 
     // Remove subname for planes and datum features
     if (PartDesign::Feature::isDatum(selObj)) {
         subname = "";
-        refStr = QString::fromAscii(selObj->getNameInDocument());
+        refStr = QString::fromLatin1(selObj->getNameInDocument());
     } else {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromAscii(selObj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Face") + QString::number(faceId);
+        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);
@@ -132,9 +132,9 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
     if (text.length() == 0)
         return QByteArray();
 
-    QStringList parts = text.split(QChar::fromAscii(':'));
+    QStringList parts = text.split(QChar::fromLatin1(':'));
     if (parts.length() < 2)
-        parts.push_back(QString::fromAscii(""));
+        parts.push_back(QString::fromLatin1(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(parts[0].toLatin1());
     if (obj == NULL)
@@ -173,13 +173,13 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
 
 QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub)
 {
-    QString o = obj.left(obj.indexOf(QString::fromAscii(":")));
+    QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
 
     if (o == tr("No face selected"))
-        return QString::fromAscii("");
+        return QString::fromLatin1("");
     else
-        return QString::fromAscii("(App.activeDocument().") + o +
-                QString::fromAscii(", [\"") + sub + QString::fromAscii("\"])");
+        return QString::fromLatin1("(App.activeDocument().") + o +
+                QString::fromLatin1(", [\"") + sub + QString::fromLatin1("\"])");
 }
 
 TaskSketchBasedParameters::~TaskSketchBasedParameters()
