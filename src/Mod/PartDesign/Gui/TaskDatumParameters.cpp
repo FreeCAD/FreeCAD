@@ -107,7 +107,7 @@ void TaskDatumParameters::makeRefStrings(std::vector<QString>& refstrings, std::
 }
 
 TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap((QString::fromAscii("PartDesign_") + DatumView->datumType).toAscii()),
+    : TaskBox(Gui::BitmapFactory().pixmap((QString::fromAscii("PartDesign_") + DatumView->datumType).toLatin1()),
               DatumView->datumType + tr(" parameters"), true, parent),
       DatumView(DatumView)
 {
@@ -597,7 +597,7 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
     if (parts.length() < 2)
         parts.push_back(QString::fromAscii(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
-    App::DocumentObject* obj = DatumView->getObject()->getDocument()->getObject(parts[0].toAscii());
+    App::DocumentObject* obj = DatumView->getObject()->getDocument()->getObject(parts[0].toLatin1());
     if (obj == NULL) return;
 
     std::string subElement;

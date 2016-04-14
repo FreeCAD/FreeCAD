@@ -151,7 +151,7 @@ namespace Gui
       void operator()(std::ostream& out, const VertexW& vertexW) const
       {
         out << "[label=\"";
-        out << graphVW[vertexW].text->toPlainText().toAscii().data(); 
+        out << graphVW[vertexW].text->toPlainText().toLatin1().data(); 
         out << "\"]";
       }
     private:
