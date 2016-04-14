@@ -25,7 +25,7 @@
 
 #include <memory>
 
-#include <QtGui/QGraphicsView>
+#include <QGraphicsView>
 
 #include <Gui/DockWindow.h>
 #include <Gui/Document.h>

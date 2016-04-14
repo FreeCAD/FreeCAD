@@ -35,7 +35,7 @@
 #include "DlgCheckableMessageBox.h"
 #include "ui_DlgCheckableMessageBox.h"
 
-#include <QtGui/QPushButton>
+#include <QPushButton>
 #include <QtCore/QDebug>
 
 #include "MainWindow.h" 
