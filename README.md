@@ -44,7 +44,7 @@ Build Status <img src="https://cdn.travis-ci.org/images/travis-mascot-150-379170
 |:------:|:----:|
 |[![Master][freecad-master-status]][travis-branches]|[![0.16][freecad-0.16-status]][travis-branches]|
 
-[freecad-0.16-status]: https://travis-ci-org/FreeCAD/FreeCAD.svg?branch=0.16
+[freecad-0.16-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=0.16
 [freecad-master-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=master
 [travis-branches]: https://travis-ci.org/FreeCAD/FreeCAD/branches
 [travis-builds]: https://travis-ci.org/FreeCAD/FreeCAD/builds
