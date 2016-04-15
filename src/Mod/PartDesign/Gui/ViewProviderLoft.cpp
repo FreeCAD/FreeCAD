@@ -78,52 +78,21 @@ bool ViewProviderLoft::doubleClicked(void)
 
 bool ViewProviderLoft::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default || ModNum == 1 ) {
-        
+    if (ModNum == ViewProvider::Default)        
         setPreviewDisplayMode(true);
         
-        // When double-clicking on the item for this pad the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgLoftParameters *padDlg = qobject_cast<TaskDlgLoftParameters *>(dlg);
-        if (padDlg && padDlg->getLoftView() != this)
-            padDlg = 0; // another pad left open its task panel
-        if (dlg && !padDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().reject();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        if (padDlg)
-            Gui::Control().showDialog(padDlg);
-        else
-            Gui::Control().showDialog(new TaskDlgLoftParameters(this,ModNum == 1));
-        
-        return true;
-    }
-    else {
-        return ViewProviderPart::setEdit(ModNum);
-    }
+    return ViewProviderAddSub::setEdit(ModNum);
 }
 
+TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
+    return new TaskDlgLoftParameters(this);
+}
+
+
 void ViewProviderLoft::unsetEdit(int ModNum) {
+    
     setPreviewDisplayMode(false);
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
+    ViewProviderAddSub::unsetEdit(ModNum);
 }
 
 

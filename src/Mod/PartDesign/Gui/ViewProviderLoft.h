@@ -49,6 +49,8 @@ public:
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+    virtual TaskDlgFeatureParameters* getEditDialog();
+    
     virtual QIcon getIcon(void) const;
     
 private:
