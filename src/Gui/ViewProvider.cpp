@@ -395,6 +395,8 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInven
     sa.setNode(pcRoot);
     sa.setSearchingAll(true);
     sa.apply(viewer->getSoRenderManager()->getSceneGraph());
+    if (!sa.getPath())
+        return nullptr;
     SoGetMatrixAction gm(viewer->getSoRenderManager()->getViewportRegion());
     gm.apply(sa.getPath());
 
