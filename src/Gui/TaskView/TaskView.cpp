@@ -409,6 +409,8 @@ TaskView::~TaskView()
 {
     connectApplicationActiveDocument.disconnect();
     connectApplicationDeleteDocument.disconnect();
+    connectApplicationUndoDocument.disconnect();
+    connectApplicationRedoDocument.disconnect();
     Gui::Selection().Detach(this);
 }
 
