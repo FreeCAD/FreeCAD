@@ -88,7 +88,7 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
     else
         material->diffuseColor = SbColor(1,0,0);
     
-    material->transparency = 0.7;    
+    material->transparency = 0.7f;
     auto* pick = new SoPickStyle();
     pick->style = SoPickStyle::UNPICKABLE;
     

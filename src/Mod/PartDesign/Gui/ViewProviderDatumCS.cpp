@@ -129,7 +129,7 @@ void ViewProviderDatumCoordinateSystem::attach ( App::DocumentObject *obj ) {
 
     getShapeRoot ()->addChild(axisLabelYToZTrans);
     SoRotation *rot = new SoRotation();
-    rot->rotation = SbRotation(SbVec3f(1,1,1), 2*M_PI/3);
+    rot->rotation = SbRotation(SbVec3f(1,1,1), static_cast<float>(2*M_PI/3));
     getShapeRoot ()->addChild(rot);
     t = new SoAsciiText();
     t->string = "Z";
