@@ -74,6 +74,8 @@ ViewProviderBody::ViewProviderBody()
 ViewProviderBody::~ViewProviderBody()
 {
     pcBodyChildren->unref ();
+    connectChangedObjectApp.disconnect();
+    connectChangedObjectGui.disconnect();
 }
 
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
