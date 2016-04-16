@@ -63,9 +63,10 @@ WorkflowManager::WorkflowManager() {
 }
 
 WorkflowManager::~WorkflowManager() {
-    // won't they will be disconnected on destruction?
+    // they won't be automatically disconnected on destruction!
     connectNewDocument.disconnect ();
     connectFinishRestoreDocument.disconnect ();
+    connectDeleteDocument.disconnect ();
 }
 
 
