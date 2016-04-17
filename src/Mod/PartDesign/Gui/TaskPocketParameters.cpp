@@ -364,9 +364,7 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         if (upToFace.indexOf("Face") == 0) {
             faceId = upToFace.remove(0,4).toInt(&ok);
         }
-#if QT_VERSION >= 0x040700
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
         ui->lineFaceName->setText(ok ?
                                   parts[0] + QString::fromLatin1(":") + tr("Face") + QString::number(faceId) :
                                   tr(""));
