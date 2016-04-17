@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2012     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2012    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,7 +54,7 @@ public:
     std::vector<std::string> getDisplayModes(void) const;
     void setDisplayMode(const char* ModeName);
 
-   /// indicates if the ViewProvider use the new Selection model
+    /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const {return true;}
     /// indicates if the ViewProvider can be selected
     virtual bool isSelectable(void) const ;

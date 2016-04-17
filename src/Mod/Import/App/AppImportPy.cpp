@@ -52,6 +52,7 @@
 #include <CXX/Objects.hxx>
 
 #include "ImportOCAF.h"
+//#include "ImportOCAFAssembly.h"
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -62,7 +63,6 @@
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/encodeFilename.h>
-
 
 namespace Import {
 class Module : public Py::ExtensionModule<Module>
@@ -76,10 +76,13 @@ public:
         add_varargs_method("insert",&Module::importer,
             "insert(string,string) -- Insert the file into the given document."
         );
+//        add_varargs_method("openAssembly",&Module::importAssembly,
+//            "openAssembly(string) -- Open the assembly file and create a new document."
+//        );
         add_varargs_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
-        initialize("This module is the Import module."); // register with Python
+        initialize("This module is the Import module."); // register with Python       
     }
 
     virtual ~Module() {}
@@ -297,6 +300,114 @@ private:
         return Py::None();
     }
 };
+/*
+static PyObject * importAssembly(PyObject *self, PyObject *args)
+{
+    char* Name;
+    PyObject* TargetObjectPy=0;
+    if (!PyArg_ParseTuple(args, "et|O!","utf-8",&Name,&(App::DocumentObjectPy::Type),&TargetObjectPy))
+        return 0;
+    std::string Utf8Name = std::string(Name);
+    PyMem_Free(Name);
+    std::string name8bit = Part::encodeFilename(Utf8Name);
+
+    PY_TRY {
+        //Base::Console().Log("Insert in Part with %s",Name);
+        Base::FileInfo file(name8bit);
+
+        App::DocumentObject* target = nullptr;
+
+        if(TargetObjectPy)
+            target = static_cast<App::DocumentObjectPy*>(TargetObjectPy)->getDocumentObjectPtr();
+       
+
+        App::Document *pcDoc = 0;
+            
+		pcDoc = App::GetApplication().getActiveDocument();
+        
+        if (!pcDoc) 
+            pcDoc = App::GetApplication().newDocument("ImportedAssembly");
+        
+
+        Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
+        Handle(TDocStd_Document) hDoc;
+        hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
+
+        if (file.hasExtension("stp") || file.hasExtension("step")) {
+            try {
+                STEPCAFControl_Reader aReader;
+                aReader.SetColorMode(true);
+                aReader.SetNameMode(true);
+                aReader.SetLayerMode(true);
+                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
+                    PyErr_SetString(PyExc_Exception, "cannot read STEP file");
+                    return 0;
+                }
+
+                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                aReader.Reader().WS()->MapReader()->SetProgress(pi);
+                pi->NewScope(100, "Reading STEP file...");
+                pi->Show();
+                aReader.Transfer(hDoc);
+                pi->EndScope();
+            }
+            catch (OSD_Exception) {
+                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Base::Console().Error("%s\n", e->GetMessageString());
+                Base::Console().Message("Try to load STEP file without colors...\n");
+
+                Part::ImportStepParts(pcDoc,Name);
+                pcDoc->recompute();
+            }
+        }
+        else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            try {
+                IGESControl_Controller::Init();
+                Interface_Static::SetIVal("read.surfacecurve.mode",3);
+                IGESCAFControl_Reader aReader;
+                aReader.SetColorMode(true);
+                aReader.SetNameMode(true);
+                aReader.SetLayerMode(true);
+                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
+                    PyErr_SetString(PyExc_Exception, "cannot read IGES file");
+                    return 0;
+                }
+
+                Handle_Message_ProgressIndicator pi = new Part::ProgressIndicator(100);
+                aReader.WS()->MapReader()->SetProgress(pi);
+                pi->NewScope(100, "Reading IGES file...");
+                pi->Show();
+                aReader.Transfer(hDoc);
+                pi->EndScope();
+            }
+            catch (OSD_Exception) {
+                Handle_Standard_Failure e = Standard_Failure::Caught();
+                Base::Console().Error("%s\n", e->GetMessageString());
+                Base::Console().Message("Try to load IGES file without colors...\n");
+
+                Part::ImportIgesParts(pcDoc,Name);
+                pcDoc->recompute();
+            }
+        }
+        else {
+            PyErr_SetString(PyExc_Exception, "no supported file format");
+            return 0;
+        }
+
+        Import::ImportOCAFAssembly ocaf(hDoc, pcDoc, file.fileNamePure(),target);
+        ocaf.loadAssembly();
+        pcDoc->recompute();
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+    PY_CATCH
+
+    Py_Return;
+}*/
 
 PyObject* initModule()
 {

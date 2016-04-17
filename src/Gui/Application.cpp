@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -104,7 +104,13 @@
 #include "ViewProviderAnnotation.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderPlacement.h"
+#include "ViewProviderOriginFeature.h"
 #include "ViewProviderPlane.h"
+#include "ViewProviderLine.h"
+#include "ViewProviderGeoFeatureGroup.h"
+#include "ViewProviderOriginGroup.h"
+#include "ViewProviderPart.h"
+#include "ViewProviderOrigin.h"
 #include "ViewProviderMaterialObject.h"
 
 #include "Language/Translator.h"
@@ -319,6 +325,15 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "of the Coin library and version information"},
     {NULL, NULL}  /* sentinel */
 };
+
+
+Gui::MDIView* Application::activeView(void) const
+{
+	if (activeDocument())
+		return activeDocument()->getActiveView();
+	else
+		return NULL;
+}
 
 } // namespace Gui
 
@@ -1552,7 +1567,14 @@ void Application::initTypes(void)
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
+    Gui::ViewProviderOriginFeature              ::init();
     Gui::ViewProviderPlane                      ::init();
+    Gui::ViewProviderLine                       ::init();
+    Gui::ViewProviderGeoFeatureGroup            ::init();
+    Gui::ViewProviderGeoFeatureGroupPython      ::init();
+    Gui::ViewProviderOriginGroup                ::init();
+    Gui::ViewProviderPart                       ::init();
+    Gui::ViewProviderOrigin                     ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
 

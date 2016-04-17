@@ -34,8 +34,6 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Precision.hxx>
 # include <gp_Lin.hxx>
-# include <GProp_GProps.hxx>
-# include <BRepGProp.hxx>
 #endif
 
 #include <Base/Axis.h>
@@ -51,10 +49,12 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::Additive)
+PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::ProfileBased)
 
 Revolution::Revolution()
 {
+    addSubType = FeatureAddSub::Additive;
+    
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
@@ -69,7 +69,7 @@ short Revolution::mustExecute() const
         Base.isTouched() ||
         Angle.isTouched())
         return 1;
-    return Additive::mustExecute();
+    return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Revolution::execute(void)
@@ -86,19 +86,20 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
 
-    std::vector<TopoDS_Wire> wires;
+    TopoDS_Shape sketchshape;
     try {
-        wires = getSketchWires();
+        sketchshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopoDS_Shape support;
+    // if the Base property has a valid shape, fuse the AddShape into it
+    TopoDS_Shape base;
     try {
-        support = getSupportShape();
+        base = getBaseShape();
     } catch (const Base::Exception&) {
-        // ignore, because support isn't mandatory
-        support = TopoDS_Shape();
+        // fall back to support (for legacy features)
+        base = TopoDS_Shape();
     }
 
     // update Axis from ReferenceAxis
@@ -111,7 +112,6 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
-        TopoDS_Shape sketchshape = makeFace(wires);
         if (sketchshape.IsNull())
             return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
 
@@ -123,11 +123,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             sketchshape.Move(loc);
         }
 
-        this->positionBySketch();
+        this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-        support.Move(invObjLoc);
+        base.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
@@ -141,15 +141,14 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             TopoDS_Shape result = RevolMaker.Shape();
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
-            this->AddShape.setValue(result);
+            this->AddSubShape.setValue(result);            
 
-            // if the sketch has a support fuse them to get one result object (PAD!)
-            if (!support.IsNull()) {
+            if (!base.IsNull()) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support, result);
+                BRepAlgoAPI_Fuse mkFuse(base, result);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone())
-                    throw Base::Exception("Fusion with support failed");
+                    throw Base::Exception("Fusion with base feature failed");
                 result = mkFuse.Shape();
                 result = refineShapeIfActive(result);
             }
@@ -176,75 +175,20 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
 bool Revolution::suggestReversed(void)
 {
-    try {
-        updateAxis();
-
-        Part::Part2DObject* sketch = getVerifiedSketch();
-        std::vector<TopoDS_Wire> wires = getSketchWires();
-        TopoDS_Shape sketchshape = makeFace(wires);
-
-        Base::Vector3d b = Base.getValue();
-        Base::Vector3d v = Axis.getValue();
-
-        // get centre of gravity of the sketch face
-        GProp_GProps props;
-        BRepGProp::SurfaceProperties(sketchshape, props);
-        gp_Pnt cog = props.CentreOfMass();
-        Base::Vector3d p_cog(cog.X(), cog.Y(), cog.Z());
-        // get direction to cog from its projection on the revolve axis
-        Base::Vector3d perp_dir = p_cog - p_cog.Perpendicular(b, v);
-        // get cross product of projection direction with revolve axis direction
-        Base::Vector3d cross = v % perp_dir;
-        // get sketch vector pointing away from support material
-        Base::Placement SketchPos = sketch->Placement.getValue();
-        Base::Rotation SketchOrientation = SketchPos.getRotation();
-        Base::Vector3d SketchNormal(0,0,1);
-        SketchOrientation.multVec(SketchNormal,SketchNormal);
-        // simply convert double to float
-        Base::Vector3d norm(SketchNormal.x, SketchNormal.y, SketchNormal.z);
-
-        // return true if the angle between norm and cross is obtuse
-        return norm * cross < 0.f;
-    }
-    catch (...) {
-        return Reversed.getValue();
-    }
+    updateAxis();
+    return ProfileBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
 }
 
 void Revolution::updateAxis(void)
 {
-    Part::Part2DObject* sketch = getVerifiedSketch();
-    Base::Placement SketchPlm = sketch->Placement.getValue();
-
-    // get reference axis
     App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
-    if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        bool hasValidAxis=false;
-        Base::Axis axis;
-        if (subReferenceAxis[0] == "V_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else if (subReferenceAxis[0] == "H_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
-            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
-                hasValidAxis = true;
-                axis = sketch->getAxis(AxId);
-            }
-        }
-        if (hasValidAxis) {
-            axis *= SketchPlm;
-            Base::Vector3d base=axis.getBase();
-            Base::Vector3d dir=axis.getDirection();
-            Base.setValue(base.x,base.y,base.z);
-            Axis.setValue(dir.x,dir.y,dir.z);
-        }
-    }
+    Base::Vector3d base;
+    Base::Vector3d dir;
+    getAxis(pcReferenceAxis, subReferenceAxis, base, dir);
+
+    Base.setValue(base.x,base.y,base.z);
+    Axis.setValue(dir.x,dir.y,dir.z);
 }
 
 }

@@ -62,9 +62,11 @@
 using namespace Fem;
 
 // maybe in the c++ standard later, older compiler don't have round()
+#if _MSC_VER <= 1700
 double round(double r) {
     return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
 }
+#endif
 
 PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject);
 
@@ -298,7 +300,7 @@ const bool Constraint::getCylinder(double &radius, double &height, Base::Vector3
         return false;
     App::DocumentObject* obj = Objects[0];
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
-    Part::TopoShape toposhape = feat->Shape.getShape();
+    const Part::TopoShape& toposhape = feat->Shape.getShape();
     if (toposhape.isNull())
         return false;
     TopoDS_Shape sh = toposhape.getSubShape(SubElements[0].c_str());

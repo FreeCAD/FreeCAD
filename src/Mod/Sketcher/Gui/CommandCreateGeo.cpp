@@ -36,6 +36,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
+#include <App/OriginFeature.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -46,6 +47,8 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -4472,18 +4475,46 @@ namespace SketcherGui {
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
-            App::DocumentObject *support = sketch->Support.getValue();
-            // for the moment we allow external constraints only from the support
-            if (pObj != support)
+            sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier);
+            
+            Sketcher::SketchObject::eReasonList msg;
+            if (!sketch->isExternalAllowed(pDoc, pObj, &msg)){
+                switch(msg){
+                case Sketcher::SketchObject::rlCircularReference:
+                    this->notAllowedReason = QT_TR_NOOP("Linking this will cause circular dependency.");
+                    break;
+                case Sketcher::SketchObject::rlOtherDoc:
+                    this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
+                    break;
+                case Sketcher::SketchObject::rlOtherPart:
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another part or body, can't link. Hold Ctrl to allow crossreferences.");
+                    break;
+                default:
+                    break;
+                }
                 return false;
+            }
+
+            // Note: its better to search the support of the sketch in case the sketch support is a base plane
+            //Part::BodyBase* body = Part::BodyBase::findBodyOf(sketch);
+            //if ( body && body->hasFeature ( pObj ) && body->isAfter ( pObj, sketch ) ) {
+                // Don't allow selection after the sketch in the same body
+                // NOTE: allowness of features in other bodies is handled by SketchObject::isExternalAllowed()
+                // TODO may be this should be in SketchObject::isExternalAllowed() (2015-08-07, Fat-Zer)
+                //return false;
+            //}
+
             if (!sSubName || sSubName[0] == '\0')
                 return false;
             std::string element(sSubName);
-            // for the moment we allow only edges and vertices
             if ((element.size() > 4 && element.substr(0,4) == "Edge") ||
-                (element.size() > 6 && element.substr(0,6) == "Vertex")) {
+                (element.size() > 6 && element.substr(0,6) == "Vertex") ||
+                (element.size() > 4 && element.substr(0,4) == "Face")) {
                 return true;
             }
+            if (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+                pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+                return true;
             return  false;
         }
     };
@@ -4582,9 +4613,15 @@ public:
     virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            if (obj == NULL)
+                throw Base::Exception("Sketcher: External geometry: Invalid object in selection");
             std::string subName(msg.pSubName);
-            if ((subName.size() > 4 && subName.substr(0,4) == "Edge") ||
-                (subName.size() > 6 && subName.substr(0,6) == "Vertex")) {
+            if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+                obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
+                (subName.size() > 4 && subName.substr(0,4) == "Edge") ||
+                (subName.size() > 6 && subName.substr(0,6) == "Vertex") ||
+                (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
                     Gui::Command::openCommand("Add external geometry");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addExternal(\"%s\",\"%s\")",

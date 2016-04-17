@@ -166,7 +166,6 @@ protected:
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
-    void adjustCameraPosition();
     //@}
 
 public:
@@ -252,8 +251,6 @@ public:
     static void copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from);
     /// Get Python tuple from object and sub-elements 
     static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
-    /// import an external module only once 
-    //static void addModule(const char* sModuleName);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
     const std::string strToPython(const char* Str);
     const std::string strToPython(const std::string &Str){return strToPython(Str.c_str());};
@@ -287,6 +284,12 @@ public:
     /// Get the name of the grouping of the command
     const char* getGroupName() const { return sGroup; }
     void setGroupName(const char*);
+    //@}
+    
+    
+    /** @name arbitrary helper methods */
+    //@{
+    void adjustCameraPosition();
     //@}
 
 protected:

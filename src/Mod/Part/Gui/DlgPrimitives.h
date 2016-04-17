@@ -26,8 +26,8 @@
 #include <QEventLoop>
 #include <QPointer>
 #include <Gui/TaskView/TaskDialog.h>
-#include "ui_DlgPrimitives.h"
-#include "ui_Location.h"
+#include <Mod/Part/Gui/ui_DlgPrimitives.h>
+#include <Mod/Part/Gui/ui_Location.h>
 
 class gp_Ax2;
 class SoEventCallback;

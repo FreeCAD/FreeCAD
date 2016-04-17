@@ -51,12 +51,13 @@ class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
+enum  HighlightMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping
  *  track off open windows for a document and warning on unsaved closes.
  *  All handled views on the document must inherit from MDIView
- *  @see App::Document 
+ *  @see App::Document
  *  @see MDIView
  *  @author Jürgen Riegel
  */
@@ -141,7 +142,7 @@ public:
     void setModified(bool);
     bool isModified() const;
 
-    /// Getter for the App Document 
+    /// Getter for the App Document
     App::Document*  getDocument(void) const;
 
     /** @name methods for View handling */
@@ -152,7 +153,7 @@ public:
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
     /// Create a new view
     void createView(const Base::Type& typeId);
-    /** send messages to the active view 
+    /** send messages to the active view
      * Send a specific massage to the active view and is able to recive a
      * return massage
      */
@@ -167,7 +168,7 @@ public:
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
+    void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
     /// helper for selection
     ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
     /// call update on all attached views
@@ -239,6 +240,9 @@ protected:
     Gui::DocumentPy *_pcDocPy;
 
 private:
+    //handles the scene graph nodes to correctly group child and parents
+    void handleChildren3D(ViewProvider* viewProvider);
+
     struct DocumentP* d;
     static int _iDocCount;
 

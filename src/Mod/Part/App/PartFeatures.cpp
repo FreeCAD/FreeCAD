@@ -542,14 +542,12 @@ PROPERTY_SOURCE(Part::Thickness, Part::Feature)
 
 Thickness::Thickness()
 {
-    ADD_PROPERTY_TYPE(Faces,(0),"Thickness",App::Prop_None,"Source shape");
+    ADD_PROPERTY_TYPE(Faces,(0),"Thickness",App::Prop_None,"Faces to be removed");
     ADD_PROPERTY_TYPE(Value,(1.0),"Thickness",App::Prop_None,"Thickness value");
     ADD_PROPERTY_TYPE(Mode,(long(0)),"Thickness",App::Prop_None,"Mode");
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
     Join.setEnums(JoinEnums);
-    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Intersection");
-    ADD_PROPERTY_TYPE(SelfIntersection,(false),"Thickness",App::Prop_None,"Self Intersection");
 }
 
 short Thickness::mustExecute() const

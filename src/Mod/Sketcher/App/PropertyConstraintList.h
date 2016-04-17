@@ -101,6 +101,9 @@ public:
     bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
     bool isGeometryInvalid(){return invalidGeometry;}
 
+    /// Return status of geometry for better error reporting
+    bool hasInvalidGeometry() const { return invalidGeometry; }
+
 
     const Constraint *getConstraint(const App::ObjectIdentifier &path) const;
     virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);

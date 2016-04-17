@@ -249,7 +249,9 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     }
     else if (PyTuple_Check(value) || PyList_Check(value)) {
         Py::Sequence seq(value);
-        if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
+        if(seq.size() == 0)
+            setValue(NULL);
+        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
             DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
@@ -547,11 +549,18 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
         _lSubList.resize(1);
         _lSubList[0]=SubName;
         hasSetValue();
+    } else {
+        aboutToSetValue();
+        _lValueList.clear();
+        _lSubList.clear();
+        hasSetValue();
     }
 }
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<const char*>& lSubNames)
 {
+    if (lValue.size() != lSubNames.size())
+        throw Base::Exception("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     aboutToSetValue();
     _lValueList = lValue;
     _lSubList.resize(lSubNames.size());
@@ -563,10 +572,69 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,const std::vector<std::string>& lSubNames)
 {
+    if (lValue.size() != lSubNames.size())
+        throw Base::Exception("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     aboutToSetValue();
     _lValueList = lValue;
     _lSubList   = lSubNames;
     hasSetValue();
+}
+
+void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
+{
+    aboutToSetValue();
+    int size = SubList.size();
+    this->_lValueList.clear();
+    if (size == 0) {
+        if (lValue)
+            this->_lValueList.push_back(lValue);
+        this->_lSubList.clear();
+    } else {
+        this->_lSubList = SubList;
+        this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
+    }
+    hasSetValue();
+}
+
+const string PropertyLinkSubList::getPyReprString()
+{
+    assert(this->_lValueList.size() == this->_lSubList.size());
+
+    if (this->_lValueList.size() == 0)
+        return std::string("None");
+
+    std::stringstream strm;
+    strm << "[";
+    for (std::size_t i = 0; i < this->_lSubList.size(); i++) {
+        if (i>0)
+            strm << ",(";
+        else
+            strm << "(";
+        App::DocumentObject* obj = this->_lValueList[i];
+        if (obj) {
+            strm << "App.getDocument('" << obj->getDocument()->getName() << "')." << obj->getNameInDocument();
+        } else {
+            strm << "None";
+        }
+        strm << ",";
+        strm << "'" << this->_lSubList[i] << "'";
+        strm << ")";
+    }
+    strm << "]";
+    return strm.str();
+}
+
+DocumentObject *PropertyLinkSubList::getValue() const
+{
+    App::DocumentObject* ret = 0;
+    //FIXME: cache this to avoid iterating each time, to improve speed
+    for (std::size_t i = 0; i < this->_lValueList.size(); i++) {
+        if (ret == 0)
+            ret = this->_lValueList[i];
+        if (ret != this->_lValueList[i])
+            return 0;
+    }
+    return ret;
 }
 
 PyObject *PropertyLinkSubList::getPyObject(void)
@@ -591,44 +659,50 @@ PyObject *PropertyLinkSubList::getPyObject(void)
 
 void PropertyLinkSubList::setPyObject(PyObject *value)
 {
-    if (PyTuple_Check(value) || PyList_Check(value)) {
-        Py::Sequence list(value);
-        Py::Sequence::size_type size = list.size();
+    try { //try PropertyLinkSub syntax
+        PropertyLinkSub dummy;
+        dummy.setPyObject(value);
+        this->setValue(dummy.getValue(), dummy.getSubValues());
+    } catch (Base::TypeError) {
 
-        std::vector<DocumentObject*> values;
-        values.reserve(size);
-        std::vector<std::string>     SubNames;
-        SubNames.reserve(size);
+        if (PyTuple_Check(value) || PyList_Check(value)) {
+            Py::Sequence list(value);
+            Py::Sequence::size_type size = list.size();
 
-        for (Py::Sequence::size_type i=0; i<size; i++) {
-            Py::Object item = list[i];
-            if (item.isTuple()) {
-                Py::Tuple tup(item);
-                if (PyObject_TypeCheck(tup[0].ptr(), &(DocumentObjectPy::Type))){
-                    DocumentObjectPy  *pcObj;
-                    pcObj = static_cast<DocumentObjectPy*>(tup[0].ptr());
-                    values.push_back(pcObj->getDocumentObjectPtr());
-                    if (Py::Object(tup[1].ptr()).isString()){
-                        SubNames.push_back(Py::String(tup[1].ptr()));
+            std::vector<DocumentObject*> values;
+            values.reserve(size);
+            std::vector<std::string>     SubNames;
+            SubNames.reserve(size);
+            for (Py::Sequence::size_type i=0; i<size; i++) {
+                Py::Object item = list[i];
+                if (item.isTuple()) {
+                    Py::Tuple tup(item);
+                    if (PyObject_TypeCheck(tup[0].ptr(), &(DocumentObjectPy::Type))){
+                        DocumentObjectPy  *pcObj;
+                        pcObj = static_cast<DocumentObjectPy*>(tup[0].ptr());
+                        values.push_back(pcObj->getDocumentObjectPtr());
+                        if (Py::Object(tup[1].ptr()).isString()){
+                            SubNames.push_back(Py::String(tup[1].ptr()));
+                        }
                     }
                 }
+                else if (PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
+                    DocumentObjectPy *pcObj;
+                    pcObj = static_cast<DocumentObjectPy*>(*item);
+                    values.push_back(pcObj->getDocumentObjectPtr());
+                }
+                else if (item.isString()) {
+                    SubNames.push_back(Py::String(item));
+                }
             }
-            else if (PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
-                DocumentObjectPy *pcObj;
-                pcObj = static_cast<DocumentObjectPy*>(*item);
-                values.push_back(pcObj->getDocumentObjectPtr());
-            }
-            else if (item.isString()) {
-                SubNames.push_back(Py::String(item));
-            }
-        }
 
-        setValues(values,SubNames);
-    }
-    else {
-        std::string error = std::string("type must be 'DocumentObject' or list of 'DocumentObject', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+            setValues(values,SubNames);
+        }
+        else {
+            std::string error = std::string("type must be 'DocumentObject' or list of 'DocumentObject', not ");
+            error += value->ob_type->tp_name;
+            throw Base::TypeError(error);
+        }
     }
 }
 
@@ -663,7 +737,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         std::string name = reader.getAttribute("obj");
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
-        // document. Thus, we should silently ingore this.
+        // document. Thus, we should silently ignore this.
         // Property not in an object!
         DocumentObject* father = static_cast<DocumentObject*>(getContainer());
         App::Document* document = father->getDocument();
@@ -681,6 +755,44 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
 
     // assignment
     setValues(values,SubNames);
+}
+
+void PropertyLinkSubList::RestoreFromLinkSub(XMLReader &reader)
+{
+    //Copy-paste from PropertyLinkSub::Restore()
+    // read my element
+    reader.readElement("LinkSub");
+    // get the values of my attributes
+    std::string name = reader.getAttribute("value");
+    int count = reader.getAttributeAsInteger("count");
+
+    // Property not in a DocumentObject!
+    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
+
+    std::vector<std::string> values(count);
+    for (int i = 0; i < count; i++) {
+        reader.readElement("Sub");
+        values[i] = reader.getAttribute("value");
+    }
+
+    reader.readEndElement("LinkSub");
+
+    DocumentObject *pcObject;
+    if (name != ""){
+        App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
+        pcObject = document ? document->getObject(name.c_str()) : 0;
+        if (!pcObject) {
+            if (reader.isVerbose()) {
+                Base::Console().Warning("Lost link to '%s' while loading, maybe "
+                                        "an object was not loaded correctly\n",name.c_str());
+            }
+        }
+        setValue(pcObject,values);
+    }
+    else {
+       setValue(0);
+    }
+
 }
 
 Property *PropertyLinkSubList::Copy(void) const

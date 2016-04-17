@@ -67,8 +67,16 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
+    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetFeatures->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     // Create a context menu for the listview of transformation features
-    QAction* action = new QAction(tr("Edit"), ui->listTransformFeatures);
+    action = new QAction(tr("Edit"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformEdit()));
     ui->listTransformFeatures->addAction(action);
@@ -131,13 +139,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->lineOriginal->setEnabled(false); // This is never enabled since it is for optical feed-back only
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
-            break;
-        }
+        if ((*i) != NULL)
+            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 }
@@ -145,9 +150,28 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
 void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
-        App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
-        ui->lineOriginal->setText(QString::fromLatin1(selectedObject->getNameInDocument()));
+        if (selectionMode == addFeature)
+            ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
+        else
+            removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+        exitSelectionMode();
     }
+}
+
+void TaskMultiTransformParameters::clearButtons()
+{
+    ui->buttonAddFeature->setChecked(false);
+    ui->buttonRemoveFeature->setChecked(false);
+}
+
+void TaskMultiTransformParameters::onFeatureDeleted(void)
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    pcTransformed->Originals.setValues(originals);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    recomputeFeature();
 }
 
 void TaskMultiTransformParameters::closeSubTask()
@@ -291,7 +315,7 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
     if (row < 0) {
         // Happens when first row (first transformation) is created
         // Hide all the originals now (hiding them in Command.cpp presents the user with an empty screen!)
-        hideOriginals();
+        hideBase();
     }
 
     // Insert new transformation after the selected row
@@ -418,70 +442,44 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMul
 
 bool TaskDlgMultiTransformParameters::accept()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
 
-    try {
-        //Gui::Command::openCommand("MultiTransform changed");
-        // Handle Originals
-        if (!TaskDlgTransformedParameters::accept())
-            return false;
-
-        TaskMultiTransformParameters* mtParameter = static_cast<TaskMultiTransformParameters*>(parameter);
-        std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
-        std::stringstream str;
-        str << "App.ActiveDocument." << name.c_str() << ".Transformations = [";
-        for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
-        {
-            if ((*it) != NULL)
-                str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
-        }
-        str << "]";
-        Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!TransformedView->getObject()->isValid())
-            throw Base::Exception(TransformedView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
-        return false;
-    }
-
-    return true;
-}
-
-bool TaskDlgMultiTransformParameters::reject()
-{
-    // Get objects before view is invalidated
-    // For the same reason we can't delegate showing the originals to TaskDlgTransformedParameters::reject()
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
-    std::vector<App::DocumentObject*> pcOriginals = pcMultiTransform->Originals.getValues();
-    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
-
-    // Delete the transformation features - must happen before abortCommand()!
-    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); ++it)
+    // Set up transformations
+    TaskMultiTransformParameters* mtParameter = static_cast<TaskMultiTransformParameters*>(parameter);
+    std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
+    std::stringstream str;
+    str << "App.ActiveDocument." << name.c_str() << ".Transformations = [";
+    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); it++)
     {
         if ((*it) != NULL)
-            Gui::Command::doCommand(
-                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument());
+            str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
     }
+    str << "]";
+    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
 
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    // if abort command deleted the object the originals are visible again
-    if (!Gui::Application::Instance->getViewProvider(pcMultiTransform)) {
-        for (std::vector<App::DocumentObject*>::const_iterator it = pcOriginals.begin(); it != pcOriginals.end(); ++it)
-        {
-            if (((*it) != NULL) && (Gui::Application::Instance->getViewProvider(*it) != NULL)) {
-                Gui::Application::Instance->getViewProvider(*it)->show();
-            }
-        }
-    }
-
-    return true;
+    return TaskDlgFeatureParameters::accept ();
 }
+
+// FIXME: It seems all roll back is finely handled by abortCommand() in parent classes. On the other
+//        hand manual removal of objects may lead to segfault in dialog distructer of subtransformation
+//        due to TaskMultiTransformParameters::getSubFeature() returns already destroid object. So check
+//        that everything is fine and delete the method. (2015-07-31, Fat-Zer)
+//bool TaskDlgMultiTransformParameters::reject()
+//{
+//    // Get objects before view is invalidated
+//    // For the same reason we can't delegate showing the originals to TaskDlgTransformedParameters::reject()
+//    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(vp->getObject());
+//    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
+//
+//    // Delete the transformation features - must happen before abortCommand()!
+//    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); ++it)
+//    {
+//        if ((*it) != NULL)
+//            Gui::Command::doCommand(
+//                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument());
+//    }
+//
+//    return TaskDlgTransformedParameters::reject();
+//}
 
 #include "moc_TaskMultiTransformParameters.cpp"

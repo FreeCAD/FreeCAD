@@ -33,6 +33,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/propertyeditor
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
+    ${CMAKE_CURRENT_BINARY_DIR}/DAGView
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
@@ -199,6 +200,7 @@ set(Gui_MOC_HDRS
     DlgSettingsMacroImp.h
     DlgSettingsUnitsImp.h
     DlgTipOfTheDayImp.h
+    DlgCheckableMessageBox.h
     DlgToolbarsImp.h
     DlgWorkbenchesImp.h
     TaskDlgRelocation.h
@@ -260,6 +262,8 @@ set(Gui_MOC_HDRS
     TaskView/TaskWatcher.h
     TaskView/TaskEditControl.h
     TaskView/TaskView.h
+    DAGView/DAGView.h
+    DAGView/DAGModel.h
 )
 #qt4_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
@@ -305,6 +309,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
     DlgSettingsMacro.ui
+    DlgCheckableMessageBox.ui
     DlgTipOfTheDay.ui
     DlgToolbars.ui
     DlgWorkbenches.ui
@@ -376,6 +381,7 @@ SET(Dialog_CPP_SRCS
     DlgTipOfTheDayImp.cpp
     DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
+    DlgCheckableMessageBox.cpp
     DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
@@ -405,6 +411,7 @@ SET(Dialog_HPP_SRCS
     DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgPropertyLink.h
+    DlgCheckableMessageBox.h
     DlgTipOfTheDayImp.h
     DlgExpressionInput.h
     TaskDlgRelocation.h
@@ -443,6 +450,7 @@ SET(Dialog_SRCS
     DlgProjectUtility.ui
     DlgPropertyLink.ui
     DlgTipOfTheDay.ui
+    DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DlgExpressionInput.ui
     DownloadManager.ui
@@ -551,6 +559,11 @@ SET(Dock_Windows_CPP_SRCS
     Tree.cpp
     TreeView.cpp
     ProjectView.cpp
+    DAGView/DAGView.cpp
+    DAGView/DAGModel.cpp
+    DAGView/DAGRectItem.cpp
+    DAGView/DAGModelGraph.cpp
+    DAGView/DAGFilter.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     CombiView.h
@@ -563,6 +576,11 @@ SET(Dock_Windows_HPP_SRCS
     Tree.h
     TreeView.h
     ProjectView.h
+    DAGView/DAGView.h
+    DAGView/DAGModel.h
+    DAGView/DAGRectItem.h
+    DAGView/DAGModelGraph.h
+    DAGView/DAGFilter.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
@@ -815,7 +833,13 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
+    ViewProviderOriginFeature.cpp
     ViewProviderPlane.cpp
+    ViewProviderLine.cpp
+    ViewProviderGeoFeatureGroup.cpp
+    ViewProviderOriginGroup.cpp
+    ViewProviderPart.cpp
+    ViewProviderOrigin.cpp
     ViewProviderMaterialObject.cpp
 )
 SET(Viewprovider_SRCS
@@ -833,7 +857,13 @@ SET(Viewprovider_SRCS
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h
+    ViewProviderOriginFeature.h
     ViewProviderPlane.h
+    ViewProviderLine.h
+    ViewProviderGeoFeatureGroup.h
+    ViewProviderOriginGroup.h
+    ViewProviderPart.h
+    ViewProviderOrigin.h
     ViewProviderMaterialObject.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
@@ -924,10 +954,12 @@ SOURCE_GROUP("Widget" FILES ${Widget_SRCS})
 SET(View_CPP_SRCS
     MDIView.cpp
     GraphvizView.cpp
+	ActiveObjectList.cpp
 )
 SET(View_HPP_SRCS
     MDIView.h
     GraphvizView.h
+	ActiveObjectList.h
 )
 SET(View_SRCS
     ${View_CPP_SRCS}

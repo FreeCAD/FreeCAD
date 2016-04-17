@@ -27,6 +27,9 @@
 #include <Standard_math.hxx>
 #include <Standard_Boolean.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Face.hxx>
+#include <Poly_Triangulation.hxx>
+#include <TColgp_Array1OfDir.hxx>
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <map>
@@ -69,19 +72,23 @@ public:
     virtual ~ViewProviderPartExt();
 
     // Display properties
-    App::PropertyFloatConstraint LineWidth;
-    App::PropertyFloatConstraint PointSize;
     App::PropertyFloatConstraint Deviation;
+    App::PropertyBool ControlPoints;
     App::PropertyAngle AngularDeflection;
-    App::PropertyColor LineColor;
-    App::PropertyColor PointColor;
-    App::PropertyMaterial LineMaterial;
-    App::PropertyMaterial PointMaterial;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
-
-    App::PropertyColorList DiffuseColor;
-
+    // Points
+    App::PropertyFloatConstraint PointSize;
+    App::PropertyColor PointColor;
+    App::PropertyMaterial PointMaterial;
+    App::PropertyColorList PointColorArray;
+    // Lines
+    App::PropertyFloatConstraint LineWidth;
+    App::PropertyColor LineColor;
+    App::PropertyMaterial LineMaterial;
+    App::PropertyColorList LineColorArray;
+    // Faces (Gui::ViewProviderGeometryObject::ShapeColor and Gui::ViewProviderGeometryObject::ShapeMaterial apply)
+    App::PropertyColorList DiffuseColor;    
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -121,9 +128,12 @@ protected:
     virtual void onChanged(const App::Property* prop);
     bool loadParameter();
     void updateVisual(const TopoDS_Shape &);
+    void GetNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
+                    TColgp_Array1OfDir& theNormals);
 
     // nodes for the data representation
     SoMaterialBinding * pcShapeBind;
+    SoMaterialBinding * pcLineBind;
     SoMaterial        * pcLineMaterial;
     SoMaterial        * pcPointMaterial;
     SoDrawStyle       * pcLineStyle;

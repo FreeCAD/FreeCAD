@@ -7,14 +7,20 @@ endif(MSVC)
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+    ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
+
+generate_from_xml(BodyPy)
+
 
 set(PartDesign_LIBS
     ${OCC_LIBRARIES}
@@ -26,10 +32,26 @@ set(PartDesign_LIBS
 SET(Features_SRCS
     Feature.cpp
     Feature.h
+    FeatureSolid.cpp
+    FeatureSolid.h
     Body.cpp
     Body.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
+
+SET(DatumFeatures_SRCS
+    ShapeBinder.h
+    ShapeBinder.cpp
+    DatumPlane.cpp
+    DatumPlane.h
+    DatumLine.cpp
+    DatumLine.h
+    DatumPoint.cpp
+    DatumPoint.h
+    DatumCS.h
+    DatumCS.cpp
+)
+SOURCE_GROUP("DatumFeatures" FILES ${DatumFeatures_SRCS})
 
 SET(FeaturesTransformed_SRCS
     FeatureTransformed.h
@@ -56,6 +78,8 @@ SET(FeaturesDressUp_SRCS
     FeatureChamfer.h
     FeatureDraft.cpp
     FeatureDraft.h
+    FeatureThickness.cpp
+    FeatureThickness.h
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
@@ -70,12 +94,18 @@ SET(FeaturesSketchBased_SRCS
     FeatureRevolution.h
     FeatureGroove.cpp
     FeatureGroove.h
-    FeatureAdditive.cpp
-    FeatureAdditive.h
-    FeatureSubtractive.h
-    FeatureSubtractive.cpp
+    FeatureAddSub.cpp
+    FeatureAddSub.h
     FeatureHole.h
     FeatureHole.cpp
+    FeatureBoolean.h
+    FeatureBoolean.cpp
+    FeaturePrimitive.h
+    FeaturePrimitive.cpp
+    FeaturePipe.h
+    FeaturePipe.cpp
+    FeatureLoft.h
+    FeatureLoft.cpp
 )
 
 SOURCE_GROUP("SketchBasedFeatures" FILES ${FeaturesSketchBased_SRCS})
@@ -88,12 +118,22 @@ SET(Module_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
+
+SET(Python_SRCS
+    BodyPy.xml
+    BodyPyImp.cpp
+
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 SET(PartDesign_SRCS
     ${Features_SRCS}
+    ${DatumFeatures_SRCS}
     ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
+	${Python_SRCS}
 )
 
 SET(PartDesign_Scripts

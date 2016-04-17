@@ -77,9 +77,16 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     double angle;
     if (PyArg_ParseTuple(args, "O!d", &(Base::VectorPy::Type), &o, &angle)) {
-        // NOTE: The last parameter defines the rotation angle in degree.
-        getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
-        return 0;
+      // NOTE: The last parameter defines the rotation angle in degree.
+      getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
+      return 0;
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!d", &(Base::MatrixPy::Type), &o, &angle)) {
+      // NOTE: The last parameter defines the rotation angle in degree.
+      getRotationPtr()->setValue(static_cast<Base::MatrixPy*>(o)->value());
+      return 0;
     }
 
     PyErr_Clear();
@@ -95,6 +102,43 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         getRotationPtr()->setYawPitchRoll(y, p, r);
         return 0;
     }
+
+    double a11 = 1.0, a12 = 0.0, a13 = 0.0, a14 = 0.0;
+    double a21 = 0.0, a22 = 1.0, a23 = 0.0, a24 = 0.0;
+    double a31 = 0.0, a32 = 0.0, a33 = 1.0, a34 = 0.0;
+    double a41 = 0.0, a42 = 0.0, a43 = 0.0, a44 = 1.0;
+
+    // try read a 4x4 matrix
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "dddddddddddddddd",
+      &a11, &a12, &a13, &a14,
+      &a21, &a22, &a23, &a24,
+      &a31, &a32, &a33, &a34,
+      &a41, &a42, &a43, &a44))
+    {
+      Matrix4D mtx(a11, a12, a13, a14,
+        a21, a22, a23, a24,
+        a31, a32, a33, a34,
+        a41, a42, a43, a44);
+      getRotationPtr()->setValue(mtx);
+      return 0;
+    }
+
+    // try read a 3x3 matrix
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "ddddddddd",
+      &a11, &a12, &a13,
+      &a21, &a22, &a23,
+      &a31, &a32, &a33))
+    {
+      Matrix4D mtx(a11, a12, a13, a14,
+        a21, a22, a23, a24,
+        a31, a32, a33, a34,
+        a41, a42, a43, a44);
+      getRotationPtr()->setValue(mtx);
+      return 0;
+    }
+
 
     PyErr_Clear();
     PyObject *v1, *v2;
@@ -112,7 +156,11 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         "-- four floats (a quaternion)\n"
         "-- three floats (yaw, pitch, roll)"
         "-- Vector (rotation axis) and float (rotation angle)\n"
-        "-- two Vectors (two axes)");
+        "-- two Vectors (two axes)\n"
+        "-- Matrix object\n"
+        "-- 16 floats (4x4 matrix)\n"
+        "-- 9 floats (3x3 matrix)\n"
+       );
     return -1;
 }
 

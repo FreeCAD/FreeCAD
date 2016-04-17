@@ -29,9 +29,13 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopExp.hxx>
+#include <BRep_Tool.hxx>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -61,30 +65,29 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute(void)
 {
-    App::DocumentObject* link = Base.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
-    const Part::TopoShape& TopShape = base->Shape.getShape();
-    if (TopShape._Shape.IsNull())
-        return new App::DocumentObjectExecReturn("Cannot fillet invalid shape");
+    Part::TopoShape TopShape;
+    try {
+        TopShape = getBaseShape();
+    } catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
+    getContiniusEdges(TopShape, SubNames);
 
-    const std::vector<std::string>& SubVals = Base.getSubValuesStartsWith("Edge");
-    if (SubVals.size() == 0)
-        return new App::DocumentObjectExecReturn("No edges specified");
-
+    if (SubNames.size() == 0)
+        return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
+    
     double radius = Radius.getValue();
 
-    this->positionByBase();
+    this->positionByBaseFeature();
+
     // create an untransformed copy of the base shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
         BRepFilletAPI_MakeFillet mkFillet(baseShape._Shape);
 
-        for (std::vector<std::string>::const_iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
+        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             mkFillet.Add(radius, edge);
         }

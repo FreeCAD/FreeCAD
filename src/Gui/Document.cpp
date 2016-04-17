@@ -423,6 +423,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
         }
 #endif
+
         std::list<Gui::BaseView*>::iterator vIt;
         // cycling to all views of the document
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
@@ -430,9 +431,12 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             if (activeView)
                 activeView->getViewer()->addViewProvider(pcProvider);
         }
-    
+
         // adding to the tree
         signalNewObject(*pcProvider);
+
+        // it is possible that a new viewprovider aready claims children
+        handleChildren3D(pcProvider);
     }
     else {
         Base::Console().Warning("Gui::Document::slotNewObject() no view provider for the object %s found\n",cName.c_str());
@@ -472,7 +476,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
-    //Base::Console().Log("Document::slotChangedObject() called\n");
+    //Base::Console().Log("Document::slotChangedObject() called\n");
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider) {
         try {
@@ -491,35 +495,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             Base::Console().Error("Cannot update representation for '%s'.\n", Obj.getNameInDocument());
         }
 
-        // check for children 
-        if (viewProvider->getChildRoot()) {
-            std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
-            SoGroup* childGroup =  viewProvider->getChildRoot();
-
-            // size not the same -> build up the list new
-            if(childGroup->getNumChildren() != static_cast<int>(children.size())){
-
-                childGroup->removeAllChildren();
-            
-                for(std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it){
-                    ViewProvider* ChildViewProvider = getViewProvider(*it);
-                    if(ChildViewProvider) {
-                        SoSeparator* childRootNode =  ChildViewProvider->getRoot();
-                        childGroup->addChild(childRootNode);
-
-                        // cycling to all views of the document to remove the viewprovider from the viewer itself
-                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-                            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-                            if (activeView && viewProvider) {
-                                if (d->_editViewProvider == ChildViewProvider)
-                                    resetEdit();
-                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        handleChildren3D(viewProvider);
 
         if (viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
             signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
@@ -1030,13 +1006,25 @@ void Document::createView(const Base::Type& typeId)
             view3D->getViewer()->setOverrideMode(overrideMode);
         }
 
-        // attach the viewprovider
+        // attach the viewproviders. we need to make sure that we only attach the toplevel ones
+        // and not viewproviders which are claimed by other providers. To ensure this we first
+        // add all providers and then remove the ones already claimed
         std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
+        std::vector<App::DocumentObject*> child_vps;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
             view3D->getViewer()->addViewProvider(It1->second);
+            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
         std::map<std::string,ViewProvider*>::const_iterator It2;
-        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2)
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
             view3D->getViewer()->addViewProvider(It2->second);
+            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
+        
+        for(App::DocumentObject* obj : child_vps) 
+            view3D->getViewer()->removeViewProvider(getViewProvider(obj));
 
         const char* name = getDocument()->Label.getValue();
         QString title = QString::fromLatin1("%1 : %2[*]")
@@ -1374,4 +1362,41 @@ PyObject* Document::getPyObject(void)
 {
     _pcDocPy->IncRef();
     return _pcDocPy;
+}
+
+void Document::handleChildren3D(ViewProvider* viewProvider)
+{
+    // check for children
+    if (viewProvider->getChildRoot()) {
+        std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
+        SoGroup* childGroup =  viewProvider->getChildRoot();
+
+        // size not the same -> build up the list new
+        if(childGroup->getNumChildren() != static_cast<int>(children.size())){
+
+            childGroup->removeAllChildren();
+
+            for(std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it){
+                ViewProvider* ChildViewProvider = getViewProvider(*it);
+                if(ChildViewProvider) {
+                    SoSeparator* childRootNode =  ChildViewProvider->getRoot();
+                    childGroup->addChild(childRootNode);
+
+                    // cycling to all views of the document to remove the viewprovider from the viewer itself
+                    for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+                        View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+                        if (activeView && viewProvider && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+                            // Note about hasViewProvider()
+                            //remove the viewprovider serves the purpose of detaching the inventor nodes from the
+                            //top level root in the viewer. However, if some of the children were grouped beneath the object
+                            //earlier they are not anymore part of the toplevel inventor node. we need to check for that.
+                            if (d->_editViewProvider == ChildViewProvider)
+                                resetEdit();
+                            activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

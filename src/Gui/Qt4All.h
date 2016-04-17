@@ -60,6 +60,7 @@
 #include <qvariant.h>
 #include <QWaitCondition>
 // QtGui
+#include <QAbstractEventDispatcher>
 #include <QAbstractItemModel>
 #include <QStandardItemModel>
 #include <QAbstractTextDocumentLayout>
@@ -83,8 +84,10 @@
 #include <QFileIconProvider>
 #include <qfontdatabase.h>
 #include <qfontdialog.h>
+#include <QGraphicsProxyWidget>
 #include <QGraphicsRectItem>
 #include <QGraphicsSvgItem>
+#include <QGraphicsSceneContextMenuEvent>
 #include <QGroupBox>
 #include <QHeaderView>
 #include <qimage.h>

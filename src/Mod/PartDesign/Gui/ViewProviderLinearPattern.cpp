@@ -28,36 +28,11 @@
 
 #include "ViewProviderLinearPattern.h"
 #include "TaskLinearPatternParameters.h"
-#include <Mod/PartDesign/App/FeatureLinearPattern.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern,PartDesignGui::ViewProviderTransformed)
 
-bool ViewProviderLinearPattern::setEdit(int ModNum)
-{
-    ViewProviderTransformed::setEdit(ModNum);
-
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgLinearPatternParameters *linearpatternDlg = NULL;
-
-        if (checkDlgOpen(linearpatternDlg)) {
-            // start the edit dialog
-            if (linearpatternDlg)
-                Gui::Control().showDialog(linearpatternDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgLinearPatternParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderPart::setEdit(ModNum);
-    }
+TaskDlgFeatureParameters *ViewProviderLinearPattern::getEditDialog() {
+    return new TaskDlgLinearPatternParameters (this);
 }

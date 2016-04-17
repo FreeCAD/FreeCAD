@@ -33,6 +33,11 @@ set(FreeCADApp_LIBS
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
 generate_from_xml(DocumentObjectGroupPy)
+generate_from_xml(GeoFeaturePy)
+generate_from_xml(GeoFeatureGroupPy)
+generate_from_xml(OriginGroupPy)
+generate_from_xml(PartPy)
+
 generate_from_xml(ComplexGeoDataPy)
 generate_from_xml(PropertyContainerPy)
 generate_from_xml(MaterialPy)
@@ -43,6 +48,10 @@ generate_from_py(FreeCADTest TestScript.h)
 SET(FreeCADApp_XML_SRCS
     DocumentObjectGroupPy.xml
     DocumentObjectPy.xml
+    GeoFeaturePy.xml
+    GeoFeatureGroupPy.xml
+    OriginGroupPy.xml
+    PartPy.xml
     DocumentPy.xml
     PropertyContainerPy.xml
     ComplexGeoDataPy.xml
@@ -58,6 +67,7 @@ SET(Document_CPP_SRCS
     DocumentObjectFileIncluded.cpp
     DocumentObjectGroup.cpp
     DocumentObjectGroupPyImp.cpp
+    GeoFeaturePyImp.cpp
     DocumentObjectPyImp.cpp
     DocumentObserver.cpp
     DocumentObserverPython.cpp
@@ -66,10 +76,18 @@ SET(Document_CPP_SRCS
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
+    GeoFeatureGroupPyImp.cpp
+    GeoFeatureGroup.cpp
+    OriginGroupPyImp.cpp
+    OriginGroup.cpp
+    PartPyImp.cpp
+    Part.cpp
+    Origin.cpp
+    Path.cpp
     InventorObject.cpp
     MeasureDistance.cpp
     Placement.cpp
-    Plane.cpp
+    OriginFeature.cpp
     Range.cpp
     Transactions.cpp
     VRMLObject.cpp
@@ -93,10 +111,15 @@ SET(Document_HPP_SRCS
     FeaturePythonPyImp.inl
     FeatureTest.h
     GeoFeature.h
+    GeoFeatureGroup.h
+    OriginGroup.h
+    Part.h
+    Origin.h
+    Path.h
     InventorObject.h
     MeasureDistance.h
     Placement.h
-    Plane.h
+    OriginFeature.h
     Range.h
     Transactions.h
     VRMLObject.h

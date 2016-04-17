@@ -24,14 +24,14 @@
 #ifndef PARTGUI_ViewProviderRevolution_H
 #define PARTGUI_ViewProviderRevolution_H
 
-#include "ViewProvider.h"
+#include "ViewProviderSketchBased.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderRevolution : public ViewProvider
+class PartDesignGuiExport ViewProviderRevolution : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER(PartGui::ViewProviderRevolution);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderRevolution);
 
 public:
     /// constructor
@@ -39,16 +39,12 @@ public:
     /// destructor
     virtual ~ViewProviderRevolution();
 
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-
     void setupContextMenu(QMenu*, QObject*, const char*);
 
-    virtual bool onDelete(const std::vector<std::string> &);
-
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    /// Returns a newly created TaskDlgRevolutionParameters
+    virtual TaskDlgFeatureParameters *getEditDialog();
+
 
 };
 

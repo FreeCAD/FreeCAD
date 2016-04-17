@@ -24,85 +24,51 @@
 #ifndef GUI_TASKVIEW_TaskFilletParameters_H
 #define GUI_TASKVIEW_TaskFilletParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
+#include "TaskDressUpParameters.h"
 #include "ViewProviderFillet.h"
 
 class Ui_TaskFilletParameters;
 
-namespace App {
-class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-}
-
-
 namespace PartDesignGui {
 
-class TaskFilletParameters : public Gui::TaskView::TaskBox
+class TaskFilletParameters : public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    TaskFilletParameters(ViewProviderFillet *FilletView, QWidget *parent=0);
+    TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
     ~TaskFilletParameters();
 
-    void apply();
+    virtual void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onRefDeleted(void);
 
 protected:
     double getLength(void) const;
+    virtual void clearButtons(const selectionModes notThis);
     void changeEvent(QEvent *e);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-
-private:
-    QWidget* proxy;
     Ui_TaskFilletParameters* ui;
-    ViewProviderFillet *FilletView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFilletParameters : public Gui::TaskView::TaskDialog
+class TaskDlgFilletParameters : public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgFilletParameters(ViewProviderFillet *FilletView);
+    TaskDlgFilletParameters(ViewProviderFillet *DressUpView);
     ~TaskDlgFilletParameters();
 
-    ViewProviderFillet* getFilletView() const
-    { return FilletView; }
-
-
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-protected:
-    ViewProviderFillet   *FilletView;
-
-    TaskFilletParameters  *parameter;
 };
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif // GUI_TASKVIEW_TaskFilletParameters_H
