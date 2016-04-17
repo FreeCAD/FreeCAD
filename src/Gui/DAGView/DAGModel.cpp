@@ -42,6 +42,7 @@
 #include <QKeyEvent>
 #include <QMenu>
 #include <QTimer>
+#include <QTransform>
 #endif
 
 #include <QAbstractEventDispatcher>
@@ -940,7 +941,7 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
         const GraphLinkRecord &record = findRecord(rect, *graphLink);
         
         //don't like that I am doing this again here after getRectFromPosition call.
-        QGraphicsItem *item = itemAt(event->scenePos());
+        QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
         QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
         if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
         {
@@ -1034,7 +1035,7 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     const GraphLinkRecord &record = findRecord(rect, *graphLink);
     
     //don't like that I am doing this again here after getRectFromPosition call.
-    QGraphicsItem *item = itemAt(event->scenePos());
+    QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
     QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
     if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
     {

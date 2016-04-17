@@ -145,6 +145,7 @@
 #include <qtoolbox.h>
 #include <qtoolbutton.h>
 #include <qtooltip.h>
+#include <QTransform>
 #include <QTreeView>
 #include <QTreeWidget>
 #include <qvalidator.h>
