@@ -25,7 +25,7 @@ import FreeCAD
 
 import PySide
 from PySide import QtCore, QtGui
-from distutils.version import StrictVersion as V
+from distutils.version import LooseVersion as V
 
 try:
     import matplotlib
