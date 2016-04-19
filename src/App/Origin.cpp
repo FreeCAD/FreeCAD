@@ -140,7 +140,7 @@ void Origin::setupObject () {
         {App::Line::getClassTypeId(), "Y_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
         {App::Line::getClassTypeId(), "Z_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*4/3 ) },
         {App::Plane::getClassTypeId (), "XY_Plane", Base::Rotation () },
-        {App::Plane::getClassTypeId (), "XZ_Plane", Base::Rotation ( Base::Vector3d (0,1,1), M_PI ), },
+        {App::Plane::getClassTypeId (), "XZ_Plane", Base::Rotation ( 1.0, 0.0, 0.0, 1.0 ), },
         {App::Plane::getClassTypeId (), "YZ_Plane", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
     };
 
