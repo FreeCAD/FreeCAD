@@ -1509,6 +1509,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
+        attacher3D.superPlacement = Base::Placement(); //superplacement is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
         plm *= presuperPlacement;
     }
@@ -1677,6 +1678,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
+        attacher3D.superPlacement = Base::Placement(); //superplacement is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
         plm = attacher3D.calculateAttachedPlacement(origPlacement);
     }
     plm *= this->superPlacement;
