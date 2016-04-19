@@ -40,7 +40,7 @@ PROPERTY_SOURCE(PartDesign::Plane, Part::Datum)
 
 Plane::Plane()
 {
-    this->setAttacher(new AttachEngine3D);
+    this->setAttacher(new AttachEnginePlane);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
     // Sketcher on the PartDesign module
     BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
