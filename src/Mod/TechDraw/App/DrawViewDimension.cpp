@@ -67,7 +67,7 @@ const char* DrawViewDimension::TypeEnums[]= {"Distance",
                                                 "Angle",
                                                 NULL};
 
-const char* DrawViewDimension::ProjTypeEnums[]= {"True",
+const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
                                                     "Projected",
                                                     NULL};
 
@@ -95,8 +95,8 @@ DrawViewDimension::DrawViewDimension(void)
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
 
-    ProjectionType.setEnums(ProjTypeEnums);
-    ADD_PROPERTY(ProjectionType, ((long)0));                           //True or Projected measurement
+    MeasureType.setEnums(MeasureTypeEnums);
+    ADD_PROPERTY(MeasureType, ((long)0));                           //True or Projected measurement
 
     //hide the DrawView properties that don't apply to Dimensions
     //App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
@@ -141,7 +141,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             catch (...) {
             }
         }
-        if (prop == &ProjectionType) {
+        if (prop == &MeasureType) {
             const std::vector<std::string> &subElements = References.getSubValues();
             if (subElements.empty()) {
                 Base::Console().Log("INFO - DrawViewDimension::onChanged - no References yet\n");
@@ -158,9 +158,9 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                     break;
                 }
             }
-            if (ProjectionType.isValue("True") && !trueAllowed) {
+            if (MeasureType.isValue("True") && !trueAllowed) {
                 Base::Console().Warning("Dimension %s missing Reference to 3D model. Must be Projected.\n", getNameInDocument());
-                ProjectionType.setValue("Projected");
+                MeasureType.setValue("Projected");
             }
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
@@ -178,7 +178,7 @@ short DrawViewDimension::mustExecute() const
     bool result = 0;
     if (References.isTouched() ||
         Type.isTouched() ||
-        ProjectionType.isTouched()) {
+        MeasureType.isTouched()) {
         result =  1;
     } else {
         result = 0;
@@ -195,7 +195,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     //Clear the previous measurement made
     measurement->clear();
 
-    if (ProjectionType.isValue("True")) {
+    if (MeasureType.isValue("True")) {
         //Update Dimension.measurement with 3D References
         const std::vector<std::string> &subElements = References.getSubValues();
         ProjDirection.setValue(getViewPart()->Direction.getValue());
@@ -213,11 +213,11 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
             if (ref < 0) {
                 Base::Console().Log("INFO - FVD::execute - no 3D ref yet. Probably loading document.\n");
             } else {
-                measurement->addReference(docObj,newName.c_str());
+                measurement->addReference3D(docObj,newName.c_str());
             }
         }
     }
-    //TODO: if ProjectionType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
+    //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
 
     return App::DocumentObject::StdReturn;
 }
@@ -261,7 +261,7 @@ double DrawViewDimension::getDimValue() const
         return result;
     }
 
-    if (ProjectionType.isValue("True")) {
+    if (MeasureType.isValue("True")) {
         // True Values
         if (!measurement->hasReferences()) {
             return result;

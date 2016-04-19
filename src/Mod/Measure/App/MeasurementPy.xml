@@ -14,7 +14,7 @@
       <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
       <UserDocu>Make a measurement</UserDocu>
     </Documentation>
-    <Methode Name="addReference">
+    <Methode Name="addReference3D">
       <Documentation>
         <UserDocu>add a geometric reference</UserDocu>
       </Documentation>
