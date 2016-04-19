@@ -59,6 +59,7 @@
 using namespace Part;
 using namespace Attacher;
 
+//These strings are for mode list enum property.
 const char* AttachEngine::eMapModeStrings[]= {
     "Deactivated",
     "Translate",
@@ -1251,6 +1252,35 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
     return acos(cos_unfold);
 }
 
+
+//=================================================================================
+
+TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine);
+
+AttachEnginePlane::AttachEnginePlane()
+{
+    //re-used 3d modes: all of Attacher3d
+    AttachEngine3D attacher3D;
+    this->modeRefTypes = attacher3D.modeRefTypes;
+    this->EnableAllSupportedModes();
+}
+
+AttachEnginePlane *AttachEnginePlane::copy() const
+{
+    AttachEnginePlane* p = new AttachEnginePlane;
+    p->setUp(*this);
+    return p;
+}
+
+Base::Placement AttachEnginePlane::calculateAttachedPlacement(Base::Placement origPlacement) const
+{
+    //re-use Attacher3d
+    Base::Placement plm;
+    AttachEngine3D attacher3D;
+    attacher3D.setUp(*this);
+    plm = attacher3D.calculateAttachedPlacement(origPlacement);
+    return plm;
+}
 
 //=================================================================================
 
