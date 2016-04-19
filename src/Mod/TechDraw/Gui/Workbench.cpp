@@ -113,6 +113,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_NewRadiusDimension";
     *dims << "TechDraw_NewDiameterDimension";
     *dims << "TechDraw_NewAngleDimension";
+    *dims << "TechDraw_LinkDimension";
 //    *dims << "TechDraw_NewDimension"
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
@@ -157,6 +158,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_NewRadiusDimension";
     *dims << "TechDraw_NewDiameterDimension";
     *dims << "TechDraw_NewAngleDimension";
+    *dims << "TechDraw_LinkDimension";
 //    *dims << "TechDraw_NewDimension";
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);

@@ -76,8 +76,21 @@ std::vector<std::string> ViewProviderDimension::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderDimension::updateData(const App::Property*)
+void ViewProviderDimension::updateData(const App::Property* p)
 {
+    if (p == &(getViewObject()->Type)) {
+        if (getViewObject()->Type.isValue("DistanceX")) {
+            sPixmap = "Dimension_Horizonatal";
+        } else if (getViewObject()->Type.isValue("DistanceY")) {
+            sPixmap = "Dimension_Vertical";
+        } else if (getViewObject()->Type.isValue("Radius")) {
+            sPixmap = "Dimension_Radius";
+        } else if (getViewObject()->Type.isValue("Diameter")) {
+            sPixmap = "Dimension_Diameter";
+        } else if (getViewObject()->Type.isValue("Angle")) {
+            sPixmap = "Dimension_Angle";
+        }
+    }
 }
 
 TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const
