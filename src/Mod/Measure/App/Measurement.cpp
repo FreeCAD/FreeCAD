@@ -76,34 +76,34 @@ void Measurement::clear()
 {
     std::vector<App::DocumentObject*> Objects;
     std::vector<std::string> SubElements;
-    References.setValues(Objects, SubElements);
+    References3D.setValues(Objects, SubElements);
     measureType = Invalid;
 }
 
 bool Measurement::hasReferences()
 {
-    return (References.getSize() > 0);
+    return (References3D.getSize() > 0);
 }
 
 /// Convenience Methods for adding points
-int Measurement::addReference(App::DocumentObject *obj, const char* subName)
+int Measurement::addReference3D(App::DocumentObject *obj, const char* subName)
 {
-  std::vector<App::DocumentObject*> objects = References.getValues();
-  std::vector<std::string> subElements = References.getSubValues();
+  std::vector<App::DocumentObject*> objects = References3D.getValues();
+  std::vector<std::string> subElements = References3D.getSubValues();
 
   objects.push_back(obj);
   subElements.push_back(subName);
 
-  References.setValues(objects, subElements);
+  References3D.setValues(objects, subElements);
 
   measureType = getType();
-  return References.getSize();
+  return References3D.getSize();
 }
 
 MeasureType Measurement::getType()
 {
-    const std::vector<App::DocumentObject*> &objects = References.getValues();
-    const std::vector<std::string> &subElements = References.getSubValues();
+    const std::vector<App::DocumentObject*> &objects = References3D.getValues();
+    const std::vector<std::string> &subElements = References3D.getSubValues();
 
     std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
     std::vector<std::string>::const_iterator subEl = subElements.begin();
@@ -112,7 +112,7 @@ MeasureType Measurement::getType()
     //int dims = -1;
     MeasureType mode;
 
-    // Type of References
+    // Type of References3D
     int verts = 0;
     int edges = 0;
     int faces = 0;
@@ -226,14 +226,14 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
 // Methods for distances (edge length, two points, edge and a point
 double Measurement::length() const
 {
-  int numRefs =  References.getSize();
+  int numRefs =  References3D.getSize();
   if(!numRefs || measureType == Invalid) {
-      throw Base::Exception("Measurement - length - Invalid References Provided");
+      throw Base::Exception("Measurement - length - Invalid References3D Provided");
   }
 
   double result = 0.0;
-  const std::vector<App::DocumentObject*> &objects = References.getValues();
-  const std::vector<std::string> &subElements = References.getSubValues();
+  const std::vector<App::DocumentObject*> &objects = References3D.getValues();
+  const std::vector<std::string> &subElements = References3D.getSubValues();
 
   if(measureType == Points ||
      measureType == PointToEdge ||
@@ -293,15 +293,15 @@ double Measurement::length() const
 
 double Measurement::angle(const Base::Vector3d &param) const
 {
-    int numRefs = References.getSize();
+    int numRefs = References3D.getSize();
     if(!numRefs)
-        throw Base::Exception("Measurement - angle - No references provided");
+        throw Base::Exception("Measurement - angle - No References3D provided");
 
     if(measureType == Edges) {
         // Only case that is supported is edge to edge
         if(numRefs == 2) {
-            const std::vector<App::DocumentObject*> &objects = References.getValues();
-            const std::vector<std::string> &subElements = References.getSubValues();
+            const std::vector<App::DocumentObject*> &objects = References3D.getValues();
+            const std::vector<std::string> &subElements = References3D.getSubValues();
 
             TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
             TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str());
@@ -325,22 +325,22 @@ double Measurement::angle(const Base::Vector3d &param) const
                 throw Base::Exception("Objects must both be lines");
             }
         } else {
-            throw Base::Exception("Can not compute angle. Too many references");
+            throw Base::Exception("Can not compute angle. Too many References3D");
         }
     }
-    throw Base::Exception("References are not Edges");
+    throw Base::Exception("References3D are not Edges");
 }
 
 double Measurement::radius() const
 {
-    int numRefs = References.getSize();
+    int numRefs = References3D.getSize();
     if(!numRefs) {
-        throw Base::Exception("Measurement - radius - No references provided");
+        throw Base::Exception("Measurement - radius - No References3D provided");
     }
 
     if(numRefs == 1 || measureType == Edges) {
-        const std::vector<App::DocumentObject*> &objects = References.getValues();
-        const std::vector<std::string> &subElements = References.getSubValues();
+        const std::vector<App::DocumentObject*> &objects = References3D.getValues();
+        const std::vector<std::string> &subElements = References3D.getSubValues();
 
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
         const TopoDS_Edge& edge = TopoDS::Edge(shape);
@@ -350,17 +350,17 @@ double Measurement::radius() const
             return (double) curve.Circle().Radius();
         }
     }
-    throw Base::Exception("Measurement - radius - Invalid References Provided");
+    throw Base::Exception("Measurement - radius - Invalid References3D Provided");
 }
 
 Base::Vector3d Measurement::delta() const
 {
-    int numRefs =  References.getSize();
+    int numRefs =  References3D.getSize();
     if(!numRefs || measureType == Invalid)
-        throw Base::Exception("Measurement - delta - Invalid References Provided");
+        throw Base::Exception("Measurement - delta - Invalid References3D Provided");
 
-    const std::vector<App::DocumentObject*> &objects = References.getValues();
-    const std::vector<std::string> &subElements = References.getSubValues();
+    const std::vector<App::DocumentObject*> &objects = References3D.getValues();
+    const std::vector<std::string> &subElements = References3D.getSubValues();
 
     if(measureType == Points) {
         if(numRefs == 2) {
@@ -437,12 +437,12 @@ Base::Vector3d Measurement::delta() const
 Base::Vector3d Measurement::massCenter() const
 {
 
-    int numRefs =  References.getSize();
+    int numRefs =  References3D.getSize();
     if(!numRefs || measureType == Invalid)
-        throw Base::Exception("Measurement - massCenter - Invalid References Provided");
+        throw Base::Exception("Measurement - massCenter - Invalid References3D Provided");
 
-    const std::vector<App::DocumentObject*> &objects = References.getValues();
-    const std::vector<std::string> &subElements = References.getSubValues();
+    const std::vector<App::DocumentObject*> &objects = References3D.getValues();
+    const std::vector<std::string> &subElements = References3D.getSubValues();
 
 
     GProp_GProps gprops = GProp_GProps();
@@ -470,7 +470,7 @@ Base::Vector3d Measurement::massCenter() const
         return Base::Vector3d(cog.X(), cog.Y(), cog.Z());
 
       } else {
-          throw Base::Exception("Measurement - massCenter - Invalid References Provided");
+          throw Base::Exception("Measurement - massCenter - Invalid References3D Provided");
       }
 }
 

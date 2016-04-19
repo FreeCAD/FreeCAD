@@ -48,7 +48,7 @@ class MeasureExport Measurement : public Base::BaseClass {
       TYPESYSTEM_HEADER();
 public:
 
-    App::PropertyLinkSubList References;
+    App::PropertyLinkSubList References3D;
 
 public:
     Measurement();
@@ -58,7 +58,7 @@ public:
     bool hasReferences();
 
     /// Add a reference
-    int addReference(App::DocumentObject *obj, const char *subName);
+    int addReference3D(App::DocumentObject *obj, const char *subName);
 
     MeasureType getType();
 

@@ -57,7 +57,7 @@ int MeasurementPy::PyInit(PyObject* args, PyObject* /*kwd*/)
    return 0;
 }
 
-PyObject* MeasurementPy::addReference(PyObject *args)
+PyObject* MeasurementPy::addReference3D(PyObject *args)
 {
     char *ObjectName;
     char *SubName;
@@ -74,7 +74,7 @@ PyObject* MeasurementPy::addReference(PyObject *args)
     }
 
     // add the external
-    if (this->getMeasurementPtr()->addReference(Obj,SubName) < 0) {
+    if (this->getMeasurementPtr()->addReference3D(Obj,SubName) < 0) {
         std::stringstream str;
         str << "Not able to add reference";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -139,5 +139,3 @@ int MeasurementPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
-

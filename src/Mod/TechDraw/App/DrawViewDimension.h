@@ -45,7 +45,7 @@ public:
     DrawViewDimension();
     virtual ~DrawViewDimension();
 
-    App::PropertyEnumeration ProjectionType;                           //True/Projected
+    App::PropertyEnumeration MeasureType;                              //True/Projected
     App::PropertyVector ProjDirection;                                 //??why would dim have different projDir from View?
     App::PropertyLinkSubList References;                               //Points to Projection SubFeatures
     App::PropertyEnumeration Type;                                     //DistanceX,DistanceY,Diameter, etc
@@ -94,7 +94,7 @@ protected:
                      Base::Vector2D e2) const;
 private:
     static const char* TypeEnums[];
-    static const char* ProjTypeEnums[];
+    static const char* MeasureTypeEnums[];
     void dumpRefs(char* text) const;
 };
 
