@@ -42,6 +42,7 @@ set(TechDrawGui_MOC_HDRS
     QGIViewClip.h
     TaskProjGroup.h
     DlgPrefsTechDrawImp.h
+    TaskLinkDim.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -52,6 +53,7 @@ qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDraw.ui
     TaskProjGroup.ui
+    TaskLinkDim.ui
 )
 
 qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
@@ -74,7 +76,9 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDraw.ui
     DlgPrefsTechDrawImp.cpp
     DlgPrefsTechDrawImp.h
-
+    TaskLinkDim.ui
+    TaskLinkDim.cpp
+    TaskLinkDim.h
 )
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
@@ -160,6 +164,7 @@ SOURCE_GROUP("ViewProvider" FILES ${TechDrawGuiViewProvider_SRCS})
 
 SET(TechDrawGuiTaskDlgs_SRCS
     TaskProjGroup.ui
+    TaskLinkDim.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

@@ -142,23 +142,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         }
         if (prop == &MeasureType) {
-            const std::vector<std::string> &subElements = References.getSubValues();
-            if (subElements.empty()) {
-                Base::Console().Log("INFO - DrawViewDimension::onChanged - no References yet\n");
-                return;
-            }
-            std::vector<std::string>::const_iterator subIt = subElements.begin();
-            bool trueAllowed = true;
-            for(; subIt != subElements.end(); subIt++) {
-                std::string geomType = DrawUtil::getGeomTypeFromName((*subIt));
-                int refIndex = DrawUtil::getIndexFromName((*subIt));
-                int ref = get3DRef(refIndex,geomType);
-                if (ref < 0) {                                             //-1 => no reference
-                    trueAllowed = false;
-                    break;
-                }
-            }
-            if (MeasureType.isValue("True") && !trueAllowed) {
+            if (MeasureType.isValue("True") && !measurement->hasReferences()) {
                 Base::Console().Warning("Dimension %s missing Reference to 3D model. Must be Projected.\n", getNameInDocument());
                 MeasureType.setValue("Projected");
             }
@@ -192,31 +176,10 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    //Clear the previous measurement made
-    measurement->clear();
+    //TODO: why not just use View's property directly?
+    ProjDirection.setValue(getViewPart()->Direction.getValue());
+    XAxisDirection.setValue(getViewPart()->XAxisDirection.getValue());
 
-    if (MeasureType.isValue("True")) {
-        //Update Dimension.measurement with 3D References
-        const std::vector<std::string> &subElements = References.getSubValues();
-        ProjDirection.setValue(getViewPart()->Direction.getValue());
-        XAxisDirection.setValue(getViewPart()->XAxisDirection.getValue());
-        //Overall assumption is that the dimensions are only allowed for one view
-        App::DocumentObject *docObj = getViewPart()->Source.getValue();
-        std::vector<std::string>::const_iterator subEl = subElements.begin();
-        for(; subEl != subElements.end(); subEl++) {
-            //figure out which 3D geometry belongs to the 2D geometry in Dimension.References
-            //and update the Measurement.References
-            std::string geomType = DrawUtil::getGeomTypeFromName((*subEl));
-            int refIndex = DrawUtil::getIndexFromName((*subEl));
-            int ref = get3DRef(refIndex,geomType);
-            std::string newName = DrawUtil::makeGeomName(geomType, ref);
-            if (ref < 0) {
-                Base::Console().Log("INFO - FVD::execute - no 3D ref yet. Probably loading document.\n");
-            } else {
-                measurement->addReference3D(docObj,newName.c_str());
-            }
-        }
-    }
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
 
     return App::DocumentObject::StdReturn;
@@ -457,6 +420,22 @@ int DrawViewDimension::getRefType() const
     return refType;
 }
 
+//!add 1 3D measurement Reference
+void DrawViewDimension::setMeasurement(DocumentObject* obj, std::vector<std::string>& subElements) const
+{
+   std::vector<std::string>::iterator itSub = subElements.begin();
+   for (; itSub != subElements.end(); itSub++) {
+       //int rc =
+       static_cast<void> (measurement->addReference3D(obj,(*itSub).c_str()));
+   }
+}
+
+//delete all previous measurements
+void DrawViewDimension::clearMeasurements()
+{
+    measurement->clear();
+}
+
 int DrawViewDimension::get3DRef(int refIndex, std::string geomType) const
 {
     int ref = -1;
@@ -467,6 +446,7 @@ int DrawViewDimension::get3DRef(int refIndex, std::string geomType) const
     }
     return ref;
 }
+
 
 void DrawViewDimension::dumpRefs(char* text) const
 {

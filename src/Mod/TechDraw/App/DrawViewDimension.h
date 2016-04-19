@@ -79,6 +79,8 @@ public:
     virtual std::string getFormatedValue() const;
     virtual double getDimValue() const;
     DrawViewPart* getViewPart() const;
+    void setMeasurement(DocumentObject* obj, std::vector<std::string>& subElements) const;
+    void clearMeasurements(void);
 
 protected:
     void onChanged(const App::Property* prop);
