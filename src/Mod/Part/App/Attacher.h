@@ -360,17 +360,15 @@ private:
     double calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp_Vec edB) const;
 };
 
-typedef AttachEngine3D AttachEnginePlane ;//no separate class for planes, for now. Can be added later, if required.
-/*
-class AttachEngine2D : public AttachEngine
+//attacher specialized for datum planes
+class PartExport AttachEnginePlane : public AttachEngine
 {
+    TYPESYSTEM_HEADER();
+public:
     AttachEnginePlane();
-    virtual AttachEnginePlane* copy() const {return new AttachEnginePlane(*this);}
-    virtual Base::Placement calculateAttachedPlacement(void) const;
-    virtual eMapMode listMapModes(eSuggestResult &msg, std::vector<eMapMode>* allmodes = 0, std::vector<QString>* nextRefTypeHint = 0) const;
-    ~AttachEnginePlane(){};
+    virtual AttachEnginePlane* copy() const;
+    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
 };
-*/
 
 //attacher specialized for datum lines
 class PartExport AttachEngineLine : public AttachEngine
