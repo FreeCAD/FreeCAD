@@ -443,6 +443,15 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         int fontSize = metric.width(QLatin1String("0"));
         setTabStopWidth(tabWidth * fontSize);
     }
+
+    // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
+    QRect cr = contentsRect();
+    bool show = hPrefGrp->GetBool( "EnableLineNumber", true );
+    if(show) {
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+    } else {
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
+    }
 }
 
 void TextEditor::paintEvent (QPaintEvent * e)
