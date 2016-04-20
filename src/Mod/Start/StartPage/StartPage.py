@@ -186,7 +186,7 @@ page = """
             // load latest news
             ddiv = document.getElementById("news");
             ddiv.innerHTML = "Connecting...";
-            var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
+            var tobj=new JSONscriptRequest('http://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
             tobj.buildScriptTag(); // Build the script tag
             tobj.addScriptTag(); // Execute (add) the script tag
             ddiv.innerHTML = "Downloading latest news...";
