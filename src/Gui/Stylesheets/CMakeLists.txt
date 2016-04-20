@@ -22,8 +22,13 @@ fc_copy_sources(Stylesheets_data "${CMAKE_BINARY_DIR}/data/Gui/Stylesheets" ${St
 
 INSTALL(
     FILES
-        ${Stylesheets_Files} ${Images_Files}
+        ${Stylesheets_Files}
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets
 )
-
+INSTALL(
+    FILES
+         ${Images_Files}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets/images
+)
