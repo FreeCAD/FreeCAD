@@ -286,6 +286,13 @@ public://helper functions that may be useful outside of the class
      */
     static int isShapeOfType(eRefType shapeType, eRefType requirement);
 
+    /**
+     * @brief getModeName
+     * @param mmode
+     * @return returns a string that identifies the attachment mode in enum property.
+     */
+    static std::string getModeName(eMapMode mmode);
+
 
 public: //enums
     static const char* eMapModeStrings[];

@@ -549,6 +549,13 @@ int AttachEngine::isShapeOfType(eRefType shapeType, eRefType requirement)
     return -1;
 }
 
+std::string AttachEngine::getModeName(eMapMode mmode)
+{
+    if(mmode < 0 || mmode >= mmDummy_NumberOfModes)
+        throw Base::Exception("AttachEngine::getModeName: Attachment Mode index is out of range");
+    return std::string(AttachEngine::eMapModeStrings[mmode]);
+}
+
 /*!
  * \brief AttachEngine3D::readLinks
  * \param parts
