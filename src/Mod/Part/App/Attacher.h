@@ -38,8 +38,6 @@
 
 #include "PartFeature.h"
 
-#include <QString>
-
 #include <gp_Vec.hxx>
 
 namespace Attacher
