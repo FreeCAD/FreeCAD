@@ -83,6 +83,8 @@ SET(PartGui_SRCS
     ${PartGui_QRC_SRCS}
     ${PartGui_UIC_HDRS}
     AppPartGui.cpp
+    AttacherTexts.h
+    AttacherTexts.cpp
     Command.cpp
     CommandSimple.cpp
     CommandParametric.cpp
