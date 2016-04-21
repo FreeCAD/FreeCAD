@@ -1352,7 +1352,7 @@ MeshObjectRef makeParallelMengerSponge(int level, float x0, float y0, float z0)
 void CmdMengerSponge::activated(int iMsg)
 {
     bool ok;
-    int level = QInputDialog::getInteger(Gui::getMainWindow(),
+    int level = QInputDialog::getInt(Gui::getMainWindow(),
         QString::fromLatin1("Menger sponge"),
         QString::fromLatin1("Recursion depth:"),
         3, 1, 5, 1, &ok);
