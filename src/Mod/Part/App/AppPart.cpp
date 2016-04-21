@@ -93,6 +93,8 @@
 #include "PartFeaturePy.h"
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
+#include "Attacher.h"
+#include "AttachableObject.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -219,6 +221,12 @@ PyMODINIT_FUNC initPart()
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
 
+    Attacher::AttachEngine        ::init();
+    Attacher::AttachEngine3D      ::init();
+    Attacher::AttachEnginePlane   ::init();
+    Attacher::AttachEngineLine    ::init();
+    Attacher::AttachEnginePoint   ::init();
+
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
     Part::AttachableObject      ::init();
@@ -264,6 +272,7 @@ PyMODINIT_FUNC initPart()
     Part::Helix                 ::init();
     Part::Spiral                ::init();
     Part::Wedge                 ::init();
+
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();
     Part::Face                  ::init();
