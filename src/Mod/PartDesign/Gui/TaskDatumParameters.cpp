@@ -658,7 +658,9 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
             std::vector<QString> mstr = AttacherGui::getUIStrings(pcDatum->attacher().getTypeId(),mmode);
             ui->listOfModes->addItem(mstr[0]);
             QListWidgetItem* item = ui->listOfModes->item(i);
-            item->setToolTip(mstr[1]);
+            item->setToolTip(mstr[1] + QString::fromLatin1("\n\n") +
+                             tr("Reference combinations:\n") +
+                             AttacherGui::getRefListForMode(pcDatum->attacher(),mmode).join(QString::fromLatin1("\n")));
             if (mmode == curMode)
                 iSelect = ui->listOfModes->item(i);
             if (mmode == suggMode){
