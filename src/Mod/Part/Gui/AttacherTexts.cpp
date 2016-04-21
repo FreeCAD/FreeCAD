@@ -39,9 +39,9 @@ TextSet TwoStrings(QString str1, QString str2)
     return v;
 }
 
-AttacherGui::TextSet AttacherGui::getUIStrings(Base::Type attacherType, Attacher::eMapMode mmode)
+TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
 {
-    if (attacherType.isDerivedFrom(Attacher::AttachEngine3D::getClassTypeId())){
+    if (attacherType.isDerivedFrom(AttachEngine3D::getClassTypeId())){
         //---- coordinate system attacher ----
         switch (mmode){
         case mmDeactivated:
@@ -109,7 +109,7 @@ AttacherGui::TextSet AttacherGui::getUIStrings(Base::Type attacherType, Attacher
                               qApp->translate("Attacher3D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.","Attachment3D mode tooltip"));
         break;
         }
-    } else if (attacherType.isDerivedFrom(Attacher::AttachEnginePlane::getClassTypeId())){
+    } else if (attacherType.isDerivedFrom(AttachEnginePlane::getClassTypeId())){
         //---- Plane/sketch attacher ----
         switch (mmode){
         case mmDeactivated:
@@ -177,7 +177,7 @@ AttacherGui::TextSet AttacherGui::getUIStrings(Base::Type attacherType, Attacher
                               qApp->translate("Attacher2D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.","AttachmentPlane mode tooltip"));
         break;
         }
-    } else if (attacherType.isDerivedFrom(Attacher::AttachEngineLine::getClassTypeId())){
+    } else if (attacherType.isDerivedFrom(AttachEngineLine::getClassTypeId())){
         //---- Line attacher ----
         switch (mmode){
         case mmDeactivated:
@@ -249,7 +249,7 @@ AttacherGui::TextSet AttacherGui::getUIStrings(Base::Type attacherType, Attacher
                               qApp->translate("Attacher1D", "Line that spans the shortest distance between shapes.","AttachmentLine mode tooltip"));
         break;
         }
-    } else if (attacherType.isDerivedFrom(Attacher::AttachEnginePoint::getClassTypeId())){
+    } else if (attacherType.isDerivedFrom(AttachEnginePoint::getClassTypeId())){
         //---- Point attacher ----
         switch (mmode){
         case mmDeactivated:
@@ -300,7 +300,7 @@ AttacherGui::TextSet AttacherGui::getUIStrings(Base::Type attacherType, Attacher
     }
 
     assert("No user-friendly string defined for this attachment mode."=="");
-    return TwoStrings(QString::fromLatin1(Attacher::AttachEngine::getModeName(mmode).c_str()),QString());
+    return TwoStrings(QString::fromLatin1(AttachEngine::getModeName(mmode).c_str()),QString());
 }
 
 //Note: this list must be in sync with eRefType enum
