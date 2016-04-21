@@ -1,45 +1,48 @@
 # -*- coding: utf-8 -*-
 
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 '''Path selection function select a face or faces, two edges, etc to get a dictionary with what was selected in order '''
 
-import FreeCAD,FreeCADGui
-import Part
+import FreeCAD
+import FreeCADGui
 from FreeCAD import Vector
 
-def equals(p1,p2):
+
+def equals(p1, p2):
     '''returns True if vertexes have same coordinates within precision amount of digits '''
-    precision = 12 #hardcoded
-    p=precision
-    u = Vector(p1.X,p1.Y,p1.Z)
-    v = Vector(p2.X,p2.Y,p2.Z)
+    precision = 12
+    p = precision
+    u = Vector(p1.X, p1.Y, p1.Z)
+    v = Vector(p2.X, p2.Y, p2.Z)
     vector = (u.sub(v))
-    isNull = (round(vector.x,p)==0 and round(vector.y,p)==0 and round(vector.z,p)==0)
+    isNull = (round(vector.x, p) == 0 and round(vector.y, p) == 0 and round(vector.z, p) == 0)
     return isNull
+
 
 def segments(poly):
     ''' A sequence of (x,y) numeric coordinates pairs '''
     return zip(poly, poly[1:] + [poly[0]])
+
 
 def check_clockwise(poly):
     '''
@@ -53,28 +56,33 @@ def check_clockwise(poly):
 
 
 class FGate:
-    def allow(self,doc,obj,sub):
+    def allow(self, doc, obj, sub):
         return (sub[0:4] == 'Face')
 
+
 class VGate:
-    def allow(self,doc,obj,sub):
+    def allow(self, doc, obj, sub):
         return (sub[0:6] == 'Vertex')
 
+
 class EGate:
-    def allow(self,doc,obj,sub):
+    def allow(self, doc, obj, sub):
         return (sub[0:4] == 'Edge')
 
+
 class MESHGate:
-    def allow(self,doc,obj,sub):
+    def allow(self, doc, obj, sub):
         print obj.TypeId[0:4] == 'Mesh'
         return (obj.TypeId[0:4] == 'Mesh')
 
+
 class ENGRAVEGate:
-    def allow(self,doc,obj,sub):
+    def allow(self, doc, obj, sub):
         return (obj.Name[0:11] == 'ShapeString')
 
+
 class DRILLGate:
-    def allow(self,doc,obj,sub):
+    def allow(self, doc, obj, sub):
         import Part
         drillable = False
         try:
@@ -102,9 +110,9 @@ class DRILLGate:
 
         return drillable
 
+
 class PROFILEGate:
-    def allow(self,doc,obj,sub):
-        import Part
+    def allow(self, doc, obj, sub):
 
         profileable = False
         try:
@@ -112,8 +120,10 @@ class PROFILEGate:
         except:
             return False
 
-
         if obj.ShapeType == 'Edge':
+            profileable = True
+
+        elif obj.ShapeType == 'Compound':
             profileable = True
 
         elif obj.ShapeType == 'Face':
@@ -134,16 +144,15 @@ class PROFILEGate:
 
         return profileable
 
+
 class POCKETGate:
-    def allow(self,doc,obj,sub):
-        import Part
+    def allow(self, doc, obj, sub):
 
         pocketable = False
         try:
             obj = obj.Shape
         except:
             return False
-
 
         if obj.ShapeType == 'Edge':
             pocketable = False
@@ -152,6 +161,10 @@ class POCKETGate:
             pocketable = True
 
         elif obj.ShapeType == 'Solid':
+            if sub[0:4] == 'Face':
+                pocketable = True
+
+        elif obj.ShapeType == 'Compound':
             if sub[0:4] == 'Face':
                 pocketable = True
 
@@ -171,33 +184,41 @@ def fselect():
     FreeCADGui.Selection.addSelectionGate(FGate())
     FreeCAD.Console.PrintWarning("Face Select Mode\n")
 
+
 def vselect():
     FreeCADGui.Selection.addSelectionGate(VGate())
     FreeCAD.Console.PrintWarning("Vertex Select Mode\n")
+
 
 def eselect():
     FreeCADGui.Selection.addSelectionGate(EGate())
     FreeCAD.Console.PrintWarning("Edge Select Mode\n")
 
+
 def drillselect():
     FreeCADGui.Selection.addSelectionGate(DRILLGate())
     FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
+
 
 def engraveselect():
     FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
     FreeCAD.Console.PrintWarning("Engraving Select Mode\n")
 
+
 def profileselect():
     FreeCADGui.Selection.addSelectionGate(PROFILEGate())
     FreeCAD.Console.PrintWarning("Profiling Select Mode\n")
+
 
 def pocketselect():
     FreeCADGui.Selection.addSelectionGate(POCKETGate())
     FreeCAD.Console.PrintWarning("Pocketing Select Mode\n")
 
+
 def surfaceselect():
     FreeCADGui.Selection.addSelectionGate(MESHGate())
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
+
 
 def clear():
     FreeCADGui.Selection.removeSelectionGate()
