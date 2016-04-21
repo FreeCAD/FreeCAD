@@ -32,6 +32,7 @@
 
 #include <vector>
 #include <QString>
+#include <QStringList>
 #include <Mod/Part/App/Attacher.h>
 
 namespace AttacherGui {
@@ -50,6 +51,8 @@ TextSet PartGuiExport getUIStrings(Base::Type attacherType, Attacher::eMapMode m
 
 
 QString PartGuiExport getShapeTypeText(Attacher::eRefType type);
+
+QStringList PartGuiExport getRefListForMode(Attacher::AttachEngine &attacher, Attacher::eMapMode mmode);
 
 }
 
