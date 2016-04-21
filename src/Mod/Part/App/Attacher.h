@@ -104,7 +104,7 @@ enum eSuggestResult{
 
 /**
  * @brief The eRefType enum lists the types of references. If adding one, see
- * also AttachEngine::getShapeType(), AttachEngine::downgradeType(), TaskDatumParameters.cpp/getShTypeText()
+ * also AttachEngine::getShapeType(), AttachEngine::downgradeType(), AttacherTexts.cpp/getShTypeText()
  */
 enum eRefType {
     //topo             //ranks: (number of times the type is downgradable)
