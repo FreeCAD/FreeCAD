@@ -342,4 +342,18 @@ QString getShapeTypeText(eRefType type)
     throw Base::Exception("getShTypeText: type value is wrong, or a string is missing in the list");
 }
 
+QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
+{
+    AttachEngine::refTypeStringList list = attacher.modeRefTypes[mmode];
+    QStringList strlist;
+    for(AttachEngine::refTypeString &rts : list){
+        QStringList buf;
+        for(eRefType rt : rts){
+            buf.append(getShapeTypeText(rt));
+        }
+        strlist.append(buf.join(QString::fromLatin1(", ")));
+    }
+    return strlist;
+}
+
 } //namespace AttacherGui
