@@ -125,6 +125,11 @@ class PROFILEGate:
 
         elif obj.ShapeType == 'Compound':
             profileable = True
+            if sub[0:4] == 'Face':
+                profileable = True
+
+            if sub[0:4] == 'Edge':
+                profileable = True
 
         elif obj.ShapeType == 'Face':
             profileable = True
