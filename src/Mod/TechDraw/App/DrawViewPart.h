@@ -75,19 +75,6 @@ public:
     TechDrawGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
 
-    int getEdgeRefByIndex(int idx) const;                                       //get reference to Source edge for Projected edge idx
-    int getVertexRefByIndex(int idx) const;                                     //get reference to Source Vertex for Projected Vertex idx
-
-    TechDrawGeometry::BaseGeom * getCompleteEdge(int idx) const;                 //project source edge idx
-    TechDrawGeometry::Vertex   * getVertex(int idx) const;                       //project source vertex
-    TechDrawGeometry::Vertex*    getVertexGeomByRef(int ref) const;
-    TechDrawGeometry::BaseGeom*  getEdgeGeomByRef(int ref) const;
-
-    /// Get References for geometric features
-    const std::vector<int> & getVertexReferences() const;
-    const std::vector<int> & getEdgeReferences() const;
-    const std::vector<int> & getFaceReferences() const;
-
     virtual Base::BoundBox3d getBoundingBox() const;
 
     short mustExecute() const;
@@ -105,7 +92,6 @@ public:
     //return PyObject as DrawViewPartPy
     virtual PyObject *getPyObject(void);
 
-    void dumpVertexRefs(char* text) const;
     void dumpVertexes(const char* text, const TopoDS_Shape& s);
 
 protected:

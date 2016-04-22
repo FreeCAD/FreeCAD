@@ -160,13 +160,8 @@ void GeometryObject::clear()
     }
 
     vertexGeom.clear();
-    vertexReferences.clear();
-
     faceGeom.clear();
-    faceReferences.clear();
-
     edgeGeom.clear();
-    edgeReferences.clear();
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -175,8 +170,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
                              const Base::Vector3d& direction,
                              const Base::Vector3d& xAxis)
 {
-    // Clear previous Geometry and References that may have been stored
-    //TODO: hate losing references on recompute! if Shape has changed, aren't reference potentially invalid anyway?
+    // Clear previous Geometry
     clear();
 
     Handle_HLRBRep_Algo brep_hlr = NULL;
@@ -290,7 +284,6 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         base->classOfEdge = category;
         base->visible = visible;
         edgeGeom.push_back(base);
-        edgeReferences.push_back(-1);
 
         //add vertices of new edge if not already in list
         if (visible) {
@@ -311,25 +304,18 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             if (v1Add) {
                 vertexGeom.push_back(v1);
                 v1->visible = true;
-                vertexReferences.push_back(-1);
             } else {
                 delete v1;
             }
             if (v2Add) {
                 vertexGeom.push_back(v2);
                 v2->visible = true;
-                vertexReferences.push_back(-1);
             } else {
                 delete v2;
             }
         }
 
     }
-}
-
-//!find the 3D edges & vertices that correspond to 2D edges & vertices
-void GeometryObject::update3DRefs()
-{
 }
 
 //! empty Face geometry
@@ -635,189 +621,6 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
     }
     return bbox;
 }
-
-////////////////// Project TopoDS_xxxxx routines
-
-//! only ever called from FVP::getVertex which is never used, so obs?
-TechDrawGeometry::Vertex * GeometryObject::projectVertex(const TopoDS_Shape &vert,
-                                                        const TopoDS_Shape &support,
-                                                        const Base::Vector3d &direction,
-                                                        const Base::Vector3d &projXAxis) const
-{
-    if(vert.IsNull())
-        throw Base::Exception("Projected vertex is null");
-    TechDrawGeometry::Vertex* result = NULL;
-    return result;
-#if 0
-    gp_Pnt supportCentre = findCentroid(support, direction, projXAxis);
-
-    // mirror+scale vert around centre of support
-    gp_Trsf mat;
-    mat.SetMirror(gp_Ax2(supportCentre, gp_Dir(0, 1, 0)));
-    gp_Trsf matScale;
-    matScale.SetScale(supportCentre, Scale);
-    mat.Multiply(matScale);
-
-    //TODO: See if it makes sense to use gp_Trsf::Transforms() instead
-    BRepBuilderAPI_Transform mkTrfScale(vert, mat);
-    const TopoDS_Vertex &refVert = TopoDS::Vertex(mkTrfScale.Shape());
-
-    gp_Ax2 transform;
-    transform = gp_Ax2(supportCentre,
-                       gp_Dir(direction.x, direction.y, direction.z),
-                       gp_Dir(projXAxis.x, projXAxis.y, projXAxis.z));
-
-    HLRAlgo_Projector projector = HLRAlgo_Projector( transform );
-    projector.Scaled(true);
-    // If the index was found and is unique, the point is projected using the HLR Projector Algorithm  //wf: what index?
-    gp_Pnt2d prjPnt;
-    projector.Project(BRep_Tool::Pnt(refVert), prjPnt);
-    TechDrawGeometry::Vertex *myVert = new Vertex(prjPnt.X(), prjPnt.Y());
-    return myVert;
-#endif
-}
-
-//! only ever called from fvp::getCompleteEdge which is only ever called from CmdCreateDim for true dims. so obs?
-TechDrawGeometry::BaseGeom * GeometryObject::projectEdge(const TopoDS_Shape &edge,
-                                                        const TopoDS_Shape &support,
-                                                        const Base::Vector3d &direction,
-                                                        const Base::Vector3d &projXAxis) const
-{
-    if(edge.IsNull())
-        throw Base::Exception("Projected edge is null");
-    // Invert y function using support to calculate bounding box
-
-    TechDrawGeometry::BaseGeom *result = 0;
-    return result;
-#if 0
-    gp_Pnt supportCentre = findCentroid(support, direction, projXAxis);
-
-    gp_Trsf mat;
-    mat.SetMirror(gp_Ax2(supportCentre, gp_Dir(0, 1, 0)));
-    gp_Trsf matScale;
-    matScale.SetScale(supportCentre, Scale);
-    mat.Multiply(matScale);
-    BRepBuilderAPI_Transform mkTrfScale(edge, mat);
-
-    const TopoDS_Edge &refEdge = TopoDS::Edge(mkTrfScale.Shape());
-
-    gp_Ax2 transform;
-    transform = gp_Ax2(supportCentre,
-                       gp_Dir(direction.x, direction.y, direction.z),
-                       gp_Dir(projXAxis.x, projXAxis.y, projXAxis.z));
-
-    BRepAdaptor_Curve refCurve(refEdge);
-    HLRAlgo_Projector projector = HLRAlgo_Projector( transform );
-    projector.Scaled(true);
-
-    if (refCurve.GetType() == GeomAbs_Line) {
-        // Use the simpler algorithm for lines
-        gp_Pnt p1 = refCurve.Value(refCurve.FirstParameter());
-        gp_Pnt p2 = refCurve.Value(refCurve.LastParameter());
-
-        // Project the points
-        gp_Pnt2d pnt1, pnt2;
-        projector.Project(p1, pnt1);
-        projector.Project(p2, pnt2);
-
-        TechDrawGeometry::Generic *line = new TechDrawGeometry::Generic();
-
-        line->points.push_back(Base::Vector2D(pnt1.X(), pnt1.Y()));
-        line->points.push_back(Base::Vector2D(pnt2.X(), pnt2.Y()));
-
-        return line;
-
-    } else {
-
-        HLRBRep_Curve curve;
-        curve.Curve(refEdge);
-
-        curve.Projector(&projector);
-
-        TechDrawGeometry::BaseGeom *result = 0;
-        TopoDS_Edge e = BRepBuilderAPI_MakeEdge(curve.Curve());
-        switch(HLRBRep_BCurveTool::GetType(curve.Curve()))
-        {
-        case GeomAbs_Line: {
-              TechDrawGeometry::Generic *line = new TechDrawGeometry::Generic(e,ecTrue,true);
-
-//              gp_Pnt2d pnt1 = curve.Value(curve.FirstParameter());
-//              gp_Pnt2d pnt2 = curve.Value(curve.LastParameter());
-
-//              line->points.push_back(Base::Vector2D(pnt1.X(), pnt1.Y()));
-//              line->points.push_back(Base::Vector2D(pnt2.X(), pnt2.Y()));
-
-              result = line;
-            }break;
-        case GeomAbs_Circle: {
-                TechDrawGeometry::Circle *circle = new TechDrawGeometry::Circle(e,ecTrue,true));
-                gp_Circ2d prjCirc = curve.Circle();
-
-                double f = curve.FirstParameter();
-                double l = curve.LastParameter();
-                gp_Pnt2d s = curve.Value(f);
-                gp_Pnt2d e = curve.Value(l);
-
-                if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-                      circle->radius = prjCirc.Radius();
-                      circle->center = Base::Vector2D(prjCirc.Location().X(), prjCirc.Location().Y());
-                      result = circle;
-                } else {
-                      AOC *aoc = new AOC(curve.Curve());
-                      aoc->radius = prjCirc.Radius();
-                      aoc->center = Base::Vector2D(prjCirc.Location().X(), prjCirc.Location().Y());
-                      double ax = s.X() - aoc->center.fX;
-                      double ay = s.Y() - aoc->center.fY;
-                      double bx = e.X() - aoc->center.fX;
-                      double by = e.Y() - aoc->center.fY;
-
-                      aoc->startAngle = atan2(ay,ax);
-                      float range = atan2(-ay*bx+ax*by, ax*bx+ay*by);
-
-                      aoc->endAngle = aoc->startAngle + range;
-                      result = aoc;
-                }
-              } break;
-        case GeomAbs_Ellipse: {
-                gp_Elips2d prjEllipse = curve.Ellipse();
-
-                double f = curve.FirstParameter();
-                double l = curve.LastParameter();
-                gp_Pnt2d s = curve.Value(f);
-                gp_Pnt2d e = curve.Value(l);
-
-                if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-                      Ellipse *ellipse = new Ellipse();
-                      ellipse->major = prjEllipse.MajorRadius();
-                      ellipse->minor = prjEllipse.MinorRadius();
-                      ellipse->center = Base::Vector2D(prjEllipse.Location().X(),
-                                                       prjEllipse.Location().Y());
-                      result = ellipse;
-                      // TODO: Finish implementing ellipsey stuff
-                } else {
-                      // TODO implement this correctly
-                      AOE *aoe = new AOE();
-                      aoe->major = prjEllipse.MajorRadius();
-                      aoe->minor = prjEllipse.MinorRadius();
-                      aoe->center = Base::Vector2D(prjEllipse.Location().X(),
-                                                   prjEllipse.Location().Y());
-                      result =  aoe;
-                }
-              } break;
-        case GeomAbs_BSplineCurve: {
-                  // TODO: Project BSpline here?
-              } break;
-
-        default:
-              break;
-        }
-
-        return result;
-    }
-#endif
-}
-
-/////////////////////////////////////////////////////
 
 //! does this GeometryObject already have this vertex
 bool GeometryObject::findVertex(Base::Vector2D v)

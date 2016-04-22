@@ -365,7 +365,6 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
 
         TechDraw::DrawView *viewObj = viewItem->getViewObject();
         std::stringstream ss;
-        //ss << "Edge" << edge->getReference();
         ss << "Edge" << edge->getProjIndex();
         //bool accepted =
         static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
@@ -376,8 +375,6 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
                                      ,0));
 
     } else if(vert) {
-              // Find the parent view that this edges is contained within
-              //WF: sb Vertex??
         QGraphicsItem*parent = vert->parentItem();
         if(!parent)
             return;
@@ -388,7 +385,7 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
 
         TechDraw::DrawView *viewObj = viewItem->getViewObject();
         std::stringstream ss;
-        ss << "Edge" << vert->getReference();   //WF: sb Vertex??
+        ss << "Vertex" << vert->getProjIndex();
         //bool accepted =
         static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
                                      ,viewObj->getNameInDocument()
@@ -397,8 +394,6 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
                                      ,pos.y()
                                      ,0));
     } else {
-            // Check if an edge was preselected
-            //WF: sb View?
         QGIView *view = qobject_cast<QGIView *>(obj);
 
         if(!view)

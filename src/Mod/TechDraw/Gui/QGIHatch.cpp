@@ -85,23 +85,6 @@ QGIHatch::~QGIHatch()
 {
 }
 
-#if 0
-void QGIHatch::draw()
-{
-    const std::vector<App::DocumentObject*> &objects = hatch->Edges.getValues();
-    //const std::vector<std::string> &SubNames         = hatch->Edges.getSubValues();
-    //const TechDraw::DrawViewPart *refObj = static_cast<const TechDraw::DrawViewPart*>(objects[0]);
-
-    //for edgeName in SubNames
-    //    iEdge = _getIndexFromName(edgeName)    //from CommandCreateDims.cpp
-    //    geom = refObj->getEdgeGeomByRef(iEdge)
-    //    subPath = drawPainterPath(geom)        //from qgiViewPart
-    //    m_path.addPath(subPath)
-    //m_path = m_path.simplified()               //????
-    //m_face->setPath(m_path);
-}
-#endif
-
 QVariant QGIHatch::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemSelectedHasChanged && scene()) {

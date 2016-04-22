@@ -70,9 +70,6 @@ Q_SIGNALS:
     void dirty();
 
 protected:
-    QGIEdge * findRefEdge(int i);
-    QGIVertex * findRefVertex(int idx);
-
     /// Helper for pathArc()
     /*!
      * x_axis_rotation is in radian
