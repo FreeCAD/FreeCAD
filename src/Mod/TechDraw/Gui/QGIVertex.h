@@ -48,8 +48,6 @@ public:
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
-    int getReference() const { return reference; }
-    void setReference(int ref) {reference = ref; }
     int getProjIndex() const { return projIndex; }
 
     float getRadius() { return m_radius; }
@@ -68,7 +66,6 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     int projIndex;                                                     //index of vertex in Projection. must exist.
-    int reference;                                                     //index of vertex in DrawView Source. may not exist(-1).
 
     bool isHighlighted;
 

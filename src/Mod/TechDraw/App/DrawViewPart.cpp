@@ -281,140 +281,14 @@ const std::vector<TechDrawGeometry::Vertex *> & DrawViewPart::getVertexGeometry(
     return geometryObject->getVertexGeometry();
 }
 
-const std::vector<int> & DrawViewPart::getVertexReferences() const
-{
-    return geometryObject->getVertexRefs();
-}
-
 const std::vector<TechDrawGeometry::Face *> & DrawViewPart::getFaceGeometry() const
 {
     return geometryObject->getFaceGeometry();
 }
 
-const std::vector<int> & DrawViewPart::getFaceReferences() const
-{
-    return geometryObject->getFaceRefs();
-}
-
 const std::vector<TechDrawGeometry::BaseGeom  *> & DrawViewPart::getEdgeGeometry() const
 {
     return geometryObject->getEdgeGeometry();
-}
-
-const std::vector<int> & DrawViewPart::getEdgeReferences() const
-{
-    return geometryObject->getEdgeRefs();
-}
-
-//! project Source Edge(idx) to 2D BaseGeom
-TechDrawGeometry::BaseGeom *DrawViewPart::getCompleteEdge(int idx) const
-{
-   //NOTE: idx is in fact a Reference to an Edge in Source
-   //returns projection of ref'd Edge as BaseGeom. Why not just use existing BaseGeom(idx)?
-    App::DocumentObject* link = Source.getValue();
-
-    if (!link || !link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return 0;
-
-    const Part::TopoShape &topoShape = static_cast<Part::Feature*>(link)->Shape.getShape();
-    std::stringstream str;
-    str << "Edge" << idx;
-    TopoDS_Shape shape = topoShape.getSubShape(str.str().c_str());
-
-
-    const TopoDS_Shape &support = static_cast<Part::Feature*>(link)->Shape.getValue();
-    //TODO: make sure prjShape gets deleted
-
-    TechDrawGeometry::BaseGeom* prjShape = 0;
-    try {
-        prjShape = geometryObject->projectEdge(shape, support, Direction.getValue(), getValidXDir());
-    }
-    catch(Standard_Failure) {
-        Base::Console().Error("getCompleteEdge - OCC Error - could not project Edge: %d\n",idx);
-        return 0;
-    }
-    catch (exception& e) {
-        Base::Console().Error("getCompleteEdge - unknown exception on Edge: %d - %s\n",idx,e.what());
-        return 0;
-    }
-    catch(...) {
-        Base::Console().Error("getCompleteEdge - unknown error on Edge: %d\n",idx);
-        return 0;
-    }
-
-    return prjShape;
-}
-
-//! project Source Vertex(idx) to 2D geometry
-TechDrawGeometry::Vertex * DrawViewPart::getVertex(int idx) const
-{
-   //## Get the Part Link ##/
-    App::DocumentObject* link = Source.getValue();
-
-    if (!link || !link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return 0;
-
-    const Part::TopoShape &topoShape = static_cast<Part::Feature*>(link)->Shape.getShape();
-    std::stringstream str;
-    str << "Vertex" << idx;
-    TopoDS_Shape shape = topoShape.getSubShape(str.str().c_str());
-
-    const TopoDS_Shape &support = static_cast<Part::Feature*>(link)->Shape.getValue();
-    //TODO: Make sure prjShape gets deleted
-    TechDrawGeometry::Vertex *prjShape = geometryObject->projectVertex(shape, support, Direction.getValue(), getValidXDir());
-    //Base::Console().Log("vert %f, %f \n", prjShape->pnt.fX,  prjShape->pnt.fY);
-    return prjShape;
-}
-
-TechDrawGeometry::Vertex* DrawViewPart::getVertexGeomByRef(int ref) const
-{
-    const std::vector<TechDrawGeometry::Vertex *> &verts = getVertexGeometry();
-    if (verts.empty()) {
-        Base::Console().Log("INFO - getVertexGeomByRef(%d) - no Vertex Geometry. Probably restoring?\n",ref);
-        return NULL;
-    }
-    const std::vector<int> &vertRefs                    = getVertexReferences();
-    std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-    bool found = false;
-    for(int i = 0 ; vert != verts.end(); ++vert, i++) {
-        if (vertRefs[i] == ref) {
-            found = true;
-            break;
-        }
-    }
-    if (found) {
-        return (*vert);
-    } else {
-        std::stringstream error;
-        error << "getVertexGeomByRef: no vertex geometry for ref: " << ref;
-        throw Base::Exception(error.str().c_str());
-    }
-}
-
-//! returns existing BaseGeom of Edge with 3D Reference = ref
-TechDrawGeometry::BaseGeom* DrawViewPart::getEdgeGeomByRef(int ref) const
-{
-    const std::vector<TechDrawGeometry::BaseGeom *> &geoms = getEdgeGeometry();
-    if (geoms.empty()) {
-        Base::Console().Log("INFO - getEdgeGeomByRef(%d) - no Edge Geometry. Probably restoring?\n",ref);
-        return NULL;
-    }
-    const std::vector<int> &refs = getEdgeReferences();
-    std::vector<TechDrawGeometry::BaseGeom*>::const_iterator it = geoms.begin();
-    bool found = false;
-    for(int i = 0 ; it != geoms.end(); ++it, i++) {
-        if (refs[i] == ref) {
-            found = true;
-            break;
-        }
-    }
-    if (found) {
-        return (*it);
-    } else {
-        std::stringstream error;
-        error << "getEdgeGeomByRef: no edge geometry for ref: " << ref;
-        throw Base::Exception(error.str().c_str());
-    }
 }
 
 //! returns existing BaseGeom of 2D Edge(idx)
@@ -437,26 +311,6 @@ TechDrawGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
         return NULL;
     }
     return geoms[idx];
-}
-
-int DrawViewPart::getEdgeRefByIndex(int idx) const
-{
-    const std::vector<int> &refs = getEdgeReferences();
-    if (refs.empty()) {
-        Base::Console().Log("INFO - getEdgeRefByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
-        return -1;
-    }
-    return refs[idx];
-}
-
-int DrawViewPart::getVertexRefByIndex(int idx) const
-{
-    const std::vector<int> &refs = getVertexReferences();
-    if (refs.empty()) {
-        Base::Console().Log("INFO - getVertexRefByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
-        return -1;
-    }
-    return refs[idx];
 }
 
 Base::BoundBox3d DrawViewPart::getBoundingBox() const
@@ -545,17 +399,6 @@ Base::Vector3d DrawViewPart::getValidXDir() const
         xDir = Base::Vector3d(1.0,0.0,0.0);
     }
     return xDir;
-}
-
-void DrawViewPart::dumpVertexRefs(char* text) const
-{
-    Base::Console().Message("DUMP - %s\n",text);
-    const std::vector<int> &refs = getVertexReferences();
-    std::vector<int>::const_iterator it = refs.begin();
-    int i = 0;
-    for( ; it != refs.end(); it++, i++) {
-        Base::Console().Message("DUMP - Vertex: %d ref: %d\n",i,(*it));
-    }
 }
 
 void DrawViewPart::dumpVertexes(const char* text, const TopoDS_Shape& s)

@@ -359,7 +359,6 @@ void QGIViewPart::drawViewPart()
 
     // Draw Edges
     const std::vector<TechDrawGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
-    const std::vector<int> &refs = viewPart->getEdgeReferences();
     std::vector<TechDrawGeometry::BaseGeom *>::const_iterator itEdge = geoms.begin();
     QGIEdge* item;
 
@@ -379,7 +378,6 @@ void QGIViewPart::drawViewPart()
         }
         if (showEdge) {
             item = new QGIEdge(i);
-            item->setReference(refs.at(i));
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);
             item->setPath(drawPainterPath(*itEdge));
@@ -403,11 +401,9 @@ void QGIViewPart::drawViewPart()
 
     // Draw Vertexs:
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
-    const std::vector<int> &vertRefs                    = viewPart->getVertexReferences();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         QGIVertex *item = new QGIVertex(i);
-        item->setReference(vertRefs.at(i));
         addToGroup(item);
         item->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
         item->setRadius(lineWidth * vertexScaleFactor);
@@ -576,28 +572,6 @@ void QGIViewPart::pathArcSegment(QPainterPath &path,
     path.cubicTo(a00 * x1 + a01 * y1, a10 * x1 + a11 * y1,
                  a00 * x2 + a01 * y2, a10 * x2 + a11 * y2,
                  a00 * x3 + a01 * y3, a10 * x3 + a11 * y3);
-}
-
-QGIEdge * QGIViewPart::findRefEdge(int idx)
-{
-    QList<QGraphicsItem*> items = childItems();
-    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
-        QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-        if(edge && edge->getReference() == idx)
-            return edge;
-    }
-    return 0;
-}
-
-QGIVertex * QGIViewPart::findRefVertex(int idx)
-{
-    QList<QGraphicsItem*> items = childItems();
-    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
-        QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
-        if(vert && vert->getReference() == idx)
-            return vert;
-    }
-    return 0;
 }
 
 void QGIViewPart::toggleCache(bool state)

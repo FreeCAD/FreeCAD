@@ -73,27 +73,11 @@ public:
     const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; };
     const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; };
 
-    const std::vector<int> & getVertexRefs() const { return vertexReferences; };
-    const std::vector<int> & getEdgeRefs()   const { return edgeReferences; };
-    const std::vector<int> & getFaceRefs()   const { return faceReferences; };
-
-//begin obs?
-    BaseGeom* projectEdge(const TopoDS_Shape &edge,
-                          const TopoDS_Shape &support,
-                          const Base::Vector3d &direction,
-                          const Base::Vector3d &projXAxis) const;
-    Vertex* projectVertex(const TopoDS_Shape &vert,
-                          const TopoDS_Shape &support,
-                          const Base::Vector3d &direction,
-                          const Base::Vector3d &projXAxis) const;
-//end obs?
-
     void projectShape(const TopoDS_Shape &input,
                                  const gp_Pnt& inputCenter,
                                  const Base::Vector3d &direction,
                                  const Base::Vector3d &xAxis);
     void extractGeometry(edgeClass category, bool visible);
-    void update3DRefs();
     void addFaceGeom(Face * f);
     void clearFaceGeom();
 
@@ -139,11 +123,6 @@ protected:
     std::vector<Face *> faceGeom;
 
     bool findVertex(Base::Vector2D v);
-
-    // indexes to geometry in Source object
-    std::vector<int> vertexReferences;
-    std::vector<int> edgeReferences;
-    std::vector<int> faceReferences;
 
     double Tolerance;
     double Scale;
