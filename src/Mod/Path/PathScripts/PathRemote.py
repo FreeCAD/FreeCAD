@@ -1,28 +1,29 @@
 # -*- coding: utf-8 -*-
 
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2016 sliptonic  <shopinthewoods@gmail.com>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2016 sliptonic  <shopinthewoods@gmail.com>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-import FreeCAD,Path
+import FreeCAD
+import Path
 from PathScripts import PathUtils
 import urllib2
 import json
@@ -31,12 +32,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
-    from pivy import coin
 else:
-    def translate(ctxt,txt):
+    def translate(ctxt, txt):
         return txt
 
-__title__="Path Remote Operation"
+__title__ = "Path Remote Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 
@@ -45,6 +45,7 @@ __url__ = "http://www.freecadweb.org"
 # Qt tanslation handling
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
@@ -54,39 +55,39 @@ except AttributeError:
 
 class ObjectRemote:
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
-        obj.addProperty("App::PropertyLinkSubList","Base","Path",translate("Parent Object(s)","The base geometry of this toolpath"))
-        obj.addProperty("App::PropertyBool","Active","Path",translate("Active","Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString","Comment","Path",translate("PathProject","An optional comment for this profile"))
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", translate("Parent Object(s)", "The base geometry of this toolpath"))
+        obj.addProperty("App::PropertyBool", "Active", "Path", translate("Active", "Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString", "Comment", "Path", translate("PathProject", "An optional comment for this profile"))
 
-        obj.addProperty("App::PropertyString","URL", "API", translate("RemotePath", "The Base URL of the remote path service"))
-        obj.addProperty("App::PropertyStringList", "proplist","Path",translate("Path","list of remote properties"))
-        obj.setEditorMode('proplist',2) #make this hidden
+        obj.addProperty("App::PropertyString", "URL", "API", translate("RemotePath", "The Base URL of the remote path service"))
+        obj.addProperty("App::PropertyStringList", "proplist", "Path", translate("Path", "list of remote properties"))
+        obj.setEditorMode('proplist', 2)  # make this hidden
 
-        #Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("PathProfile","The tool number in use"))
+        # Tool Properties
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("PathProfile", "The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 0)
-        obj.setEditorMode('ToolNumber',1) #make this read only
+        obj.setEditorMode('ToolNumber', 1)  # make this read only
 
-        #Depth Properties
-        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Depth", translate("PathProject","The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyFloat", "SafeHeight", "Depth", translate("PathProject","Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Step", translate("PathProject","Incremental Step Down of Tool"))
+        # Depth Properties
+        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Depth", translate("PathProject", "The height needed to clear clamps and obstructions"))
+        obj.addProperty("App::PropertyFloat", "SafeHeight", "Depth", translate("PathProject", "Rapid Safety Height between locations."))
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Step", translate("PathProject", "Incremental Step Down of Tool"))
         obj.StepDown = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyFloat", "StartDepth", "Depth", translate("PathProject","Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyFloat", "FinalDepth", "Depth", translate("PathProject","Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyFloat", "FinishDepth", "Depth", translate("PathProject","Maximum material removed on final pass."))
+        obj.addProperty("App::PropertyFloat", "StartDepth", "Depth", translate("PathProject", "Starting Depth of Tool- first cut depth in Z"))
+        obj.addProperty("App::PropertyFloat", "FinalDepth", "Depth", translate("PathProject", "Final Depth of Tool- lowest value in Z"))
+        obj.addProperty("App::PropertyFloat", "FinishDepth", "Depth", translate("PathProject", "Maximum material removed on final pass."))
 
         obj.Proxy = self
 
     def addbaseobject(self, obj, ss, sub=""):
         baselist = obj.Base
-        if len(baselist) == 0: #When adding the first base object, guess at heights
+        if len(baselist) == 0:  # When adding the first base object, guess at heights
             try:
-                bb = ss.Shape.BoundBox  #parent boundbox
+                bb = ss.Shape.BoundBox  # parent boundbox
                 subobj = ss.Shape.getElement(sub)
-                fbb = subobj.BoundBox #feature boundbox
+                fbb = subobj.BoundBox  # feature boundbox
                 obj.StartDepth = bb.ZMax
                 obj.ClearanceHeight = bb.ZMax + 5.0
                 obj.SafeHeight = bb.ZMax + 3.0
@@ -102,16 +103,16 @@ class ObjectRemote:
 
         item = (ss, sub)
         if item in baselist:
-            FreeCAD.Console.PrintWarning("this object already in the list"+ "\n")
+            FreeCAD.Console.PrintWarning("this object already in the list" + "\n")
         else:
-            baselist.append (item)
+            baselist.append(item)
         obj.Base = baselist
         self.execute(obj)
 
     def __getstate__(self):
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         return None
 
     def onChanged(self, obj, prop):
@@ -143,54 +144,58 @@ class ObjectRemote:
             pl = obj.proplist
             pl = []
             for prop in properties:
-                obj.addProperty(prop['type'], prop['propertyname'], "Remote", prop['description'])
+                obj.addProperty(
+                        prop['type'],
+                        prop['propertyname'],
+                        "Remote",
+                        prop['description'])
                 pl.append(prop['propertyname'])
                 print "adding: " + str(prop)
             obj.proplist = pl
 
-    def execute(self,obj):
+    def execute(self, obj):
         output = ""
 
         toolLoad = PathUtils.getLastToolLoad(obj)
-        if toolLoad == None:
+        if toolLoad is None:
             self.vertFeed = 100
             self.horizFeed = 100
             self.radius = 0.25
-            obj.ToolNumber= 0
+            obj.ToolNumber = 0
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             self.radius = tool.Diameter/2
-            obj.ToolNumber= toolLoad.ToolNumber
+            obj.ToolNumber = toolLoad.ToolNumber
 
         output += "(remote gcode goes here)"
         path = Path.Path(output)
         obj.Path = path
 
+
 class ViewProviderRemote:
-    def __init__(self,obj): #mandatory
-#        obj.addProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
+    def __init__(self, obj):
         obj.Proxy = self
 
-    def __getstate__(self): #mandatory
+    def __getstate__(self):
         return None
 
-    def __setstate__(self,state): #mandatory
+    def __setstate__(self, state):
         return None
 
-    def getIcon(self): #optional
+    def getIcon(self):
         return ":/icons/Path-Remote.svg"
 
-    def onChanged(self,obj,prop): #optional
+    def onChanged(self, obj, prop):
         # this is executed when a property of the VIEW PROVIDER changes
         pass
 
-    def updateData(self,obj,prop): #optional
+    def updateData(self, obj, prop):  # optional
         # this is executed when a property of the APP OBJECT changes
         pass
 
-    def setEdit(self,vobj,mode=0):
+    def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         taskd = TaskPanel()
         taskd.obj = vobj.Object
@@ -198,37 +203,37 @@ class ViewProviderRemote:
         taskd.setupUi()
         return True
 
-    def unsetEdit(self,vobj,mode): #optional
+    def unsetEdit(self, vobj, mode):
         # this is executed when the user cancels or terminates edit mode
         pass
 
+
 class _RefreshRemotePath:
     def GetResources(self):
-        return {'Pixmap'  : 'Path-Refresh',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Remote","Refresh Remote Path Data"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Remote","Refresh Remote Path Data")}
+        return {'Pixmap': 'Path-Refresh',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Remote", "Refresh Remote Path Data"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Remote", "Refresh Remote Path Data")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        return FreeCAD.ActiveDocument is not None
 
     def refresh(self):
-        obj=FreeCADGui.Selection.getSelection()[0]
+        obj = FreeCADGui.Selection.getSelection()[0]
         values = {}
 
         for i in obj.PropertiesList:
             if obj.getGroupOfProperty(i) in ["Remote"]:
-                values.update({i : obj.getPropertyByName(i)})
+                values.update({i: obj.getPropertyByName(i)})
 
             if obj.getGroupOfProperty(i) in ["Depth"]:
                 print str(i)
-                values.update({i : obj.getPropertyByName(i)})
+                values.update({i: obj.getPropertyByName(i)})
 
             if obj.getGroupOfProperty(i) in ["Step"]:
-                values.update({i : obj.getPropertyByName(i)})
-
+                values.update({i: obj.getPropertyByName(i)})
 
             if obj.getGroupOfProperty(i) in ["Tool"]:
-                tool = PathUtils.getTool(obj,obj.ToolNumber)
+                tool = PathUtils.getTool(obj, obj.ToolNumber)
                 if tool:
                     tradius = tool.Diameter/2
                     tlength = tool.LengthOffset
@@ -238,10 +243,9 @@ class _RefreshRemotePath:
                     tlength = 1
                     ttype = "undefined"
 
-                values.update({"tool_diameter" : tradius})
-                values.update({"tool_length" : tlength})
-                values.update({"tool_type" : ttype})
-
+                values.update({"tool_diameter": tradius})
+                values.update({"tool_length": tlength})
+                values.update({"tool_type": ttype})
 
         payload = json.dumps(values)
 
@@ -256,7 +260,6 @@ class _RefreshRemotePath:
             print "service not defined or not responding"
             return
 
-
         path = data['path']
         output = ""
         for command in path:
@@ -264,33 +267,31 @@ class _RefreshRemotePath:
         path = Path.Path(output)
         obj.Path = path
 
-
     def Activated(self):
         self.refresh()
 
+
 class CommandPathRemote:
 
-
     def GetResources(self):
-        return {'Pixmap'  : 'Path-Remote',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Remote","Remote"),
+        return {'Pixmap': 'Path-Remote',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Remote", "Remote"),
                 'Accel': "P, R",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Remote","Request a Path from a remote cloud service")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Remote", "Request a Path from a remote cloud service")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
         ztop = 10.0
         zbottom = 0.0
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Remote","Create remote path operation"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Remote", "Create remote path operation"))
         FreeCADGui.addModule("PathScripts.PathRemote")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Remote")')
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Remote")')
         FreeCADGui.doCommand('PathScripts.PathRemote.ObjectRemote(obj)')
         FreeCADGui.doCommand('obj.Active = True')
         FreeCADGui.doCommand('PathScripts.PathRemote.ViewProviderRemote(obj.ViewObject)')
-        #FreeCADGui.doCommand('obj.Base = (FreeCAD.ActiveDocument.'+selection[0].ObjectName+',[])')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
         FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop + 2))
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop))
@@ -304,9 +305,9 @@ class CommandPathRemote:
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
 
+
 class TaskPanel:
     def __init__(self):
-        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/RemoteEdit.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/RemoteEdit.ui")
 
     def accept(self):
@@ -327,41 +328,31 @@ class TaskPanel:
         self.obj.URL = self.form.remoteURL.text()
         print "getRemote:320"
 
-        #self.form.label_a = QtGui.QLabel(self.form.remoteProperties)
-        #self.form.label_a.setObjectName("label_a")
-        #self.form.formLayoutREMOTE.setWidget(0, QtGui.QFormLayout.LabelRole, self.form.label_a)
-        #self.form.sampleLE = QtGui.QLineEdit(self.form.remoteProperties)
-        #self.form.sampleLE.setObjectName("sampleLE")
-        #self.form.formLayoutREMOTE.setWidget(0, QtGui.QFormLayout.FieldRole, self.form.sampleLE)
-        ##self.formLayout_2.setWidget(1, QtGui.QFormLayout.SpanningRole, self.remoteProperties)
-
-
     def getFields(self):
         if self.obj:
-            if hasattr(self.obj,"StartDepth"):
+            if hasattr(self.obj, "StartDepth"):
                 self.obj.StartDepth = float(self.form.startDepth.text())
-            if hasattr(self.obj,"FinalDepth"):
+            if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = float(self.form.finalDepth.text())
-            if hasattr(self.obj,"SafeHeight"):
+            if hasattr(self.obj, "SafeHeight"):
                 self.obj.SafeHeight = float(self.form.safeHeight.text())
-            if hasattr(self.obj,"ClearanceHeight"):
+            if hasattr(self.obj, "ClearanceHeight"):
                 self.obj.ClearanceHeight = float(self.form.clearanceHeight.text())
-            if hasattr(self.obj,"StepDown"):
+            if hasattr(self.obj, "StepDown"):
                 self.obj.StepDown = float(self.form.stepDown.value())
 
         self.obj.Proxy.execute(self.obj)
 
     def open(self):
-        self.s =SelObserver()
-        # install the function mode resident
+        self.s = SelObserver()
         FreeCADGui.Selection.addObserver(self.s)
 
     def addBase(self):
-         # check that the selection contains exactly what we want
+        # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
 
         if not len(selection) >= 1:
-            FreeCAD.Console.PrintError(translate("PathProject","Please select at least one suitable object\n"))
+            FreeCAD.Console.PrintError(translate("PathProject", "Please select at least one suitable object\n"))
             return
         for s in selection:
             if s.HasSubObjects:
@@ -370,7 +361,7 @@ class TaskPanel:
             else:
                 self.obj.Proxy.addbaseobject(self.obj, s.Object)
 
-        self.setupUi() #defaults may have changed.  Reload.
+        self.setupUi()  # defaults may have changed.  Reload.
         self.form.baseList.clear()
         for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
@@ -381,7 +372,7 @@ class TaskPanel:
             newlist = []
             for i in self.obj.Base:
                 if not i[0].Name == d.text():
-                    newlist.append (i)
+                    newlist.append(i)
             self.obj.Base = newlist
         self.form.baseList.takeItem(self.form.baseList.row(d))
         self.obj.Proxy.execute(self.obj)
@@ -398,10 +389,10 @@ class TaskPanel:
     def reorderBase(self):
         newlist = []
         for i in range(self.form.baseList.count()):
-	    s = self.form.baseList.item(i).text()
+            s = self.form.baseList.item(i).text()
             obj = FreeCAD.ActiveDocument.getObject(s)
             newlist.append(obj)
-        self.obj.Base=newlist
+        self.obj.Base = newlist
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
@@ -411,15 +402,14 @@ class TaskPanel:
     def changeURL(self):
         from urlparse import urlparse
         t = self.form.remoteURL.text()
-        if t == '' and self.obj.URL != '': #if the url was deleted, cleanup.
+        if t == '' and self.obj.URL != '':  # if the url was deleted, cleanup.
             self.obj.URL = ''
 
-        if urlparse(t).scheme != '' and t != self.obj.URL: #validate new url.
+        if urlparse(t).scheme != '' and t != self.obj.URL:  # validate new url.
             self.obj.URL = t
-        #next make sure the property fields reflect the current attached service
+        # next make sure the property fields reflect the current attached service
         for p in self.obj.proplist:
             print p
-
 
     def setupUi(self):
         self.form.startDepth.setText(str(self.obj.StartDepth))
@@ -431,7 +421,7 @@ class TaskPanel:
         for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name)
 
-        #Connect Signals and Slots
+        # Connect Signals and Slots
         self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.safeHeight.editingFinished.connect(self.getFields)
@@ -443,24 +433,23 @@ class TaskPanel:
         self.form.reorderBase.clicked.connect(self.reorderBase)
 
         self.form.remoteURL.editingFinished.connect(self.changeURL)
-        #self.form.remoteURL.returnPressed.connect(self.testOne)
+
 
 class SelObserver:
     def __init__(self):
         import PathScripts.PathSelection as PST
-        #PST.surfaceselect()
 
     def __del__(self):
         import PathScripts.PathSelection as PST
         PST.clear()
 
-    def addSelection(self,doc,obj,sub,pnt):               # Selection object
-        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj +')')
+    def addSelection(self, doc, obj, sub, pnt):
+        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
         FreeCADGui.updateGui()
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Remote',CommandPathRemote())
-    FreeCADGui.addCommand('Refresh_Path',_RefreshRemotePath())
+    FreeCADGui.addCommand('Path_Remote', CommandPathRemote())
+    FreeCADGui.addCommand('Refresh_Path', _RefreshRemotePath())
 
 FreeCAD.Console.PrintLog("Loading PathRemote... done\n")

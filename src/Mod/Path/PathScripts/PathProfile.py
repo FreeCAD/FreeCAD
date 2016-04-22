@@ -142,7 +142,7 @@ class ObjectProfile:
 
         item = (ss, sub)
         if item in baselist:
-            FreeCAD.Console.PrintWarning("this object already in the list" + "\n")
+            FreeCAD.Console.PrintWarning(translate("Path", "this object already in the list" + "\n"))
         else:
             baselist.append(item)
         obj.Base = baselist
@@ -247,6 +247,7 @@ print "y - " + str(point.y)
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
+            FreeCAD.Console.PrintWarning(translate("Path", "No tool found.  Using default values for now." + "\n"))
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
@@ -443,6 +444,9 @@ class TaskPanel:
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ProfileEdit.ui")
         self.updating = False
+
+    def __del__(self):
+        FreeCADGui.Selection.removeObserver(self.s)
 
     def accept(self):
         self.getFields()
@@ -725,7 +729,7 @@ class SelObserver:
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
+        #FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
         FreeCADGui.updateGui()
 
 
