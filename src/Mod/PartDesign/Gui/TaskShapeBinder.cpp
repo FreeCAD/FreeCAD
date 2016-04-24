@@ -82,7 +82,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj, QWid
     Part::Feature* obj = nullptr;
     std::vector<std::string> subs;
             
-    PartDesign::ShapeBinder::getFilterdReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);            
+    PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);            
      
     if(obj)
         ui->baseEdit->setText(QString::fromUtf8(obj->getNameInDocument()));
@@ -229,7 +229,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
         Part::Feature* obj = nullptr;
         std::vector<std::string> refs;
                 
-        PartDesign::ShapeBinder::getFilterdReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, refs);            
+        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, refs);
     
         //if we already have a object we need to ensure th new selected subref belongs to it
         if(obj && strcmp(msg.pObjectName, obj->getNameInDocument()) != 0)
@@ -248,14 +248,14 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
                     refs.erase(f);
                 else
                     return false;
-            }        
+            }
         }
         else {
             refs.clear();
         }
         
-        static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support.setValue(obj, refs);            
-         
+        static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support.setValue(obj, refs);
+
         return true;
     }
 
