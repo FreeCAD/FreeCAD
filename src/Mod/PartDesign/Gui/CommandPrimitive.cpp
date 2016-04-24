@@ -33,6 +33,7 @@
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Action.h>
+#include <Gui/Control.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
@@ -226,10 +227,7 @@ void CmdPrimtiveCompAdditive::languageChange()
 
 bool CmdPrimtiveCompAdditive::isActive(void)
 {
-    if (getActiveGuiDocument())
-        return true;
-    else
-        return false;
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive);
@@ -426,10 +424,7 @@ void CmdPrimtiveCompSubtractive::languageChange()
 
 bool CmdPrimtiveCompSubtractive::isActive(void)
 {
-    if (getActiveGuiDocument())
-        return true;
-    else
-        return false;
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 //===========================================================================
