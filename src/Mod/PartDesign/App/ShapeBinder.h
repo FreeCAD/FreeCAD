@@ -49,7 +49,7 @@ public:
 
     App::PropertyLinkSubList    Support;
 
-    static void getFilterdReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
+    static void getFilteredReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
     static Part::TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
 
     const char* getViewProviderName(void) const {
