@@ -1193,7 +1193,7 @@ bool CDxfRead::ReadPolyLine()
     bool closed = false;
     int flags;
     bool first_vertex_section_found = false;
-    double first_vertex[3];
+    double first_vertex[3] = {0,0,0};
     bool bulge_found;
     double bulge;
 

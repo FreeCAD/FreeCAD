@@ -109,6 +109,7 @@ TaskDlgPathCompound::TaskDlgPathCompound(PathGui::ViewProviderPathCompound *obj)
     : TaskDialog(),CompoundView(obj)
 {
     assert(CompoundView);
+    (void)CompoundView; // fix clang warning
     parameter  = new TaskWidgetPathCompound(CompoundView);
     Content.push_back(parameter);
 }

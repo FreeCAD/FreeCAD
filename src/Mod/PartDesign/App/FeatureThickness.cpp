@@ -36,10 +36,6 @@ using namespace PartDesign;
 const char* PartDesign::Thickness::ModeEnums[] = {"Skin","Pipe", "RectoVerso",NULL};
 const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection",NULL};
 
-namespace PartDesign {
-    const App::PropertyQuantityConstraint::Constraints quantityRange  = {0.0,FLT_MAX,0.1};
-}
-
 PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 
 Thickness::Thickness()

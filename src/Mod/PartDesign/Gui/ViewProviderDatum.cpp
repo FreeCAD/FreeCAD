@@ -172,7 +172,7 @@ void ViewProviderDatum::setDisplayMode(const char* ModeName)
 std::string ViewProviderDatum::getElement(const SoDetail* detail) const
 {
     if (detail) {
-        int element;
+        int element = 1;
 
         if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
