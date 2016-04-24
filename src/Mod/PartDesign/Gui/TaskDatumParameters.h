@@ -89,6 +89,8 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
+    void resetViewMode();
+    void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI(std::string message = std::string(), bool isWarning = false);
 
@@ -117,6 +119,8 @@ private:
     std::vector<Attacher::eMapMode> modesInList; //this list is synchronous to what is populated into listOfModes widget.
     bool completed;
 
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectDelObject;
 };
 
 /// simulation dialog for the TaskView
