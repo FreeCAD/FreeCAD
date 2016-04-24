@@ -58,7 +58,7 @@ public:
     ~TaskBoxPrimitives();
 
     void setPrimitive(QString name);
-    
+
 public Q_SLOTS:
     void onBoxLengthChanged(double);
     void onBoxWidthChanged(double);
@@ -120,8 +120,8 @@ protected:
 
     virtual bool accept();
     virtual bool reject();
-    
-private:  
+
+private:
     s::connection connection;
     TaskBoxPrimitives*   primitive;
     TaskDatumParameters* parameter;

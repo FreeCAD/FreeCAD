@@ -29,7 +29,7 @@
 # include <QTextStream>
 # include <QMessageBox>
 # include <Precision.hxx>
-#include <boost/bind/bind.hpp>
+# include <boost/bind/bind.hpp>
 #endif
 
 #include "TaskPrimitiveParameters.h"
@@ -624,10 +624,10 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
       
     parameter  = new TaskDatumParameters(vp);
     Content.push_back(parameter);
-    
+
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
-    
+
     //make sure we track changes from the coordinate system to the primitive position
     auto bnd = boost::bind(&TaskPrimitiveParameters::objectChanged, this, _1, _2);
     connection = vp_prm->getObject()->getDocument()->signalChangedObject.connect(bnd);
@@ -656,25 +656,27 @@ bool TaskPrimitiveParameters::accept()
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     vp->setVisible(cs_visibility);
-      
-    connection.disconnect();    
+
+    connection.disconnect();
+
     return true;
 }
 
-bool TaskPrimitiveParameters::reject() {
-    
+bool TaskPrimitiveParameters::reject()
+{
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    
+
     //if we did not delete the document object we  need to set the visibilities right
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
-            Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
-    
-    if(vp)
+        Gui::Application::Instance->activeDocument()->getViewProvider(cs));
+
+    if (vp)
         vp->setVisible(cs_visibility);
-       
+
     connection.disconnect();
+
     return true;
 }
 

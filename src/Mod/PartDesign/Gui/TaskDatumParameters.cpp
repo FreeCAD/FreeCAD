@@ -29,6 +29,7 @@
 # include <QTextStream>
 # include <QMessageBox>
 # include <Precision.hxx>
+# include <boost/bind.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -214,8 +215,8 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     updateListOfModes(eMapMode(pcDatum->MapMode.getValue()));
 
     //temporary show coordinate systems for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( DatumView->getObject() );
-    if(body) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf(DatumView->getObject());
+    if (body) {
         try {
             App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
@@ -225,14 +226,52 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
+
     if (pcDatum->Support.getSize() == 0)
         autoNext = true;
     else
         autoNext = false;
-    
+
     DatumView->setPickable(false);
+
+    // connect object deletion with slot
+    auto bnd = boost::bind(&TaskDatumParameters::objectDeleted, this, _1);
+    Gui::Document* document = Gui::Application::Instance->getDocument(DatumView->getObject()->getDocument());
+    connectDelObject = document->signalDeletedObject.connect(bnd);
 }
 
+TaskDatumParameters::~TaskDatumParameters()
+{
+    connectDelObject.disconnect();
+    if (DatumView)
+        resetViewMode();
+    delete ui;
+}
+
+void TaskDatumParameters::resetViewMode()
+{
+    //end temporary view mode of coordinate system
+    PartDesign::Body * body = PartDesign::Body::findBodyOf(DatumView->getObject());
+    if (body) {
+        try {
+            App::Origin *origin = body->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        }
+        catch (const Base::Exception &ex) {
+            Base::Console().Error("%s\n", ex.what());
+        }
+    }
+
+    DatumView->setPickable(true);
+}
+
+void TaskDatumParameters::objectDeleted(const Gui::ViewProviderDocumentObject& view)
+{
+    if (DatumView == &view)
+        DatumView = nullptr;
+}
 
 const QString makeHintText(std::set<eRefType> hint)
 {
@@ -735,26 +774,6 @@ double TaskDatumParameters::getAngle() const
 bool   TaskDatumParameters::getFlip() const
 {
     return ui->checkBoxFlip->isChecked();
-}
-
-TaskDatumParameters::~TaskDatumParameters()
-{
-    //end temporary view mode of coordinate system
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( DatumView->getObject() );
-    if(body) {
-        try {
-            App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->resetTemporaryVisibility();
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
-        }
-    }
-
-    DatumView->setPickable(true);
-    
-    delete ui;
 }
 
 void TaskDatumParameters::changeEvent(QEvent *e)
