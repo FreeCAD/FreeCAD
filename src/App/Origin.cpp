@@ -117,10 +117,12 @@ App::DocumentObjectExecReturn *Origin::execute(void) {
         for (const char* role: AxisRoles) {
             App::Line *axis = getAxis (role);
             assert(axis);
+            (void)axis;
         }
         for (const char* role: PlaneRoles) {
             App::Plane *plane = getPlane (role);
             assert(plane);
+            (void)plane;
         }
     } catch (const Base::Exception &ex) {
         setError ();

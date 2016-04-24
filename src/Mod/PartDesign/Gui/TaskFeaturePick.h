@@ -67,11 +67,10 @@ public:
 protected Q_SLOTS:
     void onUpdate(bool);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    
+
 private:
     Ui_TaskFeaturePick* ui;
     QWidget* proxy;
-    SoSwitch* featureswitch;
     std::vector<Gui::ViewProviderOrigin*> origins;
 
     std::vector<QString> features;

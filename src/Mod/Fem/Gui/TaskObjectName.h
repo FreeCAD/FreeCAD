@@ -39,7 +39,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace FemGui { 
+namespace FemGui {
 
 
 
@@ -56,7 +56,7 @@ public:
 
 private Q_SLOTS:
     void TextChanged ( const QString &);
- 
+
 protected:
     App::DocumentObject *pcObject;
 

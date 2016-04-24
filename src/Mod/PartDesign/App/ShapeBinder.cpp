@@ -64,7 +64,7 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
         Part::Feature* obj = nullptr;
         std::vector<std::string> subs;
 
-        ShapeBinder::getFilterdReferences(&Support, obj, subs);
+        ShapeBinder::getFilteredReferences(&Support, obj, subs);
         //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
         if(obj) {
             Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
     return Part::Feature::execute();
 }
 
-void ShapeBinder::getFilterdReferences(App::PropertyLinkSubList* prop, Part::Feature*& obj, std::vector< std::string >& subobjects) {
+void ShapeBinder::getFilteredReferences(App::PropertyLinkSubList* prop, Part::Feature*& obj, std::vector< std::string >& subobjects) {
 
     obj = nullptr;
     subobjects.clear();

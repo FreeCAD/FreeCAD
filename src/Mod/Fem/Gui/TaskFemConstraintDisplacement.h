@@ -73,7 +73,7 @@ public:
 private Q_SLOTS:
     void onReferenceDeleted(void);
     void x_changed(double);
-    void y_changed(double); 
+    void y_changed(double);
     void z_changed(double);
     void x_rot(double);
     void y_rot(double);
@@ -90,7 +90,7 @@ private Q_SLOTS:
     void rotfreey(int);
     void rotfixz(int);
     void rotfreez(int);
-    
+
     void addToSelection();
     void removeFromSelection();
     void setSelection(QListWidgetItem* item);
@@ -102,7 +102,7 @@ private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintDisplacement* ui;
-    
+
 };
 
 class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint

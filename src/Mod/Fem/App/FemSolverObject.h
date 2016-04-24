@@ -54,7 +54,7 @@ public:
     App::PropertyString ExternalCaseEditor;
     /// Path to External Result Viewer like Paraview, empty string means using FreeCAD
     App::PropertyString ExternalResultViewer;
-    
+
     /// for FEM: Static, Frequency, etc
     App::PropertyString AnalysisType;
     /// Path of working dir for the solver

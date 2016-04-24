@@ -132,7 +132,7 @@ bool TaskDlgMeshShapeNetgen::reject()
 {
     //FemSetNodesObject->execute();
     //    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //    //if(doc) 
+    //    //if(doc)
     //    //    doc->resetEdit();
     //param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();

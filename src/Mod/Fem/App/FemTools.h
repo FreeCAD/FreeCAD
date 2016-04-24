@@ -55,13 +55,13 @@ public:
      */
     static bool isPlanar(const TopoDS_Face&);
     /*!
-     It is assumed that the edge is 'linear'. 
+     It is assumed that the edge is 'linear'.
      The direction vector of the line is returned.
      @see isLinear
      */
     static gp_XYZ getDirection(const TopoDS_Edge&);
     /*!
-     It is assumed that the face is 'planar'. 
+     It is assumed that the face is 'planar'.
      The normal vector of the plane is returned.
      @see isPlanar
      */

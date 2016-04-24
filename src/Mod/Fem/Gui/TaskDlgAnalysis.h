@@ -51,16 +51,16 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user press the help button 
+    /// is called by the framework if the user press the help button
     virtual void helpRequested();
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply; }
 
 protected:
-    TaskAnalysisInfo             *info; 
-    TaskDriver                   *driver; 
+    TaskAnalysisInfo             *info;
+    TaskDriver                   *driver;
 
     Fem::FemAnalysis              *FemAnalysis;
 };

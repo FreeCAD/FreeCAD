@@ -44,25 +44,25 @@ PROPERTY_SOURCE(Fem::ConstraintDisplacement, Fem::Constraint);
 
 ConstraintDisplacement::ConstraintDisplacement()
 {
-    ADD_PROPERTY(xDisplacement,(0.0)); 
-    ADD_PROPERTY(yDisplacement,(0.0)); 
-    ADD_PROPERTY(zDisplacement,(0.0)); 
-    ADD_PROPERTY(xRotation,(0.0)); 
-    ADD_PROPERTY(yRotation,(0.0)); 
-    ADD_PROPERTY(zRotation,(0.0)); 
-    ADD_PROPERTY(xFree,(1)); 
-    ADD_PROPERTY(yFree,(1)); 
-    ADD_PROPERTY(zFree,(1)); 
-    ADD_PROPERTY(xFix,(0)); 
-    ADD_PROPERTY(yFix,(0)); 
-    ADD_PROPERTY(zFix,(0)); 
-    ADD_PROPERTY(rotxFree,(1)); 
-    ADD_PROPERTY(rotyFree,(1)); 
-    ADD_PROPERTY(rotzFree,(1)); 
+    ADD_PROPERTY(xDisplacement,(0.0));
+    ADD_PROPERTY(yDisplacement,(0.0));
+    ADD_PROPERTY(zDisplacement,(0.0));
+    ADD_PROPERTY(xRotation,(0.0));
+    ADD_PROPERTY(yRotation,(0.0));
+    ADD_PROPERTY(zRotation,(0.0));
+    ADD_PROPERTY(xFree,(1));
+    ADD_PROPERTY(yFree,(1));
+    ADD_PROPERTY(zFree,(1));
+    ADD_PROPERTY(xFix,(0));
+    ADD_PROPERTY(yFix,(0));
+    ADD_PROPERTY(zFix,(0));
+    ADD_PROPERTY(rotxFree,(1));
+    ADD_PROPERTY(rotyFree,(1));
+    ADD_PROPERTY(rotzFree,(1));
     ADD_PROPERTY(rotxFix,(0));
     ADD_PROPERTY(rotyFix,(0));
     ADD_PROPERTY(rotzFix,(0));
-    
+
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Points where symbols are drawn");
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
@@ -78,7 +78,7 @@ App::DocumentObjectExecReturn *ConstraintDisplacement::execute(void)
 
 const char* ConstraintDisplacement::getViewProviderName(void) const
 {
-	return "FemGui::ViewProviderFemConstraintDisplacement";
+    return "FemGui::ViewProviderFemConstraintDisplacement";
 }
 
 void ConstraintDisplacement::onChanged(const App::Property* prop)
