@@ -93,6 +93,8 @@ public:
     void setDocumentObject(const std::string&);
     PyObject* getPyObject();
 
+    QGVPage* getQGVPage(void) {return m_view;};
+
 protected:
     void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
     bool hasQView(App::DocumentObject *obj);

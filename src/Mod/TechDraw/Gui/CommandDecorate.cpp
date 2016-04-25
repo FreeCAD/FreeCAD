@@ -31,6 +31,8 @@
 # include <boost/regex.hpp>
 #endif  //#ifndef _PreComp_
 
+#include <QGraphicsView>
+
 # include <App/DocumentObject.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
@@ -45,15 +47,59 @@
 
 # include <Mod/Part/App/PartFeature.h>
 
-# include <Mod/TechDraw/App/DrawViewPart.h>
-# include <Mod/TechDraw/App/DrawHatch.h>
-# include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/Gui/QGVPage.h>
 
 # include "MDIViewPage.h"
 # include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 using namespace std;
+
+//===========================================================================
+// utility routines
+//===========================================================================
+
+//TODO: code is duplicated in Command and CommandCreateDims
+TechDraw::DrawPage* _findPageCD(Gui::Command* cmd)
+{
+    TechDraw::DrawPage* page = 0;
+    //check if a DrawPage is currently displayed
+    Gui::MainWindow* w = Gui::getMainWindow();
+    Gui::MDIView* mv = w->activeWindow();
+    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+    if (mvp) {
+        QGVPage* qp = mvp->getQGVPage();
+        page = qp->getDrawPage();
+    } else {
+        //DrawPage not displayed, check Selection and/or Document for a DrawPage
+        std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        if (selPages.empty()) {                                            //no page in selection
+            selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+            if (selPages.empty()) {                                        //no page in document
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                     QObject::tr("Create a page first."));
+                return page;
+            } else if (selPages.size() > 1) {                              //multiple pages in document
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                                     QObject::tr("Can not determine correct page."));
+                return page;
+            } else {                                                       //use only page in document
+                page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+            }
+        } else if (selPages.size() > 1) {                                  //multiple pages in selection
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                                 QObject::tr("Select exactly 1 page."));
+            return page;
+        } else {                                                           //use only page in selection
+            page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+        }
+    }
+    return page;
+}
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
@@ -85,6 +131,8 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawHatch *hatch = 0;
     std::string FeatName = getUniqueObjectName("Hatch");
@@ -97,11 +145,6 @@ void CmdTechDrawNewHatch::activated(int iMsg)
         objs.push_back(objFeat);
         subs.push_back((*itSub));
     }
-
-    //TODO: this should be the active page or a selected page? not first page
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
 
     openCommand("Create Hatch");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
@@ -146,26 +189,12 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
 
 void CmdTechDrawToggleFrame::activated(int iMsg)
 {
-    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (pages.empty()) {                                   // no Pages in Selection
-        pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (pages.empty()) {                               // no Pages in Document
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No pages found"),
-                                 QObject::tr("Create a TechDraw Page first."));
-            return;
-        }
-    }
-
-    unsigned int n = getSelection().countObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (n > 1) {                                          // too many Pages
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select only one Page object."));
+    TechDraw::DrawPage* page = _findPageCD(this);
+    if (!page) {
         return;
     }
+    std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawPage* page = dynamic_cast<TechDraw::DrawPage*>(pages.front());
-
-//TODO: this should probably work on the currently displayed page, rather than selecting one in the Tree
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
     ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
