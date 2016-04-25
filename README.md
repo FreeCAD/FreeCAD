@@ -1,5 +1,6 @@
-FreeCAD
--------
+This is a tentative of code migration to OCCT7 and Salome 7.7.1 base code as mesher backend.
+This code is highly unstable and do not compile currently, this is an ongoing port
+If you have any question feel free to contact me on vejmarie@ruggedpod.qyshare.com
 
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
@@ -94,3 +95,4 @@ Development:        http://www.freecadweb.org/wiki/?title=Developer_hub
 The FreeCAD forum at http://forum.freecadweb.org is also a great place
 to find help and solve specific problems you might encounter when
 learning to use FreeCAD.
+=======
