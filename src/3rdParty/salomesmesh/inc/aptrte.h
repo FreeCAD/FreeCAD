@@ -1,24 +1,22 @@
 //  SMESH MEFISTO2 : algorithm for meshing
 //
-//  Copyright (C) 2006  Laboratoire J.-L. Lions UPMC Paris
+// Copyright (C) 2006-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.ann.jussieu.fr/~perronne or email Perronnet@ann.jussieu.fr
-//
-//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 //  File   : aptrte.h
 //  Author : Alain PERRONNET
@@ -48,7 +46,7 @@
 #include <sys/time.h>
 #endif
 
-#ifdef WNT
+#ifdef WIN32
  #if defined MEFISTO2D_EXPORTS
   #define MEFISTO2D_EXPORT __declspec( dllexport )
  #else
@@ -58,12 +56,13 @@
  #define MEFISTO2D_EXPORT
 #endif
 
+
 MEFISTO2D_EXPORT
   void  aptrte( Z nutysu, R aretmx,
-	      Z nblf,   Z *nudslf, R2 *uvslf,
-	      Z nbpti,  R2 *uvpti,
-	      Z & nbst, R2 * & uvst, Z & nbt, Z * & nust,
-	      Z & ierr );
+              Z nblf,   Z *nudslf, R2 *uvslf,
+              Z nbpti,  R2 *uvpti,
+              Z & nbst, R2 * & uvst, Z & nbt, Z * & nust,
+              Z & ierr );
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // but : appel de la triangulation par un arbre-4 recouvrant
 // ----- de triangles equilateraux
@@ -108,8 +107,7 @@ MEFISTO2D_EXPORT
 // auteur : Alain Perronnet  Analyse Numerique Paris UPMC   decembre 2001
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if defined(WIN32) && defined(DFORTRAN)
-
+#if WIN32 & DFORTRAN
   #define tempscpu TEMPSCPU
   #define deltacpu DELTACPU
   #define insoar   INSOAR
@@ -126,58 +124,45 @@ MEFISTO2D_EXPORT
   #define nusotr   NUSOTR
   #define qutr2d   QUTR2D
   #define surtd2   SURTD2
-  #define qualitetrte	QUALITETRTE
+  #define qualitetrte   QUALITETRTE
   
   #define areteideale ARETEIDEALE
+  
+#else
+  #define tempscpu tempscpu_
+  #define deltacpu deltacpu_
+  #define insoar   insoar_
+  #define azeroi   azeroi_
+  #define fasoar   fasoar_
+  #define teajte   teajte_
+  #define tehote   tehote_
+  #define tetrte   tetrte_
+  #define aisoar   aisoar_
+  #define tedela   tedela_
+  #define terefr   terefr_
+  #define tesuex   tesuex_
+  #define teamqt   teamqt_
+  #define nusotr   nusotr_
+  #define qutr2d   qutr2d_
+  #define surtd2   surtd2_
+  #define qualitetrte   qualitetrte_
 
-  #define MEFISTO2D_STDCALL __stdcall
-
-#elif defined(WIN32) && defined (__WATCOM__)
-
-  #define MEFISTO2D_STDCALL
-  #define insoar  insoar_
-  #define azeroi  azeroi_
-  #define fasoar  fasoar_
-  #define teajte  teajte_
-  #define tehote  tehote_
-  #define tetrte  tetrte_
-  #define aisoar  aisoar_
-  #define tedela  tedela_
-  #define terefr  terefr_
-  #define tesuex  tesuex_
-  #define teamqt  teamqt_
-  #define nusotr  nusotr_
-  #define qutr2d  qutr2d_
-  #define surtd2  surtd2_
-  #define qualitetrte qualitetrte_
-  #define areteideale areteideale_  
-#else //Lin and MacOSX use f77
-
-  #define MEFISTO2D_STDCALL
-
-  #define insoar  insoar_
-  #define azeroi  azeroi_
-  #define fasoar  fasoar_
-  #define teajte  teajte_
-  #define tehote  tehote_
-  #define tetrte  tetrte_
-  #define aisoar  aisoar_
-  #define tedela  tedela_
-  #define terefr  terefr_
-  #define tesuex  tesuex_
-  #define teamqt  teamqt_
-  #define nusotr  nusotr_
-  #define qutr2d  qutr2d_
-  #define surtd2  surtd2_
-  #define qualitetrte qualitetrte_
   #define areteideale areteideale_
 
 #endif
 
-extern "C" { MEFISTO2D_EXPORT void MEFISTO2D_STDCALL qualitetrte( R3 *mnpxyd,
-		   Z & mosoar, Z & mxsoar, Z *mnsoar,
-	  	   Z & moartr, Z & mxartr, Z *mnartr,
-		   Z & nbtria, R & quamoy, R & quamin ); }
+
+extern "C" { void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+   qualitetrte( R3 *mnpxyd,
+                   Z & mosoar, Z & mxsoar, Z *mnsoar,
+                   Z & moartr, Z & mxartr, Z *mnartr,
+                   Z & nbtria, R & quamoy, R & quamin ); }
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // but :    calculer la qualite moyenne et minimale de la triangulation
 // -----    actuelle definie par les tableaux nosoar et noartr
@@ -207,27 +192,62 @@ extern "C" { MEFISTO2D_EXPORT void MEFISTO2D_STDCALL qualitetrte( R3 *mnpxyd,
 // quamin : qualite minimale des triangles actuels
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-extern "C" { void MEFISTO2D_STDCALL tempscpu( double & tempsec ); }
+extern "C" {  void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  tempscpu( double & tempsec );
+}
     
 //Retourne le temps CPU utilise en secondes
 
-extern "C" { void MEFISTO2D_STDCALL deltacpu( R & dtcpu ); }
+extern "C" { void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  deltacpu( R & dtcpu );
+}
     
 //Retourne le temps CPU utilise en secondes depuis le precedent appel
 
 //initialiser le tableau mnsoar pour le hachage des aretes
-extern "C" { void MEFISTO2D_STDCALL insoar( Z & mxsomm, 
-										    Z & mosoar, 
-											Z & mxsoar, 
-											Z & n1soar, 
-											Z * mnsoar );}
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  insoar( Z & mxsomm, Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar );
+}
 
 //mettre a zero les nb entiers de tab
-extern "C" { void MEFISTO2D_STDCALL azeroi( Z & nb, Z * tab ); }
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  azeroi( Z & nb, Z * tab );
+}
 
-extern "C" {void MEFISTO2D_STDCALL fasoar( Z & ns1, Z & ns2, Z & nt1, Z & nt2, Z & nolign,
-  			  Z & mosoar,  Z & mxsoar,  Z & n1soar,  Z * mnsoar,  Z * mnarst,
-	  		  Z & noar, Z & ierr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  fasoar( Z & ns1, Z & ns2, Z & nt1, Z & nt2, Z & nolign,
+                          Z & mosoar,  Z & mxsoar,  Z & n1soar,  Z * mnsoar,  Z * mnarst,
+                          Z & noar, Z & ierr );
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // but :    former l'arete de sommet ns1-ns2 dans le hachage du tableau
@@ -273,64 +293,121 @@ extern "C" {void MEFISTO2D_STDCALL fasoar( Z & ns1, Z & ns2, Z & nt1, Z & nt2, Z
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //initialisation du tableau letree et ajout dans letree des sommets 1 a nbsomm
-extern "C" {void MEFISTO2D_STDCALL teajte( Z & mxsomm, Z &  nbsomm, R3 * mnpxyd,  R3 * comxmi,
-			    R & aretmx,  Z & mxtree, Z * letree,
-			    Z & ierr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  teajte( Z & mxsomm, Z &  nbsomm, R3 * mnpxyd,  R3 * comxmi,
+                            R & aretmx,  Z & mxtree, Z * letree,
+                            Z & ierr );
 }
 
-extern "C" {void MEFISTO2D_STDCALL tehote( Z & nutysu, Z & nbarpi, Z &  mxsomm, Z &  nbsomm, R3 * mnpxyd,
-			    R3 * comxmi, R & aretmx,
-			    Z * letree, Z & mxqueu, Z * mnqueu,
-			    Z & ierr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  tehote( Z & nutysu, Z & nbarpi, Z &  mxsomm, Z &  nbsomm, R3 * mnpxyd,
+                            R3 * comxmi, R & aretmx,
+                            Z * letree, Z & mxqueu, Z * mnqueu,
+                            Z & ierr );
 }
 // homogeneisation de l'arbre des te a un saut de taille au plus
 // prise en compte des tailles d'aretes souhaitees autour des sommets initiaux
 
-extern "C" {void MEFISTO2D_STDCALL tetrte( R3 * comxmi, R & aretmx, Z & nbarpi, Z & mxsomm, R3 * mnpxyd,
-			    Z & mxqueu,  Z * mnqueu,  Z * mntree,
-			    Z & mosoar,  Z & mxsoar,  Z & n1soar, Z * mnsoar,
-			    Z & moartr, Z &  mxartr,  Z & n1artr,  Z * mnartr,  Z * mnarst,
-			    Z & ierr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  tetrte( R3 * comxmi, R & aretmx, Z & nbarpi, Z & mxsomm, R3 * mnpxyd,
+                            Z & mxqueu,  Z * mnqueu,  Z * mntree,
+                            Z & mosoar,  Z & mxsoar,  Z & n1soar, Z * mnsoar,
+                            Z & moartr, Z &  mxartr,  Z & n1artr,  Z * mnartr,  Z * mnarst,
+                            Z & ierr );
 }
 // trianguler les triangles equilateraux feuilles a partir de leurs 3 sommets
 // et des points de la frontiere, des points internes imposes interieurs
 
-extern "C" { void MEFISTO2D_STDCALL aisoar( Z & mosoar, Z & mxsoar, Z * mnsoar, Z & na ); }
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  aisoar( Z & mosoar, Z & mxsoar, Z * mnsoar, Z & na );
+}
 // formation du chainage 6 des aretes internes a echanger eventuellement
 
-extern "C" { void MEFISTO2D_STDCALL  tedela( R3 * mnpxyd, Z * mnarst,
-			    Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar, Z & na,
-			    Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z & n );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  tedela( R3 * mnpxyd, Z * mnarst,
+                            Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar, Z & na,
+                            Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z & n );
 }
 // boucle sur les aretes internes (non sur une ligne de la frontiere)
 // avec echange des 2 diagonales afin de rendre la triangulation delaunay
  
-extern "C" { void MEFISTO2D_STDCALL terefr( Z & nbarpi, R3 * mnpxyd,
-			    Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar,
-			    Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z * mnarst,
-			    Z & mxarcf, Z * mnarc1, Z * mnarc2,
-			    Z * mnarc3, Z * mnarc4,
-			    Z & n, Z & ierr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  terefr( Z & nbarpi, R3 * mnpxyd,
+                            Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar,
+                            Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z * mnarst,
+                            Z & mxarcf, Z * mnarc1, Z * mnarc2,
+                            Z * mnarc3, Z * mnarc4,
+                            Z & n, Z & ierr );
 }
 // detection des aretes frontalieres initiales perdues
 // triangulation frontale pour les restaurer
 
-extern "C" { void MEFISTO2D_STDCALL tesuex( Z & nblf, Z * nulftr,
-			    Z & ndtri0, Z & nbsomm, R3 * mnpxyd, Z * mnslig,
-			    Z & mosoar, Z & mxsoar, Z * mnsoar,
-			    Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z * mnarst,
-			    Z & nbtria, Z * mntrsu, Z & ierr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  tesuex( Z & nblf, Z * nulftr,
+                            Z & ndtri0, Z & nbsomm, R3 * mnpxyd, Z * mnslig,
+                            Z & mosoar, Z & mxsoar, Z * mnsoar,
+                            Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z * mnarst,
+                            Z & nbtria, Z * mntrsu, Z & ierr );
 }
 // suppression des triangles externes a la surface
 
-extern "C" { void MEFISTO2D_STDCALL teamqt( Z & nutysu, R & aretmx, R & airemx,
-			    Z * mnarst, Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar,
-			    Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr,
-			    Z & mxarcf, Z * mntrcf, Z * mnstbo,
-			    Z * n1arcf, Z * mnarcf, Z * mnarc1,
-			    Z & nbarpi, Z & nbsomm, Z & mxsomm,
-			    R3 * mnpxyd, Z * mnslig,
-			    Z & ierr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  teamqt( Z & nutysu, R & aretmx, R & airemx,
+                            Z * mnarst, Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar,
+                            Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr,
+                            Z & mxarcf, Z * mntrcf, Z * mnstbo,
+                            Z * n1arcf, Z * mnarcf, Z * mnarc1,
+                            Z & nbarpi, Z & nbsomm, Z & mxsomm,
+                            R3 * mnpxyd, Z * mnslig,
+                            Z & ierr );
 }
 // amelioration de la qualite de la triangulation par
 // barycentrage des sommets internes a la triangulation
@@ -338,14 +415,37 @@ extern "C" { void MEFISTO2D_STDCALL teamqt( Z & nutysu, R & aretmx, R & airemx,
 // modification de la topologie des groupes de triangles
 // mise en delaunay de la triangulation
  
-extern "C" { void MEFISTO2D_STDCALL nusotr( Z & nt, Z & mosoar, Z * mnsoar, Z & moartr, Z * mnartr,Z * nosotr );
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  nusotr( Z & nt, Z & mosoar, Z * mnsoar, Z & moartr, Z * mnartr,Z * nosotr );
 }
 //retrouver les numero des 3 sommets du triangle nt
 
-extern "C" { void MEFISTO2D_STDCALL qutr2d( R3 & p1, R3 & p2, R3 & p3, R & qualite ); }
+extern "C" {void
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  qutr2d( R3 & p1, R3 & p2, R3 & p3, R & qualite );
+}
 //calculer la qualite d'un triangle de R2 de sommets p1, p2, p3
 
-extern "C" { R MEFISTO2D_STDCALL surtd2( R3 & p1, R3 & p2, R3 & p3 ); }
+extern "C" { R
+#ifdef WIN32
+#ifdef F2C_BUILD
+#else
+              __stdcall
+#endif
+#endif
+  surtd2( R3 & p1, R3 & p2, R3 & p3 );
+}
 //calcul de la surface d'un triangle defini par 3 points de r**2
 
 #endif

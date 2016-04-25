@@ -1,31 +1,32 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESHDS : management of mesh data and SMESH document
 //  File   : SMESH_Script.cxx
 //  Author : Yves FRICAUD, OCC
 //  Module : SMESH
-//  $Header: 
 //
 #include "SMESHDS_Script.hxx"
+#include <iostream>
 
 using namespace std;
 
@@ -35,7 +36,9 @@ using namespace std;
 //=======================================================================
 SMESHDS_Script::SMESHDS_Script(bool theIsEmbeddedMode):
   myIsEmbeddedMode(theIsEmbeddedMode)
-{}
+{
+  //cerr << "=========================== myIsEmbeddedMode " << myIsEmbeddedMode << endl;
+}
 
 //=======================================================================
 //function : Destructor
@@ -93,6 +96,19 @@ void SMESHDS_Script::AddNode(int NewNodeID, double x, double y, double z)
     return;
   }
   getCommand(SMESHDS_AddNode)->AddNode(NewNodeID, x, y, z);
+}
+
+//=======================================================================
+//function :
+//purpose  :
+//=======================================================================
+void SMESHDS_Script::Add0DElement (int New0DElementID, int idnode)
+{
+  if (myIsEmbeddedMode) {
+    myIsModified = true;
+    return;
+  }
+  getCommand(SMESHDS_Add0DElement)->Add0DElement(New0DElementID, idnode);
 }
 
 //=======================================================================
@@ -209,10 +225,28 @@ void SMESHDS_Script::AddVolume(int NewID,
 }
 
 //=======================================================================
+//function : 
+//purpose  : 
+//=======================================================================
+void SMESHDS_Script::AddVolume(int NewVolID, int idnode1, int idnode2, int idnode3,
+                               int idnode4, int idnode5, int idnode6, int idnode7, int idnode8,
+                               int idnode9, int idnode10, int idnode11, int idnode12)
+{
+  if(myIsEmbeddedMode){
+    myIsModified = true;
+    return;
+  }
+  getCommand(SMESHDS_AddHexagonalPrism)->AddVolume(NewVolID,
+                                                   idnode1, idnode2, idnode3, idnode4,
+                                                   idnode5, idnode6, idnode7, idnode8,
+                                                   idnode9, idnode10, idnode11, idnode12);
+}
+
+//=======================================================================
 //function : AddPolygonalFace
 //purpose  : 
 //=======================================================================
-void SMESHDS_Script::AddPolygonalFace (int NewFaceID, std::vector<int> nodes_ids)
+void SMESHDS_Script::AddPolygonalFace (int NewFaceID, const std::vector<int>& nodes_ids)
 {
   if(myIsEmbeddedMode){
     myIsModified = true;
@@ -222,12 +256,25 @@ void SMESHDS_Script::AddPolygonalFace (int NewFaceID, std::vector<int> nodes_ids
 }
 
 //=======================================================================
+//function : AddQuadPolygonalFace
+//purpose  : 
+//=======================================================================
+void SMESHDS_Script::AddQuadPolygonalFace(int NewFaceID, const std::vector<int>& nodes_ids)
+{
+  if(myIsEmbeddedMode){
+    myIsModified = true;
+    return;
+  }
+  getCommand(SMESHDS_AddQuadPolygon)->AddQuadPolygonalFace(NewFaceID, nodes_ids);
+}
+
+//=======================================================================
 //function : AddPolyhedralVolume
 //purpose  : 
 //=======================================================================
-void SMESHDS_Script::AddPolyhedralVolume (int NewID,
-                                          std::vector<int> nodes_ids,
-                                          std::vector<int> quantities)
+void SMESHDS_Script::AddPolyhedralVolume (int                     NewID,
+                                          const std::vector<int>& nodes_ids,
+                                          const std::vector<int>& quantities)
 {
   if(myIsEmbeddedMode){
     myIsModified = true;
@@ -235,6 +282,19 @@ void SMESHDS_Script::AddPolyhedralVolume (int NewID,
   }
   getCommand(SMESHDS_AddPolyhedron)->AddPolyhedralVolume
     (NewID, nodes_ids, quantities);
+}
+
+//=======================================================================
+//function : AddBall
+//purpose  : Record adding a Ball
+//=======================================================================
+
+void SMESHDS_Script::AddBall(int NewBallID, int node, double diameter)
+{
+  if ( myIsEmbeddedMode )
+    myIsModified = true;
+  else
+    getCommand(SMESHDS_AddBall)->AddBall(NewBallID, node, diameter);
 }
 
 //=======================================================================
@@ -294,9 +354,9 @@ void SMESHDS_Script::ChangeElementNodes(int ElementID, int nodes[], int nbnodes)
 //function : ChangePolyhedronNodes
 //purpose  : 
 //=======================================================================
-void SMESHDS_Script::ChangePolyhedronNodes (const int        ElementID,
-                                            std::vector<int> nodes_ids,
-                                            std::vector<int> quantities)
+void SMESHDS_Script::ChangePolyhedronNodes (const int               ElementID,
+                                            const std::vector<int>& nodes_ids,
+                                            const std::vector<int>& quantities)
 {
   if(myIsEmbeddedMode){
     myIsModified = true;
@@ -392,6 +452,21 @@ void SMESHDS_Script::AddFace(int NewFaceID, int n1, int n2, int n3,
 //function : AddFace
 //purpose  : 
 //=======================================================================
+void SMESHDS_Script::AddFace(int NewFaceID, int n1, int n2, int n3,
+                             int n12, int n23, int n31, int nCenter)
+{
+  if(myIsEmbeddedMode){
+    myIsModified = true;
+    return;
+  }
+  getCommand(SMESHDS_AddBiQuadTriangle)->AddFace(NewFaceID, n1, n2, n3,
+                                                 n12, n23, n31, nCenter);
+}
+
+//=======================================================================
+//function : AddFace
+//purpose  : 
+//=======================================================================
 void SMESHDS_Script::AddFace(int NewFaceID, int n1, int n2, int n3, int n4,
                              int n12, int n23, int n34, int n41)
 {
@@ -401,6 +476,21 @@ void SMESHDS_Script::AddFace(int NewFaceID, int n1, int n2, int n3, int n4,
   }
   getCommand(SMESHDS_AddQuadQuadrangle)->AddFace(NewFaceID, n1, n2, n3, n4,
                                                  n12, n23, n34, n41);
+}
+
+//=======================================================================
+//function : AddFace
+//purpose  : 
+//=======================================================================
+void SMESHDS_Script::AddFace(int NewFaceID, int n1, int n2, int n3, int n4,
+                             int n12, int n23, int n34, int n41, int nCenter)
+{
+  if(myIsEmbeddedMode){
+    myIsModified = true;
+    return;
+  }
+  getCommand(SMESHDS_AddBiQuadQuadrangle)->AddFace(NewFaceID, n1, n2, n3, n4,
+                                                   n12, n23, n34, n41, nCenter);
 }
 
 //=======================================================================
@@ -475,5 +565,30 @@ void SMESHDS_Script::AddVolume(int NewVolID, int n1, int n2, int n3,
                                                    n12, n23, n34, n41,
                                                    n56, n67, n78, n85,
                                                    n15, n26, n37, n48);
+}
+
+//=======================================================================
+//function : AddVolume
+//purpose  : 
+//=======================================================================
+void SMESHDS_Script::AddVolume(int NewVolID, int n1, int n2, int n3,
+                               int n4, int n5, int n6, int n7, int n8,
+                               int n12, int n23, int n34, int n41,
+                               int n56, int n67, int n78, int n85,
+                               int n15, int n26, int n37, int n48,
+                               int n1234,int n1256,int n2367,int n3478,
+                               int n1458,int n5678,int nCenter)
+{
+  if(myIsEmbeddedMode){
+    myIsModified = true;
+    return;
+  }
+  getCommand(SMESHDS_AddTriQuadHexa)->AddVolume(NewVolID, n1, n2, n3, n4,
+                                                n5, n6, n7, n8,
+                                                n12, n23, n34, n41,
+                                                n56, n67, n78, n85,
+                                                n15, n26, n37, n48,
+                                                n1234, n1256, n2367, n3478,
+                                                n1458, n5678, nCenter);
 }
 

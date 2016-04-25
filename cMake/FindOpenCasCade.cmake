@@ -112,6 +112,7 @@ if(OCC_FOUND)
     TKBin
     TKBool
     TKBO
+    TKCDF
     TKBRep
     TKTopAlgo
     TKGeomAlgo
