@@ -35,6 +35,7 @@ class DrawViewAnnotation;
 class DrawViewSymbol;
 class DrawViewClip;
 class DrawHatch;
+class DrawViewCollection;
 }
 
 namespace TechDrawGui
@@ -80,6 +81,9 @@ public:
 
     QGITemplate * getTemplate() const;
     void removeTemplate();
+
+    /// Getter for DrawPage feature
+    TechDraw::DrawPage * getDrawPage() { return pageFeat; }
 
     void toggleEdit(bool enable);
 

@@ -31,6 +31,8 @@
 # include <boost/regex.hpp>
 #endif  //#ifndef _PreComp_
 
+#include <QGraphicsView>
+
 # include <App/DocumentObject.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
@@ -51,6 +53,8 @@
 # include <Mod/TechDraw/App/DrawViewDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/Gui/QGVPage.h>
+
 
 # include "MDIViewPage.h"
 # include "ViewProviderPage.h"
@@ -58,6 +62,49 @@
 
 using namespace TechDrawGui;
 using namespace std;
+
+//===========================================================================
+// utility routines
+//===========================================================================
+
+//TODO: still need this as separate routine? only used in LinkDimension now
+//TODO: code is duplicated in Command and CommandDecorate
+TechDraw::DrawPage* _findPageCCD(Gui::Command* cmd)
+{
+    TechDraw::DrawPage* page = 0;
+    //check if a DrawPage is currently displayed
+    Gui::MainWindow* w = Gui::getMainWindow();
+    Gui::MDIView* mv = w->activeWindow();
+    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+    if (mvp) {
+        QGVPage* qp = mvp->getQGVPage();
+        page = qp->getDrawPage();
+    } else {
+        //DrawPage not displayed, check Selection and/or Document for a DrawPage
+        std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        if (selPages.empty()) {                                            //no page in selection
+            selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+            if (selPages.empty()) {                                        //no page in document
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                     QObject::tr("Create a page first."));
+                return page;
+            } else if (selPages.size() > 1) {                              //multiple pages in document
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                                     QObject::tr("Can not determine correct page."));
+                return page;
+            } else {                                                       //use only page in document
+                page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+            }
+        } else if (selPages.size() > 1) {                                  //multiple pages in selection
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                                 QObject::tr("Select exactly 1 page."));
+            return page;
+        } else {                                                           //use only page in selection
+            page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+        }
+    }
+    return page;
+}
 
 //internal functions
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
@@ -76,6 +123,7 @@ enum EdgeType{
         isCurve,
         isAngle
     };
+
 
 //===========================================================================
 // TechDraw_NewDimension
@@ -104,9 +152,19 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     if (!result)
         return;
 
+//do we still need to pick DVPs out of selection? or should we complain about junk?
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawViewPart* objFeat = 0;
+    std::vector<std::string> SubNames;
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
@@ -189,10 +247,6 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
 
@@ -235,8 +289,18 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
@@ -275,10 +339,6 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -322,8 +382,18 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
@@ -362,10 +432,6 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -409,8 +475,18 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
@@ -455,10 +531,6 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -502,8 +574,18 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
@@ -546,10 +628,6 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -593,8 +671,18 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
@@ -636,10 +724,6 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -683,8 +767,18 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
@@ -716,10 +810,6 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
-
-    std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    TechDraw::DrawPage *page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    std::string PageName = page->getNameInDocument();
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     commitCommand();
@@ -735,6 +825,8 @@ bool CmdTechDrawNewAngleDimension::isActive(void)
     return hasActiveDocument();
 }
 
+//! link 3D geometry to Dimension(s) on a Page
+//TODO: should we present all potential Dimensions from all Pages?
 //===========================================================================
 // TechDraw_LinkDimension
 //===========================================================================
@@ -755,32 +847,29 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
 
 void CmdTechDrawLinkDimension::activated(int iMsg)
 {
+    TechDraw::DrawPage* page = _findPageCCD(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
     bool result = _checkSelection(this,2);
     if (!result)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawPage* page = 0;
     Part::Feature* obj3D = 0;
     std::vector<std::string> subs;
+
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
             obj3D = dynamic_cast<Part::Feature*> ((*itSel).getObject());
             subs = (*itSel).getSubNames();
         }
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
-            page = dynamic_cast<TechDraw::DrawPage*>((*itSel).getObject());
-        }
     }
 
-    //no page in selection, use first
-    if (!page) {
-        std::vector<App::DocumentObject*> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        page = dynamic_cast<TechDraw::DrawPage *>(pages.front());
-    }
-
-    if (!page || !obj3D) {
+    if (!obj3D) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr("Can't link a dimension to this selection"));
         return;
@@ -825,7 +914,7 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs) {
         return false;
     }
 
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() > maxObjs){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
             QObject::tr("Too many objects selected"));
@@ -873,7 +962,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     int edgeType = isInvalid;
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
         if (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
             int GeoId = DrawUtil::getIndexFromName(SubNames[0]);
@@ -914,7 +1003,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
 //! verify that Selection contains valid geometries for a Vertex to Vertex Dimension
 bool _isValidVertexes(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         if (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex" &&                    //they both start with "Vertex"
             DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
@@ -931,7 +1020,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* objFeat0 = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     //TechDraw::DrawViewPart* objFeat1 = dynamic_cast<TechDraw::DrawViewPart *>(selection[1].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         if (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&                      //they both start with "Edge"
             DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {

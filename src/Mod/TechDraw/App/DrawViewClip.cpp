@@ -160,6 +160,18 @@ std::vector<std::string> DrawViewClip::getChildViewNames()
     return childNames;
 }
 
+bool DrawViewClip::isViewInClip(App::DocumentObject* view)
+{
+    bool result = false;
+    std::vector<App::DocumentObject*> children = Views.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it) == view) {
+            result = true;
+        }
+    }
+    return result;
+}
+
 PyObject *DrawViewClip::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {

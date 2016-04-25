@@ -70,6 +70,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     std::vector<std::string> getChildViewNames();
+    bool isViewInClip(App::DocumentObject* view);
 
 
 protected:
