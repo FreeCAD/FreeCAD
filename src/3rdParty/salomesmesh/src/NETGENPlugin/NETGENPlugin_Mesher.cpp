@@ -39,14 +39,14 @@
 #include <SMESH_Comment.hxx>
 #include <SMESH_ComputeError.hxx>
 #include <SMESH_File.hxx>
-#include <SMESH_Gen_i.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESH_Gen.hxx>
 #include <SMESH_MesherHelper.hxx>
 #include <SMESH_subMesh.hxx>
 #include <StdMeshers_QuadToTriaAdaptor.hxx>
 #include <StdMeshers_ViscousLayers2D.hxx>
 
-#include <SALOMEDS_Tool.hxx>
+// #include <SALOMEDS_Tool.hxx>
 
 #include <utilities.h>
 
@@ -74,13 +74,9 @@ namespace nglib {
 #include <nglib.h>
 }
 #ifndef OCCGEOMETRY
-# define OCCGEOMETRY
-#endif
-
-=======
-#ifndef OCCGEOMETRY
 #define OCCGEOMETRY
 #endif
+
 #include <occgeom.hpp>
 #include <meshing.hpp>
 //#include <ngexception.hpp>
@@ -280,6 +276,9 @@ void NETGENPlugin_Mesher::SetParameters(const NETGENPlugin_Hypothesis* hyp)
     netgen::merge_solids    = hyp->GetFuseEdges();
     _simpleHyp = NULL;
 
+
+/* vejmarie
+
     SMESH_Gen_i* smeshGen_i = SMESH_Gen_i::GetSMESHGen();
     CORBA::Object_var anObject = smeshGen_i->GetNS()->Resolve("/myStudyManager");
     SALOMEDS::StudyManager_var aStudyMgr = SALOMEDS::StudyManager::_narrow(anObject);
@@ -305,6 +304,7 @@ void NETGENPlugin_Mesher::SetParameters(const NETGENPlugin_Hypothesis* hyp)
         // --
         SetLocalSize(S, val);
       }
+*/
   }
 }
 
@@ -4011,7 +4011,8 @@ void NETGENPlugin_NetgenLibWrapper::setMesh( Ng_Mesh* mesh )
 
 std::string NETGENPlugin_NetgenLibWrapper::getOutputFileName()
 {
-  std::string aTmpDir = SALOMEDS_Tool::GetTmpDir();
+//  std::string aTmpDir = SALOMEDS_Tool::GetTmpDir();
+  std::string aTmpDir = "/tmp";
 
   TCollection_AsciiString aGenericName = (char*)aTmpDir.c_str();
   aGenericName += "NETGEN_";
@@ -4035,7 +4036,7 @@ std::string NETGENPlugin_NetgenLibWrapper::getOutputFileName()
 
 void NETGENPlugin_NetgenLibWrapper::removeOutputFile()
 {
-  if ( !_outputFileName.empty() )
+/*  if ( !_outputFileName.empty() )
   {
     if ( netgen::mycout )
     {
@@ -4051,4 +4052,5 @@ void NETGENPlugin_NetgenLibWrapper::removeOutputFile()
 
     SALOMEDS_Tool::RemoveTemporaryFiles( tmpDir.c_str(), aFiles.in(), true );
   }
+*/
 }

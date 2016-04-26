@@ -32,8 +32,8 @@
 
 #include "NETGENPlugin_Defs.hxx"
 
-#include <SALOMEconfig.h>
-#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+// #include <SALOMEconfig.h>
+// #include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
 #include "NETGENPlugin_Hypothesis_i.hxx"
 #include "NETGENPlugin_Hypothesis_2D.hxx"

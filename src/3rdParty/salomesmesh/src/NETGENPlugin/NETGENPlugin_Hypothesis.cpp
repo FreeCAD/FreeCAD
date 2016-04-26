@@ -361,13 +361,13 @@ istream & NETGENPlugin_Hypothesis::LoadFrom(istream & load)
   int is;
   double val;
 
-  isOK = (load >> val);
+  isOK = (bool)(load >> val);
   if (isOK)
     _maxSize = val;
   else
     load.clear(ios::badbit | load.rdstate());
 
-  isOK = (load >> is);
+  isOK = (bool)(load >> is);
   if (isOK)
     SetFineness((Fineness) is);
   else
@@ -375,32 +375,32 @@ istream & NETGENPlugin_Hypothesis::LoadFrom(istream & load)
 
   if (_fineness == UserDefined)
   {
-    isOK = (load >> val);
+    isOK = (bool)(load >> val);
     if (isOK)
       _growthRate = val;
     else
       load.clear(ios::badbit | load.rdstate());
 
-    isOK = (load >> val);
+    isOK = (bool)(load >> val);
     if (isOK)
       _nbSegPerEdge = val;
     else
       load.clear(ios::badbit | load.rdstate());
 
-    isOK = (load >> val);
+    isOK =(bool) (load >> val);
     if (isOK)
       _nbSegPerRadius = val;
     else
       load.clear(ios::badbit | load.rdstate());
   }
 
-  isOK = (load >> is);
+  isOK = (bool)(load >> is);
   if (isOK)
     _secondOrder = (bool) is;
   else
     load.clear(ios::badbit | load.rdstate());
 
-  isOK = (load >> is);
+  isOK = (bool)(load >> is);
   if (isOK)
     _optimize = (bool) is;
   else
@@ -409,18 +409,18 @@ istream & NETGENPlugin_Hypothesis::LoadFrom(istream & load)
   std::string option_or_sm;
   bool hasLocalSize = false;
 
-  isOK = (load >> option_or_sm);
+  isOK = (bool)(load >> option_or_sm);
   if (isOK)
     if (option_or_sm == "__LOCALSIZE_BEGIN__")
       hasLocalSize = true;
 
   std::string smEntry, smValue;
   while (isOK && hasLocalSize) {
-    isOK = (load >> smEntry);
+    isOK = (bool)(load >> smEntry);
     if (isOK) {
       if (smEntry == "__LOCALSIZE_END__")
         break;
-      isOK = (load >> smValue);
+      isOK = (bool)(load >> smValue);
     }
     if (isOK) {
       std::istringstream tmp(smValue);
@@ -433,15 +433,15 @@ istream & NETGENPlugin_Hypothesis::LoadFrom(istream & load)
   if ( !hasLocalSize && !option_or_sm.empty() )
     _minSize = atof( option_or_sm.c_str() );
 
-  isOK = ( load >> _quadAllowed );
+  isOK = (bool)( load >> _quadAllowed );
   if ( !isOK )
     _quadAllowed = GetDefaultQuadAllowed();
 
-  isOK = ( load >> _surfaceCurvature );
+  isOK = (bool)( load >> _surfaceCurvature );
   if ( !isOK )
     _surfaceCurvature = GetDefaultSurfaceCurvature();
 
-  isOK = ( load >> _fuseEdges );
+  isOK = (bool)( load >> _fuseEdges );
   if ( !isOK )
     _fuseEdges = GetDefaultFuseEdges();
 

@@ -28,7 +28,7 @@
 //
 #ifndef _NETGENPlugin_Mesher_HXX_
 #define _NETGENPlugin_Mesher_HXX_
-
+#include <TopTools_IndexedMapOfShape.hxx>
 #include "NETGENPlugin_Defs.hxx"
 
 #include <StdMeshers_FaceSide.hxx>
@@ -49,7 +49,7 @@ class SMESH_Comment;
 class SMESH_Mesh;
 class SMESH_MesherHelper;
 class TopoDS_Shape;
-class TopTools_IndexedMapOfShape;
+// class TopTools_IndexedMapOfShape;
 class NETGENPlugin_Hypothesis;
 class NETGENPlugin_SimpleHypothesis_2D;
 class NETGENPlugin_Internals;

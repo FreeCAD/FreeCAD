@@ -32,7 +32,6 @@
 #include "SMDS_Mesh.hxx"
 #include "SMESHDS_SubMesh.hxx"
 
-#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <map>

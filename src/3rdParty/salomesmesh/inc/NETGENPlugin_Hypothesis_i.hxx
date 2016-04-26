@@ -32,10 +32,10 @@
 
 #include "NETGENPlugin_Defs.hxx"
 
-#include <SALOMEconfig.h>
-#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+//#include <SALOMEconfig.h>
+//#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
-#include "SMESH_Hypothesis_i.hxx"
+// #include "SMESH_Hypothesis_i.hxx"
 #include "NETGENPlugin_Hypothesis.hxx"
 
 class SMESH_Gen;

@@ -1,6 +1,20 @@
 ** This is OCCT 7/Salome 7.7.1 Changelog
 ** Current compilation platform: MacOS X El Capitan (10.11.3) XCode 7.3
 
+** NETGENPlugin_SimpleHypothesis_3D.cpp NETGENPlugin_SimpleHypothesis_2D.cpp
+	Add bool casting to isOK
+
+** NETGENPlugin_Mesher.cpp
+   WARNING: Comment some code into SetParameters -> look for vejmarie
+   WARNING: At the end of file SALOMEDS is not integrated so disable some code which manage temporary files creation and force TMPDIR to /tmp
+
+** NETGENPlugin_Hypothesis.cpp
+	Add bool casting to isOK
+
+** NETGENPlugin_Mesher.hxx
+	Add #include <TopTools_IndexedMapOfShape.hxx>
+	and remove //// class TopTools_IndexedMapOfShape;
+
 ** StdMeshers_QuadrangleParams.cpp & StdMeshers_Reversible1D.cpp & StdMeshers_SegmentLengthAroundVertex.cpp & StdMeshers_StartEndLength.cpp
 	isOK cast to bool
 
