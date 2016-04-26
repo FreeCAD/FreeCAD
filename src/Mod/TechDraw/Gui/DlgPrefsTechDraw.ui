@@ -286,7 +286,7 @@
           <x>20</x>
           <y>30</y>
           <width>531</width>
-          <height>131</height>
+          <height>103</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
@@ -297,20 +297,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <spacer name="horizontalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="2">
+         <item row="0" column="1">
           <widget class="Gui::PrefComboBox" name="cb_Angle">
            <property name="prefEntry" stdset="0">
             <cstring>ProjectionAngle</cstring>
@@ -330,20 +317,7 @@
            </item>
           </widget>
          </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="2">
+         <item row="1" column="1">
           <widget class="Gui::PrefComboBox" name="cb_HidLine">
            <property name="prefEntry" stdset="0">
             <cstring>HiddenLine</cstring>
@@ -385,42 +359,38 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="lbl_HatchDir">
-           <property name="text">
-            <string>Pattern Directory</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="lbl_Hatch">
-           <property name="text">
-            <string>Default Pattern File</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
-           <property name="prefEntry" stdset="0">
-            <cstring>PatternFile</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>/Mod/TechDraw</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="Gui::PrefFileChooser" name="pfc_HatchDir">
-           <property name="mode">
-            <enum>Gui::FileChooser::Directory</enum>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>PatternDir</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>/Mod/TechDraw</cstring>
-           </property>
-          </widget>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="gridLayoutWidget_5">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>130</y>
+          <width>531</width>
+          <height>54</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="1">
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="1">
+            <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
+             <property name="prefEntry" stdset="0">
+              <cstring>PatternFile</cstring>
+             </property>
+             <property name="prefPath" stdset="0">
+              <cstring>/Mod/TechDraw</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_Hatch">
+             <property name="text">
+              <string>Default Pattern File</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>

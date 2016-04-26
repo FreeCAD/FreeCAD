@@ -29,6 +29,9 @@
 
 #include <iomanip>
 
+# include <QFile>
+# include <QFileInfo>
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -58,18 +61,16 @@ DrawHatch::DrawHatch(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns";
-    QString patternDir = QString::fromStdString(hGrp->GetASCII("PatternDir", defaultDir.c_str()));
-    if (patternDir.isEmpty()) {                                        //PatternDir key probably has null value
-        patternDir = QString::fromStdString(defaultDir);
-    }
-    std::string defaultFileName = "simple.svg";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
+    std::string defaultFileName = defaultDir + "simple.svg";
     QString patternFileName = QString::fromStdString(hGrp->GetASCII("PatternFile",defaultFileName.c_str()));
     if (patternFileName.isEmpty()) {
         patternFileName = QString::fromStdString(defaultFileName);
     }
-    patternFileName = patternDir + QString::fromUtf8("/")  + patternFileName;
-    HatchPattern.setValue(patternFileName.toUtf8().constData());
+    QFileInfo tfi(patternFileName);
+        if (tfi.isReadable()) {
+            HatchPattern.setValue(patternFileName.toUtf8().constData());
+        }
 }
 
 DrawHatch::~DrawHatch()

@@ -53,7 +53,7 @@ void DlgPrefsTechDrawImp::saveSettings()
     cb_HidLine->onSave();
     cb_Angle->onSave();
     pfc_HatchFile->onSave();
-    pfc_HatchDir->onSave();
+    //pfc_HatchDir->onSave();
 }
 
 void DlgPrefsTechDrawImp::loadSettings()
@@ -68,7 +68,7 @@ void DlgPrefsTechDrawImp::loadSettings()
     cb_HidLine->onRestore();
     cb_Angle->onRestore();
     pfc_HatchFile->onRestore();
-    pfc_HatchDir->onRestore();
+    //pfc_HatchDir->onRestore();
 }
 
 /**
