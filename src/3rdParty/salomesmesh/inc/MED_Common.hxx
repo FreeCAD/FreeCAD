@@ -33,7 +33,6 @@
 
 #include <boost/tuple/tuple.hpp>
 
-
 #include "MED_Vector.hxx"
 #include "MED_SharedPtr.hxx"
 #include "MED_SliceArray.hxx"

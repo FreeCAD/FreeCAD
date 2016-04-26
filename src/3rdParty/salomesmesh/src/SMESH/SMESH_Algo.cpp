@@ -74,7 +74,6 @@
 #include "SMESH_ProxyMesh.hxx"
 #include "SMESH_MesherHelper.hxx"
 #include <LDOMParser.hxx>
-
 using namespace std;
 
 //================================================================================
@@ -102,6 +101,7 @@ bool SMESH_Algo::Features::IsCompatible( const SMESH_Algo::Features& algo2 ) con
  * \brief Return Data of the algorithm
  */
 //================================================================================
+
 
 const SMESH_Algo::Features& SMESH_Algo::GetFeatures( const std::string& algoType )
 {
@@ -168,6 +168,7 @@ const SMESH_Algo::Features& SMESH_Algo::GetFeatures( const std::string& algoType
   }
   return theFeaturesByName[ algoType ];
 }
+
 
 //=============================================================================
 /*!
