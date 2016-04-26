@@ -529,6 +529,8 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
     std::set<int> result;
 
     Bnd_Box box;
+// vejmarie disable
+/*
     BRepBndLib::Add(solid, box);
     // limit where the mesh node belongs to the solid:
     double limit = box.SquareExtent()/10000.0;
@@ -559,7 +561,7 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
                 result.insert(aNode->GetID());
         }
     }
-
+*/
     return result;
 }
 
@@ -873,7 +875,8 @@ void FemMesh::read(const char *FileName)
     }
     else if (File.hasExtension("dat") ) {
         // read brep-file
-        myMesh->DATToMesh(File.filePath().c_str());
+	// vejmarie disable
+        // myMesh->DATToMesh(File.filePath().c_str());
     }
     else if (File.hasExtension("bdf") ) {
         // read Nastran-file

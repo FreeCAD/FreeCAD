@@ -1,4 +1,29 @@
 ** This is OCCT 7/Salome 7.7.1 Changelog
+
+** ALERT into ImportStep.cpp look for vejmarie -> needed to disable code for C++ class issues
+** ALERT into TopoShape.cpp convertToMatrix look for vejmarie -> needed to disable code for unknown parameter
+** ALERT into Tools.cpp look for vejmarie -> needed to disable code for unknown parameter
+** ALERT into MeshPart/App/CMakeList.txt include directory to VTK is hardcoded
+** ALERT into Import/Gui/CMakeList.txt include directory to VTK is hardcoded
+** ALERT into Fem/App/CMakeList.txt include directory to VTK/NGLIB is hardcoded
+** ALERT into Fem/Gui/CMakeList.txt include directory to VTK/NGLIB is hardcoded
+** ALERT FemMesh.cpp some code is disabled
+** ALERT HypothesisPy.cpp some code is disabled
+
+** into CrossSection.h
+	Remove declaration of class TopTools_IndexedMapOfShape;
+
+** WARNING INTO ConePyImp.cpp Code commented
+	68:47: error: no viable conversion from 'const handle<Geom_Geometry>' to
+      'const handle<Geom_ConicalSurface>'
+        const Handle_Geom_ConicalSurface& s = static_cast<const Handle_Geom_ConicalSurface&>
+
+** into Part and WB in Geometry.h & PrimitiveFeature.cpp & GeometryCurvePyImp.cpp & BSplineCurvePyImp.cpp & BezierSurfacePyImp.cpp & BSplineSurfacePyImp.cpp 
+	& Tools.h & TopoShapeFacePyImp.cpp & AppPartPy.cpp & ImportIges.cpp & ImportStep.cpp & TopoShape.cpp & AppImportPy.cpp & AppReverseEngineering.cpp &
+	ApproxSurface.h DlgPrimitives.cpp ViewProviderExt.cpp DatumPoint.cpp ImportOCAF.h ImportOCAF.cpp FeaturePathShape.cpp AppSketcherPy.cpp
+
+	Remove <Handle_ prefix within include files
+
 ** Current compilation platform: MacOS X El Capitan (10.11.3) XCode 7.3
 
 ** NETGENPlugin_SimpleHypothesis_3D.cpp NETGENPlugin_SimpleHypothesis_2D.cpp

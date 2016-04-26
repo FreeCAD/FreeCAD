@@ -20,6 +20,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
+    /opt/local/include/vtk-7.0
 )
 
 link_directories(${OCC_LIBRARY_DIR})

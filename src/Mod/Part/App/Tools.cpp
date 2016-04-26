@@ -184,7 +184,8 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
         //data races in AdvApp2Var used by GeomApprox_Surface, use global mutex
         //Standard_Mutex::Sentry aSentry (theBSMutex);
         GeomPlate_MakeApprox aMakeApprox (aPlate, aCriterion, aTol3d, aMaxSeg, aMaxDeg);
-        aRes = aMakeApprox.Surface();
+// vejmarie
+//        aRes = aMakeApprox.Surface();
     }
 
     return aRes;

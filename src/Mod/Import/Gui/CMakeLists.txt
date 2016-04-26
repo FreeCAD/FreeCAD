@@ -15,6 +15,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    /opt/local/include/vtk-7.0
 )
 
 link_directories(${OCC_LIBRARY_DIR})

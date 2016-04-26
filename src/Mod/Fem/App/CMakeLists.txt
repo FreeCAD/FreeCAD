@@ -22,6 +22,8 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
+    /opt/local/include/vtk-7.0
+    /opt/netgen/include
 )
 
 link_directories(${OCC_LIBRARY_DIR})

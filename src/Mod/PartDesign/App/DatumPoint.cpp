@@ -42,6 +42,7 @@
 # include <Geom2d_Line.hxx>
 # include <Geom_Curve.hxx>
 # include <Geom_Surface.hxx>
+# include <Geom_Plane.hxx>
 # include <Geom2d_Line.hxx>
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_IntSS.hxx>
