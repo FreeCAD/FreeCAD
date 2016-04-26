@@ -50,11 +50,10 @@ endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 
 # ================================================================================
 
-# Issues with boost::any on older versions with C++11 enabled.
-set(BOOST_MIN_VERSION 1.55)
-IF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_COMPILER_VERSION VERSION_LESS 4.7)
-   UNSET(BOOST_MIN_VERSION) # For Ubuntu 12.04
-ENDIF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_COMPILER_VERSION VERSION_LESS 4.7)
+# Allow developers to use Boost < 1.48
+if(NOT ${BOOST_MIN_VERSION})
+   set(BOOST_MIN_VERSION 1.48)
+endif()
 
 # Enabled C++11 for Freecad 0.17 and later
 IF(FREECAD_VERSION VERSION_GREATER 0.16)
