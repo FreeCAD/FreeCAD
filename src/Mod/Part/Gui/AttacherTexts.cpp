@@ -247,7 +247,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         }
     }
 
-    assert("No user-friendly string defined for this attachment mode."=="");
+    assert(false && "No user-friendly string defined for this attachment mode.");
     return TwoStrings(QString::fromStdString(AttachEngine::getModeName(mmode)), QString());
 }
 
