@@ -1369,7 +1369,7 @@ namespace
     }
     if ( surf->IsKind( STANDARD_TYPE(Geom_BSplineSurface )) ||
          surf->IsKind( STANDARD_TYPE(Geom_BezierSurface )))
-      if ( !noSafeTShapes.insert((const Standard_Transient*) _face.TShape() ).second )
+      // if ( !noSafeTShapes.insert((const Standard_Transient*) _face.TShape() ).second )
         isSafe = false;
 
     double f, l;
@@ -1409,7 +1409,7 @@ namespace
             edgeIsSafe = false;
         }
       }
-      if ( !edgeIsSafe && !noSafeTShapes.insert((const Standard_Transient*) e.TShape() ).second )
+      if ( !edgeIsSafe ) // && !noSafeTShapes.insert((const Standard_Transient*) e.TShape() ).second )
         isSafe = false;
     }
     return isSafe;
@@ -3135,7 +3135,7 @@ namespace
     if ( !_vIntNodes.empty() )
       return false;
 
-    const int ijk[3] = { _i, _j, _k };
+    const int ijk[3] = { (int)_i, (int)_j, (int)_k };
     F_IntersectPoint curIntPnt;
 
     // consider a cell to be in a hole if all links in any direction

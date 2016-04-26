@@ -132,8 +132,8 @@ ostream & StdMeshers_Geometric1D::SaveTo(ostream & save)
 istream & StdMeshers_Geometric1D::LoadFrom(istream & load)
 {
   bool isOK = true;
-  isOK = (load >> _begLength);
-  isOK = (load >> _ratio);
+  isOK = (bool)(load >> _begLength);
+  isOK = (bool)(load >> _ratio);
 
   if (isOK)
     StdMeshers_Reversible1D::LoadFrom( load );

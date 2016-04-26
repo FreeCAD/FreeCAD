@@ -408,7 +408,7 @@ namespace {
       if ( nbQuads > 0 )
         toRemove = helper->IsStructured( faceSm );
       else
-        toRemove = quadAlgo->CheckNbEdges( *helper->GetMesh(),
+        toRemove = (bool)quadAlgo->CheckNbEdges( *helper->GetMesh(),
                                            faceSm->GetSubShape() );
       nbRemoved += toRemove;
       if ( toRemove )

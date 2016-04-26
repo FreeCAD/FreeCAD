@@ -41,7 +41,7 @@
 #ifdef NO_CAS_CATCH
 #include <Standard_ErrorHandler.hxx>
 #endif
-
+#include <Expr_NamedUnknown.hxx>
 using namespace std;
 
 namespace StdMeshers {

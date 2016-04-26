@@ -359,9 +359,9 @@ namespace
           _edge2sides[ side.getEdge( (EQuadEdge) e ) ].erase( &side );
     }
     //!< store reason of error
+    SMESH_Comment      _error;
     int error(const SMESH_Comment& reason) { _error = reason; return 0; }
 
-    SMESH_Comment      _error;
 
     list< _BlockSide > _allSides;
     vector< _Block >   _blocks;

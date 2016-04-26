@@ -104,9 +104,9 @@ ostream & StdMeshers_LengthFromEdges::SaveTo(ostream & save)
 
 istream & StdMeshers_LengthFromEdges::LoadFrom(istream & load)
 {
-  bool isOK = true;
+  bool isOK = (bool)true;
   int a;
-  isOK = (load >> a);
+  isOK = (bool)(load >> a);
   if (isOK) 
     this->_mode = a;
   else 

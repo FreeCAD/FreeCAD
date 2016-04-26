@@ -992,7 +992,7 @@ ostream & StdMeshers_Adaptive1D::SaveTo(ostream & save)
 istream & StdMeshers_Adaptive1D::LoadFrom(istream & load)
 {
   int dummyParam;
-  bool isOK = (load >> myMinSize >> myMaxSize >> myDeflection >> dummyParam >> dummyParam);
+  bool isOK = (bool)(load >> myMinSize >> myMaxSize >> myDeflection >> dummyParam >> dummyParam);
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
   return load;

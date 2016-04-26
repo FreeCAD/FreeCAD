@@ -26,14 +26,15 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_ProxyMesh.hxx"
-
+#include <TColgp_HArray1OfPnt.hxx>
+#include <TColgp_HArray1OfVec.hxx>
 class SMESH_Mesh;
 class SMESH_ElementSearcher;
 class SMDS_MeshElement;
 class SMDS_MeshNode;
 class SMDS_MeshFace;
-class Handle_TColgp_HArray1OfPnt;
-class Handle_TColgp_HArray1OfVec;
+// class Handle_TColgp_HArray1OfPnt;
+// class Handle_TColgp_HArray1OfVec;
 class gp_Pnt;
 class gp_Vec;
 

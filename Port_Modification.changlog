@@ -1,6 +1,49 @@
 ** This is OCCT 7/Salome 7.7.1 Changelog
 ** Current compilation platform: MacOS X El Capitan (10.11.3) XCode 7.3
 
+** StdMeshers_QuadrangleParams.cpp & StdMeshers_Reversible1D.cpp & StdMeshers_SegmentLengthAroundVertex.cpp & StdMeshers_StartEndLength.cpp
+	isOK cast to bool
+
+** StdMeshers_Prism_3D.cpp
+	toRemove = quadAlgo->CheckNbEdges( *helper->GetMesh() add bool cast
+
+** StdMeshers_LengthFromEdges.cpp & StdMeshers_LocalLength.cpp & StdMeshers_MaxElementArea.cpp & StdMeshers_MaxElementVolume.cpp &
+** StdMeshers_MaxLength.cpp & StdMeshers_NumberOfLayers.cpp & StdMeshers_NumberOfSegments.cpp
+	cast isOK to bool
+
+** StdMeshers_HexaFromSkin_3D.cpp
+	declare SMESH_Comment      _error; before error function declaration
+
+** StdMeshers_Geometric1D.cpp
+	cast isOK to bool
+
+** StdMeshers_FixedPoints1D.cpp
+	cast isOK to bool
+
+** StdMeshers_Distribution.cpp
+	myVars.ChangeValue( 1 ) = new Expr_NamedUnknown( "t" ); // Expr_NamedUnknown
+	#include <Expr_NamedUnknown.hxx> added
+
+** StdMeshers_Deflection1D.cpp
+	cast isOK to bool
+
+** StdMeshers_CompositeHexa_3D.hxx
+	define list as std::list
+
+** StdMeshers_CartesianParameters3D.cpp
+	cast to bool from ok variable
+
+** StdMeshers_Cartesian_3D.cpp
+	WARNING Cast error removing test
+		1372 and 1412	
+	Add cast to int 3138
+
+** StdMeshers_Adaptive1D.cpp 
+	Casting issue 		bool isOK = (load >> myMinSize >> myMaxSize >> myDeflection >> dummyParam >> dummyParam);
+				bool isOK = (bool)(load >> myMinSize >> myMaxSize >> myDeflection >> dummyParam >> dummyParam);
+** StdMeshers_Arithmetic1D.cpp
+	Casting issue to all isOK variable -> add (bool)
+
 ** SMESH_MeshEditor.cpp
 	WARNING 4595: replace isSingleNode.swap by std::swap
 	Add cast in line 8531 int nbNodes[]  = { (int)nSide[0].size(), (int)nSide[1].size() };

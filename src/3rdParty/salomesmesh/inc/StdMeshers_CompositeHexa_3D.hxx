@@ -58,7 +58,7 @@ public:
 private:
 
   bool findBoxFaces( const TopoDS_Shape&    shape,
-                     list< _QuadFaceGrid >& boxFaceContainer,
+                     std::list< _QuadFaceGrid >& boxFaceContainer,
                      SMESH_Mesh&            mesh,
                      _QuadFaceGrid * &      fBottom,
                      _QuadFaceGrid * &      fTop,

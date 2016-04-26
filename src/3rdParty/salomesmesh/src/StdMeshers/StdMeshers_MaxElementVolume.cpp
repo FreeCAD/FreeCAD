@@ -116,7 +116,7 @@ istream & StdMeshers_MaxElementVolume::LoadFrom(istream & load)
 {
   bool isOK = true;
   double a;
-  isOK = (load >> a);
+  isOK = (bool)(load >> a);
   if (isOK)
     this->_maxVolume = a;
   else 

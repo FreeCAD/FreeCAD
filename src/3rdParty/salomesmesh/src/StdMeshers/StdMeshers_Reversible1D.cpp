@@ -85,14 +85,14 @@ std::istream & StdMeshers_Reversible1D::LoadFrom(std::istream & load)
   bool isOK;
   int intVal;
 
-  isOK = (load >> intVal);
+  isOK = (bool)(load >> intVal);
   if (isOK && intVal > 0) {
     _edgeIDs.reserve( intVal );
     for (int i = 0; i < _edgeIDs.capacity() && isOK; i++) {
-      isOK = (load >> intVal);
+      isOK = (bool)(load >> intVal);
       if ( isOK ) _edgeIDs.push_back( intVal );
     }
-    isOK = (load >> _objEntry);
+    isOK = (bool)(load >> _objEntry);
   }
 
   return load;

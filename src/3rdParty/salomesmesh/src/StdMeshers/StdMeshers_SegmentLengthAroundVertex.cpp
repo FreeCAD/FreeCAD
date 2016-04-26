@@ -117,7 +117,7 @@ istream & StdMeshers_SegmentLengthAroundVertex::LoadFrom(istream & load)
 {
   bool isOK = true;
   double a;
-  isOK = (load >> a);
+  isOK = (bool)(load >> a);
   if (isOK)
     this->_length = a;
   else
