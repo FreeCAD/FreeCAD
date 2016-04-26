@@ -155,7 +155,8 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     //should this be: doCommand(Doc,"App..Feat..Edges = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    //Note: Hatch is not added to the Page Views.  DVP::getHatches gathers them via PartView property when needed.  Can't remember why!
+    //doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
 
     //Horrible hack to force Tree update  ??still required??
