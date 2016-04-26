@@ -1,14 +1,14 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.04
+version 2.05
 QT theme (stylesheet) specially developed for FreeCAD (http://www.freecadweb.org/).
 It might work with other software that uses QT styling.
 
 
 LICENSE
 ============================================================================================================
-Copyright (c) 2016 Pablo Gil Fernández
+Copyright (c) 2016 Pablo Gil FernÃ¡ndez
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.
@@ -93,6 +93,7 @@ Main window
 ==================================================================================================*/
 QMainWindow,
 QDialog,
+QDockWidget,
 QToolBar  {
     background-color: #f5f5f5; /* main background color */
 }
@@ -156,6 +157,38 @@ QMenu::separator {
 
 QMenu::indicator:non-exclusive:checked {
     color: white;
+}
+
+/* Fix for elements inside a drop-down menu */
+QMenu QRadioButton,
+QMenu QCheckBox,
+QMenu QPushButton,
+QMenu QToolButton {
+    color: black; /* same as regular QRadioButton and QCheckBox */
+}
+
+QMenu QRadioButton:hover,
+QMenu QCheckBox:hover,
+QMenu QPushButton:hover,
+QMenu QToolButton:hover,
+QMenu QPushButton:pressed,
+QMenu QToolButton:pressed,
+QMenu QPushButton:selected,
+QMenu QToolButton:selected {
+    color: white;
+    background-color: #daa116; /* same as QMenu::item:selected and QMenu::item:pressed */
+}
+
+QMenu QRadioButton:disabled,
+QMenu QCheckBox:disabled {
+    color: #6e6e6e;
+}
+
+QMenu QRadioButton::indicator:disabled,
+QMenu QCheckBox::indicator:disabled {
+    color: #6e6e6e;
+    background-color: transparent;
+    border: 1px solid #6e6e6e;
 }
 
 
@@ -935,14 +968,6 @@ QSplitter::handle {
     padding: 0px;
 }
 
-QSplitter::handle:vertical {
-    background-image: url(qss:images/splitter_horizontal_dark.png);
-    background-position: center center;
-    background-repeat: none;
-    margin: 2px 4px 2px 4px;
-    height: 2px;
-}
-
 QSplitter::handle:horizontal {
     background-image: url(qss:images/splitter_vertical_dark.png);
     background-position: center center;
@@ -951,7 +976,15 @@ QSplitter::handle:horizontal {
     width: 2px;
 }
 
-/* Similar to the splitter is the following window separator: */
+QSplitter::handle:vertical {
+    background-image: url(qss:images/splitter_horizontal_dark.png);
+    background-position: center center;
+    background-repeat: none;
+    margin: 2px 4px 2px 4px;
+    height: 2px;
+}
+
+/* Similar to the splitter is the following window separator (but horizontal/vertical is on the opposite way) */
 QMainWindow::separator {
     background-position: center center;
     background-repeat: none;
@@ -1554,12 +1587,9 @@ QRadioButton::indicator:pressed {
 }
 
 QRadioButton::indicator:disabled {
-    border: 1px solid #6e6e6e;
-}
-
-QRadioButton::indicator:disabled {
     color: #6e6e6e;
     background-color: transparent;
+    border: 1px solid #6e6e6e;
 }
 
 QRadioButton:focus {
@@ -1884,6 +1914,17 @@ QToolBar > QToolButton::menu-arrow:hover {
 
 QToolBar > QToolButton::menu-arrow:open {
     background-image: url(qss:images/down_arrow_lighter.png);
+}
+
+/* when QToolButton is checked: */
+QToolButton:checked {
+    border: 1px solid #e3b64d;
+    background-color: rgba(124,171,249,60); /* transparency for #e3b64d color */
+}
+
+QToolButton:checked:hover {
+    border: 1px solid #e3b64d;
+    background-color: rgba(124,171,249,80); /* transparency for #e3b64d color */
 }
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension" */
