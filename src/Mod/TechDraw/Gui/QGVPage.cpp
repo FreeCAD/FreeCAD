@@ -56,6 +56,7 @@
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
+#include "../App/DrawHatch.h"
 
 
 #include "QGIDrawingTemplate.h"
