@@ -332,6 +332,8 @@ int MDIViewPage::attachView(App::DocumentObject *obj)
     } else if(obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()) ) {
         TechDraw::DrawViewClip *viewClip = dynamic_cast<TechDraw::DrawViewClip *>(obj);
         qview = m_view->addDrawViewClip(viewClip);
+    } else if(obj->getTypeId().isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
+        //Hatch is not attached like other Views (since it isn't really a View)
     } else {
         Base::Console().Log("Logic Error - Unknown view type in MDIViewPage::attachView\n");
     }
