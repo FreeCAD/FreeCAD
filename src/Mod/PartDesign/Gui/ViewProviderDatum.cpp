@@ -87,9 +87,9 @@ ViewProviderDatum::ViewProviderDatum()
     pShapeSep->ref();
     pPickStyle = new SoPickStyle();
     pPickStyle->ref();
-    
+
     DisplayMode.setStatus(App::Property::Hidden, true);
-    
+
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
@@ -349,15 +349,19 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
         }
     }
 
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(this->getActiveView())->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-    SbBox3f bbox = getRelevantBoundBox (bboxAction, objs);
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+    if(view){
+       Gui::View3DInventorViewer* viewer = view->getViewer();
+       SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+       SbBox3f bbox = getRelevantBoundBox (bboxAction, objs);
 
-    if ( bbox.getVolume () < Precision::Confusion() ) {
-        bbox.extendBy ( defaultBoundBox () );
+       if ( bbox.getVolume () < Precision::Confusion() ) {
+           bbox.extendBy ( defaultBoundBox () );
+       }
+       return bbox;
+    } else {
+       return defaultBoundBox();
     }
-
-    return bbox;
 }
 
 SbBox3f ViewProviderDatum::getRelevantBoundBox (
