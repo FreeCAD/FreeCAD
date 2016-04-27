@@ -59,6 +59,7 @@ public:
 
     PyObject *getPyObject(void);
     void setPyObject(PyObject *);
+    int getSize();
 
 protected:
     void setupSettings();
@@ -67,7 +68,7 @@ protected:
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
     std::vector<View3DInventorViewer*> _viewer;
-    PyObject* _viewerPy;
+    PyObject *_viewerPy;
 };
 
 class AbstractSplitViewPy : public Py::PythonExtension<AbstractSplitViewPy>
@@ -89,6 +90,8 @@ public:
     Py::Object viewTop(const Py::Tuple&);
     Py::Object viewAxometric(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
+    Py::Object sequence_item(ssize_t);
+    int sequence_length();
 
 private:
     AbstractSplitView* _view;

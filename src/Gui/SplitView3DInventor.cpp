@@ -46,6 +46,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
 {
+    _viewerPy = 0;
     // important for highlighting 
     setMouseTracking(true);
 }
@@ -373,22 +374,25 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 
 PyObject *AbstractSplitView::getPyObject(void)
 {
-    // static bool init = false;
-    // if (!init) {
-    if (!_viewerPy)
-    {
-        // init = true;
+    static bool init = false;
+    if (!init) {
+        init = true;
         AbstractSplitViewPy::init_type();
-        _viewerPy = new AbstractSplitViewPy(this);
     }
+    if (!_viewerPy)
+        _viewerPy = new AbstractSplitViewPy(this);
     Py_INCREF(_viewerPy);
     return _viewerPy;
-    
 }
 
 void AbstractSplitView::setPyObject(PyObject *)
 {
     throw Base::AttributeError("Attribute is read-only");
+}
+
+int AbstractSplitView::getSize()
+{
+    return _viewer.size();
 }
 
 // ------------------------------------------------------
@@ -399,6 +403,7 @@ void AbstractSplitViewPy::init_type()
     behaviors().doc("Python binding class for the Inventor viewer class");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
+    behaviors().supportSequenceType();
 
     add_varargs_method("fitAll",&AbstractSplitViewPy::fitAll,"fitAll()");
     add_varargs_method("viewBottom",&AbstractSplitViewPy::viewBottom,"viewBottom()");
@@ -408,7 +413,7 @@ void AbstractSplitViewPy::init_type()
     add_varargs_method("viewRight",&AbstractSplitViewPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&AbstractSplitViewPy::viewTop,"viewTop()");
     add_varargs_method("viewAxometric",&AbstractSplitViewPy::viewAxometric,"viewAxometric()");
-    add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer()");
+    add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer(index)");
 }
 
 AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
@@ -625,6 +630,18 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
+{
+    if (viewIndex >= _view->getSize() or viewIndex < 0)
+        throw Py::Exception("Index out of range");
+    PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
+    return Py::Object(viewer);
+}
+
+int AbstractSplitViewPy::sequence_length()
+{
+    return _view->getSize();
+}
 // ------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
