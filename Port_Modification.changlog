@@ -1,14 +1,14 @@
 ** This is OCCT 7/Salome 7.7.1 Changelog
 
 ** ALERT into ImportStep.cpp look for vejmarie -> needed to disable code for C++ class issues
-** ALERT into TopoShape.cpp convertToMatrix look for vejmarie -> needed to disable code for unknown parameter
-** ALERT into Tools.cpp look for vejmarie -> needed to disable code for unknown parameter
 ** ALERT into MeshPart/App/CMakeList.txt include directory to VTK is hardcoded
 ** ALERT into Import/Gui/CMakeList.txt include directory to VTK is hardcoded
 ** ALERT into Fem/App/CMakeList.txt include directory to VTK/NGLIB is hardcoded
 ** ALERT into Fem/Gui/CMakeList.txt include directory to VTK/NGLIB is hardcoded
 ** ALERT FemMesh.cpp some code is disabled
 ** ALERT HypothesisPy.cpp some code is disabled
+
+** into TopoShape.cpp convertToMatrix call to class functions instead of using internal structure which are undeclared currently
 
 ** into CrossSection.h
 	Remove declaration of class TopTools_IndexedMapOfShape;
