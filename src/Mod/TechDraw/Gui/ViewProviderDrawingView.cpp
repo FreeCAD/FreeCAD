@@ -49,7 +49,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
-    sPixmap = "View";
+    sPixmap = "TechDraw_Tree_View";
 
     // Do not show in property editor
     //DisplayMode.StatusBits.set(3, true);
@@ -134,4 +134,3 @@ TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
 }
-

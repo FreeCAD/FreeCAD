@@ -770,7 +770,7 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
     sToolTipText  = QT_TR_NOOP("Inserts a Draft WB object into the active drawing");
     sWhatsThis    = "TechDraw_DraftView";
     sStatusTip    = QT_TR_NOOP("Inserts a Draft WB object into the active drawing");
-    sPixmap       = "actions/drawing-draft-view";
+    sPixmap       = "actions/techdraw-draft-view";
 }
 
 void CmdTechDrawDraftView::activated(int iMsg)
@@ -821,7 +821,7 @@ CmdTechDrawExportPage::CmdTechDrawExportPage()
     sToolTipText  = QT_TR_NOOP("Export a page to an SVG file");
     sWhatsThis    = "TechDraw_ExportPage";
     sStatusTip    = QT_TR_NOOP("Export a page to an SVG file");
-    sPixmap       = "actions/saveSVG";
+    sPixmap       = "actions/techdraw-saveSVG";
 }
 
 void CmdTechDrawExportPage::activated(int iMsg)

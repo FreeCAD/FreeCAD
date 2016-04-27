@@ -95,25 +95,25 @@ void ViewProviderProjGroupItem::updateData(const App::Property* prop)
         //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
 
         if(strcmp(projType.c_str(), "Front") == 0) {
-            sPixmap = "ProjFront";
+            sPixmap = "TechDraw_ProjFront";
         } else if(strcmp(projType.c_str(), "Rear") == 0) {
-            sPixmap = "ProjRear";
+            sPixmap = "TechDraw_ProjRear";
         } else if(strcmp(projType.c_str(), "Right") == 0) {
-            sPixmap = "ProjRight";
+            sPixmap = "TechDraw_ProjRight";
         } else if(strcmp(projType.c_str(), "Left") == 0) {
-           sPixmap = "ProjLeft";
+           sPixmap = "TechDraw_ProjLeft";
         } else if(strcmp(projType.c_str(), "Top") == 0) {
-           sPixmap = "ProjTop";
+           sPixmap = "TechDraw_ProjTop";
         } else if(strcmp(projType.c_str(), "Bottom") == 0) {
-           sPixmap = "ProjBottom";
+           sPixmap = "TechDraw_ProjBottom";
         } else if(strcmp(projType.c_str(), "FrontTopLeft") == 0) {
-           sPixmap = "ProjFrontTopLeft";
+           sPixmap = "TechDraw_ProjFrontTopLeft";
         } else if(strcmp(projType.c_str(), "FrontTopRight") == 0) {
-           sPixmap = "ProjFrontTopRight";
+           sPixmap = "TechDraw_ProjFrontTopRight";
         } else if(strcmp(projType.c_str(), "FrontBottomRight") == 0) {
-           sPixmap = "ProjFrontBottomRight";
+           sPixmap = "TechDraw_ProjFrontBottomRight";
         } else if(strcmp(projType.c_str(), "FrontBottomLeft") == 0) {
-           sPixmap = "ProjFrontBottomLeft";
+           sPixmap = "TechDraw_ProjFrontBottomLeft";
         }
     }
  }

@@ -52,7 +52,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTemplate, Gui::ViewProviderDocumentObje
 
 ViewProviderTemplate::ViewProviderTemplate()
 {
-    sPixmap = "PageTemplate";
+    sPixmap = "TechDraw_Tree_PageTemplate";
 }
 
 ViewProviderTemplate::~ViewProviderTemplate()

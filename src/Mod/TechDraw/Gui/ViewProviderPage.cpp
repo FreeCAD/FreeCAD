@@ -75,7 +75,7 @@ ViewProviderPage::ViewProviderPage()
   : view(0),
     restoreState(false)
 {
-    sPixmap = "Page";
+    sPixmap = "TechDraw_Tree_Page";
 
 //    ADD_PROPERTY(HintScale,(10.0));
 //    ADD_PROPERTY(HintOffsetX,(10.0));
@@ -192,7 +192,7 @@ bool ViewProviderPage::showMDIViewPage()
             (pcObject->getDocument());
         view = new MDIViewPage(this, doc, Gui::getMainWindow());
         view->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromAscii("[*]"));
-        view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/techdraw-landscape"));
+        view->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
         view->updateDrawing(true);
      //   view->updateTemplate(true);   //TODO: I don't think this is necessary?  Ends up triggering a reload of SVG template, but the MDIViewPage constructor does too.
         Gui::getMainWindow()->addWindow(view);

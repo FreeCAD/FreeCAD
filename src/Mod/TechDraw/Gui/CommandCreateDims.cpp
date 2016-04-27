@@ -140,7 +140,7 @@ CmdTechDrawNewDimension::CmdTechDrawNewDimension()
     sToolTipText    = QT_TR_NOOP("Insert a new dimension");
     sWhatsThis      = "TechDraw_NewDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Dimension";
+    sPixmap         = "TechDraw_Dimension";
 }
 
 void CmdTechDrawNewDimension::activated(int iMsg)
@@ -276,7 +276,7 @@ CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
     sToolTipText    = QT_TR_NOOP("Insert a new radius dimension feature for the selected view");
     sWhatsThis      = "TechDraw_NewRadiusDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Dimension_Radius";
+    sPixmap         = "TechDraw_Dimension_Radius";
 }
 
 void CmdTechDrawNewRadiusDimension::activated(int iMsg)
@@ -369,7 +369,7 @@ CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
     sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature for the selected view");
     sWhatsThis      = "TechDraw_NewDiameterDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Dimension_Diameter";
+    sPixmap         = "TechDraw_Dimension_Diameter";
 }
 
 void CmdTechDrawNewDiameterDimension::activated(int iMsg)
@@ -462,7 +462,7 @@ CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
     sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
     sWhatsThis      = "TechDraw_NewLengthDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Dimension_Length";
+    sPixmap         = "TechDraw_Dimension_Length";
 }
 
 void CmdTechDrawNewLengthDimension::activated(int iMsg)
@@ -561,7 +561,7 @@ CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
     sToolTipText    = QT_TR_NOOP("Insert a new horizontal-distance dimension");
     sWhatsThis      = "TechDraw_NewDistanceXDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Dimension_Horizontal";
+    sPixmap         = "TechDraw_Dimension_Horizontal";
 }
 
 void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
@@ -658,7 +658,7 @@ CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
     sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
     sWhatsThis      = "TechDraw_NewDistanceYDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Dimension_Vertical";
+    sPixmap         = "TechDraw_Dimension_Vertical";
 }
 
 void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
@@ -754,7 +754,7 @@ CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
     sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
     sWhatsThis      = "TechDraw_NewAngleDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Dimension_Angle";
+    sPixmap         = "TechDraw_Dimension_Angle";
 }
 
 void CmdTechDrawNewAngleDimension::activated(int iMsg)
@@ -842,7 +842,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sToolTipText    = QT_TR_NOOP("Link a dimension to 3D geometry");
     sWhatsThis      = "TechDraw_LinkDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "LinkDimension";
+    sPixmap         = "TechDraw_Dimension_Link";
 }
 
 void CmdTechDrawLinkDimension::activated(int iMsg)

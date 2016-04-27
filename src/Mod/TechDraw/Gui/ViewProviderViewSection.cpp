@@ -53,7 +53,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderViewSection, TechDrawGui::ViewProviderV
 
 ViewProviderViewSection::ViewProviderViewSection()
 {
-    sPixmap = "Section";
+    sPixmap = "TechDraw_Tree_Section";
 }
 
 ViewProviderViewSection::~ViewProviderViewSection()

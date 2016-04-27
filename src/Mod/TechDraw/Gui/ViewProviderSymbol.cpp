@@ -50,7 +50,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderSymbol, Gui::ViewProviderDocumentObject
 
 ViewProviderSymbol::ViewProviderSymbol()
 {
-    sPixmap = "Symbol";
+    sPixmap = "TechDraw_Tree_Symbol";
 }
 
 ViewProviderSymbol::~ViewProviderSymbol()

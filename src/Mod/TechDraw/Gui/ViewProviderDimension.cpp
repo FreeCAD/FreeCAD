@@ -50,7 +50,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDra
 
 ViewProviderDimension::ViewProviderDimension()
 {
-    sPixmap = "Dimension";
+    sPixmap = "TechDraw_Dimension";
 }
 
 ViewProviderDimension::~ViewProviderDimension()
@@ -80,15 +80,15 @@ void ViewProviderDimension::updateData(const App::Property* p)
 {
     if (p == &(getViewObject()->Type)) {
         if (getViewObject()->Type.isValue("DistanceX")) {
-            sPixmap = "Dimension_Horizonatal";
+            sPixmap = "TechDraw_Dimension_Horizonatal";
         } else if (getViewObject()->Type.isValue("DistanceY")) {
-            sPixmap = "Dimension_Vertical";
+            sPixmap = "TechDraw_Dimension_Vertical";
         } else if (getViewObject()->Type.isValue("Radius")) {
-            sPixmap = "Dimension_Radius";
+            sPixmap = "TechDraw_Dimension_Radius";
         } else if (getViewObject()->Type.isValue("Diameter")) {
-            sPixmap = "Dimension_Diameter";
+            sPixmap = "TechDraw_Dimension_Diameter";
         } else if (getViewObject()->Type.isValue("Angle")) {
-            sPixmap = "Dimension_Angle";
+            sPixmap = "TechDraw_Dimension_Angle";
         }
     }
 }
