@@ -63,7 +63,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderProjGroup, Gui::ViewProviderDocumentObj
 
 ViewProviderProjGroup::ViewProviderProjGroup()
 {
-    sPixmap = "ProjGroup";
+    sPixmap = "TechDraw_Tree_ProjGroup";
 }
 
 ViewProviderProjGroup::~ViewProviderProjGroup()
@@ -92,7 +92,7 @@ std::vector<std::string> ViewProviderProjGroup::getDisplayModes(void) const
 void ViewProviderProjGroup::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
- 
+
     if(prop == &(getObject()->Scale) ||
        prop == &(getObject()->ScaleType) ||
        prop == &(getObject()->Views) ||
@@ -101,11 +101,11 @@ void ViewProviderProjGroup::updateData(const App::Property* prop)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgProjGroup *projDlg = qobject_cast<TaskDlgProjGroup *>(dlg);
 
-        if (projDlg && 
+        if (projDlg &&
             projDlg->getViewProvider() == dynamic_cast<const ViewProviderProjGroup *>(getObject()) ) {
             projDlg->update();
         }
-    } 
+    }
 
  }
 

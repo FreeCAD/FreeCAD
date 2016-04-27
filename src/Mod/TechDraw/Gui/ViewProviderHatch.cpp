@@ -50,7 +50,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderHatch, Gui::ViewProviderDocumentObject)
 
 ViewProviderHatch::ViewProviderHatch()
 {
-    sPixmap = "Hatch";
+    sPixmap = "TechDraw_Tree_Hatch";
 }
 
 ViewProviderHatch::~ViewProviderHatch()
