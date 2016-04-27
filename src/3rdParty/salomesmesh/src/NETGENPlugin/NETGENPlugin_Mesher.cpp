@@ -283,7 +283,6 @@ void NETGENPlugin_Mesher::SetParameters(const NETGENPlugin_Hypothesis* hyp)
     CORBA::Object_var anObject = smeshGen_i->GetNS()->Resolve("/myStudyManager");
     SALOMEDS::StudyManager_var aStudyMgr = SALOMEDS::StudyManager::_narrow(anObject);
     SALOMEDS::Study_var myStudy = aStudyMgr->GetStudyByID(hyp->GetStudyId());
-    
     const NETGENPlugin_Hypothesis::TLocalSize localSizes = hyp->GetLocalSizesAndEntries();
     NETGENPlugin_Hypothesis::TLocalSize::const_iterator it = localSizes.begin();
     for (it ; it != localSizes.end() ; it++)

@@ -209,7 +209,6 @@ Mesh::MeshObject* Mesher::createMesh() const
     // Set new cout
     MeshingOutput stdcout;
     std::streambuf* oldcout = std::cout.rdbuf(&stdcout);
-
     // Apply the hypothesis and create the mesh
     mesh->ShapeToMesh(shape);
     for (int i=0; i<hyp;i++)
@@ -362,15 +361,20 @@ Mesh::MeshObject* Mesher::createMesh() const
     }
 
     // clean up
-    delete meshgen;
+    // delete meshgen;
 
-    TopoDS_Shape aNull;
-    mesh->ShapeToMesh(aNull);
+    // throw Base::Exception("CLEANING THE MESH");
+    TopoDS_Shape aNullShape;
+    aNullShape.Nullify();
+    mesh->ShapeToMesh(aNullShape);
+
     mesh->Clear();
+
     delete mesh;
     for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
-        delete *it;
+         delete *it;
 
+    delete meshgen;
     MeshCore::MeshKernel kernel;
     kernel.Adopt(verts, faces, true);
 

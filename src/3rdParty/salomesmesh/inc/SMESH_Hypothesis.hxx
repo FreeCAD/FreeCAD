@@ -87,7 +87,12 @@ public:
    *        parameters of hypothesis.
    */
   virtual bool DataDependOnParams() const { return false; }
+  void  SetParameters(const char *theParameters);
+  char* GetParameters() const;
 
+  void SetLastParameters(const char* theParameters);
+  char* GetLastParameters() const;
+  void ClearParameters();
   /*!
    * \brief Initialize my parameter values by the mesh built on the geometry
    *  \param theMesh - the built mesh
@@ -132,8 +137,8 @@ protected:
 
 private:
   std::string _libName; // name of library of plug-in Engine
-  //std::string _parameters;
-  //std::string _lastParameters;
+  std::string _parameters;
+  std::string _lastParameters;
 };
 
 #endif
