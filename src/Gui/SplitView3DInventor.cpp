@@ -414,6 +414,7 @@ void AbstractSplitViewPy::init_type()
     add_varargs_method("viewTop",&AbstractSplitViewPy::viewTop,"viewTop()");
     add_varargs_method("viewAxometric",&AbstractSplitViewPy::viewAxometric,"viewAxometric()");
     add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer(index)");
+    add_varargs_method("close",&AbstractSplitViewPy::close,"close()");
 }
 
 AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
@@ -632,6 +633,7 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
 
 Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
 {
+    testExistence();
     if (viewIndex >= _view->getSize() or viewIndex < 0)
         throw Py::Exception("Index out of range");
     PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
@@ -641,6 +643,20 @@ Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
 int AbstractSplitViewPy::sequence_length()
 {
     return _view->getSize();
+}
+
+Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    _view->close();
+    if (_view->parentWidget())
+        _view->parentWidget()->deleteLater();
+    _view = 0;
+
+    return Py::None();
 }
 // ------------------------------------------------------
 

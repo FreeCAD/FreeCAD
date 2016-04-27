@@ -91,6 +91,7 @@ public:
     Py::Object viewAxometric(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
     Py::Object sequence_item(ssize_t);
+    Py::Object close(const Py::Tuple&);
     int sequence_length();
 
 private:
