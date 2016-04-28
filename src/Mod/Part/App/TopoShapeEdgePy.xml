@@ -109,6 +109,11 @@ Part.show(s)
 				<UserDocu>Splits the edge at the given parameter values and builds a wire out of it</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="isSeam">
+			<Documentation>
+				<UserDocu>isSeam(Face) - Checks whether the edge is a seam edge.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Tolerance">
 			<Documentation>
 				<UserDocu>Set or get the tolerance of the vertex</UserDocu>
