@@ -235,9 +235,10 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     }
 
     std::string contentStr;
-    if (dimType == "Angle") {
-        contentStr = "%value%\x00b0";
-    } else if (dimType == "Radius") {
+    //if (dimType == "Angle") {
+    //    contentStr = "%value%\x00b0";
+    //} else
+    if (dimType == "Radius") {
         contentStr = "r%value%";
     }
     doCommand(Doc,"App.activeDocument().%s.FormatSpec = '%s'",FeatName.c_str()
@@ -802,9 +803,6 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Angle");
-
-    doCommand(Doc,"App.activeDocument().%s.FormatSpec = '%s'",FeatName.c_str()
-                                                          ,"%value%\u00b0");        // \u00b0 is degree sign
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References2D.setValues(objs, subs);

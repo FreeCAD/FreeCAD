@@ -37,6 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include <Mod/Measure/App/Measurement.h>
 
@@ -195,6 +196,7 @@ std::string  DrawViewDimension::getFormatedValue() const
 {
 
     QString str = QString::fromUtf8(FormatSpec.getStrValue().c_str());
+    double val = std::abs(getDimValue());
 
     QRegExp rx(QString::fromAscii("%(\\w+)%"));                        //any word bracketed by %
     QStringList list;
@@ -207,9 +209,14 @@ std::string  DrawViewDimension::getFormatedValue() const
 
     for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it) {
         if(*it == QString::fromAscii("%value%")){
-            double val = std::abs(getDimValue());
-            str.replace(*it, QString::number(val, 'f', Precision.getValue()) );
-        } else {                                                       //insert new placeholder replacement logic here
+            QString unitVal;
+            if (Type.isValue("Angle")) {
+                unitVal = Base::Quantity(val, Base::Unit::Angle).getUserString();
+            } else {
+                unitVal = Base::Quantity(val, Base::Unit::Length).getUserString();
+            }
+            str.replace(*it, unitVal);
+        } else {                                                       //insert additional placeholder replacement logic here
             str.replace(*it, QString::fromAscii(""));
         }
     }
