@@ -121,6 +121,9 @@ PyMethodDef Application::Methods[] = {
   {"runCommand",              (PyCFunction) Application::sRunCommand,       1,
    "runCommand(string) -> None\n\n"
    "Run command with name"},
+  {"listCommands",               (PyCFunction) Application::sListCommands,1,
+   "listCommands() -> list of strings\n\n"
+   "Returns a list of all commands known to FreeCAD."},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView,   1,
    "deprecated -- use class View"},
   {"hide",                    (PyCFunction) Application::sHide,             1,
@@ -1012,6 +1015,21 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject 
         PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
         return 0;
     }
+}
+
+PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                       // NULL triggers exception 
+
+    std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
+    PyObject* pyList = PyList_New(cmds.size());
+    int i=0;
+    for ( std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it ) {
+        PyObject* str = PyString_FromString((*it)->getName());
+        PyList_SetItem(pyList, i++, str);
+    }
+    return pyList;
 }
 
 PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)

@@ -222,6 +222,7 @@ public:
 
     PYFUNCDEF_S(sRunCommand);
     PYFUNCDEF_S(sAddCommand);
+    PYFUNCDEF_S(sListCommands);
 
     PYFUNCDEF_S(sHide);                     // deprecated
     PYFUNCDEF_S(sShow);                     // deprecated
