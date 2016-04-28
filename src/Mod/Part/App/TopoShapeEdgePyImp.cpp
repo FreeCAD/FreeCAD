@@ -52,6 +52,7 @@
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Vertex.hxx>
+# include <ShapeAnalysis_Edge.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
@@ -626,6 +627,27 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
     return 0;
+}
+
+PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
+{
+    PyObject* face;
+    if (!PyArg_ParseTuple(args, "O!", &TopoShapeFacePy::Type, &face))
+        return 0;
+
+    try {
+        const TopoDS_Edge& e = TopoDS::Edge(this->getTopoShapePtr()->_Shape);
+        const TopoDS_Face& f = TopoDS::Face(static_cast<TopoShapeFacePy*>(face)->getTopoShapePtr()->_Shape);
+
+        ShapeAnalysis_Edge sa;
+        Standard_Boolean ok = sa.IsSeam(e, f);
+        return PyBool_FromLong(ok ? 1 : 0);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* TopoShapeEdgePy::setTolerance(PyObject *args)
