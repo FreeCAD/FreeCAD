@@ -41,6 +41,14 @@ class Document;
 class AlignmentView;
 class View3DInventorViewer;
 
+class PickedPoint {
+public:
+    PickedPoint() {}
+    PickedPoint(const Base::Vector3d& p, const Base::Vector3d& n) : point(p), normal(n) {}
+    Base::Vector3d point;
+    Base::Vector3d normal;
+};
+
 /**
  * The AlignemntGroup class is the base for fixed and movable groups.
  * @author Werner Mayer
@@ -81,7 +89,7 @@ public:
     /**
      * Add a point to an array of picked points.
      */
-    void addPoint(const Base::Vector3d&);
+    void addPoint(const PickedPoint&);
     /**
      * Remove last point from array of picked points.
      */
@@ -93,7 +101,7 @@ public:
     /**
      * Return an array of picked points.
      */
-    const std::vector<Base::Vector3d>& getPoints() const;
+    const std::vector<PickedPoint>& getPoints() const;
     /**
      * Clear all picked points.
      */
@@ -117,7 +125,7 @@ public:
     int count() const;
 
 protected:
-    std::vector<Base::Vector3d> _pickedPoints;
+    std::vector<PickedPoint> _pickedPoints;
     std::vector<Gui::ViewProviderDocumentObject*> _views;
 };
 
@@ -209,7 +217,7 @@ public:
     void slotDeletedObject(const Gui::ViewProvider& Obj);
 
 protected:
-    bool computeAlignment(const std::vector<Base::Vector3d>& unnavPts, const std::vector<Base::Vector3d>& navigPts);
+    bool computeAlignment(const std::vector<PickedPoint>& unnavPts, const std::vector<PickedPoint>& fixPts);
     void continueAlignment();
     void showInstructions();
     /** @name Probe picking */
