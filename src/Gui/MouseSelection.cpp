@@ -266,6 +266,7 @@ void PolyPickerSelection::initialize()
     polyline.setViewer(_pcView3D);
 
     _pcView3D->addGraphicsItem(&polyline);
+    _pcView3D->redraw(); // needed to get an up-to-date image
     _pcView3D->setRenderType(View3DInventorViewer::Image);
     _pcView3D->redraw();
 
