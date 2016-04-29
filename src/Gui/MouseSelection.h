@@ -167,14 +167,14 @@ protected:
 // -----------------------------------------------------------------------------------
 
 /**
- * The brush selection class
+ * The freehand selection class
  * \author Werner Mayer
  */
-class GuiExport BrushSelection : public PolyPickerSelection
+class GuiExport FreehandSelection : public PolyPickerSelection
 {
 public:
-    BrushSelection();
-    virtual ~BrushSelection();
+    FreehandSelection();
+    virtual ~FreehandSelection();
 
     void setClosed(bool c);
 

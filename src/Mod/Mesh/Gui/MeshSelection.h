@@ -72,7 +72,7 @@ protected:
     void setCallback(SoEventCallbackCB *cb);
     std::list<ViewProviderMesh*> getViewProviders() const;
     Gui::View3DInventorViewer* getViewer() const;
-    void prepareBrushSelection(bool,SoEventCallbackCB *cb);
+    void prepareFreehandSelection(bool,SoEventCallbackCB *cb);
     void startInteractiveCallback(Gui::View3DInventorViewer* viewer,SoEventCallbackCB *cb);
     void stopInteractiveCallback(Gui::View3DInventorViewer* viewer);
 
