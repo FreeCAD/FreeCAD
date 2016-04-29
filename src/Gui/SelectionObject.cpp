@@ -43,6 +43,13 @@ SelectionObject::SelectionObject()
 {
 }
 
+SelectionObject::SelectionObject(App::DocumentObject* obj)
+{
+    FeatName = obj->getNameInDocument();
+    DocName = obj->getDocument()->getName();
+    TypeName = obj->getTypeId().getName();
+}
+
 SelectionObject::~SelectionObject()
 {
 }
