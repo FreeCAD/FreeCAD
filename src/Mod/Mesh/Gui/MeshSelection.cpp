@@ -80,6 +80,7 @@ MeshSelection::MeshSelection()
   , onlyVisibleTriangles(false)
   , activeCB(0)
   , selectionCB(0)
+  , ivViewer(0)
 {
     setCallback(selectGLCallback);
 }
@@ -139,8 +140,17 @@ std::list<ViewProviderMesh*> MeshSelection::getViewProviders() const
     return vps;
 }
 
+void MeshSelection::setViewer(Gui::View3DInventorViewer* v)
+{
+    ivViewer = v;
+}
+
 Gui::View3DInventorViewer* MeshSelection::getViewer() const
 {
+    // if a special viewer was set from outside then use this
+    if (ivViewer)
+        return ivViewer;
+
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (!doc) return 0;
     Gui::MDIView* view = doc->getActiveView();
