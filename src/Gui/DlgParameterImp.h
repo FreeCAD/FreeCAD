@@ -49,6 +49,8 @@ public:
     void accept();
     void reject();
 
+    void activateParameterSet(const char*);
+
 protected Q_SLOTS:
     void onChangeParameterSet(int);
     void on_buttonSaveToDisk_clicked();

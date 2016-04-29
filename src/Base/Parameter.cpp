@@ -959,6 +959,34 @@ void ParameterGrp::NotifyAll()
 
 //**************************************************************************
 //**************************************************************************
+// ParameterSerializer
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ParameterSerializer::ParameterSerializer(const std::string& fn)
+  : filename(fn)
+{
+}
+
+ParameterSerializer::~ParameterSerializer()
+{
+}
+
+void ParameterSerializer::SaveDocument(const ParameterManager& mgr)
+{
+    mgr.SaveDocument(filename.c_str());
+}
+
+int ParameterSerializer::LoadDocument(ParameterManager& mgr)
+{
+    return mgr.LoadDocument(filename.c_str());
+}
+
+bool ParameterSerializer::LoadOrCreateDocument(ParameterManager& mgr)
+{
+    return mgr.LoadOrCreateDocument(filename.c_str());
+}
+
+//**************************************************************************
+//**************************************************************************
 // ParameterManager
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -970,7 +998,7 @@ static XercesDOMParser::ValSchemes    gValScheme       = XercesDOMParser::Val_Au
 /** Default construction
   */
 ParameterManager::ParameterManager()
-  : ParameterGrp(), _pDocument(0)
+  : ParameterGrp(), _pDocument(0), paramSerializer(0)
 {
     // initialize the XML system
     Init();
@@ -1036,6 +1064,7 @@ ParameterManager::ParameterManager()
 ParameterManager::~ParameterManager()
 {
     delete _pDocument;
+    delete paramSerializer;
 }
 
 void ParameterManager::Init(void)
@@ -1067,6 +1096,43 @@ void ParameterManager::Terminate(void)
     StrXUTF8::terminate();
     XUTF8Str::terminate();
     XMLPlatformUtils::Terminate();
+}
+
+//**************************************************************************
+// Serializer handling
+
+void ParameterManager::SetSerializer(ParameterSerializer* ps)
+{
+    if (paramSerializer != ps)
+        delete paramSerializer;
+    paramSerializer = ps;
+}
+
+bool ParameterManager::HasSerializer() const
+{
+    return (paramSerializer != 0);
+}
+
+int ParameterManager::LoadDocument()
+{
+    if (paramSerializer)
+        return paramSerializer->LoadDocument(*this);
+    else
+        return -1;
+}
+
+bool ParameterManager::LoadOrCreateDocument()
+{
+    if (paramSerializer)
+        return paramSerializer->LoadOrCreateDocument(*this);
+    else
+        return false;
+}
+
+void ParameterManager::SaveDocument() const
+{
+    if (paramSerializer)
+        paramSerializer->SaveDocument(*this);
 }
 
 //**************************************************************************
