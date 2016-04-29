@@ -1582,6 +1582,32 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
+void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
+{
+    App::Color c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
+    SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+    for (std::size_t index = 0; index < facetTransparency.size(); ++index)
+        cols[index].setValue(c.r, c.g, c.b);
+    pcShapeMaterial->diffuseColor.finishEditing();
+
+    pcShapeMaterial->transparency.setNum(facetTransparency.size());
+    float* tran = pcShapeMaterial->transparency.startEditing();
+    for (std::size_t index = 0; index < facetTransparency.size(); ++index)
+        tran[index] = facetTransparency[index];
+
+    pcShapeMaterial->transparency.finishEditing();
+    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+}
+
+void ViewProviderMesh::resetFacetTransparency()
+{
+    pcMatBinding->value = SoMaterialBinding::OVERALL;
+    App::Color c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    pcShapeMaterial->transparency.setValue(0);
+}
+
 void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
 {
     // Get the attached mesh property

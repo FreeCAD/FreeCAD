@@ -156,6 +156,9 @@ public:
     std::vector<unsigned long> getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
     std::vector<unsigned long> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
     virtual void removeFacets(const std::vector<unsigned long>&);
+    /*! The size of the array must be equal to the number of facets. */
+    void setFacetTransparency(const std::vector<float>&);
+    void resetFacetTransparency();
     //@}
 
 protected:
