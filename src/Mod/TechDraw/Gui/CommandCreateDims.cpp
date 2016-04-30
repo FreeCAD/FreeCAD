@@ -235,9 +235,6 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     }
 
     std::string contentStr;
-    //if (dimType == "Angle") {
-    //    contentStr = "%value%\x00b0";
-    //} else
     if (dimType == "Radius") {
         contentStr = "r%value%";
     }
