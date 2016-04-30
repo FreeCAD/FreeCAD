@@ -37,6 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 
 #include <Mod/Measure/App/Measurement.h>
@@ -87,7 +88,7 @@ DrawViewDimension::DrawViewDimension(void)
 
     ADD_PROPERTY_TYPE(References2D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
     ADD_PROPERTY_TYPE(References3D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"3D Geometry References");
-    ADD_PROPERTY_TYPE(Precision,(2)   ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Precision");
+    ADD_PROPERTY_TYPE(Precision,(2)   ,"Dimension",(App::PropertyType)(App::Prop_None),"Decimal positions to display");
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Dimension",App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(4)    ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
     ADD_PROPERTY_TYPE(CentreLines,(0) ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Center Lines");
@@ -107,6 +108,8 @@ DrawViewDimension::DrawViewDimension(void)
     Scale.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::ReadOnly,true);
     Rotation.setStatus(App::Property::Hidden,true);
+
+    Precision.setValue(Base::UnitsApi::getDecimals());
 
     measurement = new Measure::Measurement();
 }
@@ -198,6 +201,23 @@ std::string  DrawViewDimension::getFormatedValue() const
     QString str = QString::fromUtf8(FormatSpec.getStrValue().c_str());
     double val = std::abs(getDimValue());
 
+    Base::Quantity qVal;
+    qVal.setValue(val);
+    if (Type.isValue("Angle")) {
+        qVal.setUnit(Base::Unit::Angle);
+    } else {
+        qVal.setUnit(Base::Unit::Length);
+    }
+    QString userStr = qVal.getUserString();
+    QStringList userSplit = userStr.split(QString::fromUtf8(" "),QString::SkipEmptyParts);
+    QString displayText;
+    if (!userSplit.isEmpty()) {
+       double valNum = userSplit.front().toDouble();
+       QString valText = QString::number(valNum, 'f', Precision.getValue());
+       QString unitText = userSplit.back();
+       displayText = valText + QString::fromUtf8(" ") + unitText;
+    }
+
     QRegExp rx(QString::fromAscii("%(\\w+)%"));                        //any word bracketed by %
     QStringList list;
     int pos = 0;
@@ -209,13 +229,7 @@ std::string  DrawViewDimension::getFormatedValue() const
 
     for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it) {
         if(*it == QString::fromAscii("%value%")){
-            QString unitVal;
-            if (Type.isValue("Angle")) {
-                unitVal = Base::Quantity(val, Base::Unit::Angle).getUserString();
-            } else {
-                unitVal = Base::Quantity(val, Base::Unit::Length).getUserString();
-            }
-            str.replace(*it, unitVal);
+            str.replace(*it,displayText);
         } else {                                                       //insert additional placeholder replacement logic here
             str.replace(*it, QString::fromAscii(""));
         }
