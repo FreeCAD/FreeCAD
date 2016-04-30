@@ -2091,7 +2091,6 @@ QVariant PropertyFloatListItem::toString(const QVariant& prop) const
         list.append(QLatin1String("..."));
     }
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
-
     return QVariant(text);
 }
 
@@ -2120,6 +2119,8 @@ void PropertyFloatListItem::setValue(const QVariant& value)
         str << *it << ",";
     }
     str << "]";
+    if (data == QString::fromUtf8("[,]"))
+        data = QString::fromUtf8("[]");
     setPropertyValue(data);
 }
 
@@ -2193,6 +2194,8 @@ void PropertyIntegerListItem::setValue(const QVariant& value)
         str << *it << ",";
     }
     str << "]";
+    if (data == QString::fromUtf8("[,]"))
+        data = QString::fromUtf8("[]");
     setPropertyValue(data);
 }
 
