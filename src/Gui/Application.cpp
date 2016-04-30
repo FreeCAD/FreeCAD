@@ -1576,6 +1576,8 @@ void Application::runApplication(void)
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
+    // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
+    mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // check if a single or multiple instances can run
     it = cfg.find("SingleInstance");
