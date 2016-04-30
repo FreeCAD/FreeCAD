@@ -730,6 +730,9 @@ def survey(callback=False):
                     for o in newsels:
                         if o.Object.isDerivedFrom("Part::Feature"):
                             n = o.Object.Label
+                            showUnit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True)
+                            t = ""
+                            u = FreeCAD.Units.Quantity()
                             if not o.HasSubObjects:
                                 # entire object
                                 anno = FreeCAD.ActiveDocument.addObject("App::AnnotationLabel","surveyLabel")
@@ -738,27 +741,29 @@ def survey(callback=False):
                                 else:
                                     anno.BasePosition = o.Object.Shape.BoundBox.Center
                                 FreeCAD.SurveyObserver.labels.append(anno.Name)
-                                t = ""
                                 if o.Object.Shape.Solids:
-                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
-                                    t = t.getUserPreferred()[0]
+                                    u = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
+                                    t = u.getUserPreferred()[0]
                                     t = t.encode("utf8").replace("^3","³")
                                     anno.LabelText = "v " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + t.decode("utf8") + "\n")
                                 elif o.Object.Shape.Faces:
-                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
-                                    t = t.getUserPreferred()[0]
+                                    u = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
+                                    t = u.getUserPreferred()[0]
                                     t = t.encode("utf8").replace("^2","²")
                                     anno.LabelText = "a " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + t.decode("utf8") + "\n")
                                 else:
-                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
-                                    t = t.getUserPreferred()[0]
+                                    u = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
+                                    t = u.getUserPreferred()[0]
                                     t = t.encode("utf8")
                                     anno.LabelText = "l " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t.decode("utf8") + "\n")
                                 if FreeCAD.GuiUp and t:
-                                    QtGui.qApp.clipboard().setText(t)
+                                    if showUnit:
+                                        QtGui.qApp.clipboard().setText(t)
+                                    else:
+                                        QtGui.qApp.clipboard().setText(str(u.Value))
                             else:
                                 # single element(s)
                                 for el in o.SubElementNames:
@@ -772,27 +777,29 @@ def survey(callback=False):
                                         else:
                                             anno.BasePosition = e.BoundBox.Center
                                     FreeCAD.SurveyObserver.labels.append(anno.Name)
-                                    t = ""
                                     if "Face" in el:
-                                        t = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
-                                        t = t.getUserPreferred()[0]
+                                        u = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
+                                        t = u.getUserPreferred()[0]
                                         t = t.encode("utf8").replace("^2","²")
                                         anno.LabelText = "a " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t.decode("utf8")  + "\n")
                                     elif "Edge" in el:
-                                        t = FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
-                                        t = t.getUserPreferred()[0]
+                                        u= FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
+                                        t = u.getUserPreferred()[0]
                                         t = t.encode("utf8")
                                         anno.LabelText = "l " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t.decode("utf8") + "\n")
                                     elif "Vertex" in el:
-                                        t = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
-                                        t = t.getUserPreferred()[0]
+                                        u = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
+                                        t = u.getUserPreferred()[0]
                                         t = t.encode("utf8")
                                         anno.LabelText = "z " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t.decode("utf8") + "\n")
                                     if FreeCAD.GuiUp and t:
-                                        QtGui.qApp.clipboard().setText(t)
+                                        if showUnit:
+                                            QtGui.qApp.clipboard().setText(t)
+                                        else:
+                                            QtGui.qApp.clipboard().setText(str(u.Value))
 
                     FreeCAD.SurveyObserver.selection.extend(newsels)
 
