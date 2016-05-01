@@ -7,10 +7,11 @@
 ** into CrossSection.h
 	Remove declaration of class TopTools_IndexedMapOfShape;
 
-** WARNING INTO ConePyImp.cpp Code commented
+** into ConePyImp.cpp Code commented
 	68:47: error: no viable conversion from 'const handle<Geom_Geometry>' to
       'const handle<Geom_ConicalSurface>'
         const Handle_Geom_ConicalSurface& s = static_cast<const Handle_Geom_ConicalSurface&>
+	use of Handle_Geom_ConicalSurface::DownCast to be compliant with new version of OCC
 
 ** into Part and WB in Geometry.h & PrimitiveFeature.cpp & GeometryCurvePyImp.cpp & BSplineCurvePyImp.cpp & BezierSurfacePyImp.cpp & BSplineSurfacePyImp.cpp 
 	& Tools.h & TopoShapeFacePyImp.cpp & AppPartPy.cpp & ImportIges.cpp & ImportStep.cpp & TopoShape.cpp & AppImportPy.cpp & AppReverseEngineering.cpp &
