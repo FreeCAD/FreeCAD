@@ -1,6 +1,6 @@
 ** This is OCCT 7/Salome 7.7.1 Changelog
 
-** ALERT into ImportStep.cpp look for vejmarie -> needed to disable code for C++ class issues
+** into ImportStep.cpp add missing include file StepRepr_NextAssemblyUsageOccurrence.hxx
 
 ** into TopoShape.cpp convertToMatrix call to class functions instead of using internal structure which are undeclared currently
 

@@ -61,6 +61,7 @@
 #include <StepRepr_AssemblyComponentUsage.hxx>
 #include <StepRepr_AssemblyComponentUsage.hxx>
 #include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
+#include <StepRepr_NextAssemblyUsageOccurrence.hxx>
 #include <Quantity_Color.hxx>
 #include <TCollection_ExtendedString.hxx>
 #include <StepBasic_Product.hxx>
@@ -320,7 +321,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                 if (PDS.IsNull())
                     continue;
                 StepRepr_CharacterizedDefinition aCharDef = PDS->Definition();
-/* vejmarie        
+// vejmarie: HERE
                 Handle(StepRepr_AssemblyComponentUsage) ACU = 
                     Handle(StepRepr_AssemblyComponentUsage)::DownCast(aCharDef.ProductDefinitionRelationship());
                 // PTV 10.02.2003 skip styled item that refer to SHUO
@@ -332,8 +333,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                     Handle(StepRepr_NextAssemblyUsageOccurrence)::DownCast(ACU);
                 if (NAUO.IsNull())
                     continue;
-*/
-        
+// vejmarie: END        
                 TopoDS_Shape aSh;
                 // PTV 10.02.2003 to find component of assembly CORRECTLY
                 STEPConstruct_Tool Tool( WS );
@@ -396,7 +396,6 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
     Handle(Transfer_TransientProcess) TP = TR->TransientProcess();
 
 
-/* vejmarie remove the code for now
 
     STEPConstruct_Tool Tool ( WS );
 
@@ -447,7 +446,6 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
         //TCollection_ExtendedString str ( name->String() );
         //TDataStd_Name::Set ( L, str );
     }
-*/
     return Standard_True;
 #endif
 }
