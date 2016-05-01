@@ -1116,22 +1116,26 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args,PyOb
 
 PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-
     int num_of_views = 1;
+    char* title = nullptr;
     // if one argument (int) is given
-    if (PyArg_ParseTuple(args, "|i", &num_of_views))
+    if (PyArg_ParseTuple(args, "|is", &num_of_views, &title))
     {
         if (num_of_views < 0)
             return NULL;
         else if (num_of_views==1)
         {
             View3DInventor* viewer = new View3DInventor(0, 0);
+            if (title)
+                viewer->setWindowTitle(QString::fromUtf8(title));
             Gui::getMainWindow()->addWindow(viewer);
             return viewer->getPyObject();
         }
         else
         {
             SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, 0, 0);
+            if (title)
+                viewer->setWindowTitle(QString::fromUtf8(title));
             Gui::getMainWindow()->addWindow(viewer);
             return viewer->getPyObject();
         }
