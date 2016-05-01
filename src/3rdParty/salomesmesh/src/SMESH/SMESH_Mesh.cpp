@@ -40,8 +40,9 @@
 #include "SMESH_subMesh.hxx"
 
 #include "utilities.h"
-
+#include "SMESH_Exception.hxx"
 #include "DriverDAT_W_SMDS_Mesh.h"
+#include "DriverDAT_R_SMDS_Mesh.h"
 #include "DriverGMF_Read.hxx"
 #include "DriverGMF_Write.hxx"
 #include "DriverMED_R_SMESHDS_Mesh.h"
@@ -577,6 +578,31 @@ int SMESH_Mesh::STLToMesh(const char* theFileName)
     MESSAGE("STLToMesh - _myMeshDS->NbEdges() = "<<_myMeshDS->NbEdges());
     MESSAGE("STLToMesh - _myMeshDS->NbFaces() = "<<_myMeshDS->NbFaces());
     MESSAGE("STLToMesh - _myMeshDS->NbVolumes() = "<<_myMeshDS->NbVolumes());
+  }
+  return 1;
+}
+
+//=======================================================================
+//function : DATToMesh
+//purpose  :
+//=======================================================================
+
+int SMESH_Mesh::DATToMesh(const char* theFileName)
+{
+  if(MYDEBUG) MESSAGE("DATToMesh - theFileName = "<<theFileName);
+  if(_isShapeToMesh)
+	throw SMESH_Exception(LOCALIZED("a shape to mesh has already been defined"));
+  _isShapeToMesh = true;
+  DriverDAT_R_SMDS_Mesh myReader;
+  myReader.SetMesh(_myMeshDS);
+  myReader.SetFile(theFileName);
+  myReader.SetMeshId(-1);
+  myReader.Perform();
+  if(MYDEBUG){
+	MESSAGE("DATToMesh - _myMeshDS->NbNodes() = "<<_myMeshDS->NbNodes());
+	MESSAGE("DATToMesh - _myMeshDS->NbEdges() = "<<_myMeshDS->NbEdges());
+	MESSAGE("DATToMesh - _myMeshDS->NbFaces() = "<<_myMeshDS->NbFaces());
+	MESSAGE("DATToMesh - _myMeshDS->NbVolumes() = "<<_myMeshDS->NbVolumes());
   }
   return 1;
 }

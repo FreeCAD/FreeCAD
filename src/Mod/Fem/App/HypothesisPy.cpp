@@ -142,7 +142,6 @@ template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 {
     std::string paramName = (std::string)Py::String(args[0]);
-// vejmarie disabled
     hypothesis<SMESH_Hypothesis>()->SetParameters(paramName.c_str());
     return Py::None();
 }
@@ -150,7 +149,6 @@ Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::getParameters(const Py::Tuple& args)
 {
-// vejmarie disabled
     return Py::String(hypothesis<SMESH_Hypothesis>()->GetParameters());
 }
 
@@ -158,7 +156,6 @@ template<class T>
 Py::Object SMESH_HypothesisPy<T>::setLastParameters(const Py::Tuple& args)
 {
     std::string paramName = (std::string)Py::String(args[0]);
-// vejmarie disabled
     hypothesis<SMESH_Hypothesis>()->SetLastParameters(paramName.c_str());
     return Py::None();
 }
@@ -166,14 +163,12 @@ Py::Object SMESH_HypothesisPy<T>::setLastParameters(const Py::Tuple& args)
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::getLastParameters(const Py::Tuple& args)
 {
-// vejmarie disabled
     return Py::String(hypothesis<SMESH_Hypothesis>()->GetLastParameters());
 }
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::clearParameters(const Py::Tuple& args)
 {
-// vejmarie disabled
     hypothesis<SMESH_Hypothesis>()->ClearParameters();
     return Py::None();
 }

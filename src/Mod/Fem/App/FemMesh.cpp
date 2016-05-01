@@ -68,6 +68,8 @@
 #include <StdMeshers_QuadraticMesh.hxx>
 
 # include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shape.hxx>
 
 //to simplify parsing input files we use the boost lib
 #include <boost/tokenizer.hpp>
@@ -526,8 +528,6 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
     std::set<int> result;
 
     Bnd_Box box;
-// vejmarie disable
-/*
     BRepBndLib::Add(solid, box);
     // limit where the mesh node belongs to the solid:
     double limit = box.SquareExtent()/10000.0;
@@ -558,7 +558,6 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
                 result.insert(aNode->GetID());
         }
     }
-*/
     return result;
 }
 
@@ -873,7 +872,7 @@ void FemMesh::read(const char *FileName)
     else if (File.hasExtension("dat") ) {
         // read brep-file
 	// vejmarie disable
-        // myMesh->DATToMesh(File.filePath().c_str());
+        myMesh->DATToMesh(File.filePath().c_str());
     }
     else if (File.hasExtension("bdf") ) {
         // read Nastran-file

@@ -123,6 +123,8 @@ class SMESH_EXPORT SMESH_Mesh
   
   int STLToMesh(const char* theFileName);
 
+  int DATToMesh(const char* theFileName);
+
   int CGNSToMesh(const char* theFileName, const int theMeshIndex, std::string& theMeshName);
   
   SMESH_ComputeErrorPtr GMFToMesh(const char* theFileName,
