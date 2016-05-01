@@ -57,7 +57,9 @@ void View3DInventorViewerPy::init_type()
         "the viewer. It can be used to change the event processing. This must however be\n"
         "done very carefully to not change the user interaction in an unpredictable manner.\n"
     );
-    
+    add_varargs_method("getSceneGraph", &View3DInventorViewerPy::getSceneGraph, "getSceneGraph() -> SoNode");
+    add_varargs_method("setSceneGraph", &View3DInventorViewerPy::setSceneGraph, "setSceneGraph(SoNode)");
+
     add_varargs_method("seekToPoint",&View3DInventorViewerPy::seekToPoint,"seekToPoint(tuple) -> None\n"
      "Initiate a seek action towards the 3D intersection of the scene and the\n"
      "ray from the screen coordinate's point and in the same direction as the\n"
@@ -146,7 +148,6 @@ int View3DInventorViewerPy::setattr(const char * attr, const Py::Object & value)
 
 Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
 {
-
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
@@ -155,6 +156,41 @@ Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
         PyObject* proxy = 0;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", (void*)manager, 0);
         return Py::Object(proxy, true);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+}
+
+Py::Object View3DInventorViewerPy::getSceneGraph(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        SoNode* scene = _viewer->getSceneGraph();
+        PyObject* proxy = 0;
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", (void*)scene, 1);
+        scene->ref();
+        return Py::Object(proxy, true);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+}
+
+Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
+{
+    PyObject* proxy;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &proxy))
+        throw Py::Exception();
+
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+        SoNode* node = static_cast<SoNode*>(ptr);
+        _viewer->setSceneGraph(node);
+        return Py::None();
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
@@ -176,7 +212,6 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
         throw Py::Exception(e.what());
     }
 }
-
 
 Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
 {

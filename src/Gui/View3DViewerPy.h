@@ -55,6 +55,8 @@ public:
     //exposed methods
     Py::Object getSoEventManager(const Py::Tuple&);
     Py::Object getSoRenderManager(const Py::Tuple&);
+    Py::Object getSceneGraph(const Py::Tuple&);
+    Py::Object setSceneGraph(const Py::Tuple&);
 
     Py::Object seekToPoint(const Py::Tuple&);
     Py::Object setFocalDistance(const Py::Tuple& args);
