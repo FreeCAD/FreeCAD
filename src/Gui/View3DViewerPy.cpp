@@ -31,6 +31,8 @@
 #include "View3DViewerPy.h"
 #include <CXX/Objects.hxx>
 #include <Base/Interpreter.h>
+#include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 #include <Gui/View3DInventorViewer.h>
 
 using namespace Gui;
@@ -66,7 +68,7 @@ void View3DInventorViewerPy::init_type()
     );
     add_varargs_method("setFocalDistance",&View3DInventorViewerPy::setFocalDistance,"setFocalDistance(float) -> None\n");
     add_varargs_method("getFocalDistance",&View3DInventorViewerPy::getFocalDistance,"getFocalDistance() -> float\n");
-    
+    add_varargs_method("getPoint", &View3DInventorViewerPy::getPoint, "getPoint(x, y) -> Base::Vector(x,y,z)");
 }
 
 View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
@@ -256,5 +258,26 @@ Py::Object View3DInventorViewerPy::getFocalDistance(const Py::Tuple& args)
     }
     catch(...) {
         throw Py::Exception("Unknown C++ exception");
+    }
+}
+
+Py::Object View3DInventorViewerPy::getPoint(const Py::Tuple& args)
+{
+    short x,y;
+    if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
+        PyErr_Clear();
+        Py::Tuple t(args[0]);
+        x = (int)Py::Int(t[0]);
+        y = (int)Py::Int(t[1]);
+    }
+    try {
+        SbVec3f pt = _viewer->getPointOnScreen(SbVec2s(x,y));
+        return Py::Vector(Base::Vector3f(pt[0], pt[1], pt[2]));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const Py::Exception&) {
+        throw;
     }
 }

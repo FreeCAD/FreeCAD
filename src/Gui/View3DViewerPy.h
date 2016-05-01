@@ -59,6 +59,8 @@ public:
     Py::Object seekToPoint(const Py::Tuple&);
     Py::Object setFocalDistance(const Py::Tuple& args);
     Py::Object getFocalDistance(const Py::Tuple& args);
+    Py::Object getPoint(const Py::Tuple& args);
+
 
 
 private:

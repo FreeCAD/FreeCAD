@@ -245,6 +245,9 @@ public:
     PYFUNCDEF_S(sShowDownloads);
     PYFUNCDEF_S(sShowPreferences);
 
+
+    PYFUNCDEF_S(sCreateViewer);
+
     static PyMethodDef    Methods[]; 
 
 private:
