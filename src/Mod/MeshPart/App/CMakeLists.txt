@@ -11,7 +11,10 @@ endif(BUILD_SMESH)
 if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
 endif(BUILD_FEM_NETGEN)
+
 find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIRS}
@@ -21,7 +24,6 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIR}
-    /opt/local/include/vtk-7.0/
 )
 
 

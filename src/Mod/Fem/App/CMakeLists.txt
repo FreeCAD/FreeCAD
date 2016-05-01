@@ -8,6 +8,8 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
 
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
 
 include_directories(
     ${CMAKE_BINARY_DIR}
@@ -22,7 +24,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
-    /opt/local/include/vtk-7.0
+    ${VTK_INCLUDE_DIR}
     /opt/netgen/include
 )
 

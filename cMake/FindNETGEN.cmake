@@ -39,8 +39,8 @@ IF(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
     ENDIF(NOT NETGENDATA)
 
 ELSE(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
-    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h /usr/include)
-    FIND_LIBRARY(NGLIB_LIBRARIES nglib /usr/lib /usr/local/lib)
+    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h /usr/include /opt/netgen)
+    FIND_LIBRARY(NGLIB_LIBRARIES nglib /usr/lib /usr/local/lib /opt/netgen)
 
     IF(NOT NETGENDATA)
         SET(NETGENDATA /usr/share/netgen/libsrc)
