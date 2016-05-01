@@ -263,7 +263,28 @@ int SMDS_MeshNode::NbNodes() const
 
 double* SMDS_MeshNode::getCoord() const
 {
-  return SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetPoint(myVtkID);
+  double coord[3];
+  double *coord2;
+  vtkUnstructuredGrid *grid;
+  coord2=(double *)malloc(3*sizeof(double));
+  if ( SMDS_Mesh::_meshList[myMeshId] != NULL )
+	if ( SMDS_Mesh::_meshList[myMeshId]->getGrid() != NULL )
+	{
+	     grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
+	     grid->GetPoints()->GetPoint(myVtkID,coord);
+	     coord2[0]=coord[0];
+	     coord2[1]=coord[1];
+	     coord2[2]=coord[2];
+	     return(coord2);
+//	     return (double *)(SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetPoints()->GetPoint(myVtkID,coord));
+	}
+  else
+  {
+     coord2[0]=0.;
+     coord2[1]=0.;
+     coord2[2]=0.;
+     return coord2;
+  }
 }
 
 double SMDS_MeshNode::X() const

@@ -34,6 +34,7 @@
 #include <Base/Console.h>
 
 #include <SMESH_Gen.hxx>
+
 #include <SMESH_Mesh.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
@@ -76,32 +77,37 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 #ifdef FCWithNetgen
 
     Fem::FemMesh newMesh;
-
+    // SMESH_Gen *myGen = newMesh.getGenerator();
+// vejmarie NEEDED TO MAKE IT WORK
+    newMesh.myMesh = newMesh.myGen->CreateMesh(0, true);
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
 
 
     TopoDS_Shape shape = feat->Shape.getValue();
 
 
-    newMesh.getSMesh()->ShapeToMesh(shape);
-    SMESH_Gen *myGen = newMesh.getGenerator();
+//    newMesh.myMesh->ShapeToMesh(shape);
+//    SMESH_Gen *myGen = newMesh.getGenerator();
+//    meshgen->CreateMesh(0, true);
 
     int hyp=0;
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
+/*
+    NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
+    static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);
+    static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);
+    static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();
+    myNetGenMesher.SetParameters(tet2);
+*/
+/*
+    NETGENPlugin_SimpleHypothesis_3D* tet= new NETGENPlugin_SimpleHypothesis_3D(hyp++,1,myGen);
+    static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();
+    static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);
+    myNetGenMesher.SetParameters( tet);
+*/
 
-    //NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();
-    //myNetGenMesher.SetParameters(tet2);
-
-    //NETGENPlugin_SimpleHypothesis_3D* tet= new NETGENPlugin_SimpleHypothesis_3D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);
-    //myNetGenMesher.SetParameters( tet);
-
-    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,myGen);
+    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,newMesh.myGen);
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
     tet->SetOptimize(Optimize.getValue());
@@ -113,9 +119,11 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
         tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());
     }
     myNetGenMesher.SetParameters( tet);
+    newMesh.myMesh->ShapeToMesh(shape);
 
     myNetGenMesher.Compute();
 
+    // throw Base::Exception("Compute Done\n");
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
     const SMDS_MeshInfo& info = data->GetMeshInfo();
@@ -134,8 +142,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     Base::Console().Log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n",numNode,numVolu,numFaces);
 
     // set the value to the object
-    FemMesh.setValue(newMesh);
-
+      FemMesh.setValue(newMesh);
     return App::DocumentObject::StdReturn;
 #else
     return new App::DocumentObjectExecReturn("The FEM module is built without NETGEN support. Meshing will not work!!!", this);

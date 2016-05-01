@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -32,8 +32,9 @@
 #include "SMDS_Mesh.hxx"
 #include "SMESHDS_SubMesh.hxx"
 
-#include <TopoDS_Shape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopoDS_Shape.hxx>
+
 #include <map>
 
 class TopoDS_Solid ;

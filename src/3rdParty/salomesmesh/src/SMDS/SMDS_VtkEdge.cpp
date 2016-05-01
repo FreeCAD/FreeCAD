@@ -50,7 +50,9 @@ void SMDS_VtkEdge::init(std::vector<vtkIdType>& nodeIds, SMDS_Mesh* mesh)
   vtkIdType aType = VTK_LINE;
   if (nodeIds.size() == 3)
     aType = VTK_QUADRATIC_EDGE;
+
   myVtkID = grid->InsertNextLinkedCell(aType, nodeIds.size(), &nodeIds[0]);
+
   mesh->setMyModified();
   //MESSAGE("SMDS_VtkEdge::init myVtkID " << myVtkID);
 }
