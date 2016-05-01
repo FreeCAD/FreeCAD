@@ -171,8 +171,8 @@ PyMethodDef Application::Methods[] = {
    "showPreferences([string,int]) -> None\n\n"
    "Shows the preferences window. If string and int are provided, the given page index in the given group is shown."},
    {"createViewer",               (PyCFunction) Application::sCreateViewer,1,
-   "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
-   "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
+    "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
+    "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -1113,7 +1113,6 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args,PyOb
     Py_INCREF(Py_None);
     return Py_None;
 }
-
 
 PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
