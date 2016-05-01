@@ -728,11 +728,11 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
         QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
 
         if (glformat) {
-            _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
+            _viewer.push_back(new View3DInventorViewer(f, topSplitter));
             _viewer.push_back(new View3DInventorViewer(f, topSplitter));
         }
         else {
-            _viewer.push_back(new View3DInventorViewer(mainSplitter));
+            _viewer.push_back(new View3DInventorViewer(topSplitter));
             _viewer.push_back(new View3DInventorViewer(topSplitter));
         }
 
@@ -743,8 +743,8 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
                 _viewer.push_back(new View3DInventorViewer(botSplitter));
         }
 
-        topSplitter->setOpaqueResize( true );
-        botSplitter->setOpaqueResize( true );
+        topSplitter->setOpaqueResize(true);
+        botSplitter->setOpaqueResize(true);
     }
 
     if (smoothing) {
