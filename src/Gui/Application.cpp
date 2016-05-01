@@ -439,6 +439,7 @@ Application::Application(bool GUIenabled)
     PythonStdin                 ::init_type();
     View3DInventorPy            ::init_type();
     View3DInventorViewerPy      ::init_type();
+    AbstractSplitViewPy         ::init_type();
 
     d = new ApplicationP;
 

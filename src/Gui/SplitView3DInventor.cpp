@@ -374,11 +374,6 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 
 PyObject *AbstractSplitView::getPyObject(void)
 {
-    static bool init = false;
-    if (!init) {
-        init = true;
-        AbstractSplitViewPy::init_type();
-    }
     if (!_viewerPy)
         _viewerPy = new AbstractSplitViewPy(this);
     Py_INCREF(_viewerPy);
@@ -392,7 +387,7 @@ void AbstractSplitView::setPyObject(PyObject *)
 
 int AbstractSplitView::getSize()
 {
-    return _viewer.size();
+    return static_cast<int>(_viewer.size());
 }
 
 // ------------------------------------------------------
@@ -428,7 +423,7 @@ AbstractSplitViewPy::~AbstractSplitViewPy()
 
 void AbstractSplitViewPy::testExistence()
 {
-    if (!(_view and _view->getViewer(0)))
+    if (!(_view && _view->getViewer(0)))
         throw Py::Exception("Object already deleted");
 }
 
@@ -447,6 +442,7 @@ Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewFit", 0);
     }
@@ -467,6 +463,7 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewBottom", 0);
     }
@@ -488,6 +485,7 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewFront", 0);
     }
@@ -509,6 +507,7 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewLeft", 0);
     }
@@ -530,6 +529,7 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewRear", 0);
     }
@@ -551,6 +551,7 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewRight", 0);
     }
@@ -572,6 +573,7 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewTop", 0);
     }
@@ -593,6 +595,7 @@ Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     testExistence();
+
     try {
         _view->onMsg("ViewAxo", 0);
     }
@@ -615,8 +618,12 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "i", &viewIndex))
         throw Py::Exception();
     testExistence();
+
     try {
-        return Py::Object(_view->getViewer(viewIndex)->getPyObject());
+        Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
+        if (!view)
+            throw Py::IndexError("Index out of range");
+        return Py::Object(view->getPyObject());
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
@@ -634,14 +641,15 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
 Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
 {
     testExistence();
-    if (viewIndex >= _view->getSize() or viewIndex < 0)
-        throw Py::Exception("Index out of range");
+    if (viewIndex >= _view->getSize() || viewIndex < 0)
+        throw Py::IndexError("Index out of range");
     PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
     return Py::Object(viewer);
 }
 
 int AbstractSplitViewPy::sequence_length()
 {
+    testExistence();
     return _view->getSize();
 }
 
@@ -658,6 +666,7 @@ Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
 
     return Py::None();
 }
+
 // ------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
@@ -695,8 +704,7 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
       case View3DInventorViewer::None:
       default:
           break;
-      }
-
+    }
 
     QSplitter* mainSplitter=0;
     // minimal 2 views
