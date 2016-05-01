@@ -682,40 +682,40 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     QGLFormat f;
     bool smoothing = false;
     bool glformat = false;
-    switch( hGrp->GetInt("AntiAliasing",0) ) {
-      case View3DInventorViewer::MSAA2x:
-          glformat = true;
-          f.setSampleBuffers(true);
-          f.setSamples(2);
-          break;
-      case View3DInventorViewer::MSAA4x:
-          glformat = true;
-          f.setSampleBuffers(true);
-          f.setSamples(4);
-          break;
-      case View3DInventorViewer::MSAA8x:
-          glformat = true;
-          f.setSampleBuffers(true);
-          f.setSamples(8);
-          break;
-      case View3DInventorViewer::Smoothing:
-          smoothing = true;
-          break;
-      case View3DInventorViewer::None:
-      default:
-          break;
+    switch (hGrp->GetInt("AntiAliasing",0) ) {
+    case View3DInventorViewer::MSAA2x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(2);
+        break;
+    case View3DInventorViewer::MSAA4x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(4);
+        break;
+    case View3DInventorViewer::MSAA8x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(8);
+        break;
+    case View3DInventorViewer::Smoothing:
+        smoothing = true;
+        break;
+    case View3DInventorViewer::None:
+    default:
+        break;
     }
 
-    QSplitter* mainSplitter=0;
     // minimal 2 views
     while (views < 2)
         views ++;
+
+    QSplitter* mainSplitter = 0;
+
     // if views < 3 show them as a row
-    if (views <= 3) 
-    {
+    if (views <= 3) {
         mainSplitter = new QSplitter(Qt::Horizontal, this);
-        for (int i=0; i < views; i++)
-        {
+        for (int i=0; i < views; i++) {
             if (glformat)
                 _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
             else
@@ -726,30 +726,28 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
         mainSplitter = new QSplitter(Qt::Vertical, this);
         QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
         QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        if (glformat)
-        {
+
+        if (glformat) {
             _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
             _viewer.push_back(new View3DInventorViewer(f, topSplitter));
-            _viewer.push_back(new View3DInventorViewer(f, topSplitter));
         }
-        else
-        {
+        else {
             _viewer.push_back(new View3DInventorViewer(mainSplitter));
             _viewer.push_back(new View3DInventorViewer(topSplitter));
-            _viewer.push_back(new View3DInventorViewer(topSplitter));
         }
-        for (int i=2;i<views;i++)
-        {
+
+        for (int i=2;i<views;i++) {
             if (glformat)
                 _viewer.push_back(new View3DInventorViewer(f, botSplitter));
             else
                 _viewer.push_back(new View3DInventorViewer(botSplitter));
         }
+
         topSplitter->setOpaqueResize( true );
         botSplitter->setOpaqueResize( true );
     }
-    if (smoothing)
-    {
+
+    if (smoothing) {
         for (std::vector<int>::size_type i = 0; i != _viewer.size(); i++)
             _viewer[i]->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
     }
