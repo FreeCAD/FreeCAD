@@ -216,10 +216,13 @@ public: //methods
      * right type.
      *
      * @param nextRefTypeHint (output). A hint of what can be added to references.
+     *
+     * @param reachableModes (output). List of modes that can be reached by selecing more references.
      */
     virtual eMapMode listMapModes(eSuggestResult &msg,
                                   std::vector<eMapMode>* allApplicableModes = 0,
-                                  std::set<eRefType>* nextRefTypeHint = 0) const;
+                                  std::set<eRefType>* nextRefTypeHint = 0,
+                                  std::set<eMapMode> *reachableModes = 0) const;
 
     /**
      * @brief getHint function returns a set of types that user can add to
