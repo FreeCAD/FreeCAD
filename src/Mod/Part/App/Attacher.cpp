@@ -247,7 +247,8 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
 
 eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
                                     std::vector<eMapMode>* allApplicableModes,
-                                    std::set<eRefType>* nextRefTypeHint) const
+                                    std::set<eRefType>* nextRefTypeHint,
+                                    std::set<eMapMode>* reachableModes) const
 {
     //replace a pointer with a valid reference, to avoid checks for zero pointer everywhere
     std::vector<eMapMode> buf;
@@ -262,6 +263,12 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
         nextRefTypeHint = &buf2;
     std::set<eRefType> &hints = *nextRefTypeHint;
     hints.clear();
+
+    std::set<eMapMode> buf3;
+    if (reachableModes == 0)
+        reachableModes = &buf3;
+    std::set<eMapMode> &mlist_reachable = *reachableModes;
+    mlist_reachable.clear();
 
 
     std::vector<App::GeoFeature*> parts;
@@ -305,8 +312,10 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
                 }
             }
 
-            if (score > 0  &&  str.size() > typeStr.size())
+            if (score > 0  &&  str.size() > typeStr.size()){
                 hints.insert(str[typeStr.size()]);
+                reachableModes->insert(eMapMode(iMode));
+            }
 
             //size check is last, because we needed to collect hints
             if (str.size() != typeStr.size())
