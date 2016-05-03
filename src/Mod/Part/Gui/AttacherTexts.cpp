@@ -92,6 +92,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mmFolding:
             return TwoStrings(qApp->translate("Attacher3D", "Folding","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.","Attachment3D mode tooltip"));
+        case mmInertialCS:
+            return TwoStrings(qApp->translate("Attacher3D", "Inertial CS","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Inertial coordinate system, constructed on principal axes of inertia and center of mass.","Attachment3D mode tooltip"));
         default:
             break;
         }
@@ -146,6 +149,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mmFolding:
             return TwoStrings(qApp->translate("Attacher2D", "Folding","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.","AttachmentPlane mode tooltip"));
+        case mmInertialCS:
+            return TwoStrings(qApp->translate("Attacher2D", "Inertia 2-3","AttachmentPlane mode caption"),
+                              qApp->translate("Attacher2D", "Plane constructed on second and third principal axes of inertia (passes through center of mass).","AttachmentPlane mode tooltip"));
         default:
             break;
         }
@@ -203,6 +209,15 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mm1Proximity:
             return TwoStrings(qApp->translate("Attacher1D", "Proximity line","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Line that spans the shortest distance between shapes.","AttachmentLine mode tooltip"));
+        case mm1AxisInertia1:
+            return TwoStrings(qApp->translate("Attacher1D", "1st principal axis","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line follows first principal axis of inertia.","AttachmentLine mode tooltip"));
+        case mm1AxisInertia2:
+            return TwoStrings(qApp->translate("Attacher1D", "2nd principal axis","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line follows second principal axis of inertia.","AttachmentLine mode tooltip"));
+        case mm1AxisInertia3:
+            return TwoStrings(qApp->translate("Attacher1D", "3rd principal axis","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line follows third principal axis of inertia.","AttachmentLine mode tooltip"));
         default:
             break;
         }
