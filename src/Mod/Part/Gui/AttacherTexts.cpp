@@ -229,7 +229,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher0D", "Center of osculating circle of an edge. Optinal vertex link defines where.","AttachmentPoint mode tooltip"));
         case mm0CenterOfMass:
             return TwoStrings(qApp->translate("Attacher0D", "Center of mass","AttachmentPoint mode caption"),
-                              qApp->translate("Attacher0D", "Not implemented","AttachmentPoint mode tooltip"));
+                              qApp->translate("Attacher0D", "Center of mass of all references (equal densities are assumed).","AttachmentPoint mode tooltip"));
         case mm0Intersection:
             return TwoStrings(qApp->translate("Attacher0D", "Intersection","AttachmentPoint mode caption"),
                               qApp->translate("Attacher0D", "Not implemented","AttachmentPoint mode tooltip"));

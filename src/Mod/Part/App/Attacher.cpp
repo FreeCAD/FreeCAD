@@ -48,6 +48,11 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PGProps.hxx>
+# include <BRepGProp.hxx>
 #endif
 #include <BRepLProp_SLProps.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
@@ -578,6 +583,81 @@ std::string AttachEngine::getModeName(eMapMode mmode)
     if(mmode < 0 || mmode >= mmDummy_NumberOfModes)
         throw Base::Exception("AttachEngine::getModeName: Attachment Mode index is out of range");
     return std::string(AttachEngine::eMapModeStrings[mmode]);
+}
+
+GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes)
+{
+    //explode compounds
+    TopTools_HSequenceOfShape totalSeq;
+    for (const TopoDS_Shape* pSh: shapes){
+        ShapeExtend_Explorer xp;
+        totalSeq.Append( xp.SeqFromCompound(*pSh, /*recursive=*/true));
+    }
+    if (totalSeq.Length() == 0)
+        throw Base::Exception("AttachEngine::getInertialPropsOfShape: no geometry provided");
+    const TopoDS_Shape &sh0 = totalSeq.Value(1);
+    switch (sh0.ShapeType()){
+    case TopAbs_VERTEX:{
+        GProp_PGProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_VERTEX)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only vertices)");
+            gpr.AddPoint(BRep_Tool::Pnt(TopoDS::Vertex(sh)));
+        }
+        return gpr;
+    } break;
+    case TopAbs_EDGE:
+    case TopAbs_WIRE:{
+        GProp_GProps gpr_acc;
+        GProp_GProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_EDGE && sh.ShapeType() != TopAbs_WIRE)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only edges/wires)");
+            if (sh.Infinite())
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
+            BRepGProp::LinearProperties(sh,gpr);
+            gpr_acc.Add(gpr);
+        }
+        return gpr_acc;
+    } break;
+    case TopAbs_FACE:
+    case TopAbs_SHELL:{
+        GProp_GProps gpr_acc;
+        GProp_GProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_FACE && sh.ShapeType() != TopAbs_SHELL)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only faces/shells)");
+            if (sh.Infinite())
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
+            BRepGProp::SurfaceProperties(sh,gpr);
+            gpr_acc.Add(gpr);
+        }
+        return gpr_acc;
+    } break;
+    case TopAbs_SOLID:
+    case TopAbs_COMPSOLID:{
+        GProp_GProps gpr_acc;
+        GProp_GProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_SOLID && sh.ShapeType() != TopAbs_COMPSOLID)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only solids/compsolids)");
+            if (sh.Infinite())
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
+            BRepGProp::SurfaceProperties(sh,gpr);
+            gpr_acc.Add(gpr);
+        }
+        return gpr_acc;
+    } break;
+    default:
+        throw Base::Exception("AttachEngine::getInertialPropsOfShape: unexpected shape type");
+    }
+
+    assert(false);//exec shouldn't ever get here
+    return GProp_GProps();
 }
 
 /*!
@@ -1577,6 +1657,11 @@ AttachEnginePoint::AttachEnginePoint()
     modeRefTypes[mm0ProximityPoint1].push_back(s);
     modeRefTypes[mm0ProximityPoint2].push_back(s);
 
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything));
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything,rtAnything));
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything,rtAnything,rtAnything,rtAnything));
+
     this->EnableAllSupportedModes();
 }
 
@@ -1699,6 +1784,10 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
                 BasePoint = p1;
             else
                 BasePoint = p2;
+        }break;
+        case mm0CenterOfMass:{
+            GProp_GProps gpr =  AttachEngine::getInertialPropsOfShape(shapes);
+            BasePoint = gpr.CentreOfMass();
         }break;
         default:
             throwWrongMode(mmode);
