@@ -52,6 +52,7 @@
 # include <ShapeExtend_Explorer.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PGProps.hxx>
+# include <GProp_PrincipalProps.hxx>
 # include <BRepGProp.hxx>
 #endif
 #include <BRepLProp_SLProps.hxx>
@@ -110,6 +111,13 @@ const char* AttachEngine::eMapModeStrings[]= {
     "Vertex",
     "ProximityPoint1",
     "ProximityPoint2",
+
+    "AxisOfInertia1",
+    "AxisOfInertia2",
+    "AxisOfInertia3",
+
+    "InertialCS",
+
     NULL};
 
 
@@ -775,6 +783,11 @@ AttachEngine3D::AttachEngine3D()
     modeRefTypes[mmObjectXZ] = ss;
     modeRefTypes[mmObjectYZ] = ss;
 
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything));
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything));
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything,rtAnything,rtAnything));
+
     modeRefTypes[mmFlatFace].push_back(cat(rtFlatFace));
 
     modeRefTypes[mmTangentPlane].push_back(cat(rtFace, rtVertex));
@@ -959,6 +972,37 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         }
 
     } break;
+    case mmInertialCS:{
+        GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);
+        GProp_PrincipalProps pr = gpr.PrincipalProperties();
+        if (pr.HasSymmetryPoint())
+            throw Base::Exception("AttachEngine3D::calculateAttachedPlacement:InertialCS: inertia tensor is trivial, principal axes are undefined.");
+        if (pr.HasSymmetryAxis()){
+            Base::Console().Warning("AttachEngine3D::calculateAttachedPlacement:InertialCS: inertia tensor has axis of symmetry. Second and third axes of inertia are undefined.\n");
+            //find defined axis, and use it as Z axis
+            //situation: we have two moments that are almost equal, and one
+            //that is substantially different. The one that is different
+            //corresponds to a defined axis. We'll identify the different one by
+            //comparing differences.
+            Standard_Real I1, I2, I3;
+            pr.Moments(I1,I2,I3);
+            Standard_Real d12, d23, d31;
+            d12 = fabs(I1-I2);
+            d23 = fabs(I2-I3);
+            d31 = fabs(I3-I1);
+            if(d12 < d23 && d12 < d31){
+                SketchNormal = pr.ThirdAxisOfInertia();
+            } else if (d23 < d31 && d23 < d12){
+                SketchNormal = pr.FirstAxisOfInertia();
+            } else {
+                SketchNormal = pr.SecondAxisOfInertia();
+            }
+        } else {
+            SketchNormal = pr.FirstAxisOfInertia();
+            SketchXAxis = pr.SecondAxisOfInertia();
+        }
+        SketchBasePoint = gpr.CentreOfMass();
+    }break;
     case mmFlatFace:{
         if (shapes.size() < 1)
             throw Base::Exception("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (needed one planar face).");
@@ -1426,6 +1470,15 @@ AttachEngineLine::AttachEngineLine()
 
     modeRefTypes[mm1Proximity].push_back(cat(rtAnything, rtAnything));
 
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything));
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything,rtAnything));
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything,rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mm1AxisInertia2] = modeRefTypes[mm1AxisInertia1];
+    modeRefTypes[mm1AxisInertia3] = modeRefTypes[mm1AxisInertia1];
+
+
+
     this->EnableAllSupportedModes();
 }
 
@@ -1503,6 +1556,38 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         case mmDeactivated:
             //should have been filtered out already!
         break;
+        case mm1AxisInertia1:
+        case mm1AxisInertia2:
+        case mm1AxisInertia3:{
+            GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);
+            LineBasePoint = gpr.CentreOfMass();
+            GProp_PrincipalProps pr = gpr.PrincipalProperties();
+            if (pr.HasSymmetryPoint())
+                throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor is trivial, principal axes are undefined.");
+
+            //query moments, to use them to check if axis is defined
+            //See AttachEngine3D::calculateAttachedPlacement:case mmInertial for comment explaining these comparisons
+            Standard_Real I1, I2, I3;
+            pr.Moments(I1,I2,I3);
+            Standard_Real d12, d23, d31;
+            d12 = fabs(I1-I2);
+            d23 = fabs(I2-I3);
+            d31 = fabs(I3-I1);
+
+            if (mmode == mm1AxisInertia1){
+                LineDir = pr.FirstAxisOfInertia();
+                if (pr.HasSymmetryAxis() && !(d23 < d31 && d23 < d12))
+                    throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor has axis of symmetry; first axis of inertia is undefined.");
+            } else if (mmode == mm1AxisInertia2) {
+                LineDir = pr.SecondAxisOfInertia();
+                if (pr.HasSymmetryAxis() && !(d31 < d12 && d31 < d23))
+                    throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor has axis of symmetry; second axis of inertia is undefined.");
+            } else if (mmode == mm1AxisInertia3) {
+                LineDir = pr.ThirdAxisOfInertia();
+                if (pr.HasSymmetryAxis() && !(d12 < d23 && d12 < d31))
+                    throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor has axis of symmetry; third axis of inertia is undefined.");
+            }
+        }break;
         case mm1TwoPoints:{
             std::vector<gp_Pnt> points;
 
