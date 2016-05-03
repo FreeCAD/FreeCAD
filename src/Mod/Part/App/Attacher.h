@@ -144,6 +144,10 @@ enum eRefType {
 class PartExport AttachEngine : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
+public: //typedefs
+    typedef std::vector<eRefType> refTypeString; //a sequence of ref types, according to Support contents for example
+    typedef std::vector<refTypeString> refTypeStringList; //a set of type strings, defines which selection sets are supported by a certain mode
+
 public: //methods
     AttachEngine();
     virtual void setUp(const App::PropertyLinkSubList &references,
@@ -217,12 +221,16 @@ public: //methods
      *
      * @param nextRefTypeHint (output). A hint of what can be added to references.
      *
-     * @param reachableModes (output). List of modes that can be reached by selecing more references.
+     * @param reachableModes (output). List of modes that can be reached by
+     * selecing more references. Is a map, where key is the mode that can be
+     * reached and value is a list of reference sequences that can be added to
+     * reach the mode (stuff already linked is omitted from these lists; only
+     * extra links needed are listed)
      */
     virtual eMapMode listMapModes(eSuggestResult &msg,
                                   std::vector<eMapMode>* allApplicableModes = 0,
                                   std::set<eRefType>* nextRefTypeHint = 0,
-                                  std::set<eMapMode> *reachableModes = 0) const;
+                                  std::map<eMapMode, refTypeStringList> *reachableModes = 0) const;
 
     /**
      * @brief getHint function returns a set of types that user can add to
@@ -317,8 +325,6 @@ public: //members
      */
     std::vector<bool> modeEnabled;
 
-    typedef std::vector<eRefType> refTypeString; //a sequence of ref types, according to Support contents for example
-    typedef std::vector<refTypeString> refTypeStringList; //a set of type strings, defines which selection sets are supported by a certain mode
     std::vector<refTypeStringList> modeRefTypes; //a complete data structure, containing info on which modes support what selection
 
 protected:
