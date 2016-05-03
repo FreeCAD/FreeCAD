@@ -39,6 +39,7 @@
 #include "PartFeature.h"
 
 #include <gp_Vec.hxx>
+#include <GProp_GProps.hxx>
 
 namespace Attacher
 {
@@ -303,6 +304,8 @@ public://helper functions that may be useful outside of the class
      * @return returns a string that identifies the attachment mode in enum property.
      */
     static std::string getModeName(eMapMode mmode);
+
+    static GProp_GProps getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes);
 
 
 public: //enums
