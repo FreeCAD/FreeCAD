@@ -248,7 +248,7 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
 eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
                                     std::vector<eMapMode>* allApplicableModes,
                                     std::set<eRefType>* nextRefTypeHint,
-                                    std::set<eMapMode>* reachableModes) const
+                                    std::map<eMapMode,refTypeStringList>* reachableModes) const
 {
     //replace a pointer with a valid reference, to avoid checks for zero pointer everywhere
     std::vector<eMapMode> buf;
@@ -264,10 +264,10 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
     std::set<eRefType> &hints = *nextRefTypeHint;
     hints.clear();
 
-    std::set<eMapMode> buf3;
+    std::map<eMapMode,refTypeStringList> buf3;
     if (reachableModes == 0)
         reachableModes = &buf3;
-    std::set<eMapMode> &mlist_reachable = *reachableModes;
+    std::map<eMapMode,refTypeStringList> &mlist_reachable = *reachableModes;
     mlist_reachable.clear();
 
 
@@ -313,8 +313,23 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
             }
 
             if (score > 0  &&  str.size() > typeStr.size()){
+                //mode does not fit, but adding more references will make this mode fit.
                 hints.insert(str[typeStr.size()]);
-                reachableModes->insert(eMapMode(iMode));
+
+                //build string of references to be added to fit this mode
+                refTypeString extraRefs;
+                extraRefs.resize(str.size() - typeStr.size());
+                for (int iChr = typeStr.size()   ;   iChr < str.size()   ;   iChr++){
+                    extraRefs[iChr - typeStr.size()] = str[iChr];
+                }
+
+                //add reachable mode
+                auto it_r = mlist_reachable.find(eMapMode(iMode));
+                if (it_r == mlist_reachable.end()){
+                    it_r = mlist_reachable.insert(std::pair<eMapMode,refTypeStringList>(eMapMode(iMode),refTypeStringList())).first;
+                }
+                refTypeStringList &list = it_r->second;
+                list.push_back(extraRefs);
             }
 
             //size check is last, because we needed to collect hints
