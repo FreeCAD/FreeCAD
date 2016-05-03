@@ -142,7 +142,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher2D", "Align plane to pass through three vertices.","AttachmentPlane mode tooltip"));
         case mmThreePointsNormal:
             return TwoStrings(qApp->translate("Attacher2D", "Normal to 3 points","AttachmentPlane mode caption"),
-                              qApp->translate("Attacher2D", "Plane will pass through first to vertices, and perpendicular to plane that passes through three vertices.","AttachmentPlane mode tooltip"));
+                              qApp->translate("Attacher2D", "Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.","AttachmentPlane mode tooltip"));
         case mmFolding:
             return TwoStrings(qApp->translate("Attacher2D", "Folding","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.","AttachmentPlane mode tooltip"));
