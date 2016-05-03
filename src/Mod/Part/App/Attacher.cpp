@@ -48,6 +48,12 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PGProps.hxx>
+# include <GProp_PrincipalProps.hxx>
+# include <BRepGProp.hxx>
 #endif
 #include <BRepLProp_SLProps.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
@@ -105,6 +111,13 @@ const char* AttachEngine::eMapModeStrings[]= {
     "Vertex",
     "ProximityPoint1",
     "ProximityPoint2",
+
+    "AxisOfInertia1",
+    "AxisOfInertia2",
+    "AxisOfInertia3",
+
+    "InertialCS",
+
     NULL};
 
 
@@ -247,7 +260,8 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
 
 eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
                                     std::vector<eMapMode>* allApplicableModes,
-                                    std::set<eRefType>* nextRefTypeHint) const
+                                    std::set<eRefType>* nextRefTypeHint,
+                                    std::map<eMapMode,refTypeStringList>* reachableModes) const
 {
     //replace a pointer with a valid reference, to avoid checks for zero pointer everywhere
     std::vector<eMapMode> buf;
@@ -262,6 +276,12 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
         nextRefTypeHint = &buf2;
     std::set<eRefType> &hints = *nextRefTypeHint;
     hints.clear();
+
+    std::map<eMapMode,refTypeStringList> buf3;
+    if (reachableModes == 0)
+        reachableModes = &buf3;
+    std::map<eMapMode,refTypeStringList> &mlist_reachable = *reachableModes;
+    mlist_reachable.clear();
 
 
     std::vector<App::GeoFeature*> parts;
@@ -305,8 +325,25 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
                 }
             }
 
-            if (score > 0  &&  str.size() > typeStr.size())
+            if (score > 0  &&  str.size() > typeStr.size()){
+                //mode does not fit, but adding more references will make this mode fit.
                 hints.insert(str[typeStr.size()]);
+
+                //build string of references to be added to fit this mode
+                refTypeString extraRefs;
+                extraRefs.resize(str.size() - typeStr.size());
+                for (int iChr = typeStr.size()   ;   iChr < str.size()   ;   iChr++){
+                    extraRefs[iChr - typeStr.size()] = str[iChr];
+                }
+
+                //add reachable mode
+                auto it_r = mlist_reachable.find(eMapMode(iMode));
+                if (it_r == mlist_reachable.end()){
+                    it_r = mlist_reachable.insert(std::pair<eMapMode,refTypeStringList>(eMapMode(iMode),refTypeStringList())).first;
+                }
+                refTypeStringList &list = it_r->second;
+                list.push_back(extraRefs);
+            }
 
             //size check is last, because we needed to collect hints
             if (str.size() != typeStr.size())
@@ -556,6 +593,81 @@ std::string AttachEngine::getModeName(eMapMode mmode)
     return std::string(AttachEngine::eMapModeStrings[mmode]);
 }
 
+GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes)
+{
+    //explode compounds
+    TopTools_HSequenceOfShape totalSeq;
+    for (const TopoDS_Shape* pSh: shapes){
+        ShapeExtend_Explorer xp;
+        totalSeq.Append( xp.SeqFromCompound(*pSh, /*recursive=*/true));
+    }
+    if (totalSeq.Length() == 0)
+        throw Base::Exception("AttachEngine::getInertialPropsOfShape: no geometry provided");
+    const TopoDS_Shape &sh0 = totalSeq.Value(1);
+    switch (sh0.ShapeType()){
+    case TopAbs_VERTEX:{
+        GProp_PGProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_VERTEX)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only vertices)");
+            gpr.AddPoint(BRep_Tool::Pnt(TopoDS::Vertex(sh)));
+        }
+        return gpr;
+    } break;
+    case TopAbs_EDGE:
+    case TopAbs_WIRE:{
+        GProp_GProps gpr_acc;
+        GProp_GProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_EDGE && sh.ShapeType() != TopAbs_WIRE)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only edges/wires)");
+            if (sh.Infinite())
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
+            BRepGProp::LinearProperties(sh,gpr);
+            gpr_acc.Add(gpr);
+        }
+        return gpr_acc;
+    } break;
+    case TopAbs_FACE:
+    case TopAbs_SHELL:{
+        GProp_GProps gpr_acc;
+        GProp_GProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_FACE && sh.ShapeType() != TopAbs_SHELL)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only faces/shells)");
+            if (sh.Infinite())
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
+            BRepGProp::SurfaceProperties(sh,gpr);
+            gpr_acc.Add(gpr);
+        }
+        return gpr_acc;
+    } break;
+    case TopAbs_SOLID:
+    case TopAbs_COMPSOLID:{
+        GProp_GProps gpr_acc;
+        GProp_GProps gpr;
+        for (int i = 0   ;   i < totalSeq.Length()   ;   i++){
+            const TopoDS_Shape &sh = totalSeq.Value(i+1);
+            if (sh.ShapeType() != TopAbs_SOLID && sh.ShapeType() != TopAbs_COMPSOLID)
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only solids/compsolids)");
+            if (sh.Infinite())
+                throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
+            BRepGProp::SurfaceProperties(sh,gpr);
+            gpr_acc.Add(gpr);
+        }
+        return gpr_acc;
+    } break;
+    default:
+        throw Base::Exception("AttachEngine::getInertialPropsOfShape: unexpected shape type");
+    }
+
+    assert(false);//exec shouldn't ever get here
+    return GProp_GProps();
+}
+
 /*!
  * \brief AttachEngine3D::readLinks
  * \param parts
@@ -670,6 +782,11 @@ AttachEngine3D::AttachEngine3D()
     modeRefTypes[mmObjectXY] = ss;
     modeRefTypes[mmObjectXZ] = ss;
     modeRefTypes[mmObjectYZ] = ss;
+
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything));
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything));
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything,rtAnything,rtAnything));
 
     modeRefTypes[mmFlatFace].push_back(cat(rtFlatFace));
 
@@ -855,6 +972,33 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
         }
 
     } break;
+    case mmInertialCS:{
+        GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);
+        GProp_PrincipalProps pr = gpr.PrincipalProperties();
+        if (pr.HasSymmetryPoint())
+            throw Base::Exception("AttachEngine3D::calculateAttachedPlacement:InertialCS: inertia tensor is trivial, principal axes are undefined.");
+        if (pr.HasSymmetryAxis()){
+            Base::Console().Warning("AttachEngine3D::calculateAttachedPlacement:InertialCS: inertia tensor has axis of symmetry. Second and third axes of inertia are undefined.\n");
+            //find defined axis, and use it as Z axis
+            Standard_Real I1, I2, I3;
+            pr.Moments(I1,I2,I3);
+            Standard_Real d12, d23, d31;
+            d12 = fabs(I1-I2);
+            d23 = fabs(I2-I3);
+            d31 = fabs(I3-I1);
+            if(d12 < d23 && d12 < d31){
+                SketchNormal = pr.ThirdAxisOfInertia();
+            } else if (d23 < d31 && d23 < d12){
+                SketchNormal = pr.FirstAxisOfInertia();
+            } else {
+                SketchNormal = pr.SecondAxisOfInertia();
+            }
+        } else {
+            SketchNormal = pr.FirstAxisOfInertia();
+            SketchXAxis = pr.SecondAxisOfInertia();
+        }
+        SketchBasePoint = gpr.CentreOfMass();
+    }break;
     case mmFlatFace:{
         if (shapes.size() < 1)
             throw Base::Exception("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (needed one planar face).");
@@ -1322,6 +1466,15 @@ AttachEngineLine::AttachEngineLine()
 
     modeRefTypes[mm1Proximity].push_back(cat(rtAnything, rtAnything));
 
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything));
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything,rtAnything));
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mm1AxisInertia1].push_back(cat(rtAnything,rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mm1AxisInertia2] = modeRefTypes[mm1AxisInertia1];
+    modeRefTypes[mm1AxisInertia3] = modeRefTypes[mm1AxisInertia1];
+
+
+
     this->EnableAllSupportedModes();
 }
 
@@ -1399,6 +1552,37 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         case mmDeactivated:
             //should have been filtered out already!
         break;
+        case mm1AxisInertia1:
+        case mm1AxisInertia2:
+        case mm1AxisInertia3:{
+            GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);
+            LineBasePoint = gpr.CentreOfMass();
+            GProp_PrincipalProps pr = gpr.PrincipalProperties();
+            if (pr.HasSymmetryPoint())
+                throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor is trivial, principal axes are undefined.");
+
+            //query moments, to use them to check if axis is defined
+            Standard_Real I1, I2, I3;
+            pr.Moments(I1,I2,I3);
+            Standard_Real d12, d23, d31;
+            d12 = fabs(I1-I2);
+            d23 = fabs(I2-I3);
+            d31 = fabs(I3-I1);
+
+            if (mmode == mm1AxisInertia1){
+                LineDir = pr.FirstAxisOfInertia();
+                if (pr.HasSymmetryAxis() && !(d23 < d31 && d23 < d12))
+                    throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor has axis of symmetry; first axis of inertia is undefined.");
+            } else if (mmode == mm1AxisInertia2) {
+                LineDir = pr.SecondAxisOfInertia();
+                if (pr.HasSymmetryAxis() && !(d31 < d12 && d31 < d23))
+                    throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor has axis of symmetry; second axis of inertia is undefined.");
+            } else if (mmode == mm1AxisInertia3) {
+                LineDir = pr.ThirdAxisOfInertia();
+                if (pr.HasSymmetryAxis() && !(d12 < d23 && d12 < d31))
+                    throw Base::Exception("AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: inertia tensor has axis of symmetry; third axis of inertia is undefined.");
+            }
+        }break;
         case mm1TwoPoints:{
             std::vector<gp_Pnt> points;
 
@@ -1553,6 +1737,11 @@ AttachEnginePoint::AttachEnginePoint()
     modeRefTypes[mm0ProximityPoint1].push_back(s);
     modeRefTypes[mm0ProximityPoint2].push_back(s);
 
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything));
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything,rtAnything));
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything,rtAnything,rtAnything));
+    modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything,rtAnything,rtAnything,rtAnything));
+
     this->EnableAllSupportedModes();
 }
 
@@ -1675,6 +1864,10 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
                 BasePoint = p1;
             else
                 BasePoint = p2;
+        }break;
+        case mm0CenterOfMass:{
+            GProp_GProps gpr =  AttachEngine::getInertialPropsOfShape(shapes);
+            BasePoint = gpr.CentreOfMass();
         }break;
         default:
             throwWrongMode(mmode);

@@ -675,9 +675,16 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
     //obtain list of available modes:
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     eMapMode suggMode = mmDeactivated;
+    std::map<eMapMode, AttachEngine::refTypeStringList> reachableModes;
+    int lastValidModeItemIndex = mmDummy_NumberOfModes;
     if (pcDatum->Support.getSize() > 0){
         eSuggestResult msg;
-        suggMode = pcDatum->attacher().listMapModes(msg, &modesInList);
+        suggMode = pcDatum->attacher().listMapModes(msg, &modesInList, 0, &reachableModes);
+        //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
+        lastValidModeItemIndex = modesInList.size()-1;
+        for(std::pair<const eMapMode, AttachEngine::refTypeStringList> &rm: reachableModes){
+            modesInList.push_back(rm.first);
+        }
     } else {
         //no references - display all modes
         modesInList.clear();
@@ -702,13 +709,31 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
                              AttacherGui::getRefListForMode(pcDatum->attacher(),mmode).join(QString::fromLatin1("\n")));
             if (mmode == curMode)
                 iSelect = ui->listOfModes->item(i);
-            if (mmode == suggMode){
-                //make it bold
+            if (i > lastValidModeItemIndex){
+                //potential mode - can be reached by selecting more stuff
+                item->setFlags(item->flags() & ~(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable));
+
+                AttachEngine::refTypeStringList &extraRefs = reachableModes[mmode];
+                if (extraRefs.size() == 1){
+                    QStringList buf;
+                    for(eRefType rt : extraRefs[0]){
+                        buf.append(AttacherGui::getShapeTypeText(rt));
+                    }
+                    item->setText(tr("%1 (add %2)").arg(
+                                      item->text(),
+                                      buf.join(QString::fromLatin1("+"))
+                                      ));
+                } else {
+                    item->setText(tr("%1 (add more references)").arg(item->text()));
+                }
+            } else if (mmode == suggMode){
+                //suggested mode - make bold
                 assert (item);
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
             }
+
         }
     }
     //restore selection
