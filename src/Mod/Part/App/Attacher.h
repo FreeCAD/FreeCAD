@@ -92,6 +92,13 @@ enum eMapMode {
     mm0Vertex,
     mm0ProximityPoint1,
     mm0ProximityPoint2,
+
+    mm1AxisInertia1,
+    mm1AxisInertia2,
+    mm1AxisInertia3,
+
+    mmInertialCS,
+
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
 
