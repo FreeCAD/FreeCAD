@@ -45,7 +45,7 @@ class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
 
 public:
     QGIView(const QPoint &position, QGraphicsScene *scene);
-    ~QGIView();
+    virtual ~QGIView() = default;
 
     enum {Type = QGraphicsItem::UserType + 101};
     int type() const { return Type;}

@@ -25,6 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
 
 namespace TechDraw

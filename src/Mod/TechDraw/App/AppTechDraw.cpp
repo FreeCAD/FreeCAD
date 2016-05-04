@@ -29,10 +29,10 @@
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
 #include "DrawViewSymbol.h"
-//#include "DrawProjection.h"
 #include "DrawViewClip.h"
 #include "DrawHatch.h"
 #include "DrawViewDraft.h"
+#include "DrawViewSpreadsheet.h"
 
 extern struct PyMethodDef TechDraw_methods[];
 
@@ -48,7 +48,6 @@ void TechDrawExport initTechDraw()
     try {
         Base::Interpreter().loadModule("Part");
         Base::Interpreter().loadModule("Measure");
-        //Base::Interpreter().loadModule("Mesh");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -66,9 +65,9 @@ void TechDrawExport initTechDraw()
     TechDraw::DrawView            ::init();
     TechDraw::DrawViewCollection  ::init();
     TechDraw::DrawViewPart        ::init();
-    //TechDraw::DrawProjection      ::init();
     TechDraw::DrawViewAnnotation  ::init();
     TechDraw::DrawViewSymbol      ::init();
+    TechDraw::DrawViewSpreadsheet ::init();
 
     TechDraw::DrawViewSection     ::init();
     TechDraw::DrawViewDimension   ::init();

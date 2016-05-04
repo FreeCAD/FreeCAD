@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2016 wandererfan <WandererFan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,57 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 
-#include <QObject>
-#include <QPainter>
-#include <QString>
-#include <QByteArray>
-#include <QSvgRenderer>
-#include <QGraphicsSvgItem>
+#ifndef DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
+#define DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 
-#include "QGIView.h"
-#include "QGCustomSvg.h"
+#include <Gui/ViewProviderFeature.h>
 
-namespace TechDraw {
-class DrawViewSymbol;
+namespace TechDraw{
+    class DrawViewSpreadsheet;
 }
 
-namespace TechDrawGui
-{
+namespace TechDrawGui {
 
-class TechDrawGuiExport QGIViewSymbol : public QGIView
+
+class TechDrawGuiExport ViewProviderSpreadsheet : public Gui::ViewProviderDocumentObject
 {
-    Q_OBJECT
+    PROPERTY_HEADER(TechDrawGui::ViewProviderSpreadsheet);
 
 public:
-    explicit QGIViewSymbol(const QPoint &position, QGraphicsScene *scene);
-    ~QGIViewSymbol();
+    /// constructor
+    ViewProviderSpreadsheet();
+    /// destructor
+    virtual ~ViewProviderSpreadsheet();
 
-    enum {Type = QGraphicsItem::UserType + 121};
-    int type() const { return Type;}
 
-    void updateView(bool update = false);
-    void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
+    virtual void attach(App::DocumentObject *);
+    virtual void setDisplayMode(const char* ModeName);
+    virtual bool useNewSelectionModel(void) const {return false;}
+    /// returns a list of all possible modes
+    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual void updateData(const App::Property*);
 
-    virtual void draw();
-    virtual QRectF boundingRect() const;
-
-Q_SIGNALS:
-    void hover(bool state);
-    void selected(bool state);
-
-protected:
-    bool load(QByteArray *svgString);
-    virtual void drawSvg();
-    void symbolToSvg(QString qs);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-    QGCustomSvg *m_svgItem;
-    QSvgRenderer *m_svgRender;
+    TechDraw::DrawViewSpreadsheet* getViewObject() const;
 };
 
-} // namespace MDIViewPageGui
+} // namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+
+#endif // DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H

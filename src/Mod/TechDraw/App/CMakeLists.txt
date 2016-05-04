@@ -22,7 +22,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(TechDrawLIBS
     Measure
     Part
-    FreeCADApp
+    Spreadsheet
 )
 
 generate_from_xml(DrawPagePy)
@@ -51,6 +51,8 @@ SET(Draw_SRCS
     DrawViewAnnotation.h
     DrawViewSymbol.cpp
     DrawViewSymbol.h
+    DrawViewSpreadsheet.cpp
+    DrawViewSpreadsheet.h
     DrawViewClip.cpp
     DrawViewClip.h
     DrawProjGroup.cpp

@@ -32,11 +32,13 @@
 # define PartExport     __declspec(dllimport)
 # define MeasureExport  __declspec(dllimport)
 # define MeshExport     __declspec(dllimport)
+# define SpreadsheetExport     __declspec(dllimport)
 #else // for Linux
 # define TechDrawExport
 # define MeasureExport
-# define PartExport 
-# define MeshExport   
+# define PartExport
+# define MeshExport
+# define SpreadsheetExport
 #endif
 
 #ifdef _PreComp_
@@ -122,7 +124,7 @@
 #include <Standard_OId.hxx>
 #endif
 
- 
+
 #include <TCollection_ExtendedString.hxx>
 #include <TCollection_AsciiString.hxx>
 #include <TColStd_SequenceOfExtendedString.hxx>
@@ -141,7 +143,7 @@
 #include <BRepCheck_ListIteratorOfListOfStatus.hxx>
 
 #include <BRepTools.hxx>
-#include <Standard_DefineHandle.hxx> 
+#include <Standard_DefineHandle.hxx>
 #include <GCE2d_MakeSegment.hxx>
 #include <GCPnts_TangentialDeflection.hxx>
 #include <Geom_Axis2Placement.hxx>
@@ -235,4 +237,3 @@
 
 #endif // _PreComp_
 #endif
-

@@ -6,6 +6,7 @@
         <file>icons/TechDraw_Tree_PageTemplate.svg</file>
         <file>icons/TechDraw_Tree_ProjGroup.svg</file>
         <file>icons/TechDraw_Tree_Section.svg</file>
+        <file>icons/TechDraw_Tree_Spreadsheet.svg</file>
         <file>icons/TechDraw_Tree_Symbol.svg</file>
         <file>icons/TechDraw_Tree_View.svg</file>
         <file>icons/TechDraw_Pages.svg</file>
@@ -42,5 +43,6 @@
         <file>icons/actions/techdraw-hatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
         <file>icons/actions/techdraw-projgroup.svg</file>
+        <file>icons/actions/techdraw-spreadsheet.svg</file>
     </qresource>
 </RCC>

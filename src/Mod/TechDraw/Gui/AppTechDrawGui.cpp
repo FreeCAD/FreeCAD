@@ -47,6 +47,7 @@
 #include "ViewProviderSymbol.h"
 #include "ViewProviderViewClip.h"
 #include "ViewProviderHatch.h"
+#include "ViewProviderSpreadsheet.h"
 //#include "resources/qrc_TechDraw.cpp"
 
 // use a different name to CreateCommand()
@@ -103,6 +104,7 @@ void TechDrawGuiExport initTechDrawGui()
     TechDrawGui::ViewProviderAnnotation::init();
     TechDrawGui::ViewProviderSymbol::init();
     TechDrawGui::ViewProviderHatch::init();
+    TechDrawGui::ViewProviderSpreadsheet::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");

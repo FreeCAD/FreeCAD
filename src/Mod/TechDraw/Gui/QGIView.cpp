@@ -87,7 +87,8 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
     m_font.setPointSize(5.0);     //scene units (mm), not points
 
     //Add object to scene
-    scene->addItem(this);
+    if(scene) // TODO: Get rid of the ctor args as in the refactor attempt
+        scene->addItem(this);
 
     m_label = new QGraphicsTextItem();
     addToGroup(m_label);
@@ -99,10 +100,6 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
 }
 
-QGIView::~QGIView()
-{
-
-}
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
@@ -357,6 +354,7 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 
+//This should count everything except Frame,Label,Dimension - custom or not
 QRectF QGIView::customChildrenBoundingRect() {
     QList<QGraphicsItem*> children = childItems();
     int dimItemType = QGraphicsItem::UserType + 106;

@@ -86,6 +86,7 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include "../App/DrawViewSpreadsheet.h"
 
 #include "QGIDrawingTemplate.h"
 #include "QGIView.h"
@@ -332,6 +333,8 @@ int MDIViewPage::attachView(App::DocumentObject *obj)
     } else if(obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()) ) {
         TechDraw::DrawViewClip *viewClip = dynamic_cast<TechDraw::DrawViewClip *>(obj);
         qview = m_view->addDrawViewClip(viewClip);
+    } else if(obj->getTypeId().isDerivedFrom(TechDraw::DrawViewSpreadsheet::getClassTypeId()) ) {
+        qview = m_view->addDrawViewSpreadsheet( dynamic_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
     } else if(obj->getTypeId().isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
     } else {
