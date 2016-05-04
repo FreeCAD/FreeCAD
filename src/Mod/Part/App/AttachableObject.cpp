@@ -28,6 +28,7 @@
 #include "AttachableObject.h"
 
 #include <Base/Console.h>
+#include <App/Application.h>
 
 
 
@@ -95,6 +96,14 @@ App::DocumentObjectExecReturn *AttachableObject::execute()
     return Part::Feature::execute();
 }
 
+void setReadonlyness(App::Property &prop, bool on)
+{
+    unsigned long status = prop.getStatus();
+    prop.setStatus(App::Property::ReadOnly, on);
+    if (status != prop.getStatus())
+        App::GetApplication().signalChangePropertyEditor(prop);
+}
+
 void AttachableObject::onChanged(const App::Property* prop)
 {
     if(! this->isRestoring()){
@@ -103,8 +112,14 @@ void AttachableObject::onChanged(const App::Property* prop)
                  || prop == &MapMode
                  || prop == &MapPathParameter
                  || prop == &MapReversed
-                 || prop == &superPlacement))
+                 || prop == &superPlacement)){
+
+                eMapMode mmode = eMapMode(this->MapMode.getValue());
+                setReadonlyness(this->superPlacement, mmode == mmDeactivated);
+                setReadonlyness(this->Placement, mmode != mmDeactivated && mmode != mmTranslate);
+
                 positionBySupport();
+            }
         } catch (Base::Exception &e) {
             this->setError();
             Base::Console().Error("PositionBySupport: %s",e.what());
