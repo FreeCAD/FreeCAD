@@ -951,7 +951,7 @@ bool TaskDlgDatumParameters::accept()
         //here it is assumed that the support was already assigned, it just outputs a dummy Python command to the console
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Support = %s", name.c_str(), pcDatum->Support.getPyReprString().c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapMode = '%s'", name.c_str(), AttachEngine::eMapModeStrings[parameter->getActiveMapMode()]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapMode = '%s'", name.c_str(), AttachEngine::getModeName(parameter->getActiveMapMode()).c_str());
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!DatumView->getObject()->isValid())
