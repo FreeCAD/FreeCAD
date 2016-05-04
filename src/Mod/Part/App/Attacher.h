@@ -102,13 +102,6 @@ enum eMapMode {
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
 
-enum eSuggestResult{
-    srOK,
-    srLinkBroken,
-    srUnexpectedError,
-    srNoModesFit,//none of the avaliable mapping modes accepts the set of topological type
-    srIncompatibleGeometry,//there is a mode that could fit, but geometry is wrong (e.g. a line is required, but a curve was passed).
-};
 
 /**
  * @brief The eRefType enum lists the types of references. If adding one, see
@@ -144,6 +137,66 @@ enum eRefType {
 };
 
 
+typedef std::vector<eRefType> refTypeString; //a sequence of ref types, according to Support contents for example
+typedef std::vector<refTypeString> refTypeStringList; //a set of type strings, defines which selection sets are supported by a certain mode
+
+
+/**
+ * @brief The SuggestResult struct is a container for output information of AttachEngine mode suggesting routine.
+ */
+struct SuggestResult{
+    /**
+     * @brief message contains overall verdict of suggestor on current reference set
+     */
+    enum eSuggestResult{
+        srOK, //references are valid for at least one mode
+        srLinkBroken, //failed to resolve out some of current references. Exception info is stored in SuggestResult::error.
+        srUnexpectedError,
+        srNoModesFit,//none of the avaliable mapping modes accepts the set of topological type
+        srIncompatibleGeometry,//there is a mode that could fit, but geometry is wrong (e.g. a line is required, but a curve was passed).
+    };
+    eSuggestResult message;
+
+    /**
+      * @brief allApplicableModes. Vector array that will recieve the list of
+      * all modes that are applicable to current set of references. It doesn't
+      * guarantee that all modes will work, it only checks that subelemnts are
+      * of right type.
+      */
+    std::vector<eMapMode> allApplicableModes;
+
+    /**
+     * @brief bestFitMode is the mode that is the most specific to current
+     * references. Note that the mode may not be valid for current references;
+     * check if it's listed in allApplicableModes, or test if message == srOK.
+     */
+    eMapMode bestFitMode;
+
+    /**
+     * @brief nextRefTypeHint: a hint of what can be added to references to
+     * achieve other modes.
+     */
+    std::set<eRefType> nextRefTypeHint;
+
+    /**
+     * @brief reachableModes. List of modes that can be reached by selecing
+     * more references. Is a map, where key is the mode that can be reached,
+     * and value is a list of reference sequences that can be added to reach
+     * the mode (stuff already linked is omitted from these lists; only extra
+     * links needed are listed)
+     */
+    std::map<eMapMode, refTypeStringList> reachableModes;
+
+    /**
+     * @brief references_Types: list of types of references, as queried when
+     * running suggesting routine.
+     */
+    refTypeString references_Types;
+
+    Base::Exception error;
+};
+
+
 /**
  * @brief The AttachEngine class is the placement calculation routine, modes,
  * hints and so on. It can be used separately, without deriving from
@@ -152,10 +205,6 @@ enum eRefType {
 class PartExport AttachEngine : public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
-public: //typedefs
-    typedef std::vector<eRefType> refTypeString; //a sequence of ref types, according to Support contents for example
-    typedef std::vector<refTypeString> refTypeStringList; //a set of type strings, defines which selection sets are supported by a certain mode
-
 public: //methods
     AttachEngine();
     virtual void setUp(const App::PropertyLinkSubList &references,
@@ -214,43 +263,15 @@ public: //methods
                                       Base::Placement* placeOfRef = 0) const;
 
     /**
-     * @brief listMapModes is the procedure that knows everything about
+     * @brief suggestMapModes is the procedure that knows everything about
      * mapping modes. It returns the most appropriate mapping mode, as well as
      * list of all modes that will accept the set of references. In case no modes apply,
      * extra information regarding reasons is returned in msg.
      *
-     * @param msg (output). Returns a message from the decision logic: OK if
-     * the mode was chosen, a reason if not.
-     *
-     * @param allApplicableModes (output). Pointer to a vector array that will recieve the
-     * list of all modes that are applicable to the support. It doesn't
-     * guarantee that all modes will work, it only checks that subelemnts are of
-     * right type.
-     *
-     * @param nextRefTypeHint (output). A hint of what can be added to references.
-     *
-     * @param reachableModes (output). List of modes that can be reached by
-     * selecing more references. Is a map, where key is the mode that can be
-     * reached and value is a list of reference sequences that can be added to
-     * reach the mode (stuff already linked is omitted from these lists; only
-     * extra links needed are listed)
+     * @param result (output). Returns results of suggestion, such as best fit
+     * mode, list of all modes that apply, hints, etc.
      */
-    virtual eMapMode listMapModes(eSuggestResult &msg,
-                                  std::vector<eMapMode>* allApplicableModes = 0,
-                                  std::set<eRefType>* nextRefTypeHint = 0,
-                                  std::map<eMapMode, refTypeStringList> *reachableModes = 0) const;
-
-    /**
-     * @brief getHint function returns a set of types that user can add to
-     * references to arrive to combinations valid for some modes. This function
-     * is a shoutcut to listMapModes.
-     *
-     * @return a set of selection types that can be appended to the support.
-     *
-     * Subclassing: This function works out of the box via a call to
-     * listMapModes, so there is no need to reimplement it.
-     */
-    virtual const std::set<eRefType> getHint(bool forCurrentModeOnly) const;
+    virtual void suggestMapModes(SuggestResult &result) const;
 
     /**
      * @brief EnableAllModes enables all modes that have shape type lists filled. The function acts on modeEnabled array.
