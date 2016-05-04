@@ -92,7 +92,13 @@ private:
     void resetViewMode();
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(std::string message = std::string(), bool isWarning = false);
+    void updateUI();
+
+    /**
+     * @brief updatePreview: calculate attachment, update 3d view, update status message
+     * @return true if attachment calculation was successful, false otherwise
+     */
+    bool updatePreview();
 
     void makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames);
     QLineEdit* getLine(unsigned idx);
