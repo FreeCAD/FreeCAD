@@ -315,13 +315,12 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     completed = false;
 
     // Get hints for further required references
-    eSuggestResult msg;
-    std::set<eRefType> hint;
+    SuggestResult sugr;
 
-    pcDatum->attacher().listMapModes(msg,0,&hint);
+    pcDatum->attacher().suggestMapModes(sugr);
 
-    if (msg != srOK) {
-        if(hint.size() > 0)
+    if (sugr.message != SuggestResult::srOK) {
+        if(sugr.nextRefTypeHint.size() > 0)
             message = "Need more references";
     } else {
         completed = true;
@@ -344,10 +343,10 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     ui->labelAngle->setEnabled(true);
     ui->spinAngle->setEnabled(true);
 
-    QString hintText = makeHintText(hint);
+    QString hintText = makeHintText(sugr.nextRefTypeHint);
 
     // Check if we have all required references
-    if (hint.size() == 0) {
+    if (sugr.nextRefTypeHint.size() == 0) {
         ui->buttonRef2->setEnabled(numrefs >= 2);
         ui->lineRef2->setEnabled(numrefs >= 2);
         ui->buttonRef3->setEnabled(numrefs >= 3);
@@ -674,15 +673,15 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
 
     //obtain list of available modes:
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-    eMapMode suggMode = mmDeactivated;
-    std::map<eMapMode, AttachEngine::refTypeStringList> reachableModes;
+    SuggestResult sugr;
+    sugr.bestFitMode = mmDeactivated;
     int lastValidModeItemIndex = mmDummy_NumberOfModes;
     if (pcDatum->Support.getSize() > 0){
-        eSuggestResult msg;
-        suggMode = pcDatum->attacher().listMapModes(msg, &modesInList, 0, &reachableModes);
+        pcDatum->attacher().suggestMapModes(sugr);
+        modesInList = sugr.allApplicableModes;
         //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
         lastValidModeItemIndex = modesInList.size()-1;
-        for(std::pair<const eMapMode, AttachEngine::refTypeStringList> &rm: reachableModes){
+        for(std::pair<const eMapMode, refTypeStringList> &rm: sugr.reachableModes){
             modesInList.push_back(rm.first);
         }
     } else {
@@ -713,7 +712,7 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
                 //potential mode - can be reached by selecting more stuff
                 item->setFlags(item->flags() & ~(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable));
 
-                AttachEngine::refTypeStringList &extraRefs = reachableModes[mmode];
+                refTypeStringList &extraRefs = sugr.reachableModes[mmode];
                 if (extraRefs.size() == 1){
                     QStringList buf;
                     for(eRefType rt : extraRefs[0]){
@@ -726,7 +725,7 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
                 } else {
                     item->setText(tr("%1 (add more references)").arg(item->text()));
                 }
-            } else if (mmode == suggMode){
+            } else if (mmode == sugr.bestFitMode){
                 //suggested mode - make bold
                 assert (item);
                 QFont fnt = item->font();
@@ -750,10 +749,10 @@ Attacher::eMapMode TaskDatumParameters::getActiveMapMode()
         return modesInList[ui->listOfModes->row(sel[0])];
     else {
         Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-        eSuggestResult msg;
-        eMapMode suggMode = pcDatum->attacher().listMapModes(msg);
-        if (msg == srOK)
-            return suggMode;
+        SuggestResult sugr;
+        pcDatum->attacher().suggestMapModes(sugr);
+        if (sugr.message == SuggestResult::srOK)
+            return sugr.bestFitMode;
         else
             return mmDeactivated;
     };

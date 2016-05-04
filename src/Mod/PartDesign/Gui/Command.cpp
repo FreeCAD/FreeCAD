@@ -114,12 +114,12 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             if (support.getSize() > 0) {
                 Part::AttachableObject* pcDatum = static_cast<Part::AttachableObject*>(cmd.getDocument()->getObject(FeatName.c_str()));
                 pcDatum->attacher().references.Paste(support);
-                eSuggestResult msg;
-                eMapMode suggMode = pcDatum->attacher().listMapModes(msg);
-                if (msg == srOK) {
+                SuggestResult sugr;
+                pcDatum->attacher().suggestMapModes(sugr);
+                if (sugr.message == Attacher::SuggestResult::srOK) {
                     //fits some mode. Populate support property.
                     cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),support.getPyReprString().c_str());
-                    cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),AttachEngine::eMapModeStrings[suggMode]);
+                    cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),AttachEngine::getModeName(sugr.bestFitMode).c_str());
                 } else {
                     QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit seleted objects. Select something else."));
                 }

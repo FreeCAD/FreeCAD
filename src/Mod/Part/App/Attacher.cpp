@@ -258,30 +258,20 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
 
 }
 
-eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
-                                    std::vector<eMapMode>* allApplicableModes,
-                                    std::set<eRefType>* nextRefTypeHint,
-                                    std::map<eMapMode,refTypeStringList>* reachableModes) const
+void AttachEngine::suggestMapModes(SuggestResult &result) const
 {
-    //replace a pointer with a valid reference, to avoid checks for zero pointer everywhere
-    std::vector<eMapMode> buf;
-    if (allApplicableModes == 0)
-        allApplicableModes = &buf;
-    std::vector<eMapMode> &mlist = *allApplicableModes;
+    std::vector<eMapMode> &mlist = result.allApplicableModes;
     mlist.clear();
     mlist.reserve(mmDummy_NumberOfModes);
 
-    std::set<eRefType> buf2;
-    if (nextRefTypeHint == 0)
-        nextRefTypeHint = &buf2;
-    std::set<eRefType> &hints = *nextRefTypeHint;
+    std::set<eRefType> &hints = result.nextRefTypeHint;
     hints.clear();
 
-    std::map<eMapMode,refTypeStringList> buf3;
-    if (reachableModes == 0)
-        reachableModes = &buf3;
-    std::map<eMapMode,refTypeStringList> &mlist_reachable = *reachableModes;
+    std::map<eMapMode,refTypeStringList> &mlist_reachable = result.reachableModes;
     mlist_reachable.clear();
+
+    result.message = SuggestResult::srLinkBroken;
+    result.bestFitMode = mmDeactivated;
 
 
     std::vector<App::GeoFeature*> parts;
@@ -290,15 +280,18 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
     std::vector<eRefType> typeStr;
     try{
         readLinks(this->references, parts, shapes, shapeStorage, typeStr);
-    } catch (Base::Exception) {
-        msg = srLinkBroken;
-        return mmDeactivated;
+    } catch (Base::Exception &err) {
+        result.references_Types = typeStr;
+        result.message = SuggestResult::srLinkBroken;
+        result.error = err;
+        return;
     }
 
+    result.references_Types = typeStr;
+
     //search valid modes.
-    eMapMode bestMatchType = mmDeactivated;
     int bestMatchScore = -1;
-    msg = srNoModesFit;
+    result.message = SuggestResult::srNoModesFit;
     for (std::size_t iMode = 0; iMode < this->modeRefTypes.size(); ++iMode) {
         if (! this->modeEnabled[iMode])
             continue;
@@ -352,8 +345,8 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
             if (score > -1){//still output a best match, even if it is not completely compatible
                 if (score > bestMatchScore){
                     bestMatchScore = score;
-                    bestMatchType = eMapMode(iMode);
-                    msg = score > 0 ? srOK : srIncompatibleGeometry;
+                    result.bestFitMode = eMapMode(iMode);
+                    result.message = score > 0 ? SuggestResult::srOK : SuggestResult::srIncompatibleGeometry;
                 }
             }
             if (score > 0){
@@ -365,16 +358,6 @@ eMapMode AttachEngine::listMapModes(eSuggestResult& msg,
         }
     }
 
-    return bestMatchType;
-
-}
-
-const std::set<eRefType> AttachEngine::getHint(bool forCurrentModeOnly) const
-{
-    eSuggestResult msg;
-    std::set<eRefType> ret;
-    this->listMapModes(msg, 0, &ret);
-    return ret;
 }
 
 void AttachEngine::EnableAllSupportedModes()
