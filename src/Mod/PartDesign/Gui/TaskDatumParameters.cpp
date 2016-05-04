@@ -29,6 +29,7 @@
 # include <QTextStream>
 # include <QMessageBox>
 # include <Precision.hxx>
+# include <Standard_Failure.hxx>
 # include <boost/bind.hpp>
 #endif
 
@@ -221,6 +222,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     updateUI();
     updateListOfModes(eMapMode(pcDatum->MapMode.getValue()));
+    updatePreview();
 
     //temporary show coordinate systems for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf(DatumView->getObject());
@@ -288,17 +290,8 @@ const QString makeHintText(std::set<eRefType> hint)
     return result;
 }
 
-void TaskDatumParameters::updateUI(std::string message, bool error)
+void TaskDatumParameters::updateUI()
 {
-    //set text if available
-    if(!message.empty()) {
-        ui->message->setText(QString::fromStdString(message));
-        if(error)
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
-        else
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
-    }
-
     ui->checkBoxFlip->setVisible(false);
 
     ui->labelOffset->setVisible(true);
@@ -326,8 +319,9 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     pcDatum->attacher().suggestMapModes(this->lastSuggestResult);
 
     if (this->lastSuggestResult.message != SuggestResult::srOK) {
-        if(this->lastSuggestResult.nextRefTypeHint.size() > 0)
-            message = "Need more references";
+        if(this->lastSuggestResult.nextRefTypeHint.size() > 0){
+            //message = "Need more references";
+        }
     } else {
         completed = true;
     }
@@ -343,6 +337,36 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     updateRefButton(1);
     updateRefButton(2);
     updateRefButton(3);
+}
+
+bool TaskDatumParameters::updatePreview()
+{
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
+    QString errMessage;
+    try{
+        pcDatum->positionBySupport();
+    } catch (Base::Exception &err){
+        errMessage = QString::fromLatin1(err.what());
+    } catch (Standard_Failure &err){
+        errMessage = tr("OCC error: %1").arg(QString::fromLatin1(err.GetMessageString()));
+    } catch (...) {
+        errMessage = tr("unknown error");
+    }
+    if (errMessage.length()>0){
+        ui->message->setText(tr("Attachment mode failed: %1").arg(errMessage));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+        return false;
+    } else {
+        if (pcDatum->MapMode.getValue() == mmDeactivated){
+            ui->message->setText(tr("Not attached"));
+            ui->message->setStyleSheet(QString());
+        } else {
+            std::vector<QString> strs = AttacherGui::getUIStrings(pcDatum->attacher().getTypeId(),eMapMode(pcDatum->MapMode.getValue()));
+            ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
+            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
+        }
+        return true;
+    }
 }
 
 QLineEdit* TaskDatumParameters::getLine(unsigned idx)
@@ -399,23 +423,23 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         bool error = false;
-        std::string message("Selection accepted");
         try {
             pcDatum->Support.setValues(refs, refnames);
             updateListOfModes();
             eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if no modes are available
             if(mmode == mmDeactivated){
-                message = "Selection invalid";
                 error = true;
                 this->completed = false;
             } else {
                 this->completed = true;
             }
             pcDatum->MapMode.setValue(mmode);
+            updatePreview();
         }
         catch(Base::Exception& e) {
             error = true;
-            message = std::string(e.what());
+            ui->message->setText(QString::fromLatin1(e.what()));
+            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         }
 
         QLineEdit* line = getLine(iActiveRef);
@@ -436,7 +460,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
 
-        updateUI(message, error);
+        updateUI();
     }
 }
 
@@ -531,6 +555,7 @@ void TaskDatumParameters::onModeSelect()
 {
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     pcDatum->MapMode.setValue(getActiveMapMode());
+    updatePreview();
 }
 
 void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
@@ -555,6 +580,8 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
         pcDatum->Support.setValues(newrefs, newrefnames);
         updateListOfModes();
         pcDatum->MapMode.setValue(getActiveMapMode());
+
+        updatePreview();
 
         // Update the UI
         std::vector<QString> refstrings;
