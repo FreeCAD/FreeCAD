@@ -313,9 +313,9 @@ QString getShapeTypeText(eRefType type)
 
 QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
 {
-    AttachEngine::refTypeStringList list = attacher.modeRefTypes[mmode];
+    refTypeStringList list = attacher.modeRefTypes[mmode];
     QStringList strlist;
-    for(AttachEngine::refTypeString &rts : list){
+    for(refTypeString &rts : list){
         QStringList buf;
         for(eRefType rt : rts){
             buf.append(getShapeTypeText(rt));
