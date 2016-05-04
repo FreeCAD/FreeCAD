@@ -51,6 +51,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -806,6 +807,54 @@ bool CmdTechDrawDraftView::isActive(void)
     return hasActiveDocument();
 }
 
+//===========================================================================
+// TechDraw_Spreadheet
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawSpreadsheet);
+
+CmdTechDrawSpreadsheet::CmdTechDrawSpreadsheet()
+  : Command("TechDraw_Spreadsheet")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("TechDraw");
+    sMenuText     = QT_TR_NOOP("Spreadsheet");
+    sToolTipText  = QT_TR_NOOP("Inserts a view of a selected spreadsheet into a drawing");
+    sWhatsThis    = "TechDraw_Spreadsheet";
+    sStatusTip    = QT_TR_NOOP("Inserts a view of a selected spreadsheet into a drawing");
+    sPixmap       = "actions/techdraw-spreadsheet";
+}
+
+void CmdTechDrawSpreadsheet::activated(int iMsg)
+{
+    const std::vector<App::DocumentObject*> spreads = getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
+    if (spreads.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly one Spreadsheet object."));
+        return;
+    }
+    std::string SpreadName = spreads.front()->getNameInDocument();
+
+    TechDraw::DrawPage* page = _findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
+    openCommand("Create spreadsheet view");
+    std::string FeatName = getUniqueObjectName("Sheet");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SpreadName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdTechDrawSpreadsheet::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
 
 //===========================================================================
 // TechDraw_ExportPage
@@ -867,4 +916,5 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPage());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
+    rcCmdMgr.addCommand(new CmdTechDrawSpreadsheet());
 }

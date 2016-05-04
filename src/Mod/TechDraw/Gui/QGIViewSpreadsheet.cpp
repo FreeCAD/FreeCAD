@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2016 wandererfan <WandererFan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,57 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-
-#include <QObject>
-#include <QPainter>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <cmath>
+#include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QGraphicsSceneHoverEvent>
+#include <QMenu>
+#include <QMouseEvent>
 #include <QString>
-#include <QByteArray>
-#include <QSvgRenderer>
-#include <QGraphicsSvgItem>
+#include <sstream>
+#endif
 
-#include "QGIView.h"
-#include "QGCustomSvg.h"
+#include <qmath.h>
 
-namespace TechDraw {
-class DrawViewSymbol;
+#include <App/Application.h>
+#include <App/Material.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
+
+#include "../App/DrawView.h"
+#include "../App/DrawViewSpreadsheet.h"
+#include "QGIViewSpreadsheet.h"
+
+using namespace TechDrawGui;
+
+QGIViewSpreadsheet::QGIViewSpreadsheet() : QGIViewSymbol(QPoint(), nullptr)
+{
+    setHandlesChildEvents(false);
+    setCacheMode(QGraphicsItem::NoCache);
+    setAcceptHoverEvents(true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
-namespace TechDrawGui
+QGIViewSpreadsheet::~QGIViewSpreadsheet()
 {
+}
 
-class TechDrawGuiExport QGIViewSymbol : public QGIView
+void QGIViewSpreadsheet::setViewFeature(TechDraw::DrawViewSpreadsheet *obj)
 {
-    Q_OBJECT
+    // called from QGVPage. (once)
+    QGIView::setViewFeature(static_cast<TechDraw::DrawView *>(obj));
+}
 
-public:
-    explicit QGIViewSymbol(const QPoint &position, QGraphicsScene *scene);
-    ~QGIViewSymbol();
 
-    enum {Type = QGraphicsItem::UserType + 121};
-    int type() const { return Type;}
-
-    void updateView(bool update = false);
-    void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
-
-    virtual void draw();
-    virtual QRectF boundingRect() const;
-
-Q_SIGNALS:
-    void hover(bool state);
-    void selected(bool state);
-
-protected:
-    bool load(QByteArray *svgString);
-    virtual void drawSvg();
-    void symbolToSvg(QString qs);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-    QGCustomSvg *m_svgItem;
-    QSvgRenderer *m_svgRender;
-};
-
-} // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+#include "moc_QGIViewSpreadsheet.cpp"

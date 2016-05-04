@@ -116,20 +116,6 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
         svg = newsvg;
     }
     //TODO: shouldn't there be a Symbol.setValue(svg) here??? -wf
-#if 0
-    std::stringstream result;
-    result  << "<g transform=\"translate(" << X.getValue() << "," << Y.getValue() << ")"
-            << " rotate(" << Rotation.getValue() << ")"
-            << " scale(" << Scale.getValue() << ")\">" << endl
-            << svg << endl
-            << "</g>" << endl;
-
-    // Apply the resulting fragment
-    // no more ViewResult! Need to xlate SVG to Geometry object???
-    //ViewResult.setValue(result.str().c_str());
-#endif
-
-    //return App::DocumentObject::StdReturn;
     return DrawView::execute();
 }
 

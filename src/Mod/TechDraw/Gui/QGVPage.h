@@ -38,6 +38,7 @@ class DrawViewSymbol;
 class DrawViewClip;
 class DrawHatch;
 class DrawViewCollection;
+class DrawViewSpreadsheet;
 }
 
 namespace TechDrawGui
@@ -69,6 +70,7 @@ public:
     QGIView * addDrawViewAnnotation(TechDraw::DrawViewAnnotation *view);
     QGIView * addDrawViewSymbol(TechDraw::DrawViewSymbol *view);
     QGIView * addDrawViewClip(TechDraw::DrawViewClip *view);
+    QGIView * addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view);
 
     QGIView * findView(App::DocumentObject *obj) const;
     QGIView * findParent(QGIView *) const;

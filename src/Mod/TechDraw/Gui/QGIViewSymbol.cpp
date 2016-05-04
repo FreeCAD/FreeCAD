@@ -114,13 +114,20 @@ void QGIViewSymbol::drawSvg()
     TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
 
     QString qs(QString::fromUtf8(viewSymbol->Symbol.getValue()));
+
+    symbolToSvg(qs);
+}
+
+void QGIViewSymbol::symbolToSvg(QString qs)
+{
     if (qs.isEmpty()) {
         return;
     }
+
     QByteArray qba;
     qba.append(qs);
     if (!load(&qba)) {
-        Base::Console().Error("QGIViewSymbol::drawSvg - Could not load %s.Symbol into renderer\n", viewSymbol->getNameInDocument());
+        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewObject()->getNameInDocument());
     }
     m_svgItem->setPos(0.,0.);
 }

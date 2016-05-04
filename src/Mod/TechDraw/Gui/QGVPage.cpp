@@ -57,6 +57,7 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include "../App/DrawHatch.h"
+#include "../App/DrawViewSpreadsheet.h"
 
 
 #include "QGIDrawingTemplate.h"
@@ -69,6 +70,7 @@
 #include "QGIViewAnnotation.h"
 #include "QGIViewSymbol.h"
 #include "QGIViewClip.h"
+#include "QGIViewSpreadsheet.h"
 
 #include "ZVALUE.h"
 #include "QGVPage.h"
@@ -250,6 +252,16 @@ QGIView * QGVPage::addDrawViewClip(TechDraw::DrawViewClip *view)
 {
     QPoint qp(view->X.getValue(),view->Y.getValue());
     QGIViewClip *qview = new  QGIViewClip(qp, scene());
+    qview->setViewFeature(view);
+
+    addView(qview);
+    return qview;
+}
+
+QGIView * QGVPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
+{
+    QGIViewSpreadsheet *qview(new QGIViewSpreadsheet);
+
     qview->setViewFeature(view);
 
     addView(qview);

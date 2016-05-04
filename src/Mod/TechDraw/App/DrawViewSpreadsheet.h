@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2016 WandererFan    (wandererfan@gmail.com)             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,60 +21,60 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_PRECOMPILED_H
-#define DRAWINGGUI_PRECOMPILED_H
 
-#include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-//# define DrawingAppExport __declspec(dllimport)
-# define TechDrawExport      __declspec(dllimport)
-# define PartExport         __declspec(dllimport)
-# define TechDrawGuiExport   __declspec(dllexport)
-# define SpreadsheetExport  __declspec(dllimport)
-#else // for Linux
-# define TechDrawExport
-# define PartExport
-# define TechDrawGuiExport
-# define SpreadsheetExport
+#ifndef _DrawViewSpreadsheet_h_
+#define _DrawViewSpreadsheet_h_
+
+
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
+#include "App/PropertyStandard.h"
+#include <App/PropertyGeo.h>
+#include <App/FeaturePython.h>
+
+#include "DrawViewSymbol.h"
+
+namespace TechDraw
+{
+
+
+class TechDrawExport DrawViewSpreadsheet : public TechDraw::DrawViewSymbol
+{
+    PROPERTY_HEADER(TechDraw::DrawViewSpreadsheet);
+
+public:
+    DrawViewSpreadsheet(void);
+    virtual ~DrawViewSpreadsheet();
+    App::PropertyLink         Source;
+    App::PropertyString       CellStart;
+    App::PropertyString       CellEnd;
+    App::PropertyString       Font;
+    App::PropertyColor        TextColor;
+    App::PropertyFloat        LineWidth;
+    App::PropertyFloat        TextSize;
+
+
+    virtual App::DocumentObjectExecReturn *execute(void);
+    std::string getSheetImage(void);
+
+    virtual const char* getViewProviderName(void) const {
+        return "TechDrawGui::ViewProviderSpreadsheet";
+    }
+
+protected:
+    virtual void onChanged(const App::Property* prop);
+    std::vector<std::string> getAvailColumns(void);
+    std::string getSVGHead(void);
+    std::string getSVGTail(void);
+
+private:
+};
+
+typedef App::FeaturePythonT<DrawViewSpreadsheet> DrawViewSpreadsheetPython;
+
+
+} //namespace TechDraw
+
+
 #endif
-
-#ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#endif
-
-#ifdef _PreComp_
-
-// Python
-#include <Python.h>
-
-// standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
-
-// STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
-
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
-
-#endif //_PreComp_
-
-#endif // DRAWINGGUI_PRECOMPILED_H

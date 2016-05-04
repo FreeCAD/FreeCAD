@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2016 wandererfan <WandererFan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
+#define DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 
 #include <QObject>
 #include <QPainter>
@@ -31,47 +30,36 @@
 #include <QSvgRenderer>
 #include <QGraphicsSvgItem>
 
+#include "QGIViewSymbol.h"
 #include "QGIView.h"
-#include "QGCustomSvg.h"
 
 namespace TechDraw {
-class DrawViewSymbol;
+class DrawViewSpreadsheet;
 }
 
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIViewSymbol : public QGIView
+class TechDrawGuiExport QGIViewSpreadsheet : public QGIViewSymbol
 {
     Q_OBJECT
 
 public:
-    explicit QGIViewSymbol(const QPoint &position, QGraphicsScene *scene);
-    ~QGIViewSymbol();
+    explicit QGIViewSpreadsheet();
+    ~QGIViewSpreadsheet();
 
-    enum {Type = QGraphicsItem::UserType + 121};
+    enum {Type = QGraphicsItem::UserType + 124};
     int type() const { return Type;}
 
-    void updateView(bool update = false);
-    void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
-
-    virtual void draw();
-    virtual QRectF boundingRect() const;
-
-Q_SIGNALS:
-    void hover(bool state);
-    void selected(bool state);
+    //void updateView(bool update = false);
+    void setViewFeature(TechDraw::DrawViewSpreadsheet *obj);
 
 protected:
-    bool load(QByteArray *svgString);
-    virtual void drawSvg();
-    void symbolToSvg(QString qs);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    //void drawSvg();
 
-    QGCustomSvg *m_svgItem;
-    QSvgRenderer *m_svgRender;
+protected:
 };
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
