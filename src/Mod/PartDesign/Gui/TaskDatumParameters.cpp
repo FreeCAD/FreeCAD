@@ -211,6 +211,14 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->buttonRef4->blockSignals(false);
     ui->lineRef4->blockSignals(false);
     ui->listOfModes->blockSignals(false);
+
+    if (pcDatum->Support.getSize() == 0){
+        autoNext = true;
+        this->iActiveRef = 0;
+    } else {
+        autoNext = false;
+    }
+
     updateUI();
     updateListOfModes(eMapMode(pcDatum->MapMode.getValue()));
 
@@ -226,11 +234,6 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
-
-    if (pcDatum->Support.getSize() == 0)
-        autoNext = true;
-    else
-        autoNext = false;
 
     DatumView->setPickable(false);
 
@@ -314,13 +317,16 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     std::vector<App::DocumentObject*> refs = pcDatum->Support.getValues();
     completed = false;
 
-    // Get hints for further required references
-    SuggestResult sugr;
+    // Get hints for further required references...
+    // DeepSOIC: hint system became useless since inertial system attachment
+    // modes have been introduced, becuase they accept any number of references
+    // of any type, so the hint will always be 'Any'. I keep the logic
+    // nevertheless, in case it is decided to resurrect hint system.
 
-    pcDatum->attacher().suggestMapModes(sugr);
+    pcDatum->attacher().suggestMapModes(this->lastSuggestResult);
 
-    if (sugr.message != SuggestResult::srOK) {
-        if(sugr.nextRefTypeHint.size() > 0)
+    if (this->lastSuggestResult.message != SuggestResult::srOK) {
+        if(this->lastSuggestResult.nextRefTypeHint.size() > 0)
             message = "Need more references";
     } else {
         completed = true;
@@ -330,53 +336,13 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     Base::Vector3d val;
     pcDatum->superPlacement.getValue().getRotation().getValue(val, angle);
 
-    // Enable the next reference button
-    int numrefs = refs.size();
-
-    ui->buttonRef2->setEnabled(numrefs >= 1);
-    ui->lineRef2->setEnabled(numrefs >= 1);
-    ui->buttonRef3->setEnabled(numrefs >= 2);
-    ui->lineRef3->setEnabled(numrefs >= 2);
-    ui->buttonRef4->setEnabled(numrefs >= 3);
-    ui->lineRef4->setEnabled(numrefs >= 3);
-
     ui->labelAngle->setEnabled(true);
     ui->spinAngle->setEnabled(true);
 
-    QString hintText = makeHintText(sugr.nextRefTypeHint);
-
-    // Check if we have all required references
-    if (sugr.nextRefTypeHint.size() == 0) {
-        ui->buttonRef2->setEnabled(numrefs >= 2);
-        ui->lineRef2->setEnabled(numrefs >= 2);
-        ui->buttonRef3->setEnabled(numrefs >= 3);
-        ui->lineRef3->setEnabled(numrefs >= 3);
-        ui->buttonRef4->setEnabled(numrefs >= 4);
-        ui->lineRef4->setEnabled(numrefs >= 4);
-        completed = true;
-    }
-
-    if (hintText.size() != 0 && autoNext) {
-        if (numrefs == 0) {
-            onButtonRef1(true);
-            autoNext = true;
-        } else if (numrefs == 1) {
-            ui->buttonRef2->setText(hintText);
-            onButtonRef2(true);//will reset autonext, so...
-            autoNext = true;
-        } else if (numrefs == 2) {
-            ui->buttonRef3->setText(hintText);
-            onButtonRef3(true);//will reset autonext, so...
-            autoNext = true;
-        } else if (numrefs == 3) {
-            ui->buttonRef4->setText(hintText);
-            onButtonRef4(true);
-            autoNext = true;
-        } else if (numrefs == 4) {
-            onButtonRef4(false);
-            autoNext = false;
-        }
-    }
+    updateRefButton(0);
+    updateRefButton(1);
+    updateRefButton(2);
+    updateRefButton(3);
 }
 
 QLineEdit* TaskDatumParameters::getLine(unsigned idx)
@@ -460,6 +426,16 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             line->blockSignals(false);
         }
 
+        if (autoNext) {
+            if (iActiveRef == -1){
+                //nothing to do
+            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.size() == 0){
+                iActiveRef = -1;
+            } else {
+                iActiveRef++;
+            }
+        }
+
         updateUI(message, error);
     }
 }
@@ -532,10 +508,10 @@ void TaskDatumParameters::onButtonRef(const bool checked, unsigned idx)
     } else {
         iActiveRef = -1;
     }
-    ui->buttonRef1->setChecked(iActiveRef==0);
-    ui->buttonRef2->setChecked(iActiveRef==1);
-    ui->buttonRef3->setChecked(iActiveRef==2);
-    ui->buttonRef4->setChecked(iActiveRef==3);
+    updateRefButton(0);
+    updateRefButton(1);
+    updateRefButton(2);
+    updateRefButton(3);
 }
 
 void TaskDatumParameters::onButtonRef1(const bool checked) {
@@ -662,6 +638,39 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
     updateUI();
 }
 
+void TaskDatumParameters::updateRefButton(int idx)
+{
+    QAbstractButton* b;
+    switch(idx){
+        case 0: b = ui->buttonRef1; break;
+        case 1: b = ui->buttonRef2; break;
+        case 2: b = ui->buttonRef3; break;
+        case 3: b = ui->buttonRef4; break;
+        default: throw Base::Exception("button index out of range");
+    }
+
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
+    std::vector<App::DocumentObject*> refs = pcDatum->Support.getValues();
+
+    int numrefs = refs.size();
+    bool enable = true;
+    if (idx > numrefs)
+        enable = false;
+    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.size() == 0)
+        enable = false;
+    b->setEnabled(enable);
+
+    b->setChecked(iActiveRef == idx);
+
+    if (iActiveRef == idx) {
+        b->setText(tr("Selecting..."));
+    } else if (idx < this->lastSuggestResult.references_Types.size()){
+        b->setText(AttacherGui::getShapeTypeText(this->lastSuggestResult.references_Types[idx]));
+    } else {
+        b->setText(tr("Reference%1").arg(idx+1));
+    }
+}
+
 void TaskDatumParameters::updateListOfModes(eMapMode curMode)
 {
     //first up, remember currently selected mode.
@@ -673,15 +682,14 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
 
     //obtain list of available modes:
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-    SuggestResult sugr;
-    sugr.bestFitMode = mmDeactivated;
+    this->lastSuggestResult.bestFitMode = mmDeactivated;
     int lastValidModeItemIndex = mmDummy_NumberOfModes;
     if (pcDatum->Support.getSize() > 0){
-        pcDatum->attacher().suggestMapModes(sugr);
-        modesInList = sugr.allApplicableModes;
+        pcDatum->attacher().suggestMapModes(this->lastSuggestResult);
+        modesInList = this->lastSuggestResult.allApplicableModes;
         //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
         lastValidModeItemIndex = modesInList.size()-1;
-        for(std::pair<const eMapMode, refTypeStringList> &rm: sugr.reachableModes){
+        for(std::pair<const eMapMode, refTypeStringList> &rm: this->lastSuggestResult.reachableModes){
             modesInList.push_back(rm.first);
         }
     } else {
@@ -712,7 +720,7 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
                 //potential mode - can be reached by selecting more stuff
                 item->setFlags(item->flags() & ~(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable));
 
-                refTypeStringList &extraRefs = sugr.reachableModes[mmode];
+                refTypeStringList &extraRefs = this->lastSuggestResult.reachableModes[mmode];
                 if (extraRefs.size() == 1){
                     QStringList buf;
                     for(eRefType rt : extraRefs[0]){
@@ -725,7 +733,7 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
                 } else {
                     item->setText(tr("%1 (add more references)").arg(item->text()));
                 }
-            } else if (mmode == sugr.bestFitMode){
+            } else if (mmode == this->lastSuggestResult.bestFitMode){
                 //suggested mode - make bold
                 assert (item);
                 QFont fnt = item->font();
@@ -748,11 +756,8 @@ Attacher::eMapMode TaskDatumParameters::getActiveMapMode()
     if (sel.count() > 0)
         return modesInList[ui->listOfModes->row(sel[0])];
     else {
-        Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-        SuggestResult sugr;
-        pcDatum->attacher().suggestMapModes(sugr);
-        if (sugr.message == SuggestResult::srOK)
-            return sugr.bestFitMode;
+        if (this->lastSuggestResult.message == SuggestResult::srOK)
+            return this->lastSuggestResult.bestFitMode;
         else
             return mmDeactivated;
     };
