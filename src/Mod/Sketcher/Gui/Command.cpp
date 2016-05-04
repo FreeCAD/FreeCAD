@@ -204,7 +204,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         openCommand("Create a Sketch on Face");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         if (mapmode >= 0 && mapmode < Attacher::mmDummy_NumberOfModes)
-            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::eMapModeStrings[mapmode]);
+            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(mapmode).c_str());
         else
             assert(0 /* mapmode index out of range */);
         doCommand(Gui,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
@@ -256,7 +256,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         openCommand("Create a new Sketch");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
-        doCommand(Doc,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::eMapModeStrings[int(Attacher::mmDeactivated)]);
+        doCommand(Doc,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
         doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",camstring.c_str());
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
@@ -517,7 +517,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         int iSugg = 0;//index of the auto-suggested mode in the list of valid modes
         int iCurr = 0;//index of current mode in the list of valid modes
         for (size_t i = 0  ;  i < validModes.size()  ;  ++i){
-            items.push_back(QString::fromLatin1(AttachEngine::eMapModeStrings[validModes[i]]));
+            items.push_back(QString::fromLatin1(AttachEngine::getModeName(validModes[i]).c_str()));
             if (validModes[i] == curMapMode) {
                 iCurr = items.size() - 1;
                 items.back().append(bCurIncompatible?
@@ -564,12 +564,12 @@ void CmdSketcherMapSketch::activated(int iMsg)
             std::string supportString = support.getPyReprString();
 
             openCommand("Attach Sketch");
-            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::eMapModeStrings[suggMapMode]);
+            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::getModeName(suggMapMode).c_str());
             doCommand(Gui,"App.activeDocument().%s.Support = %s",featName.c_str(),supportString.c_str());
             commitCommand();
         } else {
             openCommand("Detach Sketch");
-            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::eMapModeStrings[suggMapMode]);
+            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::getModeName(suggMapMode).c_str());
             doCommand(Gui,"App.activeDocument().%s.Support = None",featName.c_str());
             commitCommand();
         }
