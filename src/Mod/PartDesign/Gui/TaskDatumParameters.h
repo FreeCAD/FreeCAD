@@ -98,6 +98,7 @@ private:
     QLineEdit* getLine(unsigned idx);
     void onButtonRef(const bool checked, unsigned idx);
     void onRefName(const QString& text, unsigned idx);
+    void updateRefButton(int idx);
 
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
@@ -114,9 +115,10 @@ private:
     ViewProviderDatum *DatumView;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)
-    int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-2 means a reference is being picked.
+    int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-3 means a reference is being picked.
     bool autoNext;//if we should automatically switch to next reference (true after dialog launch, false afterwards)
     std::vector<Attacher::eMapMode> modesInList; //this list is synchronous to what is populated into listOfModes widget.
+    Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
