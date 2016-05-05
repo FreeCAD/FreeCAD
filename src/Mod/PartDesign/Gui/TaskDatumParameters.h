@@ -54,10 +54,6 @@ public:
     TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = 0);
     ~TaskDatumParameters();
 
-    double getOffset(void) const;
-    double getOffset2(void) const;
-    double getOffset3(void) const;
-    double getAngle(void) const;
     bool   getFlip(void) const;
 
     /**
@@ -70,10 +66,13 @@ public:
     const bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
-    void onOffsetChanged(double);
-    void onOffset2Changed(double);
-    void onOffset3Changed(double);
-    void onAngleChanged(double);
+    void onSuperplacementChanged(double, int idx);
+    void onSuperplacementXChanged(double);
+    void onSuperplacementYChanged(double);
+    void onSuperplacementZChanged(double);
+    void onSuperplacementYawChanged(double);
+    void onSuperplacementPitchChanged(double);
+    void onSuperplacementRollChanged(double);
     void onCheckFlip(bool);
     void onRefName1(const QString& text);
     void onRefName2(const QString& text);
@@ -92,7 +91,7 @@ private:
     void resetViewMode();
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI();
+    void updateReferencesUI();
 
     /**
      * @brief updatePreview: calculate attachment, update 3d view, update status message
@@ -105,6 +104,7 @@ private:
     void onButtonRef(const bool checked, unsigned idx);
     void onRefName(const QString& text, unsigned idx);
     void updateRefButton(int idx);
+    void updateSuperplacementUI();
 
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
