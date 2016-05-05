@@ -441,7 +441,7 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
         QString branch = ui->labelBuildBranch->text();
-        branch.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()));
+        branch.replace(QString::fromLatin1("Unknown"), QString::fromUtf8(it->second.c_str()));
         ui->labelBuildBranch->setText(branch);
     }
     else {
@@ -541,7 +541,7 @@ void AboutDialog::on_copyButton_clicked()
 #endif
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
-        str << "Branch: " << it->second.c_str() << endl;
+        str << "Branch: " << QString::fromUtf8(it->second.c_str()) << endl;
     it = config.find("BuildRevisionHash");
     if (it != config.end())
         str << "Hash: " << it->second.c_str() << endl;
