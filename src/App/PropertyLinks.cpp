@@ -838,44 +838,6 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     setValues(values,SubNames);
 }
 
-void PropertyLinkSubList::RestoreFromLinkSub(XMLReader &reader)
-{
-    //Copy-paste from PropertyLinkSub::Restore()
-    // read my element
-    reader.readElement("LinkSub");
-    // get the values of my attributes
-    std::string name = reader.getAttribute("value");
-    int count = reader.getAttributeAsInteger("count");
-
-    // Property not in a DocumentObject!
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
-
-    std::vector<std::string> values(count);
-    for (int i = 0; i < count; i++) {
-        reader.readElement("Sub");
-        values[i] = reader.getAttribute("value");
-    }
-
-    reader.readEndElement("LinkSub");
-
-    DocumentObject *pcObject;
-    if (name != ""){
-        App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
-        pcObject = document ? document->getObject(name.c_str()) : 0;
-        if (!pcObject) {
-            if (reader.isVerbose()) {
-                Base::Console().Warning("Lost link to '%s' while loading, maybe "
-                                        "an object was not loaded correctly\n",name.c_str());
-            }
-        }
-        setValue(pcObject,values);
-    }
-    else {
-       setValue(0);
-    }
-
-}
-
 Property *PropertyLinkSubList::Copy(void) const
 {
     PropertyLinkSubList *p = new PropertyLinkSubList();

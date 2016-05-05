@@ -196,14 +196,14 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
         }
     }
 
-   if (GeoId1 < 0 && GeoId2 < 0)
-       return false;
+    if (GeoId1 < 0 && GeoId2 < 0)
+        return false;
 
-   if (GeoId1 >= 0)
-       intersect1 = Base::Vector3d(p1.X(),p1.Y(),0.f);
-   if (GeoId2 >= 0)
-       intersect2 = Base::Vector3d(p2.X(),p2.Y(),0.f);
-   return true;
+    if (GeoId1 >= 0)
+        intersect1 = Base::Vector3d(p1.X(),p1.Y(),0.f);
+    if (GeoId2 >= 0)
+        intersect2 = Base::Vector3d(p2.X(),p2.Y(),0.f);
+    return true;
 }
 
 void Part2DObject::acceptGeometry()
@@ -227,16 +227,17 @@ void Part2DObject::Restore(Base::XMLReader &reader)
         // subclass of PropertyContainer might change the type of a property but
         // not its name. In this case we would force to read-in a wrong property
         // type and the behaviour would be undefined.
-        // Exception: PropertyLinkSubList can read PropertyLinkSub
         try {
             if(prop){
                 if (strcmp(prop->getTypeId().getName(), TypeName) == 0){
                     prop->Restore(reader);
                 } else if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())){
                     //reading legacy Support - when the Support could only be a single flat face.
-                    App::PropertyLinkSub tmp;//getTypeId() is not static =(
+                    App::PropertyLinkSub tmp;
                     if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
-                        static_cast<App::PropertyLinkSubList*>(prop)->RestoreFromLinkSub(reader);
+                        tmp.setContainer(this);
+                        tmp.Restore(reader);
+                        static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
                     }
                     this->MapMode.setValue(Attacher::mmFlatFace);
                 }
