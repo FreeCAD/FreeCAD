@@ -297,7 +297,7 @@ public:
 
     /**
      * @brief getAsPropertyLinkSubList fills PropertyLinkSubList with current selection.
-     * @param prop (output). The property object to recieve links
+     * @param prop (output). The property object to receive links
      * @return the number of items written to the link
      */
     int getAsPropertyLinkSubList(App::PropertyLinkSubList &prop) const;
