@@ -70,15 +70,17 @@ void AttachableObject::setAttacher(AttachEngine* attacher)
     updateAttacherVals();
 }
 
-void AttachableObject::positionBySupport()
+bool AttachableObject::positionBySupport()
 {
     if (!_attacher)
         throw Base::Exception("AttachableObject: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
     try{
         this->Placement.setValue(_attacher->calculateAttachedPlacement(this->Placement.getValue()));
+        return true;
     } catch (ExceptionCancel) {
         //disabled, don't do anything
+        return false;
     };
 }
 
@@ -107,6 +109,7 @@ void setReadonlyness(App::Property &prop, bool on)
 void AttachableObject::onChanged(const App::Property* prop)
 {
     if(! this->isRestoring()){
+        bool bAttached = false;
         try{
             if ((prop == &Support
                  || prop == &MapMode
@@ -114,11 +117,7 @@ void AttachableObject::onChanged(const App::Property* prop)
                  || prop == &MapReversed
                  || prop == &superPlacement)){
 
-                eMapMode mmode = eMapMode(this->MapMode.getValue());
-                setReadonlyness(this->superPlacement, mmode == mmDeactivated);
-                setReadonlyness(this->Placement, mmode != mmDeactivated && mmode != mmTranslate);
-
-                positionBySupport();
+                bAttached = positionBySupport();
             }
         } catch (Base::Exception &e) {
             this->setError();
@@ -128,6 +127,11 @@ void AttachableObject::onChanged(const App::Property* prop)
             this->setError();
             Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
         }
+
+        eMapMode mmode = eMapMode(this->MapMode.getValue());
+        setReadonlyness(this->superPlacement, !bAttached);
+        setReadonlyness(this->Placement, bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+
     }
     Part::Feature::onChanged(prop);
 }

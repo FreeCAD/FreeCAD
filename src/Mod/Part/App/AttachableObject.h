@@ -84,9 +84,10 @@ public:
     App::PropertyFloat MapPathParameter;
 
     /** calculate and update the Placement property based on the Support, and
-      * mode. Can throw FreeCAD and OCC exceptions.
+      * mode. Can throw FreeCAD and OCC exceptions. Returns true if attached,
+      * false if not, throws if attachment failed.
       */
-    virtual void positionBySupport(void);
+    virtual bool positionBySupport(void);
 
     virtual bool isTouched_Mapping()
     {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/};
