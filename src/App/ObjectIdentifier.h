@@ -267,7 +267,7 @@ protected:
 
 };
 
-std::size_t hash_value(const App::ObjectIdentifier & path);
+std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
 
 }
 
