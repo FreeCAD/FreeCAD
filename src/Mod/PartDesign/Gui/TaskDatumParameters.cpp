@@ -307,9 +307,9 @@ bool TaskDatumParameters::updatePreview()
 {
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     QString errMessage;
-    bool attached;
+    bool attached = false;
     try{
-        pcDatum->positionBySupport();
+        attached = pcDatum->positionBySupport();
     } catch (Base::Exception &err){
         errMessage = QString::fromLatin1(err.what());
     } catch (Standard_Failure &err){
@@ -320,17 +320,14 @@ bool TaskDatumParameters::updatePreview()
     if (errMessage.length()>0){
         ui->message->setText(tr("Attachment mode failed: %1").arg(errMessage));
         ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
-        attached = false;
     } else {
-        if (pcDatum->MapMode.getValue() == mmDeactivated){
+        if (!attached){
             ui->message->setText(tr("Not attached"));
             ui->message->setStyleSheet(QString());
-            attached = false;
         } else {
             std::vector<QString> strs = AttacherGui::getUIStrings(pcDatum->attacher().getTypeId(),eMapMode(pcDatum->MapMode.getValue()));
             ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
-            attached = true;
         }
     }
     QString splmLabelText = attached ? tr("Extra placement:") : tr("Extra placement (inactive - not attached):");
