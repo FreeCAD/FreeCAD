@@ -70,9 +70,10 @@ public:
   App::PropertyFloatList   FloatList;
 
   // Standard Properties (PropertyLinks.h)
-  App::PropertyLink     Link;
-  App::PropertyLinkSub  LinkSub;
-  App::PropertyLinkList LinkList;
+  App::PropertyLink        Link;
+  App::PropertyLinkSub     LinkSub;
+  App::PropertyLinkList    LinkList;
+  App::PropertyLinkSubList LinkSubList;
 
   // Standard Properties (PropertyGeo.h)
   App::PropertyMatrix     Matrix;
