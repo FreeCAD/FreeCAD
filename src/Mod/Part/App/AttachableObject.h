@@ -104,6 +104,8 @@ private:
 };
 
 
+typedef App::FeaturePythonT<AttachableObject> AttachableObjectPython;
+
 } // namespace Part
 
 #endif // PARTATTACHABLEOBJECT_H

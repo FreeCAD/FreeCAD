@@ -229,6 +229,7 @@ PyMODINIT_FUNC initPart()
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
     Part::AttachableObject      ::init();
+    Part::AttachableObjectPython::init();
     Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();
