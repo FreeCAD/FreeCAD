@@ -329,7 +329,7 @@ void QGIViewPart::drawViewPart()
             }
 
             //chain edges tail to nose into a closed region
-            std::vector<TechDrawGeometry::BaseGeom*> chained = TechDrawGeometry::chainGeoms(unChained);
+            auto chained( TechDrawGeometry::GeometryUtils::chainGeoms(unChained) );
 
             //iterate through the chain to make QPainterPath
             std::vector<TechDrawGeometry::BaseGeom*>::iterator itChain = chained.begin();

@@ -40,7 +40,7 @@ enum ExtractionType {               //obs sb vis/hid + hard/smooth/seam/out(edge
 };
 
 enum edgeClass {
-    ecNONE,                                                            //not used, OCC index starts at 1
+    ecNONE,  // Not used, OCC index starts at 1
     ecUVISO,
     ecOUTLINE,
     ecSMOOTH,
@@ -78,6 +78,8 @@ class TechDrawExport BaseGeom
         Base::Vector2D getEndPoint();
         static BaseGeom* baseFactory(TopoDS_Edge edge);
 };
+
+typedef std::vector<BaseGeom *> BaseGeomPtrVector;
 
 class TechDrawExport Circle: public BaseGeom
 {
@@ -205,7 +207,7 @@ class TechDrawExport Wire
 class TechDrawExport Face
 {
     public:
-        Face();
+        Face() = default;
         ~Face();
 
         std::vector<Wire *> wires;
@@ -227,26 +229,34 @@ class TechDrawExport Vertex
         bool isEqual(Vertex* v, double tol);
 };
 
+/// Encapsulates some useful static methods
+class TechDrawExport GeometryUtils
+{
+    public:
+        /// Used by nextGeom()
+        struct TechDrawExport ReturnType {
+            unsigned int index;
+            bool reversed;
+            explicit ReturnType(int i = 0, bool r = false) :
+                index(i),
+                reversed(r)
+                {}
+        };
 
-//*** utility functions
-extern "C" {
+        /// Find an unused geom starts or ends at atPoint.
+        /*!
+         * returns index[1:geoms.size()),reversed [true,false]
+         */
+        static ReturnType nextGeom( Base::Vector2D atPoint,
+                                    std::vector<TechDrawGeometry::BaseGeom*> geoms,
+                                    std::vector<bool> used,
+                                    double tolerance );
 
-struct TechDrawExport getNextReturnVal {
-    unsigned int index;
-    bool reversed;
-    explicit getNextReturnVal(int i = 0, bool r = false) :
-        index(i),
-        reversed(r)
-        {}
+        //! return a vector of BaseGeom*'s in tail to nose order
+        //could/should this be replaced by DVP::connectEdges?
+        static std::vector<BaseGeom*> chainGeoms(std::vector<BaseGeom*> geoms);
 };
 
-std::vector<TechDrawGeometry::BaseGeom*> chainGeoms(std::vector<TechDrawGeometry::BaseGeom*> geoms);
-getNextReturnVal nextGeom(Base::Vector2D atPoint,
-                              std::vector<TechDrawGeometry::BaseGeom*> geoms,
-                              std::vector<bool> used,
-                              double tolerance);
-
-} //end extern "C"
 } //end namespace TechDrawGeometry
 
 #endif //TECHDRAW_GEOMETRY_H
