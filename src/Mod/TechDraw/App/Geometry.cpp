@@ -84,39 +84,35 @@ Wire::Wire()
 {
 }
 
+
 Wire::Wire(const TopoDS_Wire &w)
 {
     TopExp_Explorer edges(w, TopAbs_EDGE);
     for (; edges.More(); edges.Next()) {
-        const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
-        TechDrawGeometry::BaseGeom* base = TechDrawGeometry::BaseGeom::baseFactory(edge);
-        geoms.push_back(base);
+        const auto edge( TopoDS::Edge(edges.Current()) );
+        geoms.push_back( BaseGeom::baseFactory(edge) );
     }
 
 }
 
+
 Wire::~Wire()
 {
-    for(std::vector<BaseGeom *>::iterator it = geoms.begin(); it != geoms.end(); ++it) {
-        delete (*it);
-        *it = 0;
+    for(auto it : geoms) {
+        delete it;
     }
     geoms.clear();
 }
 
-Face::Face()
-{
-
-}
 
 Face::~Face()
 {
-    for(std::vector<Wire *>::iterator it = wires.begin(); it != wires.end(); ++it) {
-        delete (*it);
-        *it = 0;
+    for(auto it : wires) {
+        delete it;
     }
     wires.clear();
 }
+
 
 BaseGeom::BaseGeom() :
     geomType(NOTDEF),
@@ -128,17 +124,19 @@ BaseGeom::BaseGeom() :
 {
 }
 
+
 std::vector<Base::Vector2D> BaseGeom::findEndPoints()
 {
     std::vector<Base::Vector2D> result;
-    //if (occEdge) {
-        gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-        result.push_back(Base::Vector2D(p.X(),p.Y()));
-        p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-        result.push_back(Base::Vector2D(p.X(),p.Y()));
-    //}
+
+    gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
+    result.push_back(Base::Vector2D(p.X(),p.Y()));
+    p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
+    result.push_back(Base::Vector2D(p.X(),p.Y()));
+
     return result;
 }
+
 
 Base::Vector2D BaseGeom::getStartPoint()
 {
@@ -146,13 +144,15 @@ Base::Vector2D BaseGeom::getStartPoint()
     return verts[0];
 }
 
+
 Base::Vector2D BaseGeom::getEndPoint()
 {
     std::vector<Base::Vector2D> verts = findEndPoints();
     return verts[1];
 }
 
-//!convert 1 OCC edge into 1 BaseGeom (static factory method)
+
+//! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
 {
     BaseGeom* result = NULL;
@@ -222,6 +222,7 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
     return result;
 }
 
+
 Ellipse::Ellipse(const TopoDS_Edge &e)
 {
     geomType = ELLIPSE;
@@ -266,6 +267,7 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
     midPnt = Base::Vector2D(m.X(), m.Y());
 }
 
+
 Circle::Circle(const TopoDS_Edge &e)
 {
     geomType = CIRCLE;
@@ -278,6 +280,7 @@ Circle::Circle(const TopoDS_Edge &e)
     radius = circ.Radius();
     center = Base::Vector2D(p.X(), p.Y());
 }
+
 
 AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 {
@@ -306,7 +309,7 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 }
 
 
-//!Generic is a multiline
+//! Generic is a multiline
 Generic::Generic(const TopoDS_Edge &e)
 {
     geomType = GENERIC;
@@ -331,10 +334,12 @@ Generic::Generic(const TopoDS_Edge &e)
     }
 }
 
+
 Generic::Generic()
 {
     geomType = GENERIC;
 }
+
 
 BSpline::BSpline(const TopoDS_Edge &e)
 {
@@ -379,7 +384,8 @@ BSpline::BSpline(const TopoDS_Edge &e)
     }
 }
 
-//! can this BSpline be represented by a straight line?
+
+//! Can this BSpline be represented by a straight line?
 bool BSpline::isLine()
 {
     bool result = false;
@@ -390,6 +396,7 @@ bool BSpline::isLine()
     }
     return result;
 }
+
 
 //**** Vertex
 bool Vertex::isEqual(Vertex* v, double tol)
@@ -402,30 +409,29 @@ bool Vertex::isEqual(Vertex* v, double tol)
     return result;
 }
 
-//****  TechDrawGeometry utility funtions
 
-extern "C" {
-//! return a vector of BaseGeom*'s in tail to nose order
-//could/should this be replaced by DVP::connectEdges?
-std::vector<TechDrawGeometry::BaseGeom*> TechDrawExport chainGeoms(std::vector<TechDrawGeometry::BaseGeom*> geoms)
+/*static*/
+BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
 {
-    std::vector<TechDrawGeometry::BaseGeom*> result;
+    BaseGeomPtrVector result;
     std::vector<bool> used(geoms.size(),false);
 
     if (geoms.empty()) {
         return result;
     }
 
-    if (geoms.size() == 1) {                                              //don't bother for single geom (circles, ellipses,etc)
+    if (geoms.size() == 1) {
+        //don't bother for single geom (circles, ellipses,etc)
         result.push_back(geoms[0]);
     } else {
-        result.push_back(geoms[0]);                                    //start with first edge
+        //start with first edge
+        result.push_back(geoms[0]);
         Base::Vector2D atPoint = (geoms[0])->getEndPoint();
         used[0] = true;
-        for (unsigned int i = 1; i < geoms.size(); i++) {              //do size-1 more edges
-            getNextReturnVal next = nextGeom(atPoint,geoms,used,Precision::Confusion());
-            if (next.index) {                                          //found an unused edge with vertex == atPoint
-                TechDrawGeometry::BaseGeom* nextEdge = geoms.at(next.index);
+        for (unsigned int i = 1; i < geoms.size(); i++) { //do size-1 more edges
+            auto next( nextGeom(atPoint, geoms, used, Precision::Confusion()) );
+            if (next.index) { //found an unused edge with vertex == atPoint
+                BaseGeom* nextEdge = geoms.at(next.index);
                 used[next.index] = true;
                 nextEdge->reversed = next.reversed;
                 result.push_back(nextEdge);
@@ -443,30 +449,31 @@ std::vector<TechDrawGeometry::BaseGeom*> TechDrawExport chainGeoms(std::vector<T
     return result;
 }
 
-//! find an unused geom starts or ends at atPoint. returns index[1:geoms.size()),reversed [true,false]
-getNextReturnVal TechDrawExport nextGeom(Base::Vector2D atPoint,
-                       std::vector<TechDrawGeometry::BaseGeom*> geoms,
-                       std::vector<bool> used,
-                       double tolerance)
+
+/*static*/ GeometryUtils::ReturnType GeometryUtils::nextGeom(
+        Base::Vector2D atPoint,
+        BaseGeomPtrVector geoms,
+        std::vector<bool> used,
+        double tolerance )
 {
-    getNextReturnVal result(0,false);
-    std::vector<TechDrawGeometry::BaseGeom*>::iterator itGeom = geoms.begin();
-    for (; itGeom != geoms.end(); itGeom++) {
-        unsigned int index = itGeom - geoms.begin();
+    ReturnType result(0, false);
+    auto index(0);
+    for (auto itGeom : geoms) {
         if (used[index]) {
+            ++index;
             continue;
         }
-        if ((atPoint - (*itGeom)->getStartPoint()).Length() < tolerance) {
+        if ((atPoint - itGeom->getStartPoint()).Length() < tolerance) {
             result.index = index;
             result.reversed = false;
             break;
-        } else if ((atPoint - (*itGeom)->getEndPoint()).Length() < tolerance) {
+        } else if ((atPoint - itGeom->getEndPoint()).Length() < tolerance) {
             result.index = index;
             result.reversed = true;
             break;
         }
+        ++index;
     }
     return result;
 }
 
-} //end extern C
