@@ -68,9 +68,20 @@ public:
      * @param attacher. AttachableObject takes ownership and will delete it eventually.
      */
     virtual void setAttacher(Attacher::AttachEngine* attacher);
+
+    /**
+     * @brief changeAttacherType
+     * @param typeName is the typename of new attacher class. Must be derived
+     * from Attacher::AttachEngine.
+     * @return true if attacher was changed. false if attacher is already of the
+     * type requested. Throws if invalid type is supplied.
+     */
+    bool changeAttacherType(const char* typeName);
+
     Attacher::AttachEngine &attacher(void) const {return *_attacher;}
 
-    /// if the 2DObject lies on the Face of an other object this links to it
+
+    App::PropertyString         AttacherType;
     App::PropertyLinkSubList    Support;
     App::PropertyEnumeration    MapMode; //see AttachEngine::eMapMode
     App::PropertyBool           MapReversed; //inverts Z and X internal axes
