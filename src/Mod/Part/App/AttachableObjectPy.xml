@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PartFeaturePy"  
+    Name="AttachableObjectPy" 
+    Twin="AttachableObject" 
+    TwinPointer="AttachableObject" 
+    Include="Mod/Part/App/AttachableObject.h" 
+    Namespace="Part" 
+    FatherInclude="Mod/Part/App/PartFeaturePy.h" 
+    FatherNamespace="Part">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <UserDocu>This object represents an attachable object with OCC shape.</UserDocu>
+    </Documentation>
+    <Methode Name="positionBySupport">
+      <Documentation>
+        <UserDocu>positionBySupport(): Reposition object based on Support, MapMode and MapPathParameter properties.
+Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
+and raises an exception if attachment calculation fails.</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>
