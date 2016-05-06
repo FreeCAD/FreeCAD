@@ -34,6 +34,25 @@ PyObject* AttachableObjectPy::positionBySupport(PyObject *args)
     return Py::new_reference_to(Py::Boolean(bAttached));
 }
 
+PyObject* AttachableObjectPy::changeAttacherType(PyObject *args)
+{
+    const char* typeName;
+    if (!PyArg_ParseTuple(args, "s", &typeName))
+        return 0;
+    bool ret;
+    try{
+        ret = this->getAttachableObjectPtr()->changeAttacherType(typeName);
+    } catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    } catch (Base::Exception &e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        return NULL;
+    }
+    return Py::new_reference_to(Py::Boolean(ret));
+}
+
 
 PyObject *AttachableObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
