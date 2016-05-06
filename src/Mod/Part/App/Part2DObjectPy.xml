@@ -13,12 +13,5 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>This object represents a 2D Shape in a 3D World</UserDocu>
     </Documentation>
-    <Methode Name="positionBySupport">
-      <Documentation>
-        <UserDocu>positionBySupport(): Reposition object based on Support, MapMode and MapPathParameter properties.
-Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
-and raises an exception if attachment calculation fails.</UserDocu>
-      </Documentation>
-    </Methode>
   </PythonExport>
 </GenerateModel>
