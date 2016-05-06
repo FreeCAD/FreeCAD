@@ -59,7 +59,7 @@ class PartExport AttachableObject : public Part::Feature
     PROPERTY_HEADER(Part::AttachableObject);
 public:
     AttachableObject();
-    ~AttachableObject();
+    virtual ~AttachableObject();
 
     /**
      * @brief setAttacher sets the AttachEngine object. The class takes the
