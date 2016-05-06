@@ -41,15 +41,11 @@
 
 #include "DrawUtil.h"
 
-namespace DrawUtil {
+using namespace TechDraw;
 
-//==============================================================================
-// convenient utility functions for TechDraw Module
-//==============================================================================
-extern "C" {
-int TechDrawExport getIndexFromName(std::string geomName)
+/*static*/ int DrawUtil::getIndexFromName(std::string geomName)
 {
-   boost::regex re("\\d+$");                                           //one of more digits at end of string
+   boost::regex re("\\d+$"); // one of more digits at end of string
    boost::match_results<std::string::const_iterator> what;
    boost::match_flag_type flags = boost::match_default;
    char* endChar;
@@ -69,7 +65,7 @@ int TechDrawExport getIndexFromName(std::string geomName)
    }
 }
 
-std::string TechDrawExport getGeomTypeFromName(std::string geomName)
+std::string DrawUtil::getGeomTypeFromName(std::string geomName)
 {
    boost::regex re("^[a-zA-Z]*");                                           //one or more letters at start of string
    boost::match_results<std::string::const_iterator> what;
@@ -90,11 +86,10 @@ std::string TechDrawExport getGeomTypeFromName(std::string geomName)
    }
 }
 
-std::string TechDrawExport makeGeomName(std::string geomType, int index)
+std::string DrawUtil::makeGeomName(std::string geomType, int index)
 {
     std::stringstream newName;
     newName << geomType << index;
     return newName.str();
 }
-} //end extern "C"
-} //end namespace DrawUtil
+

@@ -959,8 +959,8 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
-        if (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
-            int GeoId = DrawUtil::getIndexFromName(SubNames[0]);
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
+            int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
             TechDrawGeometry::BaseGeom* geom = objFeat->getProjEdgeByIndex(GeoId);
             if (!geom) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
@@ -1000,8 +1000,8 @@ bool _isValidVertexes(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
-        if (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex" &&                    //they both start with "Vertex"
-            DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex" &&                    //they both start with "Vertex"
+            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
             return true;
         }
     }
@@ -1017,10 +1017,10 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     //TechDraw::DrawViewPart* objFeat1 = dynamic_cast<TechDraw::DrawViewPart *>(selection[1].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
-        if (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&                      //they both start with "Edge"
-            DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
-            int GeoId0 = DrawUtil::getIndexFromName(SubNames[0]);
-            int GeoId1 = DrawUtil::getIndexFromName(SubNames[1]);
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&                      //they both start with "Edge"
+            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
+            int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
+            int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
             TechDrawGeometry::BaseGeom* geom0 = objFeat0->getProjEdgeByIndex(GeoId0);
             TechDrawGeometry::BaseGeom* geom1 = objFeat0->getProjEdgeByIndex(GeoId1);
             if ((!geom0) || (!geom1)) {

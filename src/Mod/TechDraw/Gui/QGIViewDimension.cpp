@@ -361,8 +361,8 @@ void QGIViewDimension::draw()
        strcmp(dimType, "DistanceY") == 0) {
         Base::Vector3d distStart, distEnd;
         if((dim->References2D.getValues().size() == 1) &&
-           (DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge")) {
-            int idx = DrawUtil::getIndexFromName(SubNames[0]);
+           (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge")) {
+            int idx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
             TechDrawGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
             if (!geom) {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
@@ -379,10 +379,10 @@ void QGIViewDimension::draw()
                 throw Base::Exception("FVD::draw - Original edge not found or is invalid type (1)");
             }
         } else if(dim->References2D.getValues().size() == 2 &&
-                  DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex" &&
-                  DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
-            int idx0 = DrawUtil::getIndexFromName(SubNames[0]);
-            int idx1 = DrawUtil::getIndexFromName(SubNames[1]);
+                  TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex" &&
+                  TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
+            int idx0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            int idx1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDrawGeometry::Vertex *v0 = refObj->getProjVertexByIndex(idx0);
             TechDrawGeometry::Vertex *v1 = refObj->getProjVertexByIndex(idx1);
             if (!v0 || !v1) {
@@ -394,10 +394,10 @@ void QGIViewDimension::draw()
             distStart = Base::Vector3d (v0->pnt.fX, v0->pnt.fY, 0.);
             distEnd = Base::Vector3d (v1->pnt.fX, v1->pnt.fY, 0.);
         } else if(dim->References2D.getValues().size() == 2 &&
-            DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-            DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
-            int idx0 = DrawUtil::getIndexFromName(SubNames[0]);
-            int idx1 = DrawUtil::getIndexFromName(SubNames[1]);
+            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
+            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
+            int idx0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            int idx1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDrawGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
             TechDrawGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
             if (!geom0 || !geom1) {
@@ -600,8 +600,8 @@ void QGIViewDimension::draw()
         double radius;
 
         if(dim->References2D.getValues().size() == 1 &&
-           DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
-            int idx = DrawUtil::getIndexFromName(SubNames[0]);
+           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
+            int idx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
             TechDrawGeometry::BaseGeom *geom = refObj->getProjEdgeByIndex(idx);
             if(!geom)  {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
@@ -865,8 +865,8 @@ void QGIViewDimension::draw()
         Base::Vector3d pointOnCurve,curveCenter;
         double radius;
         if(dim->References2D.getValues().size() == 1 &&
-           DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
-            int idx = DrawUtil::getIndexFromName(SubNames[0]);
+           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
+            int idx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
             TechDrawGeometry::BaseGeom* geom = refObj->getProjEdgeByIndex(idx);
             if(!geom)  {
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
@@ -975,10 +975,10 @@ void QGIViewDimension::draw()
     } else if(strcmp(dimType, "Angle") == 0) {
         // Only use two straight line edeges for angle
         if(dim->References2D.getValues().size() == 2 &&
-           DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-           DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
-            int idx0 = DrawUtil::getIndexFromName(SubNames[0]);
-            int idx1 = DrawUtil::getIndexFromName(SubNames[1]);
+           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
+           TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
+            int idx0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            int idx1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDrawGeometry::BaseGeom* geom0 = refObj->getProjEdgeByIndex(idx0);
             TechDrawGeometry::BaseGeom* geom1 = refObj->getProjEdgeByIndex(idx1);
             if (!geom0 || !geom1) {
