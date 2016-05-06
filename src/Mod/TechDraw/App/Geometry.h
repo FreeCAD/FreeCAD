@@ -34,9 +34,9 @@ class BRepAdaptor_Curve;
 namespace TechDrawGeometry {
 
 enum ExtractionType {               //obs sb vis/hid + hard/smooth/seam/out(edgeClass?)
-      Plain = 0,
-      WithHidden = 1,
-      WithSmooth = 2
+    Plain,
+    WithHidden,
+    WithSmooth
 };
 
 enum edgeClass {
@@ -60,81 +60,93 @@ enum GeomType {
 
 class TechDrawExport BaseGeom
 {
-public:
-   BaseGeom();
-   virtual ~BaseGeom() {}
-public:
-    GeomType geomType;
-    ExtractionType extractType;     //obs
-    edgeClass classOfEdge;
-    bool visible;
-    bool reversed;
-    int ref3D;
-    TopoDS_Edge occEdge;            //projected Edge
-    std::vector<Base::Vector2D> findEndPoints();
-    Base::Vector2D getStartPoint();
-    Base::Vector2D getEndPoint();
-public:      //class wide methods
-    static BaseGeom* baseFactory(TopoDS_Edge edge);
+    public:
+        BaseGeom();
+        virtual ~BaseGeom() = default;
+
+    public:
+        GeomType geomType;
+        ExtractionType extractType;     //obs
+        edgeClass classOfEdge;
+        bool visible;
+        bool reversed;
+        int ref3D;
+        TopoDS_Edge occEdge;            //projected Edge
+
+        std::vector<Base::Vector2D> findEndPoints();
+        Base::Vector2D getStartPoint();
+        Base::Vector2D getEndPoint();
+        static BaseGeom* baseFactory(TopoDS_Edge edge);
 };
 
 class TechDrawExport Circle: public BaseGeom
 {
-public:
-  Circle(const TopoDS_Edge &e);
-  ~Circle() {}
-public:
-  Base::Vector2D center;
-  double radius;
+    public:
+        Circle(const TopoDS_Edge &e);
+        ~Circle() = default;
+
+    public:
+        Base::Vector2D center;
+        double radius;
 };
 
 class TechDrawExport Ellipse: public BaseGeom
 {
-public:
-  Ellipse(const TopoDS_Edge &e);
-  ~Ellipse() {}
-public:
-  Base::Vector2D center;
-  double minor;
-  double major;
-  /// Angle between the major axis of the ellipse and the X axis, in radian
-  double angle;
+    public:
+        Ellipse(const TopoDS_Edge &e);
+        ~Ellipse() = default;
+
+    public:
+        Base::Vector2D center;
+        double minor;
+        double major;
+
+        /// Angle between the major axis of the ellipse and the X axis, in radian
+        double angle;
 };
 
 class TechDrawExport AOE: public Ellipse
 {
-public:
-  AOE(const TopoDS_Edge &e);
-  ~AOE() {}
-public:
-  Base::Vector2D startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
-  Base::Vector2D endPnt;
-  Base::Vector2D midPnt;
-  /// Angle in radian
-  double startAngle;
-  /// Angle in radian
-  double endAngle;
-  /// Arc is drawn clockwise from startAngle to endAngle if true, counterclockwise if false
-  bool cw;
-  bool largeArc;
+    public:
+        AOE(const TopoDS_Edge &e);
+        ~AOE() = default;
+
+    public:
+        Base::Vector2D startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
+        Base::Vector2D endPnt;
+        Base::Vector2D midPnt;
+
+        /// Angle in radian
+        double startAngle;
+
+        /// Angle in radian
+        double endAngle;
+
+        /// Arc is drawn clockwise from startAngle to endAngle if true, counterclockwise if false
+        bool cw;
+        bool largeArc;
 };
 
 class TechDrawExport AOC: public Circle
 {
-public:
-  AOC(const TopoDS_Edge &e);
-  ~AOC() {}
-public:
-  Base::Vector2D startPnt;
-  Base::Vector2D endPnt;
-  Base::Vector2D midPnt;
-  /// Angle in radian
-  double startAngle;
-  /// Angle in radian
-  double endAngle;
-  /// Arc is drawn clockwise from startAngle to endAngle if true, counterclockwise if false
-  bool cw;  // TODO: Instead of this (and similar one in AOE), why not reorder startAngle and endAngle?
-  bool largeArc;
+    public:
+        AOC(const TopoDS_Edge &e);
+        ~AOC() = default;
+
+    public:
+        Base::Vector2D startPnt;
+        Base::Vector2D endPnt;
+        Base::Vector2D midPnt;
+
+        /// Angle in radian
+        double startAngle;
+
+        /// Angle in radian
+        double endAngle;
+
+        /// Arc is drawn clockwise from startAngle to endAngle if true, counterclockwise if false
+        bool cw;  // TODO: Instead of this (and similar one in AOE), why not reorder startAngle and endAngle?
+        bool largeArc;
 };
 
 /// Handles degree 1 to 3 Bezier segments
@@ -145,6 +157,7 @@ struct BezierSegment
 {
     /// Number of entries in pnts that are valid
     int poles;
+
     /// Control points for this segment
     /*!
      * Note that first and last used points define the endpoints for this
@@ -157,58 +170,63 @@ struct BezierSegment
 
 class TechDrawExport BSpline: public BaseGeom
 {
-public:
-  BSpline(const TopoDS_Edge &e);
-  ~BSpline(){}
-public:
-  bool isLine(void);
-  std::vector<BezierSegment> segments;
+    public:
+        BSpline(const TopoDS_Edge &e);
+        ~BSpline() = default;
+
+    public:
+        bool isLine(void);
+        std::vector<BezierSegment> segments;
 };
 
 class TechDrawExport Generic: public BaseGeom
 {
-public:
-  Generic(const TopoDS_Edge &e);
-  Generic();
-  ~Generic() {}
-  std::vector<Base::Vector2D> points;
-};
+    public:
+        Generic(const TopoDS_Edge &e);
+        Generic();
+        ~Generic() = default;
 
+       std::vector<Base::Vector2D> points;
+};
 
 
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
 class TechDrawExport Wire
 {
-public:
-  Wire();
-  Wire(const TopoDS_Wire &w);
-  ~Wire();
-  std::vector<BaseGeom *> geoms;
+    public:
+        Wire();
+        Wire(const TopoDS_Wire &w);
+        ~Wire();
+
+        std::vector<BaseGeom *> geoms;
 };
 
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
 class TechDrawExport Face
 {
-public:
-  Face();
-  ~Face();
-  std::vector<Wire *> wires;
+    public:
+        Face();
+        ~Face();
+
+        std::vector<Wire *> wires;
 };
 
 //! 2D Vertex
 class TechDrawExport Vertex
 {
-public:
-  Vertex(double x, double y) { pnt = Base::Vector2D(x, y); }
-  Vertex(Base::Vector2D v) { pnt = v; }
-  ~Vertex() {}
-  Base::Vector2D pnt;
-  ExtractionType extractType;
-  bool visible;
-  int ref3D;
-  TopoDS_Vertex occVertex;
-  bool isEqual(Vertex* v, double tol);
+    public:
+        Vertex(double x, double y) { pnt = Base::Vector2D(x, y); }
+        Vertex(Base::Vector2D v) { pnt = v; }
+        ~Vertex() = default;
+
+        Base::Vector2D pnt;
+        ExtractionType extractType;
+        bool visible;
+        int ref3D;
+        TopoDS_Vertex occVertex;
+        bool isEqual(Vertex* v, double tol);
 };
+
 
 //*** utility functions
 extern "C" {
