@@ -109,30 +109,31 @@ void setReadonlyness(App::Property &prop, bool on)
 void AttachableObject::onChanged(const App::Property* prop)
 {
     if(! this->isRestoring()){
-        bool bAttached = false;
-        try{
-            if ((prop == &Support
-                 || prop == &MapMode
-                 || prop == &MapPathParameter
-                 || prop == &MapReversed
-                 || prop == &superPlacement)){
+        if ((prop == &Support
+             || prop == &MapMode
+             || prop == &MapPathParameter
+             || prop == &MapReversed
+             || prop == &superPlacement)){
 
+            bool bAttached = false;
+            try{
                 bAttached = positionBySupport();
+            } catch (Base::Exception &e) {
+                this->setError();
+                Base::Console().Error("PositionBySupport: %s",e.what());
+                //set error message - how?
+            } catch (Standard_Failure &e){
+                this->setError();
+                Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
             }
-        } catch (Base::Exception &e) {
-            this->setError();
-            Base::Console().Error("PositionBySupport: %s",e.what());
-            //set error message - how?
-        } catch (Standard_Failure &e){
-            this->setError();
-            Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
+
+            eMapMode mmode = eMapMode(this->MapMode.getValue());
+            setReadonlyness(this->superPlacement, !bAttached);
+            setReadonlyness(this->Placement, bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
         }
 
-        eMapMode mmode = eMapMode(this->MapMode.getValue());
-        setReadonlyness(this->superPlacement, !bAttached);
-        setReadonlyness(this->Placement, bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
-
     }
+
     Part::Feature::onChanged(prop);
 }
 
