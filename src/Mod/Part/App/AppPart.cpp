@@ -51,7 +51,6 @@
 #include "PartFeatures.h"
 #include "BodyBase.h"
 #include "PrimitiveFeature.h"
-#include "Attacher.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
 #include "TopoShapePy.h"
