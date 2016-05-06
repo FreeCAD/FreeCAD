@@ -30,6 +30,8 @@
 #include <Base/Console.h>
 #include <App/Application.h>
 
+#include <App/FeaturePythonPyImp.h>
+#include "AttachableObjectPy.h"
 
 
 using namespace Part;
@@ -151,4 +153,22 @@ void AttachableObject::updateAttacherVals()
                      this->superPlacement.getValue());
 }
 
+namespace App {
+/// @cond DOXERR
+  PROPERTY_SOURCE_TEMPLATE(Part::AttachableObjectPython, Part::AttachableObject)
+  template<> const char* Part::AttachableObjectPython::getViewProviderName(void) const {
+    return "PartGui::ViewProviderPython";
+  }
+  template<> PyObject* Part::AttachableObjectPython::getPyObject(void) {
+        if (PythonObject.is(Py::_None())) {
+            // ref counter is set to 1
+            PythonObject = Py::Object(new FeaturePythonPyT<Part::AttachableObjectPy>(this),true);
+        }
+        return Py::new_reference_to(PythonObject);
+  }
+/// @endcond
+
+// explicit template instantiation
+  template class PartExport FeaturePythonT<Part::AttachableObject>;
+}
 
