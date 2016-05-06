@@ -320,7 +320,7 @@ void QGIViewPart::drawViewPart()
 
             //get all edge geometries for this hatch
             for (; itEdge != edgeNames.end(); itEdge++) {
-                int idxEdge = DrawUtil::getIndexFromName((*itEdge));
+                int idxEdge = TechDraw::DrawUtil::getIndexFromName((*itEdge));
                 TechDrawGeometry::BaseGeom* edgeGeom = viewPart->getProjEdgeByIndex(idxEdge);
                 if (!edgeGeom) {
                     Base::Console().Log("Error - qgivp::drawViewPart - edgeGeom: %d is NULL\n",idxEdge);

@@ -23,13 +23,18 @@
 #ifndef _DrawUtil_h_
 #define _DrawUtil_h_
 
-namespace DrawUtil {
-extern "C" {
+#include <string>
 
-int getIndexFromName(std::string geomName);
-std::string getGeomTypeFromName(std::string geomName);
-std::string makeGeomName(std::string geomType, int index);
+namespace TechDraw
+{
 
-} //end extern "C"
-} //end namespace DrawUtil
+/// Convenient utility functions for TechDraw Module
+class TechDrawExport DrawUtil {
+    public:
+        static int getIndexFromName(std::string geomName);
+        static std::string getGeomTypeFromName(std::string geomName);
+        static std::string makeGeomName(std::string geomType, int index);
+};
+
+} //end namespace TechDraw
 #endif

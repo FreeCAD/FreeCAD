@@ -277,8 +277,8 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
                 std::string str = msg.pSubName;
                 // If it's a subfeature, dont select feature
                 if (!str.empty()) {
-                    if (DrawUtil::getGeomTypeFromName(str) == "Edge" ||
-                        DrawUtil::getGeomTypeFromName(str) == "Vertex") {
+                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
+                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Vertex") {
                         //TODO: handle Faces
                         // TODO implement me
                     } else {
@@ -296,8 +296,8 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
                 std::string str = msg.pSubName;
                 // If it's a subfeature, dont select feature
                 if (!str.empty()) {
-                    if (DrawUtil::getGeomTypeFromName(str) == "Edge" ||
-                        DrawUtil::getGeomTypeFromName(str) == "Vertex") {
+                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
+                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Vertex") {
                         // TODO implement me
                     } else {
                         view->selectFeature(obj, selectState);
