@@ -195,6 +195,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonClear">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonReset">
        <property name="text">
         <string>&amp;Reset</string>
