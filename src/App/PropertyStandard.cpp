@@ -2516,6 +2516,11 @@ void PropertyMaterial::Restore(Base::XMLReader &reader)
     hasSetValue();
 }
 
+const char* PropertyMaterial::getEditorName(void) const
+{
+    return "";// "Gui::PropertyEditor::PropertyMaterialItem";
+}
+
 Property *PropertyMaterial::Copy(void) const
 {
     PropertyMaterial *p= new PropertyMaterial();
@@ -2670,6 +2675,11 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader &reader)
         it->transparency = valueF;
     }
     setValues(values);
+}
+
+const char* PropertyMaterialList::getEditorName(void) const
+{
+    return "";// "Gui::PropertyEditor::PropertyMaterialListItem";
 }
 
 Property *PropertyMaterialList::Copy(void) const

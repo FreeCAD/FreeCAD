@@ -66,7 +66,7 @@ FeatureTest::FeatureTest()
   ConstraintFloat.setConstraints(&floatPercent);
 
   App::Color c;
-  App::Material mat;
+  App::Material mat(App::Material::GOLD);
   ADD_PROPERTY(Colour      ,(c) );
   ADD_PROPERTY(ColourList  ,(c) );
   ADD_PROPERTY(Material    ,(mat));
