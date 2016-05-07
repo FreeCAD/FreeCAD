@@ -98,12 +98,14 @@ App::DocumentObjectExecReturn *AttachableObject::execute()
     return Part::Feature::execute();
 }
 
-void setReadonlyness(App::Property &prop, bool on)
-{
-    unsigned long status = prop.getStatus();
-    prop.setStatus(App::Property::ReadOnly, on);
-    if (status != prop.getStatus())
-        App::GetApplication().signalChangePropertyEditor(prop);
+namespace Attacher {
+    void setReadonlyness(App::Property &prop, bool on)
+    {
+        unsigned long status = prop.getStatus();
+        prop.setStatus(App::Property::ReadOnly, on);
+        if (status != prop.getStatus())
+            App::GetApplication().signalChangePropertyEditor(prop);
+    }
 }
 
 void AttachableObject::onChanged(const App::Property* prop)
