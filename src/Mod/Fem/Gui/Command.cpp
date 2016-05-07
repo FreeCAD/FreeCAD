@@ -115,7 +115,7 @@ void CmdFemCreateAnalysis::activated(int iMsg)
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
     return;
-#endif 
+#endif
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -177,7 +177,7 @@ void CmdFemAddPart::activated(int iMsg)
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
     return;
-#endif 
+#endif
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -240,7 +240,7 @@ void CmdFemCreateSolver::activated(int iMsg)
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
     return;
-#endif 
+#endif
 
     Fem::FemAnalysis        *Analysis;
 
@@ -615,7 +615,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3f vec(aNode->X(),aNode->Y(),aNode->Z());
         pt2d = proj(vec);
-        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == true) 
+        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == true)
             IntSet.insert(aNode->GetID());
     }
 
@@ -629,7 +629,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
             set << "," << *it ;
     set << "]";
 
-    
+
     Gui::Command::openCommand("Place robot");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.ActiveObject.Nodes = %s",set.str().c_str());

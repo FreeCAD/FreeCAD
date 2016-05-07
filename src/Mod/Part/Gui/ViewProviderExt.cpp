@@ -350,17 +350,19 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != LineMaterial.getValue().diffuseColor)
             LineMaterial.setDiffuseColor(c);
+        LineColorArray.setValue(LineColor.getValue());
     }
     else if (prop == &PointColor) {
         const App::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != PointMaterial.getValue().diffuseColor)
             PointMaterial.setDiffuseColor(c);
+        PointColorArray.setValue(PointColor.getValue());
     }
     else if (prop == &LineMaterial) {
         const App::Material& Mat = LineMaterial.getValue();
         if (LineColor.getValue() != Mat.diffuseColor)
-        LineColor.setValue(Mat.diffuseColor);
+            LineColor.setValue(Mat.diffuseColor);
         pcLineMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
         pcLineMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
         pcLineMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);

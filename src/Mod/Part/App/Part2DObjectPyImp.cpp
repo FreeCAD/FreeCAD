@@ -20,8 +20,9 @@ PyObject* Part2DObjectPy::positionBySupport(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
+    bool bAttached = false;
     try{
-        this->getPart2DObjectPtr()->positionBySupport();
+        bAttached = this->getPart2DObjectPtr()->positionBySupport();
     } catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
@@ -30,8 +31,7 @@ PyObject* Part2DObjectPy::positionBySupport(PyObject *args)
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return NULL;
     }
-    Py_INCREF(Py_None);
-    return Py_None;
+    return Py::new_reference_to(Py::Boolean(bAttached));
 }
 
 

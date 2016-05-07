@@ -66,8 +66,11 @@ FeatureTest::FeatureTest()
   ConstraintFloat.setConstraints(&floatPercent);
 
   App::Color c;
+  App::Material mat(App::Material::GOLD);
   ADD_PROPERTY(Colour      ,(c) );
   ADD_PROPERTY(ColourList  ,(c) );
+  ADD_PROPERTY(Material    ,(mat));
+  ADD_PROPERTY(MaterialList,(mat));
 
   ADD_PROPERTY(Distance,(47.11f) );
   ADD_PROPERTY(Angle   ,(3.0f) );
@@ -75,9 +78,10 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY(IntegerList,(4711)  );
   ADD_PROPERTY(FloatList  ,(47.11f) );
   
-  ADD_PROPERTY(Link     ,(0));
-  ADD_PROPERTY(LinkSub,  (0));
-  ADD_PROPERTY(LinkList ,(0));
+  ADD_PROPERTY(Link       ,(0));
+  ADD_PROPERTY(LinkSub    ,(0));
+  ADD_PROPERTY(LinkList   ,(0));
+  ADD_PROPERTY(LinkSubList,(0));
 
   ADD_PROPERTY(Vector    ,(1.0,2.0,3.0));
   ADD_PROPERTY(VectorList,(3.0,2.0,1.0));

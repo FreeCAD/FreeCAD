@@ -48,10 +48,10 @@ set(FemGui_MOC_HDRS
     TaskDlgCreateNodeSet.h
     TaskFemConstraint.h
     TaskFemConstraintBearing.h
-    TaskFemConstraintFixed.h  
-    TaskFemConstraintForce.h  
+    TaskFemConstraintFixed.h
+    TaskFemConstraintForce.h
     TaskFemConstraintPressure.h
-    TaskFemConstraintGear.h   
+    TaskFemConstraintGear.h
     TaskFemConstraintPulley.h
     TaskFemConstraintDisplacement.h
     TaskTetParameter.h
@@ -217,7 +217,7 @@ add_library(FemGui SHARED ${FemGui_SRCS})
 target_link_libraries(FemGui ${FemGui_LIBS})
 
 
-fc_target_copy_resource(FemGui 
+fc_target_copy_resource(FemGui
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
     InitGui.py

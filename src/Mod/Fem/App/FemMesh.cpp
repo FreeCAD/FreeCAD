@@ -683,53 +683,53 @@ void FemMesh::readNastran(const std::string &Filename)
 
     _Mtrx = Base::Matrix4D();
 
-	std::ifstream inputfile;
-	inputfile.open(Filename.c_str());
-	inputfile.seekg(std::ifstream::beg);
-	std::string line1,line2,temp;
-	std::vector<string> token_results;
-	token_results.clear();
-	Base::Vector3d current_node;
-	std::vector<Base::Vector3d> vertices;
-	vertices.clear();
-	std::vector<unsigned int> nodal_id;
-	nodal_id.clear();
-	std::vector<unsigned int> tetra_element;
-	std::vector<std::vector<unsigned int> > all_elements;
-	std::vector<unsigned int> element_id;
-	element_id.clear();
-	bool nastran_free_format = false;
-	do
-	{
-		std::getline(inputfile,line1);
-		if (line1.size() == 0) continue;
-		if (!nastran_free_format && line1.find(",")!= std::string::npos)
-			nastran_free_format = true;
-		if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
-		{
-			//Now lets extract the GRID Points = Nodes
-			//As each GRID Line consists of two subsequent lines we have to
-			//take care of that as well
-			std::getline(inputfile,line2);
-			//Get the Nodal ID
-			nodal_id.push_back(atoi(line1.substr(8,24).c_str()));
-			//Extract X Value
-			current_node.x = atof(line1.substr(40,56).c_str());
-			//Extract Y Value
-			current_node.y = atof(line1.substr(56,72).c_str());
-			//Extract Z Value
-			current_node.z = atof(line2.substr(8,24).c_str());
+    std::ifstream inputfile;
+    inputfile.open(Filename.c_str());
+    inputfile.seekg(std::ifstream::beg);
+    std::string line1,line2,temp;
+    std::vector<string> token_results;
+    token_results.clear();
+    Base::Vector3d current_node;
+    std::vector<Base::Vector3d> vertices;
+    vertices.clear();
+    std::vector<unsigned int> nodal_id;
+    nodal_id.clear();
+    std::vector<unsigned int> tetra_element;
+    std::vector<std::vector<unsigned int> > all_elements;
+    std::vector<unsigned int> element_id;
+    element_id.clear();
+    bool nastran_free_format = false;
+    do
+    {
+        std::getline(inputfile,line1);
+        if (line1.size() == 0) continue;
+        if (!nastran_free_format && line1.find(",")!= std::string::npos)
+            nastran_free_format = true;
+        if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
+        {
+            //Now lets extract the GRID Points = Nodes
+            //As each GRID Line consists of two subsequent lines we have to
+            //take care of that as well
+            std::getline(inputfile,line2);
+            //Get the Nodal ID
+            nodal_id.push_back(atoi(line1.substr(8,24).c_str()));
+            //Extract X Value
+            current_node.x = atof(line1.substr(40,56).c_str());
+            //Extract Y Value
+            current_node.y = atof(line1.substr(56,72).c_str());
+            //Extract Z Value
+            current_node.z = atof(line2.substr(8,24).c_str());
 
-			vertices.push_back(current_node);
-		}
-		else if (!nastran_free_format && line1.find("CTETRA")!= std::string::npos)
-		{
-			tetra_element.clear();
-			//Lets extract the elements
-			//As each Element Line consists of two subsequent lines as well 
-			//we have to take care of that
-			//At a first step we only extract Quadratic Tetrahedral Elements
-			std::getline(inputfile,line2);
+            vertices.push_back(current_node);
+        }
+        else if (!nastran_free_format && line1.find("CTETRA")!= std::string::npos)
+        {
+            tetra_element.clear();
+            //Lets extract the elements
+            //As each Element Line consists of two subsequent lines as well
+            //we have to take care of that
+            //At a first step we only extract Quadratic Tetrahedral Elements
+            std::getline(inputfile,line2);
             unsigned int id = atoi(line1.substr(8,16).c_str());
             int offset = 0;
 
@@ -739,113 +739,113 @@ void FemMesh::readNastran(const std::string &Filename)
                 offset = 1;
             else if (id < 100000000)
                 offset = 2;
-            
 
-			element_id.push_back(id);
-			tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
-			tetra_element.push_back(atoi(line1.substr(32,40).c_str()));
-			tetra_element.push_back(atoi(line1.substr(40,48).c_str()));
-			tetra_element.push_back(atoi(line1.substr(48,56).c_str()));
-			tetra_element.push_back(atoi(line1.substr(56,64).c_str()));
-			tetra_element.push_back(atoi(line1.substr(64,72).c_str()));
-			tetra_element.push_back(atoi(line2.substr(8+offset,16+offset).c_str()));
-			tetra_element.push_back(atoi(line2.substr(16+offset,24+offset).c_str()));
-			tetra_element.push_back(atoi(line2.substr(24+offset,32+offset).c_str()));
-			tetra_element.push_back(atoi(line2.substr(32+offset,40+offset).c_str()));
 
-			all_elements.push_back(tetra_element);
-		}
-		else if (nastran_free_format && line1.find("GRID")!= std::string::npos ) //We found a Grid line
-		{
-			char_separator<char> sep(",");
-			tokenizer<char_separator<char> > tokens(line1, sep);
-			token_results.assign(tokens.begin(),tokens.end());
-			if (token_results.size() < 3)
-				continue;//Line does not include Nodal coordinates
-			nodal_id.push_back(atoi(token_results[1].c_str()));
-			current_node.x = atof(token_results[3].c_str());
-			current_node.y = atof(token_results[4].c_str());		
-			current_node.z = atof(token_results[5].c_str());
-			vertices.push_back(current_node);
-		}
-		else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
-		{
-			tetra_element.clear();
-			//Lets extract the elements
-			//As each Element Line consists of two subsequent lines as well 
-			//we have to take care of that
-			//At a first step we only extract Quadratic Tetrahedral Elements
-			std::getline(inputfile,line2);
-			char_separator<char> sep(",");
-			tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
-			token_results.assign(tokens.begin(),tokens.end());
-			if (token_results.size() < 11)
-				continue;//Line does not include enough nodal IDs
-			element_id.push_back(atoi(token_results[1].c_str()));
-			tetra_element.push_back(atoi(token_results[3].c_str()));
-			tetra_element.push_back(atoi(token_results[4].c_str()));
-			tetra_element.push_back(atoi(token_results[5].c_str()));
-			tetra_element.push_back(atoi(token_results[6].c_str()));
-			tetra_element.push_back(atoi(token_results[7].c_str()));
-			tetra_element.push_back(atoi(token_results[8].c_str()));
-			tetra_element.push_back(atoi(token_results[10].c_str()));
-			tetra_element.push_back(atoi(token_results[11].c_str()));
-			tetra_element.push_back(atoi(token_results[12].c_str()));
-			tetra_element.push_back(atoi(token_results[13].c_str()));
+            element_id.push_back(id);
+            tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
+            tetra_element.push_back(atoi(line1.substr(32,40).c_str()));
+            tetra_element.push_back(atoi(line1.substr(40,48).c_str()));
+            tetra_element.push_back(atoi(line1.substr(48,56).c_str()));
+            tetra_element.push_back(atoi(line1.substr(56,64).c_str()));
+            tetra_element.push_back(atoi(line1.substr(64,72).c_str()));
+            tetra_element.push_back(atoi(line2.substr(8+offset,16+offset).c_str()));
+            tetra_element.push_back(atoi(line2.substr(16+offset,24+offset).c_str()));
+            tetra_element.push_back(atoi(line2.substr(24+offset,32+offset).c_str()));
+            tetra_element.push_back(atoi(line2.substr(32+offset,40+offset).c_str()));
 
-			all_elements.push_back(tetra_element);
-		}
+            all_elements.push_back(tetra_element);
+        }
+        else if (nastran_free_format && line1.find("GRID")!= std::string::npos ) //We found a Grid line
+        {
+            char_separator<char> sep(",");
+            tokenizer<char_separator<char> > tokens(line1, sep);
+            token_results.assign(tokens.begin(),tokens.end());
+            if (token_results.size() < 3)
+                continue;//Line does not include Nodal coordinates
+            nodal_id.push_back(atoi(token_results[1].c_str()));
+            current_node.x = atof(token_results[3].c_str());
+            current_node.y = atof(token_results[4].c_str());
+            current_node.z = atof(token_results[5].c_str());
+            vertices.push_back(current_node);
+        }
+        else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
+        {
+            tetra_element.clear();
+            //Lets extract the elements
+            //As each Element Line consists of two subsequent lines as well
+            //we have to take care of that
+            //At a first step we only extract Quadratic Tetrahedral Elements
+            std::getline(inputfile,line2);
+            char_separator<char> sep(",");
+            tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
+            token_results.assign(tokens.begin(),tokens.end());
+            if (token_results.size() < 11)
+                continue;//Line does not include enough nodal IDs
+            element_id.push_back(atoi(token_results[1].c_str()));
+            tetra_element.push_back(atoi(token_results[3].c_str()));
+            tetra_element.push_back(atoi(token_results[4].c_str()));
+            tetra_element.push_back(atoi(token_results[5].c_str()));
+            tetra_element.push_back(atoi(token_results[6].c_str()));
+            tetra_element.push_back(atoi(token_results[7].c_str()));
+            tetra_element.push_back(atoi(token_results[8].c_str()));
+            tetra_element.push_back(atoi(token_results[10].c_str()));
+            tetra_element.push_back(atoi(token_results[11].c_str()));
+            tetra_element.push_back(atoi(token_results[12].c_str()));
+            tetra_element.push_back(atoi(token_results[13].c_str()));
 
-	}
-	while (inputfile.good());
-	inputfile.close();
+            all_elements.push_back(tetra_element);
+        }
+
+    }
+    while (inputfile.good());
+    inputfile.close();
 
     Base::Console().Log("    %f: File read, start building mesh\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
-	//Now fill the SMESH datastructure
-	std::vector<Base::Vector3d>::const_iterator anodeiterator;
-	SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
-	meshds->ClearMesh();
-	unsigned int j=0;
-	for(anodeiterator=vertices.begin(); anodeiterator!=vertices.end(); anodeiterator++)
-	{
-		meshds->AddNodeWithID((*anodeiterator).x,(*anodeiterator).y,(*anodeiterator).z,nodal_id[j]);
-		j++;
-	}
+    //Now fill the SMESH datastructure
+    std::vector<Base::Vector3d>::const_iterator anodeiterator;
+    SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
+    meshds->ClearMesh();
+    unsigned int j=0;
+    for(anodeiterator=vertices.begin(); anodeiterator!=vertices.end(); anodeiterator++)
+    {
+        meshds->AddNodeWithID((*anodeiterator).x,(*anodeiterator).y,(*anodeiterator).z,nodal_id[j]);
+        j++;
+    }
 
-	for(unsigned int i=0;i<all_elements.size();i++)
-	{
-		//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
-		//Ansonsten ist eine konsistente Datenstruktur nicht möglich
-		//meshds->AddVolumeWithID
-		//(
-		//	meshds->FindNode(all_elements[i][0]),
-		//	meshds->FindNode(all_elements[i][2]),
-		//	meshds->FindNode(all_elements[i][1]),
-		//	meshds->FindNode(all_elements[i][3]),
-		//	meshds->FindNode(all_elements[i][6]),
-		//	meshds->FindNode(all_elements[i][5]),
-		//	meshds->FindNode(all_elements[i][4]),
-		//	meshds->FindNode(all_elements[i][9]),
-		//	meshds->FindNode(all_elements[i][7]),
-		//	meshds->FindNode(all_elements[i][8]),
-		//	element_id[i]
-		//);
-		meshds->AddVolumeWithID
-		(
-			meshds->FindNode(all_elements[i][1]),
-			meshds->FindNode(all_elements[i][0]),
-			meshds->FindNode(all_elements[i][2]),
-			meshds->FindNode(all_elements[i][3]),
-			meshds->FindNode(all_elements[i][4]),
-			meshds->FindNode(all_elements[i][6]),
-			meshds->FindNode(all_elements[i][5]),
-			meshds->FindNode(all_elements[i][8]),
-			meshds->FindNode(all_elements[i][7]),
-			meshds->FindNode(all_elements[i][9]),
-			element_id[i]
-		);
-	}
+    for(unsigned int i=0;i<all_elements.size();i++)
+    {
+        //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
+        //Ansonsten ist eine konsistente Datenstruktur nicht möglich
+        //meshds->AddVolumeWithID
+        //(
+        //    meshds->FindNode(all_elements[i][0]),
+        //    meshds->FindNode(all_elements[i][2]),
+        //    meshds->FindNode(all_elements[i][1]),
+        //    meshds->FindNode(all_elements[i][3]),
+        //    meshds->FindNode(all_elements[i][6]),
+        //    meshds->FindNode(all_elements[i][5]),
+        //    meshds->FindNode(all_elements[i][4]),
+        //    meshds->FindNode(all_elements[i][9]),
+        //    meshds->FindNode(all_elements[i][7]),
+        //    meshds->FindNode(all_elements[i][8]),
+        //    element_id[i]
+        //);
+        meshds->AddVolumeWithID
+        (
+            meshds->FindNode(all_elements[i][1]),
+            meshds->FindNode(all_elements[i][0]),
+            meshds->FindNode(all_elements[i][2]),
+            meshds->FindNode(all_elements[i][3]),
+            meshds->FindNode(all_elements[i][4]),
+            meshds->FindNode(all_elements[i][6]),
+            meshds->FindNode(all_elements[i][5]),
+            meshds->FindNode(all_elements[i][8]),
+            meshds->FindNode(all_elements[i][7]),
+            meshds->FindNode(all_elements[i][9]),
+            element_id[i]
+        );
+    }
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
 }
@@ -855,11 +855,11 @@ void FemMesh::read(const char *FileName)
 {
     Base::FileInfo File(FileName);
     _Mtrx = Base::Matrix4D();
-  
+
     // checking on the file
     if (!File.isReadable())
         throw Base::Exception("File to load not existing or not readable");
-    
+
     if (File.hasExtension("unv") ) {
         // read UNV file
         myMesh->UNVToMesh(File.filePath().c_str());
@@ -922,8 +922,8 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
 
         // dimension 3
         //
-      //std::vector<int> c3d4  = boost::assign::list_of(0)(3)(1)(2);
-      //std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);
+        //std::vector<int> c3d4  = boost::assign::list_of(0)(3)(1)(2);
+        //std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);
         std::vector<int> c3d4  = boost::assign::list_of(1)(0)(2)(3);
         std::vector<int> c3d10 = boost::assign::list_of(1)(0)(2)(3)(4)(6)(5)(8)(7)(9);
         // FIXME: get the right order
@@ -1179,10 +1179,10 @@ void FemMesh::SaveDocFile (Base::Writer &writer) const
     Base::FileInfo fi(App::Application::getTempFileName().c_str());
 
     myMesh->ExportUNV(fi.filePath().c_str());
- 
+
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
     if (file){
-        unsigned long ulSize = 0; 
+        unsigned long ulSize = 0;
         std::streambuf* buf = file.rdbuf();
         if (buf) {
             unsigned long ulCurr;
@@ -1222,16 +1222,16 @@ void FemMesh::RestoreDocFile(Base::Reader &reader)
 
 void FemMesh::transformGeometry(const Base::Matrix4D& rclTrf)
 {
-	//We perform a translation and rotation of the current active Mesh object
-	Base::Matrix4D clMatrix(rclTrf);
-	SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-	Base::Vector3d current_node;
-	for (;aNodeIter->more();) {
-		const SMDS_MeshNode* aNode = aNodeIter->next();
-		current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
-		current_node = clMatrix * current_node;
-		myMesh->GetMeshDS()->MoveNode(aNode,current_node.x,current_node.y,current_node.z);
-	}
+    //We perform a translation and rotation of the current active Mesh object
+    Base::Matrix4D clMatrix(rclTrf);
+    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
+    Base::Vector3d current_node;
+    for (;aNodeIter->more();) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
+        current_node = clMatrix * current_node;
+        myMesh->GetMeshDS()->MoveNode(aNode,current_node.x,current_node.y,current_node.z);
+    }
 }
 
 void FemMesh::setTransform(const Base::Matrix4D& rclTrf)
@@ -1251,14 +1251,14 @@ Base::BoundBox3d FemMesh::getBoundBox(void) const
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
 
-	SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
-	for (;aNodeIter->more();) {
-		const SMDS_MeshNode* aNode = aNodeIter->next();
+    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
+    for (;aNodeIter->more();) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
-        // Apply the matrix to hold the BoundBox in absolute space. 
+        // Apply the matrix to hold the BoundBox in absolute space.
         vec = _Mtrx * vec;
         box.Add(vec);
-	}
+    }
 
     return box;
 }
@@ -1281,7 +1281,7 @@ unsigned long FemMesh::countSubElements(const char* Type) const
 
 Data::Segment* FemMesh::getSubElement(const char* Type, unsigned long n) const
 {
-    // FIXME implement subelement interface 
+    // FIXME implement subelement interface
     //std::stringstream str;
     //str << Type << n;
     //std::string temp = str.str();
@@ -1294,8 +1294,8 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
     struct FemMeshInfo rtrn;
 
     SMESHDS_Mesh* data =  const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
-	const SMDS_MeshInfo& info = data->GetMeshInfo();
-	rtrn.numFaces = data->NbFaces();
+    const SMDS_MeshInfo& info = data->GetMeshInfo();
+    rtrn.numFaces = data->NbFaces();
     rtrn.numNode = info.NbNodes();
     rtrn.numTria = info.NbTriangles();
     rtrn.numQuad = info.NbQuadrangles();
@@ -1310,39 +1310,39 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
     return rtrn;
 
 }
-//		for(unsigned int i=0;i<all_elements.size();i++)
-//		{
-//			//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
-//			//Ansonsten ist eine konsistente Datenstruktur nicht möglich
-//			meshds->AddVolumeWithID(
-//				meshds->FindNode(all_elements[i][0]),
-//				meshds->FindNode(all_elements[i][2]),
-//				meshds->FindNode(all_elements[i][1]),
-//				meshds->FindNode(all_elements[i][3]),
-//				meshds->FindNode(all_elements[i][6]),
-//				meshds->FindNode(all_elements[i][5]),
-//				meshds->FindNode(all_elements[i][4]),
-//				meshds->FindNode(all_elements[i][9]),
-//				meshds->FindNode(all_elements[i][7]),
-//				meshds->FindNode(all_elements[i][8]),
-//				element_id[i]
-//			);
-//		}
+//    for(unsigned int i=0;i<all_elements.size();i++)
+//        {
+//            //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
+//            //Ansonsten ist eine konsistente Datenstruktur nicht möglich
+//                meshds->AddVolumeWithID(
+//                meshds->FindNode(all_elements[i][0]),
+//                meshds->FindNode(all_elements[i][2]),
+//                meshds->FindNode(all_elements[i][1]),
+//                meshds->FindNode(all_elements[i][3]),
+//                meshds->FindNode(all_elements[i][6]),
+//                meshds->FindNode(all_elements[i][5]),
+//                meshds->FindNode(all_elements[i][4]),
+//                meshds->FindNode(all_elements[i][9]),
+//                meshds->FindNode(all_elements[i][7]),
+//                meshds->FindNode(all_elements[i][8]),
+//                element_id[i]
+//            );
+//        }
 
 Base::Quantity FemMesh::getVolume(void)const
 {
-	SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
+    SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
 
-	//Calculate Mesh Volume
-	//For an accurate Volume Calculation of a quadratic Tetrahedron
-	//we have to calculate the Volume of 8 Sub-Tetrahedrons
-	Base::Vector3d a,b,c,a_b_product;
-	double volume = 0.0;
+    //Calculate Mesh Volume
+    //For an accurate Volume Calculation of a quadratic Tetrahedron
+    //we have to calculate the Volume of 8 Sub-Tetrahedrons
+    Base::Vector3d a,b,c,a_b_product;
+    double volume = 0.0;
 
-	for (;aVolIter->more();) 
-	{
+    for (;aVolIter->more();)
+    {
         const SMDS_MeshVolume* aVol = aVolIter->next();
-        
+
         if ( aVol->NbNodes() != 10 ) continue;
 
         Base::Vector3d v1(aVol->GetNode(1)->X(),aVol->GetNode(1)->Y(),aVol->GetNode(1)->Z());
@@ -1357,56 +1357,56 @@ Base::Quantity FemMesh::getVolume(void)const
         Base::Vector3d v9(aVol->GetNode(9)->X(),aVol->GetNode(9)->Y(),aVol->GetNode(9)->Z());
 
 
-		//1,5,8,7
-		a = v4 -v0 ;
-		b = v7 -v0 ;
-		c = v6 -v0 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-		//5,9,8,7
-		a = v8 -v4 ;
-		b = v7 -v4 ;
-		c = v6 -v4 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-		//5,2,9,7
-		a = v1 -v4 ;
-		b = v8 -v4 ;
-		c = v6 -v4 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-		//2,6,9,7
-		a = v5 -v1 ;
-		b = v8 -v1 ;
-		c = v6 -v1 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-		//9,6,10,7
-		a = v5 -v8 ;
-		b = v9 -v8 ;
-		c = v6 -v8 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-		//6,3,10,7
-		a = v2 -v5 ;
-		b = v9 -v5 ;
-		c = v6 -v5 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-		//8,9,10,7
-		a = v8 -v7 ;
-		b = v9 -v7 ;
-		c = v6 -v7 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-		//8,9,10,4
-		a = v8 -v7 ;
-		b = v9 -v7 ;
-		c = v3 -v7 ;
-		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
-		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
-	
-	}
+        //1,5,8,7
+        a = v4 -v0 ;
+        b = v7 -v0 ;
+        c = v6 -v0 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        //5,9,8,7
+        a = v8 -v4 ;
+        b = v7 -v4 ;
+        c = v6 -v4 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        //5,2,9,7
+        a = v1 -v4 ;
+        b = v8 -v4 ;
+        c = v6 -v4 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        //2,6,9,7
+        a = v5 -v1 ;
+        b = v8 -v1 ;
+        c = v6 -v1 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        //9,6,10,7
+        a = v5 -v8 ;
+        b = v9 -v8 ;
+        c = v6 -v8 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        //6,3,10,7
+        a = v2 -v5 ;
+        b = v9 -v5 ;
+        c = v6 -v5 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        //8,9,10,7
+        a = v8 -v7 ;
+        b = v9 -v7 ;
+        c = v6 -v7 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+        //8,9,10,4
+        a = v8 -v7 ;
+        b = v9 -v7 ;
+        c = v3 -v7 ;
+        a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+        volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+
+    }
 
     return Base::Quantity(volume,Unit::Volume);
 

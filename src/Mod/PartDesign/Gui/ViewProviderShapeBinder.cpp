@@ -128,17 +128,17 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool auxillery)
     
     Part::Feature* obj;
     std::vector<std::string> subs;
-    
+
     if(getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
-        PartDesign::ShapeBinder::getFilterdReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
-    else 
+        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
+    else
         return;
-        
+
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(obj));
     if (svp == NULL) return;
 
-    if (on) {        
+    if (on) {
          if (!subs.empty() && originalLineColors.empty()) {
             TopTools_IndexedMapOfShape eMap;
             TopExp::MapShapes(obj->Shape.getValue(), TopAbs_EDGE, eMap);

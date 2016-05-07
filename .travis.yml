@@ -46,6 +46,13 @@ matrix:
 git:
   depth: 800
 
+notifications:
+  email:
+    recipients:
+      - yorik@uncreated.net
+    on_success: never
+    on_failure: never
+
 before_install:
 - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
 - |

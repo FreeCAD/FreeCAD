@@ -266,6 +266,7 @@ void PolyPickerSelection::initialize()
     polyline.setViewer(_pcView3D);
 
     _pcView3D->addGraphicsItem(&polyline);
+    _pcView3D->redraw(); // needed to get an up-to-date image
     _pcView3D->setRenderType(View3DInventorViewer::Image);
     _pcView3D->redraw();
 
@@ -464,22 +465,22 @@ int PolyClipSelection::popupMenu()
 
 // -----------------------------------------------------------------------------------
 
-BrushSelection::BrushSelection()
+FreehandSelection::FreehandSelection()
 {
 }
 
-BrushSelection::~BrushSelection()
+FreehandSelection::~FreehandSelection()
 {
 
 }
 
-void BrushSelection::setClosed(bool on)
+void FreehandSelection::setClosed(bool on)
 {
     polyline.setClosed(on);
     polyline.setCloseStippled(true);
 }
 
-int BrushSelection::popupMenu()
+int FreehandSelection::popupMenu()
 {
     QMenu menu;
     QAction* fi = menu.addAction(QObject::tr("Finish"));
@@ -498,7 +499,7 @@ int BrushSelection::popupMenu()
         return Restart;
 }
 
-int BrushSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
+int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
 {
     const int button = e->getButton();
     const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
@@ -572,7 +573,7 @@ int BrushSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QP
     return Continue;
 }
 
-int BrushSelection::locationEvent(const SoLocation2Event* const e, const QPoint& pos)
+int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoint& pos)
 {
     // do all the drawing stuff for us
     QPoint clPoint = pos;

@@ -28,6 +28,7 @@
 #include "AttachableObject.h"
 
 #include <Base/Console.h>
+#include <App/Application.h>
 
 
 
@@ -69,15 +70,17 @@ void AttachableObject::setAttacher(AttachEngine* attacher)
     updateAttacherVals();
 }
 
-void AttachableObject::positionBySupport()
+bool AttachableObject::positionBySupport()
 {
     if (!_attacher)
         throw Base::Exception("AttachableObject: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
     try{
         this->Placement.setValue(_attacher->calculateAttachedPlacement(this->Placement.getValue()));
+        return true;
     } catch (ExceptionCancel) {
         //disabled, don't do anything
+        return false;
     };
 }
 
@@ -95,25 +98,44 @@ App::DocumentObjectExecReturn *AttachableObject::execute()
     return Part::Feature::execute();
 }
 
+namespace Attacher {
+    void setReadonlyness(App::Property &prop, bool on)
+    {
+        unsigned long status = prop.getStatus();
+        prop.setStatus(App::Property::ReadOnly, on);
+        if (status != prop.getStatus())
+            App::GetApplication().signalChangePropertyEditor(prop);
+    }
+}
+
 void AttachableObject::onChanged(const App::Property* prop)
 {
     if(! this->isRestoring()){
-        try{
-            if ((prop == &Support
-                 || prop == &MapMode
-                 || prop == &MapPathParameter
-                 || prop == &MapReversed
-                 || prop == &superPlacement))
-                positionBySupport();
-        } catch (Base::Exception &e) {
-            this->setError();
-            Base::Console().Error("PositionBySupport: %s",e.what());
-            //set error message - how?
-        } catch (Standard_Failure &e){
-            this->setError();
-            Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
+        if ((prop == &Support
+             || prop == &MapMode
+             || prop == &MapPathParameter
+             || prop == &MapReversed
+             || prop == &superPlacement)){
+
+            bool bAttached = false;
+            try{
+                bAttached = positionBySupport();
+            } catch (Base::Exception &e) {
+                this->setError();
+                Base::Console().Error("PositionBySupport: %s",e.what());
+                //set error message - how?
+            } catch (Standard_Failure &e){
+                this->setError();
+                Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
+            }
+
+            eMapMode mmode = eMapMode(this->MapMode.getValue());
+            setReadonlyness(this->superPlacement, !bAttached);
+            setReadonlyness(this->Placement, bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
         }
+
     }
+
     Part::Feature::onChanged(prop);
 }
 

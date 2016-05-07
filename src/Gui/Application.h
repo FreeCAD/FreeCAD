@@ -222,6 +222,7 @@ public:
 
     PYFUNCDEF_S(sRunCommand);
     PYFUNCDEF_S(sAddCommand);
+    PYFUNCDEF_S(sListCommands);
 
     PYFUNCDEF_S(sHide);                     // deprecated
     PYFUNCDEF_S(sShow);                     // deprecated
@@ -240,9 +241,11 @@ public:
     PYFUNCDEF_S(sDoCommand);
     PYFUNCDEF_S(sDoCommandGui);
     PYFUNCDEF_S(sAddModule);
-    
+
     PYFUNCDEF_S(sShowDownloads);
     PYFUNCDEF_S(sShowPreferences);
+
+    PYFUNCDEF_S(sCreateViewer);
 
     static PyMethodDef    Methods[]; 
 

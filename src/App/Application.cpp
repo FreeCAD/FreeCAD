@@ -100,6 +100,7 @@
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "MaterialObject.h"
+#include "MaterialPy.h"
 #include "Expression.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
@@ -189,29 +190,12 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
-    if (PyType_Ready(&Base::VectorPy::Type) < 0) return;
-    union PyType_Object pyVecType = {&Base::VectorPy::Type};
-    PyModule_AddObject(pAppModule, "Vector", pyVecType.o);
-
-    if (PyType_Ready(&Base::MatrixPy::Type) < 0) return;
-    union PyType_Object pyMtxType = {&Base::MatrixPy::Type};
-    PyModule_AddObject(pAppModule, "Matrix", pyMtxType.o);
-
-    if (PyType_Ready(&Base::BoundBoxPy::Type) < 0) return;
-    union PyType_Object pyBoundBoxType = {&Base::BoundBoxPy::Type};
-    PyModule_AddObject(pAppModule, "BoundBox", pyBoundBoxType.o);
-
-    if (PyType_Ready(&Base::PlacementPy::Type) < 0) return;
-    union PyType_Object pyPlacementPyType = {&Base::PlacementPy::Type};
-    PyModule_AddObject(pAppModule, "Placement", pyPlacementPyType.o);
-
-    if (PyType_Ready(&Base::RotationPy::Type) < 0) return;
-    union PyType_Object pyRotationPyType = {&Base::RotationPy::Type};
-    PyModule_AddObject(pAppModule, "Rotation", pyRotationPyType.o);
-
-    if (PyType_Ready(&Base::AxisPy::Type) < 0) return;
-    union PyType_Object pyAxisPyType = {&Base::AxisPy::Type};
-    PyModule_AddObject(pAppModule, "Axis", pyAxisPyType.o);
+    Base::Interpreter().addType(&Base::VectorPy::Type, pAppModule, "Vector");
+    Base::Interpreter().addType(&Base::MatrixPy::Type, pAppModule, "Matrix");
+    Base::Interpreter().addType(&Base::BoundBoxPy::Type, pAppModule, "BoundBox");
+    Base::Interpreter().addType(&Base::PlacementPy::Type, pAppModule, "Placement");
+    Base::Interpreter().addType(&Base::RotationPy::Type, pAppModule, "Rotation");
+    Base::Interpreter().addType(&Base::AxisPy::Type, pAppModule, "Axis");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -232,6 +216,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::PlacementPy  ::Type,pBaseModule,"Placement");
     Base::Interpreter().addType(&Base::RotationPy   ::Type,pBaseModule,"Rotation");
     Base::Interpreter().addType(&Base::AxisPy       ::Type,pBaseModule,"Axis");
+
+    Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
@@ -904,15 +890,31 @@ void Application::destruct(void)
 {
     // saving system parameter
     Console().Log("Saving system parameter...\n");
-    _pcSysParamMngr->SaveDocument(mConfig["SystemParameter"].c_str());
+    _pcSysParamMngr->SaveDocument();
     // saving the User parameter
     Console().Log("Saving system parameter...done\n");
     Console().Log("Saving user parameter...\n");
-    _pcUserParamMngr->SaveDocument(mConfig["UserParameter"].c_str());
+    _pcUserParamMngr->SaveDocument();
     Console().Log("Saving user parameter...done\n");
-    // clean up
-    delete _pcSysParamMngr;
-    delete _pcUserParamMngr;
+
+    // now save all other parameter files
+    std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
+    for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
+        if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
+            if (it->second->HasSerializer()) {
+                Console().Log("Saving %s...\n", it->first.c_str());
+                it->second->SaveDocument();
+                Console().Log("Saving %s...done\n", it->first.c_str());
+            }
+        }
+
+        // clean up
+        delete it->second;
+    }
+
+    paramMgr.clear();
+    _pcSysParamMngr = 0;
+    _pcUserParamMngr = 0;
 
     // not initialized or doubel destruct!
     assert(_pcSingleton);
@@ -1107,6 +1109,7 @@ void Application::initTypes(void)
     App ::PropertyColor             ::init();
     App ::PropertyColorList         ::init();
     App ::PropertyMaterial          ::init();
+    App ::PropertyMaterialList      ::init();
     App ::PropertyPath              ::init();
     App ::PropertyFile              ::init();
     App ::PropertyFileIncluded      ::init();
@@ -1455,10 +1458,6 @@ void Application::logStatus()
 
 void Application::LoadParameters(void)
 {
-    // create standard parameter sets
-    _pcSysParamMngr = new ParameterManager();
-    _pcUserParamMngr = new ParameterManager();
-
     // Init parameter sets ===========================================================
     //
     if (mConfig.find("UserParameter") == mConfig.end())
@@ -1466,9 +1465,15 @@ void Application::LoadParameters(void)
     if (mConfig.find("SystemParameter") == mConfig.end())
         mConfig["SystemParameter"] = mConfig["UserAppData"] + "system.cfg";
 
+    // create standard parameter sets
+    _pcSysParamMngr = new ParameterManager();
+    _pcSysParamMngr->SetSerializer(new ParameterSerializer(mConfig["SystemParameter"]));
+
+    _pcUserParamMngr = new ParameterManager();
+    _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
-        if (_pcSysParamMngr->LoadOrCreateDocument(mConfig["SystemParameter"].c_str()) && !(mConfig["Verbose"] == "Strict")) {
+        if (_pcSysParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Console().Warning("   Parameter does not exist, writing initial one\n");
@@ -1487,7 +1492,7 @@ void Application::LoadParameters(void)
     }
 
     try {
-        if (_pcUserParamMngr->LoadOrCreateDocument(mConfig["UserParameter"].c_str()) && !(mConfig["Verbose"] == "Strict")) {
+        if (_pcUserParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
             std::map<std::string, std::string>::iterator it = mConfig.find("UserParameterTemplate");

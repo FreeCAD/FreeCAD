@@ -81,6 +81,7 @@ namespace Gui
       void renameRejectedSlot();
       void editingStartSlot();
       void editingFinishedSlot();
+      void iconUpdateSlot(); //!< needed because python objects are not ready.
       
     private:
       Model(){}
@@ -150,6 +151,7 @@ namespace Gui
       QPixmap passPixmap;
       QPixmap failPixmap;
       QPixmap pendingPixmap;
+      Vertex lastAddedVertex = Graph::null_vertex(); //!< needed because python objects are not ready.
       
       QAction *renameAction;
       QAction *editingFinishedAction;

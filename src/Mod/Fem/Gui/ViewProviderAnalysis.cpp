@@ -112,7 +112,7 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
 //        if (padDlg)
 //            Gui::Control().showDialog(padDlg);
 //        else
-        
+
         //Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
         //Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
         //return true;
@@ -137,11 +137,11 @@ void ViewProviderFemAnalysis::unsetEdit(int ModNum)
 bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
 {
     //// get the support and Sketch
-    //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject()); 
+    //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
     //Sketcher::SketchObject *pcSketch = 0;
     //App::DocumentObject    *pcSupport = 0;
     //if (pcPad->Sketch.getValue()){
-    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
+    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
     //    pcSupport = pcSketch->Support.getValue();
     //}
 

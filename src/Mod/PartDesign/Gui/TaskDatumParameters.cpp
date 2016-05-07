@@ -29,6 +29,8 @@
 # include <QTextStream>
 # include <QMessageBox>
 # include <Precision.hxx>
+# include <Standard_Failure.hxx>
+# include <boost/bind.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -38,6 +40,8 @@
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
+#include <App/ObjectIdentifier.h>
+#include <App/PropertyExpressionEngine.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -49,6 +53,7 @@
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/Part/Gui/AttacherTexts.h>
 
 #include "ReferenceSelection.h"
 #include "Utils.h"
@@ -117,14 +122,12 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffsetChanged(double)));
-    connect(ui->spinOffset2, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffset2Changed(double)));
-    connect(ui->spinOffset3, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffset3Changed(double)));
-    connect(ui->spinAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onAngleChanged(double)));
+    connect(ui->superplacementX, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementXChanged(double)));
+    connect(ui->superplacementY, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementYChanged(double)));
+    connect(ui->superplacementZ, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementZChanged(double)));
+    connect(ui->superplacementYaw, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementYawChanged(double)));
+    connect(ui->superplacementPitch, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementPitchChanged(double)));
+    connect(ui->superplacementRoll, SIGNAL(valueChanged(double)), this, SLOT(onSuperplacementRollChanged(double)));
     connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
             this, SLOT(onCheckFlip(bool)));
     connect(ui->buttonRef1, SIGNAL(clicked(bool)),
@@ -149,10 +152,6 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature recomputes
-    ui->spinOffset->blockSignals(true);
-    ui->spinOffset2->blockSignals(true);
-    ui->spinOffset3->blockSignals(true);
-    ui->spinAngle->blockSignals(true);
     ui->checkBoxFlip->blockSignals(true);
     ui->buttonRef1->blockSignals(true);
     ui->lineRef1->blockSignals(true);
@@ -169,20 +168,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     //std::vector<App::DocumentObject*> refs = pcDatum->Support.getValues();
     std::vector<std::string> refnames = pcDatum->Support.getSubValues();
 
-    //bool checked1 = pcDatum->Checked.getValue();
-    double offset = pcDatum->superPlacement.getValue().getPosition().z;
-    double offset2 = pcDatum->superPlacement.getValue().getPosition().y;
-    double offset3 = pcDatum->superPlacement.getValue().getPosition().x;
-    double angle = 0;
-    Base::Vector3d val;
-    pcDatum->superPlacement.getValue().getRotation().getValue(val, angle);
-
-    // Fill data into dialog elements
-    ui->spinOffset->setValue(offset);
-    ui->spinOffset2->setValue(offset2);
-    ui->spinOffset3->setValue(offset3);
-    ui->spinAngle->setValue(angle);
-    //ui->checkBoxFlip->setChecked(checked1);
+    ui->checkBoxFlip->setChecked(pcDatum->MapReversed.getValue());
     std::vector<QString> refstrings;
     makeRefStrings(refstrings, refnames);
     ui->lineRef1->setText(refstrings[0]);
@@ -195,10 +181,6 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->lineRef4->setProperty("RefName", QByteArray(refnames[3].c_str()));
 
     // activate and de-activate dialog elements as appropriate
-    ui->spinOffset->blockSignals(false);
-    ui->spinOffset2->blockSignals(false);
-    ui->spinOffset3->blockSignals(false);
-    ui->spinAngle->blockSignals(false);
     ui->checkBoxFlip->blockSignals(false);
     ui->buttonRef1->blockSignals(false);
     ui->lineRef1->blockSignals(false);
@@ -209,12 +191,25 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->buttonRef4->blockSignals(false);
     ui->lineRef4->blockSignals(false);
     ui->listOfModes->blockSignals(false);
-    updateUI();
+
+    if (pcDatum->Support.getSize() == 0){
+        autoNext = true;
+        this->iActiveRef = 0;
+    } else {
+        autoNext = false;
+    }
+
+    ui->superplacementX->bind(App::ObjectIdentifier::parse(pcDatum,std::string("superPlacement.Base.x")));
+    ui->superplacementY->bind(App::ObjectIdentifier::parse(pcDatum,std::string("superPlacement.Base.y")));
+    ui->superplacementZ->bind(App::ObjectIdentifier::parse(pcDatum,std::string("superPlacement.Base.z")));
+    updateSuperplacementUI();
+    updateReferencesUI();
     updateListOfModes(eMapMode(pcDatum->MapMode.getValue()));
+    updatePreview();
 
     //temporary show coordinate systems for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( DatumView->getObject() );
-    if(body) {
+    PartDesign::Body * body = PartDesign::Body::findBodyOf(DatumView->getObject());
+    if (body) {
         try {
             App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
@@ -224,50 +219,46 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
-    if (pcDatum->Support.getSize() == 0)
-        autoNext = true;
-    else
-        autoNext = false;
-    
+
     DatumView->setPickable(false);
+
+    // connect object deletion with slot
+    auto bnd = boost::bind(&TaskDatumParameters::objectDeleted, this, _1);
+    Gui::Document* document = Gui::Application::Instance->getDocument(DatumView->getObject()->getDocument());
+    connectDelObject = document->signalDeletedObject.connect(bnd);
 }
 
-QString getShTypeText(eRefType type)
+TaskDatumParameters::~TaskDatumParameters()
 {
-    //get rid of flags in type
-    type = eRefType(type & (rtFlagHasPlacement - 1));
+    connectDelObject.disconnect();
+    if (DatumView)
+        resetViewMode();
+    delete ui;
+}
 
-    const char* eRefTypeStrings[] = {
-        QT_TR_NOOP("Any"),
-        QT_TR_NOOP("Vertex"),
-        QT_TR_NOOP("Edge"),
-        QT_TR_NOOP("Face"),
+void TaskDatumParameters::resetViewMode()
+{
+    //end temporary view mode of coordinate system
+    PartDesign::Body * body = PartDesign::Body::findBodyOf(DatumView->getObject());
+    if (body) {
+        try {
+            App::Origin *origin = body->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        }
+        catch (const Base::Exception &ex) {
+            Base::Console().Error("%s\n", ex.what());
+        }
+    }
 
-        QT_TR_NOOP("Line"),
-        QT_TR_NOOP("Curve"),
-        QT_TR_NOOP("Circle"),
-        QT_TR_NOOP("Conic"),
-        QT_TR_NOOP("Ellipse"),
-        QT_TR_NOOP("Parabola"),
-        QT_TR_NOOP("Hyperbola"),
+    DatumView->setPickable(true);
+}
 
-        QT_TR_NOOP("Plane"),
-        QT_TR_NOOP("Sphere"),
-        QT_TR_NOOP("Revolve"),
-        QT_TR_NOOP("Cylinder"),
-        QT_TR_NOOP("Torus"),
-        QT_TR_NOOP("Cone"),
-        //
-        QT_TR_NOOP("Object"),
-        QT_TR_NOOP("Solid"),
-        QT_TR_NOOP("Wire"),
-        NULL
-    };
-
-    if (type >= 0 && type < rtDummy_numberOfShapeTypes)
-        if (eRefTypeStrings[int(type)])
-            return QObject::tr(eRefTypeStrings[int(type)]);
-    throw Base::Exception("getShTypeText: type value is wrong, or a string is missing in the list");
+void TaskDatumParameters::objectDeleted(const Gui::ViewProviderDocumentObject& view)
+{
+    if (DatumView == &view)
+        DatumView = nullptr;
 }
 
 const QString makeHintText(std::set<eRefType> hint)
@@ -275,106 +266,73 @@ const QString makeHintText(std::set<eRefType> hint)
     QString result;
     for (std::set<eRefType>::const_iterator t = hint.begin(); t != hint.end(); t++) {
         QString tText;
-        tText = getShTypeText(*t);
+        tText = AttacherGui::getShapeTypeText(*t);
         result += QString::fromLatin1(result.size() == 0 ? "" : "/") + tText;
     }
 
     return result;
 }
 
-void TaskDatumParameters::updateUI(std::string message, bool error)
+void TaskDatumParameters::updateReferencesUI()
 {
-    //set text if available
-    if(!message.empty()) {
-        ui->message->setText(QString::fromStdString(message));
-        if(error)
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
-        else
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
-    }
-
-    ui->checkBoxFlip->setVisible(false);
-
-    ui->labelOffset->setVisible(true);
-    ui->spinOffset->setVisible(true);
-    ui->labelOffset2->setVisible(true);
-    ui->spinOffset2->setVisible(true);
-    ui->labelOffset3->setVisible(true);
-    ui->spinOffset3->setVisible(true);
 
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-    if (pcDatum->isDerivedFrom(Part::Datum::getClassTypeId())) {
-        ui->labelAngle->setVisible(true);
-        ui->spinAngle->setVisible(true);
-    }
 
     std::vector<App::DocumentObject*> refs = pcDatum->Support.getValues();
     completed = false;
 
-    // Get hints for further required references
-    eSuggestResult msg;
-    std::set<eRefType> hint;
+    // Get hints for further required references...
+    // DeepSOIC: hint system became useless since inertial system attachment
+    // modes have been introduced, becuase they accept any number of references
+    // of any type, so the hint will always be 'Any'. I keep the logic
+    // nevertheless, in case it is decided to resurrect hint system.
 
-    pcDatum->attacher().listMapModes(msg,0,&hint);
+    pcDatum->attacher().suggestMapModes(this->lastSuggestResult);
 
-    if (msg != srOK) {
-        if(hint.size() > 0)
-            message = "Need more references";
+    if (this->lastSuggestResult.message != SuggestResult::srOK) {
+        if(this->lastSuggestResult.nextRefTypeHint.size() > 0){
+            //message = "Need more references";
+        }
     } else {
         completed = true;
     }
 
-    double angle = 0;
-    Base::Vector3d val;
-    pcDatum->superPlacement.getValue().getRotation().getValue(val, angle);
+    updateRefButton(0);
+    updateRefButton(1);
+    updateRefButton(2);
+    updateRefButton(3);
+}
 
-    // Enable the next reference button
-    int numrefs = refs.size();
-
-    ui->buttonRef2->setEnabled(numrefs >= 1);
-    ui->lineRef2->setEnabled(numrefs >= 1);
-    ui->buttonRef3->setEnabled(numrefs >= 2);
-    ui->lineRef3->setEnabled(numrefs >= 2);
-    ui->buttonRef4->setEnabled(numrefs >= 3);
-    ui->lineRef4->setEnabled(numrefs >= 3);
-
-    ui->labelAngle->setEnabled(true);
-    ui->spinAngle->setEnabled(true);
-
-    QString hintText = makeHintText(hint);
-
-    // Check if we have all required references
-    if (hint.size() == 0) {
-        ui->buttonRef2->setEnabled(numrefs >= 2);
-        ui->lineRef2->setEnabled(numrefs >= 2);
-        ui->buttonRef3->setEnabled(numrefs >= 3);
-        ui->lineRef3->setEnabled(numrefs >= 3);
-        ui->buttonRef4->setEnabled(numrefs >= 4);
-        ui->lineRef4->setEnabled(numrefs >= 4);
-        completed = true;
+bool TaskDatumParameters::updatePreview()
+{
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
+    QString errMessage;
+    bool attached = false;
+    try{
+        attached = pcDatum->positionBySupport();
+    } catch (Base::Exception &err){
+        errMessage = QString::fromLatin1(err.what());
+    } catch (Standard_Failure &err){
+        errMessage = tr("OCC error: %1").arg(QString::fromLatin1(err.GetMessageString()));
+    } catch (...) {
+        errMessage = tr("unknown error");
     }
-
-    if (hintText.size() != 0 && autoNext) {
-        if (numrefs == 0) {
-            onButtonRef1(true);
-            autoNext = true;
-        } else if (numrefs == 1) {
-            ui->buttonRef2->setText(hintText);
-            onButtonRef2(true);//will reset autonext, so...
-            autoNext = true;
-        } else if (numrefs == 2) {
-            ui->buttonRef3->setText(hintText);
-            onButtonRef3(true);//will reset autonext, so...
-            autoNext = true;
-        } else if (numrefs == 3) {
-            ui->buttonRef4->setText(hintText);
-            onButtonRef4(true);
-            autoNext = true;
-        } else if (numrefs == 4) {
-            onButtonRef4(false);
-            autoNext = false;
+    if (errMessage.length()>0){
+        ui->message->setText(tr("Attachment mode failed: %1").arg(errMessage));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+    } else {
+        if (!attached){
+            ui->message->setText(tr("Not attached"));
+            ui->message->setStyleSheet(QString());
+        } else {
+            std::vector<QString> strs = AttacherGui::getUIStrings(pcDatum->attacher().getTypeId(),eMapMode(pcDatum->MapMode.getValue()));
+            ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
+            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
         }
     }
+    QString splmLabelText = attached ? tr("Extra placement:") : tr("Extra placement (inactive - not attached):");
+    ui->groupBox_superplacement->setTitle(splmLabelText);
+    return attached;
 }
 
 QLineEdit* TaskDatumParameters::getLine(unsigned idx)
@@ -431,23 +389,23 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         bool error = false;
-        std::string message("Selection accepted");
         try {
             pcDatum->Support.setValues(refs, refnames);
             updateListOfModes();
             eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if no modes are available
             if(mmode == mmDeactivated){
-                message = "Selection invalid";
                 error = true;
                 this->completed = false;
             } else {
                 this->completed = true;
             }
             pcDatum->MapMode.setValue(mmode);
+            updatePreview();
         }
         catch(Base::Exception& e) {
             error = true;
-            message = std::string(e.what());
+            ui->message->setText(QString::fromLatin1(e.what()));
+            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         }
 
         QLineEdit* line = getLine(iActiveRef);
@@ -458,60 +416,83 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             line->blockSignals(false);
         }
 
-        updateUI(message, error);
+        if (autoNext) {
+            if (iActiveRef == -1){
+                //nothing to do
+            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.size() == 0){
+                iActiveRef = -1;
+            } else {
+                iActiveRef++;
+            }
+        }
+
+        updateReferencesUI();
     }
 }
 
-void TaskDatumParameters::onOffsetChanged(double val)
+void TaskDatumParameters::onSuperplacementChanged(double val, int idx)
 {
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     Base::Placement pl = pcDatum->superPlacement.getValue();
-    Base::Vector3d pos = pl.getPosition();
-    pos.z = val;
-    pl.setPosition(pos);
-    pcDatum->superPlacement.setValue(pl);
-    pcDatum->getDocument()->recomputeFeature(pcDatum);
-    updateUI();
-}
 
-void TaskDatumParameters::onOffset2Changed(double val)
-{
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-    Base::Placement pl = pcDatum->superPlacement.getValue();
     Base::Vector3d pos = pl.getPosition();
-    pos.y = val;
-    pl.setPosition(pos);
-    pcDatum->superPlacement.setValue(pl);
-    pcDatum->getDocument()->recomputeFeature(pcDatum);
-    updateUI();
-}
+    if (idx == 0) {
+        pos.x = ui->superplacementX->value().getValueAs(Base::Quantity::MilliMetre);
+    }
+    if (idx == 1) {
+        pos.y = ui->superplacementY->value().getValueAs(Base::Quantity::MilliMetre);
+    }
+    if (idx == 2) {
+        pos.z = ui->superplacementZ->value().getValueAs(Base::Quantity::MilliMetre);
+    }
+    if (idx >= 0  && idx <= 2){
+        pl.setPosition(pos);
+    }
 
-void TaskDatumParameters::onOffset3Changed(double val)
-{
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-    Base::Placement pl = pcDatum->superPlacement.getValue();
-    Base::Vector3d pos = pl.getPosition();
-    pos.x = val;
-    pl.setPosition(pos);
-    pcDatum->superPlacement.setValue(pl);
-    pcDatum->getDocument()->recomputeFeature(pcDatum);
-    updateUI();
-}
-
-void TaskDatumParameters::onAngleChanged(double val)
-{
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-    Base::Placement pl = pcDatum->superPlacement.getValue();
     Base::Rotation rot = pl.getRotation();
-    Base::Vector3d ax;
-    double ang;
-    rot.getValue(ax,ang);
-    ang = val;
-    rot.setValue(ax,ang);
-    pl.setRotation(rot);
+    double yaw, pitch, roll;
+    rot.getYawPitchRoll(yaw, pitch, roll);
+    if (idx == 3) {
+        yaw = ui->superplacementYaw->value().getValueAs(Base::Quantity::Degree);
+    }
+    if (idx == 4) {
+        pitch = ui->superplacementPitch->value().getValueAs(Base::Quantity::Degree);
+    }
+    if (idx == 5) {
+        roll = ui->superplacementRoll->value().getValueAs(Base::Quantity::Degree);
+    }
+    if (idx >= 3  &&  idx <= 5){
+        rot.setYawPitchRoll(yaw,pitch,roll);
+        pl.setRotation(rot);
+    }
+
     pcDatum->superPlacement.setValue(pl);
-    pcDatum->getDocument()->recomputeFeature(pcDatum);
-    updateUI();
+    updatePreview();
+}
+
+void TaskDatumParameters::onSuperplacementXChanged(double val)
+{
+    onSuperplacementChanged(val, 0);
+}
+void TaskDatumParameters::onSuperplacementYChanged(double val)
+{
+    onSuperplacementChanged(val, 1);
+}
+void TaskDatumParameters::onSuperplacementZChanged(double val)
+{
+    onSuperplacementChanged(val, 2);
+}
+void TaskDatumParameters::onSuperplacementYawChanged(double val)
+{
+    onSuperplacementChanged(val, 3);
+}
+void TaskDatumParameters::onSuperplacementPitchChanged(double val)
+{
+    onSuperplacementChanged(val, 4);
+}
+void TaskDatumParameters::onSuperplacementRollChanged(double val)
+{
+    onSuperplacementChanged(val, 5);
 }
 
 void TaskDatumParameters::onCheckFlip(bool on)
@@ -530,10 +511,10 @@ void TaskDatumParameters::onButtonRef(const bool checked, unsigned idx)
     } else {
         iActiveRef = -1;
     }
-    ui->buttonRef1->setChecked(iActiveRef==0);
-    ui->buttonRef2->setChecked(iActiveRef==1);
-    ui->buttonRef3->setChecked(iActiveRef==2);
-    ui->buttonRef4->setChecked(iActiveRef==3);
+    updateRefButton(0);
+    updateRefButton(1);
+    updateRefButton(2);
+    updateRefButton(3);
 }
 
 void TaskDatumParameters::onButtonRef1(const bool checked) {
@@ -553,6 +534,7 @@ void TaskDatumParameters::onModeSelect()
 {
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     pcDatum->MapMode.setValue(getActiveMapMode());
+    updatePreview();
 }
 
 void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
@@ -578,6 +560,8 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
         updateListOfModes();
         pcDatum->MapMode.setValue(getActiveMapMode());
 
+        updatePreview();
+
         // Update the UI
         std::vector<QString> refstrings;
         makeRefStrings(refstrings, newrefnames);
@@ -589,7 +573,7 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
         ui->lineRef3->setProperty("RefName", QByteArray(newrefnames[2].c_str()));
         ui->lineRef4->setText(refstrings[3]);
         ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
-        updateUI();
+        updateReferencesUI();
         return;
     }
 
@@ -657,7 +641,93 @@ void TaskDatumParameters::onRefName(const QString& text, unsigned idx)
     updateListOfModes();
     pcDatum->MapMode.setValue(getActiveMapMode());
 
-    updateUI();
+    updateReferencesUI();
+}
+
+void TaskDatumParameters::updateRefButton(int idx)
+{
+    QAbstractButton* b;
+    switch(idx){
+        case 0: b = ui->buttonRef1; break;
+        case 1: b = ui->buttonRef2; break;
+        case 2: b = ui->buttonRef3; break;
+        case 3: b = ui->buttonRef4; break;
+        default: throw Base::Exception("button index out of range");
+    }
+
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
+    std::vector<App::DocumentObject*> refs = pcDatum->Support.getValues();
+
+    int numrefs = refs.size();
+    bool enable = true;
+    if (idx > numrefs)
+        enable = false;
+    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.size() == 0)
+        enable = false;
+    b->setEnabled(enable);
+
+    b->setChecked(iActiveRef == idx);
+
+    if (iActiveRef == idx) {
+        b->setText(tr("Selecting..."));
+    } else if (idx < this->lastSuggestResult.references_Types.size()){
+        b->setText(AttacherGui::getShapeTypeText(this->lastSuggestResult.references_Types[idx]));
+    } else {
+        b->setText(tr("Reference%1").arg(idx+1));
+    }
+}
+
+void TaskDatumParameters::updateSuperplacementUI()
+{
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
+    Base::Placement pl = pcDatum->superPlacement.getValue();
+    Base::Vector3d pos = pl.getPosition();
+    Base::Rotation rot = pl.getRotation();
+    double yaw, pitch, roll;
+    rot.getYawPitchRoll(yaw, pitch, roll);
+
+    bool bBlock = true;
+    ui->superplacementX->blockSignals(bBlock);
+    ui->superplacementY->blockSignals(bBlock);
+    ui->superplacementZ->blockSignals(bBlock);
+    ui->superplacementYaw->blockSignals(bBlock);
+    ui->superplacementPitch->blockSignals(bBlock);
+    ui->superplacementRoll->blockSignals(bBlock);
+
+    ui->superplacementX->setValue(Base::Quantity(pos.x,Base::Unit::Length));
+    ui->superplacementY->setValue(Base::Quantity(pos.y,Base::Unit::Length));
+    ui->superplacementZ->setValue(Base::Quantity(pos.z,Base::Unit::Length));
+    ui->superplacementYaw->setValue(yaw);
+    ui->superplacementPitch->setValue(pitch);
+    ui->superplacementRoll->setValue(roll);
+
+    auto expressions = pcDatum->ExpressionEngine.getExpressions();
+    bool bRotationBound = false;
+    bRotationBound = bRotationBound ||
+            expressions.find(App::ObjectIdentifier::parse(pcDatum,std::string("superPlacement.Rotation.Angle"))) != expressions.end();
+    bRotationBound = bRotationBound ||
+            expressions.find(App::ObjectIdentifier::parse(pcDatum,std::string("superPlacement.Rotation.Axis.x"))) != expressions.end();
+    bRotationBound = bRotationBound ||
+            expressions.find(App::ObjectIdentifier::parse(pcDatum,std::string("superPlacement.Rotation.Axis.y"))) != expressions.end();
+    bRotationBound = bRotationBound ||
+            expressions.find(App::ObjectIdentifier::parse(pcDatum,std::string("superPlacement.Rotation.Axis.z"))) != expressions.end();
+
+    ui->superplacementYaw->setEnabled(!bRotationBound);
+    ui->superplacementPitch->setEnabled(!bRotationBound);
+    ui->superplacementRoll->setEnabled(!bRotationBound);
+
+    QString tooltip = bRotationBound ? tr("Not editable because rotation part of superplacement is bound by expressions.") : QString();
+    ui->superplacementYaw->setToolTip(tooltip);
+    ui->superplacementPitch->setToolTip(tooltip);
+    ui->superplacementRoll->setToolTip(tooltip);
+
+    bBlock = false;
+    ui->superplacementX->blockSignals(bBlock);
+    ui->superplacementY->blockSignals(bBlock);
+    ui->superplacementZ->blockSignals(bBlock);
+    ui->superplacementYaw->blockSignals(bBlock);
+    ui->superplacementPitch->blockSignals(bBlock);
+    ui->superplacementRoll->blockSignals(bBlock);
 }
 
 void TaskDatumParameters::updateListOfModes(eMapMode curMode)
@@ -671,10 +741,16 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
 
     //obtain list of available modes:
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-    eMapMode suggMode = mmDeactivated;
+    this->lastSuggestResult.bestFitMode = mmDeactivated;
+    int lastValidModeItemIndex = mmDummy_NumberOfModes;
     if (pcDatum->Support.getSize() > 0){
-        eSuggestResult msg;
-        suggMode = pcDatum->attacher().listMapModes(msg, &modesInList);
+        pcDatum->attacher().suggestMapModes(this->lastSuggestResult);
+        modesInList = this->lastSuggestResult.allApplicableModes;
+        //add reachable modes to the list, too, but gray them out (using lastValidModeItemIndex, later)
+        lastValidModeItemIndex = modesInList.size()-1;
+        for(std::pair<const eMapMode, refTypeStringList> &rm: this->lastSuggestResult.reachableModes){
+            modesInList.push_back(rm.first);
+        }
     } else {
         //no references - display all modes
         modesInList.clear();
@@ -691,17 +767,39 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
     if (modesInList.size()>0) {
         for (size_t i = 0  ;  i < modesInList.size()  ;  ++i){
             eMapMode mmode = modesInList[i];
-            ui->listOfModes->addItem(QString::fromLatin1(AttachEngine::eMapModeStrings[mmode]));
+            std::vector<QString> mstr = AttacherGui::getUIStrings(pcDatum->attacher().getTypeId(),mmode);
+            ui->listOfModes->addItem(mstr[0]);
+            QListWidgetItem* item = ui->listOfModes->item(i);
+            item->setToolTip(mstr[1] + QString::fromLatin1("\n\n") +
+                             tr("Reference combinations:\n") +
+                             AttacherGui::getRefListForMode(pcDatum->attacher(),mmode).join(QString::fromLatin1("\n")));
             if (mmode == curMode)
                 iSelect = ui->listOfModes->item(i);
-            if (mmode == suggMode){
-                //make it bold
-                QListWidgetItem* item = ui->listOfModes->item(i);
+            if (i > lastValidModeItemIndex){
+                //potential mode - can be reached by selecting more stuff
+                item->setFlags(item->flags() & ~(Qt::ItemFlag::ItemIsEnabled | Qt::ItemFlag::ItemIsSelectable));
+
+                refTypeStringList &extraRefs = this->lastSuggestResult.reachableModes[mmode];
+                if (extraRefs.size() == 1){
+                    QStringList buf;
+                    for(eRefType rt : extraRefs[0]){
+                        buf.append(AttacherGui::getShapeTypeText(rt));
+                    }
+                    item->setText(tr("%1 (add %2)").arg(
+                                      item->text(),
+                                      buf.join(QString::fromLatin1("+"))
+                                      ));
+                } else {
+                    item->setText(tr("%1 (add more references)").arg(item->text()));
+                }
+            } else if (mmode == this->lastSuggestResult.bestFitMode){
+                //suggested mode - make bold
                 assert (item);
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
             }
+
         }
     }
     //restore selection
@@ -717,11 +815,8 @@ Attacher::eMapMode TaskDatumParameters::getActiveMapMode()
     if (sel.count() > 0)
         return modesInList[ui->listOfModes->row(sel[0])];
     else {
-        Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
-        eSuggestResult msg;
-        eMapMode suggMode = pcDatum->attacher().listMapModes(msg);
-        if (msg == srOK)
-            return suggMode;
+        if (this->lastSuggestResult.message == SuggestResult::srOK)
+            return this->lastSuggestResult.bestFitMode;
         else
             return mmDeactivated;
     };
@@ -744,59 +839,16 @@ void TaskDatumParameters::onRefName4(const QString &text)
     onRefName(text, 3);
 }
 
-double TaskDatumParameters::getOffset() const
-{
-    return ui->spinOffset->value();
-}
-
-double TaskDatumParameters::getOffset2() const
-{
-    return ui->spinOffset2->value();
-}
-
-double TaskDatumParameters::getOffset3() const
-{
-    return ui->spinOffset3->value();
-}
-
-double TaskDatumParameters::getAngle() const
-{
-    return ui->spinAngle->value();
-}
 
 bool   TaskDatumParameters::getFlip() const
 {
     return ui->checkBoxFlip->isChecked();
 }
 
-TaskDatumParameters::~TaskDatumParameters()
-{
-    //end temporary view mode of coordinate system
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( DatumView->getObject() );
-    if(body) {
-        try {
-            App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->resetTemporaryVisibility();
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
-        }
-    }
-
-    DatumView->setPickable(true);
-    
-    delete ui;
-}
-
 void TaskDatumParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
-        ui->spinOffset->blockSignals(true);
-        ui->spinOffset2->blockSignals(true);
-        ui->spinOffset3->blockSignals(true);
-        ui->spinAngle->blockSignals(true);
         ui->checkBoxFlip->blockSignals(true);
         ui->buttonRef1->blockSignals(true);
         ui->lineRef1->blockSignals(true);
@@ -816,12 +868,7 @@ void TaskDatumParameters::changeEvent(QEvent *e)
         ui->lineRef3->setText(refstrings[2]);
         ui->lineRef3->setText(refstrings[3]);
         updateListOfModes();
-        // TODO: Translate DatumView->datumType ?
 
-        ui->spinOffset->blockSignals(false);
-        ui->spinOffset2->blockSignals(false);
-        ui->spinOffset3->blockSignals(false);
-        ui->spinAngle->blockSignals(false);
         ui->checkBoxFlip->blockSignals(false);
         ui->buttonRef1->blockSignals(false);
         ui->lineRef1->blockSignals(false);
@@ -931,16 +978,22 @@ bool TaskDlgDatumParameters::accept()
     }
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.superPlacement.Base.z = %f",name.c_str(),parameter->getOffset());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.superPlacement.Base.y = %f",name.c_str(),parameter->getOffset2());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.superPlacement.Base.x = %f",name.c_str(),parameter->getOffset3());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.superPlacement.Rotation.Angle = %f",name.c_str(),parameter->getAngle());
-        //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Checked = %i",name.c_str(),parameter->getCheckBox1()?1:0);
+        //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
+        if (pcDatum->superPlacement.isTouched()){
+            Base::Placement plm = pcDatum->superPlacement.getValue();
+            double yaw, pitch, roll;
+            plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.superPlacement = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+                                    name.c_str(),
+                                    plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
+                                    yaw, pitch, roll);
+        }
 
-        //here it is assumed that the support was already assigned, it just outputs a dummy Python command to the console
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapReversed = %s", name.c_str(), pcDatum->MapReversed.getValue() ? "True" : "False");
+
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Support = %s", name.c_str(), pcDatum->Support.getPyReprString().c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapMode = '%s'", name.c_str(), AttachEngine::eMapModeStrings[parameter->getActiveMapMode()]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapMode = '%s'", name.c_str(), AttachEngine::getModeName(eMapMode(pcDatum->MapMode.getValue())).c_str());
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!DatumView->getObject()->isValid())

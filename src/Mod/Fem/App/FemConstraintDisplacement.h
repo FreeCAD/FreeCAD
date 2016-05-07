@@ -39,18 +39,18 @@ class AppFemExport ConstraintDisplacement : public Fem::Constraint
 public:
     /// Constructor
     ConstraintDisplacement(void);
-    
+
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 
     //Displacement parameters
-    App::PropertyFloat xDisplacement; 
-    App::PropertyFloat yDisplacement; 
-    App::PropertyFloat zDisplacement; 
-    App::PropertyFloat xRotation; 
-    App::PropertyFloat yRotation; 
-    App::PropertyFloat zRotation; 
+    App::PropertyFloat xDisplacement;
+    App::PropertyFloat yDisplacement;
+    App::PropertyFloat zDisplacement;
+    App::PropertyFloat xRotation;
+    App::PropertyFloat yRotation;
+    App::PropertyFloat zRotation;
     App::PropertyBool xFree;
     App::PropertyBool yFree;
     App::PropertyBool zFree;

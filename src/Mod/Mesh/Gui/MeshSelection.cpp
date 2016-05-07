@@ -80,6 +80,7 @@ MeshSelection::MeshSelection()
   , onlyVisibleTriangles(false)
   , activeCB(0)
   , selectionCB(0)
+  , ivViewer(0)
 {
     setCallback(selectGLCallback);
 }
@@ -139,8 +140,17 @@ std::list<ViewProviderMesh*> MeshSelection::getViewProviders() const
     return vps;
 }
 
+void MeshSelection::setViewer(Gui::View3DInventorViewer* v)
+{
+    ivViewer = v;
+}
+
 Gui::View3DInventorViewer* MeshSelection::getViewer() const
 {
+    // if a special viewer was set from outside then use this
+    if (ivViewer)
+        return ivViewer;
+
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (!doc) return 0;
     Gui::MDIView* view = doc->getActiveView();
@@ -170,7 +180,7 @@ void MeshSelection::stopInteractiveCallback(Gui::View3DInventorViewer* viewer)
     this->activeCB = 0;
 }
 
-void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
+void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
 {
     // a rubberband to select a rectangle area of the meshes
     Gui::View3DInventorViewer* viewer = this->getViewer();
@@ -182,11 +192,11 @@ void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
         viewer->navigationStyle()->stopSelection();
 
         // set cross cursor
-        Gui::BrushSelection* brush = new Gui::BrushSelection();
-        brush->setClosed(true);
-        brush->setColor(1.0f,0.0f,0.0f);
-        brush->setLineWidth(3.0f);
-        viewer->navigationStyle()->startSelection(brush);
+        Gui::FreehandSelection* freehand = new Gui::FreehandSelection();
+        freehand->setClosed(true);
+        freehand->setColor(1.0f, 0.0f, 0.0f);
+        freehand->setLineWidth(3.0f);
+        viewer->navigationStyle()->startSelection(freehand);
         
         QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
         QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
@@ -198,12 +208,12 @@ void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
 
 void MeshSelection::startSelection()
 {
-    prepareBrushSelection(true, selectionCB);
+    prepareFreehandSelection(true, selectionCB);
 }
 
 void MeshSelection::startDeselection()
 {
-    prepareBrushSelection(false, selectionCB);
+    prepareFreehandSelection(false, selectionCB);
 }
 
 void MeshSelection::stopSelection()

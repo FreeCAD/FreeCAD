@@ -47,4 +47,4 @@ protected:
 } // namespace FemGui
 
 
-#endif // IMAGE_WORKBENCH_H 
+#endif // IMAGE_WORKBENCH_H

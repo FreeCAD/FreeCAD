@@ -120,22 +120,22 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         // Set up the nodes
         cpx->matrix.setNum(0);
         cpx->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cpy->matrix.setNum(0);
         cpy->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cpz->matrix.setNum(0);
         cpz->addChild((SoNode*)createDisplacement(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cprotx->matrix.setNum(0);
         cprotx->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cproty->matrix.setNum(0);
         cproty->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         cprotz->matrix.setNum(0);
         cprotz->addChild((SoNode*)createRotation(scaledheight, scaledwidth)); //OvG: Scaling
-        
+
         pShapeSep->addChild(cpx);
         pShapeSep->addChild(cpy);
         pShapeSep->addChild(cpz);
@@ -156,27 +156,27 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         cpx = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cpx->matrix.setNum(points.size());
         SbMatrix* matricesx = cpx->matrix.startEditing();
-        
+
         cpy = static_cast<SoMultipleCopy*>(pShapeSep->getChild(1));
         cpy->matrix.setNum(points.size());
         SbMatrix* matricesy = cpy->matrix.startEditing();
-        
+
         cpz = static_cast<SoMultipleCopy*>(pShapeSep->getChild(2));
         cpz->matrix.setNum(points.size());
         SbMatrix* matricesz = cpz->matrix.startEditing();
-        
+
         cprotx = static_cast<SoMultipleCopy*>(pShapeSep->getChild(3));
         cprotx->matrix.setNum(points.size());
         SbMatrix* matricesrotx = cprotx->matrix.startEditing();
-        
+
         cproty = static_cast<SoMultipleCopy*>(pShapeSep->getChild(4));
         cproty->matrix.setNum(points.size());
         SbMatrix* matricesroty = cproty->matrix.startEditing();
-        
+
         cprotz = static_cast<SoMultipleCopy*>(pShapeSep->getChild(5));
         cprotz->matrix.setNum(points.size());
         SbMatrix* matricesrotz = cprotz->matrix.startEditing();
-        
+
         int idx = 0;
         int idy = 0;
         int idz = 0;
@@ -203,94 +203,94 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
             //OvG: Translation indication
             if(!xFree)
             {
-				SbMatrix mx;
-				mx.setTransform(base, rotx, SbVec3f(1,1,1));
-				matricesx[idx] = mx;
-				idx++;
-			}
-			if(!yFree)
+                SbMatrix mx;
+                mx.setTransform(base, rotx, SbVec3f(1,1,1));
+                matricesx[idx] = mx;
+                idx++;
+            }
+            if(!yFree)
             {
-				SbMatrix my;
-				my.setTransform(base, roty, SbVec3f(1,1,1));
-				matricesy[idy] = my;
-				idy++;
-			}
-			if(!zFree)
+                SbMatrix my;
+                my.setTransform(base, roty, SbVec3f(1,1,1));
+                matricesy[idy] = my;
+                idy++;
+            }
+            if(!zFree)
             {
-				SbMatrix mz;
-				mz.setTransform(base, rotz, SbVec3f(1,1,1));
-				matricesz[idz] = mz;
-				idz++;
-			}
-			
-			//OvG: Rotation indication
-			if(!rotxFree)
+                SbMatrix mz;
+                mz.setTransform(base, rotz, SbVec3f(1,1,1));
+                matricesz[idz] = mz;
+                idz++;
+            }
+
+            //OvG: Rotation indication
+            if(!rotxFree)
             {
-				SbMatrix mrotx;
-				mrotx.setTransform(base, rotx, SbVec3f(1,1,1));
-				matricesrotx[idrotx] = mrotx;
-				idrotx++;
-			}
-			if(!rotyFree)
+                SbMatrix mrotx;
+                mrotx.setTransform(base, rotx, SbVec3f(1,1,1));
+                matricesrotx[idrotx] = mrotx;
+                idrotx++;
+            }
+            if(!rotyFree)
             {
-				SbMatrix mroty;
-				mroty.setTransform(base, roty, SbVec3f(1,1,1));
-				matricesroty[idroty] = mroty;
-				idroty++;
-			}
-			if(!rotzFree)
+                SbMatrix mroty;
+                mroty.setTransform(base, roty, SbVec3f(1,1,1));
+                matricesroty[idroty] = mroty;
+                idroty++;
+            }
+            if(!rotzFree)
             {
-				SbMatrix mrotz;
-				mrotz.setTransform(base, rotz, SbVec3f(1,1,1));
-				matricesrotz[idrotz] = mrotz;
-				idrotz++;
-			}
+                SbMatrix mrotz;
+                mrotz.setTransform(base, rotz, SbVec3f(1,1,1));
+                matricesrotz[idrotz] = mrotz;
+                idrotz++;
+            }
 #else
-			//OvG: Translation indication
-			if(!xFree)
+            //OvG: Translation indication
+            if(!xFree)
             {
-				SoSeparator* sepx = new SoSeparator();
-				createPlacement(sepx, base, rotx);
-				createDisplacement(sepx, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepx);
-			}
-			if(!yFree)
+                SoSeparator* sepx = new SoSeparator();
+                createPlacement(sepx, base, rotx);
+                createDisplacement(sepx, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepx);
+            }
+            if(!yFree)
             {
-				SoSeparator* sepy = new SoSeparator();
-				createPlacement(sepy, base, roty);
-				createDisplacement(sepy, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepy);
-			}
-			if(!zFree)
+                SoSeparator* sepy = new SoSeparator();
+                createPlacement(sepy, base, roty);
+                createDisplacement(sepy, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepy);
+            }
+            if(!zFree)
             {
-				SoSeparator* sepz = new SoSeparator();
-				createPlacement(sepz, base, rotz);
-				createDisplacement(sepz, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepz);
-			}
-			
-			//OvG: Rotation indication
-			if(!rotxFree)
+                SoSeparator* sepz = new SoSeparator();
+                createPlacement(sepz, base, rotz);
+                createDisplacement(sepz, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepz);
+            }
+
+            //OvG: Rotation indication
+            if(!rotxFree)
             {
-				SoSeparator* sepx = new SoSeparator();
-				createPlacement(sepx, base, rotx);
-				createRotation(sepx, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepx);
-			}
-			if(!rotyFree)
+                SoSeparator* sepx = new SoSeparator();
+                createPlacement(sepx, base, rotx);
+                createRotation(sepx, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepx);
+            }
+            if(!rotyFree)
             {
-				SoSeparator* sepy = new SoSeparator();
-				createPlacement(sepy, base, roty);
-				createRotation(sepy, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepy);
-			}
-			if(!rotzFree)
+                SoSeparator* sepy = new SoSeparator();
+                createPlacement(sepy, base, roty);
+                createRotation(sepy, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepy);
+            }
+            if(!rotzFree)
             {
-				SoSeparator* sepz = new SoSeparator();
-				createPlacement(sepz, base, rotz);
-				createRotation(sepz, scaledheight, scaledwidth); //OvG: Scaling
-				pShapeSep->addChild(sepz);
-			}
+                SoSeparator* sepz = new SoSeparator();
+                createPlacement(sepz, base, rotz);
+                createRotation(sepz, scaledheight, scaledwidth); //OvG: Scaling
+                pShapeSep->addChild(sepz);
+            }
 #endif
             n++;
         }
@@ -303,7 +303,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         cprotz->matrix.finishEditing();
 #endif
     }
-	
+
     // Gets called whenever a property of the attached object changes
     ViewProviderFemConstraint::updateData(prop);
 }

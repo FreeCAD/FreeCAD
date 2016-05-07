@@ -45,7 +45,7 @@ namespace Fem{
     class FemMeshShapeNetgenObject;
 }
 
-namespace FemGui { 
+namespace FemGui {
 
 class ViewProviderFemMeshShapeNetgen;
 
@@ -61,7 +61,7 @@ public:
     ViewProviderFemMeshShapeNetgen * MeshViewProvider;
     void setInfo(void);
 
-    bool touched; 
+    bool touched;
 
 private Q_SLOTS:
     void SwitchMethod(int Value);

@@ -461,6 +461,7 @@ StdCmdSaveAs::StdCmdSaveAs()
   sStatusTip    = QT_TR_NOOP("Save the active document under a new file name");
   sPixmap       = "document-save-as";
   sAccel        = keySequenceToAccel(QKeySequence::SaveAs);
+  eType         = 0;
 }
 
 void StdCmdSaveAs::activated(int iMsg)

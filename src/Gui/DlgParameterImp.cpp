@@ -241,6 +241,16 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
     }
 }
 
+/** Switches the type of parameters with name @a config. */
+void DlgParameterImp::activateParameterSet(const char* config)
+{
+    int index = ui->parameterSet->findData(QByteArray(config));
+    if (index != -1) {
+        ui->parameterSet->setCurrentIndex(index);
+        onChangeParameterSet(index);
+    }
+}
+
 /** Switches the type of parameters either to user or system parameters. */
 void DlgParameterImp::onChangeParameterSet(int index)
 {
@@ -248,12 +258,7 @@ void DlgParameterImp::onChangeParameterSet(int index)
     if (!rcParMngr)
         return;
 
-    if (rcParMngr == App::GetApplication().GetParameterSet("System parameter"))
-        ui->buttonSaveToDisk->setEnabled(true);
-    else if (rcParMngr == App::GetApplication().GetParameterSet("User parameter"))
-        ui->buttonSaveToDisk->setEnabled(true);
-    else
-        ui->buttonSaveToDisk->setEnabled(false);
+    ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
 
     // remove all labels
     paramGroup->clear();
@@ -306,11 +311,10 @@ void DlgParameterImp::on_buttonSaveToDisk_clicked()
 {
     int index = ui->parameterSet->currentIndex();
     ParameterManager* parmgr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(index).toByteArray());
-    if (!parmgr) return;
-    if (parmgr == App::GetApplication().GetParameterSet("System parameter"))
-        parmgr->SaveDocument(App::Application::Config()["SystemParameter"].c_str());
-    else if (parmgr == App::GetApplication().GetParameterSet("User parameter"))
-        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
+    if (!parmgr)
+        return;
+
+    parmgr->SaveDocument();
 }
 
 namespace Gui {
