@@ -57,6 +57,26 @@
 
 using namespace Gui::PropertyEditor;
 
+namespace Gui { namespace PropertyEditor {
+    static QColor toQColor(const App::Color& col)
+    {
+        return QColor(
+            (int)(255.0f*col.r),
+            (int)(255.0f*col.g),
+            (int)(255.0f*col.b)
+            );
+    }
+    static App::Color fromQColor(const QColor& col)
+    {
+        App::Color val;
+        val.r = (float)col.red() / 255.0f;
+        val.g = (float)col.green() / 255.0f;
+        val.b = (float)col.blue() / 255.0f;
+        return val;
+    }
+}
+}
+
 TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyItem, Base::BaseClass);
 
 PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false)
@@ -235,7 +255,7 @@ QVariant PropertyItem::toolTip(const App::Property* prop) const
     return QVariant(QString::fromUtf8(prop->getDocumentation()));
 }
 
-QVariant PropertyItem::decoration(const App::Property* /*prop*/) const
+QVariant PropertyItem::decoration(const QVariant&) const
 {
     return QVariant();
 }
@@ -355,8 +375,13 @@ QVariant PropertyItem::data(int column, int role) const
             PropertyItem* parent = this->parent();
             if (!parent || !parent->parent())
                 return QVariant();
-            if (role == Qt::EditRole)
+            if (role == Qt::EditRole) {
                 return parent->property(qPrintable(objectName()));
+            }
+            else if (role == Qt::DecorationRole) {
+                QVariant val = parent->property(qPrintable(objectName()));
+                return decoration(val);
+            }
             else if (role == Qt::DisplayRole) {
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
@@ -368,7 +393,7 @@ QVariant PropertyItem::data(int column, int role) const
         if (role == Qt::EditRole)
             return value(propertyItems[0]);
         else if (role == Qt::DecorationRole)
-            return decoration(propertyItems[0]);
+            return decoration(value(propertyItems[0]));
         else if (role == Qt::DisplayRole)
             return toString(value(propertyItems[0]));
         else if (role == Qt::ToolTipRole)
@@ -2207,10 +2232,9 @@ PropertyColorItem::PropertyColorItem()
 {
 }
 
-QVariant PropertyColorItem::decoration(const App::Property* prop) const
+QVariant PropertyColorItem::decoration(const QVariant& value) const
 {
-    App::Color value = ((App::PropertyColor*)prop)->getValue();
-    QColor color((int)(255.0f*value.r),(int)(255.0f*value.g),(int)(255.0f*value.b));
+    QColor color = value.value<QColor>();
 
     int size = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
     QPixmap p(size, size);
@@ -2232,7 +2256,7 @@ QVariant PropertyColorItem::value(const App::Property* prop) const
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId()));
 
     App::Color value = ((App::PropertyColor*)prop)->getValue();
-    return QVariant(QColor((int)(255.0f*value.r),(int)(255.0f*value.g),(int)(255.0f*value.b)));
+    return QVariant(toQColor(value));
 }
 
 void PropertyColorItem::setValue(const QVariant& value)
@@ -2240,10 +2264,7 @@ void PropertyColorItem::setValue(const QVariant& value)
     if (!value.canConvert<QColor>())
         return;
     QColor col = value.value<QColor>();
-    App::Color val;
-    val.r = (float)col.red()/255.0f;
-    val.g = (float)col.green()/255.0f;
-    val.b = (float)col.blue()/255.0f;
+    App::Color val = fromQColor(col);
     QString data = QString::fromLatin1("(%1,%2,%3)")
                     .arg(val.r,0,'f',decimals())
                     .arg(val.g,0,'f',decimals())
@@ -2272,6 +2293,314 @@ QVariant PropertyColorItem::editorData(QWidget *editor) const
     QVariant var;
     var.setValue(cb->color());
     return var;
+}
+
+// --------------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyMaterialItem, Gui::PropertyEditor::PropertyItem);
+
+PropertyMaterialItem::PropertyMaterialItem()
+{
+    diffuse = static_cast<PropertyColorItem*>(PropertyColorItem::create());
+    diffuse->setParent(this);
+    diffuse->setPropertyName(QLatin1String("DiffuseColor"));
+    this->appendChild(diffuse);
+
+    ambient = static_cast<PropertyColorItem*>(PropertyColorItem::create());
+    ambient->setParent(this);
+    ambient->setPropertyName(QLatin1String("AmbientColor"));
+    this->appendChild(ambient);
+
+    specular = static_cast<PropertyColorItem*>(PropertyColorItem::create());
+    specular->setParent(this);
+    specular->setPropertyName(QLatin1String("SpecularColor"));
+    this->appendChild(specular);
+
+    emissive = static_cast<PropertyColorItem*>(PropertyColorItem::create());
+    emissive->setParent(this);
+    emissive->setPropertyName(QLatin1String("EmissiveColor"));
+    this->appendChild(emissive);
+
+    shininess = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    shininess->setParent(this);
+    shininess->setPropertyName(QLatin1String("Shininess"));
+    this->appendChild(shininess);
+
+    transparency = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    transparency->setParent(this);
+    transparency->setPropertyName(QLatin1String("Transparency"));
+    this->appendChild(transparency);
+}
+
+PropertyMaterialItem::~PropertyMaterialItem()
+{
+}
+
+void PropertyMaterialItem::propertyBound()
+{
+}
+
+QColor PropertyMaterialItem::getDiffuseColor() const
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return QColor();
+
+    const QVariantList& val = value.toList();
+    return val[0].value<QColor>();
+}
+
+void PropertyMaterialItem::setDiffuseColor(const QColor& color)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return;
+
+    QVariantList val = value.toList();
+    val[0] = QVariant(color);
+    setValue(val);
+}
+
+QColor PropertyMaterialItem::getAmbientColor() const
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return QColor();
+
+    const QVariantList& val = value.toList();
+    return val[1].value<QColor>();
+}
+
+void PropertyMaterialItem::setAmbientColor(const QColor& color)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return;
+
+    QVariantList val = value.toList();
+    val[1] = QVariant(color);
+    setValue(val);
+}
+
+QColor PropertyMaterialItem::getSpecularColor() const
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return QColor();
+
+    const QVariantList& val = value.toList();
+    return val[2].value<QColor>();
+}
+
+void PropertyMaterialItem::setSpecularColor(const QColor& color)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return;
+
+    QVariantList val = value.toList();
+    val[2] = QVariant(color);
+    setValue(val);
+}
+
+QColor PropertyMaterialItem::getEmissiveColor() const
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return QColor();
+
+    const QVariantList& val = value.toList();
+    return val[3].value<QColor>();
+}
+
+void PropertyMaterialItem::setEmissiveColor(const QColor& color)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return;
+
+    QVariantList val = value.toList();
+    val[3] = QVariant(color);
+    setValue(val);
+}
+
+float PropertyMaterialItem::getShininess() const
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return 0;
+
+    const QVariantList& val = value.toList();
+    return val[4].toFloat();
+}
+
+void PropertyMaterialItem::setShininess(float s)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return;
+
+    QVariantList val = value.toList();
+    val[4] = QVariant(s);
+    setValue(val);
+}
+
+float PropertyMaterialItem::getTransparency() const
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return 0;
+
+    const QVariantList& val = value.toList();
+    return val[5].toFloat();
+}
+
+void PropertyMaterialItem::setTransparency(float t)
+{
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return;
+
+    QVariantList val = value.toList();
+    val[5] = QVariant(t);
+    setValue(val);
+}
+
+QVariant PropertyMaterialItem::decoration(const QVariant& value) const
+{
+    // use the diffuse color
+    const QVariantList& val = value.toList();
+    QColor color = val[0].value<QColor>();
+
+    int size = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+    QPixmap p(size, size);
+    p.fill(color);
+
+    return QVariant(p);
+}
+
+QVariant PropertyMaterialItem::toString(const QVariant& prop) const
+{
+    // use the diffuse color
+    const QVariantList& val = prop.toList();
+    QColor value = val[0].value<QColor>();
+    QString color = QString::fromLatin1("[%1, %2, %3]")
+        .arg(value.red()).arg(value.green()).arg(value.blue());
+    return QVariant(color);
+}
+
+QVariant PropertyMaterialItem::toolTip(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId()));
+
+    const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
+    QColor dc = toQColor(value.diffuseColor);
+    QColor ac = toQColor(value.ambientColor);
+    QColor sc = toQColor(value.specularColor);
+    QColor ec = toQColor(value.emissiveColor);
+
+    QString data = QString::fromUtf8(
+        "Diffuse color: [%1, %2, %3]\n"
+        "Ambient color: [%4, %5, %6]\n"
+        "Specular color: [%7, %8, %9]\n"
+        "Emissive color: [%10, %11, %12]\n"
+        "Shininess: %13\n"
+        "Transparency: %14"
+        )
+        .arg(dc.red()).arg(dc.green()).arg(dc.blue())
+        .arg(ac.red()).arg(ac.green()).arg(ac.blue())
+        .arg(sc.red()).arg(sc.green()).arg(sc.blue())
+        .arg(ec.red()).arg(ec.green()).arg(ec.blue())
+        .arg(value.shininess)
+        .arg(value.transparency)
+        ;
+
+    return QVariant(data);
+}
+
+QVariant PropertyMaterialItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId()));
+
+    const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
+    QVariantList variantList;
+
+    variantList << QVariant(toQColor(value.diffuseColor));
+    variantList << QVariant(toQColor(value.ambientColor));
+    variantList << QVariant(toQColor(value.specularColor));
+    variantList << QVariant(toQColor(value.emissiveColor));
+    variantList << QVariant(value.shininess);
+    variantList << QVariant(value.transparency);
+
+    return variantList;
+}
+
+void PropertyMaterialItem::setValue(const QVariant& value)
+{
+    if (!value.canConvert<QVariantList>())
+        return;
+
+    QVariantList val = value.toList();
+    App::Color dc = fromQColor(val[0].value<QColor>());
+    App::Color ac = fromQColor(val[1].value<QColor>());
+    App::Color sc = fromQColor(val[2].value<QColor>());
+    App::Color ec = fromQColor(val[3].value<QColor>());
+    float s = val[4].toFloat();
+    float t = val[5].toFloat();
+
+    QString data = QString::fromLatin1(
+        "App.Material("
+        "DiffuseColor=(%1,%2,%3),"
+        "AmbientColor=(%4,%5,%6),"
+        "SpecularColor=(%7,%8,%9),"
+        "EmissiveColor=(%10,%11,%12),"
+        "Shininess=(%13),"
+        "Transparency=(%14),"
+        ")"
+    )
+    .arg(dc.r, 0, 'f', decimals())
+    .arg(dc.g, 0, 'f', decimals())
+    .arg(dc.b, 0, 'f', decimals())
+    .arg(ac.r, 0, 'f', decimals())
+    .arg(ac.g, 0, 'f', decimals())
+    .arg(ac.b, 0, 'f', decimals())
+    .arg(sc.r, 0, 'f', decimals())
+    .arg(sc.g, 0, 'f', decimals())
+    .arg(sc.b, 0, 'f', decimals())
+    .arg(ec.r, 0, 'f', decimals())
+    .arg(ec.g, 0, 'f', decimals())
+    .arg(ec.b, 0, 'f', decimals())
+    .arg(s, 0, 'f', decimals())
+    .arg(t, 0, 'f', decimals())
+    ;
+
+    setPropertyValue(data);
+}
+
+QWidget* PropertyMaterialItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    Gui::ColorButton* cb = new Gui::ColorButton(parent);
+    cb->setDisabled(isReadOnly());
+    QObject::connect(cb, SIGNAL(changed()), receiver, method);
+    return cb;
+}
+
+void PropertyMaterialItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
+    cb->setColor(getDiffuseColor());
+}
+
+QVariant PropertyMaterialItem::editorData(QWidget *editor) const
+{
+    Gui::ColorButton *cb = qobject_cast<Gui::ColorButton*>(editor);
+    QVariant value = data(1, Qt::EditRole);
+    if (!value.canConvert<QVariantList>())
+        return QVariant();
+
+    QVariantList val = value.toList();
+    val[0] = QVariant(cb->color());
+    return val;
 }
 
 // --------------------------------------------------------------------

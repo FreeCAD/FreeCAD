@@ -952,7 +952,9 @@ public:
     
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
-    
+
+    virtual const char* getEditorName(void) const;
+
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
     
@@ -1005,6 +1007,8 @@ public:
 
     virtual void SaveDocFile(Base::Writer &writer) const;
     virtual void RestoreDocFile(Base::Reader &reader);
+
+    virtual const char* getEditorName(void) const;
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
