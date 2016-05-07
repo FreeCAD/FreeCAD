@@ -331,7 +331,7 @@ bool TaskDatumParameters::updatePreview()
         }
     }
     QString splmLabelText = attached ? tr("Extra placement:") : tr("Extra placement (inactive - not attached):");
-    ui->label_superplacement->setText(splmLabelText);
+    ui->groupBox_superplacement->setTitle(splmLabelText);
     return attached;
 }
 
