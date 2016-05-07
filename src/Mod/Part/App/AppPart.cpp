@@ -90,6 +90,7 @@
 #include "ToroidPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
+#include "AttachEnginePy.h"
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
@@ -208,6 +209,8 @@ PyMODINIT_FUNC initPart()
                                                             ::Type,partModule,"RectangularTrimmedSurface");
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
+
+    Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
 
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
     Py_INCREF(brepModule);

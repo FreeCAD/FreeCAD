@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="BaseClassPy" 
+      Name="AttachEnginePy" 
+      Twin="AttachEngine" 
+      TwinPointer="AttachEngine" 
+      Include="Mod/Part/App/Attacher.h" 
+      FatherInclude="Base/BaseClassPy.h" 
+      Namespace="Attacher" 
+      Delete="true"
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>AttachEngine abstract class</DeveloperDocu>
+      <UserDocu>AttachEngine abstract class - the functinality of AttachableObject, but outside of DocumentObject</UserDocu>
+    </Documentation>
+    <Attribute Name="AttacherType" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Type of engine: 3d, plane, line, or point.</UserDocu>
+      </Documentation>
+      <Parameter Name="AttacherType" Type="String" />
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
