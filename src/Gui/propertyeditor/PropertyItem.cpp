@@ -670,12 +670,16 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObj
     return sb;
 }
 
-void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVariant& /*data*/) const
+void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     const App::PropertyIntegerConstraint* prop = static_cast
         <const App::PropertyIntegerConstraint*>(getFirstProperty());
 
-    const App::PropertyIntegerConstraint::Constraints* c = prop->getConstraints();
+    const App::PropertyIntegerConstraint::Constraints* c = 0;
+    if (prop) {
+        c = prop->getConstraints();
+    }
+
     QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
@@ -686,7 +690,7 @@ void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVarian
         sb->setMinimum(INT_MIN);
         sb->setMaximum(INT_MAX);
     }
-    sb->setValue(prop->getValue());
+    sb->setValue(data.toInt());
 }
 
 QVariant PropertyIntegerConstraintItem::editorData(QWidget *editor) const
@@ -869,7 +873,10 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
     const App::PropertyQuantityConstraint* prop = static_cast
         <const App::PropertyQuantityConstraint*>(getFirstProperty());
 
-    const App::PropertyQuantityConstraint::Constraints* c = prop->getConstraints();
+    const App::PropertyQuantityConstraint::Constraints* c = 0;
+    if (prop) {
+        c = prop->getConstraints();
+    }
 
     if (c) {
         infield->setMinimum(c->LowerBound);
@@ -934,12 +941,16 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObjec
     return sb;
 }
 
-void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant& /*data*/) const
+void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     const App::PropertyFloatConstraint* prop = static_cast
         <const App::PropertyFloatConstraint*>(getFirstProperty());
 
-    const App::PropertyFloatConstraint::Constraints* c = prop->getConstraints();
+    const App::PropertyFloatConstraint::Constraints* c = 0;
+    if (prop) {
+        c = prop->getConstraints();
+    }
+
     QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
@@ -951,7 +962,7 @@ void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant&
         sb->setMaximum((double)INT_MAX);
         sb->setSingleStep(0.1);
     }
-    sb->setValue(prop->getValue());
+    sb->setValue(data.toDouble());
 }
 
 QVariant PropertyFloatConstraintItem::editorData(QWidget *editor) const
