@@ -66,8 +66,11 @@ FeatureTest::FeatureTest()
   ConstraintFloat.setConstraints(&floatPercent);
 
   App::Color c;
+  App::Material mat;
   ADD_PROPERTY(Colour      ,(c) );
   ADD_PROPERTY(ColourList  ,(c) );
+  ADD_PROPERTY(Material    ,(mat));
+  ADD_PROPERTY(MaterialList,(mat));
 
   ADD_PROPERTY(Distance,(47.11f) );
   ADD_PROPERTY(Angle   ,(3.0f) );
