@@ -39,6 +39,7 @@
 #include "PartFeature.h"
 
 #include <gp_Vec.hxx>
+#include <GProp_GProps.hxx>
 
 namespace Attacher
 {
@@ -91,16 +92,16 @@ enum eMapMode {
     mm0Vertex,
     mm0ProximityPoint1,
     mm0ProximityPoint2,
+
+    mm1AxisInertia1,
+    mm1AxisInertia2,
+    mm1AxisInertia3,
+
+    mmInertialCS,
+
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
 
-enum eSuggestResult{
-    srOK,
-    srLinkBroken,
-    srUnexpectedError,
-    srNoModesFit,//none of the avaliable mapping modes accepts the set of topological type
-    srIncompatibleGeometry,//there is a mode that could fit, but geometry is wrong (e.g. a line is required, but a curve was passed).
-};
 
 /**
  * @brief The eRefType enum lists the types of references. If adding one, see
@@ -133,6 +134,66 @@ enum eRefType {
     rtWire,            //2
     rtDummy_numberOfShapeTypes,//a value useful to check the validity of value
     rtFlagHasPlacement = 0x0100 //indicates that the linked shape is a whole FreeCAD object that has placement available.
+};
+
+
+typedef std::vector<eRefType> refTypeString; //a sequence of ref types, according to Support contents for example
+typedef std::vector<refTypeString> refTypeStringList; //a set of type strings, defines which selection sets are supported by a certain mode
+
+
+/**
+ * @brief The SuggestResult struct is a container for output information of AttachEngine mode suggesting routine.
+ */
+struct SuggestResult{
+    /**
+     * @brief message contains overall verdict of suggestor on current reference set
+     */
+    enum eSuggestResult{
+        srOK, //references are valid for at least one mode
+        srLinkBroken, //failed to resolve out some of current references. Exception info is stored in SuggestResult::error.
+        srUnexpectedError,
+        srNoModesFit,//none of the avaliable mapping modes accepts the set of topological type
+        srIncompatibleGeometry,//there is a mode that could fit, but geometry is wrong (e.g. a line is required, but a curve was passed).
+    };
+    eSuggestResult message;
+
+    /**
+      * @brief allApplicableModes. Vector array that will recieve the list of
+      * all modes that are applicable to current set of references. It doesn't
+      * guarantee that all modes will work, it only checks that subelemnts are
+      * of right type.
+      */
+    std::vector<eMapMode> allApplicableModes;
+
+    /**
+     * @brief bestFitMode is the mode that is the most specific to current
+     * references. Note that the mode may not be valid for current references;
+     * check if it's listed in allApplicableModes, or test if message == srOK.
+     */
+    eMapMode bestFitMode;
+
+    /**
+     * @brief nextRefTypeHint: a hint of what can be added to references to
+     * achieve other modes.
+     */
+    std::set<eRefType> nextRefTypeHint;
+
+    /**
+     * @brief reachableModes. List of modes that can be reached by selecing
+     * more references. Is a map, where key is the mode that can be reached,
+     * and value is a list of reference sequences that can be added to reach
+     * the mode (stuff already linked is omitted from these lists; only extra
+     * links needed are listed)
+     */
+    std::map<eMapMode, refTypeStringList> reachableModes;
+
+    /**
+     * @brief references_Types: list of types of references, as queried when
+     * running suggesting routine.
+     */
+    refTypeString references_Types;
+
+    Base::Exception error;
 };
 
 
@@ -202,36 +263,15 @@ public: //methods
                                       Base::Placement* placeOfRef = 0) const;
 
     /**
-     * @brief listMapModes is the procedure that knows everything about
+     * @brief suggestMapModes is the procedure that knows everything about
      * mapping modes. It returns the most appropriate mapping mode, as well as
      * list of all modes that will accept the set of references. In case no modes apply,
      * extra information regarding reasons is returned in msg.
      *
-     * @param msg (output). Returns a message from the decision logic: OK if
-     * the mode was chosen, a reason if not.
-     *
-     * @param allApplicableModes (output). Pointer to a vector array that will recieve the
-     * list of all modes that are applicable to the support. It doesn't
-     * guarantee that all modes will work, it only checks that subelemnts are of
-     * right type.
-     *
-     * @param nextRefTypeHint (output). A hint of what can be added to references.
+     * @param result (output). Returns results of suggestion, such as best fit
+     * mode, list of all modes that apply, hints, etc.
      */
-    virtual eMapMode listMapModes(eSuggestResult &msg,
-                                  std::vector<eMapMode>* allApplicableModes = 0,
-                                  std::set<eRefType>* nextRefTypeHint = 0) const;
-
-    /**
-     * @brief getHint function returns a set of types that user can add to
-     * references to arrive to combinations valid for some modes. This function
-     * is a shoutcut to listMapModes.
-     *
-     * @return a set of selection types that can be appended to the support.
-     *
-     * Subclassing: This function works out of the box via a call to
-     * listMapModes, so there is no need to reimplement it.
-     */
-    virtual const std::set<eRefType> getHint(bool forCurrentModeOnly) const;
+    virtual void suggestMapModes(SuggestResult &result) const;
 
     /**
      * @brief EnableAllModes enables all modes that have shape type lists filled. The function acts on modeEnabled array.
@@ -293,6 +333,8 @@ public://helper functions that may be useful outside of the class
      */
     static std::string getModeName(eMapMode mmode);
 
+    static GProp_GProps getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes);
+
 
 public: //enums
     static const char* eMapModeStrings[];
@@ -314,8 +356,6 @@ public: //members
      */
     std::vector<bool> modeEnabled;
 
-    typedef std::vector<eRefType> refTypeString; //a sequence of ref types, according to Support contents for example
-    typedef std::vector<refTypeString> refTypeStringList; //a set of type strings, defines which selection sets are supported by a certain mode
     std::vector<refTypeStringList> modeRefTypes; //a complete data structure, containing info on which modes support what selection
 
 protected:

@@ -196,7 +196,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
                 sketch->getNameInDocument(), reverseSketch ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
-                sketch->getNameInDocument(), Attacher::AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
+                sketch->getNameInDocument(), Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
 
     } else {
         // Offset to base plane
@@ -213,7 +213,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
                 Datum.c_str(), refStr.toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
-                Datum.c_str(), AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
+                Datum.c_str(), AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",
                 Datum.c_str(), offset);
         Gui::Command::doCommand(Gui::Command::Doc,
@@ -225,7 +225,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
                 sketch->getNameInDocument(), reverseSketch ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
-                sketch->getNameInDocument(),Attacher::AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
+                sketch->getNameInDocument(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
     }
 }
 
