@@ -353,6 +353,12 @@
   <tabstop>buttonRef4</tabstop>
   <tabstop>lineRef4</tabstop>
   <tabstop>listOfModes</tabstop>
+  <tabstop>superplacementX</tabstop>
+  <tabstop>superplacementY</tabstop>
+  <tabstop>superplacementZ</tabstop>
+  <tabstop>superplacementYaw</tabstop>
+  <tabstop>superplacementPitch</tabstop>
+  <tabstop>superplacementRoll</tabstop>
   <tabstop>checkBoxFlip</tabstop>
  </tabstops>
  <resources/>
