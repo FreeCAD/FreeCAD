@@ -389,6 +389,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         bool error = false;
+        (void)error; // fix warning
         try {
             pcDatum->Support.setValues(refs, refnames);
             updateListOfModes();
@@ -670,7 +671,7 @@ void TaskDatumParameters::updateRefButton(int idx)
 
     if (iActiveRef == idx) {
         b->setText(tr("Selecting..."));
-    } else if (idx < this->lastSuggestResult.references_Types.size()){
+    } else if (static_cast<std::size_t>(idx) < this->lastSuggestResult.references_Types.size()){
         b->setText(AttacherGui::getShapeTypeText(this->lastSuggestResult.references_Types[idx]));
     } else {
         b->setText(tr("Reference%1").arg(idx+1));
@@ -742,7 +743,7 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
     //obtain list of available modes:
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     this->lastSuggestResult.bestFitMode = mmDeactivated;
-    int lastValidModeItemIndex = mmDummy_NumberOfModes;
+    std::size_t lastValidModeItemIndex = mmDummy_NumberOfModes;
     if (pcDatum->Support.getSize() > 0){
         pcDatum->attacher().suggestMapModes(this->lastSuggestResult);
         modesInList = this->lastSuggestResult.allApplicableModes;
