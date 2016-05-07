@@ -207,7 +207,7 @@ bool ViewProviderGeometryObject::setEdit(int ModNum)
     
     assert(!csysDragger);
     csysDragger = new SoFCCSysDragger();
-    csysDragger->draggerSize.setValue(0.05);
+    csysDragger->draggerSize.setValue(0.05f);
     csysDragger->translation.setValue(tempTransform->translation.getValue());
     csysDragger->rotation.setValue(tempTransform->rotation.getValue());
     

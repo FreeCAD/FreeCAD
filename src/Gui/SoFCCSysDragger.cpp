@@ -93,9 +93,9 @@ TDragger::TDragger()
 {
     SO_KIT_CONSTRUCTOR(TDragger);
 
-    SO_KIT_ADD_CATALOG_ENTRY(translatorSwitch, SoSwitch, TRUE, geomSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, translatorSwitch, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(translatorActive, SoSeparator, TRUE, translatorSwitch, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(translatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, translatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(translatorActive, SoSeparator, TRUE, translatorSwitch, "", TRUE);
 
     if (SO_KIT_IS_FIRST_INSTANCE())
         buildFirstInstance();
@@ -161,7 +161,7 @@ SoGroup* TDragger::buildGeometry()
 
     //cylinder
     float cylinderHeight = 10.0;
-    float cylinderRadius = 0.2;
+    float cylinderRadius = 0.2f;
     SoSeparator *cylinderSeparator = new SoSeparator();
     root->addChild(cylinderSeparator);
 
@@ -280,7 +280,7 @@ void TDragger::drag()
     //when the movement vector is null either the appendTranslation or
     //the setMotionMatrix doesn't work. either way it stops translating
     //back to its initial starting point.
-    if (localMovement.equals(SbVec3f(0.0, 0.0, 0.0), 0.00001))
+    if (localMovement.equals(SbVec3f(0.0, 0.0, 0.0), 0.00001f))
     {
         setMotionMatrix(getStartMotionMatrix());
         //don't know why I need the following but if I don't have it
@@ -366,9 +366,9 @@ RDragger::RDragger()
 {
     SO_KIT_CONSTRUCTOR(RDragger);
 
-    SO_KIT_ADD_CATALOG_ENTRY(rotatorSwitch, SoSwitch, TRUE, geomSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(rotator, SoSeparator, TRUE, rotatorSwitch, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(rotatorActive, SoSeparator, TRUE, rotatorSwitch, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(rotatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(rotator, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(rotatorActive, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
 
     arcRadius = 8.0;
 
@@ -566,7 +566,7 @@ void RDragger::drag()
     localRotation = SbRotation(tempVec, incrementCount * static_cast<float>(rotationIncrement.getValue()));
 
     //same problem as described in tDragger::drag.
-    if (localRotation.equals(SbRotation(SbVec3f(0.0, 0.0, 1.0), 0.0), 0.00001))
+    if (localRotation.equals(SbRotation(SbVec3f(0.0, 0.0, 1.0), 0.0), 0.00001f))
     {
         setMotionMatrix(getStartMotionMatrix());
         this->valueChanged();
@@ -643,48 +643,48 @@ SoFCCSysDragger::SoFCCSysDragger()
 {
     SO_KIT_CONSTRUCTOR(SoFCCSysDragger);
 
-    SO_KIT_ADD_CATALOG_ENTRY(annotation, SoAnnotation, TRUE, geomSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(annotation, SoAnnotation, TRUE, geomSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSwitch, SoSwitch, TRUE, annotation, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorSwitch, SoSwitch, TRUE, annotation, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSwitch, SoSwitch, TRUE, annotation, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSeparator, SoSeparator, TRUE, xTranslatorSwitch, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorSeparator, SoSeparator, TRUE, yTranslatorSwitch, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSeparator, SoSeparator, TRUE, zTranslatorSwitch, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSeparator, SoSeparator, TRUE, xTranslatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorSeparator, SoSeparator, TRUE, yTranslatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSeparator, SoSeparator, TRUE, zTranslatorSwitch, "", TRUE);
     
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorColor, SoBaseColor, TRUE, xTranslatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorColor, SoBaseColor, TRUE, yTranslatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorColor, SoBaseColor, TRUE, zTranslatorSeparator, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorColor, SoBaseColor, TRUE, xTranslatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorColor, SoBaseColor, TRUE, yTranslatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorColor, SoBaseColor, TRUE, zTranslatorSeparator, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorRotation, SoRotation, TRUE, xTranslatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorRotation, SoRotation, TRUE, yTranslatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorRotation, SoRotation, TRUE, zTranslatorSeparator, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorRotation, SoRotation, TRUE, xTranslatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorRotation, SoRotation, TRUE, yTranslatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorRotation, SoRotation, TRUE, zTranslatorSeparator, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorDragger, TDragger, TRUE, xTranslatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorDragger, TDragger, TRUE, yTranslatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorDragger, TDragger, TRUE, zTranslatorSeparator, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorDragger, TDragger, TRUE, xTranslatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorDragger, TDragger, TRUE, yTranslatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorDragger, TDragger, TRUE, zTranslatorSeparator, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorSwitch, SoSwitch, TRUE, annotation, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorSwitch, SoSwitch, TRUE, annotation, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorSwitch, SoSwitch, TRUE, annotation, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xRotatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yRotatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zRotatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorSeparator, SoSeparator, TRUE, xRotatorSwitch, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorSeparator, SoSeparator, TRUE, yRotatorSwitch, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorSeparator, SoSeparator, TRUE, zRotatorSwitch, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xRotatorSeparator, SoSeparator, TRUE, xRotatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yRotatorSeparator, SoSeparator, TRUE, yRotatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zRotatorSeparator, SoSeparator, TRUE, zRotatorSwitch, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorColor, SoBaseColor, TRUE, xRotatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorColor, SoBaseColor, TRUE, yRotatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorColor, SoBaseColor, TRUE, zRotatorSeparator, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xRotatorColor, SoBaseColor, TRUE, xRotatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yRotatorColor, SoBaseColor, TRUE, yRotatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zRotatorColor, SoBaseColor, TRUE, zRotatorSeparator, "", TRUE);
     
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorRotation, SoRotation, TRUE, xRotatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorRotation, SoRotation, TRUE, yRotatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorRotation, SoRotation, TRUE, zRotatorSeparator, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xRotatorRotation, SoRotation, TRUE, xRotatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yRotatorRotation, SoRotation, TRUE, yRotatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zRotatorRotation, SoRotation, TRUE, zRotatorSeparator, "", TRUE);
 
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorDragger, RDragger, TRUE, xRotatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorDragger, RDragger, TRUE, yRotatorSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorDragger, RDragger, TRUE, zRotatorSeparator, , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xRotatorDragger, RDragger, TRUE, xRotatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yRotatorDragger, RDragger, TRUE, yRotatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zRotatorDragger, RDragger, TRUE, zRotatorSeparator, "", TRUE);
 
     SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
     SO_KIT_ADD_FIELD(translationIncrement, (1.0));
@@ -759,21 +759,22 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     SoRotation *localRotation;
     SbRotation tempRotation;
+    float angle = static_cast<float>(M_PI / 2.0);
     localRotation = SO_GET_ANY_PART(this, "xTranslatorRotation", SoRotation);
-    localRotation->rotation.setValue(SbVec3f(0.0, 0.0, -1.0), M_PI / 2.0);
+    localRotation->rotation.setValue(SbVec3f(0.0, 0.0, -1.0), angle);
     localRotation = SO_GET_ANY_PART(this, "yTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbRotation::identity());
     localRotation = SO_GET_ANY_PART(this, "zTranslatorRotation", SoRotation);
-    localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), M_PI / 2.0);
+    localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), angle);
 
     localRotation = SO_GET_ANY_PART(this, "xRotatorRotation", SoRotation);
-    tempRotation = SbRotation(SbVec3f(1.0, 0.0, 0.0), M_PI / 2.0);
-    tempRotation *= SbRotation(SbVec3f(0.0, 0.0, 1.0), M_PI / 2.0);
+    tempRotation = SbRotation(SbVec3f(1.0, 0.0, 0.0), angle);
+    tempRotation *= SbRotation(SbVec3f(0.0, 0.0, 1.0), angle);
     localRotation->rotation.setValue(tempRotation);
 
     localRotation = SO_GET_ANY_PART(this, "yRotatorRotation", SoRotation);
-    tempRotation = SbRotation(SbVec3f(0.0, -1.0, 0.0), M_PI /2.0);
-    tempRotation *= SbRotation(SbVec3f(0.0, 0.0, -1.0), M_PI /2.0);
+    tempRotation = SbRotation(SbVec3f(0.0, -1.0, 0.0), angle);
+    tempRotation *= SbRotation(SbVec3f(0.0, 0.0, -1.0), angle);
     localRotation->rotation.setValue(tempRotation);
 
     localRotation = SO_GET_ANY_PART(this, "zRotatorRotation", SoRotation);
