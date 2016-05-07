@@ -190,29 +190,12 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
-    if (PyType_Ready(&Base::VectorPy::Type) < 0) return;
-    union PyType_Object pyVecType = {&Base::VectorPy::Type};
-    PyModule_AddObject(pAppModule, "Vector", pyVecType.o);
-
-    if (PyType_Ready(&Base::MatrixPy::Type) < 0) return;
-    union PyType_Object pyMtxType = {&Base::MatrixPy::Type};
-    PyModule_AddObject(pAppModule, "Matrix", pyMtxType.o);
-
-    if (PyType_Ready(&Base::BoundBoxPy::Type) < 0) return;
-    union PyType_Object pyBoundBoxType = {&Base::BoundBoxPy::Type};
-    PyModule_AddObject(pAppModule, "BoundBox", pyBoundBoxType.o);
-
-    if (PyType_Ready(&Base::PlacementPy::Type) < 0) return;
-    union PyType_Object pyPlacementPyType = {&Base::PlacementPy::Type};
-    PyModule_AddObject(pAppModule, "Placement", pyPlacementPyType.o);
-
-    if (PyType_Ready(&Base::RotationPy::Type) < 0) return;
-    union PyType_Object pyRotationPyType = {&Base::RotationPy::Type};
-    PyModule_AddObject(pAppModule, "Rotation", pyRotationPyType.o);
-
-    if (PyType_Ready(&Base::AxisPy::Type) < 0) return;
-    union PyType_Object pyAxisPyType = {&Base::AxisPy::Type};
-    PyModule_AddObject(pAppModule, "Axis", pyAxisPyType.o);
+    Base::Interpreter().addType(&Base::VectorPy::Type, pAppModule, "Vector");
+    Base::Interpreter().addType(&Base::MatrixPy::Type, pAppModule, "Matrix");
+    Base::Interpreter().addType(&Base::BoundBoxPy::Type, pAppModule, "BoundBox");
+    Base::Interpreter().addType(&Base::PlacementPy::Type, pAppModule, "Placement");
+    Base::Interpreter().addType(&Base::RotationPy::Type, pAppModule, "Rotation");
+    Base::Interpreter().addType(&Base::AxisPy::Type, pAppModule, "Axis");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
