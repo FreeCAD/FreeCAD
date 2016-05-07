@@ -4,6 +4,8 @@
 #include "Mod/Part/App/AttachableObject.h"
 #include "OCCError.h"
 
+#include "AttachEnginePy.h"
+
 // inclusion of the generated files (generated out of AttachableObjectPy.xml)
 #include "AttachableObjectPy.h"
 #include "AttachableObjectPy.cpp"
@@ -53,6 +55,24 @@ PyObject* AttachableObjectPy::changeAttacherType(PyObject *args)
     return Py::new_reference_to(Py::Boolean(ret));
 }
 
+Py::Object AttachableObjectPy::getAttacher(void) const
+{
+    try {
+        this->getAttachableObjectPtr()->attacher(); //throws if attacher is not set
+    } catch (Base::Exception) {
+        return Py::None();
+    }
+
+    try {
+        return Py::Object( new Attacher::AttachEnginePy(this->getAttachableObjectPtr()->attacher().copy()), true);
+    } catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
+    } catch (Base::Exception &e) {
+        throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+    }
+
+}
 
 PyObject *AttachableObjectPy::getCustomAttributes(const char* /*attr*/) const
 {

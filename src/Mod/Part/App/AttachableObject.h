@@ -78,7 +78,7 @@ public:
      */
     bool changeAttacherType(const char* typeName);
 
-    Attacher::AttachEngine &attacher(void) const {return *_attacher;}
+    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw Base::Exception("AttachableObject: no attacher is set."); return *_attacher;}
 
 
     App::PropertyString         AttacherType;
