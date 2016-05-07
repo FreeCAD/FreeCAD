@@ -100,6 +100,7 @@
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "MaterialObject.h"
+#include "MaterialPy.h"
 #include "Expression.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
@@ -232,6 +233,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::PlacementPy  ::Type,pBaseModule,"Placement");
     Base::Interpreter().addType(&Base::RotationPy   ::Type,pBaseModule,"Rotation");
     Base::Interpreter().addType(&Base::AxisPy       ::Type,pBaseModule,"Axis");
+
+    Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
