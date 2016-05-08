@@ -142,7 +142,7 @@ class ObjectProfile:
 
         item = (ss, sub)
         if item in baselist:
-            FreeCAD.Console.PrintWarning(translate("Path", "this object already in the list" + "\n"))
+            FreeCAD.Console.PrintWarning("this object already in the list" + "\n")
         else:
             baselist.append(item)
         obj.Base = baselist
@@ -247,7 +247,6 @@ print "y - " + str(point.y)
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
-            FreeCAD.Console.PrintWarning(translate("Path", "No tool found.  Using default values for now." + "\n"))
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
@@ -256,22 +255,29 @@ print "y - " + str(point.y)
             obj.ToolNumber = toolLoad.ToolNumber
 
         if obj.Base:
+            hfaces = []
+            vfaces = []
+            wires = []
+
             for b in obj.Base:
-
                 # we only consider the outer wire if this is a Face
-                # shape = getattr(obj.Base[0][0].Shape,obj.Base[0][1])
+                # Horizontal and vertical faces are handled differently
                 shape = getattr(b[0].Shape, b[1])
+                if abs(shape.normalAt(0, 0).z) == 1:  # horizontal face
+                    hfaces.append(shape)
 
-                if shape.ShapeType in ["Edge"]:
-                    edges = [getattr(obj.Base[0].Shape, sub) for sub in obj.Base[1]]
-                    wire = Part.Wire(edges)
+                elif abs(shape.normalAt(0, 0).z) == 0:  # vertical face
+                    vfaces.append(shape)
 
-                    if not wire.Edges[0].isSame(shape):
-                        wire.Edges.reverse()
+            for h in hfaces:
+                wires.append(h.OuterWire)
 
-                else:
-                    wire = shape.OuterWire
+            tempshell = Part.makeShell(vfaces)
+            slices = tempshell.slice(FreeCAD.Base.Vector(0, 0, 1), 1.5)
 
+            wires = wires + slices
+
+            for wire in wires:
                 edgelist = wire.Edges
                 edgelist = Part.__sortEdges__(edgelist)
 
@@ -444,9 +450,6 @@ class TaskPanel:
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ProfileEdit.ui")
         self.updating = False
-
-    def __del__(self):
-        FreeCADGui.Selection.removeObserver(self.s)
 
     def accept(self):
         self.getFields()
@@ -729,7 +732,7 @@ class SelObserver:
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        #FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
+        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
         FreeCADGui.updateGui()
 
 
