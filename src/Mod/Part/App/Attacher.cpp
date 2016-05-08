@@ -124,6 +124,8 @@ const char* AttachEngine::eMapModeStrings[]= {
 TYPESYSTEM_SOURCE_ABSTRACT(Attacher::AttachEngine, Base::BaseClass);
 
 AttachEngine::AttachEngine()
+ : mapReverse(false), attachParameter(0.0), mapMode(mmDeactivated),
+   surfU(0.0), surfV(0.0)
 {
 }
 
