@@ -325,7 +325,7 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
                 //build string of references to be added to fit this mode
                 refTypeString extraRefs;
                 extraRefs.resize(str.size() - typeStr.size());
-                for (int iChr = typeStr.size()   ;   iChr < str.size()   ;   iChr++){
+                for (std::size_t iChr = typeStr.size(); iChr < str.size(); iChr++) {
                     extraRefs[iChr - typeStr.size()] = str[iChr];
                 }
 

@@ -2516,6 +2516,11 @@ void PropertyMaterial::Restore(Base::XMLReader &reader)
     hasSetValue();
 }
 
+const char* PropertyMaterial::getEditorName(void) const
+{
+    return "";// "Gui::PropertyEditor::PropertyMaterialItem";
+}
+
 Property *PropertyMaterial::Copy(void) const
 {
     PropertyMaterial *p= new PropertyMaterial();
@@ -2599,7 +2604,8 @@ void PropertyMaterialList::setPyObject(PyObject *value)
 
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(MaterialPy::Type))) {
-                materials.push_back(*static_cast<MaterialPy*>(value)->getMaterialPtr());
+                Material mat = *static_cast<MaterialPy*>((*it).ptr())->getMaterialPtr();
+                materials.push_back(mat);
             }
         }
 
@@ -2670,6 +2676,11 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader &reader)
         it->transparency = valueF;
     }
     setValues(values);
+}
+
+const char* PropertyMaterialList::getEditorName(void) const
+{
+    return "Gui::PropertyEditor::PropertyMaterialListItem";
 }
 
 Property *PropertyMaterialList::Copy(void) const

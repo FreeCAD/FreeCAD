@@ -106,7 +106,7 @@ public:
 protected:
     PropertyItem();
 
-    virtual QVariant decoration(const App::Property*) const;
+    virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toolTip(const App::Property*) const;
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
@@ -654,13 +654,115 @@ class GuiExport PropertyColorItem: public PropertyItem
     virtual QVariant editorData(QWidget *editor) const;
 
 protected:
-    virtual QVariant decoration(const App::Property*) const;
+    virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
 
 protected:
     PropertyColorItem();
+};
+
+/**
+* Change a material property.
+* \author Werner Mayer
+*/
+class GuiExport PropertyMaterialItem : public PropertyItem
+{
+    Q_OBJECT
+    Q_PROPERTY(QColor AmbientColor READ getAmbientColor WRITE setAmbientColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor DiffuseColor READ getDiffuseColor WRITE setDiffuseColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
+    Q_PROPERTY(float Shininess READ getShininess WRITE setShininess DESIGNABLE true USER true)
+    Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true)
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
+
+    QColor getAmbientColor() const;
+    void setAmbientColor(const QColor&);
+    QColor getDiffuseColor() const;
+    void setDiffuseColor(const QColor&);
+    QColor getSpecularColor() const;
+    void setSpecularColor(const QColor&);
+    QColor getEmissiveColor() const;
+    void setEmissiveColor(const QColor&);
+    float getShininess() const;
+    void setShininess(float);
+    float getTransparency() const;
+    void setTransparency(float);
+
+protected:
+    PropertyMaterialItem();
+    virtual ~PropertyMaterialItem();
+
+    virtual QVariant decoration(const QVariant&) const;
+    virtual QVariant toolTip(const App::Property*) const;
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+private:
+    PropertyColorItem* ambient;
+    PropertyColorItem* diffuse;
+    PropertyColorItem* specular;
+    PropertyColorItem* emissive;
+    PropertyFloatItem* shininess;
+    PropertyFloatItem* transparency;
+};
+
+class GuiExport PropertyMaterialListItem : public PropertyItem
+{
+    Q_OBJECT
+    Q_PROPERTY(QColor AmbientColor READ getAmbientColor WRITE setAmbientColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor DiffuseColor READ getDiffuseColor WRITE setDiffuseColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
+    Q_PROPERTY(float Shininess READ getShininess WRITE setShininess DESIGNABLE true USER true)
+    Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true)
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
+
+    QColor getAmbientColor() const;
+    void setAmbientColor(const QColor&);
+    QColor getDiffuseColor() const;
+    void setDiffuseColor(const QColor&);
+    QColor getSpecularColor() const;
+    void setSpecularColor(const QColor&);
+    QColor getEmissiveColor() const;
+    void setEmissiveColor(const QColor&);
+    float getShininess() const;
+    void setShininess(float);
+    float getTransparency() const;
+    void setTransparency(float);
+
+protected:
+    PropertyMaterialListItem();
+    virtual ~PropertyMaterialListItem();
+
+    virtual QVariant decoration(const QVariant&) const;
+    virtual QVariant toolTip(const App::Property*) const;
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+private:
+    PropertyColorItem* ambient;
+    PropertyColorItem* diffuse;
+    PropertyColorItem* specular;
+    PropertyColorItem* emissive;
+    PropertyFloatItem* shininess;
+    PropertyFloatItem* transparency;
 };
 
 /**
