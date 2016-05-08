@@ -47,11 +47,14 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include "../App/DrawView.h"
-#include "../App/DrawViewClip.h"
+#include "QGCustomBorder.h"
+#include "QGCustomLabel.h"
+
 #include "QGIView.h"
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
+
+#include "../App/DrawViewClip.h"
 
 using namespace TechDrawGui;
 
@@ -90,14 +93,15 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
     if(scene) // TODO: Get rid of the ctor args as in the refactor attempt
         scene->addItem(this);
 
-    m_label = new QGraphicsTextItem();
+    m_decorPen.setStyle(Qt::DashLine);
+    m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
+
+    m_label = new QGCustomLabel();
     addToGroup(m_label);
     m_label->setFont(m_font);
 
-    m_border = new QGraphicsRectItem();
+    m_border = new QGCustomBorder();
     addToGroup(m_border);
-    m_decorPen.setStyle(Qt::DashLine);
-    m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
 }
 
 
@@ -354,16 +358,17 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 
-//This should count everything except Frame,Label,Dimension - custom or not
 QRectF QGIView::customChildrenBoundingRect() {
     QList<QGraphicsItem*> children = childItems();
-    int dimItemType = QGraphicsItem::UserType + 106;
+    int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Magic number warning. make include file for custom types?
+    int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
+    int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
     QRectF result;
     for (QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->type() >= QGraphicsItem::UserType) {
-            if ((*it)->type() != dimItemType) {                         //Dimensions don't count towards bRect
-                result = result.united((*it)->boundingRect());
-            }
+        if ( ((*it)->type() != dimItemType) &&
+             ((*it)->type() != borderItemType) &&
+             ((*it)->type() != labelItemType) ) {
+            result = result.united((*it)->boundingRect());
         }
     }
     return result;

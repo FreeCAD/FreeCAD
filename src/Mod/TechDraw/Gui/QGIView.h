@@ -27,17 +27,17 @@
 #include <QObject>
 #include <App/PropertyLinks.h>
 
+#include "../App/DrawView.h"
+
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
-namespace TechDraw {
-class DrawView;
-}
-
 namespace TechDrawGui
 {
+class QGCustomBorder;
+class QGCustomLabel;
 
 class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
 {
@@ -102,8 +102,8 @@ protected:
     QColor m_colPre;
     QColor m_colSel;
     QFont m_font;
-    QGraphicsTextItem* m_label;
-    QGraphicsRectItem* m_border;
+    QGCustomLabel* m_label;
+    QGCustomBorder* m_border;
     QPen m_decorPen;
 };
 
