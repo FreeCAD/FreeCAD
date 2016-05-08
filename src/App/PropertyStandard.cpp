@@ -2604,7 +2604,8 @@ void PropertyMaterialList::setPyObject(PyObject *value)
 
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(MaterialPy::Type))) {
-                materials.push_back(*static_cast<MaterialPy*>(value)->getMaterialPtr());
+                Material mat = *static_cast<MaterialPy*>((*it).ptr())->getMaterialPtr();
+                materials.push_back(mat);
             }
         }
 
@@ -2679,7 +2680,7 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader &reader)
 
 const char* PropertyMaterialList::getEditorName(void) const
 {
-    return "";// "Gui::PropertyEditor::PropertyMaterialListItem";
+    return "Gui::PropertyEditor::PropertyMaterialListItem";
 }
 
 Property *PropertyMaterialList::Copy(void) const
