@@ -388,13 +388,13 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             refnames.push_back(subname);
         }
 
-        bool error = false;
+        //bool error = false;
         try {
             pcDatum->Support.setValues(refs, refnames);
             updateListOfModes();
             eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if no modes are available
             if(mmode == mmDeactivated){
-                error = true;
+                //error = true;
                 this->completed = false;
             } else {
                 this->completed = true;
@@ -403,7 +403,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             updatePreview();
         }
         catch(Base::Exception& e) {
-            error = true;
+            //error = true;
             ui->message->setText(QString::fromLatin1(e.what()));
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         }
@@ -670,7 +670,7 @@ void TaskDatumParameters::updateRefButton(int idx)
 
     if (iActiveRef == idx) {
         b->setText(tr("Selecting..."));
-    } else if (idx < this->lastSuggestResult.references_Types.size()){
+    } else if (idx < static_cast<int>(this->lastSuggestResult.references_Types.size())){
         b->setText(AttacherGui::getShapeTypeText(this->lastSuggestResult.references_Types[idx]));
     } else {
         b->setText(tr("Reference%1").arg(idx+1));
@@ -742,7 +742,7 @@ void TaskDatumParameters::updateListOfModes(eMapMode curMode)
     //obtain list of available modes:
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     this->lastSuggestResult.bestFitMode = mmDeactivated;
-    int lastValidModeItemIndex = mmDummy_NumberOfModes;
+    size_t lastValidModeItemIndex = mmDummy_NumberOfModes;
     if (pcDatum->Support.getSize() > 0){
         pcDatum->attacher().suggestMapModes(this->lastSuggestResult);
         modesInList = this->lastSuggestResult.allApplicableModes;
