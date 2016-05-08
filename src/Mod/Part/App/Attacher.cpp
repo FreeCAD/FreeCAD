@@ -640,7 +640,7 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
                 throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only solids/compsolids)");
             if (sh.Infinite())
                 throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
-            BRepGProp::SurfaceProperties(sh,gpr);
+            BRepGProp::VolumeProperties(sh,gpr);
             gpr_acc.Add(gpr);
         }
         return gpr_acc;
