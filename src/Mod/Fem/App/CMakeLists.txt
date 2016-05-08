@@ -230,8 +230,8 @@ SET(Fem_SRCS
     ${Python_SRCS}
 )
 
-add_library(Fem SHARED ${Fem_SRCS} ${VTK_LIBRARIES})
-target_link_libraries(Fem ${Fem_LIBS})
+add_library(Fem SHARED ${Fem_SRCS})
+target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 
 
 fc_target_copy_resource(Fem
