@@ -121,31 +121,27 @@ class PROFILEGate:
             return False
 
         if obj.ShapeType == 'Edge':
-            profileable = True
+            profileable = False
 
         elif obj.ShapeType == 'Compound':
-            profileable = True
             if sub[0:4] == 'Face':
                 profileable = True
 
             if sub[0:4] == 'Edge':
-                profileable = True
+                profileable = False
 
         elif obj.ShapeType == 'Face':
-            profileable = True
+            profileable = False
 
         elif obj.ShapeType == 'Solid':
             if sub[0:4] == 'Face':
                 profileable = True
 
             if sub[0:4] == 'Edge':
-                profileable = True
+                profileable = False
 
         elif obj.ShapeType == 'Wire':
-            profileable = True
-
-        if sub[0:6] == 'Vertex':
-            print "might be fun to try to derive the loop by hovering near a vertex"
+            profileable = False
 
         return profileable
 
