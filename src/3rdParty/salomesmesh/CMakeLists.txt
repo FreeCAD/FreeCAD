@@ -18,6 +18,7 @@ endif()
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 find_package(VTK REQUIRED)
+find_package(HDF5 REQUIRED)
 find_package(OPENCASCADE)
 find_package(MEDFile REQUIRED)
 find_package(Boost COMPONENTS filesystem program_options regex signals system thread REQUIRED)
@@ -39,6 +40,7 @@ include_directories(
     ${NETGEN_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${VTK_INCLUDE_DIR}
+    ${HDF5_INCLUDE_DIR}
     ${BOOST_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -156,7 +158,7 @@ ENDIF(UNIX)
 #########
 FILE(GLOB SMDS_source_files src/SMDS/*.cpp inc/SMDS*.hxx)
 ADD_LIBRARY(SMDS SHARED ${SMDS_source_files})
-TARGET_LINK_LIBRARIES(SMDS ${SMESH_LIBS} ${VTK_LIBRARIES})
+TARGET_LINK_LIBRARIES(SMDS ${SMESH_LIBS} ${HDF5_C_STATIC_LIBRARY} ${VTK_LIBRARIES})
 
 SET_BIN_DIR(SMDS SMDS)
 if(WIN32)
