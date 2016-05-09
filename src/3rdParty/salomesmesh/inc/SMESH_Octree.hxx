@@ -30,7 +30,7 @@
 #define _SMESH_OCTREE_HXX_
 
 #include "SMESH_Utils.hxx"
-#include "SMESH_Tree.hxx"
+#include "SMESH_tree.hxx"
 #include <Bnd_B3d.hxx>
 
 //================================================================================
