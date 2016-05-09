@@ -37,10 +37,12 @@
 # include <dirent.h>
 # include <unistd.h>
 # include <sys/stat.h>
+#define GetCurrentDir getcwd
 # elif defined (FC_OS_WIN32)
 # include <direct.h>
 # include <io.h>
 # include <windows.h>
+#define GetCurrentDir _getcwd
 # endif
 #endif
 
@@ -92,9 +94,6 @@ std::wstring ConvertToWideString(const std::string& string)
     wideCharString = NULL;
     return wideString;
 }
-#define GetCurrentDir direct::_getcwd
-#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#define GetCurrentDir unistd::getcwd
 #endif
 
 
