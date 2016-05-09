@@ -131,9 +131,15 @@ class ObjectProfile:
                 obj.ClearanceHeight = bb.ZMax + 5.0
                 obj.SafeHeight = bb.ZMax + 3.0
 
-                if fbb.ZMax < bb.ZMax:
-                    obj.FinalDepth = fbb.ZMax
-                else:
+                if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
+                    obj.FinalDepth = bb.ZMin
+                elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
+                    obj.FinalDepth = fbb.ZMin
+                elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+                    obj.FinalDepth = fbb.ZMin
+                elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+                    obj.FinalDepth = fbb.ZMin
+                else: #catch all
                     obj.FinalDepth = bb.ZMin
             except:
                 obj.StartDepth = 5.0
@@ -273,23 +279,21 @@ print "y - " + str(point.y)
                 wires.append(h.OuterWire)
 
             tempshell = Part.makeShell(vfaces)
-            slices = tempshell.slice(FreeCAD.Base.Vector(0, 0, 1), 1.5)
+            slices = tempshell.slice(FreeCAD.Base.Vector(0, 0, 1), tempshell.CenterOfMass.z )
 
             wires = wires + slices
 
             for wire in wires:
-                edgelist = wire.Edges
-                edgelist = Part.__sortEdges__(edgelist)
-
                 if obj.Algorithm == "OCC Native":
                     output += self._buildPathOCC(obj, wire)
-
                 else:
                     try:
                         import area
                     except:
                         FreeCAD.Console.PrintError(translate("Path", "libarea needs to be installed for this command to work.\n"))
                         return
+                    edgelist = wire.Edges
+                    edgelist = Part.__sortEdges__(edgelist)
                     output += self._buildPathLibarea(obj, edgelist)
 
         if obj.Active:
@@ -496,6 +500,48 @@ class TaskPanel:
                 self.obj.Direction = str(self.form.direction.currentText())
         self.obj.Proxy.execute(self.obj)
 
+    def setFields(self): 
+        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
+        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
+        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
+        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
+        self.form.stepDown.setValue(self.obj.StepDown)
+        self.form.extraOffset.setValue(self.obj.OffsetExtra.Value)
+        self.form.segLen.setValue(self.obj.SegLen.Value)
+        self.form.rollRadius.setValue(self.obj.RollRadius.Value)
+        self.form.useCompensation.setChecked(self.obj.UseComp)
+        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+        self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
+
+        index = self.form.algorithmSelect.findText(
+                self.obj.Algorithm, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.algorithmSelect.setCurrentIndex(index)
+
+        index = self.form.cutSide.findText(
+                self.obj.Side, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.cutSide.setCurrentIndex(index)
+
+        index = self.form.direction.findText(
+                self.obj.Direction, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.direction.setCurrentIndex(index)
+
+        for i in self.obj.Base:
+            self.form.baseList.addItem(i[0].Name + "." + i[1])
+
+        for i in range(len(self.obj.locs)):
+            item = QtGui.QTreeWidgetItem(self.form.tagTree)
+            item.setText(0, str(i+1))
+            l = self.obj.locs[i]
+            item.setText(1, str(l.x)+", " + str(l.y) + ", " + str(l.z))
+            item.setText(2, str(self.obj.heights[i]))
+            item.setText(3, str(self.obj.lengths[i]))
+            item.setText(4, str(self.obj.angles[i]))
+            item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
+            item.setTextAlignment(0, QtCore.Qt.AlignLeft)
+
     def open(self):
         self.s = SelObserver()
         # install the function mode resident
@@ -505,16 +551,23 @@ class TaskPanel:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
 
-        if not len(selection) >= 1:
-            FreeCAD.Console.PrintError(translate("PathProject", "Please select at least one profileable object\n"))
+        if len(selection) != 1:
+            FreeCAD.Console.PrintError(translate("PathProject", "Please select only faces from one solid\n"))
             return
-        for s in selection:
-            if s.HasSubObjects:
-                for i in s.SubElementNames:
-                    self.obj.Proxy.addprofilebase(self.obj, s.Object, i)
-            else:
-                self.obj.Proxy.addprofilebase(self.obj, s.Object)
-        self.setupUi()  # defaults may have changed.  Reload.
+        sel = selection[0]
+        if not sel.HasSubObjects:
+            FreeCAD.Console.PrintError(translate("PathProject", "Please select faces from one solid\n"))
+            return
+        if not selection[0].SubObjects[0].ShapeType == "Face":
+            FreeCAD.Console.PrintError(translate("PathProject", "Please select faces from one solid\n"))
+            return
+
+          #  if s.HasSubObjects:
+        for i in sel.SubElementNames:
+            self.obj.Proxy.addprofilebase(self.obj, sel.Object, i)
+            #else:
+                #self.obj.Proxy.addprofilebase(self.obj, s.Object)
+        self.setFields()  # defaults may have changed.  Reload.
         self.form.baseList.clear()
         for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
@@ -644,47 +697,8 @@ class TaskPanel:
         self.updating = False
         return
 
+
     def setupUi(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.stepDown.setValue(self.obj.StepDown)
-        self.form.extraOffset.setValue(self.obj.OffsetExtra.Value)
-        self.form.segLen.setValue(self.obj.SegLen.Value)
-        self.form.rollRadius.setValue(self.obj.RollRadius.Value)
-        self.form.useCompensation.setChecked(self.obj.UseComp)
-        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-        self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
-
-        index = self.form.algorithmSelect.findText(
-                self.obj.Algorithm, QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            self.form.algorithmSelect.setCurrentIndex(index)
-
-        index = self.form.cutSide.findText(
-                self.obj.Side, QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            self.form.cutSide.setCurrentIndex(index)
-
-        index = self.form.direction.findText(
-                self.obj.Direction, QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            self.form.direction.setCurrentIndex(index)
-
-        for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
-
-        for i in range(len(self.obj.locs)):
-            item = QtGui.QTreeWidgetItem(self.form.tagTree)
-            item.setText(0, str(i+1))
-            l = self.obj.locs[i]
-            item.setText(1, str(l.x)+", " + str(l.y) + ", " + str(l.z))
-            item.setText(2, str(self.obj.heights[i]))
-            item.setText(3, str(self.obj.lengths[i]))
-            item.setText(4, str(self.obj.angles[i]))
-            item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
-            item.setTextAlignment(0, QtCore.Qt.AlignLeft)
 
         # Connect Signals and Slots
         # Base Controls
@@ -720,6 +734,13 @@ class TaskPanel:
                 self.edit)
         self.form.addTag.clicked.connect(self.addElement)
         self.form.deleteTag.clicked.connect(self.removeElement)
+
+        self.setFields()
+
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) != 0 and sel[0].HasSubObjects:
+#            if sel[0].SubObjects[0].ShapeType == "Face":
+                self.addBase()
 
 
 class SelObserver:

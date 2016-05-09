@@ -137,20 +137,21 @@ def filterArcs(arcEdge):
     if isinstance(s.Curve, Part.Circle):
         splitlist = []
         angle = abs(s.LastParameter - s.FirstParameter)
-        overhalfcircle = False
+        # overhalfcircle = False
         goodarc = False
         if (angle > math.pi):
-            overhalfcircle = True
+            pass
+            # overhalfcircle = True
         else:
             goodarc = True
         if not goodarc:
             arcstpt = s.valueAt(s.FirstParameter)
             arcmid = s.valueAt(
                 (s.LastParameter - s.FirstParameter) * 0.5 + s.FirstParameter)
-            arcquad1 = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.25 + s.FirstParameter)  # future midpt for arc1
-            arcquad2 = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.75 + s.FirstParameter)  # future midpt for arc2
+            arcquad1 = s.valueAt((s.LastParameter - s.FirstParameter)
+                                 * 0.25 + s.FirstParameter)  # future midpt for arc1
+            arcquad2 = s.valueAt((s.LastParameter - s.FirstParameter)
+                                 * 0.75 + s.FirstParameter)  # future midpt for arc2
             arcendpt = s.valueAt(s.LastParameter)
             # reconstruct with 2 arcs
             arcseg1 = Part.ArcOfCircle(arcstpt, arcquad1, arcmid)
@@ -170,8 +171,7 @@ def filterArcs(arcEdge):
 def reverseEdge(e):
     if geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)
-        arcmid = e.valueAt(
-                (e.LastParameter - e.FirstParameter) * 0.5 + e.FirstParameter)
+        arcmid = e.valueAt((e.LastParameter - e.FirstParameter) * 0.5 + e.FirstParameter)
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
@@ -183,9 +183,7 @@ def reverseEdge(e):
     return newedge
 
 
-def convert(
-        toolpath, Side, radius, clockwise=False, Z=0.0, firstedge=None,
-        vf=1.0, hf=2.0):
+def convert(toolpath, Side, radius, clockwise=False, Z=0.0, firstedge=None, vf=1.0, hf=2.0):
     '''convert(toolpath,Side,radius,clockwise=False,Z=0.0,firstedge=None) Converts lines and arcs to G1,G2,G3 moves. Returns a string.'''
     last = None
     output = ""
@@ -289,8 +287,8 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
                 geomType(e) == "BezierCurve" or \
                 geomType(e) == "Ellipse":
             edgelist.append(Part.Wire(curvetowire(e, (SegLen))))
-
     newwire = Part.Wire(edgelist)
+
     if Side == 'Left':
         # we use the OCC offset feature
         offset = newwire.makeOffset(radius)  # tool is outside line
@@ -308,6 +306,9 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
 def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart, ZFinalDepth, firstedge=None, PathClosed=True, SegLen=0.5, VertFeed=1.0, HorizFeed=2.0):
     ''' makes the path - just a simple profile for now '''
     offset = SortPath(wire, Side, radius, clockwise, firstedge, SegLen=0.5)
+    if len(offset.Edges) == 0:
+        return ""
+
     toolpath = offset.Edges[:]
     paths = ""
     paths += "G0 Z" + str(ZClearance) + "\n"
@@ -366,10 +367,10 @@ def getLastTool(obj):
 
 def getLastToolLoad(obj):
     # This walks up the hierarchy and tries to find the closest preceding
-    # ToolLoadOject (tlo).
+    # toolchange.
 
     import PathScripts
-    tlo = None
+    tc = None
     lastfound = None
 
     try:
@@ -379,30 +380,30 @@ def getLastToolLoad(obj):
         parent = None
 
     while parent is not None:
+
         sibs = parent.Group
         for g in sibs:
             if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
                 lastfound = g
             if g == child:
-                tlo = lastfound
+                tc = lastfound
 
-        if tlo is None:
+        if tc is None:
             try:
                 child = parent
-                parent = child.InList[0]
+                parent = parent.InList[0]
             except:
                 parent = None
         else:
-            return tlo
+            return tc
 
-    if tlo is None:
-        for g in FreeCAD.ActiveDocument.Objects:  # Look in top level
-            if hasattr(g, "Proxy"):
-                if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
-                    lastfound = g
+    if tc is None:
+        for g in FreeCAD.ActiveDocument.Objects:  # top level object
+            if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                lastfound = g
             if g == obj:
-                tlo = lastfound
-    return tlo
+                tc = lastfound
+    return tc
 
 
 def getTool(obj, number=0):
@@ -481,177 +482,6 @@ def frange(start, stop, step, finish):
         x.append(curdepth)
 
     return x
-
-def rapid(x=None, y=None, z=None):
-    """ Returns gcode string to perform a rapid move."""
-    retstr = "G00"
-    if (x is not None) or (y is not None) or (z is not None):
-        if (x is not None):
-            retstr += " X" + str("%.4f" % x)
-        if (y is not None):
-            retstr += " Y" + str("%.4f" % y)
-        if (z is not None):
-            retstr += " Z" + str("%.4f" % z)
-    else:
-        return ""
-    return retstr + "\n"
-
-def feed(x=None, y=None, z=None, horizFeed=0, vertFeed=0):
-    """ Return gcode string to perform a linear feed."""
-    global feedxy
-    retstr = "G01 F"
-    if(x is None) and (y is None):
-        retstr += str("%.4f" % horizFeed)
-    else:
-        retstr += str("%.4f" % vertFeed)
-
-    if (x is not None) or (y is not None) or (z is not None):
-        if (x is not None):
-            retstr += " X" + str("%.4f" % x)
-        if (y is not None):
-            retstr += " Y" + str("%.4f" % y)
-        if (z is not None):
-            retstr += " Z" + str("%.4f" % z)
-    else:
-        return ""
-    return retstr + "\n"
-
-def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
-    """
-    Return gcode string to perform an arc.
-
-    Assumes XY plane or helix around Z
-    Don't worry about starting Z- assume that's dealt with elsewhere
-    If start/end radii aren't within eps, abort.
-
-    cx, cy -- arc center coordinates
-    sx, sy -- arc start coordinates
-    ex, ey -- arc end coordinates
-    ez -- ending Z coordinate.  None unless helix.
-    horizFeed -- horiz feed speed
-    ccw -- arc direction
-    """
-
-    eps = 0.01
-    if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
-        print "ERROR: Illegal arc: Start and end radii not equal"
-        return ""
-
-    retstr = ""
-    if ccw:
-        retstr += "G03 F" + str(horizFeed)
-    else:
-        retstr += "G02 F" + str(horizFeed)
-
-    retstr += " X" + str("%.4f" % ex) + " Y" + str("%.4f" % ey)
-
-    if ez is not None:
-        retstr += " Z" + str("%.4f" % ez)
-
-    retstr += " I" + str("%.4f" % (cx - sx)) + " J" + str("%.4f" % (cy - sy))
-
-    return retstr + "\n"
-
-def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed):
-    """
-    Return gcode string to perform helical entry move.
-
-    plungePos -- vector of the helical entry location
-    destZ -- the lowest Z position or milling level
-    startZ -- Starting Z position for helical move
-    rampangle -- entry angle
-    toold -- tool diameter
-    plungeR -- the radius of the entry helix
-    """
-    # toold = self.radius * 2
-
-    helixCmds = "(START HELICAL PLUNGE)\n"
-    if(plungePos is None):
-        raise Exception("Helical plunging requires a position!")
-        return None
-
-    helixX = plungePos.x + toold/2 * plungeR
-    helixY = plungePos.y
-
-    helixCirc = math.pi * toold * plungeR
-    dzPerRev = math.sin(rampangle/180. * math.pi) * helixCirc
-
-    # Go to the start of the helix position
-    helixCmds += rapid(helixX, helixY)
-    helixCmds += rapid(z=startZ)
-
-    # Helix as required to get to the requested depth
-    lastZ = startZ
-    curZ = max(startZ-dzPerRev, destZ)
-    done = False
-    while not done:
-        done = (curZ == destZ)
-        # NOTE: FreeCAD doesn't render this, but at least LinuxCNC considers it valid
-        # helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX, helixY, ez = curZ, ccw=True)
-
-        # Use two half-helixes; FreeCAD renders that correctly,
-        # and it fits with the other code breaking up 360-degree arcs
-        helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX - toold * plungeR, helixY, horizFeed, ez=(curZ + lastZ)/2., ccw=True)
-        helixCmds += arc(plungePos.x, plungePos.y, helixX - toold * plungeR, helixY, helixX, helixY, horizFeed, ez=curZ, ccw=True)
-        lastZ = curZ
-        curZ = max(curZ - dzPerRev, destZ)
-
-    return helixCmds
-
-def rampPlunge(edge, rampangle, destZ, startZ):
-    """
-    Return gcode string to linearly ramp down to milling level.
-
-    edge -- edge to follow
-    rampangle -- entry angle
-    destZ -- Final Z depth
-    startZ -- Starting Z depth
-
-    FIXME: This ramps along the first edge, assuming it's long
-    enough, NOT just wiggling back and forth by ~0.75 * toolD.
-    Not sure if that's any worse, but it's simpler
-    I think this should be changed to be limited to a maximum ramp size.  Otherwise machine time will get longer than it needs to be.
-    """
-
-    rampCmds = "(START RAMP PLUNGE)\n"
-    if(edge is None):
-        raise Exception("Ramp plunging requires an edge!")
-        return None
-
-    sPoint = edge.Vertexes[0].Point
-    ePoint = edge.Vertexes[1].Point
-    # Evidently edges can get flipped- pick the right one in this case
-    # FIXME: This is iffy code, based on what already existed in the "for vpos ..." loop below
-    if ePoint == sPoint:
-        # print "FLIP"
-        ePoint = edge.Vertexes[-1].Point
-
-    rampDist = edge.Length
-    rampDZ = math.sin(rampangle/180. * math.pi) * rampDist
-
-    rampCmds += rapid(sPoint.x, sPoint.y)
-    rampCmds += rapid(z=startZ)
-
-    # Ramp down to the requested depth
-    # FIXME: This might be an arc, so handle that as well
-
-    curZ = max(startZ-rampDZ, destZ)
-    done = False
-    while not done:
-        done = (curZ == destZ)
-
-        # If it's an arc, handle it!
-        if isinstance(edge.Curve, Part.Circle):
-            raise Exception("rampPlunge: Screw it, not handling an arc.")
-        # Straight feed! Easy!
-        else:
-            rampCmds += feed(ePoint.x, ePoint.y, curZ)
-            rampCmds += feed(sPoint.x, sPoint.y)
-
-        curZ = max(curZ - rampDZ, destZ)
-
-    return rampCmds
-
 
 
 class depth_params:
