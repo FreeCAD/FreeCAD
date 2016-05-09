@@ -235,7 +235,7 @@ std::string FileInfo::dirPath () const
         retval = FileName.substr(0, last_pos);
     }
     else{
-        retval = std::string(getcwd(NULL, 0));
+        retval = std::string(GetCurrentDir(NULL, 0));
     }
     return retval;
 }
