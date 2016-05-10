@@ -92,9 +92,6 @@ std::wstring ConvertToWideString(const std::string& string)
     wideCharString = NULL;
     return wideString;
 }
-#define GetCurrentDir direct::_getcwd
-#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#define GetCurrentDir unistd::getcwd
 #endif
 
 
@@ -234,8 +231,17 @@ std::string FileInfo::dirPath () const
     if (last_pos != std::string::npos) {
         retval = FileName.substr(0, last_pos);
     }
-    else{
-        retval = std::string(GetCurrentDir(NULL, 0));
+    else {
+#ifdef FC_OS_WIN32
+        wchar_t buf[MAX_PATH];
+        GetCurrentDirectoryW(MAX_PATH, buf);
+        retval = std::string(ConvertFromWideString(std::wstring(buf)));
+#else
+        char buf[PATH_MAX+1];
+        const char* cwd = getcwd(buf, PATH_MAX);
+        if (cwd)
+            retval = std::string(cwd);
+#endif
     }
     return retval;
 }
