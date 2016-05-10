@@ -1515,52 +1515,52 @@ void MeshOutput::Transform(const Base::Matrix4D& mat)
 bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
 {
     // ask for write permission
-    Base::FileInfo fi(FileName);
-    Base::FileInfo di(fi.dirPath().c_str());
-    if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable())
+    Base::FileInfo file(FileName);
+    Base::FileInfo directory(file.dirPath());
+    if ((file.exists() && !file.isWritable()) || !directory.exists() || !directory.isWritable())
         throw Base::FileException("No write permission for file",FileName);
 
     MeshIO::Format fileformat = format;
     if (fileformat == MeshIO::Undefined) {
-        if (fi.hasExtension("bms")) {
+        if (file.hasExtension("bms")) {
             fileformat = MeshIO::BMS;
         }
-        else if (fi.hasExtension("stl")) {
+        else if (file.hasExtension("stl")) {
             fileformat = MeshIO::BSTL;
         }
-        else if (fi.hasExtension("ast")) {
+        else if (file.hasExtension("ast")) {
             fileformat = MeshIO::ASTL;
         }
-        else if (fi.hasExtension("obj")) {
+        else if (file.hasExtension("obj")) {
             fileformat = MeshIO::OBJ;
         }
-        else if (fi.hasExtension("off")) {
+        else if (file.hasExtension("off")) {
             fileformat = MeshIO::OFF;
         }
-        else if (fi.hasExtension("ply")) {
+        else if (file.hasExtension("ply")) {
             fileformat = MeshIO::PLY;
         }
-        else if (fi.hasExtension("iv")) {
+        else if (file.hasExtension("iv")) {
             fileformat = MeshIO::IV;
         }
-        else if (fi.hasExtension("x3d")) {
+        else if (file.hasExtension("x3d")) {
             fileformat = MeshIO::X3D;
         }
-        else if (fi.hasExtension("py")) {
+        else if (file.hasExtension("py")) {
             fileformat = MeshIO::PY;
         }
-        else if (fi.hasExtension("wrl") || fi.hasExtension("vrml")) {
+        else if (file.hasExtension("wrl") || file.hasExtension("vrml")) {
             fileformat = MeshIO::VRML;
         }
-        else if (fi.hasExtension("wrz")) {
+        else if (file.hasExtension("wrz")) {
             fileformat = MeshIO::WRZ;
         }
-        else if (fi.hasExtension("nas") || fi.hasExtension("bdf")) {
+        else if (file.hasExtension("nas") || file.hasExtension("bdf")) {
             fileformat = MeshIO::NAS;
         }
     }
 
-    Base::ofstream str(fi, std::ios::out | std::ios::binary);
+    Base::ofstream str(file, std::ios::out | std::ios::binary);
 
     if (fileformat == MeshIO::BMS) {
         _rclMesh.Write(str);

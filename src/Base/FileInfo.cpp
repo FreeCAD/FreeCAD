@@ -37,10 +37,12 @@
 # include <dirent.h>
 # include <unistd.h>
 # include <sys/stat.h>
+#define GetCurrentDir getcwd
 # elif defined (FC_OS_WIN32)
 # include <direct.h>
 # include <io.h>
 # include <windows.h>
+#define GetCurrentDir _getcwd
 # endif
 #endif
 
@@ -225,7 +227,16 @@ std::string FileInfo::fileName () const
 
 std::string FileInfo::dirPath () const
 {
-    return FileName.substr(0,FileName.find_last_of('/'));
+    std::size_t last_pos;
+    std::string retval;
+    last_pos = FileName.find_last_of('/');
+    if (last_pos != std::string::npos) {
+        retval = FileName.substr(0, last_pos);
+    }
+    else{
+        retval = std::string(GetCurrentDir(NULL, 0));
+    }
+    return retval;
 }
 
 std::string FileInfo::fileNamePure () const
