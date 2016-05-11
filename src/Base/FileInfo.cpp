@@ -233,14 +233,13 @@ std::string FileInfo::dirPath () const
     }
     else {
 #ifdef FC_OS_WIN32
-        wchar_t buf[MAX_PATH];
+        wchar_t buf[MAX_PATH+1];
         GetCurrentDirectoryW(MAX_PATH, buf);
         retval = std::string(ConvertFromWideString(std::wstring(buf)));
 #else
         char buf[PATH_MAX+1];
         const char* cwd = getcwd(buf, PATH_MAX);
-        if (cwd)
-            retval = std::string(cwd);
+        retval = std::string(cwd ? cwd : ".");
 #endif
     }
     return retval;
