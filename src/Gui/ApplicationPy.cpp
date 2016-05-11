@@ -48,6 +48,7 @@
 #include "PythonEditor.h"
 #include "SoFCDB.h"
 #include "View3DInventor.h"
+#include "SplitView3DInventor.h"
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
@@ -169,6 +170,9 @@ PyMethodDef Application::Methods[] = {
   {"showPreferences",               (PyCFunction) Application::sShowPreferences,1,
    "showPreferences([string,int]) -> None\n\n"
    "Shows the preferences window. If string and int are provided, the given page index in the given group is shown."},
+   {"createViewer",               (PyCFunction) Application::sCreateViewer,1,
+    "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
+    "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -1107,5 +1111,34 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args,PyOb
     cDlg.exec();
 
     Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    int num_of_views = 1;
+    char* title = nullptr;
+    // if one argument (int) is given
+    if (PyArg_ParseTuple(args, "|is", &num_of_views, &title))
+    {
+        if (num_of_views < 0)
+            return NULL;
+        else if (num_of_views==1)
+        {
+            View3DInventor* viewer = new View3DInventor(0, 0);
+            if (title)
+                viewer->setWindowTitle(QString::fromUtf8(title));
+            Gui::getMainWindow()->addWindow(viewer);
+            return viewer->getPyObject();
+        }
+        else
+        {
+            SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, 0, 0);
+            if (title)
+                viewer->setWindowTitle(QString::fromUtf8(title));
+            Gui::getMainWindow()->addWindow(viewer);
+            return viewer->getPyObject();
+        }
+    }
     return Py_None;
 }

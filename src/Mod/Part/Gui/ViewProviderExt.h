@@ -99,10 +99,10 @@ public:
 
     virtual void updateData(const App::Property*);
 
-      /** @name Selection handling
-      * This group of methodes do the selection handling.
-      * Here you can define how the selection for your ViewProfider
-      * works. 
+    /** @name Selection handling
+     * This group of methods do the selection handling.
+     * Here you can define how the selection for your ViewProfider
+     * works.
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
@@ -113,6 +113,19 @@ public:
     virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const;
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
+    //@}
+
+    /** @name Highlight handling
+    * This group of methods do the highlighting of elements.
+    */
+    //@{
+    void setHighlightedFaces(const std::vector<App::Color>& colors);
+    void setHighlightedFaces(const std::vector<App::Material>& colors);
+    void unsetHighlightedFaces();
+    void setHighlightedEdges(const std::vector<App::Color>& colors);
+    void unsetHighlightedEdges();
+    void setHighlightedPoints(const std::vector<App::Color>& colors);
+    void unsetHighlightedPoints();
     //@}
 
     /** @name Edit methods */

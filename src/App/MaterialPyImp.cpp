@@ -31,6 +31,54 @@
 
 using namespace App;
 
+PyObject *MaterialPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+{
+    // create a new instance of MaterialPy and the Twin object 
+    return new MaterialPy(new Material);
+}
+
+// constructor method
+int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
+{
+    PyObject* diffuse = 0;
+    PyObject* ambient = 0;
+    PyObject* specular = 0;
+    PyObject* emissive = 0;
+    PyObject* shininess = 0;
+    PyObject* transpareny = 0;
+    static char* kwds_colors[] = { "DiffuseColor", "AmbientColor", "SpecularColor", "EmissiveColor", "Shininess", "Transparency", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOOOOO", kwds_colors,
+        &diffuse, &ambient, &specular, &emissive, &shininess, &transpareny))
+        return -1;
+
+    if (diffuse) {
+        setDiffuseColor(Py::Tuple(diffuse));
+    }
+
+    if (ambient) {
+        setAmbientColor(Py::Tuple(ambient));
+    }
+
+    if (specular) {
+        setSpecularColor(Py::Tuple(specular));
+    }
+
+    if (emissive) {
+        setEmissiveColor(Py::Tuple(emissive));
+    }
+
+    if (shininess) {
+        setShininess(Py::Float(shininess));
+    }
+
+    if (transpareny) {
+        setTransparency(Py::Float(transpareny));
+    }
+
+    return 0;
+}
+
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialPy::representation(void) const
 {

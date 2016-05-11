@@ -92,6 +92,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mmFolding:
             return TwoStrings(qApp->translate("Attacher3D", "Folding","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.","Attachment3D mode tooltip"));
+        case mmInertialCS:
+            return TwoStrings(qApp->translate("Attacher3D", "Inertial CS","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "Inertial coordinate system, constructed on principal axes of inertia and center of mass.","Attachment3D mode tooltip"));
         default:
             break;
         }
@@ -142,10 +145,13 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher2D", "Align plane to pass through three vertices.","AttachmentPlane mode tooltip"));
         case mmThreePointsNormal:
             return TwoStrings(qApp->translate("Attacher2D", "Normal to 3 points","AttachmentPlane mode caption"),
-                              qApp->translate("Attacher2D", "Plane will pass through first to vertices, and perpendicular to plane that passes through three vertices.","AttachmentPlane mode tooltip"));
+                              qApp->translate("Attacher2D", "Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.","AttachmentPlane mode tooltip"));
         case mmFolding:
             return TwoStrings(qApp->translate("Attacher2D", "Folding","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.","AttachmentPlane mode tooltip"));
+        case mmInertialCS:
+            return TwoStrings(qApp->translate("Attacher2D", "Inertia 2-3","AttachmentPlane mode caption"),
+                              qApp->translate("Attacher2D", "Plane constructed on second and third principal axes of inertia (passes through center of mass).","AttachmentPlane mode tooltip"));
         default:
             break;
         }
@@ -203,6 +209,15 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mm1Proximity:
             return TwoStrings(qApp->translate("Attacher1D", "Proximity line","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Line that spans the shortest distance between shapes.","AttachmentLine mode tooltip"));
+        case mm1AxisInertia1:
+            return TwoStrings(qApp->translate("Attacher1D", "1st principal axis","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line follows first principal axis of inertia.","AttachmentLine mode tooltip"));
+        case mm1AxisInertia2:
+            return TwoStrings(qApp->translate("Attacher1D", "2nd principal axis","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line follows second principal axis of inertia.","AttachmentLine mode tooltip"));
+        case mm1AxisInertia3:
+            return TwoStrings(qApp->translate("Attacher1D", "3rd principal axis","AttachmentLine mode caption"),
+                              qApp->translate("Attacher1D", "Line follows third principal axis of inertia.","AttachmentLine mode tooltip"));
         default:
             break;
         }
@@ -229,7 +244,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher0D", "Center of osculating circle of an edge. Optinal vertex link defines where.","AttachmentPoint mode tooltip"));
         case mm0CenterOfMass:
             return TwoStrings(qApp->translate("Attacher0D", "Center of mass","AttachmentPoint mode caption"),
-                              qApp->translate("Attacher0D", "Not implemented","AttachmentPoint mode tooltip"));
+                              qApp->translate("Attacher0D", "Center of mass of all references (equal densities are assumed).","AttachmentPoint mode tooltip"));
         case mm0Intersection:
             return TwoStrings(qApp->translate("Attacher0D", "Intersection","AttachmentPoint mode caption"),
                               qApp->translate("Attacher0D", "Not implemented","AttachmentPoint mode tooltip"));
@@ -298,9 +313,9 @@ QString getShapeTypeText(eRefType type)
 
 QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
 {
-    AttachEngine::refTypeStringList list = attacher.modeRefTypes[mmode];
+    refTypeStringList list = attacher.modeRefTypes[mmode];
     QStringList strlist;
-    for(AttachEngine::refTypeString &rts : list){
+    for(refTypeString &rts : list){
         QStringList buf;
         for(eRefType rt : rts){
             buf.append(getShapeTypeText(rt));

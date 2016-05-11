@@ -38,6 +38,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
+# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/sensors/SoNodeSensor.h> 
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h> 
@@ -61,8 +62,10 @@
 #if (COIN_MAJOR_VERSION > 2)
 #include <Inventor/nodes/SoDepthBuffer.h>
 #endif
-#include "SoNavigationDragger.h"
 #include "SoFCUnifiedSelection.h"
+#include "SoFCCSysDragger.h"
+#include "Control.h"
+#include "TaskCSysDragger.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
 using namespace Gui;
@@ -71,7 +74,7 @@ PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDocumentObject
 
 const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 
-ViewProviderGeometryObject::ViewProviderGeometryObject() : m_dragStart(false), pcBoundSwitch(0)
+ViewProviderGeometryObject::ViewProviderGeometryObject() : pcBoundSwitch(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
@@ -175,38 +178,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         //    <==> (I-R) * c = 0 ==> c = 0
         // This means that the center point must be the origin!
         Base::Placement p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-        float q0 = (float)p.getRotation().getValue()[0];
-        float q1 = (float)p.getRotation().getValue()[1];
-        float q2 = (float)p.getRotation().getValue()[2];
-        float q3 = (float)p.getRotation().getValue()[3];
-        float px = (float)p.getPosition().x;
-        float py = (float)p.getPosition().y;
-        float pz = (float)p.getPosition().z;
-        pcTransform->rotation.setValue(q0,q1,q2,q3);
-        pcTransform->translation.setValue(px,py,pz);
-        pcTransform->center.setValue(0.0f,0.0f,0.0f);
-        pcTransform->scaleFactor.setValue(1.0f,1.0f,1.0f);
-
-        // If this view provider is in edit mode also check whether it has
-        // an SoCenterballManip that must be updated (#0002150)
-        if (isEditing() && !m_dragStart) {
-            SoSearchAction sa;
-            sa.setType(SoCenterballManip::getClassTypeId());
-            sa.setInterest(SoSearchAction::FIRST);
-            sa.apply(pcRoot);
-
-            SoPath * path = sa.getPath();
-            if (path) {
-                // check if the name matches to avoid to get any other manipulator
-                SoCenterballManip * manip = static_cast<SoCenterballManip*>(path->getTail());
-                if (manip->getName() == SbName("ViewProviderGeometryObject")) {
-                    manip->rotation.setValue(q0,q1,q2,q3);
-                    manip->translation.setValue(px,py,pz);
-                    manip->center.setValue(0.0f,0.0f,0.0f);
-                    manip->scaleFactor.setValue(1.0f,1.0f,1.0f);
-                }
-            }
-        }
+        updateTransform(p, pcTransform);
     }
 }
 
@@ -224,310 +196,169 @@ void ViewProviderGeometryObject::setupContextMenu(QMenu* menu, QObject* receiver
 
 bool ViewProviderGeometryObject::setEdit(int ModNum)
 {
-#if 1
-    SoSearchAction sa;
-    sa.setInterest(SoSearchAction::FIRST);
-    sa.setSearchingAll(false);
-    sa.setNode(this->pcTransform);
-    sa.apply(pcRoot);
-    SoPath * path = sa.getPath();
-    if (path) {
-        SoCenterballManip * manip = new SoCenterballManip;
-        manip->setName("ViewProviderGeometryObject");
-        SoDragger* dragger = manip->getDragger();
-        dragger->addStartCallback(dragStartCallback, this);
-        dragger->addFinishCallback(dragFinishCallback, this);
-#if 1
-        dragger->addMotionCallback(dragMotionCallback, this);
-        dragger->setUserData(manip);
-#else
-        // Attach a sensor to the transform manipulator and set it as its user
-        // data to delete it when the view provider leaves the edit mode
-        SoNodeSensor* sensor = new SoNodeSensor(sensorCallback, this);
-        //sensor->setPriority(0);
-        sensor->attach(manip);
-        manip->setUserData(sensor);
-#endif
-        return manip->replaceNode(path);
-    }
-    return false;
-#else
-	// get the size of this viewprovider
-	SoGetBoundingBoxAction *boundAction = new SoGetBoundingBoxAction(SbViewportRegion());
-	boundAction->apply(pcRoot);
-    SbBox3f bdBox = boundAction->getBoundingBox();
-	float size = bdBox.getSize().length();
-	App::GeoFeature* geometry = static_cast<App::GeoFeature*>(pcObject);
-	const Base::Placement pos = geometry->Placement.getValue();
-	const Base::Vector3d &vpos = pos.getPosition();
-	const Base::Rotation &rrot = pos.getRotation();
-
-	// set up manipulator node
-	SoSeparator * draggSep = new SoSeparator();
-	SoDepthBuffer *depth = new SoDepthBuffer();
-	depth->test = true;
-	depth->function = SoDepthBuffer::ALWAYS;
-	draggSep->addChild(depth);
-	SoScale *scale = new SoScale();
-	scale->scaleFactor = SbVec3f  (size,size,size);
-	draggSep->addChild(scale);
-	RotTransDragger *dragger = new RotTransDragger();
-	dragger->translation = SbVec3f  (vpos.x,vpos.y,vpos.z);
-	dragger->rotation = SbRotation(rrot[0],rrot[1],rrot[2],rrot[3]);
-	draggSep->addChild(dragger);
-
-    // Attach a sensor to the transform manipulator and set it as its user
-    // data to delete it when the view provider leaves the edit mode
-    SoNodeSensor* sensor = new SoNodeSensor(sensorCallback, this);
-    //sensor->setPriority(0);
-    sensor->attach(dragger);
-
-
-	pcRoot->insertChild(draggSep,0);
-	return true;
-
-#endif 
-
+  App::DocumentObject *genericObject = this->getObject();
+  if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
+  {
+    App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
+    const Base::Placement &placement = geoFeature->Placement.getValue();
+    SoTransform *tempTransform = new SoTransform();
+    tempTransform->ref();
+    updateTransform(placement, tempTransform);
+    
+    assert(!csysDragger);
+    csysDragger = new SoFCCSysDragger();
+    csysDragger->draggerSize.setValue(0.05f);
+    csysDragger->translation.setValue(tempTransform->translation.getValue());
+    csysDragger->rotation.setValue(tempTransform->rotation.getValue());
+    
+    tempTransform->unref();
+    
+    pcTransform->translation.connectFrom(&csysDragger->translation);
+    pcTransform->rotation.connectFrom(&csysDragger->rotation);
+    
+    csysDragger->addStartCallback(dragStartCallback, this);
+    csysDragger->addFinishCallback(dragFinishCallback, this);
+    
+    pcRoot->insertChild(csysDragger, 0);
+    
+    TaskCSysDragger *task = new TaskCSysDragger(this, csysDragger);
+    Gui::Control().showDialog(task);
+  }
+  
+  return true;
 }
 
 void ViewProviderGeometryObject::unsetEdit(int ModNum)
 {
-# if 1
-    SoSearchAction sa;
-    sa.setType(SoCenterballManip::getClassTypeId());
-    sa.setInterest(SoSearchAction::FIRST);
-    sa.apply(pcRoot);
-    SoPath * path = sa.getPath();
-
-    // No transform manipulator found.
-    if (!path)
-        return;
-
-    // The manipulator has a sensor as user data and this sensor contains the view provider
-    SoCenterballManip * manip = static_cast<SoCenterballManip*>(path->getTail());
-#if 0
-    SoNodeSensor* sensor = reinterpret_cast<SoNodeSensor*>(manip->getUserData());
-#endif
-    // #0000939: Pressing Escape while pivoting a box crashes
-    // #0000942: Crash when 2xdouble-click on part
-    SoDragger* dragger = manip->getDragger();
-    if (dragger && dragger->getHandleEventAction())
-        dragger->grabEventsCleanup();
-
-#if 0
-    // detach sensor
-    sensor->detach();
-    delete sensor;
-#endif
-
-    SoTransform* transform = this->pcTransform;
-    manip->replaceManip(path, transform);
-
-    if (this->pcObject->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-        App::GeoFeature* geometry = static_cast<App::GeoFeature*>(this->pcObject);
-        this->updateData(&geometry->Placement);
-    }
-#else
-	pcRoot->removeChild(0);
-#endif 
+  if(csysDragger)
+  {
+    pcTransform->translation.disconnect(&csysDragger->translation);
+    pcTransform->rotation.disconnect(&csysDragger->rotation);
+    
+    pcRoot->removeChild(csysDragger); //should delete csysDragger
+    csysDragger = nullptr;
+  }
 }
 
 void ViewProviderGeometryObject::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    if (ModNum == (int)ViewProvider::Transform) {
-        SoNode* root = viewer->getSceneGraph();
-        static_cast<SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+    if (csysDragger && viewer)
+    {
+      SoPickStyle *rootPickStyle = new SoPickStyle();
+      rootPickStyle->style = SoPickStyle::UNPICKABLE;
+      static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
+      csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
     }
 }
 
 void ViewProviderGeometryObject::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-    int ModNum = this->getEditingMode();
-    if (ModNum == (int)ViewProvider::Transform) {
-        SoNode* root = viewer->getSceneGraph();
-        static_cast<SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
-    }
-}
-
-void ViewProviderGeometryObject::sensorCallback(void * data, SoSensor * s)
-{
-    SoNodeSensor* sensor = static_cast<SoNodeSensor*>(s);
-    SoNode* node = sensor->getAttachedNode();
-
-    if (node && node->getTypeId().isDerivedFrom(SoCenterballManip::getClassTypeId())) {
-        // apply the transformation data to the placement
-        SoCenterballManip* manip = static_cast<SoCenterballManip*>(node);
-        float q0, q1, q2, q3;
-        SbVec3f move = manip->translation.getValue();
-        SbVec3f center = manip->center.getValue();
-        manip->rotation.getValue().getValue(q0, q1, q2, q3);
-    
-        // get the placement
-        ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
-        if (view && view->pcObject && view->pcObject->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            App::GeoFeature* geometry = static_cast<App::GeoFeature*>(view->pcObject);
-            // Note: If R is the rotation, c the rotation center and t the translation
-            // vector then Inventor applies the following transformation: R*(x-c)+c+t
-            // In FreeCAD a placement only has a rotation and a translation part but
-            // no rotation center. This means that we must divide the transformation
-            // in a rotation and translation part.
-            // R * (x-c) + c + t = R * x - R * c + c + t
-            // The rotation part is R, the translation part t', however, is:
-            // t' = t + c - R * c
-            Base::Placement p;
-            p.setRotation(Base::Rotation(q0,q1,q2,q3));
-            Base::Vector3d t(move[0],move[1],move[2]);
-            Base::Vector3d c(center[0],center[1],center[2]);
-            t += c;
-            p.getRotation().multVec(c,c);
-            t -= c;
-            p.setPosition(t);
-            geometry->Placement.setValue(p);
-        }
-    }
-#if 0
-	else // RotTransDragger -----------------------------------------------------------	 
-    if (node && node->getTypeId().isDerivedFrom(RotTransDragger::getClassTypeId())) {
-        // apply the transformation data to the placement
-        RotTransDragger* dragger = static_cast<RotTransDragger*>(node);
-        float q0, q1, q2, q3;
-        SbVec3f pos = dragger->translation.getValue();
-        dragger->rotation.getValue().getValue(q0, q1, q2, q3);
-    
-        // get the placement
-        ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
-        if (view && view->pcObject && view->pcObject->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            App::GeoFeature* geometry = static_cast<App::GeoFeature*>(view->pcObject);
-            // Note: If R is the rotation, c the rotation center and t the translation
-            // vector then Inventor applies the following transformation: R*(x-c)+c+t
-            // In FreeCAD a placement only has a rotation and a translation part but
-            // no rotation center. This means that we must divide the transformation
-            // in a rotation and translation part.
-            // R * (x-c) + c + t = R * x - R * c + c + t
-            // The rotation part is R, the translation part t', however, is:
-            // t' = t + c - R * c
-            Base::Placement p;
-            p.setRotation(Base::Rotation(q0,q1,q2,q3));
-            Base::Vector3d t(pos[0],pos[1],pos[2]);
- /*           Base::Vector3d c(center[0],center[1],center[2]);
-            t += c;
-            p.getRotation().multVec(c,c);
-            t -= c;*/
-            p.setPosition(t);
-            geometry->Placement.setValue(p);
-        }
-    } else
-    if (node && node->getTypeId().isDerivedFrom(SoCenterballDragger::getClassTypeId())) {
-        // apply the transformation data to the placement
-        SoCenterballDragger* dragger = static_cast<SoCenterballDragger*>(node);
-        float q0, q1, q2, q3;
-        SbVec3f pos = dragger->center.getValue();
-        dragger->rotation.getValue().getValue(q0, q1, q2, q3);
-    
-        // get the placement
-        ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
-        if (view && view->pcObject && view->pcObject->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            App::GeoFeature* geometry = static_cast<App::GeoFeature*>(view->pcObject);
-            // Note: If R is the rotation, c the rotation center and t the translation
-            // vector then Inventor applies the following transformation: R*(x-c)+c+t
-            // In FreeCAD a placement only has a rotation and a translation part but
-            // no rotation center. This means that we must divide the transformation
-            // in a rotation and translation part.
-            // R * (x-c) + c + t = R * x - R * c + c + t
-            // The rotation part is R, the translation part t', however, is:
-            // t' = t + c - R * c
-            Base::Placement p;
-            p.setRotation(Base::Rotation(q0,q1,q2,q3));
-            Base::Vector3d t(pos[0],pos[1],pos[2]);
- /*           Base::Vector3d c(center[0],center[1],center[2]);
-            t += c;
-            p.getRotation().multVec(c,c);
-            t -= c;*/
-            p.setPosition(t);
-            geometry->Placement.setValue(p);
-        }
-    }
-#endif
-}
-
-void ViewProviderGeometryObject::dragMotionCallback(void * data, SoDragger * d)
-{
-    SoNode* node = reinterpret_cast<SoNode*>(d->getUserData());
-    if (node && node->getTypeId().isDerivedFrom(SoCenterballManip::getClassTypeId())) {
-        // apply the transformation data to the placement
-        SoCenterballManip* manip = static_cast<SoCenterballManip*>(node);
-        float q0, q1, q2, q3;
-        // See also SoTransformManip::valueChangedCB
-        // to get translation directly from dragger
-        SbVec3f move = manip->translation.getValue();
-        SbVec3f center = manip->center.getValue();
-        manip->rotation.getValue().getValue(q0, q1, q2, q3);
-
-        // it can happen that the values of the motion matrix is garbage
-        if (boost::math::isnan(q0)) {
-            Base::Console().Warning("NaN values received in ViewProviderGeometryObject::dragMotionCallback\n");
-            return;
-        }
-
-        // get the placement
-        ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
-        if (view && view->pcObject && view->pcObject->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            App::GeoFeature* geometry = static_cast<App::GeoFeature*>(view->pcObject);
-            // Note: If R is the rotation, c the rotation center and t the translation
-            // vector then Inventor applies the following transformation: R*(x-c)+c+t
-            // In FreeCAD a placement only has a rotation and a translation part but
-            // no rotation center. This means that we must divide the transformation
-            // in a rotation and translation part.
-            // R * (x-c) + c + t = R * x - R * c + c + t
-            // The rotation part is R, the translation part t', however, is:
-            // t' = t + c - R * c
-            Base::Placement newPlm;
-            newPlm.setRotation(Base::Rotation(q0,q1,q2,q3));
-            Base::Vector3d t(move[0],move[1],move[2]);
-            Base::Vector3d c(center[0],center[1],center[2]);
-            t += c;
-            newPlm.getRotation().multVec(c,c);
-            t -= c;
-            newPlm.setPosition(t);
-
-            // #0001441: entering Transform mode degrades the Placement rotation to single precision
-            Base::Placement oldPlm = geometry->Placement.getValue();
-            const Base::Vector3d& p1 = oldPlm.getPosition();
-            const Base::Vector3d& p2 = newPlm.getPosition();
-            if (fabs(p1.x-p2.x) < FLT_EPSILON &&
-                fabs(p1.y-p2.y) < FLT_EPSILON &&
-                fabs(p1.z-p2.z) < FLT_EPSILON) {
-                newPlm.setPosition(oldPlm.getPosition());
-            }
-
-            const Base::Rotation& r1 = oldPlm.getRotation();
-            const Base::Rotation& r2 = newPlm.getRotation();
-            if (fabs(r1[0]-r2[0]) < FLT_EPSILON &&
-                fabs(r1[1]-r2[1]) < FLT_EPSILON &&
-                fabs(r1[2]-r2[2]) < FLT_EPSILON &&
-                fabs(r1[3]-r2[3]) < FLT_EPSILON) {
-                newPlm.setRotation(oldPlm.getRotation());
-            }
-            geometry->Placement.setValue(newPlm);
-        }
-    }
+  SoNode *child = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->getChild(0);
+  if (child && child->isOfType(SoPickStyle::getClassTypeId()))
+    static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
 }
 
 void ViewProviderGeometryObject::dragStartCallback(void *data, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand("Transform");
-    ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
-    view->m_dragStart = true;
 }
 
-void ViewProviderGeometryObject::dragFinishCallback(void *data, SoDragger *)
+void ViewProviderGeometryObject::dragFinishCallback(void *data, SoDragger *d)
 {
     // This is called when a manipulator has done manipulating
+    
+    ViewProviderGeometryObject* sudoThis = reinterpret_cast<ViewProviderGeometryObject *>(data);
+    SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
+    updatePlacementFromDragger(sudoThis, dragger);
+    
     Gui::Application::Instance->activeDocument()->commitCommand();
-    ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
-    view->m_dragStart = false;
 }
+
+void ViewProviderGeometryObject::updatePlacementFromDragger(ViewProviderGeometryObject* sudoThis, SoFCCSysDragger* draggerIn)
+{
+  App::DocumentObject *genericObject = sudoThis->getObject();
+  if (!genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
+    return;
+  App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
+  Base::Placement originalPlacement = geoFeature->Placement.getValue();
+  double pMatrix[16];
+  originalPlacement.toMatrix().getMatrix(pMatrix);
+  Base::Placement freshPlacement = originalPlacement;
+  
+  //local cache for brevity.
+  double translationIncrement = draggerIn->translationIncrement.getValue();
+  double rotationIncrement = draggerIn->rotationIncrement.getValue();
+  int tCountX = draggerIn->translationIncrementCountX.getValue();
+  int tCountY = draggerIn->translationIncrementCountY.getValue();
+  int tCountZ = draggerIn->translationIncrementCountZ.getValue();
+  int rCountX = draggerIn->rotationIncrementCountX.getValue();
+  int rCountY = draggerIn->rotationIncrementCountY.getValue();
+  int rCountZ = draggerIn->rotationIncrementCountZ.getValue();
+  
+  //just as a little sanity check make sure only 1 field has changed.
+  int numberOfFieldChanged = 0;
+  if (tCountX) numberOfFieldChanged++;
+  if (tCountY) numberOfFieldChanged++;
+  if (tCountZ) numberOfFieldChanged++;
+  if (rCountX) numberOfFieldChanged++;
+  if (rCountY) numberOfFieldChanged++;
+  if (rCountZ) numberOfFieldChanged++;
+  if (numberOfFieldChanged == 0)
+    return;
+  assert(numberOfFieldChanged == 1);
+  
+  //helper lamdas.
+  auto getVectorX = [&pMatrix]() {return Base::Vector3d(pMatrix[0], pMatrix[4], pMatrix[8]);};
+  auto getVectorY = [&pMatrix]() {return Base::Vector3d(pMatrix[1], pMatrix[5], pMatrix[9]);};
+  auto getVectorZ = [&pMatrix]() {return Base::Vector3d(pMatrix[2], pMatrix[6], pMatrix[10]);};
+  
+  if (tCountX)
+  {
+    Base::Vector3d movementVector(getVectorX());
+    movementVector *= (tCountX * translationIncrement);
+    freshPlacement.move(movementVector);
+    geoFeature->Placement.setValue(freshPlacement);
+  }
+  else if (tCountY)
+  {
+    Base::Vector3d movementVector(getVectorY());
+    movementVector *= (tCountY * translationIncrement);
+    freshPlacement.move(movementVector);
+    geoFeature->Placement.setValue(freshPlacement);
+  }
+  else if (tCountZ)
+  {
+    Base::Vector3d movementVector(getVectorZ());
+    movementVector *= (tCountZ * translationIncrement);
+    freshPlacement.move(movementVector);
+    geoFeature->Placement.setValue(freshPlacement);
+  }
+  else if (rCountX)
+  {
+    Base::Vector3d rotationVector(getVectorX());
+    Base::Rotation rotation(rotationVector, rCountX * rotationIncrement);
+    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
+    geoFeature->Placement.setValue(freshPlacement);
+  }
+  else if (rCountY)
+  {
+    Base::Vector3d rotationVector(getVectorY());
+    Base::Rotation rotation(rotationVector, rCountY * rotationIncrement);
+    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
+    geoFeature->Placement.setValue(freshPlacement);
+  }
+  else if (rCountZ)
+  {
+    Base::Vector3d rotationVector(getVectorZ());
+    Base::Rotation rotation(rotationVector, rCountZ * rotationIncrement);
+    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
+    geoFeature->Placement.setValue(freshPlacement);
+  }
+  
+  draggerIn->clearIncrementCounts();
+}
+
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll) const
 {
@@ -601,7 +432,7 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
 {
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::ALL);
-    sa.setSearchingAll(true);
+    sa.setSearchingAll(TRUE);
     sa.setType(Gui::SoFCSelection::getClassTypeId());
     sa.apply(pcRoot);
 
@@ -619,4 +450,19 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
             selNode->selected = SoFCSelection::NOTSELECTED;
         }
     }
+}
+
+void ViewProviderGeometryObject::updateTransform(const Base::Placement& from, SoTransform* to)
+{
+  float q0 = (float)from.getRotation().getValue()[0];
+  float q1 = (float)from.getRotation().getValue()[1];
+  float q2 = (float)from.getRotation().getValue()[2];
+  float q3 = (float)from.getRotation().getValue()[3];
+  float px = (float)from.getPosition().x;
+  float py = (float)from.getPosition().y;
+  float pz = (float)from.getPosition().z;
+  to->rotation.setValue(q0,q1,q2,q3);
+  to->translation.setValue(px,py,pz);
+  to->center.setValue(0.0f,0.0f,0.0f);
+  to->scaleFactor.setValue(1.0f,1.0f,1.0f);
 }

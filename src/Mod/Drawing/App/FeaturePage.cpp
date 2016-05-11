@@ -56,9 +56,9 @@ FeaturePage::FeaturePage(void) : numChildren(0)
 {
     static const char *group = "Drawing view";
 
-    ADD_PROPERTY_TYPE(PageResult ,(0),group,App::Prop_Output,"Resulting SVG document of that page");
-    ADD_PROPERTY_TYPE(Template   ,(""),group,App::Prop_Transient  ,"Template for the page");
-    ADD_PROPERTY_TYPE(EditableTexts,(""),group,App::Prop_None,"Substitution values for the editable strings in the template");
+    ADD_PROPERTY_TYPE(PageResult, (0), group, App::Prop_Output, "Resulting SVG document of that page");
+    ADD_PROPERTY_TYPE(Template, (""), group, App::Prop_None, "Template for the page");
+    ADD_PROPERTY_TYPE(EditableTexts, (""), group, App::Prop_None, "Substitution values for the editable strings in the template");
 }
 
 FeaturePage::~FeaturePage()
@@ -107,17 +107,22 @@ void FeaturePage::onChanged(const App::Property* prop)
 void FeaturePage::onDocumentRestored()
 {
     // Needs to be tmp. set because otherwise the custom text gets overridden (#0002064)
-    this->StatusBits.set(4); // the 'Restore' flag
+    this->StatusBits.set(App::Restore); // the 'Restore' flag
 
-    Base::FileInfo fi(PageResult.getValue());
-    std::string path = App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName();
-    // try to find the template in user dir/Templates first
-    Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
-    if (tempfi.exists())
-        path = tempfi.filePath();
-    Template.setValue(path);
+    Base::FileInfo templateInfo(Template.getValue());
+    if (!templateInfo.exists()) {
+        Base::FileInfo fi(Template.getValue());
+        if (fi.fileName().empty())
+            fi.setFile(PageResult.getValue());
+        std::string path = App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName();
+        // try to find the template in user dir/Templates first
+        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+        if (tempfi.exists())
+            path = tempfi.filePath();
+        Template.setValue(path);
+    }
 
-    this->StatusBits.reset(4); // the 'Restore' flag
+    this->StatusBits.reset(App::Restore); // the 'Restore' flag
 }
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)

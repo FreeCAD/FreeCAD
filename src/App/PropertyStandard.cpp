@@ -2516,6 +2516,11 @@ void PropertyMaterial::Restore(Base::XMLReader &reader)
     hasSetValue();
 }
 
+const char* PropertyMaterial::getEditorName(void) const
+{
+    return "";// "Gui::PropertyEditor::PropertyMaterialItem";
+}
+
 Property *PropertyMaterial::Copy(void) const
 {
     PropertyMaterial *p= new PropertyMaterial();
@@ -2530,4 +2535,169 @@ void PropertyMaterial::Paste(const Property &from)
     hasSetValue();
 }
 
+//**************************************************************************
+// PropertyMaterialList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+TYPESYSTEM_SOURCE(App::PropertyMaterialList, App::PropertyLists);
+
+//**************************************************************************
+// Construction/Destruction
+
+PropertyMaterialList::PropertyMaterialList()
+{
+
+}
+
+PropertyMaterialList::~PropertyMaterialList()
+{
+
+}
+
+//**************************************************************************
+// Base class implementer
+
+void PropertyMaterialList::setSize(int newSize)
+{
+    _lValueList.resize(newSize);
+}
+
+int PropertyMaterialList::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+void PropertyMaterialList::setValue(const Material& lValue)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0] = lValue;
+    hasSetValue();
+}
+
+void PropertyMaterialList::setValues(const std::vector<Material>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyMaterialList::getPyObject(void)
+{
+    Py::Tuple tuple(getSize());
+
+    for (int i = 0; i<getSize(); i++) {
+        tuple.setItem(i, Py::asObject(new MaterialPy(new Material(_lValueList[i]))));
+    }
+
+    return Py::new_reference_to(tuple);
+}
+
+void PropertyMaterialList::setPyObject(PyObject *value)
+{
+    if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
+        setValue(*static_cast<MaterialPy*>(value)->getMaterialPtr());
+    }
+    else if (PyList_Check(value) || PyTuple_Check(value)) {
+        Py::Sequence list(value);
+        std::vector<Material> materials;
+
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyObject_TypeCheck((*it).ptr(), &(MaterialPy::Type))) {
+                Material mat = *static_cast<MaterialPy*>((*it).ptr())->getMaterialPtr();
+                materials.push_back(mat);
+            }
+        }
+
+        setValues(materials);
+    }
+    else {
+        std::string error = std::string("type must be 'Material', not ");
+        error += value->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
+}
+
+void PropertyMaterialList::Save(Base::Writer &writer) const
+{
+    if (!writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<MaterialList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyMaterialList::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("MaterialList");
+    if (reader.hasAttribute("file")) {
+        std::string file(reader.getAttribute("file"));
+
+        if (!file.empty()) {
+            // initate a file read
+            reader.addFile(file.c_str(), this);
+        }
+    }
+}
+
+void PropertyMaterialList::SaveDocFile(Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    uint32_t uCt = (uint32_t)getSize();
+    str << uCt;
+    for (std::vector<App::Material>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+        str << it->ambientColor.getPackedValue();
+        str << it->diffuseColor.getPackedValue();
+        str << it->specularColor.getPackedValue();
+        str << it->emissiveColor.getPackedValue();
+        str << it->shininess;
+        str << it->transparency;
+    }
+}
+
+void PropertyMaterialList::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    uint32_t uCt = 0;
+    str >> uCt;
+    std::vector<Material> values(uCt);
+    uint32_t value; // must be 32 bit long
+    float valueF;
+    for (std::vector<App::Material>::iterator it = values.begin(); it != values.end(); ++it) {
+        str >> value;
+        it->ambientColor.setPackedValue(value);
+        str >> value;
+        it->diffuseColor.setPackedValue(value);
+        str >> value;
+        it->specularColor.setPackedValue(value);
+        str >> value;
+        it->emissiveColor.setPackedValue(value);
+        str >> valueF;
+        it->shininess = valueF;
+        str >> valueF;
+        it->transparency = valueF;
+    }
+    setValues(values);
+}
+
+const char* PropertyMaterialList::getEditorName(void) const
+{
+    return "Gui::PropertyEditor::PropertyMaterialListItem";
+}
+
+Property *PropertyMaterialList::Copy(void) const
+{
+    PropertyMaterialList *p = new PropertyMaterialList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyMaterialList::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyMaterialList&>(from)._lValueList;
+    hasSetValue();
+}
+
+unsigned int PropertyMaterialList::getMemSize(void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Material));
+}

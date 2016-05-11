@@ -45,20 +45,25 @@ PROPERTY_SOURCE(Raytracing::RayProject, App::DocumentObjectGroup)
 
 RayProject::RayProject(void)
 {
-    ADD_PROPERTY_TYPE(PageResult ,(0),0,App::Prop_Output,"Resulting povray Project file");
-    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_Transient ,"Template for the Povray project");
-    ADD_PROPERTY_TYPE(Camera     ,(""),0,App::Prop_None ,"Camera settings");
+    ADD_PROPERTY_TYPE(PageResult, (0), 0, App::Prop_Output, "Resulting povray Project file");
+    ADD_PROPERTY_TYPE(Template, (""), 0, App::Prop_None, "Template for the Povray project");
+    ADD_PROPERTY_TYPE(Camera, (""), 0, App::Prop_None, "Camera settings");
 }
 
 void RayProject::onDocumentRestored()
 {
-    Base::FileInfo fi(PageResult.getValue());
-    std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
-    // try to find the template in user dir/Templates first
-    Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
-    if (tempfi.exists())
-        path = tempfi.filePath();
-    Template.setValue(path);
+    Base::FileInfo templateInfo(Template.getValue());
+    if (!templateInfo.exists()) {
+        Base::FileInfo fi(Template.getValue());
+        if (fi.fileName().empty())
+            fi.setFile(PageResult.getValue());
+        std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
+        // try to find the template in user dir/Templates first
+        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+        if (tempfi.exists())
+            path = tempfi.filePath();
+        Template.setValue(path);
+    }
 }
 
 App::DocumentObjectExecReturn *RayProject::execute(void)

@@ -26,7 +26,11 @@
 
 #include <vector>
 #include <string>
+#ifndef BOOST_105400
 #include <boost/any.hpp>
+#else
+#include <boost_any_1_55.hpp>
+#endif
 
 namespace App
 {
@@ -263,7 +267,7 @@ protected:
 
 };
 
-std::size_t hash_value(const App::ObjectIdentifier & path);
+std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
 
 }
 
