@@ -52,6 +52,7 @@ protected Q_SLOTS:
     void on_categoryBox_activated(int index);
     void on_commandTreeWidget_currentItemChanged(QTreeWidgetItem*);
     void on_buttonAssign_clicked();
+    void on_buttonClear_clicked();
     void on_buttonReset_clicked();
     void on_buttonResetAll_clicked();
     void on_editShortcut_textChanged(const QString&);

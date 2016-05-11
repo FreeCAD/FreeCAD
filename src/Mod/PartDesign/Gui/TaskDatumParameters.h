@@ -54,10 +54,6 @@ public:
     TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = 0);
     ~TaskDatumParameters();
 
-    double getOffset(void) const;
-    double getOffset2(void) const;
-    double getOffset3(void) const;
-    double getAngle(void) const;
     bool   getFlip(void) const;
 
     /**
@@ -70,10 +66,13 @@ public:
     const bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
-    void onOffsetChanged(double);
-    void onOffset2Changed(double);
-    void onOffset3Changed(double);
-    void onAngleChanged(double);
+    void onSuperplacementChanged(double, int idx);
+    void onSuperplacementXChanged(double);
+    void onSuperplacementYChanged(double);
+    void onSuperplacementZChanged(double);
+    void onSuperplacementYawChanged(double);
+    void onSuperplacementPitchChanged(double);
+    void onSuperplacementRollChanged(double);
     void onCheckFlip(bool);
     void onRefName1(const QString& text);
     void onRefName2(const QString& text);
@@ -92,12 +91,20 @@ private:
     void resetViewMode();
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(std::string message = std::string(), bool isWarning = false);
+    void updateReferencesUI();
+
+    /**
+     * @brief updatePreview: calculate attachment, update 3d view, update status message
+     * @return true if attachment calculation was successful, false otherwise
+     */
+    bool updatePreview();
 
     void makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames);
     QLineEdit* getLine(unsigned idx);
     void onButtonRef(const bool checked, unsigned idx);
     void onRefName(const QString& text, unsigned idx);
+    void updateRefButton(int idx);
+    void updateSuperplacementUI();
 
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
@@ -114,9 +121,10 @@ private:
     ViewProviderDatum *DatumView;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)
-    int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-2 means a reference is being picked.
+    int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-3 means a reference is being picked.
     bool autoNext;//if we should automatically switch to next reference (true after dialog launch, false afterwards)
     std::vector<Attacher::eMapMode> modesInList; //this list is synchronous to what is populated into listOfModes widget.
+    Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;

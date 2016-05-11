@@ -12,6 +12,8 @@ IF(DOCDIR)
     add_definitions(-DDOCDIR="${DOCDIR}")
 ENDIF(DOCDIR)
 
+add_definitions(-DBOOST_${Boost_VERSION})
+
 include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src

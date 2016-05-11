@@ -46,6 +46,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
 {
+    _viewerPy = 0;
     // important for highlighting 
     setMouseTracking(true);
 }
@@ -55,6 +56,10 @@ AbstractSplitView::~AbstractSplitView()
     hGrp->Detach(this);
     for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
         delete *it;
+    }
+    if (_viewerPy) {
+        static_cast<AbstractSplitViewPy*>(_viewerPy)->_view = 0;
+        Py_DECREF(_viewerPy);
     }
 }
 
@@ -369,18 +374,20 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 
 PyObject *AbstractSplitView::getPyObject(void)
 {
-    static bool init = false;
-    if (!init) {
-        init = true;
-        AbstractSplitViewPy::init_type();
-    }
-
-    return new AbstractSplitViewPy(this);
+    if (!_viewerPy)
+        _viewerPy = new AbstractSplitViewPy(this);
+    Py_INCREF(_viewerPy);
+    return _viewerPy;
 }
 
 void AbstractSplitView::setPyObject(PyObject *)
 {
     throw Base::AttributeError("Attribute is read-only");
+}
+
+int AbstractSplitView::getSize()
+{
+    return static_cast<int>(_viewer.size());
 }
 
 // ------------------------------------------------------
@@ -391,6 +398,7 @@ void AbstractSplitViewPy::init_type()
     behaviors().doc("Python binding class for the Inventor viewer class");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
+    behaviors().supportSequenceType();
 
     add_varargs_method("fitAll",&AbstractSplitViewPy::fitAll,"fitAll()");
     add_varargs_method("viewBottom",&AbstractSplitViewPy::viewBottom,"viewBottom()");
@@ -400,6 +408,8 @@ void AbstractSplitViewPy::init_type()
     add_varargs_method("viewRight",&AbstractSplitViewPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&AbstractSplitViewPy::viewTop,"viewTop()");
     add_varargs_method("viewAxometric",&AbstractSplitViewPy::viewAxometric,"viewAxometric()");
+    add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer(index)");
+    add_varargs_method("close",&AbstractSplitViewPy::close,"close()");
 }
 
 AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
@@ -409,6 +419,12 @@ AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
 
 AbstractSplitViewPy::~AbstractSplitViewPy()
 {
+}
+
+void AbstractSplitViewPy::testExistence()
+{
+    if (!(_view && _view->getViewer(0)))
+        throw Py::Exception("Object already deleted");
 }
 
 Py::Object AbstractSplitViewPy::repr()
@@ -425,6 +441,7 @@ Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewFit", 0);
@@ -445,6 +462,7 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewBottom", 0);
@@ -466,6 +484,7 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewFront", 0);
@@ -487,6 +506,7 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewLeft", 0);
@@ -508,6 +528,7 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewRear", 0);
@@ -529,6 +550,7 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewRight", 0);
@@ -550,6 +572,7 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewTop", 0);
@@ -571,6 +594,7 @@ Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
+    testExistence();
 
     try {
         _view->onMsg("ViewAxo", 0);
@@ -588,6 +612,61 @@ Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
+{
+    int viewIndex;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &viewIndex))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
+        if (!view)
+            throw Py::IndexError("Index out of range");
+        return Py::Object(view->getPyObject());
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
+{
+    testExistence();
+    if (viewIndex >= _view->getSize() || viewIndex < 0)
+        throw Py::IndexError("Index out of range");
+    PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
+    return Py::Object(viewer);
+}
+
+int AbstractSplitViewPy::sequence_length()
+{
+    testExistence();
+    return _view->getSize();
+}
+
+Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    _view->close();
+    if (_view->parentWidget())
+        _view->parentWidget()->deleteLater();
+    _view = 0;
+
+    return Py::None();
+}
+
 // ------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
@@ -595,25 +674,82 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
 SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : AbstractSplitView(pcDocument,parent, wflags)
 {
-    QSplitter* mainSplitter=0;
+    // attach parameter Observer
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    hGrp->Attach(this);
 
+    //anti-aliasing settings
+    QGLFormat f;
+    bool smoothing = false;
+    bool glformat = false;
+    switch (hGrp->GetInt("AntiAliasing",0) ) {
+    case View3DInventorViewer::MSAA2x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(2);
+        break;
+    case View3DInventorViewer::MSAA4x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(4);
+        break;
+    case View3DInventorViewer::MSAA8x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(8);
+        break;
+    case View3DInventorViewer::Smoothing:
+        smoothing = true;
+        break;
+    case View3DInventorViewer::None:
+    default:
+        break;
+    }
+
+    // minimal 2 views
+    while (views < 2)
+        views ++;
+
+    QSplitter* mainSplitter = 0;
+
+    // if views < 3 show them as a row
     if (views <= 3) {
         mainSplitter = new QSplitter(Qt::Horizontal, this);
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        if (views==3)
-            _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        for (int i=0; i < views; i++) {
+            if (glformat)
+                _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
+            else
+                _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        }
     }
     else {
         mainSplitter = new QSplitter(Qt::Vertical, this);
         QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
         QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        _viewer.push_back(new View3DInventorViewer(topSplitter));
-        _viewer.push_back(new View3DInventorViewer(topSplitter));
-        for (int i=2;i<views;i++)
-            _viewer.push_back(new View3DInventorViewer(botSplitter));
-        topSplitter->setOpaqueResize( true );
-        botSplitter->setOpaqueResize( true );
+
+        if (glformat) {
+            _viewer.push_back(new View3DInventorViewer(f, topSplitter));
+            _viewer.push_back(new View3DInventorViewer(f, topSplitter));
+        }
+        else {
+            _viewer.push_back(new View3DInventorViewer(topSplitter));
+            _viewer.push_back(new View3DInventorViewer(topSplitter));
+        }
+
+        for (int i=2;i<views;i++) {
+            if (glformat)
+                _viewer.push_back(new View3DInventorViewer(f, botSplitter));
+            else
+                _viewer.push_back(new View3DInventorViewer(botSplitter));
+        }
+
+        topSplitter->setOpaqueResize(true);
+        botSplitter->setOpaqueResize(true);
+    }
+
+    if (smoothing) {
+        for (std::vector<int>::size_type i = 0; i != _viewer.size(); i++)
+            _viewer[i]->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
     }
 
     mainSplitter->show();

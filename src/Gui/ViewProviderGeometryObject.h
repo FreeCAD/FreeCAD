@@ -32,12 +32,16 @@ class SoSwitch;
 class SoSensor;
 class SoDragger;
 class SbVec2s;
+class SoTransform;
+
+namespace Base { class Placement;}
 
 namespace Gui {
 
 class SoFCSelection;
 class SoFCBoundingBox;
 class View3DInventorViewer;
+class SoFCCSysDragger;
 
 /**
  * The base class for all view providers that display geometric data, like mesh, point cloudes and shapes.
@@ -86,12 +90,16 @@ public:
     //@{
     bool doubleClicked(void);
     void setupContextMenu(QMenu*, QObject*, const char*);
+    
+    /*! synchronize From FC placement to Coin placement*/
+    static void updateTransform(const Base::Placement &from, SoTransform *to);
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
     void setEditViewer(View3DInventorViewer*, int ModNum);
     void unsetEditViewer(View3DInventorViewer*);
     //@}
+    SoFCCSysDragger *csysDragger = nullptr;
 
 protected:
     void showBoundingBox(bool);
@@ -100,11 +108,10 @@ protected:
     void setSelectable(bool Selectable=true);
 
 private:
-    static void sensorCallback(void * data, SoSensor * sensor);
     static void dragStartCallback(void * data, SoDragger * d);
     static void dragFinishCallback(void * data, SoDragger * d);
-    static void dragMotionCallback(void * data, SoDragger * d);
-    bool m_dragStart;
+    
+    static void updatePlacementFromDragger(ViewProviderGeometryObject *sudoThis, SoFCCSysDragger *draggerIn);
 
 protected:
     SoMaterial       * pcShapeMaterial;
