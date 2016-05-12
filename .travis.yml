@@ -29,8 +29,6 @@ compiler:
    - clang
    - gcc
 
-python: 2.7
-
 os:
    - linux
    - osx
@@ -89,23 +87,22 @@ before_install:
                                qt4-qmake                        \
                                shiboken                         \
                                swig
-	sudo apt-get install -y python-pivy
-	sudo apt-get install -y git
-	sudo apt-get install -y cmake
-	sudo apt-get install -y g++
-	sudo apt-get install -y libfreetype6-dev
-	sudo apt-get install -y tcl8.5-dev tk8.5-dev
-	sudo apt-get install -y libtogl-dev
-	sudo apt-get install -y libmed-dev
-	sudo apt-get install -y libmedc-dev
-	sudo apt-get install -y libhdf5-dev
+       sudo apt-get install -y python-pivy
+       sudo apt-get install -y git
+       sudo apt-get install -y cmake
+       sudo apt-get install -y g++
+       sudo apt-get install -y libfreetype6-dev
+       sudo apt-get install -y tcl8.5-dev tk8.5-dev
+       sudo apt-get install -y libtogl-dev
+       sudo apt-get install -y libmed-dev
+       sudo apt-get install -y libmedc-dev
+       sudo apt-get install -y libhdf5-dev
 
 
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
-	
 
        CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
        INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
@@ -127,7 +124,7 @@ before_install:
                     pyside-tools                \
                     xerces-c                    \
                     orocos-kdl                  \
-		    homebrew/science/hdf5	\
+                    homebrew/science/hdf5	\
                     homebrew/python/matplotlib
        brew install --without-framework --without-soqt sanelson/freecad/coin
        brew install --HEAD pivy
@@ -156,67 +153,60 @@ install:
 ###
 # Building VTK
 ###
-
- - wget http://www.vtk.org/files/release/7.0/VTK-7.0.0.tar.gz
- - gunzip VTK-7.0.0.tar.gz
- - tar xf VTK-7.0.0.tar
- - rm VTK-7.0.0.tar
- - cd VTK-7.0.0
- - mkdir build
- - cd build
- - cmake .. -DVTK_Group_Rendering:BOOL=OFF -DVTK_Group_StandAlone:BOOL=ON -DVTK_RENDERING_BACKEND=None
- - make -j 2
- - sudo make install
-
+    - wget "http://www.vtk.org/files/release/7.0/VTK-7.0.0.tar.gz"
+    - gunzip VTK-7.0.0.tar.gz
+    - tar xf VTK-7.0.0.tar
+    - rm VTK-7.0.0.tar
+    - cd VTK-7.0.0
+    - mkdir build
+    - cd build
+    - cmake .. -DVTK_Group_Rendering:BOOL=OFF -DVTK_Group_StandAlone:BOOL=ON -DVTK_RENDERING_BACKEND=None
+    - make -j 2
+    - sudo make install
 ###
 # Building OCCT
 ###
-
- - cd ../..
- - wget "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=b00770133187b83761e651df50051b2fa3433858;sf=tgz"
- - mv "index.html?p=occt.git;a=snapshot;h=b00770133187b83761e651df50051b2fa3433858;sf=tgz" occt.tgz
- - gunzip occt.tgz
- - tar xf occt.tar
- - rm occt.tar
- - cd occt-b007701
- - grep -v vtkRenderingFreeTypeOpenGL src/TKIVtk/EXTERNLIB >& /tmp/EXTERNLIB
- - \cp /tmp/EXTERNLIB src/TKIVtk/EXTERNLIB
- - grep -v vtkRenderingFreeTypeOpenGL src/TKIVtkDraw/EXTERNLIB >& /tmp/EXTERNLIB
- - \cp /tmp/EXTERNLIB src/TKIVtkDraw/EXTERNLIB
- - mkdir build
- - cd build
- - cmake .. -DUSE_VTK:BOOL=OFF
- - sudo make -j 2
- - sudo make install
+    - cd ../..
+    - wget "http://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=b00770133187b83761e651df50051b2fa3433858;sf=tgz"
+    - mv "index.html?p=occt.git;a=snapshot;h=b00770133187b83761e651df50051b2fa3433858;sf=tgz" occt.tgz
+    - gunzip occt.tgz
+    - tar xf occt.tar
+    - rm occt.tar
+    - cd occt-b007701
+    - mkdir build
+    - cd build
+    - cmake .. -DUSE_VTK:BOOL=OFF
+    - sudo make -j 2
+    - sudo make install
 
 ###
 # Building Netgen
 ###
 
- - cd ../..
- - git clone https://github.com/vejmarie/Netgen
- - cd Netgen/netgen-5.3.1
- - ./configure --with-tcl=/usr/lib/tcl8.5 --with-tk=/usr/lib/tk8.5  --enable-occ  --enable-shared --enable-nglib CXXFLAGS="-DNGLIB_EXPORTS -std=gnu++11"
- - make -j 2
- - sudo make install
- - cd ../..
- - sudo cp -rf Netgen/netgen-5.3.1 /usr/share/netgen
+    - cd ../..
+    - git clone https://github.com/vejmarie/Netgen
+    - cd Netgen/netgen-5.3.1
+    - ./configure --with-tcl=/usr/lib/tcl8.5 --with-tk=/usr/lib/tk8.5  --enable-occ  --enable-shared --enable-nglib CXXFLAGS="-DNGLIB_EXPORTS -std=gnu++11"
+    - make -j 2
+    - sudo make install
+    - cd ../..
+    - sudo cp -rf Netgen/netgen-5.3.1 /usr/share/netgen
 
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ###
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+    - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
 #  Install FreeCAD and run unit tests.  Test failures will fail the build
 ###
-  - sudo make -j2 install
-  - ${INSTALLED_APP_PATH} --run-test 0
-  - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
-  - sleep 10 && pkill FreeCAD
-  - cat /tmp/FreeCAD_installed.log
-  - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
+    - sudo make -j2 install
+    - ${INSTALLED_APP_PATH} --run-test 0
+    - ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
+    - sleep 10 && pkill FreeCAD
+    - cat /tmp/FreeCAD_installed.log
+    - grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
 
 after_success:
 ####
