@@ -25,6 +25,8 @@
 # include <QApplication>
 #endif
 #include "AttacherTexts.h"
+#include <Base/PyObjectBase.h>
+#include <Base/Console.h>
 
 using namespace Attacher;
 
@@ -262,7 +264,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         }
     }
 
-    assert(false && "No user-friendly string defined for this attachment mode.");
+    Base::Console().Warning("No user-friendly string defined for this attachment mode and attacher type: %s %s \n",AttachEngine::getModeName(mmode).c_str(), attacherType.getName());
     return TwoStrings(QString::fromStdString(AttachEngine::getModeName(mmode)), QString());
 }
 
@@ -324,5 +326,65 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
     }
     return strlist;
 }
+
+
+// --------------------Py interface---------------------
+
+PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    int modeIndex = 0;
+    char* attacherType;
+    if (!PyArg_ParseTuple(args, "si", &attacherType, &modeIndex))
+        return NULL;
+
+    try {
+        Base::Type t = Base::Type::fromName(attacherType);
+        if (! t.isDerivedFrom(AttachEngine::getClassTypeId())){
+            std::stringstream ss;
+            ss << "Object of this type is not derived from AttachEngine: ";
+            ss << attacherType;
+            throw Py::TypeError(ss.str());
+        }
+        TextSet strs = getUIStrings(t,eMapMode(modeIndex));
+        Py::List result;
+        for(QString &s : strs){
+            QByteArray ba_utf8 = s.toUtf8();
+            result.append(Py::String(ba_utf8.data(), "utf-8"));
+        }
+
+        return Py::new_reference_to(result);
+    } catch (const Py::Exception&) {
+        return 0;
+    } catch (const Base::Exception& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        return 0;
+    }
+}
+
+PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    int refTypeIndex = 0;
+    if (!PyArg_ParseTuple(args, "i", &refTypeIndex))
+        return NULL;
+
+    try {
+        QByteArray ba_utf8 = getShapeTypeText(eRefType(refTypeIndex)).toUtf8();
+        return Py::new_reference_to(Py::String(ba_utf8.data(), "utf-8"));
+    } catch (const Py::Exception&) {
+        return 0;
+    } catch (const Base::Exception& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        return 0;
+    }
+}
+
+
+PyMethodDef AttacherGuiPy::Methods[] = {
+    {"getModeStrings",             (PyCFunction) AttacherGuiPy::sGetModeStrings, 1,
+     "getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."},
+    {"getRefTypeUserFriendlyName", (PyCFunction) AttacherGuiPy::sGetRefTypeUserFriendlyName, 1,
+     "getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."},
+};
+
 
 } //namespace AttacherGui
