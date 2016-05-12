@@ -257,6 +257,37 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
         Py::Dict ret;
         ret["ReferenceCombinations"] = pyListOfCombinations;
         ret["ModeIndex"] = Py::Int(mmode);
+
+        try {
+            Py::Module module(PyImport_ImportModule("PartGui"),true);
+            if (!module.hasAttr("AttachEngineResources")) {
+                // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
+                throw Py::RuntimeError("Gui is not up");//DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
+            }
+            Py::Object submod(module.getAttr("AttachEngineResources"));
+            Py::Callable method(submod.getAttr("getModeStrings"));
+            Py::Tuple arg(2);
+            arg.setItem(0, Py::String(this->getAttachEnginePtr()->getTypeId().getName()));
+            arg.setItem(1, Py::Int(mmode));
+            Py::List strs = method.apply(arg);
+            assert(strs.size() == 2);
+            ret["UserFriendlyName"] = strs[0];
+            ret["BriefDocu"] = strs[1];
+        } catch (Py::Exception& e) {
+            if (PyErr_ExceptionMatches(PyExc_ImportError)) {
+                // the GUI is not up.
+                Base::Console().Warning("AttachEngine: Gui not up, so no gui-related entries in getModeInfo.\n");
+                e.clear();
+            } else {
+                Base::Console().Warning("AttachEngine.getModeInfo: error obtaining GUI strings\n");
+                e.clear();
+            }
+        } catch (Base::Exception &e){
+            Base::Console().Warning("AttachEngine.getModeInfo: error obtaining GUI strings:");
+            Base::Console().Warning(e.what());
+            Base::Console().Warning("\n");
+        }
+
         return Py::new_reference_to(ret);
     } ATTACHERPY_STDCATCH_METH;
 }
@@ -311,6 +342,49 @@ PyObject* AttachEnginePy::getTypeRank(PyObject* args)
         return Py::new_reference_to(Py::Int(result));
     } ATTACHERPY_STDCATCH_METH;
 
+}
+
+PyObject* AttachEnginePy::getTypeInfo(PyObject* args)
+{
+    char* typeName;
+    if (!PyArg_ParseTuple(args, "s", &typeName))
+        return 0;
+
+    try {
+        AttachEngine &attacher = *(this->getAttachEnginePtr());
+        eRefType rt = attacher.getRefTypeByName(typeName);
+        Py::Dict ret;
+        ret["TypeIndex"] = Py::Int(rt);
+
+        try {
+            Py::Module module(PyImport_ImportModule("PartGui"),true);
+            if (!module.hasAttr("AttachEngineResources")) {
+                // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
+                throw Py::RuntimeError("Gui is not up");//DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
+            }
+            Py::Object submod(module.getAttr("AttachEngineResources"));
+            Py::Callable method(submod.getAttr("getRefTypeUserFriendlyName"));
+            Py::Tuple arg(1);
+            arg.setItem(0, Py::Int(rt));
+            Py::String st = method.apply(arg);
+            ret["UserFriendlyName"] = st;
+        } catch (Py::Exception& e) {
+            if (PyErr_ExceptionMatches(PyExc_ImportError)) {
+                // the GUI is not up.
+                Base::Console().Warning("AttachEngine: Gui not up, so no gui-related entries in getModeInfo.\n");
+                e.clear();
+            } else {
+                Base::Console().Warning("AttachEngine.getTypeInfo: error obtaining GUI strings\n");
+                e.clear();
+            }
+        } catch (Base::Exception &e){
+            Base::Console().Warning("AttachEngine.getTypeInfo: error obtaining GUI strings:");
+            Base::Console().Warning(e.what());
+            Base::Console().Warning("\n");
+        }
+
+        return Py::new_reference_to(ret);
+    } ATTACHERPY_STDCATCH_METH;
 }
 
 PyObject* AttachEnginePy::copy(PyObject* args)
