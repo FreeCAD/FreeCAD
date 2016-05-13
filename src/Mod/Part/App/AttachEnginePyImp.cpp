@@ -292,7 +292,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
     } ATTACHERPY_STDCATCH_METH;
 }
 
-PyObject* AttachEnginePy::getShapeType(PyObject* args)
+PyObject* AttachEnginePy::getRefTypeOfShape(PyObject* args)
 {
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj))
@@ -305,7 +305,7 @@ PyObject* AttachEnginePy::getShapeType(PyObject* args)
     } ATTACHERPY_STDCATCH_METH;
 }
 
-PyObject* AttachEnginePy::isShapeOfType(PyObject* args)
+PyObject* AttachEnginePy::isFittingRefType(PyObject* args)
 {
     char* type_shape_str;
     char* type_need_str;
@@ -319,7 +319,7 @@ PyObject* AttachEnginePy::isShapeOfType(PyObject* args)
     } ATTACHERPY_STDCATCH_METH;
 }
 
-PyObject* AttachEnginePy::downgradeType(PyObject* args)
+PyObject* AttachEnginePy::downgradeRefType(PyObject* args)
 {
     char* type_shape_str;
     if (!PyArg_ParseTuple(args, "s", &type_shape_str))
@@ -331,20 +331,7 @@ PyObject* AttachEnginePy::downgradeType(PyObject* args)
     } ATTACHERPY_STDCATCH_METH;
 }
 
-PyObject* AttachEnginePy::getTypeRank(PyObject* args)
-{
-    char* type_shape_str;
-    if (!PyArg_ParseTuple(args, "s", &type_shape_str))
-        return 0;
-    try {
-        eRefType type_shape = AttachEngine::getRefTypeByName(std::string(type_shape_str));
-        int result = AttachEngine::getTypeRank(type_shape);
-        return Py::new_reference_to(Py::Int(result));
-    } ATTACHERPY_STDCATCH_METH;
-
-}
-
-PyObject* AttachEnginePy::getTypeInfo(PyObject* args)
+PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
 {
     char* typeName;
     if (!PyArg_ParseTuple(args, "s", &typeName))
@@ -355,6 +342,7 @@ PyObject* AttachEnginePy::getTypeInfo(PyObject* args)
         eRefType rt = attacher.getRefTypeByName(typeName);
         Py::Dict ret;
         ret["TypeIndex"] = Py::Int(rt);
+        ret["Rank"] = Py::Int(AttachEngine::getTypeRank(rt));
 
         try {
             Py::Module module(PyImport_ImportModule("PartGui"),true);
@@ -374,11 +362,11 @@ PyObject* AttachEnginePy::getTypeInfo(PyObject* args)
                 Base::Console().Warning("AttachEngine: Gui not up, so no gui-related entries in getModeInfo.\n");
                 e.clear();
             } else {
-                Base::Console().Warning("AttachEngine.getTypeInfo: error obtaining GUI strings\n");
+                Base::Console().Warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings\n");
                 e.clear();
             }
         } catch (Base::Exception &e){
-            Base::Console().Warning("AttachEngine.getTypeInfo: error obtaining GUI strings:");
+            Base::Console().Warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings:");
             Base::Console().Warning(e.what());
             Base::Console().Warning("\n");
         }
@@ -415,7 +403,7 @@ PyObject* AttachEnginePy::calculateAttachedPlacement(PyObject* args)
     return NULL;
 }
 
-PyObject* AttachEnginePy::suggestMapModes(PyObject* args)
+PyObject* AttachEnginePy::suggestModes(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;

@@ -77,29 +77,24 @@
         <UserDocu>getModeInfo(mode): returns supported reference combinations, user-friendly name, and so on.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getShapeType">
+    <Methode Name="getRefTypeOfShape">
       <Documentation>
-        <UserDocu>getShapeType(shape): returns shape type as interpreted by AttachEngine. Returns a string.</UserDocu>
+        <UserDocu>getRefTypeOfShape(shape): returns shape type as interpreted by AttachEngine. Returns a string.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isShapeOfType">
+    <Methode Name="isFittingRefType">
       <Documentation>
-        <UserDocu>isShapeOfType(type_shape, type_needed): tests if shape type, specified by type_shape (string), fits a type required by attachment mode type_needed (string). e.g. 'Circle' fits a requirement of 'Edge', and 'Curve' doesn't fit if a 'Circle' is required.</UserDocu>
+        <UserDocu>isFittingRefType(type_shape, type_needed): tests if shape type, specified by type_shape (string), fits a type required by attachment mode type_needed (string). e.g. 'Circle' fits a requirement of 'Edge', and 'Curve' doesn't fit if a 'Circle' is required.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="downgradeType">
+    <Methode Name="downgradeRefType">
       <Documentation>
-        <UserDocu>downgradeType(type): returns next more general type. E.g. downgradeType('Circle') yeilds 'Curve'.</UserDocu>
+        <UserDocu>downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yeilds 'Curve'.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getTypeRank">
+    <Methode Name="getRefTypeInfo">
       <Documentation>
-        <UserDocu>getTypeRank(type): returns rank of shape type. Rank is how many times the type can be downgraded, before it becomes 'Any'.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="getTypeInfo">
-      <Documentation>
-        <UserDocu>getTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex'.</UserDocu>
+        <UserDocu>getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex'.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="copy" Const="true">
@@ -120,10 +115,10 @@ Returns the new placement. If not attached, returns None. If attachment fails,
 an exception is raised.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="suggestMapModes">
+    <Methode Name="suggestModes">
       <Documentation>
 
-<UserDocu>suggestMapModes(): runs mode suggestion routine and returns a dictionary with
+<UserDocu>suggestModes(): runs mode suggestion routine and returns a dictionary with
 results and supplementary information.
 
 Keys:
