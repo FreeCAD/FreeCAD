@@ -67,11 +67,6 @@ DrawView::DrawView(void)
     ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
 
-    // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag set to
-    // avoid to call the execute() method. The view provider touches the page object, instead.
-    App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
-    ADD_PROPERTY_TYPE(Visible, (true),group,propType,"Control whether view is visible in page object");
-
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");

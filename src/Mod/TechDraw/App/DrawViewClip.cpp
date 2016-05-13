@@ -63,18 +63,7 @@ DrawViewClip::DrawViewClip(void)
     ADD_PROPERTY_TYPE(ShowLabels ,(0) ,group,App::Prop_None,"Specifies if View labels appear within the clip area");
     ADD_PROPERTY_TYPE(Views      ,(0) ,group,App::Prop_None,"The Views in this Clip group");
 
-    // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag set to
-    // avoid to call the execute() method. The view provider touches the page object, instead.
-    App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
-    ADD_PROPERTY_TYPE(Visible, (true),group,propType,"Control whether Clip is visible in page object");
-
     // hide N/A properties
-    //int bitReadOnly = 2;
-    //int bitHidden = 3;
-    //ScaleType.StatusBits.set(bitReadOnly, true);
-    //ScaleType.StatusBits.set(bitHidden, true);
-    //Scale.StatusBits.set(bitReadOnly, true);
-    //Scale.StatusBits.set(bitHidden,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::Hidden,true);
     Scale.setStatus(App::Property::ReadOnly,true);

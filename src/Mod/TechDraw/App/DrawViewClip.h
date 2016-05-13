@@ -49,7 +49,6 @@ public:
     App::PropertyFloat Height;
     App::PropertyBool ShowFrame;
     App::PropertyBool ShowLabels;
-    App::PropertyBool Visible;
     App::PropertyLinkList Views;
 
     void addView(DrawView *view);

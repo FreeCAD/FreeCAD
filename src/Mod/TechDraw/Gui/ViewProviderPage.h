@@ -82,7 +82,7 @@ public:
     virtual void updateData(const App::Property* prop);
     virtual void startRestoring();
     virtual void finishRestoring();
-    bool isRestoring(void) {return restoreState;}
+    bool isRestoring(void) {return !m_docReady;}
 
     TechDraw::DrawPage* getPageObject() const;
     void unsetEdit(int ModNum);
@@ -94,11 +94,10 @@ protected:
 
 private:
     QPointer<MDIViewPage> view;
-    bool restoreState;
+    bool m_docReady;
 };
 
 } // namespace TechDrawGui
 
 
 #endif // DRAWINGGUI_VIEWPROVIDERPAGE_H
-

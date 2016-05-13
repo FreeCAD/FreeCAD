@@ -58,6 +58,10 @@ QGIViewSection::~QGIViewSection()
 
 void QGIViewSection::draw()
 {
+    if (!isVisible()) {
+        return;
+    }
+
     QGIViewPart::draw();
     drawSectionFace();
 }

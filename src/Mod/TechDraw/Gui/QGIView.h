@@ -25,6 +25,8 @@
 
 #include <QGraphicsItemGroup>
 #include <QObject>
+#include <QPen>
+#include <QFont>
 #include <App/PropertyLinks.h>
 
 #include "../App/DrawView.h"
@@ -56,6 +58,9 @@ public:
 
     virtual void toggleBorder(bool state = true);
     virtual void drawBorder(void);
+    virtual void isVisible(bool state) { m_visibility = state; };
+    virtual bool isVisible(void) {return m_visibility;};
+    virtual void draw(void);
 
     /// Methods to ensure that Y-Coordinates are orientated correctly.
     void setPosition(qreal x, qreal y);
@@ -78,6 +83,7 @@ Q_SIGNALS:
     void dirty();
 
 protected:
+
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     // Mouse handling
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event );
@@ -93,6 +99,7 @@ protected:
     QHash<QString, QGraphicsItem*> alignHash;
     bool locked;
     bool borderVisible;
+    bool m_visibility;
     bool m_innerView;                                                  //View is inside another View
 
     QPen m_pen;

@@ -50,7 +50,6 @@ public:
 
     App::PropertyEnumeration ScaleType;
     App::PropertyFloat Rotation;
-    App::PropertyBool Visible;
 
     /** @name methods overide Feature */
     //@{

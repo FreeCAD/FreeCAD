@@ -45,7 +45,7 @@ public:
     explicit QGIViewSection(const QPoint &position, QGraphicsScene *scene);
     ~QGIViewSection();
 
-    virtual void draw();
+    virtual void draw() override;
     void updateView(bool update = false);
     enum {Type = QGraphicsItem::UserType + 108};
     int type() const { return Type;}

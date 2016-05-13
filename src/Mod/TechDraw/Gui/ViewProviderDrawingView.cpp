@@ -35,13 +35,21 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/MainWindow.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
-
+#include "QGVPage.h"
+#include "MDIViewPage.h"
 
 using namespace TechDrawGui;
 
@@ -51,9 +59,9 @@ ViewProviderDrawingView::ViewProviderDrawingView()
 {
     sPixmap = "TechDraw_Tree_View";
 
-    // Do not show in property editor
-    //DisplayMode.StatusBits.set(3, true);
+    // Do not show in property editor   why? wf
     DisplayMode.setStatus(App::Property::ReadOnly,true);
+    m_docReady = true;
 }
 
 ViewProviderDrawingView::~ViewProviderDrawingView()
@@ -62,7 +70,6 @@ ViewProviderDrawingView::~ViewProviderDrawingView()
 
 void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
-    // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
 }
 
@@ -77,38 +84,74 @@ std::vector<std::string> ViewProviderDrawingView::getDisplayModes(void) const
     return StrList;
 }
 
+void ViewProviderDrawingView::onChanged(const App::Property *prop)
+{
+    App::DocumentObject* obj = getObject();
+    if (!obj || obj->isRestoring()) {
+            Gui::ViewProviderDocumentObject::onChanged(prop);
+            return;
+    }
+
+    if (prop == &Visibility) {
+        if(Visibility.getValue()) {
+            show();
+        } else {
+            hide();
+        }
+    }
+    Gui::ViewProviderDocumentObject::onChanged(prop);
+}
+
 void ViewProviderDrawingView::show(void)
 {
-    ViewProviderDocumentObject::show();
-
-    App::DocumentObject* obj = getObject();
+    TechDraw::DrawView* obj = getViewObject();
     if (!obj || obj->isRestoring())
         return;
+
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-        // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
-        // the parent page object is touched.
-        static_cast<TechDraw::DrawView*>(obj)->Visible.setValue(true);
-        std::vector<App::DocumentObject*> inp = obj->getInList();
-        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
-            (*it)->touch();
+        QGIView* qView = getQView();
+        if (qView) {
+            qView->isVisible(true);
+            qView->draw();
+            qView->show();
+        }
     }
+    ViewProviderDocumentObject::show();
 }
 
 void ViewProviderDrawingView::hide(void)
 {
-    ViewProviderDocumentObject::hide();
-
-    App::DocumentObject* obj = getObject();
+    TechDraw::DrawView* obj = getViewObject();
     if (!obj || obj->isRestoring())
         return;
+
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-        // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
-        // the parent page object is touched.
-        static_cast<TechDraw::DrawView*>(obj)->Visible.setValue(false);
-        std::vector<App::DocumentObject*> inp = obj->getInList();
-        for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
-            (*it)->touch();
+        QGIView* qView = getQView();
+        if (qView) {
+            qView->isVisible(false);
+            qView->draw();
+            qView->hide();
+        }
     }
+    ViewProviderDocumentObject::hide();
+}
+
+QGIView* ViewProviderDrawingView::getQView(void)
+{
+    QGIView *qView = nullptr;
+    if (m_docReady){
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+        ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+        if (dvp) {
+            if (dvp->getMDIViewPage()) {
+                if (dvp->getMDIViewPage()->getQGVPage()) {
+                    qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findView(getViewObject()));
+                }
+            }
+        }
+    }
+    return qView;
 }
 
 bool ViewProviderDrawingView::isShow(void) const
@@ -118,17 +161,24 @@ bool ViewProviderDrawingView::isShow(void) const
 
 void ViewProviderDrawingView::startRestoring()
 {
-    // do nothing
+    m_docReady = false;
+    Gui::ViewProviderDocumentObject::startRestoring();
 }
 
 void ViewProviderDrawingView::finishRestoring()
 {
-    // do nothing
+    m_docReady = true;
+    if (Visibility.getValue()) {
+        show();
+    } else {
+        hide();
+    }
+    Gui::ViewProviderDocumentObject::finishRestoring();
 }
 
-void ViewProviderDrawingView::updateData(const App::Property*)
-{
-}
+//void ViewProviderDrawingView::updateData(const App::Property*)
+//{
+//}
 
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {

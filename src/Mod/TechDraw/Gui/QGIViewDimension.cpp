@@ -324,6 +324,10 @@ void QGIViewDimension::datumLabelDragFinished()
 
 void QGIViewDimension::draw()
 {
+    if (!isVisible()) {                                                //should this be controlled by parent ViewPart?
+        return;
+    }
+
     TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
     if((!dim) ||                                                       //nothing to draw, don't try
        (!dim->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) ||

@@ -73,7 +73,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 ViewProviderPage::ViewProviderPage()
   : view(0),
-    restoreState(false)
+    m_docReady(true)
 {
     sPixmap = "TechDraw_Tree_Page";
 
@@ -325,13 +325,13 @@ void ViewProviderPage::onChanged(const App::Property *prop)
 
 void ViewProviderPage::startRestoring()
 {
-    restoreState = true;
+    m_docReady = false;
     Gui::ViewProviderDocumentObject::startRestoring();
 }
 
 void ViewProviderPage::finishRestoring()
 {
-    restoreState = false;
+    m_docReady = true;
     static_cast<void>(showMDIViewPage());
     Gui::ViewProviderDocumentObject::finishRestoring();
 }

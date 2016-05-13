@@ -47,7 +47,6 @@ public:
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
 
 public:
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
