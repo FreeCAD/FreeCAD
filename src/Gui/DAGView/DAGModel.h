@@ -111,6 +111,7 @@ namespace Gui
       void addVertexItemsToScene(const Vertex &vertexIn);
       void removeVertexItemsFromScene(const Vertex &vertexIn);
       void updateStates();
+      std::size_t columnFromMask(const ColumnMask&);
       
       RectItem* getRectFromPosition(const QPointF &position); //!< can be nullptr
       
