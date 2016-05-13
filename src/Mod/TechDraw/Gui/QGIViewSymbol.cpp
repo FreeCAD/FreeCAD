@@ -100,6 +100,10 @@ void QGIViewSymbol::updateView(bool update)
 
 void QGIViewSymbol::draw()
 {
+    if (!isVisible()) {
+        return;
+    }
+
     drawSvg();
     if (borderVisible) {
         drawBorder();

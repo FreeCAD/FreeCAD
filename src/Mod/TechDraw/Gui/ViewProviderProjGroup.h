@@ -28,6 +28,8 @@
 
 #include <QPointer>
 
+#include "ViewProviderDrawingView.h"
+
 namespace TechDraw{
     class DrawProjGroup;
 }
@@ -35,7 +37,7 @@ namespace TechDraw{
 namespace TechDrawGui {
 
 
-class TechDrawGuiExport ViewProviderProjGroup : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderProjGroup : public ViewProviderDrawingView
 {
     PROPERTY_HEADER(TechDrawGui::ViewProviderProjGroup);
 

@@ -102,6 +102,8 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
 
     m_border = new QGCustomBorder();
     addToGroup(m_border);
+
+    isVisible(true);
 }
 
 
@@ -298,6 +300,15 @@ void QGIView::toggleBorder(bool state)
     borderVisible = state;
     drawBorder();
 }
+void QGIView::draw()
+{
+    if (isVisible()) {
+        show();
+    } else {
+        hide();
+    }
+}
+
 void QGIView::drawBorder()
 {
     if (!borderVisible) {

@@ -51,7 +51,7 @@ public:
 
     virtual void updateView(bool update = false);
 
-    virtual void draw();
+    virtual void draw() override;
     virtual QRectF boundingRect() const;
 
 Q_SIGNALS:

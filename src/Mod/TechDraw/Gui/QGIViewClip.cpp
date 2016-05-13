@@ -100,6 +100,10 @@ void QGIViewClip::updateView(bool update)
 
 void QGIViewClip::draw()
 {
+    if (!isVisible()) {
+        return;
+    }
+
     drawClip();
     if (borderVisible) {
         drawBorder();
@@ -132,18 +136,20 @@ void QGIViewClip::drawClip()
     for(std::vector<std::string>::iterator it = childNames.begin(); it != childNames.end(); it++) {
         QGIView* qgiv = getQGIVByName((*it));
         if (qgiv) {
-            //TODO: why is qgiv never already in a group? 
+            //TODO: why is qgiv never already in a group?
             if (qgiv->group() != m_cliparea) {
-                double x = qgiv->getViewObject()->X.getValue();
-                double y = qgiv->getViewObject()->Y.getValue();
+                qgiv->hide();
                 m_cliparea->addToGroup(qgiv);
                 qgiv->isInnerView(true);
+                double x = qgiv->getViewObject()->X.getValue();
+                double y = qgiv->getViewObject()->Y.getValue();
                 qgiv->setPosition(x,y);
                 if (viewClip->ShowLabels.getValue()) {
                     qgiv->toggleBorder(true);
                 } else {
                     qgiv->toggleBorder(false);
                 }
+                qgiv->show();
             }
         } else {
             Base::Console().Warning("Logic error? - drawClip() - qgiv for %s not found\n",(*it).c_str());   //gview for feature !exist
@@ -189,4 +195,3 @@ QRectF QGIViewClip::boundingRect() const
 }
 
 #include "moc_QGIViewClip.cpp"
-

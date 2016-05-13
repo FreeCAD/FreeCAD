@@ -91,55 +91,36 @@ std::vector<App::DocumentObject*> ViewProviderViewClip::claimChildren(void) cons
 
 void ViewProviderViewClip::show(void)
 {
-    ViewProviderDrawingView::show();
-
+    //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())
         return;
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
-        // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
-        // the parent page object is touched.
-        static_cast<TechDraw::DrawViewClip*>(obj)->Visible.setValue(true);
         std::vector<App::DocumentObject*> inp = obj->getInList();
         for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
             (*it)->touch();
     }
+    ViewProviderDrawingView::show();
+
 }
 
 void ViewProviderViewClip::hide(void)
 {
-    ViewProviderDrawingView::hide();
-
+    //TODO: not sure that clip members need to be touched when hiding clip group
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())
         return;
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
-        // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
-        // the parent page object is touched.
-        static_cast<TechDraw::DrawViewClip*>(obj)->Visible.setValue(false);
         std::vector<App::DocumentObject*> inp = obj->getInList();
         for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
             (*it)->touch();
     }
+    ViewProviderDrawingView::hide();
 }
 
 bool ViewProviderViewClip::isShow(void) const
 {
     return Visibility.getValue();
-}
-
-void ViewProviderViewClip::startRestoring()
-{
-    // do nothing
-}
-
-void ViewProviderViewClip::finishRestoring()
-{
-    // do nothing
-}
-
-void ViewProviderViewClip::updateData(const App::Property*)
-{
 }
 
 TechDraw::DrawViewClip* ViewProviderViewClip::getObject() const

@@ -26,6 +26,8 @@
 
 #include <Gui/ViewProviderFeature.h>
 
+#include "ViewProviderSymbol.h"
+
 namespace TechDraw{
     class DrawViewSpreadsheet;
 }
@@ -33,7 +35,7 @@ namespace TechDraw{
 namespace TechDrawGui {
 
 
-class TechDrawGuiExport ViewProviderSpreadsheet : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderSpreadsheet : public ViewProviderSymbol
 {
     PROPERTY_HEADER(TechDrawGui::ViewProviderSpreadsheet);
 

@@ -50,7 +50,6 @@ public:
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
     TechDraw::DrawViewClip* getObject() const;
 
     /// Hide the object in the view
@@ -60,11 +59,6 @@ public:
     virtual bool isShow(void) const;
     std::vector<App::DocumentObject*> claimChildren(void) const;
 
-    /** @name Restoring view provider from document load */
-    //@{
-    virtual void startRestoring();
-    virtual void finishRestoring();
-    //@}
 };
 } // namespace TechDrawGui
 

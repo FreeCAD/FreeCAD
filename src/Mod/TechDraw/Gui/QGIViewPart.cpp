@@ -272,6 +272,7 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawBorder();
+    QGIView::draw();
 }
 
 void QGIViewPart::drawViewPart()

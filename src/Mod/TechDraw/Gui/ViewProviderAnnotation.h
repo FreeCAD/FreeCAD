@@ -27,6 +27,8 @@
 
 #include <Gui/ViewProviderFeature.h>
 
+#include "ViewProviderDrawingView.h"
+
 namespace TechDraw{
     class DrawViewAnnotation;
 }
@@ -34,7 +36,7 @@ namespace TechDraw{
 namespace TechDrawGui {
 
 
-class TechDrawGuiExport ViewProviderAnnotation : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderAnnotation : public ViewProviderDrawingView
 {
     PROPERTY_HEADER(TechDrawGui::ViewProviderAnnotation);
 
