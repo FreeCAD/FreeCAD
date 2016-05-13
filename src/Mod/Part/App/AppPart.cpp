@@ -51,7 +51,6 @@
 #include "PartFeatures.h"
 #include "BodyBase.h"
 #include "PrimitiveFeature.h"
-#include "Attacher.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
 #include "TopoShapePy.h"
@@ -91,6 +90,7 @@
 #include "ToroidPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
+#include "AttachEnginePy.h"
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
@@ -210,6 +210,8 @@ PyMODINIT_FUNC initPart()
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
 
+    Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
+
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
@@ -230,6 +232,7 @@ PyMODINIT_FUNC initPart()
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
     Part::AttachableObject      ::init();
+    Part::AttachableObjectPython::init();
     Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();

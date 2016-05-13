@@ -16,23 +16,6 @@ std::string Part2DObjectPy::representation(void) const
     return std::string("<Part::Part2DObject>");
 }
 
-PyObject* Part2DObjectPy::positionBySupport(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-    bool bAttached = false;
-    try{
-        bAttached = this->getPart2DObjectPtr()->positionBySupport();
-    } catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
-        return NULL;
-    } catch (Base::Exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return NULL;
-    }
-    return Py::new_reference_to(Py::Boolean(bAttached));
-}
 
 
 PyObject *Part2DObjectPy::getCustomAttributes(const char* /*attr*/) const
