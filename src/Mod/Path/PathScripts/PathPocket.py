@@ -118,6 +118,23 @@ class ObjectPocket:
         if baselist is None:
             baselist = []
         if len(baselist) == 0:  # When adding the first base object, guess at heights
+            # try:
+            #     bb = ss.Shape.BoundBox  # parent boundbox
+            #     subobj = ss.Shape.getElement(sub)
+            #     fbb = subobj.BoundBox  # feature boundbox
+            #     obj.StartDepth = bb.ZMax
+            #     obj.ClearanceHeight = bb.ZMax + 5.0
+            #     obj.SafeHeight = bb.ZMax + 3.0
+
+            #     if fbb.ZMax < bb.ZMax:
+            #         obj.FinalDepth = fbb.ZMax
+            #     else:
+            #         obj.FinalDepth = bb.ZMin
+            # except:
+            #     obj.StartDepth = 5.0
+            #     obj.ClearanceHeight = 10.0
+            #     obj.SafeHeight = 8.0
+
             try:
                 bb = ss.Shape.BoundBox  # parent boundbox
                 subobj = ss.Shape.getElement(sub)
@@ -126,14 +143,22 @@ class ObjectPocket:
                 obj.ClearanceHeight = bb.ZMax + 5.0
                 obj.SafeHeight = bb.ZMax + 3.0
 
-                if fbb.ZMax < bb.ZMax:
-                    obj.FinalDepth = fbb.ZMax
-                else:
+                if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
+                    obj.FinalDepth = bb.ZMin
+                elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
+                    obj.FinalDepth = fbb.ZMin
+                elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+                    obj.FinalDepth = fbb.ZMin
+                elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+                    obj.FinalDepth = fbb.ZMin
+                else: #catch all
                     obj.FinalDepth = bb.ZMin
             except:
                 obj.StartDepth = 5.0
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0
+
+
 
         item = (ss, sub)
         if item in baselist:
@@ -219,9 +244,9 @@ class ObjectPocket:
         offsets = []
         nextradius = self.radius
         result = DraftGeomUtils.pocket2d(shape, nextradius)
-
+        print "did we get something: " + str(result)
         while result:
-            # print "Adding " + str(len(result)) + " wires"
+            print "Adding " + str(len(result)) + " wires"
             offsets.extend(result)
             nextradius += self.radius
             result = DraftGeomUtils.pocket2d(shape, nextradius)
@@ -495,7 +520,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop))
         FreeCADGui.doCommand('obj.FinalDepth =' + str(zbottom))
         FreeCADGui.doCommand('obj.ZigZagAngle = 45')
-        FreeCADGui.doCommand('obj.UseEntry = True')
+        FreeCADGui.doCommand('obj.UseEntry = False')
         FreeCADGui.doCommand('obj.RampAngle = 3.0')
         FreeCADGui.doCommand('obj.RampSize = 0.75')
         FreeCADGui.doCommand('obj.HelixSize = 0.75')
@@ -547,6 +572,24 @@ class TaskPanel:
                 self.obj.CutMode = str(self.form.cutMode.currentText())
         self.obj.Proxy.execute(self.obj)
 
+    def setFields(self):
+        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
+        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
+        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
+        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
+        self.form.stepDown.setValue(self.obj.StepDown)
+        self.form.extraOffset.setValue(self.obj.MaterialAllowance.Value)
+        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+
+        index = self.form.algorithmSelect.findText(self.obj.Algorithm, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.algorithmSelect.setCurrentIndex(index)
+
+        for i in self.obj.Base:
+            self.form.baseList.addItem(i[0].Name + "." + i[1])
+
+
+
     def open(self):
         self.s = SelObserver()
         # install the function mode resident
@@ -556,17 +599,31 @@ class TaskPanel:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
 
-        if not len(selection) >= 1:
-            FreeCAD.Console.PrintError(translate("PathProject", "Please select at least one profileable object\n"))
-            return
-        for s in selection:
-            if s.HasSubObjects:
-                for i in s.SubElementNames:
-                    self.obj.Proxy.addpocketbase(self.obj, s.Object, i)
-            else:
-                self.obj.Proxy.addpocketbase(self.obj, s.Object)
+        # if not len(selection) >= 1:
+        #     FreeCAD.Console.PrintError(translate("PathProject", "Please select at least one profileable object\n"))
+        #     return
+        # for s in selection:
+        #     if s.HasSubObjects:
+        #         for i in s.SubElementNames:
+        #             self.obj.Proxy.addpocketbase(self.obj, s.Object, i)
+        #     else:
+        #         self.obj.Proxy.addpocketbase(self.obj, s.Object)
 
-        self.setupUi()  # defaults may have changed.  Reload.
+        if len(selection) != 1:
+            FreeCAD.Console.PrintError(translate("PathProject", "Please select only faces from one solid\n"))
+            return
+        sel = selection[0]
+        if not sel.HasSubObjects:
+            FreeCAD.Console.PrintError(translate("PathProject", "Please select faces from one solid\n"))
+            return
+        if not selection[0].SubObjects[0].ShapeType == "Face":
+            FreeCAD.Console.PrintError(translate("PathProject", "Please select faces from one solid\n"))
+            return
+        for i in sel.SubElementNames:
+            self.obj.Proxy.addpocketbase(self.obj, sel.Object, i)
+
+
+        self.setFields()  # defaults may have changed.  Reload.
         self.form.baseList.clear()
         for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name + "." + i[1])
@@ -618,20 +675,6 @@ class TaskPanel:
             self.resetObject()
 
     def setupUi(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.stepDown.setValue(self.obj.StepDown)
-        self.form.extraOffset.setValue(self.obj.MaterialAllowance.Value)
-        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
-
-        index = self.form.algorithmSelect.findText(self.obj.Algorithm, QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            self.form.algorithmSelect.setCurrentIndex(index)
-
-        for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
 
         # Connect Signals and Slots
         # Base Controls
@@ -654,6 +697,12 @@ class TaskPanel:
         self.form.cutMode.currentIndexChanged.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
+
+        self.setFields()
+
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) != 0 and sel[0].HasSubObjects:
+                self.addBase()
 
 
 class SelObserver:
