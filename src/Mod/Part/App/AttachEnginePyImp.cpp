@@ -111,6 +111,7 @@ Py::Object AttachEnginePy::getReferences(void) const
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
+        AttachEngine::verifyReferencesAreSafe(attacher.references);
         return Py::Object(attacher.references.getPyObject(),true);
     } ATTACHERPY_STDCATCH_ATTR;
 }
@@ -523,6 +524,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
         }
         Part::AttachableObject* feat = static_cast<Part::AttachableObject*>(dobj);
         const AttachEngine &attacher = *(this->getAttachEnginePtr());
+        AttachEngine::verifyReferencesAreSafe(attacher.references);
         feat->Support.Paste(attacher.references);
         feat->MapMode.setValue(attacher.mapMode);
         feat->MapReversed.setValue(attacher.mapReverse);

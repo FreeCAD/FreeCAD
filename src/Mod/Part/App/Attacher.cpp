@@ -61,6 +61,8 @@
 #include "Attacher.h"
 #include <Base/Console.h>
 #include <App/OriginFeature.h>
+#include <App/Application.h>
+#include <App/Document.h>
 
 using namespace Part;
 using namespace Attacher;
@@ -749,6 +751,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
                              std::vector<TopoDS_Shape> &storage,
                              std::vector<eRefType> &types)
 {
+    verifyReferencesAreSafe(references);
     const std::vector<App::DocumentObject*> &objs = references.getValues();
     const std::vector<std::string> &sub = references.getSubValues();
     geofs.resize(objs.size());
@@ -828,6 +831,23 @@ void AttachEngine::throwWrongMode(eMapMode mmode)
         errmsg << "Attachment mode index (" << int(mmode) << ") is out of range." ;
     }
     throw Base::Exception(errmsg.str().c_str());
+}
+
+void AttachEngine::verifyReferencesAreSafe(const App::PropertyLinkSubList &references)
+{
+    const std::vector<App::DocumentObject*> links =  references.getValues();
+    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+    for(App::DocumentObject* lnk : links){
+        bool found = false;
+        for(App::Document* doc : docs){
+            if(doc->isIn(lnk)){
+                found = true;
+            }
+        }
+        if (!found){
+            throw Base::Exception("AttachEngine: verifyReferencesAreSafe: references point to deleted object.");
+        }
+    }
 }
 
 
