@@ -67,9 +67,9 @@
     </Attribute>
     <Attribute Name="CompleteRefTypeList" ReadOnly="true">
       <Documentation>
-        <UserDocu>List of all attachment modes of all AttachEngines. This is the list of modes in MapMode enum properties of AttachableObjects.</UserDocu>
+        <UserDocu>List of all reference shape types recognized by AttachEngine.</UserDocu>
       </Documentation>
-      <Parameter Name="CompleteModeList" Type="List" />
+      <Parameter Name="CompleteRefTypeList" Type="List" />
     </Attribute>
 
     <Methode Name="getModeInfo">
@@ -94,7 +94,7 @@
     </Methode>
     <Methode Name="getRefTypeInfo">
       <Documentation>
-        <UserDocu>getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex'.</UserDocu>
+        <UserDocu>getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="copy" Const="true">
