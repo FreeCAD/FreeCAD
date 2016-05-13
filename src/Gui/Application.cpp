@@ -1826,6 +1826,12 @@ void Application::runApplication(void)
         Base::Console().Message("System exit\n");
         throw;
     }
+    catch (const std::exception& e) {
+        // catching nasty stuff coming out of the event loop
+        App::Application::destructObserver();
+        Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
+        throw;
+    }
     catch (...) {
         // catching nasty stuff coming out of the event loop
         App::Application::destructObserver();
