@@ -120,7 +120,12 @@ class _ViewProviderLoadTool:
 
     def setEdit(self, vobj, mode):
         # this is executed when the object is double-clicked in the tree
-        pass
+        FreeCADGui.Control.closeDialog()
+        taskd = TaskPanel()
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        taskd.setupUi()
+        return True
 
     def unsetEdit(self, vobj, mode):
         # this is executed when the user cancels or terminates edit mode
@@ -165,6 +170,119 @@ PathUtils.addToProject(obj)
         PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
 
         PathUtils.addToProject(obj)
+
+
+class TaskPanel:
+    def __init__(self):
+        #self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolControl.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolControl.ui")
+        self.updating = False
+
+    def accept(self):
+        self.getFields()
+
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s)
+
+    def reject(self):
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s)
+
+    def getFields(self):
+        if self.obj:
+
+            if hasattr(self.obj, "VertFeed"):
+                self.obj.Label = self.form.tcoName.text()
+
+            if hasattr(self.obj, "VertFeed"):
+                self.obj.VertFeed = self.form.vertFeed.value()
+            if hasattr(self.obj, "HorizFeed"):
+                self.obj.HorizFeed = self.form.horizFeed.value()
+            if hasattr(self.obj, "SpindleSpeed"):
+                self.obj.SpindleSpeed = self.form.spindleSpeed.value()
+            if hasattr(self.obj, "SpindleDir"):
+                self.obj.SpindleDir = str(self.form.cboSpindleDirection.currentText())
+            if hasattr(self.obj, "ToolNumber"):
+                self.obj.ToolNumber = self.form.ToolNumber.value()
+        self.obj.Proxy.execute(self.obj)
+
+    def setFields(self): 
+        self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
+        self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
+        self.form.spindleSpeed.setText(str(self.obj.SpindleSpeed.Value))
+        self.form.cboSpindleDirection.setText(str(self.obj.SpindleDir.Value))
+        self.form.ToolNumber.setValue(self.obj.ToolNumber)
+
+
+    def open(self):
+        self.s = SelObserver()
+        # install the function mode resident
+        FreeCADGui.Selection.addObserver(self.s)
+
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok)
+
+    def edit(self, item, column):
+        if not self.updating:
+            self.resetObject()
+
+    def resetObject(self, remove=None):
+        "transfers the values from the widget to the object"
+        # loc = []
+        # h = []
+        # l = []
+        # a = []
+
+        # for i in range(self.form.tagTree.topLevelItemCount()):
+        #     it = self.form.tagTree.findItems(
+        #             str(i+1), QtCore.Qt.MatchExactly, 0)[0]
+        #     if (remove is None) or (remove != i):
+        #         if it.text(1):
+        #             x = float(it.text(1).split()[0].rstrip(","))
+        #             y = float(it.text(1).split()[1].rstrip(","))
+        #             z = float(it.text(1).split()[2].rstrip(","))
+        #             loc.append(Vector(x, y, z))
+
+        #         else:
+        #             loc.append(0.0)
+        #         if it.text(2):
+        #             h.append(float(it.text(2)))
+        #         else:
+        #             h.append(4.0)
+        #         if it.text(3):
+        #             l.append(float(it.text(3)))
+        #         else:
+        #             l.append(5.0)
+        #         if it.text(4):
+        #             a.append(float(it.text(4)))
+        #         else:
+        #             a.append(45.0)
+
+        # self.obj.locs = loc
+        # self.obj.heights = h
+        # self.obj.lengths = l
+        # self.obj.angles = a
+
+        # self.obj.touch()
+        FreeCAD.ActiveDocument.recompute()
+
+    def setupUi(self):
+        pass
+        # Connect Signals and Slots
+        # Base Controls
+        # self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
+        self.setFields()
+
+class SelObserver:
+    def __init__(self):
+        pass
+
+    def __del__(self):
+        pass
 
 
 if FreeCAD.GuiUp:
