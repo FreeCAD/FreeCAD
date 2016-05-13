@@ -58,6 +58,7 @@ class ObjectProfile:
         obj.addProperty("App::PropertyLinkSubList", "Base", "Path", translate("Parent Object", "The base geometry of this toolpath"))
         obj.addProperty("App::PropertyBool", "Active", "Path", translate("Path", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", translate("Path", "An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", translate("Path", "The library or algorithm used to generate the path"))
         obj.Algorithm = ['OCC Native', 'libarea']
@@ -120,6 +121,10 @@ class ObjectProfile:
     def __setstate__(self, state):
         return None
 
+    # def onChanged(self, obj, prop):
+    #      if prop == "Label":
+    #         print "we're here"
+
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
         if len(baselist) == 0:  # When adding the first base object, guess at heights
@@ -145,6 +150,11 @@ class ObjectProfile:
                 obj.StartDepth = 5.0
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0
+
+            if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
+                obj.Side = "Left"
+            else:
+                obj.Side = "Right"
 
         item = (ss, sub)
         if item in baselist:
@@ -259,6 +269,7 @@ print "y - " + str(point.y)
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             self.radius = tool.Diameter/2
             obj.ToolNumber = toolLoad.ToolNumber
+            #obj.Label = obj.Label + "(" + toolLoad.Label + ")"
 
         if obj.Base:
             hfaces = []
@@ -739,7 +750,6 @@ class TaskPanel:
 
         sel = FreeCADGui.Selection.getSelectionEx()
         if len(sel) != 0 and sel[0].HasSubObjects:
-#            if sel[0].SubObjects[0].ShapeType == "Face":
                 self.addBase()
 
 
