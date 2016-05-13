@@ -222,8 +222,24 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     setModal(true);
     ui->setupUi(this);
     ui->labelSplashPicture->setPixmap(getMainWindow()->splashImage());
-    if (!showLic)
-        ui->licenseButton->hide();
+//    if (showLic) { // currently disabled. Additional license blocks are always shown.
+        QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
+        // any additional piece of text to be added after the main license text goes below.
+        // Please set title in <h2> tags, license text in <p> tags 
+        // and add an <hr/> tag at the end to nicely separate license blocks
+#ifdef _USE_3DCONNEXION_SDK
+        info += QString::fromLatin1(
+            "<h2>3D Mouse Support</h2>"
+            "<p>Development tools and related technology provided under license from 3Dconnexion."
+            "(c) 1992 - 2012 3Dconnexion. All rights reserved</p>"
+            "<hr/>"
+            );
+#endif
+        QString lictext = ui->textBrowserLicense->toHtml();
+        lictext.replace(QString::fromLatin1("SUCH DAMAGES."),info);
+        ui->textBrowserLicense->setHtml(lictext);
+//    }
+    ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
 }
 
@@ -460,56 +476,6 @@ void AboutDialog::setupLabels()
         ui->labelHash->hide();
         ui->labelBuildHash->hide();
     }
-}
-
-namespace Gui {
-namespace Dialog {
-
-class GuiExport LicenseDialog : public QDialog
-{
-public:
-    LicenseDialog(QWidget *parent = 0) : QDialog(parent, Qt::FramelessWindowHint)
-    {
-        QString info;
-#ifdef _USE_3DCONNEXION_SDK
-        info = QString::fromLatin1(
-            "3D Mouse Support:\n"
-            "Development tools and related technology provided under license from 3Dconnexion.\n"
-            "(c) 1992 - 2012 3Dconnexion. All rights reserved");
-#endif
-        statusLabel = new QLabel(info);
-        buttonBox = new QDialogButtonBox;
-        buttonBox->setStandardButtons(QDialogButtonBox::Ok);
-        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-
-        QHBoxLayout *topLayout = new QHBoxLayout;
-        topLayout->addWidget(statusLabel);
-
-        QVBoxLayout *mainLayout = new QVBoxLayout;
-        mainLayout->addLayout(topLayout);
-        mainLayout->addWidget(buttonBox);
-        setLayout(mainLayout);
-
-        setWindowTitle(tr("Copyright"));
-    }
-    ~LicenseDialog()
-    {
-    }
-
-private:
-    QLabel *statusLabel;
-    QDialogButtonBox *buttonBox;
-};
-
-} // namespace Dialog
-} // namespace Gui
-
-void AboutDialog::on_licenseButton_clicked()
-{
-#ifdef _USE_3DCONNEXION_SDK
-    LicenseDialog dlg(this);
-    dlg.exec();
-#endif
 }
 
 void AboutDialog::on_copyButton_clicked()
