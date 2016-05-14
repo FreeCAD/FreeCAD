@@ -413,7 +413,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
         const SMDS_MeshVolume* vol = vol_iter->next();
         SMDS_ElemIteratorPtr face_iter = vol->facesIterator();
 
-        while (face_iter->more()) {
+        while (face_iter && face_iter->more()) {
             const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
             int numNodes = face->NbNodes();
 
