@@ -24,7 +24,7 @@ __title__ = "CalculiX Job Control Task Panel"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-from FemTools import FemTools
+import FemToolsCcx
 import FreeCAD
 import os
 import time
@@ -141,7 +141,7 @@ class _TaskPanelFemSolverCalculix:
         self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        fea = FemTools()
+        fea = FemToolsCcx.FemToolsCcx()
         fea.reset_all()
         fea.inp_file_name = self.inp_file_name
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -182,7 +182,7 @@ class _TaskPanelFemSolverCalculix:
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
-            fea = FemTools()
+            fea = FemToolsCcx.FemToolsCcx()
             fea.set_analysis_type(self.solver_object.AnalysisType)
             fea.update_objects()
             fea.write_inp_file()
@@ -200,7 +200,7 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("Check dependencies...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
-        fea = FemTools()
+        fea = FemToolsCcx.FemToolsCcx()
         fea.update_objects()
         message = fea.check_prerequisites()
         if message != "":

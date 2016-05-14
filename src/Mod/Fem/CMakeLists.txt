@@ -21,11 +21,13 @@ INSTALL(
         ccxFrdReader.py
         ccxInpWriter.py
         FemTools.py
+        FemToolsCcx.py
 
         FemCommands.py
         _CommandFemFromShape.py
         _CommandPurgeFemResults.py
         _CommandQuickAnalysis.py
+        _CommandSolverJobControl.py
 
         _CommandMechanicalShowResult.py
         _TaskPanelResultControl.py
@@ -37,10 +39,6 @@ INSTALL(
 
         FemAnalysis.py
         _CommandNewMechanicalAnalysis.py
-
-        _CommandSolverJobControl.py
-        _TaskPanelFemSolverCalculix.py
-        TaskPanelFemSolverCalculix.ui
 
         FemBeamSection.py
         _FemBeamSection.py
@@ -67,6 +65,8 @@ INSTALL(
         _FemSolverCalculix.py
         _ViewProviderFemSolverCalculix.py
         _CommandFemSolverCalculix.py
+        _TaskPanelFemSolverCalculix.py
+        TaskPanelFemSolverCalculix.ui
 
     DESTINATION
         Mod/Fem

@@ -108,6 +108,7 @@ SET(FemScripts_SRCS
     FemShellThickness.py
     FemSolverCalculix.py
     FemTools.py
+    FemToolsCcx.py
     MechanicalMaterial.py
     SelectionObserverFem.py
     TestFem.py
