@@ -2,6 +2,8 @@ if(WIN32)
     add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
 endif(WIN32)
 
+include(${VTK_USE_FILE})
+
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -12,6 +14,7 @@ include_directories(
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIR}
 )
 
 

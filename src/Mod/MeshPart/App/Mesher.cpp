@@ -362,8 +362,6 @@ Mesh::MeshObject* Mesher::createMesh() const
     }
 
     // clean up
-    delete meshgen;
-
     TopoDS_Shape aNull;
     mesh->ShapeToMesh(aNull);
     mesh->Clear();
@@ -371,6 +369,8 @@ Mesh::MeshObject* Mesher::createMesh() const
     for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
         delete *it;
 
+    delete meshgen;
+    
     MeshCore::MeshKernel kernel;
     kernel.Adopt(verts, faces, true);
 
