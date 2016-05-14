@@ -83,122 +83,149 @@ def readResult(frd_input):
             elemType = int(line[14:18])
         #then import elements
         if elements_found and (line[1:3] == "-2"):
-            if elemType == 1:  # HEXA8 element
-                node_id_5 = int(line[3:13])
-                node_id_6 = int(line[13:23])
-                node_id_7 = int(line[23:33])
-                node_id_8 = int(line[33:43])
-                node_id_1 = int(line[43:53])
-                node_id_2 = int(line[53:63])
-                node_id_3 = int(line[63:73])
-                node_id_4 = int(line[73:83])
-                elements_hexa8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
-            elif elemType == 2:  # PENTA6 element
-                node_id_4 = int(line[3:13])
-                node_id_5 = int(line[13:23])
-                node_id_6 = int(line[23:33])
-                node_id_1 = int(line[33:43])
-                node_id_2 = int(line[43:53])
-                node_id_3 = int(line[53:63])
-                elements_penta6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
-            elif elemType == 3:  # TETRA4 element
-                node_id_2 = int(line[3:13])
-                node_id_1 = int(line[13:23])
-                node_id_3 = int(line[23:33])
-                node_id_4 = int(line[33:43])
-                elements_tetra4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
-            elif elemType == 4 and input_continues is False:  # HEXA20 element (1st line)
-                node_id_5 = int(line[3:13])
-                node_id_6 = int(line[13:23])
-                node_id_7 = int(line[23:33])
-                node_id_8 = int(line[33:43])
-                node_id_1 = int(line[43:53])
-                node_id_2 = int(line[53:63])
-                node_id_3 = int(line[63:73])
-                node_id_4 = int(line[73:83])
-                node_id_13 = int(line[83:93])
-                node_id_14 = int(line[93:103])
+            # node order fits with node order in writeAbaqus() in FemMesh.cpp
+            if elemType == 1:
+                # C3D8 CalculiX --> hexa8 FreeCAD
+                # N6, N7, N8, N5, N2, N3, N4, N1
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                nd5 = int(line[43:53])
+                nd6 = int(line[53:63])
+                nd7 = int(line[63:73])
+                nd8 = int(line[73:83])
+                elements_hexa8[elem] = (nd6, nd7, nd8, nd5, nd2, nd3, nd4, nd1)
+            elif elemType == 2:
+                # C3D6 Calculix --> penta6 FreeCAD
+                # N5, N6, N4, N2, N3, N1
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                nd5 = int(line[43:53])
+                nd6 = int(line[53:63])
+                elements_penta6[elem] = (nd5, nd6, nd4, nd2, nd3, nd1)
+            elif elemType == 3:
+                # C3D4 Calculix --> tetra4 FreeCAD
+                # N2, N1, N3, N4
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                elements_tetra4[elem] = (nd2, nd1, nd3, nd4)
+            elif elemType == 4 and input_continues is False:
+                # first line
+                # C3D20 Calculix --> hexa20 FreeCAD
+                # N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                nd5 = int(line[43:53])
+                nd6 = int(line[53:63])
+                nd7 = int(line[63:73])
+                nd8 = int(line[73:83])
+                nd9 = int(line[83:93])
+                nd10 = int(line[93:103])
                 input_continues = True
-            elif elemType == 4 and input_continues is True:  # HEXA20 element (2nd line)
-                node_id_15 = int(line[3:13])
-                node_id_16 = int(line[13:23])
-                node_id_9 = int(line[23:33])
-                node_id_10 = int(line[33:43])
-                node_id_11 = int(line[43:53])
-                node_id_12 = int(line[53:63])
-                node_id_17 = int(line[63:73])
-                node_id_18 = int(line[73:83])
-                node_id_19 = int(line[83:93])
-                node_id_20 = int(line[93:103])
+            elif elemType == 4 and input_continues is True:
+                # second line
+                nd11 = int(line[3:13])
+                nd12 = int(line[13:23])
+                nd13 = int(line[23:33])
+                nd14 = int(line[33:43])
+                nd15 = int(line[43:53])
+                nd16 = int(line[53:63])
+                nd17 = int(line[63:73])
+                nd18 = int(line[73:83])
+                nd19 = int(line[83:93])
+                nd20 = int(line[93:103])
                 input_continues = False
-                elements_hexa20[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10,
-                                         node_id_11, node_id_12, node_id_13, node_id_14, node_id_15, node_id_16, node_id_17, node_id_18, node_id_19, node_id_20)
-            elif elemType == 5 and input_continues is False:  # PENTA15 element (1st line)
-                node_id_4 = int(line[3:13])
-                node_id_5 = int(line[13:23])
-                node_id_6 = int(line[23:33])
-                node_id_1 = int(line[33:43])
-                node_id_2 = int(line[43:53])
-                node_id_3 = int(line[53:63])
-                node_id_10 = int(line[63:73])
-                node_id_11 = int(line[73:83])
-                node_id_12 = int(line[83:93])
-                node_id_13 = int(line[93:103])
+                elements_hexa20[elem] = (nd6, nd7, nd8, nd5, nd2, nd3, nd4, nd1, nd14, nd15,
+                                         nd16, nd13, nd10, nd11, nd12, nd9, nd18, nd19, nd20, nd17)
+            elif elemType == 5 and input_continues is False:
+                # first line
+                # C3D15 Calculix --> penta15 FreeCAD
+                # N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                nd5 = int(line[43:53])
+                nd6 = int(line[53:63])
+                nd7 = int(line[63:73])
+                nd8 = int(line[73:83])
+                nd9 = int(line[83:93])
+                nd10 = int(line[93:103])
                 input_continues = True
-            elif elemType == 5 and input_continues is True:  # PENTA15 element (2nd line)
-                node_id_14 = int(line[3:13])
-                node_id_15 = int(line[13:23])
-                node_id_7 = int(line[23:33])
-                node_id_8 = int(line[33:43])
-                node_id_9 = int(line[43:53])
+            elif elemType == 5 and input_continues is True:
+                # second line
+                nd11 = int(line[3:13])
+                nd12 = int(line[13:23])
+                nd13 = int(line[23:33])
+                nd14 = int(line[33:43])
+                nd15 = int(line[43:53])
                 input_continues = False
-                elements_penta15[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10,
-                                          node_id_11, node_id_12, node_id_13, node_id_14, node_id_15)
-            elif elemType == 6:  # TETRA10 element
-                node_id_2 = int(line[3:13])
-                node_id_1 = int(line[13:23])
-                node_id_3 = int(line[23:33])
-                node_id_4 = int(line[33:43])
-                node_id_5 = int(line[43:53])
-                node_id_7 = int(line[53:63])
-                node_id_6 = int(line[63:73])
-                node_id_9 = int(line[73:83])
-                node_id_8 = int(line[83:93])
-                node_id_10 = int(line[93:103])
-                elements_tetra10[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8, node_id_9, node_id_10)
-            elif elemType == 7:  # TRIA3 element
-                node_id_1 = int(line[3:13])
-                node_id_2 = int(line[13:23])
-                node_id_3 = int(line[23:33])
-                elements_tria3[elem] = (node_id_1, node_id_2, node_id_3)
-            elif elemType == 8:  # TRIA6 element
-                node_id_1 = int(line[3:13])
-                node_id_2 = int(line[13:23])
-                node_id_3 = int(line[23:33])
-                node_id_4 = int(line[33:43])
-                node_id_5 = int(line[43:53])
-                node_id_6 = int(line[53:63])
-                elements_tria6[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6)
-            elif elemType == 9:  # QUAD4 element
-                node_id_1 = int(line[3:13])
-                node_id_2 = int(line[13:23])
-                node_id_3 = int(line[23:33])
-                node_id_4 = int(line[33:43])
-                elements_quad4[elem] = (node_id_1, node_id_2, node_id_3, node_id_4)
-            elif elemType == 10:  # QUAD8 element
-                node_id_1 = int(line[3:13])
-                node_id_2 = int(line[13:23])
-                node_id_3 = int(line[23:33])
-                node_id_4 = int(line[33:43])
-                node_id_5 = int(line[43:53])
-                node_id_6 = int(line[53:63])
-                node_id_7 = int(line[63:73])
-                node_id_8 = int(line[73:83])
-                elements_quad8[elem] = (node_id_1, node_id_2, node_id_3, node_id_4, node_id_5, node_id_6, node_id_7, node_id_8)
-            elif elemType == 11:  # SEG2 element
-                node_id_1 = int(line[3:13])
-                node_id_2 = int(line[13:23])
-                elements_seg2[elem] = (node_id_1, node_id_2)
+                elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd11, nd12, nd10, nd8,
+                                          nd9, nd7, nd14, nd15, nd13)
+            elif elemType == 6:
+                # C3D10 Calculix --> tetra10 FreeCAD
+                # N2, N1, N3, N4, N5, N7, N6, N9, N8, N10
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                nd5 = int(line[43:53])
+                nd6 = int(line[53:63])
+                nd7 = int(line[63:73])
+                nd8 = int(line[73:83])
+                nd9 = int(line[83:93])
+                nd10 = int(line[93:103])
+                elements_tetra10[elem] = (nd2, nd1, nd3, nd4, nd5, nd7, nd6, nd9, nd8, nd10)
+            elif elemType == 7:
+                # S3 Calculix --> tria3 FreeCAD
+                # N1, N2, N3
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                elements_tria3[elem] = (nd1, nd2, nd3)
+            elif elemType == 8:
+                # S6 CalculiX --> tria6 FreeCAD
+                # N1, N2, N3, N4, N5, N6
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                nd5 = int(line[43:53])
+                nd6 = int(line[53:63])
+                elements_tria6[elem] = (nd1, nd2, nd3, nd4, nd5, nd6)
+            elif elemType == 9:
+                # S4 CalculiX --> quad4 FreeCAD
+                # N1, N2, N3, N4
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                elements_quad4[elem] = (nd1, nd2, nd3, nd4)
+            elif elemType == 10:
+                # S8 CalculiX --> quad8 FreeCAD
+                # N1, N2, N3, N4, N5, N6, N7, N8
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                nd3 = int(line[23:33])
+                nd4 = int(line[33:43])
+                nd5 = int(line[43:53])
+                nd6 = int(line[53:63])
+                nd7 = int(line[63:73])
+                nd8 = int(line[73:83])
+                elements_quad8[elem] = (nd1, nd2, nd3, nd4, nd5, nd6, nd7, nd8)
+            elif elemType == 11:
+                # B31 CalculiX --> seg2 FreeCAD
+                # N1, N2
+                nd1 = int(line[3:13])
+                nd2 = int(line[13:23])
+                elements_seg2[elem] = (nd1, nd2)
 
         #Check if we found new eigenmode
         if line[5:10] == "PMODE":
