@@ -61,6 +61,8 @@
 #include "Attacher.h"
 #include <Base/Console.h>
 #include <App/OriginFeature.h>
+#include <App/Application.h>
+#include <App/Document.h>
 
 using namespace Part;
 using namespace Attacher;
@@ -120,10 +122,44 @@ const char* AttachEngine::eMapModeStrings[]= {
 
     NULL};
 
+//this list must be in sync with eRefType enum.
+//These strings are used only by Py interface of Attacher. Strings for use in Gui are in Mod/Part/Gui/AttacherTexts.cpp
+const char* AttachEngine::eRefTypeStrings[]= {
+    "Any",
+    "Vertex",
+    "Edge",
+    "Face",
+
+    "Line",
+    "Curve",
+    "Circle",
+    "Conic",
+    "Ellipse",
+    "Parabola",
+    "Hyperbola",
+
+    "Plane",
+    "Sphere",
+    "Revolve",
+    "Cylinder",
+    "Torus",
+    "Cone",
+
+    "Object",
+    "Solid",
+    "Wire",
+    NULL
+};
+
+
+
+
 
 TYPESYSTEM_SOURCE_ABSTRACT(Attacher::AttachEngine, Base::BaseClass);
 
 AttachEngine::AttachEngine()
+ : mapReverse(false), attachParameter(0.0), mapMode(mmDeactivated),
+   surfU(0.0), surfV(0.0)
 {
 }
 
@@ -576,6 +612,57 @@ std::string AttachEngine::getModeName(eMapMode mmode)
     return std::string(AttachEngine::eMapModeStrings[mmode]);
 }
 
+eMapMode AttachEngine::getModeByName(const std::string &modeName)
+{
+    for (int mmode = 0   ;   mmode < mmDummy_NumberOfModes   ;   mmode++){
+        if (strcmp(eMapModeStrings[mmode],modeName.c_str())==0) {
+            return eMapMode(mmode);
+        }
+    }
+    std::stringstream errMsg;
+    errMsg << "AttachEngine::getModeByName: mode with this name doesn't exist: " << modeName;
+    throw Base::Exception(errMsg.str());
+}
+
+std::string AttachEngine::getRefTypeName(eRefType shapeType)
+{
+    eRefType flagless = eRefType(shapeType & 0xFF);
+    if(flagless < 0 || flagless >= rtDummy_numberOfShapeTypes)
+        throw Base::Exception("eRefType value is out of range");
+    std::string result = std::string(eRefTypeStrings[flagless]);
+    if (shapeType & rtFlagHasPlacement){
+        result.append("|Placement");
+    }
+    return result;
+}
+
+eRefType AttachEngine::getRefTypeByName(const std::string& typeName)
+{
+    std::string flagless;
+    std::string flags;
+    size_t seppos = typeName.find('|');
+    flagless = typeName.substr(0, seppos);
+    if(seppos != std::string::npos ){
+        flags = typeName.substr(seppos+1);
+    }
+    for(int irt = 0   ;   irt < rtDummy_numberOfShapeTypes   ;   irt++){
+        if(strcmp(flagless.c_str(),eRefTypeStrings[irt]) == 0){
+            if(strcmp("Placement",flags.c_str()) == 0){
+                return eRefType(irt | rtFlagHasPlacement);
+            } else if (flags.length() == 0){
+                return eRefType(irt);
+            } else {
+                std::stringstream errmsg;
+                errmsg << "RefType flag not recognized: " << flags;
+                throw Base::Exception(errmsg.str());
+            }
+        }
+    }
+    std::stringstream errmsg;
+    errmsg << "RefType not recognized: " << typeName;
+    throw Base::Exception(errmsg.str());
+}
+
 GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes)
 {
     //explode compounds
@@ -638,7 +725,7 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
                 throw Base::Exception("AttachEngine::getInertialPropsOfShape: provided shapes are incompatible (not only solids/compsolids)");
             if (sh.Infinite())
                 throw Base::Exception("AttachEngine::getInertialPropsOfShape: infinite shape provided");
-            BRepGProp::SurfaceProperties(sh,gpr);
+            BRepGProp::VolumeProperties(sh,gpr);
             gpr_acc.Add(gpr);
         }
         return gpr_acc;
@@ -664,6 +751,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
                              std::vector<TopoDS_Shape> &storage,
                              std::vector<eRefType> &types)
 {
+    verifyReferencesAreSafe(references);
     const std::vector<App::DocumentObject*> &objs = references.getValues();
     const std::vector<std::string> &sub = references.getSubValues();
     geofs.resize(objs.size());
@@ -743,6 +831,23 @@ void AttachEngine::throwWrongMode(eMapMode mmode)
         errmsg << "Attachment mode index (" << int(mmode) << ") is out of range." ;
     }
     throw Base::Exception(errmsg.str().c_str());
+}
+
+void AttachEngine::verifyReferencesAreSafe(const App::PropertyLinkSubList &references)
+{
+    const std::vector<App::DocumentObject*> links =  references.getValues();
+    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+    for(App::DocumentObject* lnk : links){
+        bool found = false;
+        for(App::Document* doc : docs){
+            if(doc->isIn(lnk)){
+                found = true;
+            }
+        }
+        if (!found){
+            throw Base::Exception("AttachEngine: verifyReferencesAreSafe: references point to deleted object.");
+        }
+    }
 }
 
 

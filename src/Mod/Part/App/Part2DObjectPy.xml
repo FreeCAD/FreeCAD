@@ -1,24 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport 
-    Father="PartFeaturePy"  
+    Father="AttachableObjectPy"
     Name="Part2DObjectPy" 
     Twin="Part2DObject" 
     TwinPointer="Part2DObject" 
     Include="Mod/Part/App/Part2DObject.h" 
     Namespace="Part" 
-    FatherInclude="Mod/Part/App/PartFeaturePy.h" 
+    FatherInclude="Mod/Part/App/AttachableObjectPy.h"
     FatherNamespace="Part">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>This object represents a 2D Shape in a 3D World</UserDocu>
     </Documentation>
-    <Methode Name="positionBySupport">
-      <Documentation>
-        <UserDocu>positionBySupport(): Reposition object based on Support, MapMode and MapPathParameter properties.
-Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
-and raises an exception if attachment calculation fails.</UserDocu>
-      </Documentation>
-    </Methode>
   </PythonExport>
 </GenerateModel>
