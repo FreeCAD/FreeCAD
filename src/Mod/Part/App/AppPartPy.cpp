@@ -57,9 +57,9 @@
 # include <Geom_CylindricalSurface.hxx>
 # include <Geom_OffsetSurface.hxx>
 # include <GeomAPI_PointsToBSplineSurface.hxx>
-# include <Handle_Geom_Circle.hxx>
-# include <Handle_Geom_Plane.hxx>
-# include <Handle_Geom2d_TrimmedCurve.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 # include <Interface_Static.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <Standard_ConstructionError.hxx>

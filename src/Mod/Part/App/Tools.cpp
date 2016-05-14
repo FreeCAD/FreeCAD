@@ -26,6 +26,7 @@
 # include <gp_Pln.hxx>
 # include <gp_Lin.hxx>
 # include <Adaptor3d_HCurveOnSurface.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAdaptor_HCurve.hxx>
 # include <GeomAPI_IntSS.hxx>

@@ -24,9 +24,9 @@
 #ifndef IMPORT_IMPORTOCAF_H
 #define IMPORT_IMPORTOCAF_H
 
-#include <Handle_TDocStd_Document.hxx>
-#include <Handle_XCAFDoc_ColorTool.hxx>
-#include <Handle_XCAFDoc_ShapeTool.hxx>
+#include <TDocStd_Document.hxx>
+#include <XCAFDoc_ColorTool.hxx>
+#include <XCAFDoc_ShapeTool.hxx>
 #include <Quantity_Color.hxx>
 #include <TopoDS_Shape.hxx>
 #include <climits>

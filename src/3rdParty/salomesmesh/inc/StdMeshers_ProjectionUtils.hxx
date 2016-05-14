@@ -30,6 +30,7 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include <TopTools_DataMapOfShapeShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Face.hxx>
@@ -42,7 +43,6 @@ class SMDS_MeshNode;
 class SMESH_Mesh;
 class SMESH_Hypothesis;
 class SMESH_subMesh;
-class TopTools_IndexedDataMapOfShapeListOfShape;
 
 /*!
  * \brief Class encapsulating methods common to Projection algorithms

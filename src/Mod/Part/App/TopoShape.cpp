@@ -90,9 +90,9 @@
 # include <GeomFill_SectionLaw.hxx>
 # include <GeomFill_Sweep.hxx>
 # include <GeomLib.hxx>
-# include <Handle_Law_BSpFunc.hxx>
-# include <Handle_Law_BSpline.hxx>
-# include <Handle_TopTools_HSequenceOfShape.hxx>
+# include <Law_BSpFunc.hxx>
+# include <Law_BSpline.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <Law_BSpFunc.hxx>
 # include <Law_Constant.hxx>
 # include <Law_Linear.hxx>
@@ -473,6 +473,29 @@ void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 
 void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
 {
+#if OCC_VERSION_HEX >= 0x070000
+    gp_Mat m = trsf.VectorialPart();
+    gp_XYZ p = trsf.TranslationPart();
+    Standard_Real scale = trsf.ScaleFactor();
+
+    // set Rotation matrix
+    mtrx[0][0] = scale * m(0,0);
+    mtrx[0][1] = scale * m(0,1);
+    mtrx[0][2] = scale * m(0,2);
+
+    mtrx[1][0] = scale * m(1,0);
+    mtrx[1][1] = scale * m(1,1);
+    mtrx[1][2] = scale * m(1,2);
+
+    mtrx[2][0] = scale * m(2,0);
+    mtrx[2][1] = scale * m(2,1);
+    mtrx[2][2] = scale * m(2,2);
+
+    // set pos vector
+    mtrx[0][3] = p.X();
+    mtrx[1][3] = p.Y();
+    mtrx[2][3] = p.Z();
+#else
     gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
     gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
     Standard_Real scale = trsf._CSFDB_Getgp_Trsfscale();
@@ -494,6 +517,7 @@ void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
     mtrx[0][3] = p._CSFDB_Getgp_XYZx();
     mtrx[1][3] = p._CSFDB_Getgp_XYZy();
     mtrx[2][3] = p._CSFDB_Getgp_XYZz();
+#endif
 }
 
 void TopoShape::setTransform(const Base::Matrix4D& rclTrf)

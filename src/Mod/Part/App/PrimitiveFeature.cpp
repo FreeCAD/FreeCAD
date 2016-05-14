@@ -49,10 +49,10 @@
 # include <Geom_CylindricalSurface.hxx>
 # include <Geom2d_Line.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
-# include <Handle_Geom_Plane.hxx>
-# include <Handle_Geom_CylindricalSurface.hxx>
-# include <Handle_Geom2d_Line.hxx>
-# include <Handle_Geom2d_TrimmedCurve.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom2d_Line.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>
 # include <TopoDS.hxx>

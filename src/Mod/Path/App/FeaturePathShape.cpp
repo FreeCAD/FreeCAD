@@ -42,10 +42,9 @@
 #include <gp_Lin.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
-#include <Handle_BRepAdaptor_HCompCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_HCurve.hxx>
-#include <Handle_BRepAdaptor_HCurve.hxx>
 
 
 using namespace Path;

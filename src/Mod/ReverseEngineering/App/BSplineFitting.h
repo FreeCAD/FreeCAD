@@ -25,7 +25,7 @@
 #define REEN_BSPLINEFITTING_H
 
 #if defined(HAVE_PCL_OPENNURBS)
-#include <Handle_Geom_BSplineSurface.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <Base/Vector3D.h>
 #include <vector>
 

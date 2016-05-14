@@ -28,11 +28,11 @@
 #include <gp_Vec.hxx>
 #include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
-#include <Handle_Geom_Surface.hxx>
+#include <Geom_Surface.hxx>
+#include <TColStd_ListOfTransient.hxx>
 
 class gp_Lin;
 class gp_Pln;
-class TColStd_ListOfTransient;
 
 namespace Base {
 // Specialization for gp_Pnt

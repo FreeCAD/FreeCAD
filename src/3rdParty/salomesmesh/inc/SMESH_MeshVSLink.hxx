@@ -36,11 +36,11 @@
 #ifndef _TColStd_PackedMapOfInteger_HeaderFile
 #include <TColStd_PackedMapOfInteger.hxx>
 #endif
-#ifndef _Handle_TColStd_HArray2OfInteger_HeaderFile
-#include <Handle_TColStd_HArray2OfInteger.hxx>
+#ifndef _TColStd_HArray2OfInteger_HeaderFile
+#include <TColStd_HArray2OfInteger.hxx>
 #endif
-#ifndef _Handle_TColStd_HArray2OfReal_HeaderFile
-#include <Handle_TColStd_HArray2OfReal.hxx>
+#ifndef _TColStd_HArray2OfReal_HeaderFile
+#include <TColStd_HArray2OfReal.hxx>
 #endif
 #ifndef _MeshVS_DataSource3D_HeaderFile
 #include <MeshVS_DataSource3D.hxx>
@@ -57,8 +57,8 @@
 #ifndef _Standard_Address_HeaderFile
 #include <Standard_Address.hxx>
 #endif
-#ifndef _Handle_TColStd_HArray1OfInteger_HeaderFile
-#include <Handle_TColStd_HArray1OfInteger.hxx>
+#ifndef _TColStd_HArray1OfInteger_HeaderFile
+#include <TColStd_HArray1OfInteger.hxx>
 #endif
 #ifndef _Standard_Real_HeaderFile
 #include <Standard_Real.hxx>
@@ -66,7 +66,13 @@
 #ifndef _SMESH_Mesh_HeaderFile
 #include <SMESH_Mesh.hxx>
 #endif
+#ifndef _Standard_Version_HeaderFile
+#include <Standard_Version.hxx>
+#endif
 
+#if OCC_VERSION_HEX >= 0x070000
+DEFINE_STANDARD_HANDLE(SMESH_MeshVSLink, MeshVS_DataSource3D)
+#endif
 class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 
   public:
@@ -125,7 +131,11 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 
 	// Type management
 	//
-	Standard_EXPORT const Handle(Standard_Type)& DynamicType() const;
+#if OCC_VERSION_HEX >= 0x070000
+    DEFINE_STANDARD_RTTIEXT(SMESH_MeshVSLink,MeshVS_DataSource3D)
+#else
+    Standard_EXPORT const Handle(Standard_Type)& DynamicType() const;
+#endif
 
   protected:
 	// Methods PROTECTED

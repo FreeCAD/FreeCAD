@@ -38,6 +38,7 @@
 
 #include "SMESH_Exception.hxx"
 
+#include <Standard_Version.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
@@ -47,7 +48,9 @@
 class SMESH_Gen;
 class SMESHDS_Document;
 class SMESH_Group;
+#if OCC_VERSION_HEX < 0x070000
 class TopTools_ListOfShape;
+#endif
 class SMESH_subMesh;
 class SMESH_HypoFilter;
 class TopoDS_Solid;

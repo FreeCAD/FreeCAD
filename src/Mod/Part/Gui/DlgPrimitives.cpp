@@ -30,8 +30,6 @@
 #include <GC_MakeArcOfCircle.hxx>
 #include <Geom_Circle.hxx>
 #include <Geom_TrimmedCurve.hxx>
-#include <Handle_Geom_Circle.hxx>
-#include <Handle_Geom_TrimmedCurve.hxx>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
