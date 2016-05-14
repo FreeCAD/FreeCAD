@@ -20,7 +20,9 @@
 #endif
 
 #include <time.h>
+#if defined(FC_OS_WIN32)
 #include <sys/timeb.h>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
