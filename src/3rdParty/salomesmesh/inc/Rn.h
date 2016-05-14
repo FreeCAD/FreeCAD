@@ -1,24 +1,22 @@
 //  MEFISTO :  library to compute 2D triangulation from segmented boundaries
 //
-//  Copyright (C) 2006  Laboratoire J.-L. Lions UPMC Paris
-// 
-//  This library is free software; you can redistribute it and/or 
-//  modify it under the terms of the GNU Lesser General Public 
-//  License as published by the Free Software Foundation; either 
-//  version 2.1 of the License. 
-// 
-//  This library is distributed in the hope that it will be useful, 
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of 
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
-//  Lesser General Public License for more details. 
-// 
-//  You should have received a copy of the GNU Lesser General Public 
-//  License along with this library; if not, write to the Free Software 
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA 
-// 
-//  See http://www.ann.jussieu.fr/~perronne or email Perronnet@ann.jussieu.fr
-//                                          or email Hecht@ann.jussieu.fr
+// Copyright (C) 2006-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 //  File   : Rn.h
 //  Module : SMESH
@@ -172,8 +170,8 @@ public:
 
   bool  DansPave( R3 & xyzMin, R3 & xyzMax )
     { return xyzMin.x<=x && x<=xyzMax.x &&
-     	     xyzMin.y<=y && y<=xyzMax.y &&
-	     xyzMin.z<=z && z<=xyzMax.z; }
+             xyzMin.y<=y && y<=xyzMax.y &&
+             xyzMin.z<=z && z<=xyzMax.z; }
 };
 
 //la classe R4

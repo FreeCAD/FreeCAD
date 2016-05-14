@@ -1,28 +1,29 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_Propagation.hxx
 //  Module : SMESH
-
+//
 #ifndef _SMESH_PROPAGATION_HXX_
 #define _SMESH_PROPAGATION_HXX_
 
@@ -30,10 +31,11 @@
 
 #include "SMESH_Hypothesis.hxx"
 #include "SMESH_subMeshEventListener.hxx"
-#include "SMESH_Exception.hxx"
+#include "Utils_SALOME_Exception.hxx"
 
 #include <TopoDS_Edge.hxx>
 
+class SMESH_HypoFilter;
 
 // =======================================================================
 /*!
@@ -41,7 +43,7 @@
  */
 // =======================================================================
 
-class STDMESHERS_EXPORT StdMeshers_Propagation:public SMESH_Hypothesis
+class STDMESHERS_EXPORT StdMeshers_Propagation : public SMESH_Hypothesis
 {
  public:
   StdMeshers_Propagation(int hypId, int studyId, SMESH_Gen * gen);
@@ -49,10 +51,14 @@ class STDMESHERS_EXPORT StdMeshers_Propagation:public SMESH_Hypothesis
 
   virtual std::ostream & SaveTo(std::ostream & save);
   virtual std::istream & LoadFrom(std::istream & load);
-  friend std::ostream & operator <<(std::ostream & save, StdMeshers_Propagation & hyp);
-  friend std::istream & operator >>(std::istream & load, StdMeshers_Propagation & hyp);
 
-  static std::string GetName ();
+  static std::string GetName();
+
+  /*!
+   * \brief Returns a filter selecting both StdMeshers_Propagation and
+   *        StdMeshers_PropagOfDistribution hypotheses
+   */
+  static const SMESH_HypoFilter& GetFilter();
 
   /*!
    * \brief Set EventListener managing propagation of hypotheses
@@ -68,7 +74,9 @@ class STDMESHERS_EXPORT StdMeshers_Propagation:public SMESH_Hypothesis
     * \param theEdge - edge to which hypotheses are propagated
     * \retval TopoDS_Edge - source edge, also passing orientation
    */
-  static TopoDS_Edge GetPropagationSource(SMESH_Mesh& theMesh, const TopoDS_Shape& theEdge);
+  static TopoDS_Edge GetPropagationSource(SMESH_Mesh&         theMesh,
+                                          const TopoDS_Shape& theEdge,
+                                          bool&               isPropagOfDistribution );
 
   /*!
    * \brief Initialize my parameter values by the mesh built on the geometry
@@ -87,4 +95,19 @@ class STDMESHERS_EXPORT StdMeshers_Propagation:public SMESH_Hypothesis
   virtual bool SetParametersByDefaults(const TDefaults& dflts, const SMESH_Mesh* theMesh=0);
 
 };
+
+// =======================================================================
+/*!
+ * \brief Propagation Of Distribution hypothesis
+ */
+// =======================================================================
+
+class STDMESHERS_EXPORT StdMeshers_PropagOfDistribution: public StdMeshers_Propagation
+{
+ public:
+  StdMeshers_PropagOfDistribution(int hypId, int studyId, SMESH_Gen * gen);
+
+  static std::string GetName();
+};
+
 #endif

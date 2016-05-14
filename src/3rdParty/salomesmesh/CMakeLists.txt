@@ -17,7 +17,12 @@ if(CMAKE_COMPILER_IS_CLANGXX)
 endif()
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-
+find_package(VTK REQUIRED)
+find_package(HDF5 REQUIRED)
+find_package(OPENCASCADE)
+find_package(MEDFile REQUIRED)
+find_package(Boost COMPONENTS filesystem program_options regex signals system thread REQUIRED)
+include(${VTK_USE_FILE})
 include_directories(
     src/SMDS
     src/Driver
@@ -34,6 +39,9 @@ include_directories(
     ${NGLIB_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIR}
+    ${HDF5_INCLUDE_DIR}
+    ${BOOST_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -150,7 +158,7 @@ ENDIF(UNIX)
 #########
 FILE(GLOB SMDS_source_files src/SMDS/*.cpp inc/SMDS*.hxx)
 ADD_LIBRARY(SMDS SHARED ${SMDS_source_files})
-TARGET_LINK_LIBRARIES(SMDS ${SMESH_LIBS})
+TARGET_LINK_LIBRARIES(SMDS ${SMESH_LIBS} ${HDF5_C_STATIC_LIBRARY} ${VTK_LIBRARIES})
 
 SET_BIN_DIR(SMDS SMDS)
 if(WIN32)
@@ -183,7 +191,7 @@ endif(WIN32)
 #############
 FILE(GLOB DriverSTL_source_files src/DriverSTL/*.cpp inc/DriverSTL*.h*)
 ADD_LIBRARY(DriverSTL SHARED ${DriverSTL_source_files})
-TARGET_LINK_LIBRARIES(DriverSTL ${SMESH_LIBS} Driver SMDS)
+TARGET_LINK_LIBRARIES(DriverSTL ${SMESH_LIBS} Driver SMDS ${Boost_LIBRARIES})
 
 SET_BIN_DIR(DriverSTL DriverSTL)
 if(WIN32)
@@ -244,7 +252,7 @@ endif(WIN32)
 ###########
 FILE(GLOB SMESHDS_source_files src/SMESHDS/*.cpp inc/SMESHDS_*.h*)
 ADD_LIBRARY(SMESHDS SHARED ${SMESHDS_source_files})
-TARGET_LINK_LIBRARIES(SMESHDS ${SMESH_LIBS} SMDS )
+TARGET_LINK_LIBRARIES(SMESHDS ${SMESH_LIBS} SMDS ${Boost_LIBRARIES} )
 
 SET_BIN_DIR(SMESHDS SMESHDS)
 
@@ -256,9 +264,9 @@ SET_BIN_DIR(SMESHDS SMESHDS)
 #########
 # SMESH #
 #########
-FILE(GLOB SMESH_source_files src/SMESH/*.cpp src/Controls/*.cpp inc/SMESH_*.h*)
+FILE(GLOB SMESH_source_files src/SMESH/*.c src/SMESH/*.cpp src/Controls/*.cpp inc/SMESH_*.h*)
 ADD_LIBRARY(SMESH SHARED ${SMESH_source_files})
-TARGET_LINK_LIBRARIES(SMESH SMDS SMESHDS  Driver DriverSTL DriverDAT DriverUNV ${SMESH_LIBS})
+TARGET_LINK_LIBRARIES(SMESH SMDS SMESHDS  Driver DriverSTL DriverDAT DriverUNV ${SMESH_LIBS} ${OPENCASCADE_LIBRARIES} ${OCC_LIBRARIES} ${OCC_DEBUG_LIBRARIES} ${OCC_OCAF_DEBUG_LIBRARIES} ${OCC_OCAF_LIBRARIES} ${MEDFILE_LIBRARIES})
  
 SET_BIN_DIR(SMESH SMESH)
 if(WIN32)
@@ -362,7 +370,7 @@ if (BUILD_FEM_NETGEN)
 ################
 FILE(GLOB NETGENPlugin_source_files src/NETGENPlugin/*.cpp inc/NETGENPlugin_*.h* )
 ADD_LIBRARY(NETGENPlugin SHARED ${NETGENPlugin_source_files})
-TARGET_LINK_LIBRARIES(NETGENPlugin SMDS SMESHDS SMESH StdMeshers  ${SMESH_LIBS} )
+TARGET_LINK_LIBRARIES(NETGENPlugin SMDS SMESHDS SMESH StdMeshers ${SMESH_LIBS} )
 
 SET_BIN_DIR(NETGENPlugin NETGENPlugin)
 if(WIN32)

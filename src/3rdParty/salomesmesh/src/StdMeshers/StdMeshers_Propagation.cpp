@@ -1,34 +1,36 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_Propagation.cxx
 //  Module : SMESH
-
+//
 #include "StdMeshers_Propagation.hxx"
 
 #include "utilities.h"
 
 #include "SMDS_SetIterator.hxx"
 #include "SMESH_Algo.hxx"
+#include "SMESH_Gen.hxx"
 #include "SMESH_HypoFilter.hxx"
 #include "SMESH_Mesh.hxx"
 #include "SMESH_subMesh.hxx"
@@ -39,7 +41,7 @@
 #include <TopoDS.hxx>
 
 #define DBGMSG(txt) \
-//  cout << txt << endl;
+  //  cout << txt << endl;
 
 using namespace std;
 
@@ -62,7 +64,8 @@ namespace {
     /*!
      * \brief Return an edge from which hypotheses are propagated from
      */
-    static TopoDS_Edge GetSource(SMESH_subMesh * submesh);
+    static TopoDS_Edge GetSource(SMESH_subMesh * submesh,
+                                 bool&           isPropagOfDistribution);
     /*!
      * \brief Does it's main job
      */
@@ -88,25 +91,40 @@ StdMeshers_Propagation::StdMeshers_Propagation (int hypId, int studyId, SMESH_Ge
   _name = GetName();
   _param_algo_dim = -1; // 1D auxiliary
 }
+StdMeshers_PropagOfDistribution::StdMeshers_PropagOfDistribution (int hypId,
+                                                                  int studyId,
+                                                                  SMESH_Gen * gen)
+  : StdMeshers_Propagation(hypId, studyId, gen)                        { _name = GetName(); }
 StdMeshers_Propagation::~StdMeshers_Propagation()                      {}
 string StdMeshers_Propagation::GetName ()                              { return "Propagation"; }
+string StdMeshers_PropagOfDistribution::GetName ()                     { return "PropagOfDistribution"; }
 ostream & StdMeshers_Propagation::SaveTo (ostream & save)              { return save; }
 istream & StdMeshers_Propagation::LoadFrom (istream & load)            { return load; }
-ostream & operator << (ostream & save, StdMeshers_Propagation & hyp)   { return hyp.SaveTo(save); }
-istream & operator >> (istream & load, StdMeshers_Propagation & hyp)   { return hyp.LoadFrom(load); }
 bool StdMeshers_Propagation::SetParametersByMesh(const SMESH_Mesh*,
                                                  const TopoDS_Shape& ) { return false; }
 bool StdMeshers_Propagation::SetParametersByDefaults(const TDefaults&,const SMESH_Mesh*) { return false; }
 void StdMeshers_Propagation::SetPropagationMgr(SMESH_subMesh* subMesh) { PropagationMgr::Set( subMesh ); }
 /*!
- * \brief Return an edge from which hypotheses are propagated from
+ * \brief Return an edge from which hypotheses are propagated
  */
-TopoDS_Edge StdMeshers_Propagation::GetPropagationSource(SMESH_Mesh& theMesh,
-                                                         const TopoDS_Shape& theEdge)
+TopoDS_Edge StdMeshers_Propagation::GetPropagationSource(SMESH_Mesh&         theMesh,
+                                                         const TopoDS_Shape& theEdge,
+                                                         bool&               isPropagOfDistribution)
 {
-  return PropagationMgr::GetSource(theMesh.GetSubMeshContaining( theEdge ));
+  return PropagationMgr::GetSource( theMesh.GetSubMeshContaining( theEdge ),
+                                    isPropagOfDistribution);
 }
-
+const SMESH_HypoFilter& StdMeshers_Propagation::GetFilter()
+{
+  static SMESH_HypoFilter propagHypFilter;
+  if ( propagHypFilter.IsEmpty() )
+  {
+    propagHypFilter.
+      Init( SMESH_HypoFilter::HasName( StdMeshers_Propagation::GetName ())).
+      Or  ( SMESH_HypoFilter::HasName( StdMeshers_PropagOfDistribution::GetName ()));
+  }
+  return propagHypFilter;
+}
 //=============================================================================
 //=============================================================================
 // PROPAGATION MANAGEMENT
@@ -124,11 +142,13 @@ namespace {
   struct PropagationMgrData : public EventListenerData
   {
     bool myForward; //!< true if a curve of edge in chain is codirected with one of source edge
+    bool myIsPropagOfDistribution; //!< type of Propagation hyp
     PropagationMgrData( SubMeshState state=WAIT_PROPAG_HYP ): EventListenerData(true) {
-      myType = state; myForward = true;
+      myType = state; myForward = true; myIsPropagOfDistribution = false;
     }
     void Init() {
       myType = WAIT_PROPAG_HYP;  mySubMeshes.clear(); myForward = true;
+      myIsPropagOfDistribution = false;
     }
     SubMeshState State() const {
       return (SubMeshState) myType;
@@ -199,25 +219,27 @@ namespace {
   /*!
    * \brief Returns a local 1D hypothesis used for theEdge
    */
-  const SMESH_Hypothesis* getLocal1DHyp (SMESH_Mesh&         theMesh,
-                                         const TopoDS_Shape& theEdge)
+  const SMESH_Hypothesis* getLocal1DHyp (SMESH_subMesh*      theSubMesh,
+                                         //const TopoDS_Shape& theEdge,
+                                         TopoDS_Shape*       theSssignedTo=0)
   {
     static SMESH_HypoFilter hypo;
     hypo.Init( hypo.HasDim( 1 )).
       AndNot ( hypo.IsAlgo() ).
-      AndNot ( hypo.IsAssignedTo( theMesh.GetMeshDS()->ShapeToMesh() ));
-    return theMesh.GetHypothesis( theEdge, hypo, true );
+      AndNot ( hypo.HasName( StdMeshers_Propagation::GetName() )).
+      AndNot ( hypo.HasName( StdMeshers_PropagOfDistribution::GetName() )).
+      AndNot ( hypo.IsAssignedTo( theSubMesh->GetFather()->GetShapeToMesh() ));
+
+    return theSubMesh->GetFather()->GetHypothesis( theSubMesh, hypo, true, theSssignedTo );
   }
   //=============================================================================
   /*!
    * \brief Returns a propagation hypothesis assigned to theEdge
    */
-  const SMESH_Hypothesis* getProagationHyp (SMESH_Mesh&         theMesh,
-                                            const TopoDS_Shape& theEdge)
+  const SMESH_Hypothesis* getProagationHyp (SMESH_subMesh* theSubMesh)
   {
-    static SMESH_HypoFilter propagHypFilter
-      ( SMESH_HypoFilter::HasName( StdMeshers_Propagation::GetName ()));
-    return theMesh.GetHypothesis( theEdge, propagHypFilter, true );
+    return theSubMesh->GetFather()->GetHypothesis
+      ( theSubMesh, StdMeshers_Propagation::GetFilter(), true );
   }
   //================================================================================
   /*!
@@ -243,8 +265,16 @@ namespace {
 
     SMESH_Mesh* mesh = theMainSubMesh->GetFather();
 
+    TopoDS_Shape shapeOfHyp1D; // shape to which an hyp being propagated is assigned
+    const SMESH_Hypothesis* hyp1D = getLocal1DHyp( theMainSubMesh, &shapeOfHyp1D );
+    SMESH_HypoFilter moreLocalCheck( SMESH_HypoFilter::IsMoreLocalThan( shapeOfHyp1D, *mesh ));
+
     PropagationMgrData* chainData = getData( theMainSubMesh );
     chainData->SetState( HAS_PROPAG_HYP );
+
+    if ( const SMESH_Hypothesis * propagHyp = getProagationHyp( theMainSubMesh ))
+      chainData->myIsPropagOfDistribution =
+        ( StdMeshers_PropagOfDistribution::GetName() == propagHyp->GetName() );
 
     // Edge submeshes, to which the 1D hypothesis will be propagated from theMainEdge
     list<SMESH_subMesh*> & chain = chainData->mySubMeshes;
@@ -253,6 +283,8 @@ namespace {
 
     TopTools_MapOfShape checkedShapes;
     checkedShapes.Add( theMainEdge );
+
+    vector<TopoDS_Edge> edges;
 
     list<SMESH_subMesh*>::iterator smIt = chain.begin();
     for ( ; smIt != chain.end(); ++smIt )
@@ -266,13 +298,12 @@ namespace {
       for (; itA.More(); itA.Next())
       {
         // there are objects of different type among the ancestors of edge
-        if ( itA.Value().ShapeType() != TopAbs_WIRE || !checkedShapes.Add( itA.Value() ))
+        if ( itA.Value().ShapeType() != TopAbs_WIRE /*|| !checkedShapes.Add( itA.Value() )*/)
           continue;
 
         // Get ordered edges and find index of anE in a sequence
+        edges.clear();
         BRepTools_WireExplorer aWE (TopoDS::Wire(itA.Value()));
-        vector<TopoDS_Edge> edges;
-        edges.reserve(4);
         int edgeIndex = 0;
         for (; aWE.More(); aWE.Next()) {
           TopoDS_Edge edge = aWE.Current();
@@ -288,8 +319,7 @@ namespace {
           continue; // too few edges
         }
         else if ( edges.size() == 4 ) {
-          int oppIndex = edgeIndex + 2;
-          if ( oppIndex > 3 ) oppIndex -= 4;
+          int oppIndex = ( edgeIndex + 2 ) % 4;
           anOppE = edges[ oppIndex ];
         }
         else {
@@ -337,7 +367,8 @@ namespace {
         if ( oppData->State() == WAIT_PROPAG_HYP ) // ... anOppE is not in any chain
         {
           oppData->SetSource( theMainSubMesh );
-          if ( !getLocal1DHyp( *mesh, anOppE )) // ... no 1d hyp on anOppE
+          if ( ! (hyp1D = getLocal1DHyp( oppSM, &shapeOfHyp1D )) || //...no 1d hyp on anOppE
+               ! (moreLocalCheck.IsOk( hyp1D, shapeOfHyp1D ))) // ... or hyp1D is "more global"
           {
             oppData->myForward = data->myForward;
             if ( edges[ edgeIndex ].Orientation() == anOppE.Orientation() )
@@ -346,6 +377,10 @@ namespace {
             oppSM->ComputeStateEngine( SMESH_subMesh::CLEAN );
             oppData->SetState( IN_CHAIN );
             DBGMSG( "set IN_CHAIN on " << oppSM->GetId() );
+            if ( oppSM->GetAlgoState() != SMESH_subMesh::HYP_OK )
+              // make oppSM check algo state
+              if ( SMESH_Algo* algo = oppSM->GetAlgo() )
+                oppSM->AlgoStateEngine(SMESH_subMesh::ADD_FATHER_ALGO, algo);
           }
           else {
             oppData->SetState( LAST_IN_CHAIN );
@@ -444,7 +479,8 @@ namespace {
   //================================================================================
 
   PropagationMgr::PropagationMgr()
-    : SMESH_subMeshEventListener( false ) // won't be deleted by submesh
+    : SMESH_subMeshEventListener( false, // won't be deleted by submesh
+                                  "StdMeshers_Propagation::PropagationMgr")
   {}
   //================================================================================
   /*!
@@ -454,18 +490,23 @@ namespace {
 
   void PropagationMgr::Set(SMESH_subMesh * submesh)
   {
+    if ( findData( submesh )) return;
     DBGMSG( "PropagationMgr::Set() on  " << submesh->GetId() );
-    EventListenerData* data = new PropagationMgrData();
+    PropagationMgrData* data = new PropagationMgrData();
     submesh->SetEventListener( getListener(), data, submesh );
 
     const SMESH_Hypothesis * propagHyp =
-      getProagationHyp( *submesh->GetFather(), submesh->GetSubShape() );
+      getProagationHyp( submesh );
     if ( propagHyp )
+    {
+      data->myIsPropagOfDistribution =
+        ( StdMeshers_PropagOfDistribution::GetName() == propagHyp->GetName() );
       getListener()->ProcessEvent( SMESH_subMesh::ADD_HYP,
                                    SMESH_subMesh::ALGO_EVENT,
                                    submesh,
                                    data,
                                    propagHyp);
+    }
   }
   //================================================================================
   /*!
@@ -473,7 +514,8 @@ namespace {
    */
   //================================================================================
 
-  TopoDS_Edge PropagationMgr::GetSource(SMESH_subMesh * submesh)
+  TopoDS_Edge PropagationMgr::GetSource(SMESH_subMesh * submesh,
+                                        bool&           isPropagOfDistribution)
   {
     if ( PropagationMgrData* data = findData( submesh )) {
       if ( data->State() == IN_CHAIN ) {
@@ -482,6 +524,9 @@ namespace {
           TopoDS_Shape edge = sm->GetSubShape();
           edge = edge.Oriented( data->myForward ? TopAbs_FORWARD : TopAbs_REVERSED );
           DBGMSG( " GetSource() = edge " << sm->GetId() << " REV = " << (!data->myForward));
+          isPropagOfDistribution = false;
+          if ( PropagationMgrData* data = findData( sm ))
+            isPropagOfDistribution = data->myIsPropagOfDistribution;
           if ( edge.ShapeType() == TopAbs_EDGE )
             return TopoDS::Edge( edge );
         }
@@ -495,9 +540,9 @@ namespace {
    */
   //================================================================================
 
-  void PropagationMgr::ProcessEvent(const int          event,
-                                    const int          eventType,
-                                    SMESH_subMesh*     subMesh,
+  void PropagationMgr::ProcessEvent(const int                       event,
+                                    const int                       eventType,
+                                    SMESH_subMesh*                  subMesh,
                                     SMESH_subMeshEventListenerData* listenerData,
                                     const SMESH_Hypothesis*         hyp)
   {
@@ -509,18 +554,18 @@ namespace {
       return;
     DBGMSG( "PropagationMgr::ProcessEvent() on  " << subMesh->GetId() );
 
-    bool isPropagHyp = ( StdMeshers_Propagation::GetName() == hyp->GetName() );
+    bool isPropagHyp = ( StdMeshers_Propagation::GetName()          == hyp->GetName() ||
+                         StdMeshers_PropagOfDistribution::GetName() == hyp->GetName() );
 
     PropagationMgrData* data = static_cast<PropagationMgrData*>( listenerData );
     switch ( data->State() ) {
 
     case WAIT_PROPAG_HYP: { // propagation hyp or local 1D hyp is missing
       // --------------------------------------------------------
-      bool hasPropagHyp = ( isPropagHyp ||
-                            getProagationHyp( *subMesh->GetFather(), subMesh->GetSubShape()) );
+      bool hasPropagHyp = ( isPropagHyp || getProagationHyp( subMesh ));
       if ( !hasPropagHyp )
         return;
-      bool hasLocal1DHyp =  getLocal1DHyp( *subMesh->GetFather(), subMesh->GetSubShape());
+      bool hasLocal1DHyp =  getLocal1DHyp( subMesh );
       if ( !hasLocal1DHyp )
         return;
       if ( event == SMESH_subMesh::ADD_HYP ||
@@ -537,7 +582,7 @@ namespace {
       switch ( event ) {
       case SMESH_subMesh::REMOVE_HYP:
       case SMESH_subMesh::REMOVE_FATHER_HYP: // remove propagation hyp
-        if ( isPropagHyp && !getProagationHyp( *subMesh->GetFather(), subMesh->GetSubShape()) )
+        if ( isPropagHyp && !getProagationHyp( subMesh ))
         {
           DBGMSG( "REMOVE_HYP propagation from HAS_PROPAG_HYP " << subMesh->GetId() );
           // clear propagation chain
