@@ -48,10 +48,11 @@ void DlgSettingsFemImp::saveSettings()
         ("User parameter:BaseApp/Preferences/Mod/Fem");
     hGrp->SetInt("AnalysisType", cb_analysis_type->currentIndex());
 
-    fc_ccx_working_directory->onSave();
+    fc_analysis_working_directory->onSave();
     cb_int_editor->onSave();
     fc_ext_editor->onSave();
     fc_ccx_binary->onSave();
+    fc_z88_binary->onSave();
     cb_analysis_type->onSave();
     sb_eigenmode_number->onSave();
     dsb_eigenmode_high_limit->onSave();
@@ -65,10 +66,11 @@ void DlgSettingsFemImp::saveSettings()
 
 void DlgSettingsFemImp::loadSettings()
 {
-    fc_ccx_working_directory->onRestore();
+    fc_analysis_working_directory->onRestore();
     cb_int_editor->onRestore();
     fc_ext_editor->onRestore();
     fc_ccx_binary->onRestore();
+    fc_z88_binary->onRestore();
     cb_analysis_type->onRestore();
     sb_eigenmode_number->onRestore();
     dsb_eigenmode_high_limit->onRestore();

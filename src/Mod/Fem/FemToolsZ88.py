@@ -26,6 +26,7 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import FreeCAD
 import FemTools
 from PySide import QtCore
 from PySide.QtGui import QApplication
@@ -37,7 +38,6 @@ class FemToolsZ88(FemTools.FemTools):
 
     ## The constructor
     #  @param analysis - analysis object to be used as the core object.
-    #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
     def __init__(self, analysis=None, test_mode=False):
@@ -55,12 +55,12 @@ class FemToolsZ88(FemTools.FemTools):
             if self.solver:
                 self.set_analysis_type()
                 self.setup_working_dir()
+                self.setup_z88()
             else:
                 raise Exception('FEM: No solver found!')
         else:
             raise Exception('FEM: No active analysis found!')
 
-        self.z88_binary = "/home/hugo/z88progr/z88v14os/bin/unix64/z88r"
         self.z88_is_running = False
         self.z88_testrun = QtCore.QProcess()
         self.z88_solverun = QtCore.QProcess()
@@ -85,6 +85,23 @@ class FemToolsZ88(FemTools.FemTools):
         except:
             print("Unexpected error when writing Z88 input files:", sys.exc_info()[0])
             raise
+
+    ## Sets Z88 solver z88r binary path
+    #  @param self The python object self
+    #  @z88_binary path to z88r binary, default is guessed: "bin/z88r" windows, "z88r" for other systems
+    def setup_z88(self, z88_binary=None):
+        from platform import system
+        if not z88_binary:
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+            z88_binary = self.fem_prefs.GetString("z88BinaryPath", "")
+        if not z88_binary:
+            if system() == "Linux":
+                z88_binary = "z88r"
+            elif system() == "Windows":
+                z88_binary = FreeCAD.getHomePath() + "bin/z88r.exe"
+            else:
+                z88_binary = "z88r"
+        self.z88_binary = z88_binary
 
     def run(self):
         # TODO: reimplement the process handling for z88 binary
