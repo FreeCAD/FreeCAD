@@ -25,7 +25,7 @@
 #***************************************************************************/
 
 import Fem
-import FemTools
+import FemToolsCcx
 import FreeCAD
 import FemAnalysis
 import FemSolverCalculix
@@ -202,7 +202,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(self.pressure_constraint, "FemTest of new pressure constraint failed")
         self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
 
-        fea = FemTools.FemTools(self.analysis, test_mode=True)
+        fea = FemToolsCcx.FemToolsCcx(self.analysis, test_mode=True)
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
@@ -210,7 +210,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for static analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
 
@@ -224,7 +224,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_analysis_dir, mesh_name))
         ret = self.compare_inp_files(static_analysis_inp_file, static_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemTools write_inp_file test failed.\n{}".format(ret))
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -266,7 +266,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, mesh_name))
         error = fea.write_inp_file()
@@ -274,7 +274,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Comparing {} to {}/{}.inp'.format(frequency_analysis_inp_file, frequency_analysis_dir, mesh_name))
         ret = self.compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemTools write_inp_file test failed.\n{}".format(ret))
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -322,8 +322,8 @@ def create_cube_test_results():
     FreeCAD.open(cube_file)
     import FemGui
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.MechanicalAnalysis)
-    import FemTools
-    fea = FemTools.FemTools()
+    import FemToolsCcx
+    fea = FemToolsCcx.FemToolsCcx()
 
     # static
     fea.reset_all()
@@ -340,7 +340,7 @@ def create_cube_test_results():
         f.write(s)
     f.close()
 
-    # could be added in FemTools to the self object as an Attribut
+    # could be added in FemToolsCcx to the self object as an Attribut
     frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
     dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
 

@@ -25,7 +25,6 @@ __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
-from FemTools import FemTools
 from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
@@ -48,18 +47,21 @@ class _CommandQuickAnalysis(FemCommands):
                 self.fea.load_results()
                 self.show_results_on_mesh()
                 self.hide_parts_constraints_show_meshes()
-
             else:
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
-        self.fea = FemTools()
-        self.fea.reset_all()
-        message = self.fea.check_prerequisites()
-        if message:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-            return
-        self.fea.finished.connect(load_results)
-        QtCore.QThreadPool.globalInstance().start(self.fea)
+        if FreeCADGui.Selection.getSelection()[0].SolverType == "FemSolverCalculix":
+            import FemToolsCcx
+            self.fea = FemToolsCcx.FemToolsCcx()
+            self.fea.reset_all()
+            message = self.fea.check_prerequisites()
+            if message:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+                return
+            self.fea.finished.connect(load_results)
+            QtCore.QThreadPool.globalInstance().start(self.fea)
+        else:
+            QtGui.QMessageBox.critical(None, "Not known solver type", message)
 
     def show_results_on_mesh(self):
         #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
