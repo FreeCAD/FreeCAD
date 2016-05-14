@@ -43,6 +43,7 @@
 using namespace std;
 
 #ifndef WIN32
+#include <sys.wait.>
 #if !(defined(__MACH__) && defined(__APPLE__))
 #include <sys/sysinfo.h>
 #endif

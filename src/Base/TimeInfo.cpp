@@ -57,10 +57,13 @@ TimeInfo::~TimeInfo()
 
 void TimeInfo::setCurrent(void)
 {
-#if defined (_MSC_VER)
+#if defined (FC_OS_WIN32)
     _ftime( &timebuffer );
-#elif defined(__GNUC__)
-    ftime( &timebuffer );
+#else
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    timebuffer.time = t.tv_sec;
+    timebuffer.millitm = t.tv_usec / 1000;
 #endif
 }
 
