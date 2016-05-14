@@ -148,6 +148,19 @@ def get_elset_short_name(obj, i):
         print('Error: ', obj.Name, ' --> ', obj.Proxy.Type)
 
 
+def get_force_obj_vertex_nodeload_table(femmesh, frc_obj):
+    # force_obj_node_load_table = [('refshape_name.elemname',node_load_table), ..., ('refshape_name.elemname',node_load_table)]
+    force_obj_node_load_table = []
+    node_load = frc_obj.Force / len(frc_obj.References)
+    for o, elem in frc_obj.References:
+        elem_o = o.Shape.getElement(elem)
+        node = femmesh.getNodesByVertex(elem_o)
+        elem_info_string = 'node load on shape: ' + o.Name + ':' + elem
+        force_obj_node_load_table.append((elem_info_string, {node[0]: node_load}))
+
+    return force_obj_node_load_table
+
+
 def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, frc_obj):
     # force_obj_node_load_table = [('refshape_name.elemname',node_load_table), ..., ('refshape_name.elemname',node_load_table)]
     force_obj_node_load_table = []

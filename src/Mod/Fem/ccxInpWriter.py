@@ -78,8 +78,6 @@ class inp_writer:
         self.write_element_sets_material_and_femelement_type(inpfile)
         self.write_node_sets_constraints_fixed(inpfile)
         self.write_node_sets_constraints_displacement(inpfile)
-        if self.analysis_type is None or self.analysis_type == "static":
-            self.write_node_sets_constraints_force(inpfile)
         self.write_materials(inpfile)
         self.write_femelementsets(inpfile)
         self.write_step_begin(inpfile)
@@ -158,56 +156,6 @@ class inp_writer:
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
-
-    def write_node_sets_constraints_force(self, f):
-        # check shape type of reference shape
-        for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            frc_obj = femobj['Object']
-            # in GUI defined frc_obj all ref_shape have the same shape type
-            # TODO in FemTools: check if all RefShapes really have the same type an write type to dictionary
-            femobj['RefShapeType'] = ''
-            if frc_obj.References:
-                first_ref_obj = frc_obj.References[0]
-                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1])
-                femobj['RefShapeType'] = first_ref_shape.ShapeType
-            else:
-                # frc_obj.References could be empty ! # TODO in FemTools: check
-                FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
-            if femobj['RefShapeType'] == 'Vertex':
-                print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
-                pass
-            elif femobj['RefShapeType'] == 'Face' and FemMeshTools.is_solid_mesh(self.femmesh) and not FemMeshTools.has_no_face_data(self.femmesh):
-                print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
-                if not self.femnodes_mesh:
-                    self.femnodes_mesh = self.femmesh.Nodes
-            else:
-                print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
-                if not self.femnodes_mesh:
-                    self.femnodes_mesh = self.femmesh.Nodes
-                if not self.femelement_table:
-                    self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        # point loads on vertices, get nodes
-        for femobj in self.force_objects:
-            if femobj['RefShapeType'] == 'Vertex':
-                femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
-                # calculate node load
-                if len(femobj['Nodes']) != 0:
-                    femobj['NodeLoad'] = (femobj['Object'].Force) / len(femobj['Nodes'])
-        # point loads on vertices, write nodes to file
-        f.write('\n***********************************************************\n')
-        f.write('** Node sets for loads\n')
-        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.force_objects:
-            if femobj['RefShapeType'] == 'Vertex':
-                frc_obj = femobj['Object']
-                f.write('*NSET,NSET=' + frc_obj.Name + '\n')
-                for n in femobj['Nodes']:
-                    f.write(str(n) + ',\n')
-                f.write('** concentrated load [N] distributed on all mesh nodes of the given vertieces\n')
-                f.write('** ' + str(frc_obj.Force) + ' N / ' + str(len(femobj['Nodes'])) + ' Nodes = ' + str(femobj['NodeLoad']) + ' N on each node\n')
-                f.write('\n')
-            else:
-                f.write('** no point load on vertices --> no set for node loads\n')
 
     def write_materials(self, f):
         f.write('\n***********************************************************\n')
@@ -322,12 +270,40 @@ class inp_writer:
         f.write('\n')
 
     def write_constraints_force(self, f):
+        # check shape type of reference shape
+        for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            frc_obj = femobj['Object']
+            # in GUI defined frc_obj all ref_shape have the same shape type
+            # TODO in FemTools: check if all RefShapes really have the same type an write type to dictionary
+            femobj['RefShapeType'] = ''
+            if frc_obj.References:
+                first_ref_obj = frc_obj.References[0]
+                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1])
+                femobj['RefShapeType'] = first_ref_shape.ShapeType
+            else:
+                # frc_obj.References could be empty ! # TODO in FemTools: check
+                FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
+            if femobj['RefShapeType'] == 'Vertex':
+                #print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
+                pass
+            elif femobj['RefShapeType'] == 'Face' and FemMeshTools.is_solid_mesh(self.femmesh) and not FemMeshTools.has_no_face_data(self.femmesh):
+                #print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
+                if not self.femnodes_mesh:
+                    self.femnodes_mesh = self.femmesh.Nodes
+            else:
+                #print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
+                if not self.femnodes_mesh:
+                    self.femnodes_mesh = self.femmesh.Nodes
+                if not self.femelement_table:
+                    self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
         # get node loads
         for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             frc_obj = femobj['Object']
             if frc_obj.Force == 0:
                 print('  Warning --> Force = 0')
-            if femobj['RefShapeType'] == 'Edge':  # line load on edges
+            if femobj['RefShapeType'] == 'Vertex':  # point load on vertieces
+                femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_vertex_nodeload_table(self.femmesh, frc_obj)
+            elif femobj['RefShapeType'] == 'Edge':  # line load on edges
                 femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_edge_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
             elif femobj['RefShapeType'] == 'Face':  # area load on faces
                 femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_face_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
@@ -340,31 +316,21 @@ class inp_writer:
             frc_obj_name = femobj['Object'].Name
             direction_vec = femobj['Object'].DirectionVector
             f.write('** ' + frc_obj_name + '\n')
-            if femobj['RefShapeType'] == 'Vertex':  # point load on vertieces
-                node_load = femobj['NodeLoad']
-                f.write('** force: ' + str(node_load) + ' N,  direction: ' + str(direction_vec) + '\n')
-                v1 = "{:.13E}".format(direction_vec.x * node_load)
-                v2 = "{:.13E}".format(direction_vec.y * node_load)
-                v3 = "{:.13E}".format(direction_vec.z * node_load)
-                f.write(frc_obj_name + ',1,' + v1 + '\n')
-                f.write(frc_obj_name + ',2,' + v2 + '\n')
-                f.write(frc_obj_name + ',3,' + v3 + '\n\n')
-            elif femobj['RefShapeType'] == 'Edge' or femobj['RefShapeType'] == 'Face':
-                for ref_shape in femobj['NodeLoadTable']:
-                    f.write('** ' + ref_shape[0] + '\n')
-                    for n in sorted(ref_shape[1]):
-                        node_load = ref_shape[1][n]
-                        if (direction_vec.x != 0.0):
-                            v1 = "{:.13E}".format(direction_vec.x * node_load)
-                            f.write(str(n) + ',1,' + v1 + '\n')
-                        if (direction_vec.y != 0.0):
-                            v2 = "{:.13E}".format(direction_vec.y * node_load)
-                            f.write(str(n) + ',2,' + v2 + '\n')
-                        if (direction_vec.z != 0.0):
-                            v3 = "{:.13E}".format(direction_vec.z * node_load)
-                            f.write(str(n) + ',3,' + v3 + '\n')
-                    f.write('\n')
+            for ref_shape in femobj['NodeLoadTable']:
+                f.write('** ' + ref_shape[0] + '\n')
+                for n in sorted(ref_shape[1]):
+                    node_load = ref_shape[1][n]
+                    if (direction_vec.x != 0.0):
+                        v1 = "{:.13E}".format(direction_vec.x * node_load)
+                        f.write(str(n) + ',1,' + v1 + '\n')
+                    if (direction_vec.y != 0.0):
+                        v2 = "{:.13E}".format(direction_vec.y * node_load)
+                        f.write(str(n) + ',2,' + v2 + '\n')
+                    if (direction_vec.z != 0.0):
+                        v3 = "{:.13E}".format(direction_vec.z * node_load)
+                        f.write(str(n) + ',3,' + v3 + '\n')
                 f.write('\n')
+            f.write('\n')
 
     def write_constraints_pressure(self, f):
         f.write('\n***********************************************************\n')
