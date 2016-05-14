@@ -20,24 +20,34 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "SelectionObserverFem"
+__title__ = "_CommandBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-import FreeCADGui
+from FemCommands import FemCommands
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore
 
 
-class SelectionObserverFem:
-    '''SelectionObserverFem'''
-    def __init__(self, parseSelectionFunction, print_message=''):
-        self.parseSelectionFunction = parseSelectionFunction
-        FreeCADGui.Selection.addObserver(self)
-        FreeCAD.Console.PrintMessage(print_message + "!\n")
+class _CommandBeamSection(FemCommands):
+    "The Fem_BeamSection command definition"
+    def __init__(self):
+        super(_CommandBeamSection, self).__init__()
+        self.resources = {'Pixmap': 'fem-beam-section',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Beam cross section"),
+                          'Accel': "C, B",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_BeamSection", "Creates a FEM beam cross section")}
+        self.is_active = 'with_analysis'
 
-    def addSelection(self, docName, objName, sub, pos):
-        selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
-        self.added_obj = (selected_object, sub)
-        # on double click on a vertex of a solid sub is None and obj is the solid
-        self.parseSelectionFunction(self.added_obj)
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemBeamSection")
+        FreeCADGui.addModule("FemBeamSection")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemBeamSection.makeFemBeamSection()]")
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Fem_BeamSection', _CommandBeamSection())

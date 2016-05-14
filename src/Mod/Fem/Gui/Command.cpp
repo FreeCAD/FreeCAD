@@ -272,8 +272,8 @@ CmdFemConstraintBearing::CmdFemConstraintBearing()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM bearing constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a bearing");
+    sMenuText       = QT_TR_NOOP("Constraint bearing");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a bearing");
     sWhatsThis      = "Fem_ConstraintBearing";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-bearing";
@@ -313,8 +313,8 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM fixed constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a fixed geometric entity");
+    sMenuText       = QT_TR_NOOP("Constraint fixed");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a fixed geometric entity");
     sWhatsThis      = "Fem_ConstraintFixed";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-fixed";
@@ -355,8 +355,8 @@ CmdFemConstraintForce::CmdFemConstraintForce()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM force constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a force acting on a geometric entity");
+    sMenuText       = QT_TR_NOOP("constraint force");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
     sWhatsThis      = "Fem_ConstraintForce";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-force";
@@ -399,8 +399,8 @@ CmdFemConstraintPressure::CmdFemConstraintPressure()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM pressure constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a pressure acting on a face");
+    sMenuText       = QT_TR_NOOP("Constraint pressure");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pressure acting on a face");
     sWhatsThis      = "Fem_ConstraintPressure";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-pressure";
@@ -444,8 +444,8 @@ CmdFemConstraintGear::CmdFemConstraintGear()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM gear constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a gear");
+    sMenuText       = QT_TR_NOOP("Constraint gear");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a gear");
     sWhatsThis      = "Fem_ConstraintGear";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-gear";
@@ -485,8 +485,8 @@ CmdFemConstraintPulley::CmdFemConstraintPulley()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM pulley constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a pulley");
+    sMenuText       = QT_TR_NOOP("Constraint pulley");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pulley");
     sWhatsThis      = "Fem_ConstraintPulley";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-pulley";
@@ -530,8 +530,8 @@ CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM displacement constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a displacement acting on a face");
+    sMenuText       = QT_TR_NOOP("Constraint displacement");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a face");
     sWhatsThis      = "Fem_ConstraintDisplacement";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-displacement";
@@ -718,8 +718,8 @@ CmdFemCreateNodesSet::CmdFemCreateNodesSet()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Define/create a nodes set...");
-    sToolTipText    = QT_TR_NOOP("Define/create a nodes set...");
+    sMenuText       = QT_TR_NOOP("Nodes set");
+    sToolTipText    = QT_TR_NOOP("Create a FEM mesh nodes set");
     sWhatsThis      = "Fem_CreateNodesSet";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-fem-mesh-create-node-by-poly";

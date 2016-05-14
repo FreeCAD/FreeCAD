@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandFemSolverCalculix"
+__title__ = "_CommandShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -33,21 +33,21 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
 
 
-class _CommandFemSolverCalculix(FemCommands):
-    "The Fem_SolverCalculix command definition"
+class _CommandShellThickness(FemCommands):
+    "The Fem_ShellThickness command definition"
     def __init__(self):
-        super(_CommandFemSolverCalculix, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Create FEM Solver CalculiX ..."),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Creates FEM Solver CalculiX")}
-        self.is_active = 'with_analysis_without_solver'
+        super(_CommandShellThickness, self).__init__()
+        self.resources = {'Pixmap': 'fem-shell-thickness',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Shell plate thickness"),
+                          'Accel': "C, S",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShellThickness", "Creates a FEM shell plate thickness")}
+        self.is_active = 'with_analysis'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
-        FreeCADGui.addModule("FemSolverCalculix")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemSolverCalculix.makeFemSolverCalculix()]")
+        FreeCAD.ActiveDocument.openTransaction("Create FemShellThickness")
+        FreeCADGui.addModule("FemShellThickness")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemShellThickness.makeFemShellThickness()]")
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_SolverCalculix', _CommandFemSolverCalculix())
+    FreeCADGui.addCommand('Fem_ShellThickness', _CommandShellThickness())
