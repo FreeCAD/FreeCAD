@@ -26,6 +26,8 @@ include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
 
 #if(CMAKE_CFG_INTDIR STREQUAL .)
     # No Debug/Release output paths
