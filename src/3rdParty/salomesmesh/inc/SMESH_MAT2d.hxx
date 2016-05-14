@@ -30,6 +30,7 @@
 
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Edge.hxx>
+#include <gp.hxx> //added for occ6
 
 #include <vector>
 #include <map>
