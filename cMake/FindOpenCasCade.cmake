@@ -1,3 +1,4 @@
+#
 # Try to find OCE / OCC
 # Once done this will define
 #
