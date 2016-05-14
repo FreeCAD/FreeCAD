@@ -384,6 +384,7 @@ PyMethodDef AttacherGuiPy::Methods[] = {
      "getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."},
     {"getRefTypeUserFriendlyName", (PyCFunction) AttacherGuiPy::sGetRefTypeUserFriendlyName, 1,
      "getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."},
+    {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
 
