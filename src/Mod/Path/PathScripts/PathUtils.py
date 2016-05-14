@@ -26,6 +26,7 @@ import FreeCAD
 import Part
 import math
 from DraftGeomUtils import geomType
+from DraftGeomUtils import findWires
 import DraftVecUtils
 import PathScripts
 from PathScripts import PathProject
@@ -271,9 +272,11 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
 
             sortedpreoff = Part.__sortEdges__(preoffset)
             wire = Part.Wire(sortedpreoff)
+            #wire = findWires(sortedpreoff)[0]
         else:
             sortedpreoff = Part.__sortEdges__(edgelist)
             wire = Part.Wire(sortedpreoff)
+            #wire = findWires(sortedpreoff)[0]
 
     edgelist = []
     for e in wire.Edges:
@@ -287,7 +290,9 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
                 geomType(e) == "BezierCurve" or \
                 geomType(e) == "Ellipse":
             edgelist.append(Part.Wire(curvetowire(e, (SegLen))))
-    newwire = Part.Wire(edgelist)
+    #newwire = Part.Wire(edgelist)
+    sortededges = Part.__sortEdges__(edgelist)
+    newwire = findWires(sortededges)[0]
 
     if Side == 'Left':
         # we use the OCC offset feature
