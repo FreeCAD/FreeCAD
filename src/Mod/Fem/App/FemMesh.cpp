@@ -891,9 +891,16 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     static std::map<int, std::string> faceTypeMap;
     static std::map<int, std::string> volTypeMap;
     if (elemOrderMap.empty()) {
+        // node order fits with node order in ccxFrdReader.py module to import CalculiX result meshes
+
         // dimension 1
         //
+        // seg2 FreeCAD --> CalculiX B31
+        // N1, N2
         std::vector<int> b31 = boost::assign::list_of(0)(1);
+        //
+        // seg3 FreeCAD --> CalculiX B32
+        // N1, N3, N2
         std::vector<int> b32 = boost::assign::list_of(0)(2)(1);
 
         elemOrderMap.insert(std::make_pair("B31", b31));
@@ -903,49 +910,89 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
 
         // dimension 2
         //
+        // tria3 FreeCAD --> S3 CalculiX
+        // N1, N2, N3
         std::vector<int> s3 = boost::assign::list_of(0)(1)(2);
+        //
+        // tria6 FreeCAD --> S6 CalculiX
+        // N1, N2, N3, N4, N5, N6
         std::vector<int> s6 = boost::assign::list_of(0)(1)(2)(3)(4)(5);
-        // FIXME: get the right order
-        std::vector<int> s4r;
-        std::vector<int> s8r;
+        //
+        // quad4 FreeCAD --> S4 CalculiX
+        // N1, N2, N3, N4
+        std::vector<int> s4 = boost::assign::list_of(0)(1)(2)(3);
+        //
+        // quad8 FreeCAD --> S8 CalculiX
+        // N1, N2, N3, N4, N5, N6, N7, N8
+        std::vector<int> s8 = boost::assign::list_of(0)(1)(2)(3)(4)(5)(6)(7);
 
         elemOrderMap.insert(std::make_pair("S3", s3));
         faceTypeMap.insert(std::make_pair(elemOrderMap["S3"].size(), "S3"));
         elemOrderMap.insert(std::make_pair("S6", s6));
         faceTypeMap.insert(std::make_pair(elemOrderMap["S6"].size(), "S6"));
-#if 0
-        elemOrderMap.insert(std::make_pair("S4R", s4r));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S4R"].size(), "S4R"));
-        elemOrderMap.insert(std::make_pair("S8R", s8r));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S8R"].size(), "S8R"));
-#endif
+        elemOrderMap.insert(std::make_pair("S4", s4));
+        faceTypeMap.insert(std::make_pair(elemOrderMap["S4"].size(), "S4"));
+        elemOrderMap.insert(std::make_pair("S8", s8));
+        faceTypeMap.insert(std::make_pair(elemOrderMap["S8"].size(), "S8"));
 
         // dimension 3
         //
+        // tetras
+        // master 0.14 release
+        // changed to this in August 2013, commited by juergen (jriedel)
+        // https://github.com/FreeCAD/FreeCAD/commit/af56b324b9566b20f3b6e7880c29354c1dbe7a99
         //std::vector<int> c3d4  = boost::assign::list_of(0)(3)(1)(2);
         //std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);
+
+        // since master 0.15
+        // added by werner (wmayer) March 2015, http://forum.freecadweb.org/viewtopic.php?f=18&t=10110&start=10#p81681
+        // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
+        // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
+        // tetra4 FreeCAD --> C3D4 CalculiX
+        // N2, N1, N3, N4
         std::vector<int> c3d4  = boost::assign::list_of(1)(0)(2)(3);
+        // tetra10: FreeCAD --> C3D10 CalculiX
+        // N2, N1, N3, N4, N5, N7, N6, N9, N8, N10
         std::vector<int> c3d10 = boost::assign::list_of(1)(0)(2)(3)(4)(6)(5)(8)(7)(9);
-        // FIXME: get the right order
-        std::vector<int> c3d6;
-        std::vector<int> c3d8;
-        std::vector<int> c3d15;
-        std::vector<int> c3d20;
+
+        // tetra node order for the system which is used for hexa8, hexa20, penta6 and penda15
+        // be careful with activating because of method getccxVolumesByFace())
+        // tetra4 FreeCAD --> C3D4 CalculiX
+        // N2, N3, N4, N1
+        //std::vector<int> c3d4  = boost::assign::list_of(1)(2)(3)(0);
+        //
+        // tetra10: FreeCAD --> C3D10 CalculiX
+        // N2, N3, N4, N1, N6, N10, N9, N5, N7, N8
+        //std::vector<int> c3d10 = boost::assign::list_of(1)(2)(3)(0)(5)(9)(8)(4)(6)(7);
+
+        // hexa8 FreeCAD --> C3D8 CalculiX
+        // N6, N7, N8, N5, N2, N3, N4, N1
+        std::vector<int> c3d8 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0) ;
+        //
+        // hexa20 FreeCAD --> C3D20 CalculiX
+        // N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
+        std::vector<int> c3d20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(10)(11)(8)(17)(18)(19)(16) ;
+        //
+        // penta6 FreeCAD --> C3D6 CalculiX
+        // N5, N6, N4, N2, N3, N1
+        std::vector<int> c3d6 = boost::assign::list_of(4)(5)(3)(1)(2)(0) ;
+        //
+        // penta15 FreeCAD --> C3D15 CalculiX
+        // N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
+        std::vector<int> c3d15 = boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12) ;
 
         elemOrderMap.insert(std::make_pair("C3D4", c3d4));
         volTypeMap.insert(std::make_pair(elemOrderMap["C3D4"].size(), "C3D4"));
         elemOrderMap.insert(std::make_pair("C3D10", c3d10));
         volTypeMap.insert(std::make_pair(elemOrderMap["C3D10"].size(), "C3D10"));
-#if 0
-        elemOrderMap.insert(std::make_pair("C3D6", c3d6));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D6"].size(), "C3D6"));
         elemOrderMap.insert(std::make_pair("C3D8", c3d8));
         volTypeMap.insert(std::make_pair(elemOrderMap["C3D8"].size(), "C3D8"));
-        elemOrderMap.insert(std::make_pair("C3D15", c3d15));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D15"].size(), "C3D15"));
         elemOrderMap.insert(std::make_pair("C3D20", c3d20));
         volTypeMap.insert(std::make_pair(elemOrderMap["C3D20"].size(), "C3D20"));
-#endif
+        elemOrderMap.insert(std::make_pair("C3D6", c3d6));
+        volTypeMap.insert(std::make_pair(elemOrderMap["C3D6"].size(), "C3D6"));
+        elemOrderMap.insert(std::make_pair("C3D15", c3d15));
+        volTypeMap.insert(std::make_pair(elemOrderMap["C3D15"].size(), "C3D15"));
     }
 
     std::ofstream anABAQUS_Output;
@@ -1002,9 +1049,21 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     for (ElementsMap::iterator it = elementsMap.begin(); it != elementsMap.end(); ++it) {
         anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Eall" << std::endl;
         for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            anABAQUS_Output << jt->first << ", ";
-            for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-                anABAQUS_Output << *kt << ", ";
+            anABAQUS_Output << jt->first;
+            // Calculix allows max 16 enntries in one line, an hexa20 has more !
+            int ct = 0;  // counter
+            bool first_line = true;
+            for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt, ++ct) {
+                if (ct < 15) {
+                    anABAQUS_Output  << ", " << *kt;
+                }
+                else {
+                    if (first_line == true) {
+                        anABAQUS_Output << "," << std::endl;
+                        first_line = false;
+                    }
+                    anABAQUS_Output << *kt << ", ";
+                }
             }
             anABAQUS_Output << std::endl;
         }
@@ -1037,9 +1096,9 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     for (ElementsMap::iterator it = elementsMap.begin(); it != elementsMap.end(); ++it) {
         anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Eall" << std::endl;
         for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            anABAQUS_Output << jt->first << ", ";
+            anABAQUS_Output << jt->first;
             for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-                anABAQUS_Output << *kt << ", ";
+                anABAQUS_Output << ", " << *kt;
             }
             anABAQUS_Output << std::endl;
         }
@@ -1072,9 +1131,9 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     for (ElementsMap::iterator it = elementsMap.begin(); it != elementsMap.end(); ++it) {
         anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=Eall" << std::endl;
         for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            anABAQUS_Output << jt->first << ", ";
+            anABAQUS_Output << jt->first;
             for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-                anABAQUS_Output << *kt << ", ";
+                anABAQUS_Output << ", " << *kt;
             }
             anABAQUS_Output << std::endl;
         }
@@ -1412,3 +1471,4 @@ Base::Quantity FemMesh::getVolume(void)const
 
 
 }
+
