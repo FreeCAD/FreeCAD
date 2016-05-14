@@ -105,7 +105,8 @@ enum eMapMode {
 
 /**
  * @brief The eRefType enum lists the types of references. If adding one, see
- * also AttachEngine::getShapeType(), AttachEngine::downgradeType(), AttacherTexts.cpp/getShTypeText()
+ * also AttachEngine::eRefTypeStrings, AttachEngine::getShapeType(),
+ * AttachEngine::downgradeType(), AttacherTexts.cpp/getShTypeText()
  */
 enum eRefType {
     //topo             //ranks: (number of times the type is downgradable)
@@ -333,11 +334,24 @@ public://helper functions that may be useful outside of the class
      */
     static std::string getModeName(eMapMode mmode);
 
+    static eMapMode getModeByName(const std::string &modeName);
+
+    static std::string getRefTypeName(eRefType shapeType);
+
+    static eRefType getRefTypeByName(const std::string &typeName);
+
     static GProp_GProps getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes);
 
+    /**
+     * @brief verifyReferencesAreSafe: checks if pointers in references still
+     * point to objects contained in open documents. This guarantees the links
+     * are valid. Throws Base::Exception if invalid links are found.
+     */
+    static void verifyReferencesAreSafe(const App::PropertyLinkSubList& references);
 
 public: //enums
     static const char* eMapModeStrings[];
+    static const char* eRefTypeStrings[];
 
 
 public: //members
