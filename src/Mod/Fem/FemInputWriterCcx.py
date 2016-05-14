@@ -22,19 +22,20 @@
 # ***************************************************************************
 
 
+__title__ = "FemInputWriterCcx"
+__author__ = "Przemo Firszt, Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+
 import FreeCAD
 import os
 import sys
 import time
 import FemMeshTools
+import FemInputWriter
 
 
-__title__ = "ccxInpWriter"
-__author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
-
-
-class inp_writer:
+class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self, analysis_obj, mesh_obj, mat_obj,
                  fixed_obj,
                  force_obj, pressure_obj,
@@ -42,32 +43,16 @@ class inp_writer:
                  beamsection_obj, shellthickness_obj,
                  analysis_type=None, eigenmode_parameters=None,
                  dir_name=None):
-        self.dir_name = dir_name
-        self.analysis = analysis_obj
-        self.mesh_object = mesh_obj
-        self.material_objects = mat_obj
-        self.fixed_objects = fixed_obj
-        self.force_objects = force_obj
-        self.pressure_objects = pressure_obj
-        self.displacement_objects = displacement_obj
-        if eigenmode_parameters:
-            self.no_of_eigenfrequencies = eigenmode_parameters[0]
-            self.eigenfrequeny_range_low = eigenmode_parameters[1]
-            self.eigenfrequeny_range_high = eigenmode_parameters[2]
-        self.analysis_type = analysis_type
-        self.beamsection_objects = beamsection_obj
-        self.shellthickness_objects = shellthickness_obj
-        if not dir_name:
-            self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
-        if not os.path.isdir(self.dir_name):
-            os.mkdir(self.dir_name)
+        FemInputWriter.FemInputWriter.__init__(self, analysis_obj, mesh_obj, mat_obj,
+                                               fixed_obj,
+                                               force_obj, pressure_obj,
+                                               displacement_obj,
+                                               beamsection_obj, shellthickness_obj,
+                                               analysis_type, eigenmode_parameters,
+                                               dir_name)
         self.file_name = self.dir_name + '/' + self.mesh_object.Name + '.inp'
-        self.fc_ver = FreeCAD.Version()
-        self.ccx_eall = 'Eall'
-        self.ccx_elsets = []
-        self.femmesh = self.mesh_object.FemMesh
-        self.femnodes_mesh = {}
-        self.femelement_table = {}
+        print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
+        print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
 
     def write_calculix_input_file(self):
         self.femmesh.writeABAQUS(self.file_name)
@@ -133,8 +118,7 @@ class inp_writer:
 
     def write_node_sets_constraints_fixed(self, f):
         # get nodes
-        for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+        self.get_constraints_fixed_nodes()
         # write nodes to file
         f.write('\n***********************************************************\n')
         f.write('** Node set for fixed constraint\n')
@@ -146,8 +130,7 @@ class inp_writer:
 
     def write_node_sets_constraints_displacement(self, f):
         # get nodes
-        for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+        self.get_constraints_displacement_nodes()
         # write nodes to file
         f.write('\n***********************************************************\n')
         f.write('** Node sets for prescribed displacement constraint\n')
@@ -174,8 +157,7 @@ class inp_writer:
             f.write('**FreeCAD material name: ' + mat_info_name + '\n')
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
             f.write('*ELASTIC \n')
-            f.write('{},  '.format(YM_in_MPa))
-            f.write('{0:.3f}\n'.format(PR))
+            f.write('{0},  {1:.3f}\n'.format(YM_in_MPa, PR))
             density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
             density_in_tone_per_mm3 = float(density.getValueAs('t/mm^3'))
             f.write('*DENSITY \n')
@@ -270,43 +252,8 @@ class inp_writer:
         f.write('\n')
 
     def write_constraints_force(self, f):
-        # check shape type of reference shape
-        for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            frc_obj = femobj['Object']
-            # in GUI defined frc_obj all ref_shape have the same shape type
-            # TODO in FemTools: check if all RefShapes really have the same type an write type to dictionary
-            femobj['RefShapeType'] = ''
-            if frc_obj.References:
-                first_ref_obj = frc_obj.References[0]
-                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1])
-                femobj['RefShapeType'] = first_ref_shape.ShapeType
-            else:
-                # frc_obj.References could be empty ! # TODO in FemTools: check
-                FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
-            if femobj['RefShapeType'] == 'Vertex':
-                #print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
-                pass
-            elif femobj['RefShapeType'] == 'Face' and FemMeshTools.is_solid_mesh(self.femmesh) and not FemMeshTools.has_no_face_data(self.femmesh):
-                #print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
-                if not self.femnodes_mesh:
-                    self.femnodes_mesh = self.femmesh.Nodes
-            else:
-                #print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
-                if not self.femnodes_mesh:
-                    self.femnodes_mesh = self.femmesh.Nodes
-                if not self.femelement_table:
-                    self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        # get node loads
-        for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            frc_obj = femobj['Object']
-            if frc_obj.Force == 0:
-                print('  Warning --> Force = 0')
-            if femobj['RefShapeType'] == 'Vertex':  # point load on vertieces
-                femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_vertex_nodeload_table(self.femmesh, frc_obj)
-            elif femobj['RefShapeType'] == 'Edge':  # line load on edges
-                femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_edge_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
-            elif femobj['RefShapeType'] == 'Face':  # area load on faces
-                femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_face_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
+        # check shape type of reference shape and get node loads
+        self.get_constraints_force_nodeloads()
         # write node loads to file
         f.write('\n***********************************************************\n')
         f.write('** Node loads\n')

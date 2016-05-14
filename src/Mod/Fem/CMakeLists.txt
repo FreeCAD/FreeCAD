@@ -16,12 +16,13 @@ INSTALL(
         SelectionObserverFem.py
         TestFem.py
         FemMeshTools.py
+        FemTools.py
+        FemInputWriter.py
 
         ccxDatReader.py
         ccxFrdReader.py
-        ccxInpWriter.py
-        FemTools.py
         FemToolsCcx.py
+        FemInputWriterCcx.py
 
         FemCommands.py
         _CommandFemFromShape.py
