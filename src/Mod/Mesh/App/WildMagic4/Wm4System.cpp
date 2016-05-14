@@ -22,7 +22,7 @@ using namespace Wm4;
 #include <sys/stat.h>
 
 // support for GetTime
-#ifdef __APPLE__
+#if !defined(WIN32)
 #include <sys/time.h>
 static timeval gs_kInitial;
 static bool gs_bInitializedTime = false;
@@ -103,7 +103,7 @@ void System::EndianCopy (int iSize, int iQuantity, const void* pvSrc,
 //----------------------------------------------------------------------------
 double System::GetTime ()
 {
-#ifdef __APPLE__
+#if !defined(WIN32)
     if (!gs_bInitializedTime)
     {
         gs_bInitializedTime = true;

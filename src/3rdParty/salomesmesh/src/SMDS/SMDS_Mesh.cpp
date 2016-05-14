@@ -46,6 +46,7 @@ using namespace std;
 #if !(defined(__MACH__) && defined(__APPLE__))
 #include <sys/sysinfo.h>
 #endif
+#include <sys/wait.h>
 #endif
 
 // number of added entitis to check memory after
