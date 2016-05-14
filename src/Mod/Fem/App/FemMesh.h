@@ -143,6 +143,9 @@ public:
     void read(const char *FileName);
     void write(const char *FileName) const;
     void writeABAQUS(const std::string &Filename) const;
+    Base::Matrix4D _Mtrx;
+    SMESH_Gen  *myGen;
+    SMESH_Mesh *myMesh;
 
 private:
     void copyMeshData(const FemMesh&);
@@ -150,9 +153,9 @@ private:
 
 private:
     /// positioning matrix
-    Base::Matrix4D _Mtrx;
-    SMESH_Gen  *myGen;
-    SMESH_Mesh *myMesh;
+//    Base::Matrix4D _Mtrx;
+//    SMESH_Gen  *myGen;
+//    SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
 };
