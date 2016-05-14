@@ -1,29 +1,35 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 // File      : SMESH_Pattern.hxx
 // Created   : Mon Aug  2 10:30:00 2004
 // Author    : Edward AGAPOV (eap)
 //
 #include "SMESH_Block.hxx"
+
+#include "SMDS_MeshNode.hxx"
+#include "SMDS_MeshVolume.hxx"
+#include "SMDS_VolumeTool.hxx"
+#include "SMESH_MeshAlgos.hxx"
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Curve2d.hxx>
@@ -32,9 +38,12 @@
 #include <BRepTools_WireExplorer.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
+#include <Bnd_B2d.hxx>
 #include <Bnd_Box.hxx>
 #include <Extrema_ExtPC.hxx>
+#include <Extrema_ExtPS.hxx>
 #include <Extrema_POnCurv.hxx>
+#include <Extrema_POnSurf.hxx>
 #include <Geom2d_Curve.hxx>
 #include <ShapeAnalysis.hxx>
 #include <TopExp_Explorer.hxx>
@@ -52,12 +61,10 @@
 #include <math_Matrix.hxx>
 #include <math_Vector.hxx>
 
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_MeshVolume.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "utilities.h"
+#include <utilities.h>
 
 #include <list>
+#include <limits>
 
 using namespace std;
 
@@ -66,7 +73,7 @@ using namespace std;
 //================================================================================
 /*!
  * \brief Set edge data
-  * \param edgeID - block subshape ID
+  * \param edgeID - block sub-shape ID
   * \param curve - edge geometry
   * \param isForward - is curve orientation coincides with edge orientation in the block
  */
@@ -86,7 +93,7 @@ void SMESH_Block::TEdge::Set( const int edgeID, Adaptor3d_Curve* curve, const bo
 //================================================================================
 /*!
  * \brief Set coordinates of nodes at edge ends to work with mesh block
-  * \param edgeID - block subshape ID
+  * \param edgeID - block sub-shape ID
   * \param node1 - coordinates of node with lower ID
   * \param node2 - coordinates of node with upper ID
  */
@@ -142,7 +149,7 @@ SMESH_Block::TEdge::~TEdge()
 //================================================================================
 /*!
  * \brief Set face data
-  * \param faceID - block subshape ID
+  * \param faceID - block sub-shape ID
   * \param S - face surface geometry
   * \param c2d - 4 pcurves in the order as returned by GetFaceEdgesIDs(faceID)
   * \param isForward - orientation of pcurves comparing with block edge direction
@@ -179,7 +186,7 @@ void SMESH_Block::TFace::Set( const int          faceID,
 //================================================================================
 /*!
  * \brief Set face data to work with mesh block
-  * \param faceID - block subshape ID
+  * \param faceID - block sub-shape ID
   * \param edgeU0 - filled data of edge u0 = GetFaceEdgesIDs(faceID)[ 0 ]
   * \param edgeU1 - filled data of edge u1 = GetFaceEdgesIDs(faceID)[ 1 ]
  */
@@ -301,6 +308,60 @@ gp_XYZ SMESH_Block::TFace::Point( const gp_XYZ& theParams ) const
   return p;
 }
 
+
+namespace
+{
+  inline
+  bool isPntInTria( const gp_XY& p, const gp_XY& t0, const gp_XY& t1, const gp_XY& t2  )
+  {
+    double bc0, bc1;
+    SMESH_MeshAlgos::GetBarycentricCoords( p, t0, t1, t2, bc0, bc1 );
+    return ( bc0 >= 0. && bc1 >= 0. && bc0 + bc1 <= 1. );
+  }
+
+  inline
+  bool isPntInQuad( const gp_XY& p,
+                    const gp_XY& q0, const gp_XY& q1, const gp_XY& q2, const gp_XY& q3 )
+  {
+    const int in1 = isPntInTria( p, q0, q1, q2 );
+    const int in2 = isPntInTria( p, q0, q2, q3 );
+    return in1 + in2 == 1;
+  }
+}
+
+//=======================================================================
+//function : IsUVInQuad
+//purpose  : Checks if UV is in a quardilateral defined by 4 nornalized points
+//=======================================================================
+
+bool SMESH_Block::TFace::IsUVInQuad( const gp_XY& uv,
+                                     const gp_XYZ& param0, const gp_XYZ& param1,
+                                     const gp_XYZ& param2, const gp_XYZ& param3 ) const
+{
+  gp_XY q0 = GetUV( param0 );
+  gp_XY q1 = GetUV( param1 );
+  gp_XY q2 = GetUV( param2 );
+  gp_XY q3 = GetUV( param3 );
+  return isPntInQuad( uv, q0,q1,q2,q3);
+}
+
+//=======================================================================
+//function : GetUVRange
+//purpose  : returns UV range of the face
+//=======================================================================
+
+gp_XY SMESH_Block::TFace::GetUVRange() const
+{
+  if ( !myS ) return gp_XY(1.,1.);
+
+  Bnd_B2d bb;
+  for ( int iE = 0; iE < 4; ++iE )
+  {
+    //TColStd_Array1OfReal T(1, 
+  }
+  return bb.CornerMax() - bb.CornerMin();
+}
+
 //=======================================================================
 //function : GetShapeCoef
 //purpose  : 
@@ -372,7 +433,7 @@ bool SMESH_Block::ShellPoint( const gp_XYZ& theParams, gp_XYZ& thePoint ) const
 //=======================================================================
 //function : ShellPoint
 //purpose  : computes coordinates of a point in shell by points on sub-shapes;
-//           thePointOnShape[ subShapeID ] must be a point on a subShape
+//           thePointOnShape[ subShapeID ] must be a point on a sub-shape
 //=======================================================================
 
 bool SMESH_Block::ShellPoint(const gp_XYZ&         theParams,
@@ -382,8 +443,8 @@ bool SMESH_Block::ShellPoint(const gp_XYZ&         theParams,
   if ( thePointOnShape.size() < ID_F1yz )
     return false;
 
-  double x = theParams.X(), y = theParams.Y(), z = theParams.Z();
-  double x1 = 1. - x,       y1 = 1. - y,       z1 = 1. - z;
+  const double x = theParams.X(), y = theParams.Y(), z = theParams.Z();
+  const double x1 = 1. - x,       y1 = 1. - y,       z1 = 1. - z;
   const vector<gp_XYZ>& p = thePointOnShape;
 
   thePoint = 
@@ -535,6 +596,7 @@ Standard_Boolean SMESH_Block::Values(const math_Vector& theXYZ,
       if ( mag > DBL_MIN )
         dPi /= mag;
       drv[ iP - 1 ] = dPi;
+      // drv[ iP - 1 ] = dPi / 0.001;
     }
     for ( int iP = 0; iP < 3; iP++ ) {
 #if 1
@@ -579,7 +641,8 @@ Standard_Boolean SMESH_Block::Values(const math_Vector& theXYZ,
 
 bool SMESH_Block::computeParameters(const gp_Pnt& thePoint,
                                     gp_XYZ&       theParams,
-                                    const gp_XYZ& theParamsHint)
+                                    const gp_XYZ& theParamsHint,
+                                    int           theShapeID)
 {
   myPoint = thePoint.XYZ();
 
@@ -621,8 +684,11 @@ bool SMESH_Block::computeParameters(const gp_Pnt& thePoint,
   theParams = myParam;
 
   if ( myFaceIndex > 0 )
+  {
     theParams.SetCoord( myFaceIndex, myFaceParam );
-
+    if ( distance() > loopTol )
+      refineParametersOnFace( thePoint, theParams, theShapeID );
+  }
   return true;
 }
 
@@ -660,7 +726,7 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
 
   bool hasHint = ( 0 <= theParamsHint.X() && theParamsHint.X() <= 1 &&
                    0 <= theParamsHint.Y() && theParamsHint.Y() <= 1 &&
-                   0 <= theParamsHint.Y() && theParamsHint.Y() <= 1 );
+                   0 <= theParamsHint.Z() && theParamsHint.Z() <= 1 );
   if ( !hasHint && !myGridComputed )
   {
     // define the first guess by thePoint projection on lines
@@ -693,19 +759,20 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
       start.SetCoord( iParam, sumParam / 4.);
     }
     if ( needGrid ) {
-      // compute nodes of 3 x 3 x 3 grid
+      // compute nodes of 10 x 10 x 10 grid
       int iNode = 0;
       Bnd_Box box;
-      for ( double x = 0.25; x < 0.9; x += 0.25 )
-        for ( double y = 0.25; y < 0.9; y += 0.25 )
-          for ( double z = 0.25; z < 0.9; z += 0.25 ) {
+      for ( double x = 0.05; x < 1.; x += 0.1 )
+        for ( double y = 0.05; y < 1.; y += 0.1 )
+          for ( double z = 0.05; z < 1.; z += 0.1 ) {
             TxyzPair & prmPtn = my3x3x3GridNodes[ iNode++ ];
             prmPtn.first.SetCoord( x, y, z );
             ShellPoint( prmPtn.first, prmPtn.second );
             box.Add( gp_Pnt( prmPtn.second ));
           }
       myGridComputed = true;
-      myTolerance = sqrt( box.SquareExtent() ) * 1e-5;
+      if ( myTolerance < 0 )
+        myTolerance = sqrt( box.SquareExtent() ) * 1e-5;
     }
   }
 
@@ -713,11 +780,17 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
   {
     start = theParamsHint;
   }
-  else if ( myGridComputed )
+  if ( myGridComputed )
   {
     double minDist = DBL_MAX;
+    if ( hasHint )
+    {
+      gp_XYZ p;
+      if ( ShellPoint( start, p ))
+        minDist = thePoint.SquareDistance( p );
+    }
     gp_XYZ* bestParam = 0;
-    for ( int iNode = 0; iNode < 27; iNode++ ) {
+    for ( int iNode = 0; iNode < 1000; iNode++ ) {
       TxyzPair & prmPtn = my3x3x3GridNodes[ iNode ];
       double dist = ( thePoint.XYZ() - prmPtn.second ).SquareModulus();
       if ( dist < minDist ) {
@@ -725,7 +798,8 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
         bestParam = & prmPtn.first;
       }
     }
-    start = *bestParam;
+    if ( bestParam )
+      start = *bestParam;
   }
 
   myFaceIndex = -1;
@@ -763,7 +837,7 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
 
     if ( sqDist > sqDistance ) { // solution get worse
       if ( ++nbGetWorst > 2 )
-        return computeParameters( thePoint, theParams, solution );
+        return computeParameters( thePoint, theParams, solution, theShapeID );
     }
 #ifdef DEBUG_PARAM_COMPUTE
     MESSAGE ( "PARAMS: ( " << params.X() <<" "<< params.Y() <<" "<< params.Z() <<" )" );
@@ -818,12 +892,447 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
          << " ------ NB IT: " << myNbIterations << ",  SUM DIST: " << mySumDist );
 #endif
 
-  theParams = solution;
-
   if ( myFaceIndex > 0 )
     theParams.SetCoord( myFaceIndex, myFaceParam );
 
+  const double reachedDist = sqrt( sqDistance );
+  // if ( reachedDist > 1000 * myTolerance &&
+  //      computeParameters( thePoint, theParams, solution ) &&
+  //      reachedDist > distance() )
+  //   return true;
+
+  if ( reachedDist > 10 * myTolerance &&
+       computeParameters( thePoint, theParams, solution, theShapeID ) &&
+       reachedDist > distance() )
+    return true;
+
+  theParams = solution;
+  myValues[ SQUARE_DIST ] = sqDistance;
+
+  if ( reachedDist > 10 * myTolerance && myFaceIndex > 0 )
+    refineParametersOnFace( thePoint, theParams, theShapeID );
+
   return true;
+}
+
+//================================================================================
+/*!
+ * \brief Find more precise solution
+ *  \param [in] thePoint - the point
+ *  \param [in,out] theParams - solution to precise
+ *  \param [in] theFaceID - FACE ID
+ */
+//================================================================================
+
+void SMESH_Block::refineParametersOnFace( const gp_Pnt& thePoint,
+                                          gp_XYZ&       theParams,
+                                          int           theFaceID )
+{
+  // find UV of thePoint on the FACE
+  Standard_Real U,V;
+
+  const TFace& tface = myFace[ theFaceID - ID_FirstF ];
+  if ( !tface.Surface() ) return;
+
+  Extrema_ExtPS extPS( thePoint, *tface.Surface(),
+                       tface.Surface()->UResolution( myTolerance ),
+                       tface.Surface()->VResolution( myTolerance ));
+  if ( !extPS.IsDone() || extPS.NbExt() < 1 )
+    return;
+
+  double minDist = 1e100;
+  for ( int i = 1; i <= extPS.NbExt(); ++i )
+    if ( extPS.SquareDistance( i ) < minDist )
+    {
+      minDist = extPS.SquareDistance( i );
+      extPS.Point( i ).Parameter( U,V );
+    }
+  if ( minDist > 100 * myTolerance * myTolerance )
+    return;
+
+  gp_XY uv(U,V);
+  if ( findUVByHalfDivision( thePoint, uv, tface, theParams))
+    return;
+
+  int nbGetWorstLimit = 20;
+  if ( findUVAround( thePoint, uv, tface, theParams, nbGetWorstLimit ))
+    return;
+
+  double dist2, prevSolDist = distance();
+  gp_XYZ sol = theParams;
+  for ( double delta = 1./10; delta > 0.001; delta /= 2.5, nbGetWorstLimit *= 2 )
+  {
+    for ( double y = delta; y < 1.; y += delta )
+    {
+      sol.SetCoord( tface.GetVInd(), y );
+      for ( double x = delta; x < 1.; x += delta )
+      {
+        sol.SetCoord( tface.GetUInd(), x );
+        dist2 = thePoint.SquareDistance( tface.Point( sol ));
+        if ( dist2 < prevSolDist * prevSolDist )
+        {
+          if ( findUVAround( thePoint, uv, tface, theParams, nbGetWorstLimit ))
+            return;
+          if ( distance() < 1000 * myTolerance )
+            return;
+          prevSolDist = distance();
+        }
+      }
+    }
+  }
+}
+
+//================================================================================
+/*!
+ * \brief Finds parameters corresponding to a given UV of a given face using half-division
+ *  \param [in] theUV - the UV to locate
+ *  \param [in] tface - the face
+ *  \param [in,out] theParams - the starting parameters to improve 
+ *  \return bool - \c true if found solution is within myTolerance 
+ */
+//================================================================================
+
+bool SMESH_Block::findUVByHalfDivision( const gp_Pnt&             thePoint,
+                                        const gp_XY&              theUV,
+                                        const SMESH_Block::TFace& tface,
+                                        gp_XYZ&                   theParams)
+{
+  int nbGetUV = 0; // just for statistics
+
+  // find a range of parameters including the UV
+
+  double xMin, xMax, yMin, yMax;
+  //#define _DEBUG_REFINE_
+#ifdef _DEBUG_REFINE_
+  cout << "SMESH_Block::refineParametersOnFace(): dividing Starts at dist " << distance()<< endl;
+#endif
+  double dx = 0.1, xSol = theParams.Coord( tface.GetUInd() );
+  double dy = 0.1, ySol = theParams.Coord( tface.GetVInd() );
+  gp_XYZ xXYZ( 0,0,0 ); xXYZ.SetCoord( tface.GetUInd(), 1 );
+  gp_XYZ yXYZ( 0,0,0 ); yXYZ.SetCoord( tface.GetVInd(), 1 );
+  gp_XYZ xy0,xy1,xy2,xy3;
+  bool isInQuad = false;
+  while ( !isInQuad )
+  {
+    xMin = Max( 0., xSol - 0.5*dx ); xMax = Min( 1.0, xSol + 0.5*dx );
+    yMin = Max( 0., ySol - 0.5*dy ); yMax = Min( 1.0, ySol + 0.5*dy );
+    xy0.SetLinearForm( xMin, xXYZ, yMin, yXYZ );
+    xy1.SetLinearForm( xMax, xXYZ, yMin, yXYZ );
+    xy2.SetLinearForm( xMax, xXYZ, yMax, yXYZ );
+    xy3.SetLinearForm( xMin, xXYZ, yMax, yXYZ );
+    isInQuad = tface.IsUVInQuad( theUV, xy0,xy1,xy2,xy3 );
+    nbGetUV += 4;
+    if ( !isInQuad )
+    {
+      dx *= 1.2;
+      dy *= 1.2;
+      xSol = 0.5 * (xMax + xMin) ;
+      ySol = 0.5 * (yMax + yMin) ;
+      if ( xMin == 0. && yMin == 0. && xMax == 1. && yMax == 1. ) // avoid infinit loop
+      {
+#ifdef _DEBUG_REFINE_
+        cout << "SMESH_Block::refineParametersOnFace(): tface.IsUVInQuad() fails" << endl;
+      cout << " nbGetUV = " << nbGetUV << endl;
+#endif
+        break;
+      }
+    }
+  }
+
+  // refine solution using half-division technic
+
+  gp_XYZ sol = theParams;
+
+  const double paramTol = 0.001;
+  while ( dx > paramTol || dy > paramTol )
+  {
+    // divide along X
+    bool xDivided = ( dx > paramTol );
+    if ( xDivided )
+    {
+      double xMid = 0.5 * ( xMin + xMax );
+      gp_XYZ parMid1 = xMid * xXYZ + yMin * yXYZ;
+      gp_XYZ parMid2 = xMid * xXYZ + yMax * yXYZ;
+      nbGetUV += 4;
+      if ( tface.IsUVInQuad( theUV, xy0,parMid1,parMid2,xy3 ))
+      {
+        xMax = xMid;
+        xy1 = parMid1; xy2 = parMid2;
+      }
+      else if ( tface.IsUVInQuad( theUV, parMid1,xy1,xy2,parMid2 ))
+      {
+        nbGetUV += 4;
+        xMin = xMid;
+        xy0 = parMid1; xy3 = parMid2;
+      }
+      else
+      {
+        nbGetUV += 8;
+        xDivided = false;
+      }
+      dx = xMax - xMin;
+    }
+    // divide along Y
+    bool yDivided = ( dy > paramTol );
+    if ( yDivided )
+    {
+      double yMid = 0.5 * ( yMin + yMax );
+      gp_XYZ parMid2 = xMax * xXYZ + yMid * yXYZ;
+      gp_XYZ parMid3 = xMin * xXYZ + yMid * yXYZ;
+      nbGetUV += 4;
+      if ( tface.IsUVInQuad( theUV, xy0,xy1,parMid2,parMid3 ))
+      {
+        yMax = yMid;
+        xy2 = parMid2; xy3 = parMid3;
+      }
+      else if ( tface.IsUVInQuad( theUV, parMid3,parMid2,xy2,xy3 ))
+      {
+        nbGetUV += 4;
+        yMin = yMid;
+        xy0 = parMid3; xy1 = parMid2;
+      }
+      else
+      {
+        nbGetUV += 8;
+        yDivided = false;
+      }
+      dy = yMax - yMin;
+    }
+    if ( !xDivided && !yDivided )
+    {
+#ifdef _DEBUG_REFINE_
+      cout << "SMESH_Block::refineParametersOnFace(): nothing divided" << endl;
+      cout << " nbGetUV = " << nbGetUV << endl;
+#endif
+      break;
+    }
+
+    // evaluate reached distance to thePoint
+    sol.SetCoord( tface.GetUInd(), 0.5 * ( xMin + xMax ));
+    sol.SetCoord( tface.GetVInd(), 0.5 * ( yMin + yMax ));
+    if ( saveBetterSolution( sol, theParams, thePoint.SquareDistance( tface.Point( sol ))))
+    {
+#ifdef _DEBUG_REFINE_
+      cout << "SMESH_Block::refineParametersOnFace(): dividing suceeded" << endl;
+      cout << " nbGetUV = " << nbGetUV << endl;
+#endif
+        return true;
+    }
+  }
+#ifdef _DEBUG_REFINE_
+  cout << "SMESH_Block::refineParametersOnFace(): dividing Ends at dist " << distance()<< endl;
+  cout << " nbGetUV = " << nbGetUV << endl;
+#endif
+
+  return false;
+}
+
+//================================================================================
+/*!
+ * \brief Finds parameters corresponding to a given UV of a given face by searching 
+ * around the starting solution
+ *  \param [in] theUV - the UV to locate
+ *  \param [in] tface - the face
+ *  \param [in,out] theParams - the starting parameters to improve 
+ *  \param [in] nbGetWorstLimit - nb of steps from the starting solution w/o improvement
+ *         to stop searching in this direction
+ *  \return bool - \c true if found solution is within myTolerance 
+ */
+//================================================================================
+
+bool SMESH_Block::findUVAround( const gp_Pnt&             thePoint,
+                                const gp_XY&              theUV,
+                                const SMESH_Block::TFace& tface,
+                                gp_XYZ&                   theParams,
+                                int                       nbGetWorstLimit )
+{
+#ifdef _DEBUG_REFINE_
+  cout << "SMESH_Block::refineParametersOnFace(): walk around Starts at dist " << distance()<< endl;
+  cout << " nbGetUV = " << (nbGetUV=0) << endl;
+#endif
+  const double paramTol = 0.001;
+  const double dx = 0.01, dy = 0.01;
+  double xMin = theParams.Coord( tface.GetUInd() ), xMax;
+  double yMin = theParams.Coord( tface.GetVInd() ), yMax;
+  yMax = yMin;
+  if ( xMin + dx < 1. ) 
+    xMax = xMin + dx;
+  else
+    xMax = 1, xMin = 1 - dx;
+  gp_XYZ sol = theParams;
+  sol.SetCoord( tface.GetUInd(), xMax );
+  sol.SetCoord( tface.GetVInd(), yMax );
+  //nbGetUV++;
+  if ( saveBetterSolution( sol, theParams, thePoint.SquareDistance( tface.Point( sol ))))
+    return true;
+
+  int xMaxNbGetWorst = 0, xMinNbGetWorst = 0, yMaxNbGetWorst = 0, yMinNbGetWorst = 0;
+  double xMaxBestDist = 1e100, xMinBestDist = 1e100, yMaxBestDist = 1e100, yMinBestDist = 1e100;
+  double x, y, bestDist, dist;
+  while ( xMax - xMin < 1 || yMax - yMin < 1 )
+  {
+    // walk along X
+    if ( yMin > 0. )
+    {
+      bestDist = 1e100;
+      for ( x = Max(0.,xMin); x <= xMax+paramTol; x += dx )
+      {
+        y = Max( 0., yMin - dy );
+        sol.SetCoord( tface.GetUInd(), x );
+        sol.SetCoord( tface.GetVInd(), y );
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+        sol.SetCoord( tface.GetUInd(), Min( 1., x + 0.5*dx ));
+        sol.SetCoord( tface.GetVInd(),          y + 0.5*dy );
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+      }
+      yMin = Max(0., yMin-dy );
+      yMinNbGetWorst += ( yMinBestDist < bestDist );
+      yMinBestDist = Min( yMinBestDist, bestDist );
+      if ( yMinNbGetWorst > nbGetWorstLimit )
+        yMin = 0;
+    }
+    if ( yMax < 1. )
+    {
+      bestDist = 1e100;
+      for ( x = Max(0.,xMin); x <= xMax+paramTol; x += dx )
+      {
+        y = Min( 1., yMax + dy );
+        sol.SetCoord( tface.GetUInd(), x );
+        sol.SetCoord( tface.GetVInd(), y );
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+        sol.SetCoord( tface.GetUInd(), Min( 1., x + 0.5*dx ));
+        sol.SetCoord( tface.GetVInd(),          y - 0.5*dy );
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+      }
+      yMax = Min(1., yMax+dy );
+      yMaxNbGetWorst += ( yMaxBestDist < bestDist );
+      yMaxBestDist = Min( yMaxBestDist, bestDist );
+      if ( yMaxNbGetWorst > nbGetWorstLimit )
+        yMax = 1;
+    }
+    // walk along Y
+    if ( xMin > 0. )
+    {
+      bestDist = 1e100;
+      for ( y = Max(0.,yMin); y <= yMax+paramTol; y += dy )
+      {
+        x = Max( 0., xMin - dx );
+        sol.SetCoord( tface.GetUInd(), x );
+        sol.SetCoord( tface.GetVInd(), y );
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+        sol.SetCoord( tface.GetUInd(),          x + 0.5*dx );
+        sol.SetCoord( tface.GetVInd(), Min( 1., y + 0.5*dy ));
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+      }
+      xMin = Max(0., xMin-dx );
+      xMinNbGetWorst += ( xMinBestDist < bestDist );
+      xMinBestDist = Min( xMinBestDist, bestDist );
+      if ( xMinNbGetWorst > nbGetWorstLimit )
+        xMin = 0;
+    }
+    if ( xMax < 1. )
+    {
+      bestDist = 1e100;
+      for ( y = Max(0.,yMin); y <= yMax+paramTol; y += dy )
+      {
+        x = Min( 1., xMax + dx );
+        sol.SetCoord( tface.GetUInd(), x );
+        sol.SetCoord( tface.GetVInd(), y );
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+        sol.SetCoord( tface.GetUInd(),          x - 0.5*dx);
+        sol.SetCoord( tface.GetVInd(), Min( 1., y + 0.5*dy ));
+        //nbGetUV++;
+        dist = thePoint.SquareDistance( tface.Point( sol ));
+        bestDist = Min( dist, bestDist );
+        if ( saveBetterSolution( sol, theParams, dist ))
+          return true;
+      }
+      xMax = Min(1., xMax+dx );
+      xMaxNbGetWorst += ( xMaxBestDist < bestDist );
+      xMaxBestDist = Min( xMaxBestDist, bestDist );
+      if ( xMaxNbGetWorst > nbGetWorstLimit )
+        xMax = 1;
+    }
+  }
+#ifdef _DEBUG_REFINE_
+  cout << "SMESH_Block::refineParametersOnFace(): walk around failed at dist " << distance()<< endl;
+  //cout << " nbGetUV = " << nbGetUV << endl;
+#endif
+
+  return false;
+}
+
+//================================================================================
+/*!
+ * \brief Store a solution if it's better than a previous one
+ *  \param [in] theNewParams - a new solution
+ *  \param [out] theParams - the parameters to store solution in
+ *  \param [in] sqDistance - a square distance reached at theNewParams
+ *  \return bool - true if the reached distance is within the tolerance
+ */
+//================================================================================
+
+bool SMESH_Block::saveBetterSolution( const gp_XYZ& theNewParams,
+                                      gp_XYZ&       theParams,
+                                      double        sqDistance )
+{
+  if ( myValues[ SQUARE_DIST ] > sqDistance )
+  {
+    myValues[ SQUARE_DIST ] = sqDistance;
+    theParams = theNewParams;
+    if ( distance() <= myTolerance )
+      return true;
+  }
+  return false;
+}
+
+//=======================================================================
+//function : SetTolerance
+//purpose  : set tolerance for ComputeParameters()
+//=======================================================================
+
+void SMESH_Block::SetTolerance(const double tol)
+{
+  if ( tol > 0 )
+    myTolerance = tol;
+}
+
+//=======================================================================
+//function : IsToleranceReached
+//purpose  : return true if solution found by ComputeParameters() is within the tolerance
+//=======================================================================
+
+bool SMESH_Block::IsToleranceReached() const
+{
+  return distance() < myTolerance;
 }
 
 //=======================================================================
@@ -952,29 +1461,45 @@ int SMESH_Block::GetShapeIDByParams ( const gp_XYZ& theCoord )
   return id + 1; // shape ids start at 1
 }
 
-//=======================================================================
-//function : GetOrderedEdges
-//purpose  : return nb wires and a list of oredered edges
-//=======================================================================
+//================================================================================
+/*!
+ * \brief Return number of wires and a list of oredered edges.
+ *  \param theFace - the face to process
+ *  \param theEdges - all ordered edges of theFace (outer edges go first).
+ *  \param theNbEdgesInWires - nb of edges (== nb of vertices in closed wire) in each wire
+ *  \param theFirstVertex - the vertex of the outer wire to set first in the returned
+ *         list ( theFirstVertex may be NULL )
+ *  \param theShapeAnalysisAlgo - if true, ShapeAnalysis::OuterWire() is used to find
+ *         the outer wire else BRepTools::OuterWire() is used.
+ *  \retval int - nb of wires
+ * 
+ * Always try to set a seam edge first.
+ * BRepTools::OuterWire() fails e.g. in the case of issue 0020184,
+ * ShapeAnalysis::OuterWire() fails in the case of issue 0020452
+ */
+//================================================================================
 
 int SMESH_Block::GetOrderedEdges (const TopoDS_Face&   theFace,
-                                  TopoDS_Vertex        theFirstVertex,
                                   list< TopoDS_Edge >& theEdges,
-                                  list< int >  &       theNbVertexInWires)
+                                  list< int >  &       theNbEdgesInWires,
+                                  TopoDS_Vertex        theFirstVertex,
+                                  const bool           theShapeAnalysisAlgo)
 {
   // put wires in a list, so that an outer wire comes first
   list<TopoDS_Wire> aWireList;
-  //TopoDS_Wire anOuterWire = BRepTools::OuterWire( theFace ); ### issue 0020184
-  TopoDS_Wire anOuterWire = ShapeAnalysis::OuterWire( theFace );
-  //aWireList.push_back( anOuterWire ); ### issue 0020184
+  TopoDS_Wire anOuterWire =
+    theShapeAnalysisAlgo ? ShapeAnalysis::OuterWire( theFace ) : BRepTools::OuterWire( theFace );
   for ( TopoDS_Iterator wIt (theFace); wIt.More(); wIt.Next() )
-    if ( !anOuterWire.IsSame( wIt.Value() ))
-      aWireList.push_back( TopoDS::Wire( wIt.Value() ));
-    else
-      aWireList.push_front( TopoDS::Wire( wIt.Value() ));// ### issue 0020184
+    if ( wIt.Value().ShapeType() == TopAbs_WIRE ) // it can be internal vertex!
+    {
+      if ( !anOuterWire.IsSame( wIt.Value() ))
+        aWireList.push_back( TopoDS::Wire( wIt.Value() ));
+      else
+        aWireList.push_front( TopoDS::Wire( wIt.Value() ));
+    }
 
   // loop on edges of wires
-  theNbVertexInWires.clear();
+  theNbEdgesInWires.clear();
   list<TopoDS_Wire>::iterator wlIt = aWireList.begin();
   for ( ; wlIt != aWireList.end(); wlIt++ )
   {
@@ -983,10 +1508,16 @@ int SMESH_Block::GetOrderedEdges (const TopoDS_Face&   theFace,
     for ( iE = 0; wExp.More(); wExp.Next(), iE++ )
     {
       TopoDS_Edge edge = wExp.Current();
-      edge = TopoDS::Edge( edge.Oriented( wExp.Orientation() ));
+      // commented for issue 0020557, other related ones: 0020526, PAL19080
+      // edge = TopoDS::Edge( edge.Oriented( wExp.Orientation() ));
       theEdges.push_back( edge );
     }
-    theNbVertexInWires.push_back( iE );
+    if ( iE == 0 ) // wExp returns nothing if e.g. the wire contains one internal edge
+    { // Issue 0020676
+      for ( TopoDS_Iterator e( *wlIt ); e.More(); e.Next(), ++iE )
+        theEdges.push_back( TopoDS::Edge( e.Value() ));
+    }
+    theNbEdgesInWires.push_back( iE );
     iE = 0;
     if ( wlIt == aWireList.begin() && theEdges.size() > 1 ) { // the outer wire
       // orient closed edges
@@ -1024,7 +1555,7 @@ int SMESH_Block::GetOrderedEdges (const TopoDS_Face&   theFace,
           theEdges.splice(theEdges.end(), theEdges,
                           theEdges.begin(), ++theEdges.begin());
           TopExp::Vertices( theEdges.front(), vv[0], vv[1], true );
-          if ( iE++ > theNbVertexInWires.back() ) {
+          if ( iE++ > theNbEdgesInWires.back() ) {
 #ifdef _DEBUG_
             gp_Pnt p = BRep_Tool::Pnt( theFirstVertex );
             MESSAGE ( " : Warning : vertex "<< theFirstVertex.TShape().operator->()
@@ -1268,8 +1799,11 @@ bool SMESH_Block::FindBlockShapes(const TopoDS_Shell&         theShell,
     for (  ; eIt.More(); eIt.Next() ) {
       const TopoDS_Edge& e = TopoDS::Edge( eIt.Value() );
       TopoDS_Vertex v = TopExp::FirstVertex( e );
-      if ( v.IsSame( V000 ))
+      if ( v.IsSame( V000 )) {
         v = TopExp::LastVertex( e );
+        if ( v.IsSame( V000 ))
+          return false;
+      }
       val = dir001 * gp_Vec( p000, BRep_Tool::Pnt( v )).Normalized();
       if ( val > maxVal ) {
         V001 = v;
@@ -1329,7 +1863,7 @@ bool SMESH_Block::FindBlockShapes(const TopoDS_Shell&         theShell,
   // find bottom edges and veritices
   list< TopoDS_Edge > eList;
   list< int >         nbVertexInWires;
-  GetOrderedEdges( TopoDS::Face( Fxy0 ), TopoDS::Vertex( V000 ), eList, nbVertexInWires );
+  GetOrderedEdges( TopoDS::Face( Fxy0 ), eList, nbVertexInWires, TopoDS::Vertex( V000 ) );
   if ( nbVertexInWires.size() != 1 || nbVertexInWires.front() != 4 ) {
     MESSAGE(" LoadBlockShapes() error ");
     return false;
@@ -1351,7 +1885,7 @@ bool SMESH_Block::FindBlockShapes(const TopoDS_Shell&         theShell,
 
   // find top edges and veritices
   eList.clear();
-  GetOrderedEdges( TopoDS::Face( Fxy1 ), TopoDS::Vertex( V001 ), eList, nbVertexInWires );
+  GetOrderedEdges( TopoDS::Face( Fxy1 ), eList, nbVertexInWires, TopoDS::Vertex( V001 ) );
   if ( nbVertexInWires.size() != 1 || nbVertexInWires.front() != 4 ) {
     MESSAGE(" LoadBlockShapes() error ");
     return false;
@@ -1482,7 +2016,7 @@ bool SMESH_Block::FindBlockShapes(const TopoDS_Shell&         theShell,
 //================================================================================
 /*!
  * \brief Initialize block geometry with shapes from theShapeIDMap
-  * \param theShapeIDMap - map of block subshapes
+  * \param theShapeIDMap - map of block sub-shapes
   * \retval bool - is a success
  */
 //================================================================================
@@ -1531,11 +2065,11 @@ bool SMESH_Block::LoadBlockShapes(const TopTools_IndexedMapOfOrientedShape& theS
  * \brief Load face geometry
   * \param theFace - face
   * \param theFaceID - face in-block ID
-  * \param theShapeIDMap - map of block subshapes
+  * \param theShapeIDMap - map of block sub-shapes
   * \retval bool - is a success
  * 
  * It is enough to compute params or coordinates on the face.
- * Face subshapes must be loaded into theShapeIDMap before
+ * Face sub-shapes must be loaded into theShapeIDMap before
  */
 //================================================================================
 
@@ -1567,7 +2101,7 @@ bool SMESH_Block::LoadFace(const TopoDS_Face& theFace,
  * \brief/ Insert theShape into theShapeIDMap with theShapeID
   * \param theShape - shape to insert
   * \param theShapeID - shape in-block ID
-  * \param theShapeIDMap - map of block subshapes
+  * \param theShapeIDMap - map of block sub-shapes
  */
 //================================================================================
 

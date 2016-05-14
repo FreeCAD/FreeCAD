@@ -1,28 +1,28 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH StdMeshers : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_QuadranglePreference.hxx
 //  Module : SMESH
-//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_QuadranglePreference.hxx,v 1.4.2.1 2008/11/27 13:03:49 abd Exp $
 //
 #ifndef _StdMeshers_QuadranglePreference_HXX_
 #define _StdMeshers_QuadranglePreference_HXX_
@@ -30,7 +30,7 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "SMESH_Exception.hxx"
+#include "Utils_SALOME_Exception.hxx"
 
 /*!
  * \brief Hypothesis for StdMeshers_Quadrangle_2D, forcing construction
@@ -46,8 +46,6 @@ class STDMESHERS_EXPORT StdMeshers_QuadranglePreference:public SMESH_Hypothesis
   
   virtual std::ostream & SaveTo(std::ostream & save);
   virtual std::istream & LoadFrom(std::istream & load);
-  friend std::ostream & operator <<(std::ostream & save, StdMeshers_QuadranglePreference & hyp);
-  friend std::istream & operator >>(std::istream & load, StdMeshers_QuadranglePreference & hyp);
 
   /*!
    * \brief Initialize my parameter values by the mesh built on the geometry
@@ -59,7 +57,7 @@ class STDMESHERS_EXPORT StdMeshers_QuadranglePreference:public SMESH_Hypothesis
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-   /*!
+  /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */

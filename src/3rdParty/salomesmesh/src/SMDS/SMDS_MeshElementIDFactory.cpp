@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMDS : implementaion of Salome mesh data structure
 //  File   : SMDS_MeshElementIDFactory.cxx
 //  Author : Jean-Michel BOULCOURT
@@ -30,6 +31,14 @@
 
 #include "SMDS_MeshElementIDFactory.hxx"
 #include "SMDS_MeshElement.hxx"
+#include "SMDS_Mesh.hxx"
+
+#include "utilities.h"
+
+#include "SMDS_UnstructuredGrid.hxx"
+#include <vtkCellType.h>
+
+#include <climits>
 
 using namespace std;
 
@@ -38,23 +47,46 @@ using namespace std;
 //purpose  : 
 //=======================================================================
 SMDS_MeshElementIDFactory::SMDS_MeshElementIDFactory():
-  SMDS_MeshIDFactory(),
-  myMin(0), myMax(0)
+  SMDS_MeshNodeIDFactory()
 {
+}
+
+int SMDS_MeshElementIDFactory::SetInVtkGrid(SMDS_MeshElement * elem)
+{
+   // --- retrieve nodes ID
+
+  SMDS_MeshCell *cell = dynamic_cast<SMDS_MeshCell*>(elem);
+  assert(cell);
+  vector<vtkIdType> nodeIds;
+  SMDS_ElemIteratorPtr it = elem->nodesIterator();
+  while(it->more())
+  {
+      int nodeId = (static_cast<const SMDS_MeshNode*>(it->next()))->getVtkId();
+      MESSAGE("   node in cell " << cell->getVtkId() << " : " << nodeId)
+      nodeIds.push_back(nodeId);
+  }
+
+  // --- insert cell in vtkUnstructuredGrid
+
+  vtkUnstructuredGrid * grid = myMesh->getGrid();
+  //int locType = elem->GetType();
+  int typ = VTK_VERTEX;//GetVtkCellType(locType);
+  int cellId = grid->InsertNextLinkedCell(typ, nodeIds.size(), &nodeIds[0]);
+  cell->setVtkId(cellId); 
+  //MESSAGE("SMDS_MeshElementIDFactory::SetInVtkGrid " << cellId);
+  return cellId;
 }
 
 //=======================================================================
 //function : BindID
 //purpose  : 
 //=======================================================================
+
 bool SMDS_MeshElementIDFactory::BindID(int ID, SMDS_MeshElement * elem)
 {
-  if (myIDElements.IsBound(ID))
-    return false;
-  myIDElements.Bind(ID,elem);
-  elem->myID=ID;
-  updateMinMax (ID);
-  return true;
+  MESSAGE("SMDS_MeshElementIDFactory::BindID " << ID);
+  SetInVtkGrid(elem);
+  return myMesh->registerElement(ID, elem);
 }
 
 //=======================================================================
@@ -63,22 +95,23 @@ bool SMDS_MeshElementIDFactory::BindID(int ID, SMDS_MeshElement * elem)
 //=======================================================================
 SMDS_MeshElement* SMDS_MeshElementIDFactory::MeshElement(int ID)
 {
-  if (!myIDElements.IsBound(ID))
+  if ((ID<1) || (ID>=myMesh->myCells.size()))
     return NULL;
-  return myIDElements.Find(ID);
+  const SMDS_MeshElement* elem = GetMesh()->FindElement(ID);
+  return (SMDS_MeshElement*)(elem);
 }
-
 
 //=======================================================================
 //function : GetFreeID
 //purpose  : 
 //=======================================================================
+
 int SMDS_MeshElementIDFactory::GetFreeID()
 {
   int ID;
   do {
     ID = SMDS_MeshIDFactory::GetFreeID();
-  } while (myIDElements.IsBound(ID));
+  } while ( MeshElement( ID ));
   return ID;
 }
 
@@ -86,38 +119,25 @@ int SMDS_MeshElementIDFactory::GetFreeID()
 //function : ReleaseID
 //purpose  : 
 //=======================================================================
-void SMDS_MeshElementIDFactory::ReleaseID(const int ID)
+void SMDS_MeshElementIDFactory::ReleaseID(int ID, int vtkId)
 {
-  myIDElements.UnBind(ID);
+  if (ID < 1) // TODO check case ID == O
+    {
+      MESSAGE("~~~~~~~~~~~~~~ SMDS_MeshElementIDFactory::ReleaseID ID = " << ID);
+      return;
+    }
+  //MESSAGE("~~~~~~~~~~~~~~ SMDS_MeshElementIDFactory::ReleaseID smdsId vtkId " << ID << " " << vtkId);
+  if (vtkId >= 0)
+    {
+      assert(vtkId < myMesh->myCellIdVtkToSmds.size());
+      myMesh->myCellIdVtkToSmds[vtkId] = -1;
+      myMesh->setMyModified();
+    }
   SMDS_MeshIDFactory::ReleaseID(ID);
   if (ID == myMax)
     myMax = 0;
   if (ID == myMin)
-    myMin = 0;
-}
-
-//=======================================================================
-//function : GetMaxID
-//purpose  : 
-//=======================================================================
-
-int SMDS_MeshElementIDFactory::GetMaxID() const
-{
-  if (myMax == 0)
-    updateMinMax();
-  return myMax;
-}
-
-//=======================================================================
-//function : GetMinID
-//purpose  : 
-//=======================================================================
-
-int SMDS_MeshElementIDFactory::GetMinID() const
-{
-  if (myMin == 0)
-    updateMinMax();
-  return myMin;
+    myMax = 0;
 }
 
 //=======================================================================
@@ -127,12 +147,20 @@ int SMDS_MeshElementIDFactory::GetMinID() const
 
 void SMDS_MeshElementIDFactory::updateMinMax() const
 {
-  myMin = IntegerLast();
+  myMin = INT_MAX;
   myMax = 0;
-  SMDS_IdElementMap::Iterator it(myIDElements);
-  for (; it.More(); it.Next())
-    updateMinMax (it.Key());
-  if (myMin == IntegerLast())
+  for (int i = 0; i < myMesh->myCells.size(); i++)
+    {
+      if (myMesh->myCells[i])
+        {
+          int id = myMesh->myCells[i]->GetID();
+          if (id > myMax)
+            myMax = id;
+          if (id < myMin)
+            myMin = id;
+        }
+    }
+  if (myMin == INT_MAX)
     myMin = 0;
 }
 
@@ -141,35 +169,15 @@ void SMDS_MeshElementIDFactory::updateMinMax() const
 //purpose  : Return an iterator on elements of the factory
 //=======================================================================
 
-class SMDS_Fact_MyElemIterator:public SMDS_ElemIterator
-{
-  SMDS_IdElementMap::Iterator myIterator;
- public:
-  SMDS_Fact_MyElemIterator(const SMDS_IdElementMap& s):myIterator(s)
-  {}
-
-  bool more()
-  {
-    return myIterator.More() != Standard_False;
-  }
-
-  const SMDS_MeshElement* next()
-  {
-    const SMDS_MeshElement* current = myIterator.Value();
-    myIterator.Next();
-    return current;
-  }
-};
-
 SMDS_ElemIteratorPtr SMDS_MeshElementIDFactory::elementsIterator() const
 {
-  return SMDS_ElemIteratorPtr
-    (new SMDS_Fact_MyElemIterator(myIDElements));
+    return myMesh->elementsIterator(SMDSAbs_All);
 }
 
 void SMDS_MeshElementIDFactory::Clear()
 {
-  myIDElements.Clear();
+  //myMesh->myCellIdSmdsToVtk.clear();
+  myMesh->myCellIdVtkToSmds.clear();
   myMin = myMax = 0;
   SMDS_MeshIDFactory::Clear();
 }

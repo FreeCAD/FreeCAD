@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 // File      : SMESH_Pattern.hxx
 // Created   : Mon Aug  2 10:30:00 2004
 // Author    : Edward AGAPOV (eap)
@@ -34,15 +35,11 @@
 #include <set>
 #include <iostream>
 
-#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <TopTools_IndexedMapOfOrientedShape.hxx>
 #include <gp_XYZ.hxx>
 #include <gp_XY.hxx>
 #include <gp_Pnt.hxx>
-
-#ifdef __BORLANDC__
-#include <TopoDS_Edge.hxx>
-#endif
 
 class SMDS_MeshElement;
 class SMDS_MeshFace;
@@ -51,12 +48,8 @@ class SMDS_MeshNode;
 class SMESH_Mesh;
 class SMESHDS_SubMesh;
 class TopoDS_Shell;
-class TopoDS_Vertex;
 class TopoDS_Face;
-
-#ifndef __BORLANDC__
 class TopoDS_Edge;
-#endif
 
 //
 // Class allowing meshing by mapping of pre-defined patterns: it generates
@@ -77,7 +70,8 @@ class SMESH_EXPORT SMESH_Pattern {
 
   bool Load (SMESH_Mesh*        theMesh,
              const TopoDS_Face& theFace,
-             bool               theProject = false);
+             bool               theProject = false,
+             TopoDS_Vertex      the1stVertex=TopoDS_Vertex());
   // Create a pattern from the mesh built on <theFace>.
   // <theProject>==true makes override nodes positions
   // on <theFace> computed by mesher
@@ -197,7 +191,9 @@ class SMESH_EXPORT SMESH_Pattern {
     // Apply(mesh_face)
     ERR_APPLF_BAD_FACE_GEOM, // bad face geometry
     // MakeMesh
-    ERR_MAKEM_NOT_COMPUTED // mapping failed
+    ERR_MAKEM_NOT_COMPUTED, // mapping failed
+    //Unexpected error 
+    ERR_UNEXPECTED // Unexpected of the pattern mapping alorithm
   };
 
   ErrorCode GetErrorCode() const { return myErrorCode; }
@@ -248,8 +244,7 @@ private:
   };
   friend std::ostream & operator <<(std::ostream & OS, const TPoint& p);
 
-  bool setErrorCode( const ErrorCode theErrorCode )
-  { myErrorCode = theErrorCode; return myErrorCode == ERR_OK; }
+  bool setErrorCode( const ErrorCode theErrorCode );
   // set ErrorCode and return true if it is Ok
 
   bool setShapeToMesh(const TopoDS_Shape& theShape);
@@ -299,7 +294,7 @@ private:
                           const TListOfEdgesList::iterator& theFromWire,
                           const TListOfEdgesList::iterator& theToWire,
                           const int                         theFirstEdgeID,
-                          std::list< std::list< TPoint* > >& theEdgesPointsList );
+                          std::list< std::list< TPoint* > >&          theEdgesPointsList );
   // sort wires in theWireList from theFromWire until theToWire,
   // the wires are set in the order to correspond to the order
   // of boundaries; after sorting, edges in the wires are put
@@ -339,6 +334,12 @@ private:
   void clearMesh(SMESH_Mesh* theMesh) const;
   // clear mesh elements existing on myShape in theMesh
 
+  bool findExistingNodes( SMESH_Mesh*                           mesh,
+                          const TopoDS_Shape&                   S,
+                          const std::list< TPoint* > &          points,
+                          std::vector< const SMDS_MeshNode* > & nodes);
+  // fills nodes vector with nodes existing on a given shape
+
   static SMESHDS_SubMesh * getSubmeshWithElements(SMESH_Mesh*         theMesh,
                                                   const TopoDS_Shape& theShape);
   // return submesh containing elements bound to theShape in theMesh
@@ -361,7 +362,7 @@ private:
   // all functions assure that shapes are indexed so that first go
   // ordered vertices, then ordered edge, then faces and maybe a shell
   TopTools_IndexedMapOfOrientedShape   myShapeIDMap;
-  std::map< int, std::list< TPoint* > >     myShapeIDToPointsMap;
+  std::map< int, std::list< TPoint*> > myShapeIDToPointsMap;
 
   // for the 2d case:
   // nb of key-points in each of pattern boundaries

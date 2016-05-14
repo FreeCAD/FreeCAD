@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMDS : implementaion of Salome mesh data structure
 // File:      SMDS_QuadraticFaceOfNodes.cxx
 // Created:   16.01.06 17:12:58
@@ -48,6 +49,7 @@ SMDS_QuadraticFaceOfNodes::SMDS_QuadraticFaceOfNodes(const SMDS_MeshNode * n1,
                                                      const SMDS_MeshNode * n23,
                                                      const SMDS_MeshNode * n31)
 {
+  //MESSAGE("********************************************** SMDS_QuadraticFaceOfNodes 1");
   myNodes.resize( 6 );
   myNodes[ 0 ] = n1;
   myNodes[ 1 ] = n2;
@@ -72,6 +74,7 @@ SMDS_QuadraticFaceOfNodes::SMDS_QuadraticFaceOfNodes(const SMDS_MeshNode * n1,
                                                      const SMDS_MeshNode * n34,
                                                      const SMDS_MeshNode * n41)
 {
+  //MESSAGE("********************************************* SMDS_QuadraticFaceOfNodes 2");
   myNodes.resize( 8 );
   myNodes[ 0 ] = n1;
   myNodes[ 1 ] = n2;
@@ -190,21 +193,6 @@ namespace {
   };
 
   //=======================================================================
-  //class : _MyInterlacedNodeElemIterator
-  //purpose  : 
-  //=======================================================================
-
-  class _MyInterlacedNodeElemIterator : public SMDS_ElemIterator
-  {
-    SMDS_NodeIteratorPtr myItr;
-  public:
-    _MyInterlacedNodeElemIterator(SMDS_NodeIteratorPtr interlacedNodeItr):
-      myItr( interlacedNodeItr ) {}
-    bool more()                    { return myItr->more(); }
-    const SMDS_MeshElement* next() { return myItr->next(); }
-  };
-
-  //=======================================================================
   //class : _MyNodeIterator
   //purpose  : 
   //=======================================================================
@@ -231,16 +219,6 @@ SMDS_NodeIteratorPtr SMDS_QuadraticFaceOfNodes::interlacedNodesIterator() const
     (new _MyInterlacedNodeIterator (myNodes, myNodes.size()==6 ? triaInterlace : quadInterlace));
 }
 
-//=======================================================================
-//function : interlacedNodesElemIterator
-//purpose  : 
-//=======================================================================
-
-SMDS_ElemIteratorPtr SMDS_QuadraticFaceOfNodes::interlacedNodesElemIterator() const
-{
-  return SMDS_ElemIteratorPtr
-    (new _MyInterlacedNodeElemIterator ( interlacedNodesIterator() ));
-}
 /// ===================================================================
 /*!
  * \brief Iterator on edges of face
@@ -254,10 +232,10 @@ class _MyEdgeIterator : public SMDS_ElemIterator
 public:
   _MyEdgeIterator(const SMDS_QuadraticFaceOfNodes* face):myIndex(0) {
     myElems.reserve( face->NbNodes() );
-    SMDS_ElemIteratorPtr nIt = face->interlacedNodesElemIterator();
+    SMDS_NodeIteratorPtr nIt = face->interlacedNodesIterator();
     const SMDS_MeshNode* n0 = face->GetNodeWrap( -1 );
     while ( nIt->more() ) {
-      const SMDS_MeshNode* n1 = static_cast<const SMDS_MeshNode*>( nIt->next() );
+      const SMDS_MeshNode* n1 = nIt->next();
       const SMDS_MeshElement* edge = SMDS_Mesh::FindEdge( n0, n1 );
       if ( edge )
         myElems.push_back( edge );
@@ -306,3 +284,7 @@ const SMDS_MeshNode* SMDS_QuadraticFaceOfNodes::GetNode(const int ind) const
   return myNodes[ ind ];
 }
 
+SMDSAbs_EntityType SMDS_QuadraticFaceOfNodes::GetEntityType() const
+{
+  return NbNodes() == 6 ? SMDSEntity_Quad_Triangle : SMDSEntity_Quad_Quadrangle;
+}

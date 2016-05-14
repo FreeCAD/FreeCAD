@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMDS : implementaion of Salome mesh data structure
 // File:      SMDS_QuadraticVolumeOfNodes.cxx
 // Created:   17.01.06 09:46:11
@@ -53,6 +54,7 @@ SMDS_QuadraticVolumeOfNodes::SMDS_QuadraticVolumeOfNodes
                                                 const SMDS_MeshNode * n24,
                                                 const SMDS_MeshNode * n34)
 {
+  //MESSAGE("*********************************************** SMDS_QuadraticVolumeOfNodes");
   myNodes.resize( 10 );
   myNodes[ 0 ] = n1;
   myNodes[ 1 ] = n2;
@@ -87,6 +89,7 @@ SMDS_QuadraticVolumeOfNodes::SMDS_QuadraticVolumeOfNodes
                                                 const SMDS_MeshNode * n35,
                                                 const SMDS_MeshNode * n45)
 {
+  //MESSAGE("*********************************************** SMDS_QuadraticVolumeOfNodes");
   myNodes.resize( 13 );
   myNodes[ 0 ] = n1;
   myNodes[ 1 ] = n2;
@@ -126,6 +129,7 @@ SMDS_QuadraticVolumeOfNodes::SMDS_QuadraticVolumeOfNodes
                                                 const SMDS_MeshNode * n25,
                                                 const SMDS_MeshNode * n36)
 {
+  //MESSAGE("*********************************************** SMDS_QuadraticVolumeOfNodes");
   myNodes.resize( 15 );
   myNodes[ 0 ] = n1;
   myNodes[ 1 ] = n2;
@@ -172,6 +176,7 @@ SMDS_QuadraticVolumeOfNodes::SMDS_QuadraticVolumeOfNodes
                                                 const SMDS_MeshNode * n37,
                                                 const SMDS_MeshNode * n48)
 {
+  //MESSAGE("*********************************************** SMDS_QuadraticVolumeOfNodes");
   myNodes.resize( 20 );
   myNodes[ 0 ] = n1;
   myNodes[ 1 ] = n2;
@@ -368,3 +373,16 @@ const SMDS_MeshNode* SMDS_QuadraticVolumeOfNodes::GetNode(const int ind) const
   return myNodes[ ind ];
 }
 
+SMDSAbs_EntityType SMDS_QuadraticVolumeOfNodes::GetEntityType() const
+{
+  SMDSAbs_EntityType aType = SMDSEntity_Quad_Tetra;
+  switch(NbNodes())
+  {
+  case 10: aType = SMDSEntity_Quad_Tetra;   break;
+  case 13: aType = SMDSEntity_Quad_Pyramid; break;
+  case 15: aType = SMDSEntity_Quad_Penta;   break;
+  case 20:
+  default: aType = SMDSEntity_Quad_Hexa;    break;
+  }
+  return aType;
+}
