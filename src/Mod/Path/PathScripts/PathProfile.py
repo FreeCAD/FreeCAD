@@ -258,7 +258,7 @@ print "y - " + str(point.y)
         import Part  # math #DraftGeomUtils
         output = ""
         toolLoad = PathUtils.getLastToolLoad(obj)
-        if toolLoad is None:
+        if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
             self.horizFeed = 100
             self.radius = 0.25

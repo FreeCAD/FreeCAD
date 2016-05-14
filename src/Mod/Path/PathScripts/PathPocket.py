@@ -74,8 +74,8 @@ class ObjectPocket:
         obj.addProperty("App::PropertyDistance", "MaterialAllowance", "Pocket", translate("PathProject", "Amount of material to leave"))
         obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", translate("PathProject", "Start pocketing at center or boundary"))
         obj.StartAt = ['Center', 'Edge']
-        obj.addProperty("App::PropertyFloatConstraint", "StepOver", "Pocket", translate("PathProject", "Amount to step over on each pass"))
-        obj.StepOver = (0.0, 0.01, 100.0, 0.5)
+        obj.addProperty("App::PropertyPercent", "StepOver", "Pocket", translate("PathProject", "Percent of cutter diameter to step over on each pass"))
+        #obj.StepOver = (0.0, 0.01, 100.0, 0.5)
         obj.addProperty("App::PropertyBool", "KeepToolDown", "Pocket", translate("PathProject", "Attempts to avoid unnecessary retractions."))
         obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Pocket", translate("PathProject", "Lifts tool at the end of each pass to respect cut mode."))
         obj.addProperty("App::PropertyBool", "UseZigZag", "Pocket", translate("PathProject", "Use Zig Zag pattern to clear area."))
@@ -118,22 +118,7 @@ class ObjectPocket:
         if baselist is None:
             baselist = []
         if len(baselist) == 0:  # When adding the first base object, guess at heights
-            # try:
-            #     bb = ss.Shape.BoundBox  # parent boundbox
-            #     subobj = ss.Shape.getElement(sub)
-            #     fbb = subobj.BoundBox  # feature boundbox
-            #     obj.StartDepth = bb.ZMax
-            #     obj.ClearanceHeight = bb.ZMax + 5.0
-            #     obj.SafeHeight = bb.ZMax + 3.0
 
-            #     if fbb.ZMax < bb.ZMax:
-            #         obj.FinalDepth = fbb.ZMax
-            #     else:
-            #         obj.FinalDepth = bb.ZMin
-            # except:
-            #     obj.StartDepth = 5.0
-            #     obj.ClearanceHeight = 10.0
-            #     obj.SafeHeight = 8.0
 
             try:
                 bb = ss.Shape.BoundBox  # parent boundbox
@@ -197,7 +182,7 @@ class ObjectPocket:
                 obj.FinalDepth.Value)
 
         extraoffset = obj.MaterialAllowance.Value
-        stepover = obj.StepOver
+        stepover = (self.radius * 2) * (float(obj.StepOver)/100)
         use_zig_zag = obj.UseZigZag
         zig_angle = obj.ZigZagAngle
         from_center = (obj.StartAt == "Center")
@@ -242,22 +227,23 @@ class ObjectPocket:
         # Build up the offset loops
         output = ""
         offsets = []
-        nextradius = self.radius
+        nextradius = (self.radius * 2) * (float(obj.StepOver)/100)
         result = DraftGeomUtils.pocket2d(shape, nextradius)
         print "did we get something: " + str(result)
         while result:
             print "Adding " + str(len(result)) + " wires"
             offsets.extend(result)
-            nextradius += self.radius
+            nextradius += (self.radius * 2) * (float(obj.StepOver)/100)
             result = DraftGeomUtils.pocket2d(shape, nextradius)
 
         # revert the list so we start with the outer wires
         if obj.StartAt != 'Edge':
             offsets.reverse()
 
+        plungePos = None
+        rampEdge = None
         if obj.UseEntry:
             # Try to find an entry location
-            plungePos = None
             toold = self.radius*2
             helixBounds = DraftGeomUtils.pocket2d(shape, self.radius * (1 + obj.HelixSize))
 
@@ -279,7 +265,6 @@ class ObjectPocket:
                     # Maybe reverse helixBounds and pick off that?
 
             if plungePos is None:  # If we didn't find a place to helix, how about a ramp?
-                rampEdge = None
                 FreeCAD.Console.PrintMessage(translate("PathPocket", "Attempting ramp entry.\n"))
                 if (offsets[0].Edges[0].Length >= toold * rampD) and not (isinstance(offsets[0].Edges[0].Curve, Part.Circle)):
                     rampEdge = offsets[0].Edges[0]
@@ -305,6 +290,7 @@ class ObjectPocket:
             first = True
             # loop over successive wires
             for currentWire in offsets:
+                #output += PathUtils.convert(currentWire.Edges, "on", 1)
                 last = None
                 for edge in currentWire.Edges:
                     if not last:
@@ -363,7 +349,7 @@ class ObjectPocket:
     def execute(self, obj):
         output = ""
         toolLoad = PathUtils.getLastToolLoad(obj)
-        if toolLoad is None:
+        if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
             self.horizFeed = 100
             self.radius = 0.25
@@ -371,13 +357,14 @@ class ObjectPocket:
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
+            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            self.radius = tool.Diameter/2
             obj.ToolNumber = toolLoad.ToolNumber
 
-            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            if tool is None:
-                self.radius = 0.25
-            else:
-                self.radius = tool.Diameter/2
+#             if tool is None:
+#                 self.radius = 0.25
+#             else:
+#                 self.radius = tool.Diameter/2
 
         if obj.Base:
             for b in obj.Base:
@@ -514,7 +501,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.Active = True')
         FreeCADGui.doCommand('PathScripts.PathPocket.ViewProviderPocket(obj.ViewObject)')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
-        FreeCADGui.doCommand('obj.StepOver = 1.0')
+        FreeCADGui.doCommand('obj.StepOver = 100')
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')  # + str(bb.ZMax + 2.0))
         FreeCADGui.doCommand('obj.StepDown = 1.0')
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop))

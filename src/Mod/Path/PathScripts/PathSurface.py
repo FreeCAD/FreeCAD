@@ -241,7 +241,7 @@ class ObjectSurface:
         output = ""
 
         toolLoad = PathUtils.getLastToolLoad(obj)
-        if toolLoad == None:
+        if toolLoad == None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
             self.horizFeed = 100
             self.radius = 0.25
