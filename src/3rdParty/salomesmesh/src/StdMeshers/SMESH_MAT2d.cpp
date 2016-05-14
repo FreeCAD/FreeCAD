@@ -663,10 +663,12 @@ namespace
     // make scale to have coordinates precise enough when converted to int
 
     gp_XY uvMin = uvBox.CornerMin(), uvMax = uvBox.CornerMax();
-    uvMin.ChangeCoord(1) = uvMin.X() * scale[0];
-    uvMin.ChangeCoord(2) = uvMin.Y() * scale[1];
-    uvMax.ChangeCoord(1) = uvMax.X() * scale[0];
-    uvMax.ChangeCoord(2) = uvMax.Y() * scale[1];
+
+    uvMin.SetX(uvMin.X() * scale[0]);
+    uvMin.SetY(uvMin.Y() * scale[1]);
+    uvMax.SetX(uvMax.X() * scale[0]);
+    uvMax.SetY(uvMax.Y() * scale[1]);
+
     double vMax[2] = { Max( Abs( uvMin.X() ), Abs( uvMax.X() )),
                        Max( Abs( uvMin.Y() ), Abs( uvMax.Y() )) };
     int iMax = ( vMax[0] > vMax[1] ) ? 0 : 1;

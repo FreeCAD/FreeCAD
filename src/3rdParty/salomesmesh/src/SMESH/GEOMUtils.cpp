@@ -1134,9 +1134,11 @@ bool GEOMUtils::FixShapeCurves( TopoDS_Shape& shape )
     for (; aExpE.More(); aExpE.Next()) {
       const TopoDS_Edge& aE = *(TopoDS_Edge*)&aExpE.Current();
       try {
+#if OCC_VERSION_HEX >= 0x060800
         if (!BOPTools_AlgoTools::ComputeTolerance(aF, aE, aDMax, aT)) {
           continue;
         }
+#endif
       }
       catch(...) {
         continue;

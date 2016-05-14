@@ -16,12 +16,6 @@ if(CMAKE_COMPILER_IS_CLANGXX)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-self-assign -Wno-reorder -Wno-switch-enum -Wno-unknown-pragmas -Wno-logical-op-parentheses -Wno-unused-variable -Wno-unused-function -Wno-overloaded-virtual")
 endif()
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-find_package(VTK REQUIRED)
-find_package(HDF5 REQUIRED)
-find_package(OPENCASCADE)
-find_package(MEDFile REQUIRED)
-find_package(Boost COMPONENTS filesystem program_options regex signals system thread REQUIRED)
 include(${VTK_USE_FILE})
 include_directories(
     src/SMDS
