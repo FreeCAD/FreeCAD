@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH StdMeshers : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_Penta_3D.hxx
 //  Module : SMESH
@@ -35,13 +36,14 @@
 //  class StdMeshers_SMESHBlock
 //
 ////////////////////////////////////////////////////////////////////////
+#include <TColStd_MapOfInteger.hxx>
+#include <TopTools_IndexedMapOfOrientedShape.hxx>
+#include <TopoDS_Shell.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_XYZ.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopTools_IndexedMapOfOrientedShape.hxx>
-#include <TColStd_MapOfInteger.hxx>
 
+#include "SMESH_Algo.hxx"
 #include "SMESH_Block.hxx"
 #include "SMESH_ComputeError.hxx"
 #include "SMESH_MesherHelper.hxx"
@@ -57,26 +59,26 @@ public:
   void Load (const TopoDS_Shell& theShell);
   
   void Load (const TopoDS_Shell& theShell,
-	     const TopoDS_Vertex& theV000,
-	     const TopoDS_Vertex& theV001);
+             const TopoDS_Vertex& theV000,
+             const TopoDS_Vertex& theV001);
   
   void ComputeParameters(const gp_Pnt& thePnt, 
-			 gp_XYZ& theXYZ);
+                         gp_XYZ& theXYZ);
   
   void ComputeParameters(const gp_Pnt& thePnt,
-			 const TopoDS_Shape& theShape,
-			 gp_XYZ& theXYZ);
+                         const TopoDS_Shape& theShape,
+                         gp_XYZ& theXYZ);
   
   void ComputeParameters(const double& theU,
-			 const TopoDS_Shape& theShape,
-			 gp_XYZ& theXYZ);
+                         const TopoDS_Shape& theShape,
+                         gp_XYZ& theXYZ);
   
   void Point(const gp_XYZ& theParams, 
-	     gp_Pnt& thePnt);
+             gp_Pnt& thePnt);
   
   void Point(const gp_XYZ& theParams,
-	     const TopoDS_Shape& theShape, 
-	     gp_Pnt& thePnt);
+             const TopoDS_Shape& theShape, 
+             gp_Pnt& thePnt);
   
   int ShapeID(const TopoDS_Shape& theShape); 
   
@@ -204,6 +206,9 @@ class STDMESHERS_EXPORT StdMeshers_Penta_3D {
     // The key of theIJNodes map is a normalized parameter of each
     // 0-the node on theBaseEdge.
 
+    bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
+                  MapShapeNbElems& aResMap);
+
 
   protected: // methods
     
@@ -213,23 +218,23 @@ class STDMESHERS_EXPORT StdMeshers_Penta_3D {
 
     void MakeNodes();
 
-    double SetHorizEdgeXYZ(const gp_XYZ&                       aBNXYZ,
-                           const int                           aFaceID,
+    double SetHorizEdgeXYZ(const gp_XYZ&                  aBNXYZ,
+                           const int                      aFaceID,
                            std::vector<const SMDS_MeshNode*>*& aCol1,
                            std::vector<const SMDS_MeshNode*>*& aCol2);
 
     void ShapeSupportID(const bool theIsUpperLayer,
-			const SMESH_Block::TShapeID theBNSSID,
-			SMESH_Block::TShapeID& theSSID);
+                        const SMESH_Block::TShapeID theBNSSID,
+                        SMESH_Block::TShapeID& theSSID);
 
     void FindNodeOnShape(const TopoDS_Shape& aS,
-			 const gp_XYZ& aParams,
+                         const gp_XYZ& aParams,
                          const int z,
-			 StdMeshers_TNode& aTN);
+                         StdMeshers_TNode& aTN);
 
     void CreateNode(const bool theIsUpperLayer,
-		    const gp_XYZ& aParams,
-		    StdMeshers_TNode& aTN);
+                    const gp_XYZ& aParams,
+                    StdMeshers_TNode& aTN);
 
     void ClearMeshOnFxy1();
 
@@ -262,7 +267,7 @@ class STDMESHERS_EXPORT StdMeshers_Penta_3D {
     std::map < int, int >     myConnectingMap;
     //
     std::vector<StdMeshers_IJNodeMap> myWallNodesMaps; // nodes on a face
-    std::vector<gp_XYZ>            myShapeXYZ; // point on each sub-shape
+    std::vector<gp_XYZ>               myShapeXYZ; // point on each sub-shape
 
     bool myCreateQuadratic;
     SMESH_MesherHelper* myTool; // tool building quadratic elements
