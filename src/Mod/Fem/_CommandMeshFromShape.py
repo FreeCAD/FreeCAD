@@ -20,33 +20,39 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Command Purge Fem Results"
+__title__ = "Command Mesh From Shape"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 from FemCommands import FemCommands
-import FemTools
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
 
 
-class _CommandPurgeFemResults(FemCommands):
+class _CommandMeshFromShape(FemCommands):
+    # the Fem_MeshFromShape command definition
     def __init__(self):
-        super(_CommandPurgeFemResults, self).__init__()
-        self.resources = {'Pixmap': 'fem-purge-results',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results"),
-                          'Accel': "S, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results from an analysis")}
-        self.is_active = 'with_results'
+        super(_CommandMeshFromShape, self).__init__()
+        self.resources = {'Pixmap': 'fem-fem-mesh-from-shape',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "FEM mesh from shape"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "Create a FEM volume mesh from a solid shape")}
+        self.is_active = 'with_part_feature'
 
     def Activated(self):
-        fea = FemTools.FemTools()
-        fea.reset_all()
+        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
+        FreeCADGui.addModule("FemGui")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            if(sel[0].isDerivedFrom("Part::Feature")):
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
+                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
-        self.hide_meshes_show_parts_constraints()
+        FreeCADGui.Selection.clearSelection()
+
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
+    FreeCADGui.addCommand('Fem_MeshFromShape', _CommandMeshFromShape())

@@ -36,10 +36,10 @@ if FreeCAD.GuiUp:
     from PySide.QtGui import QApplication
 
 
-class _TaskPanelResultControl:
-    '''The control for the displacement post-processing'''
+class _TaskPanelShowResult:
+    '''The task panel for the post-processing'''
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelShowDisplacement.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelShowResult.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
 

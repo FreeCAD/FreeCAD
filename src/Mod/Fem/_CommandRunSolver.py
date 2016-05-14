@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Command Quick Analysis"
+__title__ = "Command Run Solver"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
@@ -32,13 +32,14 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
 
-class _CommandQuickAnalysis(FemCommands):
+class _CommandRunSolver(FemCommands):
+    # the Fem_RunSolver command definition
     def __init__(self):
-        super(_CommandQuickAnalysis, self).__init__()
-        self.resources = {'Pixmap': 'fem-quick-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
+        super(_CommandRunSolver, self).__init__()
+        self.resources = {'Pixmap': 'fem-run-solver',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_RunAnalysis", "Run solver calculations"),
                           'Accel': "R, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_RunAnalysis", "Runs the calculations for the selected solver")}
         self.is_active = 'with_solver'
 
     def Activated(self):
@@ -67,10 +68,10 @@ class _CommandQuickAnalysis(FemCommands):
         #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
         # or confirmation that it's safe to call restore_result_dialog
         #FIXME if an analysis has multiple results (frequence) the first result object found is restored
-        import _TaskPanelResultControl
-        tp = _TaskPanelResultControl._TaskPanelResultControl()
+        import _TaskPanelShowResult
+        tp = _TaskPanelShowResult._TaskPanelShowResult()
         tp.restore_result_dialog()
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
+    FreeCADGui.addCommand('Fem_RunSolver', _CommandRunSolver())

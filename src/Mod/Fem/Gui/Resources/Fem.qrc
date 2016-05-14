@@ -16,9 +16,9 @@
         <file>icons/fem-add-part.svg</file>
         <file>icons/fem-inp-editor.svg</file>
         <file>icons/fem-material.svg</file>
-        <file>icons/fem-new-analysis.svg</file>
+        <file>icons/fem-control-solver.svg</file>
         <file>icons/fem-purge-results.svg</file>
-        <file>icons/fem-quick-analysis.svg</file>
+        <file>icons/fem-run-solver.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-result.svg</file>
         <file>icons/fem-shell-thickness.svg</file>

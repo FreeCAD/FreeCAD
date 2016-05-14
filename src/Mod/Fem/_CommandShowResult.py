@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Command Mechanical Job Control"
+__title__ = "Command Show Result"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
@@ -29,26 +29,44 @@ from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
+    from PySide import QtCore, QtGui
 
 
-class _CommandSolverJobControl(FemCommands):
-    "the Fem JobControl command definition"
+class _CommandShowResult(FemCommands):
+    "the Fem show reslult command definition"
     def __init__(self):
-        super(_CommandSolverJobControl, self).__init__()
-        self.resources = {'Pixmap': 'fem-new-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverJobControl", "Start solver job control"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverJobControl", "Dialog to start the calculation of the selected solver")}
-        self.is_active = 'with_solver'
+        super(_CommandShowResult, self).__init__()
+        self.resources = {'Pixmap': 'fem-result',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Show result"),
+                          'Accel': "S, R",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Shows and visualizes selected result data")}
+        self.is_active = 'with_results'
 
     def Activated(self):
+        self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
+
+        if not self.result_object:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
+            return
 
         self.hide_parts_constraints_show_meshes()
 
-        solver_obj = FreeCADGui.Selection.getSelection()[0]
-        FreeCADGui.ActiveDocument.setEdit(solver_obj, 0)
+        import _TaskPanelShowResult
+        taskd = _TaskPanelShowResult._TaskPanelShowResult()
+        FreeCADGui.Control.showDialog(taskd)
 
+
+#Code duplidation - to be removed after migration to FemTools
+def get_results_object(sel):
+    import FemGui
+    if (len(sel) == 1):
+        if sel[0].isDerivedFrom("Fem::FemResultObject"):
+            return sel[0]
+
+    for i in FemGui.getActiveAnalysis().Member:
+        if(i.isDerivedFrom("Fem::FemResultObject")):
+            return i
+    return None
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_SolverJobControl', _CommandSolverJobControl())
+    FreeCADGui.addCommand('Fem_ShowResult', _CommandShowResult())
