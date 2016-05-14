@@ -303,8 +303,13 @@ Py::Object View3DInventorViewerPy::getPoint(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
+#if PY_MAJOR_VERSION >= 3
+        x = (int)Py::Long(t[0]);
+        y = (int)Py::Long(t[1]);
+#else
         x = (int)Py::Int(t[0]);
         y = (int)Py::Int(t[1]);
+#endif
     }
     try {
         SbVec3f pt = _viewer->getPointOnScreen(SbVec2s(x,y));
