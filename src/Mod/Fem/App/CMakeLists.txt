@@ -98,6 +98,7 @@ SET(FemScripts_SRCS
     ccxDatReader.py
     ccxFrdReader.py
     convert2TetGen.py
+    importZ88Mesh.py
     Init.py
     InitGui.py
     FemAnalysis.py
