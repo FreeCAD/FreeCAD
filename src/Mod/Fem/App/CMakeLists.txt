@@ -104,6 +104,7 @@ SET(FemScripts_SRCS
     FemAnalysis.py
     FemCommands.py
     FemBeamSection.py
+    FemMeshTools.py
     FemShellThickness.py
     FemSolverCalculix.py
     FemTools.py
