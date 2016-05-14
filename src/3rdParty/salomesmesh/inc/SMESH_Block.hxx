@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 // File      : SMESH_Block.hxx
 // Created   : Tue Nov 30 12:42:18 2004
 // Author    : Edward AGAPOV (eap)
@@ -26,11 +27,11 @@
 #ifndef SMESH_Block_HeaderFile
 #define SMESH_Block_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+#include "SMESH_Utils.hxx"
 
-//#include <Geom2d_Curve.hxx>
-//#include <Geom_Curve.hxx>
-//#include <Geom_Surface.hxx>
+// #include <Geom2d_Curve.hxx>
+// #include <Geom_Curve.hxx>
+// #include <Geom_Surface.hxx>
 
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfOrientedShape.hxx>
@@ -58,7 +59,7 @@ class gp_Pnt;
 // parameters inside the block and vice versa
 // =========================================================
 
-class SMESH_EXPORT SMESH_Block: public math_FunctionSetWithDerivatives
+class SMESHUtils_EXPORT SMESH_Block: public math_FunctionSetWithDerivatives
 {
  public:
   enum TShapeID {
@@ -67,20 +68,19 @@ class SMESH_EXPORT SMESH_Block: public math_FunctionSetWithDerivatives
     // ----------------------------
     ID_NONE = 0,
 
-    ID_V000 = 1, ID_V100, ID_V010, ID_V110, ID_V001, ID_V101, ID_V011, ID_V111,
+    ID_V000 = 1, ID_V100, ID_V010, ID_V110, ID_V001, ID_V101, ID_V011, ID_V111, // 1-8
 
-    ID_Ex00, ID_Ex10, ID_Ex01, ID_Ex11,
-    ID_E0y0, ID_E1y0, ID_E0y1, ID_E1y1,
-    ID_E00z, ID_E10z, ID_E01z, ID_E11z,
+    ID_Ex00, ID_Ex10, ID_Ex01, ID_Ex11, // 9-12
+    ID_E0y0, ID_E1y0, ID_E0y1, ID_E1y1, // 13-16
+    ID_E00z, ID_E10z, ID_E01z, ID_E11z, // 17-20
 
-    ID_Fxy0, ID_Fxy1, ID_Fx0z, ID_Fx1z, ID_F0yz, ID_F1yz,
+    ID_Fxy0, ID_Fxy1, ID_Fx0z, ID_Fx1z, ID_F0yz, ID_F1yz, // 21-26
 
-    ID_Shell
-    };
-  enum { // to use TShapeID for indexing certain type subshapes
+    ID_Shell, // 27
+
+    // to use TShapeID for indexing certain type subshapes
 
     ID_FirstV = ID_V000, ID_FirstE = ID_Ex00, ID_FirstF = ID_Fxy0
-
   };
 
 
@@ -245,6 +245,8 @@ public:
                           const gp_XYZ& theParamsHint = gp_XYZ(-1,-1,-1));
   // compute point parameters in the block.
   // Note: for edges, it is better to use EdgeParameters()
+  // Return false only in case of "hard" failure, use IsToleranceReached() etc
+  // to evaluate quality of the found solution
 
   bool VertexParameters(const int theVertexID, gp_XYZ& theParams);
   // return parameters of a vertex given by TShapeID
@@ -252,14 +254,18 @@ public:
   bool EdgeParameters(const int theEdgeID, const double theU, gp_XYZ& theParams);
   // return parameters of a point given by theU on edge
 
+  void SetTolerance(const double tol);
+  // set tolerance for ComputeParameters()
 
- public:
-  // ---------------
-  // Block geomerty
-  // ---------------
+  double GetTolerance() const { return myTolerance; }
+  // return current tolerance of ComputeParameters()
 
-  
-  
+  bool IsToleranceReached() const;
+  // return true if solution found by ComputeParameters() is within the tolerance
+
+  double DistanceReached() const { return distance(); }
+  // return distance between solution found by ComputeParameters() and thePoint
+
  public:
   // ---------
   // Services
@@ -274,13 +280,16 @@ public:
   // Return true if an in-block parameter increases along theEdge curve
 
   static int GetOrderedEdges (const TopoDS_Face&        theFace,
-                              TopoDS_Vertex             theFirstVertex,
                               std::list< TopoDS_Edge >& theEdges,
-                              std::list< int >  &       theNbVertexInWires);
-  // Return nb wires and a list of oredered edges.
+                              std::list< int >  &       theNbEdgesInWires,
+                              TopoDS_Vertex             theFirstVertex=TopoDS_Vertex(),
+                              const bool                theShapeAnalysisAlgo=false);
+  // Return nb wires and a list of ordered edges.
   // It is used to assign indices to subshapes.
   // theFirstVertex may be NULL.
   // Always try to set a seam edge first
+  // if (theShapeAnalysisAlgo) then ShapeAnalysis::OuterWire() is used to find the outer
+  // wire else BRepTools::OuterWire() is used
 
  public:
   // -----------------------------------------------------------
@@ -307,7 +316,7 @@ public:
   // Note 2: curve adaptors need to have only Value(double), FirstParameter() and
   // LastParameter() defined to be used by Block algoritms
 
-  class SMESH_EXPORT TEdge {
+  class SMESHUtils_EXPORT TEdge {
     int                myCoordInd;
     double             myFirst;
     double             myLast;
@@ -327,7 +336,7 @@ public:
     ~TEdge();
   };
 
-  class SMESH_EXPORT TFace {
+  class SMESHUtils_EXPORT TFace {
     // 4 edges in the order u0, u1, 0v, 1v
     int                  myCoordInd[ 4 ];
     double               myFirst   [ 4 ];
@@ -348,6 +357,11 @@ public:
     int GetUInd() const { return myCoordInd[ 0 ]; }
     int GetVInd() const { return myCoordInd[ 2 ]; }
     void GetCoefs( int i, const gp_XYZ& theParams, double& eCoef, double& vCoef ) const;
+    const Adaptor3d_Surface* Surface() const { return myS; }
+    bool IsUVInQuad( const gp_XY& uv,
+                     const gp_XYZ& param0, const gp_XYZ& param1,
+                     const gp_XYZ& param2, const gp_XYZ& param3 ) const;
+    gp_XY GetUVRange() const;
     TFace(): myS(0) { myC2d[0]=myC2d[1]=myC2d[2]=myC2d[3]=0; }
     ~TFace();
   };
@@ -365,7 +379,13 @@ public:
   enum { SQUARE_DIST = 0, DRV_1, DRV_2, DRV_3 };
   double distance () const { return sqrt( myValues[ SQUARE_DIST ]); }
   double funcValue(double sqDist) const { return mySquareFunc ? sqDist : sqrt(sqDist); }
-  bool computeParameters(const gp_Pnt& thePoint, gp_XYZ& theParams, const gp_XYZ& theParamsHint);
+  bool computeParameters(const gp_Pnt& thePoint, gp_XYZ& theParams, const gp_XYZ& theParamsHint, int);
+  void refineParametersOnFace( const gp_Pnt& thePoint, gp_XYZ& theParams, int theFaceID );
+  bool findUVByHalfDivision( const gp_Pnt& thePoint, const gp_XY& theUV,
+                             const TFace& tface, gp_XYZ& theParams);
+  bool findUVAround( const gp_Pnt& thePoint, const gp_XY& theUV,
+                     const TFace& tface, gp_XYZ& theParams, int nbGetWorstLimit );
+  bool saveBetterSolution( const gp_XYZ& theNewParams, gp_XYZ& theParams, double sqDistance );
 
   int      myFaceIndex;
   double   myFaceParam;
@@ -379,7 +399,7 @@ public:
   double   myValues[ 4 ]; // values computed at myParam: square distance and 3 derivatives
 
   typedef std::pair<gp_XYZ,gp_XYZ> TxyzPair;
-  TxyzPair my3x3x3GridNodes[ 27 ]; // to compute the first param guess
+  TxyzPair my3x3x3GridNodes[ 1000 ]; // to compute the first param guess
   bool     myGridComputed;
 };
 

@@ -1,29 +1,30 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH StdMeshers : implementaion of point distribution algorithm
 //  File   : StdMeshers_Distribution.cxx
 //  Author : Alexandre SOLOVYOV
 //  Module : SMESH
-//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_Distribution.cxx,v 1.6.2.2 2008/11/27 13:03:50 abd Exp $
+//  $Header$
 //
 #include "StdMeshers_Distribution.hxx"
 
@@ -40,8 +41,10 @@
 #ifdef NO_CAS_CATCH
 #include <Standard_ErrorHandler.hxx>
 #endif
-
+#include <Expr_NamedUnknown.hxx>
 using namespace std;
+
+namespace StdMeshers {
 
 Function::Function( const int conv )
 : myConv( conv )
@@ -304,21 +307,21 @@ double dihotomySolve( Function& f, const double val, const double _start, const 
 }
 
 bool buildDistribution( const TCollection_AsciiString& f, const int conv, const double start, const double end,
-		        const int nbSeg, vector<double>& data, const double eps )
+                        const int nbSeg, vector<double>& data, const double eps )
 {
   FunctionExpr F( f.ToCString(), conv );
   return buildDistribution( F, start, end, nbSeg, data, eps );
 }
 
 bool buildDistribution( const std::vector<double>& f, const int conv, const double start, const double end,
-		        const int nbSeg, vector<double>& data, const double eps )
+                        const int nbSeg, vector<double>& data, const double eps )
 {
   FunctionTable F( f, conv );
   return buildDistribution( F, start, end, nbSeg, data, eps );
 }
 
 bool buildDistribution( const Function& func, const double start, const double end, const int nbSeg,
-		        vector<double>& data, const double eps )
+                        vector<double>& data, const double eps )
 {
   if( nbSeg<=0 )
     return false;
@@ -344,4 +347,5 @@ bool buildDistribution( const Function& func, const double start, const double e
 
   data[nbSeg] = end;
   return true;
+}
 }

@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 // File      : StdMeshers_Projection_1D.cxx
 // Module    : SMESH
@@ -56,7 +57,8 @@ using namespace std;
 
 #define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
 
-typedef StdMeshers_ProjectionUtils TAssocTool;
+//typedef StdMeshers_ProjectionUtils TAssocTool;
+namespace TAssocTool = StdMeshers_ProjectionUtils;
 
 //=======================================================================
 //function : StdMeshers_Projection_1D
@@ -67,7 +69,7 @@ StdMeshers_Projection_1D::StdMeshers_Projection_1D(int hypId, int studyId, SMESH
   :SMESH_1D_Algo(hypId, studyId, gen)
 {
   _name = "Projection_1D";
-  _shapeType = (1 << TopAbs_EDGE);	// 1 bit per shape type
+  _shapeType = (1 << TopAbs_EDGE);      // 1 bit per shape type
 
   _compatibleHypothesis.push_back("ProjectionSource1D");
   _sourceHypo = 0;
@@ -128,25 +130,25 @@ bool StdMeshers_Projection_1D::CheckHypothesis(SMESH_Mesh&                      
     if ( _sourceHypo->HasVertexAssociation() )
     {
       // source and target vertices
-      if ( !TAssocTool::IsSubShape( _sourceHypo->GetSourceVertex(), srcMesh ) ||
-           !TAssocTool::IsSubShape( _sourceHypo->GetTargetVertex(), tgtMesh ) ||
-           !TAssocTool::IsSubShape( _sourceHypo->GetSourceVertex(),
-                                    _sourceHypo->GetSourceEdge() ))
+      if ( !SMESH_MesherHelper::IsSubShape( _sourceHypo->GetSourceVertex(), srcMesh ) ||
+           !SMESH_MesherHelper::IsSubShape( _sourceHypo->GetTargetVertex(), tgtMesh ) ||
+           !SMESH_MesherHelper::IsSubShape( _sourceHypo->GetSourceVertex(),
+                                            _sourceHypo->GetSourceEdge() ))
       {
         aStatus = HYP_BAD_PARAMETER;
-        SCRUTE((TAssocTool::IsSubShape( _sourceHypo->GetSourceVertex(), srcMesh )));
-        SCRUTE((TAssocTool::IsSubShape( _sourceHypo->GetTargetVertex(), tgtMesh )));
-        SCRUTE((TAssocTool::IsSubShape( _sourceHypo->GetSourceVertex(),
-                                        _sourceHypo->GetSourceEdge() )));
+        SCRUTE((SMESH_MesherHelper::IsSubShape( _sourceHypo->GetSourceVertex(), srcMesh )));
+        SCRUTE((SMESH_MesherHelper::IsSubShape( _sourceHypo->GetTargetVertex(), tgtMesh )));
+        SCRUTE((SMESH_MesherHelper::IsSubShape( _sourceHypo->GetSourceVertex(),
+                                                _sourceHypo->GetSourceEdge() )));
       }
       // PAL16202
-      else 
+      else
       {
-        bool isSub = TAssocTool::IsSubShape( _sourceHypo->GetTargetVertex(), aShape );
+        bool isSub = SMESH_MesherHelper::IsSubShape( _sourceHypo->GetTargetVertex(), aShape );
         if ( !_sourceHypo->IsCompoundSource() ) {
           if ( !isSub ) {
             aStatus = HYP_BAD_PARAMETER;
-            SCRUTE((TAssocTool::IsSubShape( _sourceHypo->GetTargetVertex(), aShape)));
+            SCRUTE((SMESH_MesherHelper::IsSubShape( _sourceHypo->GetTargetVertex(), aShape)));
           }
         }
         else if ( isSub ) {
@@ -159,7 +161,7 @@ bool StdMeshers_Projection_1D::CheckHypothesis(SMESH_Mesh&                      
           {
             const TopoDS_Shape& ancestor = ancestIt.Value();
             if ( ancestor.ShapeType() == TopAbs_EDGE &&
-                 TAssocTool::IsSubShape( ancestor, _sourceHypo->GetSourceEdge() ))
+                 SMESH_MesherHelper::IsSubShape( ancestor, _sourceHypo->GetSourceEdge() ))
             {
               if ( sharingEdge.IsNull() || ancestor.IsSame( sharingEdge ))
                 sharingEdge = ancestor;
@@ -175,11 +177,11 @@ bool StdMeshers_Projection_1D::CheckHypothesis(SMESH_Mesh&                      
       }
     }
     // check source edge
-    if ( !TAssocTool::IsSubShape( _sourceHypo->GetSourceEdge(), srcMesh ) ||
+    if ( !SMESH_MesherHelper::IsSubShape( _sourceHypo->GetSourceEdge(), srcMesh ) ||
          ( srcMesh == tgtMesh && aShape == _sourceHypo->GetSourceEdge() ))
     {
       aStatus = HYP_BAD_PARAMETER;
-      SCRUTE((TAssocTool::IsSubShape( _sourceHypo->GetSourceEdge(), srcMesh )));
+      SCRUTE((SMESH_MesherHelper::IsSubShape( _sourceHypo->GetSourceEdge(), srcMesh )));
       SCRUTE((srcMesh == tgtMesh));
       SCRUTE(( aShape == _sourceHypo->GetSourceEdge() ));
     }
@@ -209,14 +211,14 @@ bool StdMeshers_Projection_1D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
   SMESHDS_Mesh * meshDS = theMesh.GetMeshDS();
 
   // ---------------------------
-  // Make subshapes association
+  // Make sub-shapes association
   // ---------------------------
 
   TopoDS_Edge srcEdge, tgtEdge = TopoDS::Edge( theShape.Oriented(TopAbs_FORWARD));
   TopoDS_Shape srcShape = _sourceHypo->GetSourceEdge().Oriented(TopAbs_FORWARD);
 
   TAssocTool::TShapeShapeMap shape2ShapeMap;
-  TAssocTool::InitVertexAssociation( _sourceHypo, shape2ShapeMap, tgtEdge );
+  TAssocTool::InitVertexAssociation( _sourceHypo, shape2ShapeMap );
   if ( !TAssocTool::FindSubShapeAssociation( tgtEdge, tgtMesh, srcShape, srcMesh,
                                              shape2ShapeMap) ||
        !shape2ShapeMap.IsBound( tgtEdge ))
@@ -237,14 +239,18 @@ bool StdMeshers_Projection_1D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
   SMESH_subMesh* srcSubMesh = srcMesh->GetSubMesh( srcEdge );
   //SMESH_subMesh* tgtSubMesh = tgtMesh->GetSubMesh( tgtEdge );
 
+  string srcMeshError;
   if ( tgtMesh == srcMesh ) {
     if ( !TAssocTool::MakeComputed( srcSubMesh ))
-      return error(COMPERR_BAD_INPUT_MESH,"Source mesh not computed");
+      srcMeshError = TAssocTool::SourceNotComputedError( srcSubMesh, this );
   }
   else {
     if ( !srcSubMesh->IsMeshComputed() )
-      return error(COMPERR_BAD_INPUT_MESH,"Source mesh not computed");
+      srcMeshError = TAssocTool::SourceNotComputedError();
   }
+  if ( !srcMeshError.empty() )
+    return error(COMPERR_BAD_INPUT_MESH, srcMeshError );
+
   // -----------------------------------------------
   // Find out nodes distribution on the source edge
   // -----------------------------------------------
@@ -371,6 +377,97 @@ bool StdMeshers_Projection_1D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
 
   return true;
 }
+
+
+//=======================================================================
+//function : Evaluate
+//purpose  : 
+//=======================================================================
+
+bool StdMeshers_Projection_1D::Evaluate(SMESH_Mesh& theMesh,
+                                        const TopoDS_Shape& theShape,
+                                        MapShapeNbElems& aResMap)
+{
+  if ( !_sourceHypo )
+    return false;
+
+  SMESH_Mesh * srcMesh = _sourceHypo->GetSourceMesh(); 
+  SMESH_Mesh * tgtMesh = & theMesh;
+  if ( !srcMesh )
+    srcMesh = tgtMesh;
+
+  //SMESHDS_Mesh * meshDS = theMesh.GetMeshDS();
+
+  // ---------------------------
+  // Make sub-shapes association
+  // ---------------------------
+
+  TopoDS_Edge srcEdge, tgtEdge = TopoDS::Edge( theShape.Oriented(TopAbs_FORWARD));
+  TopoDS_Shape srcShape = _sourceHypo->GetSourceEdge().Oriented(TopAbs_FORWARD);
+
+  TAssocTool::TShapeShapeMap shape2ShapeMap;
+  TAssocTool::InitVertexAssociation( _sourceHypo, shape2ShapeMap );
+  if ( !TAssocTool::FindSubShapeAssociation( tgtEdge, tgtMesh, srcShape, srcMesh,
+                                             shape2ShapeMap) ||
+       !shape2ShapeMap.IsBound( tgtEdge ))
+    return error("Vertices association failed" );
+
+  srcEdge = TopoDS::Edge( shape2ShapeMap( tgtEdge ).Oriented(TopAbs_FORWARD));
+//   cout << " srcEdge #" << srcMesh->GetMeshDS()->ShapeToIndex( srcEdge )
+//        << " tgtEdge #" << tgtMesh->GetMeshDS()->ShapeToIndex( tgtEdge ) << endl;
+
+  TopoDS_Vertex tgtV[2], srcV[2];
+  TopExp::Vertices( tgtEdge, tgtV[0], tgtV[1] );
+  TopExp::Vertices( srcEdge, srcV[0], srcV[1] );
+
+  // ----------------------------------------------
+  // Assure that mesh on a source edge is computed
+  // ----------------------------------------------
+
+  SMESH_subMesh* srcSubMesh = srcMesh->GetSubMesh( srcEdge );
+  //SMESH_subMesh* tgtSubMesh = tgtMesh->GetSubMesh( tgtEdge );
+
+  if ( tgtMesh == srcMesh ) {
+    if ( !TAssocTool::MakeComputed( srcSubMesh ))
+      return error(COMPERR_BAD_INPUT_MESH,"Source mesh not computed");
+  }
+  else {
+    if ( !srcSubMesh->IsMeshComputed() )
+      return error(COMPERR_BAD_INPUT_MESH,"Source mesh not computed");
+  }
+  // -----------------------------------------------
+  // Find out nodes distribution on the source edge
+  // -----------------------------------------------
+
+  //double srcLength = EdgeLength( srcEdge );
+  //double tgtLength = EdgeLength( tgtEdge );
+  
+  vector< double > params; // sorted parameters of nodes on the source edge
+  if ( !SMESH_Algo::GetNodeParamOnEdge( srcMesh->GetMeshDS(), srcEdge, params ))
+    return error(COMPERR_BAD_INPUT_MESH,"Bad node parameters on the source edge");
+
+  int nbNodes = params.size();
+
+  std::vector<int> aVec(SMDSEntity_Last);
+  for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aVec[i] = 0;
+
+  aVec[SMDSEntity_Node] = nbNodes;
+
+  bool quadratic = false;
+  SMDS_ElemIteratorPtr elemIt = srcSubMesh->GetSubMeshDS()->GetElements();
+  if ( elemIt->more() )
+    quadratic = elemIt->next()->IsQuadratic();
+  if(quadratic)
+    aVec[SMDSEntity_Quad_Edge] = (nbNodes-1)/2;
+  else
+    aVec[SMDSEntity_Edge] = nbNodes - 1;
+
+  SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);
+  aResMap.insert(std::make_pair(sm,aVec));
+
+  return true;
+}
+
 
 //=============================================================================
 /*!
