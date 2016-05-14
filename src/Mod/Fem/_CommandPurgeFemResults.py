@@ -26,7 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 from FemCommands import FemCommands
-from FemTools import FemTools
+import FemTools
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -43,7 +43,7 @@ class _CommandPurgeFemResults(FemCommands):
         self.is_active = 'with_results'
 
     def Activated(self):
-        fea = FemTools()
+        fea = FemTools.FemTools()
         fea.reset_all()
 
         self.hide_meshes_show_parts_constraints()

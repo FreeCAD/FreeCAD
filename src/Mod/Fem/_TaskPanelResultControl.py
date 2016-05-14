@@ -26,7 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-from FemTools import FemTools
+import FemTools
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -100,7 +100,7 @@ class _TaskPanelResultControl:
     def restore_initial_result_dialog(self):
         FreeCAD.FEM_dialog = {"results_type": "None", "show_disp": False,
                               "disp_factor": 0, "disp_factor_max": 100}
-        fea = FemTools()
+        fea = FemTools.FemTools()
         fea.reset_mesh_color()
         fea.reset_mesh_deformation()
 
@@ -122,7 +122,7 @@ class _TaskPanelResultControl:
     def none_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.set_result_stats("mm", 0.0, 0.0, 0.0)
-        fea = FemTools()
+        fea = FemTools.FemTools()
         fea.reset_mesh_color()
 
     def abs_displacement_selected(self, state):
