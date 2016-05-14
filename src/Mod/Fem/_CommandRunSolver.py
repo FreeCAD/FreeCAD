@@ -61,6 +61,17 @@ class _CommandRunSolver(FemCommands):
                 return
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
+        elif FreeCADGui.Selection.getSelection()[0].SolverType == "FemSolverZ88":
+            import FemToolsZ88
+            self.fea = FemToolsZ88.FemToolsZ88()
+            self.fea.reset_all()
+            message = self.fea.check_prerequisites()
+            if message:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+                return
+            self.fea.run()  # test z88
+            #self.fea.finished.connect(load_results)
+            #QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
 

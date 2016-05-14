@@ -80,10 +80,12 @@ SET(FemScripts_SRCS
     _CommandRunSolver.py
     _CommandShellThickness.py
     _CommandSolverCalculix.py
+    _CommandSolverZ88.py
     _FemAnalysis.py
     _FemBeamSection.py
     _FemShellThickness.py
     _FemSolverCalculix.py
+    _FemSolverZ88.py
     _MechanicalMaterial.py
     _TaskPanelFemBeamSection.py
     _TaskPanelFemShellThickness.py
@@ -94,6 +96,7 @@ SET(FemScripts_SRCS
     _ViewProviderFemBeamSection.py
     _ViewProviderFemShellThickness.py
     _ViewProviderFemSolverCalculix.py
+    _ViewProviderFemSolverZ88.py
     _ViewProviderMechanicalMaterial.py
     ccxDatReader.py
     ccxFrdReader.py
@@ -106,11 +109,14 @@ SET(FemScripts_SRCS
     FemBeamSection.py
     FemInputWriter.py
     FemInputWriterCcx.py
+    FemInputWriterZ88.py
     FemMeshTools.py
     FemShellThickness.py
     FemSolverCalculix.py
+    FemSolverZ88.py
     FemTools.py
     FemToolsCcx.py
+    FemToolsZ88.py
     MechanicalMaterial.py
     FemSelectionObserver.py
     TestFem.py
