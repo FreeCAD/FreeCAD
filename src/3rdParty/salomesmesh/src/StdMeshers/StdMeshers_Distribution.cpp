@@ -35,6 +35,7 @@
 #endif
 
 #include <Standard_Failure.hxx>
+#include <Expr_NamedUnknown.hxx>
 
 #ifdef NO_CAS_CATCH
 #include <Standard_ErrorHandler.hxx>

@@ -41,7 +41,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
-# include <Handle_Adaptor3d_HCurve.hxx>
+# include <Adaptor3d_HCurve.hxx>
 #endif
 
 

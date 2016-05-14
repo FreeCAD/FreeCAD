@@ -43,8 +43,8 @@
 # include <GeomAdaptor_Curve.hxx>
 # include <GeomFill.hxx>
 # include <GeomLProp_CLProps.hxx>
-# include <Handle_Geom_RectangularTrimmedSurface.hxx>
-# include <Handle_Geom_BSplineSurface.hxx>
+# include <Geom_RectangularTrimmedSurface.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <Precision.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert_ApproxCurve.hxx>

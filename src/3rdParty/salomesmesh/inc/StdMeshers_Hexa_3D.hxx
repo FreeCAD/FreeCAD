@@ -37,7 +37,9 @@
 
 #include "SMESH_MesherHelper.hxx"
 
+#if OCC_VERSION_HEX < 0x070000
 class TopTools_IndexedMapOfShape;
+#endif
 
 typedef struct point3Dstruct
 {

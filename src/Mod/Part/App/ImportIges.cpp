@@ -36,15 +36,15 @@
 # include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Message_MsgFile.hxx>
-# include <Handle_TColStd_HSequenceOfTransient.hxx>
+# include <TColStd_HSequenceOfTransient.hxx>
 # include <TColStd_HSequenceOfTransient.hxx>
 # include <IGESBasic_Group.hxx>
 # include <IGESSolid_ManifoldSolid.hxx>
 # include <IGESBasic_SingularSubfigure.hxx>
 #endif
 
-#include <Handle_XSControl_WorkSession.hxx>
-#include <Handle_XSControl_TransferReader.hxx>
+#include <XSControl_WorkSession.hxx>
+#include <XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
 #include <XSControl_TransferReader.hxx>
 #include <Transfer_TransientProcess.hxx>

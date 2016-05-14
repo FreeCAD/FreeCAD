@@ -32,7 +32,7 @@
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_HArray1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <Handle_TColgp_HArray1OfPnt.hxx>
+# include <TColgp_HArray1OfPnt.hxx>
 # include <Precision.hxx>
 #endif
 

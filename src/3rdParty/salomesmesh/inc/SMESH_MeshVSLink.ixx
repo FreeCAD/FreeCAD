@@ -30,6 +30,11 @@
 #include <Standard_TypeMismatch.hxx>
 #endif
 
+#ifndef _Standard_Version_HeaderFile
+#include <Standard_Version.hxx>
+#endif
+
+#if OCC_VERSION_HEX < 0x070000
 Standard_EXPORT Handle_Standard_Type& SMESH_MeshVSLink_Type_()
 {
   static Handle_Standard_Type aType1 = STANDARD_TYPE(MeshVS_DataSource3D);
@@ -69,3 +74,4 @@ const Handle(Standard_Type)& SMESH_MeshVSLink::DynamicType() const
 { 
   return STANDARD_TYPE(SMESH_MeshVSLink) ; 
 }
+#endif
