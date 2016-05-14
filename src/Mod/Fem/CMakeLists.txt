@@ -69,6 +69,7 @@ INSTALL(
 
         # solver Z88
         importZ88Mesh.py
+        z88DispReader.py
         FemInputWriterZ88.py
         FemToolsZ88.py
         FemSolverZ88.py
