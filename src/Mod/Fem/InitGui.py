@@ -57,6 +57,7 @@ class FemWorkbench (Workbench):
         import _CommandBeamSection
         import _CommandMechanicalMaterial
         import _CommandSolverCalculix
+        import _CommandSolverZ88
 
         import subprocess
         from platform import system

@@ -57,6 +57,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     fem->setCommand("FEM");
     *fem << "Fem_Analysis"
          << "Fem_SolverCalculix"
+         // << "Fem_SolverZ88"
          << "Fem_MeshFromShape"
          << "Fem_MechanicalMaterial"
          << "Fem_BeamSection"
@@ -89,6 +90,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     fem->setCommand("&FEM");
     *fem << "Fem_Analysis"
          << "Fem_SolverCalculix"
+         << "Fem_SolverZ88"
          << "Fem_MeshFromShape"
          << "Fem_MechanicalMaterial"
          << "Fem_BeamSection"

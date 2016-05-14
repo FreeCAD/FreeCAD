@@ -67,7 +67,16 @@ INSTALL(
         _TaskPanelFemSolverCalculix.py
         TaskPanelFemSolverCalculix.ui
 
+        # solver Z88
         importZ88Mesh.py
+        FemInputWriterZ88.py
+        FemToolsZ88.py
+        FemSolverZ88.py
+        _FemSolverZ88.py
+        _ViewProviderFemSolverZ88.py
+        _CommandSolverZ88.py
+        _TaskPanelFemSolverZ88.py
+        TaskPanelFemSolverZ88.ui
 
     DESTINATION
         Mod/Fem
