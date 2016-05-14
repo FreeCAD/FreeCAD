@@ -34,12 +34,12 @@
 
 #include <TopTools_DataMapOfShapeShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <gp_GTrsf.hxx>
 #include <gp_GTrsf2d.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
 #include <list>
 #include <map>
@@ -49,7 +49,6 @@ class SMESH_Algo;
 class SMESH_Hypothesis;
 class SMESH_Mesh;
 class SMESH_subMesh;
-class TopTools_IndexedMapOfShape;
 class TopoDS_Shape;
 
 /*!

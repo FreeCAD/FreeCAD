@@ -27,6 +27,12 @@
 #ifndef _SMESH_MeshVSLink_HeaderFile
 #define _SMESH_MeshVSLink_HeaderFile
 
+#if OCC_VERSION_HEX < 0x070000
+#ifndef _Handle_SMESH_MeshVSLink_HeaderFile
+#include <Handle_SMESH_MeshVSLink.hxx>
+#endif
+#endif
+
 #ifndef _Standard_HeaderFile
 #include <Standard.hxx>
 #endif
