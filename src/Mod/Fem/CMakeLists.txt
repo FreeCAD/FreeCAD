@@ -15,6 +15,7 @@ INSTALL(
 
         SelectionObserverFem.py
         TestFem.py
+        FemMeshTools.py
 
         ccxDatReader.py
         ccxFrdReader.py
