@@ -25,7 +25,7 @@
 // Module    : SMESH
 
 //local headers
-#include <SMESH_MeshVSLink.ixx>
+#include <SMESH_MeshVSLink.hxx>
 #include <SMESHDS_Group.hxx>
 
 //occ headers

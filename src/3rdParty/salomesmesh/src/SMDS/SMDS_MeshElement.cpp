@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMDS : implementaion of Salome mesh data structure
 //
 #ifdef _MSC_VER
@@ -34,19 +35,33 @@
 
 using namespace std;
 
-SMDS_MeshElement::SMDS_MeshElement(int ID):myID(ID)
+SMDS_MeshElement::SMDS_MeshElement(int ID)
 {
+  init(ID);
+}
+
+SMDS_MeshElement::SMDS_MeshElement(int id, ShortType meshId, LongType shapeId)
+{
+  init(id, meshId, shapeId);
+}
+
+void SMDS_MeshElement::init(int id, ShortType meshId, LongType shapeId )
+{
+  myID = id;
+  myMeshId = meshId;
+  myShapeId = shapeId;
+  myIdInShape = -1;
 }
 
 void SMDS_MeshElement::Print(ostream & OS) const
 {
-	OS << "dump of mesh element" << endl;
+        OS << "dump of mesh element" << endl;
 }
 
 ostream & operator <<(ostream & OS, const SMDS_MeshElement * ME)
 {
-	ME->Print(OS);
-	return OS;
+        ME->Print(OS);
+        return OS;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,7 +70,7 @@ ostream & operator <<(ostream & OS, const SMDS_MeshElement * ME)
 ///////////////////////////////////////////////////////////////////////////////
 SMDS_ElemIteratorPtr SMDS_MeshElement::nodesIterator() const
 {
-	return elementsIterator(SMDSAbs_Node);
+        return elementsIterator(SMDSAbs_Node);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -64,7 +79,7 @@ SMDS_ElemIteratorPtr SMDS_MeshElement::nodesIterator() const
 ///////////////////////////////////////////////////////////////////////////////
 SMDS_ElemIteratorPtr SMDS_MeshElement::edgesIterator() const
 {
-	return elementsIterator(SMDSAbs_Edge);
+        return elementsIterator(SMDSAbs_Edge);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -73,7 +88,7 @@ SMDS_ElemIteratorPtr SMDS_MeshElement::edgesIterator() const
 ///////////////////////////////////////////////////////////////////////////////
 SMDS_ElemIteratorPtr SMDS_MeshElement::facesIterator() const
 {
-	return elementsIterator(SMDSAbs_Face);
+        return elementsIterator(SMDSAbs_Face);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -81,14 +96,14 @@ SMDS_ElemIteratorPtr SMDS_MeshElement::facesIterator() const
 ///////////////////////////////////////////////////////////////////////////////
 int SMDS_MeshElement::NbNodes() const
 {
-	int nbnodes=0;
-	SMDS_ElemIteratorPtr it=nodesIterator();
-	while(it->more())
-	{
-		it->next();
-		nbnodes++;
-	}
-	return nbnodes;
+        int nbnodes=0;
+        SMDS_ElemIteratorPtr it=nodesIterator();
+        while(it->more())
+        {
+                it->next();
+                nbnodes++;
+        }
+        return nbnodes;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,14 +111,14 @@ int SMDS_MeshElement::NbNodes() const
 ///////////////////////////////////////////////////////////////////////////////
 int SMDS_MeshElement::NbEdges() const
 {
-	int nbedges=0;
-	SMDS_ElemIteratorPtr it=edgesIterator();
-	while(it->more())
-	{
-		it->next();
-		nbedges++;
-	}
-	return nbedges;
+        int nbedges=0;
+        SMDS_ElemIteratorPtr it=edgesIterator();
+        while(it->more())
+        {
+                it->next();
+                nbedges++;
+        }
+        return nbedges;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -111,14 +126,14 @@ int SMDS_MeshElement::NbEdges() const
 ///////////////////////////////////////////////////////////////////////////////
 int SMDS_MeshElement::NbFaces() const
 {
-	int nbfaces=0;
-	SMDS_ElemIteratorPtr it=facesIterator();
-	while(it->more())
-	{
-		it->next();
-		nbfaces++;
-	}
-	return nbfaces;
+        int nbfaces=0;
+        SMDS_ElemIteratorPtr it=facesIterator();
+        while(it->more())
+        {
+                it->next();
+                nbfaces++;
+        }
+        return nbfaces;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -142,56 +157,98 @@ class SMDS_MeshElement_MyIterator:public SMDS_ElemIterator
   const SMDS_MeshElement* next()
   {
     myMore=false;
-    return myElement;	
-  }	
+    return myElement;   
+  }     
 };
-SMDS_ElemIteratorPtr SMDS_MeshElement::
-	elementsIterator(SMDSAbs_ElementType type) const
+
+SMDS_ElemIteratorPtr
+SMDS_MeshElement::elementsIterator(SMDSAbs_ElementType type) const
 {
-	/** @todo Check that iterator in the child classes return elements
-	in the same order for each different implementation (i.e: SMDS_VolumeOfNodes
-	and SMDS_VolumeOfFaces */
-	
-	if(type==GetType())
-          return SMDS_ElemIteratorPtr(new SMDS_MeshElement_MyIterator(this));
-	else 
-	{
-          MESSAGE("Iterator not implemented");
-          return SMDS_ElemIteratorPtr((SMDS_ElemIterator*)NULL);
-	}
+  /** @todo Check that iterator in the child classes return elements
+      in the same order for each different implementation (i.e: SMDS_VolumeOfNodes
+      and SMDS_VolumeOfFaces */
+  if(type==GetType())
+    return SMDS_ElemIteratorPtr(new SMDS_MeshElement_MyIterator(this));
+  else
+  {
+    MESSAGE("Iterator not implemented");
+    return SMDS_ElemIteratorPtr((SMDS_ElemIterator*)NULL);
+  }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-///Return the ID of the element
-///////////////////////////////////////////////////////////////////////////////
-int SMDS_MeshElement::GetID() const
+//! virtual, redefined in vtkEdge, vtkFace and vtkVolume classes
+SMDS_NodeIteratorPtr SMDS_MeshElement::nodesIteratorToUNV() const
 {
-	return myID;
+  return nodeIterator();
+}
+
+//! virtual, redefined in vtkEdge, vtkFace and vtkVolume classes
+SMDS_NodeIteratorPtr SMDS_MeshElement::interlacedNodesIterator() const
+{
+  return nodeIterator();
+}
+
+namespace
+{
+  //=======================================================================
+  //class : _MyNodeIteratorFromElemIterator
+  //=======================================================================
+  class _MyNodeIteratorFromElemIterator : public SMDS_NodeIterator
+  {
+    SMDS_ElemIteratorPtr myItr;
+  public:
+    _MyNodeIteratorFromElemIterator(SMDS_ElemIteratorPtr elemItr):myItr( elemItr ) {}
+    bool                 more() { return myItr->more(); }
+    const SMDS_MeshNode* next() { return static_cast< const SMDS_MeshNode*>( myItr->next() ); }
+  };
+  //=======================================================================
+  //class : _MyElemIteratorFromNodeIterator
+  //=======================================================================
+  class _MyElemIteratorFromNodeIterator : public SMDS_ElemIterator
+  {
+    SMDS_NodeIteratorPtr myItr;
+  public:
+    _MyElemIteratorFromNodeIterator(SMDS_NodeIteratorPtr nodeItr): myItr( nodeItr ) {}
+    bool more()                    { return myItr->more(); }
+    const SMDS_MeshElement* next() { return myItr->next(); }
+  };
+}
+
+SMDS_ElemIteratorPtr SMDS_MeshElement::interlacedNodesElemIterator() const
+{
+  return SMDS_ElemIteratorPtr
+    ( new _MyElemIteratorFromNodeIterator( interlacedNodesIterator() ));
+}
+
+SMDS_NodeIteratorPtr SMDS_MeshElement::nodeIterator() const
+{
+  return SMDS_NodeIteratorPtr
+    ( new _MyNodeIteratorFromElemIterator( nodesIterator() ));
 }
 
 bool operator<(const SMDS_MeshElement& e1, const SMDS_MeshElement& e2)
 {
-	if(e1.GetType()!=e2.GetType()) return false;
-	switch(e1.GetType())
-	{
-	case SMDSAbs_Node:
-		return static_cast<const SMDS_MeshNode &>(e1) <
-			static_cast<const SMDS_MeshNode &>(e2);
+        if(e1.GetType()!=e2.GetType()) return false;
+        switch(e1.GetType())
+        {
+        case SMDSAbs_Node:
+                return static_cast<const SMDS_MeshNode &>(e1) <
+                        static_cast<const SMDS_MeshNode &>(e2);
 
-	case SMDSAbs_Edge:
-		return static_cast<const SMDS_MeshEdge &>(e1) <
-			static_cast<const SMDS_MeshEdge &>(e2);
+        case SMDSAbs_Edge:
+                return static_cast<const SMDS_MeshEdge &>(e1) <
+                        static_cast<const SMDS_MeshEdge &>(e2);
 
-	case SMDSAbs_Face:
-		return static_cast<const SMDS_MeshFace &>(e1) <
-			static_cast<const SMDS_MeshFace &>(e2);
+        case SMDSAbs_Face:
+                return static_cast<const SMDS_MeshFace &>(e1) <
+                        static_cast<const SMDS_MeshFace &>(e2);
 
-	case SMDSAbs_Volume:
-		return static_cast<const SMDS_MeshVolume &>(e1) <
-			static_cast<const SMDS_MeshVolume &>(e2);
+        case SMDSAbs_Volume:
+                return static_cast<const SMDS_MeshVolume &>(e1) <
+                        static_cast<const SMDS_MeshVolume &>(e2);
 
-	default : MESSAGE("Internal Error");
-	}
+        default : MESSAGE("Internal Error");
+        }
         return false;
 }
 
@@ -220,6 +277,17 @@ bool SMDS_MeshElement::IsQuadratic() const
 bool SMDS_MeshElement::IsMediumNode(const SMDS_MeshNode* node) const
 {
   return false;
+}
+
+//================================================================================
+/*!
+ * \brief Return number of nodes excluding medium ones
+ */
+//================================================================================
+
+int SMDS_MeshElement::NbCornerNodes() const
+{
+  return IsQuadratic() ? NbNodes() - NbEdges() : NbNodes();
 }
 
 //================================================================================

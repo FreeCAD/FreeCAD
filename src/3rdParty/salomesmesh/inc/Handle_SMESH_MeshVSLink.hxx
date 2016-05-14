@@ -39,7 +39,8 @@
 
 #if OCC_VERSION_HEX < 0x070000
 #ifndef _Handle_MeshVS_DataSource3D_HeaderFile
-#include <Handle_MeshVS_DataSource3D.hxx>
+//#include <Handle_MeshVS_DataSource3D.hxx>
+#include <MeshVS_DataSource3D.hxx>
 #endif
 
 class Standard_Transient;
