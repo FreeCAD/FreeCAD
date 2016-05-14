@@ -70,16 +70,16 @@ SET(Mod_SRCS
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 SET(FemScripts_SRCS
-    _CommandFemBeamSection.py
-    _CommandFemFromShape.py
-    _CommandFemShellThickness.py
-    _CommandFemSolverCalculix.py
+    _CommandAnalysis.py
+    _CommandBeamSection.py
+    _CommandControlSolver.py
     _CommandMechanicalMaterial.py
-    _CommandMechanicalShowResult.py
-    _CommandNewMechanicalAnalysis.py
-    _CommandPurgeFemResults.py
-    _CommandQuickAnalysis.py
-    _CommandSolverJobControl.py
+    _CommandShowResult.py
+    _CommandMeshFromShape.py
+    _CommandPurgeResults.py
+    _CommandRunSolver.py
+    _CommandShellThickness.py
+    _CommandSolverCalculix.py
     _FemAnalysis.py
     _FemBeamSection.py
     _FemShellThickness.py
@@ -89,7 +89,7 @@ SET(FemScripts_SRCS
     _TaskPanelFemShellThickness.py
     _TaskPanelFemSolverCalculix.py
     _TaskPanelMechanicalMaterial.py
-    _TaskPanelResultControl.py
+    _TaskPanelShowResult.py
     _ViewProviderFemAnalysis.py
     _ViewProviderFemBeamSection.py
     _ViewProviderFemShellThickness.py
@@ -111,14 +111,14 @@ SET(FemScripts_SRCS
     FemTools.py
     FemToolsCcx.py
     MechanicalMaterial.py
-    SelectionObserverFem.py
+    FemSelectionObserver.py
     TestFem.py
 
     TaskPanelFemBeamSection.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui
     TaskPanelMechanicalMaterial.ui
-    TaskPanelShowDisplacement.ui
+    TaskPanelShowResult.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 

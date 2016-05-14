@@ -13,45 +13,38 @@ INSTALL(
 
         convert2TetGen.py
 
-        SelectionObserverFem.py
-        TestFem.py
+        FemSelectionObserver.py
         FemMeshTools.py
         FemTools.py
         FemInputWriter.py
-
-        ccxDatReader.py
-        ccxFrdReader.py
-        FemToolsCcx.py
-        FemInputWriterCcx.py
+        TestFem.py
 
         FemCommands.py
-        _CommandFemFromShape.py
-        _CommandPurgeFemResults.py
-        _CommandQuickAnalysis.py
-        _CommandSolverJobControl.py
+        _CommandMeshFromShape.py
+        _CommandPurgeResults.py
+        _CommandRunSolver.py
+        _CommandControlSolver.py
 
-        _CommandMechanicalShowResult.py
-        _TaskPanelResultControl.py
-
-        TaskPanelShowDisplacement.ui
-
-        _FemAnalysis.py
-        _ViewProviderFemAnalysis.py
+        _CommandShowResult.py
+        _TaskPanelShowResult.py
+        TaskPanelShowResult.ui
 
         FemAnalysis.py
-        _CommandNewMechanicalAnalysis.py
+        _FemAnalysis.py
+        _ViewProviderFemAnalysis.py
+        _CommandAnalysis.py
 
         FemBeamSection.py
         _FemBeamSection.py
         _ViewProviderFemBeamSection.py
-        _CommandFemBeamSection.py
+        _CommandBeamSection.py
         _TaskPanelFemBeamSection.py
         TaskPanelFemBeamSection.ui
 
         FemShellThickness.py
         _FemShellThickness.py
         _ViewProviderFemShellThickness.py
-        _CommandFemShellThickness.py
+        _CommandShellThickness.py
         _TaskPanelFemShellThickness.py
         TaskPanelFemShellThickness.ui
 
@@ -62,10 +55,15 @@ INSTALL(
         _TaskPanelMechanicalMaterial.py
         TaskPanelMechanicalMaterial.ui
 
+        # solver CalculiX ccx
+        ccxDatReader.py
+        ccxFrdReader.py
+        FemInputWriterCcx.py
+        FemToolsCcx.py
         FemSolverCalculix.py
         _FemSolverCalculix.py
         _ViewProviderFemSolverCalculix.py
-        _CommandFemSolverCalculix.py
+        _CommandSolverCalculix.py
         _TaskPanelFemSolverCalculix.py
         TaskPanelFemSolverCalculix.ui
 

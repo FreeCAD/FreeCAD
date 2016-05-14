@@ -260,8 +260,8 @@ class _TaskPanelMechanicalMaterial:
         # start SelectionObserver and parse the function to add the References to the widget
         # TODO add a ToolTip with print_message if the mouse pointer is over addReference button
         print_message = "Select Edges and Faces by single click on them or Solids by double click on a Vertex to add them to the list"
-        import SelectionObserverFem
-        self.sel_server = SelectionObserverFem.SelectionObserverFem(self.selectionParser, print_message)
+        import FemSelectionObserver
+        self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])

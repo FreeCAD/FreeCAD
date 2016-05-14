@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Commend Fem From Shape"
+__title__ = "Command New Analysis"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
@@ -32,26 +32,35 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
 
 
-class _CommandFemFromShape(FemCommands):
+class _CommandAnalysis(FemCommands):
+    "the Fem_Analysis command definition"
     def __init__(self):
-        super(_CommandFemFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-fem-mesh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh from shape")}
-        self.is_active = 'with_part_feature'
+        super(_CommandAnalysis, self).__init__()
+        self.resources = {'Pixmap': 'fem-analysis',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Analysis container"),
+                          'Accel': "N, A",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Creates a analysis container with standard solver CalculiX")}
+        self.is_active = 'with_document'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
+        FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
+        FreeCADGui.addModule("FemAnalysis")
+        FreeCADGui.addModule("FemSolverCalculix")
+        FreeCADGui.doCommand("FemAnalysis.makeFemAnalysis('Analysis')")
+        FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
+        FreeCADGui.doCommand("FemSolverCalculix.makeFemSolverCalculix('CalculiX')")
+        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
+            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
             if(sel[0].isDerivedFrom("Part::Feature")):
                 FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
                 FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
-
         FreeCADGui.Selection.clearSelection()
 
-
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
+    FreeCADGui.addCommand('Fem_Analysis', _CommandAnalysis())

@@ -20,53 +20,34 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__ = "Command Mechanical Show Result"
+__title__ = "Command Purge Fem Results"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 from FemCommands import FemCommands
+import FemTools
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
 
 
-class _CommandMechanicalShowResult(FemCommands):
-    "the Fem JobControl command definition"
+class _CommandPurgeResults(FemCommands):
+    # the Fem_PurgeResults command definition
     def __init__(self):
-        super(_CommandMechanicalShowResult, self).__init__()
-        self.resources = {'Pixmap': 'fem-result',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Show result"),
-                          'Accel': "S, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ShowResult", "Show result information of an analysis")}
+        super(_CommandPurgeResults, self).__init__()
+        self.resources = {'Pixmap': 'fem-purge-results',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results"),
+                          'Accel': "S, S",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purges all results from active analysis")}
         self.is_active = 'with_results'
 
     def Activated(self):
-        self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
+        fea = FemTools.FemTools()
+        fea.reset_all()
 
-        if not self.result_object:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
-            return
-
-        self.hide_parts_constraints_show_meshes()
-
-        import _TaskPanelResultControl
-        taskd = _TaskPanelResultControl._TaskPanelResultControl()
-        FreeCADGui.Control.showDialog(taskd)
-
-
-#Code duplidation - to be removed after migration to FemTools
-def get_results_object(sel):
-    import FemGui
-    if (len(sel) == 1):
-        if sel[0].isDerivedFrom("Fem::FemResultObject"):
-            return sel[0]
-
-    for i in FemGui.getActiveAnalysis().Member:
-        if(i.isDerivedFrom("Fem::FemResultObject")):
-            return i
-    return None
+        self.hide_meshes_show_parts_constraints()
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
+    FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeResults())

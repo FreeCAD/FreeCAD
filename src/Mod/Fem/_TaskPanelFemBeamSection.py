@@ -87,8 +87,8 @@ class _TaskPanelFemBeamSection:
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
         print_message = "Select Edges by single click on them to add them to the list"
-        import SelectionObserverFem
-        self.sel_server = SelectionObserverFem.SelectionObserverFem(self.selectionParser, print_message)
+        import FemSelectionObserver
+        self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
