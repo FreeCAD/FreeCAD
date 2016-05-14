@@ -122,7 +122,6 @@ SET(FemScripts_SRCS
     FemSelectionObserver.py
     TestFem.py
     z88DispReader.py
-
     TaskPanelFemBeamSection.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui
@@ -222,7 +221,7 @@ SET(Fem_SRCS
     ${FemSet_SRCS}
     ${FemConstraints_SRCS}
     ${FemResult_SRCS}
-....${FemPost_SRCS}
+    ${FemPost_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )

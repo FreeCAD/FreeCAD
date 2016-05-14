@@ -129,25 +129,6 @@
 #include "WinNativeGestureRecognizers.h"
 #include "Document.h"
 
-/*
-#include "SoVTKActor.h"
-#include "vtkDataSetSurfaceFilter.h"
-#include "vtkGeometryFilter.h"
-#include "vtkLookupTable.h"
-#include "vtkPointData.h"
-#include "vtkCellData.h"
-#include "vtkContourFilter.h"
-#include "vtkCubeSource.h"
-#include "vtkPlane.h"
-#include "vtkCutter.h"
-#include "vtkHedgeHog.h"
-#include "vtkGlyph3D.h"
-#include "vtkArrowSource.h"
-#include "vtkPointSource.h"
-#include "vtkRungeKutta4.h"
-#include "vtkStreamTracer.h"
-#include "vtkPointLocator.h"
-*/
 //#define FC_LOGGING_CB
 
 using namespace Gui;
@@ -546,7 +527,6 @@ void View3DInventorViewer::init()
     cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
     mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
     panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
-        
 }
 
 View3DInventorViewer::~View3DInventorViewer()
