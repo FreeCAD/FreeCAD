@@ -23,7 +23,7 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,sys
 from PySide import QtGui
 from xml.etree.ElementTree import parse
 
@@ -42,10 +42,16 @@ def translate(context,text):
                                      QtGui.QApplication.UnicodeUTF8).encode("utf8")
     s = cStringIO.StringIO()
     for i in u:
-        if i == 39:
-            s.write("\\'")
+        if sys.version_info.major > 2: #below only works correctly in python3
+            if i == 39:
+                s.write(unicode("\\'"))
+            else:
+                s.write(unicode(chr(i)))
         else:
-            s.write(chr(i))
+            if ord(i) == 39:
+                s.write(unicode("\\'"))
+            else:
+                s.write(unicode(i))
     t = s.getvalue()
     s.close()
     return t
