@@ -120,6 +120,7 @@ SET(FemScripts_SRCS
     MechanicalMaterial.py
     FemSelectionObserver.py
     TestFem.py
+    z88DispReader.py
 
     TaskPanelFemBeamSection.ui
     TaskPanelFemShellThickness.ui
