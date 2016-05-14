@@ -97,13 +97,14 @@ SET(FemScripts_SRCS
     _ViewProviderMechanicalMaterial.py
     ccxDatReader.py
     ccxFrdReader.py
-    ccxInpWriter.py
     convert2TetGen.py
     Init.py
     InitGui.py
     FemAnalysis.py
     FemCommands.py
     FemBeamSection.py
+    FemInputWriter.py
+    FemInputWriterCcx.py
     FemMeshTools.py
     FemShellThickness.py
     FemSolverCalculix.py
