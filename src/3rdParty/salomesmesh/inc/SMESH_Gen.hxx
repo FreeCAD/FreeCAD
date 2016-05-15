@@ -60,8 +60,9 @@ typedef std::set<int> TSetOfInt;
 class SMESH_EXPORT  SMESH_Gen
 {
 public:
-  SMESH_Gen();
   ~SMESH_Gen();
+  
+  static SMESH_Gen* get();
 
   SMESH_Mesh* CreateMesh(int theStudyId, bool theIsEmbeddedMode)
     throw(SALOME_Exception);
@@ -159,6 +160,10 @@ public:
   // std::map < int, SMESH_2D_Algo * >_map2D_Algo;
   // std::map < int, SMESH_3D_Algo * >_map3D_Algo;
 
+protected:
+  SMESH_Gen();
+  static SMESH_Gen* generator;
+  
 private:
 
   int _localId;                         // unique Id of created objects, within SMESH_Gen entity
