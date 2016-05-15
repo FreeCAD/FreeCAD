@@ -76,13 +76,12 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 {
 #ifdef FCWithNetgen
 
-    Fem::FemMesh newMesh;
-    // SMESH_Gen *myGen = newMesh.getGenerator();
-// vejmarie NEEDED TO MAKE IT WORK
-    newMesh.myMesh = newMesh.myGen->CreateMesh(0, true);
+    Fem::FemMesh newMesh, mesh2;
+    
+    Base::Console().Message("newMesh ID: %i\n", newMesh.getSMesh()->GetMeshDS()->getMeshId());
+    Base::Console().Message("second mesh ID: %i\n", mesh2.getSMesh()->GetMeshDS()->getMeshId());
+
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
-
-
     TopoDS_Shape shape = feat->Shape.getValue();
 
 
@@ -107,7 +106,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     myNetGenMesher.SetParameters( tet);
 */
 
-    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,newMesh.myGen);
+    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,newMesh.getGenerator());
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
     tet->SetOptimize(Optimize.getValue());
@@ -119,7 +118,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
         tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());
     }
     myNetGenMesher.SetParameters( tet);
-    newMesh.myMesh->ShapeToMesh(shape);
+    newMesh.getSMesh()->ShapeToMesh(shape);
 
     myNetGenMesher.Compute();
 
@@ -141,7 +140,6 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
     Base::Console().Log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n",numNode,numVolu,numFaces);
 
-    // set the value to the object
       FemMesh.setValue(newMesh);
     return App::DocumentObject::StdReturn;
 #else
