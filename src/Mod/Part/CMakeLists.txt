@@ -15,3 +15,16 @@ INSTALL(
     DESTINATION
         Mod/Part
 )
+
+INSTALL(
+    FILES
+        AttachmentEditor/__init__.py
+        AttachmentEditor/Commands.py
+        AttachmentEditor/DepGraphTools.py
+        AttachmentEditor/FrozenClass.py
+        AttachmentEditor/TaskAttachmentEditor.py
+        AttachmentEditor/TaskAttachmentEditor.ui
+        AttachmentEditor/TempoVis.py
+    DESTINATION
+        Mod/Part/AttachmentEditor
+       )
