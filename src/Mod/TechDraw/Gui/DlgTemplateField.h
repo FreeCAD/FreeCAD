@@ -1,5 +1,5 @@
-/***************************************************************************
- *   Copyright (c) Ian Rees                    (ian.rees@gmail.com) 2015   *
+ /**************************************************************************
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,44 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include<QInputDialog>
-#include<QLineEdit>
-#endif // #ifndef _PreCmp_
+#ifndef DRAWINGGUI_DLGTEMPLATEFIELD_H
+#define DRAWINGGUI_DLGTEMPLATEFIELD_H
 
-#include "TemplateTextField.h"
-#include "DlgTemplateField.h"
+#include <QDialog>
 
-//#include<QDebug>
+#include "ui_DlgTemplateField.h"
 
-using namespace TechDrawGui;
+namespace TechDrawGui {
 
-TemplateTextField::TemplateTextField(QGraphicsItem*parent,
-                                     TechDraw::DrawTemplate *myTmplte,
-                                     const std::string &myFieldName)
-    : QGraphicsRectItem(parent), tmplte(myTmplte), fieldNameStr(myFieldName)
+class DlgTemplateField : public QDialog, public Ui_dlgTemplateField
 {
-}
+    Q_OBJECT
 
+public:
+    DlgTemplateField( QWidget* parent = 0 );
+    ~DlgTemplateField();
 
-TemplateTextField::~TemplateTextField()
-{
-}
+    void setFieldName(std::string name);
+    void setFieldContent(std::string content);
+    std::string getFieldContent();
 
-void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    //TODO: Add a command to change template text, and call it from here
-    // ...Interpreter....("App.ActiveDocument().%s.%s.setTextField(%s,%s)",pageName,templateName,fieldName,fieldValue)
-    DlgTemplateField* ui = new DlgTemplateField(nullptr);
-    ui->setFieldName(fieldNameStr);
-    ui->setFieldContent(tmplte->EditableTexts[fieldNameStr]);
-    int uiCode = ui->exec();
-    std::string newContent = "";
-    if(uiCode == QDialog::Accepted) {
-       std::string newContent = ui->getFieldContent();
-         tmplte->EditableTexts.setValue(fieldNameStr, newContent);
-    }
-    ui->deleteLater();
-}
+public Q_SLOTS:
+
+protected:
+    void changeEvent(QEvent *e);
+    //Ui_dlgTemplateField* ui;
+};
+
+} // namespace TechDrawGui
+
+#endif // DRAWINGGUI_DLGTEMPLATEFIELD_H

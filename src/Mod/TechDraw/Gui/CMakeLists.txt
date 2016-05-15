@@ -44,6 +44,7 @@ set(TechDrawGui_MOC_HDRS
     TaskProjGroup.h
     DlgPrefsTechDrawImp.h
     TaskLinkDim.h
+    DlgTemplateField.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -55,6 +56,7 @@ set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDraw.ui
     TaskProjGroup.ui
     TaskLinkDim.ui
+    DlgTemplateField.ui
 )
 
 qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
@@ -80,6 +82,9 @@ SET(TechDrawGui_SRCS
     TaskLinkDim.ui
     TaskLinkDim.cpp
     TaskLinkDim.h
+    DlgTemplateField.ui
+    DlgTemplateField.cpp
+    DlgTemplateField.h
 )
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
