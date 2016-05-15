@@ -479,17 +479,17 @@ void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
     Standard_Real scale = trsf.ScaleFactor();
 
     // set Rotation matrix
-    mtrx[0][0] = scale * m(0,0);
-    mtrx[0][1] = scale * m(0,1);
-    mtrx[0][2] = scale * m(0,2);
+    mtrx[0][0] = scale * m(1,1);
+    mtrx[0][1] = scale * m(1,2);
+    mtrx[0][2] = scale * m(1,3);
 
-    mtrx[1][0] = scale * m(1,0);
-    mtrx[1][1] = scale * m(1,1);
-    mtrx[1][2] = scale * m(1,2);
+    mtrx[1][0] = scale * m(2,1);
+    mtrx[1][1] = scale * m(2,2);
+    mtrx[1][2] = scale * m(2,3);
 
-    mtrx[2][0] = scale * m(2,0);
-    mtrx[2][1] = scale * m(2,1);
-    mtrx[2][2] = scale * m(2,2);
+    mtrx[2][0] = scale * m(3,1);
+    mtrx[2][1] = scale * m(3,2);
+    mtrx[2][2] = scale * m(3,3);
 
     // set pos vector
     mtrx[0][3] = p.X();
