@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Ian Rees                    (ian.rees@gmail.com) 2015   *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,44 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include<QInputDialog>
-#include<QLineEdit>
-#endif // #ifndef _PreCmp_
-
-#include "TemplateTextField.h"
 #include "DlgTemplateField.h"
-
-//#include<QDebug>
 
 using namespace TechDrawGui;
 
-TemplateTextField::TemplateTextField(QGraphicsItem*parent,
-                                     TechDraw::DrawTemplate *myTmplte,
-                                     const std::string &myFieldName)
-    : QGraphicsRectItem(parent), tmplte(myTmplte), fieldNameStr(myFieldName)
+DlgTemplateField::DlgTemplateField( QWidget* parent )
+{
+    setupUi(this);
+}
+
+DlgTemplateField::~DlgTemplateField()
 {
 }
 
-
-TemplateTextField::~TemplateTextField()
+void DlgTemplateField::changeEvent(QEvent *e)
 {
-}
-
-void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    //TODO: Add a command to change template text, and call it from here
-    // ...Interpreter....("App.ActiveDocument().%s.%s.setTextField(%s,%s)",pageName,templateName,fieldName,fieldValue)
-    DlgTemplateField* ui = new DlgTemplateField(nullptr);
-    ui->setFieldName(fieldNameStr);
-    ui->setFieldContent(tmplte->EditableTexts[fieldNameStr]);
-    int uiCode = ui->exec();
-    std::string newContent = "";
-    if(uiCode == QDialog::Accepted) {
-       std::string newContent = ui->getFieldContent();
-         tmplte->EditableTexts.setValue(fieldNameStr, newContent);
+    if (e->type() == QEvent::LanguageChange) {
+        retranslateUi(this);
     }
-    ui->deleteLater();
+    else {
+        QWidget::changeEvent(e);
+    }
 }
+
+void DlgTemplateField::setFieldName(std::string name)
+{
+    QString qs = QString::fromStdString(name);
+    lblName->setText(qs);
+}
+
+void DlgTemplateField::setFieldContent(std::string content)
+{
+    QString qs = QString::fromStdString(content);
+    leInput->setText(qs);
+}
+
+std::string DlgTemplateField::getFieldContent()
+{
+    QString result = leInput->text();
+    return result.toUtf8().constData();
+}
+
+#include "moc_DlgTemplateField.cpp"
