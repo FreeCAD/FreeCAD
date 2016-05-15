@@ -60,7 +60,7 @@ public:
     FemMesh &operator=(const FemMesh&);
     const SMESH_Mesh* getSMesh() const;
     SMESH_Mesh* getSMesh();
-    SMESH_Gen * getGenerator();
+    static SMESH_Gen * getGenerator();
     void addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp);
     void setStanardHypotheses();
     void compute();
@@ -143,9 +143,6 @@ public:
     void read(const char *FileName);
     void write(const char *FileName) const;
     void writeABAQUS(const std::string &Filename) const;
-    Base::Matrix4D _Mtrx;
-    SMESH_Gen  *myGen;
-    SMESH_Mesh *myMesh;
 
 private:
     void copyMeshData(const FemMesh&);
@@ -153,9 +150,8 @@ private:
 
 private:
     /// positioning matrix
-//    Base::Matrix4D _Mtrx;
-//    SMESH_Gen  *myGen;
-//    SMESH_Mesh *myMesh;
+    Base::Matrix4D _Mtrx;
+    SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
 };
