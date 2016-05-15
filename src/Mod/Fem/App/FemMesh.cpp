@@ -80,48 +80,45 @@ using namespace Base;
 using namespace boost;
 
 static int StatCount = 0;
+SMESH_Gen* FemMesh::meshGenerator = nullptr;
 
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
 FemMesh::FemMesh()
 {
-    // Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
-    myGen = new SMESH_Gen();
-    // create a mesh allways with new StudyId to avoid overlapping destruction
-    myMesh = myGen->CreateMesh(StatCount++,false);
-    // myMesh = myGen->CreateMesh(0,true);
-    // Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
+    Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
+    if (!meshGenerator)
+	meshGenerator = new SMESH_Gen();
+    // create a mesh always with new StudyId to avoid overlapping destruction
+    myMesh = meshGenerator->CreateMesh(StatCount++,true);
 
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
     Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
-    myGen = new SMESH_Gen();
-    myMesh = myGen->CreateMesh(StatCount++,false);
+    if (!meshGenerator)
+	meshGenerator = new SMESH_Gen();
+    myMesh = meshGenerator->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
 }
 
 FemMesh::~FemMesh()
 {
-    //Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
+    Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
 
     TopoDS_Shape aNull;
     myMesh->ShapeToMesh(aNull);
     myMesh->Clear();
     //myMesh->ClearLog();
     delete myMesh;
-#if defined(__GNUC__)
-    delete myGen; // crashes with MSVC
-#endif
 }
 
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     Base::Console().Log("Start Copy through equal sign\n");
     if (this != &mesh) {
-	myGen = new SMESH_Gen();
-	myMesh = myGen->CreateMesh(0,true);
+	myMesh = meshGenerator->CreateMesh(0,true);
         copyMeshData(mesh);
     }
     return *this;
@@ -334,7 +331,9 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
-    return myGen;
+	if (!meshGenerator)
+		meshGenerator = new SMESH_Gen();
+	return(meshGenerator);
 }
 
 void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp)
@@ -349,37 +348,37 @@ void FemMesh::setStanardHypotheses()
     if (!hypoth.empty())
         return;
     int hyp=0;
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
+    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, meshGenerator));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     hypoth.push_back(len);
 
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, myGen));
+    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, meshGenerator));
     static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
     hypoth.push_back(loc);
 
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, myGen));
+    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, meshGenerator));
     static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
     hypoth.push_back(area);
 
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, myGen));
+    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, meshGenerator));
     static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
     hypoth.push_back(segm);
 
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, myGen));
+    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, meshGenerator));
     static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
     hypoth.push_back(defl);
 
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, myGen));
+    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, meshGenerator));
     hypoth.push_back(reg);
 
-    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, myGen));
+    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, meshGenerator));
     //static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
     //hypoth.push_back(sel);
 
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,myGen));
+    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,meshGenerator));
     hypoth.push_back(qdp);
 
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,myGen));
+    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,meshGenerator));
     hypoth.push_back(q2d);
 
     // Apply hypothesis
@@ -389,7 +388,7 @@ void FemMesh::setStanardHypotheses()
 
 void FemMesh::compute()
 {
-    myGen->Compute(*myMesh, myMesh->GetShapeToMesh());
+    meshGenerator->Compute(*myMesh, myMesh->GetShapeToMesh());
 }
 
 std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) const

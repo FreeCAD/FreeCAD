@@ -357,7 +357,7 @@ private:
   void getAncestorsSubMeshes(const TopoDS_Shape&            theSubShape,
                              std::vector< SMESH_subMesh* >& theSubMeshes) const;
   
-protected:
+public:
   int                        _id;           // id given by creator (unique within the creator instance)
   int                        _studyId;
   int                        _groupId;      // id generator for group objects

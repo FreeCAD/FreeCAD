@@ -52,6 +52,9 @@
 #include "HypothesisPy.h"
 
 using namespace Fem;
+using namespace Base;
+using namespace boost;
+
 
 // returns a string which represents the object e.g. when printed in python
 std::string FemMeshPy::representation(void) const
@@ -64,6 +67,7 @@ std::string FemMeshPy::representation(void) const
 PyObject *FemMeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of FemMeshPy and the Twin object
+
     return new FemMeshPy(new FemMesh);
 }
 
