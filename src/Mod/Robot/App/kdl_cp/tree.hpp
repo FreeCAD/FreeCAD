@@ -22,7 +22,8 @@
 #ifndef KDL_TREE_HPP
 #define KDL_TREE_HPP
 
-#include "config.h"
+// This file comes along with oce but not with occ.
+//#include "config.h"
 
 #include "segment.hpp"
 #include "chain.hpp"
