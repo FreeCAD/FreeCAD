@@ -27,8 +27,8 @@
 # undef _PreComp_
 #endif
 
-#ifdef FC_OS_LINUX || defined(FC_OS_BSD)
-#	include <unistd.h>
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+# include <unistd.h>
 #endif
 
 #ifdef FC_OS_MACOSX
@@ -37,7 +37,7 @@
 #endif
 
 #if HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <stdio.h>
@@ -81,9 +81,9 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD  ul_reason_for_call, LPVOID lpReserv
 #endif
 
 #ifdef FC_OS_WIN32
-#	define MainExport __declspec(dllexport)
+# define MainExport __declspec(dllexport)
 #else
-#	define MainExport
+# define MainExport
 #endif
 
 extern "C"
