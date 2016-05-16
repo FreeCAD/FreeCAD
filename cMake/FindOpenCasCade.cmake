@@ -59,6 +59,7 @@ else(OCE_FOUND) #look for OpenCASCADE
       /usr/local/include/opencascade
       /opt/opencascade/include
       /opt/opencascade/inc
+      /opt/local/FreeCAD-0.17/include/opencascade
     )
     FIND_LIBRARY(OCC_LIBRARY TKernel
       /usr/lib
