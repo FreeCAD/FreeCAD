@@ -76,37 +76,13 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 {
 #ifdef FCWithNetgen
 
-    Fem::FemMesh newMesh, mesh2;
-    
-    Base::Console().Message("newMesh ID: %i\n", newMesh.getSMesh()->GetMeshDS()->getMeshId());
-    Base::Console().Message("second mesh ID: %i\n", mesh2.getSMesh()->GetMeshDS()->getMeshId());
+    Fem::FemMesh newMesh;
 
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
     TopoDS_Shape shape = feat->Shape.getValue();
 
-
-//    newMesh.myMesh->ShapeToMesh(shape);
-//    SMESH_Gen *myGen = newMesh.getGenerator();
-//    meshgen->CreateMesh(0, true);
-
-    int hyp=0;
-
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
-/*
-    NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
-    static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);
-    static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);
-    static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();
-    myNetGenMesher.SetParameters(tet2);
-*/
-/*
-    NETGENPlugin_SimpleHypothesis_3D* tet= new NETGENPlugin_SimpleHypothesis_3D(hyp++,1,myGen);
-    static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();
-    static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);
-    myNetGenMesher.SetParameters( tet);
-*/
-
-    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,newMesh.getGenerator());
+    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(0,1,newMesh.getGenerator());
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
     tet->SetOptimize(Optimize.getValue());

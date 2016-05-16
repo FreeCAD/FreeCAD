@@ -98,6 +98,8 @@ public:
     std::set<int> getNodesByVertex(const TopoDS_Vertex &vertex) const;
     /// retrieving node IDs by element ID
     std::list<int> getElementNodes(int id) const;
+    /// retrieving face IDs number by face
+    std::list<int> getFacesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and face IDs number by face
     std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face
