@@ -422,8 +422,8 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                         ve_ref_face_nodes.append(nodeID)
                 face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
         else:  # the femmesh has face_data
-            volume_faces = femmesh.getVolumesByFace(ref_face)   # (mv, mf)
-            for mv, mf in volume_faces:
+            faces = femmesh.getFacesByFace(ref_face)   # (mv, mf)
+            for mf in faces:
                 face_table[mf] = femmesh.getElementNodes(mf)
     elif is_face_femmesh(femmesh):
         ref_face_nodes = femmesh.getNodesByFace(ref_face)
