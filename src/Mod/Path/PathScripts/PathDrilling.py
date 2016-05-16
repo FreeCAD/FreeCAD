@@ -24,6 +24,7 @@
 
 import FreeCAD
 import Path
+import Part
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
 
@@ -99,14 +100,22 @@ class ObjectDrilling:
                 else:
                     s = loc[0].Shape
 
-                if s.ShapeType in ['Face', 'Wire', 'Edge']:
-                        X = s.Edges[0].Curve.Center.x
-                        Y = s.Edges[0].Curve.Center.y
-                        Z = s.Edges[0].Curve.Center.z
-                elif s.ShapeType == 'Vertex':
-                        X = s.Point.x
-                        Y = s.Point.y
-                        Z = s.Point.z
+                if s.ShapeType in ['Wire', 'Edge']:
+                    X = s.Edges[0].Curve.Center.x
+                    Y = s.Edges[0].Curve.Center.y
+                    Z = s.Edges[0].Curve.Center.z
+                elif s.ShapeType in ['Vertex']:
+                    X = s.Point.x
+                    Y = s.Point.y
+                    Z = s.Point.z
+                elif s.ShapeType in ['Face']:
+                    #if abs(s.normalAt(0, 0).z) == 1:  # horizontal face
+                    X = s.CenterOfMass.x
+                    Y = s.CenterOfMass.y
+                    Z = s.CenterOfMass.z
+
+
+
 
                 locations.append(FreeCAD.Vector(X, Y, Z))
 
@@ -137,6 +146,24 @@ class ObjectDrilling:
         path = Path.Path(output)
         obj.Path = path
 
+    def checkdrillable(self, obj, sub):
+        print "in checkdrillable"
+        drillable = False
+        if obj.ShapeType == 'Vertex':
+                drillable = True
+        elif obj.ShapeType == 'Solid':
+            if sub[0:4] == 'Face':
+                subobj = obj.getElement(sub)
+                drillable = isinstance(subobj.Edges[0].Curve, Part.Circle)
+                if str(subobj.Surface) == "<Cylinder object>":
+                    drillable = True
+
+            if sub[0:4] == 'Edge':
+                o = obj.getElement(sub)
+                drillable = isinstance(o.Curve, Part.Circle)
+
+        return drillable
+
     def addDrillableLocation(self, obj, ss, sub=""):
         baselist = obj.Base
         item = (ss, sub)
@@ -159,13 +186,14 @@ class ObjectDrilling:
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0
                 obj.RetractHeight = 6.0
+        if self.checkdrillable(ss.Shape,sub):
 
-        if item in baselist:
-            FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
-        else:
-            baselist.append(item)
-        obj.Base = baselist
-        self.execute(obj)
+            if item in baselist:
+                FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
+            else:
+                baselist.append(item)
+            obj.Base = baselist
+            self.execute(obj)
 
 
 class _ViewProviderDrill:
@@ -269,6 +297,19 @@ class TaskPanel:
 
         self.obj.Proxy.execute(self.obj)
 
+    def setFields(self):
+        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
+        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
+        self.form.peckDepth.setText(str(self.obj.PeckDepth.Value))
+        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
+        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
+        self.form.retractHeight.setText(str(self.obj.RetractHeight.Value))
+
+        self.form.baseList.clear()
+        for i in self.obj.Base:
+            self.form.baseList.addItem(i[0].Name + "." + i[1])
+
+
     def open(self):
         self.s = SelObserver()
         FreeCADGui.Selection.addObserver(self.s)
@@ -287,10 +328,9 @@ class TaskPanel:
             else:
                 self.obj.Proxy.addDrillableLocation(self.obj, s.Object)
 
-        self.setupUi()  # defaults may have changed.  Reload.
-        self.form.baseList.clear()
-        for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
+        self.setFields()  # defaults may have changed.  Reload.
+        # for i in self.obj.Base:
+        #     self.form.baseList.addItem(i[0].Name + "." + i[1])
 
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
@@ -336,15 +376,6 @@ class TaskPanel:
         return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.peckDepth.setText(str(self.obj.PeckDepth.Value))
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.retractHeight.setText(str(self.obj.RetractHeight.Value))
-
-        for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
 
         # Connect Signals and Slots
         self.form.startDepth.editingFinished.connect(self.getFields)
@@ -358,6 +389,11 @@ class TaskPanel:
 
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
 
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) != 0 and sel[0].HasSubObjects:
+                self.addBase()
+
+        self.setFields()
 
 class SelObserver:
     def __init__(self):
