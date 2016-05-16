@@ -13,5 +13,15 @@
       <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
       <UserDocu>Feature for creating and manipulating Technical Drawing SVG Templates</UserDocu>
     </Documentation>
+    <Methode Name="getEditFieldContent">
+      <Documentation>
+        <UserDocu>getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setEditFieldContent">
+      <Documentation>
+        <UserDocu>setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
