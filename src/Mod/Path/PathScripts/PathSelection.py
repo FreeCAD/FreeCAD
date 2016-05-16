@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-'''Path selection function select a face or faces, two edges, etc to get a dictionary with what was selected in order '''
+'''Selection gates and observers to control selectability while building Path operations '''
 
 import FreeCAD
 import FreeCADGui
@@ -72,7 +72,6 @@ class EGate:
 
 class MESHGate:
     def allow(self, doc, obj, sub):
-        print obj.TypeId[0:4] == 'Mesh'
         return (obj.TypeId[0:4] == 'Mesh')
 
 
@@ -91,19 +90,13 @@ class DRILLGate:
             return False
         if obj.ShapeType == 'Vertex':
                 drillable = True
-        elif obj.ShapeType == 'Edge':
-            if isinstance(obj.Curve, Part.Circle):
-                drillable = True
-        elif obj.ShapeType == 'Face':
-            if isinstance(obj.Edges[0].Curve, Part.Circle):
-                drillable = True
-        elif obj.ShapeType == 'Wire':
-            if isinstance(obj.Edges[0].Curve, Part.Circle):
-                drillable = True
         elif obj.ShapeType == 'Solid':
             if sub[0:4] == 'Face':
-                o = obj.getElement(sub)
-                drillable = isinstance(o.Edges[0].Curve, Part.Circle)
+                subobj = obj.getElement(sub)
+                drillable = isinstance(subobj.Edges[0].Curve, Part.Circle)
+                if str(subobj.Surface) == "<Cylinder object>":
+                    drillable = True
+
             if sub[0:4] == 'Edge':
                 o = obj.getElement(sub)
                 drillable = isinstance(o.Curve, Part.Circle)
@@ -168,15 +161,6 @@ class POCKETGate:
         elif obj.ShapeType == 'Compound':
             if sub[0:4] == 'Face':
                 pocketable = True
-
-            # if sub[0:4] == 'Edge':
-            #     pocketable = True
-
-        # elif obj.ShapeType == 'Wire':
-            # pocketable = True
-
-        # if sub[0:6] == 'Vertex':
-            # print "might be fun to try to derive the loop by hovering near a vertex"
 
         return pocketable
 

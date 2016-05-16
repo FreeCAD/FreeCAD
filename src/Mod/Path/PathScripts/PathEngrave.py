@@ -45,7 +45,7 @@ except AttributeError:
 
 class ObjectPathEngrave:
 
-    def __init__(self,obj):
+    def __init__(self, obj):
         obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this object")
         obj.addProperty("App::PropertyBool", "Active", "Path", translate("Path", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", translate("Path", "An optional comment for this profile"))
@@ -166,16 +166,10 @@ class ObjectPathEngrave:
         if len(baselist) == 0:  # When adding the first base object, guess at heights
             try:
                 bb = ss.Shape.BoundBox  # parent boundbox
-                subobj = ss.Shape.getElement(sub)
-                fbb = subobj.BoundBox  # feature boundbox
                 obj.StartDepth = bb.ZMax
                 obj.ClearanceHeight = bb.ZMax + 5.0
                 obj.SafeHeight = bb.ZMax + 3.0
-
-                if fbb.ZMax < bb.ZMax:
-                    obj.FinalDepth = fbb.ZMax
-                else:
-                    obj.FinalDepth = bb.ZMin
+                obj.FinalDepth = bb.ZMin
             except:
                 obj.StartDepth = 5.0
                 obj.ClearanceHeight = 10.0
@@ -278,6 +272,16 @@ class TaskPanel:
 
         self.obj.Proxy.execute(self.obj)
 
+    def setFields(self):
+        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
+        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
+        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
+        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
+
+        self.form.baseList.clear()
+        for i in self.obj.Base:
+            self.form.baseList.addItem(i[0].Name)
+
     def open(self):
         self.s = SelObserver()
         # install the function mode resident
@@ -296,9 +300,7 @@ class TaskPanel:
                 return
             self.obj.Proxy.addShapeString(self.obj, s.Object)
 
-        self.form.baseList.clear()
-        for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name)
+        self.setFields()
 
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
@@ -332,13 +334,6 @@ class TaskPanel:
         return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-
-        for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name)
 
         # Connect Signals and Slots
         self.form.startDepth.editingFinished.connect(self.getFields)
@@ -351,6 +346,12 @@ class TaskPanel:
         self.form.reorderBase.clicked.connect(self.reorderBase)
 
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
+
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) != 0:
+                self.addBase()
+
+        self.setFields()
 
 
 class SelObserver:
