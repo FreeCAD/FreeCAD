@@ -31,8 +31,16 @@
         <file>icons/Path-ToolChange.svg</file>
         <file>icons/Path-SimpleCopy.svg</file>
         <file>icons/Path-Engrave.svg</file>
-        <file>icons/Path-Surfacing.svg</file>
-        <file>icons/Path-Hamburger.svg</file>
+        <file>icons/Path-Sanity.svg</file>
+        <file>icons/Path-3DSurface.svg</file>
+        <file>icons/Path-Speed.svg</file>
+        <file>icons/Path-BaseGeometry.svg</file>
+        <file>icons/Path-Depths.svg</file>
+        <file>icons/Path-Heights.svg</file>
+        <file>icons/Path-MachineLathe.svg</file>
+        <file>icons/Path-MachineMill.svg</file>
+        <file>icons/Path-OperationA.svg</file>
+        <file>icons/Path-OperationB.svg</file>
         <file>translations/Path_de.qm</file>
         <file>translations/Path_af.qm</file>
         <file>translations/Path_zh-CN.qm</file>
