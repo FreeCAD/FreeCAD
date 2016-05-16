@@ -147,8 +147,15 @@ bool StdMeshers_PolygonPerFace_2D::Evaluate(SMESH_Mesh&         theMesh,
     break;
   default:
     if ( nbLinSegs + nbQuadSegs < 3 )
-      return error( COMPERR_BAD_INPUT_MESH, "Less that 3 nodes on the wire" );
+      return error( COMPERR_BAD_INPUT_MESH, "Less that 3 nodes on the wire" );  
+#ifndef VTK_NO_QUAD_POLY
     aVec[ nbQuadSegs ? SMDSEntity_Quad_Polygon : SMDSEntity_Polygon ] = 1;
+#else
+    if(nbQuadSegs)
+        throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");
+    
+    aVec[ SMDSEntity_Polygon ] = 1;
+#endif
   }
 
   SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);

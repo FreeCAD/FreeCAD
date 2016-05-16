@@ -641,21 +641,31 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     # Salome SMESH sources are under src/3rdParty now
     IF(OCC_FOUND)
-    if(NOT FREECAD_USE_EXTERNAL_SMESH)
-        find_package(VTK REQUIRED)
-        find_package(HDF5 REQUIRED)
-        find_package(MEDFile REQUIRED)
-        set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
-    else()
-        find_package(SMESH)
-        if(NOT SMESH_FOUND)
-            message(ERROR "================\n"
-                          "SMESH not found.\n"
-                          "================\n")
+        #if we use smesh we definitly also need vtk, no matter of external or internal smesh
+        find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        if(${VTK_MAJOR_VERSION} LESS 6) 
+            message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
         endif()
-        include_directories(${SMESH_INCLUDE_DIR})
-    endif()
-    set(SMESH_FOUND TRUE)
+        if(${VTK_MAJOR_VERSION} EQUAL 6)
+            if(${VTK_MINOR_VERSION} LESS 2)
+                add_definitions(-DVTK_NO_QUAD_POLY )
+            endif()
+        endif() 
+        
+        if(NOT FREECAD_USE_EXTERNAL_SMESH)
+            find_package(HDF5 REQUIRED)
+            find_package(MEDFile REQUIRED)
+            set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
+        else()
+            find_package(SMESH)
+            if(NOT SMESH_FOUND)
+                message(ERROR "================\n"
+                            "SMESH not found.\n"
+                            "================\n")
+            endif()
+            include_directories(${SMESH_INCLUDE_DIR})
+        endif()
+        set(SMESH_FOUND TRUE)
     ENDIF(OCC_FOUND)
 
 # -------------------------------- Netgen --------------------------------

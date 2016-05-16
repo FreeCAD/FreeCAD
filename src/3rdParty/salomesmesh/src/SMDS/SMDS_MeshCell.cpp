@@ -56,7 +56,9 @@ VTKCellType SMDS_MeshCell::toVtkType (SMDSAbs_EntityType smdsType)
     vtkTypes[ SMDSEntity_Quad_Quadrangle ]   = VTK_QUADRATIC_QUAD;
     vtkTypes[ SMDSEntity_BiQuad_Quadrangle ] = VTK_BIQUADRATIC_QUAD;
     vtkTypes[ SMDSEntity_Polygon ]           = VTK_POLYGON;
+#ifndef VTK_NO_QUAD_POLY
     vtkTypes[ SMDSEntity_Quad_Polygon ]      = VTK_QUADRATIC_POLYGON;
+#endif
     vtkTypes[ SMDSEntity_Tetra ]             = VTK_TETRA;
     vtkTypes[ SMDSEntity_Quad_Tetra ]        = VTK_QUADRATIC_TETRA;
     vtkTypes[ SMDSEntity_Pyramid ]           = VTK_PYRAMID;
@@ -268,6 +270,7 @@ const std::vector<int>& SMDS_MeshCell::reverseSmdsOrder(SMDSAbs_EntityType smdsT
         reverseInterlaces[ smdsType ][i] = nbNodes - i - 1;
     }
   }
+#ifndef VTK_NO_QUAD_POLY
   else if ( smdsType == SMDSEntity_Quad_Polygon )
   {
     if ( reverseInterlaces[ smdsType ].size() != nbNodes )
@@ -282,6 +285,7 @@ const std::vector<int>& SMDS_MeshCell::reverseSmdsOrder(SMDSAbs_EntityType smdsT
         reverseInterlaces[ smdsType ][pos++] = i;
     }
   }
+#endif
   
   return reverseInterlaces[smdsType];
 }
@@ -315,7 +319,7 @@ const std::vector<int>& SMDS_MeshCell::interlacedSmdsOrder(SMDSAbs_EntityType sm
       interlace[SMDSEntity_BiQuad_Quadrangle].assign( &ids[0], &ids[0]+9 );
     }
   }
-
+#ifndef VTK_NO_QUAD_POLY
   if ( smdsType == SMDSEntity_Quad_Polygon )
   {
     if ( interlace[smdsType].size() != nbNodes )
@@ -328,6 +332,7 @@ const std::vector<int>& SMDS_MeshCell::interlacedSmdsOrder(SMDSAbs_EntityType sm
       }
     }
   }
+#endif
   return interlace[smdsType];
 }
 
@@ -402,8 +407,10 @@ SMDSAbs_ElementType SMDS_MeshCell::toSmdsType(SMDSAbs_EntityType entityType)
   case SMDSEntity_Quadrangle:
   case SMDSEntity_Quad_Quadrangle:
   case SMDSEntity_BiQuad_Quadrangle:
-  case SMDSEntity_Polygon:
-  case SMDSEntity_Quad_Polygon:   return SMDSAbs_Face;
+#ifndef VTK_NO_QUAD_POLY
+  case SMDSEntity_Quad_Polygon:
+#endif
+  case SMDSEntity_Polygon:  return SMDSAbs_Face;
 
   case SMDSEntity_Tetra:
   case SMDSEntity_Quad_Tetra:
