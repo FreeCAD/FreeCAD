@@ -87,19 +87,15 @@ TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 FemMesh::FemMesh()
 {
     Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
-    if (!meshGenerator)
-	meshGenerator = new SMESH_Gen();
     // create a mesh always with new StudyId to avoid overlapping destruction
-    myMesh = meshGenerator->CreateMesh(StatCount++,true);
+    myMesh = getGenerator()->CreateMesh(StatCount++,true);
 
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
     Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
-    if (!meshGenerator)
-	meshGenerator = new SMESH_Gen();
-    myMesh = meshGenerator->CreateMesh(StatCount++,false);
+    myMesh = getGenerator()->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
 }
 
@@ -118,7 +114,7 @@ FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     Base::Console().Log("Start Copy through equal sign\n");
     if (this != &mesh) {
-	myMesh = meshGenerator->CreateMesh(0,true);
+	myMesh = getGenerator()->CreateMesh(0,true);
         copyMeshData(mesh);
     }
     return *this;
@@ -331,9 +327,7 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
-	if (!meshGenerator)
-		meshGenerator = new SMESH_Gen();
-	return(meshGenerator);
+    return SMESH_Gen::get();
 }
 
 void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp)
@@ -348,37 +342,37 @@ void FemMesh::setStanardHypotheses()
     if (!hypoth.empty())
         return;
     int hyp=0;
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, meshGenerator));
+    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     hypoth.push_back(len);
 
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, meshGenerator));
+    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
     hypoth.push_back(loc);
 
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, meshGenerator));
+    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
     hypoth.push_back(area);
 
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, meshGenerator));
+    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
     hypoth.push_back(segm);
 
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, meshGenerator));
+    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
     hypoth.push_back(defl);
 
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, meshGenerator));
+    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, getGenerator()));
     hypoth.push_back(reg);
 
-    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, meshGenerator));
+    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, getGenerator()));
     //static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
     //hypoth.push_back(sel);
 
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,meshGenerator));
+    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,getGenerator()));
     hypoth.push_back(qdp);
 
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,meshGenerator));
+    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,getGenerator()));
     hypoth.push_back(q2d);
 
     // Apply hypothesis
@@ -388,7 +382,7 @@ void FemMesh::setStanardHypotheses()
 
 void FemMesh::compute()
 {
-    meshGenerator->Compute(*myMesh, myMesh->GetShapeToMesh());
+    getGenerator()->Compute(*myMesh, myMesh->GetShapeToMesh());
 }
 
 std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) const

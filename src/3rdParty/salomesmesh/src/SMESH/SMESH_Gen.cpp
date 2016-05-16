@@ -55,6 +55,7 @@ using namespace std;
 
 //#include <vtkDebugLeaks.h>
 
+SMESH_Gen* SMESH_Gen::generator = nullptr;
 
 //=============================================================================
 /*!
@@ -72,6 +73,13 @@ SMESH_Gen::SMESH_Gen()
   MESSAGE(SMDS_Mesh::_meshList.size());
   _compute_canceled = false;
   //vtkDebugLeaks::SetExitError(0);
+}
+SMESH_Gen* SMESH_Gen::get() {
+
+    if(!generator)
+        generator = new SMESH_Gen();
+    
+    return generator;
 }
 
 //=============================================================================

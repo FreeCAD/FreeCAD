@@ -121,7 +121,7 @@ Mesh::MeshObject* Mesher::createMesh() const
 #else
     std::list<SMESH_Hypothesis*> hypoth;
 
-    SMESH_Gen* meshgen = new SMESH_Gen();
+    SMESH_Gen* meshgen = SMESH_Gen::get();
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
     int hyp=0;
 
