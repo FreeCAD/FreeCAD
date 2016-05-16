@@ -132,7 +132,6 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         TopExp_Explorer xp;
         xp.Init(sketchshape, TopAbs_FACE);
         for (;xp.More(); xp.Next()) {
-         
             if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
                 return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
         }
@@ -158,7 +157,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
             solRes = refineShapeIfActive(solRes);
-            this->Shape.setValue(solRes);
+            this->Shape.setValue(getSolid(solRes));
         }
         else
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
