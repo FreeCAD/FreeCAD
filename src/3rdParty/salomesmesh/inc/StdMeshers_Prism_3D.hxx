@@ -1,24 +1,25 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_Prism_3D.hxx
 //  Module : SMESH
@@ -28,77 +29,104 @@
 
 #include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_3D_Algo.hxx"
-#include "SMDS_TypeOfPosition.hxx"
 #include "SMDS_MeshNode.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Mesh.hxx"
+#include "SMDS_TypeOfPosition.hxx"
 #include "SMESHDS_Mesh.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_MesherHelper.hxx"
+#include "SMESH_Algo.hxx"
+#include "SMESH_Block.hxx"
 #include "SMESH_Comment.hxx"
+#include "SMESH_Mesh.hxx"
+#include "SMESH_MesherHelper.hxx"
+#include "SMESH_TypeDefs.hxx"
+#include "SMESH_subMesh.hxx"
+
+#include <Adaptor2d_Curve2d.hxx>
+#include <Adaptor3d_Curve.hxx>
+#include <Adaptor3d_Surface.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <TopTools_IndexedMapOfOrientedShape.hxx>
+#include <TopoDS_Face.hxx>
+#include <gp_Trsf.hxx>
+#include <gp_XYZ.hxx>
 
 #include <vector>
 
-#include <Adaptor3d_Curve.hxx>
-#include <Adaptor3d_Surface.hxx>
-#include <Adaptor2d_Curve2d.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <TopTools_IndexedMapOfOrientedShape.hxx>
-#include <gp_XYZ.hxx>
-
-
+namespace Prism_3D
+{
+  struct TNode;
+  struct TPrismTopo;
+}
+namespace StdMeshers_ProjectionUtils
+{
+  class TrsfFinder3D;
+}
 class SMESHDS_SubMesh;
 class TopoDS_Edge;
-class TopoDS_Faces;
-struct TNode;
 
-//typedef std::map<const SMDS_MeshNode*, const SMDS_MeshNode*> TNodeNodeMap;
-typedef std::vector<const SMDS_MeshNode* > TNodeColumn;
-
+typedef TopTools_IndexedMapOfOrientedShape                       TBlockShapes;
+typedef std::vector<const SMDS_MeshNode* >                       TNodeColumn;
+typedef std::map< double,          TNodeColumn >                 TParam2ColumnMap;
+typedef std::map< double,          TNodeColumn >::const_iterator TParam2ColumnIt;
 // map of bottom nodes to the column of nodes above them
 // (the column includes the bottom nodes)
-typedef std::map< TNode, TNodeColumn > TNode2ColumnMap;
-typedef std::map< double, TNodeColumn > TParam2ColumnMap;
-typedef std::map< double, TNodeColumn >::const_iterator TParam2ColumnIt;
+typedef std::map< Prism_3D::TNode, TNodeColumn >                 TNode2ColumnMap;
 
-typedef TopTools_IndexedMapOfOrientedShape TBlockShapes;
 
-// ===============================================
-/*!
- * \brief Structure containing node relative data
- */
-// ===============================================
-
-struct TNode
+namespace Prism_3D
 {
-  const SMDS_MeshNode* myNode;
-  gp_XYZ               myParams;
+  // ===============================================
+  /*!
+   * \brief Structure containing node relative data
+   */
+  struct TNode
+  {
+    const SMDS_MeshNode* myNode;
+    mutable gp_XYZ       myParams;
 
-  gp_XYZ GetCoords() const { return gp_XYZ( myNode->X(), myNode->Y(), myNode->Z() ); }
-  gp_XYZ GetParams() const { return myParams; }
-  gp_XYZ& ChangeParams() { return myParams; }
-  bool HasParams() const { return myParams.X() >= 0.0; }
-  SMDS_TypeOfPosition GetPositionType() const
-  { return myNode ? myNode->GetPosition()->GetTypeOfPosition() : SMDS_TOP_UNSPEC; }
-  bool IsNeighbor( const TNode& other ) const;
+    gp_XYZ GetCoords() const { return gp_XYZ( myNode->X(), myNode->Y(), myNode->Z() ); }
+    gp_XYZ GetParams() const { return myParams; }
+    gp_XYZ& ChangeParams() const { return myParams; }
+    bool HasParams() const { return myParams.X() >= 0.0; }
+    SMDS_TypeOfPosition GetPositionType() const
+    { return myNode ? myNode->GetPosition()->GetTypeOfPosition() : SMDS_TOP_UNSPEC; }
+    bool IsNeighbor( const TNode& other ) const;
 
-  TNode(const SMDS_MeshNode* node = 0): myNode(node), myParams(-1,-1,-1) {}
-  bool operator < (const TNode& other) const { return myNode->GetID() < other.myNode->GetID(); }
-};
+    TNode(const SMDS_MeshNode* node = 0): myNode(node), myParams(-1,-1,-1) {}
+    bool operator < (const TNode& other) const { return myNode->GetID() < other.myNode->GetID(); }
+  };
+  // ===============================================
+  /*!
+   * \brief Topological data of the prism
+   */
+  typedef std::list< TFaceQuadStructPtr > TQuadList;
+
+  struct TPrismTopo
+  {
+    TopoDS_Shape             myShape3D;
+    TopoDS_Face              myBottom;
+    TopoDS_Face              myTop;
+    std::list< TopoDS_Edge > myBottomEdges;
+    std::vector< TQuadList>  myWallQuads; // wall sides can be vertically composite
+    std::vector< int >       myRightQuadIndex; // index of right neighbour wall quad
+    std::list< int >         myNbEdgesInWires;
+
+    bool                     myNotQuadOnTop;
+
+    void Clear();
+    void SetUpsideDown();
+  };
+}
 
 // ===============================================================
 /*!
  * \brief Tool analyzing and giving access to a prism geometry 
  *  treating it like a block, i.e. the four side faces are
  *  emulated by division/uniting of missing/excess faces.
- *  It also manage associations between block subshapes and a mesh.
+ *  It also manage associations between block sub-shapes and a mesh.
  */
-// ===============================================================
-
 class STDMESHERS_EXPORT StdMeshers_PrismAsBlock: public SMESH_Block
 {
-public:
+ public:
   /*!
    * \brief Constructor. Initialization is needed
    */
@@ -108,19 +136,21 @@ public:
 
   /*!
    * \brief Initialization.
-    * \param helper - helper loaded with mesh and 3D shape
-    * \param shape3D - a closed shell or solid
-    * \retval bool - false if a mesh or a shape are KO
-    *
-    * Analyse shape geometry and mesh.
-    * If there are triangles on one of faces, it becomes 'bottom'
+   * \param helper - helper loaded with mesh and 3D shape
+   * \param prism - prism topology
+   * \retval bool - false if a mesh or a shape are KO
    */
-  bool Init(SMESH_MesherHelper* helper, const TopoDS_Shape& shape3D);
+  bool Init(SMESH_MesherHelper* helper, const Prism_3D::TPrismTopo& prism);
 
   /*!
    * \brief Return problem description
    */
   SMESH_ComputeErrorPtr GetError() const { return myError; }
+
+  /*!
+   * \brief Free allocated memory
+   */
+  void Clear();
 
   /*!
    * \brief Return number of nodes on every vertical edge
@@ -141,16 +171,27 @@ public:
    * \brief Return TParam2ColumnMap for a base edge
     * \param baseEdgeID - base edge SMESHDS Index
     * \param isReverse - columns in-block orientation
-    * \retval const TParam2ColumnMap& - map
+    * \retval const TParam2ColumnMap* - map
    */
-  const TParam2ColumnMap& GetParam2ColumnMap(const int baseEdgeID,
-                                             bool &    isReverse)
+  const TParam2ColumnMap* GetParam2ColumnMap(const int baseEdgeID,
+                                             bool &    isReverse) const
   {
-    std::pair< TParam2ColumnMap*, bool > & col_frw =
-      myShapeIndex2ColumnMap[ baseEdgeID ];
+    std::map< int, std::pair< TParam2ColumnMap*, bool > >::const_iterator i_mo =
+      myShapeIndex2ColumnMap.find( baseEdgeID );
+    if ( i_mo == myShapeIndex2ColumnMap.end() ) return 0;
+
+    const std::pair< TParam2ColumnMap*, bool >& col_frw = i_mo->second;
     isReverse = !col_frw.second;
-    return * col_frw.first;
+    return col_frw.first;
   }
+
+  /*!
+   * \brief Return transformations to get coordinates of nodes of each internal layer
+   *        by nodes of the bottom. Layer is a set of nodes at a certain step
+   *        from bottom to top.
+   */
+  bool GetLayersTransformation(std::vector<gp_Trsf> &      trsf,
+                               const Prism_3D::TPrismTopo& prism) const;
   
   /*!
    * \brief Return pointer to mesh
@@ -190,7 +231,7 @@ public:
 
   /*!
    * \brief Return in-block ID of a shape
-    * \param shape - block subshape
+    * \param shape - block sub-shape
     * \retval int - ID or zero if the shape has no ID
    */
   int ShapeID(const TopoDS_Shape& shape) const
@@ -208,19 +249,6 @@ public:
                             const TParam2ColumnMap& columnsMap,
                             const TopoDS_Edge &     bottomEdge,
                             const int               sideFaceID);
-  /*!
-   * \brief Find wall faces by bottom edges
-    * \param mesh - the mesh
-    * \param mainShape - the prism
-    * \param bottomFace - the bottom face
-    * \param bottomEdges - edges bounding the bottom face
-    * \param wallFaces - faces list to fill in
-   */
-  static bool GetWallFaces( SMESH_Mesh*                     mesh,
-                            const TopoDS_Shape &            mainShape,
-                            const TopoDS_Shape &            bottomFace,
-                            const std::list< TopoDS_Edge >& bottomEdges,
-                            std::list< TopoDS_Face >&       wallFaces);
 
 private:
 
@@ -235,39 +263,45 @@ private:
   // --------------------------------------------------------------------
   class TSideFace: public Adaptor3d_Surface
   {
+    typedef boost::shared_ptr<BRepAdaptor_Surface> PSurface;
+
     int                             myID; //!< in-block ID
     // map used to find out real UV by it's normalized UV
     TParam2ColumnMap*               myParamToColumnMap;
-    BRepAdaptor_Surface             mySurface;
+    PSurface                        mySurface;
     TopoDS_Edge                     myBaseEdge;
+    map< int, PSurface >            myShapeID2Surf;
     // first and last normalized params and orientaion for each component or it-self
-    std::vector< std::pair< double, double> > myParams;
+    std::vector< std::pair< double, double> > myParams; // select my columns in myParamToColumnMap
     bool                            myIsForward;
     std::vector< TSideFace* >       myComponents;
-    SMESH_MesherHelper *            myHelper;
+    SMESH_MesherHelper              myHelper;
   public:
-    TSideFace( SMESH_MesherHelper* helper,
-               const int           faceID,
-               const TopoDS_Face&  face,
-               const TopoDS_Edge&  baseEdge,
-               TParam2ColumnMap*   columnsMap,
-               const double        first = 0.0,
-               const double        last = 1.0);
-    TSideFace( const std::vector< TSideFace* >&             components,
+    TSideFace( SMESH_Mesh&                mesh,
+               const int                  faceID,
+               const Prism_3D::TQuadList& quadList,
+               const TopoDS_Edge&         baseEdge,
+               TParam2ColumnMap*          columnsMap,
+               const double               first = 0.0,
+               const double               last  = 1.0);
+    TSideFace( SMESH_Mesh&                                       mesh,
+               const std::vector< TSideFace* >&                  components,
                const std::vector< std::pair< double, double> > & params);
     TSideFace( const TSideFace& other );
     ~TSideFace();
     bool IsComplex() const
     { return ( NbComponents() > 0 || myParams[0].first != 0. || myParams[0].second != 1. ); }
     int FaceID() const { return myID; }
+    SMESH_Mesh* GetMesh() const { return myHelper.GetMesh(); }
     TParam2ColumnMap* GetColumns() const { return myParamToColumnMap; }
-    gp_XY GetNodeUV(const TopoDS_Face& F, const SMDS_MeshNode* n) const
-    { return myHelper->GetNodeUV( F, n ); }
+    gp_XY GetNodeUV(const TopoDS_Face& F, const SMDS_MeshNode* n, const SMDS_MeshNode* n2=0) const
+    { return ((SMESH_MesherHelper&) myHelper).SetSubShape(F), myHelper.GetNodeUV( F, n, n2 ); }
     const TopoDS_Edge & BaseEdge() const { return myBaseEdge; }
     int ColumnHeight() const {
       if ( NbComponents() ) return GetComponent(0)->GetColumns()->begin()->second.size();
       else                  return GetColumns()->begin()->second.size(); }
     double GetColumns(const double U, TParam2ColumnIt & col1, TParam2ColumnIt& col2 ) const;
+    void GetNodesAtZ(const int Z, std::map<double, const SMDS_MeshNode* >& nodes ) const;
     int NbComponents() const { return myComponents.size(); }
     TSideFace* GetComponent(const int i) const { return myComponents.at( i ); }
     void SetComponent(const int i, TSideFace* c)
@@ -284,6 +318,8 @@ private:
     int InsertSubShapes( TBlockShapes& shapeMap ) const;
     // redefine Adaptor methods
     gp_Pnt Value(const Standard_Real U,const Standard_Real V) const;
+    // debug
+    void dumpNodes(int nbNodes) const;
   };
 
   // --------------------------------------------------------------------
@@ -299,6 +335,8 @@ private:
     gp_Pnt Value(const Standard_Real U) const;
     Standard_Real FirstParameter() const { return 0; }
     Standard_Real LastParameter() const { return 1; }
+    // debug
+    void dumpNodes(int nbNodes) const;
   };
 
   // --------------------------------------------------------------------
@@ -316,6 +354,8 @@ private:
     gp_Pnt Value(const Standard_Real U) const;
     Standard_Real FirstParameter() const { return 0; }
     Standard_Real LastParameter() const { return 1; }
+    // debug
+    void dumpNodes(int nbNodes) const;
   };
 
   // --------------------------------------------------------------------
@@ -325,32 +365,28 @@ private:
   // --------------------------------------------------------------------
   class STDMESHERS_EXPORT TPCurveOnHorFaceAdaptor: public Adaptor2d_Curve2d
   {
-    const TSideFace*  mySide;
-    int               myZ;
-    TopoDS_Face       myFace;
+    std::map< double, gp_XY > myUVmap; // normalized parameter to UV on a horizontal face
   public:
     TPCurveOnHorFaceAdaptor( const TSideFace*   sideFace,
                              const bool         isTop,
-                             const TopoDS_Face& horFace)
-      : mySide(sideFace), myZ(isTop ? mySide->ColumnHeight() - 1 : 0 ), myFace(horFace) {}
+                             const TopoDS_Face& horFace);
     gp_Pnt2d Value(const Standard_Real U) const;
     Standard_Real FirstParameter() const { return 0; }
     Standard_Real LastParameter() const { return 1; }
   };
-  // --------------------------------------------------------------------
 
-  bool myNotQuadOnTop;
-  SMESH_MesherHelper* myHelper;
-  TBlockShapes myShapeIDMap;
+  bool                  myNotQuadOnTop;
+  SMESH_MesherHelper*   myHelper;
+  TBlockShapes          myShapeIDMap;
+  SMESH_ComputeErrorPtr myError;
 
   // container of 4 side faces
-  TSideFace*                 mySide; 
+  TSideFace*            mySide; 
   // node columns for each base edge
-  std::vector< TParam2ColumnMap > myParam2ColumnMaps;
+  std::vector< TParam2ColumnMap >                       myParam2ColumnMaps;
   // to find a column for a node by edge SMESHDS Index
   std::map< int, std::pair< TParam2ColumnMap*, bool > > myShapeIndex2ColumnMap;
 
-  SMESH_ComputeErrorPtr myError;
   /*!
    * \brief store error and comment and then return ( error == COMPERR_OK )
    */
@@ -358,15 +394,54 @@ private:
     myError = SMESH_ComputeError::New(error,comment);
     return myError->IsOK();
   }
-  //std::vector< SMESH_subMesh* >           mySubMeshesVec; // submesh by in-block id
+  /*!
+   * \brief Prints a script creating a normal grid on the prism side
+   */
+  void faceGridToPythonDump(const SMESH_Block::TShapeID face,
+                            const int                   nb=10);
+
+}; // class StdMeshers_PrismAsBlock
+
+// ===============================================
+/*!
+ * \brief Tool building internal nodes in a prism
+ */
+struct StdMeshers_Sweeper
+{
+  std::vector< TNodeColumn* > myBndColumns; // boundary nodes
+  std::vector< TNodeColumn* > myIntColumns; // internal nodes
+
+  bool ComputeNodes( SMESH_MesherHelper& helper,
+                     const double        tol,
+                     const bool          allowHighBndError );
+
+private:
+
+  gp_XYZ bndPoint( int iP, int z ) const
+  { return SMESH_TNodeXYZ( (*myBndColumns[ iP ])[ z ]); }
+
+  gp_XYZ intPoint( int iP, int z ) const
+  { return SMESH_TNodeXYZ( (*myIntColumns[ iP ])[ z ]); }
+
+  static bool projectIntPoints(const std::vector< gp_XYZ >& fromBndPoints,
+                               const std::vector< gp_XYZ >& toBndPoints,
+                               const std::vector< gp_XYZ >& fromIntPoints,
+                               std::vector< gp_XYZ >&       toIntPoints,
+                               StdMeshers_ProjectionUtils::TrsfFinder3D& trsf,
+                               std::vector< gp_XYZ > *      bndError);
+
+  static void applyBoundaryError(const std::vector< gp_XYZ >& bndPoints,
+                                 const std::vector< gp_XYZ >& bndError1,
+                                 const std::vector< gp_XYZ >& bndError2,
+                                 const double                 r,
+                                 std::vector< gp_XYZ >&       toIntPoints,
+                                 std::vector< double >&       int2BndDist);
 };
 
-// =============================================
+// ===============================================
 /*!
  * \brief Algo building prisms on a prism shape
  */
-// =============================================
-
 class STDMESHERS_EXPORT StdMeshers_Prism_3D: public SMESH_3D_Algo
 {
 public:
@@ -378,6 +453,9 @@ public:
                                SMESH_Hypothesis::Hypothesis_Status& aStatus);
 
   virtual bool Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& aShape);
+
+  virtual bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
+                        MapShapeNbElems& aResMap);
 
   /*!
    * \brief Enable removal of quadrangles from the bottom face and
@@ -395,9 +473,40 @@ public:
     * \param helper - helper initialized by mesh and shape to add prisms to
    */
   static void AddPrisms( std::vector<const TNodeColumn*> & nodeColumns,
-                         SMESH_MesherHelper*          helper);
+                         SMESH_MesherHelper*               helper);
 
-private:
+  static bool IsApplicable(const TopoDS_Shape & aShape, bool toCheckAll);
+
+ private:
+
+  /*!
+   * \brief Analyse shape geometry and mesh.
+    * If there are triangles on one of faces, it becomes 'bottom'
+   */
+  bool initPrism(Prism_3D::TPrismTopo& thePrism,
+                 const TopoDS_Shape&   theSolid,
+                 const bool            selectBottom = true);
+
+  /*!
+   * \brief Fill thePrism.myWallQuads and thePrism.myTopEdges
+   */
+  bool getWallFaces( Prism_3D::TPrismTopo& thePrism,
+                     const int             totalNbFaces);
+
+  /*!
+   * \brief Compute mesh on a SOLID
+   */
+  bool compute(const Prism_3D::TPrismTopo& thePrism);
+
+  /*!
+   * \brief Compute 2D mesh on walls FACEs of a prism
+   */
+  bool computeWalls(const Prism_3D::TPrismTopo& thePrism);
+
+  /*!
+   * \brief Returns a source EDGE of propagation to a given EDGE
+   */
+  TopoDS_Edge findPropagationSource( const TopoDS_Edge& E );
 
   /*!
    * \brief Find correspondence between bottom and top nodes.
@@ -405,35 +514,69 @@ private:
    *  and projection is possible and allowed, perform the projection
     * \retval bool - is a success or not
    */
-  bool assocOrProjBottom2Top();
+  bool assocOrProjBottom2Top( const gp_Trsf & bottomToTopTrsf,
+                              const Prism_3D::TPrismTopo& thePrism);
 
   /*!
    * \brief Remove quadrangles from the top face and
-   * create triangles there by projection from the bottom
+   *        create triangles there by projection from the bottom
     * \retval bool - a success or not
    */
-  bool projectBottomToTop();
+  bool projectBottomToTop( const gp_Trsf & bottomToTopTrsf,
+                           const Prism_3D::TPrismTopo& thePrism );
 
   /*!
-   * \brief Set projection coordinates of a node to a face and it's subshapes
+   * \brief Compute tolerance to pass to StdMeshers_Sweeper
+   */
+  double getSweepTolerance( const Prism_3D::TPrismTopo& thePrism );
+
+  /*!
+   * \brief Defines if it's safe to use the block approach
+   */
+  bool isSimpleBottom( const Prism_3D::TPrismTopo& thePrism );
+
+  /*!
+   * \brief Project mesh faces from a source FACE of one prism to
+   *        a source FACE of another prism
+   *  \retval bool - a success or not
+   */
+  bool project2dMesh(const TopoDS_Face& source, const TopoDS_Face& target);
+
+  /*!
+   * \brief Set projection coordinates of a node to a face and it's sub-shapes
     * \param faceID - the face given by in-block ID
     * \param params - node normalized parameters
     * \retval bool - is a success
    */
   bool setFaceAndEdgesXYZ( const int faceID, const gp_XYZ& params, int z );
 
+  /*!
+   * \brief If (!isOK), sets the error to a sub-mesh of a current SOLID
+   */
+  bool toSM( bool isOK );
+
+  /*!
+   * \brief Return index of a shape
+   */
+  int shapeID( const TopoDS_Shape& S );
+
 private:
 
   bool myProjectTriangles;
+  bool mySetErrorToSM;
+  bool myUseBlock;
 
   StdMeshers_PrismAsBlock myBlock;
   SMESH_MesherHelper*     myHelper;
 
-  std::vector<gp_XYZ>     myShapeXYZ; // point on each sub-shape
+  std::vector<gp_XYZ>     myShapeXYZ; // point on each sub-shape of the block
 
   // map of bottom nodes to the column of nodes above them
   // (the column includes the bottom node)
   TNode2ColumnMap         myBotToColumnMap;
-};
+
+  TopTools_IndexedMapOfShape* myPropagChains;
+
+}; // class StdMeshers_Prism_3D
 
 #endif

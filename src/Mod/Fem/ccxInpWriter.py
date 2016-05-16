@@ -458,7 +458,7 @@ class inp_writer:
 
                     # face_table = { meshfaceID : ( nodeID, ... , nodeID ) }
                     face_table = self.get_ref_face_node_table(ref_face)
-
+                   
                     # node_area_table = [ (nodeID, Area), ... , (nodeID, Area) ]  some nodes will have more than one entry
                     node_area_table = self.get_ref_face_node_areas(face_table)
 
@@ -819,9 +819,9 @@ class inp_writer:
                             ve_ref_face_nodes.append(nodeID)
                     face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
             else:  # the femmesh has face_data
-                volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)   # (mv, mf)
-                for mv, mf in volume_faces:
-                    face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
+                faces = self.mesh_object.FemMesh.getFacesByFace(ref_face)   # (mv, mf)
+                for mf in faces:
+                     face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
         elif is_shell_mesh(self.mesh_object.FemMesh):
             ref_face_nodes = self.mesh_object.FemMesh.getNodesByFace(ref_face)
             ref_face_elements = getFemElementsByNodes(self.fem_element_table, ref_face_nodes)

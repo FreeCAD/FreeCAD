@@ -27,11 +27,14 @@
 #ifndef _SMESH_MeshVSLink_HeaderFile
 #define _SMESH_MeshVSLink_HeaderFile
 
-#ifndef _Standard_HeaderFile
-#include <Standard.hxx>
-#endif
+#if OCC_VERSION_HEX < 0x070000
 #ifndef _Handle_SMESH_MeshVSLink_HeaderFile
 #include <Handle_SMESH_MeshVSLink.hxx>
+#endif
+#endif
+
+#ifndef _Standard_HeaderFile
+#include <Standard.hxx>
 #endif
 #ifndef _TColStd_PackedMapOfInteger_HeaderFile
 #include <TColStd_PackedMapOfInteger.hxx>
@@ -155,8 +158,7 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 	TColStd_PackedMapOfInteger myElements;
 	TColStd_PackedMapOfInteger myGroups;
 };
-
+#include <SMESH_MeshVSLink.ixx>
 // other Inline functions and methods (like "C++: function call" methods)
 //
-
 #endif

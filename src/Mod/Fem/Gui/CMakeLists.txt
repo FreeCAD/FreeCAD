@@ -7,6 +7,8 @@ endif(MSVC)
 if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen)
 endif(BUILD_FEM_NETGEN)
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
 
 include_directories(
     ${CMAKE_BINARY_DIR}
@@ -20,6 +22,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
