@@ -34,12 +34,12 @@
         <x>0</x>
         <y>0</y>
         <width>304</width>
-        <height>349</height>
+        <height>379</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/accessories-calculator.svg</normaloff>:/icons/FreeCAD-default/scalable/accessories-calculator.svg</iconset>
+       <iconset resource="../Path.qrc">
+        <normaloff>:/icons/Path-BaseGeometry.svg</normaloff>:/icons/Path-BaseGeometry.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Base Geometry</string>
@@ -116,8 +116,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/Part_Measure_Clear_All.svg</normaloff>:/icons/FreeCAD-default/scalable/Part_Measure_Clear_All.svg</iconset>
+       <iconset resource="../Path.qrc">
+        <normaloff>:/icons/Path-Depths.svg</normaloff>:/icons/Path-Depths.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Depths</string>
@@ -163,8 +163,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/document-open.svg</normaloff>:/icons/FreeCAD-default/scalable/document-open.svg</iconset>
+       <iconset resource="../Path.qrc">
+        <normaloff>:/icons/Path-Heights.svg</normaloff>:/icons/Path-Heights.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Heights</string>
@@ -200,53 +200,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>304</width>
-        <height>349</height>
-       </rect>
-      </property>
-      <attribute name="icon">
-       <iconset resource="../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/document-save-as.svg</normaloff>:/icons/FreeCAD-default/scalable/document-save-as.svg</iconset>
-      </attribute>
-      <attribute name="label">
-       <string>Speeds</string>
-      </attribute>
-      <layout class="QFormLayout" name="formLayout_4">
-       <item row="0" column="0">
-        <widget class="Gui::InputField" name="horizFeed">
-         <property name="unit" stdset="0">
-          <string>mm/(s)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Horiz Feed</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="Gui::InputField" name="vertFeed">
-         <property name="unit" stdset="0">
-          <string notr="true">mm/(s)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Vert Feed</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="page_3">
       <property name="geometry">
        <rect>
@@ -257,8 +210,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="Resources/Path.qrc">
-        <normaloff>:/icons/Path-Hamburger.svg</normaloff>:/icons/Path-Hamburger.svg</iconset>
+       <iconset resource="../Path.qrc">
+        <normaloff>:/icons/Path-OperationB.svg</normaloff>:/icons/Path-OperationB.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Operation</string>
@@ -294,8 +247,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../Gui/Icons/resource.qrc"/>
-  <include location="Resources/Path.qrc"/>
+  <include location="../Path.qrc"/>
+  <include location="../Path.qrc"/>
  </resources>
  <connections/>
 </ui>

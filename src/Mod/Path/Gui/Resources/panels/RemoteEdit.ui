@@ -38,8 +38,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/accessories-calculator.svg</normaloff>:/icons/FreeCAD-default/scalable/accessories-calculator.svg</iconset>
+       <iconset resource="../Path.qrc">
+        <normaloff>:/icons/Path-BaseGeometry.svg</normaloff>:/icons/Path-BaseGeometry.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Base Geometry</string>
@@ -116,8 +116,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/Part_Measure_Clear_All.svg</normaloff>:/icons/FreeCAD-default/scalable/Part_Measure_Clear_All.svg</iconset>
+       <iconset resource="../Path.qrc">
+        <normaloff>:/icons/Path-Depths.svg</normaloff>:/icons/Path-Depths.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Depths</string>
@@ -197,8 +197,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../../../Gui/Icons/resource.qrc">
-        <normaloff>:/icons/FreeCAD-default/scalable/document-open.svg</normaloff>:/icons/FreeCAD-default/scalable/document-open.svg</iconset>
+       <iconset resource="../Path.qrc">
+        <normaloff>:/icons/Path-Heights.svg</normaloff>:/icons/Path-Heights.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Heights</string>
@@ -248,7 +248,7 @@
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path-Hamburger.svg</normaloff>:/icons/Path-Hamburger.svg</iconset>
+        <normaloff>:/icons/Path-OperationB.svg</normaloff>:/icons/Path-OperationB.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Operation</string>
