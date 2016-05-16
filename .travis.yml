@@ -96,10 +96,14 @@ before_install:
                                qt4-dev-tools                    \
                                qt4-qmake                        \
                                shiboken                         \
-                               swig
-
+                               swig                             \
+                               libvtk6-dev                      \
+                               libmed-dev                       \
+                               libmedc-dev                      
+                               
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
+       sudo find /usr/lib -name libpq.so -exec ln -s {} /usr/lib/libpq.so ';'
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
