@@ -82,7 +82,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_CrossSections" << "Part_Compound" << "Part_MakeFace" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
           << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
-          << "Part_Offset" << "Part_Thickness";
+          << "Part_Offset" << "Part_Thickness" << "Separator" << "Part_EditAttachment";
 
     Gui::MenuItem* measure = new Gui::MenuItem;
     root->insertItem(item,measure);
