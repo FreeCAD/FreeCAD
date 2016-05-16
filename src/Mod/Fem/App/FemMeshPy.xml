@@ -84,6 +84,11 @@
                 <UserDocu>Make a copy of this FEM mesh.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getFacesByFace" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of face IDs which belong to a TopoFace</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getVolumesByFace" Const="true">
             <Documentation>
                 <UserDocu>Return a dict of volume IDs and face IDs which belong to a TopoFace</UserDocu>
