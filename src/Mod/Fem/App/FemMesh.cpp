@@ -126,9 +126,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        int id = aNode->GetID();
         double temp[3];
-        Base::Console().Message("CopyData Mesh ID: %i\n", aNode->getMeshId());
         aNode->GetXYZ(temp);
         meshds->AddNodeWithID(temp[0],temp[1],temp[2], aNode->GetID());
     }
@@ -399,6 +397,7 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) 
  */
 std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &face) const
 {
+    //TODO: This function is broken with SMESH7 as it is impossible to iterate volume faces
     std::list<std::pair<int, int> > result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
@@ -425,6 +424,38 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
                 result.push_back(std::make_pair(vol->GetID(), face->GetID()));
             }
         }
+    }
+
+    result.sort();
+    return result;
+}
+
+/*! That function returns a list of face IDs.
+ */
+std::list<int> FemMesh::getFacesByFace(const TopoDS_Face &face) const
+{
+    //TODO: This function is broken with SMESH7 as it is impossible to iterate volume faces
+    std::list<int> result;
+    std::set<int> nodes_on_face = getNodesByFace(face);
+
+    SMDS_FaceIteratorPtr face_iter = myMesh->GetMeshDS()->facesIterator();
+    while (face_iter->more()) {
+        const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
+        int numNodes = face->NbNodes();
+
+        std::set<int> face_nodes;
+        for (int i=0; i<numNodes; i++) {
+            face_nodes.insert(face->GetNode(i)->GetID());
+        }
+
+        std::vector<int> element_face_nodes;
+        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), face_nodes.begin(), face_nodes.end(),
+            std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+        // For curved faces it is possible that a volume contributes more than one face
+        if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
+            result.push_back(face->GetID());
+        }        
     }
 
     result.sort();
