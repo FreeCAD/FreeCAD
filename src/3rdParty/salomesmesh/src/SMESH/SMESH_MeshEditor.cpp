@@ -4614,11 +4614,13 @@ void SMESH_MeshEditor::sweepElement(const SMDS_MeshElement*               elem,
     if      ( nbNodes == 3 ) baseType = SMDSEntity_Triangle;
     else if ( nbNodes == 4 ) baseType = SMDSEntity_Quadrangle;
   }
+#ifndef VTK_NO_QUAD_POLY
   else if ( baseType == SMDSEntity_Quad_Polygon )
   {
     if      ( nbNodes == 6 ) baseType = SMDSEntity_Quad_Triangle;
     else if ( nbNodes == 8 ) baseType = SMDSEntity_Quad_Quadrangle;
   }
+#endif
 
   // make new elements
   for (int iStep = 0; iStep < nbSteps; iStep++ )
@@ -7425,9 +7427,14 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
         {
           elemType.Init( elem );
           const bool isQuad = elemType.myIsQuad;
-          if ( isQuad )
+          if ( isQuad ) {
+#ifndef VTK_NO_QUAD_POLY
             SMDS_MeshCell::applyInterlace // interlace medium and corner nodes
               ( SMDS_MeshCell::interlacedSmdsOrder( SMDSEntity_Quad_Polygon, nbNodes ), curNodes );
+#else
+            throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
+#endif
+          }
 
           // a polygon can divide into several elements
           vector<const SMDS_MeshNode *> polygons_nodes;
@@ -7445,6 +7452,7 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
               inode += nbNewNodes;
               if ( isQuad ) // check if a result elem is a valid quadratic polygon
               {
+#ifndef VTK_NO_QUAD_POLY
                 bool isValid = ( nbNewNodes % 2 == 0 );
                 for ( int i = 0; i < nbNewNodes && isValid; ++i )
                   isValid = ( elem->IsMediumNode( face_nodes[i]) == bool( i % 2 ));
@@ -7453,6 +7461,9 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
                   SMDS_MeshCell::applyInterlaceRev
                     ( SMDS_MeshCell::interlacedSmdsOrder( SMDSEntity_Quad_Polygon,
                                                           nbNewNodes ), face_nodes );
+#else
+                throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
+#endif
               }
               elemType.SetPoly(( nbNewNodes / ( elemType.myIsQuad + 1 ) > 4 ));
 

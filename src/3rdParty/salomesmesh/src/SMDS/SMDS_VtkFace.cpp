@@ -87,11 +87,15 @@ void SMDS_VtkFace::initPoly(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh* me
 
 void SMDS_VtkFace::initQuadPoly(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh* mesh)
 {
+#ifndef VTK_NO_QUAD_POLY    
   SMDS_MeshFace::init();
   vtkUnstructuredGrid* grid = mesh->getGrid();
   myMeshId = mesh->getMeshId();
   myVtkID = grid->InsertNextLinkedCell(VTK_QUADRATIC_POLYGON, nodeIds.size(), (vtkIdType*) &nodeIds[0]);
   mesh->setMyModified();
+#else
+  throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");
+#endif
 }
 
 bool SMDS_VtkFace::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
@@ -135,9 +139,11 @@ int SMDS_VtkFace::NbEdges() const
   case VTK_BIQUADRATIC_QUAD:
     nbEdges = 4;
     break;
+#ifndef VTK_NO_QUAD_POLY
   case VTK_QUADRATIC_POLYGON:
     nbEdges = grid->GetCell(myVtkID)->GetNumberOfPoints() / 2;
     break;
+#endif
   case VTK_POLYGON:
   default:
     nbEdges = grid->GetCell(myVtkID)->GetNumberOfPoints();
@@ -197,7 +203,9 @@ bool SMDS_VtkFace::IsQuadratic() const
   {
     case VTK_QUADRATIC_TRIANGLE:
     case VTK_QUADRATIC_QUAD:
+#ifndef VTK_NO_QUAD_POLY
     case VTK_QUADRATIC_POLYGON:
+#endif
     case VTK_BIQUADRATIC_QUAD:
     case VTK_BIQUADRATIC_TRIANGLE:
       return true;
@@ -211,7 +219,11 @@ bool SMDS_VtkFace::IsPoly() const
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
   vtkIdType aVtkType = grid->GetCellType(this->myVtkID);
-  return ( aVtkType == VTK_POLYGON || aVtkType == VTK_QUADRATIC_POLYGON );
+  bool isPoly = aVtkType == VTK_POLYGON;
+#ifndef VTK_NO_QUAD_POLY
+  isPoly = isPoly || aVtkType == VTK_QUADRATIC_POLYGON;
+#endif
+  return isPoly;
 }
 
 bool SMDS_VtkFace::IsMediumNode(const SMDS_MeshNode* node) const
@@ -229,9 +241,11 @@ bool SMDS_VtkFace::IsMediumNode(const SMDS_MeshNode* node) const
   case VTK_BIQUADRATIC_QUAD:
     rankFirstMedium = 4; // medium nodes are of rank 4,5,6,7
     break;
+#ifndef VTK_NO_QUAD_POLY
   case VTK_QUADRATIC_POLYGON:
     rankFirstMedium = grid->GetCell(myVtkID)->GetNumberOfPoints() / 2;
     break;
+#endif
   default:
     //MESSAGE("wrong element type " << aVtkType);
     return false;
@@ -267,9 +281,11 @@ int SMDS_VtkFace::NbCornerNodes() const
   {
   case VTK_POLYGON:
     break;
+#ifndef VTK_NO_QUAD_POLY
   case VTK_QUADRATIC_POLYGON:
     nbPoints /= 2;
     break;
+#endif
   default:
     if ( nbPoints > 4 )
       nbPoints /= 2;
@@ -296,9 +312,11 @@ SMDSAbs_GeometryType SMDS_VtkFace::GetGeomType() const
   case VTK_QUAD:
   case VTK_QUADRATIC_QUAD:
   case VTK_BIQUADRATIC_QUAD: return SMDSGeom_QUADRANGLE;
-
-  case VTK_POLYGON:
-  case VTK_QUADRATIC_POLYGON: return SMDSGeom_POLYGON;
+ 
+#ifndef VTK_NO_QUAD_POLY
+  case VTK_QUADRATIC_POLYGON:
+#endif
+  case VTK_POLYGON: return SMDSGeom_POLYGON;
   default:;
   }
   return SMDSGeom_NONE;
