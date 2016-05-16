@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 
-__title__ = "FemInputWriterCcx"
+__title__ = "Fem Tools super class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
