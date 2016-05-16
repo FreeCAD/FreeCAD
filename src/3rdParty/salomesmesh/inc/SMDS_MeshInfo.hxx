@@ -221,7 +221,9 @@ inline void // addWithPoly
 SMDS_MeshInfo::addWithPoly(const SMDS_MeshElement* el) {
   switch ( el->GetEntityType() ) {
   case SMDSEntity_Polygon:      ++myNbPolygons; break;
+#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon: ++myNbQuadPolygons; break;
+#endif
   case SMDSEntity_Polyhedra:    ++myNbPolyhedrons; break;
   default:                      add(el);
   }
@@ -234,7 +236,9 @@ inline void // RemoveFace
 SMDS_MeshInfo::RemoveFace(const SMDS_MeshElement* el) {
   switch ( el->GetEntityType() ) {
   case SMDSEntity_Polygon:      --myNbPolygons; break;
+#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon: --myNbQuadPolygons; break;
+#endif
   default:                      remove(el);
   }
 }
@@ -350,7 +354,9 @@ SMDS_MeshInfo::NbEntities(SMDSAbs_EntityType type) const
   case SMDSEntity_Polyhedra:        return myNbPolyhedrons;
   case SMDSEntity_0D:               return myNb0DElements;
   case SMDSEntity_Ball:             return myNbBalls;
+#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon:     return myNbQuadPolygons;
+#endif
   case SMDSEntity_Quad_Polyhedra:
     break;
   }
@@ -422,7 +428,9 @@ SMDS_MeshInfo::setNb(const SMDSAbs_EntityType geomType, const int nb)
   case SMDSEntity_Tetra:            myNbTetras            = nb; break;
   case SMDSEntity_TriQuad_Hexa:     myNbTriQuadHexas      = nb; break;
   case SMDSEntity_Triangle:         myNbTriangles         = nb; break;
+#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon:     myNbQuadPolygons      = nb; break;
+#endif
   case SMDSEntity_Quad_Polyhedra:
     break;
   }

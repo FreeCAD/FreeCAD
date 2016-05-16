@@ -88,7 +88,9 @@ enum SMDSAbs_EntityType {
   SMDSEntity_Quad_Quadrangle,
   SMDSEntity_BiQuad_Quadrangle,
   SMDSEntity_Polygon,
+#ifndef VTK_NO_QUAD_POLY
   SMDSEntity_Quad_Polygon,
+#endif
   SMDSEntity_Tetra,
   SMDSEntity_Quad_Tetra,
   SMDSEntity_Pyramid,
