@@ -1717,6 +1717,7 @@ double Length2D::GetValue( long theElementId )
           aVal = Min( aVal, getDistance( P( i ), P( i+1 )));
       }
       break;
+#ifndef VTK_NO_QUAD_POLY
     case SMDSEntity_Quad_Polygon:
       if ( len > 2 ) {
         aVal = getDistance( P(1), P( P.size() )) + getDistance( P(P.size()), P( P.size()-1 ));
@@ -1724,6 +1725,7 @@ double Length2D::GetValue( long theElementId )
           aVal = Min( aVal, getDistance( P( i ), P( i+1 )) + getDistance( P( i+1 ), P( i+2 )));
       }
       break;
+#endif
     case SMDSEntity_Hexagonal_Prism:
       if (len == 12) { // hexagonal prism
         double L1 = getDistance(P( 1 ),P( 2 ));

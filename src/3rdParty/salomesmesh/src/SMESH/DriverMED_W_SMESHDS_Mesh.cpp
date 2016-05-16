@@ -731,9 +731,13 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
       {
         if ( aElemTypeData->_geomType == ePOLYGONE )
           elemIterator = myMesh->elementEntityIterator( SMDSEntity_Polygon );
-        else
+        else {
+#ifndef VTK_NO_QUAD_POLY
           elemIterator = myMesh->elementEntityIterator( SMDSEntity_Quad_Polygon );
-
+#else        
+          throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
+#endif
+        }
         if ( nbPolygonNodes == 0 ) {
           // Count nb of nodes
           while ( elemIterator->more() ) {
