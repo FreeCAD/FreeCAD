@@ -129,7 +129,9 @@ SMDS_VtkCellIteratorToUNV::SMDS_VtkCellIteratorToUNV(SMDS_Mesh* mesh, int vtkCel
     break;
   }
   case SMDSEntity_Polygon:
+#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon:
+#endif
   case SMDSEntity_Polyhedra:
   case SMDSEntity_Quad_Polyhedra:
   default:
