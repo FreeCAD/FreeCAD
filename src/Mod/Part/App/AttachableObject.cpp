@@ -58,7 +58,7 @@ AttachableObject::AttachableObject()
 
     ADD_PROPERTY_TYPE(superPlacement, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
 
-    //setAttacher(new AttachEngine3D);//default attacher
+    setAttacher(new AttachEngine3D);//default attacher
 }
 
 AttachableObject::~AttachableObject()
