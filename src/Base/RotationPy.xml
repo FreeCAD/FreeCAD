@@ -10,6 +10,7 @@
 		  Namespace="Base"
 		  Constructor="true"
 		  Delete="true"
+          RichCompare="true"
 		  FatherNamespace="Base">
 		<Documentation>
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -59,7 +60,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="isNull" Const="true">
+        <Methode Name="isNull" Const="true">
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool
@@ -67,7 +68,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Q" ReadOnly="false">
+        <Attribute Name="Q" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation elements (as quaternion)</UserDocu>
 			</Documentation>
