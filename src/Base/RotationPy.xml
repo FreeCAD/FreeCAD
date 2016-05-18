@@ -10,6 +10,7 @@
 		  Namespace="Base"
 		  Constructor="true"
 		  Delete="true"
+          RichCompare="true"
 		  FatherNamespace="Base">
 		<Documentation>
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -29,12 +30,28 @@
 		<Methode Name="invert">
 			<Documentation>
 				<UserDocu>
-					move(Vector)
-					Move the matrix along the vector
+                    invert() -> None
+                    Sets the rotation to its inverse
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="multiply" Const="true">
+        <Methode Name="inverted">
+            <Documentation>
+                <UserDocu>
+                    inverted() -> Rotation
+                    Returns the inverse of the rotation
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isSame">
+            <Documentation>
+                <UserDocu>
+                    isSame(Rotation)
+                    Checks if the two quaternions perform the same rotation
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="multiply" Const="true">
 			<Documentation>
 				<UserDocu>
 					multiply(Rotation)
@@ -59,7 +76,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="isNull" Const="true">
+        <Methode Name="isNull" Const="true">
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool
@@ -67,7 +84,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Q" ReadOnly="false">
+        <Attribute Name="Q" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation elements (as quaternion)</UserDocu>
 			</Documentation>
