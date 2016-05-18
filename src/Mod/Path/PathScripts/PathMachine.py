@@ -109,7 +109,7 @@ class Machine:
 class _ViewProviderMachine:
     def __init__(self,vobj):
         vobj.Proxy = self
-        vobj.addProperty("App::PropertyBool","ShowLimits","Path",translate("ShowMinMaxTravel","Switch the machine max and minimum travel bounding box on/off"))
+        vobj.addProperty("App::PropertyBool","ShowLimits","Path",translate("ShowMinMaxTravel","Switch the machine max and minimum travel bounding box on/off".decode("utf8")))
         mode = 2
         vobj.setEditorMode('LineWidth',mode)
         vobj.setEditorMode('MarkerColor',mode)
