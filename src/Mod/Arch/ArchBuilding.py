@@ -229,7 +229,7 @@ class _Building(ArchFloor._Floor):
     "The Building object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",translate("Arch","The type of this building"))
+        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch","The type of this building")
         self.Type = "Building"
         obj.setEditorMode('Height',2)
         obj.BuildingType = BuildingTypes

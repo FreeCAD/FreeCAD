@@ -46,24 +46,24 @@ class ObjectDrilling:
     
 
     def __init__(self,obj):
-        #obj.addProperty("App::PropertyVector","StartPoint","Path",translate("PathProfile","The start position of the drilling"))
+        #obj.addProperty("App::PropertyVector","StartPoint","Path","The start position of the drilling")
 
-        obj.addProperty("App::PropertyLinkSub","Base","Path",translate("Parent Object","The base geometry of this toolpath"))
+        obj.addProperty("App::PropertyLinkSub","Base","Path","The base geometry of this toolpath")
         obj.addProperty("App::PropertyVectorList","locations","Path","The drilling locations")
 
-        obj.addProperty("App::PropertyLength", "PeckDepth", "Drilling", translate("PeckDepth","Incremental Drill depth before retracting to clear chips"))
+        obj.addProperty("App::PropertyLength", "PeckDepth", "Drilling","Incremental Drill depth before retracting to clear chips")
         #obj.PeckDepth = (0,0,1000,1)
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Drilling", translate("Clearance Height","The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Drilling", translate("Final Depth","Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drilling", translate("Retract Height","The height where feed starts and height during retract tool when path is finished"))
-        obj.addProperty("App::PropertyLength", "VertFeed", "Feed",translate("Vert Feed","Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Drilling", "The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Drilling","Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drilling","The height where feed starts and height during retract tool when path is finished")
+        obj.addProperty("App::PropertyLength", "VertFeed", "Feed","Feed rate for vertical moves in Z")
 
-        #obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",translate("Horiz Feed","Feed rate for horizontal moves")) #not needed for drilling
+        #obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed","Feed rate for horizontal moves") #not needed for drilling
 
-        obj.addProperty("App::PropertyString","Comment","Path",translate("PathProject","An optional comment for this profile"))
-        obj.addProperty("App::PropertyBool","Active","Path",translate("Active","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString","Comment","Path","An optional comment for this profile")
+        obj.addProperty("App::PropertyBool","Active","Path","Make False, to prevent operation from generating code")
 
-        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("PathProfile","The tool number in use"))
+        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool","The tool number in use")
         obj.ToolNumber = (0,0,1000,1) 
         obj.setEditorMode('ToolNumber',1) #make this read only
         
