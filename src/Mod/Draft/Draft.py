@@ -2469,7 +2469,7 @@ def clone(obj,delta=None):
         cl.CloneOf = base
         return cl
     else:
-        cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
+        cl = FreeCAD.ActiveDocument.addObject("Part::AttachableObjectPython","Clone")
         cl.Label = "Clone of " + obj[0].Label
     _Clone(cl)
     if gui:
@@ -4161,6 +4161,7 @@ class _Rectangle(_DraftObject):
                     shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
+        obj.positionBySupport()
 
 class _ViewProviderRectangle(_ViewProviderDraft):
     def __init__(self,vobj):
@@ -4192,6 +4193,7 @@ class _Circle(_DraftObject):
                 shape = Part.Face(shape)
         obj.Shape = shape
         obj.Placement = plm
+        obj.positionBySupport()
         
 class _Ellipse(_DraftObject):
     "The Circle object"
@@ -4228,6 +4230,7 @@ class _Ellipse(_DraftObject):
                     shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
+        obj.positionBySupport()
 
 class _Wire(_DraftObject):
     "The Wire object"
@@ -4349,6 +4352,7 @@ class _Wire(_DraftObject):
                 if hasattr(obj,"Length"):
                     obj.Length = shape.Length
         obj.Placement = plm
+        obj.positionBySupport()
         self.onChanged(obj,"Placement")
         
     def onChanged(self, obj, prop):
@@ -4511,6 +4515,8 @@ class _Polygon(_DraftObject):
                 shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
+        obj.positionBySupport()
+
 
 class _DrawingView(_DraftObject):
     "The Draft DrawingView object"
@@ -4612,6 +4618,7 @@ class _BSpline(_DraftObject):
                 spline.interpolate(obj.Points, False)
                 obj.Shape = spline.toShape()
             obj.Placement = plm
+        obj.positionBySupport()
 
 # for compatibility with older versions
 _ViewProviderBSpline = _ViewProviderWire
@@ -4639,6 +4646,7 @@ class _BezCurve(_DraftObject):
 
     def execute(self, fp):
         self.createGeometry(fp)
+        fp.positionBySupport()
 
     def _segpoleslst(self,fp):
         """split the points into segments"""
@@ -4760,6 +4768,7 @@ class _Block(_DraftObject):
             shape = Part.makeCompound(shps)
             obj.Shape = shape
         obj.Placement = plm
+        obj.positionBySupport()
 
 class _Shape2DView(_DraftObject):
     "The Shape2DView object"
@@ -4800,6 +4809,7 @@ class _Shape2DView(_DraftObject):
 
     def execute(self,obj):
         import DraftGeomUtils
+        obj.positionBySupport()
         pl = obj.Placement
         if obj.Base:
             if getType(obj.Base) == "SectionPlane":
@@ -5241,7 +5251,9 @@ class _Clone(_DraftObject):
             else:
                 obj.Shape = Part.makeCompound(shapes)
         obj.Placement = pl
-            
+        if hasattr(obj,"positionBySupport"):
+            obj.positionBySupport()
+    
     def getSubVolume(self,obj,placement=None):
         # this allows clones of arch windows to return a subvolume too
         if obj.Objects:
@@ -5339,6 +5351,7 @@ class _ShapeString(_DraftObject):
             obj.Shape = shape 
             if plm:                     
                 obj.Placement = plm
+        obj.positionBySupport()
 
     def makeFaces(self, wireChar):
         import Part
