@@ -9,7 +9,8 @@
 		FatherInclude="Base/PyObjectBase.h" 
 		Namespace="Base" 
 		Constructor="true"
-		Delete="true" 
+        Delete="true"
+        RichCompare="true"
 		FatherNamespace="Base">
 	<Documentation>
 		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -75,7 +76,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="isNull" Const="true">
+        <Methode Name="isNull" Const="true">
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool
@@ -83,7 +84,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Base" ReadOnly="false">
+        <Attribute Name="Base" ReadOnly="false">
 			<Documentation>
 				<UserDocu>Vector to the Base Position of the Placement</UserDocu>
 			</Documentation>
