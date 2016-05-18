@@ -92,13 +92,13 @@ class _Site(ArchFloor._Floor):
     "The Site object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Terrain","Arch",translate("Arch","The terrain of this site"))
-        obj.addProperty("App::PropertyString","Address","Arch",translate("Arch","The street and housenumber of this site"))
-        obj.addProperty("App::PropertyString","PostalCode","Arch",translate("Arch","The postal or zip code of this site"))
-        obj.addProperty("App::PropertyString","City","Arch",translate("Arch","The city of this site"))
-        obj.addProperty("App::PropertyString","Country","Arch",translate("Arch","The country of this site"))
-        obj.addProperty("App::PropertyString","Coordinates","Arch",translate("Arch","The geographic coordinates of this site"))
-        obj.addProperty("App::PropertyString","Url","Arch",translate("Arch","An url that shows this site in a mapping website"))
+        obj.addProperty("App::PropertyLink","Terrain","Arch","The terrain of this site")
+        obj.addProperty("App::PropertyString","Address","Arch","The street and housenumber of this site")
+        obj.addProperty("App::PropertyString","PostalCode","Arch","The postal or zip code of this site")
+        obj.addProperty("App::PropertyString","City","Arch","The city of this site")
+        obj.addProperty("App::PropertyString","Country","Arch","The country of this site")
+        obj.addProperty("App::PropertyString","Coordinates","Arch","The geographic coordinates of this site")
+        obj.addProperty("App::PropertyString","Url","Arch","An url that shows this site in a mapping website")
         self.Type = "Site"
         obj.setEditorMode('Height',2)
 

@@ -42,53 +42,53 @@ except AttributeError:
 class ObjectProfile:
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkSub","Base","Path",translate("Parent Object","The base geometry of this toolpath"))
-        obj.addProperty("App::PropertyLinkSub","Face1","Path",translate("Face1","First Selected Face to help determine where final depth of tool path is"))
-        obj.addProperty("App::PropertyLinkSub","Face2","Path",translate("Face2","Second Selected Face to help determine where the upper level of tool path is"))
-        obj.addProperty("App::PropertyBool","PathClosed","Path",translate("Path Closed","If the toolpath is a closed polyline this is True"))
-        obj.addProperty("App::PropertyLinkSub","Edge1","Path",translate("Edge 1","First Selected Edge to help determine which geometry to make a toolpath around"))
-        obj.addProperty("App::PropertyLinkSub","Edge2","Path",translate("Edge 2","Second Selected Edge to help determine which geometry to make a toolpath around"))
-        obj.addProperty("App::PropertyBool","Active","Path",translate("Active","Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyBool","UsePlacements","Path",translate("Use Placements","make True, if using the profile operation placement properties to transform toolpath in post processor"))
+        obj.addProperty("App::PropertyLinkSub","Base","Path","The base geometry of this toolpath")
+        obj.addProperty("App::PropertyLinkSub","Face1","Path","First Selected Face to help determine where final depth of tool path is")
+        obj.addProperty("App::PropertyLinkSub","Face2","Path","Second Selected Face to help determine where the upper level of tool path is")
+        obj.addProperty("App::PropertyBool","PathClosed","Path","If the toolpath is a closed polyline this is True")
+        obj.addProperty("App::PropertyLinkSub","Edge1","Path","First Selected Edge to help determine which geometry to make a toolpath around")
+        obj.addProperty("App::PropertyLinkSub","Edge2","Path","Second Selected Edge to help determine which geometry to make a toolpath around")
+        obj.addProperty("App::PropertyBool","Active","Path","Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyBool","UsePlacements","Path","make True, if using the profile operation placement properties to transform toolpath in post processor")
 
-        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("PathProfile","The tool number in use"))
+        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool","The tool number in use")
         obj.ToolNumber = (0,0,1000,1) 
         obj.setEditorMode('ToolNumber',1) #make this read only
 
         #Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("Clearance Height","The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyLength", "StepDown", "Depth", translate("StepDown","Incremental Step Down of Tool"))
-        obj.addProperty("App::PropertyBool","UseStartDepth","Depth",translate("Use Start Depth","make True, if manually specifying a Start Start Depth"))
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", translate("Start Depth","Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("Final Depth","Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", translate("Retract Height","The height desired to retract tool when path is finished"))
-        obj.addProperty("App::PropertyString","Comment","Path",translate("Comment","An optional comment for this profile"))
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth","The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyLength", "StepDown", "Depth", "Incremental Step Down of Tool")
+        obj.addProperty("App::PropertyBool","UseStartDepth","Depth","make True, if manually specifying a Start Start Depth")
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth","The height desired to retract tool when path is finished")
+        obj.addProperty("App::PropertyString","Comment","Path","An optional comment for this profile")
 
         #Feed Properties
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed",translate("Vert Feed","Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",translate("Horiz Feed","Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed","Feed rate for vertical moves in Z")
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed","Feed rate for horizontal moves")
        
         #Start Point Properties
-        obj.addProperty("App::PropertyVector","StartPoint","Start Point",translate("Start Point","The start point of this path"))
-        obj.addProperty("App::PropertyBool","UseStartPoint","Start Point",translate("Use Start Point","make True, if specifying a Start Point"))
-        obj.addProperty("App::PropertyLength", "ExtendAtStart", "Start Point", translate("extend at start", "extra length of tool path before start of part edge"))
-        obj.addProperty("App::PropertyLength", "LeadInLineLen", "Start Point", translate("lead in length","length of straight segment of toolpath that comes in at angle to first part edge"))
+        obj.addProperty("App::PropertyVector","StartPoint","Start Point","The start point of this path")
+        obj.addProperty("App::PropertyBool","UseStartPoint","Start Point","make True, if specifying a Start Point")
+        obj.addProperty("App::PropertyLength", "ExtendAtStart", "Start Point","extra length of tool path before start of part edge")
+        obj.addProperty("App::PropertyLength", "LeadInLineLen", "Start Point","length of straight segment of toolpath that comes in at angle to first part edge")
 
         #End Point Properties
-        obj.addProperty("App::PropertyBool","UseEndPoint","End Point",translate("Use End Point","make True, if specifying an End Point"))
-        obj.addProperty("App::PropertyLength", "ExtendAtEnd", "End Point", translate("extend at end","extra length of tool path after end of part edge"))
-        obj.addProperty("App::PropertyLength", "LeadOutLineLen", "End Point", translate("lead_out_line_len","length of straight segment of toolpath that comes in at angle to last part edge"))
-        obj.addProperty("App::PropertyVector","EndPoint","End Point",translate("End Point","The end point of this path"))
+        obj.addProperty("App::PropertyBool","UseEndPoint","End Point","make True, if specifying an End Point")
+        obj.addProperty("App::PropertyLength", "ExtendAtEnd", "End Point","extra length of tool path after end of part edge")
+        obj.addProperty("App::PropertyLength", "LeadOutLineLen", "End Point","length of straight segment of toolpath that comes in at angle to last part edge")
+        obj.addProperty("App::PropertyVector","EndPoint","End Point","The end point of this path")
 
         #Profile Properties
-        obj.addProperty("App::PropertyEnumeration", "Side", "Profile", translate("Side","Side of edge that tool should cut"))
+        obj.addProperty("App::PropertyEnumeration", "Side", "Profile","Side of edge that tool should cut")
         obj.Side = ['Left','Right','On'] #side of profile that cutter is on in relation to direction of profile
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Profile",translate("Direction", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
+        obj.addProperty("App::PropertyEnumeration", "Direction", "Profile","The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW")
         obj.Direction = ['CW','CCW'] #this is the direction that the profile runs
 
-        obj.addProperty("App::PropertyDistance", "RollRadius", "Profile", translate("Roll Radius","Radius at start and end"))
-        obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile",translate("OffsetExtra","Extra value to stay away from final profile- good for roughing toolpath"))
-        obj.addProperty("App::PropertyLength", "SegLen", "Profile",translate("Seg Len","Tesselation  value for tool paths made from beziers, bsplines, and ellipses"))
+        obj.addProperty("App::PropertyDistance", "RollRadius", "Profile","Radius at start and end")
+        obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile","Extra value to stay away from final profile- good for roughing toolpath")
+        obj.addProperty("App::PropertyLength", "SegLen", "Profile","Tesselation  value for tool paths made from beziers, bsplines, and ellipses")
 
 
 

@@ -85,8 +85,8 @@ class _CommandFloor:
 class _Floor:
     "The Floor object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this floor"))
-        obj.addProperty("App::PropertyPlacement","Placement","Arch",translate("Arch","The placement of this group"))
+        obj.addProperty("App::PropertyLength","Height","Arch","The height of this floor")
+        obj.addProperty("App::PropertyPlacement","Placement","Arch","The placement of this group")
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj

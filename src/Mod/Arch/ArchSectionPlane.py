@@ -100,10 +100,10 @@ class _SectionPlane:
     "A section plane object"
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base",translate("Arch","The placement of this object"))
+        obj.addProperty("App::PropertyPlacement","Placement","Base","The placement of this object")
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
-        obj.addProperty("App::PropertyLinkList","Objects","Arch",translate("Arch","The objects that must be considered by this section plane. Empty means all document"))
-        obj.addProperty("App::PropertyBool","OnlySolids","Arch",translate("Arch","If false, non-solids will be cut too, with possible wrong results."))
+        obj.addProperty("App::PropertyLinkList","Objects","Arch","The objects that must be considered by this section plane. Empty means all document")
+        obj.addProperty("App::PropertyBool","OnlySolids","Arch","If false, non-solids will be cut too, with possible wrong results.")
         obj.OnlySolids = True
         self.Type = "SectionPlane"
 
@@ -142,13 +142,13 @@ class _SectionPlane:
 class _ViewProviderSectionPlane:
     "A View Provider for Section Planes"
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","DisplayLength","Arch",translate("Arch","The display length of this section plane"))
-        vobj.addProperty("App::PropertyLength","DisplayHeight","Arch",translate("Arch","The display height of this section plane"))
-        vobj.addProperty("App::PropertyLength","ArrowSize","Arch",translate("Arch","The size of the arrows of this section plane"))
+        vobj.addProperty("App::PropertyLength","DisplayLength","Arch","The display length of this section plane")
+        vobj.addProperty("App::PropertyLength","DisplayHeight","Arch","The display height of this section plane")
+        vobj.addProperty("App::PropertyLength","ArrowSize","Arch","The size of the arrows of this section plane")
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
-        vobj.addProperty("App::PropertyBool","CutView","Arch",translate("Arch","Show the cut in the 3D view"))
+        vobj.addProperty("App::PropertyBool","CutView","Arch","Show the cut in the 3D view")
         vobj.DisplayLength = 1000
         vobj.DisplayHeight = 1000
         vobj.ArrowSize = 50

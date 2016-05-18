@@ -41,8 +41,8 @@ class ObjectHop:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","NextObject","Path",translate("PathHop","The object to be reached by this hop"))
-        obj.addProperty("App::PropertyDistance","HopHeight","Path",translate("PathHop","The Z height of the hop"))
+        obj.addProperty("App::PropertyLink","NextObject","Path","The object to be reached by this hop")
+        obj.addProperty("App::PropertyDistance","HopHeight","Path","The Z height of the hop")
         obj.Proxy = self
 
     def __getstate__(self):
