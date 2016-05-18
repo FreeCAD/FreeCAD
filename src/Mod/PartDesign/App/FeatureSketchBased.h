@@ -85,11 +85,11 @@ public:
     
     /**
      * Verifies the linked Object and returns the shape used as profile
-     * @param silent if profile property is malformed and the parameter is true
+     * @param silent if profirle property is malformed and the parameter is true
      *               silently returns nullptr, otherwice throw a Base::Exception.
      *               Default is false.
      */
-    TopoDS_Face getVerifiedFace(bool silent = false) const;
+    TopoDS_Shape getVerifiedFace(bool silent = false) const;
     
     /// Returns the wires the sketch is composed of
     std::vector<TopoDS_Wire> getProfileWires() const;

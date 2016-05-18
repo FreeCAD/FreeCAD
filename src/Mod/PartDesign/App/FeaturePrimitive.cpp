@@ -103,7 +103,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
              AddSubShape.setValue(primitiveShape);
              
              if(getAddSubType() == FeatureAddSub::Additive)
-                 Shape.setValue(primitiveShape);
+                 Shape.setValue(getSolid(primitiveShape));
              else 
                  return new App::DocumentObjectExecReturn("Cannot subtract primitive feature without base feature");   
              
@@ -122,7 +122,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(boolOp);
+            Shape.setValue(getSolid(boolOp));
             AddSubShape.setValue(primitiveShape);
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
@@ -137,7 +137,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(boolOp);
+            Shape.setValue(getSolid(boolOp));
             AddSubShape.setValue(primitiveShape);
         }
         
