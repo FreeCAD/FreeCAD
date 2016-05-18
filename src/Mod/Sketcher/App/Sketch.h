@@ -77,7 +77,7 @@ public:
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
     /// returns the actual geometry
-    std::vector<Part::Geometry *> extractGeometry(bool withConstrucionElements=true,
+    std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
     /// get the geometry as python objects
     Py::Tuple getPyGeometry(void) const;

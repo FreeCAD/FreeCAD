@@ -562,13 +562,13 @@ int Sketch::addEllipse(const Part::GeomEllipse &elip, bool fixed)
     return Geoms.size()-1;
 }
 
-std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstrucionElements,
+std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionElements,
                                                       bool withExternalElements) const
 {
     std::vector<Part::Geometry *> temp;
     temp.reserve(Geoms.size());
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it)
-        if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstrucionElements))
+        if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstructionElements))
             temp.push_back(it->geo->clone());
 
     return temp;
