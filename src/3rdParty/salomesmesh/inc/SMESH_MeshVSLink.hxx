@@ -1,4 +1,3 @@
-<<<<<<< 38a6d78d0d81b81af354b0de233657639bfd0589
 //  SMESH  SMESH_MeshVSLink : Connection of SMESH with MeshVS from OCC 
 //
 //  Copyright (C) 2003  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,

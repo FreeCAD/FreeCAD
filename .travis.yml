@@ -32,7 +32,7 @@ compiler:
 python: 2.7
 
 os:
-   - osx
+   - linux
 
 dist: trusty
 sudo: required
@@ -71,11 +71,6 @@ before_install:
                                libcoin80                        \
                                libcoin80-dev                    \
                                libeigen3-dev                    \
-                               liboce-foundation-dev            \
-                               liboce-modeling-dev              \
-                               liboce-ocaf-dev                  \
-                               liboce-ocaf-lite-dev             \
-                               liboce-visualization-dev         \
                                libpyside-dev                    \
                                libqtcore4                       \
                                libshiboken-dev                  \
@@ -85,9 +80,6 @@ before_install:
                                libxmu6                          \
                                libxmuu-dev                      \
                                libxmuu1                         \
-                               netgen                           \
-                               netgen-headers                   \
-                               oce-draw                         \
                                pyside-tools                     \
                                python-dev                       \
                                python-pyside                    \
@@ -96,7 +88,9 @@ before_install:
                                qt4-qmake                        \
                                shiboken                         \
                                swig
-
+       sudo echo "deb http://ruggedpod.qyshare.com/Webdav/Public/deb trusty universe" >> /etc/apt/sources.list
+       sudo apt-get update
+       sudo apt-get install -y Netgen 
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
        export DISPLAY=:99.0

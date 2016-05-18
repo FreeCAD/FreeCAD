@@ -34,7 +34,7 @@
 #include "SMESH_Algo.hxx"
 
 #if OCC_VERSION_HEX < 0x070000
-class TopTools_IndexedMapOfShape;
+//class TopTools_IndexedMapOfShape;
 #endif
 
 typedef struct point3Dstruct
