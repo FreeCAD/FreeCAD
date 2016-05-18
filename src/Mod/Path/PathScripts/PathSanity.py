@@ -41,21 +41,20 @@ except AttributeError:
 
 
 def review(obj):
-
+    limits = False
     "checks the selected project for common errors"
+    toolcontrolcount = 0
     for item in obj.Group:
         print "Checking: " + item.Label
-
-        if item.Name[:4] == "Tool":
+        if item.Name[:2] == "TC":
+            toolcontrolcount += 1
             if item.ToolNumber == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using ID 0 which is the default\n"))
+                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using ID 0 which the undefined default. Please set a real tool.\n"))
             else:
                 tool = PU.getTool(item, item.ToolNumber)
                 if tool is None:
                     FreeCAD.Console.PrintError(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which is invalid\n"))
-                continue
-
-                if tool.Diameter == 0:
+                elif tool.Diameter == 0:
                     FreeCAD.Console.PrintError(translate("Path_Sanity", "Tool Controller: " +  str(item.Label) + " is using tool: " + str(item.ToolNumber) + " which has a zero diameter\n"))
             if item.HorizFeed == 0:
                 FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Tool Controller: " + str(item.Label) + " has a 0 value for the Horizontal feed rate\n"))
@@ -67,6 +66,14 @@ def review(obj):
         if item.Name[:7] == "Machine":
             if len(item.Tooltable.Tools) == 0:
                 FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Machine: " + str(item.Label) + " has no tools defined in the tool table\n"))
+
+            if item.X_Max == item.X_Min or item.Y_Max == item.Y_Min:
+                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+            else:
+                limits = True
+
+    if toolcontrolcount == 0:
+        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
 
 
 class CommandPathSanity:

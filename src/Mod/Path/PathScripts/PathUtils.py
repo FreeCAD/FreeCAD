@@ -404,10 +404,13 @@ def getLastToolLoad(obj):
 
     if tc is None:
         for g in FreeCAD.ActiveDocument.Objects:  # top level object
-            if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
-                lastfound = g
-            if g == obj:
-                tc = lastfound
+            try:
+                if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                    lastfound = g
+                if g == obj:
+                    tc = lastfound
+            except:
+                continue
     return tc
 
 

@@ -49,6 +49,7 @@ class ObjectPathEngrave:
         obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this object")
         obj.addProperty("App::PropertyBool", "Active", "Path", translate("Path", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", translate("Path", "An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", translate("Path", "The library or Algorithm used to generate the path"))
         obj.Algorithm = ['OCC Native']
@@ -57,6 +58,8 @@ class ObjectPathEngrave:
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("Path", "The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("Path", "The height needed to clear clamps and obstructions"))
@@ -76,6 +79,10 @@ class ObjectPathEngrave:
     def __setstate__(self, state):
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "UserLabel":
+             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+
     def execute(self, obj):
         output = ""
 
@@ -85,16 +92,19 @@ class ObjectPathEngrave:
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
+            obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
-            obj.ToolNumber = toolLoad.ToolNumber
-
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            if tool is None:
-                self.radius = 0.25
-            else:
-                self.radius = tool.Diameter/2
+            self.radius = tool.Diameter/2
+            obj.ToolNumber = toolLoad.ToolNumber
+            obj.ToolDescription = toolLoad.Name
+
+        if obj.UserLabel == "":
+            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+        else:
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
         if obj.Base:
             for o in obj.Base:

@@ -60,6 +60,7 @@ class ObjectRemote:
         obj.addProperty("App::PropertyLinkSubList", "Base", "Path", translate("Parent Object(s)", "The base geometry of this toolpath"))
         obj.addProperty("App::PropertyBool", "Active", "Path", translate("Active", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", translate("PathProject", "An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
 
         obj.addProperty("App::PropertyString", "URL", "API", translate("RemotePath", "The Base URL of the remote path service"))
         obj.addProperty("App::PropertyStringList", "proplist", "Path", translate("Path", "list of remote properties"))
@@ -69,6 +70,8 @@ class ObjectRemote:
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("PathProfile", "The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
         # Depth Properties
         obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Depth", translate("PathProject", "The height needed to clear clamps and obstructions"))
@@ -153,6 +156,9 @@ class ObjectRemote:
                 print "adding: " + str(prop)
             obj.proplist = pl
 
+        if prop == "UserLabel":
+             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+
     def execute(self, obj):
         output = ""
 
@@ -162,12 +168,19 @@ class ObjectRemote:
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
+            obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             self.radius = tool.Diameter/2
             obj.ToolNumber = toolLoad.ToolNumber
+            obj.ToolDescription = toolLoad.Name
+
+        if obj.UserLabel == "":
+            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+        else:
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
         output += "(remote gcode goes here)"
         path = Path.Path(output)
