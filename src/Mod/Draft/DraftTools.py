@@ -3208,7 +3208,7 @@ class ToggleConstructionMode():
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Construction',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle construcion Mode"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle Construction Mode"),
                 'Accel' : "C, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggles the Construction Mode for next objects.")}
 
