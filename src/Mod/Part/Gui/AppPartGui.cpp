@@ -182,7 +182,7 @@ PyMODINIT_FUNC initPartGui()
     CreateSimplePartCommands();
     CreateParamPartCommands();
     try{
-        Py::Object ae = Base::Interpreter().runString_returnObject("__import__('AttachmentEditor.Commands').Commands");
+        Py::Object ae = Base::Interpreter().runStringObject("__import__('AttachmentEditor.Commands').Commands");
         Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"),ae);
     } catch (Base::PyException &err){
         err.ReportException();
