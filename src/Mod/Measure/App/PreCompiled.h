@@ -51,6 +51,13 @@
 #include <bitset>
 
 #include <Mod/Part/App/OpenCascadeAll.h>
+#include <BRep_Builder.hxx>
+#include <TopoDS_Compound.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <GProp_GProps.hxx>
+#include <GeomAPI_ExtremaCurveCurve.hxx>
+#include <BRepGProp.hxx>
 #include <Python.h>
 
 #elif defined(FC_OS_WIN32)
