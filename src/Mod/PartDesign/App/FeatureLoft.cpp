@@ -178,7 +178,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         AddSubShape.setValue(result);
         
         if(base.IsNull()) {
-            Shape.setValue(result);
+            Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
         
@@ -194,7 +194,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(boolOp);
+            Shape.setValue(getSolid(boolOp));
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
             
@@ -208,7 +208,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(boolOp);
+            Shape.setValue(getSolid(boolOp));
         }
         
         return App::DocumentObject::StdReturn;

@@ -106,7 +106,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
         }
 
-        this->Shape.setValue(shape);
+        this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
