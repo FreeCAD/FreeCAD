@@ -30,12 +30,28 @@
 		<Methode Name="invert">
 			<Documentation>
 				<UserDocu>
-					move(Vector)
-					Move the matrix along the vector
+                    invert() -> None
+                    Sets the rotation to its inverse
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="multiply" Const="true">
+        <Methode Name="inverted">
+            <Documentation>
+                <UserDocu>
+                    inverted() -> Rotation
+                    Returns the inverse of the rotation
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isSame">
+            <Documentation>
+                <UserDocu>
+                    isSame(Rotation)
+                    Checks if the two quaternions perform the same rotation
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="multiply" Const="true">
 			<Documentation>
 				<UserDocu>
 					multiply(Rotation)
