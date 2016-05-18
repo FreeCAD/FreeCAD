@@ -118,6 +118,37 @@ int PlacementPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
+PyObject* PlacementPy::richCompare(PyObject *v, PyObject *w, int op)
+{
+    if (PyObject_TypeCheck(v, &(PlacementPy::Type)) &&
+        PyObject_TypeCheck(w, &(PlacementPy::Type))) {
+        Base::Placement p1 = *static_cast<PlacementPy*>(v)->getPlacementPtr();
+        Base::Placement p2 = *static_cast<PlacementPy*>(w)->getPlacementPtr();
+
+        PyObject *res=0;
+        if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError,
+            "no ordering relation is defined for Placement");
+            return 0;
+        }
+        else if (op == Py_EQ) {
+            res = (p1 == p2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else {
+            res = (p1 != p2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+    }
+    else {
+        // This always returns False
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
+    }
+}
+
 PyObject* PlacementPy::move(PyObject * args)
 {
     PyObject *vec;

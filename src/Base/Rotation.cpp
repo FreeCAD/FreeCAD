@@ -294,15 +294,27 @@ Rotation Rotation::operator*(const Rotation & q) const
 
 bool Rotation::operator==(const Rotation & q) const
 {
-    bool equal = true;
-    for (int i=0; i<4;i++)
-        equal &= (fabs(this->quat[i] - q.quat[i]) < 0.005 );
-    return equal;
+    if (this->quat[0] == q.quat[0] &&
+        this->quat[1] == q.quat[1] &&
+        this->quat[2] == q.quat[2] &&
+        this->quat[3] == q.quat[3])
+        return true;
+    return false;
 }
 
 bool Rotation::operator!=(const Rotation & q) const
 {
     return !(*this == q);
+}
+
+bool Rotation::isSame(const Rotation& q) const
+{
+    if ((this->quat[0] == q.quat[0] || this->quat[0] == -q.quat[0]) &&
+        (this->quat[1] == q.quat[1] || this->quat[1] == -q.quat[1]) &&
+        (this->quat[2] == q.quat[2] || this->quat[2] == -q.quat[2]) &&
+        (this->quat[3] == q.quat[3] || this->quat[3] == -q.quat[3]))
+        return true;
+    return false;
 }
 
 void Rotation::multVec(const Vector3d & src, Vector3d & dst) const

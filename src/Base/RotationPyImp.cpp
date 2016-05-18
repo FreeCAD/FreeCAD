@@ -164,12 +164,51 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
+PyObject* RotationPy::richCompare(PyObject *v, PyObject *w, int op)
+{
+    if (PyObject_TypeCheck(v, &(RotationPy::Type)) &&
+        PyObject_TypeCheck(w, &(RotationPy::Type))) {
+        Base::Rotation r1 = *static_cast<RotationPy*>(v)->getRotationPtr();
+        Base::Rotation r2 = *static_cast<RotationPy*>(w)->getRotationPtr();
+
+        PyObject *res=0;
+        if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError,
+            "no ordering relation is defined for Rotation");
+            return 0;
+        }
+        else if (op == Py_EQ) {
+            res = (r1 == r2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else {
+            res = (r1 != r2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+    }
+    else {
+        // This always returns False
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
+    }
+}
+
 PyObject* RotationPy::invert(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     this->getRotationPtr()->invert();
     Py_Return;
+}
+
+PyObject* RotationPy::inverted(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    Rotation mult = this->getRotationPtr()->inverse();
+    return new RotationPy(new Rotation(mult));
 }
 
 PyObject* RotationPy::multiply(PyObject * args)
@@ -205,14 +244,24 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::isSame(PyObject *args)
+{
+    PyObject *rot;
+    if (!PyArg_ParseTuple(args, "O!", &(RotationPy::Type), &rot))
+        return NULL;
+    Base::Rotation rot1 = * getRotationPtr();
+    Base::Rotation rot2 = * static_cast<RotationPy*>(rot)->getRotationPtr();
+    bool same = rot1.isSame(rot2);
+    return Py_BuildValue("O", (same ? Py_True : Py_False));
+}
+
 PyObject* RotationPy::isNull(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     Base::Rotation rot = * getRotationPtr();
     Base::Rotation nullrot(0,0,0,1);
-    Base::Rotation nullrotinv(0,0,0,-1);
-    bool null = (rot == nullrot) | (rot == nullrotinv);
+    bool null = rot.isSame(nullrot);
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 
