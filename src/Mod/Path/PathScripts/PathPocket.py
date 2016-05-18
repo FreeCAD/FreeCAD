@@ -50,6 +50,7 @@ class ObjectPocket:
         obj.addProperty("App::PropertyLinkSubList", "Base", "Path", translate("PathProject", "The base geometry of this object"))
         obj.addProperty("App::PropertyBool", "Active", "Path", translate("PathProject", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", translate("PathProject", "An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", translate("PathProject", "The library to use to generate the path"))
         obj.Algorithm = ['OCC Native', 'libarea']
@@ -58,6 +59,8 @@ class ObjectPocket:
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("PathProfile", "The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("PathProject", "The height needed to clear clamps and obstructions"))
@@ -106,6 +109,10 @@ class ObjectPocket:
                 obj.setEditorMode('HelixSize', 2)  # make this hidden
                 obj.setEditorMode('RampAngle', 2)  # make this hidden
                 obj.setEditorMode('RampSize', 2)   # make this hidden
+
+        if prop == "UserLabel":
+             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+
 
     def __getstate__(self):
         return None
@@ -354,17 +361,19 @@ class ObjectPocket:
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
+            obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             self.radius = tool.Diameter/2
             obj.ToolNumber = toolLoad.ToolNumber
+            obj.ToolDescription = toolLoad.Name
 
-#             if tool is None:
-#                 self.radius = 0.25
-#             else:
-#                 self.radius = tool.Diameter/2
+        if obj.UserLabel == "":
+            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+        else:
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
         if obj.Base:
             for b in obj.Base:
@@ -501,6 +510,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.Active = True')
         FreeCADGui.doCommand('PathScripts.PathPocket.ViewProviderPocket(obj.ViewObject)')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
+        FreeCADGui.doCommand('obj.Algorithm = "libarea"')
         FreeCADGui.doCommand('obj.StepOver = 100')
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')  # + str(bb.ZMax + 2.0))
         FreeCADGui.doCommand('obj.StepDown = 1.0')
@@ -557,6 +567,15 @@ class TaskPanel:
                 self.obj.Algorithm = str(self.form.algorithmSelect.currentText())
             if hasattr(self.obj, "CutMode"):
                 self.obj.CutMode = str(self.form.cutMode.currentText())
+            if hasattr(self.obj, "UseZigZag"):
+                self.obj.UseZigZag = self.form.useZigZag.isChecked()
+            if hasattr(self.obj, "ZigUnidirectional"):
+                self.obj.ZigUnidirectional = self.form.zigZagUnidirectional.isChecked()
+            if hasattr(self.obj, "ZigZagAngle"):
+                self.obj.ZigZagAngle = self.form.zigZagAngle.value()
+            if hasattr(self.obj, "StepOver"):
+                self.obj.StepOver = self.form.stepOverPercent.value()
+
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
@@ -567,6 +586,10 @@ class TaskPanel:
         self.form.stepDown.setValue(self.obj.StepDown)
         self.form.extraOffset.setValue(self.obj.MaterialAllowance.Value)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+        self.form.useZigZag.setChecked(self.obj.UseZigZag)
+        self.form.zigZagUnidirectional.setChecked(self.obj.ZigUnidirectional)
+        self.form.zigZagAngle.setValue(self.obj.ZigZagAngle)
+        self.form.stepOverPercent.setValue(self.obj.StepOver)
 
         index = self.form.algorithmSelect.findText(self.obj.Algorithm, QtCore.Qt.MatchFixedString)
         if index >= 0:
@@ -585,16 +608,6 @@ class TaskPanel:
     def addBase(self):
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelectionEx()
-
-        # if not len(selection) >= 1:
-        #     FreeCAD.Console.PrintError(translate("PathProject", "Please select at least one profileable object\n"))
-        #     return
-        # for s in selection:
-        #     if s.HasSubObjects:
-        #         for i in s.SubElementNames:
-        #             self.obj.Proxy.addpocketbase(self.obj, s.Object, i)
-        #     else:
-        #         self.obj.Proxy.addpocketbase(self.obj, s.Object)
 
         if len(selection) != 1:
             FreeCAD.Console.PrintError(translate("PathProject", "Please select only faces from one solid\n"))
@@ -684,6 +697,13 @@ class TaskPanel:
         self.form.cutMode.currentIndexChanged.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
+
+        # Pattern
+        self.form.stepOverPercent.editingFinished.connect(self.getFields)
+        self.form.useZigZag.clicked.connect(self.getFields)
+        self.form.zigZagUnidirectional.clicked.connect(self.getFields)
+        self.form.zigZagAngle.editingFinished.connect(self.getFields)
+
 
         self.setFields()
 

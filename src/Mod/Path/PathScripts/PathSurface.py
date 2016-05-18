@@ -60,6 +60,7 @@ class ObjectSurface:
             "Active", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", translate(
             "PathProject", "An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
 
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", translate(
             "PathProject", "The library to use to generate the path"))
@@ -70,6 +71,8 @@ class ObjectSurface:
                         "Tool", translate("PathProfile", "The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
         # Surface Properties
         obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", translate(
@@ -127,6 +130,10 @@ class ObjectSurface:
 
     def __setstate__(self, state):
         return None
+
+    def onChanged(self, obj, prop):
+        if prop == "UserLabel":
+             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
     def _waterline(self, obj, s, bb):
         import ocl
@@ -270,16 +277,19 @@ class ObjectSurface:
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
+            obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
-            obj.ToolNumber = toolLoad.ToolNumber
-
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            if tool is None:
-                self.radius = 0.25
-            else:
-                self.radius = tool.Diameter / 2
+            self.radius = tool.Diameter/2
+            obj.ToolNumber = toolLoad.ToolNumber
+            obj.ToolDescription = toolLoad.Name
+
+        if obj.UserLabel == "":
+            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+        else:
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
         if obj.Base:
             for b in obj.Base:

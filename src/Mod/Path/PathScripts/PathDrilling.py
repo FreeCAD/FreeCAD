@@ -51,6 +51,7 @@ class ObjectDrilling:
         obj.addProperty("App::PropertyLinkSubList", "Base","Path", translate("PathProject", "The base geometry of this toolpath"))
         obj.addProperty("App::PropertyBool", "Active", "Path", translate("PathProject", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", translate("PathProject", "An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
 
         obj.addProperty("App::PropertyLength", "PeckDepth", "Depth", translate("PathProject", "Incremental Drill depth before retracting to clear chips"))
         obj.addProperty("App::PropertyLength", "StartDepth", "Depth", translate("PathProject", "Starting Depth of Tool- first cut depth in Z"))
@@ -63,6 +64,9 @@ class ObjectDrilling:
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("PathProfile", "The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
+
 
         obj.Proxy = self
 
@@ -72,6 +76,10 @@ class ObjectDrilling:
     def __setstate__(self, state):
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "UserLabel":
+             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+
     def execute(self, obj):
         output = ""
         toolLoad = PathUtils.getLastToolLoad(obj)
@@ -80,16 +88,20 @@ class ObjectDrilling:
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
+            obj.ToolDescription = "UNDEFINED"
+
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
-            obj.ToolNumber = toolLoad.ToolNumber
-
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            if tool is None:
-                self.radius = 0.25
-            else:
-                self.radius = tool.Diameter/2
+            self.radius = tool.Diameter/2
+            obj.ToolNumber = toolLoad.ToolNumber
+            obj.ToolDescription = toolLoad.Name
+
+        if obj.UserLabel == "":
+            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+        else:
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
         if obj.Base:
             locations = []

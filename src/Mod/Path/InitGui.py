@@ -69,9 +69,9 @@ class PathWorkbench (Workbench):
         from PathScripts import PathSanity
 
         # build commands list
-        projcmdlist = ["Path_Project", "Path_ToolTableEdit",
-                       "Path_Post", "Path_Inspect", "Path_Sanity"]
-        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_LoadTool", "Path_ToolLenOffset", "Path_Comment",
+        projcmdlist = ["Path_Project", "Path_Post", "Path_Inspect", "Path_Sanity"]
+        toolcmdlist = ["Path_ToolTableEdit", "Path_LoadTool"]
+        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment",
                        "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
         opcmdlist = ["Path_Profile", "Path_Pocket",
                      "Path_Drilling", "Path_Engrave", "Path_Surfacing"]
@@ -86,12 +86,15 @@ class PathWorkbench (Workbench):
         def translate(context, text):
             return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
         self.appendToolbar(translate("Path", "Project Setup"), projcmdlist)
-        self.appendToolbar(translate("Path", "Partial Commands"), prepcmdlist)
+        self.appendToolbar(translate("Path", "Tool Commands"), toolcmdlist)
+        #self.appendToolbar(translate("Path", "Partial Commands"), prepcmdlist)
         self.appendToolbar(translate("Path", "New Operations"), opcmdlist)
         self.appendToolbar(translate("Path", "Path Modification"), modcmdlist)
 
         self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Project Setup")], projcmdlist)
+            "Path", "Project Tools")], projcmdlist)
+        self.appendMenu([translate("Path", "Path"), translate(
+            "Path", "Tools")], projcmdlist)
         self.appendMenu([translate("Path", "Path"), translate(
             "Path", "Partial Commands")], prepcmdlist)
         self.appendMenu([translate("Path", "Path"), translate(

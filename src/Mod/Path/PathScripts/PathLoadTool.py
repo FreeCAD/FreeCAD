@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Used for CNC machine to load cutting Tool ie M6T3'''
+''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
 
 import FreeCAD
 import FreeCADGui
@@ -58,6 +58,15 @@ class LoadTool:
         obj.setEditorMode('Placement', mode)
 
     def execute(self, obj):
+#        if obj.ToolNumber != 0:
+
+        tool = PathUtils.getTool(obj, obj.ToolNumber)
+        if tool is not None:
+            obj.Label = obj.Name + ": (" + tool.Name + ")"
+        else:
+            obj.Label = obj.Name + ": (UNDEFINED TOOL)"
+
+
         commands = ""
         commands = 'M6T'+str(obj.ToolNumber)+'\n'
 
@@ -68,7 +77,7 @@ class LoadTool:
             commands += 'M4S' + str(obj.SpindleSpeed) + '\n'
 
         obj.Path = Path.Path(commands)
-        obj.Label = "Tool"+str(obj.ToolNumber)
+        # obj.Label = "TC: Tool"+str(obj.ToolNumber)
 
     def onChanged(self, obj, prop):
         mode = 2
@@ -135,20 +144,20 @@ class _ViewProviderLoadTool:
 class CommandPathLoadTool:
     def GetResources(self):
         return {'Pixmap': 'Path-LoadTool',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Tool Number to Load"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller to the Project"),
                 'Accel': "P, T",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Tool Number to Load")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller")}
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("Current Tool", "Tool Number to Load"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_LoadTool", "Create Tool Controller Object"))
         snippet = '''
 import Path, PathScripts
 from PathScripts import PathUtils, PathLoadTool
 
-obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Tool")
+obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","TC")
 PathScripts.PathLoadTool.LoadTool(obj)
 PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
 
@@ -165,7 +174,7 @@ PathUtils.addToProject(obj)
         import PathScripts
         import PathUtils
 
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Tool")
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TC")
         PathScripts.PathLoadTool.LoadTool(obj)
         PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
 
@@ -174,8 +183,8 @@ PathUtils.addToProject(obj)
 
 class TaskPanel:
     def __init__(self):
-        #self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolControl.ui")
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolControl.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolControl.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolControl.ui")
         self.updating = False
 
     def accept(self):
@@ -196,25 +205,41 @@ class TaskPanel:
 
             if hasattr(self.obj, "VertFeed"):
                 self.obj.Label = self.form.tcoName.text()
-
             if hasattr(self.obj, "VertFeed"):
-                self.obj.VertFeed = self.form.vertFeed.value()
+                self.obj.VertFeed = self.form.vertFeed.text()
             if hasattr(self.obj, "HorizFeed"):
-                self.obj.HorizFeed = self.form.horizFeed.value()
+                self.obj.HorizFeed = self.form.horizFeed.text()
             if hasattr(self.obj, "SpindleSpeed"):
                 self.obj.SpindleSpeed = self.form.spindleSpeed.value()
             if hasattr(self.obj, "SpindleDir"):
                 self.obj.SpindleDir = str(self.form.cboSpindleDirection.currentText())
-            if hasattr(self.obj, "ToolNumber"):
-                self.obj.ToolNumber = self.form.ToolNumber.value()
+            #if hasattr(self.obj, "ToolNumber"):
+             #   self.obj.ToolNumber = self.form.ToolNumber.value()
         self.obj.Proxy.execute(self.obj)
 
-    def setFields(self): 
+    def setFields(self):
         self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
         self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
-        self.form.spindleSpeed.setText(str(self.obj.SpindleSpeed.Value))
-        self.form.cboSpindleDirection.setText(str(self.obj.SpindleDir.Value))
-        self.form.ToolNumber.setValue(self.obj.ToolNumber)
+        self.form.spindleSpeed.setValue(self.obj.SpindleSpeed)
+        self.form.tcoName.setText(str(self.obj.Label))
+
+        index = self.form.cboSpindleDirection.findText(self.obj.SpindleDir, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.cboSpindleDirection.setCurrentIndex(index)
+        # Populate the tool list
+        mach = PathUtils.findMachine()
+        tool = mach.Tooltable.Tools[self.obj.ToolNumber]
+
+        self.form.txtToolName.setText(tool.Name)
+        self.form.txtToolType.setText(tool.ToolType)
+        self.form.txtToolMaterial.setText(tool.Material)
+        self.form.txtToolDiameter.setText(str(tool.Diameter))
+
+        #     self.form.cboToolSelect.addItem(tool.Name)
+
+        # index = self.form.cboToolSelect.findText(self.obj.SpindleDir, QtCore.Qt.MatchFixedString)
+        # if index >= 0:
+        #     self.form.cboSpindleDirection.setCurrentIndex(index)
 
 
     def open(self):

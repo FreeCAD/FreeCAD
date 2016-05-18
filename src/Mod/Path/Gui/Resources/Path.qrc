@@ -73,5 +73,6 @@
         <file>panels/ProfileEdit.ui</file>
         <file>panels/SurfaceEdit.ui</file>
         <file>panels/RemoteEdit.ui</file>
+        <file>panels/ToolControl.ui</file>
     </qresource>
 </RCC>
