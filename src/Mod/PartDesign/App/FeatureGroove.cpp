@@ -129,9 +129,14 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         sketchshape.Move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
-        if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(sketchshape)))
-            return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
-
+        TopExp_Explorer xp;
+        xp.Init(sketchshape, TopAbs_FACE);
+        for (;xp.More(); xp.Next()) {
+         
+            if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
+                return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
+        }
+        
         // revolve the face to a solid
         BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
 
@@ -164,7 +169,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         if (std::string(e->GetMessageString()) == "TopoDS::Face")
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
-                "Intersecting sketch entities or multiple faces in a sketch are not allowed.");
+                "Intersecting sketch entities in a sketch are not allowed.");
         else
             return new App::DocumentObjectExecReturn(e->GetMessageString());
     }

@@ -165,7 +165,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         result = mkTrf.Shape();
     }
 
-    this->Shape.setValue(result);
+    this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;
 }
 

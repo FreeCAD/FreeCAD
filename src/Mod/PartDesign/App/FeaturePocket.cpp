@@ -94,10 +94,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
 
     Part::Feature* obj = 0;
-    TopoDS_Face face;
+    TopoDS_Shape profileshape;
     try {
         obj = getVerifiedObject();
-        face = getVerifiedFace();
+        profileshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
@@ -126,9 +126,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invObjLoc.Transformation());
 
-        if (face.IsNull())
+        if (profileshape.IsNull())
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
-        face.Move(invObjLoc);
+        profileshape.Move(invObjLoc);
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
@@ -148,7 +148,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, face, method, dir, Offset.getValue());
+            getUpToFace(upToFace, base, supportface, profileshape, method, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid
@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!Ex.More())
                 supportface = TopoDS_Face();
             BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(base, face, supportface, dir, 0, 1);
+            PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
             PrismMaker.Perform(upToFace);
 
             if (!PrismMaker.IsDone())
@@ -175,10 +175,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
             TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(result);
-            this->Shape.setValue(prism);
+            this->Shape.setValue(getSolid(prism));
         } else {
             TopoDS_Shape prism;
-            generatePrism(prism, face, method, dir, L, 0.0,
+            generatePrism(prism, profileshape, method, dir, L, 0.0,
                           Midplane.getValue(), Reversed.getValue());
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
@@ -198,7 +198,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
             solRes = refineShapeIfActive(solRes);
             remapSupportShape(solRes);
-            this->Shape.setValue(solRes);
+            this->Shape.setValue(getSolid(solRes));
         }
 
         return App::DocumentObject::StdReturn;
