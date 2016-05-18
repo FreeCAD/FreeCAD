@@ -364,8 +364,16 @@ def formatObject(obj,dxfobj=None):
             obj.ViewObject.LineColor = dxfDefaultColor
 
 def vec(pt):
-    "returns a rounded Vector from a dxf point"
-    return FreeCAD.Vector(round(pt[0],prec()),round(pt[1],prec()),round(pt[2],prec()))
+    "returns a rounded and scaled Vector from a dxf point, or rounded and scaled value"
+    if isinstance(pt,float) or isinstance(pt,int):
+        v = round(pt,prec())
+        if dxfScaling != 1:
+            v = v * dxfScaling
+    else:
+        v = FreeCAD.Vector(round(pt[0],prec()),round(pt[1],prec()),round(pt[2],prec()))
+        if dxfScaling != 1:
+            v.multiply(dxfScaling)
+    return v
 
 def drawLine(line,forceShape=False):
     "returns a Part shape from a dxf line"
@@ -462,7 +470,7 @@ def drawArc(arc,forceShape=False):
     lastangle=round(arc.end_angle,prec())
     circle=Part.Circle()
     circle.Center=v
-    circle.Radius=round(arc.radius,prec())
+    circle.Radius=vec(arc.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
             pl = FreeCAD.Placement()
@@ -478,7 +486,7 @@ def drawCircle(circle,forceShape=False):
     "returns a Part shape from a dxf circle"
     v = vec(circle.loc)
     curve = Part.Circle()
-    curve.Radius = round(circle.radius,prec())
+    curve.Radius = vec(circle.radius)
     curve.Center = v
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
@@ -643,7 +651,7 @@ def drawSplineOld(spline,forceShape=False):
             cp.append(dline[1])
         elif dline[0] == 30:
             cp.append(dline[1])
-            pt = Vector(cp[0],cp[1],cp[2])
+            pt = vec(cp)
             if verts:
                 if pt != verts[-1]:
                     verts.append(pt)
@@ -698,11 +706,11 @@ non-parametric curve"""
             else:
                 y=0.0
                 dataremain = dataremain[1:]
-            vec = FreeCAD.Vector(x,y,z)
+            v = vec([x,y,z])
             if groupnumber == 10:
-                controlpoints.append(vec)
+                controlpoints.append(v)
             elif groupnumber == 11:
-                fitpoints.append(vec)
+                fitpoints.append(v)
         else:
             dataremain = dataremain[1:]
             #print groupnumber #debug
@@ -843,7 +851,7 @@ def drawInsert(insert,num=None,clone=False):
             tsf.move(pos)
             tsf.rotateZ(rot)
             sc = insert.scale
-            sc = FreeCAD.Vector(sc[0],sc[1],0)
+            sc = vec([sc[0],sc[1],0])
             newob.Placement = FreeCAD.Placement(tsf)
             newob.Scale = sc
             return newob
@@ -921,13 +929,13 @@ def addText(text,attrib=False):
     if attrib:
         lay = locateLayer(rawValue(text,8))
         val = rawValue(text,1)
-        pos = FreeCAD.Vector(rawValue(text,10),rawValue(text,20),rawValue(text,30))
-        hgt = rawValue(text,40)
+        pos = vec([rawValue(text,10),rawValue(text,20),rawValue(text,30)])
+        hgt = vec(rawValue(text,40))
     else:
         lay = locateLayer(text.layer)
         val = text.value
-        pos = FreeCAD.Vector(text.loc[0],text.loc[1],text.loc[2])
-        hgt = text.height
+        pos = vec(text.loc)
+        hgt = vec(text.height)
     if val:
         if attrib:
             newob = doc.addObject("App::Annotation","Attribute")
@@ -951,7 +959,7 @@ def addText(text,attrib=False):
         xv = Vector(1,0,0)
         ax = Vector(0,0,1)
         if rx or ry or rz:
-            xv = Vector(rx,ry,rz)
+            xv = vec([rx,ry,rz])
             if not DraftVecUtils.isNull(xv):
                 ax = (xv.cross(Vector(1,0,0))).negative()
                 if DraftVecUtils.isNull(ax):
@@ -1317,9 +1325,9 @@ def processdxf(document,filename,getShapes=False):
                     warn(dim)
                 else:
                     lay=locateLayer(layer)
-                    pt = FreeCAD.Vector(x1,y1,z1)
-                    p1 = FreeCAD.Vector(x2,y2,z2)
-                    p2 = FreeCAD.Vector(x3,y3,z3)
+                    pt = vec([x1,y1,z1])
+                    p1 = vec([x2,y2,z2])
+                    p2 = vec([x3,y3,z3])
                     if align >= 128:
                         align -= 128
                     elif align >= 64:
@@ -1328,9 +1336,9 @@ def processdxf(document,filename,getShapes=False):
                         align -= 32
                     if align == 0:
                         if angle in [0,180]:
-                            p2 = FreeCAD.Vector(x3,y2,z2)
+                            p2 = vec([x3,y2,z2])
                         elif angle in [90,270]:
-                            p2 = FreeCAD.Vector(x2,y3,z2)
+                            p2 = vec([x2,y3,z2])
                     newob = doc.addObject("App::FeaturePython","Dimension")
                     lay.addObject(newob)
                     _Dimension(newob)
@@ -1345,7 +1353,7 @@ def processdxf(document,filename,getShapes=False):
                         if dxfUseStandardSize and draftui:
                             newob.ViewObject.FontSize = draftui.fontsize
                         else:
-                            st = rawValue(dim,3)
+                            st = vec(rawValue(dim,3))
                             size = getdimheight(st) or 1
                             newob.ViewObject.FontSize = float(size)*TEXTSCALING
     else:
@@ -1357,9 +1365,9 @@ def processdxf(document,filename,getShapes=False):
         points = drawing.entities.get_type("point")
         if points: FreeCAD.Console.PrintMessage("drawing "+str(len(points))+" points...\n")
         for point in points:
-                x = rawValue(point,10)
-                y = rawValue(point,20)
-                z = rawValue(point,30)
+                x = vec(rawValue(point,10))
+                y = vec(rawValue(point,20))
+                z = vec(rawValue(point,30))
                 lay = rawValue(point,8)
                 if dxfImportLayouts or (not rawValue(point,67)):
                     if dxfMakeBlocks:
@@ -2016,7 +2024,7 @@ def readPreferences():
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch, dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth, dxfImportTexts, dxfImportLayouts
     global dxfImportPoints, dxfImportHatches, dxfUseStandardSize, dxfGetColors, dxfUseDraftVisGroups
-    global dxfFillMode, dxfBrightBackground, dxfDefaultColor, dxfUseLegacyImporter, dxfExportBlocks
+    global dxfFillMode, dxfBrightBackground, dxfDefaultColor, dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
     dxfCreatePart = p.GetBool("dxfCreatePart",True)
     dxfCreateDraft = p.GetBool("dxfCreateDraft",False)
     dxfCreateSketch = p.GetBool("dxfCreateSketch",False)
@@ -2037,3 +2045,4 @@ def readPreferences():
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
     dxfExportBlocks = p.GetBool("dxfExportBlocks",True)
+    dxfScaling = p.GetFloat("dxfScaling",1.0)

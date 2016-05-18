@@ -26,6 +26,7 @@
 #include "dxf.h"
 #include <Mod/Part/App/TopoShape.h>
 #include <App/Document.h>
+#include <gp_Pnt.hxx>
 
 namespace DraftUtils
 {
@@ -50,10 +51,14 @@ namespace DraftUtils
         void AddObject(Part::TopoShape *shape); //Called by OnRead functions to add Part objects
         std::string Deformat(const char* text); // Removes DXF formating from texts
         
+    private:
+        gp_Pnt makePoint(const double* p);
+        
     protected:
         App::Document *document;
         bool optionGroupLayers;
         bool optionImportAnnotations;
+        double optionScaling;
         std::map <std::string, std::vector <Part::TopoShape*> > layers;
     };
 }
