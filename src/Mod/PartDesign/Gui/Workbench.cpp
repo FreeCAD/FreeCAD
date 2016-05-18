@@ -432,18 +432,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
-    Gui::MenuItem* geom = new Gui::MenuItem();
-    geom->setCommand("Sketcher geometries");
-    SketcherGui::addSketcherWorkbenchGeometries( *geom );
-
-    Gui::MenuItem* cons = new Gui::MenuItem();
-    cons->setCommand("Sketcher constraints");
-    SketcherGui::addSketcherWorkbenchConstraints( *cons );
-
-    Gui::MenuItem* consaccel = new Gui::MenuItem();
-    consaccel->setCommand("Sketcher tools");
-    SketcherGui::addSketcherWorkbenchTools(*consaccel);
-
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
@@ -455,32 +443,34 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_MapSketch"
           << "Sketcher_ReorientSketch"
           << "Sketcher_ValidateSketch"
-          << geom
-          << cons
-          << consaccel
           << "Separator"
           << "PartDesign_Point"
           << "PartDesign_Line"
           << "PartDesign_Plane"
           << "PartDesign_ShapeBinder"
           << "Separator"
-          << "PartDesign_Pad"
-          << "PartDesign_Pocket"
-          << "PartDesign_Revolution"
-          << "PartDesign_Groove"
-          << "PartDesign_AdditivePipe"
-          << "PartDesign_SubtractivePipe"
+          << "PartDesign_Pad"         
+          << "PartDesign_Revolution"          
           << "PartDesign_AdditiveLoft"
+          << "PartDesign_AdditivePipe"          
+          << "PartDesign_CompPrimitiveAdditive"
+          << "Separator"
+          << "PartDesign_Pocket"
+          << "PartDesign_Groove"
           << "PartDesign_SubtractiveLoft"
-          << "PartDesign_Fillet"
-          << "PartDesign_Chamfer"
-          << "PartDesign_Draft"
-          << "PartDesign_Thickness"
+          << "PartDesign_SubtractivePipe"
+          << "PartDesign_CompPrimitiveSubtractive"
+          << "Separator"
           << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
           << "PartDesign_MultiTransform"
+          << "Separator"
+          << "PartDesign_Fillet"
+          << "PartDesign_Chamfer"
+          << "PartDesign_Draft"
+          << "PartDesign_Thickness"
           << "Separator"
           << "PartDesign_Boolean"
           << "Separator"
@@ -511,7 +501,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
-    part->setCommand("Part Design");
+    part->setCommand("Part Design Helper");
     *part << "PartDesign_Part"
           << "PartDesign_Body"
           << "PartDesign_NewSketch"
@@ -522,28 +512,32 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Point"
           << "PartDesign_Line"
           << "PartDesign_Plane"
-          << "PartDesign_ShapeBinder"
-          << "Separator"
+          << "PartDesign_ShapeBinder";
+          
+    part = new Gui::ToolBarItem(root);
+    part->setCommand("Part Design Modeling");
+    *part << "PartDesign_Pad"         
+          << "PartDesign_Revolution"          
+          << "PartDesign_AdditiveLoft"
+          << "PartDesign_AdditivePipe"          
           << "PartDesign_CompPrimitiveAdditive"
+          << "Separator"
+          << "PartDesign_Pocket"
+          << "PartDesign_Groove"
+          << "PartDesign_SubtractiveLoft"
+          << "PartDesign_SubtractivePipe"
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
-          << "PartDesign_Pad"
-          << "PartDesign_Pocket"
-          << "PartDesign_Revolution"
-          << "PartDesign_Groove"
-          << "PartDesign_AdditivePipe"
-          << "PartDesign_SubtractivePipe"
-          << "PartDesign_AdditiveLoft"
-          << "PartDesign_SubtractiveLoft"
-          << "PartDesign_Fillet"
-          << "PartDesign_Chamfer"
-          << "PartDesign_Draft"
-          << "PartDesign_Thickness"
           << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
           << "PartDesign_MultiTransform"
+          << "Separator"
+          << "PartDesign_Fillet"
+          << "PartDesign_Chamfer"
+          << "PartDesign_Draft"
+          << "PartDesign_Thickness"
           << "Separator"
           << "PartDesign_Boolean";
 
