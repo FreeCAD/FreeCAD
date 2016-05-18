@@ -203,6 +203,14 @@ PyObject* RotationPy::invert(PyObject * args)
     Py_Return;
 }
 
+PyObject* RotationPy::inverted(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    Rotation mult = this->getRotationPtr()->inverse();
+    return new RotationPy(new Rotation(mult));
+}
+
 PyObject* RotationPy::multiply(PyObject * args)
 {
     PyObject *rot;
@@ -236,14 +244,24 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::isSame(PyObject *args)
+{
+    PyObject *rot;
+    if (!PyArg_ParseTuple(args, "O!", &(RotationPy::Type), &rot))
+        return NULL;
+    Base::Rotation rot1 = * getRotationPtr();
+    Base::Rotation rot2 = * static_cast<RotationPy*>(rot)->getRotationPtr();
+    bool same = rot1.isSame(rot2);
+    return Py_BuildValue("O", (same ? Py_True : Py_False));
+}
+
 PyObject* RotationPy::isNull(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     Base::Rotation rot = * getRotationPtr();
     Base::Rotation nullrot(0,0,0,1);
-    Base::Rotation nullrotinv(0,0,0,-1);
-    bool null = (rot == nullrot) | (rot == nullrotinv);
+    bool null = rot.isSame(nullrot);
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 
