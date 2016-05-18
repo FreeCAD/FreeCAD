@@ -53,11 +53,11 @@ def getIndices(shape,offset):
             if not isinstance(e.Curve,Part.Line):
                 if not curves:
                     curves = shape.tessellate(1)
-                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
                     break
         except: # unimplemented curve type
             curves = shape.tessellate(1)
-            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
             break
     if curves:
         for v in curves[0]:
@@ -124,7 +124,7 @@ def export(exportList,filename):
                     for f in flist:
                         outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ")+filename+"\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ").decode('utf8')+filename+"\n")
             
             
             
