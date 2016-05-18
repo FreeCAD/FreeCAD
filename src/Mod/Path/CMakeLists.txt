@@ -59,6 +59,7 @@ SET(PathScripts_SRCS
     PathScripts/PathEngrave.py
     PathScripts/PathSurface.py
     PathScripts/PathRemote.py
+    PathScripts/PathSanity.py
 
 )
 

@@ -66,6 +66,8 @@ class ObjectProfile:
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("Path", "The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("Path", "The height needed to clear clamps and obstructions"))
@@ -112,6 +114,7 @@ class ObjectProfile:
         obj.angles = angles
         obj.lengths = lengths
         obj.heights = heights
+        obj.ToolDescription = "UNDEFINED"
 
         obj.Proxy = self
 
@@ -121,9 +124,9 @@ class ObjectProfile:
     def __setstate__(self, state):
         return None
 
-    # def onChanged(self, obj, prop):
-    #      if prop == "Label":
-    #         print "we're here"
+    def onChanged(self, obj, prop):
+        if prop == "UserLabel":
+             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -263,13 +266,20 @@ print "y - " + str(point.y)
             self.horizFeed = 100
             self.radius = 0.25
             obj.ToolNumber = 0
+            obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             self.radius = tool.Diameter/2
             obj.ToolNumber = toolLoad.ToolNumber
-            #obj.Label = obj.Label + "(" + toolLoad.Label + ")"
+            obj.ToolDescription = toolLoad.Name
+
+        if obj.UserLabel == "":
+            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+        else:
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+
 
         if obj.Base:
             hfaces = []
