@@ -28,7 +28,6 @@
 # include <stdint.h>
 #endif
 
-#include <QColor>
 #include <sstream>
 #include <iomanip>
 
@@ -52,11 +51,6 @@ public:
      */
     Color(uint32_t rgba)
     { setPackedValue( rgba ); }
-    /**
-     * creates FC Color from Qt QColor
-     */
-    Color(QColor q)
-    { set(q.redF(),q.greenF(),q.blueF()); }
     /** Copy constructor. */
     Color(const Color& c)
       :r(c.r),g(c.g),b(c.b),a(c.a){}
@@ -111,17 +105,23 @@ public:
                 (uint32_t)(a*255.0f + 0.5f));
     }
     /**
-    * returns Qt color equivalent to FC color
-    *
-    */
-    QColor asQColor()
-    {
-        return(QColor(int(r*255.0),int(g*255.0),int(b*255.0)));
+     * creates FC Color from template type, e.g. Qt QColor
+     */
+    template <typename T>
+    void setValue(const T& q)
+    { set(q.redF(),q.greenF(),q.blueF()); }
+    /**
+     * returns a template type e.g. Qt color equivalent to FC color
+     *
+     */
+    template <typename T>
+    inline T asValue(void) const {
+        return(T(int(r*255.0),int(g*255.0),int(b*255.0)));
     }
     /**
-    * returns color as CSS color "#RRGGBB"
-    *
-    */
+     * returns color as CSS color "#RRGGBB"
+     *
+     */
     std::string asCSSString() {
         std::stringstream ss;
         ss << "#" << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << int(r*255.0)

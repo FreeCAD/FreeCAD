@@ -25,6 +25,7 @@
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
+#include <HLRBRep_Data.hxx>
 #include <gp_Pnt.hxx>
 
 #include <Base/Vector3D.h>
@@ -34,7 +35,6 @@
 #include "Geometry.h"
 
 class HLRBRep_Algo;
-class Handle_HLRBRep_Data;
 class HLRBRep_EdgeData;
 class TopoDS_Wire;
 class HLRBRep_HLRToShape;

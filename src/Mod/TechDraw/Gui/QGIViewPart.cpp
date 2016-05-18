@@ -71,7 +71,7 @@ QGIViewPart::QGIViewPart(const QPoint &pos, QGraphicsScene *scene)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x08080800));
-    m_colHid = fcColor.asQColor();
+    m_colHid = fcColor.asValue<QColor>();
 }
 
 QGIViewPart::~QGIViewPart()

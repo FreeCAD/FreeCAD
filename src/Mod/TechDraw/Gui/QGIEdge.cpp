@@ -61,14 +61,14 @@ QGIEdge::QGIEdge(int index) :
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asQColor();
+    m_colNormal = fcColor.asValue<QColor>();
     m_defNormal = m_colNormal;
     fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
-    m_colSel = fcColor.asQColor();
+    m_colSel = fcColor.asValue<QColor>();
     fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
-    m_colPre = fcColor.asQColor();
+    m_colPre = fcColor.asValue<QColor>();
     fcColor.setPackedValue(hGrp->GetUnsigned("HiddenColor", 0x08080800));
-    m_colHid = fcColor.asQColor();
+    m_colHid = fcColor.asValue<QColor>();
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
     m_styleHid = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",2));

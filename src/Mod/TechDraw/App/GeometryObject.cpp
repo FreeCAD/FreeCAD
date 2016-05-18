@@ -81,12 +81,12 @@
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
 
-// # include <Handle_BRepAdaptor_HCompCurve.hxx>
+// # include <BRepAdaptor_HCompCurve.hxx>
 # include <Approx_Curve3d.hxx>
 
 # include <BRepAdaptor_HCurve.hxx>
-#include <Handle_HLRBRep_Algo.hxx>
-#include <Handle_HLRBRep_Data.hxx>
+#include <HLRBRep_Algo.hxx>
+#include <HLRBRep_Data.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>

@@ -44,6 +44,10 @@
 #   pragma warning(disable : 4005)
 #endif
 
+#ifdef FC_OS_WIN32
+#   define NOMINMAX
+#endif
+
 #ifdef _PreComp_
 
 // Python
