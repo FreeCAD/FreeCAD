@@ -256,11 +256,11 @@ class _Panel(ArchComponent.Component):
     "The Panel object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Thickness","Arch",translate("Arch","The thickness or extrusion depth of this element"))
-        obj.addProperty("App::PropertyInteger","Sheets","Arch",translate("Arch","The number of sheets to use"))
-        obj.addProperty("App::PropertyLength","Offset","Arch",translate("Arch","The offset between this panel and its baseline"))
+        obj.addProperty("App::PropertyLength","Length","Arch",   "The length of this element, if not based on a profile")
+        obj.addProperty("App::PropertyLength","Width","Arch",    "The width of this element, if not based on a profile")
+        obj.addProperty("App::PropertyLength","Thickness","Arch","The thickness or extrusion depth of this element")
+        obj.addProperty("App::PropertyInteger","Sheets","Arch",  "The number of sheets to use")
+        obj.addProperty("App::PropertyLength","Offset","Arch",   "The offset between this panel and its baseline")
         obj.Sheets = 1
         self.Type = "Panel"
 

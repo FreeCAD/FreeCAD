@@ -41,7 +41,7 @@ class FromShape:
     
     
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Shape",translate("Shape Object","The base Shape of this toolpath"))
+        obj.addProperty("App::PropertyLink","Base","Shape","The base Shape of this toolpath")
         obj.Proxy = self
 
     def __getstate__(self):
