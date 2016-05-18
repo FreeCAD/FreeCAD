@@ -9,7 +9,7 @@ class _ViewProviderFemAnalysis:
     "A View Provider for the FemAnalysis container object"
 
     def __init__(self):
-        #vobj.addProperty("App::PropertyLength", "BubbleSize", "Base", str(translate("Fem", "The size of the axis bubbles")))
+        #vobj.addProperty("App::PropertyLength", "BubbleSize", "Base", "The size of the axis bubbles")
         pass
 
     def getIcon(self):

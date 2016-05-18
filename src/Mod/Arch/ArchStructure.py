@@ -334,14 +334,14 @@ class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Tool","Arch",translate("Arch","An optional extrusion path for this element"))
-        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic"))
-        obj.addProperty("App::PropertyLinkList","Armatures","Arch",translate("Arch","Armatures contained in this element"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.addProperty("App::PropertyVectorList","Nodes","Arch",translate("Arch","The structural nodes of this element"))
-        obj.addProperty("App::PropertyString","Profile","Arch",translate("Arch","A description of the standard profile this element is based upon"))
+        obj.addProperty("App::PropertyLink","Tool","Arch","An optional extrusion path for this element")
+        obj.addProperty("App::PropertyLength","Length","Arch","The length of this element, if not based on a profile")
+        obj.addProperty("App::PropertyLength","Width","Arch","The width of this element, if not based on a profile")
+        obj.addProperty("App::PropertyLength","Height","Arch","The height or extrusion depth of this element. Keep 0 for automatic")
+        obj.addProperty("App::PropertyLinkList","Armatures","Arch","Armatures contained in this element")
+        obj.addProperty("App::PropertyVector","Normal","Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
+        obj.addProperty("App::PropertyVectorList","Nodes","Arch","The structural nodes of this element")
+        obj.addProperty("App::PropertyString","Profile","Arch","A description of the standard profile this element is based upon")
         self.Type = "Structure"
         obj.Role = Roles
 
@@ -522,8 +522,8 @@ class _StructuralSystem(ArchComponent.Component):
     "The Structural System object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkList","Axes","Arch",translate("Arch","Axes systems this structure is built on"))
-        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",translate("Arch","The element numbers to exclude when this structure is based on axes"))
+        obj.addProperty("App::PropertyLinkList","Axes","Arch","Axes systems this structure is built on")
+        obj.addProperty("App::PropertyIntegerList","Exclude","Arch","The element numbers to exclude when this structure is based on axes")
         obj.addProperty("App::PropertyBool","Align","Arch","If true the element are aligned with axes").Align = False 
         self.Type = "StructuralSystem"
 

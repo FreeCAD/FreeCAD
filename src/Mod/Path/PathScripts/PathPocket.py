@@ -74,38 +74,37 @@ class ObjectPocket:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkSub","Base","Path",translate("PathProject","The base geometry of this object"))
-        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",
-                        translate("PathProfile","The tool number in use"))
+        obj.addProperty("App::PropertyLinkSub","Base","Path","The base geometry of this object")
+        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool","The tool number in use")
         obj.ToolNumber = (0, 0, 1000, 0)
 
 
-        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Pocket", translate("PathProject","The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Pocket", translate("PathProject","Incremental Step Down of Tool"))
+        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Pocket","The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Pocket","Incremental Step Down of Tool")
         obj.StepDown = (0.0, 0.0, 100.0, 1.0)
 
-        obj.addProperty("App::PropertyFloat", "StartDepth", "Pocket", translate("PathProject","Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyBool","UseStartDepth","Pocket",translate("PathProject","make True, if manually specifying a Start Start Depth"))
-        obj.addProperty("App::PropertyFloat", "FinalDepth", "Pocket", translate("PathProject","Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyFloat", "RetractHeight", "Pocket", translate("PathProject","The height desired to retract tool when path is finished"))
+        obj.addProperty("App::PropertyFloat", "StartDepth", "Pocket", "Starting Depth of Tool- first cut depth in Z")
+        obj.addProperty("App::PropertyBool","UseStartDepth","Pocket","make True, if manually specifying a Start Start Depth")
+        obj.addProperty("App::PropertyFloat", "FinalDepth", "Pocket", "Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyFloat", "RetractHeight", "Pocket", "The height desired to retract tool when path is finished")
 
-        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket",translate("PathProject", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
+        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket","The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW")
         obj.CutMode = ['Climb','Conventional']
-        obj.addProperty("App::PropertyFloat", "MaterialAllowance", "Pocket", translate("PathProject","Amount of material to leave"))
-        obj.addProperty("App::PropertyFloat", "FinishDepth", "Pocket", translate("PathProject","Maximum material removed on final pass."))
+        obj.addProperty("App::PropertyFloat", "MaterialAllowance", "Pocket", "Amount of material to leave")
+        obj.addProperty("App::PropertyFloat", "FinishDepth", "Pocket", "Maximum material removed on final pass.")
 
-        obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket",translate("PathProject", "Start pocketing at center or boundary"))
+        obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket","Start pocketing at center or boundary")
         obj.StartAt = ['Center', 'Edge']
 
-        obj.addProperty("App::PropertyFloatConstraint", "VertFeed", "Feed",translate("Vert Feed","Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertyFloatConstraint", "VertFeed", "Feed","Feed rate for vertical moves in Z")
         obj.VertFeed = (0.0, 0.0, 100000.0, 1.0)
 
-        obj.addProperty("App::PropertyFloatConstraint", "HorizFeed", "Feed",translate("Horiz Feed","Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertyFloatConstraint", "HorizFeed", "Feed","Feed rate for horizontal moves")
         obj.HorizFeed = (0.0, 0.0, 100000.0, 1.0)
 
 
-        obj.addProperty("App::PropertyBool","Active","Path",translate("PathProject","Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString","Comment","Path",translate("PathProject","An optional comment for this profile"))
+        obj.addProperty("App::PropertyBool","Active","Path","Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyString","Comment","Path","An optional comment for this profile")
 
         obj.Proxy = self
 

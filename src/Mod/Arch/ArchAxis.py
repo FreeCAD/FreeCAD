@@ -81,9 +81,9 @@ class _CommandAxis:
 class _Axis:
     "The Axis object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyFloatList","Distances","Arch", translate("Arch","The intervals between axes"))
-        obj.addProperty("App::PropertyFloatList","Angles","Arch", translate("Arch","The angles of each axis"))
-        obj.addProperty("App::PropertyLength","Length","Arch", translate("Arch","The length of the axes"))
+        obj.addProperty("App::PropertyFloatList","Distances","Arch", "The intervals between axes")
+        obj.addProperty("App::PropertyFloatList","Angles","Arch", "The angles of each axis")
+        obj.addProperty("App::PropertyLength","Length","Arch", "The length of the axes")
         obj.addProperty("App::PropertyPlacement","Placement","Base","")
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         self.Type = "Axis"
@@ -126,8 +126,8 @@ class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
-        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", translate("Arch","The numbering style"))
+        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", "The size of the axis bubbles")
+        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", "The numbering style")
         vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
         vobj.addProperty("App::PropertyEnumeration","BubblePosition","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")

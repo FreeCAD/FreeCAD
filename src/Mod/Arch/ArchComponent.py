@@ -289,17 +289,17 @@ class ComponentTaskPanel:
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch",translate("Arch","The base object this component is built upon"))
-        obj.addProperty("App::PropertyLink","CloneOf","Arch",translate("Arch","The object this component is cloning"))
-        obj.addProperty("App::PropertyLinkList","Additions","Arch",translate("Arch","Other shapes that are appended to this object"))
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",translate("Arch","Other shapes that are subtracted from this object"))
-        obj.addProperty("App::PropertyString","Description","Arch",translate("Arch","An optional description for this component"))
-        obj.addProperty("App::PropertyString","Tag","Arch",translate("Arch","An optional tag for this component"))
-        obj.addProperty("App::PropertyMap","IfcAttributes","Arch",translate("Arch","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyLink","BaseMaterial","Material",translate("Arch","A material for this object"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this object"))
-        obj.addProperty("App::PropertyBool","MoveWithHost","Arch",translate("Arch","Specifies if this object must move together when its host is moved"))
-        obj.addProperty("App::PropertyLink","IfcProperties","Arch",translate("Arch","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyLink","Base","Arch","The base object this component is built upon")
+        obj.addProperty("App::PropertyLink","CloneOf","Arch","The object this component is cloning")
+        obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
+        obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
+        obj.addProperty("App::PropertyString","Description","Arch","An optional description for this component")
+        obj.addProperty("App::PropertyString","Tag","Arch","An optional tag for this component")
+        obj.addProperty("App::PropertyMap","IfcAttributes","Arch","Custom IFC properties and attributes")
+        obj.addProperty("App::PropertyLink","BaseMaterial","Material","A material for this object")
+        obj.addProperty("App::PropertyEnumeration","Role","Arch","The role of this object")
+        obj.addProperty("App::PropertyBool","MoveWithHost","Arch","Specifies if this object must move together when its host is moved")
+        obj.addProperty("App::PropertyLink","IfcProperties","Arch","Custom IFC properties and attributes")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
