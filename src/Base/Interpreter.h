@@ -161,8 +161,8 @@ public:
     //@{
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     std::string runString(const char *psCmd);
-    /// Runs a string (expression) and returns object returned by expression.
-    Py::Object runString_returnObject(const char *sCmd);
+    /// Run a statement on the python interpreter and return back the result object.
+    Py::Object runStringObject(const char *sCmd);
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     void runInteractiveString(const char *psCmd);
     /// Run file (script) on the python interpreter

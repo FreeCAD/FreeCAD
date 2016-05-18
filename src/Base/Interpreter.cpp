@@ -214,7 +214,7 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     }
 }
 
-Py::Object InterpreterSingleton::runString_returnObject(const char *sCmd)
+Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
 {
     PyObject *module, *dict, *presult;          /* "exec code in d, d" */
 
@@ -235,7 +235,7 @@ Py::Object InterpreterSingleton::runString_returnObject(const char *sCmd)
             throw PyException();
     }
 
-    return Py::Object(presult, true);
+    return Py::asObject(presult);
 }
 
 void InterpreterSingleton::systemExit(void)
