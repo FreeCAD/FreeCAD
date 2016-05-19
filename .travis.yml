@@ -130,11 +130,11 @@ before_install:
                     hdf5                        \
                     homebrew/science/oce        \
                     homebrew/python/matplotlib
-       brew install vtk --without-python
-       brew install --with-oce homebrew/science/nglib
-       brew install --without-framework --without-soqt sanelson/freecad/coin
-       brew install --HEAD pivy
-       brew install bblacey/taps/med-file --with-python
+       brew install homebrew/science/nglib --with-oce
+       brew install sanelson/freecad/coin --without-framework --without-soqt
+       brew install sanelson/freecad/pivy --HEAD
+       brew install bblacey/taps/med-file --without-python
+       travis_wait 30 brew install vtk --without-python
 
        #Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
