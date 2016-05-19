@@ -33,6 +33,7 @@ python: 2.7
 
 os:
    - linux
+   - osx
 
 dist: trusty
 sudo: required
@@ -90,7 +91,7 @@ before_install:
                                swig
        sudo echo "deb http://ruggedpod.qyshare.com/Webdav/Public/deb trusty universe" >> /etc/apt/sources.list
        sudo apt-get update
-       sudo apt-get install -y Netgen 
+       sudo apt-get install -y --no-checksig Netgen 
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
        export DISPLAY=:99.0
@@ -116,11 +117,14 @@ before_install:
                     pyside-tools                \
                     xerces-c                    \
                     orocos-kdl                  \
+       brew install vtk --without-python
+       brew install hdf5                        \
                     homebrew/science/oce        \
                     homebrew/python/matplotlib
        brew install --with-oce homebrew/science/nglib
        brew install --without-framework --without-soqt sanelson/freecad/coin
        brew install --HEAD pivy
+       brew install bblacey/taps/med-file --with-python
 
        #Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
