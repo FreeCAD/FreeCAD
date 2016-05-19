@@ -156,7 +156,8 @@ install:
     cat cMake/FindOpenCasCade.cmake | sed 's/\/usr\/local\/share\/cmake\//\/opt\/local\/FreeCAD-0.17\/lib\/cmake/' > /tmp/FindOpenCasCade.cmake
     cp /tmp/FindOpenCasCade.cmake cMake/FindOpenCasCade.cmake
     cp cMake/FindOpenCasCade.cmake cMake/FindOPENCASCADE.cmake
-    mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+    export PATH=/opt/local/FreeCAD-0.17/bin/:$PATH
+    mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DBUILD_FEM=1 -DBUILD_FEM_NETGEN=1 -DCMAKE_CXX_FLAGS="-DNETGEN_V5" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
   else
     mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
   fi
