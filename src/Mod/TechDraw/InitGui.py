@@ -33,7 +33,7 @@
 class TechDrawWorkbench (Workbench):
     "Technical Drawing workbench object"
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/TechDraw/Resources/icons/preferences-drawing.svg"
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/TechDraw/Resources/icons/preferences-techdraw.svg"
         self.__class__.MenuText = "TechDraw"
         self.__class__.ToolTip = "Technical Drawing workbench"
 
@@ -45,4 +45,3 @@ class TechDrawWorkbench (Workbench):
         return "TechDrawGui::Workbench"
 
 Gui.addWorkbench(TechDrawWorkbench())
-
