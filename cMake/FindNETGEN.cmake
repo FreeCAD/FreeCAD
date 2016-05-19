@@ -42,8 +42,8 @@ IF(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
     ENDIF(NOT NETGENDATA)
 
 ELSE(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
-    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h /usr/include /opt/netgen/include)
-    FIND_LIBRARY(NGLIB_LIBRARIES nglib /usr/lib /usr/local/lib /opt/netgen/lib)
+    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h /usr/include /opt/netgen/include /opt/local/FreeCAD-0.17/include)
+    FIND_LIBRARY(NGLIB_LIBRARIES nglib /usr/lib /usr/local/lib /opt/netgen/lib /opt/local/FreeCAD-0.17/lib)
 
     IF(NOT NETGENDATA)
         SET(NETGENDATA /usr/share/netgen/libsrc)
