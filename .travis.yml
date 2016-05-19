@@ -59,7 +59,6 @@ before_install:
   case "${TRAVIS_OS_NAME}" in
 
    "linux")
-       sudo cp linux/sources.list /etc/apt
        sudo apt-get update -qq
        sudo apt-get install -y doxygen                          \
                                libboost1.55-dev                 \
@@ -91,6 +90,7 @@ before_install:
                                shiboken                         \
                                swig
        sudo echo "deb http://ruggedpod.qyshare.com/Webdav/Public/deb trusty universe" >> /etc/apt/sources.list
+       sudo cp linux/sources.list /etc/apt
        sudo apt-get update
        sudo apt-get install libhdf5-7 libhdf5-dev
        sudo apt-get install -y --force-yes Netgen 
