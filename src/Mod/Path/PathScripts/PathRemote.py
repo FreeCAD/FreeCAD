@@ -57,30 +57,30 @@ class ObjectRemote:
 
     def __init__(self, obj):
 
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", translate("Parent Object(s)", "The base geometry of this toolpath"))
-        obj.addProperty("App::PropertyBool", "Active", "Path", translate("Active", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", translate("PathProject", "An optional comment for this profile"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this toolpath")
+        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
 
-        obj.addProperty("App::PropertyString", "URL", "API", translate("RemotePath", "The Base URL of the remote path service"))
-        obj.addProperty("App::PropertyStringList", "proplist", "Path", translate("Path", "list of remote properties"))
+        obj.addProperty("App::PropertyString", "URL", "API", "The Base URL of the remote path service")
+        obj.addProperty("App::PropertyStringList", "proplist", "Path", "list of remote properties")
         obj.setEditorMode('proplist', 2)  # make this hidden
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("PathProfile", "The tool number in use"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
-        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        obj.setEditorMode('ToolDescription', 1)  # make this read onlyt
 
         # Depth Properties
-        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Depth", translate("PathProject", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyFloat", "SafeHeight", "Depth", translate("PathProject", "Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Step", translate("PathProject", "Incremental Step Down of Tool"))
+        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyFloat", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Step", "Incremental Step Down of Tool")
         obj.StepDown = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyFloat", "StartDepth", "Depth", translate("PathProject", "Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyFloat", "FinalDepth", "Depth", translate("PathProject", "Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyFloat", "FinishDepth", "Depth", translate("PathProject", "Maximum material removed on final pass."))
+        obj.addProperty("App::PropertyFloat", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
+        obj.addProperty("App::PropertyFloat", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyFloat", "FinishDepth", "Depth", "Maximum material removed on final pass.")
 
         obj.Proxy = self
 
@@ -157,7 +157,7 @@ class ObjectRemote:
             obj.proplist = pl
 
         if prop == "UserLabel":
-             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
     def execute(self, obj):
         output = ""

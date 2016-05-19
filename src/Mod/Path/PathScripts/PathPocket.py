@@ -47,55 +47,55 @@ except AttributeError:
 class ObjectPocket:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", translate("PathProject", "The base geometry of this object"))
-        obj.addProperty("App::PropertyBool", "Active", "Path", translate("PathProject", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", translate("PathProject", "An optional comment for this profile"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this object")
+        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
 
-        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", translate("PathProject", "The library to use to generate the path"))
+        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", "The library to use to generate the path")
         obj.Algorithm = ['OCC Native', 'libarea']
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("PathProfile", "The tool number in use"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
         obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("PathProject", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", translate("PathProject", "Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", translate("PathProject", "Incremental Step Down of Tool"))
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", "Incremental Step Down of Tool")
         obj.StepDown = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", translate("PathProject", "Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("PathProject", "Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", translate("PathProject", "Maximum material removed on final pass."))
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", "Maximum material removed on final pass.")
 
         # Pocket Properties
-        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", translate("PathProject", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
+        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW")
         obj.CutMode = ['Climb', 'Conventional']
-        obj.addProperty("App::PropertyDistance", "MaterialAllowance", "Pocket", translate("PathProject", "Amount of material to leave"))
-        obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", translate("PathProject", "Start pocketing at center or boundary"))
+        obj.addProperty("App::PropertyDistance", "MaterialAllowance", "Pocket", "Amount of material to leave")
+        obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", "Start pocketing at center or boundary")
         obj.StartAt = ['Center', 'Edge']
-        obj.addProperty("App::PropertyPercent", "StepOver", "Pocket", translate("PathProject", "Percent of cutter diameter to step over on each pass"))
+        obj.addProperty("App::PropertyPercent", "StepOver", "Pocket", "Percent of cutter diameter to step over on each pass")
         #obj.StepOver = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyBool", "KeepToolDown", "Pocket", translate("PathProject", "Attempts to avoid unnecessary retractions."))
-        obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Pocket", translate("PathProject", "Lifts tool at the end of each pass to respect cut mode."))
-        obj.addProperty("App::PropertyBool", "UseZigZag", "Pocket", translate("PathProject", "Use Zig Zag pattern to clear area."))
-        obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Pocket", translate("PathProject", "Angle of the zigzag pattern"))
+        obj.addProperty("App::PropertyBool", "KeepToolDown", "Pocket", "Attempts to avoid unnecessary retractions.")
+        obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Pocket", "Lifts tool at the end of each pass to respect cut mode.")
+        obj.addProperty("App::PropertyBool", "UseZigZag", "Pocket", "Use Zig Zag pattern to clear area.")
+        obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Pocket", "Angle of the zigzag pattern")
 
         # Entry Properties
-        obj.addProperty("App::PropertyBool", "UseEntry", "Entry", translate("PathProject", "Allow Cutter enter material with a straight plunge."))
-        obj.addProperty("App::PropertyFloatConstraint", "RampSize", "Entry", translate("PathProject", "The minimum fraction of tool diameter to use for ramp length"))
+        obj.addProperty("App::PropertyBool", "UseEntry", "Entry", "Allow Cutter enter material with a straight plunge.")
+        obj.addProperty("App::PropertyFloatConstraint", "RampSize", "Entry", "The minimum fraction of tool diameter to use for ramp length")
         obj.RampSize = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyFloatConstraint", "HelixSize", "Entry", translate("PathProject", "The fraction of tool diameter to use for calculating helix size."))
+        obj.addProperty("App::PropertyFloatConstraint", "HelixSize", "Entry", "The fraction of tool diameter to use for calculating helix size.")
         obj.HelixSize = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyFloatConstraint", "RampAngle", "Entry", translate("PathProject", "The Angle of the ramp entry."))
+        obj.addProperty("App::PropertyFloatConstraint", "RampAngle", "Entry", "The Angle of the ramp entry.")
         obj.RampAngle = (0.0, 0.01, 100.0, 0.5)
 
         # Start Point Properties
-        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", translate("PathProject", "The start point of this path"))
-        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", translate("PathProject", "make True, if specifying a Start Point"))
+        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", "The start point of this path")
+        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", "make True, if specifying a Start Point")
 
         obj.Proxy = self
 
@@ -366,7 +366,10 @@ class ObjectPocket:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            self.radius = tool.Diameter/2
+            if tool.Diameter == 0:
+                self.radius = 0.25
+            else:
+                self.radius = tool.Diameter/2
             obj.ToolNumber = toolLoad.ToolNumber
             obj.ToolDescription = toolLoad.Name
 

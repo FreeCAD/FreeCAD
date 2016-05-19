@@ -54,45 +54,33 @@ except AttributeError:
 class ObjectSurface:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", translate(
-            "Parent Object(s)", "The base geometry of this toolpath"))
-        obj.addProperty("App::PropertyBool", "Active", "Path", translate(
-            "Active", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", translate(
-            "PathProject", "An optional comment for this profile"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this toolpath")
+        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
 
-        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", translate(
-            "PathProject", "The library to use to generate the path"))
+        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", "The library to use to generate the path")
         obj.Algorithm = ['OCL Dropcutter', 'OCL Waterline']
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber",
-                        "Tool", translate("PathProfile", "The tool number in use"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
-        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        obj.setEditorMode('ToolDescription', 1)  # make this read onlyt
 
         # Surface Properties
-        obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", translate(
-            "PathSurface", "The Sample Interval.  Small values cause long wait"))
+        obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", "The Sample Interval.  Small values cause long wait")
         obj.SampleInterval = (0, 0, 1, 0)
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate(
-            "PathProject", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", translate(
-            "PathProject", "Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", translate(
-            "PathProject", "Incremental Step Down of Tool"))
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", "Incremental Step Down of Tool")
         obj.StepDown = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", translate(
-            "PathProject", "Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate(
-            "PathProject", "Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", translate(
-            "PathProject", "Maximum material removed on final pass."))
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", "Maximum material removed on final pass.")
 
         obj.Proxy = self
 
@@ -133,7 +121,7 @@ class ObjectSurface:
 
     def onChanged(self, obj, prop):
         if prop == "UserLabel":
-             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
     def _waterline(self, obj, s, bb):
         import ocl
@@ -410,7 +398,6 @@ class TaskPanel:
         # self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/SurfaceEdit.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/SurfaceEdit.ui")
         FreeCAD.Console.PrintWarning("Surface calculations can be slow.  Don't Panic.\n")
-
 
     def accept(self):
         self.getFields()

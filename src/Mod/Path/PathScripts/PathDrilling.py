@@ -48,23 +48,23 @@ except AttributeError:
 class ObjectDrilling:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLinkSubList", "Base","Path", translate("PathProject", "The base geometry of this toolpath"))
-        obj.addProperty("App::PropertyBool", "Active", "Path", translate("PathProject", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", translate("PathProject", "An optional comment for this profile"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
+        obj.addProperty("App::PropertyLinkSubList", "Base","Path", "The base geometry of this toolpath")
+        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
 
-        obj.addProperty("App::PropertyLength", "PeckDepth", "Depth", translate("PathProject", "Incremental Drill depth before retracting to clear chips"))
-        obj.addProperty("App::PropertyLength", "StartDepth", "Depth", translate("PathProject", "Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("PathProject", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("PathProject", "Final Depth of Tool- lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", translate("PathProject", "Height to clear top of materil"))
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", translate("PathProject", "The height where feed starts and height during retract tool when path is finished"))
+        obj.addProperty("App::PropertyLength", "PeckDepth", "Depth", "Incremental Drill depth before retracting to clear chips")
+        obj.addProperty("App::PropertyLength", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Height to clear top of materil")
+        obj.addProperty("App::PropertyDistance", "RetractHeight", "Depth", "The height where feed starts and height during retract tool when path is finished")
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("PathProfile", "The tool number in use"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
         obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
 
