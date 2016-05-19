@@ -158,7 +158,7 @@ install:
     cat cMake/FindOpenCasCade.cmake | sed 's/\/usr\/local\/share\/cmake\//\/opt\/local\/FreeCAD-0.17\/lib\/cmake/' > /tmp/FindOpenCasCade.cmake
     cp /tmp/FindOpenCasCade.cmake cMake/FindOpenCasCade.cmake
     cp cMake/FindOpenCasCade.cmake cMake/FindOPENCASCADE.cmake
-    export PATH=/usr/bin:/opt/local/FreeCAD-0.17/bin:$PATH
+    export PATH=/opt/local/FreeCAD-0.17/bin:$PATH
     sudo dpkg -l
     ls -lta /usr/bin/python*
     ls -lta /opt/python
