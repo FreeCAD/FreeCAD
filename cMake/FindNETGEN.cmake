@@ -25,7 +25,8 @@ IF(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
         SET(NGLIB_PREFIX ${MACPORTS_PREFIX})
     ENDIF(DEFINED HOMEBREW_PREFIX)
     
-    SET(NGLIB_PREFIX "/opt/netgen")
+# vejmarie
+#    SET(NGLIB_PREFIX "/opt/netgen")
 
     FIND_PATH(NGLIB_INCLUDE_DIR nglib.h ${NGLIB_PREFIX}/include /opt/netgen/include)
 
