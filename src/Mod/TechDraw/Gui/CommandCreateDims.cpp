@@ -28,7 +28,6 @@
 # include <sstream>
 # include <cstdlib>
 # include <exception>
-# include <boost/regex.hpp>
 #endif  //#ifndef _PreComp_
 
 #include <QGraphicsView>
