@@ -45,13 +45,13 @@ except AttributeError:
 
 class LoadTool:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("Tool Number", "The active tool"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The active tool")
         obj.ToolNumber = (0, 0, 10000, 1)
-        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", translate("Spindle Speed", "The speed of the cutting spindle in RPM"))
-        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", translate("Spindle Dir", "Direction of spindle rotation"))
+        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", "The speed of the cutting spindle in RPM")
+        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", "Direction of spindle rotation")
         obj.SpindleDir = ['Forward', 'Reverse']
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", translate("Path", "Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", translate("Path", "Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", "Feed rate for vertical moves in Z")
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", "Feed rate for horizontal moves")
 
         obj.Proxy = self
         mode = 2
@@ -228,12 +228,18 @@ class TaskPanel:
             self.form.cboSpindleDirection.setCurrentIndex(index)
         # Populate the tool list
         mach = PathUtils.findMachine()
-        tool = mach.Tooltable.Tools[self.obj.ToolNumber]
+        try:
+            tool = mach.Tooltable.Tools[self.obj.ToolNumber]
+            self.form.txtToolName.setText(tool.Name)
+            self.form.txtToolType.setText(tool.ToolType)
+            self.form.txtToolMaterial.setText(tool.Material)
+            self.form.txtToolDiameter.setText(str(tool.Diameter))
+        except:
+            self.form.txtToolName.setText("UNDEFINED")
+            self.form.txtToolType.setText("UNDEFINED")
+            self.form.txtToolMaterial.setText("UNDEFINED")
+            self.form.txtToolDiameter.setText("UNDEFINED")
 
-        self.form.txtToolName.setText(tool.Name)
-        self.form.txtToolType.setText(tool.ToolType)
-        self.form.txtToolMaterial.setText(tool.Material)
-        self.form.txtToolDiameter.setText(str(tool.Diameter))
 
         #     self.form.cboToolSelect.addItem(tool.Name)
 
