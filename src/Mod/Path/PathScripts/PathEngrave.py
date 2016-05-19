@@ -47,25 +47,25 @@ class ObjectPathEngrave:
 
     def __init__(self, obj):
         obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this object")
-        obj.addProperty("App::PropertyBool", "Active", "Path", translate("Path", "Make False, to prevent operation from generating code"))
-        obj.addProperty("App::PropertyString", "Comment", "Path", translate("Path", "An optional comment for this profile"))
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", translate("Path", "User Assigned Label"))
+        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
 
-        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", translate("Path", "The library or Algorithm used to generate the path"))
+        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", "The library or Algorithm used to generate the path")
         obj.Algorithm = ['OCC Native']
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", translate("Path", "The tool number in use"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", translate("Path", "The description of the tool "))
-        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        obj.setEditorMode('ToolDescription', 1)  # make this read onlyt
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("Path", "The height needed to clear clamps and obstructions"))
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", translate("Path", "Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", translate("Path", "Starting Depth of Tool- first cut depth in Z"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("Path", "Final Depth of Tool- lowest value in Z"))
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", "The vertex index to start the path from")
 
         if FreeCAD.GuiUp:
@@ -81,7 +81,7 @@ class ObjectPathEngrave:
 
     def onChanged(self, obj, prop):
         if prop == "UserLabel":
-             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
     def execute(self, obj):
         output = ""
