@@ -94,6 +94,8 @@ before_install:
        sudo apt-get update
        sudo apt-get install libhdf5-7 libhdf5-dev
        sudo apt-get install -y --force-yes Netgen 
+       git clone https://github.com/vejmarie/Netgen
+       sudo cp -rf Netgen/netgen-5.3.1 /usr/share/netgen
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
        export DISPLAY=:99.0
