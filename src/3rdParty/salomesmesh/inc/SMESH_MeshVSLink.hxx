@@ -155,7 +155,7 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 	TColStd_PackedMapOfInteger myElements;
 	TColStd_PackedMapOfInteger myGroups;
 };
-
+#include <SMESH_MeshVSLink.ixx>
 // other Inline functions and methods (like "C++: function call" methods)
 //
 
