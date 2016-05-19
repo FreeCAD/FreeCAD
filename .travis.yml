@@ -90,7 +90,7 @@ before_install:
                                swig
        sudo echo "deb http://ruggedpod.qyshare.com/Webdav/Public/deb trusty universe" >> /etc/apt/sources.list
        sudo apt-get update
-       sudo apt-get install libhdf5 libhdf5-dev
+       sudo apt-get install libhdf5-7 libhdf5-dev
        sudo apt-get install -y --force-yes Netgen 
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
@@ -125,6 +125,7 @@ before_install:
        brew install --without-framework --without-soqt sanelson/freecad/coin
        brew install --HEAD pivy
        brew install bblacey/taps/med-file --with-python
+       brew install netgen
 
        #Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
