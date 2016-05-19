@@ -57,6 +57,7 @@ before_install:
   case "${TRAVIS_OS_NAME}" in
 
    "linux")
+       sudo cp linux/sources.list /etc/apt
        sudo apt-get update -qq
        sudo apt-get install -y doxygen                          \
                                libboost1.55-dev                 \
