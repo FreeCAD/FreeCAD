@@ -28,7 +28,6 @@
 #endif
 
 #include <iomanip>
-#include <boost/regex.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

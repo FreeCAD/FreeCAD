@@ -33,7 +33,6 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <App/Application.h>
-#include <boost/regex.hpp>
 #include <iostream>
 
 #include "DrawViewClip.h"
