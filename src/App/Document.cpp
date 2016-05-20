@@ -1468,10 +1468,13 @@ void Document::restore (void)
     // clean up if the document is not empty
     // !TODO mind exeptions while restoring!
     clearUndos();
+    // first notify the objects to being deleted and then delete them in a second loop (#0002521)
+    // FIXME: To delete every object individually is inefficient. Add a new signal 'signalClear'
+    // and then clear everything in one go.
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
-        // NOTE don't call unsetupObject () here due to it is intended to do some manipulations
-        //      on other objects, but here we are wiping out document completely
         signalDeletedObject(*(*obj));
+    }
+    for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         delete *obj;
     }
     d->objectArray.clear();
