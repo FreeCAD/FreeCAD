@@ -250,7 +250,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
         refTypeStringList &listOfCombinations = attacher.modeRefTypes.at(mmode);
         for(const refTypeString &combination: listOfCombinations){
             pyCombination = Py::List(combination.size());
-            for(int iref = 0   ;   iref < combination.size()   ;   iref++){
+            for(std::size_t iref = 0; iref < combination.size(); iref++) {
                 pyCombination[iref] = Py::String(AttachEngine::getRefTypeName(combination[iref]));
             }
             pyListOfCombinations.append(pyCombination);
