@@ -1,6 +1,5 @@
 ####
 #
-#
 #  Travis-CI configuration file for FreeCAD.
 #
 #  This build configuration will build and test FreeCAD on both Linux
