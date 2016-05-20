@@ -62,7 +62,7 @@ protected:
     vtkBoundingBox                        m_boundingBox;
 };
 
-class FemPostFunctionProvider : public App::DocumentObject {
+class AppFemExport FemPostFunctionProvider : public App::DocumentObject {
 
     PROPERTY_HEADER(Fem::FemPostFunctionProvider);
     
