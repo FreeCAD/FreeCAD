@@ -113,6 +113,10 @@ before_install:
             cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
             prime_local_ports_cache $cacheContext
        fi
+       brew uninstall oce	   # FreeCAD-ports cache includes oce, remove for OCCT7
+       brew uninstall nglib	   # FreeCAD-ports cache includes netgen/nglib builts agains OCE6
+       brew untap homebrew/science # Untap homebrew/science repo that contains OCCT6 formulae
+       brew tap bblacey/science    # Use forked bblacey/science repo that contains OCCT7 formulae
        brew install eigen                       \
                     freetype                    \
                     qt                          \
@@ -122,15 +126,14 @@ before_install:
                     pyside-tools                \
                     xerces-c                    \
                     orocos-kdl                  \
-       brew install vtk --without-python
-       brew install hdf5                        \
-                    homebrew/science/oce        \
                     homebrew/python/matplotlib
-       brew install --with-oce homebrew/science/nglib
-       brew install --without-framework --without-soqt sanelson/freecad/coin
-       brew install --HEAD pivy
-       brew install bblacey/taps/med-file --with-python
-       brew install netgen
+       brew install vtk --without-python
+       brew install opencascade  # bblacey/science opencascade formula builds OCCT7
+       brew install nglib --with-opencascade  # bblacey/science builds netgen with vejmarie patches
+       brew install sanelson/freecad/coin --without-framework --without-soqt
+       brew install sanelson/freecad/pivy --HEAD
+       brew install bblacey/taps/med-file --without-python
+
 
        #Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
