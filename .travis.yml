@@ -104,7 +104,7 @@ before_install:
        sh -e /etc/init.d/xvfb start
 
        CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
-       INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
+       INSTALLED_APP_PATH="/opt/local/FreeCAD-0.17/bin/FreeCAD"
        ;;
 
    "osx")
