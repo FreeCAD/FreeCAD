@@ -222,33 +222,34 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         if not self.mesh:
-            message += "No mesh object in the Analysis\n"
+            message += "No mesh object defined in the analysis\n"
         if not self.materials:
-            message += "No material object in the Analysis\n"
+            message += "No material object defined in the analysis\n"
         has_no_references = False
         for m in self.materials:
             if len(m['Object'].References) == 0:
                 if has_no_references is True:
-                    message += "More than one Material has empty References list (Only one empty References list is allowed!).\n"
+                    message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
-        if not (self.fixed_constraints):
-            message += "No fixed-constraint nodes defined in the Analysis\n"
+        if self.analysis_type == "static":
+            if not (self.fixed_constraints or self.displacement_constraints):
+                message += "Neither a constraint fixed nor a contraint displacement defined in the static analysis\n"
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints):
-                message += "No force-constraint or pressure-constraint defined in the Analysis\n"
+                message += "Neither constraint force nor constraint pressure defined in the static analysis\n"
         if self.beam_sections:
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
                     if has_no_references is True:
-                        message += "More than one BeamSection has empty References list (Only one empty References list is allowed!).\n"
+                        message += "More than one beam section has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
         if self.shell_thicknesses:
             has_no_references = False
             for s in self.shell_thicknesses:
                 if len(s['Object'].References) == 0:
                     if has_no_references is True:
-                        message += "More than one ShellThickness has empty References list (Only one empty References list is allowed!).\n"
+                        message += "More than one shell thickness has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
         return message
 
