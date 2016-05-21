@@ -142,8 +142,17 @@ def readResult(frd_input):
                 nd19 = int(line[83:93])
                 nd20 = int(line[93:103])
                 input_continues = False
-                elements_hexa20[elem] = (nd6, nd7, nd8, nd5, nd2, nd3, nd4, nd1, nd14, nd15,
-                                         nd16, nd13, nd10, nd11, nd12, nd9, nd18, nd19, nd20, nd17)
+                # print((nd1, nd2, nd3, nd4, nd5, nd6, nd7, nd8, nd9, nd10,
+                #        nd11, nd12, nd13, nd14, nd15, nd16, nd17, nd18, nd19, nd20))  # get the element node order of frd file
+                # elements_hexa20[elem] = (nd6, nd7, nd8, nd5, nd2, nd3, nd4, nd1, nd14, nd15,
+                #                          nd16, nd13, nd10, nd11, nd12, nd9, nd18, nd19, nd20, nd17)
+                # node order exported by ccx into frd is different than node order in inp file
+                # elements_hexa20[elem] = (nd6, nd7, nd8, nd5, nd2, nd3, nd4, nd1, nd14, nd15,
+                #                          nd16, nd13, nd18, nd19, nd20, nd17, nd10, nd11, nd12, nd9)
+                # hexa20 import works with the following frd file node assignment
+                elements_hexa20[elem] = (nd8, nd5, nd6, nd7, nd4, nd1, nd2, nd3, nd20, nd17,
+                                         nd18, nd19, nd12, nd9, nd10, nd11, nd16, nd13, nd14, nd15)
+                # print elements_hexa20[elem]
             elif elemType == 5 and input_continues is False:
                 # first line
                 # C3D15 Calculix --> penta15 FreeCAD
