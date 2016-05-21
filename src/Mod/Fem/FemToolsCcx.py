@@ -202,7 +202,6 @@ class FemToolsCcx(FemTools.FemTools):
                 self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
-        self.load_results_ccxdat()
 
     ## Load results of ccx calculations from .dat file.
     #  @param self The python object self
@@ -214,6 +213,10 @@ class FemToolsCcx(FemTools.FemTools):
             mode_frequencies = ccxDatReader.import_dat(dat_result_file, self.analysis)
         else:
             raise Exception('FEM: No .dat results found at {}!'.format(dat_result_file))
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
-                    m.EigenmodeFrequency = mode_frequencies[m.Eigenmode - 1]['frequency']
+        if mode_frequencies:
+            print(mode_frequencies)
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
+                    for mf in mode_frequencies:
+                        if m.Eigenmode == mf['eigenmode']:
+                            m.EigenmodeFrequency = mf['frequency']
