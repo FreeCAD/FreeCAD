@@ -28,11 +28,13 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Precision.hxx>
+# include <QMenu>
 #endif
 
 #include <Base/Console.h>
 #include <App/Part.h>
 #include <App/Origin.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
@@ -127,7 +129,12 @@ void ViewProviderBody::setOverrideMode(const std::string& mode) {
         overrideMode = mode;       
 }
 
-
+void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(tr("Toggle active body"));
+    func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
+}
 
 bool ViewProviderBody::doubleClicked(void)
 {
