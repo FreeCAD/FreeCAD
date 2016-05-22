@@ -55,7 +55,7 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
-    ADD_PROPERTY_TYPE (Origin, (0), 0, App::Prop_Hidden, "Origin linked to the body" );
+    ADD_PROPERTY(BaseFeature , (0) );
 }
 
 /*
@@ -200,6 +200,28 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
     }
 }
 
+bool Body::isAfter(const App::DocumentObject *feature, const App::DocumentObject* target) const {
+    assert (feature);
+
+    if (feature == target) {
+        return false;
+    }
+
+    if (!target || target == BaseFeature.getValue() ) {
+        return hasFeature (feature);
+    }
+
+    const std::vector<App::DocumentObject *> & features = Model.getValues();
+    auto featureIt = std::find(features.begin(), features.end(), feature);
+    auto targetIt = std::find(features.begin(), features.end(), target);
+
+    if (featureIt == features.end()) {
+        return false;
+    } else {
+        return featureIt > targetIt;
+    }
+}
+
 bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
     App::DocumentObject *nextSolid = getNextSolidFeature ();
     assert (feature);
@@ -213,7 +235,7 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
     }
 }
 
-const bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
+bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
@@ -224,7 +246,7 @@ const bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
             static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
 }
 
-const bool Body::isSolidFeature(const App::DocumentObject* f)
+bool Body::isSolidFeature(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
@@ -236,7 +258,7 @@ const bool Body::isSolidFeature(const App::DocumentObject* f)
     return false;//DeepSOIC: work-in-progress?
 }
 
-const bool Body::isAllowed(const App::DocumentObject* f)
+bool Body::isAllowed(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
@@ -364,49 +386,7 @@ void Body::removeFeature(App::DocumentObject* feature)
 
 App::DocumentObjectExecReturn *Body::execute(void)
 {
-    /*
-    Base::Console().Error("Body '%s':\n", getNameInDocument());
-    App::DocumentObject* tip = Tip.getValue();
-    Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
-    std::vector<App::DocumentObject*> model = Model.getValues();
-    Base::Console().Error("   Model:\n");
-    for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
-        if (*m == NULL) continue;
-        Base::Console().Error("      %s", (*m)->getNameInDocument());
-        if (Body::isSolidFeature(*m)) {
-            App::DocumentObject* baseFeature = static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue();
-            Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
-        } else {
-            Base::Console().Error("\n");
-        }
-    }
-    */
-
-    App::DocumentObject* tip = Tip.getValue();
-
-    Part::TopoShape tipShape;
-    if ( tip ) {
-        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() )
-                && tip != BaseFeature.getValue () ) {
-            return new App::DocumentObjectExecReturn ( "Linked object is not a PartDesign feature" );
-        }
-
-        // get the shape of the tip
-        tipShape = static_cast<Part::Feature *>(tip)->Shape.getShape();
-
-        if ( tipShape._Shape.IsNull () ) {
-            return new App::DocumentObjectExecReturn ( "Tip shape is empty" );
-        }
-
-        // We should hide here the transformation of the baseFeature
-        tipShape.transformShape (tipShape.getTransform(), true );
-
-    } else {
-        tipShape = Part::TopoShape();
-    }
-
-    Shape.setValue ( tipShape );
-    return App::DocumentObject::StdReturn;
+    return Part::BodyBase::execute();
 
 }
 
@@ -418,15 +398,12 @@ void Body::onSettingDocument() {
     Part::BodyBase::onSettingDocument();
 }
 
-void Body::removeModelFromDocument() {
-    //delete all child objects if needed
-    std::set<DocumentObject*> grp ( Model.getValues().begin (), Model.getValues().end() );
-    for (auto obj : grp) {
-        this->getDocument()->remObject(obj->getNameInDocument());
-    }
-}
-
 void Body::onChanged (const App::Property* prop) {
+    // If the tip is zero and we are adding a base feature to the body set it to be the tip
+    if ( prop == &BaseFeature && !Tip.getValue() && BaseFeature.getValue() ) {
+        Tip.setValue( BaseFeature.getValue () );
+    }
+
     if ( prop == &BaseFeature ) {
         App::DocumentObject *baseFeature = BaseFeature.getValue();
         App::DocumentObject *nextSolid = getNextSolidFeature ( baseFeature );
@@ -439,47 +416,15 @@ void Body::onChanged (const App::Property* prop) {
     Part::BodyBase::onChanged ( prop );
 }
 
-App::Origin *Body::getOrigin () const {
-    App::DocumentObject *originObj = Origin.getValue ();
-
-    if ( !originObj ) {
-        std::stringstream err;
-        err << "Can't find Origin for \"" << getNameInDocument () << "\"";
-        throw Base::Exception ( err.str().c_str () );
-
-    } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
-        std::stringstream err;
-        err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
-            << ") linked to the Origin of \"" << getNameInDocument () << "\"";
-        throw Base::Exception ( err.str().c_str () );
-    } else {
-            return static_cast<App::Origin *> ( originObj );
+void Body::onBeforeChange(const App::Property* prop)
+{
+    // If we are changing the base feature and tip point to it reset it
+    if ( prop == &BaseFeature && BaseFeature.getValue() == Tip.getValue() && BaseFeature.getValue() ) {
+        Tip.setValue( nullptr );
     }
+    Part::BodyBase::onBeforeChange(prop);
 }
 
-void Body::setupObject () {
-    // NOTE: the code shared with App::OriginGroup
-    App::Document *doc = getDocument ();
-
-    std::string objName = std::string ( getNameInDocument() ).append ( "Origin" );
-
-    App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
-
-    assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
-    Origin.setValue ( originObj );
-
-    Part::BodyBase::setupObject ();
-}
-
-void Body::unsetupObject () {
-    App::DocumentObject *origin = Origin.getValue ();
-
-    if (origin && !origin->isDeleting ()) {
-        origin->getDocument ()->remObject (origin->getNameInDocument());
-    }
-
-    Part::BodyBase::unsetupObject ();
-}
 
 PyObject *Body::getPyObject(void)
 {

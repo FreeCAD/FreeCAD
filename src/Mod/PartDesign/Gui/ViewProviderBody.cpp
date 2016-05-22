@@ -28,13 +28,11 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Precision.hxx>
-# include <QMenu>
 #endif
 
 #include <Base/Console.h>
 #include <App/Part.h>
 #include <App/Origin.h>
-#include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
@@ -59,81 +57,22 @@
 
 using namespace PartDesignGui;
 
-const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",NULL};
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderBodyBase)
 
 ViewProviderBody::ViewProviderBody()
 {
-    ADD_PROPERTY(DisplayModeBody,((long)0));
-    DisplayModeBody.setEnums(BodyModeEnum);
-    
-    pcBodyChildren = new SoSeparator();
-    pcBodyChildren->ref();
-
     sPixmap = "PartDesign_Body_Tree.svg";
 }
 
 ViewProviderBody::~ViewProviderBody()
 {
-    pcBodyChildren->unref ();
-    connectChangedObjectApp.disconnect();
-    connectChangedObjectGui.disconnect();
 }
 
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderPart::attach(pcFeat);
-
-    addDisplayMaskMode(pcBodyChildren, "Through");
-    setDisplayMaskMode("Through");
-
-    App::Document *adoc  = pcObject->getDocument ();
-    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
-
-    assert ( adoc );
-    assert ( gdoc );
-
-    connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, _1, _2) );
-
-    connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, _1, _2) );
-}
-
-// TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
-// TODO differnt icon in tree if mode is Through (2015-09-05, Fat-Zer)
-// TODO drag&drop (2015-09-05, Fat-Zer)
-// TODO Add activate () call (2015-09-08, Fat-Zer)
-
-void ViewProviderBody::setDisplayMode(const char* ModeName) {
-    
-    //if we show "Through" we must avoid to set the display mask modes, as this would result 
-    //in going into "tip" mode. When through is chosen the child features are displayed, and all
-    //we need to ensure is that the display mode change is propagated to them fro within the
-    //onChanged() method.
-    if(DisplayModeBody.getValue() == 1)
-        PartGui::ViewProviderPartExt::setDisplayMode(ModeName);
-}
-
-void ViewProviderBody::setOverrideMode(const std::string& mode) {
-    
-    //if we are in through mode, we need to ensure that the override mode is not set for the body
-    //(as this would result in "tip" mode), it is enough when the children are set to the correct 
-    //override mode. 
-    
-    if(DisplayModeBody.getValue() != 0)
-        Gui::ViewProvider::setOverrideMode(mode);
-    else
-        overrideMode = mode;       
-}
-
-void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(tr("Toggle active body"));
-    func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
+    PartGui::ViewProviderBodyBase::attach(pcFeat);
 }
 
 bool ViewProviderBody::doubleClicked(void)
@@ -146,71 +85,28 @@ bool ViewProviderBody::doubleClicked(void)
     }
 
     if (activeBody == this->getObject()){
-        //active body double-clicked. Deactivate.
-        Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY);
+        //deactivating...
     } else {
-
-        // assure the PartDesign workbench
+        //activating...
         Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // and set correct active objects
-        auto* part = App::Part::getPartOfObject ( getObject() );
-        if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
-            Gui::Command::doCommand(Gui::Command::Gui,
-                    "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                    part->getDocument()->getName(),
-                    PARTKEY,
-                    part->getDocument()->getName(),
-                    part->getNameInDocument());
-        }
-
-        Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY,
-                this->getObject()->getDocument()->getName(),
-                this->getObject()->getNameInDocument());
     }
 
+    PartGui::ViewProviderBodyBase::doubleClicked(); // <-- active body switching happens there
     return true;
 }
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 {
     PartDesign::Body* body= static_cast<PartDesign::Body*> ( getObject () );
-    const std::vector<App::DocumentObject*> &model = body->Model.getValues ();
-    std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
 
-    // search for objects handled (claimed) by the features
-    for( auto obj: model){
-        if (!obj) { continue; }
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
-        if (!vp) { continue; }
+    std::vector<App::DocumentObject*> result = ViewProviderBodyBase::claimChildren();
 
-        auto children = vp->claimChildren();
-        std::remove_copy ( children.begin (), children.end (), std::inserter (outSet, outSet.begin () ), nullptr);
+    if (body->BaseFeature.getValue()) { // Claim for the base feature: insert after Origin, but before all other features.
+        size_t posToInsert = result.size() > 0 ? 1 : 0;
+        result.insert(result.begin()+posToInsert, body->BaseFeature.getValue());
     }
 
-    // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
-    std::vector<App::DocumentObject*> Result;
-
-    if (body->Origin.getValue()) { // Clame for the Origin
-        Result.push_back (body->Origin.getValue());
-    }
-    if (body->BaseFeature.getValue()) { // Clame for the base feature
-        Result.push_back (body->BaseFeature.getValue());
-    }
-
-    // claim for rest content not claimed by any other features
-    std::remove_copy_if (model.begin(), model.end(), std::back_inserter (Result),
-            [outSet] (App::DocumentObject* obj) {
-                return outSet.find (obj) != outSet.end();
-            } );
-
-    return Result;
+    return result;
 }
 
 
@@ -218,19 +114,11 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
-    const std::vector<App::DocumentObject*> & features = body->Model.getValues();
+    std::vector<App::DocumentObject*> rv = PartGui::ViewProviderBodyBase::claimChildren3D();
 
-    std::vector<App::DocumentObject*> rv;
-
-    if ( body->Origin.getValue() ) { // Add origin
-        rv.push_back (body->Origin.getValue());
-    }
     if ( body->BaseFeature.getValue() ) { // Add Base Feature
         rv.push_back (body->BaseFeature.getValue());
     }
-
-    // Add all other stuff
-    std::copy (features.begin(), features.end(), std::back_inserter (rv) );
 
     return rv;
 }
@@ -259,14 +147,6 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 //    }
 //}
 
-bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
-    // TODO May be do it conditionally? (2015-09-05, Fat-Zer)
-    Gui::Command::doCommand(Gui::Command::Doc,
-            "App.getDocument(\"%s\").getObject(\"%s\").removeModelFromDocument()"
-            ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
-    return true;
-}
-
 void ViewProviderBody::updateData(const App::Property* prop)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
@@ -278,50 +158,10 @@ void ViewProviderBody::updateData(const App::Property* prop)
         setVisualBodyMode(true);
     } 
 
-    PartGui::ViewProviderPart::updateData(prop);
+    PartGui::ViewProviderBodyBase::updateData(prop);
 }
 
 
-void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
-    
-    if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
-        obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are intrested only in Part::Features and not in bodies
-        return;
-    }
-
-    const Part::Feature *feat = static_cast <const Part::Feature *>(&obj);
-
-    if ( &feat->Shape != &prop && &feat->Placement != &prop) { // react only on changes in shapes and placement
-        return;
-    }
-
-    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-    if ( body && body->hasFeature (&obj ) ) {
-        updateOriginDatumSize ();
-    }
-}
-
-void ViewProviderBody::slotChangedObjectGui (
-        const Gui::ViewProviderDocumentObject& vp, const App::Property& prop )
-{
-    if (&vp.Visibility != &prop) { // react only on visability changes
-        return;
-    }
-
-    if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
-         !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
-        //          but may happen in documents designed in old versions of assembly branch )
-        return;
-    }
-
-    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-    App::DocumentObject *obj = vp.getObject ();
-
-    if ( body && obj && body->hasFeature ( obj ) ) {
-        updateOriginDatumSize ();
-    }
-}
 
 void ViewProviderBody::updateOriginDatumSize () {
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
@@ -396,31 +236,11 @@ void ViewProviderBody::updateOriginDatumSize () {
 
 void ViewProviderBody::onChanged(const App::Property* prop) {
         
-    if(prop == &DisplayModeBody) {
-    
-        if ( DisplayModeBody.getValue() == 0 )  {
-            //if we are in an override mode we need to make sure to come out, because 
-            //otherwise the maskmode is blocked and won't go into "through"
-            if(getOverrideMode() != "As Is") {
-                auto mode = getOverrideMode();
-                ViewProvider::setOverrideMode("As Is");
-                overrideMode = mode;
-            }
-            setDisplayMaskMode("Through");
-        }
-        else {
-            if(getOverrideMode() == "As Is")
-                setDisplayMaskMode(DisplayMode.getValueAsString());
-            else {
-                Base::Console().Message("Set override mode: %s\n", getOverrideMode().c_str());
-                setDisplayMaskMode(getOverrideMode().c_str());
-            }
-        }
-    }
-    else 
+    if(prop != &DisplayModeBody) {
         unifyVisualProperty(prop);
+    }
     
-    PartGui::ViewProviderPartExt::onChanged(prop);
+    PartGui::ViewProviderBodyBase::onChanged(prop);
 }
 
 

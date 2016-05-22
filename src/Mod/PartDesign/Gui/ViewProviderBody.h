@@ -25,7 +25,7 @@
 #define PARTGUI_ViewProviderBody_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
-#include <QCoreApplication>
+#include <Mod/Part/Gui/ViewProviderBodyBase.h>
 
 class SoGroup;
 class SoSeparator;
@@ -39,9 +39,8 @@ namespace PartDesignGui {
  *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
-class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart
+class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderBodyBase
 {
-    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
     PROPERTY_HEADER(PartDesignGui::ViewProviderBody);
 
 public:
@@ -49,22 +48,15 @@ public:
     ViewProviderBody();
     /// destructor
     virtual ~ViewProviderBody();
-
-    App::PropertyEnumeration DisplayModeBody;
     
     virtual void attach(App::DocumentObject *);
 
     virtual bool doubleClicked(void);
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     // returns the root node where the children gets collected(3D)
-    virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
-    virtual void setDisplayMode(const char* ModeName);
-    virtual void setOverrideMode(const std::string& mode);
-
-    virtual bool onDelete(const std::vector<std::string> &);
 
     /// Update the children's highlighting when triggered
     virtual void updateData(const App::Property* prop);
@@ -74,28 +66,18 @@ public:
     /// Update the sizes of origin and datums
     void updateOriginDatumSize ();
     
-    /**
-     * Return the bounding box of visible features
-     * @note datums are counted as their base point only
-     */
-    SbBox3f getBoundBox ();
+    // /**
+    // * Return the bounding box of visible features
+    // * @note datums are counted as their base point only
+    // */
+    //SbBox3f getBoundBox ();
 
 protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );
 
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
-private:
-    /// group used to store children collected by claimChildren3D() in the through (edit) mode.
-    SoGroup *pcBodyChildren;
-
-    static const char* BodyModeEnum[];
-
-    boost::signals::connection connectChangedObjectApp;
-    boost::signals::connection connectChangedObjectGui;
 };
 
 

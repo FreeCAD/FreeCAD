@@ -23,13 +23,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/bind.hpp>
 #endif
+
+#include <Base/Console.h>
+#include <Base/Placement.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Placement.h>
+#include <App/Origin.h>
+
 
 #include "BodyBase.h"
+#include "BodyBasePy.h"
 
 
 namespace Part {
@@ -39,15 +45,15 @@ PROPERTY_SOURCE(Part::BodyBase, Part::Feature)
 
 BodyBase::BodyBase()
 {
+    ADD_PROPERTY_TYPE (Origin, (0), 0, App::Prop_Hidden, "Origin linked to the body" );
     ADD_PROPERTY(Model       , (0) );
     ADD_PROPERTY(Tip         , (0) );
-    ADD_PROPERTY(BaseFeature , (0) );
 }
 
-const bool BodyBase::hasFeature(const App::DocumentObject* f) const
+bool BodyBase::hasFeature(const App::DocumentObject* f) const
 {
-    const std::vector<App::DocumentObject*> &features = Model.getValues();
-    return f == BaseFeature.getValue() || std::find(features.begin(), features.end(), f) != features.end();
+    const std::vector<App::DocumentObject*> &features = this->getFullModel();
+    return std::find(features.begin(), features.end(), f) != features.end();
 }
 
 BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
@@ -65,42 +71,121 @@ BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
     return NULL;
 }
 
-const bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentObject* target) const {
-    assert (feature);
+App::DocumentObjectExecReturn* BodyBase::execute(void)
+{
+    App::DocumentObject* tip = Tip.getValue();
 
-    if (feature == target) {
-        return false;
-    }
+    Part::TopoShape tipShape;
+    if ( tip ) {
+        if (   !tip->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())   ) {
+            return new App::DocumentObjectExecReturn("Tip object is not a Part feature");
+        }
 
-    if (!target || target == BaseFeature.getValue() ) {
-        return hasFeature (feature);
-    }
+        // get the shape of the tip
+        tipShape = static_cast<Part::Feature *>(tip)->Shape.getShape();
 
-    const std::vector<App::DocumentObject *> & features = Model.getValues();
-    auto featureIt = std::find(features.begin(), features.end(), feature);
-    auto targetIt = std::find(features.begin(), features.end(), target);
+        if ( tipShape._Shape.IsNull () ) {
+            return new App::DocumentObjectExecReturn ( "Tip shape is empty" );
+        }
 
-    if (featureIt == features.end()) {
-        return false;
+        // We should hide here the transformation of the Tip Feature
+        tipShape.transformShape (tipShape.getTransform(), true );
+
     } else {
-        return featureIt > targetIt;
+        tipShape = Part::TopoShape();
+    }
+
+    Shape.setValue ( tipShape );
+
+    return App::DocumentObject::StdReturn;
+}
+
+void BodyBase::removeModelFromDocument() {
+    //delete all child objects if needed
+    std::set<DocumentObject*> grp ( Model.getValues().begin (), Model.getValues().end() );
+    for (auto obj : grp) {
+        this->getDocument()->remObject(obj->getNameInDocument());
     }
 }
 
-void BodyBase::onBeforeChange (const App::Property* prop) {
-    // If we are changing the base feature and tip point to it reset it
-    if ( prop == &BaseFeature && BaseFeature.getValue() == Tip.getValue() && BaseFeature.getValue() ) {
-        Tip.setValue( nullptr );
+App::Origin* BodyBase::getOrigin () const {
+    App::DocumentObject *originObj = Origin.getValue ();
+
+    if ( !originObj ) {
+        std::stringstream err;
+        err << "Can't find Origin for \"" << getNameInDocument () << "\"";
+        throw Base::Exception ( err.str().c_str () );
+
+    } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
+        std::stringstream err;
+        err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
+            << ") linked to the Origin of \"" << getNameInDocument () << "\"";
+        throw Base::Exception ( err.str().c_str () );
+    } else {
+            return static_cast<App::Origin *> ( originObj );
     }
-    Part::Feature::onBeforeChange ( prop );
 }
 
-void BodyBase::onChanged (const App::Property* prop) {
-    // If the tip is zero and we are adding a base feature to the body set it to be the tip
-    if ( prop == &BaseFeature && !Tip.getValue() && BaseFeature.getValue() ) {
-        Tip.setValue( BaseFeature.getValue () );
+
+void BodyBase::setupObject () {
+    // NOTE: the code shared with App::OriginGroup
+    App::Document *doc = getDocument ();
+
+    std::string objName = std::string ( getNameInDocument() ).append ( "Origin" );
+
+    App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
+
+    assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
+    Origin.setValue ( originObj );
+
+}
+
+void BodyBase::unsetupObject () {
+    App::DocumentObject *origin = Origin.getValue ();
+
+    if (origin && !origin->isDeleting ()) {
+        origin->getDocument ()->remObject (origin->getNameInDocument());
     }
-    Part::Feature::onChanged ( prop );
+
+}
+
+
+void BodyBase::addFeature(App::DocumentObject *feature)
+{
+    if (hasFeature(feature))
+        throw Base::Exception("BodyBase: feature being added to the body is already in this body.");
+
+    std::vector<App::DocumentObject*> model = Model.getValues();
+    model.push_back(feature);
+    Model.setValues(model);
+}
+
+
+void BodyBase::removeFeature(App::DocumentObject* feature)
+{
+    std::vector<App::DocumentObject*> model = Model.getValues();
+    std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
+    if (it == model.end())
+        throw Base::Exception("BodyBase: feature being removed doesn't belong to this body.");
+    model.erase(it);
+    Model.setValues(model);
+}
+
+short BodyBase::mustExecute() const
+{
+    if ( Tip.isTouched()) {
+        return 1;
+    }
+    return Part::Feature::mustExecute();
+}
+
+PyObject *BodyBase::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new BodyBasePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 } /* Part */

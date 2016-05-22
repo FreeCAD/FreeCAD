@@ -34,7 +34,7 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string BodyBasePy::representation(void) const
 {
-    return std::string("<body object>");
+    return std::string("<BodyBase object>");
 }
 
 
@@ -47,5 +47,55 @@ int BodyBasePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }
+
+PyObject* BodyBasePy::addFeature(PyObject *args)
+{
+    PyObject* featurePy;
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &featurePy))
+        return 0;
+
+    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
+
+    BodyBase* body = this->getBodyBasePtr();
+
+    try {
+        body->addFeature(feature);
+    } catch (Base::Exception& e) {
+        PyErr_SetString(PyExc_SystemError, e.what());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* BodyBasePy::removeFeature(PyObject *args)
+{
+    PyObject* featurePy;
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &featurePy))
+        return 0;
+
+    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
+    BodyBase* body = this->getBodyBasePtr();
+
+    try {
+        body->removeFeature(feature);
+    } catch (Base::Exception& e) {
+        PyErr_SetString(PyExc_SystemError, e.what());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject*  BodyBasePy::removeModelFromDocument(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    getBodyBasePtr()->removeModelFromDocument();
+    Py_Return;
+}
+
+
 
 
