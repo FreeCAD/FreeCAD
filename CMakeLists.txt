@@ -26,9 +26,6 @@ include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
-find_package(VTK REQUIRED)
-include(${VTK_USE_FILE})
-
 #if(CMAKE_CFG_INTDIR STREQUAL .)
     # No Debug/Release output paths
     set(DEBUG_MAIN_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
@@ -173,7 +170,6 @@ if(APPLE)
 endif(APPLE)
 
 OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
-OPTION(BUILD_FEM_VTK "Build the FreeCAD VTK Postprocessing support (need VTK 6 or higher)" OFF)
 OPTION(BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(BUILD_ARCH "Build the FreeCAD Architecture module" ON)
@@ -650,12 +646,17 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     IF(OCC_FOUND)
         #if we use smesh we definitly also need vtk, no matter of external or internal smesh
         find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        set(BUILD_FEM_VTK ON)
         if(${VTK_MAJOR_VERSION} LESS 6) 
             message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
         endif()
         if(${VTK_MAJOR_VERSION} EQUAL 6)
             if(${VTK_MINOR_VERSION} LESS 2)
                 add_definitions(-DVTK_NO_QUAD_POLY )
+            endif()
+            if(${VTK_MINOR_VERSION} EQUAL 0)
+                message(WARNING "VTK <6.0 cannot be used with c++11, FEM postprocessing is disabled")
+                set(BUILD_FEM_VTK OFF)
             endif()
         endif() 
         
@@ -773,11 +774,6 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(FREECAD_USE_FREETYPE)
 
 #---------------------------------------------------
-
-# -------------------------------- VTK --------------------------------
-    if(BUILD_FEM_VTK)
-        find_package(VTK REQUIRED)       
-    endif(BUILD_FEM_VTK)
         
     if(BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
