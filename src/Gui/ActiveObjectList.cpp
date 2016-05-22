@@ -41,7 +41,7 @@ using namespace Gui;
 void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name, const Gui::HighlightMode& mode)
 {
     if (hasObject(name)){
-            Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(getObject<App::DocumentObject*>(name))), mode, false);
+        Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(getObject<App::DocumentObject*>(name))), mode, false);
     }
     if (obj){
         Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(obj)), mode, true);
