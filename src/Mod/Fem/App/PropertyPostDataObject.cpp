@@ -186,6 +186,9 @@ void PropertyPostDataObject::getPaths(std::vector<App::ObjectIdentifier> &paths)
 void PropertyPostDataObject::Save (Base::Writer &writer) const
 {
     std::string extension;
+    if(!m_dataObject)
+        return;
+    
     switch( m_dataObject->GetDataObjectType() ) {
         
         case VTK_POLY_DATA:
@@ -228,6 +231,9 @@ void PropertyPostDataObject::Save (Base::Writer &writer) const
 void PropertyPostDataObject::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Data");
+    if(!reader.hasAttribute("file"))
+        return;
+    
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
