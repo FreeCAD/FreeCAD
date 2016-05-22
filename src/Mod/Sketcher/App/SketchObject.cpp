@@ -1729,7 +1729,7 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     
 
     // Note: Checking for the body of the support doesn't work when the support are the three base planes
-    App::DocumentObject *support = this->Support.getValue();
+    //App::DocumentObject *support = this->Support.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this, true);
