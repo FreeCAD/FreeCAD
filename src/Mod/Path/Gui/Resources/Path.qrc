@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/preferences-path.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-Compound.svg</file>
@@ -30,7 +30,17 @@
         <file>icons/Path-Inspect.svg</file>
         <file>icons/Path-ToolChange.svg</file>
         <file>icons/Path-SimpleCopy.svg</file>
-        <file>icons/PathWorkbench.svg</file>
+        <file>icons/Path-Engrave.svg</file>
+        <file>icons/Path-Sanity.svg</file>
+        <file>icons/Path-3DSurface.svg</file>
+        <file>icons/Path-Speed.svg</file>
+        <file>icons/Path-BaseGeometry.svg</file>
+        <file>icons/Path-Depths.svg</file>
+        <file>icons/Path-Heights.svg</file>
+        <file>icons/Path-MachineLathe.svg</file>
+        <file>icons/Path-MachineMill.svg</file>
+        <file>icons/Path-OperationA.svg</file>
+        <file>icons/Path-OperationB.svg</file>
         <file>translations/Path_de.qm</file>
         <file>translations/Path_af.qm</file>
         <file>translations/Path_zh-CN.qm</file>
@@ -57,5 +67,12 @@
         <file>translations/Path_sk.qm</file>
         <file>translations/Path_tr.qm</file>
         <file>translations/Path_sl.qm</file>
+        <file>panels/EngraveEdit.ui</file>
+        <file>panels/DrillingEdit.ui</file>
+        <file>panels/PocketEdit.ui</file>
+        <file>panels/ProfileEdit.ui</file>
+        <file>panels/SurfaceEdit.ui</file>
+        <file>panels/RemoteEdit.ui</file>
+        <file>panels/ToolControl.ui</file>
     </qresource>
-</RCC> 
+</RCC>
