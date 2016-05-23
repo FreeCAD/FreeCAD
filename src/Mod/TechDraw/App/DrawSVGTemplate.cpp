@@ -59,17 +59,14 @@ DrawSVGTemplate::DrawSVGTemplate()
 {
     static const char *group = "Drawing view";
 
-    //TODO: Do we need PageResult anymore?
-    // PageTemplate points to the template file in tmp/FreeCAD-AB-CD-EF-.../myTemplate.svg
-    // When restoring saved document, Template is redundant/incorrect - PageResult is the correct info.  -wf-
-    ADD_PROPERTY_TYPE(PageResult, (0),  group, App::Prop_Output,    "Resulting SVG document of that page");    //really copy of original Template
-                                                                                                               //with EditableFields replaced?
+    //TODO: Do we need PageResult anymore?  -wf Yes!
+    // PageResult points to a temporary file in tmp/FreeCAD-AB-CD-EF-.../myTemplate.svg
+    // which is really copy of original Template with EditableFields replaced
+    // When restoring saved document, Template is redundant/incorrect/not present - PageResult is the correct info.  -wf-
+    ADD_PROPERTY_TYPE(PageResult, (0),  group, App::Prop_Output,    "Resulting SVG document of that page");
     ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_Transient, "Template for the page");
 
     // Width and Height properties shouldn't be set by the user
-    //Height.StatusBits.set(2);       // Read Only
-    //Width.StatusBits.set(2);       // Read Only
-    //Orientation.StatusBits.set(2); // Read Only
     Height.setStatus(App::Property::ReadOnly,true);
     Width.setStatus(App::Property::ReadOnly,true);
     Orientation.setStatus(App::Property::ReadOnly,true);
@@ -147,11 +144,11 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
 {
-    std::string temp = Template.getValue();
-    if (temp.empty())
+    std::string templValue = Template.getValue();
+    if (templValue.empty())
         return App::DocumentObject::StdReturn;
 
-    Base::FileInfo fi(temp);
+    Base::FileInfo fi(templValue);
     if (!fi.isReadable()) {
         // non-empty template value, but can't read file
         // if there is a old absolute template file set use a redirect
@@ -164,25 +161,27 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
         }
     }
 
-    if (std::string(PageResult.getValue()).empty())
+    if (std::string(PageResult.getValue()).empty())                    //first time through?
         PageResult.setValue(fi.filePath().c_str());
 
     // open Template file
     string line;
-    ifstream file (fi.filePath().c_str());
+    ifstream inTemplate (fi.filePath().c_str());
 
-    // make a temp file for FileIncluded Property
-    string tempName = PageResult.getExchangeTempFile();
-    ostringstream ofile;
+    ostringstream copyTemplate;
     string tempendl = "--endOfLine--";
 
-    while (!file.eof())
+    //inTemplate to copyTemplate
+    //remove DrawingContent comment line
+    //change line endings
+    //capture TitleBlock dimensions
+    while (!inTemplate.eof())
     {
-        getline(file,line);
-        // check if the marker in the template is found
+        getline(inTemplate,line);
+        // copy every line except the DrawingContent comment?
         if(line.find("<!-- DrawingContent -->") == string::npos) {
             // if not -  write through
-            ofile << line << tempendl;
+            copyTemplate << line << tempendl;
         }
 
         //double t0, t1,t2,t3;
@@ -193,11 +192,11 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
         }
 
     }
-    file.close();
+    inTemplate.close();
 
-    // checking for freecad editable texts
-    string outfragment(ofile.str());
+    string outfragment(copyTemplate.str());
 
+    // update EditableText SVG clauses with Property values
     std::map<std::string, std::string> subs = EditableTexts.getValues();
 
     if (subs.size() > 0) {
@@ -224,27 +223,25 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     boost::regex e3 ("--endOfLine--");
     string fmt = "\\n";
     outfragment = boost::regex_replace(outfragment, e3, fmt);
-    ofstream outfinal(tempName.c_str());
-    outfinal << outfragment;
-    outfinal.close();
 
-    PageResult.setValue(tempName.c_str());
-
-
-    // Calculate the dimensions of the page and store for retrieval
-
-    QFile resultFile(QString::fromAscii(PageResult.getValue()));
-    if (!resultFile.exists()) {
-        throw Base::Exception("Couldn't load document from PageResult");
-    }
-
+    const QString qsOut = QString::fromStdString(outfragment);
     QDomDocument doc(QString::fromAscii("mydocument"));
 
-    if (!doc.setContent(&resultFile)) {
-        resultFile.close();
-        throw Base::Exception("Couldn't parse template SVG contents");
+    //if (!doc.setContent(&resultFile)) {
+    if (!doc.setContent(qsOut)) {
+        //setError(); //???? how/when does this get reset?
+        std::string errMsg = std::string("Invalid SVG syntax in ") + getNameInDocument() + std::string(" - Check EditableTexts");
+        return new App::DocumentObjectExecReturn(errMsg);
+    } else {
+        // make a temp file for FileIncluded Property
+        string tempName = PageResult.getExchangeTempFile();
+        ofstream outfinal(tempName.c_str());
+        outfinal << outfragment;
+        outfinal.close();
+        PageResult.setValue(tempName.c_str());
     }
 
+    // Calculate the dimensions of the page and store for retrieval
     // Parse the document XML
     QDomElement docElem = doc.documentElement();
 
@@ -269,7 +266,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     Orientation.setValue(isLandscape ? 1 : 0);
 
     // Housekeeping close the file
-    resultFile.close();
+    //resultFile.close();
 
     touch();
 
