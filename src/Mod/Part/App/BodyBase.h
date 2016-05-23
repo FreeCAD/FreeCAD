@@ -27,6 +27,9 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
 
+namespace App {
+    class Origin;
+}
 
 namespace Part
 {
@@ -53,31 +56,38 @@ public:
      */
     App::PropertyLink       Tip;
 
-    /**
-     * A base object of the body, serves as a base object for the first feature of the body.
-     * A Part::Feature link to make bodies be able based upon non-PartDesign Features.
-     */
-    App::PropertyLink BaseFeature;
+    /// Origin linked to the property, please use getOrigin () to access it
+    App::PropertyLink Origin;
 
-    /// Returns all Model objects prepanded by BaseFeature (if any)
-    std::vector<App::DocumentObject *> getFullModel () {
-        std::vector<App::DocumentObject *> rv;
-        if ( BaseFeature.getValue () ) {
-            rv.push_back ( BaseFeature.getValue () );
-        }
-        std::copy ( Model.getValues ().begin (), Model.getValues ().end (), std::back_inserter (rv) );
-        return rv;
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual short mustExecute() const;
+
+    /// returns the type name of the view provider
+    virtual const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderBodyBase";
+    }
+
+    //@}
+
+    /// Returns all Model objects (in PartDesign, this gets prepanded by BaseFeature)
+    virtual std::vector<App::DocumentObject *> getFullModel () const {
+        return this->Model.getValues();
     }
 
     // These methods are located here to avoid a dependency of ViewProviderSketchObject on PartDesign
+    virtual void addFeature(App::DocumentObject* feature);
+
     /// Remove the feature from the body
-    virtual void removeFeature(App::DocumentObject* feature){}
+    virtual void removeFeature(App::DocumentObject* feature);
+
+    /// Delets all the objects linked to the model.
+    virtual void removeModelFromDocument();
 
     /// Return true if the feature belongs to this body or either the body is based on the feature
-    const bool hasFeature(const App::DocumentObject *f) const;
-
-    /// Return true if the feature belongs to the body and is located after the target
-    const bool isAfter(const App::DocumentObject *feature, const App::DocumentObject *target) const;
+    bool hasFeature(const App::DocumentObject *f) const;
 
     /**
      * Return the body which this feature belongs too, or NULL.
@@ -88,11 +98,17 @@ public:
      */
     static BodyBase* findBodyOf(const App::DocumentObject* f);
 
+    /// Returns the origin link or throws an exception
+    App::Origin* getOrigin () const;
+
+    /// Creates the corresponding Origin object
+    virtual void setupObject ();
+    /// Removes all planes and axis if they are still linked to the document
+    virtual void unsetupObject ();
+
+    PyObject* getPyObject(void);
+
 protected:
-    /// If BaseFeature is getting changed and Tip points to it resets the Tip
-    virtual void onBeforeChange (const App::Property* prop);
-    /// If BaseFeature is setted and Tip is null sets the Tip to it
-    virtual void onChanged (const App::Property* prop);
 
 };
 

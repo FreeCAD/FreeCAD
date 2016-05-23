@@ -33,15 +33,5 @@
                     </UserDocu>
             </Documentation>
     </Methode>
-    <Methode Name="removeFeature">
-            <Documentation>
-                    <UserDocu>removeFeature(feat) - Remove the given feature from the Body</UserDocu>
-            </Documentation>
-    </Methode>
-    <Methode Name="removeModelFromDocument">
-            <Documentation>
-                <UserDocu>Delets all the objects linked to the model.</UserDocu>
-            </Documentation>
-    </Methode>
   </PythonExport>
 </GenerateModel>

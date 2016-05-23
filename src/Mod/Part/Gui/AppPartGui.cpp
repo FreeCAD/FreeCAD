@@ -36,6 +36,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderPython.h"
+#include "ViewProviderBodyBase.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCurveNet.h"
 #include "ViewProviderImport.h"
@@ -132,6 +133,7 @@ PyMODINIT_FUNC initPartGui()
     PartGui::SoFCControlPoints              ::initClass();
     PartGui::ViewProviderPartExt            ::init();
     PartGui::ViewProviderPart               ::init();
+    PartGui::ViewProviderBodyBase           ::init();
     PartGui::ViewProviderEllipsoid          ::init();
     PartGui::ViewProviderPython             ::init();
     PartGui::ViewProviderBox                ::init();

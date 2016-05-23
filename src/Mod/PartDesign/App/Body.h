@@ -49,6 +49,26 @@ public:
 
     Body();
 
+    /**
+     * A base object of the body, serves as a base object for the first feature of the body.
+     * A Part::Feature link to make bodies be able based upon non-PartDesign Features.
+     */
+    App::PropertyLink BaseFeature;
+
+    /**
+     * @brief getFullModel
+     * @return Objects contained by body. = Model property + BaseFeature (if any)
+     */
+    std::vector<App::DocumentObject *> getFullModel () {
+        std::vector<App::DocumentObject *> rv;
+        if ( BaseFeature.getValue () ) {
+            rv.push_back ( BaseFeature.getValue () );
+        }
+        std::copy ( Model.getValues ().begin (), Model.getValues ().end (), std::back_inserter (rv) );
+        return rv;
+    }
+
+
     /** @name methods override feature */
     //@{
     /// recalculate the feature
@@ -86,30 +106,30 @@ public:
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
 
-    /// Delets all the objects linked to the model.
-    void removeModelFromDocument();
-
     /**
      * Checks if the given document object lays after the current insert point
      * (place before next solid after the Tip)
      */
     bool isAfterInsertPoint(App::DocumentObject* feature);
 
+    /// Return true if the feature belongs to the body and is located after the target
+    bool isAfter(const App::DocumentObject *feature, const App::DocumentObject *target) const;
+
     /// Return true if the given feature is member of a MultiTransform feature
-    static const bool isMemberOfMultiTransform(const App::DocumentObject* f);
+    static bool isMemberOfMultiTransform(const App::DocumentObject* f);
 
     /**
       * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid
       * for features derived from PartDesign::Feature
       * Return false if the given feature is a Sketch or a Part::Datum feature
       */
-    static const bool isSolidFeature(const App::DocumentObject* f);
+    static bool isSolidFeature(const App::DocumentObject* f);
 
     /**
       * Return true if the given feature is allowed in a Body. Currently allowed are
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
-    static const bool isAllowed(const App::DocumentObject* f);
+    static bool isAllowed(const App::DocumentObject* f);
 
     /**
      * Return the body which this feature belongs too, or NULL
@@ -117,19 +137,16 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
-    /// Returns the origin link or throws an exception
-    App::Origin *getOrigin () const;
-
     PyObject *getPyObject(void);
 
-    /// Origin linked to the property, please use getOrigin () to access it
-    App::PropertyLink Origin;
 
 protected:
     virtual void onSettingDocument();
 
     /// Adjusts the first solid's feature's base on on BaseFeature getting setted
     virtual void onChanged (const App::Property* prop);
+    /// If BaseFeature is getting changed and Tip points to it resets the Tip
+    virtual void onBeforeChange (const App::Property* prop);
 
     /**
       * Return the solid feature before the given feature, or before the Tip feature
@@ -142,11 +159,6 @@ protected:
       * That is, sketches and datum features are skipped
       */
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
-
-    /// Creates the corresponding Origin object
-    virtual void setupObject ();
-    /// Removes all planes and axis if they are still linked to the document
-    virtual void unsetupObject ();
 
 private:
     boost::signals::scoped_connection connection;

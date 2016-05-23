@@ -148,6 +148,8 @@ SET(PartGui_SRCS
     ViewProvider.h
     ViewProviderExt.cpp
     ViewProviderExt.h
+    ViewProviderBodyBase.cpp
+    ViewProviderBodyBase.h
     ViewProviderReference.cpp
     ViewProviderReference.h
     ViewProviderBox.cpp

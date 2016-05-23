@@ -116,31 +116,3 @@ PyObject* BodyPy::insertFeature(PyObject *args)
     Py_Return;
 }
 
-PyObject* BodyPy::removeFeature(PyObject *args)
-{
-    PyObject* featurePy;
-    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &featurePy))
-        return 0;
-
-    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
-    Body* body = this->getBodyPtr();
-
-    try {
-        body->removeFeature(feature);
-    } catch (Base::Exception& e) {
-        PyErr_SetString(PyExc_SystemError, e.what());
-        return 0;
-    }
-
-    Py_Return;
-}
-
-PyObject*  BodyPy::removeModelFromDocument(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-
-    getBodyPtr()->removeModelFromDocument();
-    Py_Return;
-}
-
