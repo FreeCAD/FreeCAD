@@ -27,6 +27,8 @@
 #include<QLineEdit>
 #endif // #ifndef _PreCmp_
 
+#include <QTextDocument>
+
 #include "TemplateTextField.h"
 #include "DlgTemplateField.h"
 
@@ -55,6 +57,8 @@ void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
     std::string newContent = "";
     if(uiCode == QDialog::Accepted) {
        std::string newContent = ui->getFieldContent();
+       QString qsClean = Qt::escape(QString::fromStdString(newContent));        //Qt5 note: this becomes qsNewContent.toHtmlEscaped();
+       newContent = qsClean.toUtf8().constData();
        tmplte->EditableTexts.setValue(fieldNameStr, newContent);
     }
     ui->deleteLater();

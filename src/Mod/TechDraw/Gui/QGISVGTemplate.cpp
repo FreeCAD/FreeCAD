@@ -115,9 +115,7 @@ void QGISVGTemplate::load(const QString &fileName)
 
     Base::FileInfo fi(temp);
 
-    // make a temp file for FileIncluded Property
-    std::string tempName = tmplte->PageResult.getExchangeTempFile();
-    std::ostringstream ofile;
+    std::ostringstream oStream;
     std::string tempendl = "--endOfLine--";
     std::string line;
 
@@ -128,11 +126,11 @@ void QGISVGTemplate::load(const QString &fileName)
         // check if the marker in the template is found
         if(line.find("<!-- DrawingContent -->") == std::string::npos) {
             // if not -  write through
-            ofile << line << tempendl;
+            oStream << line << tempendl;
         }
     }
 
-    std::string outfragment(ofile.str());
+    std::string outfragment(oStream.str());
 
     // Find text tags with freecad:editable attribute and their matching tspans
     // keep tagRegex in sync with App/DrawSVGTemplate.cpp
