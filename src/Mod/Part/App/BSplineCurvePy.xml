@@ -302,7 +302,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="interpolate">
+        <Methode Name="interpolate" Keyword="true">
 			<Documentation>
 				<UserDocu>
 					interpolate(list_of_points, parameters = None, bool periodic = False, float tolerance = 1e-6, 

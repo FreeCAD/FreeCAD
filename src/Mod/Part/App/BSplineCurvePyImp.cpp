@@ -30,9 +30,11 @@
 # include <gp_Pnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
+# include <TColgp_Array1OfVec.hxx>
 # include <TColgp_HArray1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
 # include <TColStd_HArray1OfReal.hxx>
+# include <TColStd_HArray1OfBoolean.hxx>
 # include <TColgp_HArray1OfPnt.hxx>
 # include <Precision.hxx>
 #endif
@@ -773,52 +775,42 @@ PyObject* BSplineCurvePy::approximate(PyObject *args)
     }
 }
 
-PyObject* BSplineCurvePy::interpolate(PyObject *args)
+PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;
-    PyObject* par;
+    PyObject* par = 0;
     double tol3d = Precision::Approximation();
     PyObject* periodic = Py_False;
-    PyObject* t1=0; PyObject* t2=0;
+    PyObject* t1 = 0; PyObject* t2 = 0;
+    PyObject* ts = 0; PyObject* fl = 0;
+    PyObject* scale = Py_True;
 
-    Handle_TColgp_HArray1OfPnt interpolationPoints;
-    Handle_TColStd_HArray1OfReal parameters;
-    std::auto_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
+    static char* kwds_interp[] = {"Points", "PeriodicFlag", "Tolerance", "InitialTangent", "FinalTangent",
+                                  "Tangents", "TangentFlags", "Parameters", "Scale", NULL};
 
-    do {
-        if (PyArg_ParseTuple(args, "O|O!dO!O!",&obj, &PyBool_Type, &periodic, &tol3d,
-                                               &Base::VectorPy::Type, &t1, &Base::VectorPy::Type, &t2)) {
-            Py::Sequence list(obj);
-            interpolationPoints = new TColgp_HArray1OfPnt(1, list.size());
-            Standard_Integer index = 1;
-            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                Py::Vector v(*it);
-                Base::Vector3d pnt = v.toVector();
-                interpolationPoints->SetValue(index++, gp_Pnt(pnt.x,pnt.y,pnt.z));
-            }
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O!dO!O!OOOO!",kwds_interp,
+                                     &obj, &PyBool_Type, &periodic, &tol3d,
+                                     &Base::VectorPy::Type, &t1,
+                                     &Base::VectorPy::Type, &t2,
+                                     &ts, &fl, &par, &PyBool_Type, &scale))
+        return 0;
 
-            if (interpolationPoints->Length() < 2) {
-                Standard_Failure::Raise("not enough points given");
-            }
-            break;
+    try {
+        Py::Sequence list(obj);
+        Handle_TColgp_HArray1OfPnt interpolationPoints = new TColgp_HArray1OfPnt(1, list.size());
+        Standard_Integer index = 1;
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Vector v(*it);
+            Base::Vector3d pnt = v.toVector();
+            interpolationPoints->SetValue(index++, gp_Pnt(pnt.x,pnt.y,pnt.z));
         }
 
-        PyErr_Clear();
-        if (PyArg_ParseTuple(args, "OO|O!dO!O!",&obj, &par, &PyBool_Type, &periodic, &tol3d,
-                                                &Base::VectorPy::Type, &t1, &Base::VectorPy::Type, &t2)) {
-            Py::Sequence list(obj);
-            interpolationPoints = new TColgp_HArray1OfPnt(1, list.size());
-            Standard_Integer index = 1;
-            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                Py::Vector v(*it);
-                Base::Vector3d pnt = v.toVector();
-                interpolationPoints->SetValue(index++, gp_Pnt(pnt.x,pnt.y,pnt.z));
-            }
+        if (interpolationPoints->Length() < 2) {
+            Standard_Failure::Raise("not enough points given");
+        }
 
-            if (interpolationPoints->Length() < 2) {
-                Standard_Failure::Raise("not enough points given");
-            }
-
+        Handle_TColStd_HArray1OfReal parameters;
+        if (par) {
             Py::Sequence plist(par);
             parameters = new TColStd_HArray1OfReal(1, plist.size());
             Standard_Integer pindex = 1;
@@ -826,15 +818,9 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
                 Py::Float f(*it);
                 parameters->SetValue(pindex++, static_cast<double>(f));
             }
-            break;
         }
 
-        PyErr_SetString(PyExc_ValueError, "wrong arguments");
-        return 0;
-    }
-    while (false);
-
-    try {
+        std::auto_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
         if (parameters.IsNull()) {
             aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints,
                 PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
@@ -848,7 +834,28 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
             Base::Vector3d v1 = Py::Vector(t1,false).toVector();
             Base::Vector3d v2 = Py::Vector(t2,false).toVector();
             gp_Vec initTangent(v1.x,v1.y,v1.z), finalTangent(v2.x,v2.y,v2.z);
-            aBSplineInterpolation->Load(initTangent, finalTangent);
+            aBSplineInterpolation->Load(initTangent, finalTangent, PyObject_IsTrue(scale)
+                                        ? Standard_True : Standard_False);
+        }
+        else if (ts && fl) {
+            Py::Sequence tlist(ts);
+            TColgp_Array1OfVec tangents(1, tlist.size());
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = tlist.begin(); it != tlist.end(); ++it) {
+                Py::Vector v(*it);
+                Base::Vector3d vec = v.toVector();
+                tangents.SetValue(index++, gp_Vec(vec.x,vec.y,vec.z));
+            }
+
+            Py::Sequence flist(fl);
+            Handle_TColStd_HArray1OfBoolean tangentFlags = new TColStd_HArray1OfBoolean(1, flist.size());
+            Standard_Integer findex = 1;
+            for (Py::Sequence::iterator it = flist.begin(); it != flist.end(); ++it) {
+                Py::Boolean flag(*it);
+                tangentFlags->SetValue(findex++, static_cast<bool>(flag) ? Standard_True : Standard_False);
+                aBSplineInterpolation->Load(tangents, tangentFlags, PyObject_IsTrue(scale)
+                                            ? Standard_True : Standard_False);
+            }
         }
 
         aBSplineInterpolation->Perform();
