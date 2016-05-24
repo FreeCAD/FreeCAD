@@ -53,6 +53,7 @@
 #endif
 
 #include "BrowserView.h"
+#include "CookieJar.h"
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ProgressBar.h>
@@ -168,6 +169,10 @@ BrowserView::BrowserView(QWidget* parent)
 
     view->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     view->page()->setForwardUnsupportedContent(true);
+    
+    // set our custom cookie manager
+    FcCookieJar* cookiejar = new FcCookieJar(this);
+    view->page()->networkAccessManager()->setCookieJar(cookiejar);
 
     // setting background to white
     QPalette palette = view->palette();
