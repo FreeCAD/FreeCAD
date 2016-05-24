@@ -38,7 +38,10 @@ class _TaskPanelMechanicalMaterial:
         self.sel_server = None
         self.obj = obj
         self.material = self.obj.Material
-        self.references = self.obj.References
+        self.references = []
+        if self.obj.References:
+            self.tuplereferences = self.obj.References
+            self.get_references()
         self.references_shape_type = None
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelMechanicalMaterial.ui")
@@ -90,6 +93,11 @@ class _TaskPanelMechanicalMaterial:
     def remove_active_sel_server(self):
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
+
+    def get_references(self):
+        for ref in self.tuplereferences:
+            for elem in ref[1]:
+                self.references.append((ref[0], elem))
 
     def has_equal_references_shape_types(self):
         if not self.references:
