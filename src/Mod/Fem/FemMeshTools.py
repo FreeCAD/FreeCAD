@@ -53,21 +53,23 @@ def get_femnodes_by_references(femmesh, references):
 
 
 def get_femnodes_by_refshape(femmesh, ref):
-    if ref[1]:
-        r = ref[0].Shape.getElement(ref[1])  # Vertex, Edge, Face
-    else:
-        r = ref[0].Shape  # solid
-    # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
-    if r.ShapeType == 'Vertex':
-        nodes = femmesh.getNodesByVertex(r)
-    elif r.ShapeType == 'Edge':
-        nodes = femmesh.getNodesByEdge(r)
-    elif r.ShapeType == 'Face':
-        nodes = femmesh.getNodesByFace(r)
-    elif r.ShapeType == 'Solid':
-        nodes = femmesh.getNodesBySolid(r)
-    else:
-        print('  No Vertice, Edge, Face or Solid as reference shapes!')
+    nodes = []
+    for refelement in ref[1]:
+        if refelement:
+            r = ref[0].Shape.getElement(refelement)  # Vertex, Edge, Face
+        else:
+            r = ref[0].Shape  # solid
+        print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', refelement)
+        if r.ShapeType == 'Vertex':
+            nodes += femmesh.getNodesByVertex(r)
+        elif r.ShapeType == 'Edge':
+            nodes += femmesh.getNodesByEdge(r)
+        elif r.ShapeType == 'Face':
+            nodes += femmesh.getNodesByFace(r)
+        elif r.ShapeType == 'Solid':
+            nodes += femmesh.getNodesBySolid(r)
+        else:
+            print('  No Vertice, Edge, Face or Solid as reference shapes!')
     return nodes
 
 
@@ -152,11 +154,13 @@ def get_force_obj_vertex_nodeload_table(femmesh, frc_obj):
     # force_obj_node_load_table = [('refshape_name.elemname',node_load_table), ..., ('refshape_name.elemname',node_load_table)]
     force_obj_node_load_table = []
     node_load = frc_obj.Force / len(frc_obj.References)
-    for o, elem in frc_obj.References:
-        elem_o = o.Shape.getElement(elem)
-        node = femmesh.getNodesByVertex(elem_o)
-        elem_info_string = 'node load on shape: ' + o.Name + ':' + elem
-        force_obj_node_load_table.append((elem_info_string, {node[0]: node_load}))
+    for o, elem_tup in frc_obj.References:
+        node_count = len(elem_tup)
+        for elem in elem_tup:
+            ref_node = o.Shape.getElement(elem)
+            node = femmesh.getNodesByVertex(ref_node)
+            elem_info_string = 'node load on shape: ' + o.Name + ':' + elem
+            force_obj_node_load_table.append((elem_info_string, {node[0]: node_load / node_count}))
 
     return force_obj_node_load_table
 
@@ -167,40 +171,40 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
     sum_ref_edge_length = 0
     sum_ref_edge_node_length = 0  # for debugging
     sum_node_load = 0  # for debugging
-    for o, elem in frc_obj.References:
-        elem_o = o.Shape.getElement(elem)
-        sum_ref_edge_length += elem_o.Length
+    for o, elem_tup in frc_obj.References:
+        for elem in elem_tup:
+            sum_ref_edge_length += o.Shape.getElement(elem).Length
     if sum_ref_edge_length != 0:
         force_per_sum_ref_edge_length = frc_obj.Force / sum_ref_edge_length
-    for o, elem in frc_obj.References:
-        elem_o = o.Shape.getElement(elem)
-        ref_edge = elem_o
+    for o, elem_tup in frc_obj.References:
+        for elem in elem_tup:
+            ref_edge = o.Shape.getElement(elem)
 
-        # edge_table = { meshedgeID : ( nodeID, ... , nodeID ) }
-        edge_table = get_ref_edgenodes_table(femmesh, femelement_table, ref_edge)
+            # edge_table = { meshedgeID : ( nodeID, ... , nodeID ) }
+            edge_table = get_ref_edgenodes_table(femmesh, femelement_table, ref_edge)
 
-        # node_length_table = [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
-        node_length_table = get_ref_edgenodes_lengths(femnodes_mesh, edge_table)
+            # node_length_table = [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
+            node_length_table = get_ref_edgenodes_lengths(femnodes_mesh, edge_table)
 
-        # node_sum_length_table = { nodeID : Length, ... , nodeID : Length }  LengthSum for each node, one entry for each node
-        node_sum_length_table = get_ref_shape_node_sum_geom_table(node_length_table)
+            # node_sum_length_table = { nodeID : Length, ... , nodeID : Length }  LengthSum for each node, one entry for each node
+            node_sum_length_table = get_ref_shape_node_sum_geom_table(node_length_table)
 
-        # node_load_table = { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
-        node_load_table = {}
-        sum_node_lengths = 0  # for debugging
-        for node in node_sum_length_table:
-            sum_node_lengths += node_sum_length_table[node]  # for debugging
-            node_load_table[node] = node_sum_length_table[node] * force_per_sum_ref_edge_length
-        ratio_refedge_lengths = sum_node_lengths / elem_o.Length
-        if ratio_refedge_lengths < 0.99 or ratio_refedge_lengths > 1.01:
-            FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-            print('  sum_node_lengths:', sum_node_lengths)
-            print('  refedge_length:  ', elem_o.Length)
-            bad_refedge = elem_o
-        sum_ref_edge_node_length += sum_node_lengths
+            # node_load_table = { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
+            node_load_table = {}
+            sum_node_lengths = 0  # for debugging
+            for node in node_sum_length_table:
+                sum_node_lengths += node_sum_length_table[node]  # for debugging
+                node_load_table[node] = node_sum_length_table[node] * force_per_sum_ref_edge_length
+            ratio_refedge_lengths = sum_node_lengths / ref_edge.Length
+            if ratio_refedge_lengths < 0.99 or ratio_refedge_lengths > 1.01:
+                FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
+                print('  sum_node_lengths:', sum_node_lengths)
+                print('  refedge_length:  ', ref_edge.Length)
+                bad_refedge = ref_edge
+            sum_ref_edge_node_length += sum_node_lengths
 
-        elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
-        force_obj_node_load_table.append((elem_info_string, node_load_table))
+            elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
+            force_obj_node_load_table.append((elem_info_string, node_load_table))
 
     for ref_shape in force_obj_node_load_table:
         for node in ref_shape[1]:
@@ -262,39 +266,39 @@ def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
     sum_ref_face_area = 0
     sum_ref_face_node_area = 0  # for debugging
     sum_node_load = 0  # for debugging
-    for o, elem in frc_obj.References:
-        elem_o = o.Shape.getElement(elem)
-        sum_ref_face_area += elem_o.Area
+    for o, elem_tup in frc_obj.References:
+        for elem in elem_tup:
+            sum_ref_face_area += o.Shape.getElement(elem).Area
     if sum_ref_face_area != 0:
         force_per_sum_ref_face_area = frc_obj.Force / sum_ref_face_area
-    for o, elem in frc_obj.References:
-        elem_o = o.Shape.getElement(elem)
-        ref_face = elem_o
+    for o, elem_tup in frc_obj.References:
+        for elem in elem_tup:
+            ref_face = o.Shape.getElement(elem)
 
-        # face_table = { meshfaceID : ( nodeID, ... , nodeID ) }
-        face_table = get_ref_facenodes_table(femmesh, femelement_table, ref_face)
+            # face_table = { meshfaceID : ( nodeID, ... , nodeID ) }
+            face_table = get_ref_facenodes_table(femmesh, femelement_table, ref_face)
 
-        # node_area_table = [ (nodeID, Area), ... , (nodeID, Area) ]  some nodes will have more than one entry
-        node_area_table = get_ref_facenodes_areas(femnodes_mesh, face_table)
+            # node_area_table = [ (nodeID, Area), ... , (nodeID, Area) ]  some nodes will have more than one entry
+            node_area_table = get_ref_facenodes_areas(femnodes_mesh, face_table)
 
-        # node_sum_area_table = { nodeID : Area, ... , nodeID : Area }  AreaSum for each node, one entry for each node
-        node_sum_area_table = get_ref_shape_node_sum_geom_table(node_area_table)
+            # node_sum_area_table = { nodeID : Area, ... , nodeID : Area }  AreaSum for each node, one entry for each node
+            node_sum_area_table = get_ref_shape_node_sum_geom_table(node_area_table)
 
-        # node_load_table = { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
-        node_load_table = {}
-        sum_node_areas = 0  # for debugging
-        for node in node_sum_area_table:
-            sum_node_areas += node_sum_area_table[node]  # for debugging
-            node_load_table[node] = node_sum_area_table[node] * force_per_sum_ref_face_area
-        ratio_refface_areas = sum_node_areas / elem_o.Area
-        if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
-            FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-            print('  sum_node_lengths:', sum_node_areas)
-            print('  refedge_length:  ', elem_o.Area)
-        sum_ref_face_node_area += sum_node_areas
+            # node_load_table = { nodeID : NodeLoad, ... , nodeID : NodeLoad }  NodeLoad for each node, one entry for each node
+            node_load_table = {}
+            sum_node_areas = 0  # for debugging
+            for node in node_sum_area_table:
+                sum_node_areas += node_sum_area_table[node]  # for debugging
+                node_load_table[node] = node_sum_area_table[node] * force_per_sum_ref_face_area
+            ratio_refface_areas = sum_node_areas / ref_face.Area
+            if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
+                FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
+                print('  sum_node_lengths:', sum_node_areas)
+                print('  refedge_length:  ', ref_face.Area)
+            sum_ref_face_node_area += sum_node_areas
 
-        elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
-        force_obj_node_load_table.append((elem_info_string, node_load_table))
+            elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
+            force_obj_node_load_table.append((elem_info_string, node_load_table))
 
     for ref_shape in force_obj_node_load_table:
         for node in ref_shape[1]:

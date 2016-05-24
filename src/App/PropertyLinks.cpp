@@ -684,16 +684,7 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues()
 
 PyObject *PropertyLinkSubList::getPyObject(void)
 {
-    // FIXME: The current implementation returns a list of tuples with two items
-    // of the form: [(object, sub-element1), (object, sub-element2),...]
-    // If for an object several sub-elements are stored then it appears several
-    // times. However, to keep the output more compact the string for the
-    // sub-element should be replaced by a tuple to be of the form:
-    // [(object, (sub-element1, sub-element2)),...]
-    // When doing so the Python function 'get_femelement_sets' in the Python
-    // module cxxInpWriter.py gives an error because it passes a tuple instead
-    // of a string.
-#if 0
+#if 1
     std::vector<SubSet> subLists = getSubListValues();
     std::size_t count = subLists.size();
 #if 0//FIXME: Should switch to tuple
