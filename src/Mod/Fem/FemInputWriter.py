@@ -94,7 +94,7 @@ class FemInputWriter():
             femobj['RefShapeType'] = ''
             if frc_obj.References:
                 first_ref_obj = frc_obj.References[0]
-                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1])
+                first_ref_shape = first_ref_obj[0].Shape.getElement(first_ref_obj[1][0])
                 femobj['RefShapeType'] = first_ref_shape.ShapeType
             else:
                 # frc_obj.References could be empty ! # TODO in FemTools: check
