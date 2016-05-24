@@ -305,7 +305,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 		<Methode Name="interpolate">
 			<Documentation>
 				<UserDocu>
-					interpolate(list_of_points, bool periodic = False, float tolerance = 1e-6, 
+					interpolate(list_of_points, parameters = None, bool periodic = False, float tolerance = 1e-6, 
 					tangent1 = None, tangent2 = None)
 
 					Replaces this B-Spline curve by interpolating a set of points.
@@ -315,6 +315,9 @@ from the knots table of this B-Spline curve.</UserDocu>
 
 					tangent1, tangent2 specify tangent vectors for starting and ending points 
 					of the BSpline. Either none, or both must be specified.
+
+					parameters is an optional KnotSequence. If not supplied, the function defaults to a 
+					chord-length parameterization.
 				</UserDocu>
 			</Documentation>
 		</Methode>
