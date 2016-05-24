@@ -596,8 +596,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     for (std::vector<App::DocumentObject*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
         items.push_back(QString::fromUtf8((*it)->Label.getValue()));
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
-        qApp->translate(className(), "Select body"),
-        qApp->translate(className(), "Select a body from the list"),
+        qApp->translate("PartDesign_MoveFeature", "Select body"),
+        qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
         items, 0, false, &ok);
     if (!ok) return;
     int index = items.indexOf(text);
@@ -729,8 +729,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
-        qApp->translate(className(), "Select feature"),
-        qApp->translate(className(), "Select a feature from the list"),
+        qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
+        qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
         items, 0, false, &ok);
     if (!ok) return;
     int index = items.indexOf(text);
