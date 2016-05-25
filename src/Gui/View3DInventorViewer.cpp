@@ -2749,3 +2749,44 @@ PyObject *View3DInventorViewer::getPyObject(void)
     Py_INCREF(_viewerPy);
     return _viewerPy;
 }
+/**
+ * Drops the event \a e and loads the files into the given document.
+ */
+void View3DInventorViewer::dropEvent (QDropEvent * e)
+{
+    const QMimeData* data = e->mimeData();
+    if (data->hasUrls() && selectionRoot && selectionRoot->pcDocument) {
+        getMainWindow()->loadUrls(selectionRoot->pcDocument->getDocument(), data->urls());
+    }
+    else {
+        inherited::dropEvent(e);
+    }
+}
+
+void View3DInventorViewer::dragEnterEvent (QDragEnterEvent * e)
+{
+    // Here we must allow uri drags and check them in dropEvent
+    const QMimeData* data = e->mimeData();
+    if (data->hasUrls()) {
+        e->accept();
+    }
+    else {
+        inherited::dragEnterEvent(e);
+    }
+}
+
+void View3DInventorViewer::dragMoveEvent(QDragMoveEvent *e)
+{
+    const QMimeData* data = e->mimeData();
+    if (data->hasUrls() && selectionRoot && selectionRoot->pcDocument) {
+        e->accept();
+    }
+    else {
+        inherited::dragMoveEvent(e);
+    }
+}
+
+void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent *e)
+{
+    inherited::dragLeaveEvent(e);
+}
