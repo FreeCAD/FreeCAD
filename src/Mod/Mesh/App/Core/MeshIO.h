@@ -192,6 +192,14 @@ public:
     ~MeshCleanup();
 
     /*!
+      \brief Set the material array.
+      In case the material array sets the colors per vertex and
+      \ref RemoveInvalids() removes points from the array the
+      material array will be adjusted.
+     */
+    void SetMaterial(Material* mat);
+
+    /*!
       \brief Remove unreferenced and invalid facets.
      */
     void RemoveInvalids();
@@ -209,6 +217,7 @@ private:
 private:
     MeshPointArray& pointArray;
     MeshFacetArray& facetArray;
+    Material* materialArray;
 };
 
 /*!
