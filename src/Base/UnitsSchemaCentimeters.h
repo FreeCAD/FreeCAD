@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
+ *   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,51 +21,26 @@
  ***************************************************************************/
 
 
-#ifndef BASE_UNITSSCHEMA_H
-#define BASE_UNITSSCHEMA_H
+#ifndef BASE_UNITSSCHEMACENTIMETERS_H
+#define BASE_UNITSSCHEMACENTIMETERS_H
 
 
 #include <string>
 #include <QString>
-#include "Quantity.h"
-
-//#include "UnitsApi.h"
-
+#include "UnitsSchema.h"
 
 namespace Base {
 
-/** Units systems*/
-enum UnitSystem {
-    SI1 = 0 , /** internal (mm,kg,s) SI system (http://en.wikipedia.org/wiki/International_System_of_Units) */
-    SI2 = 1 , /** MKS (m,kg,s) SI system */
-    Imperial1 = 2, /** the Imperial system (http://en.wikipedia.org/wiki/Imperial_units) */
-    ImperialDecimal = 3, /** Imperial with length in inch only */
-    Centimeters = 4 /** All lengths in centimeters, areas and volumes in square/cubic meters */
-} ;
-    
-
-/** The UnitSchema class
- * The subclasses of this class define the stuff for a 
- * certain units schema. 
+/**
+ * The UnitSchema class
  */
-class UnitsSchema 
+class UnitsSchemaCentimeters: public UnitsSchema
 {
 public:
-    virtual ~UnitsSchema(){}
-    /** get called if this schema gets activated.
-      * Here its theoretical possible that you can change the static factors 
-      * for certain Units (e.g. mi = 1,8km instead of mi=1.6km). 
-      */
-    virtual void setSchemaUnits(void){}
-    /// if you use setSchemaUnits() you have also to impment this methode to undo your changes!
-    virtual void resetSchemaUnits(void){}
+    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
 
-    /// this methode translate the quantity in a string as the user may expect it
-    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)=0;
 };
-
 
 } // namespace Base
 
-
-#endif // BASE_UNITSSCHEMA_H
+#endif // BASE_UNITSSCHEMACENTIMETERS_H
