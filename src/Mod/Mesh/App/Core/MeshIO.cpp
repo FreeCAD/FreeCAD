@@ -236,6 +236,12 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
+    boost::regex rx_t("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
     boost::regex rx_f3("^f\\s+([0-9]+)/?[0-9]*/?[0-9]*"
                          "\\s+([0-9]+)/?[0-9]*/?[0-9]*"
                          "\\s+([0-9]+)/?[0-9]*/?[0-9]*\\s*$");
@@ -282,6 +288,21 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             float r = std::min<int>(std::atof(what[10].first),255) / 255.0f;
             float g = std::min<int>(std::atof(what[11].first),255) / 255.0f;
             float b = std::min<int>(std::atof(what[12].first),255) / 255.0f;
+            meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+
+            App::Color c(r,g,b);
+            unsigned long prop = static_cast<uint32_t>(c.getPackedValue());
+            meshPoints.back().SetProperty(prop);
+            rgb_value = MeshIO::PER_VERTEX;
+        }
+        else if (boost::regex_match(line.c_str(), what, rx_t)) {
+            readvertices = true;
+            fX = (float)std::atof(what[1].first);
+            fY = (float)std::atof(what[4].first);
+            fZ = (float)std::atof(what[7].first);
+            float r = static_cast<float>(std::atof(what[10].first));
+            float g = static_cast<float>(std::atof(what[13].first));
+            float b = static_cast<float>(std::atof(what[16].first));
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
 
             App::Color c(r,g,b);
