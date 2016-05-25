@@ -305,19 +305,36 @@ from the knots table of this B-Spline curve.</UserDocu>
         <Methode Name="interpolate" Keyword="true">
 			<Documentation>
 				<UserDocu>
-					interpolate(list_of_points, parameters = None, bool periodic = False, float tolerance = 1e-6, 
-					tangent1 = None, tangent2 = None)
-
 					Replaces this B-Spline curve by interpolating a set of points.
+					The function accepts keywords as arguments.
 
-					Continuity of the spline defaults to C2. However, if periodic, or tangents 
-					are supplied, the continuity will drop to C1.
+					interpolate(Points = list_of_points) 
 
-					tangent1, tangent2 specify tangent vectors for starting and ending points 
+					Optional arguments :
+
+					PeriodicFlag = bool (False) : Sets the curve closed or opened.
+					Tolerance = float (1e-6) : interpolating tolerance
+
+					Parameters : knot sequence of the interpolated points.
+					If not supplied, the function defaults to chord-length parameterization.
+					If PeriodicFlag == True, one extra parameter must be appended.
+
+					EndPoint Tangent constraints :
+
+					InitialTangent = vector, FinalTangent = vector
+					specify tangent vectors for starting and ending points 
 					of the BSpline. Either none, or both must be specified.
 
-					parameters is an optional KnotSequence. If not supplied, the function defaults to a 
-					chord-length parameterization.
+					Full Tangent constraints :
+
+					Tangents = list_of_vectors, TangentFlags = list_of_bools
+					Both lists must have the same length as Points list.
+					Tangents specifies the tangent vector of each point in Points list.
+					TangentFlags (bool) activates or deactivates the corresponding tangent.
+					These arguments will be ignored if EndPoint Tangents (above) are also defined.
+
+					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents 
+					are supplied, the continuity will drop to C1.
 				</UserDocu>
 			</Documentation>
 		</Methode>
