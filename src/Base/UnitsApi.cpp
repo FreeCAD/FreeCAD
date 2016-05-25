@@ -31,7 +31,8 @@
 #include "UnitsApi.h"
 #include "UnitsSchemaInternal.h"
 #include "UnitsSchemaImperial1.h"
-#include "UnitsSchemaMKS.h" 
+#include "UnitsSchemaMKS.h"
+#include "UnitsSchemaCentimeters.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -90,6 +91,7 @@ void UnitsApi::setSchema(UnitSystem s)
         case SI2 : UserPrefSystem = new UnitsSchemaMKS(); break;
         case Imperial1: UserPrefSystem = new UnitsSchemaImperial1(); break;
         case ImperialDecimal: UserPrefSystem = new UnitsSchemaImperialDecimal(); break;
+        case Centimeters: UserPrefSystem = new UnitsSchemaCentimeters(); break;
         default  : UserPrefSystem = new UnitsSchemaInternal(); s = SI1; break;
     }
 

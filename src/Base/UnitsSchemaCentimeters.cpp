@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
+ *   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,51 +21,39 @@
  ***************************************************************************/
 
 
-#ifndef BASE_UNITSSCHEMA_H
-#define BASE_UNITSSCHEMA_H
+#include "PreCompiled.h"
+#ifdef __GNUC__
+# include <unistd.h>
+#endif
 
-
-#include <string>
 #include <QString>
-#include "Quantity.h"
+#include "Exception.h"
+#include "UnitsApi.h"
+#include "UnitsSchemaCentimeters.h"
+#include <cmath>
 
-//#include "UnitsApi.h"
+using namespace Base;
 
 
-namespace Base {
-
-/** Units systems*/
-enum UnitSystem {
-    SI1 = 0 , /** internal (mm,kg,s) SI system (http://en.wikipedia.org/wiki/International_System_of_Units) */
-    SI2 = 1 , /** MKS (m,kg,s) SI system */
-    Imperial1 = 2, /** the Imperial system (http://en.wikipedia.org/wiki/Imperial_units) */
-    ImperialDecimal = 3, /** Imperial with length in inch only */
-    Centimeters = 4 /** All lengths in centimeters, areas and volumes in square/cubic meters */
-} ;
-    
-
-/** The UnitSchema class
- * The subclasses of this class define the stuff for a 
- * certain units schema. 
- */
-class UnitsSchema 
+QString UnitsSchemaCentimeters::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
-public:
-    virtual ~UnitsSchema(){}
-    /** get called if this schema gets activated.
-      * Here its theoretical possible that you can change the static factors 
-      * for certain Units (e.g. mi = 1,8km instead of mi=1.6km). 
-      */
-    virtual void setSchemaUnits(void){}
-    /// if you use setSchemaUnits() you have also to impment this methode to undo your changes!
-    virtual void resetSchemaUnits(void){}
-
-    /// this methode translate the quantity in a string as the user may expect it
-    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)=0;
-};
-
-
-} // namespace Base
-
-
-#endif // BASE_UNITSSCHEMA_H
+    Unit unit = quant.getUnit();
+    if(unit == Unit::Length){
+        // all length units in centimeters
+        unitString = QString::fromLatin1("cm");
+        factor = 10.0;
+    }else if (unit == Unit::Area){
+        // all area units in square meters
+        unitString = QString::fromLatin1("m^2");
+        factor = 1000000.0;
+    }else if (unit == Unit::Volume){
+        // all area units in cubic meters
+        unitString = QString::fromLatin1("m^3");
+        factor = 1000000000.0;
+    }else{
+        // default action for all cases without special treatment:
+        unitString = quant.getUnit().getString();
+        factor = 1.0;
+    }
+    return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
+}
