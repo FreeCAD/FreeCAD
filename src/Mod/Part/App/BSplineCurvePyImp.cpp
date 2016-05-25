@@ -853,9 +853,10 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
             for (Py::Sequence::iterator it = flist.begin(); it != flist.end(); ++it) {
                 Py::Boolean flag(*it);
                 tangentFlags->SetValue(findex++, static_cast<bool>(flag) ? Standard_True : Standard_False);
-                aBSplineInterpolation->Load(tangents, tangentFlags, PyObject_IsTrue(scale)
-                                            ? Standard_True : Standard_False);
             }
+
+            aBSplineInterpolation->Load(tangents, tangentFlags, PyObject_IsTrue(scale)
+                                        ? Standard_True : Standard_False);
         }
 
         aBSplineInterpolation->Perform();
