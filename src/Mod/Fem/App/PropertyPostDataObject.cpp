@@ -264,7 +264,7 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
         // stream...
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
+            App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
             Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n",
                 obj->Label.getValue(),fi.filePath().c_str());
         }
@@ -332,7 +332,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
             // stream...
             App::PropertyContainer* father = this->getContainer();
             if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-                App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
+                App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
                 Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
                     fi.filePath().c_str(),obj->Label.getValue());
             }

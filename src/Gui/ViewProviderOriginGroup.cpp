@@ -58,7 +58,7 @@ ViewProviderOriginGroup::~ViewProviderOriginGroup () {
 std::vector<App::DocumentObject*> ViewProviderOriginGroup::constructChildren (
         const std::vector<App::DocumentObject*> &children ) const
 {
-    App::OriginGroup *group = static_cast <App::OriginGroup *> ( getObject() );
+    auto group = dynamic_cast <App::OriginGroupExtension *> ( getObject()->getExtension(App::OriginGroupExtension::getClassTypeId()) );
     App::DocumentObject *originObj = group->Origin.getValue();
 
     // Origin must be first
@@ -98,7 +98,8 @@ void ViewProviderOriginGroup::attach(App::DocumentObject *pcObject) {
 }
 
 void ViewProviderOriginGroup::updateData ( const App::Property* prop ) {
-    App::OriginGroup *group = static_cast<App::OriginGroup*> ( getObject() );
+    
+    auto group = dynamic_cast <App::OriginGroupExtension *> ( getObject()->getExtension(App::OriginGroupExtension::getClassTypeId()) );
     if ( group && prop == &group->Group ) {
         updateOriginSize();
     }
@@ -107,7 +108,7 @@ void ViewProviderOriginGroup::updateData ( const App::Property* prop ) {
 }
 
 void ViewProviderOriginGroup::slotChangedObjectApp ( const App::DocumentObject& obj) {
-    App::OriginGroup *group = static_cast<App::OriginGroup*> ( getObject() );
+    auto group = dynamic_cast <App::OriginGroupExtension *> ( getObject()->getExtension(App::OriginGroupExtension::getClassTypeId()) );
     if ( group && group->hasObject (&obj, /*recusive=*/ true ) ) {
         updateOriginSize ();
     }
@@ -118,7 +119,7 @@ void ViewProviderOriginGroup::slotChangedObjectGui ( const Gui::ViewProviderDocu
          !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
         // Ignore origins to avoid infinite recursion (not likely in a well-formed focument, 
         //          but may happen in documents designed in old versions of assembly branch )
-        App::OriginGroup *group = static_cast<App::OriginGroup*> ( getObject() );
+        auto group = dynamic_cast <App::OriginGroupExtension *> ( getObject()->getExtension(App::OriginGroupExtension::getClassTypeId()) );
         App::DocumentObject *obj = vp.getObject ();
 
         if ( group && obj && group->hasObject (obj, /*recusive=*/ true ) ) {
@@ -128,7 +129,7 @@ void ViewProviderOriginGroup::slotChangedObjectGui ( const Gui::ViewProviderDocu
 }
 
 void ViewProviderOriginGroup::updateOriginSize () {
-    App::OriginGroup* group = static_cast<App::OriginGroup*> ( getObject() );
+    auto group = dynamic_cast <App::OriginGroupExtension *> ( getObject()->getExtension(App::OriginGroupExtension::getClassTypeId()) );
 
     // obtain an Origin and it's ViewProvider
     App::Origin* origin = 0;

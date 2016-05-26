@@ -439,7 +439,8 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // Get a valid plane from the user
         unsigned validPlanes = 0;
 
-        App::GeoFeatureGroup* geoGroup = App::GeoFeatureGroup::getGroupOfObject ( pcActiveBody );
+        auto group = App::GeoFeatureGroupExtension::getGroupOfObject ( pcActiveBody );
+        auto geoGroup = dynamic_cast<App::GeoFeatureGroupExtension*>(group->getExtension(App::GeoFeatureGroupExtension::getClassTypeId()));
 
         std::vector<App::DocumentObject*> planes;
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
@@ -474,14 +475,14 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 PartDesign::Body *planeBody = PartDesign::Body::findBodyOf (plane);
                 if ( planeBody ) {
                     if ( ( geoGroup && geoGroup->hasObject ( planeBody, true ) ) ||
-                           !App::GeoFeatureGroup::getGroupOfObject (planeBody) ) {
+                           !App::GeoFeatureGroupExtension::getGroupOfObject (planeBody) ) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherBody );
                     } else {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
                     }
                 } else {
                     if ( ( geoGroup && geoGroup->hasObject ( plane, true ) ) ||
-                           !App::GeoFeatureGroup::getGroupOfObject ( plane ) ) {
+                           !App::GeoFeatureGroupExtension::getGroupOfObject ( plane ) ) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
                     } else if (pcActiveBody) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::notInBody );
