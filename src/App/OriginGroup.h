@@ -32,12 +32,12 @@ class Origin;
 /**
  * Represents an abstact placeable group of objects with an associated Origin
  */
-class AppExport OriginGroup: public App::GeoFeatureGroup
+class AppExport OriginGroupExtension : public App::GeoFeatureGroupExtension
 {
-    PROPERTY_HEADER(App::OriginGroup);
+    PROPERTY_HEADER(App::OriginGroupExtension);
 public:
-    OriginGroup ();
-    virtual ~OriginGroup ();
+    OriginGroupExtension ();
+    virtual ~OriginGroupExtension ();
 
     /// Returns the origin link or throws an exception
     App::Origin *getOrigin () const;
@@ -54,21 +54,21 @@ public:
      * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
      *                  default is true
      */
-    static OriginGroup* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
+    static DocumentObject* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
 
     /// Returns true on changing OriginFeature set
-    virtual short mustExecute () const;
+    //virtual short mustExecute () const;
     
     /// Origin linked to the group
     PropertyLink Origin;
 
 protected:
     /// Checks integrity of the Origin
-    virtual App::DocumentObjectExecReturn *execute ();
+    //virtual App::DocumentObjectExecReturn *execute ();
     /// Creates the corresponding Origin object
-    virtual void setupObject ();
+    //virtual void setupObject ();
     /// Removes all planes and axis if they are still linked to the document
-    virtual void unsetupObject ();
+    //virtual void unsetupObject ();
 };
 
 } /* App */

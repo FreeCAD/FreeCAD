@@ -130,7 +130,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
 
     if (name != "") {
-        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        DocumentObject* parent = dynamic_cast<DocumentObject*>(getContainer());
         App::Document* document = parent->getDocument();
         DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
         if (!object) {
@@ -288,7 +288,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ingore this.
         // Property not in an object!
-        DocumentObject* father = static_cast<DocumentObject*>(getContainer());
+        DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
         App::Document* document = father->getDocument();
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
@@ -479,7 +479,7 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
 
     DocumentObject *pcObject;
     if (!name.empty()) {
-        App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
+        App::Document* document = dynamic_cast<DocumentObject*>(getContainer())->getDocument();
         pcObject = document ? document->getObject(name.c_str()) : 0;
         if (!pcObject) {
             if (reader.isVerbose()) {
@@ -820,7 +820,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
         // Property not in an object!
-        DocumentObject* father = static_cast<DocumentObject*>(getContainer());
+        DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
         App::Document* document = father->getDocument();
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)

@@ -35,53 +35,56 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::OriginGroup, App::GeoFeatureGroup);
+PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtension);
 
-OriginGroup::OriginGroup () {
+OriginGroupExtension::OriginGroupExtension () {
+    
+    m_extensionType = OriginGroupExtension::getClassTypeId();
+    
     ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
 }
 
-OriginGroup::~OriginGroup ()
+OriginGroupExtension::~OriginGroupExtension ()
 { }
 
-App::Origin *OriginGroup::getOrigin () const {
+App::Origin *OriginGroupExtension::getOrigin () const {
     App::DocumentObject *originObj = Origin.getValue ();
 
     if ( !originObj ) {
         std::stringstream err;
-        err << "Can't find Origin for \"" << getNameInDocument () << "\"";
+        err << "Can't find Origin for \"" << getExtendedObject()->getNameInDocument () << "\"";
         throw Base::Exception ( err.str().c_str () );
 
     } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
         std::stringstream err;
         err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
-            << ") linked to the Origin of \"" << getNameInDocument () << "\"";
+            << ") linked to the Origin of \"" << getExtendedObject()->getNameInDocument () << "\"";
         throw Base::Exception ( err.str().c_str () );
     } else {
             return static_cast<App::Origin *> ( originObj );
     }
 }
 
-App::OriginGroup *OriginGroup::getGroupOfObject (const DocumentObject* obj, bool indirect) {
+App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj, bool indirect) {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType ( OriginGroup::getClassTypeId() );
+    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension ( OriginGroupExtension::getClassTypeId() );
     for (auto grpObj: grps) {
-        OriginGroup* grp = static_cast <OriginGroup* >(grpObj);
+        OriginGroupExtension* grp = dynamic_cast <OriginGroupExtension* >(grpObj->getExtension(OriginGroupExtension::getClassTypeId()));
         if ( indirect ) {
             if ( grp->geoHasObject (obj) ) {
-                return grp;
+                return dynamic_cast<App::DocumentObject*>(grp);
             }
         } else {
             if ( grp->hasObject (obj) ) {
-                return grp;
+                return dynamic_cast<App::DocumentObject*>(grp);
             }
         }
     }
 
     return 0;
 }
-
-short OriginGroup::mustExecute() const {
+/*
+short OriginGroupExtension::mustExecute() const {
     if (Origin.isTouched ()) {
         return 1;
     } else {
@@ -89,7 +92,7 @@ short OriginGroup::mustExecute() const {
     }
 }
 
-App::DocumentObjectExecReturn *OriginGroup::execute() {
+App::DocumentObjectExecReturn *OriginGroupExtension::execute() {
     try { // try to find all base axis and planes in the origin
         getOrigin ();
     } catch (const Base::Exception &ex) {
@@ -100,7 +103,7 @@ App::DocumentObjectExecReturn *OriginGroup::execute() {
     return GeoFeatureGroup::execute ();
 }
 
-void OriginGroup::setupObject () {
+void OriginGroupExtension::setupObject () {
     App::Document *doc = getDocument ();
 
     std::string objName = std::string ( getNameInDocument()).append ( "Origin" );
@@ -113,7 +116,7 @@ void OriginGroup::setupObject () {
     GeoFeatureGroup::setupObject ();
 }
 
-void OriginGroup::unsetupObject () {
+void OriginGroupExtension::unsetupObject () {
     App::DocumentObject *origin = Origin.getValue ();
     if (origin && !origin->isDeleting ()) {
         origin->getDocument ()->remObject (origin->getNameInDocument());
@@ -121,3 +124,4 @@ void OriginGroup::unsetupObject () {
 
     GeoFeatureGroup::unsetupObject ();
 }
+*/

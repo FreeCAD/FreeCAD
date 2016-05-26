@@ -36,9 +36,9 @@ namespace App
 /**
  * The base class for placeable group of DocumentObjects
  */
-class AppExport GeoFeatureGroup : public App::DocumentObjectGroup
+class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
-    PROPERTY_HEADER(App::GeoFeatureGroup);
+    PROPERTY_HEADER(App::GeoFeatureGroupExtension);
 
 public:
     PropertyPlacement Placement;
@@ -51,8 +51,8 @@ public:
      */
     virtual void transformPlacement(const Base::Placement &transform);
     /// Constructor
-    GeoFeatureGroup(void);
-    virtual ~GeoFeatureGroup();
+    GeoFeatureGroupExtension(void);
+    virtual ~GeoFeatureGroupExtension();
 
     /// Returns all geometrically controlled objects: all objects of this group and it's non-geo subgroups
     std::vector<App::DocumentObject*> getGeoSubObjects () const;
@@ -67,23 +67,15 @@ public:
      * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
      *                  default is true
      */
-    static GeoFeatureGroup* getGroupOfObject(const DocumentObject* obj, bool indirect=true);
+    static DocumentObject* getGroupOfObject(const DocumentObject* obj, bool indirect=true);
 
     /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
     static bool isNonGeoGroup(const DocumentObject* obj) {
-        return obj->isDerivedFrom ( App::DocumentObjectGroup::getClassTypeId () ) &&
-            !obj->isDerivedFrom ( App::GeoFeatureGroup::getClassTypeId () );
+        return obj->hasExtension(GroupExtension::getClassTypeId());
     }
-
-    /// Returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "Gui::ViewProviderGeoFeatureGroup";
-    }
-
-    virtual PyObject *getPyObject(void);
 };
 
-typedef App::FeaturePythonT<GeoFeatureGroup> GeoFeatureGroupPython;
+typedef App::ExtensionPython<GeoFeatureGroupExtension> GeoFeatureGroupExtensionPython;
 
 } //namespace App
 
