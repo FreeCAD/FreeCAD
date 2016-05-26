@@ -181,7 +181,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
-    return DocumentObjectGroup::getGroupOfObject(this);
+    return dynamic_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const

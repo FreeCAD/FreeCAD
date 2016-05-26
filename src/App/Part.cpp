@@ -35,7 +35,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE(App::Part, App::OriginGroup)
+PROPERTY_SOURCE(App::Part, App::DocumentObject)
 
 
 //===========================================================================
@@ -60,6 +60,7 @@ Part::Part(void)
     // color and apperance
     ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
 
+    setExtendedObject(this);
 }
 
 Part::~Part(void)

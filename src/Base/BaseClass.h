@@ -112,7 +112,7 @@ public:
 template<typename T> T * freecad_dynamic_cast(Base::BaseClass * t)
 {
     if (t && t->isDerivedFrom(T::getClassTypeId()))
-        return static_cast<T*>(t);
+        return dynamic_cast<T*>(t);
     else
         return 0;
 }
@@ -126,7 +126,7 @@ template<typename T> T * freecad_dynamic_cast(Base::BaseClass * t)
 template<typename T> const T * freecad_dynamic_cast(const Base::BaseClass * t)
 {
     if (t && t->isDerivedFrom(T::getClassTypeId()))
-        return static_cast<const T*>(t);
+        return dynamic_cast<const T*>(t);
     else
         return 0;
 }

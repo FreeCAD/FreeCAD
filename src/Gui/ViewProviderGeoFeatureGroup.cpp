@@ -51,7 +51,7 @@ ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup()
 }
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren3D(void) const {
-    return static_cast<App::GeoFeatureGroup *>(getObject())->getGeoSubObjects ();
+    return dynamic_cast<App::GeoFeatureGroupExtension *>(getObject()->getExtension(App::GeoFeatureGroupExtension::getClassTypeId()))->getGeoSubObjects ();
 }
 
 void ViewProviderGeoFeatureGroup::attach(App::DocumentObject* pcObject)
@@ -81,7 +81,7 @@ std::vector<std::string> ViewProviderGeoFeatureGroup::getDisplayModes(void) cons
 
 void ViewProviderGeoFeatureGroup::updateData(const App::Property* prop)
 {
-    App::GeoFeatureGroup *obj = static_cast<App::GeoFeatureGroup*> ( getObject() );
+    App::GeoFeatureGroupExtension *obj = dynamic_cast<App::GeoFeatureGroupExtension*> ( getObject()->getExtension(App::GeoFeatureGroupExtension::getClassTypeId()) );
     if (prop == &obj->Placement) {
         setTransformation ( obj->Placement.getValue().toMatrix() );
     } else {

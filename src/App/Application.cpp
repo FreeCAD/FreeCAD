@@ -1159,6 +1159,13 @@ void Application::initTypes(void)
     App ::PropertyPythonObject      ::init();
     App ::PropertyExpressionEngine  ::init();
 
+    // Extension classes
+    App ::Extension                 ::init();
+    App ::GroupExtension            ::init();
+    App ::GeoFeatureGroupExtension  ::init();
+    //App ::GeoFeatureGroupPython     ::init();
+    App ::OriginGroupExtension      ::init();
+    
     // Document classes
     App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
@@ -1182,9 +1189,6 @@ void Application::initTypes(void)
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
     App ::Line                      ::init();
-    App ::GeoFeatureGroup           ::init();
-    App ::GeoFeatureGroupPython     ::init();
-    App ::OriginGroup               ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
 

@@ -297,7 +297,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
                 // stream...
                 App::PropertyContainer* father = this->getContainer();
                 if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-                    App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
+                    App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
                     Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n", 
                         obj->Label.getValue(),fi.filePath().c_str());
                 }
@@ -376,7 +376,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
                     // stream...
                     App::PropertyContainer* father = this->getContainer();
                     if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-                        App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
+                        App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
                         Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n", 
                             fi.filePath().c_str(),obj->Label.getValue());
                     }

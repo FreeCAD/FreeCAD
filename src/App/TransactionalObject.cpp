@@ -34,7 +34,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE_ABSTRACT(App::TransactionalObject, App::PropertyContainer)
+PROPERTY_SOURCE_ABSTRACT(App::TransactionalObject, App::ExtensionContainer)
 
 TransactionalObject::TransactionalObject(void)
 {

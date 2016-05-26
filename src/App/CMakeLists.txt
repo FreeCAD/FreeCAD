@@ -55,8 +55,8 @@ generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
 generate_from_xml(DocumentObjectGroupPy)
 generate_from_xml(GeoFeaturePy)
-generate_from_xml(GeoFeatureGroupPy)
-generate_from_xml(OriginGroupPy)
+#generate_from_xml(GeoFeatureGroupPy)
+#generate_from_xml(OriginGroupPy)
 generate_from_xml(PartPy)
 
 generate_from_xml(ComplexGeoDataPy)
@@ -70,8 +70,8 @@ SET(FreeCADApp_XML_SRCS
     DocumentObjectGroupPy.xml
     DocumentObjectPy.xml
     GeoFeaturePy.xml
-    GeoFeatureGroupPy.xml
-    OriginGroupPy.xml
+#    GeoFeatureGroupPy.xml
+#    OriginGroupPy.xml
     PartPy.xml
     DocumentPy.xml
     PropertyContainerPy.xml
@@ -85,6 +85,7 @@ SET(Document_CPP_SRCS
     Annotation.cpp
     Document.cpp
     DocumentObject.cpp
+    Extension.cpp
     DocumentObjectFileIncluded.cpp
     DocumentObjectGroup.cpp
     DocumentObjectGroupPyImp.cpp
@@ -97,9 +98,9 @@ SET(Document_CPP_SRCS
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
-    GeoFeatureGroupPyImp.cpp
+#    GeoFeatureGroupPyImp.cpp
     GeoFeatureGroup.cpp
-    OriginGroupPyImp.cpp
+#    OriginGroupPyImp.cpp
     OriginGroup.cpp
     PartPyImp.cpp
     Part.cpp
@@ -121,6 +122,7 @@ SET(Document_HPP_SRCS
     Annotation.h
     Document.h
     DocumentObject.h
+    Extension.h
     DocumentObjectFileIncluded.h
     DocumentObjectGroup.h
     DocumentObserver.h

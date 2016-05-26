@@ -218,6 +218,7 @@ public:
     /// Returns a list of all Objects
     std::vector<DocumentObject*> getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
+    std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId) const;
     std::vector<DocumentObject*> findObjects(const Base::Type& typeId, const char* objname) const;
     /// Returns an array with the correct types already.
     template<typename T> inline std::vector<T*> getObjectsOfType() const;

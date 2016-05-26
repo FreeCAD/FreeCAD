@@ -44,6 +44,8 @@
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLImageDataReader.h>
 
+#include <strstream>
+
 #ifndef _PreComp_
 
 #endif
@@ -264,8 +266,13 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
         // stream...
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
+<<<<<<< 51e23d854e59ab0a23a9ea9b19e74e5f02753d82
+            App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
             Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n",
+=======
+            App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
+            Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n", 
+>>>>>>> Introduce extensions and port App groups
                 obj->Label.getValue(),fi.filePath().c_str());
         }
         else {
@@ -279,8 +286,19 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
 
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
     if (file){
+        unsigned long ulSize = 0;
         std::streambuf* buf = file.rdbuf();
-        writer.Stream() << buf;
+        if (buf) {
+            unsigned long ulCurr;
+            ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
+            ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
+            buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
+        }
+
+        // read in the ASCII file and write back to the stream
+        std::strstreambuf sbuf(ulSize);
+        file >> &sbuf;
+        writer.Stream() << &sbuf;
     }
 
     file.close();
@@ -332,8 +350,13 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
             // stream...
             App::PropertyContainer* father = this->getContainer();
             if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-                App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
+<<<<<<< 51e23d854e59ab0a23a9ea9b19e74e5f02753d82
+                App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                 Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
+=======
+                App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(father);
+                Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n", 
+>>>>>>> Introduce extensions and port App groups
                     fi.filePath().c_str(),obj->Label.getValue());
             }
             else {
