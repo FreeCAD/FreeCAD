@@ -289,7 +289,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         return QString::fromLatin1("FreeCAD.getDocument(\"%1\").%2").arg(docName).arg(propName);
     }
     if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
+        App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(parent);
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromLatin1(obj->getNameInDocument());
@@ -3375,7 +3375,7 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
         // no object assigned
         // the document name
         if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
+            App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(c);
             list << QString::fromLatin1(obj->getDocument()->getName());
         }
         else {
@@ -3389,7 +3389,7 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
 
     // the name of this object
     if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
+        App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(c);
         list << QString::fromLatin1(obj->getNameInDocument());
     }
     else {

@@ -97,7 +97,7 @@ bool ViewProviderPart::doubleClicked(void)
 bool ViewProviderPart::canDropObject(App::DocumentObject* obj) const {
     
     //it is not allowed to have any part or assembly object within a part, hence we exclude origin groups
-    if(obj->isDerivedFrom(App::OriginGroup::getClassTypeId()))
+    if(obj->hasExtension(App::OriginGroupExtension::getClassTypeId()))
         return false;
     
     return Gui::ViewProvider::canDropObject(obj);

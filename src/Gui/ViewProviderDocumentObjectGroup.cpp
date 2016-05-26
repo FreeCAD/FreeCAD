@@ -216,7 +216,7 @@ void ViewProviderDocumentObjectGroup::drop(const std::vector<const App::Document
     for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it) {
         // get document object
         const App::DocumentObject* obj = *it;
-        const App::DocumentObjectGroup* par = App::DocumentObjectGroup::getGroupOfObject(obj);
+        const App::DocumentObject* par = App::DocumentObjectGroup::getGroupOfObject(obj);
         if (par) {
             // allow an object to be in one group only
             QString cmd;

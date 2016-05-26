@@ -27,21 +27,23 @@
 #include "FeaturePython.h"
 #include "DocumentObject.h"
 #include "PropertyLinks.h"
+#include "Extension.h"
 #include <vector>
 
 
 namespace App
 {
-class DocumentObjectGroupPy;
+class DocumentObjectGroup;
+class GroupExtensionPy;
 
-class AppExport DocumentObjectGroup : public DocumentObject
+class AppExport GroupExtension : public Extension
 {
-    PROPERTY_HEADER(App::DocumentObjectGroup);
+    PROPERTY_HEADER(App::GroupExtension);
 
 public:
     /// Constructor
-    DocumentObjectGroup(void);
-    virtual ~DocumentObjectGroup();
+    GroupExtension(void);
+    virtual ~GroupExtension();
 
     /** @name Object handling  */
     //@{
@@ -72,7 +74,7 @@ public:
      * Checks whether this group object is a child (or sub-child)
      * of the given group object.
      */
-    bool isChildOf(const DocumentObjectGroup*) const;
+    bool isChildOf(const GroupExtension*) const;
     /** Returns a list of all objects this group does have.
      */
     std::vector<DocumentObject*> getObjects() const;
@@ -85,20 +87,32 @@ public:
     /** Returns the object group of the document which the given object \a obj is part of.
      * In case this object is not part of a group 0 is returned.
      */
-    static DocumentObjectGroup* getGroupOfObject(const DocumentObject* obj);
+    static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "Gui::ViewProviderDocumentObjectGroup";
-    }
-    virtual PyObject *getPyObject(void);
 
     /// Properties
     PropertyLinkList Group;
 
 private:
     void removeObjectFromDocument(DocumentObject*);
+};
+
+//no virtual functions to override, simple derivative is enough
+typedef App::ExtensionPython<App::GroupExtension> GroupExtensionPython;
+
+class DocumentObjectGroup : public DocumentObject, public GroupExtension {
+    
+    PROPERTY_HEADER(App::DocumentObjectGroup);
+    
+public:
+    /// Constructor
+    DocumentObjectGroup(void);
+    virtual ~DocumentObjectGroup();
+    
+    /// returns the type name of the ViewProvider
+    virtual const char* getViewProviderName(void) const {
+        return "Gui::ViewProviderDocumentObjectGroup";
+    };
 };
 
 typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;
