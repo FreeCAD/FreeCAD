@@ -56,6 +56,11 @@
             <string>Building Euro (cm/m²/m³)</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Building US (ft-in/sqft/cuft)</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
