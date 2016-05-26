@@ -3585,10 +3585,12 @@ class _ViewProviderDimension(_ViewProviderDraft):
             su = True
             if hasattr(obj.ViewObject,"ShowUnit"):
                 su = obj.ViewObject.ShowUnit
-            
             # set text value
             l = self.p3.sub(self.p2).Length
-            if hasattr(obj.ViewObject,"Decimals"):
+            # special representation if "Building US" scheme
+            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0) == 5:
+                self.string = FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString
+            elif hasattr(obj.ViewObject,"Decimals"):
                 self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
             else:
                 self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su)
