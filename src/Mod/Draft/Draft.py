@@ -4584,19 +4584,22 @@ class _BSpline(_DraftObject):
         _DraftObject.__init__(self,obj,"BSpline")
         obj.addProperty("App::PropertyVectorList","Points","Draft", "The points of the b-spline")
         obj.addProperty("App::PropertyBool","Closed","Draft","If the b-spline is closed or not")
-        obj.addProperty("App::PropertyInteger","Parameterization","Draft","Parameterization factor")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this spline is closed")
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Points = []
-        obj.Parameterization = 100
-        self.knotSeq = []
+        self.assureProperties(obj)
 
-    def parameterization (self, pts, fac, closed):
+    def assureProperties(self, obj): # for Compatibility with older versions
+        if not hasattr(obj, "Parameterization"):
+            obj.addProperty("App::PropertyFloat","Parameterization","Draft","Parameterization factor")
+            obj.Parameterization = 1.0
+            self.knotSeq = []
+
+    def parameterization (self, pts, a, closed):
         # Computes a knot Sequence for a set of points
-        # fac (0-100) : parameterization factor
-        # fac = 0 -> Uniform / fac=50 -> Centripetal / fac=100 -> Chord-Length
-        a = 1. * fac / 100.
+        # fac (0-1) : parameterization factor
+        # fac=0 -> Uniform / fac=0.5 -> Centripetal / fac=1.0 -> Chord-Length
         if closed: # we need to add the first point as the end point
             pts.append(pts[0])
         params = [0]
@@ -4608,17 +4611,15 @@ class _BSpline(_DraftObject):
 
     def onChanged(self, fp, prop):
         if prop == "Parameterization":
-            if fp.Parameterization < 0:
+            if fp.Parameterization < 0.:
                 fp.Parameterization = 0.
-            if fp.Parameterization > 100:
-                fp.Parameterization = 100
-            self.knotSeq = self.parameterization(fp.Points, fp.Parameterization, fp.Closed)
-        if prop == "Closed":
-            self.knotSeq = self.parameterization(fp.Points, fp.Parameterization, fp.Closed)
+            if fp.Parameterization > 1.0:
+                fp.Parameterization = 1.0
 
     def execute(self, obj):
         import Part
         from DraftTools import msg,translate
+        self.assureProperties(obj)
         if obj.Points:
             self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
             plm = obj.Placement
