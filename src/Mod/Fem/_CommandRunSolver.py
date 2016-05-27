@@ -54,7 +54,7 @@ class _CommandRunSolver(FemCommands):
         if FreeCADGui.Selection.getSelection()[0].SolverType == "FemSolverCalculix":
             import FemToolsCcx
             self.fea = FemToolsCcx.FemToolsCcx()
-            self.fea.reset_all()
+            self.fea.reset_mesh_purge_results_checked()
             message = self.fea.check_prerequisites()
             if message:
                 QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
@@ -64,7 +64,7 @@ class _CommandRunSolver(FemCommands):
         elif FreeCADGui.Selection.getSelection()[0].SolverType == "FemSolverZ88":
             import FemToolsZ88
             self.fea = FemToolsZ88.FemToolsZ88()
-            self.fea.reset_all()
+            self.fea.reset_mesh_purge_results_checked()
             message = self.fea.check_prerequisites()
             if message:
                 QtGui.QMessageBox.critical(None, "Missing prerequisite", message)

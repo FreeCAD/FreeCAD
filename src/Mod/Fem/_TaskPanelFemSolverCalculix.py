@@ -142,7 +142,7 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         fea = FemToolsCcx.FemToolsCcx()
-        fea.reset_all()
+        fea.reset_mesh_purge_results_checked()
         fea.inp_file_name = self.inp_file_name
         QApplication.setOverrideCursor(Qt.WaitCursor)
         fea.load_results()

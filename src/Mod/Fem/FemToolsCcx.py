@@ -194,12 +194,11 @@ class FemToolsCcx(FemTools.FemTools):
         import ccxFrdReader
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
         if os.path.isfile(frd_result_file):
-            ccxFrdReader.importFrd(frd_result_file, self.analysis)
+            result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
+            ccxFrdReader.importFrd(frd_result_file, self.analysis, result_name_prefix)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
-                    self.result_object = m
-            if self.result_object:
-                self.results_present = True
+                    self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
 

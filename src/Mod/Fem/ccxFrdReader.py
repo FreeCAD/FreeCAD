@@ -305,7 +305,7 @@ def calculate_von_mises(i):
     return vm_stress
 
 
-def importFrd(filename, analysis=None):
+def importFrd(filename, analysis=None, result_name_prefix=None):
     m = readResult(filename)
     mesh_object = None
     if(len(m['Nodes']) > 0):
@@ -341,9 +341,9 @@ def importFrd(filename, analysis=None):
         for result_set in m['Results']:
             eigenmode_number = result_set['number']
             if eigenmode_number > 0:
-                results_name = 'Mode_' + str(eigenmode_number) + '_results'
+                results_name = result_name_prefix + 'mode_' + str(eigenmode_number) + '_results'
             else:
-                results_name = 'Results'
+                results_name = result_name_prefix + 'results'
             results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
             for m in analysis_object.Member:
                 if m.isDerivedFrom("Fem::FemMeshObject"):
