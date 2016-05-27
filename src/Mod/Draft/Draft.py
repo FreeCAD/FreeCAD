@@ -4590,18 +4590,47 @@ class _BSpline(_DraftObject):
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Points = []
+        self.assureProperties(obj)
+
+    def assureProperties(self, obj): # for Compatibility with older versions
+        if not hasattr(obj, "Parameterization"):
+            obj.addProperty("App::PropertyFloat","Parameterization","Draft","Parameterization factor")
+            obj.Parameterization = 1.0
+            self.knotSeq = []
+
+    def parameterization (self, pts, a, closed):
+        # Computes a knot Sequence for a set of points
+        # fac (0-1) : parameterization factor
+        # fac=0 -> Uniform / fac=0.5 -> Centripetal / fac=1.0 -> Chord-Length
+        if closed: # we need to add the first point as the end point
+            pts.append(pts[0])
+        params = [0]
+        for i in range(1,len(pts)):
+            p = pts[i].sub(pts[i-1])
+            pl = pow(p.Length,a)
+            params.append(params[-1] + pl)
+        return params
+
+    def onChanged(self, fp, prop):
+        if prop == "Parameterization":
+            if fp.Parameterization < 0.:
+                fp.Parameterization = 0.
+            if fp.Parameterization > 1.0:
+                fp.Parameterization = 1.0
 
     def execute(self, obj):
         import Part
         from DraftTools import msg,translate
+        self.assureProperties(obj)
         if obj.Points:
+            self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
             plm = obj.Placement
             if obj.Closed and (len(obj.Points) > 2):
                 if obj.Points[0] == obj.Points[-1]:  # should not occur, but OCC will crash 
                     msg(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.\n"), "error")
                     return
                 spline = Part.BSplineCurve()
-                spline.interpolate(obj.Points, True)
+                spline.interpolate(obj.Points, PeriodicFlag = True, Parameters = self.knotSeq)
                 # DNC: bug fix: convert to face if closed
                 shape = Part.Wire(spline.toShape())
                 # Creating a face from a closed spline cannot be expected to always work
@@ -4617,7 +4646,7 @@ class _BSpline(_DraftObject):
                 obj.Shape = shape
             else:   
                 spline = Part.BSplineCurve()
-                spline.interpolate(obj.Points, False)
+                spline.interpolate(obj.Points, PeriodicFlag = False, Parameters = self.knotSeq)
                 obj.Shape = spline.toShape()
             obj.Placement = plm
         obj.positionBySupport()
