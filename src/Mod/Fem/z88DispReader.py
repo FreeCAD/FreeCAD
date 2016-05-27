@@ -53,7 +53,7 @@ def insert(filename, docname):
     import_z88_disp(filename)
 
 
-def import_z88_disp(filename, analysis=None):
+def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM Result object in the ActiveDocument
     '''
     m = read_z88_disp(filename)
@@ -67,7 +67,7 @@ def import_z88_disp(filename, analysis=None):
             analysis_object = analysis  # see if statement few lines later, if not analysis -> no FemMesh object is created !
 
         for result_set in m['Results']:
-            results_name = 'Results'
+            results_name = result_name_prefix + 'results'
             results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
             for m in analysis_object.Member:
                 if m.isDerivedFrom("Fem::FemMeshObject"):

@@ -76,6 +76,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.mesh.ViewObject.ElementColor = {}
             self.mesh.ViewObject.setNodeColorByScalars()
 
+    ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
+    #  @param self The python object self
+    def reset_mesh_purge_results_checked(self):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
+        if not keep_results_on_rerun:
+            self.purge_results()
+        self.reset_mesh_color()
+        self.reset_mesh_deformation()
+
     ## Resets mesh color, deformation and removes all result objects
     #  @param self The python object self
     def reset_all(self):
@@ -96,6 +106,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.reset_mesh_color()
             return
         if self.result_object:
+            if self.result_object.Mesh.ViewObject.Visibility is False:
+                self.result_object.Mesh.ViewObject.Visibility = True
             if result_type == "Sabs":
                 values = self.result_object.StressValues
             elif result_type == "Uabs":
@@ -362,13 +374,31 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # Update inp file name
         self.set_inp_file_name()
 
+    ## Set the analysis result object
+    #  if no result object is provided, check if the analysis has result objects
+    #  if the analysis has exact one result object use this result object
+    #  @param self The python object self
+    #  @param result object name
     def use_results(self, results_name=None):
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
-                self.result_object = m
-                break
-        if not self.result_object:
-            raise Exception("{} doesn't exist".format(results_name))
+        self.result_object = None
+        if results_name is not None:
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
+                    self.result_object = m
+                    break
+            if not self.result_object:
+                raise Exception("{} doesn't exist".format(results_name))
+        else:
+            has_results = False
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject"):
+                    self.result_object = m
+                    if has_results is True:
+                        self.result_object = None
+                        raise Exception("No result name was provided, but more than one result objects in the analysis.")
+                    has_results = True
+            if not self.result_object:
+                raise Exception("No result object found in the analysis")
 
     ## Returns minimum, average and maximum value for provided result type
     #  @param self The python object self

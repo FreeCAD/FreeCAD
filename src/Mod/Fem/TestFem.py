@@ -243,7 +243,6 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM frd file read from static analysis...')
         fea.load_results()
-        fcc_print('Result object created as \"{}\"'.format(fea.result_object.Name))
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
@@ -293,8 +292,6 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM frd file read from frequency analysis...')
         fea.load_results()
-
-        fcc_print('Last result object created as \"{}\"'.format(fea.result_object.Name))
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')
