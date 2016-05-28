@@ -80,12 +80,12 @@ void Measurement::clear()
     measureType = Invalid;
 }
 
-bool Measurement::hasReferences()
+bool Measurement::has3DReferences()
 {
     return (References3D.getSize() > 0);
 }
 
-/// Convenience Methods for adding points
+///add a 3D reference (obj+sub) to end of list
 int Measurement::addReference3D(App::DocumentObject *obj, const char* subName)
 {
   std::vector<App::DocumentObject*> objects = References3D.getValues();

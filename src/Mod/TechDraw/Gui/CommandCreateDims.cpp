@@ -186,7 +186,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
                                                           ,contentStr.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    dim->References.setValues(objs, subs);
+    dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
 
@@ -272,7 +272,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = 'r%%value%%'", FeatName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    dim->References.setValues(objs, subs);
+    dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
 
@@ -359,7 +359,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\u00d8%%value%%'", FeatName.c_str());   // \u00d8 is Capital O with stroke
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    dim->References.setValues(objs, subs);
+    dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
 
@@ -450,7 +450,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        , "Distance");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    dim->References.setValues(objs, subs);
+    dim->References2D.setValues(objs, subs);
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
@@ -541,7 +541,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
                                                        ,"DistanceX");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    dim->References.setValues(objs, subs);
+    dim->References2D.setValues(objs, subs);
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
@@ -631,7 +631,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"DistanceY");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    dim->References.setValues(objs, subs);
+    dim->References2D.setValues(objs, subs);
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
 
@@ -713,7 +713,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
                                                           ,"%value%\u00b0");        // \u00b0 is degree sign
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    dim->References.setValues(objs, subs);
+    dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
 
@@ -782,17 +782,14 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
 
     if (!page || !obj3D) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr("Can't link a dimension from this selection"));
+                                                   QObject::tr("Can't link a dimension to this selection"));
         return;
     }
 
     // dialog to select the Dimension to link
     Gui::Control().showDialog(new TaskDlgLinkDim(obj3D,subs,page));
 
-    //openCommand("Link Dimension");
-    //commitCommand();
-    page->getDocument()->recompute();
-
+    page->getDocument()->recompute();                                  //still need to recompute in Gui. why?
 }
 
 bool CmdTechDrawLinkDimension::isActive(void)

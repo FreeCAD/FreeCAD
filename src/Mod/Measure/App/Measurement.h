@@ -55,10 +55,10 @@ public:
     ~Measurement();
 
     void clear();
-    bool hasReferences();
+    bool has3DReferences();
 
     /// Add a reference
-    int addReference3D(App::DocumentObject *obj, const char *subName);
+    int addReference3D(App::DocumentObject* obj, const char *subName);
 
     MeasureType getType();
 
