@@ -57,7 +57,6 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
-#include "ViewProviderPage.h"
 
 #include "QGIDrawingTemplate.h"
 #include "QGISVGTemplate.h"

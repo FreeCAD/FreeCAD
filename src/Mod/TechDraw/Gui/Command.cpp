@@ -79,19 +79,19 @@ using namespace std;
 //TODO: code is duplicated in CommandCreateDims and CommandDecorate
 TechDraw::DrawPage* _findPage(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page = 0;
     //check if a DrawPage is currently displayed
-    Gui::MainWindow* w = Gui::getMainWindow();
-    Gui::MDIView* mv = w->activeWindow();
-    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+    auto mdiView( Gui::getMainWindow()->activeWindow() );
+    auto mvp( dynamic_cast<MDIViewPage *>(mdiView) );
     if (mvp) {
-        QGVPage* qp = mvp->getQGVPage();
-        page = qp->getDrawPage();
+        return mvp->getQGVPage()->getDrawPage();
     } else {
+        TechDraw::DrawPage* page(nullptr);
+
         //DrawPage not displayed, check Selection and/or Document for a DrawPage
-        std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        auto drawPageType( TechDraw::DrawPage::getClassTypeId() );
+        auto selPages( cmd->getSelection().getObjectsOfType(drawPageType) );
         if (selPages.empty()) {                                            //no page in selection
-            selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+            selPages = cmd->getDocument()->getObjectsOfType(drawPageType);
             if (selPages.empty()) {                                        //no page in document
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
                                      QObject::tr("Create a page first."));
@@ -108,10 +108,11 @@ TechDraw::DrawPage* _findPage(Gui::Command* cmd)
                                  QObject::tr("Select exactly 1 page."));
             return page;
         } else {                                                           //use only page in selection
-            page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+            page = dynamic_cast<TechDraw::DrawPage *>(selPages.front());
         }
+
+        return page;
     }
-    return page;
 }
 
 bool isDrawingPageActive(Gui::Document *doc)

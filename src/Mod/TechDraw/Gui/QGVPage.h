@@ -25,6 +25,8 @@
 
 #include <QGraphicsView>
 
+#include "ViewProviderPage.h"
+
 namespace TechDraw {
 class DrawViewPart;
 class DrawProjGroup;
@@ -44,7 +46,6 @@ class QGIView;
 class QGIViewDimension;
 class QGITemplate;
 class QGIHatch;
-class ViewProviderPage;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -83,7 +84,7 @@ public:
     void removeTemplate();
 
     /// Getter for DrawPage feature
-    TechDraw::DrawPage * getDrawPage() { return pageFeat; }
+    TechDraw::DrawPage * getDrawPage() { return pageGui->getPageObject(); }
 
     void toggleEdit(bool enable);
 
@@ -112,7 +113,6 @@ private:
     RendererType m_renderer;
 
     bool drawBkg;
-    TechDraw::DrawPage *pageFeat;
     QGraphicsRectItem *m_backgroundItem;
     QGraphicsRectItem *m_outlineItem;
     QBrush *bkgBrush;
