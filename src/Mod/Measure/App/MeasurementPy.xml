@@ -19,6 +19,11 @@
         <UserDocu>add a geometric reference</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="has3DReferences">
+      <Documentation>
+        <UserDocu>does Measurement have links to 3D geometry</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="clear">
       <Documentation>
         <UserDocu>measure the difference between references to obtain resultant vector</UserDocu>

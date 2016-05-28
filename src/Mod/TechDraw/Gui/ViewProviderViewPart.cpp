@@ -94,7 +94,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
           if((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
               TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-              const std::vector<App::DocumentObject *> &refs = dim->References.getValues();
+              const std::vector<App::DocumentObject *> &refs = dim->References2D.getValues();
               for(std::vector<App::DocumentObject *>::const_iterator it = refs.begin(); it != refs.end(); ++it) {
                   if(strcmp(getViewPart()->getNameInDocument(), (*it)->getNameInDocument()) == 0) {        //wf: isn't this test redundant?
                      temp.push_back(dim);                                                                  // if a dim is in the inlist,

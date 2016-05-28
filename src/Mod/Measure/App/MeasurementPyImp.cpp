@@ -84,6 +84,19 @@ PyObject* MeasurementPy::addReference3D(PyObject *args)
     Py_Return;
 }
 
+PyObject* MeasurementPy::has3DReferences(PyObject *args)
+{
+    PyObject *result=Py_False;
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    if (getMeasurementPtr()->has3DReferences()) {
+        result = Py_True;
+    }
+
+    return result;
+}
+
 PyObject* MeasurementPy::clear(PyObject *)
 {
     this->getMeasurementPtr()->clear();

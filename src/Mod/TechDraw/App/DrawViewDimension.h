@@ -47,7 +47,8 @@ public:
 
     App::PropertyEnumeration MeasureType;                              //True/Projected
     App::PropertyVector ProjDirection;                                 //??why would dim have different projDir from View?
-    App::PropertyLinkSubList References;                               //Points to Projection SubFeatures
+    App::PropertyLinkSubList References2D;                             //Points to Projection SubFeatures
+    App::PropertyLinkSubList References3D;                             //Points to 3D Geometry SubFeatures
     App::PropertyEnumeration Type;                                     //DistanceX,DistanceY,Diameter, etc
     App::PropertyVector XAxisDirection;                                //??always equal to View??
 
@@ -61,7 +62,8 @@ public:
     //TODO: do we need a property for the actual dimension value? how else to access from Py?
 
     short mustExecute() const;
-    bool hasReferences(void) const;
+    bool has2DReferences(void) const;
+    bool has3DReferences(void) const;
 
     /** @name methods overide Feature */
     //@{
@@ -79,17 +81,17 @@ public:
     virtual std::string getFormatedValue() const;
     virtual double getDimValue() const;
     DrawViewPart* getViewPart() const;
-    void setMeasurement(DocumentObject* obj, std::vector<std::string>& subElements) const;
-    void clearMeasurements(void);
 
 protected:
     void onChanged(const App::Property* prop);
+    virtual void onDocumentRestored();
     int getIndexFromName(std::string geomName) const;
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
-    int get3DRef(int refIndex, std::string geomType) const;
 
 protected:
     Measure::Measurement *measurement;
+    void set3DMeasurement(DocumentObject* const &obj, const std::vector<std::string>& subElements);
+    void clear3DMeasurements(void);
     double dist2Segs(Base::Vector2D s1,
                      Base::Vector2D e1,
                      Base::Vector2D s2,
@@ -97,7 +99,7 @@ protected:
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
-    void dumpRefs(char* text) const;
+    void dumpRefs2D(char* text) const;
 };
 
 } //namespace TechDraw

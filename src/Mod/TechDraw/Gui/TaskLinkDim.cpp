@@ -94,7 +94,7 @@ void TaskLinkDim::loadAvailDims()
     for (; itView != pageViews.end(); itView++) {
         if ((*itView)->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
             TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>((*itView));
-            if (dim->References.getValues().size() == m_subs.size()) {
+            if (dim->References2D.getValues().size() == m_subs.size()) {
                 QString label = QString::fromUtf8((*itView)->Label.getValue());
                 QString name = QString::fromUtf8((*itView)->getNameInDocument());
                 QString tooltip = label + QString::fromUtf8(" / ") + name;
@@ -117,13 +117,17 @@ void TaskLinkDim::updateDims()
     if (count == 0) {
         return;
     }
-    for (int i=0; i<count; i++) {
-        QTreeWidgetItem* child = ui->selector->selectedTreeWidget()->topLevelItem(i);
+    for (int iDim=0; iDim<count; iDim++) {
+        QTreeWidgetItem* child = ui->selector->selectedTreeWidget()->topLevelItem(iDim);
         QString name = child->data(0, Qt::UserRole).toString();
         App::DocumentObject* obj = m_page->getDocument()->getObject(name.toStdString().c_str());
         TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(obj);
-        dim->clearMeasurements();
-        dim->setMeasurement(m_part,m_subs);
+        std::vector<App::DocumentObject*> parts;
+        for (unsigned int iPart = 0; iPart < m_subs.size(); iPart++) {
+            parts.push_back(m_part);
+        }
+        dim->References3D.setValues(parts,m_subs);
+        //dim->setMeasurement(m_part,m_subs);
         dim->MeasureType.setValue("True");
     }
 }

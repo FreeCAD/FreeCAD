@@ -84,7 +84,8 @@ DrawViewDimension::DrawViewDimension(void)
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
 
-    ADD_PROPERTY_TYPE(References,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Supporting References");
+    ADD_PROPERTY_TYPE(References2D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
+    ADD_PROPERTY_TYPE(References3D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"3D Geometry References");
     ADD_PROPERTY_TYPE(Precision,(2)   ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Precision");
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Dimension",App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(4)    ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
@@ -99,22 +100,12 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(MeasureType, ((long)0));                           //True or Projected measurement
 
     //hide the DrawView properties that don't apply to Dimensions
-    //App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
-    //int bitReadOnly = 2;
-    //int bitHidden = 3;
-    //ScaleType.StatusBits.set(bitReadOnly, true);
-    //ScaleType.StatusBits.set(bitHidden, true);
-    //Scale.StatusBits.set(bitReadOnly, true);
-    //Scale.StatusBits.set(bitHidden,true);
-    //Rotation.StatusBits.set(bitReadOnly, true);
-    //Rotation.StatusBits.set(bitHidden, true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::Hidden,true);
     Scale.setStatus(App::Property::ReadOnly,true);
     Scale.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::ReadOnly,true);
     Rotation.setStatus(App::Property::Hidden,true);
-    //TODO: hide Dimension X,Y?
 
     measurement = new Measure::Measurement();
 }
@@ -128,7 +119,7 @@ DrawViewDimension::~DrawViewDimension()
 void DrawViewDimension::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &References  ||
+        if (prop == &References2D  ||
             prop == &Precision   ||
             prop == &Font        ||
             prop == &Fontsize    ||
@@ -142,7 +133,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         }
         if (prop == &MeasureType) {
-            if (MeasureType.isValue("True") && !measurement->hasReferences()) {
+            if (MeasureType.isValue("True") && !measurement->has3DReferences()) {
                 Base::Console().Warning("Dimension %s missing Reference to 3D model. Must be Projected.\n", getNameInDocument());
                 MeasureType.setValue("Projected");
             }
@@ -153,14 +144,29 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             catch (...) {
             }
         }
+        if (prop == &References3D) {                                       //have to rebuild the Measurement object
+            clear3DMeasurements();
+            set3DMeasurement(References3D.getValues().at(0),References3D.getSubValues());
+        }
+
     DrawView::onChanged(prop);
     }
+
 }
+
+void DrawViewDimension::onDocumentRestored()
+{
+    if (has3DReferences()) {
+        clear3DMeasurements();
+        set3DMeasurement(References3D.getValues().at(0),References3D.getSubValues());
+    }
+}
+
 
 short DrawViewDimension::mustExecute() const
 {
     bool result = 0;
-    if (References.isTouched() ||
+    if (References2D.isTouched() ||
         Type.isTouched() ||
         MeasureType.isTouched()) {
         result =  1;
@@ -172,7 +178,7 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 {
-    if (!hasReferences()) {                                            //too soon
+    if (!has2DReferences()) {                                            //too soon
         return App::DocumentObject::StdReturn;
     }
 
@@ -214,7 +220,7 @@ std::string  DrawViewDimension::getFormatedValue() const
 double DrawViewDimension::getDimValue() const
 {
     double result = 0.0;
-    if (!hasReferences()) {                                            //happens during Dimension creation
+    if (!has2DReferences()) {                                            //happens during Dimension creation
         Base::Console().Message("INFO - DVD::getDimValue - Dimension has no References\n");
         return result;
     }
@@ -226,7 +232,7 @@ double DrawViewDimension::getDimValue() const
 
     if (MeasureType.isValue("True")) {
         // True Values
-        if (!measurement->hasReferences()) {
+        if (!measurement->has3DReferences()) {
             return result;
         }
         if(Type.isValue("Distance")) {
@@ -251,8 +257,8 @@ double DrawViewDimension::getDimValue() const
         }
     } else {
         // Projected Values
-        const std::vector<App::DocumentObject*> &objects = References.getValues();
-        const std::vector<std::string> &subElements      = References.getSubValues();
+        const std::vector<App::DocumentObject*> &objects = References2D.getValues();
+        const std::vector<std::string> &subElements      = References2D.getSubValues();
         if (Type.isValue("Distance") && getRefType() == oneEdge) {
             //TODO: Check for straight line Edge?
             int idx = DrawUtil::getIndexFromName(subElements[0]);
@@ -397,13 +403,13 @@ DrawViewPart* DrawViewDimension::getViewPart() const
 {
     //TODO: range_check here if no References.  valid situation during Dimension creation.  what happens if return NULL??
     //need checks everywhere?
-    return dynamic_cast<TechDraw::DrawViewPart * >(References.getValues().at(0));
+    return dynamic_cast<TechDraw::DrawViewPart * >(References2D.getValues().at(0));
 }
 
 int DrawViewDimension::getRefType() const
 {
     int refType = invalidRef;
-    const std::vector<std::string> &subElements      = References.getSubValues();
+    const std::vector<std::string> &subElements      = References2D.getSubValues();
     if ((subElements.size() == 1) &&
         (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge")) {
         refType = oneEdge;
@@ -421,9 +427,9 @@ int DrawViewDimension::getRefType() const
 }
 
 //!add 1 3D measurement Reference
-void DrawViewDimension::setMeasurement(DocumentObject* obj, std::vector<std::string>& subElements) const
+void DrawViewDimension::set3DMeasurement(DocumentObject* const &obj, const std::vector<std::string>& subElements)
 {
-   std::vector<std::string>::iterator itSub = subElements.begin();
+   std::vector<std::string>::const_iterator itSub = subElements.begin();
    for (; itSub != subElements.end(); itSub++) {
        //int rc =
        static_cast<void> (measurement->addReference3D(obj,(*itSub).c_str()));
@@ -431,28 +437,16 @@ void DrawViewDimension::setMeasurement(DocumentObject* obj, std::vector<std::str
 }
 
 //delete all previous measurements
-void DrawViewDimension::clearMeasurements()
+void DrawViewDimension::clear3DMeasurements()
 {
     measurement->clear();
 }
 
-int DrawViewDimension::get3DRef(int refIndex, std::string geomType) const
-{
-    int ref = -1;
-    if (geomType.compare("Edge") == 0) {
-        ref = getViewPart()->getEdgeRefByIndex(refIndex);
-    } else if (geomType.compare("Vertex") == 0) {
-        ref = getViewPart()->getVertexRefByIndex(refIndex);
-    }
-    return ref;
-}
-
-
-void DrawViewDimension::dumpRefs(char* text) const
+void DrawViewDimension::dumpRefs2D(char* text) const
 {
     Base::Console().Message("DUMP - %s\n",text);
-    const std::vector<App::DocumentObject*> &objects = References.getValues();
-    const std::vector<std::string> &subElements = References.getSubValues();
+    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
+    const std::vector<std::string> &subElements = References2D.getSubValues();
     std::vector<App::DocumentObject*>::const_iterator objIt = objects.begin();
     std::vector<std::string>::const_iterator subIt = subElements.begin();
     int i = 0;
@@ -493,9 +487,14 @@ double DrawViewDimension::dist2Segs(Base::Vector2D s1,
     return minDist;
 }
 
-bool DrawViewDimension::hasReferences(void) const
+bool DrawViewDimension::has2DReferences(void) const
 {
-    return (References.getSize() > 0);
+    return (References2D.getSize() > 0);
+}
+
+bool DrawViewDimension::has3DReferences(void) const
+{
+    return (References3D.getSize() > 0);
 }
 
 PyObject *DrawViewDimension::getPyObject(void)

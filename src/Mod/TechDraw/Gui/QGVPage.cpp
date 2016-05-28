@@ -312,10 +312,10 @@ QGIView * QGVPage::findParent(QGIView *view) const
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(myView);
 
     if(dim) {
-        std::vector<App::DocumentObject *> objs = dim->References.getValues();
+        std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
 
         if(objs.size() > 0) {
-            std::vector<App::DocumentObject *> objs = dim->References.getValues();
+            std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
             // Attach the dimension to the first object's group
             for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
                 TechDraw::DrawView *viewObj = (*it)->getViewObject();
