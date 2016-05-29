@@ -71,8 +71,8 @@ private Q_SLOTS:
     void onReversed(bool);
 
 protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void changeEvent(QEvent *e);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void changeEvent(QEvent *e) override;
     const bool updateView() const;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
     double getAngle(void) const;
@@ -89,7 +89,6 @@ protected:
 private:
     void updateUI();
 
-private:
     QWidget* proxy;
     Ui_TaskRevolutionParameters* ui;    
 
