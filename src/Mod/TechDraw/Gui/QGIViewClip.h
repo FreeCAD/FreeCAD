@@ -47,12 +47,12 @@ public:
     ~QGIViewClip();
 
     enum {Type = QGraphicsItem::UserType + 123};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void updateView(bool update = false);
+    virtual void updateView(bool update = false) override;
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const;
+    virtual QRectF boundingRect() const override;
 
 Q_SIGNALS:
     void selected(bool state);
@@ -60,7 +60,7 @@ Q_SIGNALS:
 
 protected:
     void drawClip();
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     QGIView* getQGIVByName(std::string name);
 
 private:

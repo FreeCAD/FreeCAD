@@ -50,13 +50,13 @@ public:
     ~QGIViewSymbol();
 
     enum {Type = QGraphicsItem::UserType + 121};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    void updateView(bool update = false);
+    void updateView(bool update = false) override;
     void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const;
+    virtual QRectF boundingRect() const override;
 
 Q_SIGNALS:
     void hover(bool state);
@@ -66,7 +66,7 @@ protected:
     bool load(QByteArray *svgString);
     virtual void drawSvg();
     void symbolToSvg(QString qs);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGCustomSvg *m_svgItem;
     QSvgRenderer *m_svgRender;
