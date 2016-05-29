@@ -211,7 +211,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double
         if (feet > 0) {
             output << feet << "'";
             if ( (inches > 0) || (fraction > 0.0625) )
-                output << " - ";
+                output << " ";
         }
         // inches
         if (inches > 0) {
