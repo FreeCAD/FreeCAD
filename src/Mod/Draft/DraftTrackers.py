@@ -783,11 +783,13 @@ class gridTracker(Tracker):
 
     def update(self):
         "redraws the grid"
-        bound = (self.numlines/2)*self.space
+        # resize the grid to make sure it fits an exact pair number of main lines
+        numlines = self.numlines/self.mainlines/2*2*self.mainlines
+        bound = (numlines/2)*self.space
         pts = []
         mpts = []
         apts = []
-        for i in range(self.numlines+1):
+        for i in range(numlines+1):
             curr = -bound + i*self.space
             z = 0
             if i/float(self.mainlines) == i/self.mainlines:
@@ -809,6 +811,9 @@ class gridTracker(Tracker):
             midx.append(2)
         for ap in range(0,len(apts),2):
             aidx.append(2)
+        self.lines1.numVertices.deleteValues(0)
+        self.lines2.numVertices.deleteValues(0)
+        self.lines3.numVertices.deleteValues(0)
         self.coords1.point.setValues(pts)
         self.lines1.numVertices.setValues(idx)
         self.coords2.point.setValues(mpts)

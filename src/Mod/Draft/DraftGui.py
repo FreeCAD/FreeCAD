@@ -468,6 +468,15 @@ class DraftToolBar:
         self.currentViewButton = self._pushbutton("view", self.layout)
         self.resetPlaneButton = self._pushbutton("none", self.layout)
         self.isCopy = self._checkbox("isCopy",self.layout,checked=False)
+        gl = QtGui.QHBoxLayout()
+        self.layout.addLayout(gl)
+        self.gridLabel = self._label("gridLabel", gl)
+        self.gridValue = self._inputfield("gridValue", gl)
+        self.gridValue.setText(self.FORMAT % 0)
+        ml = QtGui.QHBoxLayout()
+        self.layout.addLayout(ml)
+        self.mainlineLabel = self._label("mainlineLabel", ml)
+        self.mainlineValue = self._spinbox("mainlineValue", ml)
 
         # spacer
         if not self.taskmode:
@@ -538,6 +547,8 @@ class DraftToolBar:
         QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("returnPressed()"),self.validateSString)
         QtCore.QObject.connect(self.chooserButton,QtCore.SIGNAL("pressed()"),self.pickFile)
         QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("returnPressed()"),self.validateFile)
+        QtCore.QObject.connect(self.gridValue,QtCore.SIGNAL("textEdited(QString)"),self.setGridSize)
+        QtCore.QObject.connect(self.mainlineValue,QtCore.SIGNAL("valueChanged(int)"),self.setMainline)
         
         # following lines can cause a crash and are not needed anymore when using the task panel
         # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
@@ -674,6 +685,10 @@ class DraftToolBar:
         self.labelSTrack.setText(translate("draft", "Tracking"))
         self.labelFFile.setText(translate("draft", "Full path to font file:"))
         self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
+        self.gridLabel.setText(translate("draft", "Grid spacing"))
+        self.gridValue.setToolTip(translate("draft", "The spacing between the grid lines"))
+        self.mainlineLabel.setText(translate("draft", "Main line every"))
+        self.mainlineValue.setToolTip(translate("draft", "The number of lines between main lines"))
         
         # Update the maximum width of the push buttons
         maxwidth = 66 # that's the default
@@ -753,6 +768,17 @@ class DraftToolBar:
         self.resetPlaneButton.show()
         self.offsetLabel.show()
         self.offsetValue.show()
+        self.gridLabel.show()
+        self.gridValue.show()
+        p = Draft.getParam("gridSpacing",1.0)
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0) == 5:
+            self.gridValue.setText(FreeCAD.Units.Quantity(p,FreeCAD.Units.Length).UserString)
+        else:
+            self.gridValue.setText(self.FORMAT % p)
+        self.mainlineLabel.show()
+        self.mainlineValue.show()
+        p = Draft.getParam("gridEvery",10)
+        self.mainlineValue.setValue(p)
         
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -896,6 +922,10 @@ class DraftToolBar:
             self.labelFFile.hide()
             self.FFileValue.hide()
             self.chooserButton.hide()
+            self.gridLabel.hide()
+            self.gridValue.hide()
+            self.mainlineLabel.hide()
+            self.mainlineValue.hide()
             
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
@@ -1100,6 +1130,24 @@ class DraftToolBar:
         FreeCADGui.Control.closeDialog()
         panel = TaskPanel(extra,callback)
         FreeCADGui.Control.showDialog(panel)
+        
+    def setGridSize(self,text):
+        "sets the Draft grid to the given grid size"
+        try:
+            q = FreeCAD.Units.Quantity(text)
+        except:
+            pass
+        else:
+            Draft.setParam("gridSpacing",q.Value)
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+                
+    def setMainline(self,val):
+        "sets the grid main lines"
+        if val > 1:
+            Draft.setParam("gridEvery",val)
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
 
 #---------------------------------------------------------------------------
 # Processing functions
