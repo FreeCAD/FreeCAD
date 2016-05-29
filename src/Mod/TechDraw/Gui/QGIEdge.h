@@ -77,7 +77,6 @@ protected:
 
 private:
     float strokeWidth;
-    float strokeScale;
     QPen m_pen;
     QColor m_colCurrent;
     QColor m_colNormal;

@@ -44,11 +44,7 @@
 using namespace TechDrawGui;
 
 QGIFace::QGIFace(int ref) :
-    reference(ref),
-    m_fill(Qt::NoBrush)
-    //m_fill(Qt::CrossPattern)
-    //m_fill(Qt::Dense3Pattern)
-    //m_fill(Qt::Dense6Pattern)
+    reference(ref)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);

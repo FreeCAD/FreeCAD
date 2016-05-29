@@ -524,7 +524,10 @@ void QGVPage::saveSvg(QString filename)
     //      resize all textItem before export?
     //      postprocess generated file to mult all font-size attrib by 2.835 to get pts?
     //      duplicate all textItems and only show the appropriate one for screen/print vs export?
-    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI
+
+// TODO: Was    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI
+    svgGen.setResolution(25);    // mm/inch??  docs say this is DPI
+
     //svgGen.setResolution(600);    // resulting page is ~12.5x9mm
     //svgGen.setResolution(96);     // page is ~78x55mm
     svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));

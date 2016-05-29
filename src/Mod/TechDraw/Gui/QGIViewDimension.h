@@ -43,6 +43,7 @@ namespace TechDrawGui
 class QGIDatumLabel : public QGCustomText
 {
 Q_OBJECT
+
 public:
     explicit QGIDatumLabel(int ref = -1, QGraphicsScene *scene = 0 );
     ~QGIDatumLabel() {}
@@ -69,13 +70,11 @@ protected:
     // Selection detection
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-protected:
     int reference;
     double posX;
     double posY;
 
 private:
-    int strokeWidth;
     QPen m_pen;
     QColor m_colNormal;
     QColor m_colPre;

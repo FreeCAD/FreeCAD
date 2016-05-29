@@ -47,13 +47,13 @@ public:
     ~QGIViewAnnotation();
 
     enum {Type = QGraphicsItem::UserType + 120};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    void updateView(bool update = false);
+    void updateView(bool update = false) override;
     void setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj);
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const;
+    virtual QRectF boundingRect() const override;
 
 Q_SIGNALS:
     void hover(bool state);
@@ -61,7 +61,7 @@ Q_SIGNALS:
 
 protected:
     void drawAnnotation();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 protected:
     QGCustomText *m_textItem;

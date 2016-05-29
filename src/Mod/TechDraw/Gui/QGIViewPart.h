@@ -52,18 +52,18 @@ public:
     ~QGIViewPart();
 
     enum {Type = QGraphicsItem::UserType + 102};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
 
-    void toggleCache(bool state);
+    void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
     void toggleVertices(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
-    virtual void updateView(bool update = false);
+    virtual void updateView(bool update = false) override;
     void tidy();
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const;
+    virtual QRectF boundingRect() const override;
 
 Q_SIGNALS:
     void selected(bool state);
@@ -91,9 +91,8 @@ protected:
     void drawViewPart();
     QGIFace* drawFace(TechDrawGeometry::Face* f);
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-protected:
     QColor m_colHid;
 
 private:

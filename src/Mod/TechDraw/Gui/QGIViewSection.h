@@ -46,9 +46,9 @@ public:
     ~QGIViewSection();
 
     virtual void draw() override;
-    void updateView(bool update = false);
+    void updateView(bool update = false) override;
     enum {Type = QGraphicsItem::UserType + 108};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
 Q_SIGNALS:
     void dirty();
