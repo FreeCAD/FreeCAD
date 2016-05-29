@@ -3589,7 +3589,8 @@ class _ViewProviderDimension(_ViewProviderDraft):
             l = self.p3.sub(self.p2).Length
             # special representation if "Building US" scheme
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0) == 5:
-                self.string = FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString
+                s = FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString
+                self.string = s.replace("' ","'- ")
             elif hasattr(obj.ViewObject,"Decimals"):
                 self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
             else:
