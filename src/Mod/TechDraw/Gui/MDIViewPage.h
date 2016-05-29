@@ -24,25 +24,16 @@
 #ifndef DRAWINGGUI_DRAWINGVIEW_H
 #define DRAWINGGUI_DRAWINGVIEW_H
 
-#include <Gui/MDIView.h>
-#include <Gui/Selection.h>
+#include "Gui/MDIView.h"
+#include "Gui/Selection.h"
 
-#include <QGraphicsView>
 #include <QPrinter>
 
 QT_BEGIN_NAMESPACE
-class QSlider;
 class QAction;
-class QActionGroup;
-class QFile;
-class QPopupMenu;
-class QToolBar;
-class QSvgWidget;
-class QScrollArea;
-class QPrinter;
 QT_END_NAMESPACE
+
 namespace TechDraw {
-class DrawPage;
 class DrawTemplate;
 }
 
@@ -61,14 +52,7 @@ public:
     MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = 0);
     virtual ~MDIViewPage();
 
-public Q_SLOTS:
-    void setRenderer(QAction *action);
-    void viewAll();
-    void saveSVG(void);
-    void selectionChanged();
-
-public:
-   /// Observer message from the Selection
+    /// Observer message from the Selection
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void preSelectionChanged(const QPoint &pos);
     void selectFeature(App::DocumentObject *obj, bool state);
@@ -94,6 +78,12 @@ public:
     PyObject* getPyObject();
 
     QGVPage* getQGVPage(void) {return m_view;};
+
+public Q_SLOTS:
+    void setRenderer(QAction *action);
+    void viewAll();
+    void saveSVG(void);
+    void selectionChanged();
 
 protected:
     void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
