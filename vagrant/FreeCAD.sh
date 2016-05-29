@@ -1,5 +1,5 @@
 #!/bin/bash
-# Vagrant provisioning script to build up FreeCAD based on OCCT 7 and Salome 7.7.1 on Linux Debian/Jessie64
+# Vagrant provisioning script to build up FreeCAD based on OCCT 7 and Salome 7.7.1 on Linux Ubuntu
 # (c) 2016 Jean-Marie Verdun / vejmarie (vejmarie@ruggedpod.qyshare.com)
 # Released under GPL v2.0
 # Provided without any warranty
@@ -38,10 +38,48 @@ mv $1-$2.deb $1-$2_trusty-amd64.deb
 cd $current_dir
 }
 
+# If we are running ubuntu we must know if we are under Xenial (latest release) or Trusty which
+# doesn't support the same package name
 
-
-sudo apt-get install -y dictionaries-common
-sudo apt-get install -y doxygen                          \
+is_ubuntu=`lsb_release -a | grep -i Distributor | awk '{ print $3}'`
+if [ "$is_ubuntu" == "Ubuntu" ]
+then
+	ubuntu_version=`lsb_release -a | grep -i codename | awk '{ print $2 }'`
+        if [ "$ubuntu_version" == "xenial" ]
+        then
+	package_list="         doxygen                          \
+                               libboost1.58-dev                 \
+                               libboost-filesystem1.58-dev      \
+                               libboost-program-options1.58-dev \
+                               libboost-python1.58-dev          \
+                               libboost-regex1.58-dev           \
+                               libboost-signals1.58-dev         \
+                               libboost-system1.58-dev          \
+                               libboost-thread1.58-dev          \
+                               libcoin80v5                      \
+                               libcoin80-dev                    \
+                               libeigen3-dev                    \
+                               libpyside-dev                    \
+                               libqtcore4                       \
+                               libshiboken-dev                  \
+                               libxerces-c-dev                  \
+                               libxmu-dev                       \
+                               libxmu-headers                   \
+                               libxmu6                          \
+                               libxmuu-dev                      \
+                               libxmuu1                         \
+                               pyside-tools                     \
+                               python-dev                       \
+                               python-pyside                    \
+                               python-matplotlib                \
+                               qt4-dev-tools                    \
+                               qt4-qmake                        \
+			       libqtwebkit-dev			\
+                               shiboken                         \
+                               swig"
+        else
+	ubuntu_version="unknown"
+	package_list="	       doxygen                          \
                                libboost1.55-dev                 \
                                libboost-filesystem1.55-dev      \
                                libboost-program-options1.55-dev \
@@ -69,7 +107,12 @@ sudo apt-get install -y doxygen                          \
                                qt4-dev-tools                    \
                                qt4-qmake                        \
                                shiboken                         \
-                               swig
+                               swig"
+       fi
+fi
+sudo apt-get update
+sudo apt-get install -y dictionaries-common
+sudo apt-get install -y $package_list
 sudo apt-get install -y python-pivy
 sudo apt-get install -y git
 sudo apt-get install -y cmake
@@ -97,7 +140,7 @@ cat <<EOF >& /tmp/lightdm.conf
 [SeatDefaults]
 user-session=xfce
 autologin-session=xfce
-autologin-user=vagrant
+autologin-user=ubuntu
 autologin-user-timeout=0
 greeter-session=xfce
 pam-service=lightdm-autologin
@@ -188,8 +231,27 @@ cmake ../FreeCAD -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DBUILD_FEM
 make -j 2
 make install
 create_deb FreeCAD 0.17 "netgen (>= 5.3.1), occt (>= 7.0), med (>= 3.10)"
+source_dir=`pwd`
 cd /tmp
 mkdir deb
 mv *.deb deb
 cd deb
 dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+
+if [ "$ubuntu_version" == "xenial ]
+then
+#Let's build the snap
+	mkdir snap
+	cd snap
+	cp -Rf $source_dir/FreeCAD/vagrant/Xenial
+	cd Xenial
+	./generate_yaml.sh
+	snapcraft
+	mv freecad_0.17_amd64.snap /tmp
+fi
+mkdir $source_dir/Results
+mv /tmp/*.deb $source_dir/Results
+if [ -f "/tmp/freecad_0.17_amd64.snap" ]
+then
+	mv /tmp/freecad_0.17_amd64.snap $source_dir/Results
+fi
