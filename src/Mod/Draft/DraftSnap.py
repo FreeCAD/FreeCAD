@@ -1061,7 +1061,10 @@ class Snapper:
             FreeCADGui.Snapper.off()
             self.ui.offUi()
             if callback:
-                callback(None)
+                if len(inspect.getargspec(callback).args) > 1:
+                    callback(None,None)
+                else:
+                    callback(None)
             
         # adding callback functions
         self.ui.pointUi(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
