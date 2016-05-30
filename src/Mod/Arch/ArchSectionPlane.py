@@ -314,6 +314,7 @@ class _ArchDrawingView:
         obj.addProperty("App::PropertyBool","ShowFill","Drawing view","If cut geometry is filled or not")
         obj.addProperty("App::PropertyFloat","LineWidth","Drawing view","The line width of the rendered objects")
         obj.addProperty("App::PropertyLength","FontSize","Drawing view","The size of the texts inside this object")
+        obj.addProperty("App::PropertyBool","AlwaysOn","Drawing view","If checked, source objects are displayed regardless of being visible in the 3D model")
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35
@@ -367,7 +368,11 @@ class _ArchDrawingView:
                 if obj.Source:
                     if obj.Source.Objects:
                         objs = Draft.getGroupContents(obj.Source.Objects,walls=True,addgroups=True)
-                        objs = Draft.removeHidden(objs)
+                        if hasattr(obj,"AlwaysOn"):
+                            if not obj.AlwaysOn:
+                                objs = Draft.removeHidden(objs)
+                        else:
+                            objs = Draft.removeHidden(objs)
                         # separate spaces
                         self.spaces = []
                         os = []

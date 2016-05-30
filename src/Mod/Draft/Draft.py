@@ -1705,8 +1705,8 @@ def getDXF(obj,direction=None):
     return result
 
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None):
-    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color]):
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None):
+    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
     returns a string containing a SVG representation of the given object,
     with the given linewidth and fontsize (used if the given object contains
     any text). You can also supply an arbitrary projection vector. the
@@ -1715,6 +1715,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     svg = ""
     linewidth = float(linewidth)/scale
     fontsize = (float(fontsize)/scale)/2
+    if linespacing:
+        linespacing = float(linespacing)/scale
+    else:
+        linespacing = 0.5
     pointratio = .75 # the number of times the dots are smaller than the arrow size
     plane = None
     if direction:
@@ -2108,9 +2112,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         n = obj.ViewObject.FontName
         a = obj.ViewObject.Rotation.getValueAs("rad")
         t = obj.LabelText
-        l = obj.ViewObject.LineSpacing/2.0
         j = obj.ViewObject.Justification
-        svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,l,j)
+        svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,linespacing,j)
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
@@ -2164,11 +2167,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         f1 = fontsize*scale
         p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
         p1 = p2.add(FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue()))
-        l = obj.ViewObject.LineSpacing/2.0
         j = obj.ViewObject.TextAlign
-        svg += getText(c,f1,n,a,getProj(p1),t1,l,j,flip=True)
+        svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
         if t2:
-            svg += getText(c,fontsize,n,a,getProj(p2),t2,l,j,flip=True)
+            svg += getText(c,fontsize,n,a,getProj(p2),t2,linespacing,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull(): 
@@ -4528,10 +4530,12 @@ class _DrawingView(_DraftObject):
         obj.addProperty("App::PropertyVector","Direction","Shape View","Projection direction")
         obj.addProperty("App::PropertyFloat","LineWidth","View Style","The width of the lines inside this object")
         obj.addProperty("App::PropertyLength","FontSize","View Style","The size of the texts inside this object")
+        obj.addProperty("App::PropertyLength","LineSpacing","View Style","The spacing between lines of text")
         obj.addProperty("App::PropertyColor","LineColor","View Style","The color of the projected objects")
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","FillStyle","View Style","Shape Fill Style")
         obj.addProperty("App::PropertyEnumeration","LineStyle","View Style","Line Style")
+        obj.addProperty("App::PropertyBool","AlwaysOn","View Style","If checked, source objects are displayed regardless of being visible in the 3D model")
         obj.FillStyle = ['shape color'] + list(svgpatterns().keys())
         obj.LineStyle = ['Solid','Dashed','Dotted','Dashdot']
         obj.LineWidth = 0.35
@@ -4549,16 +4553,24 @@ class _DrawingView(_DraftObject):
                     lc = obj.LineColor
                 else:
                     lc = None
+                if hasattr(obj,"LineSpacing"):
+                    lp = obj.LineSpacing
+                else:
+                    lp = None
                 if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
                     svg = ""
                     shapes = []
                     others = []
                     objs = getGroupContents([obj.Source])
                     for o in objs:
-                        if o.ViewObject.isVisible():
-                            svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc)
+                        v = o.ViewObject.isVisible()
+                        if hasattr(obj,"AlwaysOn"):
+                            if obj.AlwaysOn:
+                                v = True
+                        if v:
+                            svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
                 else:
-                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc)
+                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
                 result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
