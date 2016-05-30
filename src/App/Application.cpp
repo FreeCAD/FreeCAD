@@ -30,6 +30,7 @@
 # include <iostream>
 # include <sstream>
 # include <exception>
+# include <ios>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <unistd.h>
 # include <pwd.h>
@@ -442,8 +443,19 @@ Document* Application::openDocument(const char * FileName)
         newDoc->restore();
         return newDoc;
     }
-    catch (...) {
+    // if the project file itself is corrupt then
+    // close the document
+    catch (const Base::FileException&) {
         closeDocument(newDoc->getName());
+        throw;
+    }
+    catch (const std::ios_base::failure&) {
+        closeDocument(newDoc->getName());
+        throw;
+    }
+    // but for any other exceptions leave it open to give the
+    // user a chance to fix it
+    catch (...) {
         throw;
     }
 }
