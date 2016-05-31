@@ -720,6 +720,17 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if obj.isDerivedFrom("Part::Feature"):
                     if obj.Shape.isNull():
                         Arch.rebuildArchShape(obj)
+                        
+    # processing remaining (normal) groups
+    for host,children in groups.items():
+        if ifcfile[host].is_a("IfcGroup"):
+            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",ifcfile[host].Name)
+            objects[host] = grp
+            for child in children:
+                if child in objects.keys():
+                    grp.addObject(objects[child])
+                else:
+                    if DEBUG: print "unable to add object to group: ",ifcfile[host]
 
 
     if MERGE_MODE_ARCH == 3:
@@ -888,6 +899,7 @@ def export(exportList,filename):
     clones = {} # { Basename:[Clonename1,Clonename2,...] }
     sharedobjects = {} # { BaseName: IfcRepresentationMap }
     count = 1
+    groups = {} # { Host: [Child,Child,...] }
 
     # build clones table
     if CREATE_CLONES:
@@ -928,6 +940,7 @@ def export(exportList,filename):
             ifctype = translationtable[ifctype]
         ifctype = "Ifc" + ifctype
         if ifctype == "IfcGroup":
+            groups[obj.Name] = [o.Name for o in obj.Group]
             continue
         ifctypes = []
         for v in typesmap.values():
@@ -1144,6 +1157,36 @@ def export(exportList,filename):
                                 relobjs.append(products[o.Name])
             if relobjs:
                 ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
+                
+    # groups
+    sortedgroups = []
+    while groups:
+        for g in groups.keys():
+            okay = True
+            for c in groups[g]:
+                if Draft.getType(FreeCAD.ActiveDocument.getObject(c)) == "Group":
+                    okay = False
+                    for s in sortedgroups:
+                        if s[0] == c:
+                            okay = True
+            if okay:
+                sortedgroups.append([g,groups[g]])
+        for g in sortedgroups:
+            if g[0] in groups.keys():
+                del groups[g[0]]
+    #print "sorted groups:",sortedgroups
+    for g in sortedgroups:
+        if g[1]:
+            children = []
+            for o in g[1]:
+                if o in products.keys():
+                    children.append(products[o])
+            if children:
+                name = str(FreeCAD.ActiveDocument.getObject(g[0]).Label.encode("utf8"))
+                grp = ifcfile.createIfcGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,name,'',None)
+                products[g[0]] = grp
+                ass = ifcfile.createIfcRelAssignsToGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupLink','',children,None,grp)
+        
 
     if DEBUG: print "writing ",filename,"..."
 
