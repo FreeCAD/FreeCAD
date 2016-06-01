@@ -103,57 +103,57 @@ class ObjectDrilling:
         else:
             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
 
+        locations = []
+        output = "(Begin Drilling)\n"
         if obj.Base:
-            locations = []
             for loc in obj.Base:
+                for sub in loc[1]:
 
-                if "Face" in loc[1] or "Edge" in loc[1]:
-                    s = getattr(loc[0].Shape, loc[1])
-                else:
-                    s = loc[0].Shape
+                    if "Face" in sub or "Edge" in sub:
+                        s = getattr(loc[0].Shape, sub)
+                    else:
+                        s = loc[0].Shape
 
-                if s.ShapeType in ['Wire', 'Edge']:
-                    X = s.Edges[0].Curve.Center.x
-                    Y = s.Edges[0].Curve.Center.y
-                    Z = s.Edges[0].Curve.Center.z
-                elif s.ShapeType in ['Vertex']:
-                    X = s.Point.x
-                    Y = s.Point.y
-                    Z = s.Point.z
-                elif s.ShapeType in ['Face']:
-                    #if abs(s.normalAt(0, 0).z) == 1:  # horizontal face
-                    X = s.CenterOfMass.x
-                    Y = s.CenterOfMass.y
-                    Z = s.CenterOfMass.z
+                    if s.ShapeType in ['Wire', 'Edge']:
+                        X = s.Edges[0].Curve.Center.x
+                        Y = s.Edges[0].Curve.Center.y
+                        Z = s.Edges[0].Curve.Center.z
+                    elif s.ShapeType in ['Vertex']:
+                        X = s.Point.x
+                        Y = s.Point.y
+                        Z = s.Point.z
+                    elif s.ShapeType in ['Face']:
+                        #if abs(s.normalAt(0, 0).z) == 1:  # horizontal face
+                        X = s.CenterOfMass.x
+                        Y = s.CenterOfMass.y
+                        Z = s.CenterOfMass.z
+
+                    locations.append(FreeCAD.Vector(X, Y, Z))
 
 
+            output += "G90 G98\n"
+            # rapid to clearance height
+            output += "G0 Z" + str(obj.ClearanceHeight.Value)
+            # rapid to first hole location, with spindle still retracted:
+            p0 = locations[0]
+            output += "G0 X" + str(p0.x) + " Y" + str(p0.y) + "\n"
+            # move tool to clearance plane
+            output += "G0 Z" + str(obj.ClearanceHeight.Value) + "\n"
+            if obj.PeckDepth.Value > 0:
+                cmd = "G83"
+                qword = " Q" + str(obj.PeckDepth.Value)
+            else:
+                cmd = "G81"
+                qword = ""
+            for p in locations:
+                output += cmd + \
+                    " X" + str(p.x) + \
+                    " Y" + str(p.y) + \
+                    " Z" + str(obj.FinalDepth.Value) + qword + \
+                    " R" + str(obj.RetractHeight.Value) + \
+                    " F" + str(self.vertFeed) + "\n" \
 
-
-                locations.append(FreeCAD.Vector(X, Y, Z))
-
-                output = "G90 G98\n"
-                # rapid to clearance height
-                output += "G0 Z" + str(obj.ClearanceHeight.Value)
-                # rapid to first hole location, with spindle still retracted:
-                p0 = locations[0]
-                output += "G0 X" + str(p0.x) + " Y" + str(p0.y) + "\n"
-                # move tool to clearance plane
-                output += "G0 Z" + str(obj.ClearanceHeight.Value) + "\n"
-                if obj.PeckDepth.Value > 0:
-                    cmd = "G83"
-                    qword = " Q" + str(obj.PeckDepth.Value)
-                else:
-                    cmd = "G81"
-                    qword = ""
-                for p in locations:
-                    output += cmd + \
-                        " X" + str(p.x) + \
-                        " Y" + str(p.y) + \
-                        " Z" + str(obj.FinalDepth.Value) + qword + \
-                        " R" + str(obj.RetractHeight.Value) + \
-                        " F" + str(self.vertFeed) + "\n" \
-
-                output += "G80\n"
+            output += "G80\n"
 
         path = Path.Path(output)
         obj.Path = path
@@ -319,7 +319,8 @@ class TaskPanel:
 
         self.form.baseList.clear()
         for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
+            for sub in i[1]:
+                self.form.baseList.addItem(i[0].Name + "." + sub)
 
 
     def open(self):
@@ -341,8 +342,11 @@ class TaskPanel:
                 self.obj.Proxy.addDrillableLocation(self.obj, s.Object)
 
         self.setFields()  # defaults may have changed.  Reload.
-        # for i in self.obj.Base:
-        #     self.form.baseList.addItem(i[0].Name + "." + i[1])
+        self.form.baseList.clear()
+
+        for i in self.obj.Base:
+            for sub in i[1]:
+                self.form.baseList.addItem(i[0].Name + "." + sub)
 
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()

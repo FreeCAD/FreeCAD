@@ -24,6 +24,7 @@
 
 import FreeCAD
 import Path
+import numpy
 from FreeCAD import Vector
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
@@ -290,15 +291,18 @@ print "y - " + str(point.y)
             wires = []
 
             for b in obj.Base:
-                # we only consider the outer wire if this is a Face
-                # Horizontal and vertical faces are handled differently
-                shape = getattr(b[0].Shape, b[1])
-                if abs(shape.normalAt(0, 0).z) == 1:  # horizontal face
-                    hfaces.append(shape)
+                for sub in b[1]:
+                    # we only consider the outer wire if this is a Face
+                    # Horizontal and vertical faces are handled differently
+                    shape = getattr(b[0].Shape, sub)
+                    if numpy.isclose(shape.normalAt(0, 0).z, 1):  # horizontal face
+                        hfaces.append(shape)
 
-                elif abs(shape.normalAt(0, 0).z) == 0:  # vertical face
-                    vfaces.append(shape)
-
+                    elif numpy.isclose(shape.normalAt(0, 0).z, 0):  # vertical face
+                        vfaces.append(shape)
+                    else:
+                        FreeCAD.Console.PrintError(translate("Path", "Face doesn't appear to be parallel or perpendicular to the XY plane. No path will be generated for: \n"))
+                        FreeCAD.Console.PrintError(b[0].Name + "." + sub + "\n")
             for h in hfaces:
                 wires.append(h.OuterWire)
 
@@ -443,9 +447,6 @@ class CommandPathProfile:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        # import Path
-        # from PathScripts import PathProject, PathUtils, PathKurveUtils
-
         ztop = 10.0
         zbottom = 0.0
 
@@ -553,7 +554,8 @@ class TaskPanel:
             self.form.direction.setCurrentIndex(index)
 
         for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
+            for sub in i[1]:
+                self.form.baseList.addItem(i[0].Name + "." + sub)
 
         for i in range(len(self.obj.locs)):
             item = QtGui.QTreeWidgetItem(self.form.tagTree)
@@ -586,15 +588,16 @@ class TaskPanel:
             FreeCAD.Console.PrintError(translate("PathProject", "Please select faces from one solid\n"))
             return
 
-          #  if s.HasSubObjects:
         for i in sel.SubElementNames:
             self.obj.Proxy.addprofilebase(self.obj, sel.Object, i)
-            #else:
-                #self.obj.Proxy.addprofilebase(self.obj, s.Object)
+
         self.setFields()  # defaults may have changed.  Reload.
         self.form.baseList.clear()
+
         for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
+            for sub in i[1]:
+                self.form.baseList.addItem(i[0].Name + "." + sub)
+
 
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
