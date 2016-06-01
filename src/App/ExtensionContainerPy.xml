@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PropertyContainerPy" 
+    Name="ExtensionContainerPy" 
+    TwinPointer="ExtensionContainer" 
+    Twin="ExtensionContainer" 
+    Include="App/Extension.h" 
+    Namespace="App" 
+    FatherInclude="App/PropertyContainerPy.h" 
+    FatherNamespace="App"
+    Initialisation="true"
+    Constructor = "true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Stefan Troeger" EMail="stefantroeger@gmx.net" />
+      <UserDocu>Base class for all objects which can be extended</UserDocu>
+    </Documentation>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>
