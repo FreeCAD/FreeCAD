@@ -296,15 +296,12 @@ void QGIViewPart::drawViewPart()
     facePen.setCosmetic(true);
     //QBrush faceBrush;
     for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
-        QGIFace* newFace = drawFace(*fit);
+        QGIFace* newFace = drawFace(*fit,i);
         newFace->setPen(facePen);
         newFace->setZValue(ZVALUE::FACE);
+        newFace->setFlag(QGraphicsItem::ItemIsSelectable, true);
         //newFace->setBrush(faceBrush);
     }
-    //debug a path
-    //std::stringstream faceId;
-    //faceId << "facePath" << i;
-    //_dumpPath(faceId.str().c_str(),facePath);
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     // Draw Hatches
@@ -411,7 +408,7 @@ void QGIViewPart::drawViewPart()
      }
 }
 
-QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f)
+QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
 {
     std::vector<TechDrawGeometry::Wire *> fWires = f->wires;
     QPainterPath facePath;
@@ -430,11 +427,14 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f)
         }
         facePath.addPath(wirePath);
     }
-    QGIFace* gFace = new QGIFace(-1);
+    QGIFace* gFace = new QGIFace(idx);
     addToGroup(gFace);
     gFace->setPos(0.0,0.0);
     gFace->setPath(facePath);
-    //_dumpPath("QGIVP.facePath",facePath);
+    //debug a path
+    //std::stringstream faceId;
+    //faceId << "facePath " << idx;
+    //_dumpPath(faceId.str().c_str(),facePath);
 
     //gFace->setFlag(QGraphicsItem::ItemIsSelectable, true);   ???
     return gFace;

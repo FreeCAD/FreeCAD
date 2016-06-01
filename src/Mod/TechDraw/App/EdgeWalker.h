@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2016 Wandererfan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,60 +20,74 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
-#define DRAWINGGUI_QGRAPHICSITEMFACE_H
+#ifndef TECHDRAW_EDGEWALKER_H
+#define TECHDRAW_EDGEWALKER_H
 
-#include <Qt>
-#include <QGraphicsItem>
+#include <vector>
+#include <iostream>
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/properties.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/property_map/property_map.hpp>
+#include <boost/graph/boyer_myrvold_planar_test.hpp>
+#include <boost/graph/planar_face_traversal.hpp>
+#include <boost/ref.hpp>
 
-namespace TechDrawGeometry {
-class BaseGeom;
-}
+namespace TechDraw {
+using namespace boost;
 
-namespace TechDrawGui
-{
+typedef adjacency_list
+    < vecS,
+      vecS,
+      undirectedS,
+      property<vertex_index_t, int>,
+      property<edge_index_t, int>
+    >
+    graph;
 
-class QGIFace : public QGraphicsPathItem
-{
-public:
-    explicit QGIFace(int ref = -1);
-    ~QGIFace() {}
-
-    enum {Type = QGraphicsItem::UserType + 104};
-    int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-
-public:
-//      QPainterPath shape() const;
-    int getReference() const { return reference; }
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
-
-protected:
-    // Preselection events:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    // Selection detection
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-protected:
-    int reference;
-
-private:
-    QPen m_pen;
-    QBrush m_brush;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
-    Qt::BrushStyle m_fill;
+struct WalkerEdge {
+    int v1;
+    int v2;
+    int idx;
 };
 
-} // namespace MDIViewPageGui
+typedef std::vector<WalkerEdge>  edgelist;
+typedef std::vector<edgelist> facelist ;
 
-#endif // DRAWINGGUI_QGRAPHICSITEMFACE_H
+
+class edgeVisitor : public planar_face_traversal_visitor
+{
+public:
+  template <typename Edge>
+  void next_edge(Edge e);
+  void begin_face();
+  void end_face();
+  facelist getResult(void);
+  void setGraph(graph& g);
+
+private:
+    edgelist faceEdges;
+    facelist graphFaces;
+    graph m_g;
+};
+
+class EdgeWalker
+{
+public:
+    EdgeWalker(void);
+    virtual ~EdgeWalker();
+
+    bool loadEdges(std::vector<WalkerEdge> edges);
+    bool setSize(int size);
+    bool perform();
+    facelist getResult();
+
+private:
+    edgeVisitor m_eV;
+    graph m_g;
+};
+
+}  //end namespace
+
+#endif //TECHDRAW_EDGEWALKER_H

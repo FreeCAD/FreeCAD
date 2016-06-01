@@ -1,5 +1,5 @@
 
-add_definitions(-DMOD_TECHDRAW_HANDLE_FACES=0)
+add_definitions(-DMOD_TECHDRAW_HANDLE_FACES=1)
 
 add_subdirectory(App)
 if(BUILD_GUI)

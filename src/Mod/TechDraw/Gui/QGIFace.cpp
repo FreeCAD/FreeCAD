@@ -44,7 +44,10 @@
 using namespace TechDrawGui;
 
 QGIFace::QGIFace(int ref) :
-    reference(ref)
+    reference(ref),
+    m_fill(Qt::NoBrush)
+    //m_fill(Qt::CrossPattern)
+    //m_fill(Qt::Dense3Pattern)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
@@ -59,7 +62,7 @@ QGIFace::QGIFace(int ref) :
     m_colPre = fcColor.asValue<QColor>();
 
     //m_pen.setStyle(Qt::NoPen);
-    //m_brush.setStyle(m_fill);
+    m_brush.setStyle(m_fill);
     setPrettyNormal();
 }
 
@@ -112,10 +115,11 @@ void QGIFace::setPrettySel() {
 
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
-    //myOption.state &= ~QStyle::State_Selected;   //temp for debugging
+    //myOption.state &= ~QStyle::State_Selected;   //commented for debugging
 
     //m_pen.setColor(m_colCurrent);
     //setPen(m_pen);
-    //setBrush(m_brush);
+    //m_brush.setStyle(m_fill);
+    setBrush(m_brush);
     QGraphicsPathItem::paint (painter, &myOption, widget);
 }

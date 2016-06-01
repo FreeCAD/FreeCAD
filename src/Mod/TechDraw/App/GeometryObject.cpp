@@ -730,8 +730,8 @@ void _dumpEdge(char* label, int i, TopoDS_Edge e)
     const gp_Pnt& vStart = propStart.Value();
     BRepLProp_CLProps propEnd(adapt,end,0,Precision::Confusion());
     const gp_Pnt& vEnd = propEnd.Value();
-    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f) end:(%.2f,%.3f,%.3f)\n",label,i,
-                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z());
+    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
+                            vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
 }
 
 const char* _printBool(bool b)

@@ -29,6 +29,7 @@
 #endif
 
 #include <algorithm>
+//#include <limits>
 
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
@@ -45,8 +46,6 @@
 #include <Poly_PolygonOnTriangulation.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
@@ -61,6 +60,19 @@
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 
+#include <BRepAdaptor_Curve.hxx>
+#include <Handle_Geom_Curve.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <GeomLib_Tool.hxx>
+#include <BRepLib.hxx>
+//# include <Standard_ConstructionError.hxx>
+//# include <Standard_DomainError.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <TopoDS_Shape.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -69,11 +81,13 @@
 
 #include "Geometry.h"
 #include "DrawViewPart.h"
-//#include "ProjectionAlgos.h"
 #include "DrawHatch.h"
-//#include "DrawViewDimension.h"
+#include "EdgeWalker.h"
+
 
 #include "DrawViewPartPy.h"  // generated from DrawViewPartPy.xml
+
+void _dumpEdge1(char* label, int i, TopoDS_Edge e);
 
 using namespace TechDraw;
 using namespace std;
@@ -242,14 +256,162 @@ void DrawViewPart::extractFaces()
     geometryObject->clearFaceGeom();
     const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getEdgeGeometry();
     std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
-    std::vector<TopoDS_Edge> occEdges;
+    std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        occEdges.push_back((*itEdge)->occEdge);
+        origEdges.push_back((*itEdge)->occEdge);
     }
 
-    //almost works. :(
-    std::vector<TopoDS_Wire> wires = connectEdges(occEdges);
-    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(wires,true);        //smallest first
+    std::vector<TopoDS_Edge> faceEdges = origEdges;
+    std::vector<TopoDS_Edge>::iterator itOrig = origEdges.begin();
+
+    //HLR algo does not provide all edge intersections for edge endpoints.
+    //need to split long edges touched by Vertex of another edge
+    int idb = 0;
+    for (; itOrig != origEdges.end(); itOrig++, idb++) {
+        TopoDS_Vertex v1 = TopExp::FirstVertex((*itOrig));
+        TopoDS_Vertex v2 = TopExp::LastVertex((*itOrig));
+        std::vector<TopoDS_Edge>::iterator itNew = faceEdges.begin();
+        std::vector<size_t> deleteList;
+        std::vector<TopoDS_Edge> edgesToAdd;
+        int idx = 0;
+        for (; itNew != faceEdges.end(); itNew++,idx++) {
+            if ( itOrig->IsSame(*itNew) ){
+                continue;
+            }
+            bool removeThis = false;
+            std::vector<TopoDS_Vertex> splitPoints;
+            if (isOnEdge((*itNew),v1,false)) {
+                splitPoints.push_back(v1);
+                removeThis = true;
+            }
+            if (isOnEdge((*itNew),v2,false)) {
+                splitPoints.push_back(v2);
+                removeThis = true;
+            }
+            if (removeThis) {
+                deleteList.push_back(idx);
+            }
+
+            if (!splitPoints.empty()) {
+                std::vector<TopoDS_Edge> subEdges = splitEdge(splitPoints,(*itNew));
+                edgesToAdd.insert(std::end(edgesToAdd), std::begin(subEdges), std::end(subEdges));
+            }
+        }
+        //delete the split edge(s) and add the subedges
+        //TODO: look into sets or maps or???? for all this
+        std::sort(deleteList.begin(),deleteList.end());                 //ascending
+        auto last = std::unique(deleteList.begin(), deleteList.end());  //duplicates at back
+        deleteList.erase(last, deleteList.end());                       //remove dupls
+        std::vector<size_t>::reverse_iterator ritDel = deleteList.rbegin();
+        for ( ; ritDel != deleteList.rend(); ritDel++) {
+            faceEdges.erase(faceEdges.begin() + (*ritDel));
+        }
+        faceEdges.insert(std::end(faceEdges), std::begin(edgesToAdd),std::end(edgesToAdd));
+    }
+
+    //find list of unique Vertex
+    std::vector<TopoDS_Vertex> uniqueVert;
+    for(auto& fe:faceEdges) {
+        TopoDS_Vertex v1 = TopExp::FirstVertex(fe);
+        TopoDS_Vertex v2 = TopExp::LastVertex(fe);
+        bool addv1 = true;
+        bool addv2 = true;
+        for (auto v:uniqueVert) {
+            if (isSamePoint(v,v1))
+                addv1 = false;
+            if (isSamePoint(v,v2))
+                addv2 = false;
+        }
+        if (addv1)
+            uniqueVert.push_back(v1);
+        if (addv2)
+            uniqueVert.push_back(v2);
+    }
+
+    //rebuild every edge using only unique verts
+    //this should help with connecting them later
+    std::vector<TopoDS_Edge> cleanEdges;
+    std::vector<WalkerEdge> walkerEdges;
+    for (auto fe:faceEdges) {
+        TopoDS_Vertex fev1 = TopExp::FirstVertex(fe);
+        TopoDS_Vertex fev2 = TopExp::LastVertex(fe);
+        int v1dx = findUniqueVert(fev1, uniqueVert);
+        int v2dx = findUniqueVert(fev2, uniqueVert);
+        BRepAdaptor_Curve adapt(fe);
+        Handle_Geom_Curve c = adapt.Curve().Curve();
+        BRepBuilderAPI_MakeEdge mkBuilder1(c, uniqueVert.at(v1dx), uniqueVert.at(v2dx));
+        TopoDS_Edge eClean = mkBuilder1.Edge();
+        cleanEdges.push_back(eClean);
+        WalkerEdge we;
+        we.v1 = v1dx;
+        we.v2 = v2dx;
+        walkerEdges.push_back(we);
+    }
+
+    EdgeWalker ew;
+    ew.setSize(uniqueVert.size());
+    ew.loadEdges(walkerEdges);
+    ew.perform();
+    facelist result = ew.getResult();
+
+    facelist::iterator iFace = result.begin();
+    std::vector<TopoDS_Wire> fw;
+    for (;iFace != result.end(); iFace++) {
+        edgelist::iterator iEdge = (*iFace).begin();
+        std::vector<TopoDS_Edge> fe;
+        for (;iEdge != (*iFace).end(); iEdge++) {
+            fe.push_back(cleanEdges.at((*iEdge).idx));
+        }
+    std::vector<TopoDS_Wire> w = connectEdges(fe);
+    fw.push_back(w.at(0));                           //looks weird, but we only passing 1 wire's edges so we only want 1 wire back
+    }
+
+    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw,false);
+
+    //remove the largest wire (OuterWire of graph)
+    Bnd_Box bigBox;
+    if (!(sortedWires.back().IsNull())) {
+        BRepBndLib::Add(sortedWires.front(), bigBox);
+        bigBox.SetGap(0.0);
+    }
+    std::vector<std::size_t> toBeChecked;
+    std::vector<TopoDS_Wire>::iterator it = sortedWires.begin() + 1;
+    for (; it != sortedWires.end(); it++) {
+        if (!(*it).IsNull()) {
+            Bnd_Box littleBox;
+            BRepBndLib::Add((*it), littleBox);
+            littleBox.SetGap(0.0);
+            if (bigBox.SquareExtent() > littleBox.SquareExtent()) {
+                break;
+            } else {
+                auto position = std::distance( sortedWires.begin(), it );    //get an index from iterator
+                toBeChecked.push_back(position);
+            }
+        }
+    }
+    //unfortuneately, faces can have same bbox, but not be same size.  need to weed out biggest
+    if (toBeChecked.size() == 0) {
+        //nobody had as big a bbox as first element of sortedWires
+        sortedWires.erase(sortedWires.begin());
+    } else if (toBeChecked.size() > 0) {
+        BRepBuilderAPI_MakeFace mkFace(sortedWires.front());
+        const TopoDS_Face& face = mkFace.Face();
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(face, props);
+        double bigArea = props.Mass();
+        unsigned int bigIndex = 0;
+        for (unsigned int idx = 1; idx < toBeChecked.size(); idx++) {
+            BRepBuilderAPI_MakeFace mkFace2(sortedWires.at(idx));
+            const TopoDS_Face& face2 = mkFace2.Face();
+            BRepGProp::SurfaceProperties(face2, props);
+            double area = props.Mass();
+            if (area > bigArea) {
+                bigArea = area;
+                bigIndex = idx;
+            }
+        }
+        sortedWires.erase(sortedWires.begin() + bigIndex);
+    }
 
     std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
     for (; itWire != sortedWires.end(); itWire++) {
@@ -262,6 +424,113 @@ void DrawViewPart::extractFaces()
     }
 }
 
+//obs?
+int DrawViewPart::findEdgeByWalkerEdge(WalkerEdge we, std::vector<TopoDS_Vertex> uniqueVert, std::vector<TopoDS_Edge>& edges)
+{
+    int result = -1;
+    TopoDS_Vertex v1 = uniqueVert.at(we.v1);
+    TopoDS_Vertex v2 = uniqueVert.at(we.v2);
+    int idx = 0;
+    for (auto& e:edges) {
+        TopoDS_Vertex ev1 = TopExp::FirstVertex(e);
+        TopoDS_Vertex ev2 = TopExp::LastVertex(e);
+        if ( (isSamePoint(v1,ev1) && isSamePoint(v2,ev2)) ||
+             (isSamePoint(v2,ev1) && isSamePoint(v1,ev2)) ) {
+             result = idx;
+             break;
+        }
+        idx++;
+    }
+    return result;
+}
+
+int DrawViewPart::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert)
+{
+    int idx = 0;
+    int result = 0;
+    for(auto& v:uniqueVert) {                    //we're always going to find vx, right?
+        if (isSamePoint(v,vx)) {
+            result = idx;
+            break;
+        }
+        idx++;
+    }                                           //if idx >= uniqueVert.size() TARFU
+    return result;
+}
+
+double DrawViewPart::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
+{
+    Standard_Real minDist = -1;
+
+    BRepExtrema_DistShapeShape extss(s1, s2);
+    if (!extss.IsDone()) {
+        Base::Console().Message("DVP - BRepExtrema_DistShapeShape failed");
+        return -1;
+    }
+    int count = extss.NbSolution();
+    if (count != 0) {
+        minDist = extss.Value();
+    } else {
+        minDist = -1;
+    }
+    return minDist;
+}
+
+bool DrawViewPart::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds)
+{
+    bool result = false;
+    double dist = simpleMinDist(v,e);
+    if (dist < 0.0) {
+        Base::Console().Error("DVP::isOnEdge - simpleMinDist failed: %.3f\n",dist);
+        result = false;
+    } else if (dist < Precision::Confusion()) {
+        result = true;
+    }
+    if (result) {
+        TopoDS_Vertex v1 = TopExp::FirstVertex(e);
+        TopoDS_Vertex v2 = TopExp::LastVertex(e);
+        if (isSamePoint(v,v1) || isSamePoint(v,v2)) {
+            if (!allowEnds) {
+                result = false;
+            }
+        }
+    }
+    return result;
+}
+
+bool DrawViewPart::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2)
+{
+    bool result = false;
+    gp_Pnt p1 = BRep_Tool::Pnt(v1);
+    gp_Pnt p2 = BRep_Tool::Pnt(v2);
+    if (p1.IsEqual(p2,Precision::Confusion())) {
+        result = true;
+    }
+    return result;
+}
+
+std::vector<TopoDS_Edge> DrawViewPart::splitEdge(std::vector<TopoDS_Vertex> splitPoints, TopoDS_Edge e)
+{
+    std::vector<TopoDS_Edge> result;
+    if (splitPoints.empty()) {
+        return result;
+    }
+    TopoDS_Vertex vStart = TopExp::FirstVertex(e);
+    TopoDS_Vertex vEnd = TopExp::LastVertex(e);
+
+    BRepAdaptor_Curve adapt(e);
+    Handle_Geom_Curve c = adapt.Curve().Curve();
+    //simple version for 1 splitPoint
+    //TODO: handle case where e is split in multiple points (ie circular edge cuts line twice)
+    BRepBuilderAPI_MakeEdge mkBuilder1(c, vStart, splitPoints[0]);
+    TopoDS_Edge e1 = mkBuilder1.Edge();
+    BRepBuilderAPI_MakeEdge mkBuilder2(c, splitPoints[0], vEnd);
+    TopoDS_Edge e2 = mkBuilder2.Edge();
+    result.push_back(e1);
+    result.push_back(e2);
+    return result;
+}
+
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
 {
     std::vector<TechDraw::DrawHatch*> result;
@@ -272,7 +541,6 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
             result.push_back(hatch);
         }
     }
-
     return result;
 }
 
@@ -331,20 +599,21 @@ std::vector<TopoDS_Wire> DrawViewPart::connectEdges (std::vector<TopoDS_Edge>& e
 
     //tolerance sb tolerance of DrawViewPart instead of Precision::Confusion()?
     ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
-
     int len = hWires->Length();
     for(int i=1;i<=len;i++) {
         TopoDS_Wire w = TopoDS::Wire(hWires->Value(i));
-        //if (BRep_Tool::IsClosed(w)) {
+        if (BRep_Tool::IsClosed(w)) {
             result.push_back(w);
-        //}
+        }
     }
+
     //delete hEdges;               //does Handle<> take care of this?
     //delete hWires;
     return result;
 }
 
 //! return true if w1 bbox is bigger than w2 bbox
+//NOTE: this won't necessarily sort the OuterWire correctly (ex smaller wire, same bbox)
 class DrawViewPart::wireCompare: public std::binary_function<const TopoDS_Wire&,
                                                             const TopoDS_Wire&, bool>
 {
@@ -366,12 +635,12 @@ public:
     }
 };
 
-//sort wires in descending order of bbox diagonal. if reversed, then ascending bbox diagonal
-std::vector<TopoDS_Wire> DrawViewPart::sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse)
+//sort wires in order of bbox diagonal.
+std::vector<TopoDS_Wire> DrawViewPart::sortWiresBySize(std::vector<TopoDS_Wire>& w, bool ascend)
 {
     std::vector<TopoDS_Wire> wires = w;
     std::sort(wires.begin(), wires.end(), wireCompare());
-    if (reverse) {
+    if (ascend) {
         std::reverse(wires.begin(),wires.end());
     }
     return wires;
@@ -421,6 +690,22 @@ PyObject *DrawViewPart::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+void _dumpEdge1(char* label, int i, TopoDS_Edge e)
+{
+    BRepAdaptor_Curve adapt(e);
+    double start = BRepLProp_CurveTool::FirstParameter(adapt);
+    double end = BRepLProp_CurveTool::LastParameter(adapt);
+    BRepLProp_CLProps propStart(adapt,start,0,Precision::Confusion());
+    const gp_Pnt& vStart = propStart.Value();
+    BRepLProp_CLProps propEnd(adapt,end,0,Precision::Confusion());
+    const gp_Pnt& vEnd = propEnd.Value();
+    //Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
+    //                        vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
+    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f)\n",label,i,
+                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z());
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

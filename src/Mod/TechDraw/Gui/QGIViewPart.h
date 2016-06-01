@@ -83,7 +83,7 @@ protected:
     QPainterPath drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const;
     std::vector <TechDraw::DrawHatch *> getHatchesForView(TechDraw::DrawViewPart* viewPart);
     void drawViewPart();
-    QGIFace* drawFace(TechDrawGeometry::Face* f);
+    QGIFace* drawFace(TechDrawGeometry::Face* f, int idx);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
