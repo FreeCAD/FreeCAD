@@ -125,6 +125,8 @@ sudo apt-get install -y xfce4 xfce4-goodies
 sudo apt-get install -y xubuntu-default-settings
 sudo apt-get install -y lightdm
 sudo apt-get install -y automake
+sudo apt-get install -y libcanberra-gtk-module
+sudo apt-get install -y libcanberra-gtk3-module overlay-scrollbar-gtk2 unity-gtk-module-common libatk-bridge2.0-0 unity-gtk2-module libatk-adaptor
 myversion=`lsb_release -a | grep -i Distributor | awk '{ print $3}'`
 if [ "$myversion" != "Ubuntu" ]
 then
@@ -238,13 +240,14 @@ mv *.deb deb
 cd deb
 dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
 
-if [ "$ubuntu_version" == "xenial ]
+if [ "$ubuntu_version" == "xenial" ]
 then
 #Let's build the snap
 	mkdir snap
 	cd snap
-	cp -Rf $source_dir/FreeCAD/vagrant/Xenial
+	cp -Rf $source_dir/FreeCAD/vagrant/Xenial .
 	cd Xenial
+        apt-get install -y snapcraft
 	./generate_yaml.sh
 	snapcraft
 	mv freecad_0.17_amd64.snap /tmp
