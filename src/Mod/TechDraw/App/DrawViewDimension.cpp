@@ -149,7 +149,9 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         }
         if (prop == &References3D) {                                       //have to rebuild the Measurement object
             clear3DMeasurements();
-            set3DMeasurement(References3D.getValues().at(0),References3D.getSubValues());
+            if (!(References3D.getValues()).empty()) {
+                set3DMeasurement(References3D.getValues().at(0),References3D.getSubValues());
+            }
         }
 
     DrawView::onChanged(prop);
