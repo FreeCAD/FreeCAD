@@ -1900,6 +1900,7 @@ void Application::ParseOptions(int ac, char ** av)
 void Application::ExtractUserPath()
 {
     // std paths
+    char *FCUserData;
     mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
     mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
 
