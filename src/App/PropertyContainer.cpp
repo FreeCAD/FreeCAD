@@ -51,7 +51,6 @@ TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
 // here the implemataion! description should take place in the header file!
 PropertyContainer::PropertyContainer()
 {
-    propertyData.parentPropertyData = 0;
 }
 
 PropertyContainer::~PropertyContainer()
@@ -279,14 +278,24 @@ void PropertyData::addProperty(const PropertyContainer *container,const char* Pr
   }
 }
 
+void PropertyData::addParentPropertyData(const PropertyData* data) {
+
+    if(data)
+        parentPropertyData.push_back(data);
+}
+
+
 const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyContainer *container,const char* PropName) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(strcmp(It->Name,PropName)==0)
       return &(*It);
 
-  if(parentPropertyData)
-      return parentPropertyData->findProperty(container,PropName);
+  for(auto data : parentPropertyData) {
+    auto res = data->findProperty(container,PropName);
+    if(res)
+        return res;
+  }
  
   return 0;
 }
@@ -299,9 +308,12 @@ const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyConta
     if(diff == It->Offset)
       return &(*It);
   
-  if(parentPropertyData)
-      return parentPropertyData->findProperty(container,prop);
-
+  for(auto data : parentPropertyData) {
+    auto res = data->findProperty(container,prop);
+    if(res)
+        return res;
+  }
+  
   return 0;
 }
 
@@ -450,9 +462,9 @@ void PropertyData::getPropertyMap(const PropertyContainer *container,std::map<st
   }
   */
 
-  if(parentPropertyData)
-    parentPropertyData->getPropertyMap(container,Map);
-
+  for(auto data : parentPropertyData) 
+    data->getPropertyMap(container,Map);
+  
 }
 
 void PropertyData::getPropertyList(const PropertyContainer *container,std::vector<Property*> &List) const
@@ -466,8 +478,8 @@ void PropertyData::getPropertyList(const PropertyContainer *container,std::vecto
   {
     List.push_back((Property *) (pos->second.Offset + (char *)container) );
   }*/
-  if(parentPropertyData)
-    parentPropertyData->getPropertyList(container,List);
+  for(auto data : parentPropertyData) 
+    data->getPropertyList(container,List);
 
 }
 

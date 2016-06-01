@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,29 +23,30 @@
 
 #include "PreCompiled.h"
 
-#include "DocumentObjectGroup.h"
-#include "Document.h"
-#include <CXX/Objects.hxx>
+#ifndef _PreComp_
+# include <sstream>
+#endif
 
-// inclusion of the generated files (generated out of DocumentObjectGroupPy.xml)
-#include "DocumentObjectGroupPy.h"
-#include "DocumentObjectGroupPy.cpp"
+#include "Application.h"
+
+// inclution of the generated files (generated out of PropertyContainerPy.xml)
+#include "ExtensionPy.h"
+#include "ExtensionPy.cpp"
 
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string DocumentObjectGroupPy::representation(void) const
+std::string ExtensionPy::representation(void) const
 {
-    return std::string("<group object>");
+    return std::string("<extension>");
 }
 
-PyObject *DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const
-{
-    return 0;
-}
-
-int DocumentObjectGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+PyObject *ExtensionPy::getCustomAttributes(const char* attr) const
 {
     return 0;
 }
 
+int ExtensionPy::setCustomAttributes(const char* attr, PyObject *obj)
+{
+    return 0;
+}

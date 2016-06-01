@@ -53,6 +53,9 @@ set(FreeCADApp_LIBS
 
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
+generate_from_xml(ExtensionPy)
+generate_from_xml(ExtensionContainerPy)
+generate_from_xml(GroupExtensionPy)
 generate_from_xml(DocumentObjectGroupPy)
 generate_from_xml(GeoFeaturePy)
 #generate_from_xml(GeoFeatureGroupPy)
@@ -67,6 +70,9 @@ generate_from_py(FreeCADInit InitScript.h)
 generate_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_XML_SRCS
+    ExtensionPy.xml
+    ExtensionContainerPy.xml
+    GroupExtensionPy.xml
     DocumentObjectGroupPy.xml
     DocumentObjectPy.xml
     GeoFeaturePy.xml
@@ -86,6 +92,9 @@ SET(Document_CPP_SRCS
     Document.cpp
     DocumentObject.cpp
     Extension.cpp
+    ExtensionPyImp.cpp
+    ExtensionContainerPyImp.cpp
+    GroupExtensionPyImp.cpp
     DocumentObjectFileIncluded.cpp
     DocumentObjectGroup.cpp
     DocumentObjectGroupPyImp.cpp
