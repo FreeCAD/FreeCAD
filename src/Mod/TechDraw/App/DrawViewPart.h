@@ -24,6 +24,9 @@
 #ifndef _DrawViewPart_h_
 #define _DrawViewPart_h_
 
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include "DrawView.h"
@@ -34,13 +37,12 @@
 
 namespace TechDraw {
 class DrawHatch;
+class WalkerEdge;
 }
 
 namespace TechDraw
 {
 
-/** Base class of all View Features in the drawing module
- */
 class TechDrawExport DrawViewPart : public DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawViewPart);
@@ -105,6 +107,13 @@ protected:
     std::vector<TopoDS_Wire> connectEdges (std::vector<TopoDS_Edge>& edges);
     std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
     class wireCompare;
+
+    bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds = false);
+    std::vector<TopoDS_Edge> splitEdge(std::vector<TopoDS_Vertex> splitPoints, TopoDS_Edge e);
+    double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
+    bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
+    int findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
+    int findEdgeByWalkerEdge(WalkerEdge we, std::vector<TopoDS_Vertex> uniqueVert, std::vector<TopoDS_Edge>& edges);
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

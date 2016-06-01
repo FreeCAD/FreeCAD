@@ -80,7 +80,7 @@ void QGIViewSection::drawSectionFace()
     facePen.setCosmetic(true);
     QBrush faceBrush(QBrush(QColor(0,0,255,40)));   //temp. sb preference or property.
     for(; fit != sectionFaces.end(); fit++) {
-        QGIFace* newFace = drawFace(*fit);
+        QGIFace* newFace = drawFace(*fit,-1);
         newFace->setZValue(ZVALUE::SECTIONFACE);
         newFace->setBrush(faceBrush);
         newFace->setPen(facePen);

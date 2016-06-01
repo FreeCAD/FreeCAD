@@ -76,7 +76,8 @@ SET(Draw_SRCS
     DrawHatch.cpp
     DrawHatch.h
     DrawViewDraft.cpp
-    DrawViewDraft.h)
+    DrawViewDraft.h
+)
 
 SET(TechDraw_SRCS
     AppTechDraw.cpp
@@ -85,6 +86,8 @@ SET(TechDraw_SRCS
     DrawUtil.h
     PreCompiled.cpp
     PreCompiled.h
+    EdgeWalker.cpp
+    EdgeWalker.h
 )
 
 SET(Geometry_SRCS
