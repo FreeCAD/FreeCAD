@@ -1909,7 +1909,12 @@ void Application::ExtractUserPath()
     if (pwd == NULL)
         throw Base::Exception("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
-    std::string appData = pwd->pw_dir;
+    char *path="/tmp";
+    if ( FCUserData=getenv("FREECAD_USER_DATA") )
+        path=FCUserData;
+    else
+                path= pwd->pw_dir;
+    std::string appData(path);
     Base::FileInfo fi(appData.c_str());
     if (!fi.exists()) {
         // This should never ever happen
