@@ -67,6 +67,10 @@ public:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
     virtual int PyInit(PyObject* args, PyObject*k);
     ~@self.export.Name@();
+    
++ if (self.export.Initialisation):
+    int initialisation();
+-
 
     typedef @self.export.TwinPointer@* PointerType ;
 
@@ -606,6 +610,10 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
 + if (self.export.Reference):
     pcObject->ref();
 -
+    
++ if (self.export.Initialisation):
+    initialisation();
+-
 }
 
 + if not (self.export.Constructor):
@@ -803,6 +811,13 @@ PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject 
 
 // constructor method
 int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+{
+    return 0;
+}
+-
+
++ if (self.export.Initialisation):
+int @self.export.Name@::initialisation()
 {
     return 0;
 }
@@ -1114,6 +1129,13 @@ PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject 
 // constructor method
 int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
+    return 0;
+}
+-
++ if (self.export.Initialisation):
+int @self.export.Name@::initialisation()
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
 -
