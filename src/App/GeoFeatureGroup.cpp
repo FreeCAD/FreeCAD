@@ -45,7 +45,7 @@ PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 
 GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
-    m_extensionType = GeoFeatureGroupExtension::getClassTypeId();
+    initExtension(GeoFeatureGroupExtension::getClassTypeId());
     
     ADD_PROPERTY(Placement,(Base::Placement()));
 }

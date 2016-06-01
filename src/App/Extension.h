@@ -28,6 +28,8 @@
 #include "PropertyPythonObject.h"
 #include <CXX/Objects.hxx>
 
+#include <boost/preprocessor/seq/for_each.hpp>
+
 namespace App {
     
 /**
@@ -37,29 +39,52 @@ namespace App {
 class AppExport Extension : public virtual App::PropertyContainer
 {
 
-  TYPESYSTEM_HEADER();
+  //The cass does not have properties itself, but it is important to provide the property access
+  //functions. see cpp file for details
+  PROPERTY_HEADER(App::Extension);
 
 public:
-  /**
-   * A constructor.
-   * A more elaborate description of the constructor.
-   */
-  Extension();
 
-  /**
-   * A destructor.
-   * A more elaborate description of the destructor.
-   */
+  Extension();
   virtual ~Extension();
 
   App::DocumentObject*       getExtendedObject() {return m_base;};
   const App::DocumentObject* getExtendedObject() const {return m_base;};
-  void                       setExtendedObject(App::DocumentObject* obj);
  
+  const char* name();
+  
+  virtual PyObject* getExtensionPyObject(void);
+
 protected:     
+  void          initExtension(Base::Type type);
+  void          initExtension(App::DocumentObject* obj);
+  Py::Object    ExtensionPythonObject;
+  
+private:
   Base::Type           m_extensionType;
-  App::DocumentObject* m_base;
+  App::DocumentObject* m_base = nullptr;
 };
+
+
+
+#define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
+  PROPERTY_HEADER(_class)
+
+//helper macro to add parent to property data
+#define ADD_PARENT(r, data, elem)\
+    data::propertyData.parentPropertyData.push_back(elem::getPropertyDataPtr());
+
+/// 
+#define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_, _extensions_) \
+TYPESYSTEM_SOURCE_P(_class_);\
+const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
+const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
+App::PropertyData _class_::propertyData; \
+void _class_::init(void){\
+  initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
+  ADD_PARENT(0, _class_, _parentclass_)\
+  BOOST_PP_SEQ_FOR_EACH(ADD_PARENT, _class_, _extensions_)\
+}
 
 template<typename ExtensionT>
 class ExtensionPython : public ExtensionT {
@@ -83,26 +108,25 @@ class AppExport ExtensionContainer : public virtual App::PropertyContainer
     TYPESYSTEM_HEADER();
 
 public:
-    /**
-    * A constructor.
-    * A more elaborate description of the constructor.
-    */
-    ExtensionContainer();
+    
+    typedef std::map<Base::Type, App::Extension*>::iterator ExtensionIterator;
 
-    /**
-    * A destructor.
-    * A more elaborate description of the destructor.
-    */
+    ExtensionContainer();
     virtual ~ExtensionContainer();
 
     void registerExtension(Base::Type extension, App::Extension* ext);
     bool hasExtension(Base::Type) const;
+    bool hasExtension(const char* name) const; //this version does not check derived classes
     App::Extension* getExtension(Base::Type);
+    App::Extension* getExtension(const char* name); //this version does not check derived classes
     template<typename Extension>
     Extension* getExtensionByType() {
         return dynamic_cast<Extension*>(getExtension(Extension::getClassTypeId()));
     };
     
+    ExtensionIterator extensionBegin() {return _extensions.begin();};
+    ExtensionIterator extensionEnd() {return _extensions.end();};
+       
 private:
     //stored extensions
     std::map<Base::Type, App::Extension*> _extensions;

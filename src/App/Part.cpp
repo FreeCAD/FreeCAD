@@ -35,7 +35,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE(App::Part, App::DocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::DocumentObject, (App::OriginGroupExtension))
 
 
 //===========================================================================
@@ -60,7 +60,7 @@ Part::Part(void)
     // color and apperance
     ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
 
-    setExtendedObject(this);
+    GroupExtension::initExtension(this);
 }
 
 Part::~Part(void)

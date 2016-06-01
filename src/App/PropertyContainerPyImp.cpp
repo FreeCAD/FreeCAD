@@ -243,7 +243,8 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         getPropertyContainerPtr()->getPropertyMap(Map);
         PyObject *dict = PyDict_New();
         if (dict) {
-            for ( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it )
+            for ( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it ){
+                Base::Console().Message("Dict add  property: %s\n",it->first.c_str());
 #if PY_MAJOR_VERSION >= 3
                 PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
 #else

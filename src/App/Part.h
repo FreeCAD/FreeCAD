@@ -37,7 +37,7 @@ namespace App
  */
 class AppExport Part : public App::DocumentObject, public App::OriginGroupExtension
 {
-    PROPERTY_HEADER(App::Part);
+    PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
 
 public:
     /// type of the part

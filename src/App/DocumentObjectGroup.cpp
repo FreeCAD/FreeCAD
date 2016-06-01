@@ -28,6 +28,7 @@
 
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
+#include "GroupExtensionPy.h"
 #include "Document.h"
 #include "FeaturePythonPyImp.h"
 
@@ -37,7 +38,7 @@ PROPERTY_SOURCE(App::GroupExtension, App::Extension)
 
 GroupExtension::GroupExtension()
 {
-    m_extensionType = GroupExtension::getClassTypeId();
+    initExtension(GroupExtension::getClassTypeId());
     
     ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
 }
@@ -178,18 +179,37 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
     return 0;
 }
 
+PyObject* GroupExtension::getExtensionPyObject(void) {
+    
+    if (ExtensionPythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        auto grp = new GroupExtensionPy(this);
+        ExtensionPythonObject = Py::Object(grp,true);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
+}
 
-PROPERTY_SOURCE(App::DocumentObjectGroup, App::DocumentObject)
+
+
+PROPERTY_SOURCE_WITH_EXTENSIONS(App::DocumentObjectGroup, App::DocumentObject, (App::GroupExtension))
 
 DocumentObjectGroup::DocumentObjectGroup(void): DocumentObject(), GroupExtension() {
 
-    setExtendedObject(this);
+    GroupExtension::initExtension(this);
 }
 
 DocumentObjectGroup::~DocumentObjectGroup() {
 
 }
 
+PyObject *DocumentObjectGroup::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DocumentObjectGroupPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 
 
 // Python feature ---------------------------------------------------------

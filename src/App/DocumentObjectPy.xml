@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport 
-		Father="PropertyContainerPy" 
+		Father="ExtensionContainerPy" 
 		Name="DocumentObjectPy" 
 		Twin="DocumentObject" 
 		TwinPointer="DocumentObject" 
 		Include="App/DocumentObject.h" 
 		Namespace="App" 
-		FatherInclude="App/PropertyContainerPy.h" 
+		FatherInclude="App/ExtensionContainerPy.h" 
 		FatherNamespace="App">
 		<Documentation>
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

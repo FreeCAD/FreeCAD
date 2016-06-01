@@ -89,6 +89,8 @@ public:
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
+    
+    virtual PyObject* getExtensionPyObject(void);
 
     /// Properties
     PropertyLinkList Group;
@@ -102,7 +104,7 @@ typedef App::ExtensionPython<App::GroupExtension> GroupExtensionPython;
 
 class DocumentObjectGroup : public DocumentObject, public GroupExtension {
     
-    PROPERTY_HEADER(App::DocumentObjectGroup);
+    PROPERTY_HEADER_WITH_EXTENSIONS(App::DocumentObjectGroup);
     
 public:
     /// Constructor
@@ -113,6 +115,8 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "Gui::ViewProviderDocumentObjectGroup";
     };
+    
+    virtual PyObject *getPyObject(void);
 };
 
 typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;
