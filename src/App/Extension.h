@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTEXTENSION_H
-#define APP_DOCUMENTOBJECTEXTENSION_H
+#ifndef APP_EXTENSION_H
+#define APP_EXTENSION_H
 
 #include "PropertyContainer.h"
 #include "PropertyPythonObject.h"
@@ -119,9 +119,21 @@ public:
     bool hasExtension(const char* name) const; //this version does not check derived classes
     App::Extension* getExtension(Base::Type);
     App::Extension* getExtension(const char* name); //this version does not check derived classes
-    template<typename Extension>
-    Extension* getExtensionByType() {
-        return dynamic_cast<Extension*>(getExtension(Extension::getClassTypeId()));
+    template<typename ExtensionT>
+    ExtensionT* getExtensionByType() {
+        return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getClassTypeId()));
+    };
+    
+    //get all extensions which have the given base class
+    std::vector<Extension*> getExtensionsDerivedFrom(Base::Type type) const;
+    template<typename ExtensionT>
+    std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
+        auto vec = getExtensionsDerivedFrom(ExtensionT::getClassTypeId());
+        std::vector<ExtensionT*> typevec;
+        for(auto ext : vec)
+            typevec.push_back(dynamic_cast<ExtensionT*>(ext));
+        
+        return typevec;
     };
     
     ExtensionIterator extensionBegin() {return _extensions.begin();};
@@ -134,4 +146,4 @@ private:
 
 } //App
 
-#endif // APP_DOCUMENTOBJECTEXTENSION_H
+#endif // APP_EXTENSION_H

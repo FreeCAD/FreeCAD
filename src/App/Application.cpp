@@ -1137,9 +1137,9 @@ void Application::initTypes(void)
 
     // Extension classes
     App ::Extension                 ::init();
+    App ::DocumentObjectExtension   ::init();
     App ::GroupExtension            ::init();
     App ::GeoFeatureGroupExtension  ::init();
-    //App ::GeoFeatureGroupPython     ::init();
     App ::OriginGroupExtension      ::init();
     
     // Document classes

@@ -27,7 +27,7 @@
 #include "FeaturePython.h"
 #include "DocumentObject.h"
 #include "PropertyLinks.h"
-#include "Extension.h"
+#include "DocumentObjectExtension.h"
 #include <vector>
 
 
@@ -36,7 +36,7 @@ namespace App
 class DocumentObjectGroup;
 class GroupExtensionPy;
 
-class AppExport GroupExtension : public Extension
+class AppExport GroupExtension : public DocumentObjectExtension
 {
     PROPERTY_HEADER(App::GroupExtension);
 
