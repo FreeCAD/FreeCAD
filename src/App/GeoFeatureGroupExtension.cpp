@@ -29,7 +29,7 @@
 
 #include <App/Document.h>
 
-#include "GeoFeatureGroup.h"
+#include "GeoFeatureGroupExtension.h"
 //#include "GeoFeatureGroupPy.h"
 //#include "FeaturePythonPyImp.h"
 

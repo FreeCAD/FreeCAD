@@ -29,7 +29,7 @@
 #endif
 
 #include <Base/Console.h>
-#include <App/OriginGroup.h>
+#include <App/OriginGroupExtension.h>
 #include <App/Origin.h>
 
 #include "Application.h"

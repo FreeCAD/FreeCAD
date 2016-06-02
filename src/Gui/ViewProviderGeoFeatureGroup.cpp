@@ -28,7 +28,7 @@
 # include <Inventor/nodes/SoGroup.h>
 #endif
 
-#include <App/GeoFeatureGroup.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "ViewProviderGeoFeatureGroup.h"
 

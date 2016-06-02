@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include "OriginGroup.h"
+#include "OriginGroupExtension.h"
 
 #ifndef _PreComp_
 #endif
