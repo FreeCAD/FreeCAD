@@ -32,7 +32,7 @@
 #endif
 
 #include <App/OriginFeature.h>
-#include <App/GeoFeatureGroup.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
