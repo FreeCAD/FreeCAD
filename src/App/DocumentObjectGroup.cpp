@@ -34,7 +34,7 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::GroupExtension, App::Extension)
+PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
 GroupExtension::GroupExtension()
 {
@@ -89,7 +89,7 @@ void GroupExtension::removeObjectFromDocument(DocumentObject* obj)
 {
     // remove all children
     if (obj->hasExtension(GroupExtension::getClassTypeId())) {
-        GroupExtension *grp = static_cast<GroupExtension*>(obj->getExtension(GroupExtension::getClassTypeId()));
+        GroupExtension *grp = static_cast<GroupExtension*>(obj->getExtension(GroupExtension::getClassTypeId()));
         // recursive call to remove all subgroups
         grp->removeObjectsFromDocument();
     }
@@ -112,7 +112,7 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
         if (*it == obj) {
             return true;
         } else if ( recursive && (*it)->hasExtension(GroupExtension::getClassTypeId()) ) {
-            App::GroupExtension *subGroup = static_cast<App::GroupExtension *> ((*it)->getExtension(GroupExtension::getClassTypeId()));
+            App::GroupExtension *subGroup = static_cast<App::GroupExtension *> ((*it)->getExtension(GroupExtension::getClassTypeId()));
             if (subGroup->hasObject (obj, recursive)) {
                 return true;
             }
@@ -129,7 +129,7 @@ bool GroupExtension::isChildOf(const GroupExtension* group) const
         if (*it == getExtendedObject())
             return true;
         if ((*it)->hasExtension(GroupExtension::getClassTypeId())) {
-            if (this->isChildOf(static_cast<GroupExtension*>((*it)->getExtension(GroupExtension::getClassTypeId()))))
+            if (this->isChildOf(static_cast<GroupExtension*>((*it)->getExtension(GroupExtension::getClassTypeId()))))
                 return true;
         }
     }

@@ -33,8 +33,11 @@
 #include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
 #include "PropertyExpressionEngine.h"
-#include "DocumentObjectExtension.h"
+<<<<<<< d634f3384aa4e6436c7df203435de3895700be84
 #include <App/DocumentObjectPy.h>
+=======
+#include "DocumentObjectExtension.h"
+>>>>>>> Special calls for document object extensions
 #include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
 
