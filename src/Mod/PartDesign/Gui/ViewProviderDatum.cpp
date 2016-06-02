@@ -53,7 +53,7 @@
 #endif
 
 #include <App/DocumentObjectGroup.h>
-#include <App/GeoFeatureGroup.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
