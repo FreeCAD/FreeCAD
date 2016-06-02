@@ -380,59 +380,60 @@ class ObjectPocket:
 
         if obj.Base:
             for b in obj.Base:
-                print "object base: " + str(b)
-                import Part
-                import PathScripts.PathKurveUtils
-                if "Face" in b[1]:
-                    print "inside"
-                    shape = getattr(b[0].Shape, b[1])
-                    wire = shape.OuterWire
-                    edges = wire.Edges
-                else:
-                    print "in else"
-                    edges = [getattr(b[0].Shape, sub) for sub in b[1]]
-                    print "myedges: " + str(edges)
-                    wire = Part.Wire(edges)
-                    shape = None
-
-                # output = ""
-                if obj.Algorithm == "OCC Native":
-                    if shape is None:
-                        shape = wire
-                    output += self.buildpathocc(obj, shape)
-                else:
-                    try:
-                        import area
-                    except:
-                        FreeCAD.Console.PrintError(translate("PathKurve", "libarea needs to be installed for this command to work.\n"))
-                        return
-
-                    a = area.Area()
-                    if shape is None:
-                        c = PathScripts.PathKurveUtils.makeAreaCurve(wire.Edges, 'CW')
-                        a.append(c)
+                for sub in b[1]:
+                    print "object base: " + str(b)
+                    import Part
+                    import PathScripts.PathKurveUtils
+                    if "Face" in sub:
+                        print "inside"
+                        shape = getattr(b[0].Shape, sub)
+                        wire = shape.OuterWire
+                        edges = wire.Edges
                     else:
-                        for w in shape.Wires:
-                            c = PathScripts.PathKurveUtils.makeAreaCurve(w.Edges, 'CW')
-                            # if w.isSame(shape.OuterWire):
-                            #     print "outerwire"
-                            #     if  c.IsClockwise():
-                            #         c.Reverse()
-                            #         print "reverse outterwire"
-                            # else:
-                            #     print "inner wire"
-                            #     if not c.IsClockwise():
-                            #         c.Reverse()
-                            #         print "reverse inner"
+                        print "in else"
+                        edges = [getattr(b[0].Shape, sub) for sub in b[1]]
+                        print "myedges: " + str(edges)
+                        wire = Part.Wire(edges)
+                        shape = None
+
+                    # output = ""
+                    if obj.Algorithm == "OCC Native":
+                        if shape is None:
+                            shape = wire
+                        output += self.buildpathocc(obj, shape)
+                    else:
+                        try:
+                            import area
+                        except:
+                            FreeCAD.Console.PrintError(translate("PathKurve", "libarea needs to be installed for this command to work.\n"))
+                            return
+
+                        a = area.Area()
+                        if shape is None:
+                            c = PathScripts.PathKurveUtils.makeAreaCurve(wire.Edges, 'CW')
                             a.append(c)
+                        else:
+                            for w in shape.Wires:
+                                c = PathScripts.PathKurveUtils.makeAreaCurve(w.Edges, 'CW')
+                                # if w.isSame(shape.OuterWire):
+                                #     print "outerwire"
+                                #     if  c.IsClockwise():
+                                #         c.Reverse()
+                                #         print "reverse outterwire"
+                                # else:
+                                #     print "inner wire"
+                                #     if not c.IsClockwise():
+                                #         c.Reverse()
+                                #         print "reverse inner"
+                                a.append(c)
 
-                    ########
-                    # This puts out some interesting information from libarea
-                    print a.text()
-                    ########
+                        ########
+                        # This puts out some interesting information from libarea
+                        print a.text()
+                        ########
 
-                    a.Reorder()
-                    output += self.buildpathlibarea(obj, a)
+                        a.Reorder()
+                        output += self.buildpathlibarea(obj, a)
 
             if obj.Active:
                 path = Path.Path(output)
@@ -598,8 +599,12 @@ class TaskPanel:
         if index >= 0:
             self.form.algorithmSelect.setCurrentIndex(index)
 
+        # for i in self.obj.Base:
+        #     self.form.baseList.addItem(i[0].Name + "." + i[1][0])
+
         for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
+            for sub in i[1]:
+                self.form.baseList.addItem(i[0].Name + "." + sub)
 
 
 
@@ -628,8 +633,13 @@ class TaskPanel:
 
         self.setFields()  # defaults may have changed.  Reload.
         self.form.baseList.clear()
+
         for i in self.obj.Base:
-            self.form.baseList.addItem(i[0].Name + "." + i[1])
+            for sub in i[1]:
+                self.form.baseList.addItem(i[0].Name + "." + sub)
+
+        # for i in self.obj.Base:
+        #     self.form.baseList.addItem(i[0].Name + "." + i[1][0])
 
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
