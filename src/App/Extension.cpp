@@ -177,3 +177,14 @@ Extension* ExtensionContainer::getExtension(const char* name) {
     }
     return nullptr;
 }
+
+std::vector< Extension* > ExtensionContainer::getExtensionsDerivedFrom(Base::Type type) const {
+
+    std::vector<Extension*> vec;
+    //and for types derived from it, as they can be cast to the extension
+    for(auto entry : _extensions) {            
+        if(entry.first.isDerivedFrom(type))
+            vec.push_back(entry.second);
+    }
+    return vec;
+}

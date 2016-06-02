@@ -57,18 +57,18 @@ public:
     static DocumentObject* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
 
     /// Returns true on changing OriginFeature set
-    //virtual short mustExecute () const;
+    virtual short extensionMustExecute () const override;
     
     /// Origin linked to the group
     PropertyLink Origin;
 
 protected:
     /// Checks integrity of the Origin
-    //virtual App::DocumentObjectExecReturn *execute ();
+    virtual App::DocumentObjectExecReturn *extensionExecute () override;
     /// Creates the corresponding Origin object
-    //virtual void setupObject ();
+    virtual void onExtendedSetupObject () override;
     /// Removes all planes and axis if they are still linked to the document
-    //virtual void unsetupObject ();
+    virtual void onExtendedUnsetupObject () override;
 };
 
 } /* App */

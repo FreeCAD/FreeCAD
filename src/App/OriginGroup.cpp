@@ -83,45 +83,44 @@ App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObjec
 
     return 0;
 }
-/*
-short OriginGroupExtension::mustExecute() const {
+
+short OriginGroupExtension::extensionMustExecute() const {
     if (Origin.isTouched ()) {
         return 1;
     } else {
-        return GeoFeatureGroup::mustExecute();
+        return GeoFeatureGroupExtension::extensionMustExecute();
     }
 }
 
-App::DocumentObjectExecReturn *OriginGroupExtension::execute() {
+App::DocumentObjectExecReturn *OriginGroupExtension::extensionExecute() {
     try { // try to find all base axis and planes in the origin
         getOrigin ();
     } catch (const Base::Exception &ex) {
-        setError ();
+        //getExtendedObject()->setError ();
         return new App::DocumentObjectExecReturn ( ex.what () );
     }
 
-    return GeoFeatureGroup::execute ();
+    return GeoFeatureGroupExtension::extensionExecute ();
 }
 
-void OriginGroupExtension::setupObject () {
-    App::Document *doc = getDocument ();
+void OriginGroupExtension::onExtendedSetupObject () {
+    App::Document *doc = getExtendedObject()->getDocument ();
 
-    std::string objName = std::string ( getNameInDocument()).append ( "Origin" );
+    std::string objName = std::string ( getExtendedObject()->getNameInDocument()).append ( "Origin" );
 
     App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
 
     assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
     Origin.setValue (originObj);
 
-    GeoFeatureGroup::setupObject ();
+    GeoFeatureGroupExtension::onExtendedSetupObject ();
 }
 
-void OriginGroupExtension::unsetupObject () {
+void OriginGroupExtension::onExtendedUnsetupObject () {
     App::DocumentObject *origin = Origin.getValue ();
     if (origin && !origin->isDeleting ()) {
         origin->getDocument ()->remObject (origin->getNameInDocument());
     }
 
-    GeoFeatureGroup::unsetupObject ();
+    GeoFeatureGroupExtension::onExtendedUnsetupObject ();
 }
-*/
