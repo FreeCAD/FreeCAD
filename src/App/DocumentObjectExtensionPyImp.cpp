@@ -27,65 +27,24 @@
 # include <sstream>
 #endif
 
-#include "Application.h"
-
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
-#include "ExtensionContainerPy.h"
-#include "ExtensionContainerPy.cpp"
+#include "DocumentObjectExtensionPy.h"
+#include "DocumentObjectExtensionPy.cpp"
 
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string ExtensionContainerPy::representation(void) const
+std::string DocumentObjectExtensionPy::representation(void) const
 {
-    return std::string("<extension>");
+    return std::string("<document object extension>");
 }
 
-int  ExtensionContainerPy::initialisation() {
-        
-    if (this->ob_type->tp_dict == NULL) {
-        if (PyType_Ready(this->ob_type) < 0)
-            return 0;
-    }
-        
-    ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
-    for(; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
-        
-        PyObject* obj = (*it).second->getExtensionPyObject();
-        PyMethodDef* tmpptr = (PyMethodDef*)obj->ob_type->tp_methods;
-        while(tmpptr->ml_name) {
-            //Note: to add methods the call to PyMethod_New is required. However, than the PyObject 
-            //      self is added to the functions arguments list. FreeCAD py implementations are not 
-            //      made to handle this, the do not accept self as argument. Hence we only use function
-            PyObject *func = PyCFunction_New(tmpptr,obj);
-            //PyObject *method = PyMethod_New(func, (PyObject*)this, PyObject_Type((PyObject*)this));  
-            PyDict_SetItem(this->ob_type->tp_dict, PyString_FromString(tmpptr->ml_name), func);
-            Py_DECREF(func);
-            //Py_DECREF(method);
-            ++tmpptr;
-        }
-    }
-    return 0;   
-}
-
-PyObject* ExtensionContainerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
-{
-    // create a new instance of @self.export.Name@ and the Twin object 
-    return 0;
-}
-
-// constructor method
-int ExtensionContainerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+PyObject *DocumentObjectExtensionPy::getCustomAttributes(const char* attr) const
 {
     return 0;
 }
 
-PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
-{   
-    return 0;
-}
-
-int ExtensionContainerPy::setCustomAttributes(const char* attr, PyObject *obj)
-{        
+int DocumentObjectExtensionPy::setCustomAttributes(const char* attr, PyObject *obj)
+{
     return 0;
 }
