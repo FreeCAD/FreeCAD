@@ -28,6 +28,7 @@
 #endif
 
 #include "Application.h"
+#include "DocumentObject.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include "ExtensionContainerPy.h"
@@ -65,8 +66,19 @@ int  ExtensionContainerPy::initialisation() {
             ++tmpptr;
         }
     }
-    return 0;   
+    return 1;   
 }
+
+int  ExtensionContainerPy::deinitialisation() {
+
+    //we need to delete all added python extensions, as we are the owner! 
+    ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
+    for(; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
+        if((*it).second->isPythonExtension())
+            delete (*it).second;
+    }
+    return 1;
+};
 
 PyObject* ExtensionContainerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
@@ -88,4 +100,64 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
 int ExtensionContainerPy::setCustomAttributes(const char* attr, PyObject *obj)
 {        
     return 0;
+}
+
+PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
+    
+    char *type;
+    if (!PyArg_ParseTuple(args, "s", &type)) 
+        return NULL;                                         // NULL triggers exception 
+
+    //get the extension type asked for
+    Base::Type extension =  Base::Type::fromName(type);
+    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getClassTypeId())) {
+        std::stringstream str;
+        str << "No extension found of type '" << type << "'" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }
+    
+    if(getExtensionContainerPtr()->hasExtension(extension)) {
+        Py_INCREF(Py_True);
+        return Py_True;
+    }
+    Py_INCREF(Py_False);
+    return Py_False;
+}
+
+PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
+    
+    char *type;
+    if (!PyArg_ParseTuple(args, "s", &type)) 
+        return NULL;                                         // NULL triggers exception 
+
+    //get the extension type asked for
+    Base::Type extension =  Base::Type::fromName(type);
+    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getClassTypeId())) {
+        std::stringstream str;
+        str << "No extension found of type '" << type << "'" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }
+    
+    //register the extension
+    App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
+    ext->initExtension(dynamic_cast<App::DocumentObject*>(getExtensionContainerPtr()));
+    
+    //we are responsible for deleting the extension once done with it!
+    ext->setPythonExtension(true);    
+    
+    //make sure all functions of the extension are acessible through this object
+    PyMethodDef* tmpptr = (PyMethodDef*)ext->getExtensionPyObject()->ob_type->tp_methods;
+    while(tmpptr->ml_name) {
+        //Note: to add methods the call to PyMethod_New is required. However, than the PyObject 
+        //      self is added to the functions arguments list. FreeCAD py implementations are not 
+        //      made to handle this, the do not accept self as argument. Hence we only use function
+        PyObject *func = PyCFunction_New(tmpptr, ext->getExtensionPyObject());
+        //PyObject *method = PyMethod_New(func, (PyObject*)this, PyObject_Type((PyObject*)this));  
+        PyDict_SetItem(this->ob_type->tp_dict, PyString_FromString(tmpptr->ml_name), func);
+        Py_DECREF(func);
+        //Py_DECREF(method);
+        ++tmpptr;
+    }
+    
+    Py_Return;
 }
