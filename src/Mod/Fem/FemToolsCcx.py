@@ -87,7 +87,8 @@ class FemToolsCcx(FemTools.FemTools):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.FemInputWriterCcx(self.analysis, self.mesh, self.materials,
+            inp_writer = iw.FemInputWriterCcx(self.analysis, self.solver,
+                                              self.mesh, self.materials,
                                               self.fixed_constraints,
                                               self.force_constraints, self.pressure_constraints,
                                               self.displacement_constraints,
