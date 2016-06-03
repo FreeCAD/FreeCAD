@@ -37,7 +37,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
     #  The constructur of FemTools is for use of analysis without solver object
-    def __init__(self, analysis=None):
+    def __init__(self, analysis=None, solver=None):
 
         if analysis:
             ## @var analysis
@@ -47,6 +47,12 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         else:
             import FemGui
             self.analysis = FemGui.getActiveAnalysis()
+        if solver:
+            ## @var solver
+            #  solver of the analysis. Used to store the active solver and analysis parameters
+            self.solver = solver
+        else:
+            self.solver = None
         if self.analysis:
             self.update_objects()
             self.results_present = False
@@ -106,8 +112,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.reset_mesh_color()
             return
         if self.result_object:
-            if self.result_object.Mesh.ViewObject.Visibility is False:
-                self.result_object.Mesh.ViewObject.Visibility = True
+            if FreeCAD.GuiUp:
+                if self.result_object.Mesh.ViewObject.Visibility is False:
+                    self.result_object.Mesh.ViewObject.Visibility = True
             if result_type == "Sabs":
                 values = self.result_object.StressValues
             elif result_type == "Uabs":
@@ -147,9 +154,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
 
-        ## @var solver
-        #  solver of the analysis. Used to store solver and analysis parameters
-        self.solver = None
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
@@ -182,12 +186,22 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
         self.displacement_constraints = []
 
+        found_solver_for_use = False
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
-                if not self.solver:
+                # for some methods no solver is needed (purge_results) --> solver could be none
+                # analysis has one solver and no solver was set --> use the one solver
+                # analysis has more than one solver and no solver was set --> use solver none
+                # analysis has no solver --> use solver none
+                if not found_solver_for_use and not self.solver:
+                    # no solver was found before and no solver was set by constructor
                     self.solver = m
-                else:
-                    raise Exception('FEM: Multiple solver in analysis not yet supported!')
+                    found_solver_for_use = True
+                elif found_solver_for_use:
+                    self.solver = None
+                    # another solver was found --> We have more than one solver
+                    # we do not know which one to use, so we use none !
+                    # print('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!')
             elif m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m

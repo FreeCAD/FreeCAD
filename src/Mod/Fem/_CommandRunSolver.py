@@ -51,9 +51,12 @@ class _CommandRunSolver(FemCommands):
             else:
                 print ("CalculiX failed ccx finished with error {}".format(ret_code))
 
-        if FreeCADGui.Selection.getSelection()[0].SolverType == "FemSolverCalculix":
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemSolverObjectPython"):
+            self.solver = sel[0]
+        if self.solver.SolverType == "FemSolverCalculix":
             import FemToolsCcx
-            self.fea = FemToolsCcx.FemToolsCcx()
+            self.fea = FemToolsCcx.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
             message = self.fea.check_prerequisites()
             if message:
@@ -61,9 +64,9 @@ class _CommandRunSolver(FemCommands):
                 return
             self.fea.finished.connect(load_results)
             QtCore.QThreadPool.globalInstance().start(self.fea)
-        elif FreeCADGui.Selection.getSelection()[0].SolverType == "FemSolverZ88":
+        elif self.solver.SolverType == "FemSolverZ88":
             import FemToolsZ88
-            self.fea = FemToolsZ88.FemToolsZ88()
+            self.fea = FemToolsZ88.FemToolsZ88(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
             message = self.fea.check_prerequisites()
             if message:
