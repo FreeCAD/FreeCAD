@@ -147,6 +147,9 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
 
 // Python feature ---------------------------------------------------------
 
-// explicit template instantiation
-//template class AppExport DocumentObjectExtensionPython<App::GeoFeatureGroupExtension>;
+namespace App {
+PROPERTY_SOURCE_TEMPLATE(App::GeoFeatureGroupExtensionPython, App::GeoFeatureGroupExtension)
 
+// explicit template instantiation
+template class AppExport ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>>;
+}

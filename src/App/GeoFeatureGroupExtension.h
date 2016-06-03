@@ -75,7 +75,8 @@ public:
     }
 };
 
-typedef App::ExtensionPython<GeoFeatureGroupExtension> GeoFeatureGroupExtensionPython;
+typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
+
 
 } //namespace App
 

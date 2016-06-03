@@ -45,7 +45,7 @@ DocumentObjectExtension::~DocumentObjectExtension()
 
 }
 
-short int DocumentObjectExtension::extensionMustExecute(void) const {
+short int DocumentObjectExtension::extensionMustExecute(void) {
     
     return 0;
 }
@@ -75,5 +75,3 @@ PyObject* DocumentObjectExtension::getExtensionPyObject(void) {
     }
     return Py::new_reference_to(ExtensionPythonObject);
 }
-
-

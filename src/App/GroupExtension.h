@@ -54,6 +54,10 @@ public:
     /* Adds the object \a obj to this group.
      */
     void addObject(DocumentObject* obj);
+    /*override this function if you want only special objects
+     */
+    virtual bool allowObject(DocumentObject* obj) {return true;};
+    
     /** Removes an object from this group.
      */
     void removeObject(DocumentObject* obj);
@@ -98,6 +102,32 @@ public:
 private:
     void removeObjectFromDocument(DocumentObject*);
 };
+
+
+template<typename ExtensionT>
+class GroupExtensionPythonT : public ExtensionT {
+         
+public:
+    
+    GroupExtensionPythonT() {}
+    virtual ~GroupExtensionPythonT() {}
+ 
+    //override the documentobjectextension functions to make them available in python 
+    virtual bool allowObject(DocumentObject* obj)  override {
+        Py::Object pyobj = Py::asObject(obj->getPyObject());
+        EXTENSION_PROXY_ONEARG(allowObject, pyobj);
+                
+        if(result.isNone())
+            ExtensionT::allowObject(obj);
+        
+        if(result.isBoolean())
+            return result.isTrue();
+        
+        return false;
+    };
+};
+
+typedef ExtensionPythonT<GroupExtensionPythonT<GroupExtension>> GroupExtensionPython;
 
 } //namespace App
 

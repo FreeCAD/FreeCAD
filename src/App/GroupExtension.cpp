@@ -50,12 +50,19 @@ GroupExtension::~GroupExtension()
 DocumentObject* GroupExtension::addObject(const char* sType, const char* pObjectName)
 {
     DocumentObject* obj = getExtendedObject()->getDocument()->addObject(sType, pObjectName);
+    if(!allowObject(obj)) {
+        getExtendedObject()->getDocument()->remObject(obj->getNameInDocument());
+        return nullptr;
+    }
     if (obj) addObject(obj);
     return obj;
 }
 
 void GroupExtension::addObject(DocumentObject* obj)
 {
+    if(!allowObject(obj))
+        return;
+    
     if (!hasObject(obj)) {
         std::vector<DocumentObject*> grp = Group.getValues();
         grp.push_back(obj);
@@ -190,4 +197,12 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
         ExtensionPythonObject = Py::Object(grp,true);
     }
     return Py::new_reference_to(ExtensionPythonObject);
+}
+
+
+namespace App {
+PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
+
+// explicit template instantiation
+template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 }

@@ -70,13 +70,13 @@ int  ExtensionContainerPy::initialisation() {
 }
 
 int  ExtensionContainerPy::deinitialisation() {
-
+/*
     //we need to delete all added python extensions, as we are the owner! 
     ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
     for(; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
         if((*it).second->isPythonExtension())
             delete (*it).second;
-    }
+    }*/
     return 1;
 };
 
@@ -127,7 +127,8 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     
     char *type;
-    if (!PyArg_ParseTuple(args, "s", &type)) 
+    PyObject* proxy;
+    if (!PyArg_ParseTuple(args, "sO", &type, &proxy)) 
         return NULL;                                         // NULL triggers exception 
 
     //get the extension type asked for
@@ -140,10 +141,24 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     
     //register the extension
     App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
+    //check if this really is a python extension!
+    if(!ext->isPythonExtension()) {
+        delete ext;
+        std::stringstream str;
+        str << "Extension is not a python addable version: '" << type << "'" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }    
+    
     ext->initExtension(dynamic_cast<App::DocumentObject*>(getExtensionContainerPtr()));
     
-    //we are responsible for deleting the extension once done with it!
-    ext->setPythonExtension(true);    
+    //set the proxy to allow python overrides
+    App::Property* pp = ext->getPropertyByName("Proxy");
+    if(!pp) {
+        std::stringstream str;
+        str << "Accessing the proxy property failed!" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }
+    static_cast<PropertyPythonObject*>(pp)->setValue(Py::asObject(proxy));
     
     //make sure all functions of the extension are acessible through this object
     PyMethodDef* tmpptr = (PyMethodDef*)ext->getExtensionPyObject()->ob_type->tp_methods;

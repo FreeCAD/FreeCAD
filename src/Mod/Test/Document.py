@@ -181,6 +181,22 @@ class DocumentBasicCases(unittest.TestCase):
     else:
       self.failUnless(False)
     del L2
+    
+  def testExtensions(self):
+    #we try to create a normal python object and add a extension to it 
+    obj = self.Doc.addObject("App::DocumentObject", "Extension_1")
+    grp = self.Doc.addObject("App::DocumentObject", "Extension_2")
+    #we should have all methods we need to handle extensions 
+    try:
+      self.failUnless(not grp.hasExtension("App::GroupExtension"))
+      grp.addExtension("App::GroupExtension", self)
+      grp.addObject(obj)
+      self.failUnless(grp.Group[0] == obj)
+    except:
+      self.failUnless(True)
+    
+    self.Doc.remove(obj)
+    del obj
 
   def tearDown(self):
     #closing doc

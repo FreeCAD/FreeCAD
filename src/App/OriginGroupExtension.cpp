@@ -84,7 +84,7 @@ App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObjec
     return 0;
 }
 
-short OriginGroupExtension::extensionMustExecute() const {
+short OriginGroupExtension::extensionMustExecute() {
     if (Origin.isTouched ()) {
         return 1;
     } else {
@@ -123,4 +123,14 @@ void OriginGroupExtension::onExtendedUnsetupObject () {
     }
 
     GeoFeatureGroupExtension::onExtendedUnsetupObject ();
+}
+
+
+// Python feature ---------------------------------------------------------
+
+namespace App {
+PROPERTY_SOURCE_TEMPLATE(App::OriginGroupExtensionPython, App::OriginGroupExtension)
+
+// explicit template instantiation
+template class AppExport ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>>;
 }

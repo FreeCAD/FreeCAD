@@ -24,11 +24,11 @@
 #ifndef APP_DOCUMENTOBJECT_H
 #define APP_DOCUMENTOBJECT_H
 
-<<<<<<< 51e23d854e59ab0a23a9ea9b19e74e5f02753d82
+<<<<<<< 75964436541d26c663d0ad51ae81c5ab359a539c
 #include <App/TransactionalObject.h>
 =======
-#include <App/Extension.h>
->>>>>>> Introduce extensions and port App groups
+#include <App/ExtensionContainer.h>
+>>>>>>> Extensions: Make Python Integration work
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyExpressionEngine.h>
@@ -80,11 +80,7 @@ public:
 
 /** Base class of all Classes handled in the Document
  */
-<<<<<<< 51e23d854e59ab0a23a9ea9b19e74e5f02753d82
 class AppExport DocumentObject: public App::TransactionalObject
-=======
-class AppExport DocumentObject : public App::ExtensionContainer
->>>>>>> Introduce extensions and port App groups
 {
     PROPERTY_HEADER(App::DocumentObject);
 
@@ -241,11 +237,11 @@ protected:
     /// get called after a document has been fully restored
     virtual void onDocumentRestored() {}
     /// get called after setting the document
-    virtual void onSettingDocument() {}
+    virtual void onSettingDocument();
     /// get called after a brand new object was created
-    virtual void setupObject() {}
+    virtual void setupObject();
     /// get called when object is going to be removed from the document
-    virtual void unsetupObject() {}
+    virtual void unsetupObject();
 
      /// python object of this class and all descendend
 protected: // attributes

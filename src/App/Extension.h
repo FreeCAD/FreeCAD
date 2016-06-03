@@ -26,10 +26,8 @@
 
 #include "PropertyContainer.h"
 #include "PropertyPythonObject.h"
-#include "DynamicProperty.h"
+#include "Base/Interpreter.h"
 #include <CXX/Objects.hxx>
-
-#include <boost/preprocessor/seq/for_each.hpp>
 
 namespace App {
     
@@ -56,127 +54,108 @@ public:
  
   //get extension name without namespace
   const char* name();
-  //store if this extension is created from python or not (hence c++ multiple inheritance)
-  void setPythonExtension(bool val) {m_isPythonExtension = val;};
+
   bool isPythonExtension() {return m_isPythonExtension;};
   
   virtual PyObject* getExtensionPyObject(void);
 
 protected:     
-  void          initExtension(Base::Type type);
-  Py::Object    ExtensionPythonObject;
+  void initExtension(Base::Type type);
+  bool m_isPythonExtension = false;
+  Py::Object ExtensionPythonObject;
   
 private:
   Base::Type           m_extensionType;
   App::DocumentObject* m_base = nullptr;
-  bool                 m_isPythonExtension = false;
 };
 
 
+/**
+ * Generic Python extension class which allows to behave every extension
+ * derived class as Python extension -- simply by subclassing.
+ */
+template <class ExtensionT>
+class ExtensionPythonT : public ExtensionT
+{
+    PROPERTY_HEADER(App::ExtensionPythonT<ExtensionT>);
 
-#define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
-  PROPERTY_HEADER(_class)
-
-//helper macro to add parent to property data
-#define ADD_PARENT(r, data, elem)\
-    data::propertyData.parentPropertyData.push_back(elem::getPropertyDataPtr());
-
-/// 
-#define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_, _extensions_) \
-TYPESYSTEM_SOURCE_P(_class_);\
-const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
-const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
-App::PropertyData _class_::propertyData; \
-void _class_::init(void){\
-  initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  ADD_PARENT(0, _class_, _parentclass_)\
-  BOOST_PP_SEQ_FOR_EACH(ADD_PARENT, _class_, _extensions_)\
-}
-
-template<typename ExtensionT>
-class ExtensionPython : public ExtensionT {
-    
-    PROPERTY_HEADER(App::ExtensionPython<ExtensionT>);
-    
 public:
-    ExtensionPython() {
+    typedef ExtensionT Inherited;
+    
+    ExtensionPythonT() {
+        ExtensionT::m_isPythonExtension = true;
+        
         ADD_PROPERTY(Proxy,(Py::Object()));
     }
-    
-    //we actually don't need to override any extension methods by default as dynamic properties 
-    //should not be supportet.
-protected:
+    virtual ~ExtensionPythonT() {
+    }
+
     PropertyPythonObject Proxy;
 };
 
-class AppExport ExtensionContainer : public virtual App::PropertyContainer
-{
+typedef ExtensionPythonT<App::Extension> ExtensionPython;
 
-    TYPESYSTEM_HEADER();
+//helper macros to define python extensions
+#define EXTENSION_PROXY_FIRST(function) \
+    Base::PyGILStateLocker lock;\
+    Py::Object result;\
+    try {\
+        Property* proxy = this->getPropertyByName("Proxy");\
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {\
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();\
+            if (feature.hasAttr(std::string("function"))) {\
+                if (feature.hasAttr("__object__")) {\
+                    Py::Callable method(feature.getAttr(std::string("function")));
+                    
+                    
+                    
 
-public:
+#define EXTENSION_PROXY_SECOND(function)\
+                    result = method.apply(args);\
+                }\
+                else {\
+                    Py::Callable method(feature.getAttr(std::string("function")));
+                    
+#define EXTENSION_PROXY_THIRD()\
+                    result = method.apply(args);\
+                }\
+            }\
+        }\
+    }\
+    catch (Py::Exception&) {\
+        Base::PyException e;\
+        e.ReportException();\
+    }
     
-    typedef std::map<Base::Type, App::Extension*>::iterator ExtensionIterator;
+#define EXTENSION_PROXY_NOARG(function)\
+    EXTENSION_PROXY_FIRST(function) \
+    Py::Tuple args;\
+    EXTENSION_PROXY_SECOND(function) \
+    Py::Tuple args(1);\
+    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));\
+    EXTENSION_PROXY_THIRD()
 
-    ExtensionContainer();
-    virtual ~ExtensionContainer();
+#define EXTENSION_PROXY_ONEARG(function, arg)\
+    EXTENSION_PROXY_FIRST(function) \
+    Py::Tuple args;\
+    args.setItem(0, arg); \
+    EXTENSION_PROXY_SECOND(function) \
+    Py::Tuple args(2);\
+    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));\
+    args.setItem(1, arg); \
+    EXTENSION_PROXY_THIRD()
 
-    void registerExtension(Base::Type extension, App::Extension* ext);
-    bool hasExtension(Base::Type) const;
-    bool hasExtension(const char* name) const; //this version does not check derived classes
-    App::Extension* getExtension(Base::Type);
-    App::Extension* getExtension(const char* name); //this version does not check derived classes
-    template<typename ExtensionT>
-    ExtensionT* getExtensionByType() {
-        return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getClassTypeId()));
+#define EXTENSION_PYTHON_OVERRIDE_VOID_NOARGS(function)\
+    virtual void function() override {\
+        EXTENSION_PROXY_NOARGS(function)\
     };
     
-    //get all extensions which have the given base class
-    std::vector<Extension*> getExtensionsDerivedFrom(Base::Type type) const;
-    template<typename ExtensionT>
-    std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
-        auto vec = getExtensionsDerivedFrom(ExtensionT::getClassTypeId());
-        std::vector<ExtensionT*> typevec;
-        for(auto ext : vec)
-            typevec.push_back(dynamic_cast<ExtensionT*>(ext));
-        
-        return typevec;
+#define EXTENSION_PYTHON_OVERRIDE_OBJECT_NOARGS(function)\
+    virtual PyObject* function() override {\
+        EXTENSION_PROXY_NOARGS(function)\
+        return res.ptr();\
     };
     
-    ExtensionIterator extensionBegin() {return _extensions.begin();};
-    ExtensionIterator extensionEnd() {return _extensions.end();};
-       
-    
-    /** @name Access properties */
-    //@{
-    /// find a property by its name
-    virtual Property *getPropertyByName(const char* name) const override;
-    /// get the name of a property
-    virtual const char* getPropertyName(const Property* prop) const override;
-    /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyMap(std::map<std::string,Property*> &Map) const override;
-    /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyList(std::vector<Property*> &List) const override;
-
-    /// get the Type of a Property
-    virtual short getPropertyType(const Property* prop) const override;
-    /// get the Type of a named Property
-    virtual short getPropertyType(const char *name) const override;
-    /// get the Group of a Property
-    virtual const char* getPropertyGroup(const Property* prop) const override;
-    /// get the Group of a named Property
-    virtual const char* getPropertyGroup(const char *name) const override;
-    /// get the Group of a Property
-    virtual const char* getPropertyDocumentation(const Property* prop) const override;
-    /// get the Group of a named Property
-    virtual const char* getPropertyDocumentation(const char *name) const override;
-    //@}
-    
-private:
-    //stored extensions
-    std::map<Base::Type, App::Extension*> _extensions;
-};
-
-} //App
+}; //App
 
 #endif // APP_EXTENSION_H

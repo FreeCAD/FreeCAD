@@ -46,7 +46,7 @@ public:
     virtual ~DocumentObjectExtension ();
 
     //override if execution is nesseccary
-    virtual short extensionMustExecute(void) const;
+    virtual short extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
     
     

@@ -57,7 +57,7 @@ public:
     static DocumentObject* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
 
     /// Returns true on changing OriginFeature set
-    virtual short extensionMustExecute () const override;
+    virtual short extensionMustExecute () override;
     
     /// Origin linked to the group
     PropertyLink Origin;
@@ -70,6 +70,8 @@ protected:
     /// Removes all planes and axis if they are still linked to the document
     virtual void onExtendedUnsetupObject () override;
 };
+
+typedef ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>> OriginGroupExtensionPython;
 
 } /* App */
 
