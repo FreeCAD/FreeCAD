@@ -40,7 +40,7 @@ class FemToolsZ88(FemTools.FemTools):
     #  @param analysis - analysis object to be used as the core object.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
-    def __init__(self, analysis=None, test_mode=False):
+    def __init__(self, analysis=None, solver=None, test_mode=False):
         if analysis:
             ## @var analysis
             #  FEM analysis - the core object. Has to be present.
@@ -49,6 +49,12 @@ class FemToolsZ88(FemTools.FemTools):
         else:
             import FemGui
             self.analysis = FemGui.getActiveAnalysis()
+        if solver:
+            ## @var solver
+            #  solver of the analysis. Used to store the active solver and analysis parameters
+            self.solver = solver
+        else:
+            self.solver = None
         if self.analysis:
             self.update_objects()
             self.base_name = ""

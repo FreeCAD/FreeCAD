@@ -202,7 +202,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(self.pressure_constraint, "FemTest of new pressure constraint failed")
         self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
 
-        fea = FemToolsCcx.FemToolsCcx(self.analysis, test_mode=True)
+        fea = FemToolsCcx.FemToolsCcx(self.analysis, self.solver_object, test_mode=True)
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
