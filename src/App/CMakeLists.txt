@@ -97,6 +97,7 @@ SET(Document_CPP_SRCS
     ExtensionPyImp.cpp
     DocumentObjectExtension.cpp
     DocumentObjectExtensionPyImp.cpp
+    ExtensionContainer.cpp
     ExtensionContainerPyImp.cpp
     GroupExtension.cpp
     GroupExtensionPyImp.cpp
@@ -137,6 +138,7 @@ SET(Document_HPP_SRCS
     Document.h
     DocumentObject.h
     Extension.h
+    ExtensionContainer.h
     GroupExtension.h
     DocumentObjectExtension.h
     DocumentObjectFileIncluded.h
