@@ -15,6 +15,16 @@
       <Author Licence="LGPL" Name="Stefan Troeger" EMail="stefantroeger@gmx.net" />
       <UserDocu>Base class for all objects which can be extended</UserDocu>
     </Documentation>
+    <Methode Name="addExtension">
+      <Documentation>
+        <UserDocu>Adds an extension to the object</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hasExtension">
+      <Documentation>
+        <UserDocu>Returns if this object has the specified extension</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

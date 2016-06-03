@@ -26,6 +26,7 @@
 
 #include "PropertyContainer.h"
 #include "PropertyPythonObject.h"
+#include "DynamicProperty.h"
 #include <CXX/Objects.hxx>
 
 #include <boost/preprocessor/seq/for_each.hpp>
@@ -48,21 +49,27 @@ public:
   Extension();
   virtual ~Extension();
 
+  void initExtension(App::DocumentObject* obj);
+    
   App::DocumentObject*       getExtendedObject() {return m_base;};
   const App::DocumentObject* getExtendedObject() const {return m_base;};
  
+  //get extension name without namespace
   const char* name();
+  //store if this extension is created from python or not (hence c++ multiple inheritance)
+  void setPythonExtension(bool val) {m_isPythonExtension = val;};
+  bool isPythonExtension() {return m_isPythonExtension;};
   
   virtual PyObject* getExtensionPyObject(void);
 
 protected:     
   void          initExtension(Base::Type type);
-  void          initExtension(App::DocumentObject* obj);
   Py::Object    ExtensionPythonObject;
   
 private:
   Base::Type           m_extensionType;
   App::DocumentObject* m_base = nullptr;
+  bool                 m_isPythonExtension = false;
 };
 
 
@@ -139,6 +146,32 @@ public:
     ExtensionIterator extensionBegin() {return _extensions.begin();};
     ExtensionIterator extensionEnd() {return _extensions.end();};
        
+    
+    /** @name Access properties */
+    //@{
+    /// find a property by its name
+    virtual Property *getPropertyByName(const char* name) const override;
+    /// get the name of a property
+    virtual const char* getPropertyName(const Property* prop) const override;
+    /// get all properties of the class (including properties of the parent)
+    virtual void getPropertyMap(std::map<std::string,Property*> &Map) const override;
+    /// get all properties of the class (including properties of the parent)
+    virtual void getPropertyList(std::vector<Property*> &List) const override;
+
+    /// get the Type of a Property
+    virtual short getPropertyType(const Property* prop) const override;
+    /// get the Type of a named Property
+    virtual short getPropertyType(const char *name) const override;
+    /// get the Group of a Property
+    virtual const char* getPropertyGroup(const Property* prop) const override;
+    /// get the Group of a named Property
+    virtual const char* getPropertyGroup(const char *name) const override;
+    /// get the Group of a Property
+    virtual const char* getPropertyDocumentation(const Property* prop) const override;
+    /// get the Group of a named Property
+    virtual const char* getPropertyDocumentation(const char *name) const override;
+    //@}
+    
 private:
     //stored extensions
     std::map<Base::Type, App::Extension*> _extensions;

@@ -80,6 +80,7 @@ public:
     
 + if (self.export.Initialisation):
     int initialisation();
+    int deinitialisation();
 -
 
     typedef @self.export.TwinPointer@* PointerType ;
@@ -687,6 +688,9 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     @self.export.Name@::PointerType ptr = static_cast<@self.export.Name@::PointerType>(_pcTwinPointer);
     delete ptr;
 -
++ if (self.export.Initialisation):
+    deinitialisation();
+-
 }
 
 //--------------------------------------------------------------------------
@@ -874,6 +878,10 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 + if (self.export.Initialisation):
 int @self.export.Name@::initialisation()
+{
+    return 0;
+}
+int @self.export.Name@::deinitialisation()
 {
     return 0;
 }
@@ -1190,6 +1198,11 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 -
 + if (self.export.Initialisation):
 int @self.export.Name@::initialisation()
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return 0;
+}
+int @self.export.Name@::deinitialisation()
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
