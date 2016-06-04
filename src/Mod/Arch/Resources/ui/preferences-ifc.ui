@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>579</height>
+    <height>608</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -422,6 +422,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcStoreUid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_16">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_10">
+          <property name="toolTip">
+           <string>Warning, experimental feature!</string>
+          </property>
+          <property name="text">
+           <string>Use IfcOpenShell serializer if available</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSerialize</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

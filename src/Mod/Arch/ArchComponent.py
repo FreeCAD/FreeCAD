@@ -383,8 +383,8 @@ class Component:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
                     base = obj.Base.Base.Shape.copy()
-                    if noplacement:
-                        base.Placement = FreeCAD.Placement()
+                    #if noplacement:
+                    #    base.Placement = FreeCAD.Placement()
                     return [base]
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
