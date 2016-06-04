@@ -431,34 +431,26 @@ void Command::blockCommand(bool block)
 }
 
 /// Run a App level Action
-void Command::doCommand(DoCmd_Type eType,const char* sCmd,...)
+void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
 {
-    // temp buffer
-    size_t format_len = std::strlen(sCmd)+4024;
-    char* format = (char*) malloc(format_len);
-    va_list namelessVars;
-    va_start(namelessVars, sCmd);  // Get the "..." vars
-    vsnprintf(format, format_len, sCmd, namelessVars);
-    va_end(namelessVars);
+    va_list ap;
+    va_start(ap, sCmd);
+    QString s;
+    const QString cmd = s.vsprintf(sCmd, ap);
+    va_end(ap);
 
-    if (eType == Gui)
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,format);
-    else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,format);
-
-    try {
-        Base::Interpreter().runString(format);
-    }
-    catch (...) {
-        // free memory to avoid a leak if an exception occurred
-        free (format);
-        throw;
-    }
+    QByteArray format = cmd.toLatin1();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n",format);
+    Base::Console().Log("CmdC: %s\n", format.constData());
 #endif
-    free (format);
+
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, format.constData());
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, format.constData());
+
+    Base::Interpreter().runString(format.constData());
 }
 
 /// Run a App level Action

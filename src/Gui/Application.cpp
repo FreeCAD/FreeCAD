@@ -1357,29 +1357,20 @@ CommandManager &Application::commandManager(void)
 
 void Application::runCommand(bool bForce, const char* sCmd,...)
 {
-    // temp buffer
-    size_t format_len = std::strlen(sCmd)+4024;
-    char* format = (char*) malloc(format_len);
-    va_list namelessVars;
-    va_start(namelessVars, sCmd);  // Get the "..." vars
-    vsnprintf(format, format_len, sCmd, namelessVars);
-    va_end(namelessVars);
+    va_list ap;
+    va_start(ap, sCmd);
+    QString s;
+    const QString cmd = s.vsprintf(sCmd, ap);
+    va_end(ap);
+
+    QByteArray format = cmd.toLatin1();
 
     if (bForce)
-        d->macroMngr->addLine(MacroManager::App,format);
+        d->macroMngr->addLine(MacroManager::App, format.constData());
     else
-        d->macroMngr->addLine(MacroManager::Gui,format);
+        d->macroMngr->addLine(MacroManager::Gui, format.constData());
 
-    try { 
-        Base::Interpreter().runString(format);
-    }
-    catch (...) {
-        // free memory to avoid a leak if an exception occurred
-        free (format);
-        throw;
-    }
-
-    free (format);
+    Base::Interpreter().runString(format.constData());
 }
 
 bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
