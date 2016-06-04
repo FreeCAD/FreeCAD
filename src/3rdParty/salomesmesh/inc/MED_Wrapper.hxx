@@ -986,7 +986,7 @@ namespace MED
     TWrapper * operator-> () const;
   };
 
-
+#if 0
   //----------------------------------------------------------------------------
   //! To specialize the SharedPtr for TWrapper
   template<> 
@@ -1047,6 +1047,7 @@ namespace MED
 
   //----------------------------------------------------------------------------
   typedef SharedPtr<TWrapper> PWrapper;
+#endif
 }
 
 #endif

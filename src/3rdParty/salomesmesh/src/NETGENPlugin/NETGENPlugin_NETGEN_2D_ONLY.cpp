@@ -65,12 +65,12 @@ namespace nglib {
 //#include <meshtype.hpp>
 namespace netgen {
 #ifdef NETGEN_V5
-  extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
-  extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
 #endif
-  extern MeshingParameters mparam;
-  extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
+  DLL_HEADER extern MeshingParameters mparam;
+  DLL_HEADER extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
 }
 
 using namespace std;
