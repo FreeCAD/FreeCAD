@@ -1697,7 +1697,12 @@ def getDXF(obj,direction=None):
             direction = FreeCAD.Vector(0,0,-1)
         if DraftVecUtils.isNull(direction):
             direction = FreeCAD.Vector(0,0,-1)
-        result += Drawing.projectToDXF(obj.Shape,direction)
+        try:
+            d = Drawing.projectToDXF(obj.Shape,direction)
+        except:
+            print("Draft.getDXF: Unable to project ",obj.Label," to ",direction)
+        else:
+            result += d
         
     else:
         print("Draft.getDXF: Unsupported object: ",obj.Label)
