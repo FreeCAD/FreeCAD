@@ -149,8 +149,8 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/Templates";
-    std::string defaultFileName = defaultDir + "A4_Landscape.svg";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
+    std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
     QString templateFileName = QString::fromStdString(hGrp->GetASCII("TemplateFile",defaultFileName.c_str()));
     if (templateFileName.isEmpty()) {
         templateFileName = QString::fromStdString(defaultFileName);

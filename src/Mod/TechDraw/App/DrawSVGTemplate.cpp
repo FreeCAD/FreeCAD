@@ -130,13 +130,9 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
         execute();
 
         // Update the parent page if exists
-        std::vector<App::DocumentObject*> parent = getInList();
-        for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-            if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-                TechDraw::DrawPage *page = static_cast<TechDraw::DrawPage *>(*it);
-                page->touch();
-            }
-        }
+        TechDraw::DrawPage *page = getParentPage();
+        if (page)
+            page->touch();
     }
 
     TechDraw::DrawTemplate::onChanged(prop);

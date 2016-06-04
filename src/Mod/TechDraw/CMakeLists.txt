@@ -19,7 +19,6 @@ INSTALL(
         Templates
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
-    FILES_MATCHING 
+    FILES_MATCHING
         PATTERN "*.svg*"
-        PATTERN "*.dxf*"
 )

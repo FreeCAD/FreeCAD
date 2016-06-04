@@ -127,6 +127,15 @@ SOURCE_GROUP("Features" FILES ${Draw_SRCS})
 SOURCE_GROUP("Geometry" FILES ${Geometry_SRCS})
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
+SET(TechDraw_Templates
+    Templates/A0_Landscape_ISO7200TD.svg
+    Templates/A1_Landscape_ISO7200TD.svg
+    Templates/A2_Landscape_ISO7200TD.svg
+    Templates/A3_Landscape_ISO7200TD.svg
+    Templates/A4_LandscapeTD.svg
+    Templates/A4_Landscape_ISO7200TD.svg
+    Templates/A4_Portrait_ISO7200TD.svg
+)
 
 if(MSVC)
     #add_definitions(-D_PreComp_)
@@ -150,7 +159,7 @@ fc_target_copy_resource(TechDraw
 fc_target_copy_resource(TechDraw
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
-    ${TechDrawTemplates})
+    ${TechDraw_Templates})
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)

@@ -80,7 +80,7 @@ std::vector<std::string> ViewProviderTemplate::getDisplayModes(void) const
 
 void ViewProviderTemplate::updateData(const App::Property* prop)
 {
-    Base::Console().Log("ViewProviderTemplate::updateData(%s)",prop->getName());
+    //Base::Console().Log("ViewProviderTemplate::updateData(%s)/n",prop->getName());
 }
 
 TechDraw::DrawTemplate* ViewProviderTemplate::getTemplate() const
