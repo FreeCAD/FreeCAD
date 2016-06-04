@@ -131,6 +131,18 @@ void DrawTemplate::getBlockDimensions(double &x, double &y, double &width, doubl
     throw Base::Exception("implement in virtual function");
 }
 
+DrawPage* DrawTemplate::getParentPage() const
+{
+    TechDraw::DrawPage* page = nullptr;
+    std::vector<App::DocumentObject*> parent = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage *>(*it);
+        }
+    }
+    return page;
+}
+
 // Python Template feature ---------------------------------------------------------
 
 namespace App {

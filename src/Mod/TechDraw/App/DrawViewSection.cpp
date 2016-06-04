@@ -149,11 +149,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     Base::Vector3d plnPnt(tmp1.x, tmp1.y, tmp1.z);
     Base::Vector3d plnNorm(tmp2.x, tmp2.y, tmp2.z);
 
-    if(!bb.IsCutPlane(plnPnt, plnNorm)) {
-        return new App::DocumentObjectExecReturn("Section Plane doesn't intersect part");
+//    if(!bb.IsCutPlane(plnPnt, plnNorm)) {      //this test doesn't work if plane is coincident with bb!
+    if(!isReallyInBox(plnPnt, bb)) {
+        Base::Console().Warning("DVS: Section Plane doesn't intersect part in %s\n",getNameInDocument());
+        Base::Console().Warning("DVS: Using center of bounding box.\n");
+        plnPnt = bb.GetCenter();
+        SectionOrigin.setValue(plnPnt);
+        //return new App::DocumentObjectExecReturn("Section Plane doesn't intersect part");
     }
-
-    //bb.Enlarge(1.0); // Enlarge the bounding box to prevent any clipping
 
     // Gather the points
     std::vector<Base::Vector3d> pnts;
@@ -244,8 +247,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e1 = Standard_Failure::Caught();
-        Base::Console().Log("DrawViewSection::execute - building Section shape failed: %s\n",e1->GetMessageString());
-        return new App::DocumentObjectExecReturn(e1->GetMessageString());
+        return new App::DocumentObjectExecReturn(std::string("DVS building Section shape failed: ") +
+                                                 std::string(e1->GetMessageString()));
     }
 
     touch();
@@ -382,6 +385,18 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
         projectedFace = mkFace.Face();
     }
     return projectedFace;
+}
+
+//this should really be in BoundBox.h
+bool DrawViewSection::isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const
+{
+    if (v.x <= bb.MinX || v.x >= bb.MaxX)
+        return false;
+    if (v.y <= bb.MinY || v.y >= bb.MaxY)
+        return false;
+    if (v.z <= bb.MinZ || v.z >= bb.MaxZ)
+        return false;
+    return true;
 }
 
 

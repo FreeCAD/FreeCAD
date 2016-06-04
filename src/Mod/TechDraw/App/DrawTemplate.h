@@ -38,6 +38,8 @@ namespace TechDrawGeometry
 namespace TechDraw
 {
 
+class DrawPage;
+
 class TechDrawExport DrawTemplate : public App::DocumentObject
 {
     PROPERTY_HEADER(TechDraw::DrawTemplate);
@@ -62,6 +64,7 @@ public:
     virtual double getHeight() const;
 
     virtual void getBlockDimensions(double &x, double &y, double &width, double &height) const;
+    virtual DrawPage* getParentPage() const;
 
     /** @name methods overide Feature */
     //@{
