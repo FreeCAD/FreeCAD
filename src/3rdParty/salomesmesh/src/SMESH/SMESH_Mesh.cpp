@@ -78,7 +78,9 @@
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
 #else 
-#include <pthread.h>
+#include <boost/thread/thread.hpp>
+#include <boost/bind.hpp>
+//#include <pthread.h>
 #endif
 
 using namespace std;
@@ -221,8 +223,9 @@ SMESH_Mesh::~SMESH_Mesh()
 #ifndef WIN32
     boost::thread aThread(boost::bind( & deleteMeshDS, _myMeshDS ));
 #else
-    pthread_t thread;
-    int result=pthread_create(&thread, NULL, deleteMeshDS, (void*)_myMeshDS);
+    boost::thread aThread(boost::bind( & deleteMeshDS, _myMeshDS ));
+//    pthread_t thread;
+//    int result=pthread_create(&thread, NULL, deleteMeshDS, (void*)_myMeshDS);
 #endif
   }
 }

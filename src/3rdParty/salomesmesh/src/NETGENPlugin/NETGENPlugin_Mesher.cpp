@@ -82,14 +82,14 @@ namespace nglib {
 //#include <ngexception.hpp>
 namespace netgen {
 #ifdef NETGEN_V5
-  extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
-  extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
 #endif
   //extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
-  extern MeshingParameters mparam;
-  extern volatile multithreadt multithread;
-  extern bool merge_solids;
+  DLL_HEADER extern MeshingParameters mparam;
+  DLL_HEADER extern volatile multithreadt multithread;
+  DLL_HEADER extern bool merge_solids;
 }
 
 #include <vector>
