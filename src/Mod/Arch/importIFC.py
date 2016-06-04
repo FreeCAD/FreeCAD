@@ -124,7 +124,7 @@ def getPreferences():
     global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
-    global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID
+    global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")   
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -147,6 +147,7 @@ def getPreferences():
     FORCE_BREP = p.GetBool("ifcExportAsBrep",False)
     IMPORT_PROPERTIES = p.GetBool("ifcImportProperties",False)
     STORE_UID = p.GetBool("ifcStoreUid",True)
+    SERIALIZE = p.GetBool("ifcSerialize",False)
 
 
 def explore(filename=None):
@@ -529,7 +530,17 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             if ex:
                                 print "extrusion ",
                                 baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
-                                baseface.Shape = ex[0]
+                                # bug in ifcopenshell? Some faces of a shell may have non-null placement
+                                # workaround to remove the bad placement: exporting/reimporting as step
+                                if not ex[0].Placement.isNull():
+                                    import tempfile
+                                    tf = tempfile.mkstemp(suffix=".stp")[1]
+                                    ex[0].exportStep(tf)
+                                    f = Part.read(tf)
+                                    os.remove(tf)
+                                else:
+                                    f = ex[0]
+                                baseface.Shape = f
                                 baseobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion",name+"_body")
                                 baseobj.Base = baseface
                                 baseobj.Dir = ex[1]
@@ -1242,6 +1253,16 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         p.scale(0.001) # to meters
                         r = obj.Proxy.getPlacement(obj)
                         r.Base = r.Base.multiply(0.001) # to meters
+                        d = DraftGeomUtils.getNormal(p.Wires[0])
+                        if r.isNull() and  ( (p.CenterOfMass.z > 0.001) or ( (d.getAngle(FreeCAD.Vector(0,0,1)) > 0.001) and (d.getAngle(FreeCAD.Vector(0,0,1)) < 3.14159) ) ):
+                            # the object placement in null, but the profile is not in the XY plane.
+                            npla = FreeCAD.Placement()
+                            npla.Base = p.CenterOfMass
+                            nrot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),d)
+                            npla.Rotation = nrot
+                            r = npla
+                            p.Placement = npla.inverse() # move the profile to origin
+                            extrusionv = nrot.inverted().multVec(extrusionv) # move the extrusion vector to Z axis
 
                         if len(p.Edges) == 1:
 
@@ -1317,8 +1338,8 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                                 pol = ifcfile.createIfcCompositeCurve(segments,False)
                             profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
-
-        if profile:
+                            
+        if profile and not(DraftVecUtils.isNull(extrusionv)):
             xvc =       ifcfile.createIfcDirection(tuple(r.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             zvc =       ifcfile.createIfcDirection(tuple(r.Rotation.multVec(FreeCAD.Vector(0,0,1))))
             ovc =       ifcfile.createIfcCartesianPoint(tuple(r.Base))
@@ -1355,71 +1376,91 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             else:
                 dataset = fcshape.Shells
                 if DEBUG: print "Warning! object contains no solids"
-            for fcsolid in dataset:
-                fcsolid.scale(0.001) # to meters
-                faces = []
-                curves = False
-                shapetype = "brep"
-                for fcface in fcsolid.Faces:
-                    for e in fcface.Edges:
-                        if DraftGeomUtils.geomType(e) != "Line":
-                            if e.curvatureAt(e.FirstParameter+(e.LastParameter-e.FirstParameter)/2) > 0.0001:
-                                curves = True
-                                break
-                if curves:
-                    joinfacets = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcJoinCoplanarFacets",False)
-                    usedae = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcUseDaeOptions",False)
-                    if not joinfacets:
-                        shapetype = "triangulated"
-                        if usedae:
-                            import importDAE
-                            tris = importDAE.triangulate(fcsolid)
+                
+            # new ifcopenshell serializer
+            from ifcopenshell import geom
+            if hasattr(geom,"serialise") and obj.isDerivedFrom("Part::Feature") and SERIALIZE:
+                p = geom.serialise(obj.Shape.exportBrepToString())
+                productdef = ifcfile.add(p)
+                for rep in productdef.Representations:
+                    rep.ContextOfItems = context
+                xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
+                zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
+                ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
+                gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                placement = ifcfile.createIfcLocalPlacement(None,gpl)
+                shapetype = "advancedbrep"
+                shapes = None
+            else:
+                # old method
+                for fcsolid in dataset:
+                    fcsolid.scale(0.001) # to meters
+                    faces = []
+                    curves = False
+                    shapetype = "brep"
+                    for fcface in fcsolid.Faces:
+                        for e in fcface.Edges:
+                            if DraftGeomUtils.geomType(e) != "Line":
+                                try:
+                                    if e.curvatureAt(e.FirstParameter+(e.LastParameter-e.FirstParameter)/2) > 0.0001:
+                                        curves = True
+                                        break
+                                except Part.OCCError:
+                                    pass
+                    if curves:
+                        joinfacets = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcJoinCoplanarFacets",False)
+                        usedae = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcUseDaeOptions",False)
+                        if not joinfacets:
+                            shapetype = "triangulated"
+                            if usedae:
+                                import importDAE
+                                tris = importDAE.triangulate(fcsolid)
+                            else:
+                                tris = fcsolid.tessellate(tessellation)
+                            for tri in tris[1]:
+                                pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
+                                loop =  ifcfile.createIfcPolyLoop(pts)
+                                bound = ifcfile.createIfcFaceOuterBound(loop,True)
+                                face =  ifcfile.createIfcFace([bound])
+                                faces.append(face)
+                                fcsolid = Part.Shape() # empty shape so below code is not executed
                         else:
-                            tris = fcsolid.tessellate(tessellation)
-                        for tri in tris[1]:
-                            pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
-                            loop =  ifcfile.createIfcPolyLoop(pts)
-                            bound = ifcfile.createIfcFaceOuterBound(loop,True)
-                            face =  ifcfile.createIfcFace([bound])
-                            faces.append(face)
-                            fcsolid = Part.Shape() # empty shape so below code is not executed
-                    else:
-                        fcsolid = Arch.removeCurves(fcsolid,dae=usedae)
-                        if not fcsolid:
-                            if DEBUG: print "Error: Unable to triangulate shape"
-                            fcsolid = Part.Shape()
-                    
-                for fcface in fcsolid.Faces:
-                    loops = []
-                    verts = [v.Point for v in Part.Wire(Part.__sortEdges__(fcface.OuterWire.Edges)).Vertexes]
-                    c = fcface.CenterOfMass
-                    v1 = verts[0].sub(c)
-                    v2 = verts[1].sub(c)
-                    n = fcface.normalAt(0,0)
-                    if DraftVecUtils.angle(v2,v1,n) >= 0:
-                        verts.reverse() # inverting verts order if the direction is couterclockwise
-                    pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                    loop =  ifcfile.createIfcPolyLoop(pts)
-                    bound = ifcfile.createIfcFaceOuterBound(loop,True)
-                    loops.append(bound)
-                    for wire in fcface.Wires:
-                        if wire.hashCode() != fcface.OuterWire.hashCode():
-                            verts = [v.Point for v in Part.Wire(Part.__sortEdges__(wire.Edges)).Vertexes]
-                            v1 = verts[0].sub(c)
-                            v2 = verts[1].sub(c)
-                            if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
-                                verts.reverse()
-                            pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                            loop =  ifcfile.createIfcPolyLoop(pts)
-                            bound = ifcfile.createIfcFaceBound(loop,True)
-                            loops.append(bound)
-                    face =  ifcfile.createIfcFace(loops)
-                    faces.append(face)
-
-                if faces:
-                    shell = ifcfile.createIfcClosedShell(faces)
-                    shape = ifcfile.createIfcFacetedBrep(shell)
-                    shapes.append(shape)
+                            fcsolid = Arch.removeCurves(fcsolid,dae=usedae)
+                            if not fcsolid:
+                                if DEBUG: print "Error: Unable to triangulate shape"
+                                fcsolid = Part.Shape()
+                        
+                    for fcface in fcsolid.Faces:
+                        loops = []
+                        verts = [v.Point for v in Part.Wire(Part.__sortEdges__(fcface.OuterWire.Edges)).Vertexes]
+                        c = fcface.CenterOfMass
+                        v1 = verts[0].sub(c)
+                        v2 = verts[1].sub(c)
+                        n = fcface.normalAt(0,0)
+                        if DraftVecUtils.angle(v2,v1,n) >= 0:
+                            verts.reverse() # inverting verts order if the direction is couterclockwise
+                        pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
+                        loop =  ifcfile.createIfcPolyLoop(pts)
+                        bound = ifcfile.createIfcFaceOuterBound(loop,True)
+                        loops.append(bound)
+                        for wire in fcface.Wires:
+                            if wire.hashCode() != fcface.OuterWire.hashCode():
+                                verts = [v.Point for v in Part.Wire(Part.__sortEdges__(wire.Edges)).Vertexes]
+                                v1 = verts[0].sub(c)
+                                v2 = verts[1].sub(c)
+                                if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
+                                    verts.reverse()
+                                pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
+                                loop =  ifcfile.createIfcPolyLoop(pts)
+                                bound = ifcfile.createIfcFaceBound(loop,True)
+                                loops.append(bound)
+                        face =  ifcfile.createIfcFace(loops)
+                        faces.append(face)
+    
+                    if faces:
+                        shell = ifcfile.createIfcClosedShell(faces)
+                        shape = ifcfile.createIfcFacetedBrep(shell)
+                        shapes.append(shape)
 
     if shapes:
 
