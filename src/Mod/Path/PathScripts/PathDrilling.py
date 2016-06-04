@@ -27,6 +27,7 @@ import Path
 import Part
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
+from PathScripts.PathUtils import fmt
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -127,7 +128,6 @@ class ObjectDrilling:
                         X = s.CenterOfMass.x
                         Y = s.CenterOfMass.y
                         Z = s.CenterOfMass.z
-
                     locations.append(FreeCAD.Vector(X, Y, Z))
 
 
@@ -136,20 +136,20 @@ class ObjectDrilling:
             output += "G0 Z" + str(obj.ClearanceHeight.Value)
             # rapid to first hole location, with spindle still retracted:
             p0 = locations[0]
-            output += "G0 X" + str(p0.x) + " Y" + str(p0.y) + "\n"
+            output += "G0 X" + fmt(p0.x) + " Y" + fmt(p0.y) + "\n"
             # move tool to clearance plane
-            output += "G0 Z" + str(obj.ClearanceHeight.Value) + "\n"
+            output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "\n"
             if obj.PeckDepth.Value > 0:
                 cmd = "G83"
-                qword = " Q" + str(obj.PeckDepth.Value)
+                qword = " Q" + fmt(obj.PeckDepth.Value)
             else:
                 cmd = "G81"
                 qword = ""
             for p in locations:
                 output += cmd + \
-                    " X" + str(p.x) + \
-                    " Y" + str(p.y) + \
-                    " Z" + str(obj.FinalDepth.Value) + qword + \
+                    " X" + fmt(p.x) + \
+                    " Y" + fmt(p.y) + \
+                    " Z" + fmt(obj.FinalDepth.Value) + qword + \
                     " R" + str(obj.RetractHeight.Value) + \
                     " F" + str(self.vertFeed) + "\n" \
 
