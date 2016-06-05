@@ -1,0 +1,52 @@
+#!/bin/bash
+# FreeCAD 0.17 snap launcher
+# written by Jean-Marie Verdun (vejmarie@ruggedpod.qyshare.com
+# released under LGPL v2.0
+
+if [ ! -d "SNAP_USER_DATA/.config" ]
+then
+\mkdir $SNAP_USER_DATA/.config
+fi
+export CONFIG_DIR=$SNAP_USER_DATA/.config
+export I18NPATH=$SNAP/usr/share/i18n
+export LOCPATH=$CONFIG_DIR
+LANG=en_US
+ENC=UTF-8
+LOC="$LANG.$ENC"
+# generate a locale so we get properly working charsets and graphics
+\rm -rf $CONFIG_DIR/$LOC
+if [ ! -e $CONFIG_DIR/$LOC ]; then
+($SNAP/usr/bin/localedef --prefix=$CONFIG_DIR -f $ENC -i $LANG $CONFIG_DIR/$LOC)>& /dev/null
+fi
+export LC_ALL=$LOC
+export LANG=$LOC
+export LANGUAGE=${LANG%_*}
+export LIBGL_DRIVERS_PATH=$SNAP/usr/lib/x86_64-linux-gnu/dri
+export GTK_PATH=$SNAP/usr/lib/x86_64-linux-gnu/gtk-2.0/modules
+export LD_LIBRARY_PATH=$SNAP/usr/lib:$SNAP/usr/lib/x86_64-linux-gnu/gio/modules:$SNAP/usr/lib/x86_64-linux-gnu/gtk-2.0/modules:$LD_LIBRARY_PATH
+export GTK_DATA_PREFIX=$CONFIG_DIR
+export GTK_EXE_PREFIX=$SNAP/usr
+export GDK_PIXBUF_MODULE_FILE=$SNAP/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
+export PYTHONHOME="$SNAP/usr"
+export PYTHONPATH="$SNAP/usr"
+export XDG_DATA_DIR="$SNAP/usr/share/glib-2.0/schemas"
+export GSETTINGS_SCHEMA_DIR="$SNAP/usr/share/glib-2.0/schemas"
+export LANG=en_US.UTF-8
+export FREECAD_USER_DATA="$SNAP_USER_DATA"
+export XDG_CONFIG_HOME="$CONFIG_DIR"
+export MATPLOTLIBDATA="$SNAP/usr/share/matplotlib/mpl-data"
+export GIO_EXTRA_MODULES="$SNAP/usr/lib/x86_64-linux-gnu/gio/modules"
+export XDG_RUNTIME_DIR="$CONFIG_DIR"
+export QT_QPA_FONTDIR="$SNAP/usr/share/fonts"
+export XDG_DATA_HOME="$SNAP/usr/share/icons"
+export XDG_DATA_DIRS="$SNAP/usr/share/mime"
+\cp -rf $SNAP/fontconfig $CONFIG_DIR
+if [ ! -d "$CONFIG_DIR/.cache/fontconfig" ]
+then
+($SNAP/usr/bin/fc-cache --really-force --verbose) >& /dev/null
+\cp $SNAP/etc/matplotlibrc $CONFIG_DIR/matplotlibrc
+fi
+export MPLCONFIGDIR="$CONFIG_DIR"
+export GTK2_RC_FILES="$SNAP/usr/share/themes/Raleigh/gtk-2.0/gtkrc"
+exec "$SNAP/opt/local/FreeCAD-0.17/bin/FreeCAD" -u $CONFIG_DIR/user.cfg -s $CONFIG_DIR/system.cfg $@
+

@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Vagrant provisioning script to build up FreeCAD based on OCCT 7 and Salome 7.7.1 on Linux Ubuntu
 # (c) 2016 Jean-Marie Verdun / vejmarie (vejmarie@ruggedpod.qyshare.com)
 # Released under GPL v2.0
@@ -6,7 +7,9 @@
 # Warning: compilation time is long quite long
 # Must add the autlogin script
 # Must add a lightdm start / reboot ?
-FREECAD_GIT_BRANCH="https://github.com/vejmarie/FreeCAD"
+
+FREECAD_GIT="https://github.com/vejmarie/FreeCAD"
+FREECAD_BRANCH="occt7"
 
 function create_deb {
 rm -rf /tmp/$1-$2
@@ -222,9 +225,9 @@ create_deb Netgen 5.3.1 "occt (>= 7.0)"
 
 #building FreeCAD
 
-git clone $FREECAD_GIT_BRANCH 
+git clone $FREECAD_GIT
 cd FreeCAD
-git checkout occt7
+git checkout $FREECAD_BRANCH
 cat cMake/FindOpenCasCade.cmake | sed 's/\/usr\/local\/share\/cmake\//\/opt\/local\/FreeCAD-0.17\/lib\/cmake/' > /tmp/FindOpenCasCade.cmake
 cp /tmp/FindOpenCasCade.cmake cMake/FindOpenCasCade.cmake
 cp cMake/FindOpenCasCade.cmake cMake/FindOPENCASCADE.cmake
