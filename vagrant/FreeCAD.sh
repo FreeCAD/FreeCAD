@@ -77,6 +77,7 @@ then
                                qt4-qmake                        \
 			       libqtwebkit-dev			\
                                shiboken                         \
+                               calculix-ccx                     \
                                swig"
         else
 	ubuntu_version="unknown"
@@ -230,7 +231,7 @@ cp cMake/FindOpenCasCade.cmake cMake/FindOPENCASCADE.cmake
 cd ..
 mkdir build
 cd build
-cmake ../FreeCAD -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DBUILD_FEM=1 -DBUILD_FEM_NETGEN=1 -DCMAKE_CXX_FLAGS="-DNETGEN_V5"
+cmake ../FreeCAD -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DBUILD_ASSEMBLY=1 -DBUILD_FEM=1 -DBUILD_FEM_VTK=1 -DBUILD_FEM_NETGEN=1 -DCMAKE_CXX_FLAGS="-DNETGEN_V5"
 make -j 2
 make install
 create_deb FreeCAD 0.17 "netgen (>= 5.3.1), occt (>= 7.0), med (>= 3.10)"
