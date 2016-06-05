@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Vagrant provisioning script to build up FreeCAD based on OCCT 7 and Salome 7.7.1 on Linux Ubuntu
 # (c) 2016 Jean-Marie Verdun / vejmarie (vejmarie@ruggedpod.qyshare.com)
 # Released under GPL v2.0
@@ -6,6 +7,9 @@
 # Warning: compilation time is long quite long
 # Must add the autlogin script
 # Must add a lightdm start / reboot ?
+
+FREECAD_GIT="https://github.com/vejmarie/FreeCAD"
+FREECAD_BRANCH="occt7"
 
 function create_deb {
 rm -rf /tmp/$1-$2
@@ -76,6 +80,7 @@ then
                                qt4-qmake                        \
 			       libqtwebkit-dev			\
                                shiboken                         \
+                               calculix-ccx                     \
                                swig"
         else
 	ubuntu_version="unknown"
@@ -220,16 +225,16 @@ create_deb Netgen 5.3.1 "occt (>= 7.0)"
 
 #building FreeCAD
 
-git clone https://github.com/vejmarie/FreeCAD
+git clone $FREECAD_GIT
 cd FreeCAD
-git checkout occt7
+git checkout $FREECAD_BRANCH
 cat cMake/FindOpenCasCade.cmake | sed 's/\/usr\/local\/share\/cmake\//\/opt\/local\/FreeCAD-0.17\/lib\/cmake/' > /tmp/FindOpenCasCade.cmake
 cp /tmp/FindOpenCasCade.cmake cMake/FindOpenCasCade.cmake
 cp cMake/FindOpenCasCade.cmake cMake/FindOPENCASCADE.cmake
 cd ..
 mkdir build
 cd build
-cmake ../FreeCAD -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DBUILD_FEM=1 -DBUILD_FEM_NETGEN=1 -DCMAKE_CXX_FLAGS="-DNETGEN_V5"
+cmake ../FreeCAD -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DBUILD_ASSEMBLY=1 -DBUILD_FEM=1 -DBUILD_FEM_VTK=1 -DBUILD_FEM_NETGEN=1 -DCMAKE_CXX_FLAGS="-DNETGEN_V5"
 make -j 2
 make install
 create_deb FreeCAD 0.17 "netgen (>= 5.3.1), occt (>= 7.0), med (>= 3.10)"
