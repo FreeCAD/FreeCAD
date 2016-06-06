@@ -361,7 +361,7 @@ CmdFemConstraintForce::CmdFemConstraintForce()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("constraint force");
+    sMenuText       = QT_TR_NOOP("Constraint force");
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
     sWhatsThis      = "Fem_ConstraintForce";
     sStatusTip      = sToolTipText;
