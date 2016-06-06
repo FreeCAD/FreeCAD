@@ -160,7 +160,13 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
 
 }
 
-int QGVPage::addView(QGIView * view) {
+int QGVPage::addView(QGIView *view)
+{
+    auto ourScene( scene() );
+    assert(ourScene);
+
+    ourScene->addItem(view);
+
     views.push_back(view);
 
     // Find if it belongs to a parent
@@ -187,7 +193,8 @@ int QGVPage::addView(QGIView * view) {
 
 QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 {
-    QGIViewPart *viewPart = new QGIViewPart(QPoint(0,0), scene());
+    auto viewPart( new QGIViewPart );
+
     viewPart->setViewPartFeature(part);
 
     addView(viewPart);
@@ -196,7 +203,8 @@ QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 
 QGIView * QGVPage::addViewSection(TechDraw::DrawViewPart *part)
 {
-    QGIViewSection *viewSection = new QGIViewSection(QPoint(0,0), scene());
+    auto viewSection( new QGIViewSection );
+
     viewSection->setViewPartFeature(part);
 
     addView(viewSection);
@@ -204,7 +212,8 @@ QGIView * QGVPage::addViewSection(TechDraw::DrawViewPart *part)
 }
 
 QGIView * QGVPage::addProjectionGroup(TechDraw::DrawProjGroup *view) {
-    QGIViewCollection *qview = new  QGIProjGroup(QPoint(0,0), scene());
+    auto qview( new QGIProjGroup );
+
     qview->setViewFeature(view);
     addView(qview);
     return qview;
@@ -212,7 +221,8 @@ QGIView * QGVPage::addProjectionGroup(TechDraw::DrawProjGroup *view) {
 
 QGIView * QGVPage::addDrawView(TechDraw::DrawView *view)
 {
-    QGIView *qview = new  QGIView(QPoint(0,0), scene());
+    auto qview( new QGIView );
+
     qview->setViewFeature(view);
     addView(qview);
     return qview;
@@ -220,7 +230,8 @@ QGIView * QGVPage::addDrawView(TechDraw::DrawView *view)
 
 QGIView * QGVPage::addDrawViewCollection(TechDraw::DrawViewCollection *view)
 {
-    QGIViewCollection *qview = new  QGIViewCollection(QPoint(0,0), scene());
+    auto qview( new QGIViewCollection );
+
     qview->setViewFeature(view);
     addView(qview);
     return qview;
@@ -230,7 +241,8 @@ QGIView * QGVPage::addDrawViewCollection(TechDraw::DrawViewCollection *view)
 QGIView * QGVPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation *view)
 {
     // This essentially adds a null view feature to ensure view size is consistent
-    QGIViewAnnotation *qview = new  QGIViewAnnotation(QPoint(0,0), this->scene());
+    auto qview( new QGIViewAnnotation );
+
     qview->setViewAnnoFeature(view);
 
     addView(qview);
@@ -241,7 +253,8 @@ QGIView * QGVPage::addDrawViewSymbol(TechDraw::DrawViewSymbol *view)
 {
     QPoint qp(view->X.getValue(),view->Y.getValue());
     // This essentially adds a null view feature to ensure view size is consistent
-    QGIViewSymbol *qview = new  QGIViewSymbol(qp, scene());
+    auto qview( new QGIViewSymbol );
+
     qview->setViewFeature(view);
 
     addView(qview);
@@ -250,8 +263,9 @@ QGIView * QGVPage::addDrawViewSymbol(TechDraw::DrawViewSymbol *view)
 
 QGIView * QGVPage::addDrawViewClip(TechDraw::DrawViewClip *view)
 {
-    QPoint qp(view->X.getValue(),view->Y.getValue());
-    QGIViewClip *qview = new  QGIViewClip(qp, scene());
+    auto qview( new QGIViewClip );
+
+    qview->setPosition(view->X.getValue(), view->Y.getValue());
     qview->setViewFeature(view);
 
     addView(qview);
@@ -260,7 +274,7 @@ QGIView * QGVPage::addDrawViewClip(TechDraw::DrawViewClip *view)
 
 QGIView * QGVPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
 {
-    QGIViewSpreadsheet *qview(new QGIViewSpreadsheet);
+    auto qview( new QGIViewSpreadsheet );
 
     qview->setViewFeature(view);
 
@@ -270,7 +284,12 @@ QGIView * QGVPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
 
 QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
 {
-    QGIViewDimension *dimGroup = new QGIViewDimension(QPoint(0,0), scene());
+    auto dimGroup( new QGIViewDimension );
+
+    auto ourScene( scene() );
+    assert(ourScene);
+    ourScene->addItem(dimGroup);
+
     dimGroup->setViewPartFeature(dim);
 
     // TODO consider changing dimension feature to use another property for label position

@@ -157,8 +157,7 @@ void QGIDatumLabel::mouseReleaseEvent( QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-QGIViewDimension::QGIViewDimension(const QPoint &pos, QGraphicsScene *scene) :
-    QGIView(pos, scene),
+QGIViewDimension::QGIViewDimension() :
     hasHover(false)
 {
     setHandlesChildEvents(false);
@@ -209,9 +208,6 @@ QGIViewDimension::QGIViewDimension(const QPoint &pos, QGraphicsScene *scene) :
     toggleBorder(false);
 }
 
-QGIViewDimension::~QGIViewDimension()
-{
-}
 
 void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 {

@@ -43,10 +43,9 @@
 
 using namespace TechDrawGui;
 
-QGIViewCollection::QGIViewCollection(const QPoint &pos, QGraphicsScene *scene) :QGIView(pos, scene)
+QGIViewCollection::QGIViewCollection()
 {
     setFlags(QGraphicsItem::ItemIsSelectable);
-    setPos(pos);
 
     setHandlesChildEvents(false);
 
@@ -55,10 +54,6 @@ QGIViewCollection::QGIViewCollection(const QPoint &pos, QGraphicsScene *scene) :
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
-QGIViewCollection::~QGIViewCollection()
-{
-
-}
 
 QVariant QGIViewCollection::itemChange(GraphicsItemChange change, const QVariant &value)
 {

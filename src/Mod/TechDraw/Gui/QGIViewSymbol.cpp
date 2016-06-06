@@ -45,7 +45,7 @@
 
 using namespace TechDrawGui;
 
-QGIViewSymbol::QGIViewSymbol(const QPoint &pos, QGraphicsScene *scene) :QGIView(pos, scene)
+QGIViewSymbol::QGIViewSymbol()
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);

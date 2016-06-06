@@ -42,8 +42,8 @@ class TechDrawGuiExport QGIViewSection : public QGIViewPart
 
 public:
 
-    explicit QGIViewSection(const QPoint &position, QGraphicsScene *scene);
-    ~QGIViewSection();
+    QGIViewSection() = default;
+    ~QGIViewSection() = default;
 
     virtual void draw() override;
     void updateView(bool update = false) override;

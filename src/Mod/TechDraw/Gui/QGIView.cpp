@@ -60,7 +60,7 @@ using namespace TechDrawGui;
 
 void _debugRect(char* text, QRectF r);
 
-QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
+QGIView::QGIView()
     :QGraphicsItemGroup(),
      locked(false),
      borderVisible(true),
@@ -70,7 +70,6 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     setAcceptHoverEvents(true);
-    setPos(pos);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
@@ -88,10 +87,6 @@ QGIView::QGIView(const QPoint &pos, QGraphicsScene *scene)
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
     m_font.setFamily(QString::fromStdString(fontName));
     m_font.setPointSize(5.0);     //scene units (mm), not points
-
-    //Add object to scene
-    if(scene) // TODO: Get rid of the ctor args as in the refactor attempt
-        scene->addItem(this);
 
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"

@@ -48,7 +48,7 @@ class TechDrawGuiExport QGIViewPart : public QGIView
 
 public:
 
-    explicit QGIViewPart(const QPoint &position, QGraphicsScene *scene);
+    explicit QGIViewPart();
     ~QGIViewPart();
 
     enum {Type = QGraphicsItem::UserType + 102};

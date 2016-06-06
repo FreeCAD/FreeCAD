@@ -88,8 +88,8 @@ class TechDrawGuiExport QGIViewDimension : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 106};
 
-    explicit QGIViewDimension(const QPoint &position, QGraphicsScene *scene);
-    ~QGIViewDimension();
+    explicit QGIViewDimension();
+    ~QGIViewDimension() = default;
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
     int type() const { return Type;}

@@ -45,7 +45,7 @@
 
 using namespace TechDrawGui;
 
-QGIViewSpreadsheet::QGIViewSpreadsheet() : QGIViewSymbol(QPoint(), nullptr)
+QGIViewSpreadsheet::QGIViewSpreadsheet()
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
@@ -53,9 +53,6 @@ QGIViewSpreadsheet::QGIViewSpreadsheet() : QGIViewSymbol(QPoint(), nullptr)
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
-QGIViewSpreadsheet::~QGIViewSpreadsheet()
-{
-}
 
 void QGIViewSpreadsheet::setViewFeature(TechDraw::DrawViewSpreadsheet *obj)
 {

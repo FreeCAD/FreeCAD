@@ -50,8 +50,7 @@
 
 using namespace TechDrawGui;
 
-QGIViewClip::QGIViewClip(const QPoint &pos, QGraphicsScene *scene) 
-                            :QGIView(pos, scene)
+QGIViewClip::QGIViewClip()
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
@@ -70,9 +69,6 @@ QGIViewClip::QGIViewClip(const QPoint &pos, QGraphicsScene *scene)
     m_frame->setRect(0.,0.,5.,5.);
 }
 
-QGIViewClip::~QGIViewClip()
-{
-}
 
 QVariant QGIViewClip::itemChange(GraphicsItemChange change, const QVariant &value)
 {

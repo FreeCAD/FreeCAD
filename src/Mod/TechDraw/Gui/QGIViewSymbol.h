@@ -46,7 +46,7 @@ class TechDrawGuiExport QGIViewSymbol : public QGIView
     Q_OBJECT
 
 public:
-    explicit QGIViewSymbol(const QPoint &position, QGraphicsScene *scene);
+    QGIViewSymbol();
     ~QGIViewSymbol();
 
     enum {Type = QGraphicsItem::UserType + 121};
