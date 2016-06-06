@@ -22,24 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QGraphicsItem>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QString>
-#include <sstream>
 #endif
 
-#include <qmath.h>
-
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include "../App/DrawView.h"
 #include "../App/DrawViewSpreadsheet.h"
 #include "QGIViewSpreadsheet.h"
 
@@ -60,5 +44,3 @@ void QGIViewSpreadsheet::setViewFeature(TechDraw::DrawViewSpreadsheet *obj)
     QGIView::setViewFeature(static_cast<TechDraw::DrawView *>(obj));
 }
 
-
-#include "moc_QGIViewSpreadsheet.cpp"

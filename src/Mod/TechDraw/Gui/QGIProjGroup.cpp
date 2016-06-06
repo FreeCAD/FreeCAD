@@ -222,4 +222,3 @@ void QGIProjGroup::drawBorder()
 //    Base::Console().Message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
 
-#include "moc_QGIProjGroup.cpp"

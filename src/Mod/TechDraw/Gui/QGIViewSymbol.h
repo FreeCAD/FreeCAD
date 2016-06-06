@@ -43,8 +43,6 @@ namespace TechDrawGui
 
 class TechDrawGuiExport QGIViewSymbol : public QGIView
 {
-    Q_OBJECT
-
 public:
     QGIViewSymbol();
     ~QGIViewSymbol();
@@ -57,10 +55,6 @@ public:
 
     virtual void draw() override;
     virtual QRectF boundingRect() const override;
-
-Q_SIGNALS:
-    void hover(bool state);
-    void selected(bool state);
 
 protected:
     bool load(QByteArray *svgString);

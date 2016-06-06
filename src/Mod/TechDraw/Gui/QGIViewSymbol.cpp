@@ -148,4 +148,3 @@ bool QGIViewSymbol::load(QByteArray *svgBytes)
     return(success);
 }
 
-#include "moc_QGIViewSymbol.cpp"

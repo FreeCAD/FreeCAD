@@ -44,8 +44,6 @@ namespace TechDrawGui
 
 class TechDrawGuiExport QGIProjGroup : public QGIViewCollection
 {
-    Q_OBJECT
-
 public:
     QGIProjGroup();
 
@@ -59,9 +57,6 @@ public:
 
     virtual void updateView(bool update = false);
     virtual void drawBorder(void);
-
-Q_SIGNALS:
-    void dirty();
 
 protected:
     virtual bool sceneEventFilter(QGraphicsItem* watched, QEvent *event);

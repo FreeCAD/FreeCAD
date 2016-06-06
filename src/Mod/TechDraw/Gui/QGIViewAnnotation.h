@@ -24,9 +24,6 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 
-#include <QObject>
-#include <QPainter>
-
 #include "QGIView.h"
 #include "QGCustomText.h"
 
@@ -39,8 +36,6 @@ namespace TechDrawGui
 
 class TechDrawGuiExport QGIViewAnnotation : public QGIView
 {
-    Q_OBJECT
-
 public:
 
     explicit QGIViewAnnotation();
@@ -57,21 +52,16 @@ public:
     virtual void draw() override;
     virtual QRectF boundingRect() const override;
 
-Q_SIGNALS:
-    void hover(bool state);
-    void selected(bool state);
-
 protected:
     void drawAnnotation();
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-protected:
     QGCustomText *m_textItem;
     QColor m_colNormal;
     QColor m_colSel;
     QColor m_colPre;
 };
 
-} // namespace MDIViewPageGui
+} // end namespace TechDrawGui
 
 #endif // DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H

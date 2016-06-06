@@ -23,15 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 
-#include <QObject>
-#include <QPainter>
-#include <QString>
-#include <QByteArray>
-#include <QSvgRenderer>
-#include <QGraphicsSvgItem>
-
 #include "QGIViewSymbol.h"
-#include "QGIView.h"
 
 namespace TechDraw {
 class DrawViewSpreadsheet;
@@ -42,24 +34,17 @@ namespace TechDrawGui
 
 class TechDrawGuiExport QGIViewSpreadsheet : public QGIViewSymbol
 {
-    Q_OBJECT
-
 public:
     QGIViewSpreadsheet();
     ~QGIViewSpreadsheet() = default;
 
     enum {Type = QGraphicsItem::UserType + 124};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    //void updateView(bool update = false);
     void setViewFeature(TechDraw::DrawViewSpreadsheet *obj);
 
-protected:
-    //void drawSvg();
-
-protected:
 };
 
-} // namespace MDIViewPageGui
+} // end namespace TechDrawGui
 
 #endif // DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H

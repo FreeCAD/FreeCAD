@@ -44,8 +44,6 @@ namespace TechDrawGui
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
-    Q_OBJECT
-
 public:
 
     explicit QGIViewPart();
@@ -64,10 +62,6 @@ public:
 
     virtual void draw() override;
     virtual QRectF boundingRect() const override;
-
-Q_SIGNALS:
-    void selected(bool state);
-    void dirty();
 
 protected:
     /// Helper for pathArc()

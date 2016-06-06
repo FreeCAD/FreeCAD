@@ -636,5 +636,3 @@ void _dumpPath(const char* text,QPainterPath path)
         }
 }
 
-
-#include "moc_QGIViewPart.cpp"
