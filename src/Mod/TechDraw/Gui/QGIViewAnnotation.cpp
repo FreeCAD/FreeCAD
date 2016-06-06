@@ -55,8 +55,7 @@
 
 using namespace TechDrawGui;
 
-QGIViewAnnotation::QGIViewAnnotation(const QPoint &pos, QGraphicsScene *scene)
-                            :QGIView(pos, scene)
+QGIViewAnnotation::QGIViewAnnotation()
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
@@ -73,10 +72,6 @@ QGIViewAnnotation::QGIViewAnnotation(const QPoint &pos, QGraphicsScene *scene)
 
 }
 
-QGIViewAnnotation::~QGIViewAnnotation()
-{
-    // m_textItem belongs to this group and will be deleted by Qt
-}
 
 QVariant QGIViewAnnotation::itemChange(GraphicsItemChange change, const QVariant &value)
 {

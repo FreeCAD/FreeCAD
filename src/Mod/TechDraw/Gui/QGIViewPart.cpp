@@ -60,8 +60,7 @@ void _dumpPath(const char* text,QPainterPath path);
 const float lineScaleFactor = 1.;   // temp fiddle for devel
 const float vertexScaleFactor = 2.; // temp fiddle for devel
 
-QGIViewPart::QGIViewPart(const QPoint &pos, QGraphicsScene *scene)
-                :QGIView(pos, scene)
+QGIViewPart::QGIViewPart()
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);

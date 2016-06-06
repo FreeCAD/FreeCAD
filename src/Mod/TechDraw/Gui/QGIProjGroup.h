@@ -47,8 +47,10 @@ class TechDrawGuiExport QGIProjGroup : public QGIViewCollection
     Q_OBJECT
 
 public:
-    QGIProjGroup(const QPoint &position, QGraphicsScene *scene);
-    ~QGIProjGroup();
+    QGIProjGroup();
+
+    // TODO: if the QGIVO is deleted, should we clean up any remaining QGIVParts??
+    ~QGIProjGroup() = default;
 
     enum {Type = QGraphicsItem::UserType + 113};
     int type() const { return Type;}
@@ -74,8 +76,8 @@ private:
     /// Convenience function
     TechDraw::DrawProjGroup * getDrawView(void) const;
 
-    QGraphicsRectItem * m_backgroundItem;
-    QGraphicsItem*origin;
+    QGraphicsRectItem *m_backgroundItem;
+    QGraphicsItem *origin;
     QPoint mousePos;
 };
 

@@ -46,10 +46,8 @@
 
 using namespace TechDrawGui;
 
-QGIProjGroup::QGIProjGroup(const QPoint &pos, QGraphicsScene *scene)
-    :QGIViewCollection(pos, scene)
+QGIProjGroup::QGIProjGroup()
 {
-    setPos(pos);
     origin = new QGraphicsItemGroup();
     origin->setParentItem(this);
 
@@ -64,10 +62,6 @@ QGIProjGroup::QGIProjGroup(const QPoint &pos, QGraphicsScene *scene)
     borderVisible = false;
 }
 
-QGIProjGroup::~QGIProjGroup()
-{
-//TODO: if the QGIVO is deleted, should we clean up any remaining QGIVParts??
-}
 
 TechDraw::DrawProjGroup * QGIProjGroup::getDrawView(void) const
 {

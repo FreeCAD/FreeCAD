@@ -45,8 +45,8 @@ class TechDrawGuiExport QGIViewSpreadsheet : public QGIViewSymbol
     Q_OBJECT
 
 public:
-    explicit QGIViewSpreadsheet();
-    ~QGIViewSpreadsheet();
+    QGIViewSpreadsheet();
+    ~QGIViewSpreadsheet() = default;
 
     enum {Type = QGraphicsItem::UserType + 124};
     int type() const { return Type;}

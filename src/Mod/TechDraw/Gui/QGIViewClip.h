@@ -43,8 +43,8 @@ class TechDrawGuiExport QGIViewClip : public QGIView
 
 public:
 
-    explicit QGIViewClip(const QPoint &position, QGraphicsScene *scene);
-    ~QGIViewClip();
+    QGIViewClip();
+    ~QGIViewClip() = default;
 
     enum {Type = QGraphicsItem::UserType + 123};
     int type() const override { return Type;}
