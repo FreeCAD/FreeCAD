@@ -306,6 +306,8 @@ def calculate_von_mises(i):
 
 
 def importFrd(filename, analysis=None, result_name_prefix=None):
+    if result_name_prefix is None:
+        result_name_prefix = ''
     m = readResult(filename)
     mesh_object = None
     if(len(m['Nodes']) > 0):
