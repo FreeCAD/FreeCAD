@@ -41,10 +41,8 @@ namespace TechDrawGui
 class QGCustomBorder;
 class QGCustomLabel;
 
-class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
+class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
 {
-    Q_OBJECT
-
 public:
     QGIView();
     virtual ~QGIView() = default;
@@ -78,9 +76,6 @@ public:
     //virtual QPainterPath shape(void) const;
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
-
-Q_SIGNALS:
-    void dirty();
 
 protected:
 

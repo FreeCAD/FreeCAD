@@ -39,8 +39,6 @@ namespace TechDrawGui
 
 class TechDrawGuiExport QGIViewClip : public QGIView
 {
-    Q_OBJECT
-
 public:
 
     QGIViewClip();
@@ -53,10 +51,6 @@ public:
 
     virtual void draw() override;
     virtual QRectF boundingRect() const override;
-
-Q_SIGNALS:
-    void selected(bool state);
-    void dirty();
 
 protected:
     void drawClip();

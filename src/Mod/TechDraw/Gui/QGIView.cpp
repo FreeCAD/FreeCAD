@@ -279,13 +279,11 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
     float x = obj->X.getValue();
     float y = obj->Y.getValue();
     setPosition(x, y);
-
-    Q_EMIT dirty();
 }
 
 void QGIView::toggleCache(bool state)
 {
-    // TODO: huh?  IR  //temp for devl. chaching was hiding problems WF
+    // temp for devl. chaching was hiding problems WF
     setCacheMode((state)? NoCache : NoCache);
 }
 
@@ -385,4 +383,3 @@ void _debugRect(char* text, QRectF r) {
                             r.left(),r.top(),r.right(),r.bottom());
 }
 
-#include "moc_QGIView.cpp"

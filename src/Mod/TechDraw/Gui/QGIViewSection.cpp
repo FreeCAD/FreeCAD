@@ -105,4 +105,3 @@ void QGIViewSection::updateView(bool update)
     }
 }
 
-#include "moc_QGIViewSection.cpp"

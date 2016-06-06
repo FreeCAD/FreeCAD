@@ -190,4 +190,3 @@ QRectF QGIViewClip::boundingRect() const
     return childrenBoundingRect();
 }
 
-#include "moc_QGIViewClip.cpp"

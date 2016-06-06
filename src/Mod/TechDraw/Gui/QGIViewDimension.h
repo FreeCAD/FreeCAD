@@ -81,7 +81,7 @@ private:
     QColor m_colSel;
 };
 
-class TechDrawGuiExport QGIViewDimension : public QGIView
+class TechDrawGuiExport QGIViewDimension : public QObject, public QGIView
 {
     Q_OBJECT
 

@@ -168,4 +168,3 @@ QRectF QGIViewAnnotation::boundingRect() const
     return childrenBoundingRect();
 }
 
-#include "moc_QGIViewAnnotation.cpp"

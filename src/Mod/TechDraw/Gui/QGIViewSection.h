@@ -25,21 +25,11 @@
 
 #include "QGIViewPart.h"
 
-namespace TechDraw {
-class DrawViewSection;
-}
-
-namespace TechDrawGeometry {
-class BaseGeom;
-}
-
 namespace TechDrawGui
 {
 
 class TechDrawGuiExport QGIViewSection : public QGIViewPart
 {
-    Q_OBJECT
-
 public:
 
     QGIViewSection() = default;
@@ -57,6 +47,6 @@ protected:
     void drawSectionFace();
 };
 
-} // namespace MDIViewPageGui
+} // end namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
+#endif // #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H

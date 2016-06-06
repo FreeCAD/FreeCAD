@@ -182,13 +182,18 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
 MDIViewPage::~MDIViewPage()
 {
-  // Safely remove graphicview items that have built up TEMP SOLUTION
-  for(QList<QGIView*>::iterator it = deleteItems.begin(); it != deleteItems.end(); ++it) {
-      (*it)->deleteLater();
-  }
-  deleteItems.clear();
+    // Safely remove graphicview items that have built up TEMP SOLUTION
+    for(auto it : deleteItems) {
+        auto qObjPtr( dynamic_cast<QObject *>(it) );
+        if (qObjPtr) {
+            qObjPtr->deleteLater();
+        } else {
+            delete it;
+        }
+    }
+    deleteItems.clear();
 
-  delete m_view;
+    delete m_view;
 }
 
 
@@ -400,7 +405,7 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
                                      ,pos.y()
                                      ,0));
     } else {
-        QGIView *view = qobject_cast<QGIView *>(obj);
+        auto view( dynamic_cast<QGIView *>(obj) );
 
         if(!view)
             return;
