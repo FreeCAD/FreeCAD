@@ -128,7 +128,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
             m_view, SLOT(setHighQualityAntialiasing(bool)));
 #endif
 
-    isSlectionBlocked = false;
+    isSelectionBlocked = false;
 
     QActionGroup *rendererGroup = new QActionGroup(this);
     rendererGroup->addAction(m_nativeAction);
@@ -353,6 +353,7 @@ int MDIViewPage::attachView(App::DocumentObject *obj)
 }
 
 
+// wf: this is never executed???
 void MDIViewPage::preSelectionChanged(const QPoint &pos)
 {
     QObject *obj = QObject::sender();
@@ -360,22 +361,21 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
     if(!obj)
         return;
 
-    // Check if an edge was preselected
+    auto view( dynamic_cast<QGIView *>(obj) );
+    if(!view)
+            return;
+
+    QGraphicsItem* parent = view->parentItem();
+    if(!parent)
+        return;
+
+    TechDraw::DrawView *viewObj = view->getViewObject();
+    std::stringstream ss;
+
+    QGIFace *face   = dynamic_cast<QGIFace *>(obj);
     QGIEdge *edge   = dynamic_cast<QGIEdge *>(obj);
     QGIVertex *vert = dynamic_cast<QGIVertex *>(obj);
     if(edge) {
-
-        // Find the parent view that this edges is contained within
-        QGraphicsItem*parent = edge->parentItem();
-        if(!parent)
-            return;
-
-        QGIView *viewItem = dynamic_cast<QGIView *>(parent);
-        if(!viewItem)
-          return;
-
-        TechDraw::DrawView *viewObj = viewItem->getViewObject();
-        std::stringstream ss;
         ss << "Edge" << edge->getProjIndex();
         //bool accepted =
         static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
@@ -384,18 +384,7 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
                                      ,pos.x()
                                      ,pos.y()
                                      ,0));
-
     } else if(vert) {
-        QGraphicsItem*parent = vert->parentItem();
-        if(!parent)
-            return;
-
-        QGIView *viewItem = dynamic_cast<QGIView *>(parent);
-        if(!viewItem)
-          return;
-
-        TechDraw::DrawView *viewObj = viewItem->getViewObject();
-        std::stringstream ss;
         ss << "Vertex" << vert->getProjIndex();
         //bool accepted =
         static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
@@ -404,25 +393,29 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
                                      ,pos.x()
                                      ,pos.y()
                                      ,0));
+    } else if(face) {
+        ss << "Face" << face->getProjIndex();      //TODO: SectionFaces have ProjIndex = -1. (but aren't selectable?) Problem?
+        //bool accepted =
+        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
+                                     ,viewObj->getNameInDocument()
+                                     ,ss.str().c_str()
+                                     ,pos.x()
+                                     ,pos.y()
+                                     ,0));
     } else {
-        auto view( dynamic_cast<QGIView *>(obj) );
-
-        if(!view)
-            return;
-        TechDraw::DrawView *viewObj = view->getViewObject();
+        ss << "";
         Gui::Selection().setPreselect(viewObj->getDocument()->getName()
                                      ,viewObj->getNameInDocument()
-                                     ,""
+                                     ,ss.str().c_str()
                                      ,pos.x()
                                      ,pos.y()
                                      ,0);
     }
 }
 
-
 void MDIViewPage::blockSelection(const bool state)
 {
-  isSlectionBlocked = state;
+  isSelectionBlocked = state;
 }
 
 
@@ -445,6 +438,7 @@ void MDIViewPage::clearSelection()
 void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
 {
     // Update QGVPage's selection based on Selection made outside Drawing Interace
+    // wf: but this also executes for changes within the Drawing Interface?
   QGIView *view = m_view->findView(obj);
 
   blockSelection(true);
@@ -480,10 +474,7 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
             }
         }
     }
-
-    // m_view->setPageFeature(pageFeature); redundant
 }
-
 
 void MDIViewPage::updateDrawing(bool forceUpdate)
 {
@@ -909,7 +900,6 @@ QPrinter::PageSize MDIViewPage::getPageSize(int w, int h) const
     return ps;
 }
 
-
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
@@ -981,57 +971,51 @@ void MDIViewPage::saveSVG()
     m_view->saveSvg(fn);
 }
 
-
+//trigged by m_view->scene() signal
 void MDIViewPage::selectionChanged()
 {
-    if(isSlectionBlocked)
+    if(isSelectionBlocked)  {
       return;
+    }
 
     QList<QGraphicsItem*> selection = m_view->scene()->selectedItems();
-
-    bool block = blockConnection(true); // avoid to be notified by itself
+    bool saveBlock = blockConnection(true); // avoid to be notified by itself
+    blockSelection(true);
 
     Gui::Selection().clearSelection();
     for (QList<QGraphicsItem*>::iterator it = selection.begin(); it != selection.end(); ++it) {
-        // All selectable items must be of QGIView type
-
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView == 0) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge) {
-
-                // Find the parent view that this edges is contained within
                 QGraphicsItem*parent = edge->parentItem();
                 if(!parent)
-                    return;
+                    continue;
 
                 QGIView *viewItem = dynamic_cast<QGIView *>(parent);
                 if(!viewItem)
-                  return;
+                  continue;
 
                 TechDraw::DrawView *viewObj = viewItem->getViewObject();
 
                 std::stringstream ss;
-                //ss << "Edge" << edge->getReference();
                 ss << "Edge" << edge->getProjIndex();
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),
                                               ss.str().c_str()));
-                //Base::Console().Message("TRACE - MDIVP::selectionChanged - selection: %s\n",ss.str().c_str());
+                continue;
             }
 
             QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
             if(vert) {
-              // Find the parent view that this edges is contained within
-              //WF: sb Vertex
                 QGraphicsItem*parent = vert->parentItem();
                 if(!parent)
-                    return;
+                    continue;
 
                 QGIView *viewItem = dynamic_cast<QGIView *>(parent);
                 if(!viewItem)
-                  return;
+                  continue;
 
                 TechDraw::DrawView *viewObj = viewItem->getViewObject();
 
@@ -1041,31 +1025,46 @@ void MDIViewPage::selectionChanged()
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),
                                               ss.str().c_str()));
+                continue;
+            }
 
+            QGIFace *face = dynamic_cast<QGIFace *>(*it);
+            if(face) {
+                QGraphicsItem*parent = face->parentItem();
+                if(!parent)
+                    continue;
+
+                QGIView *viewItem = dynamic_cast<QGIView *>(parent);
+                if(!viewItem)
+                  continue;
+
+                TechDraw::DrawView *viewObj = viewItem->getViewObject();
+
+                std::stringstream ss;
+                ss << "Face" << face->getProjIndex();
+                //bool accepted =
+                static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
+                                              viewObj->getNameInDocument(),
+                                              ss.str().c_str()));
+                continue;
             }
 
             QGIDatumLabel *dimLabel = dynamic_cast<QGIDatumLabel*>(*it);
             if(dimLabel) {
-                // Find the parent view (dimLabel->dim->view)
-
                 QGraphicsItem*dimParent = dimLabel->parentItem();
-
                 if(!dimParent)
-                    return;
+                    continue;
 
                 QGIView *dimItem = dynamic_cast<QGIView *>(dimParent);
 
                 if(!dimItem)
-                  return;
+                  continue;
 
                 TechDraw::DrawView *dimObj = dimItem->getViewObject();
 
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(),dimObj->getNameInDocument()));
-
             }
-            continue;
-
         } else {
 
             TechDraw::DrawView *viewObj = itemView->getViewObject();
@@ -1078,7 +1077,8 @@ void MDIViewPage::selectionChanged()
 
     }
 
-    blockConnection(block);
+    blockConnection(saveBlock);
+    blockSelection(false);
 } // end MDIViewPage::selectionChanged()
 
 #include "moc_MDIViewPage.cpp"

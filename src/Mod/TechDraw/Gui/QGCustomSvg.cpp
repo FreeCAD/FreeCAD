@@ -34,6 +34,9 @@ using namespace TechDrawGui;
 QGCustomSvg::QGCustomSvg()
 {
     setCacheMode(QGraphicsItem::NoCache);
+    setAcceptHoverEvents(false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
 }
 
 void QGCustomSvg::centerAt(QPointF centerPos)

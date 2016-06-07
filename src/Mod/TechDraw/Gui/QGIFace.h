@@ -41,19 +41,27 @@ namespace TechDrawGui
 class QGIFace : public QGraphicsPathItem
 {
 public:
-    explicit QGIFace(int ref = -1);
+    explicit QGIFace(int index = -1);
     ~QGIFace() {}
 
     enum {Type = QGraphicsItem::UserType + 104};
     int type() const { return Type;}
+    QRectF boundingRect() const;
+    QPainterPath shape() const;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
 public:
-//      QPainterPath shape() const;
-    int getReference() const { return reference; }
+    int getProjIndex() const { return projIndex; }
+
+    void setHighlighted(bool state);
     void setPrettyNormal();
     void setPrettyPre();
     void setPrettySel();
+    void setFill(QColor c, Qt::BrushStyle s);
+    void setFill(QBrush b);
+    void resetFill(void);
+
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
 protected:
     // Preselection events:
@@ -61,9 +69,11 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     // Selection detection
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
 
 protected:
-    int reference;
+    int projIndex;                              //index of face in Projection. -1 for SectionFace.
+    bool isHighlighted;
 
 private:
     QPen m_pen;
@@ -71,9 +81,17 @@ private:
     QColor m_colNormal;
     QColor m_colPre;
     QColor m_colSel;
-    Qt::BrushStyle m_fill;
+    QColor m_colCurrent;
+    QColor m_defNormal;                         //pen default normal color
+
+    QColor m_colDefFill;                        //"no color"
+    QColor m_colCurrFill;                       //current color
+    QColor m_colNormalFill;
+    Qt::BrushStyle m_styleDef;                  //default Normal fill fill style
+    Qt::BrushStyle m_styleCurr;                 //current fill style
+    Qt::BrushStyle m_styleNormal;               //Normal fill style
+    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
 };
 
-} // namespace MDIViewPageGui
-
+}
 #endif // DRAWINGGUI_QGRAPHICSITEMFACE_H

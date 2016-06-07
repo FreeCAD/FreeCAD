@@ -43,14 +43,20 @@
 
 using namespace TechDrawGui;
 
-QGIFace::QGIFace(int ref) :
-    reference(ref),
-    m_fill(Qt::NoBrush)
-    //m_fill(Qt::CrossPattern)
-    //m_fill(Qt::Dense3Pattern)
+QGIFace::QGIFace(int index) :
+    projIndex(index),
+    m_colDefFill(Qt::white),          //Qt::transparent?  paper colour?
+    m_styleDef(Qt::SolidPattern),
+    m_styleSelect(Qt::SolidPattern)
 {
     setCacheMode(QGraphicsItem::NoCache);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     setAcceptHoverEvents(true);
+
+    isHighlighted = false;
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
@@ -61,15 +67,21 @@ QGIFace::QGIFace(int ref) :
     fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
     m_colPre = fcColor.asValue<QColor>();
 
-    //m_pen.setStyle(Qt::NoPen);
-    m_brush.setStyle(m_fill);
+
+    m_pen.setCosmetic(true);
+    m_pen.setColor(m_colNormal);
+
+    m_colNormalFill  = m_colDefFill;
+    m_brush.setColor(m_colDefFill);
+    m_styleNormal = m_styleDef;
+    m_brush.setStyle(m_styleDef);
     setPrettyNormal();
 }
 
 QVariant QGIFace::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemSelectedHasChanged && scene()) {
-        if(isSelected()) {
+       if(isSelected()) {               //this is only QtGui Selected, not FC selected?
             setPrettySel();
         } else {
             setPrettyNormal();
@@ -80,46 +92,96 @@ QVariant QGIFace::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void QGIFace::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    setPrettyPre();
+    if (!isSelected() && !isHighlighted) {
+        setPrettyPre();
+    }
+    QGraphicsPathItem::hoverEnterEvent(event);
 }
 
 void QGIFace::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    QGIView *view = dynamic_cast<QGIView *> (parentItem());
+    if (!isSelected()) {
+      setPrettyNormal();
+    }
+    QGraphicsPathItem::hoverLeaveEvent(event);
+}
 
-    if(!isSelected() && !view->isSelected()) {
+void QGIFace::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void QGIFace::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void QGIFace::setPrettyNormal() {
+    m_colCurrent = m_colNormal;
+    m_colCurrFill = m_colNormalFill;
+    m_styleCurr = m_styleNormal;
+    update();
+}
+
+void QGIFace::setPrettyPre() {
+    m_colCurrent = m_colPre;
+    m_colCurrFill = m_colPre;
+    m_styleCurr = m_styleSelect;
+    update();
+}
+
+void QGIFace::setPrettySel() {
+    m_colCurrent = m_colSel;
+    m_colCurrFill = m_colSel;
+    m_styleCurr = m_styleSelect;
+    update();
+}
+
+void QGIFace::setHighlighted(bool b)
+{
+    isHighlighted = b;
+    if(isHighlighted && isSelected()) {
+        setPrettySel();
+    } else if (isHighlighted) {
+        setPrettyPre();
+    } else {
         setPrettyNormal();
     }
 }
 
-void QGIFace::setPrettyNormal() {
-    m_pen.setColor(m_colNormal);
-    //m_brush.setColor(m_colNormal);
-    setPen(m_pen);
-    //setBrush(m_brush);
+void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
+    m_colNormalFill = c;
+    m_styleCurr = s;
 }
 
-void QGIFace::setPrettyPre() {
-    m_pen.setColor(m_colPre);
-    //m_brush.setColor(m_colPre);
-    setPen(m_pen);
-    //setBrush(m_brush);
+void QGIFace::setFill(QBrush b) {
+    m_colNormalFill = b.color();
+    m_styleCurr = b.style();
 }
 
-void QGIFace::setPrettySel() {
-    m_pen.setColor(m_colSel);
-    //m_brush.setColor(m_colSel);
-    setPen(m_pen);
-    //setBrush(m_brush);
+void QGIFace::resetFill() {
+    m_colNormalFill = m_colDefFill;
+    m_styleCurr = m_styleDef;
+}
+
+QRectF QGIFace::boundingRect() const
+{
+    return shape().controlPointRect();
+}
+
+QPainterPath QGIFace::shape() const
+{
+    return path();
 }
 
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
-    //myOption.state &= ~QStyle::State_Selected;   //commented for debugging
+    myOption.state &= ~QStyle::State_Selected;
 
-    //m_pen.setColor(m_colCurrent);
-    //setPen(m_pen);
-    //m_brush.setStyle(m_fill);
+    m_pen.setColor(m_colCurrent);
+    setPen(m_pen);
+    m_brush.setStyle(m_styleCurr);
+    m_brush.setColor(m_colCurrFill);
     setBrush(m_brush);
     QGraphicsPathItem::paint (painter, &myOption, widget);
 }

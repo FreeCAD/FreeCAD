@@ -47,7 +47,9 @@ QGIArrow::QGIArrow(QGraphicsScene *scene)
 
     // Set Cache Mode
     setCacheMode(QGraphicsItem::NoCache);
-
+    setAcceptHoverEvents(false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
 }
 
 QPainterPath QGIArrow::shape() const

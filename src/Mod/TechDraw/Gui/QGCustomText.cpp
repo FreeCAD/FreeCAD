@@ -47,6 +47,9 @@ using namespace TechDrawGui;
 QGCustomText::QGCustomText()
 {
     setCacheMode(QGraphicsItem::NoCache);
+    setAcceptHoverEvents(false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
 }
 
 void QGCustomText::centerAt(QPointF centerPos)

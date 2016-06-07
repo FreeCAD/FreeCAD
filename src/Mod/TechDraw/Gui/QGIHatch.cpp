@@ -59,10 +59,12 @@ QGIHatch::QGIHatch(std::string parentHatch) :
     //m_fill(Qt::CrossPattern)
     //m_fill(Qt::Dense6Pattern)
 {
-    setHandlesChildEvents(false);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
-    setAcceptHoverEvents(true);
     setCacheMode(QGraphicsItem::NoCache);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setAcceptHoverEvents(true);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");

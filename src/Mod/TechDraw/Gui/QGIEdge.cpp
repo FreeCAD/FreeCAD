@@ -47,6 +47,7 @@ QGIEdge::QGIEdge(int index) :
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     setAcceptHoverEvents(true);
@@ -54,6 +55,7 @@ QGIEdge::QGIEdge(int index) :
     strokeWidth = 1.;
 
     isCosmetic    = false;
+    m_pen.setCosmetic(isCosmetic);
     isHighlighted = false;
     isHiddenEdge = false;
     isSmoothEdge = false;
@@ -76,7 +78,6 @@ QGIEdge::QGIEdge(int index) :
     m_pen.setStyle(Qt::SolidLine);
     m_pen.setCapStyle(Qt::RoundCap);
 
-    m_pen.setCosmetic(isCosmetic);
     setPrettyNormal();
 }
 
@@ -109,7 +110,9 @@ QVariant QGIEdge::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void QGIEdge::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    setPrettyPre();
+    if (!isSelected()) {
+        setPrettyPre();
+    }
     QGraphicsPathItem::hoverEnterEvent(event);
 }
 
@@ -117,7 +120,6 @@ void QGIEdge::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
     assert(view != 0);
-
     if(!isSelected() && !isHighlighted) {
         setPrettyNormal();
     }
@@ -130,6 +132,7 @@ void QGIEdge::setCosmetic(bool state)
     update();
 }
 
+// obs?
 void QGIEdge::setHighlighted(bool b)
 {
     isHighlighted = b;

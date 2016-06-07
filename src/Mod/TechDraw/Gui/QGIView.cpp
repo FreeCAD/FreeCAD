@@ -66,10 +66,14 @@ QGIView::QGIView()
      borderVisible(true),
      m_innerView(false)
 {
-    setFlag(QGraphicsItem::ItemIsSelectable,true);
+    setCacheMode(QGraphicsItem::NoCache);
+    setHandlesChildEvents(false);
+    setAcceptHoverEvents(true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
-    setAcceptHoverEvents(true);
+
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
@@ -188,12 +192,12 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    // TODO don't like this but only solution at the minute
+    // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
         m_colCurrent = m_colSel;
     } else {
         m_colCurrent = m_colPre;
-        //if(shape().contains(event->pos())) {                     // TODO don't like this for determining preselect
+        //if(shape().contains(event->pos())) {                     // TODO don't like this for determining preselect (MLP)
         //    m_colCurrent = m_colPre;
         //}
     }
@@ -382,4 +386,3 @@ void _debugRect(char* text, QRectF r) {
     Base::Console().Message("TRACE - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
                             r.left(),r.top(),r.right(),r.bottom());
 }
-
