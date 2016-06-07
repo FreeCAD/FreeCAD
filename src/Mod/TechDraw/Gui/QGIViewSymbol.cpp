@@ -51,6 +51,7 @@ QGIViewSymbol::QGIViewSymbol()
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     m_svgRender = new QSvgRenderer();
 

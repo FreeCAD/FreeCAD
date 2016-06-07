@@ -57,10 +57,10 @@ using namespace TechDrawGui;
 
 QGIViewAnnotation::QGIViewAnnotation()
 {
-    setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
-    setAcceptHoverEvents(true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
+    setAcceptHoverEvents(true);
 
     m_textItem = new QGCustomText();
     m_textItem->setTextInteractionFlags(Qt::NoTextInteraction);

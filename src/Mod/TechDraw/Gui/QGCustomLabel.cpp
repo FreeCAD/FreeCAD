@@ -47,6 +47,9 @@ using namespace TechDrawGui;
 QGCustomLabel::QGCustomLabel()
 {
     setCacheMode(QGraphicsItem::NoCache);
+    setAcceptHoverEvents(false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
 }
 
 void QGCustomLabel::centerAt(QPointF centerPos)

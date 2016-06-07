@@ -106,7 +106,7 @@ private:
     QAction *m_outlineAction;
 
     std::string m_objectName;
-    bool isSlectionBlocked;
+    bool isSelectionBlocked;
     QGVPage *m_view;
 
     QString m_currentPath;

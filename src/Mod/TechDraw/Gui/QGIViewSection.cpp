@@ -67,8 +67,6 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    //Base::Console().Log("drawing section face\n");
-
     std::vector<TechDrawGeometry::Face*> sectionFaces;
     sectionFaces = section->getFaceGeometry();
     if (sectionFaces.empty()) {
@@ -76,21 +74,18 @@ void QGIViewSection::drawSectionFace()
         return;
     }
     std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
-    QPen facePen;
-    facePen.setCosmetic(true);
-    QBrush faceBrush(QBrush(QColor(0,0,255,40)));   //temp. sb preference or property.
+    QColor faceColor(0,0,255,40);              //temp. sb preference or property.
     for(; fit != sectionFaces.end(); fit++) {
-        QGIFace* newFace = drawFace(*fit,-1);
+        QGIFace* newFace = drawFace(*fit,-1);  //TODO: do we need to know which sectionFace this QGIFace came from?
         newFace->setZValue(ZVALUE::SECTIONFACE);
-        newFace->setBrush(faceBrush);
-        newFace->setPen(facePen);
-        //newFace->setEyeCandy()
+        newFace->setFill(faceColor, Qt::SolidPattern);
+        newFace->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        newFace->setAcceptHoverEvents(false);
     }
 }
 
 void QGIViewSection::updateView(bool update)
 {
-      // Iterate
     if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return;
 
@@ -104,4 +99,3 @@ void QGIViewSection::updateView(bool update)
         QGIViewPart::updateView();
     }
 }
-

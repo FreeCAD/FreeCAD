@@ -35,6 +35,7 @@ QGIViewSpreadsheet::QGIViewSpreadsheet()
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
 }
 
 

@@ -40,7 +40,6 @@ namespace TechDrawGui
 class TechDrawGuiExport QGIVertex : public QGraphicsEllipseItem
 {
 public:
-    //explicit QGIVertex(int ref = -1);
     explicit QGIVertex(int index);
     ~QGIVertex() {}
 

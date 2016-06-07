@@ -62,10 +62,15 @@ const float vertexScaleFactor = 2.; // temp fiddle for devel
 
 QGIViewPart::QGIViewPart()
 {
-    setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
+    setHandlesChildEvents(false);
     setAcceptHoverEvents(true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+
+
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
@@ -83,12 +88,16 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &valu
     if (change == ItemSelectedHasChanged && scene()) {
         QList<QGraphicsItem*> items = childItems();
         for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            //Highlight the children if this is highlighted!?  seems to mess up Face selection?
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
+            QGIFace *face = dynamic_cast<QGIFace *>(*it);
             if(edge) {
-                edge->setHighlighted(isSelected());
+                //edge->setHighlighted(isSelected());
             } else if(vert){
-                vert->setHighlighted(isSelected());
+                //vert->setHighlighted(isSelected());
+            } else if(face){
+                //face->setHighlighted(isSelected());
             }
         }
     } else if(change == ItemSceneChange && scene()) {
@@ -238,6 +247,7 @@ void QGIViewPart::updateView(bool update)
        viewPart->Scale.isTouched() ||
        viewPart->ShowHiddenLines.isTouched()) {
         // Remove all existing graphical representations (QGIxxxx)  otherwise BRect only grows, never shrinks?
+        // is this where selection messes up?
         prepareGeometryChange();
         QList<QGraphicsItem*> items = childItems();
         for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
@@ -292,15 +302,12 @@ void QGIViewPart::drawViewPart()
     // Draw Faces
     const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
     std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
-    QPen facePen;
-    facePen.setCosmetic(true);
-    //QBrush faceBrush;
     for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
         QGIFace* newFace = drawFace(*fit,i);
-        newFace->setPen(facePen);
         newFace->setZValue(ZVALUE::FACE);
         newFace->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        //newFace->setBrush(faceBrush);
+        newFace->setAcceptHoverEvents(true);
+        newFace->setPrettyNormal();
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
@@ -635,4 +642,3 @@ void _dumpPath(const char* text,QPainterPath path)
                                     elem.type,typeName,elem.x,elem.y,elem.isMoveTo(),elem.isLineTo(),elem.isCurveTo());
         }
 }
-
