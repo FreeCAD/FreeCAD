@@ -22,10 +22,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Path
-from PySide import QtCore,QtGui
-from PathScripts import PathUtils
-from PathUtils import fmt
+import FreeCAD, Path
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+
+from . import PathUtils
+from .PathUtils import fmt
 
 """Helix Drill object and FreeCAD command"""
 
@@ -192,10 +196,9 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
 
     return out
 
-class ObjectPathHelix:
+class ObjectPathHelix(object):
 
     def __init__(self,obj):
-
         # Basic
         obj.addProperty("App::PropertyLinkSub","Base","Path",translate("Parent Object","The base geometry of this toolpath"))
         obj.addProperty("App::PropertyLinkSubList","Features","Path",translate("Features","Selected features for the drill operation"))
@@ -210,22 +213,33 @@ class ObjectPathHelix:
         obj.addProperty("App::PropertyEnumeration", "StartSide", "Helix Drill",
             translate("Direction", "Start cutting from the inside or outside"))
         obj.StartSide = ['inside','outside']
-        obj.addProperty("App::PropertyLength", "DeltaR", "Helix Drill", translate("DeltaR", "Radius increment, must be smaller than tool diameter"))
-        obj.addProperty("App::PropertyBool", "Recursive", "Helix Drill", translate("Recursive", "If True, drill holes also in any subsequent holes at the bottom of holes that are not fully through"))
+
+        obj.addProperty("App::PropertyLength", "DeltaR", "Helix Drill",
+            translate("DeltaR", "Radius increment (must be smaller than tool diameter)"))
+        obj.addProperty("App::PropertyBool", "Recursive", "Helix Drill",
+            translate("Recursive", "If True, drill holes also in any subsequent smaller holes at the bottom of a hole"))
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", translate("Clearance Height","Distance above edge to which to retract the tool"))
-        obj.addProperty("App::PropertyLength", "StepDown", "Depth", translate("StepDown","Incremental Step Down of Tool"))
-        obj.addProperty("App::PropertyBool","UseStartDepth","Depth",translate("Use Start Depth","Set to True to manually specify a start depth"))
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", translate("Start Depth","Starting Depth of Tool - first cut depth in Z"))
-        obj.addProperty("App::PropertyBool","UseFinalDepth","Depth", translate("Use Final Depth","Set to True to manually specify a final depth"))
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", translate("Final Depth","Final Depth of Tool - lowest value in Z"))
-        obj.addProperty("App::PropertyDistance", "ThroughDepth", "Depth", translate("Through Depth","Add this amount of additional cutting depth to open holes, "
-            "only used if UseFinalDepth is False"))
+        obj.addProperty("App::PropertyDistance", "Clearance", "Depths",
+            translate("Clearance","Safe distance above the top of the hole to which to retract the tool"))
+        obj.addProperty("App::PropertyLength", "StepDown", "Depths",
+            translate("StepDown","Incremental Step Down of Tool"))
+        obj.addProperty("App::PropertyBool","UseStartDepth","Depths",
+            translate("Use Start Depth","Set to True to manually specify a start depth"))
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depths",
+            translate("Start Depth","Starting Depth of Tool - first cut depth in Z"))
+        obj.addProperty("App::PropertyBool","UseFinalDepth","Depths",
+            translate("Use Final Depth","Set to True to manually specify a final depth"))
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depths",
+            translate("Final Depth","Final Depth of Tool - lowest value in Z"))
+        obj.addProperty("App::PropertyDistance", "ThroughDepth", "Depths",
+            translate("Through Depth","Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False"))
 
         # Feed Properties
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", translate("Vert Feed","Feed rate for vertical moves"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", translate("Horiz Feed","Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feeds",
+            translate("Vert Feed","Feed rate for vertical mill moves, this includes the actual arcs"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feeds",
+            translate("Horiz Feed","Feed rate for horizontal mill moves, these are mostly retractions to the safe distance above the object"))
 
         # The current tool number, read-only
         # this is apparently used internally, to keep track of tool chagnes
@@ -296,7 +310,7 @@ class ObjectPathHelix:
             else:
                 output  += ')\n'
 
-            output += "G0 Z" + fmt(obj.Base[0].Shape.BoundBox.ZMax + float(obj.ClearanceHeight))
+            output += "G0 Z" + fmt(obj.Base[0].Shape.BoundBox.ZMax + float(obj.Clearance))
 
             drill_jobs = []
 
@@ -322,7 +336,6 @@ class ObjectPathHelix:
                         next_z = other_edge.Curve.Center.z
                         dz = next_z - cur_z
                         r = cylinder.Surface.Radius
-                        print cur_z, dz, r
 
                         if dz < 0:
                             # This is a closed hole if the face connecting to the current cylinder at next_z has
@@ -392,7 +405,7 @@ class ObjectPathHelix:
             for job in drill_jobs:
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,
                                     job["zmax"], job["zmin"], obj.StepDown.Value,
-                                    job["zmax"] + obj.ClearanceHeight.Value, tool.Diameter,
+                                    job["zmax"] + obj.Clearance.Value, tool.Diameter,
                                     obj.VertFeed.Value, obj.HorizFeed.Value, obj.Direction, obj.StartSide)
                 output += '\n'
 
@@ -401,7 +414,7 @@ class ObjectPathHelix:
                 obj.ViewObject.Visibility = True
 
 
-class ViewProviderPathHelix:
+class ViewProviderPathHelix(object):
     def __init__(self,vobj):
         vobj.Proxy = self
 
@@ -412,14 +425,19 @@ class ViewProviderPathHelix:
     def getIcon(self):
         return ":/icons/Path-Helix.svg"
 
+    def setEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        taskpanel = TaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskpanel)
+        return True
+
     def __getstate__(self):
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         return None
 
-
-class CommandPathHelix:
+class CommandPathHelix(object):
     def GetResources(self):
         return {'Pixmap'  : 'Path-Helix',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathHelix","PathHelix"),
@@ -431,7 +449,7 @@ class CommandPathHelix:
     def Activated(self):
         import FreeCADGui
         import Path
-        from PathScripts import PathUtils, PathHelix
+        from PathScripts import PathUtils
 
         selection = FreeCADGui.Selection.getSelectionEx()
 
@@ -448,8 +466,8 @@ class CommandPathHelix:
             FreeCADGui.addModule("PathScripts.PathHelix")
 
             obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","PathHelix")
-            PathHelix.ObjectPathHelix(obj)
-            PathHelix.ViewProviderPathHelix(obj.ViewObject)
+            ObjectPathHelix(obj)
+            ViewProviderPathHelix(obj.ViewObject)
 
             obj.Base = selection.Object
             obj.Features = [(selection.Object, subobj) for subobj in selection.SubElementNames]
@@ -470,7 +488,7 @@ class CommandPathHelix:
             obj.Direction = "CW"
             obj.StartSide = "inside"
 
-            obj.ClearanceHeight = 10.0
+            obj.Clearance = 10.0
             obj.StepDown = 1.0
             obj.UseStartDepth = False
             obj.StartDepth = 1.0
@@ -490,6 +508,115 @@ class CommandPathHelix:
             raise
 
         FreeCAD.ActiveDocument.recompute()
+
+class TaskPanel(object):
+    def __init__(self, obj):
+        from Units import Quantity
+        self.obj = obj
+
+        ui = FreeCADGui.UiLoader()
+        layout = QtGui.QGridLayout()
+
+        headerStyle = "QLabel { font-weight: bold; font-size: large; }"
+
+        def addWidget(widget):
+            row = layout.rowCount()
+            layout.addWidget(widget, row, 0, columnSpan=2)
+
+        def addWidgets(widget1, widget2):
+            row = layout.rowCount()
+            layout.addWidget(widget1, row, 0)
+            layout.addWidget(widget2, row, 1)
+
+        def heading(label):
+            heading = QtGui.QLabel(label)
+            heading.setStyleSheet(headerStyle)
+            addWidget(heading)
+
+        def addQuantity(property, label, activator=None, max=None, step=None):
+            if activator:
+                label = QtGui.QCheckBox(label)
+                def change(state):
+                    setattr(self.obj, activator, label.isChecked())
+                    self.obj.Proxy.execute(self.obj)
+                    FreeCAD.ActiveDocument.recompute()
+                label.stateChanged.connect(change)
+                label.setChecked(getattr(self.obj, activator))
+                label.setToolTip(self.obj.getDocumentationOfProperty(activator))
+            else:
+                label = QtGui.QLabel(label)
+                label.setToolTip(self.obj.getDocumentationOfProperty(property))
+            widget = ui.createWidget("Gui::InputField")
+            widget.setText(str(getattr(self.obj, property)))
+            widget.setToolTip(self.obj.getDocumentationOfProperty(property))
+            def change(quantity):
+                if activator:
+                    label.setChecked(True)
+                setattr(self.obj, property, quantity)
+                self.obj.Proxy.execute(self.obj)
+                FreeCAD.ActiveDocument.recompute()
+            QtCore.QObject.connect(widget, QtCore.SIGNAL("valueChanged(const Base::Quantity &)"), change)
+            addWidgets(label, widget)
+
+        def addCheckBox(property, label):
+            widget = QtGui.QCheckBox(label)
+            widget.setToolTip(self.obj.getDocumentationOfProperty(property))
+            def change(state):
+                setattr(self.obj, property, widget.isChecked())
+                self.obj.Proxy.execute(self.obj)
+                FreeCAD.ActiveDocument.recompute()
+            widget.stateChanged.connect(change)
+            widget.setChecked(getattr(self.obj, property))
+            addWidget(widget)
+
+        def addEnumeration(property, label, options):
+            label = QtGui.QLabel(label)
+            label.setToolTip(self.obj.getDocumentationOfProperty(property))
+            widget = QtGui.QComboBox()
+            widget.setToolTip(self.obj.getDocumentationOfProperty(property))
+            for option_label, option_value in options:
+                widget.addItem(option_label)
+            def change(index):
+                setattr(self.obj, property, options[index][1])
+                self.obj.Proxy.execute(self.obj)
+                FreeCAD.ActiveDocument.recompute()
+            widget.currentIndexChanged.connect(change)
+            addWidgets(label, widget)
+
+        heading("Drill parameters")
+        addCheckBox("Active", "Operation is active")
+        addQuantity("DeltaR", "Step in Radius")
+        addQuantity("StepDown", "Step in Z")
+        addEnumeration("Direction", "Cut direction", [("Clockwise", "CW"), ("Counter-Clockwise", "CCW")])
+        addEnumeration("StartSide", "Start Side", [("Start from inside", "inside"), ("Start from outside", "outside")])
+        addCheckBox("Recursive", "Also mill subsequent holes")
+
+        heading("Cutting Depths")
+        addQuantity("Clearance", "Clearance Height")
+        addQuantity("StartDepth", "Start Depth", "UseStartDepth")
+        addQuantity("FinalDepth", "Final Depth", "UseFinalDepth")
+        addQuantity("ThroughDepth", "Through Depth")
+
+        heading("Feeds")
+        addQuantity("HorizFeed", "Horizontal Feed")
+        addQuantity("VertFeed", "Vertical Feed")
+
+        widget = QtGui.QWidget()
+        widget.setLayout(layout)
+        self.form = widget
+
+    def needsFullSpace(self):
+        return True
+
+    def accept(self):
+        FreeCAD.Console.PrintError("accept()\n")
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+
+    def reject(self):
+        FreeCAD.Console.PrintError("reject()\n")
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
 
 if FreeCAD.GuiUp:
     import FreeCADGui
