@@ -111,7 +111,7 @@ class ObjectPocket:
                 obj.setEditorMode('RampSize', 2)   # make this hidden
 
         if prop == "UserLabel":
-             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
 
     def __getstate__(self):
@@ -233,6 +233,9 @@ class ObjectPocket:
 
         # Build up the offset loops
         output = ""
+        if obj.Comment != "":
+            output += '(' + str(obj.Comment)+')\n'
+
         offsets = []
         nextradius = (self.radius * 2) * (float(obj.StepOver)/100)
         result = DraftGeomUtils.pocket2d(shape, nextradius)
@@ -374,9 +377,9 @@ class ObjectPocket:
             obj.ToolDescription = toolLoad.Name
 
         if obj.UserLabel == "":
-            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.Name + " :" + obj.ToolDescription
         else:
-            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         if obj.Base:
             for b in obj.Base:
