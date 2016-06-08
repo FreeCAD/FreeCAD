@@ -100,6 +100,9 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
     """
     from numpy import ceil, allclose, linspace
 
+    if (zmax <= zmin):
+        return
+
     out = "(helix_cut <{0}, {1}>, {2})".format(center[0], center[1], ", ".join(map(str, (r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter))))
 
     x0, y0 = center
@@ -316,13 +319,9 @@ class ObjectPathHelix(object):
 
             for base, cylinder in cylinders:
                 xc, yc, zc = cylinder.Surface.Center
-                if obj.UseStartDepth:
-                    zmax = obj.StartDepth.Value
-                else:
-                    zmax = cylinder.BoundBox.ZMax
 
                 if obj.Recursive:
-                    cur_z = zmax
+                    cur_z = cylinder.BoundBox.ZMax
                     jobs = []
 
                     while cylinder:
@@ -388,14 +387,24 @@ class ObjectPathHelix(object):
                                         cylinder = other_cylinder
                                         break
 
+                    if obj.UseStartDepth:
+                        jobs = [job for job in jobs if job["zmin"] < obj.StartDepth.Value]
+                        if jobs:
+                            jobs[0]["zmax"] = obj.StartDepth.Value
                     if obj.UseFinalDepth:
-                        jobs[-1]["zmin"] = obj.FinalDepth.Value
+                        jobs = [job for job in jobs if job["zmax"] > obj.FinalDepth.Value]
+                        if jobs:
+                            jobs[-1]["zmin"] = obj.FinalDepth.Value
                     else:
                         if not jobs[-1]["closed"]:
                             jobs[-1]["zmin"] -= obj.ThroughDepth.Value
 
                     drill_jobs.extend(jobs)
                 else:
+                    if obj.UseStartDepth:
+                        zmax = obj.StartDepth.Value
+                    else:
+                        zmax = cylinder.BoundBox.ZMax
                     if obj.UseFinalDepth:
                         zmin = obj.FinalDepth.Value
                     else:
@@ -592,7 +601,7 @@ class TaskPanel(object):
         addCheckBox("Recursive", "Also mill subsequent holes")
 
         heading("Cutting Depths")
-        addQuantity("Clearance", "Clearance Height")
+        addQuantity("Clearance", "Clearance Distance")
         addQuantity("StartDepth", "Start Depth", "UseStartDepth")
         addQuantity("FinalDepth", "Final Depth", "UseFinalDepth")
         addQuantity("ThroughDepth", "Through Depth")
