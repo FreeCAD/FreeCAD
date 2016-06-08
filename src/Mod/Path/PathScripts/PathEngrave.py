@@ -81,10 +81,12 @@ class ObjectPathEngrave:
 
     def onChanged(self, obj, prop):
         if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
     def execute(self, obj):
         output = ""
+        if obj.Comment != "":
+            output += '(' + str(obj.Comment)+')\n'
 
         toolLoad = PathUtils.getLastToolLoad(obj)
         if toolLoad is None or toolLoad.ToolNumber == 0:
@@ -102,9 +104,9 @@ class ObjectPathEngrave:
             obj.ToolDescription = toolLoad.Name
 
         if obj.UserLabel == "":
-            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.Name + " :" + obj.ToolDescription
         else:
-            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         if obj.Base:
             for o in obj.Base:
@@ -118,8 +120,18 @@ class ObjectPathEngrave:
         # print output
         if output == "":
             output += "G0"
-        path = Path.Path(output)
-        obj.Path = path
+
+        if obj.Active:
+            path = Path.Path(output)
+            obj.Path = path
+            obj.ViewObject.Visibility = True
+
+        else:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+        # path = Path.Path(output)
+        # obj.Path = path
 
     def buildpathocc(self, obj, wires):
         import Part

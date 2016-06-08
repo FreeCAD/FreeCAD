@@ -79,10 +79,13 @@ class ObjectDrilling:
 
     def onChanged(self, obj, prop):
         if prop == "UserLabel":
-             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
     def execute(self, obj):
         output = ""
+        if obj.Comment != "":
+            output += '(' + str(obj.Comment)+')\n'
+
         toolLoad = PathUtils.getLastToolLoad(obj)
         if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
@@ -100,9 +103,9 @@ class ObjectDrilling:
             obj.ToolDescription = toolLoad.Name
 
         if obj.UserLabel == "":
-            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.Name + " :" + obj.ToolDescription
         else:
-            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         locations = []
         output = "(Begin Drilling)\n"
@@ -155,8 +158,20 @@ class ObjectDrilling:
 
             output += "G80\n"
 
-        path = Path.Path(output)
-        obj.Path = path
+#         path = Path.Path(output)
+#         obj.Path = path
+
+        if obj.Active:
+            path = Path.Path(output)
+            obj.Path = path
+            obj.ViewObject.Visibility = True
+
+        else:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            obj.ViewObject.Visibility = False
+
+
 
     def checkdrillable(self, obj, sub):
         print "in checkdrillable"

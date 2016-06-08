@@ -127,7 +127,7 @@ class ObjectProfile:
 
     def onChanged(self, obj, prop):
         if prop == "UserLabel":
-             obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
     def addprofilebase(self, obj, ss, sub=""):
         baselist = obj.Base
@@ -171,7 +171,8 @@ class ObjectProfile:
     def _buildPathOCC(self, obj, wire):
         import DraftGeomUtils
         output = ""
-        output += '(' + str(obj.Comment)+')\n'
+        if obj.Comment != "":
+            output += '(' + str(obj.Comment)+')\n'
 
         if obj.Direction == 'CCW':
             clockwise = False
@@ -194,6 +195,8 @@ class ObjectProfile:
         import math
         import area
         output = ""
+        if obj.Comment != "":
+            output += '(' + str(obj.Comment)+')\n'
 
         if obj.StartPoint and obj.UseStartPoint:
             startpoint = obj.StartPoint
@@ -280,9 +283,9 @@ print "y - " + str(point.y)
             obj.ToolDescription = toolLoad.Name
 
         if obj.UserLabel == "":
-            obj.Label = obj.Name + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.Name + " :" + obj.ToolDescription
         else:
-            obj.Label = obj.UserLabel + " (" + obj.ToolDescription + ")"
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
 
         if obj.Base:
