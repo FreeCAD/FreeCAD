@@ -24,21 +24,20 @@
 #ifndef FEATUREBSURF_H
 #define FEATUREBSURF_H
 
+#include <Geom_BoundedSurface.hxx>
 #include <GeomFill_FillingStyle.hxx>
 #include <ShapeExtend_WireData.hxx>
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
-#include "Mod/Part/App/PartFeature.h"
-#include "Mod/Surface/FillType.h"
-
-class Handle_Geom_BoundedSurface;
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Surface/FillType.h>
 
 namespace Surface
 {
 
-class ShapeValidator
+class SurfaceExport ShapeValidator
 {
 protected:
     bool willBezier;
@@ -46,7 +45,7 @@ protected:
     int edgeCount;
 
     void initValidator(void);
-    bool checkEdge(const TopoDS_Shape& shape);
+    void checkEdge(const TopoDS_Shape& shape);
     void checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD = NULL);
     void checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWire = NULL);
 };
@@ -57,7 +56,7 @@ class BSurf : public Part::Feature, public ShapeValidator
 
 public:
     BSurf();
-    App::PropertyLinkSubList BoundaryList; //curves to be turned into a face (2-4 curves allowed).
+    App::PropertyLinkSubList BoundaryList;  //curves to be turned into a face (2-4 curves allowed).
     App::PropertyEnumeration FillType;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
     short mustExecute() const;

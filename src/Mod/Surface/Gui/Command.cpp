@@ -29,6 +29,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QPointer>
 #include <Standard_math.hxx>
 #include <TopoDS_Shape.hxx>
