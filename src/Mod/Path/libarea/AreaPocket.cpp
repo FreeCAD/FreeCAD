@@ -1,32 +1,8 @@
 // AreaPocket.cpp
+// Copyright 2011, Dan Heeks
+// This program is released under the BSD license. See the file COPYING for details.
+
 // implements CArea::MakeOnePocketCurve
-
-/*==============================
-Copyright (c) 2011-2015 Dan Heeks
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
-
 
 #include "Area.h"
 
@@ -424,38 +400,6 @@ void recur(std::list<CArea> &arealist, const CArea& a1, const CAreaPocketParams 
 			recur(arealist, *a2, params, level + 1);
 	}
 }
-
-#if 0
-static CArea make_obround(const Point& p0, const Point& p1, double radius)
-{
-    Point dir = p1 - p0;
-    dir.normalize();
-    Point right(dir.y, -dir.x);
-    CArea obround;
-    CCurve c;
-    if(fabs(radius) < 0.0000001)radius = (radius > 0.0) ? 0.002 : (-0.002);
-    Point vt0 = p0 + right * radius;
-    Point vt1 = p1 + right * radius;
-    Point vt2 = p1 - right * radius;
-    Point vt3 = p0 - right * radius;
-    c.append(vt0);
-    c.append(vt1);
-    c.append(CVertex(1, vt2, p1));
-    c.append(vt3);
-    c.append(CVertex(1, vt0, p0));
-    obround.append(c);
-    return obround;
-}
-#endif
-
-#if 0
-static bool feed_possible(const CArea &area_for_feed_possible, const Point& p0, const Point& p1, double tool_radius)
-{
-    CArea obround = make_obround(p0, p1, tool_radius);
-    obround.Subtract(area_for_feed_possible);
-    return obround.m_curves.empty();
-}
-#endif
 
 void MarkOverlappingOffsetIslands(std::list<IslandAndOffset> &offset_islands)
 {
