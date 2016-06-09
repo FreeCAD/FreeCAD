@@ -38,17 +38,31 @@
 #include <Base/Parameter.h>
 
 
-/* registration table  */
-extern struct PyMethodDef Surface_methods[];
+namespace Surface {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("Surface")
+    {
+        initialize("This module is the Surface module."); // register with Python
+    }
 
-PyDoc_STRVAR(module_Surface_doc,
-"This module is the Surface module.");
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace Surface
 
 
 /* Python entry */
-extern "C" {
-void SurfaceExport initSurface() {
-
+PyMODINIT_FUNC initSurface()
+{
     try {
         Base::Interpreter().runString("import Part");
     }
@@ -60,7 +74,7 @@ void SurfaceExport initSurface() {
     // ADD YOUR CODE HERE
     //
     //
-    (void) Py_InitModule3("Surface", Surface_methods, module_Surface_doc);   /* mod name, table ptr */
+    (void) Surface::initModule();
     Base::Console().Log("Loading Surface module... done\n");
 
     // Add types to module
@@ -71,5 +85,3 @@ void SurfaceExport initSurface() {
     Surface::BezSurf        ::init();
     Surface::BSplineSurf    ::init();
 }
-
-} // extern "C"

@@ -39,23 +39,36 @@
 void CreateSurfaceCommands(void);
 
 
-/* registration table  */
-extern struct PyMethodDef SurfaceGui_methods[];
+namespace SurfaceGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("SurfaceGui")
+    {
+        initialize("This module is the SurfaceGui module."); // register with Python
+    }
 
-PyDoc_STRVAR(module_SurfaceGui_doc,
-"This module is the SurfaceGui module.");
+    virtual ~Module() {}
 
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace SurfaceGui
 
 /* Python entry */
-extern "C" {
-void SurfaceGuiExport initSurfaceGui()
+PyMODINIT_FUNC initSurfaceGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         return;
     }
 
-//    Base::Interpreter().runString("import SurfaceGui"); infinite Python recursion comes
+    Base::Interpreter().runString("import Surface");
     Base::Interpreter().runString("import PartGui");
 
     // instanciating the commands
@@ -66,8 +79,6 @@ void SurfaceGuiExport initSurfaceGui()
     
 //    SurfaceGui::ViewProviderCut::init();
 
-    (void) Py_InitModule3("SurfaceGui", SurfaceGui_methods, module_SurfaceGui_doc);   /* mod name, table ptr */
+    (void) SurfaceGui::initModule();
     Base::Console().Log("Loading GUI of Surface module... done\n");
 }
-
-} // extern "C"
