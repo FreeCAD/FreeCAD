@@ -35,7 +35,7 @@
 #include <gp_Pnt.hxx>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
-#include <string.h>
+#include <string>
 
 using namespace Surface;
 
@@ -131,9 +131,6 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         //Generate Builder with Algorithm Variables
 
         BRepFill_Filling builder(Deg,NPOC,NI,Anis,T2d,T3d,TG1,TG2,Mdeg,Mseg);
-
-        //Check that borders are defined
-        printf("Surface Filling\n");
 
         if((Border.getSize())<1){return new App::DocumentObjectExecReturn("Border must have at least one curve defined.");}
 
@@ -292,6 +289,7 @@ void appconstr_bface(BRepFill_Filling& builder,const App::PropertyLinkSubList& a
 */
 void appconstr_crvface(BRepFill_Filling& builder, const App::PropertyLinkSubList& anEdge, const App::PropertyLinkSubList& aFace, const App::PropertyIntegerList& Order,  Standard_Boolean bnd){
 
+#if 0
     int res;
 
     GeomAbs_Shape ordtmp;
@@ -383,12 +381,12 @@ void appconstr_crvface(BRepFill_Filling& builder, const App::PropertyLinkSubList
         bc++;
 
     }
-
+#endif
     return;
 }
 
 void appconstr_pt(BRepFill_Filling& builder,const App::PropertyLinkSubList& aVertex){
-
+#if 0
     int res;
 
     for(int i=0; i<aVertex.getSize(); i++) {
@@ -420,11 +418,12 @@ void appconstr_pt(BRepFill_Filling& builder,const App::PropertyLinkSubList& aVer
         res = builder.Add(BRep_Tool::Pnt(vtmp));
 
     }
+#endif
     return;
 }
 
 void appinitface(BRepFill_Filling& builder,const App::PropertyLinkSubList& aFace){
-
+#if 0
     if(aFace.getSize()>1){Standard_Failure::Raise("Only one face may be used for the initial face");return;}
 
     Part::TopoShape ts;
@@ -452,6 +451,6 @@ void appinitface(BRepFill_Filling& builder,const App::PropertyLinkSubList& aFace
     else{Standard_Failure::Raise("Point not from Part::Feature");}
 
     builder.LoadInitSurface(face);
-
+#endif
     return;
 }

@@ -30,8 +30,8 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Wire.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <Geom_BezierCurve.hxx>
 #include <GeomFill_BezierCurves.hxx>
-#include <Geom_BoundedSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopExp_Explorer.hxx>
 #include <BRep_Tool.hxx>
@@ -51,13 +51,13 @@ void ShapeValidator::initValidator(void)
 }
 
 // shows error message if the shape is not an edge
-bool ShapeValidator::checkEdge(const TopoDS_Shape& shape)
+void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
 {
     if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE)
     {
         Standard_Failure::Raise("Shape is not an edge.");
-        return false;
     }
+
     TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
     TopLoc_Location heloc; // this will be output
     Standard_Real u0;// contains output
@@ -67,10 +67,9 @@ bool ShapeValidator::checkEdge(const TopoDS_Shape& shape)
     if (bez_geom.IsNull())
     {
         // this one is not Bezier, we hope it can be converted into b-spline
-        if(willBezier) {
+        if (willBezier) {
             // already found the other type, fail
             Standard_Failure::Raise("Mixing Bezier and non-Bezier curves is not allowed.");
-            return false;
         }
         // we will create b-spline surface
         willBSpline = true;
@@ -78,25 +77,21 @@ bool ShapeValidator::checkEdge(const TopoDS_Shape& shape)
     else
     {
         // this one is Bezier
-        if(willBSpline) {
+        if (willBSpline) {
             // already found the other type, fail
             Standard_Failure::Raise("Mixing Bezier and non-Bezier curves is not allowed.");
-            return false;
         }
         // we will create Bezier surface
         willBezier = true;
     }
+
     edgeCount++;
-    return true;
 }
 
 void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD)
 {
-    if(!checkEdge(shape))
-    {
-        return;
-    }
-    if(aWD != NULL)
+    checkEdge(shape);
+    if (aWD != NULL)
     {
         BRepBuilderAPI_Copy copier(shape);
         // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
@@ -131,20 +126,19 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
     }
     catch(Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
         Standard_Failure::Raise("Wrong shape type.");
-        return;
     }
 }
 
 
 PROPERTY_SOURCE(Surface::BSurf, Part::Feature)
 
-const char* BSurf::FillTypeEnums[]    = {"Invalid", "Sretched", "Coons", "Curved", NULL};
+const char* BSurf::FillTypeEnums[]    = {"Invalid", "Stretched", "Coons", "Curved", NULL};
 
 BSurf::BSurf(): Feature()
 {
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (0, "Dummy"));
-    FillType.StatusBits |= 4; // read-only in property editor
+    FillType.setStatus(App::Property::ReadOnly, true); // read-only in property editor
     FillType.setEnums(FillTypeEnums);
 }
 
@@ -164,10 +158,15 @@ GeomFill_FillingStyle BSurf::getFillingStyle()
 {
     //Identify filling style
     int ftype = FillType.getValue();
-    if(ftype==StretchStyle) {return GeomFill_StretchStyle;}
-    else if(ftype==CoonsStyle) {return GeomFill_CoonsStyle;}
-    else if(ftype==CurvedStyle) {return GeomFill_CurvedStyle;}
-    else {Standard_Failure::Raise("Filling style must be 1 (Stretch), 2 (Coons), or 3 (Curved).");}
+    if (ftype==StretchStyle)
+        return GeomFill_StretchStyle;
+    else if(ftype==CoonsStyle)
+        return GeomFill_CoonsStyle;
+    else if(ftype==CurvedStyle)
+        return GeomFill_CurvedStyle;
+    else
+        Standard_Failure::Raise("Filling style must be 1 (Stretch), 2 (Coons), or 3 (Curved).");
+    throw; // this is to shut up the compiler
 }
 
 
@@ -176,29 +175,32 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
 
-    int boundaryListSize = BoundaryList.getSize();
-    if(boundaryListSize > 4) // if too many not even try
+    std::vector<App::PropertyLinkSubList::SubSet> boundary = BoundaryList.getSubListValues();
+    if(boundary.size() > 4) // if too many not even try
     {
         Standard_Failure::Raise("Only 2-4 curves are allowed");
-        return;
     }
 
     initValidator();
-    for(int i = 0; i < boundaryListSize; i++)
+    for(std::size_t i = 0; i < boundary.size(); i++)
     {
-        App::PropertyLinkSubList::SubSet set = BoundaryList[i];
+        App::PropertyLinkSubList::SubSet set = boundary[i];
 
-        if(set.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if(set.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
 
-            const Part::TopoShape &ts = static_cast<Part::Feature*>(set.obj)->Shape.getShape();
-            checkAndAdd(ts, set.sub, &aWD);
+            for (auto jt: set.second) {
+                const Part::TopoShape &ts = static_cast<Part::Feature*>(set.first)->Shape.getShape();
+                checkAndAdd(ts, jt.c_str(), &aWD);
+            }
         }
-        else{Standard_Failure::Raise("Curve not from Part::Feature");return;}
+        else {
+            Standard_Failure::Raise("Curve not from Part::Feature");
+        }
     }
+
     if(edgeCount < 2 || edgeCount > 4)
     {
         Standard_Failure::Raise("Only 2-4 curves are allowed");
-        return;
     }
 
     //Reorder the curves and fix the wire if required
@@ -212,7 +214,9 @@ void BSurf::getWire(TopoDS_Wire& aWire)
 
     aWire = aShFW->Wire(); //Healed Wire
 
-    if(aWire.IsNull()){Standard_Failure::Raise("Wire unable to be constructed");return;}
+    if(aWire.IsNull()) {
+        Standard_Failure::Raise("Wire unable to be constructed");
+    }
 }
 
 void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
@@ -225,8 +229,12 @@ void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
 
     TopoDS_Face aFace = aFaceBuilder.Face();
 
-    if(!aFaceBuilder.IsDone()) { Standard_Failure::Raise("Face unable to be constructed");}
-    if (aFace.IsNull()) { Standard_Failure::Raise("Resulting Face is null"); }
+    if(!aFaceBuilder.IsDone()) {
+        Standard_Failure::Raise("Face unable to be constructed");
+    }
+    if (aFace.IsNull()) {
+        Standard_Failure::Raise("Resulting Face is null");
+    }
     this->Shape.setValue(aFace);
 }
 

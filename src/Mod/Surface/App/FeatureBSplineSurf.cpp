@@ -49,28 +49,25 @@ using namespace Surface;
 
 PROPERTY_SOURCE(Surface::BSplineSurf, Surface::BSurf)
 
-//Initial values
 
 BSplineSurf::BSplineSurf() : BSurf()
 {
 }
-
-//Functions
 
 App::DocumentObjectExecReturn *BSplineSurf::execute(void)
 {
     correcteInvalidFillType();
     //Begin Construction
     try{
-        Handle_Geom_BSplineCurve crvs[4];
-        TopoDS_Wire aWire; //Create empty wire
+        std::vector<Handle_Geom_BSplineCurve> crvs;
+        crvs.reserve(4);
+        TopoDS_Wire aWire;
 
         //Gets the healed wire
         getWire(aWire);
 
         Standard_Real u1, u2; // contains output
         TopExp_Explorer anExp (aWire, TopAbs_EDGE);
-        int it = 0;
         for (; anExp.More(); anExp.Next()) {
             const TopoDS_Edge& edge = TopoDS::Edge (anExp.Current());
             TopLoc_Location heloc; // this will be output
@@ -81,7 +78,7 @@ App::DocumentObjectExecReturn *BSplineSurf::execute(void)
                 gp_Trsf transf = heloc.Transformation();
                 b_geom->Transform(transf); // apply original transformation to control points
                 //Store Underlying Geometry
-                crvs[it] = b_geom;
+                crvs.push_back(b_geom);
             }
             else {
                 // try to convert it into a b-spline
@@ -96,36 +93,39 @@ App::DocumentObjectExecReturn *BSplineSurf::execute(void)
                     gp_Trsf transf = heloc2.Transformation();
                     b_geom2->Transform(transf); // apply original transformation to control points
                     //Store Underlying Geometry
-                    crvs[it] = b_geom2;
+                    crvs.push_back(b_geom2);
                 }
                 else {
                     Standard_Failure::Raise("A curve was not a b-spline and could not be converted into one.");
                 }
             }
-            it++;
         }
 
         GeomFill_FillingStyle fstyle = getFillingStyle();
         GeomFill_BSplineCurves aSurfBuilder; //Create Surface Builder
-        if(edgeCount==2) {aSurfBuilder.Init(crvs[0], crvs[1], fstyle);}
-        else if(edgeCount==3) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);}
-        else if(edgeCount==4) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);}
+        if(edgeCount==2) {
+            aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
+        }
+        else if(edgeCount==3) {
+            aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
+        }
+        else if(edgeCount==4) {
+            aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
+        }
 
-        createFace(aSurfBuilder.Surface());
+        //createFace(aSurfBuilder.Surface());
 
         return App::DocumentObject::StdReturn;
-
-    } //End Try
-    catch(Standard_ConstructionError) {
+    }
+    catch (Standard_ConstructionError) {
         // message is in a Latin language, show a normal one
         return new App::DocumentObjectExecReturn("Curves are disjoint.");
     }
-    catch(StdFail_NotDone) {
+    catch (StdFail_NotDone) {
         return new App::DocumentObjectExecReturn("A curve was not a b-spline and could not be converted into one.");
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
-    } //End Catch
-
-} //End execute
+    }
+}

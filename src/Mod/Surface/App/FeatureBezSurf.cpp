@@ -47,28 +47,24 @@ using namespace Surface;
 
 PROPERTY_SOURCE(Surface::BezSurf, Surface::BSurf)
 
-//Initial values
-
 BezSurf::BezSurf() : BSurf()
 {
 }
 
-//Functions
-
 App::DocumentObjectExecReturn *BezSurf::execute(void)
 {
     correcteInvalidFillType();
-    //Begin Construction
-    try{
-        Handle_Geom_BezierCurve crvs[4];
-        TopoDS_Wire aWire; //Create empty wire
+
+    try {
+        std::vector<Handle_Geom_BezierCurve> crvs;
+        crvs.reserve(4);
+        TopoDS_Wire aWire;
 
         //Gets the healed wire
         getWire(aWire);
 
         Standard_Real u1, u2; // contains output
         TopExp_Explorer anExp (aWire, TopAbs_EDGE);
-        int it = 0;
         for (; anExp.More(); anExp.Next()) {
             const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
             TopLoc_Location heloc; // this will be output
@@ -79,34 +75,35 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
                 gp_Trsf transf = heloc.Transformation();
                 b_geom->Transform(transf); // apply original transformation to control points
                 //Store Underlying Geometry
-                crvs[it] = b_geom;
+                crvs.push_back(b_geom);
             }
             else {
                 Standard_Failure::Raise("Curve not a Bezier Curve");
             }
-            it++;
         }
 
         GeomFill_FillingStyle fstyle = getFillingStyle();
         GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
-        if(edgeCount==2) {aSurfBuilder.Init(crvs[0], crvs[1], fstyle);}
-        else if(edgeCount==3) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);}
-        else if(edgeCount==4) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);}
+        if (edgeCount == 2) {
+            aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
+        }
+        else if(edgeCount == 3) {
+            aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
+        }
+        else if(edgeCount == 4) {
+            aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
+        }
 
-        createFace(aSurfBuilder.Surface());
+        //createFace(aSurfBuilder.Surface());
 
         return App::DocumentObject::StdReturn;
-
-    } //End Try
-    catch(Standard_ConstructionError) {
+    }
+    catch (Standard_ConstructionError) {
         // message is in a Latin language, show a normal one
         return new App::DocumentObjectExecReturn("Curves are disjoint.");
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
-    } //End Catch
-
-} //End execute
-
-
+    }
+}

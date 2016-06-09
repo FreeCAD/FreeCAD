@@ -39,5 +39,7 @@ public:
     // recalculate the feature
     virtual App::DocumentObjectExecReturn *execute(void);
 };
+
 }//Namespace Surface
+
 #endif
