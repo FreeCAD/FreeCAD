@@ -43,7 +43,6 @@ SET(SurfaceGui_SRCS
     ${SurfaceGui_UIC_HDRS}
     BSurf.cpp
     BSurf.h
-    ../FillType.h
     AppSurfaceGui.cpp
     Command.cpp
     PreCompiled.cpp

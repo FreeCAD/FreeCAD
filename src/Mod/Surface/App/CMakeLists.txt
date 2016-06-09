@@ -19,7 +19,6 @@ set(Surface_LIBS
 )
 
 SET(Surface_SRCS
-    ../FillType.h
     AppSurface.cpp
     PreCompiled.cpp
     PreCompiled.h
@@ -35,6 +34,7 @@ SET(Surface_SRCS
     FeatureBezSurf.cpp
     FeatureBSplineSurf.h
     FeatureBSplineSurf.cpp
+    FillType.h
 )
 
 link_directories(${OCC_LIBRARY_DIR})
