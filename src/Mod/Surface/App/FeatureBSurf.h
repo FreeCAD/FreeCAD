@@ -32,7 +32,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Surface/FillType.h>
+#include <Mod/Surface/App/FillType.h>
 
 namespace Surface
 {

@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #include <Mod/Surface/App/FeatureBSurf.h>
-#include <Mod/Surface/FillType.h>
+#include <Mod/Surface/App/FillType.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
