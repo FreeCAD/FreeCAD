@@ -103,11 +103,13 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
     if (zmax <= zmin):
         return
 
-    out = "(helix_cut <{0}, {1}>, {2})".format(center[0], center[1], ", ".join(map(str, (r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter))))
+    out = "(helix_cut <{0}, {1}>, {2})".format(center[0], center[1],
+                ", ".join(map(str, (r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vfeed, hfeed, direction, startside))))
 
     x0, y0 = center
-    nz = int(ceil(2*(zmax - zmin)/dz))
-    dz = (zmax - zmin) / nz
+    nz = max(int(ceil((zmax - zmin)/dz)), 2)
+    zi = linspace(zmax, zmin, 2 * nz + 1)
+
     if dr > tool_diameter:
         FreeCAD.Console.PrintWarning("PathHelix: Warning, shortening dr to tool diameter!\n")
         dr = tool_diameter
@@ -143,9 +145,12 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
         out += rapid(x=x0+r,y=y0)
         out += rapid(z=zmax + tool_diameter)
         out += feed(z=zmax,f=vfeed)
-        for i in range(1,nz+2):
-            out += arc(x0-r, y0, i=-r, j=0.0, z = max(zmax - (i - 0.5) * dz, zmin), f=hfeed)
-            out += arc(x0+r, y0, i=r,  j=0.0, z = max(zmax -     i     * dz, zmin), f=hfeed)
+        z=zmin
+        for i in range(1,nz+1):
+            out += arc(x0-r, y0, i=-r, j=0.0, z = zi[2*i-1], f=hfeed)
+            out += arc(x0+r, y0, i= r, j=0.0, z = zi[2*i],   f=hfeed)
+        out += arc(x0-r, y0, i=-r, j=0.0, z = zmin, f=hfeed)
+        out += arc(x0+r, y0, i=r,  j=0.0, z = zmin, f=hfeed)
         out += feed(z=zmax + tool_diameter, f=vfeed)
         out += rapid(z=safe_z)
         return out
@@ -260,6 +265,7 @@ class ObjectPathHelix(object):
 
     def execute(self,obj):
         from Part import Circle, Cylinder, Plane
+        from math import sqrt
         if obj.Base:
             if not obj.Active:
                 obj.Path = Path.Path("(helix cut operation inactive)")
@@ -318,6 +324,7 @@ class ObjectPathHelix(object):
             drill_jobs = []
 
             for base, cylinder in cylinders:
+                zsafe = cylinder.BoundBox.ZMax + obj.Clearance.Value
                 xc, yc, zc = cylinder.Surface.Center
 
                 if obj.Recursive:
@@ -337,7 +344,7 @@ class ObjectPathHelix(object):
                         r = cylinder.Surface.Radius
 
                         if dz < 0:
-                            # This is a closed hole if the face connecting to the current cylinder at next_z has
+                            # This is a closed hole if the face connected to the current cylinder at next_z has
                             # the cylinder's edge as its OuterWire
                             closed = None
                             for face in base.Shape.Faces:
@@ -351,7 +358,7 @@ class ObjectPathHelix(object):
                             if closed is None:
                                 raise Exception("Cannot determine if this cylinder is closed on the z = {0} side".format(next_z))
 
-                            jobs.append(dict(xc=xc, yc=yc, zmin=next_z, zmax=cur_z, r_out=r, r_in=0.0, closed=closed))
+                            jobs.append(dict(xc=xc, yc=yc, zmin=next_z, zmax=cur_z, r_out=r, r_in=0.0, closed=closed, zsafe=zsafe))
 
                         elif dz > 0:
                             new_jobs = []
@@ -379,11 +386,15 @@ class ObjectPathHelix(object):
                             if connected(other_edge, face):
                                 if isinstance(face.Surface, Plane):
                                     faces.append(face)
+                        # should only be one
                         face, = faces
                         for edge in face.Edges:
                             if not edge.isSame(other_edge):
                                 for base, other_cylinder in connected_cylinders(base, edge):
-                                    if other_cylinder.Surface.Center.x == xc and other_cylinder.Surface.Center.y == yc and other_cylinder.Surface.Radius < r:
+                                    xo = other_cylinder.Surface.Center.x
+                                    yo = other_cylinder.Surface.Center.y
+                                    center_dist = sqrt((xo - xc)**2 + (yo - yc)**2)
+                                    if center_dist + other_cylinder.Surface.Radius < r:
                                         cylinder = other_cylinder
                                         break
 
@@ -409,12 +420,12 @@ class ObjectPathHelix(object):
                         zmin = obj.FinalDepth.Value
                     else:
                         zmin = cylinder.BoundBox.ZMin - obj.ThroughDepth.Value
-                    drill_jobs.append(dict(xc=xc, yc=yc, zmin=zmin, zmax=zmax, r_out=cylinder.Surface.Radius, r_in=0.0))
+                    drill_jobs.append(dict(xc=xc, yc=yc, zmin=zmin, zmax=zmax, r_out=cylinder.Surface.Radius, r_in=0.0, zsafe=zsafe))
 
             for job in drill_jobs:
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,
                                     job["zmax"], job["zmin"], obj.StepDown.Value,
-                                    job["zmax"] + obj.Clearance.Value, tool.Diameter,
+                                    job["zsafe"], tool.Diameter,
                                     obj.VertFeed.Value, obj.HorizFeed.Value, obj.Direction, obj.StartSide)
                 output += '\n'
 
