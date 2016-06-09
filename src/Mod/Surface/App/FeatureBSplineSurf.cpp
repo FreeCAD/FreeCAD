@@ -28,6 +28,7 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 #include <Geom_BSplineCurve.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <Precision.hxx>
 #include <gp_Trsf.hxx>
 #include <BRep_Tool.hxx>
@@ -57,7 +58,7 @@ BSplineSurf::BSplineSurf() : BSurf()
 App::DocumentObjectExecReturn *BSplineSurf::execute(void)
 {
     correcteInvalidFillType();
-    //Begin Construction
+
     try{
         std::vector<Handle_Geom_BSplineCurve> crvs;
         crvs.reserve(4);
@@ -103,17 +104,19 @@ App::DocumentObjectExecReturn *BSplineSurf::execute(void)
 
         GeomFill_FillingStyle fstyle = getFillingStyle();
         GeomFill_BSplineCurves aSurfBuilder; //Create Surface Builder
-        if(edgeCount==2) {
+
+        std::size_t edgeCount = crvs.size();
+        if (edgeCount==2) {
             aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
         }
-        else if(edgeCount==3) {
+        else if (edgeCount==3) {
             aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
         }
-        else if(edgeCount==4) {
+        else if (edgeCount==4) {
             aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
         }
 
-        //createFace(aSurfBuilder.Surface());
+        createFace(aSurfBuilder.Surface());
 
         return App::DocumentObject::StdReturn;
     }

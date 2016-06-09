@@ -28,6 +28,7 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 #include <Geom_BezierCurve.hxx>
+#include <Geom_BezierSurface.hxx>
 #include <Precision.hxx>
 #include <gp_Trsf.hxx>
 #include <BRep_Tool.hxx>
@@ -84,17 +85,19 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
 
         GeomFill_FillingStyle fstyle = getFillingStyle();
         GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
+
+        std::size_t edgeCount = crvs.size();
         if (edgeCount == 2) {
             aSurfBuilder.Init(crvs[0], crvs[1], fstyle);
         }
-        else if(edgeCount == 3) {
+        else if (edgeCount == 3) {
             aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);
         }
-        else if(edgeCount == 4) {
+        else if (edgeCount == 4) {
             aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);
         }
 
-        //createFace(aSurfBuilder.Surface());
+        createFace(aSurfBuilder.Surface());
 
         return App::DocumentObject::StdReturn;
     }

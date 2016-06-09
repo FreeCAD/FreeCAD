@@ -37,7 +37,6 @@
 
 
 using namespace SurfaceGui;
-//#undef CS_FUTURE // multi-threading causes some problems
 
 PROPERTY_SOURCE(SurfaceGui::ViewProviderBSurf, PartGui::ViewProviderPart)
 
@@ -45,22 +44,21 @@ namespace SurfaceGui {
 
 bool ViewProviderBSurf::setEdit(int ModNum)
 {
-// When double-clicking on the item for this sketch the
-// object unsets and sets its edit mode without closing
-// the task panel
+    // When double-clicking on the item for this sketch the
+    // object unsets and sets its edit mode without closing
+    // the task panel
 
     Surface::BSurf* obj =  static_cast<Surface::BSurf*>(this->getObject());
 
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     TaskBSurf* tDlg = qobject_cast<TaskBSurf*>(dlg);
-// start the edit dialog
-    if(dlg)
-    {
+
+    // start the edit dialog
+    if(dlg) {
         tDlg->setEditedObject(obj);
         Gui::Control().showDialog(tDlg);
     }
-    else
-    {
+    else {
         Gui::Control().showDialog(new TaskBSurf(this, obj));
     }
     return true;
@@ -145,28 +143,26 @@ void BSurf::accept()
 
 void BSurf::reject()
 {
-    if(oldFillType == InvalidStyle)
-    {
+    if (oldFillType == InvalidStyle) {
         Gui::Command::abortCommand();
     }
-    else
-    {
+    else {
         // if the object fill type was changed, reset the old one
-        if(editedObject->FillType.getValue() != oldFillType)
-        {
+        if (editedObject->FillType.getValue() != oldFillType) {
             editedObject->FillType.setValue(oldFillType);
         }
+
         Gui::Command::commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     }
+
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 }
 
 void BSurf::apply()
 {
     // apply the change only if it is a real change
-    if(editedObject->FillType.getValue() != fillType)
-    {
+    if (editedObject->FillType.getValue() != fillType) {
         editedObject->FillType.setValue(fillType);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     }

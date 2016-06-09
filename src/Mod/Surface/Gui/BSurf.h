@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-// Part::CrossSections.*
-
 #ifndef SURFACE_GUI_BSURF_H
 #define SURFACE_GUI_BSURF_H
-
-#include "PreCompiled.h"
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/BoundBox.h>
-#include <Mod/Surface/FillType.h>
+#include <Mod/Surface/App/FillType.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Surface/App/FeatureBSurf.h>
 
@@ -39,7 +35,7 @@ namespace SurfaceGui
   
     class Ui_DlgBSurf;
 
-    class SurfaceGuiExport ViewProviderBSurf : public PartGui::ViewProviderPart
+    class ViewProviderBSurf : public PartGui::ViewProviderPart
     {
         PROPERTY_HEADER(SurfaceGui::ViewProviderBSurf);
     public:
@@ -51,6 +47,7 @@ namespace SurfaceGui
     class BSurf : public QWidget
     {
         Q_OBJECT
+
     protected:
         filltype_t fillType, oldFillType;
         Surface::BSurf* editedObject;

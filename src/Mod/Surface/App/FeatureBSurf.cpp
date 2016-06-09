@@ -44,6 +44,11 @@
 
 using namespace Surface;
 
+ShapeValidator::ShapeValidator()
+{
+   initValidator();
+}
+
 void ShapeValidator::initValidator(void)
 {
     willBezier = willBSpline = false;
@@ -181,7 +186,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
         Standard_Failure::Raise("Only 2-4 curves are allowed");
     }
 
-    initValidator();
+    ShapeValidator validator;
     for(std::size_t i = 0; i < boundary.size(); i++)
     {
         App::PropertyLinkSubList::SubSet set = boundary[i];
@@ -190,7 +195,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
 
             for (auto jt: set.second) {
                 const Part::TopoShape &ts = static_cast<Part::Feature*>(set.first)->Shape.getShape();
-                checkAndAdd(ts, jt.c_str(), &aWD);
+                validator.checkAndAdd(ts, jt.c_str(), &aWD);
             }
         }
         else {
@@ -198,8 +203,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
         }
     }
 
-    if(edgeCount < 2 || edgeCount > 4)
-    {
+    if(validator.numEdges() < 2 || validator.numEdges() > 4) {
         Standard_Failure::Raise("Only 2-4 curves are allowed");
     }
 
