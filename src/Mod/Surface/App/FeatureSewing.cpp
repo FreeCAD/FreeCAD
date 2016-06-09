@@ -43,110 +43,76 @@ PROPERTY_SOURCE(Surface::Sewing, Part::Feature)
 
 Sewing::Sewing()
 {
-    ADD_PROPERTY(aShapeList,(0,"TopoDS_Shape"));
+    ADD_PROPERTY(ShapeList,(0,"TopoDS_Shape"));
 
-    App::PropertyFloat tol;
-    App::PropertyBool sewopt;         //Option for sewing (if false only control)
-    App::PropertyBool degenshp;       //Option for analysis of degenerated shapes
-    App::PropertyBool cutfreeedges;   //Option for cutting of free edges
-    App::PropertyBool nonmanifold;    //Option for non-manifold processing
-
-    ADD_PROPERTY(tol,(0.0000001));
-    ADD_PROPERTY(sewopt,(true));
-    ADD_PROPERTY(degenshp,(true));
-    ADD_PROPERTY(cutfreeedges,(true));
-    ADD_PROPERTY(nonmanifold,(false));
-
+    ADD_PROPERTY(Tolerance,(0.0000001));
+    ADD_PROPERTY(SewingOption,(true));
+    ADD_PROPERTY(DegenerateShape,(true));
+    ADD_PROPERTY(CutFreeEdges,(true));
+    ADD_PROPERTY(Nonmanifold,(false));
 }
-
-//Function Definitions
-
-void addshape(BRepBuilderAPI_Sewing& builder,const App::PropertyLinkSubList& aShapeList);
-
-//Check if any components of the surface have been modified
 
 short Sewing::mustExecute() const
 {
-    if (aShapeList.isTouched() ||
-        tol.isTouched() ||
-        sewopt.isTouched() ||
-        degenshp.isTouched() ||
-        cutfreeedges.isTouched() ||
-        nonmanifold.isTouched())
+    if (ShapeList.isTouched() ||
+        Tolerance.isTouched() ||
+        SewingOption.isTouched() ||
+        DegenerateShape.isTouched() ||
+        CutFreeEdges.isTouched() ||
+        Nonmanifold.isTouched())
         return 1;
     return 0;
 }
 
 App::DocumentObjectExecReturn *Sewing::execute(void)
 {
-
     //Assign Variables
-
-    double atol = tol.getValue();
-    bool opt1 = sewopt.getValue();
-    bool opt2 = degenshp.getValue();
-    bool opt3 = cutfreeedges.getValue();
-    bool opt4 = nonmanifold.getValue();
-
-    //Perform error checking
+    double atol = Tolerance.getValue();
+    bool opt1 = SewingOption.getValue();
+    bool opt2 = DegenerateShape.getValue();
+    bool opt3 = CutFreeEdges.getValue();
+    bool opt4 = Nonmanifold.getValue();
 
 
-    //Begin Construction
-    try{
-
+    try {
         BRepBuilderAPI_Sewing builder(atol,opt1,opt2,opt3,opt4);
 
-        addshape(builder,aShapeList);
+        std::vector<App::PropertyLinkSubList::SubSet> subset = ShapeList.getSubListValues();
+        for(std::vector<App::PropertyLinkSubList::SubSet>::iterator it = subset.begin(); it != subset.end(); ++it) {
+            // the subset has the documentobject and the element name which belongs to it,
+            // in our case for example the cube object and the "Edge1" string
+            if (it->first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                //we get the shape of the document object which resemble the whole box
+                Part::TopoShape ts = static_cast<Part::Feature*>(it->first)->Shape.getShape();
+
+                //we want only the subshape which is linked
+                for (auto jt: it->second) {
+                    TopoDS_Shape sub = ts.getSubShape(jt.c_str());
+                    builder.Add(sub);
+                }
+            }
+            else {
+                Standard_Failure::Raise("Shape item not from Part::Feature");
+            }
+        }
 
         builder.Perform(); //Perform Sewing
 
         TopoDS_Shape aShape = builder.SewedShape(); //Get Shape
         
-        printf("number of degenerated shapes: %i\n",builder.NbDegeneratedShapes());
-        printf("number of deleted faces: %i\n",builder.NbDeletedFaces());
-        printf("number of free edges: %i\n",builder.NbFreeEdges());
-        printf("number of multiple edges: %i\n",builder.NbMultipleEdges());
-        printf("number of continuous edges: %i\n",builder.NbContigousEdges());
+        //printf("number of degenerated shapes: %i\n",builder.NbDegeneratedShapes());
+        //printf("number of deleted faces: %i\n",builder.NbDeletedFaces());
+        //printf("number of free edges: %i\n",builder.NbFreeEdges());
+        //printf("number of multiple edges: %i\n",builder.NbMultipleEdges());
+        //printf("number of continuous edges: %i\n",builder.NbContigousEdges());
 
         if (aShape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(aShape);
-        return 0;
-    } //End Try
+        return StdReturn;
+    }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
-    } //End Catch
-
-} //End execute
-
-void addshape(BRepBuilderAPI_Sewing& builder,const App::PropertyLinkSubList& aShapeList){
-
-    for(int i=0; i<aShapeList.getSize(); i++) {
-
-        printf("Processing shape %i\n",i);
-
-        Part::TopoShape ts;
-//        Part::TopoShape sub;
-        TopoDS_Shape sub;
-        std::vector< const char * > temp;
-       
-       //the subset has the documentobject and the element name which belongs to it,
-       // in our case for example the cube object and the "Edge1" string
-        App::PropertyLinkSubList::SubSet set = aShapeList[i];
-
-        //set.obj should be our box, but just to make sure no one set something stupid
-        if(set.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-       
-            //we get the shape of the document object which resemble the whole box
-            ts = static_cast<Part::Feature*>(set.obj)->Shape.getShape();
-           
-            //we want only the subshape which is linked
-            sub = ts.getSubShape(set.sub);
-        }
-        else{Standard_Failure::Raise("Shape item not from Part::Feature");return;}
-
-        builder.Add(sub);
-
     }
 }

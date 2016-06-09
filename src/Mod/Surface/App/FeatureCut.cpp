@@ -45,21 +45,21 @@ PROPERTY_SOURCE(Surface::Cut, Part::Feature)
 
 Cut::Cut()
 {
-    ADD_PROPERTY(aShapeList,(0,"TopoDS_Shape"));
-
+    ADD_PROPERTY(ShapeList,(0,"TopoDS_Shape"));
 }
 
 //Check if any components of the surface have been modified
 
 short Cut::mustExecute() const
 {
-    if (aShapeList.isTouched())
+    if (ShapeList.isTouched())
         return 1;
     return 0;
 }
 
 App::DocumentObjectExecReturn *Cut::execute(void)
 {
+#if 0
 
     //Perform error checking
 
@@ -113,5 +113,7 @@ App::DocumentObjectExecReturn *Cut::execute(void)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     } //End Catch
+#endif
+    return 0;
 
-} //End execute
+}

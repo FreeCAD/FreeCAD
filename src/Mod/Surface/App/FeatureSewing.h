@@ -26,7 +26,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
-#include "Mod/Part/App/PartFeature.h"
+#include <Mod/Part/App/PartFeature.h>
 
 namespace Surface
 {
@@ -38,13 +38,13 @@ class SurfaceExport Sewing :  public Part::Feature
 public:
     Sewing();
 
-    App::PropertyLinkSubList aShapeList; //Shapes to be sewn.
+    App::PropertyLinkSubList ShapeList; //Shapes to be sewn.
 
-    App::PropertyFloat tol;
-    App::PropertyBool sewopt;         //Option for sewing (if false only control)
-    App::PropertyBool degenshp;       //Option for analysis of degenerated shapes
-    App::PropertyBool cutfreeedges;   //Option for cutting of free edges
-    App::PropertyBool nonmanifold;    //Option for non-manifold processing
+    App::PropertyFloat Tolerance;
+    App::PropertyBool SewingOption;    //Option for sewing (if false only control)
+    App::PropertyBool DegenerateShape; //Option for analysis of degenerated shapes
+    App::PropertyBool CutFreeEdges;    //Option for cutting of free edges
+    App::PropertyBool Nonmanifold;     //Option for non-manifold processing
 
     // recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
@@ -55,5 +55,7 @@ public:
 //    }
 
 };
+
 }//Namespace Surface
-#endif
+
+#endif // SURFACE_FEATURESEWING_H
