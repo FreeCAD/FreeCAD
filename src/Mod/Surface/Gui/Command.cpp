@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <sstream>
+#include <QApplication>
 #include <QString>
 #include <QDir>
 #include <QFileInfo>
@@ -78,7 +79,6 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sWhatsThis    = QT_TR_NOOP("Surface Filling function");
     sStatusTip    = QT_TR_NOOP("Surface Filling function");
     sPixmap       = "Filling.svg";
-    sAccel        = "CTRL+H";
 }
 
 void CmdSurfaceFilling::activated(int iMsg)
@@ -149,22 +149,10 @@ void CmdSurfaceCut::activated(int iMsg)
 //===========================================================================
 // Bezier and BSpline surfaces
 //===========================================================================
-//DEF_STD_CMD_A(CmdSurfaceBSurf);
-class CmdSurfaceBSurf : public Gui::Command, public Surface::ShapeValidator
-{
-public:
-    CmdSurfaceBSurf();
-    virtual ~CmdSurfaceBSurf(){}
-    virtual const char* className() const
-    { return "CmdSurfaceBSurf"; }
-protected:
-    virtual bool isActive(void);
-    void createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand);
-    void showError(const char *msg);
-    virtual void activated(int iMsg);
-};
+DEF_STD_CMD_A(CmdSurfaceBSurf);
 
-CmdSurfaceBSurf::CmdSurfaceBSurf() : Command("Surface_BSurf")
+CmdSurfaceBSurf::CmdSurfaceBSurf()
+    : Command("Surface_BSurf")
 {
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
@@ -178,120 +166,105 @@ CmdSurfaceBSurf::CmdSurfaceBSurf() : Command("Surface_BSurf")
 bool CmdSurfaceBSurf::isActive(void)
 {
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    long size = Sel.size();
-    if(size < 1 || size > 4) {
+    std::size_t size = Sel.size();
+    if (size < 1 || size > 4) {
         return false;
     }
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
-    {
-        if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
+
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+        if (!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
             return false;
         }
     }
+
     return true;
-}
-
-void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand)
-{
-    std::string FeatName = getUniqueObjectName(surfaceNamePrefix);
-    std::stringstream bspListCmd;
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.BoundaryList = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
-    {
-        Gui::SelectionSingleton::SelObj selObj = *it;
-        Part::TopoShape ts = static_cast<Part::Feature*>(selObj.pObject)->Shape.getShape();
-        bspListCmd << "(App.activeDocument()." << selObj.FeatName;
-        // if it is wire, add as wire
-        if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
-        {
-            bspListCmd << ", \'Wire1\'),";
-        }
-        else
-        {
-            const char *subName =  selObj.SubName;
-            if(subName != NULL && *subName != 0)
-            {
-                bspListCmd << ", \'" << subName << "\'),";
-            }
-            else
-            {
-                bspListCmd << ", \'Edge1\'),";
-            }
-        }
-    }
-    bspListCmd << "]";
-
-    openCommand(commandName);
-    doCommand(Doc, pythonAddCommand, FeatName.c_str());
-    // invalid fill type meaning the surface is just created and cancel should delete it
-    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.FillType=0");
-    doCommand(Doc, bspListCmd.str().c_str());
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
-    updateActive();
-}
-
-void CmdSurfaceBSurf::showError(const char *msg)
-{
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-        QObject::tr(msg));
 }
 
 void CmdSurfaceBSurf::activated(int iMsg)
 {
-    initValidator();
+    Surface::ShapeValidator validator;
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     if (Sel.size() > 4) {
-        showError("Too many selected objects.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Surface_BSurf", "Error"),
+            qApp->translate("Surface_BSurf", "Too many selected objects."));
         return;
     }
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
-    {
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         Gui::SelectionSingleton::SelObj selObj = *it;
-        if(!(selObj.pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
-            showError("Selected object is not a feature.");
+        if (!(selObj.pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate("Surface_BSurf", "Error"),
+                qApp->translate("Surface_BSurf", "Selected object is not a feature."));
             return;
         }
 
         Part::TopoShape ts = static_cast<Part::Feature*>(selObj.pObject)->Shape.getShape();
         try {
-            checkAndAdd(ts, selObj.SubName);
+            validator.checkAndAdd(ts, selObj.SubName);
         }
         catch(Standard_Failure sf) {
-            showError(sf.GetMessageString());
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate("Surface_BSurf", "Error"),
+                QString::fromLatin1(sf.GetMessageString()));
             return;
         }
     }
-    switch(edgeCount) {
+
+    switch(validator.numEdges()) {
     case 2:
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Warning"),
-            QObject::tr("Surfaces with two edges may fail for some fill types."));
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Surface_BSurf", "Warning"),
+            qApp->translate("Surface_BSurf", "Surfaces with two edges may fail for some fill types."));
         break;
     case 3: // no message
     case 4:
         break;
     default:
-        showError("This tool requires 2, 3 or 4 curves.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Surface_BSurf", "Error"),
+            qApp->translate("Surface_BSurf", "This tool requires 2, 3 or 4 curves."));
         return;
     }
 
-    // check wich was activated and perfom and clearing the flag
-    if(willBezier)
-    {
-        createSurface("BezierSurface", "Create Bezier surface", "FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")");
-        willBezier = false;
+    std::stringstream out;
+    std::vector<Gui::SelectionObject> SelEx = Gui::Selection().getSelectionEx();
+    for (std::vector<Gui::SelectionObject>::iterator it = SelEx.begin(); it != SelEx.end(); ++it) {
+        out << it->getAsPropertyLinkSubString() << ",";
     }
-    if(willBSpline)
-    {
-        createSurface("BSplineSurface", "Create BSpline surface", "FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")");
-        willBSpline = false;
+
+    std::string linklist = out.str();
+
+    // check which was activated
+    if (validator.isBezier()) {
+        std::string FeatName = getUniqueObjectName("BezierSurface");
+
+        openCommand("Create Bezier surface");
+        doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")", FeatName.c_str());
+        // invalid fill type meaning the surface is just created and cancel should delete it
+        doCommand(Doc, "App.ActiveDocument.ActiveObject.FillType=0");
+        doCommand(Doc, "App.ActiveDocument.ActiveObject.BoundaryList = [%s]", linklist.c_str());
+        doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
+        updateActive();
+    }
+
+    if (validator.isBSpline()) {
+        std::string FeatName = getUniqueObjectName("BSplineSurface");
+
+        openCommand("Create BSpline surface");
+        doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
+        // invalid fill type meaning the surface is just created and cancel should delete it
+        doCommand(Doc, "App.ActiveDocument.ActiveObject.FillType=0");
+        doCommand(Doc, "App.ActiveDocument.ActiveObject.BoundaryList = [%s]", linklist.c_str());
+        doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
+        updateActive();
     }
 }
 
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-/*    rcCmdMgr.addCommand(new CmdSurfaceFilling());
+/*  rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceCut());*/
     rcCmdMgr.addCommand(new CmdSurfaceBSurf());
 }
