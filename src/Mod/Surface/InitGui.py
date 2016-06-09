@@ -2,8 +2,8 @@
 # (c) 2001 Juergen Riegel LGPL
 
 class SurfaceWorkbench ( Workbench ):
-        "Surface workbench object"
-        Icon = """
+    "Surface workbench object"
+    Icon = """
         /* XPM */
         static char * Surface_Tools_Workbench_Main_xpm[] = {
         "16 16 48 1",
@@ -74,6 +74,7 @@ class SurfaceWorkbench ( Workbench ):
         """
     MenuText = "Surface"
     ToolTip = "Surface workbench: Create and edit complex surfaces"
+
     def Initialize(self):
         # load the module
         import SurfaceGui

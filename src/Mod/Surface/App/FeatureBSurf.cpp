@@ -31,6 +31,7 @@
 #include <TopoDS_Wire.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <Geom_BezierCurve.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <GeomFill_BezierCurves.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopExp_Explorer.hxx>
@@ -58,8 +59,7 @@ void ShapeValidator::initValidator(void)
 // shows error message if the shape is not an edge
 void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
 {
-    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE)
-    {
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
         Standard_Failure::Raise("Shape is not an edge.");
     }
 
@@ -69,25 +69,28 @@ void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
     Standard_Real u1;// contains output
     Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
     Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
-    if (bez_geom.IsNull())
-    {
-        // this one is not Bezier, we hope it can be converted into b-spline
-        if (willBezier) {
-            // already found the other type, fail
-            Standard_Failure::Raise("Mixing Bezier and non-Bezier curves is not allowed.");
-        }
-        // we will create b-spline surface
-        willBSpline = true;
-    }
-    else
-    {
-        // this one is Bezier
+    Handle_Geom_BSplineCurve bsp_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
+
+    if (!bez_geom.IsNull()) {
+        // this one is a Bezier
         if (willBSpline) {
             // already found the other type, fail
-            Standard_Failure::Raise("Mixing Bezier and non-Bezier curves is not allowed.");
+            Standard_Failure::Raise("Mixing Bezier and B-Spline curves is not allowed.");
         }
         // we will create Bezier surface
         willBezier = true;
+    }
+    else if (!bsp_geom.IsNull()) {
+        // this one is Bezier
+        if (willBezier) {
+            // already found the other type, fail
+            Standard_Failure::Raise("Mixing Bezier and B-Spline curves is not allowed.");
+        }
+        // we will create B-Spline surface
+        willBSpline = true;
+    }
+    else {
+        //Standard_Failure::Raise("Neither Bezier nor B-Spline curve.");
     }
 
     edgeCount++;
@@ -96,8 +99,7 @@ void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
 void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD)
 {
     checkEdge(shape);
-    if (aWD != NULL)
-    {
+    if (aWD != NULL) {
         BRepBuilderAPI_Copy copier(shape);
         // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
         (*aWD)->Add(TopoDS::Edge(copier.Shape()));
@@ -107,27 +109,38 @@ void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_W
 void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWD)
 {
     try {
+#if 0 // weird logic!
         // unwrap the wire
-        if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
-        {
+        if ((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE) {
             TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
-            for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next())
-            {
+            for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next()) {
                 checkAndAdd(wireExplorer.Current(), aWD);
             }
         }
-        else
-        {
-            if(subName != NULL && *subName != 0)
-            {
+        else {
+            if (subName != NULL && *subName != 0) {
                 //we want only the subshape which is linked
                 checkAndAdd(ts.getSubShape(subName), aWD);
             }
-            else
-            {
+            else {
                 checkAndAdd(ts._Shape, aWD);
             }
         }
+#else
+        if (subName != NULL && *subName != '\0') {
+            //we want only the subshape which is linked
+            checkAndAdd(ts.getSubShape(subName), aWD);
+        }
+        else if (!ts._Shape.IsNull() && ts._Shape.ShapeType() == TopAbs_WIRE) {
+            TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
+            for (TopExp_Explorer xp(wire, TopAbs_EDGE); xp.More(); xp.Next()) {
+                checkAndAdd(xp.Current(), aWD);
+            }
+        }
+        else {
+            checkAndAdd(ts._Shape, aWD);
+        }
+#endif
     }
     catch(Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
         Standard_Failure::Raise("Wrong shape type.");
@@ -187,12 +200,10 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     }
 
     ShapeValidator validator;
-    for(std::size_t i = 0; i < boundary.size(); i++)
-    {
+    for(std::size_t i = 0; i < boundary.size(); i++) {
         App::PropertyLinkSubList::SubSet set = boundary[i];
 
-        if(set.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-
+        if (set.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             for (auto jt: set.second) {
                 const Part::TopoShape &ts = static_cast<Part::Feature*>(set.first)->Shape.getShape();
                 validator.checkAndAdd(ts, jt.c_str(), &aWD);
@@ -203,7 +214,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
         }
     }
 
-    if(validator.numEdges() < 2 || validator.numEdges() > 4) {
+    if (validator.numEdges() < 2 || validator.numEdges() > 4) {
         Standard_Failure::Raise("Only 2-4 curves are allowed");
     }
 
@@ -218,7 +229,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
 
     aWire = aShFW->Wire(); //Healed Wire
 
-    if(aWire.IsNull()) {
+    if (aWire.IsNull()) {
         Standard_Failure::Raise("Wire unable to be constructed");
     }
 }
@@ -233,7 +244,7 @@ void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
 
     TopoDS_Face aFace = aFaceBuilder.Face();
 
-    if(!aFaceBuilder.IsDone()) {
+    if (!aFaceBuilder.IsDone()) {
         Standard_Failure::Raise("Face unable to be constructed");
     }
     if (aFace.IsNull()) {
