@@ -45,7 +45,6 @@ SET(SurfaceGui_SRCS
     BSurf.h
     ../FillType.h
     AppSurfaceGui.cpp
-    AppSurfaceGuiPy.cpp
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h

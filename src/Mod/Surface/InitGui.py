@@ -2,7 +2,7 @@
 # (c) 2001 Juergen Riegel LGPL
 
 class SurfaceWorkbench ( Workbench ):
-	"Surface workbench object"
+        "Surface workbench object"
         Icon = """
         /* XPM */
         static char * Surface_Tools_Workbench_Main_xpm[] = {
@@ -72,26 +72,18 @@ class SurfaceWorkbench ( Workbench ):
         "                ",
         "                "};
         """
-	MenuText = "Surface"
-	ToolTip = "Surface workbench: Create and edit complex surfaces"
-	def Initialize(self):
-		# load the module
-		import SurfaceGui
-                import FreeCADGui
-                import Surface
+    MenuText = "Surface"
+    ToolTip = "Surface workbench: Create and edit complex surfaces"
+    def Initialize(self):
+        # load the module
+        import SurfaceGui
+        import FreeCADGui
+        import Surface
 
-                # Set path to icon labels
-                FreeCADGui.addIconPath('./Gui/Resources/Icons/')
-                
-	def GetClassName(self):
-		return "SurfaceGui::Workbench"
-		
-	def Activated(self):
-                # do something here if needed...
- 		Msg ("SurfaceWorkbench.Activated()\n")
- 
- 	def Deactivated(self):
-                # do something here if needed...
- 		Msg ("SurfaceWorkbench.Deactivated()\n")
+        # Set path to icon labels
+        FreeCADGui.addIconPath('./Gui/Resources/Icons/')
+
+    def GetClassName(self):
+        return "SurfaceGui::Workbench"
 
 Gui.addWorkbench(SurfaceWorkbench())

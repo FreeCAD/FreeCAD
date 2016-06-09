@@ -21,7 +21,6 @@ set(Surface_LIBS
 SET(Surface_SRCS
     ../FillType.h
     AppSurface.cpp
-    AppSurfacePy.cpp
     PreCompiled.cpp
     PreCompiled.h
     FeatureBSurf.h
