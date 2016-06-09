@@ -190,18 +190,21 @@ void CmdSurfaceBSurf::activated(int iMsg)
             qApp->translate("Surface_BSurf", "Too many selected objects."));
         return;
     }
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
-        Gui::SelectionSingleton::SelObj selObj = *it;
-        if (!(selObj.pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
+
+    std::vector<Gui::SelectionObject> SelEx = Gui::Selection().getSelectionEx();
+    for (std::vector<Gui::SelectionObject>::iterator it = SelEx.begin(); it != SelEx.end(); ++it) {
+        if (!(it->isObjectTypeOf(Part::Feature::getClassTypeId()))) {
             QMessageBox::warning(Gui::getMainWindow(),
                 qApp->translate("Surface_BSurf", "Error"),
                 qApp->translate("Surface_BSurf", "Selected object is not a feature."));
             return;
         }
 
-        Part::TopoShape ts = static_cast<Part::Feature*>(selObj.pObject)->Shape.getShape();
+        Part::TopoShape ts = static_cast<Part::Feature*>(it->getObject())->Shape.getShape();
         try {
-            validator.checkAndAdd(ts, selObj.SubName);
+            const std::vector<std::string>& sub = it->getSubNames();
+            for (auto it : sub)
+                validator.checkAndAdd(ts, it.c_str());
         }
         catch(Standard_Failure sf) {
             QMessageBox::warning(Gui::getMainWindow(),
@@ -213,9 +216,9 @@ void CmdSurfaceBSurf::activated(int iMsg)
 
     switch(validator.numEdges()) {
     case 2:
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Surface_BSurf", "Warning"),
-            qApp->translate("Surface_BSurf", "Surfaces with two edges may fail for some fill types."));
+        //QMessageBox::warning(Gui::getMainWindow(),
+        //    qApp->translate("Surface_BSurf", "Warning"),
+        //    qApp->translate("Surface_BSurf", "Surfaces with two edges may fail for some fill types."));
         break;
     case 3: // no message
     case 4:
@@ -228,7 +231,6 @@ void CmdSurfaceBSurf::activated(int iMsg)
     }
 
     std::stringstream out;
-    std::vector<Gui::SelectionObject> SelEx = Gui::Selection().getSelectionEx();
     for (std::vector<Gui::SelectionObject>::iterator it = SelEx.begin(); it != SelEx.end(); ++it) {
         out << it->getAsPropertyLinkSubString() << ",";
     }
