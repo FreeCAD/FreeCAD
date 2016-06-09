@@ -538,6 +538,9 @@ class TaskPanel(object):
         layout = QtGui.QGridLayout()
 
         headerStyle = "QLabel { font-weight: bold; font-size: large; }"
+        grayed_out = "background-color: #d0d0d0;"
+
+        self.previous_value = {}
 
         def addWidget(widget):
             row = layout.rowCount()
@@ -553,43 +556,67 @@ class TaskPanel(object):
             heading.setStyleSheet(headerStyle)
             addWidget(heading)
 
-        def addQuantity(property, label, activator=None, max=None, step=None):
+        def addQuantity(property, label, activator=None, max=None):
+            self.previous_value[property] = getattr(self.obj, property)
+            widget = ui.createWidget("Gui::InputField")
+
             if activator:
+                self.previous_value[activator] = getattr(self.obj, activator)
+                currently_active = getattr(self.obj, activator)
                 label = QtGui.QCheckBox(label)
                 def change(state):
                     setattr(self.obj, activator, label.isChecked())
+                    if label.isChecked():
+                        widget.setStyleSheet("")
+                    else:
+                        widget.setStyleSheet(grayed_out)
                     self.obj.Proxy.execute(self.obj)
                     FreeCAD.ActiveDocument.recompute()
                 label.stateChanged.connect(change)
-                label.setChecked(getattr(self.obj, activator))
+                label.setChecked(currently_active)
+                if not currently_active:
+                    widget.setStyleSheet(grayed_out)
                 label.setToolTip(self.obj.getDocumentationOfProperty(activator))
             else:
                 label = QtGui.QLabel(label)
                 label.setToolTip(self.obj.getDocumentationOfProperty(property))
-            widget = ui.createWidget("Gui::InputField")
+
             widget.setText(str(getattr(self.obj, property)))
             widget.setToolTip(self.obj.getDocumentationOfProperty(property))
+
+            if max:
+                # cannot use widget.setMaximum() as apparently ui.createWidget()
+                # returns the object up-casted to QWidget.
+                widget.setProperty("maximum", max)
+
             def change(quantity):
                 if activator:
                     label.setChecked(True)
                 setattr(self.obj, property, quantity)
                 self.obj.Proxy.execute(self.obj)
                 FreeCAD.ActiveDocument.recompute()
+
             QtCore.QObject.connect(widget, QtCore.SIGNAL("valueChanged(const Base::Quantity &)"), change)
+
             addWidgets(label, widget)
+            return label, widget
 
         def addCheckBox(property, label):
+            self.previous_value[property] = getattr(self.obj, property)
             widget = QtGui.QCheckBox(label)
             widget.setToolTip(self.obj.getDocumentationOfProperty(property))
+
             def change(state):
                 setattr(self.obj, property, widget.isChecked())
                 self.obj.Proxy.execute(self.obj)
                 FreeCAD.ActiveDocument.recompute()
             widget.stateChanged.connect(change)
+
             widget.setChecked(getattr(self.obj, property))
             addWidget(widget)
 
         def addEnumeration(property, label, options):
+            self.previous_value[property] = getattr(self.obj, property)
             label = QtGui.QLabel(label)
             label.setToolTip(self.obj.getDocumentationOfProperty(property))
             widget = QtGui.QComboBox()
@@ -605,22 +632,44 @@ class TaskPanel(object):
 
         heading("Drill parameters")
         addCheckBox("Active", "Operation is active")
-        addQuantity("DeltaR", "Step in Radius")
+        addCheckBox("Recursive", "Also mill subsequent holes")
+        tool = PathUtils.getTool(self.obj,self.obj.ToolNumber)
+        if not tool:
+            drmax = None
+        else:
+            drmax = tool.Diameter
+        addQuantity("DeltaR", "Step in Radius", max=drmax)
         addQuantity("StepDown", "Step in Z")
         addEnumeration("Direction", "Cut direction", [("Clockwise", "CW"), ("Counter-Clockwise", "CCW")])
         addEnumeration("StartSide", "Start Side", [("Start from inside", "inside"), ("Start from outside", "outside")])
-        addCheckBox("Recursive", "Also mill subsequent holes")
 
         heading("Cutting Depths")
         addQuantity("Clearance", "Clearance Distance")
-        addQuantity("StartDepth", "Start Depth", "UseStartDepth")
-        addQuantity("FinalDepth", "Final Depth", "UseFinalDepth")
-        addQuantity("ThroughDepth", "Through Depth")
+        addQuantity("StartDepth", "Absolute start height", "UseStartDepth")
+
+        fdcheckbox, fdinput = addQuantity("FinalDepth", "Absolute final height", "UseFinalDepth")
+        tdlabel, tdinput = addQuantity("ThroughDepth", "Extra drill depth for open holes")
 
         heading("Feeds")
         addQuantity("HorizFeed", "Horizontal Feed")
         addQuantity("VertFeed", "Vertical Feed")
 
+        # make ThroughDepth and FinalDepth mutually exclusive
+        def fd_change(state):
+            if fdcheckbox.isChecked():
+                tdinput.setStyleSheet(grayed_out)
+            else:
+                tdinput.setStyleSheet("")
+        fdcheckbox.stateChanged.connect(fd_change)
+
+        def td_change(quantity):
+            fdcheckbox.setChecked(False)
+        QtCore.QObject.connect(tdinput, QtCore.SIGNAL("valueChanged(const Base::Quantity &)"), td_change)
+
+        if obj.UseFinalDepth:
+            tdinput.setStyleSheet(grayed_out)
+
+        # add
         widget = QtGui.QWidget()
         widget.setLayout(layout)
         self.form = widget
@@ -629,12 +678,14 @@ class TaskPanel(object):
         return True
 
     def accept(self):
-        FreeCAD.Console.PrintError("accept()\n")
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
 
     def reject(self):
-        FreeCAD.Console.PrintError("reject()\n")
+        for property in self.previous_value:
+            setattr(self.obj, property, self.previous_value[property])
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
 
