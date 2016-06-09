@@ -44,13 +44,25 @@ protected:
     bool willBSpline;
     int edgeCount;
 
+public:
+    ShapeValidator();
     void initValidator(void);
     void checkEdge(const TopoDS_Shape& shape);
     void checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD = NULL);
     void checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWire = NULL);
+
+    bool isBezier() const {
+        return willBezier;
+    }
+    bool isBSpline() const {
+        return willBSpline;
+    }
+    int numEdges() const {
+        return edgeCount;
+    }
 };
   
-class BSurf : public Part::Feature, public ShapeValidator
+class BSurf : public Part::Feature
 {
   PROPERTY_HEADER(Surface::BSurf);
 

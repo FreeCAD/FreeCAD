@@ -41,8 +41,6 @@ using namespace Surface;
 
 PROPERTY_SOURCE(Surface::Cut, Part::Feature)
 
-//Initial values
-
 Cut::Cut()
 {
     ADD_PROPERTY(ShapeList,(0,"TopoDS_Shape"));
@@ -59,44 +57,32 @@ short Cut::mustExecute() const
 
 App::DocumentObjectExecReturn *Cut::execute(void)
 {
-#if 0
-
     //Perform error checking
 
-    //Begin Construction
-    try{
-
-        if((aShapeList.getSize()>2) || (aShapeList.getSize()<2)){
+    try {
+        std::vector<App::DocumentObject*> shapes = ShapeList.getValues();
+        if (shapes.size() != 2){
             return new App::DocumentObjectExecReturn("Two shapes must be entered at a time for a cut operation");
         }
 
-        //Initialize variables for first toposhape from document object
         Part::TopoShape ts1;
-        TopoDS_Shape sub1;
-        App::PropertyLinkSubList::SubSet set1 = aShapeList[0];
-
-        //Initialize variables for second toposhape from document object
         Part::TopoShape ts2;
-        TopoDS_Shape sub2;
-        App::PropertyLinkSubList::SubSet set2 = aShapeList[1];
 
         //Get first toposhape
-        printf("Get first toposhape\n");
-        if(set1.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-
-            ts1 = static_cast<Part::Feature*>(set1.obj)->Shape.getShape(); //Part::TopoShape 1
-
+        if (shapes[0]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            ts1 = static_cast<Part::Feature*>(shapes[0])->Shape.getShape(); //Part::TopoShape 1
         }
-        else{return new App::DocumentObjectExecReturn("Shape1 not from Part::Feature");}
+        else {
+            return new App::DocumentObjectExecReturn("Shape1 not from Part::Feature");
+        }
 
         //Get second toposhape
-        printf("Get second toposhape\n");
-        if(set2.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-
-            ts2 = static_cast<Part::Feature*>(set2.obj)->Shape.getShape();
-
+        if (shapes[1]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            ts2 = static_cast<Part::Feature*>(shapes[1])->Shape.getShape();
         }
-        else{return new App::DocumentObjectExecReturn("Shape2 not from Part::Feature");}
+        else {
+            return new App::DocumentObjectExecReturn("Shape2 not from Part::Feature");
+        }
 
         //Cut Shape1 by Shape2
         TopoDS_Shape aCutShape;
@@ -106,14 +92,12 @@ App::DocumentObjectExecReturn *Cut::execute(void)
         if (aCutShape.IsNull()){
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
+
         this->Shape.setValue(aCutShape);
         return 0;
-    } //End Try
+    }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
-    } //End Catch
-#endif
-    return 0;
-
+    }
 }
