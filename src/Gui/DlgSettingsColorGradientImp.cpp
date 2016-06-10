@@ -141,10 +141,10 @@ void DlgSettingsColorGradientImp::setRange( float fMin, float fMax )
     floatLineEditMin->blockSignals(false);
 }
 
-void DlgSettingsColorGradientImp::getRange( float& fMin, float& fMax) const
+void DlgSettingsColorGradientImp::getRange(float& fMin, float& fMax) const
 {
-    fMax = floatLineEditMax->text().toFloat();
-    fMin = floatLineEditMin->text().toFloat();
+    fMax = QLocale::system().toFloat(floatLineEditMax->text());
+    fMin = QLocale::system().toFloat(floatLineEditMin->text());
 }
 
 void DlgSettingsColorGradientImp::setNumberOfLabels(int val)
@@ -169,8 +169,8 @@ int DlgSettingsColorGradientImp::numberOfDecimals() const
 
 void DlgSettingsColorGradientImp::accept()
 {
-    double fMax = floatLineEditMax->text().toDouble();
-    double fMin = floatLineEditMin->text().toDouble();
+    double fMax = QLocale::system().toDouble(floatLineEditMax->text());
+    double fMin = QLocale::system().toDouble(floatLineEditMin->text());
 
     if (fMax <= fMin) {
         QMessageBox::warning(this, tr("Wrong parameter"),
