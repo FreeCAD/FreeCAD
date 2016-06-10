@@ -151,17 +151,20 @@ void QGIFace::setHighlighted(bool b)
 
 void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
     m_colNormalFill = c;
-    m_styleCurr = s;
+    //m_styleCurr = s;
+    m_styleNormal = s;
 }
 
 void QGIFace::setFill(QBrush b) {
     m_colNormalFill = b.color();
-    m_styleCurr = b.style();
+    //m_styleCurr = b.style();
+    m_styleNormal = b.style();
 }
 
 void QGIFace::resetFill() {
     m_colNormalFill = m_colDefFill;
-    m_styleCurr = m_styleDef;
+    //m_styleCurr = m_styleDef;
+    m_styleNormal = m_styleDef;
 }
 
 QRectF QGIFace::boundingRect() const
@@ -176,7 +179,7 @@ QPainterPath QGIFace::shape() const
 
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
+    //myOption.state &= ~QStyle::State_Selected;
 
     m_pen.setColor(m_colCurrent);
     setPen(m_pen);
