@@ -479,7 +479,7 @@ class Component:
         n,l,w,h = self.getDefaultValues(obj)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
-                return obj.Base.Dir
+                return FreeCAD.Vector(obj.Base.Dir)
         if Draft.getType(obj) == "Structure":
             if l > h:
                 v = n.multiply(l)

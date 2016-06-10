@@ -1142,32 +1142,32 @@ def export(exportList,filename):
     # materials
     materials = {}
     for m in Arch.getDocumentMaterials():
-        mat = ifcfile.createIfcMaterial(m.Label.encode("utf8"))
-        materials[m.Label] = mat
-        rgb = None
-        for colorslot in ["Color","DiffuseColor","ViewColor"]:
-            if colorslot in m.Material:
-                if m.Material[colorslot]:
-                    if m.Material[colorslot][0] == "(":
-                        rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
-                        break
-        if rgb:
-            col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
-            ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
-            iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
-            psa = ifcfile.createIfcPresentationStyleAssignment([iss])
-            isi = ifcfile.createIfcStyledItem(None,[psa],None)
-            isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
-            imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
-            relobjs = []
-            for o in m.InList:
-                if hasattr(o,"BaseMaterial"):
-                    if o.BaseMaterial:
-                        if o.BaseMaterial.Name == m.Name:
-                            if o.Name in products:
-                                relobjs.append(products[o.Name])
-            if relobjs:
-                ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
+        relobjs = []
+        for o in m.InList:
+            if hasattr(o,"BaseMaterial"):
+                if o.BaseMaterial:
+                    if o.BaseMaterial.Name == m.Name:
+                        if o.Name in products:
+                            relobjs.append(products[o.Name])
+        if relobjs:
+            mat = ifcfile.createIfcMaterial(m.Label.encode("utf8"))
+            materials[m.Label] = mat
+            rgb = None
+            for colorslot in ["Color","DiffuseColor","ViewColor"]:
+                if colorslot in m.Material:
+                    if m.Material[colorslot]:
+                        if m.Material[colorslot][0] == "(":
+                            rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
+                            break
+            if rgb:
+                col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
+                ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
+                iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
+                psa = ifcfile.createIfcPresentationStyleAssignment([iss])
+                isi = ifcfile.createIfcStyledItem(None,[psa],None)
+                isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
+                imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
+            ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
                 
     # groups
     sortedgroups = []
@@ -1249,20 +1249,22 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 if not DraftVecUtils.isNull(extrusionv):
                     extrusionv.multiply(0.001) # to meters
                     if (len(p) == 1) and extrusionv:
-                        p = p[0]
+                        p = p[0].copy()
                         p.scale(0.001) # to meters
                         r = obj.Proxy.getPlacement(obj)
                         r.Base = r.Base.multiply(0.001) # to meters
                         d = DraftGeomUtils.getNormal(p.Wires[0])
                         if r.isNull() and  ( (p.CenterOfMass.z > 0.001) or ( (d.getAngle(FreeCAD.Vector(0,0,1)) > 0.001) and (d.getAngle(FreeCAD.Vector(0,0,1)) < 3.14159) ) ):
-                            # the object placement in null, but the profile is not in the XY plane.
+                            # the object placement is null, but the profile is not in the XY plane.
                             npla = FreeCAD.Placement()
-                            npla.Base = p.CenterOfMass
+                            npla.Base = p.Vertexes[0].Point
                             nrot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),d)
                             npla.Rotation = nrot
                             r = npla
-                            p.Placement = npla.inverse() # move the profile to origin
-                            extrusionv = nrot.inverted().multVec(extrusionv) # move the extrusion vector to Z axis
+                            # p.Placement = p.Placement.multiply(npla.inverse()) # move the profile to origin - not working??
+                            p.translate(p.Vertexes[0].Point.negative())
+                            p.rotate(FreeCAD.Vector(0,0,0),nrot.inverted().Axis,math.degrees(nrot.inverted().Angle))
+                            extrusionv = nrot.inverted().multVec(extrusionv) # move the extrusion vector to Z axis, mandatory in IFC
 
                         if len(p.Edges) == 1:
 
