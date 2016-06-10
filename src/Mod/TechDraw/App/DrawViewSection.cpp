@@ -226,6 +226,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                                     inputCenter,
                                                     Scale.getValue());
         buildGeometryObject(mirroredShape,inputCenter);
+#if MOD_TECHDRAW_HANDLE_FACES
+        extractFaces();
+#endif //#if MOD_TECHDRAW_HANDLE_FACES
 
         TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
         TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
