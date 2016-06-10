@@ -397,9 +397,6 @@ class _CommandWindow:
         self.Include = True
         self.baseFace = None
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        import DraftGui
-        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         
         # autobuild mode
         if FreeCADGui.Selection.getSelectionEx():
@@ -556,11 +553,11 @@ class _CommandWindow:
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
             wid = getattr(self,"val"+param)
             if param == "Width":
-                wid.setText(self.FORMAT % self.Width)
+                wid.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
             elif param == "Height":
-                wid.setText(self.FORMAT % self.Height)
+                wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
             else:
-                wid.setText(self.FORMAT % self.Thickness)
+                wid.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
                 setattr(self,param,self.Thickness)
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
@@ -862,9 +859,6 @@ class _ArchWindowTaskPanel:
     def __init__(self):
 
         self.obj = None
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        import DraftGui
-        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -1079,7 +1073,7 @@ class _ArchWindowTaskPanel:
                             else:
                                 f.setCurrentIndex(0)
                         elif i in [3,4]:
-                            f.setProperty("text",self.FORMAT % float(t))
+                            f.setProperty("text",FreeCAD.Units.Quantity(float(t),FreeCAD.Units.Length).UserString)
                         else:
                             f.setText(t)
 

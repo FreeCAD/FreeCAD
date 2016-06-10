@@ -168,9 +168,6 @@ class _CommandWall:
         self.Height = p.GetFloat("WallHeight",3000)
         self.JOIN_WALLS_SKETCHES = p.GetBool("joinWallSketches",False)
         self.AUTOJOIN = p.GetBool("autoJoinWalls",True)
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        import DraftGui
-        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         sel = FreeCADGui.Selection.getSelectionEx()
         done = False
         self.existing = []
@@ -279,7 +276,7 @@ class _CommandWall:
                 dv = dv.negative()
                 self.tracker.update([b.add(dv),point.add(dv)])
             if self.Length:
-                self.Length.setText(self.FORMAT % bv.Length)
+                self.Length.setText(FreeCAD.Units.Quantity(bv.Length,FreeCAD.Units.Length).UserString)
 
     def taskbox(self):
         "sets up a taskbox widget"
@@ -296,13 +293,13 @@ class _CommandWall:
 
         label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         value1 = ui.createWidget("Gui::InputField")
-        value1.setText(self.FORMAT % self.Width)
+        value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(value1,1,1,1,1)
 
         label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         value2 = ui.createWidget("Gui::InputField")
-        value2.setText(self.FORMAT % self.Height)
+        value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(value2,2,1,1,1)
 

@@ -137,9 +137,6 @@ class _CommandStructure:
         self.Height = p.GetFloat("StructureHeight",1000)
         self.Profile = None
         self.continueCmd = False
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        import DraftGui
-        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel,"Structure")
@@ -233,27 +230,29 @@ class _CommandStructure:
         # length
         label1 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         self.vLength = ui.createWidget("Gui::InputField")
-        self.vLength.setText(self.FORMAT % self.Length)
+        self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,2,0,1,1)
         grid.addWidget(self.vLength,2,1,1,1)
 
         # width
         label2 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         self.vWidth = ui.createWidget("Gui::InputField")
-        self.vWidth.setText(self.FORMAT % self.Width)
+        self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,3,0,1,1)
         grid.addWidget(self.vWidth,3,1,1,1)
 
         # height
         label3 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         self.vHeight = ui.createWidget("Gui::InputField")
-        self.vHeight.setText(self.FORMAT % self.Height)
+        self.vHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,4,0,1,1)
         grid.addWidget(self.vHeight,4,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Switch Length/Height").decode("utf8"))
-        grid.addWidget(value5,5,0,1,2)
+        value5 = QtGui.QPushButton(translate("Arch","Switch L/H").decode("utf8"))
+        grid.addWidget(value5,5,0,1,1)
+        value6 = QtGui.QPushButton(translate("Arch","Switch L/W").decode("utf8"))
+        grid.addWidget(value6,5,1,1,1)
 
         # continue button
         label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
@@ -273,7 +272,8 @@ class _CommandStructure:
         QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(self.vHeight,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
-        QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotate)
+        QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotateLH)
+        QtCore.QObject.connect(value6,QtCore.SIGNAL("pressed()"),self.rotateLW)
         return w
 
     def update(self,point,info):
@@ -316,19 +316,20 @@ class _CommandStructure:
     def setPreset(self,i):
         if i > 0:
             p=self.pSelect[i-1][0]
-            self.vLength.setText(self.FORMAT % float(Presets[p][4]))
-            self.vWidth.setText(self.FORMAT % float(Presets[p][5]))
+            self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
+            self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
             self.Profile = Presets[p]
         else:
             self.Profile = None
 
-    def rotate(self):
-        l = self.Length
-        w = self.Width
-        h = self.Height
-        self.vLength.setText(self.FORMAT % h)
-        self.vHeight.setText(self.FORMAT % w)
-        self.vWidth.setText(self.FORMAT % l)
+    def rotateLH(self):
+        self.vLength.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+        self.vHeight.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+        
+    def rotateLW(self):
+        self.vLength.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
+        self.vWidth.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+
 
 class _Structure(ArchComponent.Component):
     "The Structure object"
