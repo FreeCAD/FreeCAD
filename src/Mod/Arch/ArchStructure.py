@@ -252,7 +252,7 @@ class _CommandStructure:
         grid.addWidget(self.vHeight,4,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Rotate").decode("utf8"))
+        value5 = QtGui.QPushButton(translate("Arch","Switch Length/Height").decode("utf8"))
         grid.addWidget(value5,5,0,1,2)
 
         # continue button
