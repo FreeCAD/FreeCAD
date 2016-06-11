@@ -84,6 +84,8 @@ public:
 
     /// Loads the file, decided by extension
     bool LoadAny(const char* FileName);
+    /// Loads from a stream and the given format
+    bool LoadFormat(std::istream &str, MeshIO::Format fmt);
     /** Loads an STL file either in binary or ASCII format. 
      * Therefore the file header gets checked to decide if the file is binary or not.
      */
@@ -137,6 +139,8 @@ public:
     static void SetSTLHeaderData(const std::string&);
     /// Saves the file, decided by extension if not explicitly given
     bool SaveAny(const char* FileName, MeshIO::Format f=MeshIO::Undefined) const;
+    /// Saves to a stream and the given format
+    bool SaveFormat(std::ostream &str, MeshIO::Format fmt) const;
 
     /** Saves the mesh object into an ASCII STL file. */
     bool SaveAsciiSTL (std::ostream &rstrOut) const;

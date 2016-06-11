@@ -344,9 +344,15 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
     aWriter.SaveAny(file, f);
 }
 
-void MeshObject::save(std::ostream& out) const
+void MeshObject::save(std::ostream& str, MeshCore::MeshIO::Format f,
+                      const MeshCore::Material* mat,
+                      const char* objectname) const
 {
-    _kernel.Write(out);
+    MeshCore::MeshOutput aWriter(this->_kernel, mat);
+    if (objectname)
+        aWriter.SetObjectName(objectname);
+    aWriter.Transform(this->_Mtrx);
+    aWriter.SaveFormat(str, f);
 }
 
 bool MeshObject::load(const char* file, MeshCore::Material* mat)
@@ -356,6 +362,23 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
     if (!aReader.LoadAny(file))
         return false;
 
+    swapKernel(kernel);
+    return true;
+}
+
+bool MeshObject::load(std::istream& str, MeshCore::MeshIO::Format f, MeshCore::Material* mat)
+{
+    MeshCore::MeshKernel kernel;
+    MeshCore::MeshInput aReader(kernel, mat);
+    if (!aReader.LoadFormat(str, f))
+        return false;
+
+    swapKernel(kernel);
+    return true;
+}
+
+void MeshObject::swapKernel(MeshCore::MeshKernel& kernel)
+{
     _kernel.Swap(kernel);
     // Some file formats define several objects per file (e.g. OBJ).
     // Now we mark each object as an own segment so that we can break
@@ -403,8 +426,11 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
         Base::Console().Log("Check for defects in mesh data structure failed\n");
     }
 #endif
+}
 
-    return true;
+void MeshObject::save(std::ostream& out) const
+{
+    _kernel.Write(out);
 }
 
 void MeshObject::load(std::istream& in)
