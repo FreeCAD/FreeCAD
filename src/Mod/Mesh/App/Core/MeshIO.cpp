@@ -1157,8 +1157,8 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
 {
     char szInfo[80];
     Base::Vector3f clVects[4];
-    uint16_t usAtt; 
-    uint32_t ulCt;
+    uint16_t usAtt = 0;
+    uint32_t ulCt = 0;
 
     if (!rstrIn || rstrIn.bad() == true)
         return false;
