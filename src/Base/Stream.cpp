@@ -526,12 +526,18 @@ IODeviceIStreambuf::seekpos(std::streambuf::pos_type pos,
 
 PyStreambuf::PyStreambuf(PyObject* o) : inp(o)
 {
+    Py_INCREF(inp);
     setg (buffer+pbSize,
           buffer+pbSize,
           buffer+pbSize);
 }
 
-int PyStreambuf::underflow()
+PyStreambuf::~PyStreambuf()
+{
+    Py_DECREF(inp);
+}
+
+std::streambuf::int_type PyStreambuf::underflow()
 {
     if (gptr() < egptr()) {
         return *gptr();
@@ -572,6 +578,43 @@ int PyStreambuf::underflow()
           buffer+pbSize+num);
 
     return *gptr();
+}
+
+std::streambuf::int_type
+PyStreambuf::overflow(std::streambuf::int_type c)
+{
+    if (c != EOF) {
+        char z = c;
+
+        try {
+            Py::Tuple arg(1);
+            arg.setItem(0, Py::Char(z));
+            Py::Callable meth(Py::Object(inp).getAttr("write"));
+            meth.apply(arg);
+        }
+        catch(Py::Exception& e) {
+            e.clear();
+            return EOF;
+        }
+    }
+
+    return c;
+}
+
+std::streamsize PyStreambuf::xsputn (const char* s, std::streamsize num)
+{
+    try {
+        Py::Tuple arg(1);
+        arg.setItem(0, Py::String(s, num));
+        Py::Callable meth(Py::Object(inp).getAttr("write"));
+        meth.apply(arg);
+    }
+    catch(Py::Exception& e) {
+        e.clear();
+        return 0;
+    }
+
+    return num;
 }
 
 // ---------------------------------------------------------
