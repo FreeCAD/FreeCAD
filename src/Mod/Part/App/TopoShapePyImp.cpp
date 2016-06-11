@@ -359,7 +359,7 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
     PyObject* input;
     if (PyArg_ParseTuple(args, "O", &input)) {
         try {
-            // read brep
+            // write brep
             Base::PyStreambuf buf(input);
             std::ostream str(0);
             str.rdbuf(&buf);
