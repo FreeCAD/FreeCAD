@@ -155,8 +155,13 @@ public:
     void save(const char* file,MeshCore::MeshIO::Format f=MeshCore::MeshIO::Undefined,
         const MeshCore::Material* mat = 0,
         const char* objectname = 0) const;
-    void save(std::ostream&) const;
+    void save(std::ostream&,MeshCore::MeshIO::Format f,
+        const MeshCore::Material* mat = 0,
+        const char* objectname = 0) const;
     bool load(const char* file, MeshCore::Material* mat = 0);
+    bool load(std::istream&, MeshCore::MeshIO::Format f, MeshCore::Material* mat = 0);
+    // Save and load in internal format
+    void save(std::ostream&) const;
     void load(std::istream&);
     //@}
 
@@ -371,6 +376,7 @@ private:
     void deletedFacets(const std::vector<unsigned long>& remFacets);
     void updateMesh(const std::vector<unsigned long>&);
     void updateMesh();
+    void swapKernel(MeshCore::MeshKernel& m);
 
 private:
     Base::Matrix4D _Mtrx;

@@ -164,6 +164,32 @@ bool MeshInput::LoadAny(const char* FileName)
     }
 }
 
+bool  MeshInput::LoadFormat(std::istream &str, MeshIO::Format fmt)
+{
+    switch (fmt) {
+    case MeshIO::BMS:
+        _rclMesh.Read(str);
+        return true;
+    case MeshIO::APLY:
+    case MeshIO::PLY:
+        return LoadPLY(str);
+    case MeshIO::ASTL:
+        return LoadAsciiSTL(str);
+    case MeshIO::BSTL:
+        return LoadBinarySTL(str);
+    case MeshIO::OBJ:
+        return LoadOBJ(str);
+    case MeshIO::OFF:
+        return LoadOFF(str);
+    case MeshIO::IV:
+        return LoadInventor(str);
+    case MeshIO::NAS:
+        return LoadNastran(str);
+    default:
+        throw Base::FileException("Not supported file format");
+    }
+}
+
 /** Loads an STL file either in binary or ASCII format. 
  * Therefore the file header gets checked to decide if the file is binary or not.
  */
@@ -1660,6 +1686,42 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     }
 
     return true;
+}
+
+bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
+{
+    switch (fmt) {
+    case MeshIO::BMS:
+        _rclMesh.Write(str);
+        return true;
+    case MeshIO::ASTL:
+        return SaveAsciiSTL(str);
+    case MeshIO::BSTL:
+        return SaveBinarySTL(str);
+    case MeshIO::OBJ:
+        return SaveOBJ(str);
+    case MeshIO::OFF:
+        return SaveOFF(str);
+    case MeshIO::IV:
+        return SaveInventor(str);
+    case MeshIO::X3D:
+        return SaveX3D(str);
+    case MeshIO::VRML:
+        return SaveVRML(str);
+    case MeshIO::WRZ:
+        // it's up to the client to create the needed stream
+        return SaveVRML(str);
+    case MeshIO::NAS:
+        return SaveNastran(str);
+    case MeshIO::PLY:
+        return SaveBinaryPLY(str);
+    case MeshIO::APLY:
+        return SaveAsciiPLY(str);
+    case MeshIO::PY:
+        return SavePython(str);
+    default:
+        throw Base::FileException("Not supported file format");
+    }
 }
 
 /** Saves the mesh object into an ASCII file. */
