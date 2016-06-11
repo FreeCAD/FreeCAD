@@ -126,8 +126,10 @@ const char* XMLParseException::what() const throw()
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
-    _sErrMsg += ": ";
-    _sErrMsg += sFileName;
+    if (sFileName) {
+        _sErrMsg += ": ";
+        _sErrMsg += sFileName;
+    }
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
