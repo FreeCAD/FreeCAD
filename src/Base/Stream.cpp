@@ -562,8 +562,6 @@ std::streambuf::int_type PyStreambuf::underflow()
             c = static_cast<std::string>(res)[0];
             num++;
             buffer[pbSize+i] = c;
-            if (c == '\n')
-                break;
         }
         catch (Py::Exception& e) {
             e.clear();
