@@ -248,6 +248,10 @@ protected:
     int_type underflow();
     int_type overflow(int_type c = EOF);
     std::streamsize xsputn (const char* s, std::streamsize num);
+    int sync();
+
+private:
+    bool flushBuffer();
 
 private:
     PyObject* inp;

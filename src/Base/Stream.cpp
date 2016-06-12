@@ -524,6 +524,9 @@ IODeviceIStreambuf::seekpos(std::streambuf::pos_type pos,
 
 // ---------------------------------------------------------
 
+// Buffering would make it very fast but it doesn't seem to write all data
+//#define PYSTREAM_BUFFERED
+
 // http://www.mr-edd.co.uk/blog/beginners_guide_streambuf
 PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back)
     : inp(o)
@@ -533,6 +536,10 @@ PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back
     Py_INCREF(inp);
     char *end = &buffer.front() + buffer.size();
     setg(end, end, end);
+#ifdef PYSTREAM_BUFFERED
+    char *base = &buffer.front();
+    setp(base, base + buffer.size() - 1);
+#endif
 }
 
 PyStreambuf::~PyStreambuf()
@@ -580,10 +587,20 @@ std::streambuf::int_type PyStreambuf::underflow()
 }
 
 std::streambuf::int_type
-PyStreambuf::overflow(std::streambuf::int_type c)
+PyStreambuf::overflow(std::streambuf::int_type ch)
 {
-    if (c != EOF) {
-        char z = c;
+#ifdef PYSTREAM_BUFFERED
+    if (ch != traits_type::eof()) {
+        *pptr() = ch;
+        pbump(1);
+        if (flushBuffer())
+            return ch;
+    }
+
+    return traits_type::eof();
+#else
+    if (ch != EOF) {
+        char z = ch;
 
         try {
             Py::Tuple arg(1);
@@ -597,11 +614,42 @@ PyStreambuf::overflow(std::streambuf::int_type c)
         }
     }
 
-    return c;
+    return ch;
+#endif
+}
+
+int PyStreambuf::sync()
+{
+#ifdef PYSTREAM_BUFFERED
+    return flushBuffer() ? 0 : -1;
+#else
+    return std::streambuf::sync();
+#endif
+}
+
+bool PyStreambuf::flushBuffer()
+{
+    std::ptrdiff_t n = pptr() - pbase();
+    pbump(-n);
+
+    try {
+        Py::Tuple arg(1);
+        arg.setItem(0, Py::String(pbase(), n));
+        Py::Callable meth(Py::Object(inp).getAttr("write"));
+        meth.apply(arg);
+        return true;
+    }
+    catch(Py::Exception& e) {
+        e.clear();
+        return false;
+    }
 }
 
 std::streamsize PyStreambuf::xsputn (const char* s, std::streamsize num)
 {
+#ifdef PYSTREAM_BUFFERED
+    return std::streambuf::xsputn(s, num);
+#else
     try {
         Py::Tuple arg(1);
         arg.setItem(0, Py::String(s, num));
@@ -614,6 +662,7 @@ std::streamsize PyStreambuf::xsputn (const char* s, std::streamsize num)
     }
 
     return num;
+#endif
 }
 
 // ---------------------------------------------------------
