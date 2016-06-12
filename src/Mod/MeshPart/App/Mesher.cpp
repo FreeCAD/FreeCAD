@@ -368,8 +368,6 @@ Mesh::MeshObject* Mesher::createMesh() const
     delete mesh;
     for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
         delete *it;
-
-    delete meshgen;
     
     MeshCore::MeshKernel kernel;
     kernel.Adopt(verts, faces, true);
