@@ -27,6 +27,7 @@
 # include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+# include <Standard_PrimitiveTypes.hxx>
 # include <gp_Pnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
@@ -34,8 +35,9 @@
 # include <TColgp_HArray1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
 # include <TColStd_HArray1OfReal.hxx>
+# include <TColStd_Array1OfReal.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
-# include <TColgp_HArray1OfPnt.hxx>
+
 # include <Precision.hxx>
 #endif
 
@@ -743,11 +745,29 @@ PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::approximate(PyObject *args)
+PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    Standard_Integer degMin=3;
+    Standard_Integer degMax=8;
+    char* continuity = "C2";
+    double tol3d = 1e-3;
+    char* parType = "ChordLength";
+    PyObject* par = 0;
+    double weight1 = 0;
+    double weight2 = 0;
+    double weight3 = 0;
+    
+    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
+                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", NULL};
+    
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
+                                     &obj, &degMax,
+                                     &continuity, &tol3d, &degMin, 
+                                     &parType, &par,
+                                     &weight1, &weight2, &weight3))
         return 0;
+    
     try {
         Py::Sequence list(obj);
         TColgp_Array1OfPnt pnts(1,list.size());
@@ -757,7 +777,77 @@ PyObject* BSplineCurvePy::approximate(PyObject *args)
             pnts(index++) = gp_Pnt(vec.x,vec.y,vec.z);
         }
 
-        GeomAPI_PointsToBSpline fit(pnts);
+        if (degMin > degMax) {
+            Standard_Failure::Raise("DegMin must be lower or equal to DegMax");
+        }
+        
+        GeomAbs_Shape c;
+        std::string str = continuity;
+        if (str == "C0")
+            c = GeomAbs_C0;
+        else if (str == "G1")
+            c = GeomAbs_G1;
+        else if (str == "C1")
+            c = GeomAbs_C1;
+        else if (str == "G2")
+            c = GeomAbs_G2;
+        else if (str == "C2")
+            c = GeomAbs_C2;
+        else if (str == "C3")
+            c = GeomAbs_C3;
+        else if (str == "CN")
+            c = GeomAbs_CN;
+        else
+            c = GeomAbs_C2;
+        
+        if (weight1 || weight2 || weight3) {
+            // It seems that this function only works with Continuity = C0, C1 or C2
+            if (!(c == GeomAbs_C0 || c == GeomAbs_C1 || c == GeomAbs_C2)) {
+                c = GeomAbs_C2;
+            }
+            GeomAPI_PointsToBSpline fit(pnts, weight1, weight2, weight3, degMax, c, tol3d);
+            Handle_Geom_BSplineCurve spline = fit.Curve();
+            if (!spline.IsNull()) {
+                this->getGeomBSplineCurvePtr()->setHandle(spline);
+                Py_Return;
+            }
+            else {
+                Standard_Failure::Raise("Smoothing approximation failed");
+                return 0; // goes to the catch block
+            }
+        }
+        
+        if (par) {
+            Py::Sequence plist(par);
+            TColStd_Array1OfReal parameters(1,plist.size());
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = plist.begin(); it != plist.end(); ++it) {
+                Py::Float f(*it);
+                parameters(index++) = static_cast<double>(f);
+            }
+            
+            GeomAPI_PointsToBSpline fit(pnts, parameters, degMin, degMax, c, tol3d);
+            Handle_Geom_BSplineCurve spline = fit.Curve();
+            if (!spline.IsNull()) {
+                this->getGeomBSplineCurvePtr()->setHandle(spline);
+                Py_Return;
+            }
+            else {
+                Standard_Failure::Raise("Approximation with parameters failed");
+                return 0; // goes to the catch block
+            }
+        }
+        
+        Approx_ParametrizationType pt;
+        std::string pstr = parType;
+        if (pstr == "Uniform")
+            pt = Approx_IsoParametric;
+        else if (pstr == "Centripetal")
+            pt = Approx_Centripetal;
+        else
+            pt = Approx_ChordLength;
+
+        GeomAPI_PointsToBSpline fit(pnts, pt, degMin, degMax, c, tol3d);
         Handle_Geom_BSplineCurve spline = fit.Curve();
         if (!spline.IsNull()) {
             this->getGeomBSplineCurvePtr()->setHandle(spline);
