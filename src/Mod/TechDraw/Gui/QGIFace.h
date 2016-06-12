@@ -91,6 +91,11 @@ private:
     Qt::BrushStyle m_styleCurr;                 //current fill style
     Qt::BrushStyle m_styleNormal;               //Normal fill style
     Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
+    QBrush m_brushNormal;
+    QBrush m_brushPre;
+    QBrush m_brushSel;
+    QBrush m_brushDef;
+    QBrush m_brushCurrent;
 };
 
 }

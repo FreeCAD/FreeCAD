@@ -50,6 +50,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 # include "MDIViewPage.h"
@@ -129,38 +130,27 @@ void CmdTechDrawNewHatch::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &subNames = selection[0].getSubNames();
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawHatch *hatch = 0;
     std::string FeatName = getUniqueObjectName("Hatch");
 
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    std::vector<std::string>::const_iterator itSub = SubNames.begin();
-    for (; itSub != SubNames.end(); itSub++) {
-        objs.push_back(objFeat);
-        subs.push_back((*itSub));
-    }
-
     openCommand("Create Hatch");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.PartView = App.activeDocument().%s",FeatName.c_str(),objFeat->getNameInDocument());
 
     hatch = dynamic_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str()));
-    hatch->Edges.setValues(objs, subs);
-    //should this be: doCommand(Doc,"App..Feat..Edges = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
+    hatch->Source.setValue(objFeat, subNames);
+    //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
 
-    //Note: Hatch is not added to the Page Views.  DVP::getHatches gathers them via PartView property when needed.  Can't remember why!
-    //doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     commitCommand();
 
     //Horrible hack to force Tree update  ??still required??
     double x = objFeat->X.getValue();
     objFeat->X.setValue(x);
+    getDocument()->recompute();
 }
 
 bool CmdTechDrawNewHatch::isActive(void)
@@ -248,10 +238,13 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
         return false;
     }
 
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-//                                                   QObject::tr("Can't make a Hatched area from this selection"));
-//        return false;
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    std::string gType = TechDraw::DrawUtil::getGeomTypeFromName(SubNames.at(0));
+    if (!(gType == "Face")) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+        QObject::tr("Can't make a Hatched area from this selection"));
+        return false;
+    }
 
-    //TODO: if selection != set of closed edges, return false
     return true;
 }

@@ -52,9 +52,8 @@ DrawHatch::DrawHatch(void)
 {
     static const char *vgroup = "Hatch";
 
-    ADD_PROPERTY_TYPE(PartView, (0), vgroup, (App::PropertyType)(App::Prop_None), "Parent view feature");
     ADD_PROPERTY_TYPE(DirProjection ,(0,0,1.0)    ,vgroup,App::Prop_None,"Projection direction when Hatch was defined");     //sb RO?
-    ADD_PROPERTY_TYPE(Edges,(0,0),vgroup,(App::PropertyType)(App::Prop_None),"The outline of the hatch area");
+    ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
     ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(HatchColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the hatch area");
 
@@ -79,15 +78,14 @@ DrawHatch::~DrawHatch()
 
 void DrawHatch::onChanged(const App::Property* prop)
 {
-    if (prop == &PartView      ||
-        prop == &Edges         ||
+    if (prop == &Source         ||
         prop == &HatchPattern  ||
         prop == &HatchColor) {
         if (!isRestoring()) {
               DrawHatch::execute();
-              if (PartView.getValue()) {
-                  PartView.getValue()->touch();
-                  PartView.getValue()->recompute();
+              if (getSourceView()) {
+                  getSourceView()->touch();
+                  getSourceView()->recompute();
               }
           }
     }
@@ -97,7 +95,18 @@ void DrawHatch::onChanged(const App::Property* prop)
 App::DocumentObjectExecReturn *DrawHatch::execute(void)
 {
     //TODO: need to refresh DrawViewPart to reflect change in hatch
+    DrawViewPart* parent = getSourceView();
+    if (parent) {
+        parent->touch();
+    }
     return App::DocumentObject::StdReturn;
+}
+
+DrawViewPart* DrawHatch::getSourceView(void) const
+{
+    App::DocumentObject* obj = Source.getValue();
+    DrawViewPart* result = dynamic_cast<DrawViewPart*>(obj);
+    return result;
 }
 
 PyObject *DrawHatch::getPyObject(void)

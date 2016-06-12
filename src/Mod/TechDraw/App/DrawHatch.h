@@ -42,9 +42,8 @@ public:
     DrawHatch();
     virtual ~DrawHatch();
 
-    App::PropertyLink        PartView;
-    App::PropertyVector      DirProjection;                            //edge list is only valid for original projection?
-    App::PropertyLinkSubList Edges;
+    App::PropertyVector      DirProjection;                            //Source is only valid for original projection?
+    App::PropertyLinkSub     Source;                                   //the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
     App::PropertyColor       HatchColor;
 
@@ -57,6 +56,9 @@ public:
     }
     //return PyObject as DrawHatchPy
     virtual PyObject *getPyObject(void);
+
+    DrawViewPart* getSourceView(void) const;
+
 protected:
     void onChanged(const App::Property* prop);
 
