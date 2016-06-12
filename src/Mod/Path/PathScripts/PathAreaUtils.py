@@ -375,7 +375,7 @@ def pocket(a,tool_radius, extra_offset, stepover, depthparams, from_center, keep
         area_for_feed_possible = area.Area(a)
         area_for_feed_possible.Offset(extra_offset - 0.01)
 
-    use_internal_function = (area.holes_linked() == False) # use internal function, if area module is the Clipper library
+    use_internal_function = False #(area.holes_linked() == False) # use internal function, if area module is the Clipper library
 
     if use_internal_function:
         curve_list = a.MakePocketToolpath(tool_radius, extra_offset, stepover, from_center, use_zig_zag, zig_angle)
