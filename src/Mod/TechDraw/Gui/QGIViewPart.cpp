@@ -38,6 +38,12 @@
 #endif // #ifndef _PreComp_
 
 
+#include <QBitmap>
+#include <QImage>
+#include <QPainter>
+#include <QString>
+#include <QSvgRenderer>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -300,10 +306,19 @@ void QGIViewPart::drawViewPart()
 
 #if MOD_TECHDRAW_HANDLE_FACES
     // Draw Faces
+    std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
     const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
     std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
     for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
         QGIFace* newFace = drawFace(*fit,i);
+        TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
+        if (fHatch) {
+            if (!fHatch->HatchPattern.isEmpty()) {
+                QBrush fBrush = brushFromFile(fHatch->HatchPattern.getValue());
+                fBrush.setColor(fHatch->HatchColor.getValue().asValue<QColor>());
+                newFace->setFill(fBrush);
+            }
+        }
         newFace->setZValue(ZVALUE::FACE);
         newFace->setFlag(QGraphicsItem::ItemIsSelectable, true);
         newFace->setAcceptHoverEvents(true);
@@ -311,6 +326,7 @@ void QGIViewPart::drawViewPart()
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
+#if 0
     // Draw Hatches
     std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
     if (!hatchObjs.empty()) {
@@ -318,18 +334,22 @@ void QGIViewPart::drawViewPart()
         for(; itHatch != hatchObjs.end(); itHatch++) {
             //if hatchdirection == viewPartdirection {
             TechDraw::DrawHatch* feat = (*itHatch);
-            const std::vector<std::string> &edgeNames = feat->Edges.getSubValues();
-            std::vector<std::string>::const_iterator itEdge = edgeNames.begin();
+            const std::vector<std::string> &sourceNames = feat->Source.getSubValues();
             std::vector<TechDrawGeometry::BaseGeom*> unChained;
-
-            //get all edge geometries for this hatch
-            for (; itEdge != edgeNames.end(); itEdge++) {
-                int idxEdge = TechDraw::DrawUtil::getIndexFromName((*itEdge));
-                TechDrawGeometry::BaseGeom* edgeGeom = viewPart->getProjEdgeByIndex(idxEdge);
-                if (!edgeGeom) {
-                    Base::Console().Log("Error - qgivp::drawViewPart - edgeGeom: %d is NULL\n",idxEdge);
+            if (TechDraw::DrawUtil::getGeomTypeFromName(sourceNames.at(0)) == "Face") {
+               int idxFace = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
+               unChained = viewPart->getProjFaceByIndex(idxFace);
+            } else {
+                std::vector<std::string>::const_iterator itEdge = sourceNames.begin();
+                //get all edge geometries for this hatch
+                for (; itEdge != sourceNames.end(); itEdge++) {
+                    int idxEdge = TechDraw::DrawUtil::getIndexFromName((*itEdge));
+                    TechDrawGeometry::BaseGeom* edgeGeom = viewPart->getProjEdgeByIndex(idxEdge);
+                    if (!edgeGeom) {
+                        Base::Console().Log("Error - qgivp::drawViewPart - edgeGeom: %d is NULL\n",idxEdge);
+                    }
+                    unChained.push_back(edgeGeom);
                 }
-                unChained.push_back(edgeGeom);
             }
 
             //chain edges tail to nose into a closed region
@@ -360,6 +380,7 @@ void QGIViewPart::drawViewPart()
             hatch->setZValue(ZVALUE::HATCH);
         }
     }
+#endif
 
     // Draw Edges
     const std::vector<TechDrawGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
@@ -445,21 +466,6 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
 
     //gFace->setFlag(QGraphicsItem::ItemIsSelectable, true);   ???
     return gFace;
-}
-
-std::vector<TechDraw::DrawHatch*> QGIViewPart::getHatchesForView(TechDraw::DrawViewPart* viewPart)
-{
-    std::vector<App::DocumentObject*> docObjs = viewPart->getDocument()->getObjectsOfType(TechDraw::DrawHatch::getClassTypeId());
-    std::vector<TechDraw::DrawHatch*> hatchObjs;
-    std::string viewName = viewPart->getNameInDocument();
-    std::vector<App::DocumentObject*>::iterator itDoc = docObjs.begin();
-    for(; itDoc != docObjs.end(); itDoc++) {
-        TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*itDoc);
-        if (viewName.compare((hatch->PartView.getValue())->getNameInDocument()) == 0) {
-            hatchObjs.push_back(hatch);
-        }
-    }
-    return hatchObjs;
 }
 
 // As called by arc of ellipse case:
@@ -614,6 +620,33 @@ void QGIViewPart::toggleVertices(bool state)
                 vert->hide();
         }
     }
+}
+
+QBrush QGIViewPart::brushFromFile(std::string fillSpec)
+{
+    QBrush result;
+    QString qs(QString::fromStdString(fillSpec));
+    QSvgRenderer renderer(qs);
+    QBitmap pixMap(renderer.defaultSize());
+    pixMap.fill(Qt::white);                                            //try  Qt::transparent?
+    QPainter painter(&pixMap);
+    renderer.render(&painter);                                         //svg texture -> bitmap
+    result.setTexture(pixMap);
+    return result;
+}
+
+TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const
+{
+    TechDraw::DrawHatch* result = nullptr;
+    for (auto& h:hatchObjs) {
+        const std::vector<std::string> &sourceNames = h->Source.getSubValues();
+        int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
+        if (fdx == i) {
+            result = h;
+            break;
+        }
+    }
+    return result;
 }
 
 QRectF QGIViewPart::boundingRect() const

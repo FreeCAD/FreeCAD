@@ -581,6 +581,23 @@ TechDrawGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
     return geoms[idx];
 }
 
+//! returns existing geometry of 2D Face(idx)
+//version 1 Face has 1 wire
+std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int idx) const
+{
+    std::vector<TechDrawGeometry::BaseGeom*> result;
+    const std::vector<TechDrawGeometry::Face *>& faces = getFaceGeometry();
+    for (auto& f:faces) {
+        for (auto& w:f->wires) {
+            for (auto& g:w->geoms) {
+                result.push_back(g);
+            }
+        }
+    }
+    return result;
+}
+
+
 Base::BoundBox3d DrawViewPart::getBoundingBox() const
 {
     return bbox;

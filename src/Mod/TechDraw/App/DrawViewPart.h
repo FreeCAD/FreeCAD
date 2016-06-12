@@ -76,7 +76,7 @@ public:
 
     TechDrawGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
-
+    std::vector<TechDrawGeometry::BaseGeom*> getProjFaceByIndex(int idx) const;  //get edges for face idx in projection
     virtual Base::BoundBox3d getBoundingBox() const;
 
     short mustExecute() const;
@@ -113,7 +113,7 @@ protected:
     double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
     bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
     int findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
-    int findEdgeByWalkerEdge(WalkerEdge we, std::vector<TopoDS_Vertex> uniqueVert, std::vector<TopoDS_Edge>& edges);
+    int findEdgeByWalkerEdge(WalkerEdge we, std::vector<TopoDS_Vertex> uniqueVert, std::vector<TopoDS_Edge>& edges); //obs?
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

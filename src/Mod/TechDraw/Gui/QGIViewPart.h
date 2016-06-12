@@ -81,11 +81,14 @@ protected:
                                      double curx, double cury) const;
 
     QPainterPath drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const;
-    std::vector <TechDraw::DrawHatch *> getHatchesForView(TechDraw::DrawViewPart* viewPart);
     void drawViewPart();
     QGIFace* drawFace(TechDrawGeometry::Face* f, int idx);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+    //hatching routines
+    QBrush brushFromFile(std::string fillSpec);
+    TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
 
     QColor m_colHid;
 

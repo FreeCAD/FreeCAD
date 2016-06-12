@@ -67,15 +67,19 @@ QGIFace::QGIFace(int index) :
     fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
     m_colPre = fcColor.asValue<QColor>();
 
-
     m_pen.setCosmetic(true);
     m_pen.setColor(m_colNormal);
 
-    m_colNormalFill  = m_colDefFill;
-    m_brush.setColor(m_colDefFill);
-    m_styleNormal = m_styleDef;
-    m_brush.setStyle(m_styleDef);
+    m_brushDef.setColor(m_colDefFill);
+    m_brushDef.setStyle(m_styleDef);
+    m_brushNormal = m_brushDef;
+    m_brushCurrent = m_brushNormal;
     setPrettyNormal();
+
+    m_brushPre.setColor(m_colPre);
+    m_brushPre.setStyle(m_styleSelect);
+    m_brushSel.setColor(m_colSel);
+    m_brushSel.setStyle(m_styleSelect);
 }
 
 QVariant QGIFace::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -118,22 +122,19 @@ void QGIFace::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIFace::setPrettyNormal() {
     m_colCurrent = m_colNormal;
-    m_colCurrFill = m_colNormalFill;
-    m_styleCurr = m_styleNormal;
+    m_brushCurrent = m_brushNormal;
     update();
 }
 
 void QGIFace::setPrettyPre() {
     m_colCurrent = m_colPre;
-    m_colCurrFill = m_colPre;
-    m_styleCurr = m_styleSelect;
+    m_brushCurrent = m_brushPre;
     update();
 }
 
 void QGIFace::setPrettySel() {
     m_colCurrent = m_colSel;
-    m_colCurrFill = m_colSel;
-    m_styleCurr = m_styleSelect;
+    m_brushCurrent = m_brushSel;
     update();
 }
 
@@ -150,21 +151,25 @@ void QGIFace::setHighlighted(bool b)
 }
 
 void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
-    m_colNormalFill = c;
-    //m_styleCurr = s;
-    m_styleNormal = s;
+    //m_colNormalFill = c;
+    //m_styleNormal = s;
+    m_brushNormal.setColor(c);
+    m_brushNormal.setStyle(s);
 }
 
 void QGIFace::setFill(QBrush b) {
     m_colNormalFill = b.color();
     //m_styleCurr = b.style();
-    m_styleNormal = b.style();
+    m_brushNormal = b;
 }
 
 void QGIFace::resetFill() {
     m_colNormalFill = m_colDefFill;
     //m_styleCurr = m_styleDef;
     m_styleNormal = m_styleDef;
+    m_brushNormal.setColor(m_colDefFill);
+    m_brushNormal.setStyle(m_styleDef);
+    m_brushCurrent = m_brushNormal;
 }
 
 QRectF QGIFace::boundingRect() const
@@ -183,8 +188,8 @@ void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
 
     m_pen.setColor(m_colCurrent);
     setPen(m_pen);
-    m_brush.setStyle(m_styleCurr);
-    m_brush.setColor(m_colCurrFill);
-    setBrush(m_brush);
+    //m_brush.setStyle(m_styleCurr);
+    //m_brush.setColor(m_colCurrFill);
+    setBrush(m_brushCurrent);
     QGraphicsPathItem::paint (painter, &myOption, widget);
 }
