@@ -98,6 +98,7 @@ class ObjectProfile:
         obj.addProperty("App::PropertyDistance", "RollRadius", "Profile", "Radius at start and end")
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", "Extra value to stay away from final profile- good for roughing toolpath")
         obj.addProperty("App::PropertyLength", "SegLen", "Profile", "Tesselation  value for tool paths made from beziers, bsplines, and ellipses")
+        obj.addProperty("App::PropertyAngle", "PlungeAngle", "Profile", "Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn")
 
         obj.addProperty("App::PropertyVectorList", "locs", "Tags", "List of holding tag locations")
 
@@ -183,7 +184,7 @@ class ObjectProfile:
                 wire, obj.Side, self.radius, clockwise,
                 obj.ClearanceHeight.Value, obj.StepDown, obj.StartDepth.Value,
                 obj.FinalDepth.Value, FirstEdge, PathClosed, obj.SegLen.Value,
-                self.vertFeed, self.horizFeed)
+                self.vertFeed, self.horizFeed, PlungeAngle=obj.PlungeAngle.Value)
 
         return output
 
@@ -466,6 +467,7 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = False')
+        FreeCADGui.doCommand('obj.PlungeAngle = 90.0')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
@@ -509,6 +511,8 @@ class TaskPanel:
                 self.obj.SegLen = self.form.segLen.value()
             if hasattr(self.obj, "RollRadius"):
                 self.obj.RollRadius = self.form.rollRadius.value()
+            if hasattr(self.obj, "PlungeAngle"):
+                self.obj.PlungeAngle = str(self.form.plungeAngle.value())
             if hasattr(self.obj, "UseComp"):
                 self.obj.UseComp = self.form.useCompensation.isChecked()
             if hasattr(self.obj, "UseStartPoint"):
@@ -523,7 +527,7 @@ class TaskPanel:
                 self.obj.Direction = str(self.form.direction.currentText())
         self.obj.Proxy.execute(self.obj)
 
-    def setFields(self): 
+    def setFields(self):
         self.form.startDepth.setText(str(self.obj.StartDepth.Value))
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
@@ -532,6 +536,7 @@ class TaskPanel:
         self.form.extraOffset.setValue(self.obj.OffsetExtra.Value)
         self.form.segLen.setValue(self.obj.SegLen.Value)
         self.form.rollRadius.setValue(self.obj.RollRadius.Value)
+        self.form.plungeAngle.setValue(self.obj.PlungeAngle.Value)
         self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
