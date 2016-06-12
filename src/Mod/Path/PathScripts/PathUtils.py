@@ -184,8 +184,8 @@ def reverseEdge(e):
     return newedge
 
 
-def convert(toolpath, Side, radius, clockwise=False, Z=0.0, firstedge=None, vf=1.0, hf=2.0, PlungeAngle=90.0, Zprevious=None, StopLength=None):
-    '''convert(toolpath,Side,radius,clockwise=False,Z=0.0,firstedge=None) Converts lines and arcs to G1,G2,G3 moves. Returns a string.'''
+def convert(toolpath, Z=0.0, PlungeAngle=90.0, Zprevious=None, StopLength=None, vf=1.0, hf=2.0) :
+    '''convert(toolpath,Z=0.0,vf=1.0,hf=2.0,PlungeAngle=90.0,Zprevious=None,StopLength=None) Converts lines and arcs to G1,G2,G3 moves. Returns a string.'''
 
     if PlungeAngle != 90.0:
         if Zprevious is None:
@@ -379,36 +379,30 @@ def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart, ZFinal
     paths += "G0 X" + str(fmt(first.x)) + "Y" + str(fmt(first.y)) + "\n"
     Zprevious = ZStart
     ZCurrent = ZStart - StepDown
-    if PathClosed:
-        while ZCurrent > ZFinalDepth:
-            paths += convert(toolpath, Side, radius, clockwise,
-                             ZCurrent, firstedge, VertFeed, HorizFeed, PlungeAngle=PlungeAngle, Zprevious=Zprevious)
-            Zprevious = ZCurrent
-            ZCurrent = ZCurrent - abs(StepDown)
-        paths += convert(toolpath, Side, radius, clockwise,
-                         ZFinalDepth, firstedge, VertFeed, HorizFeed, PlungeAngle=PlungeAngle, Zprevious=Zprevious)
-    else:
-        while ZCurrent > ZFinalDepth:
-            paths += convert(toolpath, Side, radius, clockwise,
-                             ZCurrent, firstedge, VertFeed, HorizFeed, PlungeAngle=PlungeAngle, Zprevious=Zprevious)
+
+    while ZCurrent > ZFinalDepth:
+        paths += convert(toolpath, Z=ZCurrent, Zprevious=Zprevious, PlungeAngle=PlungeAngle,
+                         vf=VertFeed, hf=HorizFeed)
+        if not PathClosed:
             paths += "G0 Z" + str(ZClearance)
             paths += "G0 X" + str(fmt(first.x)) + "Y" + \
                 str(fmt(first.y)) + "\n"
-            Zprevious = ZCurrent
-            ZCurrent = ZCurrent - abs(StepDown)
-        paths += convert(toolpath, Side, radius, clockwise,
-                         ZFinalDepth, firstedge, VertFeed, HorizFeed, PlungeAngle=PlungeAngle, Zprevious=Zprevious)
+        Zprevious = ZCurrent
+        ZCurrent = ZCurrent - abs(StepDown)
 
+    # do the final Z value
+    paths += convert(toolpath, Z=ZFinalDepth, Zprevious=Zprevious, PlungeAngle=PlungeAngle,
+                     vf=VertFeed, hf=HorizFeed)
 
-    # have to do one last pass to clear the remaining ramp
+    # when plunging with != 90 degree we have to do one last pass to clear the remaining ramp
     if PlungeAngle != 90.0:
         tanA = math.tan(math.pi * PlungeAngle / 180.0)
         if tanA <= 0.0:
             StopLength=None
         else:
             StopLength=abs(StepDown/tanA)
-        paths += convert(toolpath, Side, radius, clockwise,
-                         ZFinalDepth, firstedge, VertFeed, HorizFeed, StopLength=StopLength)
+        paths += convert(toolpath, Z=ZFinalDepth, Zprevious=Zprevious, StopLength=StopLength,
+                         vf=VertFeed, hf=HorizFeed)
 
     paths += "G0 Z" + str(ZClearance)
     return paths
