@@ -184,7 +184,7 @@ QPainterPath QGIFace::shape() const
 
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
-    //myOption.state &= ~QStyle::State_Selected;
+    myOption.state &= ~QStyle::State_Selected;
 
     m_pen.setColor(m_colCurrent);
     setPen(m_pen);
