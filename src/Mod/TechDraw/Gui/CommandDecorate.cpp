@@ -136,9 +136,12 @@ void CmdTechDrawNewHatch::activated(int iMsg)
 
     TechDraw::DrawHatch *hatch = 0;
     std::string FeatName = getUniqueObjectName("Hatch");
+    std::stringstream featLabel;
+    featLabel << FeatName << "F" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
     openCommand("Create Hatch");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
 
     hatch = dynamic_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str()));
     hatch->Source.setValue(objFeat, subNames);

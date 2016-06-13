@@ -45,7 +45,7 @@
 using namespace TechDraw;
 using namespace std;
 
-PROPERTY_SOURCE(TechDraw::DrawHatch, TechDraw::DrawView)
+PROPERTY_SOURCE(TechDraw::DrawHatch, App::DocumentObject)
 
 
 DrawHatch::DrawHatch(void)
@@ -83,10 +83,6 @@ void DrawHatch::onChanged(const App::Property* prop)
         prop == &HatchColor) {
         if (!isRestoring()) {
               DrawHatch::execute();
-              if (getSourceView()) {
-                  getSourceView()->touch();
-                  getSourceView()->recompute();
-              }
           }
     }
     App::DocumentObject::onChanged(prop);
@@ -98,6 +94,7 @@ App::DocumentObjectExecReturn *DrawHatch::execute(void)
     DrawViewPart* parent = getSourceView();
     if (parent) {
         parent->touch();
+        parent->recompute();
     }
     return App::DocumentObject::StdReturn;
 }
