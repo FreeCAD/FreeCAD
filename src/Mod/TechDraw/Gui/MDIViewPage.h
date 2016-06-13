@@ -95,6 +95,7 @@ protected:
     void findPrinterSettings(const QString&);
     QPrinter::PageSize getPageSize(int w, int h) const;
     void setDimensionGroups(void);
+    void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
 
 private:
     QAction *m_nativeAction;

@@ -259,8 +259,7 @@ void QGIViewPart::updateView(bool update)
         for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             if (dynamic_cast<QGIEdge *> (*it) ||
                 dynamic_cast<QGIFace *>(*it) ||
-                dynamic_cast<QGIVertex *>(*it) ||
-                dynamic_cast<QGIHatch *>(*it)) {
+                dynamic_cast<QGIVertex *>(*it)) {
                 removeFromGroup(*it);
                 scene()->removeItem(*it);
 
@@ -325,62 +324,6 @@ void QGIViewPart::drawViewPart()
         newFace->setPrettyNormal();
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
-
-#if 0
-    // Draw Hatches
-    std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
-    if (!hatchObjs.empty()) {
-        std::vector<TechDraw::DrawHatch*>::iterator itHatch = hatchObjs.begin();
-        for(; itHatch != hatchObjs.end(); itHatch++) {
-            //if hatchdirection == viewPartdirection {
-            TechDraw::DrawHatch* feat = (*itHatch);
-            const std::vector<std::string> &sourceNames = feat->Source.getSubValues();
-            std::vector<TechDrawGeometry::BaseGeom*> unChained;
-            if (TechDraw::DrawUtil::getGeomTypeFromName(sourceNames.at(0)) == "Face") {
-               int idxFace = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
-               unChained = viewPart->getProjFaceByIndex(idxFace);
-            } else {
-                std::vector<std::string>::const_iterator itEdge = sourceNames.begin();
-                //get all edge geometries for this hatch
-                for (; itEdge != sourceNames.end(); itEdge++) {
-                    int idxEdge = TechDraw::DrawUtil::getIndexFromName((*itEdge));
-                    TechDrawGeometry::BaseGeom* edgeGeom = viewPart->getProjEdgeByIndex(idxEdge);
-                    if (!edgeGeom) {
-                        Base::Console().Log("Error - qgivp::drawViewPart - edgeGeom: %d is NULL\n",idxEdge);
-                    }
-                    unChained.push_back(edgeGeom);
-                }
-            }
-
-            //chain edges tail to nose into a closed region
-            auto chained( TechDrawGeometry::GeometryUtils::chainGeoms(unChained) );
-
-            //iterate through the chain to make QPainterPath
-            std::vector<TechDrawGeometry::BaseGeom*>::iterator itChain = chained.begin();
-            QPainterPath hatchPath;
-            for (; itChain != chained.end(); itChain++) {
-                QPainterPath subPath;
-                if ((*itChain)->reversed) {
-                    subPath = drawPainterPath((*itChain)).toReversed();
-                } else {
-                    subPath = drawPainterPath((*itChain));
-                }
-                hatchPath.connectPath(subPath);
-                //_dumpPath("subpath",subPath);
-            }
-
-            QGIHatch* hatch = new QGIHatch(feat->getNameInDocument());
-            addToGroup(hatch);
-            hatch->setPos(0.0,0.0);
-            hatch->setPath(hatchPath);
-            hatch->setFill(feat->HatchPattern.getValue());
-            hatch->setColor(feat->HatchColor.getValue());
-            //_dumpPath("hatchPath",hatchPath);
-            hatch->setFlag(QGraphicsItem::ItemIsSelectable, true);
-            hatch->setZValue(ZVALUE::HATCH);
-        }
-    }
-#endif
 
     // Draw Edges
     const std::vector<TechDrawGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();

@@ -270,33 +270,31 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 
             for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
                 Gui::SelectionSingleton::SelObj selObj = *it;
-
                 if(selObj.pObject == getPageObject())
                     continue;
 
                 std::string str = msg.pSubName;
                 // If it's a subfeature, dont select feature
                 if (!str.empty()) {
-                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
+                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Face" ||
+                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
                         TechDraw::DrawUtil::getGeomTypeFromName(str) == "Vertex") {
-                        //TODO: handle Faces
-                        // TODO implement me
-                    } else {
-                        view->selectFeature(selObj.pObject, true);
+                        // TODO implement me   wf: don't think this is ever executed
                     }
+                } else {
+                        view->selectFeature(selObj.pObject, true);
                 }
-
             }
         } else {
             bool selectState = (msg.Type == Gui::SelectionChanges::AddSelection) ? true : false;
             Gui::Document* doc = Gui::Application::Instance->getDocument(pcObject->getDocument());
             App::DocumentObject *obj = doc->getDocument()->getObject(msg.pObjectName);
             if(obj) {
-
                 std::string str = msg.pSubName;
                 // If it's a subfeature, dont select feature
                 if (!str.empty()) {
-                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
+                    if (TechDraw::DrawUtil::getGeomTypeFromName(str) == "Face" ||
+                        TechDraw::DrawUtil::getGeomTypeFromName(str) == "Edge" ||
                         TechDraw::DrawUtil::getGeomTypeFromName(str) == "Vertex") {
                         // TODO implement me
                     } else {
