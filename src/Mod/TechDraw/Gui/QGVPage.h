@@ -46,7 +46,6 @@ namespace TechDrawGui
 class QGIView;
 class QGIViewDimension;
 class QGITemplate;
-class QGIHatch;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {

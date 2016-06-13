@@ -30,7 +30,6 @@
 #include "QGIFace.h"
 #include "QGIEdge.h"
 #include "QGIVertex.h"
-#include "QGIHatch.h"
 #include "../App/Geometry.h"
 
 

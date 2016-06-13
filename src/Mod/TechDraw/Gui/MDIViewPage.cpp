@@ -353,102 +353,6 @@ int MDIViewPage::attachView(App::DocumentObject *obj)
 }
 
 
-// wf: this is never executed???
-void MDIViewPage::preSelectionChanged(const QPoint &pos)
-{
-    QObject *obj = QObject::sender();
-
-    if(!obj)
-        return;
-
-    auto view( dynamic_cast<QGIView *>(obj) );
-    if(!view)
-            return;
-
-    QGraphicsItem* parent = view->parentItem();
-    if(!parent)
-        return;
-
-    TechDraw::DrawView *viewObj = view->getViewObject();
-    std::stringstream ss;
-
-    QGIFace *face   = dynamic_cast<QGIFace *>(obj);
-    QGIEdge *edge   = dynamic_cast<QGIEdge *>(obj);
-    QGIVertex *vert = dynamic_cast<QGIVertex *>(obj);
-    if(edge) {
-        ss << "Edge" << edge->getProjIndex();
-        //bool accepted =
-        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0));
-    } else if(vert) {
-        ss << "Vertex" << vert->getProjIndex();
-        //bool accepted =
-        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0));
-    } else if(face) {
-        ss << "Face" << face->getProjIndex();      //TODO: SectionFaces have ProjIndex = -1. (but aren't selectable?) Problem?
-        //bool accepted =
-        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0));
-    } else {
-        ss << "";
-        Gui::Selection().setPreselect(viewObj->getDocument()->getName()
-                                     ,viewObj->getNameInDocument()
-                                     ,ss.str().c_str()
-                                     ,pos.x()
-                                     ,pos.y()
-                                     ,0);
-    }
-}
-
-void MDIViewPage::blockSelection(const bool state)
-{
-  isSelectionBlocked = state;
-}
-
-
-void MDIViewPage::clearSelection()
-{
-  blockSelection(true);
-  std::vector<QGIView *> views = m_view->getViews();
-
-  // Iterate through all views and unselect all
-  for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
-      QGIView *item = *it;
-      item->setSelected(false);
-      item->updateView();
-  }
-
-  blockSelection(false);
-}
-
-
-void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
-{
-    // Update QGVPage's selection based on Selection made outside Drawing Interace
-    // wf: but this also executes for changes within the Drawing Interface?
-  QGIView *view = m_view->findView(obj);
-
-  blockSelection(true);
-  if(view) {
-      view->setSelected(isSelected);
-      view->updateView();
-  }
-  blockSelection(false);
-}
-
 
 void MDIViewPage::updateTemplate(bool forceUpdate)
 {
@@ -899,23 +803,6 @@ QPrinter::PageSize MDIViewPage::getPageSize(int w, int h) const
 
     return ps;
 }
-
-void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-
-    }
-    else if (msg.Type == Gui::SelectionChanges::AddSelection ||
-             msg.Type == Gui::SelectionChanges::RmvSelection) {
-        //bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
-        // Check if it is a view object
-    }
-    else if (msg.Type == Gui::SelectionChanges::SetSelection) {
-        // do nothing here
-    }
-}
-
-
 void MDIViewPage::setFrameState(bool state)
 {
     m_frameState = state;
@@ -928,7 +815,6 @@ PyObject* MDIViewPage::getPyObject()
 {
     Py_Return;
 }
-
 
 void MDIViewPage::setRenderer(QAction *action)
 {
@@ -971,6 +857,129 @@ void MDIViewPage::saveSVG()
     m_view->saveSvg(fn);
 }
 
+
+/////////////// Selection Routines ///////////////////
+// wf: this is never executed???
+// needs a signal from Scene? hoverEvent?  Scene does not emit signal for "preselect"
+void MDIViewPage::preSelectionChanged(const QPoint &pos)
+{
+    QObject *obj = QObject::sender();
+
+    if(!obj)
+        return;
+
+    auto view( dynamic_cast<QGIView *>(obj) );
+    if(!view)
+            return;
+
+    QGraphicsItem* parent = view->parentItem();
+    if(!parent)
+        return;
+
+    TechDraw::DrawView *viewObj = view->getViewObject();
+    std::stringstream ss;
+
+    QGIFace *face   = dynamic_cast<QGIFace *>(obj);
+    QGIEdge *edge   = dynamic_cast<QGIEdge *>(obj);
+    QGIVertex *vert = dynamic_cast<QGIVertex *>(obj);
+    if(edge) {
+        ss << "Edge" << edge->getProjIndex();
+        //bool accepted =
+        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
+                                     ,viewObj->getNameInDocument()
+                                     ,ss.str().c_str()
+                                     ,pos.x()
+                                     ,pos.y()
+                                     ,0));
+    } else if(vert) {
+        ss << "Vertex" << vert->getProjIndex();
+        //bool accepted =
+        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
+                                     ,viewObj->getNameInDocument()
+                                     ,ss.str().c_str()
+                                     ,pos.x()
+                                     ,pos.y()
+                                     ,0));
+    } else if(face) {
+        ss << "Face" << face->getProjIndex();      //TODO: SectionFaces have ProjIndex = -1. (but aren't selectable?) Problem?
+        //bool accepted =
+        static_cast<void> (Gui::Selection().setPreselect(viewObj->getDocument()->getName()
+                                     ,viewObj->getNameInDocument()
+                                     ,ss.str().c_str()
+                                     ,pos.x()
+                                     ,pos.y()
+                                     ,0));
+    } else {
+        ss << "";
+        Gui::Selection().setPreselect(viewObj->getDocument()->getName()
+                                     ,viewObj->getNameInDocument()
+                                     ,ss.str().c_str()
+                                     ,pos.x()
+                                     ,pos.y()
+                                     ,0);
+    }
+}
+
+void MDIViewPage::blockSelection(const bool state)
+{
+  isSelectionBlocked = state;
+}
+
+
+void MDIViewPage::clearSelection()
+{
+  blockSelection(true);
+  std::vector<QGIView *> views = m_view->getViews();
+
+  // Iterate through all views and unselect all
+  for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
+      QGIView *item = *it;
+      item->setSelected(false);
+      item->updateView();
+  }
+
+  blockSelection(false);
+}
+
+//!Update QGVPage's selection based on Selection made outside Drawing Interace
+//invoked from VPP
+void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
+{
+    App::DocumentObject* objCopy = obj;
+    TechDraw::DrawHatch* hatchObj = dynamic_cast<TechDraw::DrawHatch*>(objCopy);
+    if (hatchObj) {                                                    //Hatch does not have a QGIV of it's own. mark parent as selected.
+        objCopy = hatchObj->getSourceView();                           //possible to highlight subObject?
+    }
+    QGIView *view = m_view->findView(objCopy);
+
+    blockSelection(true);
+    if(view) {
+        view->setSelected(isSelected);
+        view->updateView();
+    }
+    blockSelection(false);
+}
+
+//! invoked by selection change made in Tree?
+// wf: seems redundant? executed, but no real logic.
+void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+
+    }
+    else if (msg.Type == Gui::SelectionChanges::AddSelection ||
+             msg.Type == Gui::SelectionChanges::RmvSelection) {
+        //bool add = (msg.Type == Gui::SelectionChanges::AddSelection);
+        // Check if it is a view object
+        std::string feat = msg.pObjectName;
+        std::string sub  = msg.pSubName;
+    }
+    else if (msg.Type == Gui::SelectionChanges::SetSelection) {
+        // do nothing here  wf: handled by VPP::onSelectionChanged?
+    }
+}
+
+//! update FC Selection from QGraphicsScene selection
 //trigged by m_view->scene() signal
 void MDIViewPage::selectionChanged()
 {
@@ -1004,6 +1013,9 @@ void MDIViewPage::selectionChanged()
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),
                                               ss.str().c_str()));
+                showStatusMsg(viewObj->getDocument()->getName(),
+                                              viewObj->getNameInDocument(),
+                                              ss.str().c_str());
                 continue;
             }
 
@@ -1025,6 +1037,9 @@ void MDIViewPage::selectionChanged()
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),
                                               ss.str().c_str()));
+                showStatusMsg(viewObj->getDocument()->getName(),
+                                              viewObj->getNameInDocument(),
+                                              ss.str().c_str());
                 continue;
             }
 
@@ -1046,6 +1061,9 @@ void MDIViewPage::selectionChanged()
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),
                                               ss.str().c_str()));
+                showStatusMsg(viewObj->getDocument()->getName(),
+                                              viewObj->getNameInDocument(),
+                                              ss.str().c_str());
                 continue;
             }
 
@@ -1073,6 +1091,10 @@ void MDIViewPage::selectionChanged()
             std::string obj_name = viewObj->getNameInDocument();
 
             Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str());
+            showStatusMsg(doc_name.c_str(),
+                          obj_name.c_str(),
+                          "");
+
         }
 
     }
@@ -1080,5 +1102,20 @@ void MDIViewPage::selectionChanged()
     blockConnection(saveBlock);
     blockSelection(false);
 } // end MDIViewPage::selectionChanged()
+
+///////////////////end Selection Routines //////////////////////
+
+void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) const
+{
+    QString msg = QString::fromUtf8("Selected: ");
+    msg.append(QObject::tr(" %1.%2.%3 ")
+               .arg(QString::fromUtf8(s1))
+               .arg(QString::fromUtf8(s2))
+               .arg(QString::fromUtf8(s3))
+               );
+    if (Gui::getMainWindow()) {
+        Gui::getMainWindow()->showMessage(msg,3000);
+    }
+}
 
 #include "moc_MDIViewPage.cpp"
