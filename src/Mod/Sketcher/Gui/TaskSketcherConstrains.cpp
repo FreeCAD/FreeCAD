@@ -135,7 +135,7 @@ public:
                 name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
                 break;
             case Sketcher::Angle:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(constraint->getPresentationValue()),Base::Unit::Angle).getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Angle).getUserString());
                 break;
             case Sketcher::SnellsLaw: {
                 double v = constraint->getPresentationValue();
