@@ -28,6 +28,7 @@
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <QDateTime>
 
 #include "Constraint.h"
@@ -145,6 +146,7 @@ double Constraint::getPresentationValue() const
         else
             return Value;
     case Angle:
+        return Base::toDegrees<double>(Value);
     case SnellsLaw:
         return Value;
     default:
