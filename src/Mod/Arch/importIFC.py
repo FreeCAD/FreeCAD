@@ -43,6 +43,7 @@ typesmap = { "Site":       ["IfcSite"],
              "Stairs":     ["IfcStair", "IfcStairFlight", "IfcRamp", "IfcRampFlight"],
              "Space":      ["IfcSpace"],
              "Rebar":      ["IfcReinforcingBar"],
+             "Panel":      ["IfcPlate"],
              "Equipment":  ["IfcFurnishingElement","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"]
            }
 

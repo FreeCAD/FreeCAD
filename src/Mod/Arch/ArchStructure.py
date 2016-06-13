@@ -38,18 +38,14 @@ __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# Make some strings picked by the translator
-#if FreeCAD.GuiUp:
-#    QtCore.QT_TRANSLATE_NOOP("Arch","Wood")
-#    QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
 # Possible roles for structural elements
 Roles = ["Beam","Column","Slab","Wall","Curtain Wall","Roof","Foundation","Pile","Tendon"]
 
 #Reads preset profiles and categorizes them
-Categories=[None]
+Categories=[]
 Presets=ArchProfile.readPresets()
-for pre in Presets[1:]:
+for pre in Presets:
     if pre[1] not in Categories:
         Categories.append(pre[1])
 
@@ -163,14 +159,17 @@ class _CommandStructure:
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
-        import DraftTrackers
+        import DraftTrackers,ArchPrecast
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
         self.tracker.height(self.Height)
         self.tracker.length(self.Length)
         self.tracker.on()
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+        self.precast = ArchPrecast._PrecastTaskPanel()
+        self.dents = ArchPrecast._DentsTaskPanel()
+        self.precast.Dents = self.dents
+        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form])
 
     def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
@@ -180,19 +179,37 @@ class _CommandStructure:
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
         FreeCADGui.addModule("Arch")
         if self.Profile is not None:
-            FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
-            if self.Length == self.Profile[4]:
-                # vertical
-                FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Height)+')')
+            if "Precast" in self.Profile:
+                # precast concrete
+                args = self.precast.getValues()
+                args["PrecastType"] = self.Profile.split("_")[1]
+                args["Length"] = self.Length
+                args["Width"] = self.Width
+                args["Height"] = self.Height
+                argstring = ""
+                for pair in args.items():
+                    argstring += pair[0].lower() + "="
+                    if isinstance(pair[1],str):
+                        argstring += '"' + pair[1] + '",'
+                    else:
+                        argstring += str(pair[1]) + ","
+                FreeCADGui.addModule("ArchPrecast")
+                FreeCADGui.doCommand("s = ArchPrecast.makePrecast("+argstring+")")
             else:
-                # horizontal
-                FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Length)+')')
-                FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
-            FreeCADGui.doCommand('s.Profile = "'+self.Profile[2]+'"')
+                # metal profile
+                FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
+                if self.Length == self.Profile[4]:
+                    # vertical
+                    FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Height)+')')
+                else:
+                    # horizontal
+                    FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Length)+')')
+                    FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
+                FreeCADGui.doCommand('s.Profile = "'+self.Profile[2]+'"')
         else :
             FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
         FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
-        FreeCADGui.doCommand('s.Placement.Rotation=FreeCAD.DraftWorkingPlane.getRotation().Rotation')
+        FreeCADGui.doCommand('s.Placement.Rotation=s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         if self.continueCmd:
@@ -214,15 +231,15 @@ class _CommandStructure:
         # categories box
         labelc = QtGui.QLabel(translate("Arch","Category").decode("utf8"))
         valuec = QtGui.QComboBox()
-        valuec.addItems([" "]+Categories[1:])
+        valuec.addItems([" ","Precast concrete"]+Categories)
         grid.addWidget(labelc,0,0,1,1)
         grid.addWidget(valuec,0,1,1,1)
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
         self.vPresets = QtGui.QComboBox()
-        self.pSelect=Presets[1:]
-        fpresets = [" "]+self._createItemlist(self.pSelect)
+        self.pSelect = [None]
+        fpresets = [" "]
         self.vPresets.addItems(fpresets)
         grid.addWidget(labelp,1,0,1,1)
         grid.addWidget(self.vPresets,1,1,1,1)
@@ -304,31 +321,53 @@ class _CommandStructure:
 
     def setCategory(self,i):
         self.vPresets.clear()
-        if i > 0:
-            self.pSelect= [p for p in Presets[1:] if p[1] == Categories[i]]
-            fpresets = [" "]+self._createItemlist(self.pSelect)
+        if i > 1:
+            self.precast.form.hide()
+            self.pSelect = [p for p in Presets if p[1] == Categories[i-2]]
+            fpresets = self._createItemlist(self.pSelect)
             self.vPresets.addItems(fpresets)
+            self.setPreset(0)
+        elif i == 1:
+            self.precast.form.show()
+            self.pSelect = self.precast.PrecastTypes
+            fpresets = self.precast.PrecastTypes
+            self.vPresets.addItems(fpresets)
+            self.setPreset(0)
         else:
-            self.pSelect=Presets[1:]
-            fpresets = [" "]+self._createItemlist(self.pSelect)
+            self.precast.form.hide()
+            self.pSelect = [None]
+            fpresets = [" "]
             self.vPresets.addItems(fpresets)
 
     def setPreset(self,i):
-        if i > 0:
-            p=self.pSelect[i-1][0]
-            self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
-            self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
-            self.Profile = Presets[p]
-        else:
-            self.Profile = None
+        self.Profile = None
+        elt = self.pSelect[i]
+        if elt:
+            if elt in self.precast.PrecastTypes:
+                self.precast.setPreset(elt)
+                self.Profile = "Precast_" + elt
+                if elt == "Pillar":
+                    self.dents.form.show()
+                else:
+                    self.dents.form.hide()
+            else:    
+                p=elt[0]
+                self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
+                self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
+                self.Profile = Presets[p]
+            
 
     def rotateLH(self):
-        self.vLength.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
-        self.vHeight.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+        h = self.Height
+        l = self.Length
+        self.vLength.setText(FreeCAD.Units.Quantity(h,FreeCAD.Units.Length).UserString)
+        self.vHeight.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
         
     def rotateLW(self):
-        self.vLength.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
-        self.vWidth.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+        w = self.Width
+        l = self.Length
+        self.vLength.setText(FreeCAD.Units.Quantity(w,FreeCAD.Units.Length).UserString)
+        self.vWidth.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
 
 
 class _Structure(ArchComponent.Component):
