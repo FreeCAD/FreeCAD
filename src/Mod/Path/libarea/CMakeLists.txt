@@ -25,10 +25,12 @@ endif()
 set(AREA_SRC_COMMON
     Arc.cpp
     Area.cpp
+    AreaDxf.cpp
     AreaOrderer.cpp
     AreaPocket.cpp
     Circle.cpp
     Curve.cpp
+    dxf.cpp
     kurve/Construction.cpp
     kurve/Finite.cpp
     kurve/kurve.cpp
