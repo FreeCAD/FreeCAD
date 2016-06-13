@@ -43,7 +43,7 @@ profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pr
                 os.path.join(os.path.dirname(__file__),"Presets","profiles.csv")]
 
 def readPresets():
-    Presets=[None]
+    Presets=[]
     for profilefile in profilefiles:
         if os.path.exists(profilefile):
             try:

@@ -36,6 +36,7 @@ SET(Arch_SRCS
     ArchSchedule.py
     ArchProfile.py
     import3DS.py
+    ArchPrecast.py
 )
 
 SET(Dice3DS_SRCS
