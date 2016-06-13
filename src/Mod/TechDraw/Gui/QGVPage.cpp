@@ -123,6 +123,7 @@ QGVPage::~QGVPage()
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
 {
+//Note: Background is not part of scene()
     if(!drawBkg)
         return;
 

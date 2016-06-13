@@ -85,8 +85,6 @@ protected:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-    //hatching routines
-    QBrush brushFromFile(std::string fillSpec);
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
 
     QColor m_colHid;

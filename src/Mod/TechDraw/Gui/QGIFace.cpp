@@ -33,6 +33,13 @@
 #include <QStyleOptionGraphicsItem>
 #endif
 
+#include <QFile>
+#include <QTextStream>
+#include <QRectF>
+#include <QPointF>
+
+#include <cmath>
+
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
@@ -54,6 +61,8 @@ QGIFace::QGIFace(int index) :
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::QGraphicsItem::ItemClipsChildrenToShape,true);
+    //setFiltersChildEvents(true);
     setAcceptHoverEvents(true);
 
     isHighlighted = false;
@@ -80,6 +89,16 @@ QGIFace::QGIFace(int index) :
     m_brushPre.setStyle(m_styleSelect);
     m_brushSel.setColor(m_colSel);
     m_brushSel.setStyle(m_styleSelect);
+
+    m_svg = new QGCustomSvg();
+
+    m_rect = new QGCustomRect();
+    m_rect->setParentItem(this);
+}
+
+QGIFace::~QGIFace()
+{
+    //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
 }
 
 QVariant QGIFace::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -161,6 +180,58 @@ void QGIFace::setFill(QBrush b) {
     m_colNormalFill = b.color();
     //m_styleCurr = b.style();
     m_brushNormal = b;
+}
+
+void QGIFace::setHatch(std::string fileSpec)
+{
+    QString qfs(QString::fromStdString(fileSpec));
+    QFile f(qfs);
+    if (!f.open(QFile::ReadOnly | QFile::Text))  {
+        Base::Console().Error("QGIFace could not read %s\n",fileSpec.c_str());
+        return;
+    }
+    m_qba = f.readAll();
+    if (!m_svg->load(&m_qba)) {
+        Base::Console().Error("Error - Could not load hatch into SVG renderer for %s\n", fileSpec.c_str());
+        return;
+    }
+
+    buildHatch();
+}
+
+void QGIFace::setPath(const QPainterPath & path)
+{
+    QGraphicsPathItem::setPath(path);
+    if (!m_qba.isEmpty()) {
+        buildHatch();
+    }
+}
+
+void QGIFace::buildHatch()
+{
+    m_brushNormal.setStyle(Qt::NoBrush );
+    double w = boundingRect().width();
+    double h = boundingRect().height();
+    QRectF r = boundingRect();
+    QPointF fCenter = r.center();
+    double nw = ceil(w / SVGSIZEW);
+    double nh = ceil(h / SVGSIZEH);
+    w = nw * SVGSIZEW;
+    h = nh * SVGSIZEW;
+    m_rect->setRect(0.,0.,w,-h);
+    m_rect->centerAt(fCenter);
+    QPointF rPos = m_rect->pos();
+    r = m_rect->rect();
+    for (int iw = 0; iw < int(nw); iw++) {
+        for (int ih = 0; ih < int(nh); ih++) {
+            QGCustomSvg* tile = new QGCustomSvg();
+            if (tile->load(&m_qba)) {
+                tile->setParentItem(m_rect);
+                tile->setPos(iw*SVGSIZEW,-h + ih*SVGSIZEH);
+            }
+        }
+    }
+
 }
 
 void QGIFace::resetFill() {

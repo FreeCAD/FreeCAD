@@ -25,6 +25,11 @@
 
 #include <Qt>
 #include <QGraphicsItem>
+#include <QSvgRenderer>
+#include <QByteArray>
+
+#include "QGCustomSvg.h"
+#include "QGCustomRect.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -38,11 +43,14 @@ class BaseGeom;
 namespace TechDrawGui
 {
 
+    const double SVGSIZEW = 64.0;                     //width and height of standard FC SVG pattern
+    const double SVGSIZEH = 64.0;
+
 class QGIFace : public QGraphicsPathItem
 {
 public:
     explicit QGIFace(int index = -1);
-    ~QGIFace() {}
+    ~QGIFace();
 
     enum {Type = QGraphicsItem::UserType + 104};
     int type() const { return Type;}
@@ -59,7 +67,10 @@ public:
     void setPrettySel();
     void setFill(QColor c, Qt::BrushStyle s);
     void setFill(QBrush b);
+    void setHatch(std::string fileSpec);
     void resetFill(void);
+    void setPath(const QPainterPath & path);
+    void buildHatch(void);
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
@@ -70,10 +81,14 @@ protected:
     // Selection detection
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    bool load(QByteArray *svgBytes);
 
 protected:
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     bool isHighlighted;
+    QGCustomRect *m_rect;
+    QGCustomSvg *m_svg;
+    QByteArray m_qba;
 
 private:
     QPen m_pen;
