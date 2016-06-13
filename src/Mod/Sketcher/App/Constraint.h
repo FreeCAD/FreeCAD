@@ -26,6 +26,7 @@
 
 
 #include <Base/Persistence.h>
+#include <Base/Quantity.h>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
@@ -89,7 +90,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     void setValue(double newValue);
-    double getPresentationValue() const;
+    Base::Quantity getPresentationValue() const;
     double getValue() const;
 
     friend class Sketch;
