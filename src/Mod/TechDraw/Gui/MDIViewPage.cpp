@@ -103,6 +103,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
     connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
 
+    //m_outlineAction is obs? never set to Enabled?
     m_outlineAction = new QAction(tr("&Outline"), this);
     m_outlineAction->setEnabled(false);
     m_outlineAction->setCheckable(true);

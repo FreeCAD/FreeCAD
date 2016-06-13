@@ -313,9 +313,7 @@ void QGIViewPart::drawViewPart()
         TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
         if (fHatch) {
             if (!fHatch->HatchPattern.isEmpty()) {
-                QBrush fBrush = brushFromFile(fHatch->HatchPattern.getValue());
-                fBrush.setColor(fHatch->HatchColor.getValue().asValue<QColor>());
-                newFace->setFill(fBrush);
+                newFace->setHatch(fHatch->HatchPattern.getValue());
             }
         }
         newFace->setZValue(ZVALUE::FACE);
@@ -407,7 +405,6 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
     //faceId << "facePath " << idx;
     //_dumpPath(faceId.str().c_str(),facePath);
 
-    //gFace->setFlag(QGraphicsItem::ItemIsSelectable, true);   ???
     return gFace;
 }
 
@@ -563,19 +560,6 @@ void QGIViewPart::toggleVertices(bool state)
                 vert->hide();
         }
     }
-}
-
-QBrush QGIViewPart::brushFromFile(std::string fillSpec)
-{
-    QBrush result;
-    QString qs(QString::fromStdString(fillSpec));
-    QSvgRenderer renderer(qs);
-    QBitmap pixMap(renderer.defaultSize());
-    pixMap.fill(Qt::white);                                            //try  Qt::transparent?
-    QPainter painter(&pixMap);
-    renderer.render(&painter);                                         //svg texture -> bitmap
-    result.setTexture(pixMap);
-    return result;
 }
 
 TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const

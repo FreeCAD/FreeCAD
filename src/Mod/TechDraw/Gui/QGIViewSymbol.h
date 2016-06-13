@@ -57,15 +57,12 @@ public:
     virtual QRectF boundingRect() const override;
 
 protected:
-    bool load(QByteArray *svgString);
     virtual void drawSvg();
     void symbolToSvg(QString qs);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGCustomSvg *m_svgItem;
-    QSvgRenderer *m_svgRender;
 };
 
-} // namespace MDIViewPageGui
-
+} // namespace
 #endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H

@@ -302,7 +302,7 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
             }
-        }
+        }  //else (Gui::SelectionChanges::SetPreselect)
     }
 }
 

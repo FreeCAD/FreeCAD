@@ -53,8 +53,6 @@ QGIViewSymbol::QGIViewSymbol()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    m_svgRender = new QSvgRenderer();
-
     m_svgItem = new QGCustomSvg();
     addToGroup(m_svgItem);
     m_svgItem->setPos(0.,0.);
@@ -63,7 +61,6 @@ QGIViewSymbol::QGIViewSymbol()
 QGIViewSymbol::~QGIViewSymbol()
 {
     // m_svgItem belongs to this group and will be deleted by Qt
-    delete(m_svgRender);
 }
 
 QVariant QGIViewSymbol::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -131,7 +128,7 @@ void QGIViewSymbol::symbolToSvg(QString qs)
 
     QByteArray qba;
     qba.append(qs);
-    if (!load(&qba)) {
+    if (!m_svgItem->load(&qba)) {
         Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewObject()->getNameInDocument());
     }
     m_svgItem->setPos(0.,0.);
@@ -141,11 +138,3 @@ QRectF QGIViewSymbol::boundingRect() const
 {
     return childrenBoundingRect();
 }
-
-bool QGIViewSymbol::load(QByteArray *svgBytes)
-{
-    bool success = m_svgRender->load(*svgBytes);
-    m_svgItem->setSharedRenderer(m_svgRender);
-    return(success);
-}
-

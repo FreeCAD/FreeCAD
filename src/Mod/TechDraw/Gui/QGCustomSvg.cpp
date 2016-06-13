@@ -37,6 +37,13 @@ QGCustomSvg::QGCustomSvg()
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+
+    m_svgRender = new QSvgRenderer();
+}
+
+QGCustomSvg::~QGCustomSvg()
+{
+    delete m_svgRender;
 }
 
 void QGCustomSvg::centerAt(QPointF centerPos)
@@ -59,10 +66,16 @@ void QGCustomSvg::centerAt(double cX, double cY)
     setPos(newX,newY);
 }
 
+bool QGCustomSvg::load(QByteArray *svgBytes)
+{
+    bool success = m_svgRender->load(*svgBytes);
+    setSharedRenderer(m_svgRender);
+    return(success);
+}
+
 void QGCustomSvg::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
     QGraphicsSvgItem::paint (painter, &myOption, widget);
 }
-
