@@ -524,10 +524,10 @@ IODeviceIStreambuf::seekpos(std::streambuf::pos_type pos,
 
 // ---------------------------------------------------------
 
-// Buffering would make it very fast but it doesn't seem to write all data
-//#define PYSTREAM_BUFFERED
+#define PYSTREAM_BUFFERED
 
 // http://www.mr-edd.co.uk/blog/beginners_guide_streambuf
+// http://www.icce.rug.nl/documents/cplusplus/cplusplus24.html
 PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back)
     : inp(o)
     , put_back(std::max(put_back, std::size_t(1)))
@@ -538,12 +538,13 @@ PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back
     setg(end, end, end);
 #ifdef PYSTREAM_BUFFERED
     char *base = &buffer.front();
-    setp(base, base + buffer.size() - 1);
+    setp(base, base + buffer.size());
 #endif
 }
 
 PyStreambuf::~PyStreambuf()
 {
+    sync();
     Py_DECREF(inp);
 }
 
@@ -590,11 +591,11 @@ std::streambuf::int_type
 PyStreambuf::overflow(std::streambuf::int_type ch)
 {
 #ifdef PYSTREAM_BUFFERED
+    sync();
     if (ch != traits_type::eof()) {
         *pptr() = ch;
         pbump(1);
-        if (flushBuffer())
-            return ch;
+        return ch;
     }
 
     return traits_type::eof();
@@ -621,7 +622,10 @@ PyStreambuf::overflow(std::streambuf::int_type ch)
 int PyStreambuf::sync()
 {
 #ifdef PYSTREAM_BUFFERED
-    return flushBuffer() ? 0 : -1;
+    if (pptr() > pbase()) {
+        flushBuffer();
+    }
+    return 0;
 #else
     return std::streambuf::sync();
 #endif
