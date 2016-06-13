@@ -241,19 +241,22 @@ protected:
 class BaseExport PyStreambuf : public std::streambuf
 {
 public:
-    PyStreambuf(PyObject* o);
+    PyStreambuf(PyObject* o, std::size_t buf_size = 256, std::size_t put_back = 8);
     virtual ~PyStreambuf();
 
 protected:
     int_type underflow();
     int_type overflow(int_type c = EOF);
     std::streamsize xsputn (const char* s, std::streamsize num);
+    int sync();
 
 private:
-    static const int pbSize = 4;
-    static const int bufSize = 1024;
-    char buffer[bufSize+pbSize];
+    bool flushBuffer();
+
+private:
     PyObject* inp;
+    const std::size_t put_back;
+    std::vector<char> buffer;
 };
 
 class BaseExport Streambuf : public std::streambuf
