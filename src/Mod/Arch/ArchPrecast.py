@@ -993,12 +993,14 @@ class _DentsTaskPanel:
         rot = self.RotationAngles[self.valueRotation.currentIndex()]
         s = "Dent "+num+" :"+str(self.Length)+";"+str(self.Width)+";"+str(self.Height)+";"+str(self.Slant)+";"+str(self.Level)+";"+str(rot)+";"+str(self.Offset)
         self.listDents.addItem(s)
+        self.listDents.setCurrentRow(self.listDents.count()-1)
+        self.editDent()
         
     def removeDent(self):
         if self.listDents.currentItem():
             self.listDents.takeItem(self.listDents.currentRow())
         
-    def editDent(self,item):
+    def editDent(self,item=None):
         if self.listDents.currentItem():
             s = self.listDents.currentItem().text()
             s = s.split(":")[1]
