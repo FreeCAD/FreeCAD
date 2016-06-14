@@ -62,7 +62,7 @@ boost::python::tuple transformed_point(const geoff_geometry::Matrix &matrix, dou
 
 static void print_curve(const CCurve& c)
 {
-	unsigned int nvertices = c.m_vertices.size();
+	std::size_t nvertices = c.m_vertices.size();
 	printf("number of vertices = %d\n", nvertices);
 	int i = 0;
 	for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
@@ -85,7 +85,7 @@ static void print_area(const CArea &a)
 
 static unsigned int num_vertices(const CCurve& curve)
 {
-	return curve.m_vertices.size();
+	return static_cast<unsigned int>(curve.m_vertices.size());
 }
 
 static CVertex FirstVertex(const CCurve& curve)
