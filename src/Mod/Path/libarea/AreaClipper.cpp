@@ -169,7 +169,7 @@ static void OffsetWithLoops(const TPolyPolygon &pp, TPolyPolygon &pp_new, double
 		{
 			if(reverse)
 			{
-				for(unsigned int j = p.size()-1; j > 1; j--)MakeLoop(p[j], p[j-1], p[j-2], radius);
+				for(std::size_t j = p.size()-1; j > 1; j--)MakeLoop(p[j], p[j-1], p[j-2], radius);
 				MakeLoop(p[1], p[0], p[p.size()-1], radius);
 				MakeLoop(p[0], p[p.size()-1], p[p.size()-2], radius);
 			}
@@ -177,7 +177,7 @@ static void OffsetWithLoops(const TPolyPolygon &pp, TPolyPolygon &pp_new, double
 			{
 				MakeLoop(p[p.size()-2], p[p.size()-1], p[0], radius);
 				MakeLoop(p[p.size()-1], p[0], p[1], radius);
-				for(unsigned int j = 2; j < p.size(); j++)MakeLoop(p[j-2], p[j-1], p[j], radius);
+				for(std::size_t j = 2; j < p.size(); j++)MakeLoop(p[j-2], p[j-1], p[j], radius);
 			}
 
 			TPolygon loopy_polygon;
@@ -213,8 +213,8 @@ static void OffsetWithLoops(const TPolyPolygon &pp, TPolyPolygon &pp_new, double
 			const TPolygon& p = copy[i];
 			TPolygon p_new;
 			p_new.resize(p.size());
-			int size_minus_one = p.size() - 1;
-			for(unsigned int j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
+			std::size_t size_minus_one = p.size() - 1;
+			for(std::size_t j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
 			pp_new[i] = p_new;
 		}
 	}
@@ -290,8 +290,8 @@ static void OffsetSpansWithObrounds(const CArea& area, TPolyPolygon &pp_new, dou
 		const TPolygon& p = copy[i];
 		TPolygon p_new;
 		p_new.resize(p.size());
-		int size_minus_one = p.size() - 1;
-		for(unsigned int j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
+		std::size_t size_minus_one = p.size() - 1;
+		for(std::size_t j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
 		pp_new[i] = p_new;
 	}
 }
@@ -315,7 +315,7 @@ static void MakePolyPoly( const CArea& area, TPolyPolygon &pp, bool reverse = tr
 		p.resize(pts_for_AddVertex.size());
 		if(reverse)
 		{
-			unsigned int i = pts_for_AddVertex.size() - 1;// clipper wants them the opposite way to CArea
+			std::size_t i = pts_for_AddVertex.size() - 1;// clipper wants them the opposite way to CArea
 			for(std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin(); It != pts_for_AddVertex.end(); It++, i--)
 			{
 				p[i] = It->int_point();

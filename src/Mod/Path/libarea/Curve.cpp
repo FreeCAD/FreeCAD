@@ -62,10 +62,10 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 	if(might_be_an_arc.size() < 2)return false;
 
 	// find middle point
-	int num = might_be_an_arc.size();
-	int i = 0;
+	std::size_t num = might_be_an_arc.size();
+	std::size_t i = 0;
 	const CVertex* mid_vt = NULL;
-	int mid_i = (num-1)/2;
+	std::size_t mid_i = (num-1)/2;
 	for(std::list<const CVertex*>::iterator It = might_be_an_arc.begin(); It != might_be_an_arc.end(); It++, i++)
 	{
 		if(i == mid_i)

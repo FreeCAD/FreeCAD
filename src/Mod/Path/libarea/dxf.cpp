@@ -1,4 +1,5 @@
 // dxf.cpp
+// dxf.cpp
 // Copyright 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 
@@ -1359,10 +1360,10 @@ void CDxfRead::get_line()
 	m_ifs->getline(m_str, 1024);
 
 	char str[1024];
-	int len = strlen(m_str);
-	int j = 0;
+	std::size_t len = strlen(m_str);
+	std::size_t j = 0;
 	bool non_white_found = false;
-	for(int i = 0; i<len; i++){
+	for(std::size_t i = 0; i<len; i++){
 		if(non_white_found || (m_str[i] != ' ' && m_str[i] != '\t')){
 #if wxUSE_UNICODE
 			if(m_str[i] != '\r')
