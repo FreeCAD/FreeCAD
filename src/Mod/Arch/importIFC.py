@@ -580,6 +580,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if store:
                             sharedobjects[store] = obj
                     obj.Label = name
+                    if hasattr(obj,"Description") and hasattr(product,"Description"):
+                        if product.Description:
+                            obj.Description = product.Description
                     if FreeCAD.GuiUp and baseobj:
                         if hasattr(baseobj,"ViewObject"):
                             baseobj.ViewObject.hide()
