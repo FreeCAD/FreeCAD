@@ -548,7 +548,7 @@ PyStreambuf::~PyStreambuf()
     Py_DECREF(inp);
 }
 
-std::streambuf::int_type PyStreambuf::underflow()
+PyStreambuf::int_type PyStreambuf::underflow()
 {
     if (gptr() < egptr()) {
         return traits_type::to_int_type(*gptr());
@@ -587,8 +587,8 @@ std::streambuf::int_type PyStreambuf::underflow()
     return traits_type::to_int_type(*gptr());
 }
 
-std::streambuf::int_type
-PyStreambuf::overflow(std::streambuf::int_type ch)
+PyStreambuf::int_type
+PyStreambuf::overflow(PyStreambuf::int_type ch)
 {
 #ifdef PYSTREAM_BUFFERED
     sync();
@@ -667,6 +667,50 @@ std::streamsize PyStreambuf::xsputn (const char* s, std::streamsize num)
 
     return num;
 #endif
+}
+
+PyStreambuf::pos_type
+PyStreambuf::seekoff(PyStreambuf::off_type offset, PyStreambuf::seekdir dir, PyStreambuf::openmode /*mode*/)
+{
+    int whence = 0;
+    switch (dir) {
+    case std::ios_base::beg:
+        whence = 0;
+        break;
+    case std::ios_base::cur:
+        whence = 1;
+        break;
+    case std::ios_base::end:
+        whence = 2;
+        break;
+    default:
+        return pos_type(off_type(-1));
+    }
+
+    try {
+        Py::Tuple arg(2);
+        arg.setItem(0, Py::Long(static_cast<long>(offset)));
+        arg.setItem(1, Py::Long(whence));
+        Py::Callable seek(Py::Object(inp).getAttr("seek"));
+        seek.apply(arg);
+
+        // get current position
+        Py::Tuple arg2;
+        Py::Callable tell(Py::Object(inp).getAttr("tell"));
+        Py::Long pos(tell.apply(arg2));
+        long cur_pos = static_cast<long>(pos);
+        return static_cast<pos_type>(cur_pos);
+    }
+    catch(Py::Exception& e) {
+        e.clear();
+        return pos_type(off_type(-1));
+    }
+}
+
+PyStreambuf::pos_type
+PyStreambuf::seekpos(PyStreambuf::pos_type offset, PyStreambuf::openmode mode)
+{
+    return seekoff(offset, std::ios::beg, mode);
 }
 
 // ---------------------------------------------------------
