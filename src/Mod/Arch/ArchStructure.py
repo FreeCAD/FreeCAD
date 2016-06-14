@@ -346,7 +346,7 @@ class _CommandStructure:
             if elt in self.precast.PrecastTypes:
                 self.precast.setPreset(elt)
                 self.Profile = "Precast_" + elt
-                if elt == "Pillar":
+                if elt in ["Pillar","Beam"]:
                     self.dents.form.show()
                 else:
                     self.dents.form.hide()
