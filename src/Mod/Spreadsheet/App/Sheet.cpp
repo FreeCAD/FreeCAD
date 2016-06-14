@@ -1336,3 +1336,17 @@ void PropertySpreadsheetQuantity::Paste(const Property &from)
     _Unit = static_cast<const PropertySpreadsheetQuantity*>(&from)->_Unit;
     hasSetValue();
 }
+
+// Python sheet feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
+template<> const char* Spreadsheet::SheetPython::getViewProviderName(void) const {
+    return "SpreadsheetGui::ViewProviderSheet";
+}
+/// @endcond
+
+// explicit template instantiation
+template class SpreadsheetExport FeaturePythonT<Spreadsheet::Sheet>;
+}
