@@ -6017,8 +6017,8 @@ SMESH_MeshEditor::Sew_Error
   // sew the border to the side 2
   // ============================
 
-  int nbNodes[]  = { (int)nSide[0].size(), (int)nSide[1].size() };
-  int maxNbNodes = Max( nbNodes[0], nbNodes[1] );
+  size_t nbNodes[]  = { nSide[0].size(), nSide[1].size() };
+  size_t maxNbNodes = std::max( nbNodes[0], nbNodes[1] );
 
   TListOfListOfNodes nodeGroupsToMerge;
   if ( nbNodes[0] == nbNodes[1] ||

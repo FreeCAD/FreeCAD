@@ -293,7 +293,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
             .arg(docName).arg(objName).arg(propName);
     }
     if (parent->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<Gui::ViewProviderDocumentObject*>(parent)->getObject();
+        App::DocumentObject* obj = parent->getObject();
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromLatin1(obj->getNameInDocument());
