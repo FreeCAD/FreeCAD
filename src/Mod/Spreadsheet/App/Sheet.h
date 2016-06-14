@@ -37,6 +37,7 @@
 #include <App/DynamicProperty.h>
 #include <App/Material.h>
 #include <App/Range.h>
+#include <App/FeaturePython.h>
 #include <Base/Unit.h>
 #include <map>
 #include "PropertySheet.h"
@@ -301,6 +302,8 @@ protected:
 
     friend class PropertySheet;
 };
+
+typedef App::FeaturePythonT<Sheet> SheetPython;
 
 } //namespace Spreadsheet
 
