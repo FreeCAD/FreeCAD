@@ -89,7 +89,7 @@ def getParamType(param):
                  "dimstyle","gridSize"]:
         return "int"
     elif param in ["constructiongroupname","textfont","patternFile","template",
-                   "snapModes","FontFile"]:
+                   "snapModes","FontFile","ClonePrefix"]:
         return "string"
     elif param in ["textheight","tolerance","gridSpacing","arrowsize","extlines","dimspacing"]:
         return "float"
@@ -2462,22 +2462,25 @@ def clone(obj,delta=None):
     linked copy of the given object. If the original object changes, the final object
     changes too. Optionally, you can give a delta Vector to move the clone from the
     original position.'''
+    prefix = getParam("ClonePrefix","Clone of")
+    if prefix:
+        prefix = prefix.strip()+" "
     if not isinstance(obj,list):
         obj = [obj]
     if (len(obj) == 1) and obj[0].isDerivedFrom("Part::Part2DObject"):
         cl = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
-        cl.Label = "Clone of " + obj[0].Label + " (2D)"
+        cl.Label = prefix + obj[0].Label + " (2D)"
     elif (len(obj) == 1) and hasattr(obj[0],"CloneOf"):
         # arch objects can be clones
         import Arch
         cl = getattr(Arch,"make"+obj[0].Proxy.Type)()
         base = getCloneBase(obj[0])
-        cl.Label = "Clone of " + base.Label
+        cl.Label = prefix + base.Label
         cl.CloneOf = base
         return cl
     else:
         cl = FreeCAD.ActiveDocument.addObject("Part::AttachableObjectPython","Clone")
-        cl.Label = "Clone of " + obj[0].Label
+        cl.Label = prefix + obj[0].Label
     _Clone(cl)
     if gui:
         _ViewProviderClone(cl.ViewObject)
