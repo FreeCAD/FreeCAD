@@ -62,12 +62,12 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObje
 ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
 {
      //initialize the properties
-    ADD_PROPERTY_TYPE(Field,((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");    
+    ADD_PROPERTY_TYPE(Field,((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
     ADD_PROPERTY_TYPE(VectorMode,((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
     ADD_PROPERTY(Transperency, (0));
-       
+
     sPixmap = "fem-fem-mesh-from-shape";
-    
+
     //create the subnodes which do the visualization work
     m_shapeHints = new SoShapeHints();
     m_shapeHints->ref();
@@ -96,7 +96,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_drawStyle->pointSize.setValue(3);
     m_seperator = new SoSeparator();
     m_seperator->ref();
-    
+
     // simple color bar
     m_colorRoot = new SoSeparator();
     m_colorRoot->ref();
@@ -106,7 +106,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_colorBar = new Gui::SoFCColorBar;
     m_colorBar->Attach(this);
     m_colorBar->ref();
-    
+
     //create the vtk algorithms we use for visualisation
     m_outline   = vtkSmartPointer<vtkOutlineCornerFilter>::New();
     m_points = vtkSmartPointer<vtkVertexGlyphFilter>::New();
@@ -119,7 +119,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_wireframeSurface->AddInputConnection(m_surface->GetOutputPort());
     m_surfaceEdges->AddInputConnection(m_surface->GetOutputPort());
     m_surfaceEdges->AddInputConnection(m_wireframeSurface->GetOutputPort());
-    
+
     m_currentAlgorithm = m_outline;
 }
 
@@ -146,7 +146,7 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
 void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
-    
+
     // face nodes
     m_seperator->addChild(m_shapeHints);
     m_seperator->addChild(m_drawStyle);
@@ -156,7 +156,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
     m_seperator->addChild(m_markers);
     m_seperator->addChild(m_lines);
     m_seperator->addChild(m_faces);
-    
+
     // Check for an already existing color bar
     Gui::SoFCColorBar* pcBar = ((Gui::SoFCColorBar*)findFrontRootOfType( Gui::SoFCColorBar::getClassTypeId() ));
     if ( pcBar ) {
@@ -174,7 +174,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
     }
 
     m_colorRoot->addChild(m_colorBar);
- 
+
     //all 
     addDisplayMaskMode(m_seperator, "Default");
     setDisplayMaskMode("Default");
@@ -183,7 +183,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
 }
 
 SoSeparator* ViewProviderFemPostObject::getFrontRoot(void) const {
-    
+
     return m_colorRoot;
 }
 
@@ -204,9 +204,9 @@ void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
         m_currentAlgorithm = m_points;
     else if (strcmp("Nodes (surface only)",ModeName)==0)
         m_currentAlgorithm = m_pointsSurface;
-    
+
     update();
-    
+
     ViewProviderDocumentObject::setDisplayMode( ModeName );
 }
 
@@ -228,16 +228,16 @@ void ViewProviderFemPostObject::update() {
     if(!setupPipeline())
         return;
     
-    m_currentAlgorithm->Update();    
+    m_currentAlgorithm->Update();
     updateProperties();
     update3D();
 }
 
 void ViewProviderFemPostObject::updateProperties() {
-    
+
     m_blockPropertyChanges = true;
     vtkPolyData* poly = m_currentAlgorithm->GetOutput(); 
-    
+
     //coloring
     std::string val;
     if(Field.getEnums() && Field.getValue() >= 0)
@@ -253,22 +253,22 @@ void ViewProviderFemPostObject::updateProperties() {
     vtkCellData* cell = poly->GetCellData();
     for(int i=0; i<cell->GetNumberOfArrays(); ++i)
         colorArrays.push_back(cell->GetArrayName(i));
-    
+
     App::Enumeration empty;
     Field.setValue(empty);
     m_coloringEnum.setEnums(colorArrays);
     Field.setValue(m_coloringEnum);
-    
+
     std::vector<std::string>::iterator it = std::find(colorArrays.begin(), colorArrays.end(), val);
     if(!val.empty() && it != colorArrays.end())
         Field.setValue(val.c_str());
-    
+
     Field.purgeTouched();
-    
+
     //Vector mode
     if(VectorMode.getEnums() && VectorMode.getValue() >= 0)
         val = VectorMode.getValueAsString();
-    
+
     colorArrays.clear();
     if(Field.getValue() == 0)         
         colorArrays.push_back("Not a vector");
@@ -293,18 +293,18 @@ void ViewProviderFemPostObject::updateProperties() {
     VectorMode.setValue(empty);
     m_vectorEnum.setEnums(colorArrays);
     VectorMode.setValue(m_vectorEnum); 
-    
+
     it = std::find(colorArrays.begin(), colorArrays.end(), val);
     if(!val.empty() && it != colorArrays.end())
         VectorMode.setValue(val.c_str());
-    
+
     m_blockPropertyChanges = false;
 }
 
 void ViewProviderFemPostObject::update3D() {
-    
+
     vtkPolyData* pd = m_currentAlgorithm->GetOutput();  
-    
+
     vtkPointData *pntData;
     vtkPoints *points;
     vtkDataArray *normals = NULL;
@@ -325,12 +325,12 @@ void ViewProviderFemPostObject::update3D() {
 
     // write out polys if any
     if (pd->GetNumberOfPolys() > 0) {
-        
+
         m_faces->coordIndex.startEditing();
         int soidx = 0;
         cells = pd->GetPolys();
         for (cells->InitTraversal(); cells->GetNextCell(npts,indx); ) {
-        
+
             for (int i = 0; i < npts; i++) {
                 m_faces->coordIndex.set1Value(soidx, static_cast<int>(indx[i]));
                 ++soidx;
@@ -341,18 +341,19 @@ void ViewProviderFemPostObject::update3D() {
         m_faces->coordIndex.setNum(soidx);
         m_faces->coordIndex.finishEditing();
     }
-    else        
+    else
         m_faces->coordIndex.setNum(0);
-    
 
-  // write out tstrips if any
+
+
+    // write out tstrips if any
   if (pd->GetNumberOfStrips() > 0) {
-      
+
       int soidx = 0;
       cells = pd->GetStrips();
       m_triangleStrips->coordIndex.startEditing();
       for (cells->InitTraversal(); cells->GetNextCell(npts,indx); ) {
-          
+
           for (int i = 0; i < npts; i++) {
               m_triangleStrips->coordIndex.set1Value(soidx, static_cast<int>(indx[i]));
               ++soidx;
@@ -363,7 +364,7 @@ void ViewProviderFemPostObject::update3D() {
       m_triangleStrips->coordIndex.setNum(soidx);
       m_triangleStrips->coordIndex.finishEditing();
   }
-  else 
+  else
       m_triangleStrips->coordIndex.setNum(0);
 
   // write out lines if any
@@ -388,7 +389,7 @@ void ViewProviderFemPostObject::update3D() {
 
   // write out verts if any
   if (pd->GetNumberOfVerts() > 0){
-      
+
         int soidx = 0;
         cells = pd->GetVerts();
         m_markers->coordIndex.startEditing();
@@ -399,13 +400,13 @@ void ViewProviderFemPostObject::update3D() {
         }
         m_markers->coordIndex.finishEditing();
   }
-  else 
+  else
       m_markers->coordIndex.setNum(0);
 }
 
 void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords) {
 
-    
+
     double *p;
     int i;
 
@@ -422,7 +423,7 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
 
     // write out the point normal data
     if (normals) {
-        
+
         m_normals->vector.startEditing();
         m_normals->vector.setNum(normals->GetNumberOfTuples());
         for (i = 0; i < normals->GetNumberOfTuples(); i++) {
@@ -440,41 +441,41 @@ void ViewProviderFemPostObject::WriteColorData() {
 
     if(!setupPipeline())
         return;
-    
+
     if(Field.getEnumVector().empty() || Field.getValue() == 0) {
-        
+
         m_material->diffuseColor.setValue(SbColor(0.8,0.8,0.8));
         m_material->transparency.setValue(0.);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();  
         return;
     };
- 
-    
-    int array = Field.getValue() - 1; //0 is none   
-    vtkPolyData*  pd = m_currentAlgorithm->GetOutput();         
+
+
+    int array = Field.getValue() - 1; //0 is none
+    vtkPolyData*  pd = m_currentAlgorithm->GetOutput();
     vtkDataArray* data = pd->GetPointData()->GetArray(array);
 
     int component = VectorMode.getValue() - 1; //0 is either "Not a vector" or magnitude, for -1 is correct for magnitude. x y and z are one number too high
     if(strcmp(VectorMode.getValueAsString(), "Not a vector")==0)
         component = 0;
-        
+
     //build the lookuptable
     double range[2];
     data->GetRange(range, component);
     m_colorBar->setRange(range[0], range[1]);
 
     m_material->diffuseColor.startEditing();
-     
+
     for (int i = 0; i < pd->GetNumberOfPoints(); i++) {
-        
+
         double value = 0;
         if(component >= 0)
             value = data->GetComponent(i, component);
         else {
             for(int j=0; j<data->GetNumberOfComponents(); ++j)
                 value += std::pow(data->GetComponent(i, j),2);
-            
+
             value = std::sqrt(value);
         }
         App::Color c = m_colorBar->getColor(value);
@@ -486,7 +487,7 @@ void ViewProviderFemPostObject::WriteColorData() {
 }
 
 void ViewProviderFemPostObject::WriteTransperency() {
-    
+
     float trans = float(Transperency.getValue()) / 100.;
     m_material->transparency.setValue(trans);
 }
@@ -494,31 +495,31 @@ void ViewProviderFemPostObject::WriteTransperency() {
 
 
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
-    
+
     if( strcmp(p->getName(), "Data") == 0 ) {
         update();
     }
 }
 
 bool ViewProviderFemPostObject::setupPipeline() {
-    
+
     vtkDataObject* data = static_cast<Fem::FemPostObject*>(getObject())->Data.getValue();
-    
+
     if(!data)
         return false;
-    
-        
+
+
     m_outline->SetInputData(data);
     m_surface->SetInputData(data);
     m_wireframe->SetInputData(data);
     m_points->SetInputData(data);
-    
+
     return true;
 }
 
 
 void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
-    
+
     if(m_blockPropertyChanges)
         return;
     
@@ -533,8 +534,8 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     }
     else if(prop == &Transperency) {
         WriteTransperency();
-    }    
-    
+    }
+
     ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -545,8 +546,8 @@ bool ViewProviderFemPostObject::doubleClicked(void) {
 
 
 bool ViewProviderFemPostObject::setEdit(int ModNum) {
-    
-     if (ModNum == ViewProvider::Default || ModNum == 1 ) {
+
+    if (ModNum == ViewProvider::Default || ModNum == 1 ) {
 
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgPost *postDlg = qobject_cast<TaskDlgPost*>(dlg);
@@ -587,7 +588,7 @@ void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg) {
 }
 
 void ViewProviderFemPostObject::unsetEdit(int ModNum) {
-    
+
     if (ModNum == ViewProvider::Default) {
         // and update the pad
         //getSketchObject()->getDocument()->recompute();
