@@ -118,7 +118,6 @@ FemMesh &FemMesh::operator=(const FemMesh& mesh)
 
 void FemMesh::copyMeshData(const FemMesh& mesh)
 {
-    SMESH_Mesh *test;
     _Mtrx = mesh._Mtrx;
 
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
