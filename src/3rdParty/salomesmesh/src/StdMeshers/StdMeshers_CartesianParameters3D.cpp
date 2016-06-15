@@ -240,6 +240,7 @@ bool StdMeshers_CartesianParameters3D::GetFixedPoint(double p[3]) const
   if ( Precision::IsInfinite( _fixedPoint[0] ))
     return false;
   std::copy( &_fixedPoint[0], &_fixedPoint[0]+3, &p[0] );
+  return true;
 }
 
 

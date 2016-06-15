@@ -285,6 +285,7 @@ double* SMDS_MeshNode::getCoord() const
      coord2[2]=0.;
      return coord2;
   }
+  return 0;
 }
 
 double SMDS_MeshNode::X() const

@@ -1024,10 +1024,11 @@ Standard_Real GEOMUtils::GetMinDistance
 // vejmarie ISSUE
 gp_Pnt GEOMUtils::ConvertClickToPoint( int x, int y, Handle(V3d_View) aView )
 {
+/*
   V3d_Coordinate XEye, YEye, ZEye, XAt, YAt, ZAt;
-//  aView->Eye( XEye, YEye, ZEye );
+  aView->Eye( XEye, YEye, ZEye );
 
- // aView->At( XAt, YAt, ZAt );
+  aView->At( XAt, YAt, ZAt );
   gp_Pnt EyePoint( XEye, YEye, ZEye );
   gp_Pnt AtPoint( XAt, YAt, ZAt );
 
@@ -1042,6 +1043,8 @@ gp_Pnt GEOMUtils::ConvertClickToPoint( int x, int y, Handle(V3d_View) aView )
   gp_Pnt2d ConvertedPointOnPlane = ProjLib::Project( PlaneOfTheView, ConvertedPoint );
   gp_Pnt ResultPoint = ElSLib::Value( ConvertedPointOnPlane.X(), ConvertedPointOnPlane.Y(), PlaneOfTheView );
   return ResultPoint;
+*/
+  return gp_Pnt(0,0,0);
 }
 
 //=======================================================================
