@@ -111,10 +111,11 @@ def GetSelectionAsLinkSubList():
     result = []
     for selobj in sel:
         for subname in selobj.SubElementNames:
-            result.append((selobj, subname))
+            result.append((selobj.Object, subname))
         if len(selobj.SubElementNames) == 0:
-            result.append((selobj, ''))
+            result.append((selobj.Object, ''))
     return result
+    
 
 def PlacementsFuzzyCompare(plm1, plm2):
     pos_eq = (plm1.Base - plm2.Base).Length < 1e-7   # 1e-7 is OCC's Precision::Confusion
@@ -263,6 +264,9 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 if sel[i][0] is obj_to_attach:
                     sel.pop(i)
             self.attacher.References = sel
+            # need to update textboxes
+            self.fillAllRefLines()
+        
         if len(self.attacher.References) == 0:
             self.i_active_ref = 0
             self.auto_next = True
@@ -430,14 +434,22 @@ class AttachmentEditorTaskPanel(FrozenClass):
             
             self.form.checkBoxFlip.setChecked(self.attacher.Reverse)
             
+            self.fillAllRefLines()
+        finally:
+            self.block = old_selfblock
+        
+    def fillAllRefLines(self):
+        old_block = self.block
+        try:
+            self.block = True
             strings = StrListFromRefs(self.attacher.References)
             if len(strings) < len(self.refLines):
                 strings.extend(['']*(len(self.refLines) - len(strings)))
             for i in range(len(self.refLines)):
                 self.refLines[i].setText(strings[i])
         finally:
-            self.block = old_selfblock
-        
+                self.block = old_block
+    
     def parseAllRefLines(self):
         self.attacher.References = RefsFromStrList([le.text() for le in self.refLines], self.obj.Document)
     
