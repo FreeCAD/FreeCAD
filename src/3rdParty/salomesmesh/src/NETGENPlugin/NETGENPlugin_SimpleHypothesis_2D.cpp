@@ -1,24 +1,22 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
-//
+
 //  NETGENPlugin : C++ implementation
 // File      : NETGENPlugin_SimpleHypothesis_2D.cxx
 // Author    : Edward AGAPOV
@@ -49,7 +47,8 @@ NETGENPlugin_SimpleHypothesis_2D::NETGENPlugin_SimpleHypothesis_2D (int         
   : SMESH_Hypothesis(hypId, studyId, gen),
     _nbSegments ((int)NETGENPlugin_Hypothesis::GetDefaultNbSegPerEdge()),
     _segmentLength(0),
-    _area       (0.)
+    _area         (0.),
+    _allowQuad    (false)
 {
   _name = "NETGEN_SimpleParameters_2D";
   _param_algo_dim = 2;
@@ -60,10 +59,10 @@ NETGENPlugin_SimpleHypothesis_2D::NETGENPlugin_SimpleHypothesis_2D (int         
  *  
  */
 //=============================================================================
-void NETGENPlugin_SimpleHypothesis_2D::SetNumberOfSegments(int nb) throw (SMESH_Exception)
+void NETGENPlugin_SimpleHypothesis_2D::SetNumberOfSegments(int nb) throw (SALOME_Exception)
 {
   if ( nb < 1 )
-    throw SMESH_Exception("Number of segments must be positive");
+    throw SALOME_Exception("Number of segments must be positive");
   if (nb != _nbSegments)
   {
     _nbSegments = nb;
@@ -78,10 +77,10 @@ void NETGENPlugin_SimpleHypothesis_2D::SetNumberOfSegments(int nb) throw (SMESH_
  */
 //=============================================================================
 void NETGENPlugin_SimpleHypothesis_2D::SetLocalLength(double segmentLength)
-  throw (SMESH_Exception)
+  throw (SALOME_Exception)
 {
   if ( segmentLength < DBL_MIN )
-    throw SMESH_Exception("segment length must be more than zero");
+    throw SALOME_Exception("segment length must be more than zero");
   if (segmentLength != _segmentLength)
   {
     _segmentLength = segmentLength;
@@ -120,6 +119,30 @@ void NETGENPlugin_SimpleHypothesis_2D::SetMaxElementArea(double area)
   }
 }
 
+//=======================================================================
+//function : SetAllowQuadrangles
+//purpose  : Enables/disables generation of quadrangular faces
+//=======================================================================
+
+void NETGENPlugin_SimpleHypothesis_2D::SetAllowQuadrangles(bool toAllow)
+{
+  if ( _allowQuad != toAllow )
+  {
+    _allowQuad = toAllow;
+    NotifySubMeshesHypothesisModification();
+  }
+}
+
+//=======================================================================
+//function : GetAllowQuadrangles
+//purpose  : Returns true if generation of quadrangular faces is enabled
+//=======================================================================
+
+bool NETGENPlugin_SimpleHypothesis_2D::GetAllowQuadrangles() const
+{
+  return _allowQuad;
+}
+
 //=============================================================================
 /*!
  *  
@@ -127,7 +150,7 @@ void NETGENPlugin_SimpleHypothesis_2D::SetMaxElementArea(double area)
 //=============================================================================
 ostream & NETGENPlugin_SimpleHypothesis_2D::SaveTo(ostream & save)
 {
-  save << _nbSegments << " " << _segmentLength << " " << _area;
+  save << _nbSegments << " " << _segmentLength << " " << _area << " " << _allowQuad;
 
   return save;
 }
@@ -142,23 +165,25 @@ istream & NETGENPlugin_SimpleHypothesis_2D::LoadFrom(istream & load)
   bool isOK = true;
   double val;
 
-  isOK = !(load >> val).bad();
+  isOK = (bool)(load >> val);
   if (isOK)
     _nbSegments = (int) val;
   else
     load.clear(ios::badbit | load.rdstate());
 
-  isOK = !(load >> val).bad();
+  isOK = (bool)(load >> val);
   if (isOK)
     _segmentLength = val;
   else
     load.clear(ios::badbit | load.rdstate());
 
-  isOK = !(load >> val).bad();
+  isOK = (bool)(load >> val);
   if (isOK)
     _area = val;
   else
     load.clear(ios::badbit | load.rdstate());
+
+  load >> _allowQuad;
 
   return load;
 }
@@ -221,3 +246,4 @@ bool NETGENPlugin_SimpleHypothesis_2D::SetParametersByDefaults(const TDefaults& 
   _segmentLength = dflts._elemLength;
   return _nbSegments && _segmentLength > 0;
 }
+

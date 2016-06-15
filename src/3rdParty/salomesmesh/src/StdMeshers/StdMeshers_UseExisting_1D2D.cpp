@@ -1,24 +1,22 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
-//
+
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 // File      : StdMeshers_UseExisting_1D2D.cxx
 // Module    : SMESH
@@ -26,6 +24,9 @@
 // Author    : Edward AGAPOV (eap)
 //
 #include "StdMeshers_UseExisting_1D2D.hxx"
+
+#include "SMESH_Mesh.hxx"
+#include "SMESH_subMesh.hxx"
 
 //=======================================================================
 //function : StdMeshers_UseExisting_1D
@@ -58,11 +59,29 @@ bool StdMeshers_UseExisting_1D::CheckHypothesis(SMESH_Mesh& ,
 //purpose  : 
 //=======================================================================
 
-bool StdMeshers_UseExisting_1D::Compute(SMESH_Mesh&, const TopoDS_Shape&)
+bool StdMeshers_UseExisting_1D::Compute(SMESH_Mesh& mesh, const TopoDS_Shape& edge)
 {
-  // This algorithm exists to allow mesh generation by mesh edition functions in TUI mode
+  // This algorithm exists to allow mesh generation by mesh
+  // edition functions in TUI mode
+  mesh.GetSubMesh( edge )->SetIsAlwaysComputed( true );
   return true;
 }
+
+
+//=======================================================================
+//function : Evaluate
+//purpose  : 
+//=======================================================================
+
+bool StdMeshers_UseExisting_1D::Evaluate(SMESH_Mesh&,
+                                         const TopoDS_Shape&,
+                                         MapShapeNbElems&)
+{
+  // This algorithm exists to allow mesh generation by mesh
+  // edition functions in TUI mode
+  return false;
+}
+
 
 //=======================================================================
 //function : StdMeshers_UseExisting_2D
@@ -95,8 +114,25 @@ bool StdMeshers_UseExisting_2D::CheckHypothesis(SMESH_Mesh& ,
 //purpose  : 
 //=======================================================================
 
-bool StdMeshers_UseExisting_2D::Compute(SMESH_Mesh&, const TopoDS_Shape&)
+bool StdMeshers_UseExisting_2D::Compute(SMESH_Mesh& mesh, const TopoDS_Shape& face)
 {
-  // This algorithm exists to allow mesh generation by mesh edition functions in TUI mode
+  // This algorithm exists to allow mesh generation by mesh edition
+  // functions in TUI mode
+  mesh.GetSubMesh( face )->SetIsAlwaysComputed( true );
   return true;
+}
+
+
+//=======================================================================
+//function : Evaluate
+//purpose  : 
+//=======================================================================
+
+bool StdMeshers_UseExisting_2D::Evaluate(SMESH_Mesh&,
+                                         const TopoDS_Shape&,
+                                         MapShapeNbElems&)
+{
+  // This algorithm exists to allow mesh generation by mesh edition
+  // functions in TUI mode
+  return false;
 }

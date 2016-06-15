@@ -8,7 +8,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
 
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -22,6 +21,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -227,7 +227,7 @@ SET(Fem_SRCS
 )
 
 add_library(Fem SHARED ${Fem_SRCS})
-target_link_libraries(Fem ${Fem_LIBS})
+target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 
 
 fc_target_copy_resource(Fem

@@ -6,6 +6,7 @@ endif(MSVC)
 
 if (BUILD_SMESH)
     add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
+    include(${VTK_USE_FILE})
 endif(BUILD_SMESH)
 
 if(BUILD_FEM_NETGEN)

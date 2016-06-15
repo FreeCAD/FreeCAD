@@ -1,31 +1,32 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 #ifndef MED_Utilities_HeaderFile
 #define MED_Utilities_HeaderFile
 
 #include "SMESH_DriverUNV.hxx"
 
-#include <iostream>	
-#include <sstream>	
+#include <iostream>     
+#include <sstream>      
 #include <fstream>
 #include <string>
 #include <stdexcept>
@@ -33,13 +34,17 @@
 #include <cstdlib>
 
 namespace UNV{
+  using namespace std;
+
+  const size_t theMaxLineLen = 82; // 80 for text + 2 for "\r\n"
+
   class MESHDRIVERUNV_EXPORT PrefixPrinter{
     static int myCounter;
   public:
     PrefixPrinter();
     ~PrefixPrinter();
 
-    static std::string GetPrefix();
+    static string GetPrefix();
   };
 
   /**
@@ -51,23 +56,30 @@ namespace UNV{
   {
     assert (in_file.good());
     assert (!ds_name.empty());
-    
+
     std::string olds, news;
-    
-    while(true){
+
+    in_file.seekg(0);
+    while(true)
+    {
       in_file >> olds >> news;
       /*
        * a "-1" followed by a number means the beginning of a dataset
        * stop combing at the end of the file
        */
-      while( ((olds != "-1") || (news == "-1") ) && !in_file.eof() ){	  
-	olds = news;
-	in_file >> news;
+      while( ((olds != "-1") || (news == "-1")))
+      {
+        olds = news;
+        in_file >> news;
+
+        if ( in_file.eof() || in_file.fail() )
+        {
+          in_file.clear();
+          return false;
+        }
       }
-      if(in_file.eof())
-	return false;
       if (news == ds_name)
-	return true;
+        return true;
     }
     // should never end up here
     return false;
@@ -89,7 +101,7 @@ namespace UNV{
     if(position != std::string::npos){
       number.replace(position, 1, "e"); 
     }
-    return std::atof (number.c_str());
+    return atof (number.c_str());
   }
   
   /**
@@ -110,6 +122,24 @@ namespace UNV{
     return (olds == "    -1");
   }
 
+  /*!
+   * \brief reads a whole line
+   *  \param in_stream - source stream
+   *  \param next - if true, first reads the current line up to the end
+   *  which is necessary after reading using >> operator
+   *  \retval std::string - the result line
+   */
+  inline std::string read_line(std::ifstream& in_stream, const bool next=true)
+  {
+    std::string resLine;
+    std::getline( in_stream, resLine );
+    if ( next )
+      std::getline( in_stream, resLine );
+
+    if ( resLine.size() > 0 && resLine[ resLine.size()-1 ] == '\r' )
+      resLine.resize( resLine.size()-1 );
+    return resLine;
+  }
 };
 
 
