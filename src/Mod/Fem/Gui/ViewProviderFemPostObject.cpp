@@ -320,7 +320,8 @@ void ViewProviderFemPostObject::update3D() {
 
     // write out point data if any
     WritePointData(points, normals, tcoords);
-    WriteColorData();
+    bool ResetColorBarRange = true;
+    WriteColorData(ResetColorBarRange);
     WriteTransperency();
 
     // write out polys if any
@@ -343,7 +344,6 @@ void ViewProviderFemPostObject::update3D() {
     }
     else
         m_faces->coordIndex.setNum(0);
-
 
 
     // write out tstrips if any
@@ -437,7 +437,7 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     }
 }
 
-void ViewProviderFemPostObject::WriteColorData() {
+void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
     if(!setupPipeline())
         return;
@@ -461,9 +461,11 @@ void ViewProviderFemPostObject::WriteColorData() {
         component = 0;
 
     //build the lookuptable
-    double range[2];
-    data->GetRange(range, component);
-    m_colorBar->setRange(range[0], range[1]);
+    if (ResetColorBarRange == true) {
+        double range[2];
+        data->GetRange(range, component);
+        m_colorBar->setRange(range[0], range[1]);
+    }
 
     m_material->diffuseColor.startEditing();
 
@@ -522,14 +524,15 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
 
     if(m_blockPropertyChanges)
         return;
-    
+
+    bool ResetColorBarRange = true;
     if(prop == &Field && setupPipeline()) {
         updateProperties();
-        WriteColorData();
+        WriteColorData(ResetColorBarRange);
         WriteTransperency();
     } 
     else if(prop == &VectorMode && setupPipeline()) {
-        WriteColorData();
+        WriteColorData(ResetColorBarRange);
         WriteTransperency();
     }
     else if(prop == &Transperency) {
@@ -613,6 +616,6 @@ void ViewProviderFemPostObject::show(void) {
 
 
 void ViewProviderFemPostObject::OnChange(Base::Subject< int >& rCaller, int rcReason) {
-
-    WriteColorData();
+    bool ResetColorBarRange = false;
+    WriteColorData(ResetColorBarRange);
 }
