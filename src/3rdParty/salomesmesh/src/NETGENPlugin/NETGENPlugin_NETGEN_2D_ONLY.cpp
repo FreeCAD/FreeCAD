@@ -65,7 +65,9 @@ namespace nglib {
 #include <meshing.hpp>
 //#include <meshtype.hpp>
 namespace netgen {
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 5
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
+#elif NETGEN_VERSION == 5
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
@@ -327,7 +329,12 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
   // -------------------------
 
   Ng_Init();
+
+#if NETGEN_VERSION > 5
+  shared_ptr<Mesh> ngMesh = make_shared<Mesh>();
+#else
   netgen::Mesh * ngMesh = new netgen::Mesh ();
+#endif
 
   netgen::OCCGeometry occgeo;
   NETGENPlugin_Mesher::PrepareOCCgeometry( occgeo, F, aMesh );
@@ -337,7 +344,12 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
   vector< const SMDS_MeshNode* > nodeVec;
   problem = AddSegmentsToMesh( *ngMesh, occgeo, wires, helper, nodeVec );
   if ( problem && !problem->IsOK() ) {
-    delete ngMesh; Ng_Exit();
+#if NETGEN_VERSION > 5
+    ngMesh.reset();
+#else
+    delete ngMesh;
+#endif
+    Ng_Exit();
     return error( problem );
   }
 
@@ -384,7 +396,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
 #if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060100
     OCC_CATCH_SIGNALS;
 #endif
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
     err = netgen::OCCGenerateMesh(occgeo, ngMesh,netgen::mparam, startWith, endWith);
 #else
     err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
@@ -450,7 +462,11 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       face = helper.AddFace(nodes[0],nodes[1],nodes[2],nodes[3]);
   }
 
+#if NETGEN_VERSION > 5
+  ngMesh.reset();
+#else
   Ng_DeleteMesh((nglib::Ng_Mesh*)ngMesh);
+#endif
   Ng_Exit();
 
   NETGENPlugin_Mesher::RemoveTmpFiles();

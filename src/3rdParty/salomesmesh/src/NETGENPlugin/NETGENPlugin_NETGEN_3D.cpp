@@ -354,7 +354,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
 
   Ng_Meshing_Parameters Netgen_param;
 
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
   Netgen_param.second_order = Netgen_param2ndOrder;
 #endif
   Netgen_param.fineness = Netgen_paramFine;
@@ -567,7 +567,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh& aMesh,
 
   Ng_Meshing_Parameters Netgen_param;
 
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
   Netgen_param.second_order = Netgen_param2ndOrder;
 #endif
   Netgen_param.fineness = Netgen_paramFine;
