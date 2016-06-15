@@ -1,29 +1,29 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESH : idl implementation based on 'SMESH' unit's classes
 //  File   : StdMeshers_ProjectionSource1D.cxx
 //  Author : Edward AGAPOV
 //  Module : SMESH
-//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_ProjectionSource1D.cxx,v 1.2.2.1 2008/11/27 13:03:50 abd Exp $
 //
 #include "StdMeshers_ProjectionSource1D.hxx"
 
@@ -73,13 +73,13 @@ StdMeshers_ProjectionSource1D::~StdMeshers_ProjectionSource1D()
 //=============================================================================
 
 void StdMeshers_ProjectionSource1D::SetSourceEdge(const TopoDS_Shape& edge)
-  throw ( SMESH_Exception )
+  throw ( SALOME_Exception )
 {
   if ( edge.IsNull() )
-    throw SMESH_Exception(LOCALIZED("Null edge is not allowed"));
+    throw SALOME_Exception(LOCALIZED("Null edge is not allowed"));
 
   if ( edge.ShapeType() != TopAbs_EDGE && edge.ShapeType() != TopAbs_COMPOUND )
-    throw SMESH_Exception(LOCALIZED("Wrong shape type"));
+    throw SALOME_Exception(LOCALIZED("Wrong shape type"));
 
   if ( !_sourceEdge.IsSame( edge ) )
   {
@@ -98,15 +98,15 @@ void StdMeshers_ProjectionSource1D::SetSourceEdge(const TopoDS_Shape& edge)
 
 void StdMeshers_ProjectionSource1D::SetVertexAssociation(const TopoDS_Shape& sourceVertex,
                                                          const TopoDS_Shape& targetVertex)
-  throw ( SMESH_Exception )
+  throw ( SALOME_Exception )
 {
   if ( sourceVertex.IsNull() != targetVertex.IsNull() )
-    throw SMESH_Exception(LOCALIZED("Two or none vertices must be provided"));
+    throw SALOME_Exception(LOCALIZED("Two or none vertices must be provided"));
 
   if ( !sourceVertex.IsNull() ) {
     if ( sourceVertex.ShapeType() != TopAbs_VERTEX ||
          targetVertex.ShapeType() != TopAbs_VERTEX )
-      throw SMESH_Exception(LOCALIZED("Wrong shape type"));
+      throw SALOME_Exception(LOCALIZED("Wrong shape type"));
   }
 
   if ( !_sourceVertex.IsSame( sourceVertex ) ||
@@ -242,3 +242,4 @@ bool StdMeshers_ProjectionSource1D::SetParametersByDefaults(const TDefaults&  /*
 {
   return false;
 }
+

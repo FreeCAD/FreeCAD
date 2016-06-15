@@ -1,0 +1,161 @@
+** This is OCCT 7/Salome 7.7.1 Changelog
+
+** into ImportStep.cpp add missing include file StepRepr_NextAssemblyUsageOccurrence.hxx
+
+** into TopoShape.cpp convertToMatrix call to class functions instead of using internal structure which are undeclared currently
+
+** into CrossSection.h
+	Remove declaration of class TopTools_IndexedMapOfShape;
+
+** into ConePyImp.cpp Code commented
+	68:47: error: no viable conversion from 'const handle<Geom_Geometry>' to
+      'const handle<Geom_ConicalSurface>'
+        const Handle_Geom_ConicalSurface& s = static_cast<const Handle_Geom_ConicalSurface&>
+	use of Handle_Geom_ConicalSurface::DownCast to be compliant with new version of OCC
+
+** into Part and WB in Geometry.h & PrimitiveFeature.cpp & GeometryCurvePyImp.cpp & BSplineCurvePyImp.cpp & BezierSurfacePyImp.cpp & BSplineSurfacePyImp.cpp 
+	& Tools.h & TopoShapeFacePyImp.cpp & AppPartPy.cpp & ImportIges.cpp & ImportStep.cpp & TopoShape.cpp & AppImportPy.cpp & AppReverseEngineering.cpp &
+	ApproxSurface.h DlgPrimitives.cpp ViewProviderExt.cpp DatumPoint.cpp ImportOCAF.h ImportOCAF.cpp FeaturePathShape.cpp AppSketcherPy.cpp
+
+	Remove <Handle_ prefix within include files
+
+** Current compilation platform: MacOS X El Capitan (10.11.3) XCode 7.3
+
+** NETGENPlugin_SimpleHypothesis_3D.cpp NETGENPlugin_SimpleHypothesis_2D.cpp
+	Add bool casting to isOK
+
+** NETGENPlugin_Mesher.cpp
+   WARNING: Comment some code into SetParameters -> look for vejmarie
+   WARNING: At the end of file SALOMEDS is not integrated so disable some code which manage temporary files creation and force TMPDIR to /tmp
+
+** NETGENPlugin_Hypothesis.cpp
+	Add bool casting to isOK
+
+** NETGENPlugin_Mesher.hxx
+	Add #include <TopTools_IndexedMapOfShape.hxx>
+	and remove //// class TopTools_IndexedMapOfShape;
+
+** StdMeshers_QuadrangleParams.cpp & StdMeshers_Reversible1D.cpp & StdMeshers_SegmentLengthAroundVertex.cpp & StdMeshers_StartEndLength.cpp
+	isOK cast to bool
+
+** StdMeshers_Prism_3D.cpp
+	toRemove = quadAlgo->CheckNbEdges( *helper->GetMesh() add bool cast
+
+** StdMeshers_LengthFromEdges.cpp & StdMeshers_LocalLength.cpp & StdMeshers_MaxElementArea.cpp & StdMeshers_MaxElementVolume.cpp &
+** StdMeshers_MaxLength.cpp & StdMeshers_NumberOfLayers.cpp & StdMeshers_NumberOfSegments.cpp
+	cast isOK to bool
+
+** StdMeshers_HexaFromSkin_3D.cpp
+	declare SMESH_Comment      _error; before error function declaration
+
+** StdMeshers_Geometric1D.cpp
+	cast isOK to bool
+
+** StdMeshers_FixedPoints1D.cpp
+	cast isOK to bool
+
+** StdMeshers_Distribution.cpp
+	myVars.ChangeValue( 1 ) = new Expr_NamedUnknown( "t" ); // Expr_NamedUnknown
+	#include <Expr_NamedUnknown.hxx> added
+
+** StdMeshers_Deflection1D.cpp
+	cast isOK to bool
+
+** StdMeshers_CompositeHexa_3D.hxx
+	define list as std::list
+
+** StdMeshers_CartesianParameters3D.cpp
+	cast to bool from ok variable
+
+** StdMeshers_Cartesian_3D.cpp
+	WARNING Cast error removing test
+		1372 and 1412	
+	Add cast to int 3138
+
+** StdMeshers_Adaptive1D.cpp 
+	Casting issue 		bool isOK = (load >> myMinSize >> myMaxSize >> myDeflection >> dummyParam >> dummyParam);
+				bool isOK = (bool)(load >> myMinSize >> myMaxSize >> myDeflection >> dummyParam >> dummyParam);
+** StdMeshers_Arithmetic1D.cpp
+	Casting issue to all isOK variable -> add (bool)
+
+** SMESH_MeshEditor.cpp
+	WARNING 4595: replace isSingleNode.swap by std::swap
+	Add cast in line 8531 int nbNodes[]  = { (int)nSide[0].size(), (int)nSide[1].size() };
+
+** memoire.h include
+	WARNING	<malloc.h> not found on MacOS removed
+		malloc_stat not found on MacOS removed
+
+** SMESH/ 
+	remove SMESH_0D_Algo.cpp SMESH_1D_Algo.cpp SMESH_2D_Algo.cpp SMESH_3D_Algo.cpp
+
+** SMESH_Algo.hxx
+	declare list as std::list
+
+** DriverUNV/
+	remove calls to Kernel_Util into DriverUNV_R_SMDS_Mesh.cpp and DriverUNV_R_SMDS_Mesh.cpp
+
+** DriverSTL/
+	add SMESH_File features
+	remove calls to Kernel_Util into DriverSTL_R_SMDS_Mesh.cpp and DriverSTL_W_SMDS_Mesh.cpp
+
+** SMESHDS/SMESHDS_Command.cpp
+   Fix declaration of function
+	void SMESHDS_Command::AddPolygonalFace (const int        ElementID,
+                                        const std::vector<int>& nodes_ids)
+	void SMESHDS_Command::AddPolyhedralVolume (const int        ElementID,
+                                           const std::vector<int>& nodes_ids,
+                                           const std::vector<int>& quantities)
+	void SMESHDS_Command::ChangePolyhedronNodes (const int ElementID,
+                                             const std::vector<int>& nodes_ids,
+                                             const std::vector<int>& quantities)	
+
+** DriveDAT link error
+	"Kernel_Utils::Localizer::Localizer()", referenced from:
+      DriverDAT_R_SMDS_Mesh::Perform() in DriverDAT_R_SMDS_Mesh.cpp.o
+      DriverDAT_W_SMDS_Mesh::Perform() in DriverDAT_W_SMDS_Mesh.cpp.o
+  	"Kernel_Utils::Localizer::~Localizer()", referenced from:
+      DriverDAT_R_SMDS_Mesh::Perform() in DriverDAT_R_SMDS_Mesh.cpp.o
+      DriverDAT_W_SMDS_Mesh::Perform() in DriverDAT_W_SMDS_Mesh.cpp.o
+	ld: symbol(s) not found for architecture x86_64
+
+	Remove call to Kernel_Utils::Localizer into DriverDAT_R_SMDS_Mesh.cpp and DriverDAT_W_SMDS_Mesh.cpp as well as Kernel_Utils::Localizer::~Localizer
+
+** DriverDAT/DriverDAT_R_SMDS_Mesh.cpp include not found Basics_Utils.hxx as well as SALOME_Basic.hxx
+	File added into the inc directory
+
+** at SMDS link
+	Add Utils_SALOME_Exception.hxx and Utils_SALOME_Exception.cpp into the relevant directory as the code is depending of classes contained
+        into these files
+        Add SALOME_Utils.hxx into the relevant include directory
+        Add duplicate.cpp
+        Add OpUtil.hxx
+
+** In file SMDS/SMDS_Mesh.cpp
+	fatal error: 'sys/sysinfo.h' file not found
+	Add a machine detection to avoid the include
+		#if !(defined(__MACH__) && defined(__APPLE__))
+
+	WARNING: int SMDS_Mesh::CheckMemory(const bool doNotRaise) throw (std::bad_alloc)
+		 is returning always 1000MB available memory. Code to detect available memory through sysctl on MacOS
+		 shall be implemented
+	line 2896: IdSortedIterator(const SMDS_MeshElementIDFactory& fact,
+		   Remove the const declaration as it fails at compilation on MacOS
+
+** In file SMDS/SMDS_MemoryLimit.cpp
+	fatal error: 'sys/sysinfo.h' file not found
+	This is a standalone executable which shouldn't be included into our library	
+	as it is declaring a main entry point. So I removed the file
+
+** In file SMDS/SMDS_BallElement.cpp
+	'Utils_SALOME_Exception.hxx' file not found
+	Add Utils_SALOME_Exception.hxx into src/3rdParty/salomesmesh/inc
+
+** In file SMDS/chrono.cpp
+	The class name is ambiguous chrono::chrono
+	It is currently useless as used for profiling so we removed it
+
+** in file salomesmesh/CMakeList.txt
+	Add VTK support for include and link as OCCT is dependant of VTK now
+	Need to Add hdf5 as a core package either from mac port or homebrew
+

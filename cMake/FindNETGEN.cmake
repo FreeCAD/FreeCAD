@@ -24,8 +24,11 @@ IF(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
     ELSE(DEFINED HOMEBREW_PREFIX)
         SET(NGLIB_PREFIX ${MACPORTS_PREFIX})
     ENDIF(DEFINED HOMEBREW_PREFIX)
+    
+# vejmarie
+#    SET(NGLIB_PREFIX "/opt/netgen")
 
-    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h ${NGLIB_PREFIX}/include)
+    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h ${NGLIB_PREFIX}/include /opt/netgen/include)
 
     FIND_LIBRARY(NGLIB_LIBNGLIB nglib ${NGLIB_PREFIX}/lib)
     FIND_LIBRARY(NGLIB_LIBMESH mesh ${NGLIB_PREFIX}/lib)
@@ -39,8 +42,8 @@ IF(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
     ENDIF(NOT NETGENDATA)
 
 ELSE(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
-    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h /usr/include)
-    FIND_LIBRARY(NGLIB_LIBRARIES nglib /usr/lib /usr/local/lib)
+    FIND_PATH(NGLIB_INCLUDE_DIR nglib.h /usr/include /opt/netgen/include /opt/local/FreeCAD-0.17/include)
+    FIND_LIBRARY(NGLIB_LIBRARIES nglib /usr/lib /usr/local/lib /opt/netgen/lib /opt/local/FreeCAD-0.17/lib)
 
     IF(NOT NETGENDATA)
         SET(NETGENDATA /usr/share/netgen/libsrc)
@@ -62,3 +65,4 @@ LIST( APPEND NETGEN_INCLUDE_DIRS
       ${NETGEN_DIR_gprim} ${NETGEN_DIR_la} ${NETGEN_DIR_mesh}
       ${NETGEN_DIR_occ} ${NETGEN_DIR_stlgeom} )
 
+LIST( APPEND NETGEN_INCLUDE_DIRS )

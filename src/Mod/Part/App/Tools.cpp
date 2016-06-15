@@ -44,6 +44,7 @@
 # include <TColStd_ListIteratorOfListOfTransient.hxx>
 # include <TColgp_SequenceOfXY.hxx>
 # include <TColgp_SequenceOfXYZ.hxx>
+#include <Geom_BSplineSurface.hxx>
 #endif
 
 #include <Base/Vector3D.h>
@@ -184,6 +185,7 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
         //data races in AdvApp2Var used by GeomApprox_Surface, use global mutex
         //Standard_Mutex::Sentry aSentry (theBSMutex);
         GeomPlate_MakeApprox aMakeApprox (aPlate, aCriterion, aTol3d, aMaxSeg, aMaxDeg);
+// vejmarie
         aRes = aMakeApprox.Surface();
     }
 

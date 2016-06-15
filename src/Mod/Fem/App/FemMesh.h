@@ -60,7 +60,7 @@ public:
     FemMesh &operator=(const FemMesh&);
     const SMESH_Mesh* getSMesh() const;
     SMESH_Mesh* getSMesh();
-    SMESH_Gen * getGenerator();
+    static SMESH_Gen * getGenerator();
     void addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp);
     void setStanardHypotheses();
     void compute();
@@ -151,13 +151,12 @@ private:
 private:
     /// positioning matrix
     Base::Matrix4D _Mtrx;
-    SMESH_Gen  *myGen;
+    static SMESH_Gen  *meshGenerator;
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
 };
 
 } //namespace Part
-
 
 #endif // FEM_FEMMESH_H

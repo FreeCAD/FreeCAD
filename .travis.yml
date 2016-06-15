@@ -1,4 +1,5 @@
 ####
+#
 #  Travis-CI configuration file for FreeCAD.
 #
 #  This build configuration will build and test FreeCAD on both Linux
@@ -72,11 +73,6 @@ before_install:
                                libcoin80                        \
                                libcoin80-dev                    \
                                libeigen3-dev                    \
-                               liboce-foundation-dev            \
-                               liboce-modeling-dev              \
-                               liboce-ocaf-dev                  \
-                               liboce-ocaf-lite-dev             \
-                               liboce-visualization-dev         \
                                libpyside-dev                    \
                                libqtcore4                       \
                                libshiboken-dev                  \
@@ -86,9 +82,6 @@ before_install:
                                libxmu6                          \
                                libxmuu-dev                      \
                                libxmuu1                         \
-                               netgen                           \
-                               netgen-headers                   \
-                               oce-draw                         \
                                pyside-tools                     \
                                python-dev                       \
                                python-pyside                    \
@@ -97,14 +90,20 @@ before_install:
                                qt4-qmake                        \
                                shiboken                         \
                                swig
-
+       sudo echo "deb http://ruggedpod.qyshare.com/Webdav/Public/deb trusty universe" >> /etc/apt/sources.list
+       sudo cp linux/sources.list /etc/apt
+       sudo apt-get update
+       sudo apt-get install libhdf5-7 libhdf5-dev
+       sudo apt-get install -y --force-yes Netgen 
+       git clone https://github.com/vejmarie/Netgen
+       sudo cp -rf Netgen/netgen-5.3.1 /usr/share/netgen
        #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
        sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
        CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
-       INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
+       INSTALLED_APP_PATH="/opt/local/FreeCAD-0.17/bin/FreeCAD"
        ;;
 
    "osx")
@@ -114,6 +113,10 @@ before_install:
             cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
             prime_local_ports_cache $cacheContext
        fi
+       brew uninstall oce	   # FreeCAD-ports cache includes oce, remove for OCCT7
+       brew uninstall nglib	   # FreeCAD-ports cache includes netgen/nglib builts agains OCE6
+       brew untap homebrew/science # Untap homebrew/science repo that contains OCCT6 formulae
+       brew tap bblacey/science    # Use forked bblacey/science repo that contains OCCT7 formulae
        brew install eigen                       \
                     freetype                    \
                     qt                          \
@@ -123,11 +126,14 @@ before_install:
                     pyside-tools                \
                     xerces-c                    \
                     orocos-kdl                  \
-                    homebrew/science/oce        \
                     homebrew/python/matplotlib
-       brew install --with-oce homebrew/science/nglib
-       brew install --without-framework --without-soqt sanelson/freecad/coin
-       brew install --HEAD pivy
+       brew install vtk --without-python
+       brew install opencascade  # bblacey/science opencascade formula builds OCCT7
+       brew install nglib --with-opencascade  # bblacey/science builds netgen with vejmarie patches
+       brew install sanelson/freecad/coin --without-framework --without-soqt
+       brew install sanelson/freecad/pivy --HEAD
+       brew install bblacey/taps/med-file --without-python
+
 
        #Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
@@ -153,7 +159,20 @@ install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+- | 
+  if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
+    cat cMake/FindOpenCasCade.cmake | sed 's/\/usr\/local\/share\/cmake\//\/opt\/local\/FreeCAD-0.17\/lib\/cmake/' > /tmp/FindOpenCasCade.cmake
+    cp /tmp/FindOpenCasCade.cmake cMake/FindOpenCasCade.cmake
+    cp cMake/FindOpenCasCade.cmake cMake/FindOPENCASCADE.cmake
+    export PATH=/opt/local/FreeCAD-0.17/bin:$PATH
+    sudo dpkg -l
+    ls -lta /usr/bin/python*
+    ls -lta /opt/python
+    sudo rm -rf /opt/python/*
+    mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/local/FreeCAD-0.17 -DBUILD_FEM=1 -DBUILD_FEM_NETGEN=1 -DCMAKE_CXX_FLAGS="-DNETGEN_V5" ../
+  else
+    mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+  fi
 
 script:
 ####

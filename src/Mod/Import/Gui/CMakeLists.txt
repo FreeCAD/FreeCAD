@@ -4,6 +4,8 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
 
 include_directories(
     ${CMAKE_BINARY_DIR}
@@ -15,6 +17,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${VTK_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})

@@ -39,6 +39,20 @@
 
 #include "FemMeshProperty.h"
 #include "FemMeshPy.h"
+#include <SMESH_Gen.hxx>
+#include <SMESH_Mesh.hxx>
+#include <SMDS_PolyhedralVolumeOfNodes.hxx>
+#include <SMDS_VolumeTool.hxx>
+#include <StdMeshers_MaxLength.hxx>
+#include <StdMeshers_LocalLength.hxx>
+#include <StdMeshers_MaxElementArea.hxx>
+#include <StdMeshers_NumberOfSegments.hxx>
+#include <StdMeshers_Deflection1D.hxx>
+#include <StdMeshers_Regular_1D.hxx>
+#include <StdMeshers_StartEndLength.hxx>
+#include <StdMeshers_QuadranglePreference.hxx>
+#include <StdMeshers_Quadrangle_2D.hxx>
+#include <StdMeshers_QuadraticMesh.hxx>
 
 using namespace Fem;
 

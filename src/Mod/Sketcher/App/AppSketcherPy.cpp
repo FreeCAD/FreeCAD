@@ -26,6 +26,7 @@
 # include <BRepPrimAPI_MakeBox.hxx>
 # include <TopoDS_Face.hxx>
 # include <Geom_Plane.hxx>
+# include <Geom_Plane.hxx>
 #endif
 
 #include <Base/Console.h>
