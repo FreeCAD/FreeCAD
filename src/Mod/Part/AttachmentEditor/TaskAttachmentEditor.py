@@ -56,6 +56,21 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 #--------------------------/translation-related code ----------------------------------------
 
+def linkSubList_convertToOldStyle(references):
+    ("input: [(obj1, (sub1, sub2)), (obj2, (sub1, sub2))]\n"
+    "output: [(obj1, sub1), (obj1, sub2), (obj2, sub1), (obj2, sub2)]")
+    result = []
+    for tup in references:
+        if type(tup[1]) is tuple or type(tup[1]) is list:
+            for subname in tup[1]:
+                result.append((tup[0], subname))
+            if len(tup[1]) == 0:
+                result.append((tup[0], ''))
+        elif isinstance(tup[1],basestring):
+            # old style references, no conversion required
+            result.append(tup)
+    return result
+    
 
 def StrFromLink(feature, subname):
     return feature.Name+ ((':'+subname) if subname else '')
@@ -79,7 +94,8 @@ def LinkFromStr(strlink, document):
 
 def StrListFromRefs(references):
     '''input: PropertyLinkSubList. Output: list of strings for UI.'''
-    return [StrFromLink(feature,subelement) for (feature, subelement) in references]
+    references_oldstyle = linkSubList_convertToOldStyle(references)
+    return [StrFromLink(feature,subelement) for (feature, subelement) in references_oldstyle]
 
 def RefsFromStrList(strings, document):
     '''input: strings as from UI. Output: list of tuples that can be assigned to PropertyLinkSubList.'''
