@@ -44,7 +44,14 @@ class _Precast(ArchComponent.Component):
         obj.addProperty("App::PropertyDistance","Height","Arch","The height of this element")
         obj.addProperty("App::PropertyLinkList","Armatures","Arch","Armatures contained in this element")
         obj.addProperty("App::PropertyVectorList","Nodes","Arch","The structural nodes of this element")
-        self.Type = "Structure"
+        self.Type = "Precast"
+        obj.Role = ["Beam","Column","Panel","Slab"]
+        
+    def getProfile(self,obj,noplacement=True):
+        return []
+        
+    def getExtrusionVector(self,obj,noplacement=True):
+        return FreeCAD.Vector()
 
 
 class _PrecastBeam(_Precast):
@@ -1090,6 +1097,9 @@ def makePrecast(precasttype,length=0,width=0,height=0,slabtype="",chamfer=0,dent
         obj.Height = height
         obj.Chamfer = chamfer
         obj.BeamBase = base
+    else:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Precast")
+        _Precast(obj)
     if FreeCAD.GuiUp:
         _ViewProviderPrecast(obj.ViewObject)
     return obj

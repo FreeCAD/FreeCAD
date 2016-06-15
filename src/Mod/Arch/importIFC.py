@@ -1077,7 +1077,7 @@ def export(exportList,filename):
         if (not ifcprop) and hasattr(obj,"IfcAttributes"):
             if obj.IfcAttributes:
                 ifcprop = True
-                if DEBUG : print("      adding ifc attributes")
+                #if DEBUG : print("      adding ifc attributes")
                 props = []
                 for key in obj.IfcAttributes:
                     if not (key in ["IfcUID","FlagForceBrep"]):

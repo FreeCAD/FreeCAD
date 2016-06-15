@@ -352,6 +352,8 @@ class Component:
 
     def getAxis(self,obj):
         "Returns an open wire which is the axis of this component, if applicable"
+        if Draft.getType(obj) == "Precast":
+            return None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
@@ -378,6 +380,8 @@ class Component:
     def getProfiles(self,obj,noplacement=False):
         "Returns the base profile(s) of this component, if applicable"
         wires = []
+        if Draft.getType(obj) == "Precast":
+            return wires
         n,l,w,h = self.getDefaultValues(obj)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
@@ -477,6 +481,8 @@ class Component:
     def getExtrusionVector(self,obj,noplacement=False):
         "Returns an extrusion vector of this component, if applicable"
         n,l,w,h = self.getDefaultValues(obj)
+        if Draft.getType(obj) == "Precast":
+            return FreeCAD.Vector()
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 return FreeCAD.Vector(obj.Base.Dir)
