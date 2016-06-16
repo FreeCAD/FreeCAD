@@ -18,6 +18,9 @@ if(COMMAND cmake_policy)
     if(POLICY CMP0050)
         cmake_policy(SET CMP0050 OLD)
     endif(POLICY CMP0050)
+    if (POLICY CMP0045)
+        cmake_policy(SET CMP0045 NEW)
+    endif(POLICY CMP0045)
 endif(COMMAND cmake_policy)
 
 # include local  modules
@@ -568,7 +571,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         endif() 
         
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
-            find_package(HDF5 REQUIRED)
+            # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
+            find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
+            #find_package(HDF5 REQUIRED)
             find_package(MEDFile REQUIRED)
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
         else()
