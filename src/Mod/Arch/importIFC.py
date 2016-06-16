@@ -1268,24 +1268,25 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     tostore = False
     
     # check for clones
-    for k,v in clones.items():
-        if (obj.Name == k ) or (obj.Name in v):
-            if k in sharedobjects:
-                # base shape already exists
-                repmap = sharedobjects[k]
-                pla = obj.Placement
-                axis1 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
-                axis2 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
-                axis3 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-                origin = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
-                transf = ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
-                mapitem = ifcfile.createIfcMappedItem(repmap,transf)
-                shapes = [mapitem]
-                solidType = "MappedRepresentation"
-                shapetype = "clone"
-            else:
-                # base shape not yet created
-                tostore = k
+    if not subtraction:
+        for k,v in clones.items():
+            if (obj.Name == k ) or (obj.Name in v):
+                if k in sharedobjects:
+                    # base shape already exists
+                    repmap = sharedobjects[k]
+                    pla = obj.Placement
+                    axis1 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+                    axis2 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
+                    axis3 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+                    origin = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
+                    transf = ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
+                    mapitem = ifcfile.createIfcMappedItem(repmap,transf)
+                    shapes = [mapitem]
+                    solidType = "MappedRepresentation"
+                    shapetype = "clone"
+                else:
+                    # base shape not yet created
+                    tostore = k
 
     if (not shapes) and (not forcebrep):
         profile = None

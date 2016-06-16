@@ -364,7 +364,7 @@ def getCutVolume(cutplane,shapes):
     u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
-        FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
+        #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
         return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
