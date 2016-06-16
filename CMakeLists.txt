@@ -284,6 +284,7 @@ REQUIRES_MODS(BUILD_SHIP               BUILD_PART BUILD_PLOT BUILD_IMAGE)
 REQUIRES_MODS(BUILD_SKETCHER           BUILD_PART)
 REQUIRES_MODS(BUILD_SPREADSHEET        BUILD_DRAFT)
 REQUIRES_MODS(BUILD_START              BUILD_WEB)
+REQUIRES_MODS(BUILD_TECHDRAW           BUILD_PART BUILD_SPREADSHEET)
 
 # ==============================================================================
 
@@ -519,7 +520,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
-    find_package(Boost ${BOOST_MIN_VERSION} 
+    find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS filesystem program_options regex signals system thread REQUIRED)
 
     IF(NOT Boost_FOUND)
@@ -567,7 +568,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         #if we use smesh we definitly also need vtk, no matter of external or internal smesh
         find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
         set(BUILD_FEM_VTK ON)
-        if(${VTK_MAJOR_VERSION} LESS 6) 
+        if(${VTK_MAJOR_VERSION} LESS 6)
             message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
         endif()
         if(${VTK_MAJOR_VERSION} EQUAL 6)
@@ -578,8 +579,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 message(WARNING "VTK <6.0 cannot be used with c++11, FEM postprocessing is disabled")
                 set(BUILD_FEM_VTK OFF)
             endif()
-        endif() 
-        
+        endif()
+
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
             if (WIN32)
@@ -699,7 +700,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(FREECAD_USE_FREETYPE)
 
 #---------------------------------------------------
-        
+
     if(BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 
@@ -985,4 +986,3 @@ if (${CMAKE_BUILD_TOOL} MATCHES "make")
             "Now run 'make' to build ${PACKAGE_NAME}\n"
             "=======================================\n")
 endif()
-
