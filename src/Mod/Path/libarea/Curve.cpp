@@ -888,7 +888,7 @@ double CCurve::PointToPerim(const Point& p)const
 {
 	double best_dist = 0.0;
 	double perim_at_best_dist = 0.0;
-	Point best_point = Point(0, 0);
+	//Point best_point = Point(0, 0);
 	bool best_dist_found = false;
 
 	double perim = 0.0;
