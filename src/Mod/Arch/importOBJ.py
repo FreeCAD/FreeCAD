@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -108,7 +108,9 @@ def export(exportList,filename):
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# http://www.freecadweb.org\n")
     offset = 1
-    for obj in exportList:
+    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Arch.pruneIncluded(objectslist)
+    for obj in objectslist:
         if obj.isDerivedFrom("Part::Feature"):
             if obj.ViewObject.isVisible():
                 vlist,elist,flist = getIndices(obj.Shape,offset)
