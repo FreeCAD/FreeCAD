@@ -16,6 +16,10 @@ if(CMAKE_COMPILER_IS_CLANGXX)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-self-assign -Wno-reorder -Wno-switch-enum -Wno-unknown-pragmas -Wno-logical-op-parentheses -Wno-unused-variable -Wno-unused-function -Wno-overloaded-virtual")
 endif()
 
+if (VTK_OPTIONS)
+    add_definitions(${VTK_OPTIONS})
+endif()
+
 include(${VTK_USE_FILE})
 include_directories(
     src/SMDS
