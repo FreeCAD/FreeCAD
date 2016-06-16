@@ -174,8 +174,6 @@
    </item>
   </layout>
   <zorder>line</zorder>
-  <zorder></zorder>
-  <zorder></zorder>
   <zorder>line_2</zorder>
  </widget>
  <resources/>
