@@ -52,6 +52,11 @@ class _Precast(ArchComponent.Component):
         
     def getExtrusionVector(self,obj,noplacement=True):
         return FreeCAD.Vector()
+        
+    def execute(self,obj):
+        
+        if self.clone(obj):
+            return
 
 
 class _PrecastBeam(_Precast):
@@ -68,6 +73,9 @@ class _PrecastBeam(_Precast):
         obj.Role = ["Beam"]
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
 
         pl = obj.Placement
         length = obj.Length.Value
@@ -168,6 +176,9 @@ class _PrecastIbeam(_Precast):
         obj.Role = ["Beam"]
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
 
         pl = obj.Placement
         length = obj.Length.Value
@@ -220,6 +231,9 @@ class _PrecastPillar(_Precast):
         obj.Role = ["Column"]
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
   
         pl = obj.Placement
         length = obj.Length.Value
@@ -336,6 +350,9 @@ class _PrecastPanel(_Precast):
         obj.Role = ["Plate"]
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
  
         pl = obj.Placement
         length = obj.Length.Value
@@ -432,6 +449,9 @@ class _PrecastSlab(_Precast):
         obj.SlabType = ["Champagne","Hat"]
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
 
         pl = obj.Placement
         slabtype = obj.SlabType
@@ -514,6 +534,9 @@ class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+        if hasattr(self,"Object"):
+            if self.Object.CloneOf:
+                return ":/icons/Arch_Structure_Clone.svg"
         return ":/icons/Arch_Structure_Tree.svg"
         
     def setEdit(self,vobj,mode):
@@ -535,8 +558,8 @@ class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
         import FreeCADGui
         if hasattr(self,"dentd"):
             self.Object.Dents = self.dentd.getValues()
+            del self.dentd
         FreeCADGui.Control.closeDialog()
-        del self.dentd
         return False
 
 
@@ -1042,7 +1065,7 @@ class _DentsTaskPanel:
         return l
         
 
-def makePrecast(precasttype,length=0,width=0,height=0,slabtype="",chamfer=0,dentlength=0,dentwidth=0,dentheight=0,dents=[],base=0,holenumber=0,holemajor=0,holeminor=0,holespacing=0,groovenumber=0,groovedepth=0,grooveheight=0,groovespacing=0):
+def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0,dentlength=0,dentwidth=0,dentheight=0,dents=[],base=0,holenumber=0,holemajor=0,holeminor=0,holespacing=0,groovenumber=0,groovedepth=0,grooveheight=0,groovespacing=0):
     
     "creates one of the precast objects in the current document"
     

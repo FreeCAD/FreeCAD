@@ -2477,6 +2477,7 @@ def clone(obj,delta=None):
         base = getCloneBase(obj[0])
         cl.Label = prefix + base.Label
         cl.CloneOf = base
+        cl.Placement = obj[0].Placement
         return cl
     else:
         cl = FreeCAD.ActiveDocument.addObject("Part::AttachableObjectPython","Clone")
