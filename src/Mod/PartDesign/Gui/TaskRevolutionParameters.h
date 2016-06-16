@@ -89,7 +89,6 @@ protected:
 private:
     void updateUI();
 
-private:
     QWidget* proxy;
     Ui_TaskRevolutionParameters* ui;    
 

@@ -78,7 +78,6 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI(int index);
 
-private:
     QWidget* proxy;
     Ui_TaskPocketParameters* ui;
     double oldLength;
