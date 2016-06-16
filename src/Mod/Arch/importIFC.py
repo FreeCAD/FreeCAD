@@ -1116,32 +1116,75 @@ def export(exportList,filename):
     sites = []
     buildings = []
     floors = []
+    treated = []
+    for floor in Draft.getObjectsOfType(objectslist,"Floor"):
+        objs = Draft.getGroupContents(floor,walls=True)
+        objs = Arch.pruneIncluded(objs)
+        children = []
+        for c in objs:
+            if c.Name in products.keys():
+                if not (c.Name in treated):
+                    children.append(products[c.Name])
+        f = products[floor.Name]
+        if children:
+            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
+        floors.append(floor.Name)
+        for c in children:
+            if not (c.Name in treated):
+                treated.append(c.Name)
+    for building in Draft.getObjectsOfType(objectslist,"Building"):
+        objs = Draft.getGroupContents(building,walls=True)
+        objs = Arch.pruneIncluded(objs)
+        children = []
+        childfloors = []
+        for c in objs:
+            if c.Name in products.keys():
+                if Draft.getType(c) == "Floor":
+                    childfloors.append(products[c.Name])
+                elif not (c.Name in treated):
+                    children.append(products[c.Name])
+        b = products[building.Name]
+        if children:
+            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,b)
+        if childfloors:
+            ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',b,childfloors)
+        buildings.append(b)
+        for c in children+childfloors:
+            if not (c.Name in treated):
+                treated.append(c.Name)
     for site in Draft.getObjectsOfType(objectslist,"Site"):
-        for building in Draft.getObjectsOfType(site.Group,"Building"):
-            for floor in Draft.getObjectsOfType(building.Group,"Floor"):
-                children = Draft.getGroupContents(floor,walls=True)
-                children = Arch.pruneIncluded(children)
-                children = [products[c.Name] for c in children if c.Name in products.keys()]
-                floor = products[floor.Name]
-                ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,floor)
-                floors.append(floor)
-            building = products[building.Name]
-            if floors:
-                ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',building,floors)
-            buildings.append(building)
-        site = products[site.Name]
-        if buildings:
-            ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',site,buildings)
-        sites.append(site)
+        objs = Draft.getGroupContents(site,walls=True)
+        objs = Arch.pruneIncluded(objs)
+        children = []
+        childbuildings = []
+        for c in objs:
+            if c.Name in products.keys():
+                if Draft.getType(c) == "Building":
+                    childbuildings.append(products[c.Name])
+                elif not (c.Name in treated):
+                    children.append(products[c.Name])
+        s = products[site.Name]
+        if children:
+            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,s)
+        sites.append(s)
+        for c in children+childbuildings:
+            if not (c.Name in treated):
+                treated.append(c.Name)
     if not sites:
-        if DEBUG: print "adding default site"
+        if DEBUG: print "No site found. Adding default site"
         sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
     ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'ProjectLink','',project,sites)
     if not buildings:
-        if DEBUG: print "adding default building"
+        if DEBUG: print "No building found. Adding default building"
         buildings = [ifcfile.createIfcBuilding(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Building",'',None,None,None,None,"ELEMENT",None,None,None)]
-        ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
-        ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',products.values(),buildings[0])
+    ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
+    untreated = []
+    for p in products.values():
+        if not(p.Name) in treated:
+            if p.Name != buildings[0].Name:
+                untreated.append(p)
+    if untreated:
+        ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',untreated,buildings[0])
 
     # materials
     materials = {}
@@ -1383,6 +1426,11 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 dataset = fcshape.Shells
                 if DEBUG: print "Warning! object contains no solids"
                 
+            # if this is a clone, place back the shapes in null position
+            if tostore:
+                for shape in dataset:
+                    shape.Placement = FreeCAD.Placement()
+                
             # new ifcopenshell serializer
             from ifcopenshell import geom
             if hasattr(geom,"serialise") and obj.isDerivedFrom("Part::Feature") and SERIALIZE:
@@ -1477,7 +1525,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
             gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
-            pla = FreeCAD.ActiveDocument.getObject(k).Placement
+            pla = FreeCAD.ActiveDocument.getObject(tostore).Placement
             axis1 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             axis2 = ifcfile.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
             origin = ifcfile.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(0.001)))
@@ -1485,7 +1533,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             transf = ifcfile.createIfcCartesianTransformationOperator3D(axis1,axis2,origin,1.0,axis3)
             mapitem = ifcfile.createIfcMappedItem(repmap,transf)
             shapes = [mapitem]
-            sharedobjects[k] = repmap
+            sharedobjects[tostore] = repmap
             solidType = "MappedRepresentation"
 
         # set surface style

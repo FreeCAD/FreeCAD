@@ -716,8 +716,7 @@ class _Window(ArchComponent.Component):
         base = self.processSubShapes(obj,base)
         if base:
             if not base.isNull():
-                if base.Solids:
-                    self.applyShape(obj,base,pl)
+                self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
@@ -746,7 +745,10 @@ class _Window(ArchComponent.Component):
                 width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
             if Draft.isClone(obj,"Window"):
-                orig = obj.Objects[0]
+                if hasattr(obj,"CloneOf"):
+                    orig = obj.CloneOf
+                else:
+                    orig = obj.Objects[0]
                 if orig.Base:
                     base = orig.Base
                 if hasattr(orig,"HoleDepth"):

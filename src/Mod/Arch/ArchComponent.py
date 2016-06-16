@@ -645,7 +645,7 @@ class Component:
                                         print "Arch: unable to cut object ",o.Name, " from ", obj.Name
         return base
 
-    def applyShape(self,obj,shape,placement):
+    def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
         "checks and cleans the given shape, and apply it to the object"
         if shape:
             if not shape.isNull():
@@ -662,8 +662,16 @@ class Component:
                             obj.Placement = placement
                     else:
                         FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
+                        if allownosolid:
+                            obj.Shape = shape
+                            if not placement.isNull():
+                                obj.Placement = placement
                 else:
                     FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
+                    if allowinvalid:
+                        obj.Shape = shape
+                        if not placement.isNull():
+                            obj.Placement = placement
             else:
                 FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has a null shape")+"\n")
 

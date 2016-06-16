@@ -504,6 +504,9 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+        if hasattr(self,"Object"):
+            if self.Object.CloneOf:
+                return ":/icons/Arch_Structure_Clone.svg"
         return ":/icons/Arch_Structure_Tree.svg"
 
     def updateData(self,obj,prop):
