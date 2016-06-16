@@ -45,6 +45,8 @@ namespace TechDrawGui
 
     const double SVGSIZEW = 64.0;                     //width and height of standard FC SVG pattern
     const double SVGSIZEH = 64.0;
+    const std::string  SVGCOLPREFIX = "stroke:";
+    const std::string  SVGCOLDEFAULT = "#000000";
 
 class QGIFace : public QGraphicsPathItem
 {
@@ -71,6 +73,7 @@ public:
     void resetFill(void);
     void setPath(const QPainterPath & path);
     void buildHatch(void);
+    void setHatchColor(std::string c);
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
@@ -88,7 +91,8 @@ protected:
     bool isHighlighted;
     QGCustomRect *m_rect;
     QGCustomSvg *m_svg;
-    QByteArray m_qba;
+    QByteArray m_svgXML;
+    std::string m_svgCol;
 
 private:
     QPen m_pen;
