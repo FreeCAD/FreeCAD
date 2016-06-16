@@ -550,7 +550,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- Salome SMESH --------------------------
 
     # Salome SMESH sources are under src/3rdParty now
-    IF(OCC_FOUND)
+    IF(BUILD_SMESH)
         #if we use smesh we definitly also need vtk, no matter of external or internal smesh
         find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
         set(BUILD_FEM_VTK ON)
@@ -575,13 +575,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(SMESH)
             if(NOT SMESH_FOUND)
                 message(ERROR "================\n"
-                            "SMESH not found.\n"
-                            "================\n")
+                              "SMESH not found.\n"
+                              "================\n")
             endif()
             include_directories(${SMESH_INCLUDE_DIR})
         endif()
         set(SMESH_FOUND TRUE)
-    ENDIF(OCC_FOUND)
+    ENDIF(BUILD_SMESH)
 
 # -------------------------------- Netgen --------------------------------
 
