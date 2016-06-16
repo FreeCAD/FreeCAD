@@ -572,8 +572,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
-            find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
-            #find_package(HDF5 REQUIRED)
+            if (WIN32)
+                find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
+            else()
+                find_package(HDF5 REQUIRED)
+            endif()
             find_package(MEDFile REQUIRED)
             set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
         else()
