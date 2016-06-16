@@ -55,7 +55,7 @@ DrawHatch::DrawHatch(void)
     ADD_PROPERTY_TYPE(DirProjection ,(0,0,1.0)    ,vgroup,App::Prop_None,"Projection direction when Hatch was defined");     //sb RO?
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
     ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
-    ADD_PROPERTY_TYPE(HatchColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the hatch area");
+    ADD_PROPERTY_TYPE(HatchColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the hatch pattern");
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
@@ -90,7 +90,6 @@ void DrawHatch::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawHatch::execute(void)
 {
-    //TODO: need to refresh DrawViewPart to reflect change in hatch
     DrawViewPart* parent = getSourceView();
     if (parent) {
         parent->touch();

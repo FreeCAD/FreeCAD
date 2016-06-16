@@ -103,7 +103,6 @@ void DrawPage::onChanged(const App::Property* prop)
     if (prop == &Template) {
         if (!isRestoring()) {
         //TODO: reload if Template prop changes (ie different Template)
-        Base::Console().Message("TODO: Unimplemented function DrawPage::onChanged(Template)\n");
         }
     } else if (prop == &Views) {
         if (!isRestoring()) {

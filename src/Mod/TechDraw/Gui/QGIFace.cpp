@@ -94,6 +94,8 @@ QGIFace::QGIFace(int index) :
 
     m_rect = new QGCustomRect();
     m_rect->setParentItem(this);
+
+    m_svgCol = SVGCOLDEFAULT;
 }
 
 QGIFace::~QGIFace()
@@ -190,8 +192,8 @@ void QGIFace::setHatch(std::string fileSpec)
         Base::Console().Error("QGIFace could not read %s\n",fileSpec.c_str());
         return;
     }
-    m_qba = f.readAll();
-    if (!m_svg->load(&m_qba)) {
+    m_svgXML = f.readAll();
+    if (!m_svg->load(&m_svgXML)) {
         Base::Console().Error("Error - Could not load hatch into SVG renderer for %s\n", fileSpec.c_str());
         return;
     }
@@ -202,7 +204,7 @@ void QGIFace::setHatch(std::string fileSpec)
 void QGIFace::setPath(const QPainterPath & path)
 {
     QGraphicsPathItem::setPath(path);
-    if (!m_qba.isEmpty()) {
+    if (!m_svgXML.isEmpty()) {
         buildHatch();
     }
 }
@@ -220,18 +222,30 @@ void QGIFace::buildHatch()
     h = nh * SVGSIZEW;
     m_rect->setRect(0.,0.,w,-h);
     m_rect->centerAt(fCenter);
-    QPointF rPos = m_rect->pos();
+    //QPointF rPos = m_rect->pos();
     r = m_rect->rect();
+    QByteArray before,after;
+    before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
+    after.append(QString::fromStdString(SVGCOLPREFIX + m_svgCol));
+    QByteArray colorXML = m_svgXML.replace(before,after);
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
-            if (tile->load(&m_qba)) {
+            if (tile->load(&colorXML)) {
+            //if (tile->load(&m_svgXML)) {
                 tile->setParentItem(m_rect);
                 tile->setPos(iw*SVGSIZEW,-h + ih*SVGSIZEH);
             }
         }
     }
 
+}
+
+//c is a CSS color ie "#000000"
+//set hatch color before building hatch
+void QGIFace::setHatchColor(std::string c)
+{
+    m_svgCol = c;
 }
 
 void QGIFace::resetFill() {

@@ -313,6 +313,8 @@ void QGIViewPart::drawViewPart()
         TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
         if (fHatch) {
             if (!fHatch->HatchPattern.isEmpty()) {
+                App::Color hColor = fHatch->HatchColor.getValue();
+                newFace->setHatchColor(hColor.asCSSString());
                 newFace->setHatch(fHatch->HatchPattern.getValue());
             }
         }
