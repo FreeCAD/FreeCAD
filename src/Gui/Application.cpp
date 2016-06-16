@@ -606,12 +606,13 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             }
 
             std::stringstream str;
-			std::set<App::DocumentObject*> unique_objs;
+            std::set<App::DocumentObject*> unique_objs;
             str << "__objs__=[]" << std::endl;
             for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it) {
-				if (unique_objs.insert(*it).second)
-					str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
-						<< (*it)->getNameInDocument() << "\"))" << std::endl;
+                if (unique_objs.insert(*it).second) {
+                    str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
+                        << (*it)->getNameInDocument() << "\"))" << std::endl;
+                }
             }
 
             str << "import " << Module << std::endl;
