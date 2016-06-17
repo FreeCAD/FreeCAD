@@ -148,6 +148,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
             s.addConstraint(Sketcher.Constraint('DistanceY',1,height)) #16
             s.addConstraint(Sketcher.Constraint('DistanceX',0,width)) #17
+            s.renameConstraint(16, 'Height')
+            s.renameConstraint(17, 'Width')
             s.addConstraint(Sketcher.Constraint('DistanceY',6,2,2,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',2,2,6,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
@@ -167,6 +169,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
             s.addConstraint(Sketcher.Constraint('DistanceY',1,height)) #16
             s.addConstraint(Sketcher.Constraint('DistanceX',0,width)) #17
+            s.renameConstraint(16, 'Height')
+            s.renameConstraint(17, 'Width')
             s.addConstraint(Sketcher.Constraint('DistanceY',6,2,2,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',2,2,6,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
@@ -360,6 +364,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 FreeCAD.ActiveDocument.recompute()
             obj = makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
+            obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:
                 obj.Role = "Door"
             FreeCAD.ActiveDocument.recompute()
@@ -645,9 +650,17 @@ class _Window(ArchComponent.Component):
                     if obj.Base:
                         try:
                             if prop == "Height":
-                                obj.Base.setDatum(16,obj.Height.Value)
+                                if obj.Height.Value > 0:
+                                    try:
+                                        obj.Base.setDatum("Height",obj.Height.Value)
+                                    except:
+                                        obj.Base.setDatum(16,obj.Height.Value)
                             elif prop == "Width":
-                                obj.Base.setDatum(17,obj.Width.Value)
+                                if obj.Width.Value > 0:
+                                    try:
+                                        obj.Base.setDatum("Width",obj.Width.Value)
+                                    except:
+                                        obj.Base.setDatum(17,obj.Width.Value)
                         except:
                             # restoring constraints when loading a file fails
                             # because of load order, but it doesn't harm...
