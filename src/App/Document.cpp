@@ -71,10 +71,10 @@ recompute path. Also enables more complicated dependencies beyond trees.
 
 
 #include "Document.h"
-#include "DocumentPy.h"
 #include "Application.h"
 #include "DocumentObject.h"
 #include "MergeDocuments.h"
+#include <App/DocumentPy.h>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -135,10 +135,7 @@ struct DocumentP
     std::map<std::string,DocumentObject*> objectMap;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
-    Transaction *activeTransaction; ///< FIXME: has no effect (2015-09-01, Fat-Zer)
     int iTransactionMode;
-    int iTransactionCount;
-    std::map<int,Transaction*> mTransactions;
     std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
     bool undoing; ///< document in the middle of undo or redo
@@ -153,9 +150,7 @@ struct DocumentP
     DocumentP() {
         activeObject = 0;
         activeUndoTransaction = 0;
-        activeTransaction = 0;
         iTransactionMode = 0;
-        iTransactionCount = 0;
         rollback = false;
         undoing = false;
         closable = true;
@@ -833,66 +828,13 @@ void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property 
 
 void Document::onChangedProperty(const DocumentObject *Who, const Property *What)
 {
-    if (d->activeTransaction && !d->rollback)
-        d->activeTransaction->addObjectChange(Who,What);
     signalChangedObject(*Who, *What);
 }
 
 void Document::setTransactionMode(int iMode)
 {
-    /*  if(_iTransactionMode == 0 && iMode == 1)
-        beginTransaction();
-
-      if(activTransaction && iMode == 0)
-        endTransaction();
-      */
     d->iTransactionMode = iMode;
 }
-
-#if 0
-/// starts a new transaction
-int  Document::beginTransaction(void)
-{
-    if (activTransaction)
-        endTransaction();
-
-    iTransactionCount++;
-
-    activTransaction = new Transaction(iTransactionCount);
-    d->mTransactions[iTransactionCount] = activTransaction;
-
-    return iTransactionCount;
-}
-
-/// revert all changes to the document since beginTransaction()
-void Document::rollbackTransaction(void)
-{
-    // ToDo
-    assert(0);
-    endTransaction();
-}
-
-/// ends the open Transaction
-int  Document::endTransaction(void)
-{
-    activTransaction = 0;
-    return iTransactionCount;
-}
-
-/// returns the named Transaction
-const Transaction *Document::getTransaction(int pos) const
-{
-    if (pos == -1)
-        return activTransaction;
-    else {
-        std::map<int,Transaction*>::const_iterator Pos(d->mTransactions.find(pos));
-        if (Pos != d->mTransactions.end())
-            return Pos->second;
-        else
-            return 0;
-    }
-}
-#endif
 
 //--------------------------------------------------------------------------
 // constructor
@@ -1962,9 +1904,6 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     // do no transactions if we do a rollback!
     if (!d->rollback) {
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
@@ -2014,9 +1953,6 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // do no transactions if we do a rollback!
     if (!d->rollback) {
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
@@ -2056,9 +1992,6 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // do no transactions if we do a rollback!
     if(!d->rollback){
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
@@ -2112,12 +2045,7 @@ void Document::remObject(const char* sName)
     }
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectDel(pos->second);
-
+    if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction) {
             // in this case transaction delete or save the object
@@ -2171,10 +2099,6 @@ void Document::_remObject(DocumentObject* pcObject)
 
     // do no transactions if we do a rollback!
     if(!d->rollback){
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectDel(pcObject);
-
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectNew(pcObject);
