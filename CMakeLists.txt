@@ -750,8 +750,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- Shiboken/PySide ------------------------
 
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
-        SET(PYTHON_SUFFIX "" CACHE STRING "if not default python version is used: <ShibokenConfigPYTHON_BASENAME.cmake>")
-        SET(PYTHON_BASENAME "" CACHE STRING "if not default python version is used: <PySideConfigPYTHON_SUFFIX.cmake>")
+        # below are two variables that can be left empty for standard python, but must be set by the user for different python versions such as 3.5
+        SET(PYTHON_SUFFIX "" CACHE STRING "Shiboken cmake file sufix. If left empty, system default python version will be used: <ShibokenConfigPYTHON_SUFFIX.cmake>")
+        SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. if left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
 
         if(DEFINED MACPORTS_PREFIX)
             find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
