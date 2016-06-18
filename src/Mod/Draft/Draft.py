@@ -2754,12 +2754,12 @@ def upgrade(objects,delete=False,force=None):
         """makes a shell with the given objects"""
         faces = []
         for obj in objectslist:
-            faces.append(obj.Shape.Faces)
+            faces.extend(obj.Shape.Faces)
         sh = Part.makeShell(faces)
         if sh:
             if sh.Faces:
-                newob = FreeCAD.ActiveDocument.addObject("Part::Feature","Shell")
-                newob.Shape = sh
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Shell")
+                newobj.Shape = sh
                 addList.append(newobj)
                 deleteList.extend(objectslist)
                 return newobj
