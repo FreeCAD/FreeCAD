@@ -106,6 +106,7 @@
 #include "MaterialObject.h"
 #include "MaterialPy.h"
 #include "Expression.h"
+#include "Transactions.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -1133,6 +1134,7 @@ void Application::initTypes(void)
     App ::PropertyExpressionEngine  ::init();
 
     // Document classes
+    App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
     App ::GeoFeature                ::init();
     App ::FeatureTest               ::init();
@@ -1173,6 +1175,9 @@ void Application::initTypes(void)
     App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
 
+    // register transaction type
+    new App::TransactionProducer<TransactionDocumentObject>
+            (DocumentObject::getClassTypeId());
 }
 
 void Application::initConfig(int argc, char ** argv)
