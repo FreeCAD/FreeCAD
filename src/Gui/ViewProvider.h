@@ -30,6 +30,9 @@
 #include <QIcon>
 #include <boost/signals.hpp>
 
+#include <App/TransactionalObject.h>
+#include <Base/Vector3D.h>
+
 class SbVec2s;
 class SbVec3f;
 class SoNode;
@@ -56,9 +59,6 @@ namespace App {
 
 class SoGroup;
 
-#include <App/PropertyContainer.h>
-#include <Base/Vector3D.h>
-
 
 namespace Gui {
     namespace TaskView {
@@ -77,7 +77,7 @@ class ObjectItem;
   * have to be implemented for any object type in order to 
   * show them in the 3DView and TreeView.
   */
-class GuiExport ViewProvider : public App::PropertyContainer
+class GuiExport ViewProvider : public App::TransactionalObject
 {
     PROPERTY_HEADER(Gui::ViewProvider);
 
@@ -212,6 +212,17 @@ public:
 
     std::string toString() const;
     PyObject* getPyObject();
+
+    /** @name Transaction handling
+     */
+    //@{
+    virtual bool isAttachedToDocument() const {
+        return false;
+    }
+    virtual const char* detachFromDocument() {
+        return 0;
+    }
+    //@}
 
     /** @name Display mode methods 
      */

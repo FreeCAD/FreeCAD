@@ -60,7 +60,7 @@ using namespace Gui;
 // ViewProvider
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
+PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
     : pcAnnotation(0)

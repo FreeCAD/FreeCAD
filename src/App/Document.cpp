@@ -820,7 +820,7 @@ void Document::onChanged(const Property* prop)
     }
 }
 
-void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property *What)
+void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Property *What)
 {
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
@@ -2050,8 +2050,6 @@ void Document::remObject(const char* sName)
         if (d->activeUndoTransaction) {
             // in this case transaction delete or save the object
             d->activeUndoTransaction->addObjectNew(pos->second);
-            // set name cache false
-            //pos->second->pcNameInDocument = 0;
         }
         else
             // if not saved in undo -> delete object
@@ -2092,21 +2090,19 @@ void Document::_remObject(DocumentObject* pcObject)
     pcObject->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
 
     //remove the tip if needed
-    if(Tip.getValue() == pcObject) {
+    if (Tip.getValue() == pcObject) {
         Tip.setValue(nullptr);
         TipName.setValue("");
     }
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
+    if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectNew(pcObject);
     }
     // remove from map
     d->objectMap.erase(pos);
-    //// set name cache false
-    //pcObject->pcNameInDocument = 0;
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if (*it == pcObject) {

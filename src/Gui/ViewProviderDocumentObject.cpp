@@ -42,7 +42,7 @@
 #include "MDIView.h"
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectPy.h"
+#include <Gui/ViewProviderDocumentObjectPy.h>
 
 
 using namespace Gui;
@@ -77,6 +77,28 @@ void ViewProviderDocumentObject::startRestoring()
 
 void ViewProviderDocumentObject::finishRestoring()
 {
+}
+
+bool ViewProviderDocumentObject::isAttachedToDocument() const
+{
+    App::DocumentObject* obj = getObject();
+    bool ok = obj ? obj->isAttachedToDocument() : false;
+    return ok;
+}
+
+const char* ViewProviderDocumentObject::detachFromDocument()
+{
+    App::DocumentObject* obj = getObject();
+    return obj ? obj->getNameInDocument() : 0;
+}
+
+void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
+{
+    App::DocumentObject* obj = getObject();
+    App::Document* doc = obj ? obj->getDocument() : 0;
+    if (doc) {
+        onBeforeChangeProperty(doc, prop);
+    }
 }
 
 void ViewProviderDocumentObject::onChanged(const App::Property* prop)

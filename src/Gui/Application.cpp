@@ -88,6 +88,7 @@
 #include "SpaceballEvent.h"
 #include "Control.h"
 #include "DocumentRecovery.h"
+#include "TransactionObject.h"
 #include "TaskView/TaskView.h"
 
 #include "SplitView3DInventor.h"
@@ -1563,6 +1564,10 @@ void Application::initTypes(void)
     Gui::PythonBaseWorkbench                    ::init();
     Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
+
+    // register transaction type
+    new App::TransactionProducer<TransactionViewProvider>
+            (ViewProviderDocumentObject::getClassTypeId());
 }
 
 void Application::runApplication(void)

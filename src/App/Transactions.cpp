@@ -61,7 +61,7 @@ Transaction::Transaction(int pos)
  */
 Transaction::~Transaction()
 {
-    std::map<const DocumentObject*,TransactionObject*>::iterator It;
+    std::map<const TransactionalObject*, TransactionObject*>::iterator It;
     for (It= _Objects.begin();It!=_Objects.end();++It) {
         if (It->second->status == TransactionObject::New) {
             // If an object has been removed from the document the transaction
@@ -74,7 +74,8 @@ Transaction::~Transaction()
             // is still not part of the document the object must be destroyed not
             // to cause a memory leak. This usually is the case when the removal
             // of an object is not undone or when an addition is undone.
-            if (!It->first->pcNameInDocument) {
+
+            if (!It->first->isAttachedToDocument()) {
                 delete It->first;
             }
         }
@@ -102,9 +103,9 @@ int Transaction::getPos(void) const
     return iPos;
 }
 
-bool Transaction::hasObject(DocumentObject *Obj) const
+bool Transaction::hasObject(const TransactionalObject *Obj) const
 {
-    std::map<const DocumentObject*,TransactionObject*>::const_iterator it;
+    std::map<const TransactionalObject*, TransactionObject*>::const_iterator it;
     it = _Objects.find(Obj);
     return (it != _Objects.end());
 }
@@ -115,20 +116,20 @@ bool Transaction::hasObject(DocumentObject *Obj) const
 
 void Transaction::apply(Document &Doc, bool forward)
 {
-    std::map<const DocumentObject*,TransactionObject*>::iterator It;
+    std::map<const TransactionalObject*, TransactionObject*>::iterator It;
     //for (It= _Objects.begin();It!=_Objects.end();++It)
     //    It->second->apply(Doc,const_cast<DocumentObject*>(It->first));
     for (It= _Objects.begin();It!=_Objects.end();++It)
-        It->second->applyDel(Doc,const_cast<DocumentObject*>(It->first));
+        It->second->applyDel(Doc, const_cast<TransactionalObject*>(It->first));
     for (It= _Objects.begin();It!=_Objects.end();++It)
-        It->second->applyNew(Doc,const_cast<DocumentObject*>(It->first));
+        It->second->applyNew(Doc, const_cast<TransactionalObject*>(It->first));
     for (It= _Objects.begin();It!=_Objects.end();++It)
-        It->second->applyChn(Doc,const_cast<DocumentObject*>(It->first),forward);
+        It->second->applyChn(Doc, const_cast<TransactionalObject*>(It->first), forward);
 }
 
-void Transaction::addObjectNew(DocumentObject *Obj)
+void Transaction::addObjectNew(TransactionalObject *Obj)
 {
-    std::map<const DocumentObject*,TransactionObject*>::iterator pos = _Objects.find(Obj);
+    std::map<const TransactionalObject*, TransactionObject*>::iterator pos = _Objects.find(Obj);
 
     if (pos != _Objects.end()) {
         if (pos->second->status == TransactionObject::Del) {
@@ -138,22 +139,20 @@ void Transaction::addObjectNew(DocumentObject *Obj)
         }
         else {
             pos->second->status = TransactionObject::New;
-            pos->second->_NameInDocument = Obj->getNameInDocument();
-            Obj->pcNameInDocument = 0;
+            pos->second->_NameInDocument = Obj->detachFromDocument();
         }
     }
     else {
-        TransactionObject *To = new TransactionObject(Obj,Obj->getNameInDocument());
-        _Objects[Obj] = To;
-        // set name cache false
-        Obj->pcNameInDocument = 0;
+        TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         To->status = TransactionObject::New;
+        To->_NameInDocument = Obj->detachFromDocument();
+        _Objects[Obj] = To;
     }
 }
 
-void Transaction::addObjectDel(const DocumentObject *Obj)
+void Transaction::addObjectDel(const TransactionalObject *Obj)
 {
-    std::map<const DocumentObject*,TransactionObject*>::iterator pos = _Objects.find(Obj);
+    std::map<const TransactionalObject*, TransactionObject*>::iterator pos = _Objects.find(Obj);
 
     // is it created in this transaction ?
     if (pos != _Objects.end() && pos->second->status == TransactionObject::New) {
@@ -165,22 +164,22 @@ void Transaction::addObjectDel(const DocumentObject *Obj)
         pos->second->status = TransactionObject::Del;
     }
     else {
-        TransactionObject *To = new TransactionObject(Obj);
+        TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         _Objects[Obj] = To;
         To->status = TransactionObject::Del;
     }
 }
 
-void Transaction::addObjectChange(const DocumentObject *Obj,const Property *Prop)
+void Transaction::addObjectChange(const TransactionalObject *Obj, const Property *Prop)
 {
-    std::map<const DocumentObject*,TransactionObject*>::iterator pos = _Objects.find(Obj);
+    std::map<const TransactionalObject*, TransactionObject*>::iterator pos = _Objects.find(Obj);
     TransactionObject *To;
 
     if (pos != _Objects.end()) {
         To = pos->second;
     }
     else {
-        To = new TransactionObject(Obj);
+        To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         _Objects[Obj] = To;
         To->status = TransactionObject::Chn;
     }
@@ -203,11 +202,9 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence);
  * A constructor.
  * A more elaborate description of the constructor.
  */
-TransactionObject::TransactionObject(const DocumentObject * /*pcObj*/,const char *NameInDocument)
+TransactionObject::TransactionObject()
   : status(New)
 {
-    if (NameInDocument)
-        _NameInDocument=NameInDocument;
 }
 
 /**
@@ -221,22 +218,15 @@ TransactionObject::~TransactionObject()
         delete It->second;
 }
 
-void TransactionObject::applyDel(Document &Doc, DocumentObject *pcObj)
+void TransactionObject::applyDel(Document &Doc, TransactionalObject *pcObj)
 {
-    if (status == Del) {
-        // simply filling in the saved object
-        Doc._remObject(pcObj);
-    }
 }
 
-void TransactionObject::applyNew(Document &Doc, DocumentObject *pcObj)
+void TransactionObject::applyNew(Document &Doc, TransactionalObject *pcObj)
 {
-    if (status == New) {
-        Doc._addObject(pcObj,_NameInDocument.c_str());
-    }
 }
 
-void TransactionObject::applyChn(Document & /*Doc*/, DocumentObject * /*pcObj*/,bool Forward)
+void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject * /*pcObj*/, bool Forward)
 {
     if (status == New || status == Chn) {
         // apply changes if any
@@ -257,7 +247,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, DocumentObject * /*pcObj*/,
 
 void TransactionObject::setProperty(const Property* pcProp)
 {
-    std::map<const Property*,Property*>::iterator pos = _PropChangeMap.find(pcProp);
+    std::map<const Property*, Property*>::iterator pos = _PropChangeMap.find(pcProp);
     if (pos == _PropChangeMap.end())
         _PropChangeMap[pcProp] = pcProp->Copy();
 }
@@ -275,4 +265,88 @@ void TransactionObject::Save (Base::Writer &/*writer*/) const
 void TransactionObject::Restore(Base::XMLReader &/*reader*/)
 {
     assert(0);
+}
+
+//**************************************************************************
+//**************************************************************************
+// TransactionDocumentObject
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionDocumentObject, App::TransactionObject);
+
+//**************************************************************************
+// Construction/Destruction
+
+/**
+ * A constructor.
+ * A more elaborate description of the constructor.
+ */
+TransactionDocumentObject::TransactionDocumentObject()
+{
+}
+
+/**
+ * A destructor.
+ * A more elaborate description of the destructor.
+ */
+TransactionDocumentObject::~TransactionDocumentObject()
+{
+}
+
+void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcObj)
+{
+    if (status == Del) {
+        // simply filling in the saved object
+        DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
+        Doc._remObject(obj);
+    }
+}
+
+void TransactionDocumentObject::applyNew(Document &Doc, TransactionalObject *pcObj)
+{
+    if (status == New) {
+        DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
+        Doc._addObject(obj, _NameInDocument.c_str());
+    }
+}
+
+//**************************************************************************
+//**************************************************************************
+// TransactionFactory
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+App::TransactionFactory* App::TransactionFactory::self = nullptr;
+
+TransactionFactory& TransactionFactory::instance()
+{
+    if (self == nullptr)
+        self = new TransactionFactory;
+    return *self;
+}
+
+void TransactionFactory::destruct()
+{
+    delete self;
+    self = nullptr;
+}
+
+void TransactionFactory::addProducer (const Base::Type& type, Base::AbstractProducer *producer)
+{
+    producers[type] = producer;
+}
+
+/**
+ * Creates a transaction object for the given type id.
+ */
+TransactionObject* TransactionFactory::createTransaction (const Base::Type& type) const
+{
+    std::map<Base::Type, Base::AbstractProducer*>::const_iterator it;
+    for (it = producers.begin(); it != producers.end(); ++it) {
+        if (type.isDerivedFrom(it->first)) {
+            return static_cast<TransactionObject*>(it->second->Produce());
+        }
+    }
+
+    assert(0);
+    return nullptr;
 }
