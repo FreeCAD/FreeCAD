@@ -240,6 +240,16 @@ def convert(toolpath, Z=0.0, PlungeAngle=90.0, Zprevious=None, StopLength=None, 
                 endpt = arcstartpt
             center = edge.Curve.Center
             relcenter = center.sub(lastpt)
+
+            # start point and end point fall together in the given output precision?
+            if fmt(startpt.x) == fmt(endpt.x) and fmt(startpt.y) == fmt(endpt.y):
+                if edge.Length < 0.5 * 2 * math.pi * edge.Curve.Radius:
+                    # because it is a very small circle -> omit, as that gcode would produce a full circle
+                    return endpt, ""
+                else:
+                    # it is an actual full circle, emit a line for this
+                    pass
+
             # FreeCAD.Console.PrintMessage("arc  startpt= " + str(startpt)+ "\n")
             # FreeCAD.Console.PrintMessage("arc  midpt= " + str(midpt)+ "\n")
             # FreeCAD.Console.PrintMessage("arc  endpt= " + str(endpt)+ "\n")
