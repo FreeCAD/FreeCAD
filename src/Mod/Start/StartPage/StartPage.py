@@ -44,9 +44,9 @@ def translate(context,text):
     for i in u:
         if sys.version_info.major > 2: #below only works correctly in python3
             if i == 39:
-                s.write(unicode("\\'"))
+                s.write("\\'")
             else:
-                s.write(unicode(chr(i)))
+                s.write(chr(i))
         else:
             if ord(i) == 39:
                 s.write(unicode("\\'"))
