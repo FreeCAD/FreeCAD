@@ -4476,7 +4476,8 @@ namespace SketcherGui {
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
             sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier);
-            
+
+            this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
             if (!sketch->isExternalAllowed(pDoc, pObj, &msg)){
                 switch(msg){
@@ -4486,8 +4487,11 @@ namespace SketcherGui {
                 case Sketcher::SketchObject::rlOtherDoc:
                     this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
                     break;
+                case Sketcher::SketchObject::rlOtherBody:
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another body, can't link. Hold Ctrl to allow crossreferences.");
+                    break;
                 case Sketcher::SketchObject::rlOtherPart:
-                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another part or body, can't link. Hold Ctrl to allow crossreferences.");
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another part, can't link.");
                     break;
                 default:
                     break;

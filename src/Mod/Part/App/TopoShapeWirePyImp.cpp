@@ -26,6 +26,7 @@
 # include <Approx_Curve3d.hxx>
 # include <ShapeAlgo_AlgoContainer.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
+# include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
 # include <Precision.hxx>
@@ -225,6 +226,11 @@ PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&dist))
         return 0;
     const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->_Shape);
+    BRepBuilderAPI_FindPlane findPlane(w);
+    if (!findPlane.Found()) {
+        PyErr_SetString(PartExceptionOCCError, "No planar wire");
+        return 0;
+    }
 
     BRepOffsetAPI_MakeOffset mkOffset(w);
     mkOffset.Perform(dist);

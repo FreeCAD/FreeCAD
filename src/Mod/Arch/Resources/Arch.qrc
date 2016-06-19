@@ -21,6 +21,7 @@
         <file>icons/Arch_SectionPlane_Tree.svg</file>
         <file>icons/Arch_Site_Tree.svg</file>
         <file>icons/Arch_Structure_Tree.svg</file>
+        <file>icons/Arch_Structure_Clone.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>
         <file>icons/Arch_Axis.svg</file>
         <file>icons/Arch_Axis_Tree.svg</file>
@@ -70,6 +71,12 @@
         <file>ui/ParametersWindowStash.svg</file>
         <file>ui/ParametersDoorSimple.svg</file>
         <file>ui/ParametersDoorGlass.svg</file>
+        <file>ui/ParametersBeam.svg</file>
+        <file>ui/ParametersPillar.svg</file>
+        <file>ui/ParametersDent.svg</file>
+        <file>ui/ParametersPanel.svg</file>
+        <file>ui/ParametersSlab.svg</file>
+        <file>ui/ParametersIbeam.svg</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
         <file>translations/Arch_fi.qm</file>

@@ -79,6 +79,14 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool newObj, Q
     // Temporarily prevent unnecessary feature recomputes
     for(QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(true);
+    
+    //add the profiles
+    for(auto obj : static_cast<PartDesign::Loft*>(LoftView->getObject())->Sections.getValues()) {
+    
+        QString objn = QString::fromLatin1(obj->getNameInDocument());
+        if(!objn.isEmpty())
+            ui->listWidgetReferences->addItem(objn);
+    }        
 
     // activate and de-activate dialog elements as appropriate
     for(QWidget* child : proxy->findChildren<QWidget*>())

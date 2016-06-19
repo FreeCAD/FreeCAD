@@ -31,6 +31,12 @@ import FreeCAD
 
 FreeCAD.addExportType("TetGen file (*.poly)", "convert2TetGen")
 FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)", "Fem")
+if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
+    FreeCAD.addImportType("FEM results (*.vtk *.vtp *.vts *.vtr *.vtu *.vti)", "Fem")
+
 FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)", "Fem")
 FreeCAD.addImportType("CalculiX result (*.frd)", "ccxFrdReader")
 FreeCAD.addImportType("Abaqus file (*.inp)", "FemGui")
+FreeCAD.addImportType("Z88 mesh file (*.txt)", "importZ88Mesh")
+FreeCAD.addExportType("Z88 mesh file (*.txt)", "importZ88Mesh")
+FreeCAD.addImportType("Z88 displacement result file (*.txt)", "z88DispReader")

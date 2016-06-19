@@ -24,10 +24,13 @@ SET(WebGui_SRCS
     Workbench.h
     BrowserView.h
     BrowserView.cpp
+    CookieJar.cpp
+    CookieJar.h
 )
 
 set(WebGui_MOC_HDRS
     BrowserView.h
+    CookieJar.h
 )
 fc_wrap_cpp(WebGui_MOC_SRCS ${WebGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SketcherGui_MOC_SRCS})

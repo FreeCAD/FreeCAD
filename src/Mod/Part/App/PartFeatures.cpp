@@ -41,7 +41,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
-# include <Handle_Adaptor3d_HCurve.hxx>
+# include <Adaptor3d_HCurve.hxx>
 #endif
 
 
@@ -548,6 +548,8 @@ Thickness::Thickness()
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
     Join.setEnums(JoinEnums);
+    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Intersection");
+    ADD_PROPERTY_TYPE(SelfIntersection,(false),"Thickness",App::Prop_None,"Self Intersection");
 }
 
 short Thickness::mustExecute() const

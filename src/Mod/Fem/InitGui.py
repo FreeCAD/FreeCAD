@@ -46,16 +46,18 @@ class FemWorkbench (Workbench):
         import Fem
         import FemGui
 
-        import _CommandMechanicalShowResult
-        import _CommandQuickAnalysis
-        import _CommandPurgeFemResults
-        import _CommandSolverJobControl
-        import _CommandFemFromShape
-        import _CommandNewMechanicalAnalysis
-        import _CommandFemShellThickness
-        import _CommandFemBeamSection
+        import _CommandShowResult
+        import _CommandRunSolver
+        import _CommandPurgeResults
+        import _CommandControlSolver
+
+        import _CommandMeshFromShape
+        import _CommandAnalysis
+        import _CommandShellThickness
+        import _CommandBeamSection
         import _CommandMechanicalMaterial
-        import _CommandFemSolverCalculix
+        import _CommandSolverCalculix
+        import _CommandSolverZ88
 
         import subprocess
         from platform import system

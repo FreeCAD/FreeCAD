@@ -302,7 +302,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        this->Shape.setValue(shape);
+        this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {

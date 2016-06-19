@@ -1,31 +1,6 @@
 // AreaClipper.cpp
+
 // implements CArea methods using Angus Johnson's "Clipper"
-
-/*==============================
-Copyright (c) 2011-2015 Dan Heeks
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
 
 #include "Area.h"
 #include "clipper.hpp"
@@ -134,34 +109,6 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 	}
 }
 
-#if 0
-static bool IsPolygonClockwise(const TPolygon& p)
-{
-#if 1
-	double area = 0.0;
-	std::size_t s = p.size();
-	for(std::size_t i = 0; i<s; i++)
-	{
-		std::size_t im1;
-		if (i == 0)
-			im1 = s - 1;
-		else
-			im1 = i - 1;
-
-		DoubleAreaPoint pt0(p[im1]);
-		DoubleAreaPoint pt1(p[i]);
-
-		area += 0.5 * (pt1.X - pt0.X) * (pt0.Y + pt1.Y);
-	}
-
-	return area > 0.0;
-#else
-	return IsClockwise(p);
-#endif
-}
-#endif
-
-
 static void MakeLoop(const DoubleAreaPoint &pt0, const DoubleAreaPoint &pt1, const DoubleAreaPoint &pt2, double radius)
 {
 	Point p0(pt0.X, pt0.Y);
@@ -230,7 +177,7 @@ static void OffsetWithLoops(const TPolyPolygon &pp, TPolyPolygon &pp_new, double
 			{
 				MakeLoop(p[p.size()-2], p[p.size()-1], p[0], radius);
 				MakeLoop(p[p.size()-1], p[0], p[1], radius);
-				for(unsigned int j = 2; j < p.size(); j++)MakeLoop(p[j-2], p[j-1], p[j], radius);
+				for(std::size_t j = 2; j < p.size(); j++)MakeLoop(p[j-2], p[j-1], p[j], radius);
 			}
 
 			TPolygon loopy_polygon;
@@ -267,7 +214,7 @@ static void OffsetWithLoops(const TPolyPolygon &pp, TPolyPolygon &pp_new, double
 			TPolygon p_new;
 			p_new.resize(p.size());
 			std::size_t size_minus_one = p.size() - 1;
-			for(unsigned int j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
+			for(std::size_t j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
 			pp_new[i] = p_new;
 		}
 	}
@@ -344,7 +291,7 @@ static void OffsetSpansWithObrounds(const CArea& area, TPolyPolygon &pp_new, dou
 		TPolygon p_new;
 		p_new.resize(p.size());
 		std::size_t size_minus_one = p.size() - 1;
-		for(unsigned int j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
+		for(std::size_t j = 0; j < p.size(); j++)p_new[j] = p[size_minus_one - j];
 		pp_new[i] = p_new;
 	}
 }
@@ -384,6 +331,27 @@ static void MakePolyPoly( const CArea& area, TPolyPolygon &pp, bool reverse = tr
 		}
 
 		pp.push_back(p);
+	}
+}
+
+static void MakePoly(const CCurve& curve, TPolygon &p)
+{
+	pts_for_AddVertex.clear();
+	const CVertex* prev_vertex = NULL;
+	for (std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin(); It2 != curve.m_vertices.end(); It2++)
+	{
+		const CVertex& vertex = *It2;
+		if (prev_vertex)AddVertex(vertex, prev_vertex);
+		prev_vertex = &vertex;
+	}
+
+	p.resize(pts_for_AddVertex.size());
+	{
+		unsigned int i = 0;
+		for (std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin(); It != pts_for_AddVertex.end(); It++, i++)
+		{
+			p[i] = It->int_point();
+		}
 	}
 }
 
@@ -456,6 +424,29 @@ void CArea::Union(const CArea& a2)
 	TPolyPolygon solution;
 	c.Execute(ctUnion, solution);
 	SetFromResult(*this, solution);
+}
+
+// static
+CArea CArea::UniteCurves(std::list<CCurve> &curves)
+{
+	Clipper c;
+
+	TPolyPolygon pp;
+
+	for (std::list<CCurve>::iterator It = curves.begin(); It != curves.end(); It++)
+	{
+		CCurve &curve = *It;
+		TPolygon p;
+		MakePoly(curve, p);
+		pp.push_back(p);
+	}
+
+	c.AddPaths(pp, ptSubject, true);
+	TPolyPolygon solution;
+	c.Execute(ctUnion, solution, pftNonZero, pftNonZero);
+	CArea area;
+	SetFromResult(area, solution);
+	return area;
 }
 
 void CArea::Xor(const CArea& a2)

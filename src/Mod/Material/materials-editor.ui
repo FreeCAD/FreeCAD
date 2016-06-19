@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MaterialEditor</class>
  <widget class="QDialog" name="MaterialEditor">
@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
+    <width>441</width>
     <height>604</height>
    </rect>
   </property>
@@ -109,34 +109,28 @@
          </spacer>
         </item>
         <item>
-         <widget class="QGraphicsView" name="PreviewRendered">
+         <widget class="QLabel" name="PreviewRender">
           <property name="minimumSize">
            <size>
             <width>96</width>
             <height>96</height>
            </size>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>96</width>
-            <height>96</height>
-           </size>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QGraphicsView" name="PreviewVector">
+         <widget class="QLabel" name="PreviewVector">
           <property name="minimumSize">
            <size>
             <width>96</width>
             <height>96</height>
            </size>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>96</width>
-            <height>96</height>
-           </size>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>

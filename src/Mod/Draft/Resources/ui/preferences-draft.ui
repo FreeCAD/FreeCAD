@@ -358,6 +358,30 @@ Values with differences below this value will be treated as same.</string>
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Prefix labels of Clones with:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit">
+          <property name="text">
+           <string>Clone of</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ClonePrefix</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>

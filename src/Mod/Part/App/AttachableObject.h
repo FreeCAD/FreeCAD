@@ -59,7 +59,7 @@ class PartExport AttachableObject : public Part::Feature
     PROPERTY_HEADER(Part::AttachableObject);
 public:
     AttachableObject();
-    ~AttachableObject();
+    virtual ~AttachableObject();
 
     /**
      * @brief setAttacher sets the AttachEngine object. The class takes the
@@ -68,9 +68,20 @@ public:
      * @param attacher. AttachableObject takes ownership and will delete it eventually.
      */
     virtual void setAttacher(Attacher::AttachEngine* attacher);
-    Attacher::AttachEngine &attacher(void) const {return *_attacher;}
 
-    /// if the 2DObject lies on the Face of an other object this links to it
+    /**
+     * @brief changeAttacherType
+     * @param typeName is the typename of new attacher class. Must be derived
+     * from Attacher::AttachEngine.
+     * @return true if attacher was changed. false if attacher is already of the
+     * type requested. Throws if invalid type is supplied.
+     */
+    bool changeAttacherType(const char* typeName);
+
+    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw Base::Exception("AttachableObject: no attacher is set."); return *_attacher;}
+
+
+    App::PropertyString         AttacherType;
     App::PropertyLinkSubList    Support;
     App::PropertyEnumeration    MapMode; //see AttachEngine::eMapMode
     App::PropertyBool           MapReversed; //inverts Z and X internal axes
@@ -103,6 +114,8 @@ private:
     Attacher::AttachEngine* _attacher;
 };
 
+
+typedef App::FeaturePythonT<AttachableObject> AttachableObjectPython;
 
 } // namespace Part
 

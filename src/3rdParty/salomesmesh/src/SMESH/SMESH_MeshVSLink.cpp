@@ -25,7 +25,7 @@
 // Module    : SMESH
 
 //local headers
-#include <SMESH_MeshVSLink.ixx>
+#include <SMESH_MeshVSLink.hxx>
 #include <SMESHDS_Group.hxx>
 
 //occ headers
@@ -39,6 +39,10 @@
 #include <TColgp_Array1OfXYZ.hxx>
 #include <TColgp_Array1OfVec.hxx>
 #include <TColStd_Array1OfReal.hxx>
+
+#if OCC_VERSION_HEX >= 0x070000
+IMPLEMENT_STANDARD_RTTIEXT(SMESH_MeshVSLink,MeshVS_DataSource3D)
+#endif
 
 #define MAX_SORT_NODE_COUNT 12
 
@@ -120,15 +124,15 @@ SMESH_MeshVSLink::SMESH_MeshVSLink(const SMESH_Mesh *aMesh)
 	const SMDS_MeshFace* anElem = aFaceIter->next();
 	myElements.Add( anElem->GetID() );
   }
-  //add the volumes
-  SMDS_VolumeIteratorPtr aVolumeIter = myMesh->GetMeshDS()->volumesIterator();
-  for(;aVolumeIter->more();) {
+  //add the volumes
+  SMDS_VolumeIteratorPtr aVolumeIter = myMesh->GetMeshDS()->volumesIterator();
+  for(;aVolumeIter->more();) {
 	const SMDS_MeshVolume* anElem = aVolumeIter->next();
 	myElements.Add( anElem->GetID() );
   }
-  //add the groups
-  const std::set<SMESHDS_GroupBase*>& groups = myMesh->GetMeshDS()->GetGroups();
-  if (!groups.empty()) {
+  //add the groups
+  const std::set<SMESHDS_GroupBase*>& groups = myMesh->GetMeshDS()->GetGroups();
+  if (!groups.empty()) {
 	std::set<SMESHDS_GroupBase*>::const_iterator GrIt = groups.begin();
 	for (; GrIt != groups.end(); GrIt++) {
 	  SMESHDS_Group* grp = dynamic_cast<SMESHDS_Group*>(*GrIt);
@@ -136,7 +140,7 @@ SMESH_MeshVSLink::SMESH_MeshVSLink(const SMESH_Mesh *aMesh)
 	  myGroups.Add(grp->GetID());
 	}
   }
-}
+}
 
 //================================================================
 // Function : GetGeom

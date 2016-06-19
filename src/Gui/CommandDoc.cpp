@@ -535,11 +535,13 @@ StdCmdRevert::StdCmdRevert()
 
 void StdCmdRevert::activated(int iMsg)
 {
-    QMessageBox msgBox;
+    QMessageBox msgBox(Gui::getMainWindow());
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setWindowTitle(qApp->translate("Std_Revert","Revert document"));
     msgBox.setText(qApp->translate("Std_Revert","This will discard all the changes since last file save."));
-    msgBox.setInformativeText(qApp->translate("Std_Revert","Are you sure?"));
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Cancel);
+    msgBox.setInformativeText(qApp->translate("Std_Revert","Do you want to continue?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
     if (ret == QMessageBox::Yes)
         doCommand(Command::App,"App.ActiveDocument.restore()");
@@ -920,10 +922,12 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
 void StdCmdDuplicateSelection::activated(int iMsg)
 {
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
+    std::set<App::DocumentObject*> unique_objs;
     std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
     for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
         if (it->pObject && it->pObject->getDocument()) {
-            objs[it->pObject->getDocument()].push_back(it->pObject);
+            if (unique_objs.insert(it->pObject).second)
+                objs[it->pObject->getDocument()].push_back(it->pObject);
         }
     }
 

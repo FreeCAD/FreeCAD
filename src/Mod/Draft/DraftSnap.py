@@ -319,7 +319,11 @@ class Snapper:
                                 elif et == "Ellipse":
                                     # extra ellipse options
                                     snaps.extend(self.snapToCenter(edge))
-
+                        elif "Face" in comp:
+                            en = int(comp[4:])-1
+                            if len(obj.Shape.Faces) > en:
+                                face = obj.Shape.Faces[en]
+                                snaps.extend(self.snapToFace(face))
                         elif "Vertex" in comp:
                             # directly snapped to a vertex
                             snaps.append(self.snapToVertex(self.snapInfo,active=True))
@@ -749,6 +753,15 @@ class Snapper:
             else:
                 snaps.append([c,'center',c])
         return snaps
+        
+    def snapToFace(self,shape):
+        "returns a face center snap location"
+        snaps = []
+        if self.isEnabled("center"):
+            pos = shape.CenterOfMass
+            c = self.toWP(pos)
+            snaps.append([pos,'center',c])
+        return snaps
 
     def snapToIntersection(self,shape):
         "returns a list of intersection snap locations"
@@ -1061,7 +1074,10 @@ class Snapper:
             FreeCADGui.Snapper.off()
             self.ui.offUi()
             if callback:
-                callback(None)
+                if len(inspect.getargspec(callback).args) > 1:
+                    callback(None,None)
+                else:
+                    callback(None)
             
         # adding callback functions
         self.ui.pointUi(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))

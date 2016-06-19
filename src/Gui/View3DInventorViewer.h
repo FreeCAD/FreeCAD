@@ -354,6 +354,10 @@ protected:
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
     virtual bool processSoEvent(const SoEvent * ev);
+    void dropEvent (QDropEvent * e);
+    void dragEnterEvent (QDragEnterEvent * e);
+    void dragMoveEvent(QDragMoveEvent *e);
+    void dragLeaveEvent(QDragLeaveEvent *e);
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();

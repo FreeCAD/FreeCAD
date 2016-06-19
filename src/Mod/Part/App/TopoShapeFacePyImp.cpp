@@ -27,6 +27,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepTools.hxx>
+# include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <ShapeAnalysis.hxx>
 # include <BRepAdaptor_Surface.hxx>
@@ -40,7 +41,7 @@
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SphericalSurface.hxx>
 # include <Geom_ToroidalSurface.hxx>
-# include <Handle_Geom_Surface.hxx>
+# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
@@ -254,6 +255,11 @@ PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&dist))
         return 0;
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
+    BRepBuilderAPI_FindPlane findPlane(f);
+    if (!findPlane.Found()) {
+        PyErr_SetString(PartExceptionOCCError, "No planar face");
+        return 0;
+    }
 
     BRepOffsetAPI_MakeOffset mkOffset(f);
     mkOffset.Perform(dist);

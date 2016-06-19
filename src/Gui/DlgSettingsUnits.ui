@@ -41,16 +41,26 @@
             <string>MKS (m/kg/s/degree)</string>
            </property>
           </item>
-           <item>
-             <property name="text">
-               <string>US customary (in/lb)</string>
-             </property>
-           </item>
-           <item>
-             <property name="text">
-               <string>Imperial decimal (in/lb)</string>
-             </property>
-           </item>
+          <item>
+           <property name="text">
+            <string>US customary (in/lb)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Imperial decimal (in/lb)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Building Euro (cm/m²/m³)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Building US (ft-in/sqft/cuft)</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

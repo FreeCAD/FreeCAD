@@ -33,8 +33,14 @@
 #ifndef _Standard_HeaderFile
 #include <Standard.hxx>
 #endif
+#ifndef _Standard_Version_HeaderFile
+#include <Standard_Version.hxx>
+#endif
+
+#if OCC_VERSION_HEX < 0x070000
 #ifndef _Handle_MeshVS_DataSource3D_HeaderFile
-#include <Handle_MeshVS_DataSource3D.hxx>
+//#include <Handle_MeshVS_DataSource3D.hxx>
+#include <MeshVS_DataSource3D.hxx>
 #endif
 
 class Standard_Transient;
@@ -74,4 +80,5 @@ class Handle(SMESH_MeshVSLink) : public Handle(MeshVS_DataSource3D) {
  
    Standard_EXPORT static const Handle(SMESH_MeshVSLink) DownCast(const Handle(Standard_Transient)& AnObject);
 };
+#endif // OCC_VERSION_HEX < 0x070000
 #endif

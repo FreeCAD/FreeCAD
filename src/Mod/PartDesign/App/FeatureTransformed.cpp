@@ -358,7 +358,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
             rejected[it->first].push_back(**it2);
 
-    this->Shape.setValue(support);
+    this->Shape.setValue(getSolid(support));
     return App::DocumentObject::StdReturn;
 }
 

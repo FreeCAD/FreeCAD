@@ -28,7 +28,7 @@
 # include <BRepBndLib.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
-# include <Handle_Geom_Surface.hxx>
+# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Face.hxx>
@@ -285,7 +285,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         AddSubShape.setValue(result);
         
         if(base.IsNull()) {
-            Shape.setValue(result);
+            Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
         
@@ -301,7 +301,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(boolOp);
+            Shape.setValue(getSolid(boolOp));
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
             
@@ -315,7 +315,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(boolOp);
+            Shape.setValue(getSolid(boolOp));
         }
         
         return App::DocumentObject::StdReturn;

@@ -214,6 +214,30 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     }
 }
 
+Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
+{
+    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");         /* get module, init python */
+    if (module == NULL)
+        throw PyException();                         /* not incref'd */
+    dict = PyModule_GetDict(module);            /* get dict namespace */
+    if (dict == NULL)
+        throw PyException();                           /* not incref'd */
+
+
+    presult = PyRun_String(sCmd, Py_eval_input, dict, dict); /* eval direct */
+    if (!presult) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
+    }
+
+    return Py::asObject(presult);
+}
+
 void InterpreterSingleton::systemExit(void)
 {
     /* This code is taken from the original Python code */

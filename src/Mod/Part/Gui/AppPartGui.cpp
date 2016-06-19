@@ -28,6 +28,7 @@
 
 #include <Mod/Part/App/PropertyTopoShape.h>
 
+#include "AttacherTexts.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepPointSet.h"
@@ -117,8 +118,13 @@ PyMODINIT_FUNC initPartGui()
         return;
     }
 
-    (void)PartGui::initModule();
+    PyObject* partGuiModule = PartGui::initModule();
     Base::Console().Log("Loading GUI of Part module... done\n");
+
+    PyObject* pAttachEngineTextsModule = Py_InitModule3("AttachEngineResources", AttacherGui::AttacherGuiPy::Methods,
+        "AttachEngine Gui resources");
+    Py_INCREF(pAttachEngineTextsModule);
+    PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
     PartGui::SoBrepFaceSet                  ::initClass();
     PartGui::SoBrepEdgeSet                  ::initClass();
@@ -175,6 +181,13 @@ PyMODINIT_FUNC initPartGui()
     CreatePartCommands();
     CreateSimplePartCommands();
     CreateParamPartCommands();
+    try{
+        Py::Object ae = Base::Interpreter().runStringObject("__import__('AttachmentEditor.Commands').Commands");
+        Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"),ae);
+    } catch (Base::PyException &err){
+        err.ReportException();
+    }
+
 
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );

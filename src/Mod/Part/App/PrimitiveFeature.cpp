@@ -49,10 +49,10 @@
 # include <Geom_CylindricalSurface.hxx>
 # include <Geom2d_Line.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
-# include <Handle_Geom_Plane.hxx>
-# include <Handle_Geom_CylindricalSurface.hxx>
-# include <Handle_Geom2d_Line.hxx>
-# include <Handle_Geom2d_TrimmedCurve.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom2d_Line.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>
 # include <TopoDS.hxx>
@@ -84,7 +84,7 @@ namespace Part {
 using namespace Part;
 
 
-PROPERTY_SOURCE_ABSTRACT(Part::Primitive, Part::Feature)
+PROPERTY_SOURCE_ABSTRACT(Part::Primitive, Part::AttachableObject)
 
 Primitive::Primitive(void) 
 {
@@ -169,7 +169,7 @@ void Primitive::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 PROPERTY_SOURCE(Part::Vertex, Part::Primitive)
@@ -191,7 +191,7 @@ short Vertex::mustExecute() const
         Y.isTouched() ||
         Z.isTouched())
         return 1;
-    return Part::Feature::mustExecute();
+    return Part::AttachableObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Vertex::execute(void)
@@ -205,7 +205,7 @@ App::DocumentObjectExecReturn *Vertex::execute(void)
     const TopoDS_Vertex& vertex = MakeVertex.Vertex();
     this->Shape.setValue(vertex);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 
@@ -221,7 +221,7 @@ void Vertex::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 PROPERTY_SOURCE(Part::Line, Part::Primitive)
@@ -249,7 +249,7 @@ short Line::mustExecute() const
         Y2.isTouched() ||
         Z2.isTouched())
         return 1;
-    return Part::Feature::mustExecute();
+    return Part::AttachableObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Line::execute(void)
@@ -270,7 +270,7 @@ App::DocumentObjectExecReturn *Line::execute(void)
     const TopoDS_Edge& edge = mkEdge.Edge();
     this->Shape.setValue(edge);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 void Line::onChanged(const App::Property* prop)
@@ -285,7 +285,7 @@ void Line::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 PROPERTY_SOURCE(Part::Plane, Part::Primitive)
@@ -356,7 +356,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
     TopoDS_Shape ResultShape = mkFace.Shape();
     this->Shape.setValue(ResultShape);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Sphere, Part::Primitive)
@@ -404,7 +404,7 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Ellipsoid, Part::Primitive)
@@ -486,7 +486,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Cylinder, Part::Primitive)
@@ -529,7 +529,7 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 App::PropertyIntegerConstraint::Constraints Prism::polygonRange = {3,INT_MAX,1};
@@ -587,7 +587,7 @@ App::DocumentObjectExecReturn *Prism::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 App::PropertyIntegerConstraint::Constraints RegularPolygon::polygon = {3,INT_MAX,1};
@@ -639,7 +639,7 @@ App::DocumentObjectExecReturn *RegularPolygon::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 
@@ -689,7 +689,7 @@ App::DocumentObjectExecReturn *Cone::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Torus, Part::Primitive)
@@ -761,7 +761,7 @@ App::DocumentObjectExecReturn *Torus::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
@@ -798,7 +798,7 @@ void Helix::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 short Helix::mustExecute() const
@@ -842,7 +842,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
@@ -869,7 +869,7 @@ void Spiral::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 short Spiral::mustExecute() const
@@ -932,13 +932,17 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         );
         BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
         this->Shape.setValue(proj.Shape());
+
+        AttachableObject::execute();
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+
+
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Wedge, Part::Primitive)
@@ -1023,7 +1027,7 @@ App::DocumentObjectExecReturn *Wedge::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 void Wedge::onChanged(const App::Property* prop)
@@ -1066,7 +1070,7 @@ short Ellipse::mustExecute() const
         MajorRadius.isTouched() ||
         MinorRadius.isTouched())
         return 1;
-    return Part::Feature::mustExecute();
+    return Part::AttachableObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Ellipse::execute(void)
@@ -1080,7 +1084,7 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
     const TopoDS_Edge& edge = clMakeEdge.Edge();
     this->Shape.setValue(edge);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 void Ellipse::onChanged(const App::Property* prop)
@@ -1095,5 +1099,5 @@ void Ellipse::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }

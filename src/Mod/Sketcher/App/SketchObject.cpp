@@ -58,6 +58,7 @@
 
 #include <App/Document.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/Part.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -1728,21 +1729,33 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     
 
     // Note: Checking for the body of the support doesn't work when the support are the three base planes
-    App::DocumentObject *support = this->Support.getValue();
-    Part::BodyBase* body = Part::BodyBase::findBodyOf(this);
-    if (body != NULL) {
-        if ( ! body->hasFeature (pObj) && !this->allowOtherBody ) {
-            // Selection outside of body not allowed if flag is not set
-            if (rsn)
-                *rsn = rlOtherPart;
-            return false;
+    //App::DocumentObject *support = this->Support.getValue();
+    Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
+    Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
+    App::Part* part_this = App::Part::getPartOfObject(this, true);
+    App::Part* part_obj = App::Part::getPartOfObject(pObj, true);
+    if (part_this == part_obj){ //either in the same part, or in the root of document
+        if (body_this == NULL) {
+            return true;
+        } else if (body_this == body_obj) {
+            return true;
+        } else {
+            if ( this->allowOtherBody ) { // Selection outside of body not allowed if flag is not set
+                return true;
+            } else {
+                if (rsn)
+                    *rsn = rlOtherBody;
+                return false;
+            }
         }
     } else {
-        // Legacy parts - don't allow selection outside of the support
-        if (pObj != support)
-            return false;
+        // cross-part link. Disallow, should be done via shapebinders only
+        if (rsn)
+            *rsn = rlOtherPart;
+        return false;
     }
 
+    assert(0);
     return true;
 }
 

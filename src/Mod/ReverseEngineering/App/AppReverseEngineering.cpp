@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <TColgp_Array1OfPnt.hxx>
-# include <Handle_Geom_BSplineSurface.hxx>
+# include <Geom_BSplineSurface.hxx>
 #endif
 
 #include <Base/Console.h>

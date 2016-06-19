@@ -106,10 +106,11 @@ text56 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=T
 text57 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Power_users_hub")
 text58 = translate("StartPage","Your version of FreeCAD is up to date.")
 text59 = translate("StartPage","There is a new release of FreeCAD available.")
-text60 = translate("StartPage","Load an FEM example analysis")
+text60 = translate("StartPage","Load an FEM 3D example analysis")
 text61 = translate("StartPage","Obtain a development version")
 text62 = translate("StartPage","<b>Development versions</b> are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.")
 text63 = translate("StartPage","See all commits")
+text64 = translate("StartPage","Load an FEM 2D example analysis")
 
 # get FreeCAD version
 
@@ -434,7 +435,8 @@ def getExamples():
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
-        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample.py">""" + text60 + """</a></li>
+        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample2D.py">""" + text64 + """</a></li>
+        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3D.py">""" + text60 + """</a></li>
     </ul>"""
       
 def getLinks():

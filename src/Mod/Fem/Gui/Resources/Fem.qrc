@@ -16,15 +16,25 @@
         <file>icons/fem-add-part.svg</file>
         <file>icons/fem-inp-editor.svg</file>
         <file>icons/fem-material.svg</file>
-        <file>icons/fem-new-analysis.svg</file>
+        <file>icons/fem-control-solver.svg</file>
         <file>icons/fem-purge-results.svg</file>
-        <file>icons/fem-quick-analysis.svg</file>
+        <file>icons/fem-run-solver.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-result.svg</file>
         <file>icons/fem-shell-thickness.svg</file>
         <file>icons/fem-beam-section.svg</file>
         <file>icons/preferences-fem.svg</file>
         <file>icons/FemWorkbench.svg</file>
+        <file>icons/fem-clip.png</file>
+        <file>icons/fem-clip-scalar.png</file>
+        <file>icons/fem-cut.png</file>
+        <file>icons/fem-isosurface.png</file>
+        <file>icons/fem-warp.png</file>
+        <file>icons/fem-data.png</file>
+        <file>icons/fem-plane.svg</file>
+        <file>icons/fem-box.svg</file>
+        <file>icons/fem-sphere.svg</file>
+        <file>icons/fem-cylinder.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
         <file>translations/Fem_fi.qm</file> 

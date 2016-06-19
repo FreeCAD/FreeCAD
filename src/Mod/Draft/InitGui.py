@@ -100,10 +100,6 @@ class DraftWorkbench (Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui","Import-Export")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
 
@@ -141,13 +137,9 @@ class DraftWorkbench (Workbench):
 
 FreeCADGui.addWorkbench(DraftWorkbench)
 
-# add Import/Export types
-App.addImportType("Autodesk DXF (*.dxf)","importDXF") 
-App.addImportType("SVG as geometry (*.svg)","importSVG")
-App.addImportType("Open CAD Format (*.oca *.gcad)","importOCA")
-App.addImportType("Common airfoil data (*.dat)","importAirfoilDAT")
-App.addExportType("Autodesk DXF (*.dxf)","importDXF")
-App.addExportType("Flattened SVG (*.svg)","importSVG")
-App.addExportType("Open CAD Format (*.oca)","importOCA")
-App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
-App.addExportType("Autodesk DWG (*.dwg)","importDWG")
+# File format pref pages are independent and can be loaded at startup
+import Draft_rc
+FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui","Import-Export")
+FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui","Import-Export")
+FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui","Import-Export")
+FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui","Import-Export")

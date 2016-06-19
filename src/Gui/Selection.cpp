@@ -730,10 +730,6 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
 bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
 {
-    // already in ?
-    //if (isSelected(pDocName, pObjectName, pSubName))
-    //    return true;
-
     _SelObj temp;
 
     temp.pDoc = getDocument(pDocName);
@@ -1071,21 +1067,50 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args,
     PyObject *object;
     char* subname=0;
     float x=0,y=0,z=0;
-    if (!PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z))
-        return NULL;                             // NULL triggers exception 
+    if (PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z)) {
+        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+        if (!docObj || !docObj->getNameInDocument()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            return NULL;
+        }
 
-    App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
-    App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-    if (!docObj || !docObj->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
-        return NULL;
+        Selection().addSelection(docObj->getDocument()->getName(),
+                                 docObj->getNameInDocument(),
+                                 subname,x,y,z);
+        Py_Return;
     }
 
-    Selection().addSelection(docObj->getDocument()->getName(),
-                             docObj->getNameInDocument(),
-                             subname,x,y,z);
+    PyErr_Clear();
+    PyObject *sequence;
+    if (PyArg_ParseTuple(args, "O!O", &(App::DocumentObjectPy::Type),&object,&sequence)) {
+        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+        if (!docObj || !docObj->getNameInDocument()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            return NULL;
+        }
 
-    Py_Return;
+        try {
+            if (PyTuple_Check(sequence) || PyList_Check(sequence)) {
+                Py::Sequence list(sequence);
+                for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                    std::string subname = static_cast<std::string>(Py::String(*it));
+                    Selection().addSelection(docObj->getDocument()->getName(),
+                                             docObj->getNameInDocument(),
+                                             subname.c_str());
+                }
+
+                Py_Return;
+            }
+        }
+        catch (const Py::Exception&) {
+            // do nothing here
+        }
+    }
+
+    PyErr_SetString(PyExc_ValueError, "type must be 'DocumentObject[,subname[,x,y,z]]' or 'DocumentObject, list or tuple of subnames'");
+    return 0;
 }
 
 PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)

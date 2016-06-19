@@ -28,7 +28,7 @@
 # include <BRepBndLib.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
-# include <Handle_Geom_Surface.hxx>
+# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Face.hxx>
@@ -213,7 +213,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
         if (!base.IsNull()) {
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
-//             static_cast<Part::Feature*>(obj)->Shape.setValue(prism);
+//             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
             // Let's call algorithm computing a fuse operation:
             BRepAlgoAPI_Fuse mkFuse(base, prism);
             // Let's check if the fusion has been successful
@@ -226,9 +226,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
             solRes = refineShapeIfActive(solRes);
-            this->Shape.setValue(solRes);
+            this->Shape.setValue(getSolid(solRes));
         } else {
-            this->Shape.setValue(prism);
+            this->Shape.setValue(getSolid(prism));
         }
 
         return App::DocumentObject::StdReturn;

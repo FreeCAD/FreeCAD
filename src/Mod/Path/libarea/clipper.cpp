@@ -1440,7 +1440,7 @@ bool Clipper::ExecuteInternal()
       ProcessHorizontals(false);
       if (m_Scanbeam.empty()) break;
       cInt topY = PopScanbeam();
-      succeeded = ProcessIntersections(botY, topY);
+      succeeded = ProcessIntersections(topY);
       if (!succeeded) break;
       ProcessEdgesAtTopOfScanbeam(topY);
       botY = topY;
@@ -2705,11 +2705,11 @@ void Clipper::UpdateEdgeIntoAEL(TEdge *&e)
 }
 //------------------------------------------------------------------------------
 
-bool Clipper::ProcessIntersections(const cInt botY, const cInt topY)
+bool Clipper::ProcessIntersections(const cInt topY)
 {
   if( !m_ActiveEdges ) return true;
   try {
-    BuildIntersectList(botY, topY);
+    BuildIntersectList(topY);
     size_t IlSize = m_IntersectList.size();
     if (IlSize == 0) return true;
     if (IlSize == 1 || FixupIntersectionOrder()) ProcessIntersectList();
@@ -2734,7 +2734,7 @@ void Clipper::DisposeIntersectNodes()
 }
 //------------------------------------------------------------------------------
 
-void Clipper::BuildIntersectList(const cInt botY, const cInt topY)
+void Clipper::BuildIntersectList(const cInt topY)
 {
   if ( !m_ActiveEdges ) return;
 
@@ -4161,10 +4161,10 @@ double DistanceFromLineSqrd(
   const IntPoint& pt, const IntPoint& ln1, const IntPoint& ln2)
 {
   //The equation of a line in general form (Ax + By + C = 0)
-  //given 2 points (xÂ¹,yÂ¹) & (xÂ²,yÂ²) is ...
-  //(yÂ¹ - yÂ²)x + (xÂ² - xÂ¹)y + (yÂ² - yÂ¹)xÂ¹ - (xÂ² - xÂ¹)yÂ¹ = 0
-  //A = (yÂ¹ - yÂ²); B = (xÂ² - xÂ¹); C = (yÂ² - yÂ¹)xÂ¹ - (xÂ² - xÂ¹)yÂ¹
-  //perpendicular distance of point (xÂ³,yÂ³) = (AxÂ³ + ByÂ³ + C)/Sqrt(AÂ² + BÂ²)
+  //given 2 points (x¹,y¹) & (x²,y²) is ...
+  //(y¹ - y²)x + (x² - x¹)y + (y² - y¹)x¹ - (x² - x¹)y¹ = 0
+  //A = (y¹ - y²); B = (x² - x¹); C = (y² - y¹)x¹ - (x² - x¹)y¹
+  //perpendicular distance of point (x³,y³) = (Ax³ + By³ + C)/Sqrt(A² + B²)
   //see http://en.wikipedia.org/wiki/Perpendicular_distance
   double A = double(ln1.Y - ln2.Y);
   double B = double(ln2.X - ln1.X);

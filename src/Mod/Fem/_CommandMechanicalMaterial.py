@@ -35,13 +35,13 @@ if FreeCAD.GuiUp:
 
 
 class _CommandMechanicalMaterial(FemCommands):
-    "the Fem Material command definition"
+    "the Fem_MechanicalMaterial command definition"
     def __init__(self):
         super(_CommandMechanicalMaterial, self).__init__()
         self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Mechanical material..."),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Mechanical material"),
                           'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Creates or edit the mechanical material definition.")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Creates a mechanical material")}
         self.is_active = 'with_analysis'
 
     def Activated(self):

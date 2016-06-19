@@ -36,6 +36,8 @@
 #include "Command.h"
 
 #include "ViewProviderPart.h"
+#include "Application.h"
+#include "MDIView.h"
 
 
 using namespace Gui;
@@ -65,9 +67,29 @@ void ViewProviderPart::onChanged(const App::Property* prop) {
 bool ViewProviderPart::doubleClicked(void)
 {
     //make the part the active one
-    Gui::Command::doCommand(Gui::Command::Gui,
-            "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-            PARTKEY, this->getObject()->getNameInDocument());
+
+    //first, check if the part is already active.
+    App::DocumentObject* activePart = nullptr;
+    MDIView* activeView = this->getActiveView();
+    if ( activeView ) {
+        activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
+    }
+
+    if (activePart == this->getObject()){
+        //active part double-clicked. Deactivate.
+        Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
+                this->getObject()->getDocument()->getName(),
+                PARTKEY);
+    } else {
+        //set new active part
+        Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
+                this->getObject()->getDocument()->getName(),
+                PARTKEY,
+                this->getObject()->getDocument()->getName(),
+                this->getObject()->getNameInDocument());
+    }
 
     return true;
 }

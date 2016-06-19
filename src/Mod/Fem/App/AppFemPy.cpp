@@ -65,6 +65,9 @@
 #include "FemMesh.h"
 #include "FemMeshObject.h"
 #include "FemMeshPy.h"
+#ifdef FC_USE_VTK
+#include "FemPostPipeline.h"
+#endif
 
 #include <cstdlib>
 
@@ -163,16 +166,37 @@ private:
             pcDoc = App::GetApplication().newDocument(DocName);
         }
 
-        std::auto_ptr<FemMesh> mesh(new FemMesh);
-        mesh->read(EncodedName.c_str());
         Base::FileInfo file(EncodedName.c_str());
-
-        FemMeshObject *pcFeature = static_cast<FemMeshObject *>
-            (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
-        pcFeature->Label.setValue(file.fileNamePure().c_str());
-        pcFeature->FemMesh.setValuePtr(mesh.get());
-        (void)mesh.release();
-        pcFeature->purgeTouched();
+        
+        try {
+            std::auto_ptr<FemMesh> mesh(new FemMesh);
+            mesh->read(EncodedName.c_str());
+            
+            FemMeshObject *pcFeature = static_cast<FemMeshObject *>
+                (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
+            pcFeature->Label.setValue(file.fileNamePure().c_str());
+            pcFeature->FemMesh.setValuePtr(mesh.get());
+            (void)mesh.release();
+            pcFeature->purgeTouched();
+        }
+        catch(Base::Exception& e) {
+#ifdef FC_USE_VTK
+            if( FemPostPipeline::canRead(file) ) {
+                
+                FemPostPipeline *pcFeature = static_cast<FemPostPipeline *>
+                    (pcDoc->addObject("Fem::FemPostPipeline", file.fileNamePure().c_str()));
+                
+                pcFeature->Label.setValue(file.fileNamePure().c_str());
+                pcFeature->read(file);
+                pcFeature->touch();
+                pcDoc->recomputeFeature(pcFeature);
+            }
+            else 
+                throw e;
+#else
+            throw e;
+#endif            
+        }
 
         return Py::None();
     }

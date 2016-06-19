@@ -32,6 +32,7 @@
 # include <qstatusbar.h>
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
@@ -476,7 +477,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
-    //Base::Console().Log("Document::slotChangedObject() called\n");
+    //Base::Console().Log("Document::slotChangedObject() called\n");
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider) {
         try {
@@ -1278,7 +1279,12 @@ Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
     std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
     for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
         View3DInventor* view = static_cast<View3DInventor*>(*it);
-        if (view->getViewer()->hasViewProvider(vp))
+        SoSearchAction searchAction;
+        searchAction.setNode(vp->getRoot());
+        searchAction.setInterest(SoSearchAction::FIRST);
+        searchAction.apply(view->getViewer()->getSceneGraph());
+        SoPath* selectionPath = searchAction.getPath();
+        if (selectionPath)
             return *it;
     }
 

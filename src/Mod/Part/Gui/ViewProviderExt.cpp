@@ -45,7 +45,6 @@
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <GeomLProp_SLProps.hxx>
 # include <gp_Trsf.hxx>
-# include <Handle_Poly_Triangulation.hxx>
 # include <Poly_Array1OfTriangle.hxx>
 # include <Poly_Triangulation.hxx>
 # include <Poly_Connect.hxx>

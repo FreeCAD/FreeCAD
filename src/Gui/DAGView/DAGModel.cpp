@@ -619,7 +619,7 @@ void Model::updateSlot()
           //go with first visible parent for now.
           if (!(*theGraph)[currentParent].dagVisible)
             continue;
-          destinationColumn = static_cast<int>(std::log2((*theGraph)[currentParent].column.to_ulong()));
+          destinationColumn = static_cast<int>(columnFromMask((*theGraph)[currentParent].column));
           break;
         }
       }
@@ -691,14 +691,15 @@ void Model::updateSlot()
       Vertex target = boost::target(*it, *theGraph);
       if (!(*theGraph)[target].dagVisible)
         continue; //we don't make it here if source isn't visible. So don't have to worry about that.
-      float dependentX = pointSpacing * static_cast<int>(std::log2((*theGraph)[target].column.to_ulong())) + pointSize / 2.0; //on center.
+      float dependentX = pointSpacing * static_cast<int>(columnFromMask((*theGraph)[target].column)) + pointSize / 2.0; //on center.
+      columnFromMask((*theGraph)[target].column);
       float dependentY = rowHeight * (*theGraph)[target].row + rowHeight / 2.0;
       
       QGraphicsPathItem *pathItem = (*theGraph)[*it].connector.get();
       pathItem->setBrush(Qt::NoBrush);
       QPainterPath path;
       path.moveTo(currentX, currentY);
-      if (currentColumn == static_cast<int>(std::log2((*theGraph)[target].column.to_ulong())))
+      if (currentColumn == static_cast<int>(columnFromMask((*theGraph)[target].column)))
         path.lineTo(currentX, dependentY); //straight connector in y.
       else
       {
@@ -880,6 +881,12 @@ void Model::updateStates()
       (*theGraph)[currentVertex].lastFeatureState = currentFeatureState;
     }
   }
+}
+
+std::size_t Model::columnFromMask(const ColumnMask &maskIn)
+{
+  std::string maskString = maskIn.to_string();
+  return maskString.size() - maskString.find("1") - 1;
 }
 
 RectItem* Model::getRectFromPosition(const QPointF& position)

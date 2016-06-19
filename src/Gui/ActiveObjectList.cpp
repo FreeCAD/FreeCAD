@@ -40,19 +40,21 @@ using namespace Gui;
 
 void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name, const Gui::HighlightMode& mode)
 {
+    if (hasObject(name)){
+        Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(getObject<App::DocumentObject*>(name))), mode, false);
+    }
     if (obj){
-        if (hasObject(name)){
-                Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(getObject<App::DocumentObject*>(name))), mode, false);
-        }
-        _ObjectMap[name] = obj;
-
         Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(obj)), mode, true);
+        _ObjectMap[name] = obj;
+    } else {
+        if (hasObject(name))
+            _ObjectMap.erase(name);
     }
 }
 
 bool Gui::ActiveObjectList::hasObject(const char*name)const 
 {
-	return _ObjectMap.find(name) != _ObjectMap.end();
+    return _ObjectMap.find(name) != _ObjectMap.end();
 }
 
 void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject& viewProviderIn)

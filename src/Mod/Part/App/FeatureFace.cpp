@@ -31,7 +31,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <Geom_Plane.hxx>
-# include <Handle_Geom_Surface.hxx>
+# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Face.hxx>

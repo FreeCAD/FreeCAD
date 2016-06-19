@@ -1,44 +1,13 @@
 // PythonStuff.cpp
-
-/*==============================
-Copyright (c) 2011-2015 Dan Heeks
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
-
+// Copyright 2011, Dan Heeks
+// This program is released under the BSD license. See the file COPYING for details.
 
 #include "PythonStuff.h"
 
 #include "Area.h"
 #include "Point.h"
+#include "AreaDxf.h"
 #include "kurve/geometry.h"
-
-#if defined (_POSIX_C_SOURCE)
-#   undef    _POSIX_C_SOURCE
-#endif
-#if defined (_XOPEN_SOURCE)
-#   undef    _XOPEN_SOURCE
-#endif
 
 #if _DEBUG
 #undef _DEBUG
@@ -50,9 +19,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef __GNUG__
 #pragma implementation
-#endif
-#ifdef _MSC_VER
-#pragma warning(disable : 4244)
 #endif
 
 #include <boost/progress.hpp>
@@ -119,7 +85,7 @@ static void print_area(const CArea &a)
 
 static unsigned int num_vertices(const CCurve& curve)
 {
-	return static_cast<int>(curve.m_vertices.size());
+	return static_cast<unsigned int>(curve.m_vertices.size());
 }
 
 static CVertex FirstVertex(const CCurve& curve)
@@ -147,6 +113,13 @@ static bool holes_linked()
 	return CArea::HolesLinked();
 }
 
+static CArea AreaFromDxf(const char* filepath)
+{
+	CArea area;
+	AreaDxfRead dxf(&area, filepath);
+	dxf.DoRead();
+	return area;
+}
 
 static void append_point(CCurve& c, const Point& p)
 {
@@ -187,6 +160,10 @@ boost::python::list SplitArea(const CArea& a)
 	return alist;
 }
 
+void dxfArea(CArea& area, const char* str)
+{
+	area = CArea();
+}
 
 boost::python::list getCurveSpans(const CCurve& c)
 {
@@ -427,5 +404,6 @@ BOOST_PYTHON_MODULE(area) {
     bp::def("set_units", set_units);
     bp::def("get_units", get_units);
     bp::def("holes_linked", holes_linked);
+    bp::def("AreaFromDxf", AreaFromDxf);
     bp::def("TangentialArc", TangentialArc);
 }

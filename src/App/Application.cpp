@@ -30,6 +30,7 @@
 # include <iostream>
 # include <sstream>
 # include <exception>
+# include <ios>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <unistd.h>
 # include <pwd.h>
@@ -47,7 +48,10 @@
 # include <Shlobj.h>
 #endif
 
-
+#if defined(FC_OS_BSD)
+#include <sys/param.h>
+#include <sys/sysctl.h>
+#endif
 
 #include "Application.h"
 #include "Document.h"
@@ -126,6 +130,7 @@ using namespace boost::program_options;
 // scriptings (scripts are build in but can be overridden by command line option)
 #include "InitScript.h"
 #include "TestScript.h"
+#include "CMakeScript.h"
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
@@ -438,8 +443,19 @@ Document* Application::openDocument(const char * FileName)
         newDoc->restore();
         return newDoc;
     }
-    catch (...) {
+    // if the project file itself is corrupt then
+    // close the document
+    catch (const Base::FileException&) {
         closeDocument(newDoc->getName());
+        throw;
+    }
+    catch (const std::ios_base::failure&) {
+        closeDocument(newDoc->getName());
+        throw;
+    }
+    // but for any other exceptions leave it open to give the
+    // user a chance to fix it
+    catch (...) {
         throw;
     }
 }
@@ -1289,6 +1305,7 @@ void Application::initApplication(void)
 {
     // interpreter and Init script ==========================================================
     // register scripts
+    new ScriptProducer( "CMakeVariables", CMakeVariables );
     new ScriptProducer( "FreeCADInit",    FreeCADInit    );
     new ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
@@ -1307,6 +1324,7 @@ void Application::initApplication(void)
 
     // starting the init script
     Console().Log("Run App init script\n");
+    Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
 }
 
@@ -1891,7 +1909,15 @@ void Application::ExtractUserPath()
     if (pwd == NULL)
         throw Base::Exception("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
-    std::string appData = pwd->pw_dir;
+
+    char *path="/tmp";
+    char *FCUserData;
+    if (FCUserData=getenv("FREECAD_USER_DATA"))
+        path = FCUserData;
+    else
+        path = pwd->pw_dir;
+
+    std::string appData(path);
     Base::FileInfo fi(appData.c_str());
     if (!fi.exists()) {
         // This should never ever happen
@@ -2091,7 +2117,18 @@ std::string Application::FindHomePath(const char* sCall)
         // path. In the worst case we simply get q wrong path and FreeCAD is not
         // able to load its modules.
         char resolved[PATH_MAX];
+#if defined(FC_OS_BSD) 
+        int mib[4];
+        mib[0] = CTL_KERN;
+        mib[1] = KERN_PROC;
+        mib[2] = KERN_PROC_PATHNAME;
+        mib[3] = -1;
+        size_t cb = sizeof(resolved);
+        sysctl(mib, 4, resolved, &cb, NULL, 0);
+        int nchars = strlen(resolved);
+#else
         int nchars = readlink("/proc/self/exe", resolved, PATH_MAX);
+#endif
         if (nchars < 0 || nchars >= PATH_MAX)
             throw Base::Exception("Cannot determine the absolute path of the executable");
         resolved[nchars] = '\0'; // enfore null termination

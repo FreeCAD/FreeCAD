@@ -22,7 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,FreeCADGui,Path,PathGui, PathUtils
 from PySide import QtCore,QtGui
 
 """Path Compound Extended object and FreeCAD command"""
@@ -41,11 +41,11 @@ class ObjectCompoundExtended:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyString","Description",  "Path",translate("PathCompoundExtended","An optional description of this compounded operation"))
-#        obj.addProperty("App::PropertySpeed", "FeedRate",     "Path",translate("PathCompoundExtended","The feed rate of the paths in these compounded operations"))
-#        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path",translate("PathCompoundExtended","The spindle speed, in revolutions per minute, of the tool used in these compounded operations"))
-        obj.addProperty("App::PropertyLength","SafeHeight",   "Path",translate("PathCompoundExtended","The safe height for this operation"))
-        obj.addProperty("App::PropertyLength","RetractHeight","Path",translate("PathCompoundExtended","The retract height, above top surface of part, between compounded operations inside clamping area"))
+        obj.addProperty("App::PropertyString","Description",  "Path","An optional description of this compounded operation")
+#        obj.addProperty("App::PropertySpeed", "FeedRate",     "Path","The feed rate of the paths in these compounded operations")
+#        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path","The spindle speed, in revolutions per minute, of the tool used in these compounded operations")
+        obj.addProperty("App::PropertyLength","SafeHeight",   "Path","The safe height for this operation")
+        obj.addProperty("App::PropertyLength","RetractHeight","Path","The retract height, above top surface of part, between compounded operations inside clamping area")
         obj.Proxy = self
 
     def __getstate__(self):
@@ -53,6 +53,13 @@ class ObjectCompoundExtended:
 
     def __setstate__(self,state):
         return None
+
+    def onChanged(self,obj,prop):
+        if prop == "Group":
+            print 'check order'
+        for child in obj.Group:
+            if child.isDerivedFrom("Path::Feature"):
+                child.touch()    
 
     def execute(self,obj):
         cmds = []

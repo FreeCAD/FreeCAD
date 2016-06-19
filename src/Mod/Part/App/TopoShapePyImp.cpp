@@ -338,21 +338,43 @@ PyObject*  TopoShapePy::exportStep(PyObject *args)
 PyObject*  TopoShapePy::exportBrep(PyObject *args)
 {
     char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
-        return NULL;
-    std::string EncodedName = std::string(Name);
-    PyMem_Free(Name);
+    if (PyArg_ParseTuple(args, "et","utf-8",&Name)) {
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
-    try {
-        // write brep file
-        getTopoShapePtr()->exportBrep(EncodedName.c_str());
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PartExceptionOCCError,e.what());
-        return NULL;
+        try {
+            // write brep file
+            getTopoShapePtr()->exportBrep(EncodedName.c_str());
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PartExceptionOCCError,e.what());
+            return NULL;
+        }
+
+        Py_Return;
     }
 
-    Py_Return;
+    PyErr_Clear();
+
+    PyObject* input;
+    if (PyArg_ParseTuple(args, "O", &input)) {
+        try {
+            // write brep
+            Base::PyStreambuf buf(input);
+            std::ostream str(0);
+            str.rdbuf(&buf);
+            getTopoShapePtr()->exportBrep(str);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PartExceptionOCCError,e.what());
+            return NULL;
+        }
+
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "expect string or file object");
+    return NULL;
 }
 
 PyObject*  TopoShapePy::exportBinary(PyObject *args)
@@ -428,26 +450,43 @@ PyObject*  TopoShapePy::exportBrepToString(PyObject *args)
 
 PyObject*  TopoShapePy::importBrep(PyObject *args)
 {
+    char* Name;
+    if (PyArg_ParseTuple(args, "et","utf-8",&Name)) {
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        try {
+            // write brep file
+            getTopoShapePtr()->importBrep(EncodedName.c_str());
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PartExceptionOCCError,e.what());
+            return NULL;
+        }
+
+        Py_Return;
+    }
+
+    PyErr_Clear();
     PyObject* input;
-    if (!PyArg_ParseTuple(args, "O", &input))
-    //char* input;
-    //if (!PyArg_ParseTuple(args, "s", &input))
-        return NULL;
+    if (PyArg_ParseTuple(args, "O", &input)) {
+        try {
+            // read brep
+            Base::PyStreambuf buf(input);
+            std::istream str(0);
+            str.rdbuf(&buf);
+            getTopoShapePtr()->importBrep(str);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PartExceptionOCCError,e.what());
+            return NULL;
+        }
 
-    try {
-        // read brep
-        Base::PyStreambuf buf(input);
-        std::istream str(0);
-        str.rdbuf(&buf);
-        //std::stringstream str(input);
-        getTopoShapePtr()->importBrep(str);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PartExceptionOCCError,e.what());
-        return NULL;
+        Py_Return;
     }
 
-    Py_Return;
+    PyErr_SetString(PyExc_TypeError, "expect string or file object");
+    return NULL;
 }
 
 PyObject*  TopoShapePy::importBinary(PyObject *args)

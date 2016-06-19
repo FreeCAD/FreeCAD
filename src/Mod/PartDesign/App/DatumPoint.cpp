@@ -40,10 +40,9 @@
 # include <Geom_CylindricalSurface.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom2d_Line.hxx>
-# include <Handle_Geom_Curve.hxx>
-# include <Handle_Geom_Surface.hxx>
-# include <Handle_Geom_Plane.hxx>
-# include <Handle_Geom2d_Line.hxx>
+# include <Geom_Curve.hxx>
+# include <Geom_Surface.hxx>
+# include <Geom2d_Line.hxx>
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>

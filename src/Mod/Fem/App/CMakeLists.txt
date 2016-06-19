@@ -8,7 +8,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
 
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -22,31 +21,33 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
-
+set(Fem_LIBS
+        Part
+        FreeCADApp
+        StdMeshers
+        SMESH
+        SMDS
+        SMESHDS
+    )
+    
 if(BUILD_FEM_NETGEN)
     set(Fem_LIBS
-        Part
-        FreeCADApp
-        StdMeshers
+        ${Fem_LIBS}
         NETGENPlugin
-        SMESH
-        SMDS
-        SMESHDS
-    )
-else(BUILD_FEM_NETGEN)
-    set(Fem_LIBS
-        Part
-        FreeCADApp
-        StdMeshers
-        SMESH
-        SMDS
-        SMESHDS
     )
 endif(BUILD_FEM_NETGEN)
+
+if(BUILD_FEM_VTK)
+    set(Fem_LIBS
+        ${Fem_LIBS}
+        ${VTK_LIBRARIES}
+    )
+endif(BUILD_FEM_VTK)
 
 generate_from_xml(FemMeshPy)
 
@@ -70,52 +71,62 @@ SET(Mod_SRCS
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 SET(FemScripts_SRCS
-    _CommandFemBeamSection.py
-    _CommandFemFromShape.py
-    _CommandFemShellThickness.py
-    _CommandFemSolverCalculix.py
+    _CommandAnalysis.py
+    _CommandBeamSection.py
+    _CommandControlSolver.py
     _CommandMechanicalMaterial.py
-    _CommandMechanicalShowResult.py
-    _CommandNewMechanicalAnalysis.py
-    _CommandPurgeFemResults.py
-    _CommandQuickAnalysis.py
-    _CommandSolverJobControl.py
+    _CommandShowResult.py
+    _CommandMeshFromShape.py
+    _CommandPurgeResults.py
+    _CommandRunSolver.py
+    _CommandShellThickness.py
+    _CommandSolverCalculix.py
+    _CommandSolverZ88.py
     _FemAnalysis.py
     _FemBeamSection.py
     _FemShellThickness.py
     _FemSolverCalculix.py
+    _FemSolverZ88.py
     _MechanicalMaterial.py
     _TaskPanelFemBeamSection.py
     _TaskPanelFemShellThickness.py
     _TaskPanelFemSolverCalculix.py
     _TaskPanelMechanicalMaterial.py
-    _TaskPanelResultControl.py
+    _TaskPanelShowResult.py
     _ViewProviderFemAnalysis.py
     _ViewProviderFemBeamSection.py
     _ViewProviderFemShellThickness.py
     _ViewProviderFemSolverCalculix.py
+    _ViewProviderFemSolverZ88.py
     _ViewProviderMechanicalMaterial.py
     ccxDatReader.py
     ccxFrdReader.py
-    ccxInpWriter.py
     convert2TetGen.py
+    importZ88Mesh.py
     Init.py
     InitGui.py
     FemAnalysis.py
     FemCommands.py
     FemBeamSection.py
+    FemInputWriter.py
+    FemInputWriterCcx.py
+    FemInputWriterZ88.py
+    FemMeshTools.py
     FemShellThickness.py
     FemSolverCalculix.py
+    FemSolverZ88.py
     FemTools.py
+    FemToolsCcx.py
+    FemToolsZ88.py
     MechanicalMaterial.py
-    SelectionObserverFem.py
+    FemSelectionObserver.py
     TestFem.py
-
+    z88DispReader.py
     TaskPanelFemBeamSection.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui
     TaskPanelMechanicalMaterial.ui
-    TaskPanelShowDisplacement.ui
+    TaskPanelShowResult.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
@@ -188,21 +199,35 @@ SET(FemConstraints_SRCS
     )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
-SET(FemResult_SRCS
+if(BUILD_FEM_VTK) 
+    SET(FemPost_SRCS
+        PropertyPostDataObject.h
+        PropertyPostDataObject.cpp
+        FemPostObject.h
+        FemPostObject.cpp
+        FemPostPipeline.h
+        FemPostPipeline.cpp
+        FemPostFilter.h
+        FemPostFilter.cpp
+        FemPostFunction.h
+        FemPostFunction.cpp
     )
-SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
+    SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
+endif(BUILD_FEM_VTK)
+
 
 SET(Fem_SRCS
     ${FemBase_SRCS}
     ${FemSet_SRCS}
     ${FemConstraints_SRCS}
     ${FemResult_SRCS}
+    ${FemPost_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
 
 add_library(Fem SHARED ${Fem_SRCS})
-target_link_libraries(Fem ${Fem_LIBS})
+target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 
 
 fc_target_copy_resource(Fem

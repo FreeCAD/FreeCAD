@@ -40,9 +40,9 @@ except AttributeError:
 class Stock:
     def __init__(self, obj):
         "Make stock"
-        obj.addProperty("App::PropertyFloat","Length_Allowance","Stock",translate("Length Allowance","extra allownace from part width")).Length_Allowance = 1.0
-        obj.addProperty("App::PropertyFloat","Width_Allowance","Stock",translate("Width Allowance","extra allownace from part width")).Width_Allowance = 1.0
-        obj.addProperty("App::PropertyFloat","Height_Allowance","Stock",translate("Height Allowance","extra allownace from part width")).Height_Allowance = 1.0
+        obj.addProperty("App::PropertyFloat","Length_Allowance","Stock","extra allownace from part width").Length_Allowance = 1.0
+        obj.addProperty("App::PropertyFloat","Width_Allowance","Stock","extra allownace from part width").Width_Allowance = 1.0
+        obj.addProperty("App::PropertyFloat","Height_Allowance","Stock","extra allownace from part width").Height_Allowance = 1.0
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object this represents")
         obj.Proxy = self

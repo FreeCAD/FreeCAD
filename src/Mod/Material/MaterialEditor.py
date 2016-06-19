@@ -21,7 +21,7 @@
 #***************************************************************************
 
 import FreeCAD, FreeCADGui, os
-from PySide import QtCore, QtGui, QtUiTools
+from PySide import QtCore, QtGui, QtUiTools, QtSvg
 
 __title__="FreeCAD material editor"
 __author__ = "Yorik van Havre"
@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 class MaterialEditor:
+
 
     def __init__(self, obj = None, prop = None, material = None):
         """Initializes, optionally with an object name and a material property name to edit, or directly
@@ -58,6 +59,7 @@ class MaterialEditor:
         QtCore.QObject.connect(self.widget.EditProperty, QtCore.SIGNAL("returnPressed()"), self.addCustomProperty)
         QtCore.QObject.connect(self.widget.ButtonDeleteProperty, QtCore.SIGNAL("clicked()"), self.deleteCustomProperty)
         QtCore.QObject.connect(self.widget.Editor, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem*,int)"), self.itemClicked)
+        QtCore.QObject.connect(self.widget.Editor, QtCore.SIGNAL("itemChanged(QTreeWidgetItem*,int)"), self.itemChanged)
         QtCore.QObject.connect(self.widget.Editor, QtCore.SIGNAL("currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)"), self.checkDeletable)
         QtCore.QObject.connect(self.widget.ButtonOpen, QtCore.SIGNAL("clicked()"), self.openfile)
         QtCore.QObject.connect(self.widget.ButtonSave, QtCore.SIGNAL("clicked()"), self.savefile)
@@ -67,8 +69,7 @@ class MaterialEditor:
             d = FreeCAD.ActiveDocument.getObject(self.obj).getPropertyByName(self.prop)
         elif self.material:
             d = self.material
-        if d:
-            self.updateContents(d)
+
 
     def updateCards(self):
         "updates the contents of the materials combo with existing material cards"
@@ -89,6 +90,7 @@ class MaterialEditor:
             self.widget.ComboMaterial.addItem("") # add a blank item first
             for k,i in self.cards.items():
                 self.widget.ComboMaterial.addItem(k)
+
 
     def updateContents(self,data):
         "updates the contents of the editor with the given data (can be the name of a card or a dictionary)"
@@ -112,11 +114,13 @@ class MaterialEditor:
                     if d:
                         self.updateContents(d)
 
+
     def openProductURL(self):
         "opens the contents of the ProductURL field in an external browser"
         url = str(self.widget.Editor.findItems(translate("Material","Product URL"),QtCore.Qt.MatchRecursive,0)[0].text(1))
         if url:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
+
 
     def accept(self):
         "if we are editing a property, set the property values"
@@ -125,10 +129,12 @@ class MaterialEditor:
             o = FreeCAD.ActiveDocument.getObject(self.obj)
             setattr(o,self.prop,d)
         QtGui.QDialog.accept(self.widget)
-        
+
+
     def reject(self):
         QtGui.QDialog.reject(self.widget)
-        
+
+
     def expandKey(self, key):
         "adds spaces before caps in a KeyName"
         nk = ""
@@ -141,6 +147,7 @@ class MaterialEditor:
             nk += l
         return nk
 
+
     def collapseKey(self, key):
         "removes the spaces in a Key Name"
         nk = ""
@@ -148,7 +155,8 @@ class MaterialEditor:
             if l != " ":
                 nk += l
         return nk
-        
+
+
     def clearEditor(self):
         "Clears the contents of the editor"
         for i1 in range(self.widget.Editor.topLevelItemCount()):
@@ -158,7 +166,8 @@ class MaterialEditor:
                 c.setText(1,"")
         for k in self.customprops:
             self.deleteCustomProperty(k)
-        
+
+
     def addCustomProperty(self, key = None, value = None):
         "Adds a custom property to the editor, optionally with a value"
         if not key:
@@ -175,7 +184,8 @@ class MaterialEditor:
                         self.widget.EditProperty.setText("")
                         if value:
                             i.setText(1,value)
-        
+
+
     def deleteCustomProperty(self, key = None):
         "Deletes a custom property from the editor"
         if not key:
@@ -191,19 +201,29 @@ class MaterialEditor:
                         if ii >= 0:
                             top.takeChild(ii)
                             self.customprops.remove(key)
-        
+
+
     def itemClicked(self, item, column):
         "Edits an item if it is not in the first column"
         if column > 0:
             self.widget.Editor.editItem(item, column)
             
+            
+    def itemChanged(self, item, column):
+        "Handles text changes"
+        if item.text(0) == "Section Fill Pattern":
+            if column == 1:
+                self.setTexture(item.text(1))
+
+
     def checkDeletable(self,current,previous):
         "Checks if the current item is a custom property, if yes enable the delete button"
         if str(current.text(0)) in self.customprops:
             self.widget.ButtonDeleteProperty.setEnabled(True)
         else:
             self.widget.ButtonDeleteProperty.setEnabled(False)
-            
+
+
     def getDict(self):
         "returns a dictionnary from the contents of the editor"
         d = {}
@@ -214,7 +234,28 @@ class MaterialEditor:
                 # TODO the following should be translated back to english,since text(0) could be translated
                 d[self.collapseKey(str(c.text(0)))] = unicode(c.text(1))
         return d
-            
+
+
+        if d:
+            self.updateContents(d)
+        self.widget.Editor.topLevelItem(6).child(4).setToolTip(1,self.getPatternsList())
+
+
+    def setTexture(self,pattern):
+        "displays a texture preview if needed"
+        self.widget.PreviewVector.hide()
+        if pattern:
+            try:
+                import DrawingPatterns
+            except:
+                print "DrawingPatterns not found"
+            else:
+                pattern = DrawingPatterns.buildFileSwatch(pattern,size=96,png=True)
+                if pattern:
+                    self.widget.PreviewVector.setPixmap(QtGui.QPixmap(pattern))
+                    self.widget.PreviewVector.show()
+
+
     def openfile(self):
         "Opens a FCMat file"
         filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'Open FreeCAD Material file','*.FCMat')
@@ -224,7 +265,8 @@ class MaterialEditor:
             d = importFCMat.read(filename[0])
             if d:
                 self.updateContents(d)
-                
+
+
     def savefile(self):
         "Saves a FCMat file"
         name = str(self.widget.Editor.findItems(translate("Material","Name"),QtCore.Qt.MatchRecursive,0)[0].text(1))
@@ -237,22 +279,29 @@ class MaterialEditor:
                 import importFCMat
                 importFCMat.write(filename,d)
 
+
     def show(self):
         return self.widget.show()
-        
+
+
     def exec_(self):
         return self.widget.exec_()
+
+
+
 
 def translate(context,text):
     "translates text"
     return text #TODO use Qt translation mechanism here
+
 
 def openEditor(obj = None, prop = None):
     """openEditor([obj,prop]): opens the editor, optionally with
     an object name and material property name to edit"""
     editor = MaterialEditor(obj,prop)
     editor.show()
-    
+
+
 def editMaterial(material):
     """editMaterial(material): opens the editor to edit the contents
     of the given material dictionary. Returns the modified material."""

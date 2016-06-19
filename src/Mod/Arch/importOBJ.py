@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -53,11 +53,11 @@ def getIndices(shape,offset):
             if not isinstance(e.Curve,Part.Line):
                 if not curves:
                     curves = shape.tessellate(1)
-                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
                     break
         except: # unimplemented curve type
             curves = shape.tessellate(1)
-            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
             break
     if curves:
         for v in curves[0]:
@@ -108,7 +108,9 @@ def export(exportList,filename):
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# http://www.freecadweb.org\n")
     offset = 1
-    for obj in exportList:
+    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Arch.pruneIncluded(objectslist)
+    for obj in objectslist:
         if obj.isDerivedFrom("Part::Feature"):
             if obj.ViewObject.isVisible():
                 vlist,elist,flist = getIndices(obj.Shape,offset)
@@ -124,7 +126,7 @@ def export(exportList,filename):
                     for f in flist:
                         outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ")+filename+"\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ").decode('utf8')+filename+"\n")
             
             
             
