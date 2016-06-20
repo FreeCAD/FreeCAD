@@ -44,6 +44,16 @@ TransactionalObject::~TransactionalObject(void)
 {
 }
 
+bool TransactionalObject::isAttachedToDocument() const
+{
+    return false;
+}
+
+const char* TransactionalObject::detachFromDocument()
+{
+    return "";
+}
+
 void TransactionalObject::onBeforeChangeProperty(Document *doc, const Property *prop)
 {
     doc->onBeforeChangeProperty(this, prop);

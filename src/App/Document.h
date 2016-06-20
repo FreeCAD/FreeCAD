@@ -116,6 +116,10 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on created object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionAppend;
+    /// signal on removed object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionRemove;
     /// signal on undo
     boost::signal<void (const App::Document&)> signalUndo;
     /// signal on redo

@@ -27,6 +27,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <bitset>
 #include <QIcon>
 #include <boost/signals.hpp>
 
@@ -67,6 +68,11 @@ namespace Gui {
 class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
+
+enum ViewStatus {
+    UpdateData = 0,
+    Detach = 1
+};
 
 
 
@@ -210,19 +216,13 @@ public:
     bool isUpdatesEnabled () const;
     void setUpdatesEnabled (bool enable);
 
+    /// return the status bits
+    unsigned long getStatus() const {return StatusBits.to_ulong();}
+    bool testStatus(ViewStatus pos) const {return StatusBits.test((size_t)pos);}
+    void setStatus(ViewStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
+
     std::string toString() const;
     PyObject* getPyObject();
-
-    /** @name Transaction handling
-     */
-    //@{
-    virtual bool isAttachedToDocument() const {
-        return false;
-    }
-    virtual const char* detachFromDocument() {
-        return 0;
-    }
-    //@}
 
     /** @name Display mode methods 
      */
@@ -361,6 +361,7 @@ protected:
     SoSeparator *pcAnnotation;
     ViewProviderPy* pyViewObject;
     std::string overrideMode;
+    std::bitset<32> StatusBits;
 
 private:
     void setModeSwitch();
@@ -369,7 +370,6 @@ private:
     int viewOverrideMode;
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
-    bool _updateData;
 
     // friends
     friend class ViewProviderPythonFeaturePy;
