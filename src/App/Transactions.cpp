@@ -61,7 +61,7 @@ Transaction::Transaction(int pos)
  */
 Transaction::~Transaction()
 {
-    std::map<const TransactionalObject*, TransactionObject*>::iterator It;
+    TransactionList::iterator It;
     for (It= _Objects.begin();It!=_Objects.end();++It) {
         if (It->second->status == TransactionObject::New) {
             // If an object has been removed from the document the transaction
@@ -105,9 +105,13 @@ int Transaction::getPos(void) const
 
 bool Transaction::hasObject(const TransactionalObject *Obj) const
 {
-    std::map<const TransactionalObject*, TransactionObject*>::const_iterator it;
-    it = _Objects.find(Obj);
-    return (it != _Objects.end());
+    TransactionList::const_iterator it;
+    for (it = _Objects.begin(); it != _Objects.end(); ++it) {
+        if (it->first == Obj)
+            return true;
+    }
+
+    return false;
 }
 
 //**************************************************************************
@@ -116,7 +120,7 @@ bool Transaction::hasObject(const TransactionalObject *Obj) const
 
 void Transaction::apply(Document &Doc, bool forward)
 {
-    std::map<const TransactionalObject*, TransactionObject*>::iterator It;
+    TransactionList::iterator It;
     //for (It= _Objects.begin();It!=_Objects.end();++It)
     //    It->second->apply(Doc,const_cast<DocumentObject*>(It->first));
     for (It= _Objects.begin();It!=_Objects.end();++It)
@@ -129,7 +133,13 @@ void Transaction::apply(Document &Doc, bool forward)
 
 void Transaction::addObjectNew(TransactionalObject *Obj)
 {
-    std::map<const TransactionalObject*, TransactionObject*>::iterator pos = _Objects.find(Obj);
+    TransactionList::iterator pos = _Objects.end();
+    for (TransactionList::iterator it = _Objects.begin(); it != _Objects.end(); ++it) {
+        if (it->first == Obj) {
+            pos = it;
+            break;
+        }
+    }
 
     if (pos != _Objects.end()) {
         if (pos->second->status == TransactionObject::Del) {
@@ -146,13 +156,19 @@ void Transaction::addObjectNew(TransactionalObject *Obj)
         TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
         To->status = TransactionObject::New;
         To->_NameInDocument = Obj->detachFromDocument();
-        _Objects[Obj] = To;
+        _Objects.push_back(std::make_pair(Obj, To));
     }
 }
 
 void Transaction::addObjectDel(const TransactionalObject *Obj)
 {
-    std::map<const TransactionalObject*, TransactionObject*>::iterator pos = _Objects.find(Obj);
+    TransactionList::iterator pos = _Objects.end();
+    for (TransactionList::iterator it = _Objects.begin(); it != _Objects.end(); ++it) {
+        if (it->first == Obj) {
+            pos = it;
+            break;
+        }
+    }
 
     // is it created in this transaction ?
     if (pos != _Objects.end() && pos->second->status == TransactionObject::New) {
@@ -165,14 +181,21 @@ void Transaction::addObjectDel(const TransactionalObject *Obj)
     }
     else {
         TransactionObject *To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
-        _Objects[Obj] = To;
+        _Objects.push_back(std::make_pair(Obj, To));
         To->status = TransactionObject::Del;
     }
 }
 
 void Transaction::addObjectChange(const TransactionalObject *Obj, const Property *Prop)
 {
-    std::map<const TransactionalObject*, TransactionObject*>::iterator pos = _Objects.find(Obj);
+    TransactionList::iterator pos = _Objects.end();
+    for (TransactionList::iterator it = _Objects.begin(); it != _Objects.end(); ++it) {
+        if (it->first == Obj) {
+            pos = it;
+            break;
+        }
+    }
+
     TransactionObject *To;
 
     if (pos != _Objects.end()) {
@@ -180,7 +203,7 @@ void Transaction::addObjectChange(const TransactionalObject *Obj, const Property
     }
     else {
         To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
-        _Objects[Obj] = To;
+        _Objects.push_back(std::make_pair(Obj, To));
         To->status = TransactionObject::Chn;
     }
 

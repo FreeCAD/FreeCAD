@@ -94,10 +94,12 @@ const char* ViewProviderDocumentObject::detachFromDocument()
 
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
 {
-    App::DocumentObject* obj = getObject();
-    App::Document* doc = obj ? obj->getDocument() : 0;
-    if (doc) {
-        onBeforeChangeProperty(doc, prop);
+    if (isAttachedToDocument()) {
+        App::DocumentObject* obj = getObject();
+        App::Document* doc = obj ? obj->getDocument() : 0;
+        if (doc) {
+            onBeforeChangeProperty(doc, prop);
+        }
     }
 }
 
