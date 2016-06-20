@@ -86,7 +86,6 @@ protected:
     //@}
 
     void addViewProvider(Gui::ViewProviderDocumentObject*);
-    void removeViewProvider(Gui::ViewProviderDocumentObject*);
 
 public:
     /** @name Signals of the document */

@@ -575,14 +575,14 @@ void Document::slotRedoDocument(const App::Document& doc)
 
 void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
 {
+    // Hint: The undo/redo first adds the view provider to the Gui
+    // document before adding the objects to the App document.
+
+    // the view provider is added by TransactionViewProvider and an
+    // object can be there only once
+    assert(d->_ViewProviderMap.find(vp->getObject()) == d->_ViewProviderMap.end());
     vp->setStatus(Detach, false);
     d->_ViewProviderMap[vp->getObject()] = vp;
-}
-
-void Document::removeViewProvider(Gui::ViewProviderDocumentObject* vp)
-{
-    vp->setStatus(Detach, true);
-    d->_ViewProviderMap.erase(vp->getObject());
 }
 
 void Document::setModified(bool b)

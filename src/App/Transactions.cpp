@@ -150,6 +150,8 @@ void Transaction::addObjectNew(TransactionalObject *Obj)
         else {
             pos->second->status = TransactionObject::New;
             pos->second->_NameInDocument = Obj->detachFromDocument();
+            // move item at the end to make sure the order of removal is kept
+            _Objects.splice(_Objects.end(), _Objects, pos);
         }
     }
     else {
