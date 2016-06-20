@@ -73,7 +73,8 @@ public:
 
 private:
     int iPos;
-    std::map<const TransactionalObject*, TransactionObject*> _Objects;
+    typedef std::list <std::pair<const TransactionalObject*, TransactionObject*> > TransactionList;
+    TransactionList _Objects;
 };
 
 /** Represents an entry for an object in a Transaction

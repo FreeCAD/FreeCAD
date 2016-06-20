@@ -1415,6 +1415,7 @@ void Document::restore (void)
     // and then clear everything in one go.
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         signalDeletedObject(*(*obj));
+        signalTransactionRemove(*(*obj), 0);
     }
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         delete *obj;
