@@ -289,11 +289,9 @@ SET(Part_Scripts
     JoinFeatures.py
     AttachmentEditor/__init__.py
     AttachmentEditor/Commands.py
-    AttachmentEditor/DepGraphTools.py
     AttachmentEditor/FrozenClass.py
     AttachmentEditor/TaskAttachmentEditor.py
     AttachmentEditor/TaskAttachmentEditor.ui
-    AttachmentEditor/TempoVis.py
 )
 
 add_library(Part SHARED ${Part_SRCS})

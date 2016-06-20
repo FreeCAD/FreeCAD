@@ -31,8 +31,16 @@ from Units import Degree as deg
 from Units import Quantity as Q
 
 from AttachmentEditor.FrozenClass import FrozenClass
-from AttachmentEditor.TempoVis import TempoVis
-from AttachmentEditor.DepGraphTools import getAllDependent
+try:
+    from Show.TempoVis import TempoVis
+    from Show.DepGraphTools import getAllDependent
+except ImportError as err:
+    def TempoVis(doc):
+        return None
+    def getAllDependent(feature):
+        return []
+    App.Console.PrintWarning("AttachmentEditor: Failed to import some code from Show module. Functionality will be limited.\n")
+    App.Console.PrintWarning(err.message)
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -280,9 +288,10 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.updateRefButtons()
         
         self.tv = TempoVis(self.obj.Document)
-        self.tv.hide_all_dependent(self.obj)
-        self.tv.show(self.obj)
-        self.tv.show([obj for (obj,subname) in self.attacher.References])
+        if self.tv: # tv will still be None if Show module is unavailable
+            self.tv.hide_all_dependent(self.obj)
+            self.tv.show(self.obj)
+            self.tv.show([obj for (obj,subname) in self.attacher.References])
     
     # task dialog handling
     def getStandardButtons(self):
@@ -582,4 +591,5 @@ class AttachmentEditorTaskPanel(FrozenClass):
     def cleanUp(self):
         '''stuff that needs to be done when dialog is closed.'''
         Gui.Selection.removeObserver(self)
-        self.tv.restore()
+        if self.tv:
+            self.tv.restore()
