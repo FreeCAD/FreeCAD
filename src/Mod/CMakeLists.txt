@@ -125,3 +125,7 @@ endif(BUILD_JTREADER)
 if(BUILD_PATH)
     add_subdirectory(Path)
 endif(BUILD_PATH)
+
+if(BUILD_SHOW)
+    add_subdirectory(Show)
+endif(BUILD_SHOW)
