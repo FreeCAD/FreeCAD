@@ -25,7 +25,12 @@
 
 #ifndef _PreComp_
 #endif
+
+#include "Application.h"
+#include "Document.h"
 #include "TransactionObject.h"
+#include "ViewProviderDocumentObject.h"
+#include <App/Document.h>
 
 using namespace Gui;
 
@@ -40,10 +45,17 @@ TransactionViewProvider::~TransactionViewProvider()
 {
 }
 
-void TransactionViewProvider::applyNew(App::Document& /*Doc*/, App::TransactionalObject* /*pcObj*/)
+void TransactionViewProvider::applyNew(App::Document& Doc, App::TransactionalObject* pcObj)
 {
+    if (status == New) {
+        Gui::Document* doc = Application::Instance->getDocument(&Doc);
+        if (doc) {
+            doc->addViewProvider(static_cast<ViewProviderDocumentObject*>(pcObj));
+        }
+    }
 }
 
-void TransactionViewProvider::applyDel(App::Document& /*Doc*/, App::TransactionalObject* /*pcObj*/)
+void TransactionViewProvider::applyDel(App::Document& Doc, App::TransactionalObject* pcObj)
 {
+    // nothing to do here
 }

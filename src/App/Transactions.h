@@ -67,9 +67,6 @@ public:
     /// check if this object is used in a transaction
     bool hasObject(const TransactionalObject *Obj) const;
 
-    friend class Document;
-
-protected:
     void addObjectNew(TransactionalObject *Obj);
     void addObjectDel(const TransactionalObject *Obj);
     void addObjectChange(const TransactionalObject *Obj, const Property *Prop);

@@ -42,8 +42,8 @@ public:
     /// Constructor
     TransactionalObject(void);
     virtual ~TransactionalObject();
-    virtual bool isAttachedToDocument() const = 0;
-    virtual const char* detachFromDocument() = 0;
+    virtual bool isAttachedToDocument() const;
+    virtual const char* detachFromDocument();
 
 protected:
     void onBeforeChangeProperty(Document *doc, const Property *prop);

@@ -81,15 +81,15 @@ void ViewProviderDocumentObject::finishRestoring()
 
 bool ViewProviderDocumentObject::isAttachedToDocument() const
 {
-    App::DocumentObject* obj = getObject();
-    bool ok = obj ? obj->isAttachedToDocument() : false;
-    return ok;
+    return (!testStatus(Detach));
 }
 
 const char* ViewProviderDocumentObject::detachFromDocument()
 {
-    App::DocumentObject* obj = getObject();
-    return obj ? obj->getNameInDocument() : 0;
+    // here we can return an empty string since the object
+    // name comes from the document object
+    setStatus(Detach, true);
+    return "";
 }
 
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
