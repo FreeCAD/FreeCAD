@@ -1910,12 +1910,14 @@ void Application::ExtractUserPath()
         throw Base::Exception("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
 
-    char *path="/tmp";
-    char *FCUserData;
-    if (FCUserData=getenv("FREECAD_USER_DATA"))
-        path = FCUserData;
-    else
-        path = pwd->pw_dir;
+    char *path = pwd->pw_dir;
+    char *fc_user_data;
+    if ((fc_user_data = getenv("FREECAD_USER_DATA"))) {
+        QString env = QString::fromUtf8(fc_user_data);
+        QDir dir(env);
+        if (!env.isEmpty() && dir.exists())
+            path = fc_user_data;
+    }
 
     std::string appData(path);
     Base::FileInfo fi(appData.c_str());
