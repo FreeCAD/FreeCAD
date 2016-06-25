@@ -30,7 +30,6 @@
 #include "DocumentObjectExtension.h"
 #include <vector>
 
-
 namespace App
 {
 class DocumentObjectGroup;
