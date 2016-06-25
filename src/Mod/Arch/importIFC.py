@@ -397,21 +397,22 @@ def insert(filename,docname,skip=[],only=[],root=None):
         for o in r.RelatedObjects:
             mattable[o.id()] = r.RelatingMaterial.id()
     for r in ifcfile.by_type("IfcStyledItem"):
-        if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
-            if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
-                if r.Styles[0].Styles[0].Styles[0].is_a("IfcSurfaceStyleRendering"):
-                    if r.Styles[0].Styles[0].Styles[0].SurfaceColour:
-                        c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
-                        if r.Item:
-                            for p in ifcfile.by_type("IfcProduct"):
-                                if p.Representation:
-                                    for it in p.Representation.Representations:
-                                        if it.Items:
-                                            if it.Items[0].id() == r.Item.id():
-                                                colors[p.id()] = (c.Red,c.Green,c.Blue)
-                                            elif it.Items[0].is_a("IfcBooleanResult"):
-                                                if (it.Items[0].FirstOperand.id() == r.Item.id()):
+        if r.Styles:
+            if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
+                if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
+                    if r.Styles[0].Styles[0].Styles[0].is_a("IfcSurfaceStyleRendering"):
+                        if r.Styles[0].Styles[0].Styles[0].SurfaceColour:
+                            c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
+                            if r.Item:
+                                for p in ifcfile.by_type("IfcProduct"):
+                                    if p.Representation:
+                                        for it in p.Representation.Representations:
+                                            if it.Items:
+                                                if it.Items[0].id() == r.Item.id():
                                                     colors[p.id()] = (c.Red,c.Green,c.Blue)
+                                                elif it.Items[0].is_a("IfcBooleanResult"):
+                                                    if (it.Items[0].FirstOperand.id() == r.Item.id()):
+                                                        colors[p.id()] = (c.Red,c.Green,c.Blue)
                         else:
                             for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
                                 for it in m.Representations:
@@ -568,13 +569,24 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj = getattr(Arch,"make"+freecadtype)(name=name)
                         obj.CloneOf = clone
                         if shape:
-                            v = shape.Solids[0].CenterOfMass.sub(clone.Shape.Solids[0].CenterOfMass)
-                            r = getRotation(product)
-                            if not r.isNull():
-                                v = v.add(clone.Shape.Solids[0].CenterOfMass)
-                                v = v.add(r.multVec(clone.Shape.Solids[0].CenterOfMass.negative()))
-                            obj.Placement.Rotation = r
-                            obj.Placement.move(v)
+                            if shape.Solids:
+                                s1 = shape.Solids[0]
+                            else:
+                                s1 = shape
+                            if clone.Shape.Solids:
+                                s2 = clone.Shape.Solids[0]
+                            else:
+                                s1 = clone.Shape
+                            if hasattr(s1,"CenterOfMass") and hasattr(s2,"CenterOfMass"):
+                                v = s1.CenterOfMass.sub(s2.CenterOfMass)
+                                r = getRotation(product)
+                                if not r.isNull():
+                                    v = v.add(s2.CenterOfMass)
+                                    v = v.add(r.multVec(s2.CenterOfMass.negative()))
+                                obj.Placement.Rotation = r
+                                obj.Placement.move(v)
+                            else:
+                                print "failed to compute placement ",
                     else:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if store:

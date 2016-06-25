@@ -97,7 +97,8 @@ class _Site(ArchFloor._Floor):
         obj.addProperty("App::PropertyString","PostalCode","Arch","The postal or zip code of this site")
         obj.addProperty("App::PropertyString","City","Arch","The city of this site")
         obj.addProperty("App::PropertyString","Country","Arch","The country of this site")
-        obj.addProperty("App::PropertyString","Coordinates","Arch","The geographic coordinates of this site")
+        obj.addProperty("App::PropertyFloat","Latitude","Arch","The latitude of this site")
+        obj.addProperty("App::PropertyFloat","Longitude","Arch","The latitude of this site")
         obj.addProperty("App::PropertyString","Url","Arch","An url that shows this site in a mapping website")
         self.Type = "Site"
         obj.setEditorMode('Height',2)

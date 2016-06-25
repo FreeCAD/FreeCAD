@@ -892,13 +892,12 @@ def rebuildArchShape(objects=None):
                                                 solid = Part.Solid(solid)
                                             #print "rebuilt solid: isValid is ",solid.isValid()
                                             if solid.isValid():
-                                                print "Success"
                                                 obj.Base.Shape = solid
                                                 success = True
                     except:
                         pass
         if not success:
-            print "Failed"
+            print "Failed to rebuild a valid solid for object ",obj.Name
     FreeCAD.ActiveDocument.recompute()
 
 
