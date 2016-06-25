@@ -440,7 +440,9 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         unsigned validPlanes = 0;
 
         auto group = App::GeoFeatureGroupExtension::getGroupOfObject ( pcActiveBody );
-        auto geoGroup = dynamic_cast<App::GeoFeatureGroupExtension*>(group->getExtension(App::GeoFeatureGroupExtension::getClassTypeId()));
+        App::GeoFeatureGroupExtension* geoGroup = nullptr;
+        if(group)
+            geoGroup = dynamic_cast<App::GeoFeatureGroupExtension*>(group->getExtension(App::GeoFeatureGroupExtension::getClassTypeId()));
 
         std::vector<App::DocumentObject*> planes;
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
