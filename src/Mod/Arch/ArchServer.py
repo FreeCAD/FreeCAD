@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,os
+import FreeCAD, os, time, tempfile, base64, Draft
 from PySide import QtCore, QtGui
 
 if FreeCAD.GuiUp:
@@ -36,19 +36,306 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
+
+# BIMSERVER ###########################################################
+
+
+
 class _CommandBimserver:
+    
     "the Arch Bimserver command definition"
+    
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Bimserver',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Bimserver","BIM server"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Bimserver","Opens a browser window and connects to a BIM server instance")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Bimserver","Connects and interacts with a BIM server instance")}
 
     def Activated(self):
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        url = p.GetString("BimServerUrl","http://localhost:8082")
-        FreeCADGui.addModule("WebGui")
-        FreeCADGui.doCommand("WebGui.openBrowser(\""+url+"\")")
-  
+        try:
+            import requests
+        except:
+            FreeCAD.Console.PrintError("requests python module not found, aborting.\n")
+        else:
+            FreeCADGui.Control.showDialog(_BimServerTaskPanel())
+
+
+class _BimServerTaskPanel:
+    
+    '''The TaskPanel for the BimServer command'''
+    
+    def __init__(self):
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/BimServerTaskPanel.ui")
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Arch_Bimserver.svg"))
+        self.form.labelStatus.setText("")
+        QtCore.QObject.connect(self.form.buttonServer, QtCore.SIGNAL("clicked()"), self.login)
+        QtCore.QObject.connect(self.form.buttonBrowser, QtCore.SIGNAL("clicked()"), self.browse)
+        QtCore.QObject.connect(self.form.comboProjects, QtCore.SIGNAL("currentIndexChanged(int)"), self.getRevisions)
+        QtCore.QObject.connect(self.form.buttonOpen, QtCore.SIGNAL("clicked()"), self.openFile)
+        QtCore.QObject.connect(self.form.buttonUpload, QtCore.SIGNAL("clicked()"), self.uploadFile)
+        self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        self.Projects = []
+        self.Revisions = []
+        self.RootObjects = Draft.getObjectsOfType(FreeCAD.ActiveDocument.Objects,"Site")+Draft.getObjectsOfType(FreeCAD.ActiveDocument.Objects,"Building")
+        for o in self.RootObjects:
+            self.form.comboRoot.addItem(o.Label)
+        self.setLogged(False)
+        url,token = self.getPrefs()
+        if url and token:
+            self.getProjects()
+            
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def accept(self):
+        FreeCADGui.Selection.removeObserver(self.observer)
+        FreeCADGui.Control.closeDialog()
+
+    def getPrefs(self):
+        url = self.prefs.GetString("BimServerUrl","http://localhost:8082")
+        if hasattr(self,"token"):
+            token = self.token
+        else:
+            token = self.prefs.GetString("BimServerToken","")
+            if token:
+                self.token = token
+        return url,token
+        
+    def setLogged(self,logged):
+        if logged:
+            self.form.buttonServer.setText("Connected")
+            self.form.buttonServer.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
+            self.form.buttonServer.setToolTip("Click to log out")
+            self.Connected = True
+        else:
+            self.form.buttonServer.setText("Not connected")
+            self.form.buttonServer.setIcon(QtGui.QIcon(":/icons/edit_Cancel.svg"))
+            self.form.buttonServer.setToolTip("Click to log in")
+            self.Connected = False
+
+    def login(self):
+        self.setLogged(False)
+        self.form.labelStatus.setText("")
+        if self.Connected:
+            # if the user pressed logout, delete the token
+            self.prefs.SetString("BimServerToken","")
+        else:
+            url,token = self.getPrefs()
+            loginform = FreeCADGui.PySideUic.loadUi(":/ui/DialogBimServerLogin.ui")
+            loginform.editUrl.setText(url)
+            dlg = loginform.exec_()
+            if dlg:
+                url = loginform.editUrl.text()
+                login = loginform.editLogin.text()
+                passwd = loginform.editPassword.text()
+                store = loginform.checkStore.isChecked()
+                import requests
+                self.form.labelStatus.setText("Logging in...")
+                url2 = url + "/json"
+                data = {'request': {'interface': 'AuthInterface', 'method': 'login', 'parameters': {'username': login, 'password': passwd}}}
+                try:
+                    resp = requests.post(url2,json = data)
+                except:
+                    FreeCAD.Console.PrintError("Unable to connect to BimServer at "+url+"\n")
+                    self.form.labelStatus.setText("Connection failed.")
+                    return
+                if resp.ok:
+                    try:
+                        token = resp.json()["response"]["result"]
+                    except:
+                        return
+                    else:
+                        if store:
+                            self.prefs.SetString("BimServerUrl",url)
+                            if token:
+                                self.prefs.SetString("BimServerToken",token)
+                        else:
+                            self.prefs.SetString("BimServerToken","")
+                        if token:
+                            self.token = token
+                            self.getProjects()
+        self.form.labelStatus.setText("")
+
+    def browse(self):
+        url = self.prefs.GetString("BimServerUrl","http://localhost:8082")+"/apps/bimviews"
+        if self.prefs.GetBool("BimServerBrowser",False):
+            FreeCADGui.addModule("WebGui")
+            FreeCADGui.doCommand("WebGui.openBrowser(\""+url+"\")")
+        else:
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl(url, QtCore.QUrl.TolerantMode))
+
+    def getProjects(self):
+        self.setLogged(False)
+        self.Projects = []
+        self.form.labelStatus.setText("")
+        import requests
+        url,token = self.getPrefs()
+        if url and token:
+            self.form.labelStatus.setText("Getting projects list...")
+            url += "/json"
+            data = { "token": token, "request": { "interface": "SettingsInterface", "method": "getServerSettings", "parameters": { } } }
+            try:
+                resp = requests.post(url,json = data)
+            except:
+                FreeCAD.Console.PrintError("Unable to connect to BimServer at "+url[:-5]+"\n")
+                self.form.labelStatus.setText("Connection failed.")
+                return
+            if resp.ok:
+                try:
+                    name = resp.json()["response"]["result"]["name"]
+                except:
+                    pass # unable to get the server name
+                else:
+                    self.form.labelServerName.setText(name)
+            data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getAllProjects", "parameters": { "onlyTopLevel": "false", "onlyActive": "true" } } }
+            resp = requests.post(url,json = data)
+            if resp.ok:
+                try:
+                    projects = resp.json()["response"]["result"]
+                except:
+                    FreeCAD.Console.PrintError("Unable to get projects list from BimServer\n")
+                else:
+                    self.setLogged(True)
+                    self.form.comboProjects.clear()
+                    for p in projects:
+                        self.form.comboProjects.addItem(p["name"])
+                    self.Projects = projects
+                    self.form.comboProjects.setCurrentIndex(0)
+                    self.getRevisions(0)
+        self.form.labelStatus.setText("")
+
+    def getRevisions(self,index):
+        self.form.labelStatus.setText("")
+        self.form.listRevisions.clear()
+        self.Revisions = []
+        import requests
+        url,token = self.getPrefs()
+        if url and token:
+            url += "/json"
+            if (index >= 0) and (len(self.Projects) > index):
+                p = self.Projects[index]
+                self.form.labelStatus.setText("Getting revisions...")
+                for rev in p["revisions"]:
+                    data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getRevision", "parameters": { "roid": rev } } }
+                    resp = requests.post(url,json = data)
+                    if resp.ok:
+                        try:
+                            name = resp.json()["response"]["result"]["comment"]
+                            date = resp.json()["response"]["result"]["date"]
+                        except:
+                            pass # unable to get the revision
+                        else:
+                            date = time.strftime("%a %d %b %Y %H:%M:%S GMT", time.gmtime(int(date)/1000.0))
+                            self.form.listRevisions.addItem(date+" - "+name)
+                            self.Revisions.append(resp.json()["response"]["result"])
+        self.form.labelStatus.setText("")
+
+    def openFile(self):
+        self.form.labelStatus.setText("")
+        if (self.form.listRevisions.currentRow() >= 0) and (len(self.Revisions) > self.form.listRevisions.currentRow()):
+            rev = self.Revisions[self.form.listRevisions.currentRow()]
+            import requests
+            url,token = self.getPrefs()
+            if url and token:
+                FreeCAD.Console.PrintMessage("Downloading file from Bimserver...\n")
+                self.form.labelStatus.setText("Checking available serializers...")
+                url += "/json"
+                serializer = None
+                for s in ["Ifc2x3tc1"]: # Ifc4 seems unreliable ATM, let's stick with good old Ifc2x3...
+                    data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getSerializerByName", "parameters": { "serializerName": s } } }
+                    resp = requests.post(url,json = data)
+                    if resp.ok:
+                        try:
+                            srl = resp.json()["response"]["result"]
+                        except:
+                            pass # unable to get this serializer
+                        else:
+                            serializer = srl
+                            break
+                if not serializer:
+                    FreeCAD.Console.PrintError("Unable to get a valid serializer from the BimServer\n")
+                    return
+                tf = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), "Save the downloaded IFC file?", None, "IFC files (*.ifc)")
+                if tf:
+                    tf = tf[0]
+                self.form.labelStatus.setText("Downloading file...")
+                data = { "token": token, "request": { "interface": "ServiceInterface", "method": "downloadRevisions", "parameters": { "roids": [rev["oid"]], "serializerOid": serializer["oid"], "sync": "false" } } }
+                resp = requests.post(url,json = data)
+                if resp.ok:
+                    try:
+                        downloadid = resp.json()["response"]["result"]
+                    except:
+                        FreeCAD.Console.PrintError("Unable to obtain a valid download for this revision from the BimServer\n")
+                        return
+                data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getDownloadData", "parameters": { "topicId": downloadid } } }
+                resp = requests.post(url,json = data)
+                if resp.ok:
+                    try:
+                        downloaddata = resp.json()["response"]["result"]["file"]
+                    except:
+                        FreeCAD.Console.PrintError("Unable to download the data for this revision.\n")
+                        return
+                    else:
+                        FreeCAD.Console.PrintMessage("Opening file...\n")
+                        self.form.labelStatus.setText("Opening file...")
+                        if not tf:
+                            tf = tempfile.mkstemp(suffix=".ifc")[1]
+                        f = open(tf,"wb")
+                        f.write(base64.b64decode(downloaddata))
+                        f.close()
+                        import importIFC
+                        importIFC.open(tf)
+        self.form.labelStatus.setText("")
+
+    def uploadFile(self):
+        self.form.labelStatus.setText("")
+        if (self.form.comboProjects.currentIndex() >= 0) and (len(self.Projects) > self.form.comboProjects.currentIndex()) and (self.form.comboRoot.currentIndex() >= 0):
+            project = self.Projects[self.form.comboProjects.currentIndex()]
+            import requests
+            url,token = self.getPrefs()
+            if url and token:
+                url += "/json"
+                deserializer = None
+                FreeCAD.Console.PrintMessage("Saving file...\n")
+                self.form.labelStatus.setText("Checking available deserializers...")
+                import ifcopenshell
+                schema = ifcopenshell.schema_identifier.lower()
+                data = { "token": token, "request": { "interface": "PluginInterface",  "method": "getAllDeserializers", "parameters": { "onlyEnabled": "true" } } }
+                resp = requests.post(url,json = data)
+                if resp.ok:
+                    try:
+                        for d in resp.json()["response"]["result"]:
+                            if schema in d["name"].lower():
+                                deserializer = d
+                                break
+                    except:
+                        pass
+                if not deserializer:
+                    FreeCAD.Console.PrintError("Unable to get a valid deserializer for the "+schema+" schema\n")
+                    return
+                tf = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), "Save the IFC file before uploading?", None, "IFC files (*.ifc)")
+                if tf:
+                    tf = tf[0]
+                if not tf:
+                    tf = os.path.join(tempfile._get_default_tempdir(),next(tempfile._get_candidate_names())+".ifc")
+                import importIFC
+                self.form.labelStatus.setText("Saving file...")
+                importIFC.export([self.RootObjects[self.form.comboRoot.currentIndex()]],tf)
+                f = open(tf,"rb")
+                ifcdata = base64.b64encode(f.read())
+                f.close()
+                FreeCAD.Console.PrintMessage("Uploading file to Bimserver...\n")
+                self.form.labelStatus.setText("Uploading file...")
+                data = { "token": token, "request": { "interface": "ServiceInterface", "method": "checkin", "parameters": { "poid": project["oid"], "comment": self.form.editComment.text(), "deserializerOid": deserializer["oid"], "fileSize": os.path.getsize(tf), "fileName": os.path.basename(tf), "data": ifcdata, "merge": "false", "sync": "true" } } }
+                resp = requests.post(url,json = data)
+                if resp.ok:
+                    if resp.json()["response"]["result"]:
+                        FreeCAD.Console.PrintMessage("File upload successful\n")
+                        self.getRevisions(self.form.comboProjects.currentIndex())
+                    else:
+                        FreeCAD.Console.PrintError("File upload failed\n")
+        self.form.labelStatus.setText("")
+
+
 
 class _CommandGit:
     "the Arch Git Commit command definition"
@@ -99,6 +386,9 @@ class _CommandGit:
             repo.git.commit(m=d.lineEdit.text())
             if d.checkBox.isChecked():
                 repo.git.push()
+                
+                
+
 
 
 class _ArchGitDialog(QtGui.QDialog):
