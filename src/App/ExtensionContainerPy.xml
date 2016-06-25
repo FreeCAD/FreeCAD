@@ -5,7 +5,7 @@
     Name="ExtensionContainerPy" 
     TwinPointer="ExtensionContainer" 
     Twin="ExtensionContainer" 
-    Include="App/Extension.h" 
+    Include="App/ExtensionContainer.h" 
     Namespace="App" 
     FatherInclude="App/PropertyContainerPy.h" 
     FatherNamespace="App"
