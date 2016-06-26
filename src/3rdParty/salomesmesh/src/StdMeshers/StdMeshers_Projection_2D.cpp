@@ -431,7 +431,7 @@ namespace {
     // get ordered src EDGEs
     TError err;
     srcWires = StdMeshers_FaceSide::GetFaceWires( srcFace, *srcMesh,/*skipMediumNodes=*/0, err);
-    if ( err && !err->IsOK() || srcWires.empty() )
+    if ( ( err && !err->IsOK() ) || srcWires.empty() )
       return err;
 
     SMESH_MesherHelper srcHelper( *srcMesh );
@@ -942,7 +942,7 @@ namespace {
    */
   //================================================================================
 
-  bool projectQuads(const TopoDS_Face&                 tgtFace,
+  inline bool projectQuads(const TopoDS_Face&                 tgtFace,
                     const TopoDS_Face&                 srcFace,
                     const TSideVector&                 tgtWires,
                     const TSideVector&                 srcWires,

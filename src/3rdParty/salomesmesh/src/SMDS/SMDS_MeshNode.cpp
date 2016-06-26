@@ -268,6 +268,7 @@ double* SMDS_MeshNode::getCoord() const
   vtkUnstructuredGrid *grid;
   coord2=(double *)malloc(3*sizeof(double));
   if ( SMDS_Mesh::_meshList[myMeshId] != NULL )
+  {
 	if ( SMDS_Mesh::_meshList[myMeshId]->getGrid() != NULL )
 	{
 	     grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
@@ -278,6 +279,7 @@ double* SMDS_MeshNode::getCoord() const
 	     return(coord2);
 //	     return (double *)(SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetPoints()->GetPoint(myVtkID,coord));
 	}
+  }
   else
   {
      coord2[0]=0.;
