@@ -789,7 +789,7 @@ protected:
   {
     assert(ID >= 0);
     myElementIDFactory->adjustMaxId(ID);
-    if (ID >= myCells.size())
+    if (ID >= static_cast<int>(myCells.size()))
       myCells.resize(ID+SMDS_Mesh::chunkSize,0);
   }
 

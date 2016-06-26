@@ -522,7 +522,7 @@ namespace {
     return nbSides;
   }
 
-  void pointsToPython(const std::vector<gp_XYZ>& p)
+  inline void pointsToPython(const std::vector<gp_XYZ>& p)
   {
 #ifdef _DEBUG_
     for ( int i = SMESH_Block::ID_V000; i < p.size(); ++i )

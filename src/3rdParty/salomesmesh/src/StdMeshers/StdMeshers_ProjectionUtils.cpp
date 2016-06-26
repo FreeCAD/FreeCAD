@@ -102,7 +102,7 @@ namespace HERE = StdMeshers_ProjectionUtils;
 namespace {
 
   static SMESHDS_Mesh* theMeshDS[2] = { 0, 0 }; // used for debug only
-  long shapeIndex(const TopoDS_Shape& S)
+  inline long shapeIndex(const TopoDS_Shape& S)
   {
     if ( theMeshDS[0] && theMeshDS[1] )
       return max(theMeshDS[0]->ShapeToIndex(S), theMeshDS[1]->ShapeToIndex(S) );
