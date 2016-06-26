@@ -107,7 +107,7 @@ bool TaskDlgPost::accept()
             (*it)->applyPythonCode();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(NULL, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(NULL, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 
@@ -297,7 +297,7 @@ void TaskPostClip::collectImplicitFunctions() {
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
                                                             pipeline->Functions.getValue())->Functions.getValues();
             for(std::size_t i=0; i<funcs.size(); ++i)
-                items.push_back(QString::fromAscii(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
            
             ui->FunctionBox->addItems(items);
         }
@@ -589,7 +589,7 @@ void TaskPostCut::collectImplicitFunctions() {
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
                                                             pipeline->Functions.getValue())->Functions.getValues();
             for(std::size_t i=0; i<funcs.size(); ++i)
-                items.push_back(QString::fromAscii(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
            
             ui->FunctionBox->addItems(items);
         }
