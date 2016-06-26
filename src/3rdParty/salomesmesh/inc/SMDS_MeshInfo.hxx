@@ -192,7 +192,7 @@ inline SMDS_MeshInfo::SMDS_MeshInfo():
 
 inline SMDS_MeshInfo& // operator=
 SMDS_MeshInfo::operator=(const SMDS_MeshInfo& other)
-{ for ( int i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=(*other.myNb[i]);
+{ for ( std::size_t i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=(*other.myNb[i]);
   myNbPolygons     = other.myNbPolygons;
   myNbQuadPolygons = other.myNbQuadPolygons;
   myNbPolyhedrons  = other.myNbPolyhedrons;
@@ -201,7 +201,7 @@ SMDS_MeshInfo::operator=(const SMDS_MeshInfo& other)
 
 inline void // Clear
 SMDS_MeshInfo::Clear()
-{ for ( int i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=0;
+{ for ( std::size_t i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=0;
   myNbPolygons=myNbQuadPolygons=myNbPolyhedrons=0;
 }
 
@@ -297,7 +297,7 @@ SMDS_MeshInfo::NbElements(SMDSAbs_ElementType type) const
   int nb = 0;
   switch (type) {
   case SMDSAbs_All:
-    for ( int i=1+index( SMDSAbs_Node,1 ); i<myNb.size(); ++i ) if ( myNb[i] ) nb += *myNb[i];
+    for ( std::size_t i=1+index( SMDSAbs_Node,1 ); i<myNb.size(); ++i ) if ( myNb[i] ) nb += *myNb[i];
     nb += myNbPolygons + myNbQuadPolygons + myNbPolyhedrons;
     break;
   case SMDSAbs_Volume:
@@ -358,6 +358,8 @@ SMDS_MeshInfo::NbEntities(SMDSAbs_EntityType type) const
   case SMDSEntity_Quad_Polygon:     return myNbQuadPolygons;
 #endif
   case SMDSEntity_Quad_Polyhedra:
+    break;
+  default:
     break;
   }
   return 0;
@@ -432,6 +434,8 @@ SMDS_MeshInfo::setNb(const SMDSAbs_EntityType geomType, const int nb)
   case SMDSEntity_Quad_Polygon:     myNbQuadPolygons      = nb; break;
 #endif
   case SMDSEntity_Quad_Polyhedra:
+    break;
+  default:
     break;
   }
 }

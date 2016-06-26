@@ -344,8 +344,8 @@ int HashCode(const Link& aLink, int aLimit)
 
 Standard_Boolean IsEqual(const Link& aLink1, const Link& aLink2)
 {
-  return (aLink1.n1 == aLink2.n1 && aLink1.n2 == aLink2.n2 ||
-          aLink1.n1 == aLink2.n2 && aLink1.n2 == aLink2.n1);
+  return ((aLink1.n1 == aLink2.n1 && aLink1.n2 == aLink2.n2) ||
+          (aLink1.n1 == aLink2.n2 && aLink1.n2 == aLink2.n1));
 }
 
 namespace
@@ -539,7 +539,7 @@ namespace
    */
   //================================================================================
 
-  void makeQuadratic( const TopTools_IndexedMapOfShape& shapes,
+  inline void makeQuadratic( const TopTools_IndexedMapOfShape& shapes,
                       SMESH_Mesh*                       mesh )
   {
     for ( int i = 1; i <= shapes.Extent(); ++i )
