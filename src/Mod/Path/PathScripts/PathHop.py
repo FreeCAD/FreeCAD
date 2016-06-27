@@ -105,7 +105,11 @@ class CommandPathHop:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Creates a Path Hop object")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
@@ -131,7 +135,7 @@ class CommandPathHop:
             'PathScripts.PathHop.ViewProviderPathHop(obj.ViewObject)')
         FreeCADGui.doCommand(
             'obj.NextObject = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

@@ -516,7 +516,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.RampAngle = 3.0')
         FreeCADGui.doCommand('obj.RampSize = 0.75')
         FreeCADGui.doCommand('obj.HelixSize = 0.75')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
 
         FreeCAD.ActiveDocument.recompute()

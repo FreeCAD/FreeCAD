@@ -23,6 +23,7 @@
 # ***************************************************************************
 '''PathUtils -common functions used in PathScripts for filterig, sorting, and generating gcode toolpath data '''
 import FreeCAD
+import FreeCADGui
 import Part
 import math
 import Path
@@ -30,9 +31,9 @@ from DraftGeomUtils import geomType
 from DraftGeomUtils import findWires
 import DraftVecUtils
 import PathScripts
-from PathScripts import PathProject
+from PathScripts import PathJob
 import itertools
-
+from PySide import QtGui
 
 def cleanedges(splines, precision):
     '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
@@ -240,16 +241,6 @@ def convert(toolpath, Z=0.0, PlungeAngle=90.0, Zprevious=None, StopLength=None, 
                 endpt = arcstartpt
             center = edge.Curve.Center
             relcenter = center.sub(lastpt)
-
-            # start point and end point fall together in the given output precision?
-            if fmt(startpt.x) == fmt(endpt.x) and fmt(startpt.y) == fmt(endpt.y):
-                if edge.Length < 0.5 * 2 * math.pi * edge.Curve.Radius:
-                    # because it is a very small circle -> omit, as that gcode would produce a full circle
-                    return endpt, ""
-                else:
-                    # it is an actual full circle, emit a line for this
-                    pass
-
             # FreeCAD.Console.PrintMessage("arc  startpt= " + str(startpt)+ "\n")
             # FreeCAD.Console.PrintMessage("arc  midpt= " + str(midpt)+ "\n")
             # FreeCAD.Console.PrintMessage("arc  endpt= " + str(endpt)+ "\n")
@@ -387,11 +378,8 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
     sortededges = Part.__sortEdges__(edgelist)
     newwire = findWires(sortededges)[0]
 
-    print "newwire is clockwise: " + str(is_clockwise(newwire))
     if is_clockwise(newwire) is not clockwise:
         newwire.reverse()
-
-    print "newwire is clockwise: " + str(is_clockwise(newwire))
 
     if Side == 'Left':
         # we use the OCC offset feature
@@ -403,9 +391,7 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
             offset = newwire.makeOffset(0.0)
         else:
             offset = newwire
-    print "offset wire is clockwise: " + str(is_clockwise(offset))
     offset.reverse()
-    print "offset wire is clockwise: " + str(is_clockwise(offset))
 
     return offset
 
@@ -455,9 +441,9 @@ def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart, ZFinal
 # numbers/height offset numbers based on previously active toolnumbers
 
 
-def changeTool(obj, proj):
+def changeTool(obj, job):
     tlnum = 0
-    for p in proj.Group:
+    for p in job.Group:
         if not hasattr(p, "Group"):
             if isinstance(p.Proxy, PathScripts.PathLoadTool.LoadTool) and p.ToolNumber > 0:
                 tlnum = p.ToolNumber
@@ -470,15 +456,13 @@ def changeTool(obj, proj):
                 if g == obj:
                     return tlnum
 
-
 def getLastTool(obj):
     toolNum = obj.ToolNumber
     if obj.ToolNumber == 0:
         # find tool from previous toolchange
-        proj = findProj()
-        toolNum = changeTool(obj, proj)
+        job = findJob()
+        toolNum = changeTool(obj, job)
     return getTool(obj, toolNum)
-
 
 def getLastToolLoad(obj):
     # This walks up the hierarchy and tries to find the closest preceding
@@ -523,51 +507,68 @@ def getLastToolLoad(obj):
                 continue
     return tc
 
-
 def getTool(obj, number=0):
     "retrieves a tool from a hosting object with a tooltable, if any"
     for o in obj.InList:
         if o.TypeId == "Path::FeatureCompoundPython":
-            for m in o.Group:
-                if hasattr(m, "Tooltable"):
-                    return m.Tooltable.getTool(number)
-    # not found? search one level up
-    for o in obj.InList:
-        return getTool(o, number)
+            if hasattr(o, "Tooltable"):
+                return o.Tooltable.getTool(number)
     return None
 
-
-def findProj():
-    for o in FreeCAD.ActiveDocument.Objects:
-        if "Proxy" in o.PropertiesList:
-            if isinstance(o.Proxy, PathProject.ObjectPathProject):
-                return o
-
-
-def findMachine():
-    '''find machine object for the tooltable editor '''
-    for o in FreeCAD.ActiveDocument.Objects:
-        if "Proxy" in o.PropertiesList:
-            if isinstance(o.Proxy, PathScripts.PathMachine.Machine):
-                return o
-
-
-def addToProject(obj):
-    """Adds a path obj to this document, if no PathParoject exists it's created on the fly"""
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-    if p.GetBool("pathAutoProject", True):
-        project = findProj()
-        if not project:
-            project = PathProject.CommandProject.Create()
-        g = project.Group
-        g.append(obj)
-        project.Group = g
-        return project
+def findParentJob(obj):
+    '''retrieves a parent job object for an operation or other Path object'''
+    for i in obj.InList:
+        if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob):
+            return i
     return None
 
+def GetJobs(jobname = None):
+    '''returns all jobs in the current document.  If name is given, returns that job'''
+    jobs = []
+    for o in FreeCAD.ActiveDocument.Objects:
+        if "Proxy" in o.PropertiesList:
+            if isinstance(o.Proxy, PathJob.ObjectPathJob):
+                if jobname is not None:
+                    if o.Name == jobname:
+                        jobs.append(o)
+                else:
+                    jobs.append(o)
+    return jobs
+
+def addToJob(obj, jobname = None):
+    if jobname is not None:
+        jobs = GetJobs(jobname)
+        if len(jobs) == 1:
+            job = jobs[0]
+        else:
+            FreeCAD.Console.PrintError("Didn't find the job")
+            return None
+
+    else:
+        jobs = GetJobs()
+        if len(jobs) == 0:
+            job = PathJob.CommandJob.Create()
+
+        elif len(jobs) == 1:
+            job = jobs[0]
+        else:
+            form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
+            mylist = [i.Name for i in jobs]
+            form.cboProject.addItems(mylist)
+            r = form.exec_()
+            if r is False:
+                return None
+            else:
+                print form.cboProject.currentText()
+                job = [i for i in jobs if i.Name == form.cboProject.currentText()][0]
+
+    g = job.Group
+    g.append(obj)
+    job.Group = g
+    return job
 
 def getLastZ(obj):
-    ''' find the last z value in the project '''
+    ''' find the last z value in the job '''
     lastZ = ""
     for g in obj.Group:
         for c in g.Path.Commands:
@@ -576,30 +577,6 @@ def getLastZ(obj):
                     lastZ = c.Parameters['Z']
     return lastZ
 
-
-def frange(start, stop, step, finish):
-    x = []
-    curdepth = start
-    if step == 0:
-        return x
-    # do the base cuts until finishing round
-    while curdepth >= stop + step + finish:
-        curdepth = curdepth - step
-        if curdepth <= stop + finish:
-            curdepth = stop + finish
-        x.append(curdepth)
-
-    # we might have to do a last pass or else finish round might be too far
-    # away
-    if curdepth - stop > finish:
-        x.append(stop + finish)
-
-    # do the the finishing round
-    if curdepth >= stop:
-        curdepth = stop
-        x.append(curdepth)
-
-    return x
 def rapid(x=None, y=None, z=None):
     """ Returns gcode string to perform a rapid move."""
     retstr = "G00"
@@ -772,6 +749,7 @@ def rampPlunge(edge, rampangle, destZ, startZ):
 
 
 class depth_params:
+    '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters'''
 
     def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, user_depths=None):
         self.clearance_height = clearance_height

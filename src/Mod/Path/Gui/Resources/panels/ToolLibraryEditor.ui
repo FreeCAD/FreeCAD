@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>946</width>
+    <height>614</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="1">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Tool Library</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="5">
+       <widget class="QPushButton" name="ButtonImport">
+        <property name="text">
+         <string>Import...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="6">
+       <widget class="QPushButton" name="ButtonDown">
+        <property name="text">
+         <string>Move down</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../Gui/Icons/resource.qrc">
+          <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="5">
+       <widget class="QPushButton" name="ButtonUp">
+        <property name="text">
+         <string>Move up</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../Gui/Icons/resource.qrc">
+          <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg</iconset>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3" colspan="4">
+       <widget class="QTableView" name="ToolsList">
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::DragOnly</enum>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="cornerButtonEnabled">
+         <bool>false</bool>
+        </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QPushButton" name="ButtonExport">
+        <property name="text">
+         <string>Export...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="QPushButton" name="ButtonDelete">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../Gui/Icons/resource.qrc">
+          <normaloff>:/icons/delete.svg</normaloff>:/icons/delete.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QListView" name="listView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::DropOnly</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QPushButton" name="ButtonNewTool">
+        <property name="text">
+         <string>New Tool</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Path.qrc">
+          <normaloff>:/icons/Path-LoadTool.svg</normaloff>:/icons/Path-LoadTool.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="btnCopyTools">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Copy checked tools to another library</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../Gui/Icons/resource.qrc">
+          <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../../../Gui/Icons/resource.qrc"/>
+  <include location="../Path.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

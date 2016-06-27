@@ -266,7 +266,11 @@ class CommandPathDrilling:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Creates a Path Drilling object")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
@@ -283,7 +287,7 @@ class CommandPathDrilling:
         FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop))
         FreeCADGui.doCommand('obj.RetractHeight= ' + str(ztop))
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

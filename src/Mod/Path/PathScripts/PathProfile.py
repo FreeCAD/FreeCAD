@@ -32,7 +32,6 @@ from PathScripts.PathUtils import depth_params
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
     # Qt tanslation handling
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
@@ -452,7 +451,11 @@ class CommandPathProfile:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Creates a Path Profile object from selected faces")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
         ztop = 10.0
@@ -477,7 +480,7 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = False')
         FreeCADGui.doCommand('obj.PlungeAngle = 90.0')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
