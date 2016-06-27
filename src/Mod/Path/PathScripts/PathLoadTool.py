@@ -25,12 +25,9 @@
 
 import FreeCAD
 import FreeCADGui
-import Path
-# import PathGui
-import PathScripts
 import PathUtils
 import Part
-# from PathScripts import PathProject
+import PathScripts
 from PySide import QtCore, QtGui
 
 # Qt tanslation handling
@@ -76,16 +73,15 @@ class LoadTool():
         else:
             commands += 'M4S' + str(obj.SpindleSpeed) + '\n'
 
-        obj.Path = Path.Path(commands)
-
     def onChanged(self, obj, prop):
         mode = 2
         obj.setEditorMode('Placement', mode)
         # if prop == "ToolNumber":
-        proj = PathUtils.findProj()
-        for g in proj.Group:
-            if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
-                g.touch()
+        job = PathUtils.findParentJob(obj)
+        if job is not None:
+            for g in job.Group:
+                if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
+                    g.touch()
 
 
 class _ViewProviderLoadTool:
@@ -147,12 +143,16 @@ class _ViewProviderLoadTool:
 class CommandPathLoadTool:
     def GetResources(self):
         return {'Pixmap': 'Path-LoadTool',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller to the Project"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller to the Job"),
                 'Accel': "P, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Path_LoadTool", "Create Tool Controller Object"))
@@ -164,16 +164,14 @@ obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","TC")
 PathScripts.PathLoadTool.LoadTool(obj)
 PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
 
-PathUtils.addToProject(obj)
+PathUtils.addToJob(obj)
 '''
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
     @staticmethod
-    def Create():
-        # FreeCADGui.addModule("PathScripts.PathLoadTool")
-        # import Path
+    def Create(jobname = None):
         import PathScripts
         import PathUtils
 
@@ -181,7 +179,7 @@ PathUtils.addToProject(obj)
         PathScripts.PathLoadTool.LoadTool(obj)
         PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
 
-        PathUtils.addToProject(obj)
+        PathUtils.addToJob(obj, jobname)
 
 
 class TaskPanel:
@@ -205,6 +203,8 @@ class TaskPanel:
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
+        if self.toolrep is not None:
+            FreeCAD.ActiveDocument.removeObject(self.toolrep.Name)
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
 
@@ -221,11 +221,12 @@ class TaskPanel:
                 self.obj.SpindleSpeed = self.form.spindleSpeed.value()
             if hasattr(self.obj, "SpindleDir"):
                 self.obj.SpindleDir = str(self.form.cboSpindleDirection.currentText())
-            #if hasattr(self.obj, "ToolNumber"):
-             #   self.obj.ToolNumber = self.form.ToolNumber.value()
+
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
+        self.form.cboToolSelect.blockSignals(True)
+
         self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
         self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
         self.form.spindleSpeed.setValue(self.obj.SpindleSpeed)
@@ -234,20 +235,45 @@ class TaskPanel:
         index = self.form.cboSpindleDirection.findText(self.obj.SpindleDir, QtCore.Qt.MatchFixedString)
         if index >= 0:
             self.form.cboSpindleDirection.setCurrentIndex(index)
-        # Populate the tool list
-        mach = PathUtils.findMachine()
+        myJob = PathUtils.findParentJob(self.obj)
+
+        #populate the toolselector and select correct tool
+        self.form.cboToolSelect.clear()
+        tooltable = myJob.Tooltable
+        for number, tool in tooltable.Tools.iteritems():
+            self.form.cboToolSelect.addItem(tool.Name)
+
         try:
-            tool = mach.Tooltable.Tools[self.obj.ToolNumber]
-            self.form.txtToolName.setText(tool.Name)
+            tool = myJob.Tooltable.Tools[self.obj.ToolNumber]
             self.form.txtToolType.setText(tool.ToolType)
             self.form.txtToolMaterial.setText(tool.Material)
             self.form.txtToolDiameter.setText(str(tool.Diameter))
+
+            index = self.form.cboToolSelect.findText(tool.Name, QtCore.Qt.MatchFixedString)
+            if index >= 0:
+                self.form.cboToolSelect.setCurrentIndex(index)
+
         except:
-            self.form.txtToolName.setText("UNDEFINED")
+            self.form.cboToolSelect.setCurrentIndex(-1)
             self.form.txtToolType.setText("UNDEFINED")
             self.form.txtToolMaterial.setText("UNDEFINED")
             self.form.txtToolDiameter.setText("UNDEFINED")
+        self.form.cboToolSelect.blockSignals(False)
 
+        radius = tool.Diameter / 2
+        length = tool.CuttingEdgeHeight
+        t = Part.makeCylinder(radius, length)
+        self.toolrep.Shape = t
+
+    def changeTool(self):
+        myJob = PathUtils.findParentJob(self.obj)
+        newtool = self.form.cboToolSelect.currentText()
+
+        tooltable = myJob.Tooltable
+        for number, tool in tooltable.Tools.iteritems():
+            if tool.Name == newtool:
+                self.obj.ToolNumber = number
+        self.setFields()
 
     def open(self):
         self.s = SelObserver()
@@ -267,16 +293,18 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def setupUi(self):
-        # setup the form fields
-        self.setFields()
+
+        self.form.cboToolSelect.currentIndexChanged.connect(self.changeTool)
+        self.form.tcoName.editingFinished.connect(self.getFields)
 
         # build the tool representation
-        if self.form.txtToolDiameter.text() != "UNDEFINED":
-            radius = float(self.form.txtToolDiameter.text()) / 2
-            length = radius * 8
-            t = Part.makeCylinder(radius, length)
+        if self.obj.ToolNumber != 0:
+            t = Part.makeCylinder(1, 1)
             self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature", "tool")
             self.toolrep.Shape = t
+
+            # setup the form fields
+        self.setFields()
 
 class SelObserver:
     def __init__(self):

@@ -56,6 +56,9 @@ class ObjectPathEngrave:
         obj.Algorithm = ['OCC Native']
 
         # Tool Properties
+        obj.addProperty("App::PropertyEnumeration", "ToolController", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool controller to use"))
+        obj.ToolController = ["None"]
+
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
@@ -87,6 +90,17 @@ class ObjectPathEngrave:
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
+
+        myJob = PathUtils.findMyJob(obj)
+        if myJob is not None:
+            controllers = myJob.Proxy.getToolControllers(myJob)
+            if len(controllers) >= 1:
+                mlist = []
+                for c in controllers:
+                    mlist.append(c.Name)
+            else:
+                mlist = ["None"]
+            obj.ToolController = mlist
 
         toolLoad = PathUtils.getLastToolLoad(obj)
         if toolLoad is None or toolLoad.ToolNumber == 0:
@@ -238,6 +252,9 @@ class _ViewProviderEngrave:
     def __setstate__(self, state):
         return None
 
+    def onDelete(self):
+        return None
+
 
 class CommandPathEngrave:
 
@@ -247,7 +264,11 @@ class CommandPathEngrave:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Engrave", "Creates an Engraving Path around a Draft ShapeString")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
@@ -263,7 +284,7 @@ class CommandPathEngrave:
         FreeCADGui.doCommand('obj.SafeHeight= 5.0')
         FreeCADGui.doCommand('obj.Active = True')
 
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
