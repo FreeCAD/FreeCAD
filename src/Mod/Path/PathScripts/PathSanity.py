@@ -41,7 +41,6 @@ except AttributeError:
 
 
 def review(obj):
-    limits = False
     "checks the selected project for common errors"
     toolcontrolcount = 0
     for item in obj.Group:
@@ -69,8 +68,6 @@ def review(obj):
 
             if item.X_Max == item.X_Min or item.Y_Max == item.Y_Min:
                 FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
-            else:
-                limits = True
 
     if toolcontrolcount == 0:
         FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
@@ -84,7 +81,11 @@ class CommandPathSanity:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Sanity","Check the Path Project for common errors")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
         # check that the selection contains exactly what we want

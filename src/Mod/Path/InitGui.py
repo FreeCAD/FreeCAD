@@ -46,8 +46,8 @@ class PathWorkbench (Workbench):
         from PathScripts import PathCopy
         from PathScripts import PathFixture
         from PathScripts import PathCompoundExtended
-        from PathScripts import PathProject
-        from PathScripts import PathToolTableEdit
+        from PathScripts import PathJob
+        from PathScripts import PathToolLibraryManager
         from PathScripts import PathStock
         from PathScripts import PathPlane
         from PathScripts import PathPost
@@ -55,7 +55,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathLoadTool
         from PathScripts import PathComment
         from PathScripts import PathStop
-        from PathScripts import PathMachine
         from PathScripts import PathFromShape
         from PathScripts import PathArray
         from PathScripts import PathFaceProfile
@@ -70,15 +69,15 @@ class PathWorkbench (Workbench):
         from PathScripts import DragknifeDressup
 
         # build commands list
-        projcmdlist = ["Path_Project", "Path_Post", "Path_Inspect", "Path_Sanity"]
-        #toolcmdlist = ["Path_ToolTableEdit", "Path_ToolLibraryEdit", "Path_LoadTool"]
-        toolcmdlist = ["Path_ToolTableEdit", "Path_LoadTool"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity"]
+        toolcmdlist = ["Path_ToolLibraryEdit", "Path_LoadTool"]
         prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment",
                        "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
         opcmdlist = ["Path_Profile", "Path_Pocket",
                      "Path_Drilling", "Path_Engrave", "Path_Surfacing"]
-        modcmdlist = ["Path_Copy", "Path_CompoundExtended",
-                      "Path_Dressup", "Path_Hop", "Path_Array", "Path_SimpleCopy", "DragKnife_Dressup"]
+        modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array",
+                      "Path_SimpleCopy" ]
+        modcmdmore = ["Path_Dressup", "Path_Hop", "DragKnife_Dressup"]
         remotecmdlist = ["Path_Remote"]
 
         # Add commands to menu and toolbar
@@ -96,13 +95,15 @@ class PathWorkbench (Workbench):
         self.appendMenu([translate("Path", "Path"), translate(
             "Path", "Project Tools")], projcmdlist)
         self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Tools")], projcmdlist)
+            "Path", "Tools")], toolcmdlist)
         self.appendMenu([translate("Path", "Path"), translate(
             "Path", "Partial Commands")], prepcmdlist)
         self.appendMenu([translate("Path", "Path"), translate(
             "Path", "New Operations")], opcmdlist)
         self.appendMenu([translate("Path", "Path"), translate(
             "Path", "Path Modification")], modcmdlist)
+        self.appendMenu([translate("Path", "Path"), translate(
+            "Path", "Path Modification")], modcmdmore)
         self.appendMenu([translate("Path", "Path"), translate(
             "Path", "Remote Operations")], remotecmdlist)
 

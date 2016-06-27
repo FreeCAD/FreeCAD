@@ -15,7 +15,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <widget class="QLineEdit" name="tcoName"/>
+    <widget class="QLineEdit" name="tcoName">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <widget class="QFrame" name="frame_2">
@@ -26,22 +30,8 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QLabel" name="txtToolType">
-        <property name="text">
-         <string>Unknown</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="txtToolName">
-        <property name="text">
-         <string>Unknown</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="txtToolMaterial">
+       <widget class="QLabel" name="txtToolDiameter">
         <property name="text">
          <string>Unknown</string>
         </property>
@@ -50,8 +40,15 @@
       <item row="0" column="0">
        <widget class="QComboBox" name="cboToolSelect"/>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="txtToolDiameter">
+      <item row="1" column="0">
+       <widget class="QLabel" name="txtToolType">
+        <property name="text">
+         <string>Unknown</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="txtToolMaterial">
         <property name="text">
          <string>Unknown</string>
         </property>
@@ -109,7 +106,11 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QSpinBox" name="spindleSpeed"/>
+       <widget class="QSpinBox" name="spindleSpeed">
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="cboSpindleDirection">
