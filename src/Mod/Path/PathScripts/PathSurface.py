@@ -29,10 +29,6 @@ from PathScripts import PathUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
-else:
-    def translate(ctxt, txt):
-        return txt
 
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -372,7 +368,11 @@ class CommandPathSurfacing:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Surface", "Creates a Path Surfacing object")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
@@ -396,7 +396,7 @@ class CommandPathSurfacing:
         FreeCADGui.doCommand('obj.SampleInterval = 0.4')
 
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

@@ -476,7 +476,11 @@ class CommandDragknifeDressup:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("DragKnife_Dressup", "Modifies a path to add dragknife corner actions")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
