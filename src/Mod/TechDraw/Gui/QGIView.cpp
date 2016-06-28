@@ -88,7 +88,7 @@ QGIView::QGIView()
     m_pen.setColor(m_colCurrent);
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
     m_font.setFamily(QString::fromStdString(fontName));
     m_font.setPointSize(5.0);     //scene units (mm), not points
 

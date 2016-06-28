@@ -60,7 +60,7 @@ DrawViewAnnotation::DrawViewAnnotation(void)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
 
     ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"The text to be displayed");
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),vgroup,App::Prop_None, "The name of the font to use");

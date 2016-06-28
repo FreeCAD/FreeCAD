@@ -79,7 +79,7 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     //svg text is much larger than screen text.  scene units(mm) vs points.
     //need to scale text if going to svg.
     //TODO: magic translation happens? approx: right ~8mm  down: 12mm + (3mm per mm of text height)
-    //SVG transform matrix translation values are different for same font size + different fonts (osifont vs Ubuntu vs Arial)???
+    //SVG transform matrix translation values are different for same font size + different fonts (Sans vs Ubuntu vs Arial)???
     //                     scale values are same for same font size + different fonts.
     //double svgScale = 2.835;      //72dpi/(25.4mm/in)
     //double svgScale = 3.84;       //96dpi/(25mm/in)

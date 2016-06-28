@@ -85,12 +85,6 @@ void TechDrawGuiExport initTechDrawGui()
 
     TechDrawGui::Workbench::init();
 
-    //TODO: is this platform independent?? should osifont be added by installer?
-    //Load the osifont for Drawing View
-    // See https://code.google.com/p/osifont/
-    QFontDatabase fontDB;
-    fontDB.addApplicationFont(QString::fromAscii(":/fonts/osifont.ttf"));
-
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();
 
