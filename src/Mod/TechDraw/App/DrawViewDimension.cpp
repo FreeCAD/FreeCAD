@@ -83,7 +83,7 @@ DrawViewDimension::DrawViewDimension(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
 
     ADD_PROPERTY_TYPE(References2D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
     ADD_PROPERTY_TYPE(References3D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"3D Geometry References");
