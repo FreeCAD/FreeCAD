@@ -78,7 +78,7 @@ inline typename Kernel::number_type calcGradFirst(const E::MatrixBase<T1>& d1,
         res = dd1.dot(d2);
         break;
     }
-    if(isfinite(res))
+    if(boost::math::isfinite(res))
         return res;
 
     return 0;
@@ -107,7 +107,7 @@ inline typename Kernel::number_type calcGradSecond(const E::MatrixBase<T1>& d1,
         res = d1.dot(dd2);
         break;
     }
-    if((isfinite)(res))
+    if((boost::math::isfinite)(res))
         return res;
     return 0;
 };
