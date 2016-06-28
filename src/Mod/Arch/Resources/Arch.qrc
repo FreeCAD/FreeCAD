@@ -80,6 +80,7 @@
         <file>ui/BimServerTaskPanel.ui</file>
         <file>ui/GitTaskPanel.ui</file>
         <file>ui/DialogBimServerLogin.ui</file>
+        <file>ui/DialogDisplayText.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
         <file>translations/Arch_fi.qm</file>
