@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>228</width>
-    <height>494</height>
+    <width>255</width>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Git</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -21,53 +21,9 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QLabel" name="labelWarning">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>103</red>
-              <green>103</green>
-              <blue>103</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
+       <widget class="QLabel" name="labelStatus">
         <property name="text">
-         <string>Warning</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>List of files to be committed:</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -103,7 +59,18 @@
        </layout>
       </item>
       <item>
-       <widget class="QListWidget" name="listFiles"/>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>List of files to be committed:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="listFiles">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::MultiSelection</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -119,6 +86,13 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonDiff">
+          <property name="text">
+           <string>Diff</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="buttonSelectAll">

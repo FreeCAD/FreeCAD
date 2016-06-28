@@ -54,7 +54,7 @@ class _CommandBimserver:
         try:
             import requests
         except:
-            FreeCAD.Console.PrintError("requests python module not found, aborting.\n")
+            FreeCAD.Console.PrintError(translate("Arch","requests python module not found, aborting. Please install python-requests\n"))
         else:
             FreeCADGui.Control.showDialog(_BimServerTaskPanel())
 
@@ -87,7 +87,6 @@ class _BimServerTaskPanel:
         return int(QtGui.QDialogButtonBox.Close)
 
     def accept(self):
-        FreeCADGui.Selection.removeObserver(self.observer)
         FreeCADGui.Control.closeDialog()
 
     def getPrefs(self):
@@ -135,8 +134,8 @@ class _BimServerTaskPanel:
                 try:
                     resp = requests.post(url2,json = data)
                 except:
-                    FreeCAD.Console.PrintError("Unable to connect to BimServer at "+url+"\n")
-                    self.form.labelStatus.setText("Connection failed.")
+                    FreeCAD.Console.PrintError(translate("Arch","Unable to connect to BimServer at")+" "+url+"\n")
+                    self.form.labelStatus.setText(translate("Arch","Connection failed."))
                     return
                 if resp.ok:
                     try:
@@ -170,14 +169,14 @@ class _BimServerTaskPanel:
         import requests
         url,token = self.getPrefs()
         if url and token:
-            self.form.labelStatus.setText("Getting projects list...")
+            self.form.labelStatus.setText(translate("Arch","Getting projects list..."))
             url += "/json"
             data = { "token": token, "request": { "interface": "SettingsInterface", "method": "getServerSettings", "parameters": { } } }
             try:
                 resp = requests.post(url,json = data)
             except:
-                FreeCAD.Console.PrintError("Unable to connect to BimServer at "+url[:-5]+"\n")
-                self.form.labelStatus.setText("Connection failed.")
+                FreeCAD.Console.PrintError(translate("Arch","Unable to connect to BimServer at")+" "+url[:-5]+"\n")
+                self.form.labelStatus.setText(translate("Arch","Connection failed."))
                 return
             if resp.ok:
                 try:
@@ -192,7 +191,7 @@ class _BimServerTaskPanel:
                 try:
                     projects = resp.json()["response"]["result"]
                 except:
-                    FreeCAD.Console.PrintError("Unable to get projects list from BimServer\n")
+                    FreeCAD.Console.PrintError(translate("Arch","Unable to get projects list from BimServer\n"))
                 else:
                     self.setLogged(True)
                     self.form.comboProjects.clear()
@@ -213,7 +212,7 @@ class _BimServerTaskPanel:
             url += "/json"
             if (index >= 0) and (len(self.Projects) > index):
                 p = self.Projects[index]
-                self.form.labelStatus.setText("Getting revisions...")
+                self.form.labelStatus.setText(translate("Arch","Getting revisions..."))
                 for rev in p["revisions"]:
                     data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getRevision", "parameters": { "roid": rev } } }
                     resp = requests.post(url,json = data)
@@ -236,8 +235,8 @@ class _BimServerTaskPanel:
             import requests
             url,token = self.getPrefs()
             if url and token:
-                FreeCAD.Console.PrintMessage("Downloading file from Bimserver...\n")
-                self.form.labelStatus.setText("Checking available serializers...")
+                FreeCAD.Console.PrintMessage(translate("Arch","Downloading file from Bimserver...\n"))
+                self.form.labelStatus.setText(translate("Arch","Checking available serializers..."))
                 url += "/json"
                 serializer = None
                 for s in ["Ifc2x3tc1"]: # Ifc4 seems unreliable ATM, let's stick with good old Ifc2x3...
@@ -252,19 +251,19 @@ class _BimServerTaskPanel:
                             serializer = srl
                             break
                 if not serializer:
-                    FreeCAD.Console.PrintError("Unable to get a valid serializer from the BimServer\n")
+                    FreeCAD.Console.PrintError(translate("Arch","Unable to get a valid serializer from the BimServer\n"))
                     return
                 tf = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), "Save the downloaded IFC file?", None, "IFC files (*.ifc)")
                 if tf:
                     tf = tf[0]
-                self.form.labelStatus.setText("Downloading file...")
+                self.form.labelStatus.setText(translate("Arch","Downloading file..."))
                 data = { "token": token, "request": { "interface": "ServiceInterface", "method": "downloadRevisions", "parameters": { "roids": [rev["oid"]], "serializerOid": serializer["oid"], "sync": "false" } } }
                 resp = requests.post(url,json = data)
                 if resp.ok:
                     try:
                         downloadid = resp.json()["response"]["result"]
                     except:
-                        FreeCAD.Console.PrintError("Unable to obtain a valid download for this revision from the BimServer\n")
+                        FreeCAD.Console.PrintError(translate("Arch","Unable to obtain a valid download for this revision from the BimServer\n"))
                         return
                 data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getDownloadData", "parameters": { "topicId": downloadid } } }
                 resp = requests.post(url,json = data)
@@ -272,11 +271,11 @@ class _BimServerTaskPanel:
                     try:
                         downloaddata = resp.json()["response"]["result"]["file"]
                     except:
-                        FreeCAD.Console.PrintError("Unable to download the data for this revision.\n")
+                        FreeCAD.Console.PrintError(translate("Arch","Unable to download the data for this revision.\n"))
                         return
                     else:
-                        FreeCAD.Console.PrintMessage("Opening file...\n")
-                        self.form.labelStatus.setText("Opening file...")
+                        FreeCAD.Console.PrintMessage(translate("Arch","Opening file...\n"))
+                        self.form.labelStatus.setText(translate("Arch","Opening file..."))
                         if not tf:
                             tf = tempfile.mkstemp(suffix=".ifc")[1]
                         f = open(tf,"wb")
@@ -295,8 +294,8 @@ class _BimServerTaskPanel:
             if url and token:
                 url += "/json"
                 deserializer = None
-                FreeCAD.Console.PrintMessage("Saving file...\n")
-                self.form.labelStatus.setText("Checking available deserializers...")
+                FreeCAD.Console.PrintMessage(translate("Arch","Saving file...\n"))
+                self.form.labelStatus.setText(translate("Arch","Checking available deserializers..."))
                 import ifcopenshell
                 schema = ifcopenshell.schema_identifier.lower()
                 data = { "token": token, "request": { "interface": "PluginInterface",  "method": "getAllDeserializers", "parameters": { "onlyEnabled": "true" } } }
@@ -310,30 +309,34 @@ class _BimServerTaskPanel:
                     except:
                         pass
                 if not deserializer:
-                    FreeCAD.Console.PrintError("Unable to get a valid deserializer for the "+schema+" schema\n")
+                    FreeCAD.Console.PrintError(translate("Arch","Unable to get a valid deserializer for the schema")+" "+schema+"\n")
                     return
-                tf = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), "Save the IFC file before uploading?", None, "IFC files (*.ifc)")
+                tf = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), translate("Arch","Save the IFC file before uploading?"), None, translate("Arch","IFC files (*.ifc)"))
                 if tf:
                     tf = tf[0]
                 if not tf:
                     tf = os.path.join(tempfile._get_default_tempdir(),next(tempfile._get_candidate_names())+".ifc")
                 import importIFC
-                self.form.labelStatus.setText("Saving file...")
+                self.form.labelStatus.setText(translate("Arch","Saving file..."))
                 importIFC.export([self.RootObjects[self.form.comboRoot.currentIndex()]],tf)
                 f = open(tf,"rb")
                 ifcdata = base64.b64encode(f.read())
                 f.close()
-                FreeCAD.Console.PrintMessage("Uploading file to Bimserver...\n")
-                self.form.labelStatus.setText("Uploading file...")
+                FreeCAD.Console.PrintMessage(translate("Arch","Uploading file to Bimserver...\n"))
+                self.form.labelStatus.setText(translate("Arch","Uploading file..."))
                 data = { "token": token, "request": { "interface": "ServiceInterface", "method": "checkin", "parameters": { "poid": project["oid"], "comment": self.form.editComment.text(), "deserializerOid": deserializer["oid"], "fileSize": os.path.getsize(tf), "fileName": os.path.basename(tf), "data": ifcdata, "merge": "false", "sync": "true" } } }
                 resp = requests.post(url,json = data)
                 if resp.ok:
                     if resp.json()["response"]["result"]:
-                        FreeCAD.Console.PrintMessage("File upload successful\n")
+                        FreeCAD.Console.PrintMessage(translate("Arch","File upload successful\n"))
                         self.getRevisions(self.form.comboProjects.currentIndex())
                     else:
-                        FreeCAD.Console.PrintError("File upload failed\n")
+                        FreeCAD.Console.PrintError(translate("Arch","File upload failed\n"))
         self.form.labelStatus.setText("")
+
+
+
+# GIT ###########################################################
 
 
 
@@ -341,112 +344,135 @@ class _CommandGit:
     "the Arch Git Commit command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Git',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Git","Commit with Git"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Git","Commits the current document")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Git","Git"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Git","Manages the current document with Git")}
 
     def Activated(self):
         f = FreeCAD.ActiveDocument.FileName
         if not f:
-            FreeCAD.Console.PrintError(translate("Arch","This document is not saved. Please save it first"))
+            FreeCAD.Console.PrintError(translate("Arch","This document is not saved. Please save it first.\n"))
             return
         try:
             import git
         except:
-            FreeCAD.Console.PrintError(translate("Arch","The Python Git module was not found. Please install the python-git package."))
+            FreeCAD.Console.PrintError(translate("Arch","The Python Git module was not found. Please install the python-git package.\n"))
             return
         try:
             repo = git.Repo(os.path.dirname(f))
         except:
-            FreeCAD.Console.PrintError(translate("Arch","This document doesn't appear to be part of a Git repository."))
+            FreeCAD.Console.PrintError(translate("Arch","This document doesn't appear to be part of a Git repository.\n"))
             return
-        pushOK = True
-        if not repo.remotes:
-            FreeCAD.Console.PrintWarning(translate("Arch","Warning: no remote repositories. Unable to push"))
-            pushOK = False
-        modified_files = repo.git.diff("--name-only").split()
-        untracked_files = repo.git.ls_files("--other","--exclude-standard").split()
-        if not os.path.basename(f) in modified_files:
-            if not os.path.basename(f) in untracked_files:
-                FreeCAD.Console.PrintError(translate("Arch","The Git repository cannot handle this document."))
-                return
+        else:
+            FreeCADGui.Control.showDialog(_GitTaskPanel(repo))
+
+
+class _GitTaskPanel:
+    
+    '''The TaskPanel for the Git command'''
+    
+    def __init__(self,repo):
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/GitTaskPanel.ui")
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Git.svg"))
+        self.form.labelStatus.setText("")
+        QtCore.QObject.connect(self.form.buttonRefresh, QtCore.SIGNAL("clicked()"), self.getFiles)
+        QtCore.QObject.connect(self.form.buttonLog, QtCore.SIGNAL("clicked()"), self.getLog)
+        QtCore.QObject.connect(self.form.buttonSelectAll, QtCore.SIGNAL("clicked()"), self.form.listFiles.selectAll)
+        QtCore.QObject.connect(self.form.buttonDiff, QtCore.SIGNAL("clicked()"), self.getDiff)
+        QtCore.QObject.connect(self.form.buttonCommit, QtCore.SIGNAL("clicked()"), self.commit)
+        QtCore.QObject.connect(self.form.buttonPush, QtCore.SIGNAL("clicked()"), self.push)
+        QtCore.QObject.connect(self.form.buttonPull, QtCore.SIGNAL("clicked()"), self.pull)
+        self.repo = repo
+        self.getRemotes()
+        self.getFiles()
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def accept(self):
+        FreeCADGui.Control.closeDialog()
+        
+    def getFiles(self):
+        self.form.labelStatus.setText("")
+        self.form.listFiles.clear()
+        self.modified = self.repo.git.diff("--name-only").split()
+        self.untracked = self.repo.git.ls_files("--other","--exclude-standard").split()
+        for f in self.modified:
+            self.form.listFiles.addItem(f)
+        for f in self.untracked:
+            self.form.listFiles.addItem(f+" *")
+        self.form.labelStatus.setText(translate("Arch","Branch")+": "+self.repo.active_branch.name)
+
+    def getLog(self):
+        textform = FreeCADGui.PySideUic.loadUi(":/ui/DialogDisplayText.ui")
+        textform.setWindowTitle("Git log")
+        textform.browserText.setPlainText(self.repo.git.log())
+        textform.exec_()
+        
+    def getDiff(self):
+        if (self.form.listFiles.currentRow() >= 0):
+            f = (self.modified+self.untracked)[self.form.listFiles.currentRow()]
+            textform = FreeCADGui.PySideUic.loadUi(":/ui/DialogDisplayText.ui")
+            textform.setWindowTitle("Diff: "+f)
+            textform.browserText.setPlainText(self.repo.git.diff(f))
+            textform.exec_()
             
-        d = _ArchGitDialog()
-        if not pushOK:
-            d.checkBox.setChecked(False)
-            d.checkBox.setEnabled(False)
-        d.label.setText(str(len(modified_files)+len(untracked_files))+" modified file(s)")
-        d.lineEdit.setText("Changed " + os.path.basename(f))
-        r = d.exec_()
-        if r:
-            if d.radioButton_2.isChecked():
-                for o in modified_files + untracked_files:
-                    repo.git.add(o)
-            else:
-                repo.git.add(os.path.basename(f))
-            repo.git.commit(m=d.lineEdit.text())
-            if d.checkBox.isChecked():
-                repo.git.push()
-                
-                
-
-
-
-class _ArchGitDialog(QtGui.QDialog):
-    def __init__(self):
-        QtGui.QDialog.__init__(self)
-        self.setObjectName("ArchGitOptions")
-        self.resize(370, 200)
-        self.verticalLayout = QtGui.QVBoxLayout(self)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.groupBox = QtGui.QGroupBox(self)
-        self.groupBox.setObjectName("groupBox")
-        self.vl3 = QtGui.QVBoxLayout(self.groupBox)
-        self.vl3.setObjectName("vl3")
-        self.label = QtGui.QLabel(self.groupBox)
-        self.label.setObjectName("label")
-        self.vl3.addWidget(self.label)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.vl3.addLayout(self.horizontalLayout)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.radioButton_2 = QtGui.QRadioButton(self.groupBox)
-        self.radioButton_2.setChecked(True)
-        self.radioButton_2.setObjectName("radioButton_2")
-        self.horizontalLayout.addWidget(self.radioButton_2)
-        self.radioButton = QtGui.QRadioButton(self.groupBox)
-        self.radioButton.setObjectName("radioButton")
-        self.horizontalLayout.addWidget(self.radioButton)
-        self.verticalLayout.addWidget(self.groupBox)
-        self.groupBox_2 = QtGui.QGroupBox(self)
-        self.groupBox_2.setObjectName("groupBox_2")
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_2)
-        self.verticalLayout_2.setObjectName("horizontalLayout_2")
-        self.lineEdit = QtGui.QLineEdit(self.groupBox_2)
-        self.lineEdit.setObjectName("lineEdit")
-        self.verticalLayout_2.addWidget(self.lineEdit)
-        self.checkBox = QtGui.QCheckBox(self.groupBox_2)
-        self.checkBox.setChecked(True)
-        self.checkBox.setObjectName("checkBox")
-        self.verticalLayout_2.addWidget(self.checkBox)
-        self.verticalLayout.addWidget(self.groupBox_2)
-        self.buttonBox = QtGui.QDialogButtonBox(self)
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.verticalLayout.addWidget(self.buttonBox)
-
-        self.retranslateUi()
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), self.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), self.reject)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self):
-        self.setWindowTitle(QtGui.QApplication.translate("ArchGitOptions", "Git Options", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("ArchGitOptions", "What to commit", None, QtGui.QApplication.UnicodeUTF8))
-        self.radioButton_2.setText(QtGui.QApplication.translate("ArchGitOptions", "All files in folder", None, QtGui.QApplication.UnicodeUTF8))
-        self.radioButton.setText(QtGui.QApplication.translate("ArchGitOptions", "Only this .FcStd file", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_2.setTitle(QtGui.QApplication.translate("ArchGitOptions", "Commit message", None, QtGui.QApplication.UnicodeUTF8))
-        self.lineEdit.setText(QtGui.QApplication.translate("ArchGitOptions", "commit", None, QtGui.QApplication.UnicodeUTF8))
-        self.checkBox.setText(QtGui.QApplication.translate("ArchGitOptions", "Push to default remote repository", None, QtGui.QApplication.UnicodeUTF8))
+    def getRemotes(self):
+        self.form.listRepos.clear()
+        if self.repo.remotes:
+            for r in self.repo.remotes:
+                self.form.listRepos.addItem(r.name+": "+r.url)
+        else:
+            FreeCAD.Console.PrintWarning(translate("Arch","Warning: no remote repositories.\n"))
+            
+    def commit(self):
+        if not self.form.listFiles.selectedItems():
+            FreeCAD.Console.PrintError(translate("Arch","Please select file(s) to commit.\n"))
+            self.form.labelStatus.setText(translate("Arch","No file selected"))
+            return
+        if not self.form.editMessage.text():
+            FreeCAD.Console.PrintError(translate("Arch","Please write a commit message.\n"))
+            self.form.labelStatus.setText(translate("Arch","No commit message"))
+            return
+        for it in self.form.listFiles.selectedItems():
+            f = it.text()
+            if f[-2:] == " *":
+                f = f[:-2]
+            self.repo.git.add(f)
+        s = self.repo.git.commit(m=self.form.editMessage.text())
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully committed %i files.\n") % len(self.form.listFiles.selectedItems()))
+        self.form.labelStatus.setText(translate("Arch","Files committed."))
+        if s:
+            FreeCAD.Console.PrintMessage(s+"\n")
+        self.getFiles()
+        
+    def push(self):
+        if len(self.form.listRepos.selectedItems()) != 1:
+            FreeCAD.Console.PrintError(translate("Arch","Please select a repo to push to.\n"))
+            self.form.labelStatus.setText(translate("Arch","No repo selected"))
+            return
+        self.form.labelStatus.setText(translate("Arch","Pushing files..."))
+        r = self.form.listRepos.selectedItems()[0].text().split(":")[0]
+        s = self.repo.git.push(r)
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully pushed to")+" "+r+"\n")
+        self.form.labelStatus.setText(translate("Arch","Files pushed."))
+        if s:
+            FreeCAD.Console.PrintMessage(s+"\n")
+        self.getFiles()
+        
+    def pull(self):
+        if len(self.form.listRepos.selectedItems()) != 1:
+            FreeCAD.Console.PrintError(translate("Arch","Please select a repo to pull from.\n"))
+            self.form.labelStatus.setText(translate("Arch","No repo selected"))
+            return
+        self.form.labelStatus.setText(translate("Arch","Pulling files..."))
+        r = self.form.listRepos.selectedItems()[0].text().split(":")[0]
+        s = self.repo.git.pull(r)
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully pulled from")+" "+r+"\n")
+        self.form.labelStatus.setText(translate("Arch","Files pulled."))
+        if s:
+            FreeCAD.Console.PrintMessage(s+"\n")
+        if os.path.basename(FreeCAD.ActiveDocument.FileName) in s:
+            FreeCAD.Console.PrintWarning(translate("Arch","Warning: the current document file has been changed by this pull. Please save your document to keep your changes.\n"))
 
 
 
