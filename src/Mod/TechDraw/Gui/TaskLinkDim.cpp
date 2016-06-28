@@ -166,7 +166,7 @@ TaskDlgLinkDim::TaskDlgLinkDim(Part::Feature* part,std::vector<std::string>& sub
     TaskDialog()
 {
     widget  = new TaskLinkDim(part,subs,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("LinkDimension"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Dimension_Link"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
