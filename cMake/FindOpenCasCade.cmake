@@ -12,9 +12,9 @@ if(NOT DEFINED OCE_DIR)
   # Check for OSX needs to come first because UNIX evaluates to true on OSX
   if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(DEFINED MACPORTS_PREFIX)
-      find_package(OCE HINTS ${MACPORTS_PREFIX}/Library/Frameworks)
+      find_package(OCE QUIET HINTS ${MACPORTS_PREFIX}/Library/Frameworks)
     elseif(DEFINED HOMEBREW_PREFIX)
-      find_package(OCE HINTS ${HOMEBREW_PREFIX}/Cellar/oce/*)
+      find_package(OCE QUIET HINTS ${HOMEBREW_PREFIX}/Cellar/oce/*)
     endif()
   elseif(UNIX)
     set(OCE_DIR "/usr/local/share/cmake/")
@@ -112,6 +112,7 @@ if(OCC_FOUND)
     TKBin
     TKBool
     TKBO
+    TKCDF
     TKBRep
     TKTopAlgo
     TKGeomAlgo
