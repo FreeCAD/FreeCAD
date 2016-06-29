@@ -61,12 +61,12 @@ void edgeVisitor::end_face()
     graphFaces.push_back(faceEdges);
 }
 
-facelist edgeVisitor::getResult(void)
+TechDraw::facelist edgeVisitor::getResult(void)
 {
     return graphFaces;
 }
 
-void edgeVisitor::setGraph(graph& g)
+void edgeVisitor::setGraph(TechDraw::graph& g)
 {
     std::cout << "setGraph()" << std::endl;
     m_g = g;
@@ -84,7 +84,7 @@ EdgeWalker::~EdgeWalker()
 {
 }
 
-bool EdgeWalker::loadEdges(std::vector<WalkerEdge> edges)
+bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge> edges)
 {
     std::cout << "loadEdges()" << std::endl;
     for (auto e: edges) {

@@ -61,7 +61,7 @@ QGIFace::QGIFace(int index) :
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
-    setFlag(QGraphicsItem::QGraphicsItem::ItemClipsChildrenToShape,true);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
     //setFiltersChildEvents(true);
     setAcceptHoverEvents(true);
 
