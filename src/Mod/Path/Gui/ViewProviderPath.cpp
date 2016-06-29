@@ -231,6 +231,7 @@ void ViewProviderPath::updateData(const App::Property* prop)
         Base::Vector3d last(0,0,0);
         colorindex.clear();
         bool absolute = true;
+        bool absolutecenter = false;
         bool first = true;
         
         for (unsigned int  i = 0; i < tp.getSize(); i++) {
@@ -272,11 +273,16 @@ void ViewProviderPath::updateData(const App::Property* prop)
             } else if ( (name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
                 // arc
                 Base::Vector3d norm;
+                Base::Vector3d center;
+                
                 if ( (name == "G2") || (name == "G02") )
                     norm.Set(0,0,-1);
                 else
                     norm.Set(0,0,1);
-                Base::Vector3d center = (last + cmd.getCenter());
+                if (absolutecenter)
+                    center = cmd.getCenter();
+                else
+                    center = (last + cmd.getCenter());
                 //double radius = (last - center).Length();
                 double angle = (next - center).GetAngle(last - center);
                 // GetAngle will always return the minor angle. Switch if needed
@@ -316,6 +322,14 @@ void ViewProviderPath::updateData(const App::Property* prop)
             } else if (name == "G91") {
                 // relative mode
                 absolute = false;
+                
+            } else if (name == "G90.1") {
+                // absolute mode
+                absolutecenter = true;
+                
+            } else if (name == "G91.1") {
+                // relative mode
+                absolutecenter = false;
                 
             } else if ((name=="G81")||(name=="G82")||(name=="G83")||(name=="G84")||(name=="G85")||(name=="G86")||(name=="G89")){
                 // drill,tap,bore
