@@ -72,9 +72,9 @@ public:
   void setGraph(graph& g);
 
 private:
-    edgelist faceEdges;
-    facelist graphFaces;
-    graph m_g;
+    TechDraw::edgelist faceEdges;
+    TechDraw::facelist graphFaces;
+    TechDraw::graph m_g;
 };
 
 class EdgeWalker
@@ -83,14 +83,14 @@ public:
     EdgeWalker(void);
     virtual ~EdgeWalker();
 
-    bool loadEdges(std::vector<WalkerEdge> edges);
+    bool loadEdges(std::vector<TechDraw::WalkerEdge> edges);
     bool setSize(int size);
     bool perform();
     facelist getResult();
 
 private:
     edgeVisitor m_eV;
-    graph m_g;
+    TechDraw::graph m_g;
 };
 
 }  //end namespace
