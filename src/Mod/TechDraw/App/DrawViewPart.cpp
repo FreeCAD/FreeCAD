@@ -61,7 +61,7 @@
 #include <BRepGProp.hxx>
 
 #include <BRepAdaptor_Curve.hxx>
-#include <Handle_Geom_Curve.hxx>
+#include <Geom_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
