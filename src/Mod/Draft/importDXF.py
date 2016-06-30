@@ -2041,7 +2041,7 @@ def readPreferences():
     dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
     dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
     dxfFillMode = p.GetBool("fillmode",True)
-    dxfUseLegacyImporter = p.GetBool("dxfUseLegacyImporter",True)
+    dxfUseLegacyImporter = p.GetBool("dxfUseLegacyImporter",False)
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
     dxfExportBlocks = p.GetBool("dxfExportBlocks",True)
