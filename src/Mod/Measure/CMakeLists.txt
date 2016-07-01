@@ -7,7 +7,6 @@ endif(FREECAD_BUILD_GUI)
 INSTALL(
     FILES
         Init.py
-        InitGui.py
     DESTINATION
         Mod/Measure
 )
