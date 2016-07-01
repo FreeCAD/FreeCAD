@@ -37,7 +37,7 @@
 
 namespace TechDraw {
 class DrawHatch;
-class WalkerEdge;
+struct WalkerEdge;
 }
 
 namespace TechDraw
