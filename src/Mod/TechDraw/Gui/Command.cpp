@@ -217,7 +217,7 @@ void CmdTechDrawNewPage::activated(int iMsg)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/Templates";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
     QString templateDir = QString::fromStdString(hGrp->GetASCII("TemplateDir", defaultDir.c_str()));
     QString templateFileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                                                    QString::fromUtf8(QT_TR_NOOP("Select a Template File")),
@@ -225,9 +225,6 @@ void CmdTechDrawNewPage::activated(int iMsg)
                                                    QString::fromUtf8(QT_TR_NOOP("Template (*.svg *.dxf)")));
 
     if (templateFileName.isEmpty()) {
-        QMessageBox::critical(Gui::getMainWindow(),
-            QLatin1String("No template"),
-            QLatin1String("Must select a valid template file"));
         return;
     }
 

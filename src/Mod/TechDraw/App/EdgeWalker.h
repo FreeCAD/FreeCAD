@@ -52,8 +52,8 @@ typedef adjacency_list
     graph;
 
 struct WalkerEdge {
-    int v1;
-    int v2;
+    std::size_t v1;
+    std::size_t v2;
     int idx;
 };
 
