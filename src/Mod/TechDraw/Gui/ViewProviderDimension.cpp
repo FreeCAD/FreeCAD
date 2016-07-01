@@ -80,7 +80,7 @@ void ViewProviderDimension::updateData(const App::Property* p)
 {
     if (p == &(getViewObject()->Type)) {
         if (getViewObject()->Type.isValue("DistanceX")) {
-            sPixmap = "TechDraw_Dimension_Horizonatal";
+            sPixmap = "TechDraw_Dimension_Horizontal";
         } else if (getViewObject()->Type.isValue("DistanceY")) {
             sPixmap = "TechDraw_Dimension_Vertical";
         } else if (getViewObject()->Type.isValue("Radius")) {
