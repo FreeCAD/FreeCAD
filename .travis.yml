@@ -27,7 +27,6 @@ language: cpp
 
 compiler:
    - clang
-   - gcc
 
 python: 2.7
 
@@ -37,11 +36,6 @@ os:
 
 dist: trusty
 sudo: required
-
-matrix:
-   exclude:
-     - os: osx
-       compiler: gcc
 
 git:
   depth: 1500
