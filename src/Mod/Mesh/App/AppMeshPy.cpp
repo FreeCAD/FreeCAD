@@ -37,6 +37,7 @@
 #include <Base/PlacementPy.h>
 
 #include <CXX/Objects.hxx>
+#include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
 #include "Core/MeshKernel.h"
@@ -45,9 +46,11 @@
 #include "Core/Iterator.h"
 #include "Core/Approximation.h"
 
-#include "MeshPy.h"
+#include "WildMagic4/Wm4ContBox3.h"
+
 #include "Mesh.h"
 #include "FeatureMeshImport.h"
+#include <Mod/Mesh/App/MeshPy.h>
 
 using namespace Mesh;
 using namespace MeshCore;
@@ -104,6 +107,10 @@ public:
         );
         add_varargs_method("polynomialFit",&Module::polynomialFit,
             "polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."
+        );
+        add_varargs_method("minimumVolumeOrientedBox",&Module::minimumVolumeOrientedBox,
+            "minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum volume oriented box containing all points.\n"
+            "The return value is a tuple of seven items: center, u, v, w directions and the lengths of the three vectors."
         );
         initialize("The functions in this module allow working with mesh objects.\n"
                    "A set of functions are provided that allow to read in registered mesh file formats\n"
@@ -544,6 +551,65 @@ private:
         dict.setItem(Py::String("Residuals"), r);
 
         return dict;
+    }
+    Py::Object minimumVolumeOrientedBox(const Py::Tuple& args) {
+        PyObject *input;
+
+        if (!PyArg_ParseTuple(args.ptr(), "O",&input))
+            throw Py::Exception();
+
+        if (!PySequence_Check(input)) {
+            throw Py::TypeError("Input has to be a sequence of Base.Vector()");
+        }
+
+        Py::Sequence list(input);
+        std::vector<Wm4::Vector3d> points;
+        points.reserve(list.size());
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* value = (*it).ptr();
+            if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
+                Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+                Base::Vector3d* val = pcObject->getVectorPtr();
+                Wm4::Vector3d pt;
+                pt[0] = val->x;
+                pt[1] = val->y;
+                pt[2] = val->z;
+                points.push_back(pt);
+            }
+        }
+
+        if (points.size() < 4)
+            throw Py::RuntimeError("Too few points");
+
+        Wm4::Box3d mobox = Wm4::ContMinBox(points.size(), &(points[0]), 0.001, Wm4::Query::QT_REAL);
+        Py::Tuple result(7);
+        Base::Vector3d v;
+
+        v.x = mobox.Center[0];
+        v.y = mobox.Center[1];
+        v.z = mobox.Center[2];
+        result.setItem(0, Py::Vector(v));
+
+        v.x = mobox.Axis[0][0];
+        v.y = mobox.Axis[0][1];
+        v.z = mobox.Axis[0][2];
+        result.setItem(1, Py::Vector(v));
+
+        v.x = mobox.Axis[1][0];
+        v.y = mobox.Axis[1][1];
+        v.z = mobox.Axis[1][2];
+        result.setItem(2, Py::Vector(v));
+
+        v.x = mobox.Axis[2][0];
+        v.y = mobox.Axis[2][1];
+        v.z = mobox.Axis[2][2];
+        result.setItem(3, Py::Vector(v));
+
+        result.setItem(4, Py::Float(mobox.Extent[0]));
+        result.setItem(5, Py::Float(mobox.Extent[1]));
+        result.setItem(6, Py::Float(mobox.Extent[2]));
+
+        return result;
     }
 };
 
