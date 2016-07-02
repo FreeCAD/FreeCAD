@@ -91,6 +91,7 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
     const std::vector<std::string>& editText = EditableTexts.getValues();
 
     if (!editText.empty()) {
+        //TODO: has this ever been run? 
         boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
         begin = svg.begin();

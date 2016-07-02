@@ -191,6 +191,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     inTemplate.close();
 
     string outfragment(copyTemplate.str());
+    std::string newfragment = outfragment;
 
     // update EditableText SVG clauses with Property values
     std::map<std::string, std::string> subs = EditableTexts.getValues();
@@ -203,12 +204,12 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
         boost::match_results<std::string::const_iterator> what;
 
         // Find editable texts
-        while (boost::regex_search(begin, end, what, e1)) {
+        while (boost::regex_search(begin, end, what, e1)) {            //search in outfragment
             // if we have a replacement value for the text we've found
             if (subs.count(what[1].str())) {
                  // change it to specified value
                  boost::regex e2 ("(<text.*?freecad:editable=\"" + what[1].str() + "\".*?<tspan.*?)>(.*?)(</tspan>)");
-                 outfragment = boost::regex_replace(outfragment, e2, "$1>" + subs[what[1].str()] + "$3");
+                 newfragment = boost::regex_replace(newfragment, e2, "$1>" + subs[what[1].str()] + "$3");   //replace in newfragment
             }
             begin = what[0].second;
         }
@@ -218,7 +219,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     // restoring linebreaks and saving the file
     boost::regex e3 ("--endOfLine--");
     string fmt = "\\n";
-    outfragment = boost::regex_replace(outfragment, e3, fmt);
+    outfragment = boost::regex_replace(newfragment, e3, fmt);
 
     const QString qsOut = QString::fromStdString(outfragment);
     QDomDocument doc(QString::fromAscii("mydocument"));
