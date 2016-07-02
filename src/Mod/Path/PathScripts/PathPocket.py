@@ -60,7 +60,7 @@ class ObjectPocket:
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
         obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
-        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
+        obj.setEditorMode('ToolDescription', 1)  # make this read only
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
@@ -78,7 +78,7 @@ class ObjectPocket:
         obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", "Start pocketing at center or boundary")
         obj.StartAt = ['Center', 'Edge']
         obj.addProperty("App::PropertyPercent", "StepOver", "Pocket", "Percent of cutter diameter to step over on each pass")
-        #obj.StepOver = (0.0, 0.01, 100.0, 0.5)
+        # obj.StepOver = (0.0, 0.01, 100.0, 0.5)
         obj.addProperty("App::PropertyBool", "KeepToolDown", "Pocket", "Attempts to avoid unnecessary retractions.")
         obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Pocket", "Lifts tool at the end of each pass to respect cut mode.")
         obj.addProperty("App::PropertyBool", "UseZigZag", "Pocket", "Use Zig Zag pattern to clear area.")
@@ -113,7 +113,6 @@ class ObjectPocket:
         if prop == "UserLabel":
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
-
     def __getstate__(self):
         return None
 
@@ -125,7 +124,6 @@ class ObjectPocket:
         if baselist is None:
             baselist = []
         if len(baselist) == 0:  # When adding the first base object, guess at heights
-
 
             try:
                 bb = ss.Shape.BoundBox  # parent boundbox
@@ -143,14 +141,12 @@ class ObjectPocket:
                     obj.FinalDepth = fbb.ZMin
                 elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
                     obj.FinalDepth = fbb.ZMin
-                else: #catch all
+                else:  # catch all
                     obj.FinalDepth = bb.ZMin
             except:
                 obj.StartDepth = 5.0
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0
-
-
 
         item = (ss, sub)
         if item in baselist:
@@ -227,17 +223,19 @@ class ObjectPocket:
         """Build pocket Path using Native OCC algorithm."""
         import Part
         import DraftGeomUtils
-        from PathScripts.PathUtils import fmt, helicalPlunge, rampPlunge
+        from PathScripts.PathUtils import fmt, helicalPlunge, rampPlunge, depth_params
 
         FreeCAD.Console.PrintMessage(translate("PathPocket", "Generating toolpath with OCC native offsets.\n"))
+        extraoffset = obj.MaterialAllowance.Value
 
         # Build up the offset loops
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
+        output += 'G0 Z' + fmt(obj.ClearanceHeight.Value) + "\n"
 
         offsets = []
-        nextradius = (self.radius * 2) * (float(obj.StepOver)/100)
+        nextradius = self.radius + extraoffset
         result = DraftGeomUtils.pocket2d(shape, nextradius)
         print "did we get something: " + str(result)
         while result:
@@ -286,21 +284,25 @@ class ObjectPocket:
                     # print "Neither edge works: " + str(offsets[0].Edges[0]) + ", " + str(offsets[0].Edges[-1])
                     # FIXME: There's got to be a smarter way to find a place to ramp
 
-        fastZPos = obj.ClearanceHeight.Value
-
         # For helix-ing/ramping, know where we were last time
         # FIXME: Can probably get this from the "machine"?
-        lastZ = fastZPos
+        lastZ = obj.ClearanceHeight.Value
 
         startPoint = None
 
-        for vpos in PathUtils.frange(obj.StartDepth.Value,
-                                     obj.FinalDepth.Value, obj.StepDown,
-                                     obj.FinishDepth.Value):
+        depthparams = depth_params(
+                obj.ClearanceHeight.Value,
+                obj.SafeHeight.Value,
+                obj.StartDepth.Value,
+                obj.StepDown,
+                obj.FinishDepth.Value,
+                obj.FinalDepth.Value)
+
+        for vpos in depthparams.get_depths():
+
             first = True
             # loop over successive wires
             for currentWire in offsets:
-                #output += PathUtils.convert(currentWire.Edges, "on", 1)
                 last = None
                 for edge in currentWire.Edges:
                     if not last:
@@ -309,7 +311,6 @@ class ObjectPocket:
                             # If we can helix, do so
                             if plungePos:
                                 output += helicalPlunge(plungePos, obj.RampAngle, vpos, lastZ, self.radius*2, obj.HelixSize, self.horizFeed)
-                                # print output
                                 lastZ = vpos
                             # Otherwise, see if we can ramp
                             # FIXME: This could be a LOT smarter (eg, searching for a longer leg of the edge to ramp along)
@@ -321,13 +322,13 @@ class ObjectPocket:
                             else:
                                 print "WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp"
                                 startPoint = edge.Vertexes[0].Point
+                                output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "\n"
                                 output += "G0 X" + fmt(startPoint.x) + " Y" + fmt(startPoint.y) +\
-                                          " Z" + fmt(fastZPos) + "\n"
+                                          " Z" + fmt(obj.ClearanceHeight.Value) + "\n"
                             first = False
                         # then move slow down to our starting point for our profile
                         last = edge.Vertexes[0].Point
                         output += "G1 X" + fmt(last.x) + " Y" + fmt(last.y) + " Z" + fmt(vpos) + "\n"
-                    # if isinstance(edge.Curve,Part.Circle):
                     if DraftGeomUtils.geomType(edge) == "Circle":
                         point = edge.Vertexes[-1].Point
                         if point == last:  # edges can come flipped
@@ -352,7 +353,7 @@ class ObjectPocket:
                         last = point
 
         # move back up
-        output += "G1 Z" + fmt(fastZPos) + "\n"
+        output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "\n"
         return output
 
     # To reload this from FreeCAD, use: import PathScripts.PathPocket; reload(PathScripts.PathPocket)
@@ -418,22 +419,7 @@ class ObjectPocket:
                         else:
                             for w in shape.Wires:
                                 c = PathScripts.PathKurveUtils.makeAreaCurve(w.Edges, 'CW')
-                                # if w.isSame(shape.OuterWire):
-                                #     print "outerwire"
-                                #     if  c.IsClockwise():
-                                #         c.Reverse()
-                                #         print "reverse outterwire"
-                                # else:
-                                #     print "inner wire"
-                                #     if not c.IsClockwise():
-                                #         c.Reverse()
-                                #         print "reverse inner"
                                 a.append(c)
-
-                        ########
-                        # This puts out some interesting information from libarea
-                        print a.text()
-                        ########
 
                         a.Reorder()
                         output += self.buildpathlibarea(obj, a)
@@ -609,8 +595,6 @@ class TaskPanel:
             for sub in i[1]:
                 self.form.baseList.addItem(i[0].Name + "." + sub)
 
-
-
     def open(self):
         self.s = SelObserver()
         # install the function mode resident
@@ -632,7 +616,6 @@ class TaskPanel:
             return
         for i in sel.SubElementNames:
             self.obj.Proxy.addpocketbase(self.obj, sel.Object, i)
-
 
         self.setFields()  # defaults may have changed.  Reload.
         self.form.baseList.clear()
@@ -719,7 +702,6 @@ class TaskPanel:
         self.form.useZigZag.clicked.connect(self.getFields)
         self.form.zigZagUnidirectional.clicked.connect(self.getFields)
         self.form.zigZagAngle.editingFinished.connect(self.getFields)
-
 
         self.setFields()
 
