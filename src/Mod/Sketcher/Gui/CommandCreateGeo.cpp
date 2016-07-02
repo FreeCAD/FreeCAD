@@ -331,10 +331,12 @@ void CmdSketcherCreateLine::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
         break;
     }
 }
@@ -572,10 +574,12 @@ void CmdSketcherCreateRectangle::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
         break;
     }
 }
@@ -1187,10 +1191,12 @@ void CmdSketcherCreatePolyline::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
         break;
     }
 }
@@ -1829,6 +1835,9 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
 void CmdSketcherCompCreateArc::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -3402,6 +3411,9 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
 void CmdSketcherCompCreateConic::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -3755,6 +3767,9 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
 void CmdSketcherCompCreateCircle::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -4955,10 +4970,12 @@ void CmdSketcherCreateSlot::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
         break;
     }
 }
@@ -5395,6 +5412,9 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
 void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
