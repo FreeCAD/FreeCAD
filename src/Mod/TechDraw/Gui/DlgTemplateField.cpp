@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <Base/Console.h>
 
 #include "DlgTemplateField.h"
 
@@ -49,20 +50,20 @@ void DlgTemplateField::changeEvent(QEvent *e)
 
 void DlgTemplateField::setFieldName(std::string name)
 {
-    QString qs = QString::fromStdString(name);
+    QString qs = QString::fromUtf8(name.data(), name.size());
     lblName->setText(qs);
 }
 
 void DlgTemplateField::setFieldContent(std::string content)
 {
-    QString qs = QString::fromStdString(content);
+    QString qs = QString::fromUtf8(content.data(), content.size());
     leInput->setText(qs);
 }
 
 std::string DlgTemplateField::getFieldContent()
 {
     QString result = leInput->text();
-    return result.toUtf8().constData();
+    return result.toStdString();
 }
 
 #include "moc_DlgTemplateField.cpp"
