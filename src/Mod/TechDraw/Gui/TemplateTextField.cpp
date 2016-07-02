@@ -29,6 +29,8 @@
 
 #include <QTextDocument>
 
+#include <Base/Console.h>
+
 #include "TemplateTextField.h"
 #include "DlgTemplateField.h"
 
@@ -56,10 +58,12 @@ void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
     int uiCode = ui->exec();
     std::string newContent = "";
     if(uiCode == QDialog::Accepted) {
-       std::string newContent = ui->getFieldContent();
-       QString qsClean = Qt::escape(QString::fromStdString(newContent));        //Qt5 note: this becomes qsNewContent.toHtmlEscaped();
-       newContent = qsClean.toUtf8().constData();
-       tmplte->EditableTexts.setValue(fieldNameStr, newContent);
+       if (tmplte) {
+           std::string newContent = ui->getFieldContent();
+           QString qsClean = Qt::escape(QString::fromStdString(newContent));        //Qt5 note: this becomes qsNewContent.toHtmlEscaped();
+           newContent = qsClean.toUtf8().constData();
+           tmplte->EditableTexts.setValue(fieldNameStr, newContent);
+       }
     }
     ui->deleteLater();
 }
