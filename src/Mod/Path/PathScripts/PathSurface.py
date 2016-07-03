@@ -138,16 +138,16 @@ class ObjectSurface:
                 loopstring += "G0 Z" + str(obj.SafeHeight.Value) + "\n"
                 loopstring += "G0 X" + \
                     str(fmt(p.x)) + " Y" + str(fmt(p.y)) + "\n"
-                loopstring += "G1 Z" + str(fmt(p.z))  + " F" + str(self.vertFeed) + "\n"
+                loopstring += "G1 Z" + str(fmt(p.z)) + "\n"
                 for p in loop[1:]:
                     loopstring += "G1 X" + \
                         str(fmt(p.x)) + " Y" + str(fmt(p.y)) + \
-                        " Z" + str(fmt(p.z))  + " F" + str(self.horizFeed)+ "\n"
+                        " Z" + str(fmt(p.z)) + "\n"
                     zheight = p.z
                 p = loop[0]
                 loopstring += "G1 X" + \
                     str(fmt(p.x)) + " Y" + str(fmt(p.y)) + \
-                    " Z" + str(fmt(zheight)) + " F" + str(self.vertFeed) + "\n"
+                    " Z" + str(fmt(zheight)) + "\n"
                 loopstring += "(loop end)" + "\n"
                 print "    loop ", nloop, " with ", len(loop), " points"
                 nloop = nloop + 1
@@ -157,6 +157,8 @@ class ObjectSurface:
 
         depthparams = depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value,
                                    obj.StartDepth.Value, obj.StepDown, obj.FinishDepth.Value, obj.FinalDepth.Value)
+        # stlfile = "../../stl/gnu_tux_mod.stl"
+        # surface = STLSurfaceSource(stlfile)
         surface = s
 
         t_before = time.time()
@@ -165,20 +167,12 @@ class ObjectSurface:
         # wl = ocl.AdaptiveWaterline() # this is slower, ca 60 seconds on i7
         # CPU
         wl.setSTL(surface)
-        diam = self.radius * 2
-
-        # FIXME:  Need to get tool length from tool object
+        diam = 0.5
         length = 10.0
-
-        # FIXME:  Need to get correct tool shape.  Hard coding to ball cutter
-        # is bad.
-
         # any ocl MillingCutter class should work here
         cutter = ocl.BallCutter(diam, length)
-
         wl.setCutter(cutter)
         # this should be smaller than the smallest details in the STL file
-
         wl.setSampling(obj.SampleInterval)
         # AdaptiveWaterline() also has settings for minimum sampling interval
         # (see c++ code)
@@ -208,8 +202,6 @@ class ObjectSurface:
         pdc = ocl.PathDropCutter()   # create a pdc
         pdc.setSTL(s)
         pdc.setCutter(cutter)
-
-        # FIXME:  need to set minimumZ to something real
         pdc.minimumZ = 0.25
         pdc.setSampling(obj.SampleInterval)
 
@@ -257,7 +249,7 @@ class ObjectSurface:
 
         for c in clp:
             output += "G1 X" + str(c.x) + " Y" + \
-                str(c.y) + " Z" + str(c.z)  + " F" + str(self.horizFeed) + "\n"
+                str(c.y) + " Z" + str(c.z) + "\n"
 
         return output
 
@@ -288,6 +280,9 @@ class ObjectSurface:
             obj.Label = obj.Name + " :" + obj.ToolDescription
         else:
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+
+        output += "(" + obj.Label + ")"
+        output += "(Compensated Tool Path: " + str(self.radius) + ")"
 
         if obj.Base:
             for b in obj.Base:
@@ -377,13 +372,7 @@ class CommandPathSurfacing:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Surface", "Creates a Path Surfacing object")}
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is None:
-            active = False
-        elif PathUtils.findProj() is None:
-            active = False
-        else:
-            active = True
-        return active
+        return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
 

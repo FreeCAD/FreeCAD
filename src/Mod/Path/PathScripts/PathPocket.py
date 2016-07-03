@@ -377,6 +377,8 @@ class ObjectPocket:
             obj.ToolNumber = toolLoad.ToolNumber
             obj.ToolDescription = toolLoad.Name
 
+        output += "(" + obj.Label + ")"
+
         if obj.UserLabel == "":
             obj.Label = obj.Name + " :" + obj.ToolDescription
         else:
