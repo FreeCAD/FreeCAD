@@ -289,7 +289,7 @@ print "y - " + str(point.y)
 
         output += "(" + obj.Label + ")"
         if obj.Side != "On":
-            output += "(Compensated Tool Path: " + str(self.radius) + ")"
+            output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
         else:
             output += "(Uncompensated Tool Path)"
 

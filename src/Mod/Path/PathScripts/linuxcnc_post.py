@@ -49,7 +49,7 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-MACHINE_NAME = "Millstone"
+MACHINE_NAME = "LinuxCNC"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
 

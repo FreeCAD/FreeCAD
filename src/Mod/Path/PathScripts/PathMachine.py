@@ -196,8 +196,7 @@ class _ViewProviderMachine:
         pass
 
     def setEdit(self, vobj, mode=0):  # optional
-        # this is executed when the object is double-clicked in the tree
-        pass
+        return True
 
     def unsetEdit(self, vobj, mode=0):  # optional
         # this is executed when the user cancels or terminates edit mode
