@@ -121,7 +121,7 @@ Mesh::MeshObject* Mesher::createMesh() const
 #else
     std::list<SMESH_Hypothesis*> hypoth;
 
-    SMESH_Gen* meshgen = new SMESH_Gen();
+    SMESH_Gen* meshgen = SMESH_Gen::get();
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
     int hyp=0;
 
@@ -362,15 +362,13 @@ Mesh::MeshObject* Mesher::createMesh() const
     }
 
     // clean up
-    delete meshgen;
-
     TopoDS_Shape aNull;
     mesh->ShapeToMesh(aNull);
     mesh->Clear();
     delete mesh;
     for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
         delete *it;
-
+    
     MeshCore::MeshKernel kernel;
     kernel.Adopt(verts, faces, true);
 

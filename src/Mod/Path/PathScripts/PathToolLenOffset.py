@@ -38,10 +38,10 @@ except AttributeError:
 
 class ToolLenOffset:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyIntegerConstraint", "HeightNumber","HeightOffset", translate( "Height Offset Number",  "The Height offset number of the active tool"))
+        obj.addProperty("App::PropertyIntegerConstraint", "HeightNumber","HeightOffset","The Height offset number of the active tool")
         obj.HeightNumber = (0,0,10000,1)
-        obj.addProperty("App::PropertyLength", "Height", "HeightOffset", translate("Height","The first height value in Z, to rapid to, before making a feed move in Z"))
-        obj.addProperty("App::PropertyBool","Active","HeightOffset",translate("Active","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyLength", "Height", "HeightOffset","The first height value in Z, to rapid to, before making a feed move in Z")
+        obj.addProperty("App::PropertyBool","Active","HeightOffset","Make False, to prevent operation from generating code")
         obj.Proxy = self
         mode = 2
         obj.setEditorMode('Placement',mode)

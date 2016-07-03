@@ -30,6 +30,7 @@
 # include <iostream>
 # include <sstream>
 # include <exception>
+# include <ios>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <unistd.h>
 # include <pwd.h>
@@ -129,6 +130,7 @@ using namespace boost::program_options;
 // scriptings (scripts are build in but can be overridden by command line option)
 #include "InitScript.h"
 #include "TestScript.h"
+#include "CMakeScript.h"
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
@@ -441,8 +443,19 @@ Document* Application::openDocument(const char * FileName)
         newDoc->restore();
         return newDoc;
     }
-    catch (...) {
+    // if the project file itself is corrupt then
+    // close the document
+    catch (const Base::FileException&) {
         closeDocument(newDoc->getName());
+        throw;
+    }
+    catch (const std::ios_base::failure&) {
+        closeDocument(newDoc->getName());
+        throw;
+    }
+    // but for any other exceptions leave it open to give the
+    // user a chance to fix it
+    catch (...) {
         throw;
     }
 }
@@ -1292,6 +1305,7 @@ void Application::initApplication(void)
 {
     // interpreter and Init script ==========================================================
     // register scripts
+    new ScriptProducer( "CMakeVariables", CMakeVariables );
     new ScriptProducer( "FreeCADInit",    FreeCADInit    );
     new ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
@@ -1310,6 +1324,7 @@ void Application::initApplication(void)
 
     // starting the init script
     Console().Log("Run App init script\n");
+    Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
 }
 
@@ -1894,7 +1909,17 @@ void Application::ExtractUserPath()
     if (pwd == NULL)
         throw Base::Exception("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
-    std::string appData = pwd->pw_dir;
+
+    char *path = pwd->pw_dir;
+    char *fc_user_data;
+    if ((fc_user_data = getenv("FREECAD_USER_DATA"))) {
+        QString env = QString::fromUtf8(fc_user_data);
+        QDir dir(env);
+        if (!env.isEmpty() && dir.exists())
+            path = fc_user_data;
+    }
+
+    std::string appData(path);
     Base::FileInfo fi(appData.c_str());
     if (!fi.exists()) {
         // This should never ever happen

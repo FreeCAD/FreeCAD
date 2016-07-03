@@ -293,28 +293,73 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="approximate">
+		<Methode Name="approximate" Keyword="true">
 			<Documentation>
 				<UserDocu>
-					approximate(list_of_points):
-
 					Replaces this B-Spline curve by approximating a set of points.
+					The function accepts keywords as arguments.
+
+					approximate2(Points = list_of_points) 
+
+					Optional arguments :
+
+					DegMin = integer (3) : Minimum degree of the curve.
+					DegMax = integer (8) : Maximum degree of the curve.
+					Tolerance = float (1e-3) : approximating tolerance.
+					Continuity = string ('C2') : Desired continuity of the curve.
+					Possible values : 'C0','G1','C1','G2','C2','C3','CN'
+
+					LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
+					If one of these arguments is not null, the functions approximates the 
+					points using variational smoothing algorithm, which tries to minimize 
+					additional criterium: 
+					LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
+					Continuity must be C0, C1 or C2, else defaults to C2.
+
+					Parameters = list of floats : knot sequence of the approximated points.
+					This argument is only used if the weights above are all null.
+
+					ParamType = string ('Uniform','Centripetal' or 'ChordLength')
+					Parameterization type. Only used if weights and Parameters above aren't specified.
+
+					Note : Continuity of the spline defaults to C2. However, it may not be applied if 
+					it conflicts with other parameters ( especially DegMax ).
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="interpolate">
+        <Methode Name="interpolate" Keyword="true">
 			<Documentation>
 				<UserDocu>
-					interpolate(list_of_points, bool periodic = False, float tolerance = 1e-6, 
-					tangent1 = None, tangent2 = None)
-
 					Replaces this B-Spline curve by interpolating a set of points.
+					The function accepts keywords as arguments.
 
-					Continuity of the spline defaults to C2. However, if periodic, or tangents 
-					are supplied, the continuity will drop to C1.
+					interpolate(Points = list_of_points) 
 
-					tangent1, tangent2 specify tangent vectors for starting and ending points 
+					Optional arguments :
+
+					PeriodicFlag = bool (False) : Sets the curve closed or opened.
+					Tolerance = float (1e-6) : interpolating tolerance
+
+					Parameters : knot sequence of the interpolated points.
+					If not supplied, the function defaults to chord-length parameterization.
+					If PeriodicFlag == True, one extra parameter must be appended.
+
+					EndPoint Tangent constraints :
+
+					InitialTangent = vector, FinalTangent = vector
+					specify tangent vectors for starting and ending points 
 					of the BSpline. Either none, or both must be specified.
+
+					Full Tangent constraints :
+
+					Tangents = list_of_vectors, TangentFlags = list_of_bools
+					Both lists must have the same length as Points list.
+					Tangents specifies the tangent vector of each point in Points list.
+					TangentFlags (bool) activates or deactivates the corresponding tangent.
+					These arguments will be ignored if EndPoint Tangents (above) are also defined.
+
+					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents 
+					are supplied, the continuity will drop to C1.
 				</UserDocu>
 			</Documentation>
 		</Methode>

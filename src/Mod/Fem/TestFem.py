@@ -84,13 +84,14 @@ class FemTest(unittest.TestCase):
             reader = csv.reader(points_file)
             for p in reader:
                 self.mesh.addNode(float(p[1]), float(p[2]), float(p[3]), int(p[0]))
-
+                
         with open(mesh_volumes_file, 'r') as volumes_file:
             reader = csv.reader(volumes_file)
             for v in reader:
                 self.mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
                                     int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
                                     int(v[0]))
+                
         self.mesh_object.FemMesh = self.mesh
         self.active_doc.recompute()
 
@@ -202,7 +203,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(self.pressure_constraint, "FemTest of new pressure constraint failed")
         self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
 
-        fea = FemToolsCcx.FemToolsCcx(self.analysis, test_mode=True)
+        fea = FemToolsCcx.FemToolsCcx(self.analysis, self.solver_object, test_mode=True)
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
@@ -243,7 +244,6 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM frd file read from static analysis...')
         fea.load_results()
-        fcc_print('Result object created as \"{}\"'.format(fea.result_object.Name))
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
@@ -293,8 +293,6 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM frd file read from frequency analysis...')
         fea.load_results()
-
-        fcc_print('Last result object created as \"{}\"'.format(fea.result_object.Name))
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')

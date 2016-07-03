@@ -28,11 +28,13 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Precision.hxx>
+# include <QMenu>
 #endif
 
 #include <Base/Console.h>
 #include <App/Part.h>
 #include <App/Origin.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
@@ -53,6 +55,7 @@
 
 #include "ViewProviderBody.h"
 #include "ViewProvider.h"
+#include <Gui/MDIView.h>
 
 using namespace PartDesignGui;
 
@@ -126,24 +129,51 @@ void ViewProviderBody::setOverrideMode(const std::string& mode) {
         overrideMode = mode;       
 }
 
-
+void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(tr("Toggle active body"));
+    func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
+}
 
 bool ViewProviderBody::doubleClicked(void)
 {
-    // assure the PartDesign workbench
-    Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-    // and set correct active objects
-    auto* part = App::Part::getPartOfObject ( getObject() );
-    if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
-        Gui::Command::doCommand ( Gui::Command::Gui,
-                "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-                PARTKEY, part->getNameInDocument() );
+    //first, check if the body is already active.
+    App::DocumentObject* activeBody = nullptr;
+    Gui::MDIView* activeView = this->getActiveView();
+    if ( activeView ) {
+        activeBody = activeView->getActiveObject<App::DocumentObject*> (PDBODYKEY);
     }
 
-    Gui::Command::doCommand ( Gui::Command::Gui,
-            "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-            PDBODYKEY, this->getObject()->getNameInDocument() );
+    if (activeBody == this->getObject()){
+        //active body double-clicked. Deactivate.
+        Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
+                this->getObject()->getDocument()->getName(),
+                PDBODYKEY);
+    } else {
+
+        // assure the PartDesign workbench
+        Gui::Command::assureWorkbench("PartDesignWorkbench");
+
+        // and set correct active objects
+        auto* part = App::Part::getPartOfObject ( getObject() );
+        if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
+            Gui::Command::doCommand(Gui::Command::Gui,
+                    "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
+                    part->getDocument()->getName(),
+                    PARTKEY,
+                    part->getDocument()->getName(),
+                    part->getNameInDocument());
+        }
+
+        Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
+                this->getObject()->getDocument()->getName(),
+                PDBODYKEY,
+                this->getObject()->getDocument()->getName(),
+                this->getObject()->getNameInDocument());
+    }
 
     return true;
 }

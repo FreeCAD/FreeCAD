@@ -1,30 +1,30 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_MaxElementVolume.cxx
 //           Moved here from SMESH_MaxElementVolume.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_MaxElementVolume.cxx,v 1.8.2.1 2008/11/27 13:03:50 abd Exp $
 //
 #include "StdMeshers_MaxElementVolume.hxx"
 
@@ -73,11 +73,11 @@ StdMeshers_MaxElementVolume::~StdMeshers_MaxElementVolume()
 //=============================================================================
 
 void StdMeshers_MaxElementVolume::SetMaxVolume(double maxVolume)
-  throw (SMESH_Exception)
+  throw (SALOME_Exception)
 {
   double oldVolume = _maxVolume;
   if (maxVolume <= 0) 
-    throw SMESH_Exception(LOCALIZED("maxVolume must be positive"));
+    throw SALOME_Exception(LOCALIZED("maxVolume must be positive"));
   _maxVolume = maxVolume;
   if (_maxVolume != oldVolume)
     NotifySubMeshesHypothesisModification();
@@ -116,7 +116,7 @@ istream & StdMeshers_MaxElementVolume::LoadFrom(istream & load)
 {
   bool isOK = true;
   double a;
-  isOK = !(load >> a).bad();
+  isOK = (bool)(load >> a);
   if (isOK)
     this->_maxVolume = a;
   else 
@@ -197,7 +197,6 @@ bool StdMeshers_MaxElementVolume::SetParametersByMesh(const SMESH_Mesh*   theMes
   }
   return _maxVolume > 0;
 }
-
 //================================================================================
 /*!
  * \brief Initialize my parameter values by default parameters.
@@ -210,3 +209,4 @@ bool StdMeshers_MaxElementVolume::SetParametersByDefaults(const TDefaults&  dflt
 {
   return ( _maxVolume = dflts._elemLength*dflts._elemLength*dflts._elemLength );
 }
+

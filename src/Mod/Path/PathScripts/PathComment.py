@@ -38,7 +38,7 @@ except AttributeError:
 
 class Comment:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyString","Comment","Path",translate("Comment","Comment or note for CNC program"))
+        obj.addProperty("App::PropertyString","Comment","Path","Comment or note for CNC program")
         obj.Proxy = self
         mode = 2
         obj.setEditorMode('Placement',mode)

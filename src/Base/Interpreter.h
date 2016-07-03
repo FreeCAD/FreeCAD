@@ -34,6 +34,8 @@
 
 
 #include <Python.h>
+#include <CXX/Extensions.hxx>
+
 
 #ifdef FC_OS_MACOSX
 #undef toupper
@@ -159,6 +161,8 @@ public:
     //@{
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     std::string runString(const char *psCmd);
+    /// Run a statement on the python interpreter and return back the result object.
+    Py::Object runStringObject(const char *sCmd);
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     void runInteractiveString(const char *psCmd);
     /// Run file (script) on the python interpreter

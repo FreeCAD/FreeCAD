@@ -18,6 +18,9 @@ if(COMMAND cmake_policy)
     if(POLICY CMP0050)
         cmake_policy(SET CMP0050 OLD)
     endif(POLICY CMP0050)
+    if (POLICY CMP0045)
+        cmake_policy(SET CMP0045 NEW)
+    endif(POLICY CMP0045)
 endif(COMMAND cmake_policy)
 
 # include local  modules
@@ -25,7 +28,6 @@ include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
-
 
 #if(CMAKE_CFG_INTDIR STREQUAL .)
     # No Debug/Release output paths
@@ -55,13 +57,19 @@ if(NOT ${BOOST_MIN_VERSION})
    set(BOOST_MIN_VERSION 1.48)
 endif()
 
+# For older cmake versions the variable 'CMAKE_CXX_COMPILER_VERSION' is missing
+IF(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
+    EXECUTE_PROCESS(COMMAND ${CMAKE_C_COMPILER} -dumpversion
+                    OUTPUT_VARIABLE CMAKE_CXX_COMPILER_VERSION)
+ENDIF(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
+
 # Enabled C++11 for Freecad 0.17 and later
 IF(FREECAD_VERSION VERSION_GREATER 0.16)
     OPTION(BUILD_ENABLE_CXX11 "Enable C++11 support." ON)
     IF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
-        MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  G++ must be 4.7 or later")
+        MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  G++ must be 4.7 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
     ELSEIF(CMAKE_COMPILER_IS_CLANGXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.3)
-        MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  Clang must be 3.3 or later")
+        MESSAGE(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  Clang must be 3.3 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
     ENDIF()
 ENDIF(FREECAD_VERSION VERSION_GREATER 0.16)
 
@@ -190,6 +198,7 @@ OPTION(BUILD_RAYTRACING "Build the FreeCAD ray tracing module" ON)
 OPTION(BUILD_REVERSEENGINEERING "Build the FreeCAD reverse engineering module" ON)
 OPTION(BUILD_ROBOT "Build the FreeCAD robot module" ON)
 OPTION(BUILD_SHIP "Build the FreeCAD ship module" ON)
+OPTION(BUILD_SHOW "Build the FreeCAD Show module (helper module for visibility automation)" ON)
 OPTION(BUILD_SKETCHER "Build the FreeCAD sketcher module" ON)
 OPTION(BUILD_SPREADSHEET "Build the FreeCAD spreadsheet module" ON)
 OPTION(BUILD_START "Build the FreeCAD start module" ON)
@@ -222,143 +231,50 @@ if (FREECAD_BUILD_DEBIAN)
     #set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
 
+if(BUILD_MESH_PART OR BUILD_FEM)
+    set(BUILD_SMESH ON)
+endif()
+
 # ==============================================================================
 #inter-module dependencies
 
-#took these from Mod/Complete/App/AppComplete.cpp. appears to be working.
-if(BUILD_COMPLETE)
-  set(BUILD_MESH ON)
-  set(BUILD_POINTS ON)
-  set(BUILD_DRAWING ON)
-  set(BUILD_RAYTRACING ON)
-  set(BUILD_PART_DESIGN ON)
-  set(BUILD_IMAGE ON)
-  set(BUILD_DRAFT ON)
-endif(BUILD_COMPLETE)
+# Takes a dependent module followed by a variable-length list of prerequisite
+# modules.  Warns if any of the prerequisite modules are disabled.
+function(REQUIRES_MODS dependent)
+    if(${dependent})
+        foreach(prerequisite ${ARGN})
+            if(NOT ${prerequisite})
+                message(WARNING
+                        "${dependent} requires ${ARGN} each be ON, but "
+                        "${prerequisite} is \"${${prerequisite}}\"")
+            endif(NOT ${prerequisite})
+        endforeach()
+    endif(${dependent})
+endfunction(REQUIRES_MODS)
 
-#inferred from .py files. appears to be working.
-if(BUILD_ARCH)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-  set(BUILD_DRAFT ON)
-endif(BUILD_ARCH)
-
-#inferred from .py files. appears to be working.
-if(BUILD_OPENSCAD)
-  set(BUILD_MESH_PART ON)
-  set(BUILD_DRAFT ON)
-endif(BUILD_OPENSCAD)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_INSPECTION)
-  set(BUILD_MESH ON)
-  set(BUILD_POINTS ON)
-  set(BUILD_PART ON)
-endif(BUILD_INSPECTION)
-
-#inferred from .py files. appears to be working.
-if(BUILD_SHIP)
-  set(BUILD_PART ON)
-  set(BUILD_PLOT ON)
-  set(BUILD_IMAGE ON)
-endif(BUILD_SHIP)
-
-#inferred from .py files. appears to be working.
-if(BUILD_SPREADSHEET)
-  set(BUILD_DRAFT ON)
-endif(BUILD_SPREADSHEET)
-
-#this has been tested. appears to be working.
-if(BUILD_DRAFT)
-  set(BUILD_SKETCHER ON)
-endif(BUILD_DRAFT)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_PART_DESIGN)
-  set(BUILD_SKETCHER ON)
-endif(BUILD_PART_DESIGN)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_REVERSEENGINEERING)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-endif(BUILD_REVERSEENGINEERING)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_MESH_PART)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-  set(BUILD_SMESH ON)
-endif(BUILD_MESH_PART)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_RAYTRACING)
-  set(BUILD_PART ON)
-endif(BUILD_RAYTRACING)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_DRAWING)
-  set(BUILD_PART ON)
-  set(BUILD_SPREADSHEET ON)
-endif(BUILD_DRAWING)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_ROBOT)
-  set(BUILD_PART ON)
-endif(BUILD_ROBOT)
-
-#path module dependencies.
-if(BUILD_PATH)
-  set(BUILD_PART ON)
-  #set(BUILD_ROBOT ON) reenable this when using KDL
-endif(BUILD_PATH)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_SKETCHER)
-  set(BUILD_PART ON)
-endif(BUILD_SKETCHER)
-
-#inferred from .py files. built, but not sure how to test.
-if(BUILD_IDF)
-  set(BUILD_PART ON)
-endif(BUILD_IDF)
-
-#inferred from cmakelists.txt. built, but not sure how to test.
-if(BUILD_IMPORT)
-  set(BUILD_PART ON)
-endif(BUILD_IMPORT)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_FEM)
-  set(BUILD_PART ON)
-  set(BUILD_SMESH ON)
-endif(BUILD_FEM)
-
-#inferred from cmakelists.txt. appears to be working.
-if(BUILD_SANDBOX)
-  set(BUILD_PART ON)
-  set(BUILD_MESH ON)
-endif(BUILD_SANDBOX)
-
-#inferred from header includes. not tested.
-if(BUILD_JTREADER)
-  set(BUILD_MESH ON)
-endif(BUILD_JTREADER)
-
-#a runtime dependency
-if(BUILD_START)
-  set(BUILD_WEB ON)
-endif(BUILD_START)
-
-#leaving test module for someone else.
-#image has none. as far as I can tell.
-#mesh has none. as far as I can tell.
-#part has none. as far as I can tell.
-#material has none. as far as I can tell.
-#web has none. as far as I can tell.
-#assembly has none. as far as I can tell.
-#plot has none. as far as I can tell.
-#points has none. as far as I can tell
+REQUIRES_MODS(BUILD_COMPLETE           BUILD_MESH BUILD_POINTS BUILD_DRAWING
+                                       BUILD_RAYTRACING BUILD_PART_DESIGN
+                                       BUILD_IMAGE BUILD_DRAFT)
+REQUIRES_MODS(BUILD_ARCH               BUILD_PART BUILD_MESH BUILD_DRAFT)
+REQUIRES_MODS(BUILD_DRAFT              BUILD_SKETCHER)
+REQUIRES_MODS(BUILD_DRAWING            BUILD_PART BUILD_SPREADSHEET)
+REQUIRES_MODS(BUILD_FEM                BUILD_PART)
+REQUIRES_MODS(BUILD_IDF                BUILD_PART)
+REQUIRES_MODS(BUILD_IMPORT             BUILD_PART)
+REQUIRES_MODS(BUILD_INSPECTION         BUILD_MESH BUILD_POINTS BUILD_PART)
+REQUIRES_MODS(BUILD_JTREADER           BUILD_MESH)
+REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_OPENSCAD           BUILD_MESH_PART BUILD_DRAFT)
+REQUIRES_MODS(BUILD_PART_DESIGN        BUILD_SKETCHER)
+REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT)
+REQUIRES_MODS(BUILD_RAYTRACING         BUILD_PART)
+REQUIRES_MODS(BUILD_REVERSEENGINEERING BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_ROBOT              BUILD_PART)
+REQUIRES_MODS(BUILD_SANDBOX            BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_SHIP               BUILD_PART BUILD_PLOT BUILD_IMAGE)
+REQUIRES_MODS(BUILD_SKETCHER           BUILD_PART)
+REQUIRES_MODS(BUILD_SPREADSHEET        BUILD_DRAFT)
+REQUIRES_MODS(BUILD_START              BUILD_WEB)
 
 # ==============================================================================
 
@@ -638,20 +554,43 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- Salome SMESH --------------------------
 
     # Salome SMESH sources are under src/3rdParty now
-    IF(OCC_FOUND)
-    if(NOT FREECAD_USE_EXTERNAL_SMESH)
-        set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
-    else()
-        find_package(SMESH)
-        if(NOT SMESH_FOUND)
-            message(ERROR "================\n"
-                          "SMESH not found.\n"
-                          "================\n")
+    IF(BUILD_SMESH)
+        #if we use smesh we definitly also need vtk, no matter of external or internal smesh
+        find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        set(BUILD_FEM_VTK ON)
+        if(${VTK_MAJOR_VERSION} LESS 6) 
+            message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
         endif()
-        include_directories(${SMESH_INCLUDE_DIR})
-    endif()
-    set(SMESH_FOUND TRUE)
-    ENDIF(OCC_FOUND)
+        if(${VTK_MAJOR_VERSION} EQUAL 6)
+            if(${VTK_MINOR_VERSION} LESS 2)
+                set(VTK_OPTIONS -DVTK_NO_QUAD_POLY)
+            endif()
+            if(${VTK_MINOR_VERSION} EQUAL 0)
+                message(WARNING "VTK <6.0 cannot be used with c++11, FEM postprocessing is disabled")
+                set(BUILD_FEM_VTK OFF)
+            endif()
+        endif() 
+        
+        if(NOT FREECAD_USE_EXTERNAL_SMESH)
+            # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
+            if (WIN32)
+                find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
+            else()
+                find_package(HDF5 REQUIRED)
+            endif()
+            find_package(MEDFile REQUIRED)
+            set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
+        else()
+            find_package(SMESH)
+            if(NOT SMESH_FOUND)
+                message(ERROR "================\n"
+                              "SMESH not found.\n"
+                              "================\n")
+            endif()
+            include_directories(${SMESH_INCLUDE_DIR})
+        endif()
+        set(SMESH_FOUND TRUE)
+    ENDIF(BUILD_SMESH)
 
 # -------------------------------- Netgen --------------------------------
 
@@ -751,7 +690,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(FREECAD_USE_FREETYPE)
 
 #---------------------------------------------------
-
+        
     if(BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 

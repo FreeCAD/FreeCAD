@@ -829,10 +829,12 @@ void CmdSketcherConstrainLock::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
         break;
     }
 }
@@ -1100,10 +1102,12 @@ void CmdSketcherConstrainDistance::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length"));
         break;
     }
 }
@@ -1342,10 +1346,12 @@ void CmdSketcherConstrainDistanceX::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
         break;
     }
 }
@@ -1497,10 +1503,12 @@ void CmdSketcherConstrainDistanceY::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
         break;
     }
 }
@@ -2493,10 +2501,12 @@ void CmdSketcherConstrainRadius::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
         break;
     }
 }
@@ -2765,10 +2775,12 @@ void CmdSketcherConstrainAngle::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
         break;
     }
 }

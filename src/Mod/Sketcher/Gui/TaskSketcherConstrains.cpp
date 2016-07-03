@@ -123,22 +123,14 @@ public:
             case Sketcher::Symmetric:
                 break;
             case Sketcher::Distance:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::DistanceX:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::DistanceY:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::Radius:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::Angle:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(constraint->getPresentationValue()),Base::Unit::Angle).getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
                 break;
             case Sketcher::SnellsLaw: {
-                double v = constraint->getPresentationValue();
+                double v = constraint->getPresentationValue().getValue();
                 double n1 = 1.0;
                 double n2 = 1.0;
                 if (fabs(v) >= 1) {

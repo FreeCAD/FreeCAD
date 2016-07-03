@@ -100,7 +100,7 @@ class FemCommands(object):
 
         def hide_parts_constraints_show_meshes(self):
             if FreeCAD.GuiUp:
-                for acnstrmesh in FreeCAD.activeDocument().Objects:
+                for acnstrmesh in FemGui.getActiveAnalysis().Member:
                     #if "Constraint" in acnstrmesh.TypeId:
                     #    acnstrmesh.ViewObject.Visibility = False
                     if "Mesh" in acnstrmesh.TypeId:
@@ -112,7 +112,7 @@ class FemCommands(object):
 
         def hide_meshes_show_parts_constraints(self):
             if FreeCAD.GuiUp:
-                for acnstrmesh in FreeCAD.activeDocument().Objects:
+                for acnstrmesh in FemGui.getActiveAnalysis().Member:
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = True
                     if "Mesh" in acnstrmesh.TypeId:

@@ -618,7 +618,7 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     else if(strcmp("SetStereoOff",pMsg) == 0 ) {
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO );
         return true;
-   }
+    }
     else if(strcmp("Example1",pMsg) == 0 ) {
         SoSeparator * root = new SoSeparator;
         Texture3D(root);
@@ -946,7 +946,7 @@ void View3DInventor::dropEvent (QDropEvent * e)
 
 void View3DInventor::dragEnterEvent (QDragEnterEvent * e)
 {
-    // Here we must allow uri drafs and check them in dropEvent
+    // Here we must allow uri drags and check them in dropEvent
     const QMimeData* data = e->mimeData();
     if (data->hasUrls())
         e->accept();

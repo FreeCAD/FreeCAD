@@ -1,34 +1,14 @@
+
 /////////////////////////////////////////////////////////////////////////////////////////
+
 //                    geometry.lib header
-//					  modified with 2d & 3d vector methods 2006
+
+//                    g.j.hawkesford August 2003
+//						modified with 2d & 3d vector methods 2006
+//
+// This program is released under the BSD license. See the file COPYING for details.
+//
 /////////////////////////////////////////////////////////////////////////////////////////
-
-/*==============================
-Copyright (c) 2006 g.j.hawkesford 
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
-
 #pragma once
 #ifdef WIN32
 #pragma warning( disable : 4996 )
@@ -130,7 +110,6 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 #define ACW 1		// anti-clockwise
 #define CW -1		// clockwise
 
-	const wchar_t* getMessage(const wchar_t* original, int messageGroup, int stringID);
 	const wchar_t* getMessage(const wchar_t* original);							// dummy
 	void FAILURE(const wchar_t* str);
 	void FAILURE(const std::wstring& str);
@@ -262,7 +241,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 #define INVALID_POINT	Point(9.9999999e50, 0, false)
 #define INVALID_POINT3D	Point3d(9.9999999e50, 0, 0, false)
 #define INVALID_CLINE	CLine(INVALID_POINT, 1, 0, false)
-#define INVALID_CIRCLE	Circle(INVALID_POINT, 0, false)
+#define INVALID_CIRCLE	Circle(INVALID_POINT, 0)
 
 	// 3d point class
 	class Point3d {
@@ -335,7 +314,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		inline	const	Vector2d& operator+=(const Vector2d &v){dx += v.dx; dy += v.dy; return *this;}		// v1 += v0;
 		inline			Vector2d operator-(const Vector2d &v)const{return Vector2d( dx - v.dx, dy - v.dy);}	// v2 = v0 - v1;
-		inline	const	Vector2d& operator-=(const Vector2d &v){dx -= v.dx; dy -= v.dy; return *this;}		// v1 -= v0;
+		inline	const	Vector2d& operator-=(const Vector2d &v){dx -= v.dx; dy =- v.dy; return *this;}		// v1 -= v0;
 		inline			Vector2d operator-(const double d){ return Vector2d(dx - d, dy - d); };
 
 		inline	const	Vector2d operator-(void)const{return Vector2d(-dx, -dy);}							// v1 = -v0;  (unary minus)
@@ -404,7 +383,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		const	Vector3d& operator+=(const Vector3d &v){dx += v.dx; dy += v.dy; dz += v.dz; return *this;}			// v1 += v0;
 		Vector3d operator-(const Vector3d &v)const{return Vector3d( dx - v.dx, dy - v.dy, dz - v.dz);}				// v2 = v0 - v1;
 		const	Vector3d& operator-=(const Vector3d &v){
-			dx -= v.dx; dy -= v.dy; dz -= v.dz; return *this;}			// v1 -= v0;
+			dx -= v.dx; dy =- v.dy; dz = -v.dz; return *this;}			// v1 -= v0;
 
 		const	Vector3d operator-(void)const{return Vector3d(-dx, -dy, -dz);}										// v1 = -v0;  (unary minus)
 
@@ -499,8 +478,8 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		// constructors etc...
 		inline	Circle() {ok = false;};
-		Circle( const Point& p, double r, bool okay = true);							// Circle  c1(Point(10,30), 20);
-		Circle( const Point& p, const Point& pc);											// Circle  c1(p[222], p[223]);
+		Circle( const Point& p, double r);										// Circle  c1(Point(10,30), 20);
+		Circle( const Point& p, const Point& pc);								// Circle  c1(p[222], p[223]);
 		Circle( const Circle& c ){*this = c;}									// copy constructor  Circle c1(c2);
 		Circle( const Span& sp);														// constructor
 
@@ -952,7 +931,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	int Intof(const Span& sp0 , const Span& sp1, Point& p0, Point& p1, double t[4]);
 	int	LineLineIntof(const Span& L0 , const Span& L1, Point& p, double t[2]);
 	int LineArcIntof(const Span& line, const Span& arc, Point& p0, Point& p1, double t[4]);
-	int ArcArcIntof(const Span& arc0, const Span& arc1, Point& pLeft, Point& pRight, double t[4]);
+	int ArcArcIntof(const Span& arc0, const Span& arc1, Point& pLeft, Point& pRight);
 
 	bool OnSpan(const Span& sp, const Point& p);
 	bool OnSpan(const Span& sp, const Point& p, bool nearPoints, Point& pNear, Point& pOnSpan);	// function returns true if pNear == pOnSpan

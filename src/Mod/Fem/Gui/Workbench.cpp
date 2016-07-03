@@ -78,6 +78,21 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Fem_RunSolver"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
+         
+#ifdef FC_USE_VTK
+     Gui::ToolBarItem* post = new Gui::ToolBarItem(root);
+     post->setCommand("Post Processing");
+     *post  << "Fem_PostApplyChanges"
+            << "Fem_PostPipelineFromResult"
+            << "Separator"
+            << "Fem_PostCreateClipFilter"
+            << "Fem_PostCreateScalarClipFilter"
+            << "Fem_PostCreateCutFilter"
+            << "Fem_PostCreateWarpVectorFilter"
+            << "Separator"
+            << "Fem_PostCreateFunctions";
+#endif
+            
     return root;
 }
 

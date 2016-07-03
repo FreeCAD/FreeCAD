@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProviderBody_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <QCoreApplication>
 
 class SoGroup;
 class SoSeparator;
@@ -40,6 +41,7 @@ namespace PartDesignGui {
  */
 class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
     PROPERTY_HEADER(PartDesignGui::ViewProviderBody);
 
 public:
@@ -53,6 +55,7 @@ public:
     virtual void attach(App::DocumentObject *);
 
     virtual bool doubleClicked(void);
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     // returns the root node where the children gets collected(3D)

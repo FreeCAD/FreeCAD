@@ -136,7 +136,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //    // if the sketch has a support fuse them to get one result object (PAD!)
     //    if (SupportObject) {
     //        // Set the subtractive shape property for later usage in e.g. pattern
-    //        this->SubShape.setValue(PrismMaker.Shape());
+    //        this->SubShape.setValue(getSolid(PrismMaker.Shape()));
     //        const TopoDS_Shape& support = SupportObject->Shape.getValue();
     //        if (support.IsNull())
     //            return new App::DocumentObjectExecReturn("Support shape is invalid");
@@ -148,7 +148,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //        // Let's check if the fusion has been successful
     //        if (!mkCut.IsDone()) 
     //            return new App::DocumentObjectExecReturn("Cut with support failed");
-    //        this->Shape.setValue(mkCut.Shape());
+    //        this->Shape.setValue(getSolid(mkCut.Shape()));
     //    }
     //    else{
     //        return new App::DocumentObjectExecReturn("Cannot create a tool out of sketch with no support");

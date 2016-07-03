@@ -133,9 +133,13 @@ void CmdPartDesignBody::activated(int iMsg)
 {
     if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
         return;
+    App::Part *actPart = PartDesignGui::getActivePart ();
+    App::Part* partOfBaseFeature = nullptr;
+
     std::vector<App::DocumentObject*> features =
         getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     App::DocumentObject* baseFeature = nullptr;
+
 
     if (!features.empty()) {
         if (features.size() == 1) {
@@ -146,15 +150,28 @@ void CmdPartDesignBody::activated(int iMsg)
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
                         QObject::tr("Body can't be based on a PartDesign feature."));
                 baseFeature = nullptr;
-
             }
-            
-            if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
+            else if (PartDesign::Body::findBodyOf ( baseFeature )){
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
+                        QObject::tr("%1 already belongs to a body, can't use it as base feature for another body.")
+                                     .arg(QString::fromUtf8(baseFeature->Label.getValue())));
+                baseFeature = nullptr;
+            }
+            else if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
                 // Prevent creating bodies based on bodies
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
                         QObject::tr("Body can't be based on annother body."));
                 baseFeature = nullptr;
+            } else {
 
+                partOfBaseFeature = App::Part::getPartOfObject(baseFeature);
+                if (partOfBaseFeature != 0  &&  partOfBaseFeature != actPart){
+                    //prevent cross-part mess
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
+                            QObject::tr("Base feature (%1) belongs to other part.")
+                                         .arg(QString::fromUtf8(baseFeature->Label.getValue())));
+                    baseFeature = nullptr;
+                };
             }
 
         } else {
@@ -164,8 +181,6 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
 
-    // first check if Part is already created:
-    App::Part *actPart = PartDesignGui::getActivePart ();
 
     openCommand("Add a Body");
 
@@ -174,6 +189,11 @@ void CmdPartDesignBody::activated(int iMsg)
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str());
     if (baseFeature) {
+        if (partOfBaseFeature){
+            //withdraw base feature from Part, otherwise visibility mandess results
+            doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                    partOfBaseFeature->getNameInDocument(), baseFeature->getNameInDocument());
+        }
         doCommand(Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
                 bodyName.c_str(), baseFeature->getNameInDocument());
     }
@@ -576,8 +596,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     for (std::vector<App::DocumentObject*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
         items.push_back(QString::fromUtf8((*it)->Label.getValue()));
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
-        qApp->translate(className(), "Select body"),
-        qApp->translate(className(), "Select a body from the list"),
+        qApp->translate("PartDesign_MoveFeature", "Select body"),
+        qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
         items, 0, false, &ok);
     if (!ok) return;
     int index = items.indexOf(text);
@@ -709,8 +729,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
-        qApp->translate(className(), "Select feature"),
-        qApp->translate(className(), "Select a feature from the list"),
+        qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
+        qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
         items, 0, false, &ok);
     if (!ok) return;
     int index = items.indexOf(text);

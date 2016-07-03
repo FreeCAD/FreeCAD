@@ -615,6 +615,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
 #ifdef FC_DEBUG
   std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
+#else
+  Q_UNUSED(bopAlgoTime);
 #endif
   
   if (!BOPCheck.HasFaulty())

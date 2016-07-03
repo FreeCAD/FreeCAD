@@ -87,6 +87,10 @@ SOURCE_GROUP("Core" FILES ${Core_SRCS})
 SET(WildMagic4_SRCS
     WildMagic4/Wm4ApprCylinderFit3.cpp
     WildMagic4/Wm4ApprCylinderFit3.h
+    WildMagic4/Wm4ApprGaussPointsFit2.cpp
+    WildMagic4/Wm4ApprGaussPointsFit2.h
+    WildMagic4/Wm4ApprGaussPointsFit3.cpp
+    WildMagic4/Wm4ApprGaussPointsFit3.h
     WildMagic4/Wm4ApprLineFit3.cpp
     WildMagic4/Wm4ApprLineFit3.h
     WildMagic4/Wm4ApprPlaneFit3.cpp
@@ -99,8 +103,22 @@ SET(WildMagic4_SRCS
     WildMagic4/Wm4ApprSphereFit3.h
     WildMagic4/Wm4BandedMatrix.h
     WildMagic4/Wm4BandedMatrix.inl
+    WildMagic4/Wm4Box2.h
+    WildMagic4/Wm4Box2.inl
     WildMagic4/Wm4Box3.h
     WildMagic4/Wm4Box3.inl
+    WildMagic4/Wm4ContBox2.cpp
+    WildMagic4/Wm4ContBox2.h
+    WildMagic4/Wm4ContBox3.cpp
+    WildMagic4/Wm4ContBox3.h
+    WildMagic4/Wm4ConvexHull.cpp
+    WildMagic4/Wm4ConvexHull.h
+    WildMagic4/Wm4ConvexHull1.cpp
+    WildMagic4/Wm4ConvexHull1.h
+    WildMagic4/Wm4ConvexHull2.cpp
+    WildMagic4/Wm4ConvexHull2.h
+    WildMagic4/Wm4ConvexHull3.cpp
+    WildMagic4/Wm4ConvexHull3.h
     WildMagic4/Wm4DelPolygonEdge.cpp
     WildMagic4/Wm4DelPolygonEdge.h
     WildMagic4/Wm4DelPolyhedronFace.cpp
@@ -207,6 +225,9 @@ SET(WildMagic4_SRCS
     WildMagic4/Wm4Polynomial1.inl
     WildMagic4/Wm4QuadricSurface.cpp
     WildMagic4/Wm4QuadricSurface.h
+    WildMagic4/Wm4Quaternion.cpp
+    WildMagic4/Wm4Quaternion.h
+    WildMagic4/Wm4Quaternion.inl
     WildMagic4/Wm4Query.h
     WildMagic4/Wm4Query.inl
     WildMagic4/Wm4Query2.h

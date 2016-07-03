@@ -33,14 +33,16 @@ import FemInputWriter
 
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):
-    def __init__(self, analysis_obj, mesh_obj, mat_obj,
+    def __init__(self, analysis_obj, solver_obj,
+                 mesh_obj, mat_obj,
                  fixed_obj,
                  force_obj, pressure_obj,
                  displacement_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type=None, eigenmode_parameters=None,
                  dir_name=None):
-        FemInputWriter.FemInputWriter.__init__(self, analysis_obj, mesh_obj, mat_obj,
+        FemInputWriter.FemInputWriter.__init__(self, analysis_obj, solver_obj,
+                                               mesh_obj, mat_obj,
                                                fixed_obj,
                                                force_obj, pressure_obj,
                                                displacement_obj,

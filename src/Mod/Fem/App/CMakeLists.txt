@@ -8,7 +8,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
 
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -22,31 +21,33 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
-
+set(Fem_LIBS
+        Part
+        FreeCADApp
+        StdMeshers
+        SMESH
+        SMDS
+        SMESHDS
+    )
+    
 if(BUILD_FEM_NETGEN)
     set(Fem_LIBS
-        Part
-        FreeCADApp
-        StdMeshers
+        ${Fem_LIBS}
         NETGENPlugin
-        SMESH
-        SMDS
-        SMESHDS
-    )
-else(BUILD_FEM_NETGEN)
-    set(Fem_LIBS
-        Part
-        FreeCADApp
-        StdMeshers
-        SMESH
-        SMDS
-        SMESHDS
     )
 endif(BUILD_FEM_NETGEN)
+
+if(BUILD_FEM_VTK)
+    set(Fem_LIBS
+        ${Fem_LIBS}
+        ${VTK_LIBRARIES}
+    )
+endif(BUILD_FEM_VTK)
 
 generate_from_xml(FemMeshPy)
 
@@ -121,7 +122,6 @@ SET(FemScripts_SRCS
     FemSelectionObserver.py
     TestFem.py
     z88DispReader.py
-
     TaskPanelFemBeamSection.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui
@@ -199,21 +199,35 @@ SET(FemConstraints_SRCS
     )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
-SET(FemResult_SRCS
+if(BUILD_FEM_VTK) 
+    SET(FemPost_SRCS
+        PropertyPostDataObject.h
+        PropertyPostDataObject.cpp
+        FemPostObject.h
+        FemPostObject.cpp
+        FemPostPipeline.h
+        FemPostPipeline.cpp
+        FemPostFilter.h
+        FemPostFilter.cpp
+        FemPostFunction.h
+        FemPostFunction.cpp
     )
-SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
+    SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
+endif(BUILD_FEM_VTK)
+
 
 SET(Fem_SRCS
     ${FemBase_SRCS}
     ${FemSet_SRCS}
     ${FemConstraints_SRCS}
     ${FemResult_SRCS}
+    ${FemPost_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
 
 add_library(Fem SHARED ${Fem_SRCS})
-target_link_libraries(Fem ${Fem_LIBS})
+target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 
 
 fc_target_copy_resource(Fem

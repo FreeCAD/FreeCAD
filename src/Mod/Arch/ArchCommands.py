@@ -364,7 +364,7 @@ def getCutVolume(cutplane,shapes):
     u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
-        FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
+        #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
         return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
@@ -892,13 +892,12 @@ def rebuildArchShape(objects=None):
                                                 solid = Part.Solid(solid)
                                             #print "rebuilt solid: isValid is ",solid.isValid()
                                             if solid.isValid():
-                                                print "Success"
                                                 obj.Base.Shape = solid
                                                 success = True
                     except:
                         pass
         if not success:
-            print "Failed"
+            print "Failed to rebuild a valid solid for object ",obj.Name
     FreeCAD.ActiveDocument.recompute()
 
 

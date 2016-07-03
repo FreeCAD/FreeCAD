@@ -40,7 +40,7 @@ class FemToolsZ88(FemTools.FemTools):
     #  @param analysis - analysis object to be used as the core object.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
-    def __init__(self, analysis=None, test_mode=False):
+    def __init__(self, analysis=None, solver=None, test_mode=False):
         if analysis:
             ## @var analysis
             #  FEM analysis - the core object. Has to be present.
@@ -49,6 +49,12 @@ class FemToolsZ88(FemTools.FemTools):
         else:
             import FemGui
             self.analysis = FemGui.getActiveAnalysis()
+        if solver:
+            ## @var solver
+            #  solver of the analysis. Used to store the active solver and analysis parameters
+            self.solver = solver
+        else:
+            self.solver = None
         if self.analysis:
             self.update_objects()
             self.base_name = ""
@@ -74,7 +80,8 @@ class FemToolsZ88(FemTools.FemTools):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.FemInputWriterZ88(self.analysis, self.mesh, self.materials,
+            inp_writer = iw.FemInputWriterZ88(self.analysis, self.solver,
+                                              self.mesh, self.materials,
                                               self.fixed_constraints,
                                               self.force_constraints, self.pressure_constraints,
                                               self.displacement_constraints,
@@ -121,15 +128,13 @@ class FemToolsZ88(FemTools.FemTools):
         # z88_testrun for memory
         QtCore.QDir.setCurrent(self.calc_path.path())
         if not self.z88_is_running:
-            #self.z88_binary = "/home/hugo/z88progr/z88v14os/bin/unix64/z88r"
-            #self.z88_testrun.start(self.z88_binary, ["-c -choly"])
             z88_testrun_binary = self.z88_binary + "  -t  -choly"
             print("Testrun Z88")
             print(z88_testrun_binary)
             self.z88_is_running = True
             self.z88_testrun.start(z88_testrun_binary)
         else:
-            print("Can not stat CalculiX, because it runs (testrun)!")
+            print("Unable to start Z88, because it runs (testrun)!")
         QtCore.QDir.setCurrent(self.cwd)
         QApplication.restoreOverrideCursor()
 
@@ -143,7 +148,7 @@ class FemToolsZ88(FemTools.FemTools):
             self.z88_is_running = True
             self.z88_solverun.start(z88_solverun_binary)
         else:
-            print("Can not stat CalculiX, because it runs (solverun)!")
+            print("Unable to start Z88, because it runs (solverun)!")
         QtCore.QDir.setCurrent(self.cwd)
         QApplication.restoreOverrideCursor()
 
@@ -179,11 +184,10 @@ class FemToolsZ88(FemTools.FemTools):
         import z88DispReader
         disp_result_file = self.working_dir + '/z88o2.txt'
         if os.path.isfile(disp_result_file):
-            z88DispReader.import_z88_disp(disp_result_file, self.analysis)
+            result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
+            z88DispReader.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
-                    self.result_object = m
-            if self.result_object:
-                self.results_present = True
+                    self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(disp_result_file))

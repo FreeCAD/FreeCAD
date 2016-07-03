@@ -174,8 +174,8 @@ void CmdSketcherNewSketch::activated(int iMsg)
                     iSugg = items.size()-1;
             }
             QString text = QInputDialog::getItem(Gui::getMainWindow(),
-                qApp->translate(className(), "Sketch attachment"),
-                qApp->translate(className(), "Select the method to attach this sketch to selected object"),
+                qApp->translate("Sketcher_NewSketch", "Sketch attachment"),
+                qApp->translate("Sketcher_NewSketch", "Select the method to attach this sketch to selected object"),
                 items, iSugg, false, &ok);
             if (!ok) return;
             int index = items.indexOf(text);
@@ -457,8 +457,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
         std::vector<App::DocumentObject*> sketches = doc->getObjectsOfType(Part::Part2DObject::getClassTypeId());
         if (sketches.empty()) {
             QMessageBox::warning(Gui::getMainWindow(),
-                qApp->translate(className(), "No sketch found"),
-                qApp->translate(className(), "The document doesn't have a sketch"));
+                qApp->translate("Sketcher_MapSketch", "No sketch found"),
+                qApp->translate("Sketcher_MapSketch", "The document doesn't have a sketch"));
             return;
         }
 
@@ -467,8 +467,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
         for (std::vector<App::DocumentObject*>::iterator it = sketches.begin(); it != sketches.end(); ++it)
             items.push_back(QString::fromUtf8((*it)->Label.getValue()));
         QString text = QInputDialog::getItem(Gui::getMainWindow(),
-            qApp->translate(className(), "Select sketch"),
-            qApp->translate(className(), "Select a sketch from the list"),
+            qApp->translate("Sketcher_MapSketch", "Select sketch"),
+            qApp->translate("Sketcher_MapSketch", "Select a sketch from the list"),
             items, 0, false, &ok);
         if (!ok) return;
         int index = items.indexOf(text);
@@ -521,26 +521,26 @@ void CmdSketcherMapSketch::activated(int iMsg)
             if (validModes[i] == curMapMode) {
                 iCurr = items.size() - 1;
                 items.back().append(bCurIncompatible?
-                                        qApp->translate(className()," (incompatible with selection)")
+                                        qApp->translate("Sketcher_MapSketch"," (incompatible with selection)")
                                       :
-                                        qApp->translate(className()," (current)")  );
+                                        qApp->translate("Sketcher_MapSketch"," (current)")  );
             }
             if (validModes[i] == suggMapMode){
                 iSugg = items.size() - 1;
                 if(iSugg == 1){
                     iSugg = 0;//redirect deactivate to detach
                 } else {
-                    items.back().append(qApp->translate(className()," (suggested)"));
+                    items.back().append(qApp->translate("Sketcher_MapSketch"," (suggested)"));
                 }
             }
         }
         // * execute the dialog
         text = QInputDialog::getItem(Gui::getMainWindow()
-            ,qApp->translate(className(), "Sketch attachment")
+            ,qApp->translate("Sketcher_MapSketch", "Sketch attachment")
             ,bCurIncompatible?
-              qApp->translate(className(), "Current attachment mode is incompatible with the new selection. Select the method to attach this sketch to selected objects.")
+              qApp->translate("Sketcher_MapSketch", "Current attachment mode is incompatible with the new selection. Select the method to attach this sketch to selected objects.")
               :
-              qApp->translate(className(), "Select the method to attach this sketch to selected objects.")
+              qApp->translate("Sketcher_MapSketch", "Select the method to attach this sketch to selected objects.")
             ,items
             , bCurIncompatible ? iSugg : iCurr
             , false
@@ -575,8 +575,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
         }
     } catch (ExceptionWrongInput &e) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate(className(), "Map sketch"),
-                             qApp->translate(className(), "Can't map a sketch to support:\n"
+                             qApp->translate("Sketcher_MapSketch", "Map sketch"),
+                             qApp->translate("Sketcher_MapSketch", "Can't map a sketch to support:\n"
                                          "%1").arg(e.ErrMsg.length() ? e.ErrMsg : msg_str));
     }
 }

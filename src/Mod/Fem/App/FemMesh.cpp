@@ -68,6 +68,8 @@
 #include <StdMeshers_QuadraticMesh.hxx>
 
 # include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shape.hxx>
 
 //to simplify parsing input files we use the boost lib
 #include <boost/tokenizer.hpp>
@@ -84,17 +86,13 @@ TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 FemMesh::FemMesh()
 {
     //Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
-    myGen = new SMESH_Gen();
     // create a mesh allways with new StudyId to avoid overlapping destruction
-    myMesh = myGen->CreateMesh(StatCount++,false);
-
+    myMesh = getGenerator()->CreateMesh(StatCount++,false);
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
-{
-    //Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
-    myGen = new SMESH_Gen();
-    myMesh = myGen->CreateMesh(StatCount++,false);
+{    
+    myMesh = getGenerator()->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
 }
 
@@ -107,14 +105,12 @@ FemMesh::~FemMesh()
     myMesh->Clear();
     //myMesh->ClearLog();
     delete myMesh;
-#if defined(__GNUC__)
-    delete myGen; // crashes with MSVC
-#endif
 }
 
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     if (this != &mesh) {
+	myMesh = getGenerator()->CreateMesh(0,true);
         copyMeshData(mesh);
     }
     return *this;
@@ -122,26 +118,17 @@ FemMesh &FemMesh::operator=(const FemMesh& mesh)
 
 void FemMesh::copyMeshData(const FemMesh& mesh)
 {
-    //const SMDS_MeshInfo& info = mesh.myMesh->GetMeshDS()->GetMeshInfo();
-    //int numPoly = info.NbPolygons();
-    //int numVolu = info.NbVolumes();
-    //int numTetr = info.NbTetras();
-    //int numHexa = info.NbHexas();
-    //int numPyrd = info.NbPyramids();
-    //int numPris = info.NbPrisms();
-    //int numHedr = info.NbPolyhedrons();
-
     _Mtrx = mesh._Mtrx;
 
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
-    meshds->ClearMesh();
-
+    
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        meshds->AddNodeWithID(aNode->X(),aNode->Y(),aNode->Z(), aNode->GetID());
+        double temp[3];
+        aNode->GetXYZ(temp);
+        meshds->AddNodeWithID(temp[0],temp[1],temp[2], aNode->GetID());
     }
-
     SMDS_EdgeIteratorPtr aEdgeIter = mesh.myMesh->GetMeshDS()->edgesIterator();
     for (;aEdgeIter->more();) {
         const SMDS_MeshEdge* aEdge = aEdgeIter->next();
@@ -335,7 +322,7 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
-    return myGen;
+    return SMESH_Gen::get();
 }
 
 void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp)
@@ -350,37 +337,37 @@ void FemMesh::setStanardHypotheses()
     if (!hypoth.empty())
         return;
     int hyp=0;
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
+    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     hypoth.push_back(len);
 
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, myGen));
+    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
     hypoth.push_back(loc);
 
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, myGen));
+    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
     hypoth.push_back(area);
 
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, myGen));
+    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
     hypoth.push_back(segm);
 
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, myGen));
+    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
     hypoth.push_back(defl);
 
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, myGen));
+    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, getGenerator()));
     hypoth.push_back(reg);
 
-    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, myGen));
+    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, getGenerator()));
     //static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
     //hypoth.push_back(sel);
 
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,myGen));
+    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,1,getGenerator()));
     hypoth.push_back(qdp);
 
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,myGen));
+    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,getGenerator()));
     hypoth.push_back(q2d);
 
     // Apply hypothesis
@@ -390,7 +377,7 @@ void FemMesh::setStanardHypotheses()
 
 void FemMesh::compute()
 {
-    myGen->Compute(*myMesh, myMesh->GetShapeToMesh());
+    getGenerator()->Compute(*myMesh, myMesh->GetShapeToMesh());
 }
 
 std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) const
@@ -409,6 +396,7 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) 
  */
 std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &face) const
 {
+    //TODO: This function is broken with SMESH7 as it is impossible to iterate volume faces
     std::list<std::pair<int, int> > result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
@@ -417,7 +405,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
         const SMDS_MeshVolume* vol = vol_iter->next();
         SMDS_ElemIteratorPtr face_iter = vol->facesIterator();
 
-        while (face_iter->more()) {
+        while (face_iter && face_iter->more()) {
             const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
             int numNodes = face->NbNodes();
 
@@ -435,6 +423,38 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
                 result.push_back(std::make_pair(vol->GetID(), face->GetID()));
             }
         }
+    }
+
+    result.sort();
+    return result;
+}
+
+/*! That function returns a list of face IDs.
+ */
+std::list<int> FemMesh::getFacesByFace(const TopoDS_Face &face) const
+{
+    //TODO: This function is broken with SMESH7 as it is impossible to iterate volume faces
+    std::list<int> result;
+    std::set<int> nodes_on_face = getNodesByFace(face);
+
+    SMDS_FaceIteratorPtr face_iter = myMesh->GetMeshDS()->facesIterator();
+    while (face_iter->more()) {
+        const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
+        int numNodes = face->NbNodes();
+
+        std::set<int> face_nodes;
+        for (int i=0; i<numNodes; i++) {
+            face_nodes.insert(face->GetNode(i)->GetID());
+        }
+
+        std::vector<int> element_face_nodes;
+        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), face_nodes.begin(), face_nodes.end(),
+            std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+        // For curved faces it is possible that a volume contributes more than one face
+        if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
+            result.push_back(face->GetID());
+        }        
     }
 
     result.sort();
@@ -559,7 +579,6 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
                 result.insert(aNode->GetID());
         }
     }
-
     return result;
 }
 
@@ -873,6 +892,7 @@ void FemMesh::read(const char *FileName)
     }
     else if (File.hasExtension("dat") ) {
         // read brep-file
+	// vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
     else if (File.hasExtension("bdf") ) {

@@ -37,7 +37,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
     #  The constructur of FemTools is for use of analysis without solver object
-    def __init__(self, analysis=None):
+    def __init__(self, analysis=None, solver=None):
 
         if analysis:
             ## @var analysis
@@ -47,6 +47,12 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         else:
             import FemGui
             self.analysis = FemGui.getActiveAnalysis()
+        if solver:
+            ## @var solver
+            #  solver of the analysis. Used to store the active solver and analysis parameters
+            self.solver = solver
+        else:
+            self.solver = None
         if self.analysis:
             self.update_objects()
             self.results_present = False
@@ -76,6 +82,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.mesh.ViewObject.ElementColor = {}
             self.mesh.ViewObject.setNodeColorByScalars()
 
+    ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
+    #  @param self The python object self
+    def reset_mesh_purge_results_checked(self):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
+        if not keep_results_on_rerun:
+            self.purge_results()
+        self.reset_mesh_color()
+        self.reset_mesh_deformation()
+
     ## Resets mesh color, deformation and removes all result objects
     #  @param self The python object self
     def reset_all(self):
@@ -96,6 +112,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.reset_mesh_color()
             return
         if self.result_object:
+            if FreeCAD.GuiUp:
+                if self.result_object.Mesh.ViewObject.Visibility is False:
+                    self.result_object.Mesh.ViewObject.Visibility = True
             if result_type == "Sabs":
                 values = self.result_object.StressValues
             elif result_type == "Uabs":
@@ -135,9 +154,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
 
-        ## @var solver
-        #  solver of the analysis. Used to store solver and analysis parameters
-        self.solver = None
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
@@ -170,12 +186,22 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
         self.displacement_constraints = []
 
+        found_solver_for_use = False
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
-                if not self.solver:
+                # for some methods no solver is needed (purge_results) --> solver could be none
+                # analysis has one solver and no solver was set --> use the one solver
+                # analysis has more than one solver and no solver was set --> use solver none
+                # analysis has no solver --> use solver none
+                if not found_solver_for_use and not self.solver:
+                    # no solver was found before and no solver was set by constructor
                     self.solver = m
-                else:
-                    raise Exception('FEM: Multiple solver in analysis not yet supported!')
+                    found_solver_for_use = True
+                elif found_solver_for_use:
+                    self.solver = None
+                    # another solver was found --> We have more than one solver
+                    # we do not know which one to use, so we use none !
+                    # print('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!')
             elif m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m
@@ -222,33 +248,34 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         if not self.mesh:
-            message += "No mesh object in the Analysis\n"
+            message += "No mesh object defined in the analysis\n"
         if not self.materials:
-            message += "No material object in the Analysis\n"
+            message += "No material object defined in the analysis\n"
         has_no_references = False
         for m in self.materials:
             if len(m['Object'].References) == 0:
                 if has_no_references is True:
-                    message += "More than one Material has empty References list (Only one empty References list is allowed!).\n"
+                    message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
-        if not (self.fixed_constraints):
-            message += "No fixed-constraint nodes defined in the Analysis\n"
+        if self.analysis_type == "static":
+            if not (self.fixed_constraints or self.displacement_constraints):
+                message += "Neither a constraint fixed nor a contraint displacement defined in the static analysis\n"
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints):
-                message += "No force-constraint or pressure-constraint defined in the Analysis\n"
+                message += "Neither constraint force nor constraint pressure defined in the static analysis\n"
         if self.beam_sections:
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
                     if has_no_references is True:
-                        message += "More than one BeamSection has empty References list (Only one empty References list is allowed!).\n"
+                        message += "More than one beam section has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
         if self.shell_thicknesses:
             has_no_references = False
             for s in self.shell_thicknesses:
                 if len(s['Object'].References) == 0:
                     if has_no_references is True:
-                        message += "More than one ShellThickness has empty References list (Only one empty References list is allowed!).\n"
+                        message += "More than one shell thickness has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
         return message
 
@@ -361,13 +388,31 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # Update inp file name
         self.set_inp_file_name()
 
+    ## Set the analysis result object
+    #  if no result object is provided, check if the analysis has result objects
+    #  if the analysis has exact one result object use this result object
+    #  @param self The python object self
+    #  @param result object name
     def use_results(self, results_name=None):
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
-                self.result_object = m
-                break
-        if not self.result_object:
-            raise Exception("{} doesn't exist".format(results_name))
+        self.result_object = None
+        if results_name is not None:
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
+                    self.result_object = m
+                    break
+            if not self.result_object:
+                raise Exception("{} doesn't exist".format(results_name))
+        else:
+            has_results = False
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject"):
+                    self.result_object = m
+                    if has_results is True:
+                        self.result_object = None
+                        raise Exception("No result name was provided, but more than one result objects in the analysis.")
+                    has_results = True
+            if not self.result_object:
+                raise Exception("No result object found in the analysis")
 
     ## Returns minimum, average and maximum value for provided result type
     #  @param self The python object self

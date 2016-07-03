@@ -141,8 +141,8 @@ class _TaskPanelFemSolverCalculix:
         self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        fea = FemToolsCcx.FemToolsCcx()
-        fea.reset_all()
+        fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
+        fea.reset_mesh_purge_results_checked()
         fea.inp_file_name = self.inp_file_name
         QApplication.setOverrideCursor(Qt.WaitCursor)
         fea.load_results()
@@ -182,7 +182,7 @@ class _TaskPanelFemSolverCalculix:
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
-            fea = FemToolsCcx.FemToolsCcx()
+            fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
             fea.set_analysis_type(self.solver_object.AnalysisType)
             fea.update_objects()
             fea.write_inp_file()
@@ -200,7 +200,7 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("Check dependencies...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
-        fea = FemToolsCcx.FemToolsCcx()
+        fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
         fea.update_objects()
         message = fea.check_prerequisites()
         if message != "":

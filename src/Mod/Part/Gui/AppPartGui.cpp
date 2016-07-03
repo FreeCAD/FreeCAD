@@ -126,7 +126,6 @@ PyMODINIT_FUNC initPartGui()
     Py_INCREF(pAttachEngineTextsModule);
     PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
-
     PartGui::SoBrepFaceSet                  ::initClass();
     PartGui::SoBrepEdgeSet                  ::initClass();
     PartGui::SoBrepPointSet                 ::initClass();
@@ -182,6 +181,13 @@ PyMODINIT_FUNC initPartGui()
     CreatePartCommands();
     CreateSimplePartCommands();
     CreateParamPartCommands();
+    try{
+        Py::Object ae = Base::Interpreter().runStringObject("__import__('AttachmentEditor.Commands').Commands");
+        Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"),ae);
+    } catch (Base::PyException &err){
+        err.ReportException();
+    }
+
 
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );

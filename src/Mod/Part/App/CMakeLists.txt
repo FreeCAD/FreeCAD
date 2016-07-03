@@ -287,6 +287,11 @@ SET(Part_Scripts
     TestPartApp.py
     MakeBottle.py
     JoinFeatures.py
+    AttachmentEditor/__init__.py
+    AttachmentEditor/Commands.py
+    AttachmentEditor/FrozenClass.py
+    AttachmentEditor/TaskAttachmentEditor.py
+    AttachmentEditor/TaskAttachmentEditor.ui
 )
 
 add_library(Part SHARED ${Part_SRCS})

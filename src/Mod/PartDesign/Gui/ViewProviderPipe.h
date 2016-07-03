@@ -47,9 +47,12 @@ public:
     void highlightReferences(const bool on, bool auxillery);
     
 protected:
+    virtual QIcon getIcon(void) const;
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
-    virtual QIcon getIcon(void) const;
+    
+    /// Returns a newly created TaskDlgPipeParameters
+    virtual TaskDlgFeatureParameters *getEditDialog();
     
 private:
     std::vector<App::Color> originalLineColors;

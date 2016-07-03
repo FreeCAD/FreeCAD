@@ -3,6 +3,7 @@
         <file>icons/PartFeature.svg</file>
         <file>icons/PartFeature.xpm</file>
         <file>icons/PartFeatureImport.xpm</file>
+        <file>icons/Part_Attachment.svg</file>
         <file>icons/Part_Booleans.svg</file>
         <file>icons/Part_Box.svg</file>
         <file>icons/Part_Chamfer.svg</file>

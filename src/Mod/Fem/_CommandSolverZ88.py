@@ -41,7 +41,7 @@ class _CommandSolverZ88(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverZ88", "Solver Z88"),
                           'Accel': "S, Z",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverZ88", "Creates a FEM solver Z88")}
-        self.is_active = 'with_analysis_without_solver'
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create SolverZ88")

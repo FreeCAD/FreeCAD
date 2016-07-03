@@ -34,9 +34,12 @@
 #include "ui_TaskPipeParameters.h"
 #include "ui_TaskPipeOrientation.h"
 #include "ui_TaskPipeScaling.h"
+#include <ui_DlgReference.h>
 #include "TaskPipeParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Origin.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -50,6 +53,8 @@
 #include <Mod/PartDesign/App/Body.h>
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
+#include "Utils.h"
+#include "TaskFeaturePick.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -85,10 +90,8 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, Q
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
-    //make sure th euser sees al important things: the base feature to select edges and the 
+    //make sure th euser sees al important things: the 
     //spine/auxillery spine he already selected 
-    if(pipe->BaseFeature.getValue())
-        doc->getViewProvider(pipe->BaseFeature.getValue())->show();
     if(pipe->Spine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->Spine.getValue());
         spineShow = svp->isShow();
@@ -151,10 +154,8 @@ TaskPipeParameters::~TaskPipeParameters()
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
-    //make sure th euser sees al important things: the base feature to select edges and the 
+    //make sure th euser sees al important things: the 
     //spine/auxillery spine he already selected 
-    if(pipe->BaseFeature.getValue())
-        doc->getViewProvider(pipe->BaseFeature.getValue())->hide();
     if(pipe->Spine.getValue()) {
         auto* svp = doc->getViewProvider(pipe->Spine.getValue());
         svp->setVisible(spineShow);
@@ -708,12 +709,80 @@ bool TaskDlgPipeParameters::accept()
 {
     std::string name = vp->getObject()->getNameInDocument();
 
+    
+    //see what to do with external references
+    //check the prerequisites for the selected objects
+    //the user has to decide which option we should take if external references are used
+    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getPipeView()->getObject());
+    auto pcActiveBody = PartDesignGui::getBodyFor(pcPipe, false);
+    auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+    std::vector<App::DocumentObject*> copies;
+
+    bool ext = false;
+    if(!pcActiveBody->hasFeature(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue()))
+        ext = true;
+    else if(!pcActiveBody->hasFeature(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue()))
+            ext = true;
+    else {
+        for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+            if(!pcActiveBody->hasFeature(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
+                ext = true;
+        }
+    }
+    
+    if(ext) {
+        QDialog* dia = new QDialog;
+        Ui_Dialog dlg;
+        dlg.setupUi(dia);
+        dia->setModal(true);
+        int result = dia->exec();
+        if(result == QDialog::DialogCode::Rejected)
+            return false;
+        else if(!dlg.radioXRef->isChecked()) {
+
+            if(!pcActiveBody->hasFeature(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue())) {
+                pcPipe->Spine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(pcPipe->Spine.getValue(), "", dlg.radioIndependent->isChecked()),
+                                        pcPipe->Spine.getSubValues());
+                copies.push_back(pcPipe->Spine.getValue());
+            }
+            else if(!pcActiveBody->hasFeature(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue())){
+                pcPipe->AuxillerySpine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(pcPipe->AuxillerySpine.getValue(), "", dlg.radioIndependent->isChecked()),
+                                        pcPipe->AuxillerySpine.getSubValues());
+                copies.push_back(pcPipe->AuxillerySpine.getValue());
+            }
+    
+            std::vector<App::DocumentObject*> objs;
+            int index = 0;
+            for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+
+                if(!pcActiveBody->hasFeature(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                    objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, "", dlg.radioIndependent->isChecked()));
+                    copies.push_back(objs.back());
+                }
+                else
+                    objs.push_back(obj);
+
+                index++;
+            }
+
+            pcPipe->Sections.setValues(objs);
+        }
+    }
+    
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
             throw Base::Exception(vp->getObject()->getStatusString());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
+        
+        //we need to add the copied features to the body after the command action, as otherwise freecad crashs unexplainable
+        for(auto obj : copies) {
+            if(pcActiveBody)
+                pcActiveBody->addFeature(obj);
+            else if (pcActivePart)
+                pcActivePart->addObject(obj);
+        }
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromUtf8(e.what()));

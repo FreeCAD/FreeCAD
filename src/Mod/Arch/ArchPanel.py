@@ -104,8 +104,6 @@ class _CommandPanel:
         self.Profile = None
         self.continueCmd = False
         self.rotated = False
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             if len(sel) == 1:
@@ -173,21 +171,21 @@ class _CommandPanel:
         # length
         label1 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         self.vLength = ui.createWidget("Gui::InputField")
-        self.vLength.setText(self.FORMAT % self.Length)
+        self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(self.vLength,1,1,1,1)
 
         # width
         label2 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         self.vWidth = ui.createWidget("Gui::InputField")
-        self.vWidth.setText(self.FORMAT % self.Width)
+        self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(self.vWidth,2,1,1,1)
 
         # height
         label3 = QtGui.QLabel(translate("Arch","Thickness").decode("utf8"))
         self.vHeight = ui.createWidget("Gui::InputField")
-        self.vHeight.setText(self.FORMAT % self.Thickness)
+        self.vHeight.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(self.vHeight,3,1,1,1)
 
@@ -244,9 +242,9 @@ class _CommandPanel:
 
     def setPreset(self,i):
         if i > 0:
-            self.vLength.setText(self.FORMAT % float(Presets[i][1]))
-            self.vWidth.setText(self.FORMAT % float(Presets[i][2]))
-            self.vHeight.setText(self.FORMAT % float(Presets[i][3]))
+            self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[i][1]),FreeCAD.Units.Length).UserString)
+            self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[i][2]),FreeCAD.Units.Length).UserString)
+            self.vHeight.setText(FreeCAD.Units.Quantity(float(Presets[i][3]),FreeCAD.Units.Length).UserString)
 
     def rotate(self):
         self.rotated = not self.rotated
@@ -256,11 +254,11 @@ class _Panel(ArchComponent.Component):
     "The Panel object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Thickness","Arch",translate("Arch","The thickness or extrusion depth of this element"))
-        obj.addProperty("App::PropertyInteger","Sheets","Arch",translate("Arch","The number of sheets to use"))
-        obj.addProperty("App::PropertyLength","Offset","Arch",translate("Arch","The offset between this panel and its baseline"))
+        obj.addProperty("App::PropertyLength","Length","Arch",   "The length of this element, if not based on a profile")
+        obj.addProperty("App::PropertyLength","Width","Arch",    "The width of this element, if not based on a profile")
+        obj.addProperty("App::PropertyLength","Thickness","Arch","The thickness or extrusion depth of this element")
+        obj.addProperty("App::PropertyInteger","Sheets","Arch",  "The number of sheets to use")
+        obj.addProperty("App::PropertyLength","Offset","Arch",   "The offset between this panel and its baseline")
         obj.Sheets = 1
         self.Type = "Panel"
 

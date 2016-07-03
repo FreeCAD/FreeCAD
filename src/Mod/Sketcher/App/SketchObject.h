@@ -267,6 +267,7 @@ public:
         rlOtherDoc,
         rlCircularReference,
         rlOtherPart,
+        rlOtherBody,
     };
     /// Return true if this object is allowed as external geometry for the
     /// sketch. rsn argument recieves the reason for disallowing.

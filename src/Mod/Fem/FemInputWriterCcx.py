@@ -36,14 +36,16 @@ import FemInputWriter
 
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
-    def __init__(self, analysis_obj, mesh_obj, mat_obj,
+    def __init__(self, analysis_obj, solver_obj,
+                 mesh_obj, mat_obj,
                  fixed_obj,
                  force_obj, pressure_obj,
                  displacement_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type=None, eigenmode_parameters=None,
                  dir_name=None):
-        FemInputWriter.FemInputWriter.__init__(self, analysis_obj, mesh_obj, mat_obj,
+        FemInputWriter.FemInputWriter.__init__(self, analysis_obj, solver_obj,
+                                               mesh_obj, mat_obj,
                                                fixed_obj,
                                                force_obj, pressure_obj,
                                                displacement_obj,
@@ -173,8 +175,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     beamsec_obj = ccx_elset['beamsection_obj']
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
                     material = 'MATERIAL=' + ccx_elset['mat_obj_name']
-                    setion_def = '*BEAM SECTION, ' + elsetdef + material + ', SECTION=RECT\n'
-                    setion_geo = str(beamsec_obj.Height.getValueAs('mm')) + ', ' + str(beamsec_obj.Width.getValueAs('mm')) + '\n'
+                    height = beamsec_obj.Height.getValueAs('mm')
+                    width = beamsec_obj.Width.getValueAs('mm')
+                    if width == 0:
+                        section_type = ', SECTION=CIRC'
+                        setion_geo = str(height) + '\n'
+                    else:
+                        section_type = ', SECTION=RECT'
+                        setion_geo = str(height) + ', ' + str(width) + '\n'
+                    setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
                     f.write(setion_def)
                     f.write(setion_geo)
                 elif 'shellthickness_obj'in ccx_elset:  # shell mesh
@@ -286,14 +295,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         for femobj in self.pressure_objects:
             prs_obj = femobj['Object']
             f.write('*DLOAD\n')
-            for o, e in prs_obj.References:
+            for o, elem_tup in prs_obj.References:
                 rev = -1 if prs_obj.Reversed else 1
-                elem = o.Shape.getElement(e)
-                if elem.ShapeType == 'Face':
-                    v = self.femmesh.getccxVolumesByFace(elem)
-                    f.write("** Load on face {}\n".format(e))
-                    for i in v:
-                        f.write("{},P{},{}\n".format(i[0], i[1], rev * prs_obj.Pressure))
+                for elem in elem_tup:
+                    ref_shape = o.Shape.getElement(elem)
+                    if ref_shape.ShapeType == 'Face':
+                        v = self.femmesh.getccxVolumesByFace(ref_shape)
+                        f.write("** Load on face {}\n".format(elem))
+                        for i in v:
+                            f.write("{},P{},{}\n".format(i[0], i[1], rev * prs_obj.Pressure))
 
     def write_frequency(self, f):
         f.write('\n***********************************************************\n')

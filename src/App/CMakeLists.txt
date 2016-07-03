@@ -14,6 +14,25 @@ ENDIF(DOCDIR)
 
 add_definitions(-DBOOST_${Boost_VERSION})
 
+#write relevant cmake variables to a file for later access with python. Exportet are all variables 
+#starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we 
+#use a python list for export. 
+set(_vars "const char CMakeVariables[] =\"cmake = [")
+set(_delim "")
+get_cmake_property(_variableNames VARIABLES)
+foreach (_variableName ${_variableNames})
+    if (${_variableName})
+        STRING(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_") 
+        if(${_prefix} STREQUAL "BUILD")
+            STRING(REPLACE "\\" "\\\\" _name ${_variableName})
+            set(_vars "${_vars}${_delim}\\n\"\n\"\\\"${_name}\\\"")
+            set(_delim ",")
+        endif()
+    endif ()
+endforeach()
+set(_vars "${_vars}]\\n\" \n;")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h "${_vars}" )
+
 include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src

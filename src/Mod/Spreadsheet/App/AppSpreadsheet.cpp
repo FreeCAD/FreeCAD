@@ -44,6 +44,7 @@ PyMODINIT_FUNC initSpreadsheet() {
     Spreadsheet::PropertySheet::init();
 
     Spreadsheet::Sheet::init();
+    Spreadsheet::SheetPython::init();
 
     new Spreadsheet::Module();
     Base::Console().Log("Loading Spreadsheet module... done\n");

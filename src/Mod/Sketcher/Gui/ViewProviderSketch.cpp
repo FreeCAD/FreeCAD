@@ -82,6 +82,7 @@
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
@@ -190,7 +191,6 @@ struct EditData {
     std::set<int> PreselectConstraintSet;
     bool blockedPreselection;
     bool FullyConstrained;
-    bool visibleBeforeEdit;
 
     // container to track our own selected parts
     std::set<int> SelPointSet;
@@ -255,8 +255,20 @@ ViewProviderSketch::ViewProviderSketch()
   : edit(0),
     Mode(STATUS_NONE)
 {
-    // FIXME Should this be placed in here?
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
+    ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
+    ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects that depend on the sketch are hidden when opening editing.");
+    ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects this sketch is attached to are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera position before entering sketch is remembered, and restored after closing it.");
+
+    {//visibility automation: update defaults to follow preferences
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        this->HideDependent.setValue(hGrp->GetBool("HideDependent", true));
+        this->ShowLinks.setValue(hGrp->GetBool("ShowLinks", true));
+        this->ShowSupport.setValue(hGrp->GetBool("ShowSupport", true));
+        this->RestoreCamera.setValue(hGrp->GetBool("RestoreCamera", true));
+    }
 
     sPixmap = "Sketcher_Sketch";
     LineColor.setValue(1,1,1);
@@ -3526,7 +3538,7 @@ Restart:
                             break;
 
                         SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Base::Quantity(Constr->getPresentationValue(),Base::Unit::Length).getUserString().toUtf8().constData());
+                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
 
                         if (Constr->Type == Distance)
                             asciiText->datumtype = SoDatumLabel::DISTANCE;
@@ -3825,7 +3837,7 @@ Restart:
                             break;
 
                         SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string    = SbString(Base::Quantity(Base::toDegrees<double>(Constr->getPresentationValue()),Base::Unit::Angle).getUserString().toUtf8().constData());
+                        asciiText->string    = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
                         asciiText->datumtype = SoDatumLabel::ANGLE;
                         asciiText->param1    = Constr->LabelDistance;
                         asciiText->param2    = startangle;
@@ -3879,7 +3891,7 @@ Restart:
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
 
                         SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Base::Quantity(Constr->getPresentationValue(),Base::Unit::Length).getUserString().toUtf8().constData());
+                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;
@@ -4219,8 +4231,35 @@ bool ViewProviderSketch::setEdit(int ModNum)
     edit->MarkerSize = hGrp->GetInt("EditSketcherMarkerSize", 7);
 
     createEditInventorNodes();
-    edit->visibleBeforeEdit = this->isVisible();
-    this->hide(); // avoid that the wires interfere with the edit lines
+
+    //visibility automation
+    try{
+        Gui::Command::addModule(Gui::Command::Gui,"Show.TempoVis");
+        try{
+            QString cmdstr = QString::fromLatin1(
+                        "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
+                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "if ActiveSketch.ViewObject.HideDependent:\n"
+                        "  tv.hide_all_dependent(ActiveSketch)\n"
+                        "if ActiveSketch.ViewObject.ShowSupport:\n"
+                        "  tv.show([ref[0] for ref in ActiveSketch.Support])\n"
+                        "if ActiveSketch.ViewObject.ShowLinks:\n"
+                        "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
+                        "tv.hide(ActiveSketch)\n"
+                        "ActiveSketch.ViewObject.TempoVis = tv\n"
+                        "del(tv)\n"
+                        );
+            cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
+            QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+            Gui::Command::doCommand(Gui::Command::Gui, cmdstr_bytearray.data());
+        } catch (Base::PyException &e){
+            Base::Console().Error("ViewProviderSketch::setEdit: visibility automation failed with an error: \n");
+            e.ReportException();
+        }
+    } catch (Base::PyException &){
+        Base::Console().Warning("ViewProviderSketch::setEdit: could not import Show module. Visibility automation will not work.\n");
+    }
+
 
     ShowGrid.setValue(true);
     TightGrid.setValue(false);
@@ -4565,10 +4604,23 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         edit->EditRoot->removeAllChildren();
         pcRoot->removeChild(edit->EditRoot);
 
-        if (edit->visibleBeforeEdit)
-            this->show();
-        else
-            this->hide();
+        //visibility autoation
+        try{
+            QString cmdstr = QString::fromLatin1(
+                        "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
+                        "tv = ActiveSketch.ViewObject.TempoVis\n"
+                        "if tv:\n"
+                        "  tv.restore()\n"
+                        "ActiveSketch.ViewObject.TempoVis = None\n"
+                        "del(tv)\n"
+                        );
+            cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
+            QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+            Gui::Command::doCommand(Gui::Command::Gui, cmdstr_bytearray.data());
+        } catch (Base::PyException &e){
+            Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
+            e.ReportException();
+        }
 
         delete edit;
         edit = 0;
@@ -4601,6 +4653,23 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
+    //visibility automation: save camera
+    if (! this->TempoVis.getValue().isNone()){
+        try{
+            QString cmdstr = QString::fromLatin1(
+                        "ActiveSketch = App.ActiveDocument.getObject('{sketch_name}')\n"
+                        "if ActiveSketch.ViewObject.RestoreCamera:\n"
+                        "  ActiveSketch.ViewObject.TempoVis.saveCamera()\n"
+                        );
+            cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
+            QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+            Gui::Command::doCommand(Gui::Command::Gui, cmdstr_bytearray.data());
+        } catch (Base::PyException &e){
+            Base::Console().Error("ViewProviderSketch::setEdit: visibility automation failed with an error: \n");
+            e.ReportException();
+        }
+    }
+
     Base::Placement plm = getPlacement();
     Base::Rotation tmp(plm.getRotation());
 

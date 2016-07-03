@@ -331,10 +331,12 @@ void CmdSketcherCreateLine::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
         break;
     }
 }
@@ -572,10 +574,12 @@ void CmdSketcherCreateRectangle::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
         break;
     }
 }
@@ -1187,10 +1191,12 @@ void CmdSketcherCreatePolyline::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
         break;
     }
 }
@@ -1829,6 +1835,9 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
 void CmdSketcherCompCreateArc::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -3402,6 +3411,9 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
 void CmdSketcherCompCreateConic::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -3755,6 +3767,9 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
 void CmdSketcherCompCreateCircle::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -4476,7 +4491,8 @@ namespace SketcherGui {
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
             sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier);
-            
+
+            this->notAllowedReason = "";
             Sketcher::SketchObject::eReasonList msg;
             if (!sketch->isExternalAllowed(pDoc, pObj, &msg)){
                 switch(msg){
@@ -4486,8 +4502,11 @@ namespace SketcherGui {
                 case Sketcher::SketchObject::rlOtherDoc:
                     this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
                     break;
+                case Sketcher::SketchObject::rlOtherBody:
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another body, can't link. Hold Ctrl to allow crossreferences.");
+                    break;
                 case Sketcher::SketchObject::rlOtherPart:
-                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another part or body, can't link. Hold Ctrl to allow crossreferences.");
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another part, can't link.");
                     break;
                 default:
                     break;
@@ -4951,10 +4970,12 @@ void CmdSketcherCreateSlot::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
         break;
     }
 }
@@ -5391,6 +5412,9 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
 void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {

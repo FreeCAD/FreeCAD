@@ -28,6 +28,7 @@
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <QDateTime>
 
 #include "Constraint.h"
@@ -132,19 +133,20 @@ double Constraint::getValue() const
     return Value;
 }
 
-double Constraint::getPresentationValue() const
+Quantity Constraint::getPresentationValue() const
 {
     switch (Type) {
     case Distance:
     case Radius:
-        return Value;
+        return Quantity(Value, Unit::Length);
     case DistanceX:
     case DistanceY:
         if (FirstPos == Sketcher::none || Second != Sketcher::Constraint::GeoUndef)
-            return Value;
+            return Quantity(Value, Unit::Length);
         else
-            return Value;
+            return Quantity(Value, Unit::Length);
     case Angle:
+        return Quantity(toDegrees<double>(Value), Unit::Angle);
     case SnellsLaw:
         return Value;
     default:

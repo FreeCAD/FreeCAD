@@ -168,9 +168,6 @@ class _CommandWall:
         self.Height = p.GetFloat("WallHeight",3000)
         self.JOIN_WALLS_SKETCHES = p.GetBool("joinWallSketches",False)
         self.AUTOJOIN = p.GetBool("autoJoinWalls",True)
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        import DraftGui
-        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         sel = FreeCADGui.Selection.getSelectionEx()
         done = False
         self.existing = []
@@ -279,7 +276,7 @@ class _CommandWall:
                 dv = dv.negative()
                 self.tracker.update([b.add(dv),point.add(dv)])
             if self.Length:
-                self.Length.setText(self.FORMAT % bv.Length)
+                self.Length.setText(FreeCAD.Units.Quantity(bv.Length,FreeCAD.Units.Length).UserString)
 
     def taskbox(self):
         "sets up a taskbox widget"
@@ -296,13 +293,13 @@ class _CommandWall:
 
         label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         value1 = ui.createWidget("Gui::InputField")
-        value1.setText(self.FORMAT % self.Width)
+        value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(value1,1,1,1,1)
 
         label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         value2 = ui.createWidget("Gui::InputField")
-        value2.setText(self.FORMAT % self.Height)
+        value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(value2,2,1,1,1)
 
@@ -411,13 +408,13 @@ class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this wall. Not used if this wall is based on an underlying object"))
-        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this wall. Not used if this wall is based on a face"))
-        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
-        obj.addProperty("App::PropertyEnumeration","Align","Arch",translate("Arch","The alignment of this wall on its base object, if applicable"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.addProperty("App::PropertyInteger","Face","Arch",translate("Arch","The face number of the base object used to build this wall"))
-        obj.addProperty("App::PropertyDistance","Offset","Arch",translate("Arch","The offset between this wall and its baseline (only for left and right alignments)"))
+        obj.addProperty("App::PropertyLength","Length","Arch","The length of this wall. Not used if this wall is based on an underlying object")
+        obj.addProperty("App::PropertyLength","Width","Arch","The width of this wall. Not used if this wall is based on a face")
+        obj.addProperty("App::PropertyLength","Height","Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")
+        obj.addProperty("App::PropertyEnumeration","Align","Arch","The alignment of this wall on its base object, if applicable")
+        obj.addProperty("App::PropertyVector","Normal","Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
+        obj.addProperty("App::PropertyInteger","Face","Arch","The face number of the base object used to build this wall")
+        obj.addProperty("App::PropertyDistance","Offset","Arch","The offset between this wall and its baseline (only for left and right alignments)")
         obj.Align = ['Left','Right','Center']
         obj.Role = Roles
         self.Type = "Wall"

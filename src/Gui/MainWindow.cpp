@@ -1318,10 +1318,12 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
 QMimeData * MainWindow::createMimeDataFromSelection () const
 {
     std::vector<SelectionSingleton::SelObj> selobj = Selection().getCompleteSelection();
+    std::set<App::DocumentObject*> unique_objs;
     std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
     for (std::vector<SelectionSingleton::SelObj>::iterator it = selobj.begin(); it != selobj.end(); ++it) {
         if (it->pObject && it->pObject->getDocument()) {
-            objs[it->pObject->getDocument()].push_back(it->pObject);
+            if (unique_objs.insert(it->pObject).second)
+                objs[it->pObject->getDocument()].push_back(it->pObject);
         }
     }
 

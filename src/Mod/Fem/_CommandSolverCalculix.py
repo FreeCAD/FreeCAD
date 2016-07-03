@@ -41,7 +41,7 @@ class _CommandSolverCalculix(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Solver CalculiX"),
                           'Accel': "S, C",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_SolverCalculix", "Creates a FEM solver CalculiX")}
-        self.is_active = 'with_analysis_without_solver'
+        self.is_active = 'with_analysis'
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")

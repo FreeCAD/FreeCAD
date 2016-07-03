@@ -42,7 +42,7 @@ class FemToolsCcx(FemTools.FemTools):
     #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
-    def __init__(self, analysis=None, test_mode=False):
+    def __init__(self, analysis=None, solver=None, test_mode=False):
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
         if analysis:
@@ -53,6 +53,12 @@ class FemToolsCcx(FemTools.FemTools):
         else:
             import FemGui
             self.analysis = FemGui.getActiveAnalysis()
+        if solver:
+            ## @var solver
+            #  solver of the analysis. Used to store the active solver and analysis parameters
+            self.solver = solver
+        else:
+            self.solver = None
         if self.analysis:
             self.update_objects()
             ## @var base_name
@@ -81,7 +87,8 @@ class FemToolsCcx(FemTools.FemTools):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.FemInputWriterCcx(self.analysis, self.mesh, self.materials,
+            inp_writer = iw.FemInputWriterCcx(self.analysis, self.solver,
+                                              self.mesh, self.materials,
                                               self.fixed_constraints,
                                               self.force_constraints, self.pressure_constraints,
                                               self.displacement_constraints,
@@ -194,15 +201,13 @@ class FemToolsCcx(FemTools.FemTools):
         import ccxFrdReader
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
         if os.path.isfile(frd_result_file):
-            ccxFrdReader.importFrd(frd_result_file, self.analysis)
+            result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
+            ccxFrdReader.importFrd(frd_result_file, self.analysis, result_name_prefix)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
-                    self.result_object = m
-            if self.result_object:
-                self.results_present = True
+                    self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
-        self.load_results_ccxdat()
 
     ## Load results of ccx calculations from .dat file.
     #  @param self The python object self
@@ -214,6 +219,10 @@ class FemToolsCcx(FemTools.FemTools):
             mode_frequencies = ccxDatReader.import_dat(dat_result_file, self.analysis)
         else:
             raise Exception('FEM: No .dat results found at {}!'.format(dat_result_file))
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
-                    m.EigenmodeFrequency = mode_frequencies[m.Eigenmode - 1]['frequency']
+        if mode_frequencies:
+            print(mode_frequencies)
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
+                    for mf in mode_frequencies:
+                        if m.Eigenmode == mf['eigenmode']:
+                            m.EigenmodeFrequency = mf['frequency']
