@@ -282,7 +282,7 @@ class ObjectSurface:
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         output += "(" + obj.Label + ")"
-        output += "(Compensated Tool Path: " + str(self.radius) + ")"
+        output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
 
         if obj.Base:
             for b in obj.Base:
