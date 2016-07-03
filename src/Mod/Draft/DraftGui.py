@@ -140,15 +140,9 @@ def displayExternal(internValue,decimals=4,dim='Length',showUnit=True):
     from FreeCAD import Units
 
     if dim == 'Length':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        pref = qty.getUserPreferred()
-        conversion = pref[1]
-        uom = pref[2]
+        return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length).UserString
     elif dim == 'Angle':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle)
-        pref=qty.getUserPreferred()
-        conversion = pref[1]
-        uom = pref[2]
+        return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle).UserString
     else:
         conversion = 1.0
         uom = "??"
@@ -241,8 +235,9 @@ class DraftToolBar:
         self.alock = False
         self.angle = None
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = makeFormatSpec(self.DECIMALS,'Length')
-        self.AFORMAT = makeFormatSpec(self.DECIMALS,'Angle')
+        self.x = 0
+        self.y = 0
+        self.z = 0
         self.uiloader = FreeCADGui.UiLoader()
         
         if self.taskmode:
@@ -392,13 +387,13 @@ class DraftToolBar:
         self.layout.addLayout(bl)
         self.labelx = self._label("labelx", xl)
         self.xValue = self._inputfield("xValue", xl) #width=60
-        self.xValue.setText(self.FORMAT % 0)
+        self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labely = self._label("labely", yl)
         self.yValue = self._inputfield("yValue", yl)
-        self.yValue.setText(self.FORMAT % 0)
+        self.yValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelz = self._label("labelz", zl)
         self.zValue = self._inputfield("zValue", zl)
-        self.zValue.setText(self.FORMAT % 0)
+        self.zValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.pointButton = self._pushbutton("addButton", bl, icon="Draft_AddPoint", width=100)
         
         # text
@@ -413,20 +408,20 @@ class DraftToolBar:
         self.layout.addLayout(al)
         self.labellength = self._label("labellength", ll)
         self.lengthValue = self._inputfield("lengthValue", ll)
-        self.lengthValue.setText(self.FORMAT % 0)
+        self.lengthValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelangle = self._label("labelangle", al)
         self.angleLock = self._checkbox("angleLock",al,checked=self.alock)
         self.angleValue = self._inputfield("angleValue", al)
-        self.angleValue.setText(self.AFORMAT % 0)
+        self.angleValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
 
         # shapestring
         
         self.labelSSize = self._label("labelSize", self.layout)
         self.SSizeValue = self._inputfield("SSizeValue", self.layout)           #, width=60)      
-        self.SSizeValue.setText(self.FORMAT % 1.0)
+        self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
         self.labelSTrack = self._label("labelTracking", self.layout)
         self.STrackValue = self._inputfield("STrackValue", self.layout)         #, width=60)    
-        self.STrackValue.setText(self.FORMAT % 0)
+        self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelSString = self._label("labelString", self.layout)
         self.SStringValue = self._lineedit("SStringValue", self.layout)      
         self.SStringValue.setText("")
@@ -447,12 +442,12 @@ class DraftToolBar:
         self.layout.addLayout(ol)
         self.offsetLabel = self._label("offsetlabel", ol)
         self.offsetValue = self._inputfield("offsetValue", ol)
-        self.offsetValue.setText(self.FORMAT % 0)
+        self.offsetValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         rl = QtGui.QHBoxLayout()
         self.layout.addLayout(rl)
         self.labelRadius = self._label("labelRadius", rl)
         self.radiusValue = self._inputfield("radiusValue", rl)
-        self.radiusValue.setText(self.FORMAT % 0)
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.isRelative = self._checkbox("isRelative",self.layout,checked=self.relativeMode)
         self.hasFill = self._checkbox("hasFill",self.layout,checked=self.fillmode)
         self.continueCmd = self._checkbox("continueCmd",self.layout,checked=self.continueMode)
@@ -472,7 +467,7 @@ class DraftToolBar:
         self.layout.addLayout(gl)
         self.gridLabel = self._label("gridLabel", gl)
         self.gridValue = self._inputfield("gridValue", gl)
-        self.gridValue.setText(self.FORMAT % 0)
+        self.gridValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         ml = QtGui.QHBoxLayout()
         self.layout.addLayout(ml)
         self.mainlineLabel = self._label("mainlineLabel", ml)
@@ -771,10 +766,7 @@ class DraftToolBar:
         self.gridLabel.show()
         self.gridValue.show()
         p = Draft.getParam("gridSpacing",1.0)
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0) == 5:
-            self.gridValue.setText(FreeCAD.Units.Quantity(p,FreeCAD.Units.Length).UserString)
-        else:
-            self.gridValue.setText(self.FORMAT % p)
+        self.gridValue.setText(FreeCAD.Units.Quantity(p,FreeCAD.Units.Length).UserString)
         self.mainlineLabel.show()
         self.mainlineValue.show()
         p = Draft.getParam("gridEvery",10)
@@ -869,7 +861,7 @@ class DraftToolBar:
         self.isCopy.show()
         self.occOffset.show()
         self.labelRadius.setText(translate("draft","Distance"))
-        self.radiusValue.setText(self.FORMAT % 0)
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.setFocus()
         self.radiusValue.selectAll()
 
@@ -931,7 +923,7 @@ class DraftToolBar:
         self.taskUi(title)
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
-        self.radiusValue.setText(self.FORMAT % 0)
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.setFocus()
         self.radiusValue.selectAll()
 
@@ -939,7 +931,7 @@ class DraftToolBar:
         self.hideXYZ()
         self.labelRadius.setText(translate("draft", "Radius"))
         self.labelRadius.show()
-        self.radiusValue.setText(self.FORMAT % 0)
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()
 
     def textUi(self):
@@ -966,7 +958,7 @@ class DraftToolBar:
         self.SStringValue.hide()
         self.continueCmd.hide()
         self.labelSSize.show()
-        self.SSizeValue.setText(self.FORMAT % 1.0)
+        self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
         self.SSizeValue.show()
         self.SSizeValue.setFocus()
 
@@ -975,7 +967,7 @@ class DraftToolBar:
         self.labelSSize.hide()
         self.SSizeValue.hide()
         self.labelSTrack.show()
-        self.STrackValue.setText(self.FORMAT % 0)
+        self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.STrackValue.show()
         self.STrackValue.setFocus()
         
