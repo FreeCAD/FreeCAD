@@ -89,9 +89,7 @@ def msg(text=None,mode=None):
 
 def formatUnit(exp,unit="mm"):
     '''returns a formatting string to set a number to the correct unit'''
-    d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-    f =  "%." + str(d) + "f " + unit
-    return f % exp
+    return FreeCAD.Units.Quantity(exp,FreeCAD.Units.Length).UserString
 
 def selectObject(arg):
     '''this is a scene even handler, to be called from the Draft tools
@@ -1131,7 +1129,7 @@ class Arc(Creator):
                             self.drawArc()
                         else:
                             self.ui.labelRadius.setText("Start angle")
-                            self.ui.radiusValue.setText(self.ui.AFORMAT % 0)
+                            self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
                             self.linetrack.p1(self.center)
                             self.linetrack.on()
                             self.step = 2
@@ -2345,7 +2343,7 @@ class Rotate(Modifier):
                         self.center = self.point
                         self.node = [self.point]
                         self.ui.radiusUi()
-                        self.ui.radiusValue.setText(self.ui.AFORMAT % 0)
+                        self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
                         self.ui.hasFill.hide()
                         self.ui.labelRadius.setText("Base angle")
                         self.arctrack.setCenter(self.center)

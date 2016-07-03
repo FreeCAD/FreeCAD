@@ -193,7 +193,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double
     if(unit == Unit::Length){
         unitString = QString::fromLatin1("in");
         factor = 25.4;
-        double inchValue = quant.getValue()/25.4;
+        double inchValue = std::abs(quant.getValue())/25.4;
         int feet = inchValue/12;
         double inchPart = inchValue - (double)feet*12;
         int inches = (int)inchPart;
@@ -203,10 +203,12 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double
             fraction = 0.0;
         }
         // if the quantity is too small it is rounded to zero
-        if (quant.getValue() <= 1.5875)
+        if (std::abs(quant.getValue()) <= 1.5875)
             return QString::fromLatin1("0");
         // build representation
         std::stringstream output;
+        if (quant.getValue() < 0)
+            output << "-";
         // feet
         if (feet > 0) {
             output << feet << "'";
