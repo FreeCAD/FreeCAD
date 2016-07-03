@@ -18,6 +18,7 @@ SET(PathScripts_SRCS
     PathScripts/PostUtils.py
     PathScripts/example_pre.py
     PathScripts/opensbp_pre.py
+    PathScripts/opensbp_post.py
     PathScripts/example_post.py
     PathScripts/linuxcnc_post.py
     PathScripts/centroid_post.py
