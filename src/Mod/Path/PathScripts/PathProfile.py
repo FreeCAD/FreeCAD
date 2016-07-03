@@ -263,6 +263,7 @@ print "y - " + str(point.y)
     def execute(self, obj):
         import Part  # math #DraftGeomUtils
         output = ""
+
         toolLoad = PathUtils.getLastToolLoad(obj)
         if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
@@ -286,6 +287,11 @@ print "y - " + str(point.y)
         else:
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
+        output += "(" + obj.Label + ")"
+        if obj.Side != "On":
+            output += "(Compensated Tool Path: " + str(self.radius) + ")"
+        else:
+            output += "(Uncompensated Tool Path)"
 
         if obj.Base:
             hfaces = []

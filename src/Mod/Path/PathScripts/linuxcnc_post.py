@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
+# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,7 +25,7 @@
 '''
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a linuxcnc 3 axis mill. This postprocessor, once placed 
+real GCode suitable for a linuxcnc 3 axis mill. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
@@ -35,6 +35,7 @@ linuxcnc_post.export(object,"/path/to/file.ncc")
 
 import datetime
 from PathScripts import PostUtils
+
 now = datetime.datetime.now()
 
 # These globals set common customization preferences
@@ -48,7 +49,7 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-MACHINE_NAME = "LinuxCNC"
+MACHINE_NAME = "Millstone"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
 
@@ -156,7 +157,7 @@ def export(objectslist, filename):
     print "done postprocessing."
 
     gfile = pythonopen(filename, "wb")
-    gfile.write(final)
+    gfile.write(gcode)
     gfile.close()
 
 
@@ -178,8 +179,8 @@ def parse(pathobj):
     params = ['X', 'Y', 'Z', 'A', 'B', 'I', 'J', 'F', 'S', 'T', 'Q', 'R', 'L']
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
-        if OUTPUT_COMMENTS:
-            out += linenumber() + "(compound: " + pathobj.Label + ")\n"
+        # if OUTPUT_COMMENTS:
+        #     out += linenumber() + "(compound: " + pathobj.Label + ")\n"
         for p in pathobj.Group:
             out += parse(p)
         return out
@@ -189,8 +190,8 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
-        if OUTPUT_COMMENTS:
-            out += linenumber() + "(Path: " + pathobj.Label + ")\n"
+        # if OUTPUT_COMMENTS:
+        #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
         for c in pathobj.Path.Commands:
             outstring = []
@@ -219,8 +220,8 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == 'M6':
-                if OUTPUT_COMMENTS:
-                    out += linenumber() + "(begin toolchange)\n"
+                # if OUTPUT_COMMENTS:
+                #     out += linenumber() + "(begin toolchange)\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
 
