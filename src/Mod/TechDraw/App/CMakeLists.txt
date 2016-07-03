@@ -152,6 +152,7 @@ target_link_libraries(TechDraw ${TechDrawLIBS};${QT_QTXML_LIBRARY};${TechDraw})
 
 SET(TechDrawScripts
     Init.py
+    TestTechDrawApp.py
 )
 
 fc_target_copy_resource(TechDraw
