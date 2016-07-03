@@ -62,13 +62,14 @@ class LoadTool:
 
         tool = PathUtils.getTool(obj, obj.ToolNumber)
         if tool is not None:
-            obj.Label = obj.Name + ": (" + tool.Name + ")"
+            obj.Label = obj.Name + ": " + tool.Name
         else:
-            obj.Label = obj.Name + ": (UNDEFINED TOOL)"
+            obj.Label = obj.Name + ": UNDEFINED TOOL"
 
 
         commands = ""
-        commands = 'M6T'+str(obj.ToolNumber)+'\n'
+        commands += "(" + obj.Label + ")"+'\n'
+        commands += 'M6T'+str(obj.ToolNumber)+'\n'
 
         if obj.SpindleDir == 'Forward':
             commands += 'M3S' + str(obj.SpindleSpeed) + '\n'
@@ -77,7 +78,6 @@ class LoadTool:
             commands += 'M4S' + str(obj.SpindleSpeed) + '\n'
 
         obj.Path = Path.Path(commands)
-        # obj.Label = "TC: Tool"+str(obj.ToolNumber)
 
     def onChanged(self, obj, prop):
         mode = 2
