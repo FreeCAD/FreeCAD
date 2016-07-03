@@ -10,6 +10,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        TestTechDrawApp.py
     DESTINATION
         Mod/TechDraw
 )
