@@ -1510,6 +1510,42 @@ TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<d
     return comp;
 }
 
+TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, Standard_Real tolerance, std::vector<TopTools_ListOfShape>* mapInOut) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX <= 0x060900
+    throw Base::Exception("GFA is available only in OCC 6.9.0 and up.");
+#else
+    BRepAlgoAPI_BuilderAlgo mkGFA;
+    TopTools_ListOfShape GFAArguments;
+    GFAArguments.Append(this->_Shape);
+    for (const TopoDS_Shape &it: sOthers) {
+        if (it.IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            GFAArguments.Append(BRepBuilderAPI_Copy(it).Shape());
+        else
+            GFAArguments.Append(it);
+    }
+    mkGFA.SetArguments(GFAArguments);
+    if (tolerance > 0.0)
+        mkGFA.SetFuzzyValue(tolerance);
+    mkGFA.SetNonDestructive(Standard_True);
+    mkGFA.Build();
+    if (!mkGFA.IsDone())
+        throw Base::Exception("MultiFusion failed");
+    TopoDS_Shape resShape = mkGFA.Shape();
+    if (mapInOut){
+        for(TopTools_ListIteratorOfListOfShape it(GFAArguments); it.More(); it.Next()){
+            mapInOut->push_back(mkGFA.Modified(it.Value()));
+        }
+    }
+    return resShape;
+#endif
+}
+
 TopoDS_Shape TopoShape::makePipe(const TopoDS_Shape& profile) const
 {
     if (this->_Shape.IsNull())
