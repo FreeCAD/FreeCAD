@@ -76,8 +76,9 @@ std::vector<std::string> ViewProviderSymbol::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderSymbol::updateData(const App::Property*)
+void ViewProviderSymbol::updateData(const App::Property* prop)
 {
+    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 TechDraw::DrawViewSymbol* ViewProviderSymbol::getViewObject() const

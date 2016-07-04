@@ -83,6 +83,7 @@ void ViewProviderViewSection::updateData(const App::Property* prop)
 {
     //Base::Console().Log("ViewProviderViewSection::updateData - Update View: %s\n",prop->getName());
     //
+    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 std::vector<App::DocumentObject*> ViewProviderViewSection::claimChildren(void) const

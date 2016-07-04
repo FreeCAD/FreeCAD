@@ -75,8 +75,9 @@ std::vector<std::string> ViewProviderSpreadsheet::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderSpreadsheet::updateData(const App::Property*)
+void ViewProviderSpreadsheet::updateData(const App::Property* prop)
 {
+    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 TechDraw::DrawViewSpreadsheet* ViewProviderSpreadsheet::getViewObject() const
