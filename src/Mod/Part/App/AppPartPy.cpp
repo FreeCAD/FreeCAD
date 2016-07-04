@@ -256,7 +256,7 @@ public:
             "makeFilledFace(list) -- Create a face out of a list of edges."
         );
         add_varargs_method("makeSolid",&Module::makeSolid,
-            "makeSolid(shape) -- Create a solid out of the shells inside a shape."
+            "makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."
         );
         add_varargs_method("makePlane",&Module::makePlane,
             "makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane\n"
@@ -693,25 +693,47 @@ private:
             throw Py::Exception();
 
         try {
-            BRepBuilderAPI_MakeSolid mkSolid;
             const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
                 ->getTopoShapePtr()->_Shape;
-            TopExp_Explorer anExp (shape, TopAbs_SHELL);
+            //first, if we were given a compsolid, try making a solid out of it
+            TopExp_Explorer CSExp (shape, TopAbs_COMPSOLID);
+            TopoDS_CompSolid compsolid;
             int count=0;
-            for (; anExp.More(); anExp.Next()) {
+            for (; CSExp.More(); CSExp.Next()) {
                 ++count;
-                mkSolid.Add(TopoDS::Shell(anExp.Current()));
+                compsolid = TopoDS::CompSolid(CSExp.Current());
+                if (count > 1)
+                    break;
             }
+            if (count == 0) {
+                //no compsolids. Get shells...
+                BRepBuilderAPI_MakeSolid mkSolid;
+                TopExp_Explorer anExp (shape, TopAbs_SHELL);
+                count=0;
+                for (; anExp.More(); anExp.Next()) {
+                    ++count;
+                    mkSolid.Add(TopoDS::Shell(anExp.Current()));
+                }
 
-            if (count == 0)
-                Standard_Failure::Raise("No shells found in shape");
+                if (count == 0)//no shells?
+                    Standard_Failure::Raise("No shells or compsolids found in shape");
 
-            TopoDS_Solid solid = mkSolid.Solid();
-            BRepLib::OrientClosedSolid(solid);
-            return Py::asObject(new TopoShapeSolidPy(new TopoShape(solid)));
+                TopoDS_Solid solid = mkSolid.Solid();
+                BRepLib::OrientClosedSolid(solid);
+                return Py::asObject(new TopoShapeSolidPy(new TopoShape(solid)));
+            } else if (count == 1) {
+                BRepBuilderAPI_MakeSolid mkSolid(compsolid);
+                TopoDS_Solid solid = mkSolid.Solid();
+                return Py::asObject(new TopoShapeSolidPy(new TopoShape(solid)));
+            } else { // if (count > 1)
+                Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
+                return Py::None(); //prevents compiler warning
+            }
         }
-        catch (Standard_Failure) {
-            throw Py::Exception(PartExceptionOCCError, "creation of solid failed");
+        catch (Standard_Failure err) {
+            std::stringstream errmsg;
+            errmsg << "Creation of solid failed: " << err.GetMessageString();
+            throw Py::Exception(PartExceptionOCCError, errmsg.str().c_str());
         }
     }
     Py::Object makePlane(const Py::Tuple& args)

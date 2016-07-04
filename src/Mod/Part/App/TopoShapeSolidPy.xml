@@ -12,7 +12,7 @@
       Constructor="true">
 	  <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
-      <UserDocu>Create a solid out of the shells of a shape</UserDocu>
+      <UserDocu>Part.Solid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created.</UserDocu>
     </Documentation>
     <Attribute Name="Mass" ReadOnly="true">
       <Documentation>

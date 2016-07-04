@@ -39,6 +39,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Shell.hxx>
+#include <TopoDS_CompSolid.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
@@ -81,25 +82,47 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
     try {
-        BRepBuilderAPI_MakeSolid mkSolid;
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
             ->getTopoShapePtr()->_Shape;
-        TopExp_Explorer anExp (shape, TopAbs_SHELL);
+        //first, if we were given a compsolid, try making a solid out of it
+        TopExp_Explorer CSExp (shape, TopAbs_COMPSOLID);
+        TopoDS_CompSolid compsolid;
         int count=0;
-        for (; anExp.More(); anExp.Next()) {
+        for (; CSExp.More(); CSExp.Next()) {
             ++count;
-            mkSolid.Add(TopoDS::Shell(anExp.Current()));
+            compsolid = TopoDS::CompSolid(CSExp.Current());
+            if (count > 1)
+                break;
+        }
+        if (count == 0) {
+            //no compsolids. Get shells...
+            BRepBuilderAPI_MakeSolid mkSolid;
+            TopExp_Explorer anExp (shape, TopAbs_SHELL);
+            count=0;
+            for (; anExp.More(); anExp.Next()) {
+                ++count;
+                mkSolid.Add(TopoDS::Shell(anExp.Current()));
+            }
+
+            if (count == 0)//no shells?
+                Standard_Failure::Raise("No shells or compsolids found in shape");
+
+            TopoDS_Solid solid = mkSolid.Solid();
+            BRepLib::OrientClosedSolid(solid);
+            getTopoShapePtr()->_Shape = solid;
+        } else if (count == 1) {
+            BRepBuilderAPI_MakeSolid mkSolid(compsolid);
+            TopoDS_Solid solid = mkSolid.Solid();
+            getTopoShapePtr()->_Shape = solid;
+        } else if (count > 1) {
+            Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
         }
 
-        if (count == 0)
-            Standard_Failure::Raise("No shells found in shape");
-
-        TopoDS_Solid solid = mkSolid.Solid();
-        BRepLib::OrientClosedSolid(solid);
-        getTopoShapePtr()->_Shape = solid;
     }
-    catch (Standard_Failure) {
-        PyErr_SetString(PartExceptionOCCError, "creation of solid failed");
+    catch (Standard_Failure err) {
+        std::stringstream errmsg;
+        errmsg << "Creation of solid failed: " << err.GetMessageString();
+        PyErr_SetString(PartExceptionOCCError, errmsg.str().c_str());
         return -1;
     }
 
