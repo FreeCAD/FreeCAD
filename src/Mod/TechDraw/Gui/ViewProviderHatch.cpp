@@ -76,8 +76,9 @@ std::vector<std::string> ViewProviderHatch::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderHatch::updateData(const App::Property*)
+void ViewProviderHatch::updateData(const App::Property* prop)
 {
+    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 TechDraw::DrawHatch* ViewProviderHatch::getViewObject() const

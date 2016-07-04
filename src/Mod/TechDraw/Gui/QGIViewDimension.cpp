@@ -246,27 +246,22 @@ void QGIViewDimension::updateView(bool update)
         return;
     TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject());
 
-    std::vector<App::DocumentObject *> refs = dim->References2D.getValues();
-
     QGIDatumLabel *dLabel = dynamic_cast<QGIDatumLabel *>(datumLabel);
 
     // Identify what changed to prevent complete redraw
     if(dim->Fontsize.isTouched() ||
        dim->Font.isTouched()) {
-
-
         QFont font = dLabel->font();
         font.setPointSizeF(dim->Fontsize.getValue());          //scene units (mm), not points
         font.setFamily(QString::fromAscii(dim->Font.getValue()));
 
         dLabel->setFont(font);
         dLabel->setLabelCenter();
-
+        updateDim();
     } else if(dim->X.isTouched() ||
               dim->Y.isTouched()) {
         dLabel->setPosFromCenter(dim->X.getValue(), dim->Y.getValue());
         updateDim();
-
     } else {
         updateDim();
     }
@@ -282,7 +277,6 @@ void QGIViewDimension::updateDim()
         return;
 
     const TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
-
     QString labelText = QString::fromStdString(dim->getFormatedValue());
 
     QGIDatumLabel *dLabel = dynamic_cast<QGIDatumLabel *>(datumLabel);
@@ -1262,6 +1256,8 @@ void QGIViewDimension::draw()
     if (parentItem()) {
         //TODO: parent redraw still required with new frame/label??
         parentItem()->update();
+    } else {
+        Base::Console().Log("INFO - QGIVD::draw - no parent to update\n");
     }
 
 }

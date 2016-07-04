@@ -76,8 +76,9 @@ std::vector<std::string> ViewProviderAnnotation::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderAnnotation::updateData(const App::Property*)
+void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
+    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 TechDraw::DrawViewAnnotation* ViewProviderAnnotation::getViewObject() const
