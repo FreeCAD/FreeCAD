@@ -367,10 +367,14 @@ void DrawViewPart::extractFaces()
     }
 
     std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw,false);
+    if (!sortedWires.size()) {
+        Base::Console().Log("INFO - DVP::extractFaces - no sorted Wires!\n");
+        return;                                     // might happen in the middle of changes?
+    }
 
     //remove the largest wire (OuterWire of graph)
     Bnd_Box bigBox;
-    if (!(sortedWires.back().IsNull())) {
+    if (sortedWires.size() && !sortedWires.front().IsNull()) {
         BRepBndLib::Add(sortedWires.front(), bigBox);
         bigBox.SetGap(0.0);
     }
