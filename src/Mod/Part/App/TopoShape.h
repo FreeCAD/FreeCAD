@@ -153,6 +153,28 @@ public:
     TopoDS_Shape section(TopoDS_Shape) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;
     TopoDS_Compound slices(const Base::Vector3d&, const std::vector<double>&) const;
+    /**
+     * @brief generalFuse: run general fuse algorithm between this and shapes
+     * supplied as sOthers
+     *
+     * @param sOthers (input): list of shapes to run the algorithm between
+     * (this is automatically added to the list)
+     *
+     * @param tolerance (input): fuzzy value (pass zero to disable fuzzyness
+     * and use shape tolerances only)
+     *
+     * @param mapInOut (output): pointer to list of lists, to write the info
+     * which shapes in result came from which argument shape. The length of
+     * list is equal to length of sOthers+1. First element is a list of shapes
+     * that came from shape of this, and the rest are those that come from
+     * shapes in sOthers. If the info is not needed, nullptr can be passed.
+     *
+     * @return compound of slices that can be combined to reproduce results of
+     * cut, fuse, common. The shapes share edges and faces where they touch.
+     * For example, if input shapes are two intersecting spheres, GFA returns
+     * three solids: two cuts and common.
+     */
+    TopoDS_Shape generalFuse(const std::vector<TopoDS_Shape> &sOthers, Standard_Real tolerance, std::vector<TopTools_ListOfShape>* mapInOut = nullptr) const;
     //@}
 
     /** Sweeping */
