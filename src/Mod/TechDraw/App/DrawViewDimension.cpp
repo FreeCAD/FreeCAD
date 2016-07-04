@@ -32,6 +32,8 @@
 # include <QRegExp>
 #endif
 
+#include <QLocale>
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -198,9 +200,12 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
 std::string  DrawViewDimension::getFormatedValue() const
 {
-
     QString str = QString::fromUtf8(FormatSpec.getStrValue().c_str());
     double val = std::abs(getDimValue());
+    //QLocale here(QLocale::German);                                           //for testing
+    //here.setNumberOptions(QLocale::OmitGroupSeparator);
+    QLocale here = QLocale();                                                  //system locale
+    QString valText = here.toString(val, 'f',Precision.getValue());
 
     Base::Quantity qVal;
     qVal.setValue(val);
@@ -210,11 +215,9 @@ std::string  DrawViewDimension::getFormatedValue() const
         qVal.setUnit(Base::Unit::Length);
     }
     QString userStr = qVal.getUserString();
-    QStringList userSplit = userStr.split(QString::fromUtf8(" "),QString::SkipEmptyParts);
+    QStringList userSplit = userStr.split(QString::fromUtf8(" "),QString::SkipEmptyParts);   //break userString into number + UoM
     QString displayText;
     if (!userSplit.isEmpty()) {
-       double valNum = userSplit.front().toDouble();
-       QString valText = QString::number(valNum, 'f', Precision.getValue());
        QString unitText = userSplit.back();
        displayText = valText + QString::fromUtf8(" ") + unitText;
     }
@@ -232,10 +235,9 @@ std::string  DrawViewDimension::getFormatedValue() const
         if(*it == QString::fromAscii("%value%")){
             str.replace(*it,displayText);
         } else {                                                       //insert additional placeholder replacement logic here
-            str.replace(*it, QString::fromAscii(""));
+            str.replace(*it, QString::fromAscii(""));                  //maybe we should just leave what was there?
         }
     }
-
     return str.toStdString();
 }
 
