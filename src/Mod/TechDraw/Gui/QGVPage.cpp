@@ -127,6 +127,11 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     if(!drawBkg)
         return;
 
+    if (!pageGui->getPageObject()) {
+        //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
+        return;
+    }
+
     p->save();
     p->resetTransform();
 

@@ -337,5 +337,10 @@ void ViewProviderPage::finishRestoring()
 
 TechDraw::DrawPage* ViewProviderPage::getPageObject() const
 {
+    //during redo, pcObject can become invalid, but non-zero??
+    if (!pcObject) {
+        Base::Console().Message("TROUBLE - VPP::getPageObject - no Page Object!\n");
+        return nullptr;
+    }
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
 }
