@@ -28,6 +28,7 @@
 #include "Gui/Selection.h"
 
 #include <QPrinter>
+#include <QGraphicsScene>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -78,6 +79,8 @@ public:
     PyObject* getPyObject();
 
     QGVPage* getQGVPage(void) {return m_view;};
+
+    QGraphicsScene m_scene;
 
 public Q_SLOTS:
     void setRenderer(QAction *action);

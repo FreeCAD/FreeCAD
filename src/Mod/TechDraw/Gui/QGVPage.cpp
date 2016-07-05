@@ -28,7 +28,7 @@
 # include <QFileInfo>
 # include <QFileDialog>
 # include <QGLWidget>
-# include <QGraphicsScene>
+//# include <QGraphicsScene>
 # include <QGraphicsEffect>
 # include <QMouseEvent>
 # include <QPainter>
@@ -77,7 +77,7 @@
 
 using namespace TechDrawGui;
 
-QGVPage::QGVPage(ViewProviderPage *vp, QWidget *parent)
+QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
     : QGraphicsView(parent)
     , pageTemplate(0)
     , m_renderer(Native)
@@ -91,7 +91,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QWidget *parent)
     const char* name = vp->getPageObject()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
 
-    setScene(new QGraphicsScene(this));
+    setScene(&s);
     //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
     setTransformationAnchor(AnchorUnderMouse);
@@ -105,12 +105,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QWidget *parent)
     m_backgroundItem->setZValue(ZVALUE::BACKGROUND);
 //     scene()->addItem(m_backgroundItem); // TODO IF SEGFAULTS WITH DRAW ENABLE THIS (REDRAWS ARE SLOWER :s)
 
-    // Prepare background check-board pattern
-    QLinearGradient gradient;
-    gradient.setStart(0, 0);
-    gradient.setFinalStop(0, height());
-    gradient.setColorAt(0., QColor(72, 72, 72));
-    gradient.setColorAt(1., QColor(150, 150, 150));
     bkgBrush = new QBrush(QColor::fromRgb(70,70,70));
 
     resetCachedContent();
