@@ -23,6 +23,11 @@ if(COMMAND cmake_policy)
     endif(POLICY CMP0045)
 endif(COMMAND cmake_policy)
 
+find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 # include local  modules
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
