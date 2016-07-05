@@ -90,10 +90,12 @@ using namespace TechDrawGui;
 
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent),
-    m_view(new QGVPage(pageVp)),
+    //m_view(new QGVPage(pageVp)),
     pageGui(pageVp),
     m_frameState(true)
 {
+    m_view = new QGVPage(pageVp,m_scene);
+
     m_backgroundAction = new QAction(tr("&Background"), this);
     m_backgroundAction->setEnabled(false);
     m_backgroundAction->setCheckable(true);
@@ -141,7 +143,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
             this, SLOT(setRenderer(QAction *)));
 
     setWindowTitle(tr("dummy[*]"));      //Yuck. prevents "QWidget::setWindowModified: The window title does not contain a '[*]' placeholder"
-    setCentralWidget(m_view);
+    setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
 
     m_orientation = QPrinter::Landscape;
     m_pageSize = QPrinter::A4;
@@ -194,7 +196,8 @@ MDIViewPage::~MDIViewPage()
     }
     deleteItems.clear();
 
-    delete m_view;
+    //m_view will be deleted by MDIViewPage as a Qt child
+    //delete m_view;
 }
 
 
