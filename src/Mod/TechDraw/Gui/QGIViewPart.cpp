@@ -123,8 +123,12 @@ void QGIViewPart::tidy()
 
 void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart *obj)
 {
+    if (!obj)
+        return;
+
     // called from QGVPage
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
+    draw();
 }
 
 QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const
@@ -280,6 +284,8 @@ void QGIViewPart::updateView(bool update)
             }
         }
         draw();
+    } else {
+        QGIView::draw();
     }
 }
 

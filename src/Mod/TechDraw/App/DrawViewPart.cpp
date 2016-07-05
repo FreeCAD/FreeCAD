@@ -114,7 +114,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(LineWidth,(0.7f),vgroup,App::Prop_None,"The thickness of visible lines");
     ADD_PROPERTY_TYPE(HiddenWidth,(0.15),vgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
-    ADD_PROPERTY_TYPE(Tolerance,(0.05f),vgroup,App::Prop_None,"The tessellation tolerance");
+    ADD_PROPERTY_TYPE(Tolerance,(0.05f),vgroup,App::Prop_None,"The tessellation tolerance");        //tessellation?
     Tolerance.setConstraints(&floatRange);
     ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Direction to use as X-axis in projection");
 
@@ -189,6 +189,7 @@ short DrawViewPart::mustExecute() const
             ShowSmoothLines.isTouched() ||
             ShowSeamLines.isTouched()   ||
             LineWidth.isTouched()       ||
+            Tolerance.isTouched()       ||
             HiddenWidth.isTouched());
     return result;
 }
@@ -203,7 +204,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &ScaleType ||
             prop == &ShowHiddenLines ||
             prop == &ShowSmoothLines ||
-            prop == &ShowSeamLines  ||
+            prop == &ShowSeamLines   ||
             prop == &LineWidth       ||
             prop == &HiddenWidth     ) {
             try {

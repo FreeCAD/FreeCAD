@@ -195,7 +195,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
 
-    return App::DocumentObject::StdReturn;
+    return App::DocumentObject::execute();;
 }
 
 std::string  DrawViewDimension::getFormatedValue() const

@@ -1080,6 +1080,14 @@ void MDIViewPage::selectionChanged()
                   continue;
 
                 TechDraw::DrawView *dimObj = dimItem->getViewObject();
+                if (!dimObj) {
+                    continue;
+                }
+                const char* name = dimObj->getNameInDocument();
+                if (!name) {                                   //can happen during undo/redo if Dim is selected???
+                    //Base::Console().Log("INFO - MDIVP::selectionChanged - dimObj name is null!\n");
+                    continue;
+                }
 
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(),dimObj->getNameInDocument()));
