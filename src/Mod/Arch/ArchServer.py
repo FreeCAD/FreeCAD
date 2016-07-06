@@ -55,6 +55,7 @@ class _CommandBimserver:
             import requests
         except:
             FreeCAD.Console.PrintError(translate("Arch","requests python module not found, aborting. Please install python-requests\n"))
+            return
         try:
             import json
         except:
