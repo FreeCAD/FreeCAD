@@ -644,14 +644,20 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& col
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcShapeBind->value = SoMaterialBinding::PER_PART;
         pcShapeMaterial->diffuseColor.setNum(size);
+        pcShapeMaterial->transparency.setNum(size);
         SbColor* ca = pcShapeMaterial->diffuseColor.startEditing();
-        for (int i = 0; i < size; i++)
+        float *t = pcShapeMaterial->transparency.startEditing();
+        for (int i = 0; i < size; i++) {
             ca[i].setValue(colors[i].r, colors[i].g, colors[i].b);
+            t[i] = colors[i].a;
+        }
         pcShapeMaterial->diffuseColor.finishEditing();
+        pcShapeMaterial->transparency.finishEditing();
     }
     else if (colors.size() == 1) {
         pcShapeBind->value = SoMaterialBinding::OVERALL;
         pcShapeMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
+        pcShapeMaterial->transparency = colors[0].a;
     }
 }
 
@@ -695,6 +701,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
 void ViewProviderPartExt::unsetHighlightedFaces()
 {
     ShapeMaterial.touch();
+    Transparency.touch();
 }
 
 void ViewProviderPartExt::setHighlightedEdges(const std::vector<App::Color>& colors)
