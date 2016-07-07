@@ -60,6 +60,7 @@ public:
     void addObject(DocumentObject* obj);
     /// Removes an object from this group.
     void removeObject(DocumentObject* obj);
+    virtual PyObject *getPyObject(void);
 
 };
 
