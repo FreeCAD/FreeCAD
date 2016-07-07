@@ -937,6 +937,11 @@ def export(exportList,filename):
             
     #print "clones table: ",clones
     #print objectslist
+    
+    # testing if more than one site selected (forbidden in IFC)
+    if len(Draft.getObjectsOfType(objectslist,"Site")) > 1:
+        FreeCAD.Console.PrintError("More than one site is selected, which is forbidden by IFC standards. Please export only one site by IFC file.\n")
+        return
 
     # products
     for obj in objectslist:
@@ -1145,16 +1150,17 @@ def export(exportList,filename):
             if not (c.Name in treated):
                 treated.append(c.Name)
     for building in Draft.getObjectsOfType(objectslist,"Building"):
-        objs = Draft.getGroupContents(building,walls=True)
+        objs = Draft.getGroupContents(building,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
         childfloors = []
         for c in objs:
-            if c.Name in products.keys():
-                if Draft.getType(c) == "Floor":
-                    childfloors.append(products[c.Name])
-                elif not (c.Name in treated):
-                    children.append(products[c.Name])
+            if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
+                if c.Name in products.keys():
+                    if Draft.getType(c) == "Floor":
+                        childfloors.append(products[c.Name])
+                    elif not (c.Name in treated):
+                        children.append(products[c.Name])
         b = products[building.Name]
         if children:
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,b)
@@ -1165,16 +1171,18 @@ def export(exportList,filename):
             if not (c.Name in treated):
                 treated.append(c.Name)
     for site in Draft.getObjectsOfType(objectslist,"Site"):
-        objs = Draft.getGroupContents(site,walls=True)
+        objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
         childbuildings = []
         for c in objs:
-            if c.Name in products.keys():
-                if Draft.getType(c) == "Building":
-                    childbuildings.append(products[c.Name])
-                elif not (c.Name in treated):
-                    children.append(products[c.Name])
+            if c.Name != site.Name: # getGroupContents + addgroups will include the building itself
+                if c.Name in products.keys():
+                    if Draft.getType(c) == "Building":
+                        childbuildings.append(products[c.Name])
+                    elif not (c.Name in treated):
+                        if Draft.getType(c) != "Floor":
+                            children.append(products[c.Name])
         s = products[site.Name]
         if children:
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,s)
@@ -1194,7 +1202,8 @@ def export(exportList,filename):
     for p in products.values():
         if not(p.Name) in treated:
             if p.Name != buildings[0].Name:
-                untreated.append(p)
+                if not(Draft.getType(FreeCAD.ActiveDocument.getObject(p.Name)) in ["Site","Building","Floor"]):
+                    untreated.append(p)
     if untreated:
         ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',untreated,buildings[0])
 
