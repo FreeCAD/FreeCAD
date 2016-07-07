@@ -56,39 +56,14 @@ QGIFace::QGIFace(int index) :
     m_styleDef(Qt::SolidPattern),
     m_styleSelect(Qt::SolidPattern)
 {
-    setCacheMode(QGraphicsItem::NoCache);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
-    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
     //setFiltersChildEvents(true);
-    setAcceptHoverEvents(true);
-
-    isHighlighted = false;
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
-    m_colSel = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
-    m_colPre = fcColor.asValue<QColor>();
 
     m_pen.setCosmetic(true);
-    m_pen.setColor(m_colNormal);
 
-    m_brushDef.setColor(m_colDefFill);
-    m_brushDef.setStyle(m_styleDef);
-    m_brushNormal = m_brushDef;
-    m_brushCurrent = m_brushNormal;
+    m_styleNormal = m_styleDef;
+    m_colNormalFill = m_colDefFill;
     setPrettyNormal();
-
-    m_brushPre.setColor(m_colPre);
-    m_brushPre.setStyle(m_styleSelect);
-    m_brushSel.setColor(m_colSel);
-    m_brushSel.setStyle(m_styleSelect);
 
     m_svg = new QGCustomSvg();
 
@@ -103,85 +78,37 @@ QGIFace::~QGIFace()
     //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
 }
 
-QVariant QGIFace::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    if (change == ItemSelectedHasChanged && scene()) {
-       if(isSelected()) {               //this is only QtGui Selected, not FC selected?
-            setPrettySel();
-        } else {
-            setPrettyNormal();
-        }
-    }
-    return QGraphicsItem::itemChange(change, value);
-}
-
-void QGIFace::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    if (!isSelected() && !isHighlighted) {
-        setPrettyPre();
-    }
-    QGraphicsPathItem::hoverEnterEvent(event);
-}
-
-void QGIFace::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    if (!isSelected()) {
-      setPrettyNormal();
-    }
-    QGraphicsPathItem::hoverLeaveEvent(event);
-}
-
-void QGIFace::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGraphicsItem::mousePressEvent(event);
-}
-
-void QGIFace::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGraphicsItem::mouseReleaseEvent(event);
-}
-
 void QGIFace::setPrettyNormal() {
-    m_colCurrent = m_colNormal;
-    m_brushCurrent = m_brushNormal;
-    update();
+    m_fillStyle = m_styleNormal;
+    m_fillColor = m_colNormalFill;
+    QGIPrimPath::setPrettyNormal();
 }
 
 void QGIFace::setPrettyPre() {
-    m_colCurrent = m_colPre;
-    m_brushCurrent = m_brushPre;
-    update();
+    m_fillStyle = m_styleSelect;
+    m_fillColor = m_colPre;
+    QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
-    m_colCurrent = m_colSel;
-    m_brushCurrent = m_brushSel;
-    update();
-}
-
-void QGIFace::setHighlighted(bool b)
-{
-    isHighlighted = b;
-    if(isHighlighted && isSelected()) {
-        setPrettySel();
-    } else if (isHighlighted) {
-        setPrettyPre();
-    } else {
-        setPrettyNormal();
-    }
+    m_fillStyle = m_styleSelect;
+    m_fillColor = m_colSel;
+    QGIPrimPath::setPrettySel();
 }
 
 void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
-    //m_colNormalFill = c;
-    //m_styleNormal = s;
-    m_brushNormal.setColor(c);
-    m_brushNormal.setStyle(s);
+    m_colNormalFill = c;
+    m_styleNormal = s;
 }
 
 void QGIFace::setFill(QBrush b) {
     m_colNormalFill = b.color();
-    //m_styleCurr = b.style();
-    m_brushNormal = b;
+    m_styleNormal = b.style();
+}
+
+void QGIFace::resetFill() {
+    m_colNormalFill = m_colDefFill;
+    m_styleNormal = m_styleDef;
 }
 
 void QGIFace::setHatch(std::string fileSpec)
@@ -211,7 +138,7 @@ void QGIFace::setPath(const QPainterPath & path)
 
 void QGIFace::buildHatch()
 {
-    m_brushNormal.setStyle(Qt::NoBrush );
+    m_styleNormal = Qt::NoBrush;
     double w = boundingRect().width();
     double h = boundingRect().height();
     QRectF r = boundingRect();
@@ -222,7 +149,6 @@ void QGIFace::buildHatch()
     h = nh * SVGSIZEW;
     m_rect->setRect(0.,0.,w,-h);
     m_rect->centerAt(fCenter);
-    //QPointF rPos = m_rect->pos();
     r = m_rect->rect();
     QByteArray before,after;
     before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
@@ -232,7 +158,6 @@ void QGIFace::buildHatch()
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
             if (tile->load(&colorXML)) {
-            //if (tile->load(&m_svgXML)) {
                 tile->setParentItem(m_rect);
                 tile->setPos(iw*SVGSIZEW,-h + ih*SVGSIZEH);
             }
@@ -246,15 +171,6 @@ void QGIFace::buildHatch()
 void QGIFace::setHatchColor(std::string c)
 {
     m_svgCol = c;
-}
-
-void QGIFace::resetFill() {
-    m_colNormalFill = m_colDefFill;
-    //m_styleCurr = m_styleDef;
-    m_styleNormal = m_styleDef;
-    m_brushNormal.setColor(m_colDefFill);
-    m_brushNormal.setStyle(m_styleDef);
-    m_brushCurrent = m_brushNormal;
 }
 
 QRectF QGIFace::boundingRect() const
@@ -271,10 +187,8 @@ void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    m_pen.setColor(m_colCurrent);
-    setPen(m_pen);
-    //m_brush.setStyle(m_styleCurr);
-    //m_brush.setColor(m_colCurrFill);
-    setBrush(m_brushCurrent);
-    QGraphicsPathItem::paint (painter, &myOption, widget);
+    m_brush.setStyle(m_fillStyle);
+    m_brush.setColor(m_fillColor);
+    setBrush(m_brush);
+    QGIPrimPath::paint (painter, &myOption, widget);
 }

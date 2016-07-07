@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,10 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
-#define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+#ifndef DRAWINGGUI_QGIPRIMPATH_H
+#define DRAWINGGUI_QGIPRIMPATH_H
 
-# include "QGIPrimPath.h"
+# include <QGraphicsItem>
+
+QT_BEGIN_NAMESPACE
+class QPainter;
+class QStyleOptionGraphicsItem;
+QT_END_NAMESPACE
 
 namespace TechDrawGeometry {
 class BaseGeom;
@@ -32,32 +37,38 @@ class BaseGeom;
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIVertex : public QGIPrimPath
+class TechDrawGuiExport QGIPrimPath : public QGraphicsPathItem
 {
 public:
-    explicit QGIVertex(int index);
-    ~QGIVertex() {}
+    explicit QGIPrimPath();
+    ~QGIPrimPath() {}
 
-    enum {Type = QGraphicsItem::UserType + 105};
+    enum {Type = QGraphicsItem::UserType + 170};
+
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
-    int getProjIndex() const { return projIndex; }
-
-    float getRadius() { return m_radius; }
-    void setRadius(float r);
-    Qt::BrushStyle getFill() { return m_fill; }
-    void setFill(Qt::BrushStyle f) { m_fill = f; }
+    void setHighlighted(bool state);
+    virtual void setPrettyNormal();
+    virtual void setPrettyPre();
+    virtual void setPrettySel();
 
 protected:
-    int projIndex;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    bool isHighlighted;
+    QPen m_pen;
+    QColor m_colCurrent;
+    QColor m_colNormal;
+    QColor m_colPre;
+    QColor m_colSel;
 
 private:
-    float m_radius;
-    QBrush m_brush;
-    Qt::BrushStyle m_fill;
+
 };
 
-}
+} // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+#endif // DRAWINGGUI_QGIPRIMPATH_H
