@@ -23,12 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
 #define DRAWINGGUI_QGRAPHICSITEMEDGE_H
 
-# include <QGraphicsItem>
-
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
+#include "QGIPrimPath.h"
 
 namespace TechDrawGeometry {
 class BaseGeom;
@@ -37,7 +32,7 @@ class BaseGeom;
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIEdge : public QGraphicsPathItem
+class TechDrawGuiExport QGIEdge : public QGIPrimPath
 {
 public:
     explicit QGIEdge(int index);
@@ -52,41 +47,27 @@ public:
 
     int getProjIndex() const { return projIndex; }
 
-    void setHighlighted(bool state);
     void setCosmetic(bool state);
     void setStrokeWidth(float width);
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
     void setHiddenEdge(bool b);
     bool getHiddenEdge() { return(isHiddenEdge); }
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() { return(isSmoothEdge); }
 
 protected:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
     int projIndex;                                                     //index of edge in Projection. must exist.
 
-    bool isHighlighted;
     bool isCosmetic;
     bool isHiddenEdge;
     bool isSmoothEdge;
 
 private:
     float strokeWidth;
-    QPen m_pen;
-    QColor m_colCurrent;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
     QColor m_colHid;
     QColor m_defNormal;
     Qt::PenStyle m_styleHid;
 };
 
-} // namespace MDIViewPageGui
+}
 
 #endif // DRAWINGGUI_QGRAPHICSITEMEDGE_H

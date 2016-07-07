@@ -325,8 +325,6 @@ void QGIViewPart::drawViewPart()
             }
         }
         newFace->setZValue(ZVALUE::FACE);
-        newFace->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        newFace->setAcceptHoverEvents(true);
         newFace->setPrettyNormal();
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
@@ -357,8 +355,6 @@ void QGIViewPart::drawViewPart()
             item->setPath(drawPainterPath(*itEdge));
             item->setStrokeWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
-            item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-            item->setAcceptHoverEvents(true);
             if(!(*itEdge)->visible) {
                 item->setStrokeWidth(lineWidthHid);
                 item->setHiddenEdge(true);

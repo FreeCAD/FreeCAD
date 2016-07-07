@@ -45,40 +45,25 @@ using namespace TechDrawGui;
 QGIEdge::QGIEdge(int index) :
     projIndex(index)
 {
-    setCacheMode(QGraphicsItem::NoCache);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
-    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
-    setAcceptHoverEvents(true);
-
     strokeWidth = 1.;
 
     isCosmetic    = false;
     m_pen.setCosmetic(isCosmetic);
-    isHighlighted = false;
     isHiddenEdge = false;
     isSmoothEdge = false;
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
     m_defNormal = m_colNormal;
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
-    m_colSel = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
-    m_colPre = fcColor.asValue<QColor>();
+    App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("HiddenColor", 0x08080800));
     m_colHid = fcColor.asValue<QColor>();
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
     m_styleHid = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",2));
 
-    m_pen.setStyle(Qt::SolidLine);
-    m_pen.setCapStyle(Qt::RoundCap);
-
-    setPrettyNormal();
+    //m_pen.setStyle(Qt::SolidLine);
+    //m_pen.setCapStyle(Qt::RoundCap);
 }
 
 QRectF QGIEdge::boundingRect() const
@@ -96,65 +81,10 @@ QPainterPath QGIEdge::shape() const
 }
 
 
-QVariant QGIEdge::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    if (change == ItemSelectedHasChanged && scene()) {
-        if(isSelected()) {
-            setPrettySel();
-        } else {
-            setPrettyNormal();
-        }
-    }
-    return QGraphicsItem::itemChange(change, value);
-}
-
-void QGIEdge::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    if (!isSelected()) {
-        setPrettyPre();
-    }
-    QGraphicsPathItem::hoverEnterEvent(event);
-}
-
-void QGIEdge::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
-    assert(view != 0);
-    if(!isSelected() && !isHighlighted) {
-        setPrettyNormal();
-    }
-    QGraphicsPathItem::hoverLeaveEvent(event);
-}
-
 void QGIEdge::setCosmetic(bool state)
 {
+    isCosmetic = state;
     m_pen.setCosmetic(state);
-    update();
-}
-
-// obs?
-void QGIEdge::setHighlighted(bool b)
-{
-    isHighlighted = b;
-    if(isHighlighted) {
-        setPrettySel();
-    } else {
-        setPrettyNormal();
-    }
-}
-
-void QGIEdge::setPrettyNormal() {
-    m_colCurrent = m_colNormal;
-    update();
-}
-
-void QGIEdge::setPrettyPre() {
-    m_colCurrent = m_colPre;
-    update();
-}
-
-void QGIEdge::setPrettySel() {
-    m_colCurrent = m_colSel;
     update();
 }
 
@@ -180,7 +110,5 @@ void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     myOption.state &= ~QStyle::State_Selected;
 
     m_pen.setWidthF(strokeWidth);
-    m_pen.setColor(m_colCurrent);
-    setPen(m_pen);
-    QGraphicsPathItem::paint (painter, &myOption, widget);
+    QGIPrimPath::paint (painter, &myOption, widget);
 }

@@ -28,13 +28,9 @@
 #include <QSvgRenderer>
 #include <QByteArray>
 
+#include "QGIPrimPath.h"
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
-
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
 
 namespace TechDrawGeometry {
 class BaseGeom;
@@ -48,7 +44,7 @@ namespace TechDrawGui
     const std::string  SVGCOLPREFIX = "stroke:";
     const std::string  SVGCOLDEFAULT = "#000000";
 
-class QGIFace : public QGraphicsPathItem
+class QGIFace : public QGIPrimPath
 {
 public:
     explicit QGIFace(int index = -1);
@@ -63,7 +59,6 @@ public:
 public:
     int getProjIndex() const { return projIndex; }
 
-    void setHighlighted(bool state);
     void setPrettyNormal();
     void setPrettyPre();
     void setPrettySel();
@@ -75,46 +70,26 @@ public:
     void buildHatch(void);
     void setHatchColor(std::string c);
 
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
-
 protected:
-    // Preselection events:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    // Selection detection
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
     bool load(QByteArray *svgBytes);
 
 protected:
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
-    bool isHighlighted;
     QGCustomRect *m_rect;
     QGCustomSvg *m_svg;
     QByteArray m_svgXML;
     std::string m_svgCol;
 
 private:
-    QPen m_pen;
     QBrush m_brush;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
-    QColor m_colCurrent;
-    QColor m_defNormal;                         //pen default normal color
+    Qt::BrushStyle m_fillStyle;                 //current fill style
+    QColor m_fillColor;                         //current fill color
 
-    QColor m_colDefFill;                        //"no color"
-    QColor m_colCurrFill;                       //current color
-    QColor m_colNormalFill;
-    Qt::BrushStyle m_styleDef;                  //default Normal fill fill style
-    Qt::BrushStyle m_styleCurr;                 //current fill style
-    Qt::BrushStyle m_styleNormal;               //Normal fill style
+    QColor m_colDefFill;                        //"no color" default normal fill color
+    QColor m_colNormalFill;                     //current Normal fill color
+    Qt::BrushStyle m_styleDef;                  //default Normal fill style
+    Qt::BrushStyle m_styleNormal;               //current Normal fill style
     Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
-    QBrush m_brushNormal;
-    QBrush m_brushPre;
-    QBrush m_brushSel;
-    QBrush m_brushDef;
-    QBrush m_brushCurrent;
 };
 
 }

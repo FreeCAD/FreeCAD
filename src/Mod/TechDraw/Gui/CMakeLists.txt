@@ -128,6 +128,8 @@ SET(TechDrawGuiView_SRCS
     QGIViewSpreadsheet.h
     QGIViewClip.cpp
     QGIViewClip.h
+    QGIPrimPath.cpp
+    QGIPrimPath.h
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
