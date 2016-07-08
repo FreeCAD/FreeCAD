@@ -61,8 +61,6 @@
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
 
-void _dumpPath(const char* text,QPainterPath path);
-
 const float lineScaleFactor = 1.;   // temp fiddle for devel
 const float vertexScaleFactor = 2.; // temp fiddle for devel
 
@@ -365,7 +363,7 @@ void QGIViewPart::drawViewPart()
             //QPainterPath edgePath=drawPainterPath(*itEdge);
             //std::stringstream edgeId;
             //edgeId << "QGIVP.edgePath" << i;
-            //_dumpPath(edgeId.str().c_str(),edgePath);
+            //dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
 
@@ -407,7 +405,7 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
     //debug a path
     //std::stringstream faceId;
     //faceId << "facePath " << idx;
-    //_dumpPath(faceId.str().c_str(),facePath);
+    //dumpPath(faceId.str().c_str(),facePath);
 
     return gFace;
 }
@@ -586,7 +584,7 @@ QRectF QGIViewPart::boundingRect() const
     return childrenBoundingRect();
 }
 
-void _dumpPath(const char* text,QPainterPath path)
+void QGIViewPart::dumpPath(const char* text,QPainterPath path)
 {
         QPainterPath::Element elem;
         Base::Console().Message(">>>%s has %d elements\n",text,path.elementCount());

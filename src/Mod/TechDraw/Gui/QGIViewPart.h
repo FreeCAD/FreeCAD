@@ -86,6 +86,7 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
+    void dumpPath(const char* text,QPainterPath path);
 
     QColor m_colHid;
 

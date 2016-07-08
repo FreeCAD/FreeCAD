@@ -67,11 +67,13 @@
 #include <BRepLProp_CLProps.hxx>
 #include <GeomLib_Tool.hxx>
 #include <BRepLib.hxx>
-//# include <Standard_ConstructionError.hxx>
-//# include <Standard_DomainError.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS_Shape.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
+#include <ShapeExtend_WireData.hxx>
+#include <ShapeFix_Wire.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -86,8 +88,6 @@
 
 
 #include "DrawViewPartPy.h"  // generated from DrawViewPartPy.xml
-
-void _dumpEdge1(char* label, int i, TopoDS_Edge e);
 
 using namespace TechDraw;
 using namespace std;
@@ -310,44 +310,8 @@ void DrawViewPart::extractFaces()
         faceEdges.insert(std::end(faceEdges), std::begin(edgesToAdd),std::end(edgesToAdd));
     }
 
-    //find list of unique Vertex
-    std::vector<TopoDS_Vertex> uniqueVert;
-    for(auto& fe:faceEdges) {
-        TopoDS_Vertex v1 = TopExp::FirstVertex(fe);
-        TopoDS_Vertex v2 = TopExp::LastVertex(fe);
-        bool addv1 = true;
-        bool addv2 = true;
-        for (auto v:uniqueVert) {
-            if (isSamePoint(v,v1))
-                addv1 = false;
-            if (isSamePoint(v,v2))
-                addv2 = false;
-        }
-        if (addv1)
-            uniqueVert.push_back(v1);
-        if (addv2)
-            uniqueVert.push_back(v2);
-    }
-
-    //rebuild every edge using only unique verts
-    //this should help with connecting them later
-    std::vector<TopoDS_Edge> cleanEdges;
-    std::vector<WalkerEdge> walkerEdges;
-    for (auto fe:faceEdges) {
-        TopoDS_Vertex fev1 = TopExp::FirstVertex(fe);
-        TopoDS_Vertex fev2 = TopExp::LastVertex(fe);
-        int v1dx = findUniqueVert(fev1, uniqueVert);
-        int v2dx = findUniqueVert(fev2, uniqueVert);
-        BRepAdaptor_Curve adapt(fe);
-        Handle_Geom_Curve c = adapt.Curve().Curve();
-        BRepBuilderAPI_MakeEdge mkBuilder1(c, uniqueVert.at(v1dx), uniqueVert.at(v2dx));
-        TopoDS_Edge eClean = mkBuilder1.Edge();
-        cleanEdges.push_back(eClean);
-        WalkerEdge we;
-        we.v1 = v1dx;
-        we.v2 = v2dx;
-        walkerEdges.push_back(we);
-    }
+    std::vector<TopoDS_Vertex> uniqueVert = makeUniqueVList(faceEdges);
+    std::vector<WalkerEdge> walkerEdges = makeWalkerEdges(faceEdges,uniqueVert);
 
     EdgeWalker ew;
     ew.setSize(uniqueVert.size());
@@ -361,10 +325,10 @@ void DrawViewPart::extractFaces()
         edgelist::iterator iEdge = (*iFace).begin();
         std::vector<TopoDS_Edge> fe;
         for (;iEdge != (*iFace).end(); iEdge++) {
-            fe.push_back(cleanEdges.at((*iEdge).idx));
+            fe.push_back(faceEdges.at((*iEdge).idx));
         }
-    std::vector<TopoDS_Wire> w = connectEdges(fe);
-    fw.push_back(w.at(0));                           //looks weird, but we only passing 1 wire's edges so we only want 1 wire back
+    TopoDS_Wire w = makeCleanWire(fe);             //make 1 clean wire from its edges
+    fw.push_back(w);
     }
 
     std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw,false);
@@ -429,24 +393,44 @@ void DrawViewPart::extractFaces()
     }
 }
 
-//obs?
-int DrawViewPart::findEdgeByWalkerEdge(WalkerEdge we, std::vector<TopoDS_Vertex> uniqueVert, std::vector<TopoDS_Edge>& edges)
+std::vector<TopoDS_Vertex> DrawViewPart:: makeUniqueVList(std::vector<TopoDS_Edge> edges)
 {
-    int result = -1;
-    TopoDS_Vertex v1 = uniqueVert.at(we.v1);
-    TopoDS_Vertex v2 = uniqueVert.at(we.v2);
-    int idx = 0;
-    for (auto& e:edges) {
+    std::vector<TopoDS_Vertex> uniqueVert;
+    for(auto& e:edges) {
+        TopoDS_Vertex v1 = TopExp::FirstVertex(e);
+        TopoDS_Vertex v2 = TopExp::LastVertex(e);
+        bool addv1 = true;
+        bool addv2 = true;
+        for (auto v:uniqueVert) {
+            if (isSamePoint(v,v1))
+                addv1 = false;
+            if (isSamePoint(v,v2))
+                addv2 = false;
+        }
+        if (addv1)
+            uniqueVert.push_back(v1);
+        if (addv2)
+            uniqueVert.push_back(v2);
+    }
+    return uniqueVert;
+}
+
+//!make WalkerEdges (unique Vertex index pairs) from edge list
+std::vector<WalkerEdge> DrawViewPart::makeWalkerEdges(std::vector<TopoDS_Edge> edges,
+                                                      std::vector<TopoDS_Vertex> verts)
+{
+    std::vector<WalkerEdge> walkerEdges;
+    for (auto e:edges) {
         TopoDS_Vertex ev1 = TopExp::FirstVertex(e);
         TopoDS_Vertex ev2 = TopExp::LastVertex(e);
-        if ( (isSamePoint(v1,ev1) && isSamePoint(v2,ev2)) ||
-             (isSamePoint(v2,ev1) && isSamePoint(v1,ev2)) ) {
-             result = idx;
-             break;
-        }
-        idx++;
+        int v1dx = findUniqueVert(ev1, verts);
+        int v2dx = findUniqueVert(ev2, verts);
+        WalkerEdge we;
+        we.v1 = v1dx;
+        we.v2 = v2dx;
+        walkerEdges.push_back(we);
     }
-    return result;
+    return walkerEdges;
 }
 
 int DrawViewPart::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert)
@@ -608,29 +592,34 @@ Base::BoundBox3d DrawViewPart::getBoundingBox() const
     return bbox;
 }
 
-//! build 1 or more wires from list of edges
-//note disjoint edges won't be connected. have to be able to traverse all the edges
-std::vector<TopoDS_Wire> DrawViewPart::connectEdges (std::vector<TopoDS_Edge>& edges)
+//! make a clean wire with sorted, oriented, connected, etc edges
+TopoDS_Wire DrawViewPart::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol)
 {
-    std::vector<TopoDS_Wire> result;
-    Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
-    Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-    std::vector<TopoDS_Edge>::const_iterator itEdge = edges.begin();
-    for (; itEdge != edges.end(); itEdge++)
-        hEdges->Append(*itEdge);
+    TopoDS_Wire result;
+    BRepBuilderAPI_MakeWire mkWire;
+    ShapeFix_ShapeTolerance sTol;
+    Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
 
-    //tolerance sb tolerance of DrawViewPart instead of Precision::Confusion()?
-    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
-    int len = hWires->Length();
-    for(int i=1;i<=len;i++) {
-        TopoDS_Wire w = TopoDS::Wire(hWires->Value(i));
-        if (BRep_Tool::IsClosed(w)) {
-            result.push_back(w);
-        }
+    for (auto e:edges) {
+        wireData->Add(e);
     }
 
-    //delete hEdges;               //does Handle<> take care of this?
-    //delete hWires;
+    Handle(ShapeFix_Wire) fixer = new ShapeFix_Wire;
+    fixer->Load(wireData);
+    fixer->Perform();
+    fixer->FixReorder();
+    fixer->SetMaxTolerance(tol);
+    fixer->ClosedWireMode() = Standard_True;
+    fixer->FixConnected(Precision::Confusion());
+    fixer->FixClosed(Precision::Confusion());
+
+    for (int i = 1; i <= wireData->NbEdges(); i ++) {
+        TopoDS_Edge edge = fixer->WireData()->Edge(i);
+        sTol.SetTolerance(edge, tol, TopAbs_VERTEX);
+        mkWire.Add(edge);
+    }
+
+    result = mkWire.Wire();
     return result;
 }
 
@@ -704,6 +693,13 @@ void DrawViewPart::dumpVertexes(const char* text, const TopoDS_Shape& s)
     }
 }
 
+void DrawViewPart::dump1Vertex(const char* text, const TopoDS_Vertex& v)
+{
+    Base::Console().Message("DUMP - DVP::dump1Vertex - %s\n",text);
+    gp_Pnt pnt = BRep_Tool::Pnt(v);
+    Base::Console().Message("%s: (%.3f,%.3f,%.3f)\n",text,pnt.X(),pnt.Y(),pnt.Z());
+}
+
 PyObject *DrawViewPart::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
@@ -713,7 +709,7 @@ PyObject *DrawViewPart::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-void _dumpEdge1(char* label, int i, TopoDS_Edge e)
+void DrawViewPart::dumpEdge(char* label, int i, TopoDS_Edge e)
 {
     BRepAdaptor_Curve adapt(e);
     double start = BRepLProp_CurveTool::FirstParameter(adapt);

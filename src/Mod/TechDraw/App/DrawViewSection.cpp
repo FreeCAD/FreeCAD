@@ -39,7 +39,6 @@
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 
-//#include <BRepAPI_MakeOutLine.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_ShapeBounds.hxx>
 #include <HLRBRep_HLRToShape.hxx>
@@ -71,6 +70,11 @@
 #include <BRepPrim_FaceBuilder.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Geom_Curve.hxx>
+
 #include <boost/concept_check.hpp>
 
 #include <Base/BoundBox.h>
@@ -82,7 +86,7 @@
 #include <Mod/Part/App/Geometry.h>
 
 #include "DrawViewSection.h"
-//#include "ProjectionAlgos.h"
+#include "EdgeWalker.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -225,7 +229,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
                                                     Scale.getValue());
-        buildGeometryObject(mirroredShape,inputCenter);
+        buildGeometryObject(mirroredShape,inputCenter);                         //this is original shape cut by section prism
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
@@ -238,7 +242,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         BRep_Builder builder;
         builder.MakeCompound(newFaces);
         TopExp_Explorer expl(mirroredSection, TopAbs_FACE);
-        for (int i = 1 ; expl.More(); expl.Next(),i++) {
+        for (; expl.More(); expl.Next()) {
             const TopoDS_Face& face = TopoDS::Face(expl.Current());
             TopoDS_Face pFace = projectFace(face,
                                             inputCenter,
@@ -300,9 +304,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 std::vector<TechDrawGeometry::Face*> DrawViewSection::getFaceGeometry()
 {
     std::vector<TechDrawGeometry::Face*> result;
-    //TopoDS_Compound c = getSectionFaces();    //get projected section faces?
     TopoDS_Compound c = sectionFaces;
-    //for face in c
     TopExp_Explorer faces(c, TopAbs_FACE);
     for (; faces.More(); faces.Next()) {
         TechDrawGeometry::Face* f = new TechDrawGeometry::Face();
@@ -314,6 +316,7 @@ std::vector<TechDrawGeometry::Face*> DrawViewSection::getFaceGeometry()
             TopExp_Explorer edges(wire, TopAbs_EDGE);
             for (; edges.More(); edges.Next()) {
                 const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+                //dumpEdge("edge",edgeCount,edge);
                 TechDrawGeometry::BaseGeom* base = TechDrawGeometry::BaseGeom::baseFactory(edge);
                 w->geoms.push_back(base);
             }
@@ -355,7 +358,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     TopExp_Explorer expl(hardEdges, TopAbs_EDGE);
     int i;
     for (i = 1 ; expl.More(); expl.Next(),i++) {
-        const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
+        TopoDS_Edge edge = TopoDS::Edge(expl.Current());
         if (edge.IsNull()) {
             Base::Console().Log("INFO - GO::projectFace - hard edge: %d is NULL\n",i);
             continue;
@@ -364,7 +367,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     }
     expl.Init(outEdges, TopAbs_EDGE);
     for (i = 1 ; expl.More(); expl.Next(),i++) {
-        const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
+        TopoDS_Edge edge = TopoDS::Edge(expl.Current());
         if (edge.IsNull()) {
             Base::Console().Log("INFO - GO::projectFace - outline edge: %d is NULL\n",i);
             continue;
@@ -372,16 +375,39 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
         faceEdges.push_back(edge);
     }
 
-    //no guarantee HLR gives edges in any particular order, so have to build back into a face.
+    std::vector<TopoDS_Vertex> uniqueVert = makeUniqueVList(faceEdges);
+    std::vector<WalkerEdge> walkerEdges = makeWalkerEdges(faceEdges,uniqueVert);
+
+    EdgeWalker ew;
+    ew.setSize(uniqueVert.size());
+    ew.loadEdges(walkerEdges);
+    ew.perform();
+    facelist result = ew.getResult();         //probably two Faces most of the time. Outerwire + real wires
+
+    facelist::iterator iFace = result.begin();
+    std::vector<TopoDS_Wire> fw;
+    for (;iFace != result.end(); iFace++) {
+        edgelist::iterator iEdge = (*iFace).begin();
+        std::vector<TopoDS_Edge> fe;
+        for (;iEdge != (*iFace).end(); iEdge++) {
+            fe.push_back(faceEdges.at((*iEdge).idx));
+        }
+    TopoDS_Wire w = makeCleanWire(fe);                 //make 1 clean wire from its edges
+    fw.push_back(w);
+    }
     TopoDS_Face projectedFace;
-    std::vector<TopoDS_Wire> faceWires = connectEdges(faceEdges);               //from DrawViewPart
-    if (!faceWires.empty()) {
-        std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(faceWires);      //from DrawViewPart
+    if (!fw.empty()) {
+        std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw);
         if (sortedWires.empty()) {
             return projectedFace;
         }
-        BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                 //true => only want planes?
-        std::vector<TopoDS_Wire>::iterator itWire = (sortedWires.begin()) + 1;    //starting with second face
+
+        //TODO: this really should have the same size checking logic as DVP
+        //remove the largest wire (OuterWire of graph)
+        sortedWires.erase(sortedWires.begin());
+
+        BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                   //true => only want planes?
+        std::vector<TopoDS_Wire>::iterator itWire = ++sortedWires.begin();          //starting with second face
         for (; itWire != sortedWires.end(); itWire++) {
             mkFace.Add(*itWire);
         }
