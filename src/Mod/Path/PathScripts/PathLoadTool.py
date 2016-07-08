@@ -59,15 +59,12 @@ class LoadTool():
         obj.setEditorMode('Placement', mode)
 
     def execute(self, obj):
-#        if obj.ToolNumber != 0:
 
         tool = PathUtils.getTool(obj, obj.ToolNumber)
         if tool is not None:
             obj.Label = obj.Name + ": " + tool.Name
         else:
             obj.Label = obj.Name + ": UNDEFINED TOOL"
-
-
 
         commands = ""
         commands += "(" + obj.Label + ")"+'\n'
@@ -79,6 +76,7 @@ class LoadTool():
         else:
             commands += 'M4S' + str(obj.SpindleSpeed) + '\n'
 
+        obj.Path = Path.Path(commands)
 
     def onChanged(self, obj, prop):
         mode = 2
