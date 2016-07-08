@@ -253,7 +253,6 @@ class TechDrawExport GeometryUtils
                                     double tolerance );
 
         //! return a vector of BaseGeom*'s in tail to nose order
-        //could/should this be replaced by DVP::connectEdges?
         static std::vector<BaseGeom*> chainGeoms(std::vector<BaseGeom*> geoms);
 };
 

@@ -95,6 +95,8 @@ public:
     virtual PyObject *getPyObject(void);
 
     void dumpVertexes(const char* text, const TopoDS_Shape& s);
+    void dumpEdge(char* label, int i, TopoDS_Edge e);
+    void dump1Vertex(const char* label, const TopoDS_Vertex& v);
 
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
@@ -104,7 +106,6 @@ protected:
     Base::Vector3d getValidXDir() const;
     void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
     void extractFaces();
-    std::vector<TopoDS_Wire> connectEdges (std::vector<TopoDS_Edge>& edges);
     std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
     class wireCompare;
 
@@ -113,7 +114,11 @@ protected:
     double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
     bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
     int findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
-    int findEdgeByWalkerEdge(WalkerEdge we, std::vector<TopoDS_Vertex> uniqueVert, std::vector<TopoDS_Edge>& edges); //obs?
+    std::vector<TopoDS_Vertex> makeUniqueVList(std::vector<TopoDS_Edge> edges);
+    std::vector<WalkerEdge>    makeWalkerEdges(std::vector<TopoDS_Edge> edges,
+                                               std::vector<TopoDS_Vertex> verts);
+    TopoDS_Wire makeCleanWire(std::vector<TopoDS_Edge> edges, double tol = 0.10);
+
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
