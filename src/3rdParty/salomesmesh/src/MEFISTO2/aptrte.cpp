@@ -44,6 +44,7 @@ extern "C"
       areteideale(R &_areteideale)
   {
         _areteideale = aretemaxface_;
+	return(_areteideale);
   }
 }
 //calcul de la longueur ideale de l'arete au sommet xyz (z ici inactif)
