@@ -77,8 +77,18 @@ class MESHGate:
 
 class ENGRAVEGate:
     def allow(self, doc, obj, sub):
-        return (obj.Name[0:11] == 'ShapeString')
+        engraveable = False
 
+        if hasattr(obj, "Shape"):
+            if obj.Shape.BoundBox.ZLength == 0.0:
+                try:
+                    obj = obj.Shape
+                except:
+                    return False
+                if len(obj.Wires) > 0:
+                    engraveable = True
+
+        return engraveable
 
 class DRILLGate:
     def allow(self, doc, obj, sub):
