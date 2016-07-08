@@ -1142,34 +1142,32 @@ def export(exportList,filename):
             if c.Name in products.keys():
                 if not (c.Name in treated):
                     children.append(products[c.Name])
+                    treated.append(c.Name)
         f = products[floor.Name]
         if children:
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
-        floors.append(floor.Name)
-        for c in children:
-            if not (c.Name in treated):
-                treated.append(c.Name)
+        floors.append(floor.Name) 
     for building in Draft.getObjectsOfType(objectslist,"Building"):
         objs = Draft.getGroupContents(building,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
         childfloors = []
         for c in objs:
-            if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
-                if c.Name in products.keys():
-                    if Draft.getType(c) == "Floor":
-                        childfloors.append(products[c.Name])
-                    elif not (c.Name in treated):
-                        children.append(products[c.Name])
+            if not (c.Name in treated):
+                if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
+                    if c.Name in products.keys():
+                        if Draft.getType(c) == "Floor":
+                            childfloors.append(products[c.Name])
+                            treated.append(c.Name)
+                        elif not (c.Name in treated):
+                            children.append(products[c.Name])
+                            treated.append(c.Name)
         b = products[building.Name]
         if children:
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,b)
         if childfloors:
             ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',b,childfloors)
         buildings.append(b)
-        for c in children+childfloors:
-            if not (c.Name in treated):
-                treated.append(c.Name)
     for site in Draft.getObjectsOfType(objectslist,"Site"):
         objs = Draft.getGroupContents(site,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1178,18 +1176,11 @@ def export(exportList,filename):
         for c in objs:
             if c.Name != site.Name: # getGroupContents + addgroups will include the building itself
                 if c.Name in products.keys():
-                    if Draft.getType(c) == "Building":
-                        childbuildings.append(products[c.Name])
-                    elif not (c.Name in treated):
-                        if Draft.getType(c) != "Floor":
-                            children.append(products[c.Name])
-        s = products[site.Name]
-        if children:
-            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',children,s)
-        sites.append(s)
-        for c in children+childbuildings:
-            if not (c.Name in treated):
-                treated.append(c.Name)
+                    if not (c.Name in treated):
+                        if Draft.getType(c) == "Building":
+                            childbuildings.append(products[c.Name])
+                            treated.append(c.Name)
+        sites.append(products[site.Name])
     if not sites:
         if DEBUG: print "No site found. Adding default site"
         sites = [ifcfile.createIfcSite(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Site",'',None,None,None,None,"ELEMENT",None,None,None,None,None)]
@@ -1199,13 +1190,13 @@ def export(exportList,filename):
         buildings = [ifcfile.createIfcBuilding(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Building",'',None,None,None,None,"ELEMENT",None,None,None)]
     ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
     untreated = []
-    for p in products.values():
-        if not(p.Name) in treated:
-            if p.Name != buildings[0].Name:
-                if not(Draft.getType(FreeCAD.ActiveDocument.getObject(p.Name)) in ["Site","Building","Floor"]):
-                    untreated.append(p)
+    for k,v in products.items():
+        if not(k in treated):
+            if k != buildings[0].Name:
+                if not(Draft.getType(FreeCAD.ActiveDocument.getObject(k)) in ["Site","Building","Floor"]):
+                    untreated.append(v)
     if untreated:
-        ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',untreated,buildings[0])
+        ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLinkUnassignedObjects','',untreated,buildings[0])
 
     # materials
     materials = {}
