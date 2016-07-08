@@ -25,11 +25,13 @@
 import FreeCAD
 import Part
 import math
+import Path
 from DraftGeomUtils import geomType
 from DraftGeomUtils import findWires
 import DraftVecUtils
 import PathScripts
 from PathScripts import PathProject
+import itertools
 
 
 def cleanedges(splines, precision):
@@ -120,6 +122,29 @@ def segments(poly):
     ''' A sequence of (x,y) numeric coordinates pairs '''
     return zip(poly, poly[1:] + [poly[0]])
 
+def is_clockwise(obj):
+    '''tests if a wire or Path is clockwise'''
+    sum = 0
+    if isinstance(obj, Part.Wire):
+        for first, second in itertools.izip(obj.Edges, obj.Edges[1:]):
+	    sum = (second.Vertexes[0].X - first.Vertexes[0].X) * (second.Vertexes[0].Y + first.Vertexes[0].Y)
+        sum += (obj.Edges[0].Vertexes[0].X - obj.Edges[-1].Vertexes[0].X) * (obj.Edges[0].Vertexes[0].Y + obj.Edges[-1].Vertexes[0].Y)
+    elif isinstance(obj, Path.Path):
+        movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
+
+        lastLocation = {'Y': 0, 'X': 0, 'Z': 0.0}
+        currLocation = {'Y': 0, 'X': 0, 'Z': 0.0}
+        sum = 0
+
+        for curCommand in obj.Commands:
+
+            if curCommand.Name in movecommands:
+                lastLocation.update(currLocation)
+                currLocation.update(curCommand.Parameters)
+                sum += (currLocation["X"] - lastLocation["X"]) * (currLocation["Y"] + lastLocation["Y"])
+        sum += (0 - lastLocation["X"]) * (0 + lastLocation["Y"])
+
+    return sum >= 0
 
 def check_clockwise(poly):
     '''
@@ -352,6 +377,12 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
     sortededges = Part.__sortEdges__(edgelist)
     newwire = findWires(sortededges)[0]
 
+    print "newwire is clockwise: " + str(is_clockwise(newwire))
+    if is_clockwise(newwire) is not clockwise:
+        newwire.reverse()
+
+    print "newwire is clockwise: " + str(is_clockwise(newwire))
+
     if Side == 'Left':
         # we use the OCC offset feature
         offset = newwire.makeOffset(radius)  # tool is outside line
@@ -362,6 +393,9 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
             offset = newwire.makeOffset(0.0)
         else:
             offset = newwire
+    print "offset wire is clockwise: " + str(is_clockwise(offset))
+    offset.reverse()
+    print "offset wire is clockwise: " + str(is_clockwise(offset))
 
     return offset
 
