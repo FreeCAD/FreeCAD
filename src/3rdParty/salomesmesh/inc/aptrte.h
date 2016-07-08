@@ -52,6 +52,7 @@
  #else
   #define MEFISTO2D_EXPORT __declspec( dllimport )
  #endif
+ #define F2C_BUILD
 #else
  #define MEFISTO2D_EXPORT
 #endif
