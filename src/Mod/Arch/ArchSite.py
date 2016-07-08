@@ -61,32 +61,43 @@ class _CommandSite:
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        ok = False
-        if (len(sel) == 1):
-            if Draft.getType(sel[0]) in ["Cell","Building","Floor"]:
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("obj = Arch.makeSite()")
-                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
-                FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
-
-                nobj = makeSite()
-                ArchCommands.copyProperties(sel[0],nobj)
-                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
-                FreeCAD.ActiveDocument.commitTransaction()
-                ok = True
-        if not ok:
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        link = p.GetBool("FreeLinking",False)
+        siteobj = []
+        warning = False
+        for obj in sel :
+            if Draft.getType(obj) == "Building":
+                siteobj.append(obj)
+            else :
+                if link == True :
+                    siteobj.append(obj)
+                else:
+                    warning = True
+        if warning :
+            message = "Please select only Building objects or nothing!\n\
+Site are not allowed to accept other object than Building.\n\
+Other objects will be removed from the selection.\n\
+You can change that in the preferences."
+            self.printMessage( message )
+        if sel and len(siteobj) == 0:
+            message = "There is no valid object in the selection.\n\
+Site creation aborted."
+            self.printMessage( message )
+        else :
+            ss = "[ "
+            for o in siteobj:
+                ss += "FreeCAD.ActiveDocument." + o.Name + ", "
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Site"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeSite("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+
+    def printMessage(self, message):
+        FreeCAD.Console.PrintMessage(translate("Arch", message))
+        if FreeCAD.GuiUp :
+            reply = QtGui.QMessageBox.information(None,"", message)
 
 class _Site(ArchFloor._Floor):
     "The Site object"
