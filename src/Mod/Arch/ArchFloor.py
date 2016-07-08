@@ -59,28 +59,43 @@ class _CommandFloor:
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        ok = False
-        if (len(sel) == 1):
-            if Draft.getType(sel[0]) in ["Cell","Site","Building"]:
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("obj = Arch.makeFloor()")
-                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
-                FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
-                FreeCAD.ActiveDocument.commitTransaction()
-                ok = True
-        if not ok:
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        link = p.GetBool("FreeLinking",False)
+        floorobj = []
+        warning = False
+        for obj in sel :
+            if not Draft.getType(obj) in ["Site", "Building","Floor"] :
+                floorobj.append(obj)
+            else :
+                if link == True :
+                    floorobj.append(obj)
+                else:
+                    warning = True
+        if warning :
+            message = "You can put anything but Site, Building, Floor object in a Floor object.\n\
+Floor object are not allowed to accept Site, Building or Floor object.\n\
+Site, Building and Floor objects will be removed from the selection.\n\
+You can change that in the preferences.\n"
+            self.printMessage( message )
+        if sel and len(floorobj) == 0:
+            message = "There is no valid object in the selection.\n\
+Floor creation aborted.\n"
+            self.printMessage( message )
+        else :
+            ss = "[ "
+            for o in floorobj:
+                ss += "FreeCAD.ActiveDocument." + o.Name + ", "
             ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Floor"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.recompute()
+
+    def printMessage(self, message):
+        FreeCAD.Console.PrintMessage(translate("Arch", message))
+        if FreeCAD.GuiUp :
+            reply = QtGui.QMessageBox.information(None,"", message)
 
 class _Floor:
     "The Floor object"
