@@ -46,24 +46,21 @@
 
 using namespace TechDrawGui;
 
-QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene)
-    : QGITemplate(scene)
+QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene, QWidget* srWidget)
+    : QGITemplate(scene),
+      upperLevelWidget(srWidget)
 {
-    m_svgRender = new QSvgRenderer();
+    m_svgItem.setSharedRenderer(&m_svgRender);
 
-    m_svgItem = new QGraphicsSvgItem();
-    m_svgItem->setSharedRenderer(m_svgRender);
+    m_svgItem.setFlags(QGraphicsItem::ItemClipsToShape);
+    m_svgItem.setCacheMode(QGraphicsItem::NoCache);
 
-    m_svgItem->setFlags(QGraphicsItem::ItemClipsToShape);
-    m_svgItem->setCacheMode(QGraphicsItem::NoCache);
-
-    addToGroup(m_svgItem);
+    addToGroup(&m_svgItem);
 }
 
 QGISVGTemplate::~QGISVGTemplate()
 {
     clearContents();
-    delete m_svgRender;
 }
 
 QVariant QGISVGTemplate::itemChange(GraphicsItemChange change,
@@ -99,11 +96,11 @@ void QGISVGTemplate::load(const QString &fileName)
     if (!file.exists()) {
         return;
     }
-    m_svgRender->load(file.fileName());
+    m_svgRender.load(file.fileName());
 
-    QSize size = m_svgRender->defaultSize();
+    QSize size = m_svgRender.defaultSize();
     //Base::Console().Log("size of svg document <%i,%i>", size.width(), size.height());
-    m_svgItem->setSharedRenderer(m_svgRender);
+    m_svgItem.setSharedRenderer(&m_svgRender);
 
     TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
 
@@ -170,7 +167,7 @@ void QGISVGTemplate::load(const QString &fileName)
             double width = editClickBoxSize;
             double height = editClickBoxSize;
 
-            TemplateTextField *item = new TemplateTextField(this, tmplte, nameMatch[1].str());
+            TemplateTextField *item = new TemplateTextField(this, tmplte, nameMatch[1].str(), upperLevelWidget);
             float pad = 1;
             item->setRect(x - pad, -tmplte->getHeight() + y - height - pad,
                           width + 2 * pad, height + 2 * pad);
@@ -198,7 +195,7 @@ void QGISVGTemplate::load(const QString &fileName)
     QTransform qtrans;
     qtrans.translate(0.f, -tmplte->getHeight());
     qtrans.scale(xaspect , yaspect);
-    m_svgItem->setTransform(qtrans);
+    m_svgItem.setTransform(qtrans);
 }
 
 TechDraw::DrawSVGTemplate * QGISVGTemplate::getSVGTemplate()
