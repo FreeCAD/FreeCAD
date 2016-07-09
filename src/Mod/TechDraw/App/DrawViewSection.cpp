@@ -77,10 +77,13 @@
 
 #include <boost/concept_check.hpp>
 
+#include <App/Application.h>
+#include <App/Material.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
+//#include <Base/FileInfo.h>
 #include <Base/Console.h>
+#include <Base/Parameter.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Geometry.h>
@@ -99,11 +102,17 @@ PROPERTY_SOURCE(TechDraw::DrawViewSection, TechDraw::DrawViewPart)
 
 DrawViewSection::DrawViewSection()
 {
-    static const char *group = "Shape view";
+    static const char *group = "Section";
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
+
 
     ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0)    ,group,App::Prop_None,"Section Plane normal direction");
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,group,App::Prop_None,"Section Plane Origin");
     ADD_PROPERTY_TYPE(ShowCutSurface ,(true),group,App::Prop_None,"Show the cut surface");
+    ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),group,App::Prop_None,"The color to shade the cut surface");
 
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
@@ -117,7 +126,8 @@ short DrawViewSection::mustExecute() const
     // If Tolerance Property is touched
     if(SectionNormal.isTouched() ||
        SectionOrigin.isTouched() ||
-       ShowCutSurface.isTouched())
+       ShowCutSurface.isTouched() ||
+       CutSurfaceColor.isTouched() )
           return 1;
 
     return TechDraw::DrawViewPart::mustExecute();
