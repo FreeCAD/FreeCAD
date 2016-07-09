@@ -420,7 +420,7 @@ void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
         pageTemplate = qTempItem;
     } else if(obj->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
         //TechDraw::DrawSVGTemplate *dwgTemplate = static_cast<TechDraw::DrawSVGTemplate *>(obj);
-        QGISVGTemplate *qTempItem = new QGISVGTemplate(scene());
+        QGISVGTemplate *qTempItem = new QGISVGTemplate(scene(),this);
         pageTemplate = qTempItem;
     }
     pageTemplate->setTemplate(obj);

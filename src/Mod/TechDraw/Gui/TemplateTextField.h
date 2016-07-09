@@ -47,7 +47,8 @@ namespace TechDrawGui
         public:
             TemplateTextField(QGraphicsItem*parent,
                               TechDraw::DrawTemplate *myTmplte,
-                              const std::string &myFieldName);
+                              const std::string &myFieldName,
+                              QWidget* upperWidget=0);
 
             ~TemplateTextField();
 
@@ -61,6 +62,7 @@ namespace TechDrawGui
             virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
             TechDraw::DrawTemplate *tmplte;
             std::string fieldNameStr;
+            QWidget* dlgOwner;
     };
 }   // namespace TechDrawGui
 

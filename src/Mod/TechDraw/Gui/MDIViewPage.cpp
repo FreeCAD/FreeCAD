@@ -94,7 +94,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     pageGui(pageVp),
     m_frameState(true)
 {
-    m_view = new QGVPage(pageVp,m_scene);
+    m_view = new QGVPage(pageVp,m_scene,this);
 
     m_backgroundAction = new QAction(tr("&Background"), this);
     m_backgroundAction->setEnabled(false);

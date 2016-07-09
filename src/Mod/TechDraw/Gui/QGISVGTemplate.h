@@ -24,12 +24,12 @@
 #define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 
 #include "QGITemplate.h"
+#include <QGraphicsSvgItem>
+#include <QSvgRenderer>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
-class QGraphicsSvgItem;
-class QSvgRenderer;
 QT_END_NAMESPACE
 
 namespace TechDraw {
@@ -44,7 +44,7 @@ class TechDrawGuiExport QGISVGTemplate : public QGITemplate
     Q_OBJECT
 
 public:
-    QGISVGTemplate(QGraphicsScene *);
+    QGISVGTemplate(QGraphicsScene *, QWidget* srWidget=0);
     ~QGISVGTemplate();
 
     enum {Type = QGraphicsItem::UserType + 153};
@@ -61,11 +61,12 @@ Q_SIGNALS:
 protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);
+    QWidget* upperLevelWidget;                                  //for parenting dlgTemplateField
 
 protected:
     TechDraw::DrawSVGTemplate * getSVGTemplate();
-    QGraphicsSvgItem *m_svgItem;
-    QSvgRenderer *m_svgRender;
+    QGraphicsSvgItem m_svgItem;
+    QSvgRenderer m_svgRender;
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };  // class QGISVGTemplate
 

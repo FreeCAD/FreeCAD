@@ -40,8 +40,12 @@ using namespace TechDrawGui;
 
 TemplateTextField::TemplateTextField(QGraphicsItem*parent,
                                      TechDraw::DrawTemplate *myTmplte,
-                                     const std::string &myFieldName)
-    : QGraphicsRectItem(parent), tmplte(myTmplte), fieldNameStr(myFieldName)
+                                     const std::string &myFieldName,
+                                     QWidget* upperWidget)
+    : QGraphicsRectItem(parent),
+      tmplte(myTmplte),
+      fieldNameStr(myFieldName),
+      dlgOwner(upperWidget)
 {
 }
 
@@ -52,7 +56,7 @@ TemplateTextField::~TemplateTextField()
 
 void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    DlgTemplateField* ui = new DlgTemplateField(nullptr);
+    DlgTemplateField* ui = new DlgTemplateField(dlgOwner);
     ui->setFieldName(fieldNameStr);
     ui->setFieldContent(tmplte->EditableTexts[fieldNameStr]);
     int uiCode = ui->exec();
