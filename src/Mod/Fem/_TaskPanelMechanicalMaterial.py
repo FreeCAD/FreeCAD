@@ -267,28 +267,32 @@ class _TaskPanelMechanicalMaterial:
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
         # TODO add a ToolTip with print_message if the mouse pointer is over addReference button
-        print_message = "Select Edges and Faces by single click on them or Solids by double click on a Vertex to add them to the list"
+        print_message = "Select Edges and Faces by single click on them or Solids by single click on a Vertex to add them to the list"
         import FemSelectionObserver
         self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+        # print('selection: ', selection[0].Shape.ShapeType, ' --> ', selection[0].Name, ' --> ', selection[1])
         if hasattr(selection[0], "Shape"):
             if selection[1]:
                 elt = selection[0].Shape.getElement(selection[1])
-            else:
-                elt = selection[0].Shape
-            if elt.ShapeType == 'Edge' or elt.ShapeType == 'Face' or elt.ShapeType == 'Solid':
-                if not self.references:
-                    self.references_shape_type = elt.ShapeType
-                if elt.ShapeType == self.references_shape_type:
-                    if selection not in self.references:
-                        self.references.append(selection)
-                        self.rebuild_list_References()
+                if elt.ShapeType == "Vertex":
+                    if selection[0].Shape.ShapeType == "Solid":
+                        elt = selection[0].Shape
+                        selection = (selection[0], '')
                     else:
-                        FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
-                else:
-                    FreeCAD.Console.PrintMessage(elt.ShapeType + ' selected, but reference list has ' + self.references_shape_type + 's already!\n')
+                        FreeCAD.Console.PrintMessage("Selected Vertex does not belong to a Solid: " + selection[0].Name + " is a " + selection[0].Shape.ShapeType + " \n")
+                if elt.ShapeType == 'Edge' or elt.ShapeType == 'Face' or elt.ShapeType == 'Solid':
+                    if not self.references:
+                        self.references_shape_type = elt.ShapeType
+                    if elt.ShapeType == self.references_shape_type:
+                        if selection not in self.references:
+                            self.references.append(selection)
+                            self.rebuild_list_References()
+                        else:
+                            FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
+                    else:
+                        FreeCAD.Console.PrintMessage(elt.ShapeType + ' selected, but reference list has ' + self.references_shape_type + 's already!\n')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
