@@ -47,6 +47,7 @@ void DlgPrefsTechDrawImp::saveSettings()
     pcb_Select->onSave();
     pcb_PreSelect->onSave();
     pcb_Hidden->onSave();
+    pcb_Surface->onSave();
     le_LabelFont->onSave();
     pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
@@ -62,6 +63,7 @@ void DlgPrefsTechDrawImp::loadSettings()
     pcb_Select->onRestore();
     pcb_PreSelect->onRestore();
     pcb_Hidden->onRestore();
+    pcb_Surface->onRestore();
     le_LabelFont->onRestore();
     pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();

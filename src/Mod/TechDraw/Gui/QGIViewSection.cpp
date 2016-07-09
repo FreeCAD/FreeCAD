@@ -67,6 +67,10 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
+    if (!section->ShowCutSurface.getValue()) {
+        return;
+    }
+
     std::vector<TechDrawGeometry::Face*> sectionFaces;
     sectionFaces = section->getFaceGeometry();
     if (sectionFaces.empty()) {
@@ -74,8 +78,7 @@ void QGIViewSection::drawSectionFace()
         return;
     }
     std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
-    QColor faceColor(0,0,255,40);              //temp. sb preference or property. transparency allows bleed through/colour mix.
-    //QColor faceColor(170,170,255);              //temp. sb preference or property.
+    QColor faceColor = section->CutSurfaceColor.getValue().asValue<QColor>();
     for(; fit != sectionFaces.end(); fit++) {
         QGIFace* newFace = drawFace(*fit,-1);  //TODO: do we need to know which sectionFace this QGIFace came from?
         newFace->setZValue(ZVALUE::SECTIONFACE);

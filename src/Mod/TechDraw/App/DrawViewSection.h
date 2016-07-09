@@ -53,7 +53,8 @@ public:
 
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
-    App::PropertyBool ShowCutSurface;
+    App::PropertyBool   ShowCutSurface;
+    App::PropertyColor  CutSurfaceColor;
 
     short mustExecute() const;
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
