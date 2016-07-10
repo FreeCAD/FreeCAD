@@ -3,7 +3,7 @@
  <class>TechDrawGui::dlgTemplateField</class>
  <widget class="QDialog" name="TechDrawGui::dlgTemplateField">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -95,11 +95,11 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
+     <x>209</x>
      <y>126</y>
     </hint>
     <hint type="destinationlabel">
-     <x>193</x>
+     <x>209</x>
      <y>79</y>
     </hint>
    </hints>
@@ -111,11 +111,11 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
+     <x>209</x>
      <y>126</y>
     </hint>
     <hint type="destinationlabel">
-     <x>193</x>
+     <x>209</x>
      <y>79</y>
     </hint>
    </hints>

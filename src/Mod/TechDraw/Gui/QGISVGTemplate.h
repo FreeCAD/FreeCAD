@@ -61,7 +61,7 @@ Q_SIGNALS:
 protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);
-    QWidget* upperLevelWidget;                                  //for parenting dlgTemplateField
+    QWidget* qgview;                                  //for parenting dlgTemplateField
 
 protected:
     TechDraw::DrawSVGTemplate * getSVGTemplate();

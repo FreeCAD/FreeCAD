@@ -66,4 +66,14 @@ std::string DlgTemplateField::getFieldContent()
     return result.toStdString();
 }
 
+void DlgTemplateField::accept()
+{
+    QDialog::accept();
+}
+
+void DlgTemplateField::reject()
+{
+    QDialog::reject();
+}
+
 #include "moc_DlgTemplateField.cpp"

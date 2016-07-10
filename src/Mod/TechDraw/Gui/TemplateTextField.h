@@ -27,11 +27,8 @@
 
 #include <QGraphicsRectItem>
 
+#include "DlgTemplateField.h"
 #include "../App/DrawTemplate.h"
-
-QT_BEGIN_NAMESPACE
-class QGI;
-QT_END_NAMESPACE
 
 namespace TechDrawGui
 {
@@ -42,28 +39,31 @@ namespace TechDrawGui
      * Property in the Drawing's template can be modified.
      * Dear English, I'm sorry.
      */
-    class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
-    {
-        public:
-            TemplateTextField(QGraphicsItem*parent,
-                              TechDraw::DrawTemplate *myTmplte,
-                              const std::string &myFieldName,
-                              QWidget* upperWidget=0);
+class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
+{
+    public:
+        TemplateTextField(QGraphicsItem*parent,
+                          TechDraw::DrawTemplate *myTmplte,
+                          const std::string &myFieldName,
+                          QWidget* upperWidget=0);
 
-            ~TemplateTextField();
+        ~TemplateTextField();
 
-            enum {Type = QGraphicsItem::UserType + 160};
-            int type() const { return Type;}
+        enum {Type = QGraphicsItem::UserType + 160};
+        int type() const { return Type;}
 
 
-            /// Returns the field name that this TemplateTextField represents
-            std::string fieldName() const { return fieldNameStr; }
-        protected:
-            virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-            TechDraw::DrawTemplate *tmplte;
-            std::string fieldNameStr;
-            QWidget* dlgOwner;
-    };
+        /// Returns the field name that this TemplateTextField represents
+        std::string fieldName() const { return fieldNameStr; }
+
+    protected:
+        void execDialog(void);
+        DlgTemplateField* ui;
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        TechDraw::DrawTemplate *tmplte;
+        std::string fieldNameStr;
+        QWidget* dlgOwner;
+};
 }   // namespace TechDrawGui
 
 #endif // #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H

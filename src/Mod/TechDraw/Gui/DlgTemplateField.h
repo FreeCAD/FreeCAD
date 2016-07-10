@@ -43,10 +43,11 @@ public:
     std::string getFieldContent();
 
 public Q_SLOTS:
+    void accept();
+    void reject();
 
 protected:
     void changeEvent(QEvent *e);
-    //Ui_dlgTemplateField* ui;
 };
 
 } // namespace TechDrawGui
