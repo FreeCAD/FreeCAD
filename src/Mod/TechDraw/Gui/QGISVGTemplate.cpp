@@ -48,7 +48,7 @@ using namespace TechDrawGui;
 
 QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene, QWidget* srWidget)
     : QGITemplate(scene),
-      upperLevelWidget(srWidget)
+      qgview(srWidget)
 {
     m_svgItem.setSharedRenderer(&m_svgRender);
 
@@ -167,7 +167,7 @@ void QGISVGTemplate::load(const QString &fileName)
             double width = editClickBoxSize;
             double height = editClickBoxSize;
 
-            TemplateTextField *item = new TemplateTextField(this, tmplte, nameMatch[1].str(), upperLevelWidget);
+            TemplateTextField *item = new TemplateTextField(this, tmplte, nameMatch[1].str(), qgview);
             float pad = 1;
             item->setRect(x - pad, -tmplte->getHeight() + y - height - pad,
                           width + 2 * pad, height + 2 * pad);

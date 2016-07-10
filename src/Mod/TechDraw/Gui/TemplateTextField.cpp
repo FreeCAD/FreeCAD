@@ -32,7 +32,6 @@
 #include <Base/Console.h>
 
 #include "TemplateTextField.h"
-#include "DlgTemplateField.h"
 
 //#include<QDebug>
 
@@ -41,11 +40,12 @@ using namespace TechDrawGui;
 TemplateTextField::TemplateTextField(QGraphicsItem*parent,
                                      TechDraw::DrawTemplate *myTmplte,
                                      const std::string &myFieldName,
-                                     QWidget* upperWidget)
+                                     QWidget* qgview)
     : QGraphicsRectItem(parent),
+      ui(nullptr),
       tmplte(myTmplte),
       fieldNameStr(myFieldName),
-      dlgOwner(upperWidget)
+      dlgOwner(qgview)
 {
 }
 
@@ -54,11 +54,8 @@ TemplateTextField::~TemplateTextField()
 {
 }
 
-void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void TemplateTextField::execDialog()
 {
-    DlgTemplateField* ui = new DlgTemplateField(dlgOwner);
-    ui->setFieldName(fieldNameStr);
-    ui->setFieldContent(tmplte->EditableTexts[fieldNameStr]);
     int uiCode = ui->exec();
     std::string newContent = "";
     if(uiCode == QDialog::Accepted) {
@@ -69,5 +66,15 @@ void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
            tmplte->EditableTexts.setValue(fieldNameStr, newContent);
        }
     }
-    ui->deleteLater();
+    ui = nullptr;               //ui memory will be release by ui's parent Widget
+}
+
+void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (!ui) {
+        ui = new DlgTemplateField(dlgOwner);
+        ui->setFieldName(fieldNameStr);
+        ui->setFieldContent(tmplte->EditableTexts[fieldNameStr]);
+        execDialog();
+    }
 }
