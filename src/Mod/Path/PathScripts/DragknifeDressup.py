@@ -206,7 +206,7 @@ class ObjectDressup:
 
         replace = Path.Command(
             queue[0].Name, {"X": queue[0].X, "Y": queue[0].Y, "I": offsetv.x, "J": offsetv.y})
-        replace = None
+
         return (results, replace)
 
     def lineExtension(self, obj, queue):
