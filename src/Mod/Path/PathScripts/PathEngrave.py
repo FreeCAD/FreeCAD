@@ -110,9 +110,10 @@ class ObjectPathEngrave:
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         if obj.Base:
+            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value)+"\n"
+
             wires = []
             for o in obj.Base:
-                output += "G0 " + str(obj.ClearanceHeight.Value)+"\n"
                 # we only consider the outer wire if this is a Face
                 for w in o[0].Shape.Wires:
                     tempedges = PathUtils.cleanedges(w.Edges, 0.5)
@@ -121,9 +122,12 @@ class ObjectPathEngrave:
                 if obj.Algorithm == "OCC Native":
                     output += self.buildpathocc(obj, wires)
 
+            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value)+"\n"
+
+
         # print output
         if output == "":
-            output += "G0"
+            output += "(No commands processed)"
 
         if obj.Active:
             path = Path.Path(output)
@@ -140,8 +144,7 @@ class ObjectPathEngrave:
     def buildpathocc(self, obj, wires):
         import Part
         import DraftGeomUtils
-        output = "G90\nG21\nG40\n"
-        output += "G0 Z" + str(obj.ClearanceHeight.Value)
+        output = ""
 
         # absolute coords, millimeters, cancel offsets
 
@@ -157,8 +160,8 @@ class ObjectPathEngrave:
                 if not last:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
-                    output += "G0" + " X" + str("%f" % last.x) + " Y" + str("%f" % last.y)  # Rapid sto starting position
-                    output += "G1" + " X" + str("%f" % last.x) + " Y" + str("%f" % last.y) + " Z" + str("%f" % last.z) + "F " + str(self.vertFeed) + "\n"  # Vertical feed to depth
+                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value)  # Rapid sto starting position
+                    output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(last.z) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                 if isinstance(edge.Curve, Part.Circle):
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
@@ -171,20 +174,20 @@ class ObjectPathEngrave:
                         output += "G2"
                     else:
                         output += "G3"
-                    output += " X" + str("%f" % point.x) + " Y" + str("%f" % point.y) + " Z" + str("%f" % point.z)
-                    output += " I" + str("%f" % relcenter.x) + " J" + str("%f" % relcenter.y) + " K" + str("%f" % relcenter.z)
-                    output += " F " + str(self.horizFeed)
+                    output += " X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += " I" + PathUtils.fmt(relcenter.x) + " J" + PathUtils.fmt(relcenter.y) + " K" + PathUtils.fmt(relcenter.z)
+                    output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
                 else:
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
                         point = edge.Vertexes[0].Point
-                    output += "G1 X" + str("%f" % point.x) + " Y" + str("%f" % point.y) + " Z" + str("%f" % point.z)
-                    output += " F " + str(self.horizFeed)
+                    output += "G1 X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
-            output += "G0 Z " + str(obj.SafeHeight.Value)
+            output += "G0 Z " + PathUtils.fmt(obj.SafeHeight.Value)
         return output
 
     def addEngraveBase(self, obj, ss):
