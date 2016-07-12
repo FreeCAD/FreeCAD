@@ -219,7 +219,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double
         if (inches > 0) {
             output << inches;
             if (fraction > 0.0625)
-                output << " ";
+                output << "+";
             else
                 output << "\"";
         }

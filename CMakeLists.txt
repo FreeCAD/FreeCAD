@@ -34,6 +34,7 @@ include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
+
 #if(CMAKE_CFG_INTDIR STREQUAL .)
     # No Debug/Release output paths
     set(DEBUG_MAIN_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
@@ -87,10 +88,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     endif(BUILD_ENABLE_CXX11)
     set(CMAKE_CXX_FLAGS "-Wall -Wno-deprecated -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
     # get linker errors as soon as possible and not at runtime e.g. for modules
-    if(UNIX)
-    #    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
-    endif(UNIX)
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,-undefined,error")
+    elseif(UNIX)
+        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+    endif()
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 # ================================================================================
@@ -208,6 +212,7 @@ OPTION(BUILD_SKETCHER "Build the FreeCAD sketcher module" ON)
 OPTION(BUILD_SPREADSHEET "Build the FreeCAD spreadsheet module" ON)
 OPTION(BUILD_START "Build the FreeCAD start module" ON)
 OPTION(BUILD_TEST "Build the FreeCAD test module" ON)
+OPTION(BUILD_TECHDRAW "Build the FreeCAD Technical Drawing module" ON)
 OPTION(BUILD_WEB "Build the FreeCAD web module" ON)
 OPTION(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
 
@@ -235,7 +240,6 @@ if (FREECAD_BUILD_DEBIAN)
     # A Debian package for SMESH doesn't exist
     #set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
-
 if(BUILD_MESH_PART OR BUILD_FEM)
     set(BUILD_SMESH ON)
 endif()
@@ -280,6 +284,7 @@ REQUIRES_MODS(BUILD_SHIP               BUILD_PART BUILD_PLOT BUILD_IMAGE)
 REQUIRES_MODS(BUILD_SKETCHER           BUILD_PART)
 REQUIRES_MODS(BUILD_SPREADSHEET        BUILD_DRAFT)
 REQUIRES_MODS(BUILD_START              BUILD_WEB)
+REQUIRES_MODS(BUILD_TECHDRAW           BUILD_PART BUILD_SPREADSHEET)
 
 # ==============================================================================
 
@@ -515,7 +520,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
-    find_package(Boost ${BOOST_MIN_VERSION} 
+    find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS filesystem program_options regex signals system thread REQUIRED)
 
     IF(NOT Boost_FOUND)
@@ -563,7 +568,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         #if we use smesh we definitly also need vtk, no matter of external or internal smesh
         find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
         set(BUILD_FEM_VTK ON)
-        if(${VTK_MAJOR_VERSION} LESS 6) 
+        if(${VTK_MAJOR_VERSION} LESS 6)
             message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
         endif()
         if(${VTK_MAJOR_VERSION} EQUAL 6)
@@ -574,8 +579,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 message(WARNING "VTK <6.0 cannot be used with c++11, FEM postprocessing is disabled")
                 set(BUILD_FEM_VTK OFF)
             endif()
-        endif() 
-        
+        endif()
+
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
             if (WIN32)
@@ -695,7 +700,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(FREECAD_USE_FREETYPE)
 
 #---------------------------------------------------
-        
+
     if(BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 
@@ -981,4 +986,3 @@ if (${CMAKE_BUILD_TOOL} MATCHES "make")
             "Now run 'make' to build ${PACKAGE_NAME}\n"
             "=======================================\n")
 endif()
-

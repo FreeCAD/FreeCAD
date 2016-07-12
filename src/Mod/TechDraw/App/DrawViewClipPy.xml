@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewPy"
+    Name="DrawViewClipPy"
+    Twin="DrawViewClip"
+    TwinPointer="DrawViewClip"
+    Include="Mod/TechDraw/App/DrawViewClip.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Clip Views</UserDocu>
+    </Documentation>
+    <Methode Name="addView">
+      <Documentation>
+        <UserDocu>addView(DrawView) - Add a View to this ClipView</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeView">
+      <Documentation>
+        <UserDocu>removeView(DrawView) - Remove specified View to this ClipView</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getChildViewNames">
+      <Documentation>
+        <UserDocu>getChildViewNames() - get a list of the DrawViews in this ClipView</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>
