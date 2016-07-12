@@ -251,7 +251,9 @@ void QGIView::updateView(bool update)
 
     if (update ||
         getViewObject()->Rotation.isTouched()) {
-        //NOTE: QPainterPaths have to be rotated individually. This transform handles everything else.
+        //NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
+        //Scale is handled in GeometryObject for DVP & descendents
+        //Objects not descended from DVP must setScale for themselves
         double rot = getViewObject()->Rotation.getValue();
         QPointF centre = boundingRect().center();
         setTransform(QTransform().translate(centre.x(), centre.y()).rotate(-rot).translate(-centre.x(), -centre.y()));

@@ -89,7 +89,6 @@ void QGIViewSymbol::updateView(bool update)
     }
 
     if (viewSymbol->Scale.isTouched()) {
-        setScale(viewSymbol->Scale.getValue());
         draw();
     }
 
@@ -102,6 +101,10 @@ void QGIViewSymbol::draw()
         return;
     }
 
+//note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
+//due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
+    TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
+    setScale(viewSymbol->Scale.getValue());
     drawSvg();
     if (borderVisible) {
         drawBorder();
