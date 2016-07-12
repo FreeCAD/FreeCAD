@@ -70,10 +70,12 @@ DrawView::DrawView(void)
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
-    //Scale.setStatus(App::Property::ReadOnly,true);
 
-    autoPos = true;
-
+    if (isRestoring()) {
+        autoPos = false;
+    } else {
+        autoPos = true;
+    }
 }
 
 DrawView::~DrawView()
@@ -126,8 +128,6 @@ void DrawView::onChanged(const App::Property* prop)
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Custom") ) {
-//            } else if (ScaleType.isValue("Custom") &&
-//                Scale.testStatus(App::Property::ReadOnly)) {
                 Scale.setStatus(App::Property::ReadOnly,false);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             }
