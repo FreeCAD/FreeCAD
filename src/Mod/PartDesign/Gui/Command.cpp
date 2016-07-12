@@ -1122,6 +1122,20 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
 {
+	App::Document *doc = getDocument();
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+		/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+	
+	// No PartDesign feature without Body past FreeCAD 0.13
+	if (!pcActiveBody) {
+		// Call normal loft command for old workflow
+		if (PartDesignGui::isLegacyWorkflow(doc)) {
+			Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+			rcCmdMgr.runCommandByName("Part_Loft");
+		}
+		return;
+	}
+
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
@@ -1162,6 +1176,20 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 {
+	App::Document *doc = getDocument();
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+		/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
+
+	// No PartDesign feature without Body past FreeCAD 0.13
+	if (!pcActiveBody) {
+		// Call normal loft command for old workflow
+		if (PartDesignGui::isLegacyWorkflow(doc)) {
+			Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+			rcCmdMgr.runCommandByName("Part_Loft");
+		}
+		return;
+	}
+
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
