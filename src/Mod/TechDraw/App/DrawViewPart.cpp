@@ -34,7 +34,6 @@
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
 #include <HLRTopoBRep_OutLiner.hxx>
-//#include <BRepAPI_MakeOutLine.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_ShapeBounds.hxx>
 #include <HLRBRep_HLRToShape.hxx>
@@ -68,7 +67,6 @@
 #include <GeomLib_Tool.hxx>
 #include <BRepLib.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
-#include <TopoDS_Shape.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeExtend_WireData.hxx>
@@ -82,12 +80,13 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "Geometry.h"
+#include "GeometryObject.h"
 #include "DrawViewPart.h"
 #include "DrawHatch.h"
 #include "EdgeWalker.h"
 
 
-#include "DrawViewPartPy.h"  // generated from DrawViewPartPy.xml
+#include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
 
 using namespace TechDraw;
 using namespace std;

@@ -45,6 +45,8 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "QGCustomSvg.h"
+#include "QGCustomRect.h"
 #include "QGIView.h"
 #include "QGIFace.h"
 

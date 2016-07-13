@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIViewDimension.h"
 #include "QGIArrow.h"
@@ -1290,4 +1291,4 @@ void QGIViewDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     QGIView::paint(painter, &myOption, widget);
 }
 
-#include "moc_QGIViewDimension.cpp"
+#include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

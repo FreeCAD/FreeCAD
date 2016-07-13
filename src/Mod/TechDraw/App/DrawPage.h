@@ -24,11 +24,10 @@
 #ifndef _DrawPage_h_
 #define _DrawPage_h_
 
-#include "App/DocumentObject.h"
-#include "App/DocumentObjectGroup.h"
-#include "App/PropertyStandard.h"
-#include "App/PropertyFile.h"
-//#include "App/FeaturePython.h"
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
+#include <App/PropertyStandard.h>
+#include <App/PropertyFile.h>
 
 namespace TechDraw
 {
@@ -38,7 +37,6 @@ class TechDrawExport DrawPage: public App::DocumentObject
     PROPERTY_HEADER(TechDraw::DrawPage);
 
 public:
-    /// Constructor
     DrawPage(void);
     virtual ~DrawPage();
 
@@ -47,13 +45,13 @@ public:
 
     App::PropertyFloat Scale;
     App::PropertyEnumeration ProjectionType; // First or Third Angle
-    
+
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     //@}
-    
+
     int addView(App::DocumentObject *docObj);
     int removeView(App::DocumentObject* docObj);
     short mustExecute() const;

@@ -56,8 +56,8 @@
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
-#include "../App/DrawHatch.h"
-#include "../App/DrawViewSpreadsheet.h"
+#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 
 
 #include "QGIDrawingTemplate.h"
@@ -73,6 +73,7 @@
 #include "QGIViewSpreadsheet.h"
 
 #include "ZVALUE.h"
+#include "ViewProviderPage.h"
 #include "QGVPage.h"
 
 using namespace TechDrawGui;
@@ -612,4 +613,10 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
     viewport()->setCursor(Qt::ArrowCursor);
 }
 
-#include "moc_QGVPage.cpp"
+TechDraw::DrawPage* QGVPage::getDrawPage()
+{
+    return pageGui->getPageObject();
+}
+
+
+#include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

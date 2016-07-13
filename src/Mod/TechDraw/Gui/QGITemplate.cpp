@@ -31,6 +31,7 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 
 #include "ZVALUE.h"
+#include "TemplateTextField.h"
 #include "QGITemplate.h"
 
 using namespace TechDrawGui;
@@ -73,4 +74,4 @@ void QGITemplate::updateView(bool update)
     draw();
 }
 
-#include "moc_QGITemplate.cpp"
+#include <Mod/TechDraw/Gui/moc_QGITemplate.cpp>

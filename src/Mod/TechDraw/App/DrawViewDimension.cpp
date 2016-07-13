@@ -34,6 +34,10 @@
 
 #include <QLocale>
 
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -43,15 +47,13 @@
 
 #include <Mod/Measure/App/Measurement.h>
 
+#include "Geometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
 #include "DrawUtil.h"
 
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
 
-#include "DrawViewDimensionPy.h"  // generated from DrawViewDimensionPy.xml
+#include <Mod/TechDraw/App/DrawViewDimensionPy.h>  // generated from DrawViewDimensionPy.xml
 
 using namespace TechDraw;
 

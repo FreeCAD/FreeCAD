@@ -1,13 +1,13 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/TechDraw/App/DrawViewSymbol.h"
-#include "Mod/TechDraw/App/DrawView.h"
-#include "Mod/TechDraw/App/DrawViewPy.h"
+#include "DrawViewSymbol.h"
+#include "DrawView.h"
 
-// inclusion of the generated files (generated out of DrawViewSymbolPy.xml)
-#include "DrawViewSymbolPy.h"
-#include "DrawViewSymbolPy.cpp"
+// inclusion of the generated files
+#include <Mod/TechDraw/App/DrawViewPy.h>
+#include <Mod/TechDraw/App/DrawViewSymbolPy.h>
+#include <Mod/TechDraw/App/DrawViewSymbolPy.cpp>
 
 using namespace TechDraw;
 
@@ -18,11 +18,6 @@ std::string DrawViewSymbolPy::representation(void) const
 }
 
 
-
-
-
-
-
 PyObject *DrawViewSymbolPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -30,7 +25,5 @@ PyObject *DrawViewSymbolPy::getCustomAttributes(const char* /*attr*/) const
 
 int DrawViewSymbolPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
-
-

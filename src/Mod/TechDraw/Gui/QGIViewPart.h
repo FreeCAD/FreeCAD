@@ -27,10 +27,7 @@
 #include <QPainter>
 
 #include "QGIView.h"
-#include "QGIFace.h"
-#include "QGIEdge.h"
-#include "QGIVertex.h"
-#include "../App/Geometry.h"
+#include <Mod/TechDraw/App/Geometry.h>
 
 
 namespace TechDraw {
@@ -40,6 +37,7 @@ class DrawHatch;
 
 namespace TechDrawGui
 {
+class QGIFace;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {

@@ -52,6 +52,8 @@
 # include <Mod/TechDraw/App/DrawViewDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
+# include <Mod/TechDraw/App/Geometry.h>
+
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 

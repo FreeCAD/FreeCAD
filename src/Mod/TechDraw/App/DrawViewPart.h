@@ -26,6 +26,7 @@
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -33,7 +34,16 @@
 #include <App/FeaturePython.h>
 
 #include <Base/BoundBox.h>
-#include "GeometryObject.h"
+
+class gp_Pnt;
+
+namespace TechDrawGeometry
+{
+class GeometryObject;
+class Vertex;
+class BaseGeom;
+class Face;
+}
 
 namespace TechDraw {
 class DrawHatch;

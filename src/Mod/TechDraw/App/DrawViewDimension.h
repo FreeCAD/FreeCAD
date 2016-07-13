@@ -28,13 +28,14 @@
 # include <App/PropertyLinks.h>
 
 #include "DrawView.h"
-#include "DrawViewPart.h"
 
 namespace Measure {
 class Measurement;
 }
 namespace TechDraw
 {
+
+class DrawViewPart;
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {

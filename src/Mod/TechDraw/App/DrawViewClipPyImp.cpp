@@ -1,15 +1,16 @@
 
 #include "PreCompiled.h"
+
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 
-#include "Mod/TechDraw/App/DrawViewClip.h"
-#include "Mod/TechDraw/App/DrawView.h"
-#include "DrawViewPy.h"
+#include "DrawViewClip.h"
+#include "DrawView.h"
 
-// inclusion of the generated files (generated out of DrawViewClipPy.xml)
-#include "DrawViewClipPy.h"
-#include "DrawViewClipPy.cpp"
+// inclusion of the generated files
+#include <Mod/TechDraw/App/DrawViewPy.h>
+#include <Mod/TechDraw/App/DrawViewClipPy.h>
+#include <Mod/TechDraw/App/DrawViewClipPy.cpp>
 
 using namespace TechDraw;
 

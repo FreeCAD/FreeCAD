@@ -41,8 +41,9 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 
+#include "ViewProviderProjGroup.h"
 #include "TaskProjGroup.h"
-#include "ui_TaskProjGroup.h"
+#include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
 using namespace Gui;
 using namespace TechDrawGui;
@@ -410,4 +411,4 @@ bool TaskDlgProjGroup::reject()
 }
 
 
-#include "moc_TaskProjGroup.cpp"
+#include <Mod/TechDraw/Gui/moc_TaskProjGroup.cpp>

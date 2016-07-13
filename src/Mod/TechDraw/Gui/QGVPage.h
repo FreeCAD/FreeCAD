@@ -26,8 +26,6 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 
-#include "ViewProviderPage.h"
-
 namespace TechDraw {
 class DrawViewPart;
 class DrawProjGroup;
@@ -37,7 +35,6 @@ class DrawTemplate;
 class DrawViewAnnotation;
 class DrawViewSymbol;
 class DrawViewClip;
-class DrawHatch;
 class DrawViewCollection;
 class DrawViewSpreadsheet;
 }
@@ -47,6 +44,7 @@ namespace TechDrawGui
 class QGIView;
 class QGIViewDimension;
 class QGITemplate;
+class ViewProviderPage;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -85,8 +83,7 @@ public:
     QGITemplate * getTemplate() const;
     void removeTemplate();
 
-    /// Getter for DrawPage feature
-    TechDraw::DrawPage * getDrawPage() { return pageGui->getPageObject(); }
+    TechDraw::DrawPage * getDrawPage();
 
     void toggleEdit(bool enable);
 

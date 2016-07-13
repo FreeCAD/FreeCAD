@@ -86,4 +86,4 @@ void DlgPrefsTechDrawImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgPrefsTechDrawImp.cpp"
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawImp.cpp>

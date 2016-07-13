@@ -81,15 +81,16 @@
 #include <App/Material.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
-//#include <Base/FileInfo.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Geometry.h>
 
-#include "DrawViewSection.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
 #include "EdgeWalker.h"
+#include "DrawViewSection.h"
 
 using namespace TechDraw;
 using namespace std;

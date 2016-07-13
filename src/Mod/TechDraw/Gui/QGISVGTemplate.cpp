@@ -42,6 +42,7 @@
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 
 #include "ZVALUE.h"
+#include "TemplateTextField.h"
 #include "QGISVGTemplate.h"
 
 using namespace TechDrawGui;
@@ -220,4 +221,4 @@ void QGISVGTemplate::updateView(bool update)
     draw();
 }
 
-#include "moc_QGISVGTemplate.cpp"
+#include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

@@ -48,7 +48,6 @@
 #include "ViewProviderViewClip.h"
 #include "ViewProviderHatch.h"
 #include "ViewProviderSpreadsheet.h"
-//#include "resources/qrc_TechDraw.cpp"
 
 // use a different name to CreateCommand()
 void CreateTechDrawCommands(void);

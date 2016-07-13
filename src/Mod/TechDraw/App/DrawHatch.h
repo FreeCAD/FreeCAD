@@ -28,11 +28,9 @@
 # include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 
-#include "DrawView.h"
-#include "DrawViewPart.h"
-
 namespace TechDraw
 {
+class DrawViewPart;
 
 class TechDrawExport DrawHatch : public App::DocumentObject
 {
