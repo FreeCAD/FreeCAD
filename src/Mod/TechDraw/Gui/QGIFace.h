@@ -29,15 +29,11 @@
 #include <QByteArray>
 
 #include "QGIPrimPath.h"
-#include "QGCustomSvg.h"
-#include "QGCustomRect.h"
-
-namespace TechDrawGeometry {
-class BaseGeom;
-}
 
 namespace TechDrawGui
 {
+class QGCustomSvg;
+class QGCustomRect;
 
     const double SVGSIZEW = 64.0;                     //width and height of standard FC SVG pattern
     const double SVGSIZEH = 64.0;

@@ -27,11 +27,12 @@
 
 #include <QGraphicsRectItem>
 
-#include "DlgTemplateField.h"
-#include "../App/DrawTemplate.h"
+
+#include <Mod/TechDraw/App/DrawTemplate.h>
 
 namespace TechDrawGui
 {
+class DlgTemplateField;
     /// QGraphicsRectItem-derived class for the text fields in title blocks
     /*!
      * This essentially just a way for us to make a rectangular area which

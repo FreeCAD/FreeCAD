@@ -132,4 +132,4 @@ void QGIDrawingTemplate::updateView(bool update)
     draw();
 }
 
-#include "moc_QGIDrawingTemplate.cpp"
+#include <Mod/TechDraw/Gui/moc_QGIDrawingTemplate.cpp>

@@ -29,8 +29,6 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 
-class BRepAdaptor_Curve;
-
 namespace TechDrawGeometry {
 
 enum ExtractionType {               //obs sb vis/hid + hard/smooth/seam/out(edgeClass?)

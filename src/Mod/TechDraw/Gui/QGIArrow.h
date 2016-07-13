@@ -30,10 +30,6 @@ class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
-namespace TechDrawGeometry {
-class BaseGeom;
-}
-
 namespace TechDrawGui
 {
 

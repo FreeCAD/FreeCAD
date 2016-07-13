@@ -31,6 +31,7 @@
 
 #include <Base/Console.h>
 
+#include "DlgTemplateField.h"
 #include "TemplateTextField.h"
 
 //#include<QDebug>

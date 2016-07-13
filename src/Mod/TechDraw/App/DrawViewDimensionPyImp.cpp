@@ -1,11 +1,11 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/TechDraw/App/DrawViewDimension.h"
+#include "DrawViewDimension.h"
 
 // inclusion of the generated files (generated out of DrawViewDimensionPy.xml)
-#include "DrawViewDimensionPy.h"
-#include "DrawViewDimensionPy.cpp"
+#include <Mod/TechDraw/App/DrawViewDimensionPy.h>
+#include <Mod/TechDraw/App/DrawViewDimensionPy.cpp>
 
 using namespace TechDraw;
 
@@ -14,11 +14,6 @@ std::string DrawViewDimensionPy::representation(void) const
 {
     return std::string("<DrawViewDimension object>");
 }
-
-
-
-
-
 
 
 PyObject *DrawViewDimensionPy::getCustomAttributes(const char* /*attr*/) const

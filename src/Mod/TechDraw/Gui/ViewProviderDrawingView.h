@@ -27,13 +27,13 @@
 
 #include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
-#include "QGIView.h"
 
 namespace TechDraw{
     class DrawView;
 }
 
 namespace TechDrawGui {
+class QGIView;
 
 class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {

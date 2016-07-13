@@ -29,7 +29,7 @@
 #include <QFont>
 #include <App/PropertyLinks.h>
 
-#include "../App/DrawView.h"
+#include <Mod/TechDraw/App/DrawView.h>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;

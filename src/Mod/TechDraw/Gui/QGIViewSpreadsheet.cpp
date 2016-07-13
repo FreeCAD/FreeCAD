@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 #endif
 
-#include "../App/DrawViewSpreadsheet.h"
+#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include "QGIViewSpreadsheet.h"
 
 using namespace TechDrawGui;

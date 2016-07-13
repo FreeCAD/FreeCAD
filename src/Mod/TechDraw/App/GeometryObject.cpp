@@ -75,18 +75,14 @@
 # include <BRepProj_Projection.hxx>
 #include <BRepLib.hxx>
 
-# include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
 
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
 
-// # include <BRepAdaptor_HCompCurve.hxx>
 # include <Approx_Curve3d.hxx>
 
 # include <BRepAdaptor_HCurve.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_Data.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>

@@ -1,11 +1,11 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/TechDraw/App/DrawProjGroupItem.h"
+#include "DrawProjGroupItem.h"
 
 // inclusion of the generated files (generated out of DrawProjGroupItemPy.xml)
-#include "DrawProjGroupItemPy.h"
-#include "DrawProjGroupItemPy.cpp"
+#include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
+#include <Mod/TechDraw/App/DrawProjGroupItemPy.cpp>
 
 using namespace TechDraw;
 
@@ -15,12 +15,6 @@ std::string DrawProjGroupItemPy::representation(void) const
     return std::string("<DrawProjGroupItem object>");
 }
 
-
-
-
-
-
-
 PyObject *DrawProjGroupItemPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -28,7 +22,5 @@ PyObject *DrawProjGroupItemPy::getCustomAttributes(const char* /*attr*/) const
 
 int DrawProjGroupItemPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
-
-

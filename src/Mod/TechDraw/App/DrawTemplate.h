@@ -30,11 +30,6 @@
 #include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 
-namespace TechDrawGeometry
-{
-    class BaseGeom;
-}
-
 namespace TechDraw
 {
 

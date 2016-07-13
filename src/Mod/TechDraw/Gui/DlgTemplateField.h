@@ -26,7 +26,7 @@
 
 #include <QDialog>
 
-#include "ui_DlgTemplateField.h"
+#include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
 
 namespace TechDrawGui {
 

@@ -42,44 +42,46 @@
 
 #include "MDIViewPage.h"
 
-#include "Base/Stream.h"
-#include "Base/gzstream.h"
-#include "Base/PyObjectBase.h"
-#include "Base/Console.h"
+#include <Base/Stream.h>
+#include <Base/gzstream.h>
+#include <Base/PyObjectBase.h>
+#include <Base/Console.h>
 
-#include "App/Document.h"
-#include "App/DocumentObject.h"
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 
-#include "Gui/Document.h"
-#include "Gui/ViewProvider.h"
-#include "Gui/FileDialog.h"
-#include "Gui/WaitCursor.h"
-#include "Gui/Application.h"
-#include "Gui/Command.h"
-#include "Gui/Document.h"
-#include "Gui/Window.h"
-#include "Gui/MainWindow.h"
-#include "Gui/Selection.h"
+#include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/FileDialog.h>
+#include <Gui/WaitCursor.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Window.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 
-#include "../App/DrawHatch.h"
-#include "../App/DrawPage.h"
-#include "../App/DrawProjGroup.h"
-#include "../App/DrawTemplate.h"
-#include "../App/DrawView.h"
-#include "../App/DrawViewAnnotation.h"
-#include "../App/DrawViewClip.h"
-#include "../App/DrawViewCollection.h"
-#include "../App/DrawViewDimension.h"
-#include "../App/DrawViewPart.h"
-#include "../App/DrawViewSection.h"
-#include "../App/DrawViewSpreadsheet.h"
-#include "../App/DrawViewSymbol.h"
+#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawViewCollection.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
 
 #include "QGIDrawingTemplate.h"
 #include "QGIView.h"
 #include "QGIViewPart.h"
 #include "QGIViewDimension.h"
 #include "QGIViewClip.h"
+#include "QGIVertex.h"
+#include "QGIEdge.h"
+#include "QGIFace.h"
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
 
@@ -1130,4 +1132,4 @@ void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) 
     }
 }
 
-#include "moc_MDIViewPage.cpp"
+#include <Mod/TechDraw/Gui/moc_MDIViewPage.cpp>

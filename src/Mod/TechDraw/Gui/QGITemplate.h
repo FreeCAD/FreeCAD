@@ -26,8 +26,6 @@
 #include <QGraphicsItemGroup>
 #include <QObject>
 
-#include "TemplateTextField.h"
-
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 QT_END_NAMESPACE
@@ -38,6 +36,7 @@ class DrawTemplate;
 
 namespace TechDrawGui
 {
+class TemplateTextField;
 
 class TechDrawGuiExport QGITemplate : public QObject, public QGraphicsItemGroup
 {

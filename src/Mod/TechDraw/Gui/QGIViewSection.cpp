@@ -40,9 +40,10 @@
 
 #include <Base/Console.h>
 
-#include "../App/DrawViewSection.h"
+#include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "ZVALUE.h"
+#include "QGIFace.h"
 #include "QGIViewSection.h"
 
 using namespace TechDrawGui;

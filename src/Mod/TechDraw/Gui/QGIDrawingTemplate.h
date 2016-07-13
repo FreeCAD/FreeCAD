@@ -27,7 +27,6 @@
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
-class QGraphicsSceneMouseEvent;
 class QGraphicsPathItem;
 QT_END_NAMESPACE
 

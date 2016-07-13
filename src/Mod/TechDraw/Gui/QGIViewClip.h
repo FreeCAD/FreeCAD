@@ -27,15 +27,11 @@
 #include <QPainter>
 
 #include "QGIView.h"
-#include "QGCustomRect.h"
-#include "QGCustomClip.h"
-
-namespace TechDraw {
-class DrawViewPart;
-}
 
 namespace TechDrawGui
 {
+class QGCustomRect;
+class QGCustomClip;
 
 class TechDrawGuiExport QGIViewClip : public QGIView
 {

@@ -7,10 +7,9 @@
 #include "DrawProjGroupItem.h"
 
 // inclusion of the generated files (generated out of DrawProjGroupPy.xml)
-#include "DrawProjGroupPy.h"
-#include "DrawProjGroupPy.cpp"
-
-#include "DrawProjGroupItemPy.h"
+#include <Mod/TechDraw/App/DrawProjGroupPy.h>
+#include <Mod/TechDraw/App/DrawProjGroupPy.cpp>
+#include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
 
 using namespace TechDraw;
 

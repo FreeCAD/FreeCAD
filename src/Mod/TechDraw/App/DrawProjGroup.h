@@ -25,15 +25,16 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
-#include <App/FeaturePython.h>
 
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
+
 #include "DrawViewCollection.h"
-#include "DrawProjGroupItem.h"
 
 namespace TechDraw
 {
+
+class DrawProjGroupItem;
 
 /**
  * Class super-container for managing a collection of DrawProjGroupItem

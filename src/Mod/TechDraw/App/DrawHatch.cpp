@@ -38,9 +38,10 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
+#include "DrawViewPart.h"
 #include "DrawHatch.h"
 
-#include "DrawHatchPy.h"  // generated from DrawHatchPy.xml
+#include <Mod/TechDraw/App/DrawHatchPy.h>  // generated from DrawHatchPy.xml
 
 using namespace TechDraw;
 using namespace std;

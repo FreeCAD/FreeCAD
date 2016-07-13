@@ -30,7 +30,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include "App/PropertyStandard.h"
+#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 
 #include "DrawView.h"
