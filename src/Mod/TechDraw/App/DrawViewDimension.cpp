@@ -30,13 +30,12 @@
 # include <QString>
 # include <QStringList>
 # include <QRegExp>
-#endif
-
-#include <QLocale>
-
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#endif
+
+#include <QLocale>
 
 #include <App/Application.h>
 #include <Base/Console.h>
