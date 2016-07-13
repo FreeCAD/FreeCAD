@@ -71,10 +71,7 @@ public:
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
     App::PropertyFloatConstraint  Tolerance;
-//    App::PropertyLinkList   HatchAreas;                                //DrawHatch
 
-    //int addHatch(App::DocumentObject *docObj);
-    //int removeHatch(App::DocumentObject *docObj);
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
 
     //TODO: are there use-cases for Python access to TechDrawGeometry???
