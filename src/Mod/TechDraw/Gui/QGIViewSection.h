@@ -40,9 +40,6 @@ public:
     enum {Type = QGraphicsItem::UserType + 108};
     int type() const override { return Type;}
 
-Q_SIGNALS:
-    void dirty();
-
 protected:
     void drawSectionFace();
 };

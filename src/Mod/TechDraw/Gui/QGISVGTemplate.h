@@ -55,9 +55,6 @@ public:
     void draw();
     virtual void updateView(bool update = false);
 
-Q_SIGNALS:
-    void dirty();
-
 protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);

@@ -98,9 +98,6 @@ public:
     virtual void updateView(bool update = false);
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
-Q_SIGNALS:
-    void dirty();
-
 public Q_SLOTS:
     void datumLabelDragged(void);
     void datumLabelDragFinished(void);
