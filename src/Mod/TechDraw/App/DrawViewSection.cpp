@@ -26,56 +26,31 @@
 
 #ifndef _PreComp_
 # include <sstream>
-#endif
 
-#include <HLRBRep_Algo.hxx>
-#include <TopoDS_Shape.hxx>
-#include <HLRTopoBRep_OutLiner.hxx>
-
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Dir.hxx>
 #include <Geom_Plane.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
+#include <HLRBRep_Algo.hxx>
+#include <HLRAlgo_Projector.hxx>
+#include <HLRBRep_HLRToShape.hxx>
+#include <TopoDS_Shape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepMesh.hxx>
 
-#include <BRepBuilderAPI_MakePolygon.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepPrim_FaceBuilder.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
+#endif
 
-#include <boost/concept_check.hpp>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -85,7 +60,6 @@
 #include <Base/Parameter.h>
 
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Geometry.h>
 
 #include "Geometry.h"
 #include "GeometryObject.h"

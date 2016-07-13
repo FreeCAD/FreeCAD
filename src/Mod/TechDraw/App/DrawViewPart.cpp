@@ -26,52 +26,39 @@
 
 #ifndef _PreComp_
 # include <sstream>
-#endif
 
-#include <algorithm>
-//#include <limits>
-
-#include <HLRBRep_Algo.hxx>
-#include <TopoDS_Shape.hxx>
-#include <HLRTopoBRep_OutLiner.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepGProp.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+#include <Geom_Curve.hxx>
+#include <GProp_GProps.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-
-#include <BRepAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <GeomLib_Tool.hxx>
-#include <BRepLib.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
+#include <HLRBRep_Algo.hxx>
+#include <HLRAlgo_Projector.hxx>
+#include <HLRBRep_ShapeBounds.hxx>
+#include <HLRBRep_HLRToShape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_Wire.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+
+#endif
+
+#include <algorithm>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
