@@ -128,7 +128,7 @@ namespace MED
     EVersion aVersion = GetVersionId(theFileName,theDoPreCheckInSeparateProcess);
     switch(aVersion){
     case eV2_2:
-      // aWrapper.reset(new MED::V2_2::TVWrapper(theFileName));
+      aWrapper.reset(new MED::V2_2::TVWrapper(theFileName));
       break;
     case eV2_1:
       EXCEPTION(std::runtime_error,"Cannot open file '"<<theFileName<<"'. Med version 2.1 is not supported any more.");
@@ -150,14 +150,14 @@ namespace MED
     PWrapper aWrapper;
     switch(theId){
     case eV2_2:
-      // aWrapper.reset(new MED::V2_2::TVWrapper(theFileName));
+      aWrapper.reset(new MED::V2_2::TVWrapper(theFileName));
       break;
     case eV2_1:
       EXCEPTION(std::runtime_error,"Cannot open file '"<<theFileName<<"'. Med version 2.1 is not supported any more.");
       //aWrapper.reset(new MED::V2_1::TVWrapper(theFileName));
       break;
-    //default:
-      // aWrapper.reset(new MED::V2_2::TVWrapper(theFileName));
+    default:
+      aWrapper.reset(new MED::V2_2::TVWrapper(theFileName));
     }
     return aWrapper;
   }
