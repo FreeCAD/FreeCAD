@@ -30,11 +30,14 @@
 #include <TopoDS_Compound.hxx>
 
 #include "DrawViewPart.h"
-#include "Geometry.h"
 
 class gp_Pln;
-class TopoDS_Compound;
 class TopoDS_Face;
+
+namespace TechDrawGeometry
+{
+class Face;
+}
 
 namespace TechDraw
 {

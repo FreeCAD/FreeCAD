@@ -40,7 +40,9 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "../App/DrawViewSymbol.h"
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
+
+#include "QGCustomSvg.h"
 #include "QGIViewSymbol.h"
 
 using namespace TechDrawGui;

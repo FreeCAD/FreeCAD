@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+#include <QRectF>
 #endif
 
 #include <App/Document.h>
@@ -34,13 +35,11 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
-#include <QRectF>
-
-#include <Mod/Part/App/PartFeature.h>
 #include "DrawPage.h"
+#include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
 
-#include "DrawProjGroupPy.h"  // generated from DrawProjGroupPy.xml
+#include <Mod/TechDraw/App/DrawProjGroupPy.h>  // generated from DrawProjGroupPy.xml
 
 using namespace TechDraw;
 

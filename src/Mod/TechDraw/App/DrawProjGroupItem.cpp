@@ -32,7 +32,7 @@
 
 #include "DrawProjGroupItem.h"
 
-#include "DrawProjGroupItemPy.h"  // generated from DrawProjGroupItemPy.xml
+#include <Mod/TechDraw/App/DrawProjGroupItemPy.h>  // generated from DrawProjGroupItemPy.xml
 
 using namespace TechDraw;
 

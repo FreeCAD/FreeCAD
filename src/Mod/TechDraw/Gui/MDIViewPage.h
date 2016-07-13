@@ -24,8 +24,8 @@
 #ifndef DRAWINGGUI_DRAWINGVIEW_H
 #define DRAWINGGUI_DRAWINGVIEW_H
 
-#include "Gui/MDIView.h"
-#include "Gui/Selection.h"
+#include <Gui/MDIView.h>
+#include <Gui/Selection.h>
 
 #include <QPrinter>
 #include <QGraphicsScene>

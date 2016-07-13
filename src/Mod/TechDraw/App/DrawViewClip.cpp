@@ -36,10 +36,9 @@
 #include <iostream>
 
 #include "DrawViewClip.h"
-#include "DrawView.h"
 #include "DrawPage.h"
 
-#include "DrawViewClipPy.h"  // generated from DrawViewClipPy.xml
+#include <Mod/TechDraw/App/DrawViewClipPy.h>  // generated from DrawViewClipPy.xml
 
 using namespace TechDraw;
 using namespace std;

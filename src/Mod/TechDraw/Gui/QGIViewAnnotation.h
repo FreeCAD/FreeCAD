@@ -25,7 +25,6 @@
 #define DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 
 #include "QGIView.h"
-#include "QGCustomText.h"
 
 namespace TechDraw {
 class DrawViewAnnotation;
@@ -33,6 +32,7 @@ class DrawViewAnnotation;
 
 namespace TechDrawGui
 {
+class QGCustomText;
 
 class TechDrawGuiExport QGIViewAnnotation : public QGIView
 {

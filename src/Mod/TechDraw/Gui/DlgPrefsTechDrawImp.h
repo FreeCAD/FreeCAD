@@ -26,7 +26,7 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMP_H
 
-#include "ui_DlgPrefsTechDraw.h"
+#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw.h>
 #include <Gui/PropertyPage.h>
 
 namespace TechDrawGui {

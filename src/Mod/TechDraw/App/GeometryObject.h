@@ -34,15 +34,8 @@
 
 #include "Geometry.h"
 
-class HLRBRep_Algo;
-class HLRBRep_EdgeData;
-class TopoDS_Wire;
-class HLRBRep_HLRToShape;
-
 namespace TechDrawGeometry
 {
-
-class BaseGeom;
 
 //! scales & mirrors a shape about a center
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,

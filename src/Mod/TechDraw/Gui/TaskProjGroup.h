@@ -28,26 +28,20 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include "ui_TaskProjGroup.h"
+#include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
-#include "ViewProviderProjGroup.h"
-#include "../App/DrawProjGroup.h"
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 
 
 class Ui_TaskProjGroup;
 
-namespace App {
-  class Document;
-  class DocumentObject;
-}
-
 namespace TechDraw {
-  class DrawViewPart;
   class DrawProjGroup;
 }
 
 namespace TechDrawGui
 {
+class ViewProviderProjGroup;
 
 class TaskProjGroup : public QWidget
 {
@@ -125,7 +119,7 @@ public:
 protected:
     const ViewProviderProjGroup *viewProvider;
     TechDraw::DrawProjGroup *multiView;
-    
+
 private:
     TaskProjGroup * widget;
     Gui::TaskView::TaskBox* taskbox;
@@ -134,4 +128,3 @@ private:
 } //namespace TechDrawGui
 
 #endif // #ifndef GUI_TASKVIEW_TASKVIEWGROUP_H
-

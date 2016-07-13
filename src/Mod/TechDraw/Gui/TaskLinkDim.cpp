@@ -46,7 +46,7 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
 #include "TaskLinkDim.h"
-#include "ui_TaskLinkDim.h"
+#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
 
 using namespace Gui;
 using namespace TechDrawGui;
@@ -202,4 +202,4 @@ bool TaskDlgLinkDim::reject()
     return true;
 }
 
-#include "moc_TaskLinkDim.cpp"
+#include <Mod/TechDraw/Gui/moc_TaskLinkDim.cpp>

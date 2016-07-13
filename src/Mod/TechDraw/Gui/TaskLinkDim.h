@@ -26,23 +26,12 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include "ui_TaskLinkDim.h"
+#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
 
-#include "ViewProviderDimension.h"
-#include "../App/DrawViewDimension.h"
+#include <Mod/TechDraw/App/DrawViewDimension.h>
 
 
 class Ui_TaskLinkDim;
-
-namespace App {
-  class Document;
-  class DocumentObject;
-}
-
-namespace TechDraw {
-  class DrawViewPart;
-  class DrawViewDimension;
-}
 
 namespace TechDrawGui
 {

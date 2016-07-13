@@ -54,7 +54,7 @@
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
 
-#include "../App/DrawViewClip.h"
+#include <Mod/TechDraw/App/DrawViewClip.h>
 
 using namespace TechDrawGui;
 

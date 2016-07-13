@@ -25,11 +25,11 @@
 # include <sstream>
 #endif
 
-#include "Mod/TechDraw/App/DrawParametricTemplate.h"
+#include "DrawParametricTemplate.h"
 
 // inclusion of the generated files (generated out of DrawParametricTemplateSFPy.xml)
-#include "DrawParametricTemplatePy.h"
-#include "DrawParametricTemplatePy.cpp"
+#include <Mod/TechDraw/App/DrawParametricTemplatePy.h>
+#include <Mod/TechDraw/App/DrawParametricTemplatePy.cpp>
 
 using namespace TechDraw;
 

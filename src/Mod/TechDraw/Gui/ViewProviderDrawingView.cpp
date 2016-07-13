@@ -46,10 +46,12 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+
 #include "ViewProviderPage.h"
-#include "ViewProviderDrawingView.h"
+#include "QGIView.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
+#include "ViewProviderDrawingView.h"
 
 using namespace TechDrawGui;
 

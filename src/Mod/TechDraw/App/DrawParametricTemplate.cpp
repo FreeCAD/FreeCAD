@@ -41,7 +41,7 @@
 #include <iterator>
 
 #include "DrawParametricTemplate.h"
-#include "DrawParametricTemplatePy.h"
+#include <Mod/TechDraw/App/DrawParametricTemplatePy.h>
 
 using namespace TechDraw;
 using namespace std;
