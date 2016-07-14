@@ -245,7 +245,9 @@ void DrawViewPart::extractFaces()
     std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        origEdges.push_back((*itEdge)->occEdge);
+        if ((*itEdge)->visible) {                        //don't make invisible faces!
+            origEdges.push_back((*itEdge)->occEdge);
+        }
     }
 
     std::vector<TopoDS_Edge> faceEdges = origEdges;
@@ -659,10 +661,22 @@ bool DrawViewPart::hasGeometry(void) const
 
 Base::Vector3d DrawViewPart::getValidXDir() const
 {
+    Base::Vector3d X(1.0,0.0,0.0);
+    Base::Vector3d Y(1.0,0.0,0.0);
     Base::Vector3d xDir = XAxisDirection.getValue();
-    if (xDir.Length() == 0) {
+    if (xDir.Length() < Precision::Confusion()) {
         Base::Console().Warning("XAxisDirection has zero length - using (1,0,0)\n");
-        xDir = Base::Vector3d(1.0,0.0,0.0);
+        xDir = X;
+    }
+    Base::Vector3d viewDir = Direction.getValue();
+    if ((xDir - viewDir).Length() < Precision::Confusion()) {
+        if (xDir == X) {
+            xDir = Y;
+        }else{
+            xDir = X;
+        }
+        Base::Console().Warning("XAxisDirection cannot equal Direction - using (%.3f,%.3f%.3f)\n",
+                                 xDir.x,xDir.y,xDir.z);
     }
     return xDir;
 }
