@@ -850,6 +850,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         return;
     }
 
+#ifdef FC_DEBUG
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
@@ -858,6 +859,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     else {
         Base::Console().Log("No active document\n");
     }
+#endif
 
     // notify all views attached to the application (not views belong to a special document)
     for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();++It)
@@ -933,9 +935,11 @@ void Application::onUpdate(void)
 /// Gets called if a view gets activated, this manages the whole activation scheme
 void Application::viewActivated(MDIView* pcView)
 {
+#ifdef FC_DEBUG
     // May be useful for error detection
     Base::Console().Log("Active view is %s (at %p)\n",
                  (const char*)pcView->windowTitle().toUtf8(),pcView);
+#endif
 
     signalActivateView(pcView);
 
