@@ -870,10 +870,12 @@ CmdPartDesignPad::CmdPartDesignPad()
 
 void CmdPartDesignPad::activated(int iMsg)
 {
-	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+	App::Document *doc = getDocument();
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+		/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
 
-	// No PartDesign feature without Body past FreeCAD 0.13
-	if (!pcActiveBody)
+	// No PartDesign feature without Body past FreeCAD 0.16
+	if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
 		return;
 
     Gui::Command* cmd = this;
@@ -925,11 +927,14 @@ CmdPartDesignPocket::CmdPartDesignPocket()
 
 void CmdPartDesignPocket::activated(int iMsg)
 {
-	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+	App::Document *doc = getDocument();
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+		/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
 
-	// No PartDesign feature without Body past FreeCAD 0.13
-	if (!pcActiveBody)
+	// No PartDesign feature without Body past FreeCAD 0.16
+	if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
 		return;
+
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
 
@@ -967,10 +972,12 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 
 void CmdPartDesignRevolution::activated(int iMsg)
 {
-	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+	App::Document *doc = getDocument();
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+		/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
 
-	// No PartDesign feature without Body past FreeCAD 0.13
-	if (!pcActiveBody)
+	// No PartDesign feature without Body past FreeCAD 0.16
+	if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
 		return;
 
     Gui::Command* cmd = this;
@@ -1016,10 +1023,11 @@ CmdPartDesignGroove::CmdPartDesignGroove()
 
 void CmdPartDesignGroove::activated(int iMsg)
 {
-	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
+	App::Document *doc = getDocument();
+	PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
+		/*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
 
-	// No PartDesign feature without Body past FreeCAD 0.13
-	if (!pcActiveBody)
+	if (!pcActiveBody && PartDesignGui::isModernWorkflow(doc))
 		return;
 
     Gui::Command* cmd = this;
