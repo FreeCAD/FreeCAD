@@ -26,9 +26,9 @@
 #include <QObject>
 #include <QPainter>
 
-#include "QGIView.h"
+#include <Base/Parameter.h>
 #include <Mod/TechDraw/App/Geometry.h>
-
+#include "QGIView.h"
 
 namespace TechDraw {
 class DrawViewPart;
@@ -85,8 +85,6 @@ protected:
 
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
     void dumpPath(const char* text,QPainterPath path);
-
-    QColor m_colHid;
 
 private:
     QList<QGraphicsItem*> deleteItems;

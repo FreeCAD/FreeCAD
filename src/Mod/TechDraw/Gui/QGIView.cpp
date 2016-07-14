@@ -1,3 +1,5 @@
+
+
 /***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *                                                                         *
@@ -43,7 +45,6 @@
 #include <App/Document.h>
 #include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
@@ -75,22 +76,9 @@ QGIView::QGIView()
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
 
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF00000));
-    m_colSel = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
-    m_colPre = fcColor.asValue<QColor>();
-
-    m_colCurrent = m_colNormal;
+    m_colCurrent = getNormalColor();
     m_pen.setColor(m_colCurrent);
 
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
-    m_font.setFamily(QString::fromStdString(fontName));
     m_font.setPointSize(5.0);     //scene units (mm), not points
 
     m_decorPen.setStyle(Qt::DashLine);
@@ -98,7 +86,6 @@ QGIView::QGIView()
 
     m_label = new QGCustomLabel();
     addToGroup(m_label);
-    m_label->setFont(m_font);
 
     m_border = new QGCustomBorder();
     addToGroup(m_border);
@@ -151,9 +138,9 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
-            m_colCurrent = m_colSel;
+            m_colCurrent = getSelectColor();
         } else {
-            m_colCurrent = m_colNormal;
+            m_colCurrent = getNormalColor();
         }
         drawBorder();
     }
@@ -195,11 +182,11 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
-        m_colCurrent = m_colSel;
+        m_colCurrent = getSelectColor();
     } else {
-        m_colCurrent = m_colPre;
+        m_colCurrent = getPreColor();
         //if(shape().contains(event->pos())) {                     // TODO don't like this for determining preselect (MLP)
-        //    m_colCurrent = m_colPre;
+        //    m_colCurrent = getPreColor();
         //}
     }
     drawBorder();
@@ -209,9 +196,9 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     if(isSelected()) {
-        m_colCurrent = m_colSel;
+        m_colCurrent = getSelectColor();
     } else {
-        m_colCurrent = m_colNormal;
+        m_colCurrent = getNormalColor();
     }
     drawBorder();
     //update();
@@ -321,6 +308,7 @@ void QGIView::drawBorder()
     m_border->hide();
 
     m_label->setDefaultTextColor(m_colCurrent);
+    m_font.setFamily(getPrefFont());
     m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);
@@ -383,6 +371,48 @@ QRectF QGIView::customChildrenBoundingRect() {
         }
     }
     return result;
+}
+
+QColor QGIView::getNormalColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+    m_colNormal = fcColor.asValue<QColor>();
+    return m_colNormal;
+}
+
+QColor QGIView::getPreColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
+    m_colPre = fcColor.asValue<QColor>();
+    return m_colPre;
+}
+
+QColor QGIView::getSelectColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
+    m_colSel = fcColor.asValue<QColor>();
+    return m_colSel;
+}
+
+Base::Reference<ParameterGrp> QGIView::getParmGroupCol()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    return hGrp;
+}
+
+QString QGIView::getPrefFont()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+    std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
+    return QString::fromStdString(fontName);
 }
 
 void _debugRect(char* text, QRectF r) {

@@ -49,6 +49,7 @@ public:
     bool getHiddenEdge() { return(isHiddenEdge); }
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() { return(isSmoothEdge); }
+    virtual void setPrettyNormal();
 
 protected:
     int projIndex;                                                     //index of edge in Projection. must exist.
@@ -56,12 +57,11 @@ protected:
     bool isCosmetic;
     bool isHiddenEdge;
     bool isSmoothEdge;
+    QColor getHiddenColor();
+    Qt::PenStyle getHiddenStyle();
 
 private:
     float strokeWidth;
-    QColor m_colHid;
-    QColor m_defNormal;
-    Qt::PenStyle m_styleHid;
 };
 
 }

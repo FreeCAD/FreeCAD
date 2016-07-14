@@ -104,3 +104,34 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
+
+QColor QGCustomText::getNormalColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+    return fcColor.asValue<QColor>();
+}
+
+QColor QGCustomText::getPreColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
+    return fcColor.asValue<QColor>();
+}
+
+QColor QGCustomText::getSelectColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
+    return fcColor.asValue<QColor>();
+}
+
+Base::Reference<ParameterGrp> QGCustomText::getParmGroup()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    return hGrp;
+}

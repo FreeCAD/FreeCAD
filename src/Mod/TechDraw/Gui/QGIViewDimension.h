@@ -119,9 +119,6 @@ protected:
     std::vector<QGraphicsItem*> arw;                                  //arrowheads
     std::vector<TechDrawGeometry::BaseGeom *> projGeom;
     QPen pen;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
 };
 
 } // namespace MDIViewPageGui

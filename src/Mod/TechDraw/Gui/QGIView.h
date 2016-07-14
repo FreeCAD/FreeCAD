@@ -24,10 +24,11 @@
 #define DRAWINGGUI_QGRAPHICSITEMVIEW_H
 
 #include <QGraphicsItemGroup>
-#include <QObject>
 #include <QPen>
 #include <QFont>
+
 #include <App/PropertyLinks.h>
+#include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 
@@ -87,6 +88,12 @@ protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual QRectF customChildrenBoundingRect(void);
+
+    QColor getNormalColor(void);
+    QColor getPreColor(void);
+    QColor getSelectColor(void);
+    QString getPrefFont(void);
+    Base::Reference<ParameterGrp> getParmGroupCol(void);
 
     TechDraw::DrawView *viewObj;
     std::string viewName;
