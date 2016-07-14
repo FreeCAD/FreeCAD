@@ -43,27 +43,13 @@
 using namespace TechDrawGui;
 
 QGIEdge::QGIEdge(int index) :
-    projIndex(index)
+    projIndex(index),
+    isCosmetic(false),
+    isHiddenEdge(false),
+    isSmoothEdge(false),
+    strokeWidth(1.0)
 {
-    strokeWidth = 1.;
-
-    isCosmetic    = false;
     m_pen.setCosmetic(isCosmetic);
-    isHiddenEdge = false;
-    isSmoothEdge = false;
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    m_defNormal = m_colNormal;
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("HiddenColor", 0x08080800));
-    m_colHid = fcColor.asValue<QColor>();
-
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    m_styleHid = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",2));
-
-    //m_pen.setStyle(Qt::SolidLine);
-    //m_pen.setCapStyle(Qt::RoundCap);
 }
 
 QRectF QGIEdge::boundingRect() const
@@ -96,13 +82,36 @@ void QGIEdge::setStrokeWidth(float width) {
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
     if (b) {
-        m_pen.setStyle(m_styleHid);
-        m_colNormal = m_colHid;
+        m_styleCurrent = getHiddenStyle();
     } else {
-        m_pen.setStyle(Qt::SolidLine);
-        m_colNormal = m_defNormal;
+        m_styleCurrent = Qt::SolidLine;
     }
     update();
+}
+
+void QGIEdge::setPrettyNormal() {
+    if (isHiddenEdge) {
+        m_colCurrent = getHiddenColor();
+    } else {
+        m_colCurrent = getNormalColor();
+    }
+    update();
+}
+
+QColor QGIEdge::getHiddenColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x08080800));
+    return fcColor.asValue<QColor>();
+}
+
+Qt::PenStyle QGIEdge::getHiddenStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",2));
+    return hidStyle;
 }
 
 void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

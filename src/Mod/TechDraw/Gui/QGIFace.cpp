@@ -61,7 +61,7 @@ QGIFace::QGIFace(int index) :
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
     //setFiltersChildEvents(true);
 
-    m_pen.setCosmetic(true);
+    m_styleCurrent = Qt::NoPen;    //don't draw face lines, just fill
 
     m_styleNormal = m_styleDef;
     m_colNormalFill = m_colDefFill;
@@ -88,13 +88,13 @@ void QGIFace::setPrettyNormal() {
 
 void QGIFace::setPrettyPre() {
     m_fillStyle = m_styleSelect;
-    m_fillColor = m_colPre;
+    m_fillColor = getPreColor();
     QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
     m_fillStyle = m_styleSelect;
-    m_fillColor = m_colSel;
+    m_fillColor = getSelectColor();
     QGIPrimPath::setPrettySel();
 }
 

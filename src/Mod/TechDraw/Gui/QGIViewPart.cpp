@@ -35,20 +35,17 @@
 #include <QPainterPathStroker>
 #include <QPainter>
 #include <QTextOption>
-#endif // #ifndef _PreComp_
-
-
 #include <QBitmap>
 #include <QImage>
 #include <QString>
 #include <QSvgRenderer>
+#endif // #ifndef _PreComp_
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -75,13 +72,6 @@ QGIViewPart::QGIViewPart()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
-
-
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Drawing/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x08080800));
-    m_colHid = fcColor.asValue<QColor>();
 }
 
 QGIViewPart::~QGIViewPart()
@@ -249,13 +239,16 @@ void QGIViewPart::updateView(bool update)
 
     TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
 
-    if(update ||
+    if (update ||
        viewPart->isTouched() ||
        viewPart->Source.isTouched() ||
        viewPart->Direction.isTouched() ||
+       viewPart->XAxisDirection.isTouched() ||
        viewPart->Tolerance.isTouched() ||
        viewPart->Scale.isTouched() ||
-       viewPart->ShowHiddenLines.isTouched()) {
+       viewPart->ShowHiddenLines.isTouched() ||
+       viewPart->ShowSmoothLines.isTouched() ||
+       viewPart->ShowSeamLines.isTouched() ) {
         // Remove all existing graphical representations (QGIxxxx)  otherwise BRect only grows, never shrinks?
         // is this where selection messes up?
         prepareGeometryChange();
@@ -272,7 +265,8 @@ void QGIViewPart::updateView(bool update)
             }
         }
         draw();
-    } else if(viewPart->LineWidth.isTouched() ||
+    } else if (update ||
+              viewPart->LineWidth.isTouched() ||
               viewPart->HiddenWidth.isTouched()) {
         QList<QGraphicsItem*> items = childItems();
         for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
@@ -333,7 +327,6 @@ void QGIViewPart::drawViewPart()
     const std::vector<TechDrawGeometry::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
     std::vector<TechDrawGeometry::BaseGeom *>::const_iterator itEdge = geoms.begin();
     QGIEdge* item;
-
     for(int i = 0 ; itEdge != geoms.end(); itEdge++, i++) {
         bool showEdge = false;
         if ((*itEdge)->visible) {
