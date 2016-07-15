@@ -47,7 +47,7 @@ using namespace UNV;
 namespace{
   typedef std::vector<size_t> TConnect;
 
-  int GetConnect(const SMDS_ElemIteratorPtr& theNodesIter, 
+  inline int GetConnect(const SMDS_ElemIteratorPtr& theNodesIter,
                  TConnect& theConnect)
   {
     theConnect.clear();

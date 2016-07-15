@@ -34,7 +34,6 @@
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 
 #include "QGIPrimPath.h"
 #include "QGIView.h"
@@ -51,20 +50,11 @@ QGIPrimPath::QGIPrimPath()
     setAcceptHoverEvents(true);
 
     isHighlighted = false;
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
-    m_colSel = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
-    m_colPre = fcColor.asValue<QColor>();
-
     setPrettyNormal();
 
-    m_pen.setColor(m_colNormal);
-    m_pen.setStyle(Qt::SolidLine);
+    m_colCurrent = getNormalColor();
+    m_styleCurrent = Qt::SolidLine;
+    m_pen.setStyle(m_styleCurrent);
     m_pen.setCapStyle(Qt::RoundCap);
 }
 
@@ -109,17 +99,17 @@ void QGIPrimPath::setHighlighted(bool b)
 }
 
 void QGIPrimPath::setPrettyNormal() {
-    m_colCurrent = m_colNormal;
+    m_colCurrent = getNormalColor();
     update();
 }
 
 void QGIPrimPath::setPrettyPre() {
-    m_colCurrent = m_colPre;
+    m_colCurrent = getPreColor();
     update();
 }
 
 void QGIPrimPath::setPrettySel() {
-    m_colCurrent = m_colSel;
+    m_colCurrent = getSelectColor();
     update();
 }
 
@@ -128,6 +118,38 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     myOption.state &= ~QStyle::State_Selected;
 
     m_pen.setColor(m_colCurrent);
+    m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);
     QGraphicsPathItem::paint (painter, &myOption, widget);
+}
+
+QColor QGIPrimPath::getNormalColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+    return fcColor.asValue<QColor>();
+}
+
+QColor QGIPrimPath::getPreColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
+    return fcColor.asValue<QColor>();
+}
+
+QColor QGIPrimPath::getSelectColor()
+{
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
+    return fcColor.asValue<QColor>();
+}
+
+Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    return hGrp;
 }

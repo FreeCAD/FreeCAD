@@ -49,6 +49,10 @@ public:
     virtual void centerAt(double cX, double cY);
 
 protected:
+    QColor getNormalColor(void);
+    QColor getPreColor(void);
+    QColor getSelectColor(void);
+    Base::Reference<ParameterGrp> getParmGroup(void);
 
 private:
 
@@ -57,4 +61,3 @@ private:
 } // namespace MDIViewPageGui
 
 #endif // DRAWINGGUI_QGCUSTOMTEXT_H
-

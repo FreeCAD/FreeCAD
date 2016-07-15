@@ -38,7 +38,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include "../App/DrawViewCollection.h"
+#include <Mod/TechDraw/App/DrawViewCollection.h>
 #include "QGIViewCollection.h"
 
 using namespace TechDrawGui;

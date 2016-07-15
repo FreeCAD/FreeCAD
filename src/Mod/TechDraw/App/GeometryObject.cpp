@@ -20,90 +20,49 @@
  *                                                                         *
  ***************************************************************************/
 
-# include "PreCompiled.h"
+#include "PreCompiled.h"
 #ifndef _PreComp_
 
-# include <gp_Ax2.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Vec.hxx>
-
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-
-# include <HLRTopoBRep_OutLiner.hxx>
-# include <HLRBRep.hxx>
-# include <HLRBRep_Algo.hxx>
-# include <HLRBRep_Data.hxx>
-# include <HLRBRep_EdgeData.hxx>
-# include <HLRAlgo_EdgeIterator.hxx>
-# include <HLRBRep_HLRToShape.hxx>
-# include <HLRAlgo_Projector.hxx>
-# include <HLRBRep_ShapeBounds.hxx>
-
-# include <Poly_Polygon3D.hxx>
-# include <Poly_Triangulation.hxx>
-# include <Poly_PolygonOnTriangulation.hxx>
-
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Builder.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-
-# include <BRep_Tool.hxx>
-# include <BRepMesh.hxx>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepTools_WireExplorer.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <BRepProj_Projection.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepLib.hxx>
-
-# include <BRepAdaptor_HCurve.hxx>
-# include <BRepAdaptor_CompCurve.hxx>
-
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
-
-// # include <BRepAdaptor_HCompCurve.hxx>
-# include <Approx_Curve3d.hxx>
-
-# include <BRepAdaptor_HCurve.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Elips.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Vec.hxx>
+#include <HLRTopoBRep_OutLiner.hxx>
+#include <HLRBRep.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <HLRBRep_Data.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-# include <Geom2d_BSplineCurve.hxx>
+#include <HLRBRep_HLRToShape.hxx>
+#include <HLRAlgo_Projector.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
 
-#include <ProjLib_Plane.hxx>
 #endif  // #ifndef _PreComp_
 
 #include <algorithm>
 
-# include <Base/Console.h>
-# include <Base/Exception.h>
-# include <Base/FileInfo.h>
-# include <Base/Tools.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Tools.h>
 
-# include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "GeometryObject.h"
 
@@ -117,7 +76,6 @@ struct EdgePoints {
 };
 
 //debugging routine signatures
-void _dumpEdgeData(char* label, int i, HLRBRep_EdgeData& ed);
 const char* _printBool(bool b);
 void _dumpEdge(char* label, int i, TopoDS_Edge e);
 
@@ -697,15 +655,6 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
 }
 
 /// debug functions
-void _dumpEdgeData(char* label, int i, HLRBRep_EdgeData& ed)
-{
-    Base::Console().Message("Dump of EdgeData for %s Edge: %d\n",label,i);
-    Base::Console().Message("Selected:%s Smooth(Rg1):%s Sewn(RgN):%s OutSta:%s OutEnd:%s\n",
-                            _printBool(ed.Selected()),_printBool(ed.Rg1Line()),_printBool(ed.RgNLine()),_printBool(ed.OutLVSta()),_printBool(ed.OutLVEnd()));
-    Base::Console().Message("Vertical:%s Simple:%s Used:%s HideCount:%d\n",
-                            _printBool(ed.Vertical()),_printBool(ed.Simple()),_printBool(ed.Used()),ed.HideCount());
-}
-
 /* TODO: Clean this up when faces are actually working properly...
 
 void debugEdge(const TopoDS_Edge &e)

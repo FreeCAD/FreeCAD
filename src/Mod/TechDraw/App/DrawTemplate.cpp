@@ -38,7 +38,7 @@
 
 #include "DrawPage.h"
 #include "DrawTemplate.h"
-#include "DrawTemplatePy.h"
+#include <Mod/TechDraw/App/DrawTemplatePy.h>
 
 using namespace TechDraw;
 using namespace std;

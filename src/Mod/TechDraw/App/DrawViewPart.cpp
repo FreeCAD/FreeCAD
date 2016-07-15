@@ -26,54 +26,39 @@
 
 #ifndef _PreComp_
 # include <sstream>
-#endif
 
-#include <algorithm>
-//#include <limits>
-
-#include <HLRBRep_Algo.hxx>
-#include <TopoDS_Shape.hxx>
-#include <HLRTopoBRep_OutLiner.hxx>
-//#include <BRepAPI_MakeOutLine.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepGProp.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+#include <Geom_Curve.hxx>
+#include <GProp_GProps.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-
-#include <BRepAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <GeomLib_Tool.hxx>
-#include <BRepLib.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <TopoDS_Shape.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
+#include <HLRBRep_Algo.hxx>
+#include <HLRAlgo_Projector.hxx>
+#include <HLRBRep_ShapeBounds.hxx>
+#include <HLRBRep_HLRToShape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_Wire.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+
+#endif
+
+#include <algorithm>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -82,12 +67,13 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "Geometry.h"
+#include "GeometryObject.h"
 #include "DrawViewPart.h"
 #include "DrawHatch.h"
 #include "EdgeWalker.h"
 
 
-#include "DrawViewPartPy.h"  // generated from DrawViewPartPy.xml
+#include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
 
 using namespace TechDraw;
 using namespace std;
@@ -259,7 +245,9 @@ void DrawViewPart::extractFaces()
     std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        origEdges.push_back((*itEdge)->occEdge);
+        if ((*itEdge)->visible) {                        //don't make invisible faces!
+            origEdges.push_back((*itEdge)->occEdge);
+        }
     }
 
     std::vector<TopoDS_Edge> faceEdges = origEdges;
@@ -673,10 +661,22 @@ bool DrawViewPart::hasGeometry(void) const
 
 Base::Vector3d DrawViewPart::getValidXDir() const
 {
+    Base::Vector3d X(1.0,0.0,0.0);
+    Base::Vector3d Y(1.0,0.0,0.0);
     Base::Vector3d xDir = XAxisDirection.getValue();
-    if (xDir.Length() == 0) {
+    if (xDir.Length() < Precision::Confusion()) {
         Base::Console().Warning("XAxisDirection has zero length - using (1,0,0)\n");
-        xDir = Base::Vector3d(1.0,0.0,0.0);
+        xDir = X;
+    }
+    Base::Vector3d viewDir = Direction.getValue();
+    if ((xDir - viewDir).Length() < Precision::Confusion()) {
+        if (xDir == X) {
+            xDir = Y;
+        }else{
+            xDir = X;
+        }
+        Base::Console().Warning("XAxisDirection cannot equal Direction - using (%.3f,%.3f%.3f)\n",
+                                 xDir.x,xDir.y,xDir.z);
     }
     return xDir;
 }

@@ -42,7 +42,7 @@
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
 
-#include "DrawViewPy.h"  // generated from DrawViewPy.xml
+#include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
 using namespace TechDraw;
 

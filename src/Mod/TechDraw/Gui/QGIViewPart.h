@@ -26,12 +26,9 @@
 #include <QObject>
 #include <QPainter>
 
+#include <Base/Parameter.h>
+#include <Mod/TechDraw/App/Geometry.h>
 #include "QGIView.h"
-#include "QGIFace.h"
-#include "QGIEdge.h"
-#include "QGIVertex.h"
-#include "../App/Geometry.h"
-
 
 namespace TechDraw {
 class DrawViewPart;
@@ -40,6 +37,7 @@ class DrawHatch;
 
 namespace TechDrawGui
 {
+class QGIFace;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
@@ -87,8 +85,6 @@ protected:
 
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
     void dumpPath(const char* text,QPainterPath path);
-
-    QColor m_colHid;
 
 private:
     QList<QGraphicsItem*> deleteItems;

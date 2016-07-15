@@ -610,13 +610,15 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.MergeEdgeMode() = true;
 #endif
   
-  Base::TimeInfo start_time;
-  BOPCheck.Perform();
-  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
 #ifdef FC_DEBUG
+  Base::TimeInfo start_time;
+#endif
+
+  BOPCheck.Perform();
+
+#ifdef FC_DEBUG
+  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
   std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
-#else
-  Q_UNUSED(bopAlgoTime);
 #endif
   
   if (!BOPCheck.HasFaulty())

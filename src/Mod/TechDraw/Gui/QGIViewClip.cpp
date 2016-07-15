@@ -45,7 +45,10 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "../App/DrawViewClip.h"
+#include <Mod/TechDraw/App/DrawViewClip.h>
+
+#include "QGCustomRect.h"
+#include "QGCustomClip.h"
 #include "QGIViewClip.h"
 
 using namespace TechDrawGui;
@@ -189,4 +192,3 @@ QRectF QGIViewClip::boundingRect() const
 {
     return childrenBoundingRect();
 }
-

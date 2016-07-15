@@ -23,16 +23,14 @@
 #ifndef DRAWINGGUI_QGIPRIMPATH_H
 #define DRAWINGGUI_QGIPRIMPATH_H
 
-# include <QGraphicsItem>
+#include <QGraphicsItem>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
-namespace TechDrawGeometry {
-class BaseGeom;
-}
+#include <Base/Parameter.h>
 
 namespace TechDrawGui
 {
@@ -58,12 +56,15 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+    QColor getNormalColor(void);
+    QColor getPreColor(void);
+    QColor getSelectColor(void);
+    Base::Reference<ParameterGrp> getParmGroup(void);
+
     bool isHighlighted;
     QPen m_pen;
     QColor m_colCurrent;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
+    Qt::PenStyle m_styleCurrent;
 
 private:
 

@@ -25,10 +25,6 @@
 
 # include "QGIPrimPath.h"
 
-namespace TechDrawGeometry {
-class BaseGeom;
-}
-
 namespace TechDrawGui
 {
 

@@ -30,14 +30,8 @@
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 #include <Gui/Selection.h>
 
-#include "MDIViewPage.h"
-
 namespace TechDraw{
     class DrawPage;
-}
-
-namespace Gui {     //TODO: Inventor here??
-    class SoFCSelection;
 }
 
 namespace TechDrawGui {

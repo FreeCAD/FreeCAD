@@ -47,7 +47,7 @@
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
 
-#include "DrawPagePy.h"  // generated from DrawPagePy.xml
+#include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
 using namespace TechDraw;
 using namespace std;

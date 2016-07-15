@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIViewDimension.h"
 #include "QGIArrow.h"
@@ -87,15 +88,6 @@ QGIDatumLabel::QGIDatumLabel(int ref, QGraphicsScene *scene  ) : reference(ref)
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsSelectable, true);
     setAcceptHoverEvents(true);
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
-    m_colSel = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
-    m_colPre = fcColor.asValue<QColor>();
 }
 
 QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -103,10 +95,10 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             Q_EMIT selected(true);
-            setDefaultTextColor(m_colSel);
+            setDefaultTextColor(getSelectColor());
         } else {
             Q_EMIT selected(false);
-            setDefaultTextColor(m_colNormal);
+            setDefaultTextColor(getNormalColor());
         }
         update();
     } else if(change == ItemPositionHasChanged && scene()) {
@@ -133,7 +125,7 @@ void QGIDatumLabel::setLabelCenter()
 void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_EMIT hover(true);
-    setDefaultTextColor(m_colPre);
+    setDefaultTextColor(getPreColor());
     update();
 }
 
@@ -144,7 +136,7 @@ void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     Q_EMIT hover(false);
     if(!isSelected() && !view->isSelected()) {
-        setDefaultTextColor(m_colNormal);
+        setDefaultTextColor(getNormalColor());
         update();
     }
 }
@@ -192,15 +184,6 @@ QGIViewDimension::QGIViewDimension() :
     pen.setCosmetic(true);
     pen.setWidthF(1.);
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x0000FF00));
-    m_colSel = fcColor.asValue<QColor>();
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00080800));
-    m_colPre = fcColor.asValue<QColor>();
-
     addToGroup(arrows);
     addToGroup(datumLabel);
     addToGroup(centreLines);
@@ -225,7 +208,6 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 
     updateDim();
     draw();
-    Q_EMIT dirty();
 }
 
 void QGIViewDimension::select(bool state)
@@ -267,8 +249,6 @@ void QGIViewDimension::updateView(bool update)
     }
 
     draw();
-
-    Q_EMIT dirty();
 }
 
 void QGIViewDimension::updateDim()
@@ -334,11 +314,11 @@ void QGIViewDimension::draw()
 
     // Crude method of determining state [TODO] improve
     if(isSelected()) {
-        pen.setColor(m_colSel);
+        pen.setColor(getSelectColor());
     } else if (hasHover) {
-        pen.setColor(m_colPre);
+        pen.setColor(getPreColor());
     } else {
-        pen.setColor(m_colNormal);
+        pen.setColor(getNormalColor());
     }
 
     QString labelText = lbl->toPlainText();
@@ -1290,4 +1270,4 @@ void QGIViewDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     QGIView::paint(painter, &myOption, widget);
 }
 
-#include "moc_QGIViewDimension.cpp"
+#include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

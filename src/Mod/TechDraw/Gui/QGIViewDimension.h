@@ -98,9 +98,6 @@ public:
     virtual void updateView(bool update = false);
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
-Q_SIGNALS:
-    void dirty();
-
 public Q_SLOTS:
     void datumLabelDragged(void);
     void datumLabelDragFinished(void);
@@ -122,9 +119,6 @@ protected:
     std::vector<QGraphicsItem*> arw;                                  //arrowheads
     std::vector<TechDrawGeometry::BaseGeom *> projGeom;
     QPen pen;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
 };
 
 } // namespace MDIViewPageGui

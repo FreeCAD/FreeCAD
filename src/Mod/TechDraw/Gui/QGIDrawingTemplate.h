@@ -27,7 +27,6 @@
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
-class QGraphicsSceneMouseEvent;
 class QGraphicsPathItem;
 QT_END_NAMESPACE
 
@@ -52,9 +51,6 @@ public:
     void clearContents();
     void draw();
     virtual void updateView(bool update = false);
-
-Q_SIGNALS:
-  void dirty();
 
 protected:
   TechDraw::DrawParametricTemplate * getParametricTemplate();

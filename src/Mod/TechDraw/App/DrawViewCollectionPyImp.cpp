@@ -1,11 +1,11 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/TechDraw/App/DrawViewCollection.h"
+#include "DrawViewCollection.h"
 
 // inclusion of the generated files (generated out of DrawViewCollectionPy.xml)
-#include "DrawViewCollectionPy.h"
-#include "DrawViewCollectionPy.cpp"
+#include <Mod/TechDraw/App/DrawViewCollectionPy.h>
+#include <Mod/TechDraw/App/DrawViewCollectionPy.cpp>
 
 using namespace TechDraw;
 
@@ -16,11 +16,6 @@ std::string DrawViewCollectionPy::representation(void) const
 }
 
 
-
-
-
-
-
 PyObject *DrawViewCollectionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -28,7 +23,5 @@ PyObject *DrawViewCollectionPy::getCustomAttributes(const char* /*attr*/) const
 
 int DrawViewCollectionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
-
-

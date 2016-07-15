@@ -49,7 +49,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "../App/DrawViewAnnotation.h"
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include "QGIViewAnnotation.h"
 #include "QGCustomText.h"
 

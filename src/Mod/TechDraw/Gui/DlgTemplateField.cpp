@@ -76,4 +76,4 @@ void DlgTemplateField::reject()
     QDialog::reject();
 }
 
-#include "moc_DlgTemplateField.cpp"
+#include <Mod/TechDraw/Gui/moc_DlgTemplateField.cpp>

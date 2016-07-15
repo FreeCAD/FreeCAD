@@ -34,11 +34,6 @@ class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
-namespace TechDraw {
-class DrawView;
-class DrawViewCollection;
-}
-
 namespace TechDrawGui
 {
 

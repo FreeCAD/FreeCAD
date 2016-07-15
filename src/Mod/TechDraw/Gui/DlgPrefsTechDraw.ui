@@ -197,12 +197,20 @@
      </item>
      <item row="1" column="1">
       <widget class="Gui::PrefComboBox" name="cb_HidLine">
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
        <property name="prefEntry" stdset="0">
         <cstring>HiddenLine</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>Mod/TechDraw</cstring>
        </property>
+       <item>
+        <property name="text">
+         <string>NeverShow</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>Solid</string>

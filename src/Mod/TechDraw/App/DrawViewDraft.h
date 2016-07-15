@@ -28,7 +28,6 @@
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
 
-#include "DrawView.h"
 #include "DrawViewSymbol.h"
 
 namespace TechDraw

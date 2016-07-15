@@ -48,7 +48,7 @@
 #include "DrawPage.h"
 #include "DrawSVGTemplate.h"
 
-#include "DrawSVGTemplatePy.h"
+#include <Mod/TechDraw/App/DrawSVGTemplatePy.h>
 
 using namespace TechDraw;
 using namespace std;

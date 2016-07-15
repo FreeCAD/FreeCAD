@@ -26,6 +26,7 @@
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -33,7 +34,16 @@
 #include <App/FeaturePython.h>
 
 #include <Base/BoundBox.h>
-#include "GeometryObject.h"
+
+class gp_Pnt;
+
+namespace TechDrawGeometry
+{
+class GeometryObject;
+class Vertex;
+class BaseGeom;
+class Face;
+}
 
 namespace TechDraw {
 class DrawHatch;
@@ -61,10 +71,7 @@ public:
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
     App::PropertyFloatConstraint  Tolerance;
-//    App::PropertyLinkList   HatchAreas;                                //DrawHatch
 
-    //int addHatch(App::DocumentObject *docObj);
-    //int removeHatch(App::DocumentObject *docObj);
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
 
     //TODO: are there use-cases for Python access to TechDrawGeometry???

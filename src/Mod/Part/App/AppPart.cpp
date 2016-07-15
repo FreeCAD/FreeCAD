@@ -15,6 +15,7 @@
 # include <Interface_Static.hxx>
 # include <IGESControl_Controller.hxx>
 # include <STEPControl_Controller.hxx>
+# include <Standard_Version.hxx>
 # include <OSD.hxx>
 # include <sstream>
 #endif
@@ -123,6 +124,9 @@ PyMODINIT_FUNC initPart()
 
     PyObject* partModule = Part::initModule();
     Base::Console().Log("Loading Part module... done\n");
+
+    Py::Object module(partModule);
+    module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));
 
     // Python exceptions
     //

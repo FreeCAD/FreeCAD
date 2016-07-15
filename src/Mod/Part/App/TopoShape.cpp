@@ -1514,8 +1514,8 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX <= 0x060900
-    throw Base::Exception("GFA is available only in OCC 6.9.0 and up.");
+#if OCC_VERSION_HEX < 0x060900
+    throw Base::AttributeError("GFA is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_BuilderAlgo mkGFA;
     TopTools_ListOfShape GFAArguments;
