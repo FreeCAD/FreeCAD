@@ -715,7 +715,9 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         Notify(Chng);
         signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
         Base::Console().Log("Sel : Add Selection \"%s.%s.%s(%f,%f,%f)\"\n",pDocName,pObjectName,pSubName,x,y,z);
+#endif
 
         // allow selection
         return true;
@@ -805,7 +807,9 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             signalSelectionChanged(Chng);
       
             rmvList.push_back(Chng);
+#ifdef FC_DEBUG
             Base::Console().Log("Sel : Rmv Selection \"%s.%s.%s\"\n",pDocName,pObjectName,pSubName);
+#endif
         }
         else {
             ++It;
@@ -901,7 +905,9 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         Notify(Chng);
         signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
         Base::Console().Log("Sel : Clear selection\n");
+#endif
     }
 }
 
@@ -919,7 +925,9 @@ void SelectionSingleton::clearCompleteSelection()
     Notify(Chng);
     signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
     Base::Console().Log("Sel : Clear selection\n");
+#endif
 }
 
 bool SelectionSingleton::isSelected(const char* pDocName, const char* pObjectName, const char* pSubName) const
