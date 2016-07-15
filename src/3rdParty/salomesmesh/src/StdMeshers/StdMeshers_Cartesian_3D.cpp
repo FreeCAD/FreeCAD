@@ -2731,7 +2731,7 @@ namespace
              chn.back()->IsLinked( quad._eIntNodes[ iP ]->_intPoint ))
         {
           chn.push_back( quad._eIntNodes[ iP ]);
-          found = quad._eIntNodes[ iP ]->_usedInFace = &quad;
+          found = (quad._eIntNodes[ iP ]->_usedInFace = &quad);
           break;
         }
     } while ( found && ! chn.back()->IsLinked( n2->_intPoint ) );
@@ -2823,7 +2823,7 @@ namespace
               ( !avoidFace || quad._eIntNodes[ iP ]->IsOnFace( avoidFace )))
           {
             chn.push_back( quad._eIntNodes[ iP ]);
-            found = quad._eIntNodes[ iP ]->_usedInFace = &quad;
+            found = (quad._eIntNodes[ iP ]->_usedInFace = &quad);
             break;
           }
       } while ( found );

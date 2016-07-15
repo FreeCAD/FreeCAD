@@ -196,7 +196,7 @@ namespace {
   /*!
    * \brief return PropagationMgrData found on theEdge submesh
    */
-  PropagationMgrData* findData(SMESH_Mesh& theMesh, const TopoDS_Shape& theEdge)
+  inline PropagationMgrData* findData(SMESH_Mesh& theMesh, const TopoDS_Shape& theEdge)
   {
     if ( theEdge.ShapeType() == TopAbs_EDGE )
       return findData( theMesh.GetSubMeshContaining( theEdge ) );

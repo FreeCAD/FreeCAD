@@ -342,7 +342,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
 
 namespace
 {
-  void limitVolumeSize( netgen::Mesh* ngMesh,
+  inline void limitVolumeSize( netgen::Mesh* ngMesh,
                         double        maxh )
   {
     // get average h of faces

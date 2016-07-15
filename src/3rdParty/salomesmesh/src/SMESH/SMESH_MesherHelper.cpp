@@ -3610,7 +3610,7 @@ namespace { // Structures used by FixQuadraticElements()
   /*!
    * \brief Dump QLink and QFace
    */
-  ostream& operator << (ostream& out, const QLink& l)
+  inline ostream& operator << (ostream& out, const QLink& l)
   {
     out <<"QLink nodes: "
         << l.node1()->GetID() << " - "
@@ -3618,7 +3618,7 @@ namespace { // Structures used by FixQuadraticElements()
         << l.node2()->GetID() << endl;
     return out;
   }
-  ostream& operator << (ostream& out, const QFace& f)
+  inline ostream& operator << (ostream& out, const QFace& f)
   {
     out <<"QFace nodes: "/*<< &f << "  "*/;
     for ( TIDSortedNodeSet::const_iterator n = f.begin(); n != f.end(); ++n )

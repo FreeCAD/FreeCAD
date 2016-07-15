@@ -187,7 +187,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::CheckHypothesis (SMESH_Mesh&         aMesh,
 
 namespace
 {
-  void limitSize( netgen::Mesh* ngMesh,
+  inline void limitSize( netgen::Mesh* ngMesh,
                   const double  maxh )
   {
     // get bnd box
@@ -669,7 +669,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Evaluate(SMESH_Mesh& aMesh,
 
   // compute edge length
   double ELen = 0;
-  if (_hypLengthFromEdges || !_hypLengthFromEdges && !_hypMaxElementArea) {
+  if (_hypLengthFromEdges || (!_hypLengthFromEdges && !_hypMaxElementArea)) {
     if ( nb1d > 0 )
       ELen = fullLen / nb1d;
   }
