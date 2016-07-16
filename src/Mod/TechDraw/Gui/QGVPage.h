@@ -85,7 +85,8 @@ public:
 
     TechDraw::DrawPage * getDrawPage();
 
-    void toggleEdit(bool enable);
+    void toggleMarkers(bool enable);
+    void toggleHatch(bool enable);
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
