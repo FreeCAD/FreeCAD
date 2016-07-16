@@ -110,7 +110,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
 #endif
     myFamilies.clear();
     if(MYDEBUG) MESSAGE("Perform - myFile : "<<myFile);
-    PWrapper aMed = CrWrapper(myFile,true);
+    PWrapper aMed = CrWrapper(myFile,false); // We are using the internal MED file version checker instead of an external reader
 
     aResult = DRS_EMPTY;
     TInt aNbMeshes = aMed->GetNbMeshes();
