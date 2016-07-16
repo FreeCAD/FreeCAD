@@ -28,7 +28,6 @@
 # include <QFileInfo>
 # include <QFileDialog>
 # include <QGLWidget>
-//# include <QGraphicsScene>
 # include <QGraphicsEffect>
 # include <QMouseEvent>
 # include <QPainter>
@@ -61,7 +60,9 @@
 
 
 #include "QGIDrawingTemplate.h"
+#include "QGITemplate.h"
 #include "QGISVGTemplate.h"
+#include "TemplateTextField.h"
 #include "QGIViewCollection.h"
 #include "QGIViewDimension.h"
 #include "QGIProjGroup.h"
@@ -71,6 +72,7 @@
 #include "QGIViewSymbol.h"
 #include "QGIViewClip.h"
 #include "QGIViewSpreadsheet.h"
+#include "QGIFace.h"
 
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
@@ -101,9 +103,9 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
     setCursor(QCursor(Qt::ArrowCursor));
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
-    m_backgroundItem = new QGraphicsRectItem();
-    m_backgroundItem->setCacheMode(QGraphicsItem::NoCache);
-    m_backgroundItem->setZValue(ZVALUE::BACKGROUND);
+    //m_backgroundItem = new QGraphicsRectItem();
+    //m_backgroundItem->setCacheMode(QGraphicsItem::NoCache);
+    //m_backgroundItem->setZValue(ZVALUE::BACKGROUND);
 //     scene()->addItem(m_backgroundItem); // TODO IF SEGFAULTS WITH DRAW ENABLE THIS (REDRAWS ARE SLOWER :s)
 
     bkgBrush = new QBrush(QColor::fromRgb(70,70,70));
@@ -113,7 +115,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
 QGVPage::~QGVPage()
 {
     delete bkgBrush;
-    delete m_backgroundItem;
+    //delete m_backgroundItem;
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -465,10 +467,10 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 
 void QGVPage::setViewBackground(bool enable)
 {
-    if (!m_backgroundItem)
-        return;
+//    if (!m_backgroundItem)
+//        return;
 
-    m_backgroundItem->setVisible(enable);
+//    m_backgroundItem->setVisible(enable);
 }
 
 void QGVPage::setViewOutline(bool enable)
@@ -479,46 +481,49 @@ void QGVPage::setViewOutline(bool enable)
     m_outlineItem->setVisible(enable);
 }
 
-void QGVPage::toggleEdit(bool enable)
+void QGVPage::toggleMarkers(bool enable)
 {
-// TODO: needs fiddling to handle items that don't inherit QGIViewPart: Annotation, Symbol, Templates, Edges, Faces, Vertices,...
     QList<QGraphicsItem*> list = scene()->items();
-
     for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView) {
-            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(*it);
             itemView->setSelected(false);
+            itemView->toggleBorder(enable);
+            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(*it);
             if(viewPart) {
-                viewPart->toggleCache(enable);
-                viewPart->toggleCosmeticLines(enable);
                 viewPart->toggleVertices(enable);
-                viewPart->toggleBorder(enable);
-                setViewBackground(enable);
-            } else {
-                itemView->toggleBorder(enable);
             }
-            //itemView->updateView(true);
         }
-
-        int textItemType = QGraphicsItem::UserType + 160;
-        QGraphicsItem*item = dynamic_cast<QGraphicsItem*>(*it);
-        if(item) {
-            //item->setCacheMode((enable) ? QGraphicsItem::DeviceCoordinateCache : QGraphicsItem::NoCache);
-            item->setCacheMode((enable) ? QGraphicsItem::NoCache : QGraphicsItem::NoCache);
-            item->update();
-            if (item->type() == textItemType) {    //TODO: move this into SVGTemplate or TemplateTextField
+        QGISVGTemplate* itemTemplate = dynamic_cast<QGISVGTemplate*> (*it);
+        if (itemTemplate) {
+            std::vector<TemplateTextField *> textFields = itemTemplate->getTestFields();
+            for (auto& t:textFields) {
                 if (enable) {
-                    item->show();
+                    t->show();
                 } else {
-                    item->hide();
+                    t->hide();
                 }
             }
         }
     }
-    scene()->update();
-    update();
-    viewport()->repaint();
+}
+
+void QGVPage::toggleHatch(bool enable)
+{
+    QList<QGraphicsItem*> sceneItems = scene()->items();
+    for (auto& qgi:sceneItems) {
+        QGIViewPart* qgiPart = dynamic_cast<QGIViewPart *>(qgi);
+        if(qgiPart) {
+            QList<QGraphicsItem*> partChildren = qgiPart->childItems();
+            int faceItemType = QGraphicsItem::UserType + 104;
+            for (auto& c:partChildren) {
+                if (c->type() == faceItemType) {
+                    QGIFace* f = dynamic_cast<QGIFace*>(c);
+                    f->toggleSvg(enable);
+                }
+            }
+        }
+    }
 }
 
 void QGVPage::saveSvg(QString filename)
@@ -545,7 +550,7 @@ void QGVPage::saveSvg(QString filename)
     //      postprocess generated file to mult all font-size attrib by 2.835 to get pts?
     //      duplicate all textItems and only show the appropriate one for screen/print vs export?
 
-// TODO: Was    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI
+// TODO: Was    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI  //really "user space units/inch"?
     svgGen.setResolution(25);    // mm/inch??  docs say this is DPI
 
     //svgGen.setResolution(600);    // resulting page is ~12.5x9mm
@@ -555,8 +560,10 @@ void QGVPage::saveSvg(QString filename)
 
     Gui::Selection().clearSelection();
 
-    toggleEdit(false);             //fiddle cache, cosmetic lines, vertices, etc
+    toggleMarkers(false);             //fiddle cache, vertices, frames, etc
+    toggleHatch(false);
     scene()->update();
+    viewport()->repaint();
 
     Gui::Selection().clearSelection();
     QPainter p;
@@ -565,8 +572,10 @@ void QGVPage::saveSvg(QString filename)
     scene()->render(&p);
     p.end();
 
-    toggleEdit(true);
+    toggleMarkers(true);
+    toggleHatch(true);
     scene()->update();
+    viewport()->repaint();
 }
 
 
