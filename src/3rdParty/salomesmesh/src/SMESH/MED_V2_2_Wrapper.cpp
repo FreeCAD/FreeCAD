@@ -2152,7 +2152,7 @@ namespace MED
           med_int myNbComp = MEDfieldnComponentByName(anId,&aFieldName);
           char *cname=new char[myNbComp*MED_SNAME_SIZE+1];
           char *unitname=new char[myNbComp*MED_SNAME_SIZE+1];
-          TInt aNbStamps;
+          med_int aNbStamps;
           MEDfieldInfoByName(anId,
                              &aFieldName,
                              aMeshName,
@@ -2266,7 +2266,7 @@ namespace MED
       med_int aNbComp = MEDfieldnComponentByName(myFile->Id(), &aFieldName);
       char *aCompName = new char[aNbComp*MED_SNAME_SIZE+1];
       char *aCompUnit = new char[aNbComp*MED_SNAME_SIZE+1];
-      TInt aNbStamps;
+      med_int aNbStamps;
       MEDfieldInfoByName(myFile->Id(),
                          &aFieldName,
                          &aMeshName,
