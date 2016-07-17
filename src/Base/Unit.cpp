@@ -347,15 +347,16 @@ QString Unit::getString(void) const
         Sig.Density                 < 0 ){
         ret << "/";
 
-        int nnom = Sig.Length<0?1:2 +
-                   Sig.Mass<0?1:2 +
-                   Sig.Time<0?1:2 +
-                   Sig.ElectricCurrent<0?1:2 +
-                   Sig.ThermodynamicTemperature<0?1:2 +
-                   Sig.AmountOfSubstance<0?1:2 +
-                   Sig.LuminoseIntensity<0?1:2 +
-                   Sig.Angle<0?1:2 +
-                   Sig.Density<0?1:2 ;
+        int nnom = 0;
+        nnom += Sig.Length<0?1:0;
+        nnom += Sig.Mass<0?1:0;
+        nnom += Sig.Time<0?1:0;
+        nnom += Sig.ElectricCurrent<0?1:0;
+        nnom += Sig.ThermodynamicTemperature<0?1:0;
+        nnom += Sig.AmountOfSubstance<0?1:0;
+        nnom += Sig.LuminoseIntensity<0?1:0;
+        nnom += Sig.Angle<0?1:0;
+        nnom += Sig.Density<0?1:0;
 
         if (nnom > 1)
             ret << '(';
