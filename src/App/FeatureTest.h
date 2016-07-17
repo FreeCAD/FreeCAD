@@ -98,6 +98,7 @@ public:
   App::PropertyInteger   TypeTransient;
   
   App::PropertyQuantity  QuantityLength;
+  App::PropertyQuantity  QuantityOther;
   //App::PropertyQuantity  QuantityMass;
   //App::PropertyQuantity  QuantityAngle;
 
