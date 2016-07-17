@@ -1532,7 +1532,9 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
     mkGFA.SetArguments(GFAArguments);
     if (tolerance > 0.0)
         mkGFA.SetFuzzyValue(tolerance);
+#if OCC_VERSION_HEX >= 0x070000
     mkGFA.SetNonDestructive(Standard_True);
+#endif
     mkGFA.Build();
     if (!mkGFA.IsDone())
         throw Base::Exception("MultiFusion failed");
