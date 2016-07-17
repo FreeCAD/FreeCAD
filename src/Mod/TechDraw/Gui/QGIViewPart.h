@@ -85,6 +85,7 @@ protected:
 
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
     void dumpPath(const char* text,QPainterPath path);
+    void removePrimitives(void);
 
 private:
     QList<QGraphicsItem*> deleteItems;
