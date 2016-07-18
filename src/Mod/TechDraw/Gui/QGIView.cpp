@@ -79,8 +79,8 @@ QGIView::QGIView()
     m_colCurrent = getNormalColor();
     m_pen.setColor(m_colCurrent);
 
+    //Border/Label styling
     m_font.setPointSize(5.0);     //scene units (mm), not points
-
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
 

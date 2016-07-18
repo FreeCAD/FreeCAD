@@ -65,6 +65,7 @@ public:
     void setPath(const QPainterPath & path);
     void buildHatch(void);
     void setHatchColor(std::string c);
+    void toggleSvg(bool b);
 
 protected:
     bool load(QByteArray *svgBytes);

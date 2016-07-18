@@ -102,6 +102,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &valu
     return QGIView::itemChange(change, value);
 }
 
+//obs?
 void QGIViewPart::tidy()
 {
     //Delete any leftover items
@@ -249,21 +250,6 @@ void QGIViewPart::updateView(bool update)
        viewPart->ShowHiddenLines.isTouched() ||
        viewPart->ShowSmoothLines.isTouched() ||
        viewPart->ShowSeamLines.isTouched() ) {
-        // Remove all existing graphical representations (QGIxxxx)  otherwise BRect only grows, never shrinks?
-        // is this where selection messes up?
-        prepareGeometryChange();
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            if (dynamic_cast<QGIEdge *> (*it) ||
-                dynamic_cast<QGIFace *>(*it) ||
-                dynamic_cast<QGIVertex *>(*it)) {
-                removeFromGroup(*it);
-                scene()->removeItem(*it);
-
-                // We store these and delete till later to prevent rendering crash ISSUE
-                deleteItems.append(*it);
-            }
-        }
         draw();
     } else if (update ||
               viewPart->LineWidth.isTouched() ||
@@ -302,6 +288,7 @@ void QGIViewPart::drawViewPart()
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
+    removePrimitives();                      //clean the slate
 
 #if MOD_TECHDRAW_HANDLE_FACES
     // Draw Faces
@@ -344,7 +331,7 @@ void QGIViewPart::drawViewPart()
         if (showEdge) {
             item = new QGIEdge(i);
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
-            item->setPos(0.0,0.0);
+            item->setPos(0.0,0.0);                                              //now at group(0,0)
             item->setPath(drawPainterPath(*itEdge));
             item->setStrokeWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
@@ -403,6 +390,21 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
     //dumpPath(faceId.str().c_str(),facePath);
 
     return gFace;
+}
+
+//! Remove all existing QGIPrimPath items(Vertex,Edge,Face)
+void QGIViewPart::removePrimitives()
+{
+    QList<QGraphicsItem*> children = childItems();
+    for (auto& c:children) {
+         QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
+         if (prim) {
+            removeFromGroup(prim);
+            scene()->removeItem(prim);
+//            deleteItems.append(prim);         //pretty sure we could just delete here since not in scene anymore
+            delete prim;
+         }
+     }
 }
 
 // As called by arc of ellipse case:
