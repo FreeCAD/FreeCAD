@@ -175,6 +175,17 @@ void QGIFace::setHatchColor(std::string c)
     m_svgCol = c;
 }
 
+//QtSvg does not handle clipping, so we must be able to turn the hatching on/off
+void QGIFace::toggleSvg(bool b)
+{
+    if (b) {
+        m_rect->show();
+    } else {
+        m_rect->hide();
+    }
+    update();
+}
+
 QRectF QGIFace::boundingRect() const
 {
     return shape().controlPointRect();

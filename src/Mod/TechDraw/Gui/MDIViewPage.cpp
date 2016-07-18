@@ -744,7 +744,7 @@ void MDIViewPage::print(QPrinter* printer)
     static_cast<void> (blockConnection(true)); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
-    m_view->toggleEdit(false);
+    m_view->toggleMarkers(false);
     m_view->scene()->update();
 
     Gui::Selection().clearSelection();
@@ -752,7 +752,7 @@ void MDIViewPage::print(QPrinter* printer)
     m_view->scene()->render(&p, rect);
 
     // Reset
-    m_view->toggleEdit(true);
+    m_view->toggleMarkers(true);
 }
 
 
@@ -812,7 +812,7 @@ QPrinter::PageSize MDIViewPage::getPageSize(int w, int h) const
 void MDIViewPage::setFrameState(bool state)
 {
     m_frameState = state;
-    m_view->toggleEdit(state);
+    m_view->toggleMarkers(state);
     m_view->scene()->update();
 }
 
