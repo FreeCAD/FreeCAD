@@ -33,11 +33,11 @@ namespace TechDrawGeometry
     class BaseGeom;
 }
 
+//TODO: DrawParametricTemplate class is obsolete
+
 namespace TechDraw
 {
 
-/** Base class of all View Features in the drawing module
- */
 class TechDrawExport DrawParametricTemplate: public TechDraw::DrawTemplate
 {
     PROPERTY_HEADER(TechDraw::DrawParametricTemplate);
