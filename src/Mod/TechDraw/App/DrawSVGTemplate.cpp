@@ -76,16 +76,6 @@ DrawSVGTemplate::~DrawSVGTemplate()
 {
 }
 
-/*
-std::string DrawSVGTemplate::getSvgIdForEditable(const std::string &editableName)
-{
-    if (editableSvgIds.count(editableName)) {
-        return editableSvgIds[editableName];
-    } else {
-        return "";
-    }
-}*/
-
 PyObject *DrawSVGTemplate::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {

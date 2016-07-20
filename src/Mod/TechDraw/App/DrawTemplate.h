@@ -47,7 +47,7 @@ public:
     App::PropertyLength Width;
     App::PropertyLength Height;
     App::PropertyEnumeration Orientation;
-    App::PropertyString PaperSize;
+    //App::PropertyString PaperSize;
 
     App::PropertyMap EditableTexts;
 
