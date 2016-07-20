@@ -642,37 +642,32 @@ CmdTechDrawClipMinus::CmdTechDrawClipMinus()
 
 void CmdTechDrawClipMinus::activated(int iMsg)
 {
-   std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-   if (selection.size() != 2) {
-       QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select 1 DrawViewClip and 1 DrawView."));
-       return;
-    }
-
-    TechDraw::DrawViewClip* clip = 0;
-    TechDraw::DrawView* view = 0;
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
-            clip = dynamic_cast<TechDraw::DrawViewClip*>((*itSel).getObject());
-        } else if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-            view = dynamic_cast<TechDraw::DrawView*>((*itSel).getObject());
-        }
-    }
-    if (!view) {
+    std::vector<App::DocumentObject*> dObj = getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId());
+    if (dObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Select exactly one Drawing View object."));
         return;
     }
-    if (!clip) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one Clip object."));
-        return;
+    TechDraw::DrawView* view = dynamic_cast<TechDraw::DrawView*>(dObj.front());
+
+    bool clipFound = false;
+    TechDraw::DrawPage* page = view->findParentPage();
+    const std::vector<App::DocumentObject*> pViews = page->Views.getValues();
+    TechDraw::DrawViewClip* clip = 0;
+    for (auto& v:pViews)     {
+        clip = nullptr;
+        if (v->isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
+            clip = dynamic_cast<TechDraw::DrawViewClip*>(v);
+            if (clip->isViewInClip(view)) {
+                clipFound = true;
+                break;
+            }
+        }
     }
 
-    if (!clip->isViewInClip(view)) {
+    if (!clipFound) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Selected View is not in Clip."));
+                             QObject::tr("View does not belong to a Clip"));
         return;
     }
 
