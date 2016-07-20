@@ -237,11 +237,19 @@ int DrawPage::addView(App::DocumentObject *docObj)
     if(!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()))
         return -1;
 
+    //position all new views in center of Page (exceptDVDimension)
+    DrawView* view = dynamic_cast<DrawView*>(docObj);
+    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        view->X.setValue(getPageWidth()/2.0);
+        view->Y.setValue(getPageHeight()/2.0);
+    }
+
     const std::vector<App::DocumentObject *> currViews = Views.getValues();
     std::vector<App::DocumentObject *> newViews(currViews);
     newViews.push_back(docObj);
     Views.setValues(newViews);
     Views.touch();
+
     return Views.getSize();
 }
 

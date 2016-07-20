@@ -58,9 +58,8 @@ const char* DrawView::ScaleTypeEnums[]= {"Document",
 
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
 
-
-
 DrawView::DrawView(void)
+  : autoPos(true)
 {
     static const char *group = "Drawing view";
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
@@ -73,8 +72,6 @@ DrawView::DrawView(void)
 
     if (isRestoring()) {
         autoPos = false;
-    } else {
-        autoPos = true;
     }
 }
 
