@@ -94,8 +94,8 @@ set(FemGui_UIC_SRCS
     TaskAnalysisInfo.ui
     TaskDriver.ui
 )
-if(BUILD_FEM_VTK) 
-    set(FemGui_UIC_SRCS 
+if(BUILD_FEM_VTK)
+    set(FemGui_UIC_SRCS
         ${FemGui_UIC_SRCS}
         TaskPostDisplay.ui
         TaskPostClip.ui
@@ -105,7 +105,7 @@ if(BUILD_FEM_VTK)
         PlaneWidget.ui
         SphereWidget.ui
     )
-endif(BUILD_FEM_VTK) 
+endif(BUILD_FEM_VTK)
 qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 
 SET(FemGui_DLG_SRCS
