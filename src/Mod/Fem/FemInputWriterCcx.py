@@ -211,7 +211,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
 
     def write_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** Constaints\n')
+        f.write('** Constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             fix_obj_name = femobj['Object'].Name
