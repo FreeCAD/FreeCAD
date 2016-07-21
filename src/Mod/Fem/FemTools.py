@@ -165,6 +165,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         #  set of fixed constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintFixed" type
         self.fixed_constraints = []
+        ## @var selfweight_constraints
+        #  set of selfweight constraints from the analysis. Updated with update_objects
+        #  Individual constraints are Proxy.Type "FemConstraintSelfWeight"
+        self.selfweight_constraints = []
         ## @var force_constraints
         #  set of force constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintForce" type
@@ -215,6 +219,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
                 self.fixed_constraints.append(fixed_constraint_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemConstraintSelfWeight":
+                selfweight_dict = {}
+                selfweight_dict['Object'] = m
+                self.selfweight_constraints.append(selfweight_dict)
             elif m.isDerivedFrom("Fem::ConstraintForce"):
                 force_constraint_dict = {}
                 force_constraint_dict['Object'] = m

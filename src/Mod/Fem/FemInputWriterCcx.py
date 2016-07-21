@@ -39,7 +39,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self, analysis_obj, solver_obj,
                  mesh_obj, mat_obj,
                  fixed_obj,
-                 force_obj, pressure_obj,
+                 selfweight_obj, force_obj, pressure_obj,
                  displacement_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type=None, eigenmode_parameters=None,
@@ -47,7 +47,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         FemInputWriter.FemInputWriter.__init__(self, analysis_obj, solver_obj,
                                                mesh_obj, mat_obj,
                                                fixed_obj,
-                                               force_obj, pressure_obj,
+                                               selfweight_obj, force_obj, pressure_obj,
                                                displacement_obj,
                                                beamsection_obj, shellthickness_obj,
                                                analysis_type, eigenmode_parameters,
@@ -71,6 +71,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.write_constraints_fixed(inpfile)
         self.write_constraints_displacement(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
+            self.write_constraints_selfweight(inpfile)
             self.write_constraints_force(inpfile)
             self.write_constraints_pressure(inpfile)
         elif self.analysis_type == "frequency":
@@ -259,6 +260,19 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 elif not disp_obj.rotzFree:
                     f.write(disp_obj_name + ',6,6,' + str(disp_obj.zRotation) + '\n')
         f.write('\n')
+
+    def write_constraints_selfweight(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Self weight\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for femobj in self.selfweight_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            selwei_obj_name = femobj['Object'].Name
+            f.write('** ' + selwei_obj_name + '\n')
+            f.write('*DLOAD\n')
+            f.write('Eall,GRAV,9810,0,0,-1\n')
+            f.write('\n')
+        # die grav (erdbeschleunigung) ist fuer alle gleich
+        # die verschidene density wurde in den material sets geschrieben !
 
     def write_constraints_force(self, f):
         # check shape type of reference shape and get node loads
