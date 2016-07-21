@@ -537,7 +537,7 @@ CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint displacement");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a face");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a geometric entity");
     sWhatsThis      = "Fem_ConstraintDisplacement";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-displacement";
@@ -725,7 +725,7 @@ CmdFemCreateNodesSet::CmdFemCreateNodesSet()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Nodes set");
-    sToolTipText    = QT_TR_NOOP("Create a FEM mesh nodes set");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM mesh nodes set");
     sWhatsThis      = "Fem_CreateNodesSet";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-fem-mesh-create-node-by-poly";
