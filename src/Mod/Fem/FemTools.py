@@ -105,7 +105,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
-    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
+    #  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hot spots.
     def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":
@@ -159,7 +159,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.mesh = None
         ## @var materials
         # set of materials from the analysis. Updated with update_objects
-        # Induvidual materials are "App::MaterialObjectPython" type
+        #  Individual materials are "App::MaterialObjectPython" type
         self.materials = []
         ## @var fixed_constraints
         #  set of fixed constraints from the analysis. Updated with update_objects
@@ -348,9 +348,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## Sets analysis type.
     #  @param self The python object self
-    #  @param analysis_type type of the analysis. Allowed values are:
-    #  - static
-    #  - frequency
+    #  @param analysis_type type of the analysis.
     def set_analysis_type(self, analysis_type=None):
         if analysis_type is not None:
             self.analysis_type = analysis_type
