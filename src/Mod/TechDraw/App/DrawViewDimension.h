@@ -47,20 +47,18 @@ public:
     virtual ~DrawViewDimension();
 
     App::PropertyEnumeration MeasureType;                              //True/Projected
-    App::PropertyVector ProjDirection;                                 //??why would dim have different projDir from View?
     App::PropertyLinkSubList References2D;                             //Points to Projection SubFeatures
     App::PropertyLinkSubList References3D;                             //Points to 3D Geometry SubFeatures
     App::PropertyEnumeration Type;                                     //DistanceX,DistanceY,Diameter, etc
-    App::PropertyVector XAxisDirection;                                //??always equal to View??
 
     /// Properties for Visualisation
-    App::PropertyInteger Precision;
     App::PropertyString  Font;
     App::PropertyFloat   Fontsize;
     App::PropertyBool    CentreLines;
     App::PropertyString  FormatSpec;
 
     //TODO: do we need a property for the actual dimension value? how else to access from Py?
+    //wf: expose getValue & getFormatedValue
 
     short mustExecute() const;
     bool has2DReferences(void) const;

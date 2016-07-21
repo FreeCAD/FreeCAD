@@ -88,20 +88,22 @@ DrawViewDimension::DrawViewDimension(void)
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
     std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
 
-    ADD_PROPERTY_TYPE(References2D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
-    ADD_PROPERTY_TYPE(References3D,(0,0),"Dimension",(App::PropertyType)(App::Prop_None),"3D Geometry References");
-    ADD_PROPERTY_TYPE(Precision,(2)   ,"Dimension",(App::PropertyType)(App::Prop_None),"Decimal positions to display");
-    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Dimension",App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(4)    ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
-    ADD_PROPERTY_TYPE(CentreLines,(0) ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Center Lines");
-    ADD_PROPERTY_TYPE(ProjDirection ,(0.,0.,1.0), "Dimension",App::Prop_None,"Projection normal direction");
-    ADD_PROPERTY_TYPE(FormatSpec,("%value%") ,"Dimension",(App::PropertyType)(App::Prop_None),"Dimension Format");
+    ADD_PROPERTY_TYPE(References2D,(0,0),"",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
+    ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
+    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Format",App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize,(4)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
+    ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
+    ADD_PROPERTY_TYPE(FormatSpec,("%value%") ,"Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
-
     MeasureType.setEnums(MeasureTypeEnums);
     ADD_PROPERTY(MeasureType, ((long)0));                           //True or Projected measurement
+
+
+    //hide the properties the user can't edit in the property editor
+    References2D.setStatus(App::Property::Hidden,true);
+    References3D.setStatus(App::Property::Hidden,true);
 
     //hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly,true);
@@ -110,8 +112,6 @@ DrawViewDimension::DrawViewDimension(void)
     Scale.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::ReadOnly,true);
     Rotation.setStatus(App::Property::Hidden,true);
-
-    Precision.setValue(Base::UnitsApi::getDecimals());
 
     measurement = new Measure::Measurement();
 }
@@ -126,7 +126,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if (prop == &References2D  ||
-            prop == &Precision   ||
             prop == &Font        ||
             prop == &Fontsize    ||
             prop == &CentreLines ||
@@ -190,10 +189,6 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    //TODO: why not just use View's property directly?
-    ProjDirection.setValue(getViewPart()->Direction.getValue());
-    XAxisDirection.setValue(getViewPart()->XAxisDirection.getValue());
-
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
 
     return App::DocumentObject::execute();;
@@ -203,10 +198,6 @@ std::string  DrawViewDimension::getFormatedValue() const
 {
     QString str = QString::fromUtf8(FormatSpec.getStrValue().c_str());
     double val = std::abs(getDimValue());
-    //QLocale here(QLocale::German);                                           //for testing
-    //here.setNumberOptions(QLocale::OmitGroupSeparator);
-    QLocale here = QLocale();                                                  //system locale
-    QString valText = here.toString(val, 'f',Precision.getValue());
 
     Base::Quantity qVal;
     qVal.setValue(val);
@@ -216,12 +207,6 @@ std::string  DrawViewDimension::getFormatedValue() const
         qVal.setUnit(Base::Unit::Length);
     }
     QString userStr = qVal.getUserString();
-    QStringList userSplit = userStr.split(QString::fromUtf8(" "),QString::SkipEmptyParts);   //break userString into number + UoM
-    QString displayText;
-    if (!userSplit.isEmpty()) {
-       QString unitText = userSplit.back();
-       displayText = valText + QString::fromUtf8(" ") + unitText;
-    }
 
     QRegExp rx(QString::fromAscii("%(\\w+)%"));                        //any word bracketed by %
     QStringList list;
@@ -234,9 +219,8 @@ std::string  DrawViewDimension::getFormatedValue() const
 
     for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it) {
         if(*it == QString::fromAscii("%value%")){
-            str.replace(*it,displayText);
-        } else {                                                       //insert additional placeholder replacement logic here
-            str.replace(*it, QString::fromAscii(""));                  //maybe we should just leave what was there?
+            str.replace(*it,userStr);
+//        } else {                                                       //insert additional placeholder replacement logic here
         }
     }
     return str.toStdString();
@@ -426,8 +410,9 @@ double DrawViewDimension::getDimValue() const
 
 DrawViewPart* DrawViewDimension::getViewPart() const
 {
-    //TODO: range_check here if no References.  valid situation during Dimension creation.  what happens if return NULL??
-    //need checks everywhere?
+    if (References2D.getValues().empty()) {
+        return nullptr;
+    }
     return dynamic_cast<TechDraw::DrawViewPart * >(References2D.getValues().at(0));
 }
 
