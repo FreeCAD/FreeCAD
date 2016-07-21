@@ -492,7 +492,7 @@ Eall
 *STATIC
 
 ***********************************************************
-** Constaints
+** Constraints
 ** written by write_constraints_fixed function
 *BOUNDARY
 FemConstraintFixed,1
