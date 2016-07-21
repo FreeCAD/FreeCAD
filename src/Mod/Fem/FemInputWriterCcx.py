@@ -82,7 +82,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             if self.pressure_objects:
                 self.write_constraints_pressure(inpfile)
         elif self.analysis_type == "frequency":
-            self.write_frequency(inpfile)
+            self.write_analysis_frequency(inpfile)
         self.write_outputs_types(inpfile)
         self.write_step_end(inpfile)
         self.write_footer(inpfile)
@@ -133,7 +133,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Node set for fixed constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.fixed_objects:
+        for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
@@ -145,7 +145,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Node sets for prescribed displacement constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.displacement_objects:
+        for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
@@ -313,7 +313,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Element + CalculiX face + load in [MPa]\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.pressure_objects:
+        for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             prs_obj = femobj['Object']
             f.write('*DLOAD\n')
             for o, elem_tup in prs_obj.References:
@@ -326,7 +326,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                         for i in v:
                             f.write("{},P{},{}\n".format(i[0], i[1], rev * prs_obj.Pressure))
 
-    def write_frequency(self, f):
+    def write_analysis_frequency(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Frequency analysis\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
