@@ -55,7 +55,7 @@ class _FemSolverCalculix():
         obj.NumberOfEigenmodes = (noe, 1, 100, 1)
 
         obj.addProperty("App::PropertyFloatConstraint", "EigenmodeLowLimit", "Fem", "Low frequency limit for eigenmode calculations")
-        #Not yet in prefs, so it will always default to 0.0
+        # Not yet in prefs, so it will always default to 0.0
         ell = fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
         obj.EigenmodeLowLimit = (ell, 0.0, 1000000.0, 10000.0)
 
