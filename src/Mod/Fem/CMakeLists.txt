@@ -83,6 +83,11 @@ INSTALL(
         _ViewProviderFemSolverZ88.py
         _CommandSolverZ88.py
 
+        FemConstraintSelfWeight.py
+        _FemConstraintSelfWeight.py
+        _ViewProviderFemConstraintSelfWeight.py
+        _CommandConstraintSelfWeight.py
+
     DESTINATION
         Mod/Fem
 )

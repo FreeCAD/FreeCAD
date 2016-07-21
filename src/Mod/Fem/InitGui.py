@@ -58,6 +58,8 @@ class FemWorkbench (Workbench):
         import _CommandMechanicalMaterial
         import _CommandSolverCalculix
         import _CommandSolverZ88
+        import _CommandConstraintSelfWeight
+
 
         import subprocess
         from platform import system
