@@ -498,7 +498,7 @@ FemConstraintFixed,3
 
 ***********************************************************
 ** Frequency analysis
-** written by write_frequency function
+** written by write_analysis_frequency function
 *FREQUENCY
 10,0.0,1000000.0
 
