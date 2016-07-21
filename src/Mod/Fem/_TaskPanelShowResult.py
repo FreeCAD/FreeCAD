@@ -43,7 +43,7 @@ class _TaskPanelShowResult:
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
 
-        #Connect Signals and Slots
+        # Connect Signals and Slots
         QtCore.QObject.connect(self.form.rb_none, QtCore.SIGNAL("toggled(bool)"), self.none_selected)
         QtCore.QObject.connect(self.form.rb_x_displacement, QtCore.SIGNAL("toggled(bool)"), self.x_displacement_selected)
         QtCore.QObject.connect(self.form.rb_y_displacement, QtCore.SIGNAL("toggled(bool)"), self.y_displacement_selected)
@@ -231,7 +231,7 @@ class _TaskPanelShowResult:
         FreeCADGui.Control.closeDialog()
 
 
-#It's code duplication that should be removes wher we migrate to FemTools.py
+# It's code duplication that should be removes wher we migrate to FemTools.py
 def get_results_object(sel):
     if (len(sel) == 1):
         if sel[0].isDerivedFrom("Fem::FemResultObject"):

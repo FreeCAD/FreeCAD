@@ -56,7 +56,7 @@ class _CommandShowResult(FemCommands):
         FreeCADGui.Control.showDialog(taskd)
 
 
-#Code duplidation - to be removed after migration to FemTools
+# Code duplidation - to be removed after migration to FemTools
 def get_results_object(sel):
     import FemGui
     if (len(sel) == 1):

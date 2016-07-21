@@ -39,7 +39,7 @@ class FemCommands(object):
                               'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
                               'Accel': "",
                               'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}
-            #FIXME add option description
+            # FIXME add option description
             self.is_active = None
 
         def GetResources(self):
@@ -101,8 +101,8 @@ class FemCommands(object):
         def hide_parts_constraints_show_meshes(self):
             if FreeCAD.GuiUp:
                 for acnstrmesh in FemGui.getActiveAnalysis().Member:
-                    #if "Constraint" in acnstrmesh.TypeId:
-                    #    acnstrmesh.ViewObject.Visibility = False
+                    # if "Constraint" in acnstrmesh.TypeId:
+                    #     acnstrmesh.ViewObject.Visibility = False
                     if "Mesh" in acnstrmesh.TypeId:
                         aparttoshow = acnstrmesh.Name.replace("_Mesh", "")
                         for apart in FreeCAD.activeDocument().Objects:

@@ -103,14 +103,14 @@ class FemInputWriter():
                 # frc_obj.References could be empty ! # TODO in FemTools: check
                 FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
             if femobj['RefShapeType'] == 'Vertex':
-                #print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
+                # print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
                 pass
             elif femobj['RefShapeType'] == 'Face' and FemMeshTools.is_solid_femmesh(self.femmesh) and not FemMeshTools.has_no_face_data(self.femmesh):
-                #print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
+                # print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
             else:
-                #print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
+                # print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femelement_table:

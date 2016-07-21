@@ -63,7 +63,7 @@ class _TaskPanelFemSolverCalculix:
 
         self.fem_console_message = ''
 
-        #Connect Signals and Slots
+        # Connect Signals and Slots
         QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
         QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
         QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)

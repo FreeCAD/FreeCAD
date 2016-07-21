@@ -34,5 +34,5 @@ def makeFemAnalysis(name):
     _FemAnalysis._FemAnalysis(obj)
     import _ViewProviderFemAnalysis
     _ViewProviderFemAnalysis._ViewProviderFemAnalysis()
-    #FreeCAD.ActiveDocument.recompute()
+    # FreeCAD.ActiveDocument.recompute()
     return obj
