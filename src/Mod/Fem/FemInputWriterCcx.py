@@ -63,17 +63,24 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfile = open(self.file_name, 'a')
         inpfile.write('\n\n')
         self.write_element_sets_material_and_femelement_type(inpfile)
-        self.write_node_sets_constraints_fixed(inpfile)
-        self.write_node_sets_constraints_displacement(inpfile)
+        if self.fixed_objects:
+            self.write_node_sets_constraints_fixed(inpfile)
+        if self.displacement_objects:
+            self.write_node_sets_constraints_displacement(inpfile)
         self.write_materials(inpfile)
         self.write_femelementsets(inpfile)
         self.write_step_begin(inpfile)
-        self.write_constraints_fixed(inpfile)
-        self.write_constraints_displacement(inpfile)
+        if self.fixed_objects:
+            self.write_constraints_fixed(inpfile)
+        if self.displacement_objects:
+            self.write_constraints_displacement(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
-            self.write_constraints_selfweight(inpfile)
-            self.write_constraints_force(inpfile)
-            self.write_constraints_pressure(inpfile)
+            if self.selfweight_objects:
+                self.write_constraints_selfweight(inpfile)
+            if self.force_objects:
+                self.write_constraints_force(inpfile)
+            if self.pressure_objects:
+                self.write_constraints_pressure(inpfile)
         elif self.analysis_type == "frequency":
             self.write_frequency(inpfile)
         self.write_outputs_types(inpfile)
