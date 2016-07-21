@@ -269,8 +269,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Neither a constraint fixed nor a contraint displacement defined in the static analysis\n"
         if self.analysis_type == "static":
-            if not (self.force_constraints or self.pressure_constraints):
-                message += "Neither constraint force nor constraint pressure defined in the static analysis\n"
+            if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
+                message += "Neither constraint force nor constraint pressure or a constraint selfweight defined in the static analysis\n"
         if self.beam_sections:
             has_no_references = False
             for b in self.beam_sections:
