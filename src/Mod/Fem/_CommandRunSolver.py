@@ -73,15 +73,15 @@ class _CommandRunSolver(FemCommands):
                 QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
                 return
             self.fea.run()  # test z88
-            #self.fea.finished.connect(load_results)
-            #QtCore.QThreadPool.globalInstance().start(self.fea)
+            # self.fea.finished.connect(load_results)
+            # QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
 
     def show_results_on_mesh(self):
-        #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
+        # FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
         # or confirmation that it's safe to call restore_result_dialog
-        #FIXME if an analysis has multiple results (frequence) the first result object found is restored
+        # FIXME if an analysis has multiple results (frequence) the first result object found is restored
         import _TaskPanelShowResult
         tp = _TaskPanelShowResult._TaskPanelShowResult()
         tp.restore_result_dialog()
