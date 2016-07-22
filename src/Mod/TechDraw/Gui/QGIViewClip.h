@@ -46,7 +46,6 @@ public:
     virtual void updateView(bool update = false) override;
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const override;
 
 protected:
     void drawClip();

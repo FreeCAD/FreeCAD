@@ -54,7 +54,6 @@ public:
     void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const override;
 
 protected:
     virtual void drawSvg();

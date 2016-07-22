@@ -58,7 +58,6 @@ public:
     void tidy();
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const override;
 
 protected:
     /// Helper for pathArc()

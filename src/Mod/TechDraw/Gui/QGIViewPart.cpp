@@ -575,12 +575,6 @@ TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::Draw
     return result;
 }
 
-QRectF QGIViewPart::boundingRect() const
-{
-    //return childrenBoundingRect().adjusted(-2.,-2.,2.,6.);             //just a bit bigger than the children need
-    return childrenBoundingRect();
-}
-
 void QGIViewPart::dumpPath(const char* text,QPainterPath path)
 {
         QPainterPath::Element elem;
