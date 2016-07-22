@@ -47,8 +47,6 @@
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
-#include "QGCustomRect.h"
-#include "QGCustomClip.h"
 #include "QGIViewClip.h"
 
 using namespace TechDrawGui;
@@ -61,15 +59,13 @@ QGIViewClip::QGIViewClip()
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
 
-    m_cliparea = new QGCustomClip();
-    addToGroup(m_cliparea);
-    m_cliparea->setPos(0.,0.);
-    m_cliparea->setRect(0.,0.,5.,5.);
+    addToGroup(&m_cliparea);
+    m_cliparea.setPos(0.,0.);
+    m_cliparea.setRect(0.,0.,5.,5.);
 
-    m_frame = new QGCustomRect();
-    addToGroup(m_frame);
-    m_frame->setPos(0.,0.);
-    m_frame->setRect(0.,0.,5.,5.);
+    addToGroup(&m_frame);
+    m_frame.setPos(0.,0.);
+    m_frame.setRect(0.,0.,5.,5.);
 }
 
 
@@ -120,15 +116,15 @@ void QGIViewClip::drawClip()
     double h = viewClip->Height.getValue();
     double w = viewClip->Width.getValue();
     QRectF r = QRectF(0,0,w,h);
-    m_frame->setRect(r);
-    m_frame->setPos(0.,0.);
+    m_frame.setRect(r);
+    m_frame.setPos(0.,0.);
     if (viewClip->ShowFrame.getValue()) {
-        m_frame->show();
+        m_frame.show();
     } else {
-        m_frame->hide();
+        m_frame.hide();
     }
 
-    m_cliparea->setRect(r.adjusted(-1,-1,1,1));                        //TODO: clip just outside frame or just inside??
+    m_cliparea.setRect(r.adjusted(-1,-1,1,1));                        //TODO: clip just outside frame or just inside??
 
     std::vector<std::string> childNames = viewClip->getChildViewNames();
     //for all child Views in Clip, add the graphics representation of the View to the Clip group
@@ -136,10 +132,10 @@ void QGIViewClip::drawClip()
         QGIView* qgiv = getQGIVByName((*it));
         if (qgiv) {
             //TODO: why is qgiv never already in a group?
-            if (qgiv->group() != m_cliparea) {
+            if (qgiv->group() != &m_cliparea) {
                 qgiv->hide();
                 scene()->removeItem(qgiv);
-                m_cliparea->addToGroup(qgiv);
+                m_cliparea.addToGroup(qgiv);
                 qgiv->isInnerView(true);
                 double x = qgiv->getViewObject()->X.getValue();
                 double y = qgiv->getViewObject()->Y.getValue();
@@ -157,14 +153,14 @@ void QGIViewClip::drawClip()
     }
 
     //for all graphic views in qgigroup, remove from qgigroup the ones that aren't in ViewClip
-    QList<QGraphicsItem*> qgItems = m_cliparea->childItems();
+    QList<QGraphicsItem*> qgItems = m_cliparea.childItems();
     QList<QGraphicsItem*>::iterator it = qgItems.begin();
     for (; it != qgItems.end(); it++) {
         QGIView* qv = dynamic_cast<QGIView*>((*it));
         if (qv) {
             std::string qvName = std::string(qv->getViewName());
             if (std::find(childNames.begin(),childNames.end(),qvName) == childNames.end()) {
-                m_cliparea->removeFromGroup(qv);
+                m_cliparea.removeFromGroup(qv);
                 removeFromGroup(qv);
                 qv->isInnerView(false);
                 qv->toggleBorder(true);
@@ -173,19 +169,4 @@ void QGIViewClip::drawClip()
     }
 }
 
-//TODO: at least move to QGIView
-QGIView* QGIViewClip::getQGIVByName(std::string name)  //should probably be method in MDIViewPage??  but qgiv can't get drawingView? or QGVPage!
-{
-    QList<QGraphicsItem*> qgItems = scene()->items();
-    QList<QGraphicsItem*>::iterator it = qgItems.begin();
-    for (; it != qgItems.end(); it++) {
-        QGIView* qv = dynamic_cast<QGIView*>((*it));
-        if (qv) {
-            const char* qvName = qv->getViewName();
-            if(name.compare(qvName) == 0) {
-                return (qv);
-            }
-        }
-    }
-    return 0;
-}
+
