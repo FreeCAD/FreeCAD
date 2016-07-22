@@ -28,6 +28,7 @@
 
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include "QGCustomBorder.h"
 #include "QGIView.h"
 
 namespace TechDraw {
@@ -56,6 +57,7 @@ public:
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
     virtual void updateView(bool update = false) override;
     void tidy();
+    virtual QRectF boundingRect() const override;
 
     virtual void draw() override;
 
@@ -90,6 +92,6 @@ private:
     QList<QGraphicsItem*> deleteItems;
 };
 
-} // namespace MDIViewPageGui
+} // namespace
 
 #endif // DRAWINGGUI_QGRAPHICSITEMVIEWPART_H

@@ -138,6 +138,7 @@ void QGIViewClip::drawClip()
             //TODO: why is qgiv never already in a group?
             if (qgiv->group() != m_cliparea) {
                 qgiv->hide();
+                scene()->removeItem(qgiv);
                 m_cliparea->addToGroup(qgiv);
                 qgiv->isInnerView(true);
                 double x = qgiv->getViewObject()->X.getValue();
@@ -172,6 +173,7 @@ void QGIViewClip::drawClip()
     }
 }
 
+//TODO: at least move to QGIView
 QGIView* QGIViewClip::getQGIVByName(std::string name)  //should probably be method in MDIViewPage??  but qgiv can't get drawingView? or QGVPage!
 {
     QList<QGraphicsItem*> qgItems = scene()->items();
