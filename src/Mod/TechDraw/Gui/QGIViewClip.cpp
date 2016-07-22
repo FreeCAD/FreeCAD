@@ -187,8 +187,3 @@ QGIView* QGIViewClip::getQGIVByName(std::string name)  //should probably be meth
     }
     return 0;
 }
-
-QRectF QGIViewClip::boundingRect() const
-{
-    return childrenBoundingRect();
-}

@@ -50,7 +50,6 @@ public:
     void setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj);
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const override;
 
 protected:
     void drawAnnotation();

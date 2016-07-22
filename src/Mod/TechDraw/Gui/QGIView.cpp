@@ -373,6 +373,10 @@ QRectF QGIView::customChildrenBoundingRect() {
     return result;
 }
 
+QRectF QGIView::boundingRect() const
+{
+    return m_border->rect().adjusted(-2.,-2.,2.,2.);     //allow for border line width  //TODO: fiddle brect if border off?
+}
 QColor QGIView::getNormalColor()
 {
     Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
