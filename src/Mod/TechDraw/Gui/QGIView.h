@@ -74,6 +74,7 @@ public:
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual QRectF boundingRect() const override;
     //virtual QPainterPath shape(void) const;
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);

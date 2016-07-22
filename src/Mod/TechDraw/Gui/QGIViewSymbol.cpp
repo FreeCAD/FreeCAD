@@ -139,7 +139,3 @@ void QGIViewSymbol::symbolToSvg(QString qs)
     m_svgItem->setPos(0.,0.);
 }
 
-QRectF QGIViewSymbol::boundingRect() const
-{
-    return childrenBoundingRect();
-}

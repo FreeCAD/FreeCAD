@@ -163,8 +163,3 @@ void QGIViewAnnotation::drawAnnotation()
     m_textItem->setPos(0.,0.);
 }
 
-QRectF QGIViewAnnotation::boundingRect() const
-{
-    return childrenBoundingRect();
-}
-
