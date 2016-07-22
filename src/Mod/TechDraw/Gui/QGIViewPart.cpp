@@ -272,7 +272,6 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawBorder();
-    QGIView::draw();
 }
 
 void QGIViewPart::drawViewPart()
@@ -594,4 +593,9 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
             Base::Console().Message(">>>>> element %d: type:%d/%s pos(%.3f,%.3f) M:%d L:%d C:%d\n",iElem,
                                     elem.type,typeName,elem.x,elem.y,elem.isMoveTo(),elem.isLineTo(),elem.isCurveTo());
         }
+}
+
+QRectF QGIViewPart::boundingRect() const
+{
+    return childrenBoundingRect();
 }

@@ -59,8 +59,6 @@
 
 using namespace TechDrawGui;
 
-void _debugRect(char* text, QRectF r);
-
 QGIView::QGIView()
     :QGraphicsItemGroup(),
      locked(false),
@@ -298,12 +296,14 @@ void QGIView::draw()
 
 void QGIView::drawBorder()
 {
+    prepareGeometryChange();
     if (!borderVisible) {
+         m_label->hide();
+         m_border->hide();
         return;
     }
 
     //double margin = 2.0;
-    prepareGeometryChange();
     m_label->hide();
     m_border->hide();
 
@@ -350,10 +350,6 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    if(!borderVisible){
-         m_label->hide();
-         m_border->hide();
-    }
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 
@@ -377,6 +373,7 @@ QRectF QGIView::boundingRect() const
 {
     return m_border->rect().adjusted(-2.,-2.,2.,2.);     //allow for border line width  //TODO: fiddle brect if border off?
 }
+
 QColor QGIView::getNormalColor()
 {
     Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
@@ -419,7 +416,7 @@ QString QGIView::getPrefFont()
     return QString::fromStdString(fontName);
 }
 
-void _debugRect(char* text, QRectF r) {
-    Base::Console().Message("TRACE - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
+void QGIView::dumpRect(char* text, QRectF r) {
+    Base::Console().Message("DUMP - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
                             r.left(),r.top(),r.right(),r.bottom());
 }

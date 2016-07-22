@@ -75,7 +75,6 @@ public:
     virtual void updateView(bool update = false);
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
     virtual QRectF boundingRect() const override;
-    //virtual QPainterPath shape(void) const;
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
@@ -89,6 +88,7 @@ protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual QRectF customChildrenBoundingRect(void);
+    void dumpRect(char* text, QRectF r);
 
     QColor getNormalColor(void);
     QColor getPreColor(void);
@@ -117,6 +117,6 @@ protected:
     QPen m_decorPen;
 };
 
-} // namespace MDIViewPageGui
+} // namespace
 
 #endif // DRAWINGGUI_QGRAPHICSITEMVIEW_H
