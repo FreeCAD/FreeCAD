@@ -376,7 +376,7 @@ private:
     void deletedFacets(const std::vector<unsigned long>& remFacets);
     void updateMesh(const std::vector<unsigned long>&);
     void updateMesh();
-    void swapKernel(MeshCore::MeshKernel& m);
+    void swapKernel(MeshCore::MeshKernel& m, const std::vector<std::string>& g);
 
 private:
     Base::Matrix4D _Mtrx;
