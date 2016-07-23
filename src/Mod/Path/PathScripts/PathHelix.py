@@ -41,6 +41,17 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
+def print_exceptions(func):
+    from functools import wraps
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except:
+            import traceback
+            raise
+    return wrapper
+
 def hollow_cylinder(cyl):
     """Test if this is a hollow cylinder"""
     from Part import Circle
@@ -77,12 +88,60 @@ def z_cylinder(cyl):
         return False
     return True
 
+def full_cylinder(cyl):
+    p1 = cyl.valueAt(cyl.ParameterRange[0], cyl.ParameterRange[2])
+    p2 = cyl.valueAt(cyl.ParameterRange[1], cyl.ParameterRange[2])
+    return fmt(p1.x) == fmt(p2.x) and fmt(p1.y) == fmt(p2.y) and p1.z == p2.z
 
 def connected(edge, face):
     for otheredge in face.Edges:
         if edge.isSame(otheredge):
             return True
     return False
+
+def connected_cylinders(base, edge):
+    from Part import Cylinder
+    cylinders = []
+    for n in range(len(base.Shape.Faces)):
+        face = "Face{0}".format(n+1)
+        subobj = base.Shape.Faces[n]
+        if isinstance(subobj.Surface, Cylinder):
+            if not connected(edge, subobj):
+                continue
+            if not z_cylinder(subobj):
+                continue
+            if not full_cylinder(subobj):
+                continue
+            cylinders.append(face)
+    return cylinders
+
+def cylinders_in_selection():
+    from Part import Cylinder
+    selections = FreeCADGui.Selection.getSelectionEx()
+
+    cylinders = []
+
+    for selection in selections:
+        base = selection.Object
+        cylinders.append((base, []))
+        for feature in selection.SubElementNames:
+            subobj = getattr(base.Shape, feature)
+            if subobj.ShapeType =='Face':
+                if isinstance(subobj.Surface, Cylinder):
+                    if z_cylinder(subobj):
+                        cylinders[-1][1].append(feature)
+                else:
+                    # brute force triple-loop as FreeCAD does not expose
+                    # any topology information...
+                    for edge in subobj.Edges:
+                        for face in connected_cylinders(base, edge):
+                            if hollow_cylinder(getattr(base.Shape, face)):
+                                cylinders[-1][1].append(face)
+
+            if subobj.ShapeType == 'Edge':
+                cylinders.extend(connected_cylinders(base, (feature,)))
+
+    return cylinders
 
 
 def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vfeed, hfeed, direction, startside):
@@ -182,7 +241,7 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
         else:
             nr = max(int(ceil((r_out - r_in)/dr)), 2)
             radii = linspace(r_out, r_in, nr)
-    elif r_out < dr:
+    elif r_out <= 2 * dr:
         out += "(single helix mode)\n"
         radii = [r_out - tool_diameter/2]
         assert(radii[0] > 0)
@@ -208,7 +267,6 @@ class ObjectPathHelix(object):
 
     def __init__(self,obj):
         # Basic
-        obj.addProperty("App::PropertyLinkSub","Base","Path",translate("Parent Object","The base geometry of this toolpath"))
         obj.addProperty("App::PropertyLinkSubList","Features","Path",translate("Features","Selected features for the drill operation"))
         obj.addProperty("App::PropertyBool","Active","Path",translate("Active","Set to False to disable code generation"))
         obj.addProperty("App::PropertyString","Comment","Path",translate("Comment","An optional comment for this profile, will appear in G-Code"))
@@ -264,9 +322,13 @@ class ObjectPathHelix(object):
         return None
 
     def execute(self,obj):
+        import cProfile, pstats, StringIO
+        pr = cProfile.Profile()
+        pr.enable()
+
         from Part import Circle, Cylinder, Plane
         from math import sqrt
-        if obj.Base:
+        if obj.Features:
             if not obj.Active:
                 obj.Path = Path.Path("(helix cut operation inactive)")
                 obj.ViewObject.Visibility = False
@@ -287,43 +349,19 @@ class ObjectPathHelix(object):
                 obj.Path = Path.Path("(ERROR: no tool selected for helix cut operation)")
                 return
 
-            def connected_cylinders(base, edge):
-                cylinders = []
-                for face in base.Shape.Faces:
-                    if isinstance(face.Surface, Cylinder):
-                        if connected(edge, face):
-                            if z_cylinder(face):
-                                cylinders.append((base, face))
-                return cylinders
-
-            cylinders = []
-
-            for base, feature in obj.Features:
-                subobj = getattr(base.Shape, feature)
-                if subobj.ShapeType =='Face':
-                    if isinstance(subobj.Surface, Cylinder):
-                        if z_cylinder(subobj):
-                            cylinders.append((base, subobj))
-                    else:
-                        # brute force triple-loop as FreeCAD does not expose
-                        # any topology information...
-                        for edge in subobj.Edges:
-                            cylinders.extend(filter(lambda b_c: hollow_cylinder(b_c[1]), (connected_cylinders(base, edge))))
-
-                if subobj.ShapeType == 'Edge':
-                    cylinders.extend(connected_cylinders(base, subobj))
-
             output = '(helix cut operation'
             if obj.Comment:
                 output  += ', '+ str(obj.Comment)+')\n'
             else:
                 output  += ')\n'
 
-            output += "G0 Z" + fmt(obj.Base[0].Shape.BoundBox.ZMax + float(obj.Clearance))
+            zsafe = max(baseobj.Shape.BoundBox.ZMax for baseobj, features in obj.Features) + obj.Clearance.Value
+            output += "G0 Z" + fmt(zsafe)
 
             drill_jobs = []
 
-            for base, cylinder in cylinders:
+            for base, feature in sum((list((obj, feature) for feature in features) for obj, features in obj.Features), []):
+                cylinder = getattr(base.Shape, feature)
                 zsafe = cylinder.BoundBox.ZMax + obj.Clearance.Value
                 xc, yc, zc = cylinder.Surface.Center
 
@@ -390,7 +428,8 @@ class ObjectPathHelix(object):
                         face, = faces
                         for edge in face.Edges:
                             if not edge.isSame(other_edge):
-                                for base, other_cylinder in connected_cylinders(base, edge):
+                                for other_face in connected_cylinders(base, edge):
+                                    other_cylinder = getattr(base.Shape, other_face)
                                     xo = other_cylinder.Surface.Center.x
                                     yo = other_cylinder.Surface.Center.y
                                     center_dist = sqrt((xo - xc)**2 + (yo - yc)**2)
@@ -433,6 +472,15 @@ class ObjectPathHelix(object):
             if obj.ViewObject:
                 obj.ViewObject.Visibility = True
 
+        pr.disable()
+        s = StringIO.StringIO()
+        sortby = 'time' #cumulative'
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats(10)
+        FreeCAD.Console.PrintError(s.getvalue() + "\n\n")
+
+
+taskpanels = {}
 
 class ViewProviderPathHelix(object):
     def __init__(self,vobj):
@@ -449,6 +497,7 @@ class ViewProviderPathHelix(object):
         FreeCADGui.Control.closeDialog()
         taskpanel = TaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskpanel)
+        taskpanels[0] = taskpanel
         return True
 
     def __getstate__(self):
@@ -471,15 +520,6 @@ class CommandPathHelix(object):
         import Path
         from PathScripts import PathUtils
 
-        selection = FreeCADGui.Selection.getSelectionEx()
-
-        if not len(selection) == 1:
-            FreeCAD.Console.PrintError("Only considering first object for PathHelix!\n")
-        selection = selection[0]
-
-        if not len(selection.SubElementNames) > 0:
-            FreeCAD.Console.PrintError("Select a face or circles to create helix cuts\n")
-
         # register the transaction for the undo stack
         try:
             FreeCAD.ActiveDocument.openTransaction(translate("PathHelix","Create a helix cut"))
@@ -489,8 +529,7 @@ class CommandPathHelix(object):
             ObjectPathHelix(obj)
             ViewProviderPathHelix(obj.ViewObject)
 
-            obj.Base = selection.Object
-            obj.Features = [(selection.Object, subobj) for subobj in selection.SubElementNames]
+            obj.Features = cylinders_in_selection()
             obj.DeltaR = 1.0
 
             project = PathUtils.addToProject(obj)
@@ -520,6 +559,8 @@ class CommandPathHelix(object):
             obj.VertFeed = 0.0
             obj.HorizFeed = 0.0
 
+            obj.ViewObject.startEditing()
+
             # commit
             FreeCAD.ActiveDocument.commitTransaction()
 
@@ -530,6 +571,7 @@ class CommandPathHelix(object):
         FreeCAD.ActiveDocument.recompute()
 
 class TaskPanel(object):
+
     def __init__(self, obj):
         from Units import Quantity
         self.obj = obj
@@ -544,7 +586,7 @@ class TaskPanel(object):
 
         def addWidget(widget):
             row = layout.rowCount()
-            layout.addWidget(widget, row, 0, columnSpan=2)
+            layout.addWidget(widget, row, 0, 1, 2)
 
         def addWidgets(widget1, widget2):
             row = layout.rowCount()
@@ -630,6 +672,24 @@ class TaskPanel(object):
             widget.currentIndexChanged.connect(change)
             addWidgets(label, widget)
 
+        self.featureList = QtGui.QListWidget()
+        self.featureList.setMinimumHeight(200)
+        self.featureList.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.featureList.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
+        self.featureList.setDefaultDropAction(QtCore.Qt.MoveAction)
+        self.fillFeatureList()
+        sm = self.featureList.selectionModel()
+        sm.selectionChanged.connect(self.selectFeatures)
+        addWidget(self.featureList)
+
+        self.addButton = QtGui.QPushButton("Add holes")
+        self.addButton.clicked.connect(self.addCylinders)
+
+        self.delButton = QtGui.QPushButton("Delete")
+        self.delButton.clicked.connect(self.delCylinders)
+
+        addWidgets(self.addButton, self.delButton)
+
         heading("Drill parameters")
         addCheckBox("Active", "Operation is active")
         addCheckBox("Recursive", "Also mill subsequent holes")
@@ -648,7 +708,7 @@ class TaskPanel(object):
         addQuantity("StartDepth", "Absolute start height", "UseStartDepth")
 
         fdcheckbox, fdinput = addQuantity("FinalDepth", "Absolute final height", "UseFinalDepth")
-        tdlabel, tdinput = addQuantity("ThroughDepth", "Extra drill depth for open holes")
+        tdlabel, tdinput = addQuantity("ThroughDepth", "Extra drill depth\nfor open holes")
 
         heading("Feeds")
         addQuantity("HorizFeed", "Horizontal Feed")
@@ -673,6 +733,65 @@ class TaskPanel(object):
         widget = QtGui.QWidget()
         widget.setLayout(layout)
         self.form = widget
+
+    @print_exceptions
+    def addCylinders(self):
+        features_per_base = {}
+        for base, features in self.obj.Features:
+            features_per_base[base] = list(set(features))
+
+        for base, features in cylinders_in_selection():
+            for feature in features:
+                if base in features_per_base:
+                    if not feature in features_per_base[base]:
+                        features_per_base[base].append(feature)
+                else:
+                    features_per_base[base] = [feature]
+
+        self.obj.Features = list(features_per_base.items())
+        self.featureList.clear()
+        self.fillFeatureList()
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.recompute()
+
+    @print_exceptions
+    def delCylinders(self):
+        del_features = []
+        for item in self.featureList.selectedItems():
+            obj, feature = item.data(QtCore.Qt.UserRole)
+            del_features.append((obj, feature))
+            self.featureList.takeItem(self.featureList.row(item))
+
+        new_features = []
+        for obj, features in self.obj.Features:
+            for feature in features:
+                if (obj, feature) not in del_features:
+                    new_features.append((obj, feature))
+
+        FreeCAD.Console.PrintError(del_features)
+        FreeCAD.Console.PrintError("\n")
+        FreeCAD.Console.PrintError(new_features)
+        FreeCAD.Console.PrintError("\n")
+        self.obj.Features = new_features
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.recompute()
+
+    @print_exceptions
+    def fillFeatureList(self):
+        for obj, features in self.obj.Features:
+            for feature in features:
+                radius = getattr(obj.Shape, feature).Surface.Radius
+                item  = QtGui.QListWidgetItem()
+                item.setText(obj.Name + "." + feature + " ({0:.2f})".format(radius))
+                item.setData(QtCore.Qt.UserRole, (obj, feature))
+                self.featureList.addItem(item)
+
+    @print_exceptions
+    def selectFeatures(self, selected, deselected):
+        FreeCADGui.Selection.clearSelection()
+        for item in self.featureList.selectedItems():
+            obj, feature = item.data(QtCore.Qt.UserRole)
+            FreeCADGui.Selection.addSelection(obj, feature)
 
     def needsFullSpace(self):
         return True
