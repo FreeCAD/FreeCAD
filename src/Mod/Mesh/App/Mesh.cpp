@@ -362,7 +362,7 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
     if (!aReader.LoadAny(file))
         return false;
 
-    swapKernel(kernel);
+    swapKernel(kernel, aReader.GetGroupNames());
     return true;
 }
 
@@ -373,16 +373,17 @@ bool MeshObject::load(std::istream& str, MeshCore::MeshIO::Format f, MeshCore::M
     if (!aReader.LoadFormat(str, f))
         return false;
 
-    swapKernel(kernel);
+    swapKernel(kernel, aReader.GetGroupNames());
     return true;
 }
 
-void MeshObject::swapKernel(MeshCore::MeshKernel& kernel)
+void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
+                            const std::vector<std::string>& g)
 {
     _kernel.Swap(kernel);
     // Some file formats define several objects per file (e.g. OBJ).
     // Now we mark each object as an own segment so that we can break
-    // the object into its orriginal objects again.
+    // the object into its original objects again.
     this->_segments.clear();
     const MeshCore::MeshFacetArray& faces = _kernel.GetFacets();
     MeshCore::MeshFacetArray::_TConstIterator it;
@@ -405,6 +406,13 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel)
     // if the whole mesh is a single object then don't mark as segment
     if (!segment.empty() && (segment.size() < faces.size())) {
         this->_segments.push_back(Segment(this,segment,true));
+    }
+
+    // apply the group names to the segments
+    if (this->_segments.size() == g.size()) {
+        for (std::size_t index = 0; index < this->_segments.size(); index++) {
+            this->_segments[index].setName(g[index]);
+        }
     }
 
 #ifndef FC_DEBUG

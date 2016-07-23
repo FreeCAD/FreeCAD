@@ -255,6 +255,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 /** Loads an OBJ file. */
 bool MeshInput::LoadOBJ (std::istream &rstrIn)
 {
+    boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
@@ -284,7 +285,6 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     std::string line;
     float fX, fY, fZ;
     unsigned int  i1=1,i2=1,i3=1,i4=1;
-    MeshGeomFacet clFacet;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad() == true)
@@ -295,19 +295,20 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         return false;
 
     MeshIO::Binding rgb_value = MeshIO::OVERALL;
-    bool readvertices=false;
+    bool new_segment = true;
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = tolower(*it);
+        // when a group name comes don't make it lower case
+        if (!line.empty() && line[0] != 'g') {
+            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
+                *it = tolower(*it);
+        }
         if (boost::regex_match(line.c_str(), what, rx_p)) {
-            readvertices = true;
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
         }
         else if (boost::regex_match(line.c_str(), what, rx_c)) {
-            readvertices = true;
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
@@ -322,7 +323,6 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             rgb_value = MeshIO::PER_VERTEX;
         }
         else if (boost::regex_match(line.c_str(), what, rx_t)) {
-            readvertices = true;
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
@@ -336,10 +336,14 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
         }
+        else if (boost::regex_match(line.c_str(), what, rx_g)) {
+            new_segment = true;
+            _groupNames.push_back(what[1].first);
+        }
         else if (boost::regex_match(line.c_str(), what, rx_f3)) {
             // starts a new segment
-            if (readvertices) {
-                readvertices = false;
+            if (new_segment) {
+                new_segment = false;
                 segment++;
             }
 
@@ -353,8 +357,8 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         }
         else if (boost::regex_match(line.c_str(), what, rx_f4)) {
             // starts a new segment
-            if (readvertices) {
-                readvertices = false;
+            if (new_segment) {
+                new_segment = false;
                 segment++;
             }
 

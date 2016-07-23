@@ -70,7 +70,7 @@ struct MeshExport Material
 };
 
 /**
- * The MeshInput class is able to read a mesh object from a input stream
+ * The MeshInput class is able to read a mesh object from an input stream
  * in various formats.
  */
 class MeshExport MeshInput
@@ -81,6 +81,9 @@ public:
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
     virtual ~MeshInput (void) { }
+    const std::vector<std::string>& GetGroupNames() const {
+        return _groupNames;
+    }
 
     /// Loads the file, decided by extension
     bool LoadAny(const char* FileName);
@@ -114,6 +117,7 @@ public:
 protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */
     Material* _material;
+    std::vector<std::string> _groupNames;
 };
 
 /**
