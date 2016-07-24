@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011                                                    *
@@ -74,15 +76,15 @@ class _CommandSite:
                 else:
                     warning = True
         if warning :
-            message = "Please select only Building objects or nothing!\n\
+            message = translate( "Arch" ,  "Please select only Building objects or nothing!\n\
 Site are not allowed to accept other object than Building.\n\
 Other objects will be removed from the selection.\n\
-You can change that in the preferences."
-            self.printMessage( message )
+You can change that in the preferences." )
+            ArchCommands.printMessage( message )
         if sel and len(siteobj) == 0:
-            message = "There is no valid object in the selection.\n\
-Site creation aborted."
-            self.printMessage( message )
+            message = translate( "Arch" ,  "There is no valid object in the selection.\n\
+Site creation aborted." )
+            ArchCommands.printMessage( message )
         else :
             ss = "[ "
             for o in siteobj:
@@ -93,11 +95,6 @@ Site creation aborted."
             FreeCADGui.doCommand("Arch.makeSite("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
-
-    def printMessage(self, message):
-        FreeCAD.Console.PrintMessage(translate("Arch", message))
-        if FreeCAD.GuiUp :
-            reply = QtGui.QMessageBox.information(None,"", message)
 
 class _Site(ArchFloor._Floor):
     "The Site object"
