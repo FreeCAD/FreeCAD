@@ -69,6 +69,12 @@ struct MeshExport Material
     std::vector<App::Color> diffuseColor;
 };
 
+struct MeshExport Group
+{
+    std::vector<unsigned long> indices;
+    std::string name;
+};
+
 /**
  * The MeshInput class is able to read a mesh object from an input stream
  * in various formats.
@@ -134,6 +140,10 @@ public:
     virtual ~MeshOutput (void) { }
     void SetObjectName(const std::string& n)
     { objectName = n; }
+    void SetGroups(const std::vector<Group>& g) {
+        _groups = g;
+    }
+
     void Transform(const Base::Matrix4D&);
     /** Set custom data to the header of a binary STL.
      * If the data exceeds 80 characters then the characters too much
@@ -181,6 +191,7 @@ protected:
     Base::Matrix4D _transform;
     bool apply_transform;
     std::string objectName;
+    std::vector<Group> _groups;
     static std::string stl_header;
 };
 
