@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -30,13 +31,13 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/FileInfo.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Property.h>
 #include <Base/PlacementPy.h>
 
-#include <CXX/Objects.hxx>
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
@@ -299,10 +300,20 @@ private:
                     const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
                     MeshCore::MeshKernel kernel = mesh.getKernel();
                     kernel.Transform(mesh.getTransform());
-                    if (global_mesh.countFacets() == 0)
+
+                    unsigned long countFacets = global_mesh.countFacets();
+                    if (countFacets == 0)
                         global_mesh.setKernel(kernel);
                     else
                         global_mesh.addMesh(kernel);
+
+                    // now create a segment for the added mesh
+                    std::vector<unsigned long> indices;
+                    indices.resize(global_mesh.countFacets() - countFacets);
+                    std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+                    Segment segm(&global_mesh, indices, true);
+                    segm.setName(obj->Label.getValue());
+                    global_mesh.addSegment(segm);
                 }
                 else if (obj->getTypeId().isDerivedFrom(partId)) {
                     App::Property* shape = obj->getPropertyByName("Shape");
@@ -312,12 +323,22 @@ private:
                         std::vector<Data::ComplexGeoData::Facet> aTopo;
                         const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData();
                         if (data) {
-                            data->getFaces(aPoints, aTopo,fTolerance);
+                            data->getFaces(aPoints, aTopo, fTolerance);
                             mesh->addFacets(aTopo, aPoints);
-                            if (global_mesh.countFacets() == 0)
+
+                            unsigned long countFacets = global_mesh.countFacets();
+                            if (countFacets == 0)
                                 global_mesh = *mesh;
                             else
                                 global_mesh.addMesh(*mesh);
+
+                            // now create a segment for the added mesh
+                            std::vector<unsigned long> indices;
+                            indices.resize(global_mesh.countFacets() - countFacets);
+                            std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+                            Segment segm(&global_mesh, indices, true);
+                            segm.setName(obj->Label.getValue());
+                            global_mesh.addSegment(segm);
                         }
                     }
                 }
@@ -327,6 +348,12 @@ private:
             }
         }
 
+        // if we have more than one segment set the 'save' flag
+        if (global_mesh.countSegments() > 1) {
+            for (unsigned long i = 0; i < global_mesh.countSegments(); ++i) {
+                global_mesh.getSegment(i).save(true);
+            }
+        }
         // export mesh compound
         global_mesh.save(EncodedName.c_str());
 

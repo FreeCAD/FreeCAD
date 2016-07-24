@@ -39,6 +39,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/Placement.h>
+#include <Base/Tools.h>
 #include <zipios++/gzipoutputstream.h>
 
 #include <cmath>
@@ -338,7 +339,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         }
         else if (boost::regex_match(line.c_str(), what, rx_g)) {
             new_segment = true;
-            _groupNames.push_back(what[1].first);
+            _groupNames.push_back(Base::Tools::escapedUnicodeToUtf8(what[1].first));
         }
         else if (boost::regex_match(line.c_str(), what, rx_f3)) {
             // starts a new segment
@@ -1897,12 +1898,26 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
         seq.next(true); // allow to cancel
     }
 
-    // facet indices (no texture and normal indices)
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        out << "f " << it->_aulPoints[0]+1 << " "
-                    << it->_aulPoints[1]+1 << " "
-                    << it->_aulPoints[2]+1 << std::endl;
-        seq.next(true); // allow to cancel
+    if (_groups.empty()) {
+        // facet indices (no texture and normal indices)
+        for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
+            out << "f " << it->_aulPoints[0]+1 << " "
+                        << it->_aulPoints[1]+1 << " "
+                        << it->_aulPoints[2]+1 << std::endl;
+            seq.next(true); // allow to cancel
+        }
+    }
+    else {
+        for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
+            out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << std::endl;
+            for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                const MeshFacet& f = rFacets[*it];
+                out << "f " << f._aulPoints[0]+1 << " "
+                            << f._aulPoints[1]+1 << " "
+                            << f._aulPoints[2]+1 << std::endl;
+                seq.next(true); // allow to cancel
+            }
+        }
     }
 
     return true;

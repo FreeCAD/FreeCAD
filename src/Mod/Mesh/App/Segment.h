@@ -50,6 +50,9 @@ public:
     void setName(const std::string& n) { _name = n; }
     const std::string& getName() const { return _name; }
 
+    void save(bool on) { _save = on; }
+    bool isSaved() const { return _save; }
+
     // friends
     friend class MeshObject;
 
@@ -57,6 +60,7 @@ private:
     MeshObject* _mesh;
     std::vector<unsigned long> _indices;
     std::string _name;
+    bool _save;
     bool _modifykernel;
 
 public:
