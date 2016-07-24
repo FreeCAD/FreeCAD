@@ -104,9 +104,9 @@
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "MaterialObject.h"
-#include "MaterialPy.h"
 #include "Expression.h"
 #include "Transactions.h"
+#include <App/MaterialPy.h>
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -129,9 +129,9 @@ using namespace boost::program_options;
 
 
 // scriptings (scripts are build in but can be overridden by command line option)
-#include "InitScript.h"
-#include "TestScript.h"
-#include "CMakeScript.h"
+#include <App/InitScript.h>
+#include <App/TestScript.h>
+#include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
