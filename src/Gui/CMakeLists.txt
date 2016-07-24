@@ -1033,6 +1033,7 @@ SET(FreeCADGui_CPP_SRCS
     Utilities.cpp
     WaitCursor.cpp
     ManualAlignment.cpp
+    TransactionObject.cpp
     WinNativeGestureRecognizers.cpp
 )
 SET(FreeCADGui_SRCS 
@@ -1060,6 +1061,7 @@ SET(FreeCADGui_SRCS
     Utilities.h
     WaitCursor.h
     ManualAlignment.h
+    TransactionObject.h
     WinNativeGestureRecognizers.h
 )
 

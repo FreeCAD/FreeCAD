@@ -463,6 +463,8 @@ void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
         SbRotation slerp = SbRotation::slerp(that->spinRotation, PRIVATE(that)->endRotation, step);
         SbVec3f focalpoint = (1.0f-step)*PRIVATE(that)->focal1 + step*PRIVATE(that)->focal2;
         SoCamera* cam = that->viewer->getSoRenderManager()->getCamera();
+        if (!cam) return; // no camera
+
         SbVec3f direction;
         cam->orientation.setValue(slerp);
         cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);

@@ -81,7 +81,9 @@ namespace nglib {
 #include <meshing.hpp>
 //#include <ngexception.hpp>
 namespace netgen {
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 5
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
+#elif NETGEN_VERSION == 5
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
@@ -344,8 +346,8 @@ int HashCode(const Link& aLink, int aLimit)
 
 Standard_Boolean IsEqual(const Link& aLink1, const Link& aLink2)
 {
-  return (aLink1.n1 == aLink2.n1 && aLink1.n2 == aLink2.n2 ||
-          aLink1.n1 == aLink2.n2 && aLink1.n2 == aLink2.n1);
+  return ((aLink1.n1 == aLink2.n1 && aLink1.n2 == aLink2.n2) ||
+          (aLink1.n1 == aLink2.n2 && aLink1.n2 == aLink2.n1));
 }
 
 namespace
@@ -539,7 +541,7 @@ namespace
    */
   //================================================================================
 
-  void makeQuadratic( const TopTools_IndexedMapOfShape& shapes,
+  inline void makeQuadratic( const TopTools_IndexedMapOfShape& shapes,
                       SMESH_Mesh*                       mesh )
   {
     for ( int i = 1; i <= shapes.Extent(); ++i )
@@ -2491,7 +2493,7 @@ bool NETGENPlugin_Mesher::Compute()
     occgeo.face_maxh = mparams.maxh;
 
     // Let netgen create _ngMesh and calculate element size on not meshed shapes
-#ifndef NETGEN_V5
+#if NETGEN_VERSION < 5
     char *optstr = 0;
 #endif
     int startWith = netgen::MESHCONST_ANALYSE;
@@ -2499,7 +2501,7 @@ bool NETGENPlugin_Mesher::Compute()
     try
     {
       OCC_CATCH_SIGNALS;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
       err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
       err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2587,7 +2589,7 @@ bool NETGENPlugin_Mesher::Compute()
         //OCCSetLocalMeshSize(intOccgeo, *_ngMesh); it deletes _ngMesh->localH
 
         // let netgen create a temporary mesh
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
         netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams, startWith, endWith);
 #else
         netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, startWith, endWith, optstr);
@@ -2600,7 +2602,7 @@ bool NETGENPlugin_Mesher::Compute()
 
         // compute mesh on internal edges
         startWith = endWith = netgen::MESHCONST_MESHEDGES;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, startWith, endWith, optstr);
@@ -2619,7 +2621,11 @@ bool NETGENPlugin_Mesher::Compute()
       FillSMesh( intOccgeo, *tmpNgMesh, initState, *_mesh, tmpNodeVec, comment );
       err = ( err || !comment.empty() );
 
+#if NETGEN_VERSION > 5
+      tmpNgMesh.reset();
+#else
       nglib::Ng_DeleteMesh((nglib::Ng_Mesh*)tmpNgMesh);
+#endif
     }
 
     // Fill _ngMesh with nodes and segments of computed submeshes
@@ -2637,7 +2643,7 @@ bool NETGENPlugin_Mesher::Compute()
       try
       {
         OCC_CATCH_SIGNALS;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2747,7 +2753,7 @@ bool NETGENPlugin_Mesher::Compute()
       try
       {
         OCC_CATCH_SIGNALS;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2826,7 +2832,7 @@ bool NETGENPlugin_Mesher::Compute()
         }
         _ngMesh->SetGlobalH (mparams.maxh);
         mparams.grading = 0.4;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
         _ngMesh->CalcLocalH(mparams.grading);
 #else
         _ngMesh->CalcLocalH();
@@ -2849,7 +2855,7 @@ bool NETGENPlugin_Mesher::Compute()
       try
       {
         OCC_CATCH_SIGNALS;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2881,7 +2887,7 @@ bool NETGENPlugin_Mesher::Compute()
         try
         {
           OCC_CATCH_SIGNALS;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
           err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
           err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -3093,13 +3099,17 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
 
   // let netgen create _ngMesh and calculate element size on not meshed shapes
   NETGENPlugin_NetgenLibWrapper ngLib;
+#if NETGEN_VERSION > 5
+  shared_ptr<netgen::Mesh> ngMesh = NULL;
+#else
   netgen::Mesh *ngMesh = NULL;
-#ifndef NETGEN_V5
+#endif
+#if NETGEN_VERSION < 5
   char *optstr = 0;
 #endif
   int startWith = netgen::MESHCONST_ANALYSE;
   int endWith   = netgen::MESHCONST_MESHEDGES;
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
   int err = netgen::OCCGenerateMesh(occgeo, ngMesh, mparams, startWith, endWith);
 #else
   int err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
@@ -3569,7 +3579,7 @@ void NETGENPlugin_ngMeshInfo::transferLocalH( netgen::Mesh* fromMesh,
 {
   if ( !fromMesh->LocalHFunctionGenerated() ) return;
   if ( !toMesh->LocalHFunctionGenerated() )
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 4
     toMesh->CalcLocalH(netgen::mparam.grading);
 #else
     toMesh->CalcLocalH();
@@ -3978,7 +3988,11 @@ NETGENPlugin_NetgenLibWrapper::NETGENPlugin_NetgenLibWrapper()
 
 NETGENPlugin_NetgenLibWrapper::~NETGENPlugin_NetgenLibWrapper()
 {
+#if NETGEN_VERSION > 5
+  _ngMesh.reset();
+#else
   Ng_DeleteMesh( _ngMesh );
+#endif
   Ng_Exit();
   NETGENPlugin_Mesher::RemoveTmpFiles();
   if ( _coutBuffer )
@@ -3998,8 +4012,12 @@ NETGENPlugin_NetgenLibWrapper::~NETGENPlugin_NetgenLibWrapper()
 void NETGENPlugin_NetgenLibWrapper::setMesh( Ng_Mesh* mesh )
 {
   if ( _ngMesh )
+#if NETGEN_VERSION > 5
+    _ngMesh.reset(mesh);
+#else
     Ng_DeleteMesh( _ngMesh );
   _ngMesh = mesh;
+#endif
 }
 
 //================================================================================

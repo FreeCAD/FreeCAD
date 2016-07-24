@@ -1,25 +1,25 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2015 - FreeCAD Developers                               *
-#*   Author (c) 2015 - Przemo Fiszt < przemo@firszt.eu>                    *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2015 - FreeCAD Developers                               *
+# *   Author (c) 2015 - Przemo Fiszt < przemo@firszt.eu>                    *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 __title__ = "Fem Commands"
 __author__ = "Przemo Firszt"
@@ -39,7 +39,7 @@ class FemCommands(object):
                               'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
                               'Accel': "",
                               'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")}
-            #FIXME add option description
+            # FIXME add option description
             self.is_active = None
 
         def GetResources(self):
@@ -101,8 +101,8 @@ class FemCommands(object):
         def hide_parts_constraints_show_meshes(self):
             if FreeCAD.GuiUp:
                 for acnstrmesh in FemGui.getActiveAnalysis().Member:
-                    #if "Constraint" in acnstrmesh.TypeId:
-                    #    acnstrmesh.ViewObject.Visibility = False
+                    # if "Constraint" in acnstrmesh.TypeId:
+                    #     acnstrmesh.ViewObject.Visibility = False
                     if "Mesh" in acnstrmesh.TypeId:
                         aparttoshow = acnstrmesh.Name.replace("_Mesh", "")
                         for apart in FreeCAD.activeDocument().Objects:

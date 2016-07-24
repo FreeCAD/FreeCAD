@@ -316,7 +316,7 @@ void StdCmdDlgParameter::activated(int iMsg)
 //===========================================================================
 // Std_DlgPreferences
 //===========================================================================
-DEF_STD_CMD(StdCmdDlgPreferences);
+DEF_STD_CMD_C(StdCmdDlgPreferences);
 
 StdCmdDlgPreferences::StdCmdDlgPreferences()
   :Command("Std_DlgPreferences")
@@ -328,6 +328,13 @@ StdCmdDlgPreferences::StdCmdDlgPreferences()
     sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the preferences");
     sPixmap     = "preferences-system";
     eType         = 0;
+}
+
+Action * StdCmdDlgPreferences::createAction(void)
+{
+    Action *pcAction = Command::createAction();
+    pcAction->setMenuRole(QAction::PreferencesRole);
+    return pcAction;
 }
 
 void StdCmdDlgPreferences::activated(int iMsg)

@@ -105,7 +105,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
-    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
+    #  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hot spots.
     def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":
@@ -159,12 +159,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.mesh = None
         ## @var materials
         # set of materials from the analysis. Updated with update_objects
-        # Induvidual materials are "App::MaterialObjectPython" type
+        #  Individual materials are "App::MaterialObjectPython" type
         self.materials = []
         ## @var fixed_constraints
         #  set of fixed constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintFixed" type
         self.fixed_constraints = []
+        ## @var selfweight_constraints
+        #  set of selfweight constraints from the analysis. Updated with update_objects
+        #  Individual constraints are Proxy.Type "FemConstraintSelfWeight"
+        self.selfweight_constraints = []
         ## @var force_constraints
         #  set of force constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintForce" type
@@ -215,6 +219,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
                 self.fixed_constraints.append(fixed_constraint_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemConstraintSelfWeight":
+                selfweight_dict = {}
+                selfweight_dict['Object'] = m
+                self.selfweight_constraints.append(selfweight_dict)
             elif m.isDerivedFrom("Fem::ConstraintForce"):
                 force_constraint_dict = {}
                 force_constraint_dict['Object'] = m
@@ -261,8 +269,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Neither a constraint fixed nor a contraint displacement defined in the static analysis\n"
         if self.analysis_type == "static":
-            if not (self.force_constraints or self.pressure_constraints):
-                message += "Neither constraint force nor constraint pressure defined in the static analysis\n"
+            if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
+                message += "Neither constraint force nor constraint pressure or a constraint selfweight defined in the static analysis\n"
         if self.beam_sections:
             has_no_references = False
             for b in self.beam_sections:
@@ -340,9 +348,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## Sets analysis type.
     #  @param self The python object self
-    #  @param analysis_type type of the analysis. Allowed values are:
-    #  - static
-    #  - frequency
+    #  @param analysis_type type of the analysis.
     def set_analysis_type(self, analysis_type=None):
         if analysis_type is not None:
             self.analysis_type = analysis_type

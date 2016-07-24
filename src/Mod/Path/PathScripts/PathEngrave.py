@@ -26,6 +26,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Draft
+import Part
 
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
@@ -109,17 +110,24 @@ class ObjectPathEngrave:
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         if obj.Base:
+            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value)+"\n"
+
+            wires = []
             for o in obj.Base:
-                output += "G0 " + str(obj.ClearanceHeight.Value)+"\n"
                 # we only consider the outer wire if this is a Face
-                wires = o[0].Shape.Wires
+                for w in o[0].Shape.Wires:
+                    tempedges = PathUtils.cleanedges(w.Edges, 0.5)
+                    wires.append (Part.Wire(tempedges))
 
                 if obj.Algorithm == "OCC Native":
                     output += self.buildpathocc(obj, wires)
 
+            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value)+"\n"
+
+
         # print output
         if output == "":
-            output += "G0"
+            output += "(No commands processed)"
 
         if obj.Active:
             path = Path.Path(output)
@@ -136,8 +144,7 @@ class ObjectPathEngrave:
     def buildpathocc(self, obj, wires):
         import Part
         import DraftGeomUtils
-        output = "G90\nG21\nG40\n"
-        output += "G0 Z" + str(obj.ClearanceHeight.Value)
+        output = ""
 
         # absolute coords, millimeters, cancel offsets
 
@@ -153,8 +160,8 @@ class ObjectPathEngrave:
                 if not last:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
-                    output += "G0" + " X" + str("%f" % last.x) + " Y" + str("%f" % last.y)  # Rapid sto starting position
-                    output += "G1" + " Z" + str("%f" % last.z) + "F " + str(self.vertFeed) + "\n"  # Vertical feed to depth
+                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value)  # Rapid sto starting position
+                    output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(last.z) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                 if isinstance(edge.Curve, Part.Circle):
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
@@ -167,23 +174,23 @@ class ObjectPathEngrave:
                         output += "G2"
                     else:
                         output += "G3"
-                    output += " X" + str("%f" % point.x) + " Y" + str("%f" % point.y) + " Z" + str("%f" % point.z)
-                    output += " I" + str("%f" % relcenter.x) + " J" + str("%f" % relcenter.y) + " K" + str("%f" % relcenter.z)
-                    output += " F " + str(self.horizFeed)
+                    output += " X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += " I" + PathUtils.fmt(relcenter.x) + " J" + PathUtils.fmt(relcenter.y) + " K" + PathUtils.fmt(relcenter.z)
+                    output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
                 else:
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
                         point = edge.Vertexes[0].Point
-                    output += "G1 X" + str("%f" % point.x) + " Y" + str("%f" % point.y) + " Z" + str("%f" % point.z)
-                    output += " F " + str(self.horizFeed)
+                    output += "G1 X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
-            output += "G0 Z " + str(obj.SafeHeight.Value)
+            output += "G0 Z " + PathUtils.fmt(obj.SafeHeight.Value)
         return output
 
-    def addShapeString(self, obj, ss):
+    def addEngraveBase(self, obj, ss):
         baselist = obj.Base
         if len(baselist) == 0:  # When adding the first base object, guess at heights
             try:
@@ -191,15 +198,16 @@ class ObjectPathEngrave:
                 obj.StartDepth = bb.ZMax
                 obj.ClearanceHeight = bb.ZMax + 5.0
                 obj.SafeHeight = bb.ZMax + 3.0
-                obj.FinalDepth = bb.ZMin
+                obj.FinalDepth = bb.ZMax - 1
             except:
                 obj.StartDepth = 5.0
+                obj.FinalDepth = 4.0
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0
 
         item = (ss, "")
         if item in baselist:
-            FreeCAD.Console.PrintWarning("ShapeString already in the Engraving list" + "\n")
+            FreeCAD.Console.PrintWarning("Object already in the Engraving list" + "\n")
 
         else:
             baselist.append(item)
@@ -225,7 +233,7 @@ class _ViewProviderEngrave:
         return True
 
     def getIcon(self):
-        return ":/icons/Path-Profile.svg"
+        return ":/icons/Path-Engrave.svg"
 
     def __getstate__(self):
         return None
@@ -257,6 +265,7 @@ class CommandPathEngrave:
         FreeCADGui.doCommand('obj.StartDepth= 0')
         FreeCADGui.doCommand('obj.FinalDepth= -0.1')
         FreeCADGui.doCommand('obj.SafeHeight= 5.0')
+        FreeCADGui.doCommand('obj.Active = True')
 
         FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
@@ -314,13 +323,13 @@ class TaskPanel:
         selection = FreeCADGui.Selection.getSelectionEx()
 
         if not len(selection) >= 1:
-            FreeCAD.Console.PrintError(translate("Path_Engrave", "Please select at least one ShapeString\n"))
+            FreeCAD.Console.PrintError(translate("Path_Engrave", "Please select engraveable geometry\n"))
             return
         for s in selection:
-            if not Draft.getType(s.Object) == "ShapeString":
-                FreeCAD.Console.PrintError(translate("Path_Engrave", "Please select at least one ShapeString\n"))
+            if not Draft.getType(s.Object) in ["ShapeString", "Part"]:
+                FreeCAD.Console.PrintError(translate("Path_Engrave", "Please select valid geometry\n"))
                 return
-            self.obj.Proxy.addShapeString(self.obj, s.Object)
+            self.obj.Proxy.addEngraveBase(self.obj, s.Object)
 
         self.setFields()
 

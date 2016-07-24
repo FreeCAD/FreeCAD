@@ -534,7 +534,7 @@ def loadTexture(filename,size=None):
             #else:   
             #    p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
-            buffersize = p.numBytes()
+            buffersize = p.byteCount()
             numcomponents = int (float(buffersize) / ( size[0] * size[1] ))
 
             img = coin.SoSFImage()
@@ -766,7 +766,7 @@ def makeAngularDimension(center,angles,p3,normal=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
+def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
     '''makeWire(pointslist,[closed],[placement]): Creates a Wire object
     from the given list of vectors. If closed is True or first
     and last points are identical, the wire is closed. If face is
@@ -794,7 +794,8 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
-    #obj.MakeFace = face
+    if face != None:
+        obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
@@ -3606,6 +3607,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0) == 5:
                 s = FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString
                 self.string = s.replace("' ","'- ")
+                self.string = s.replace("+"," ")
             elif hasattr(obj.ViewObject,"Decimals"):
                 self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
             else:

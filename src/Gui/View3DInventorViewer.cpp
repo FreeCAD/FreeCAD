@@ -83,6 +83,7 @@
 # include <QTimer>
 # include <QStatusBar>
 # include <QBitmap>
+# include <QMimeData>
 #endif
 
 #include <sstream>

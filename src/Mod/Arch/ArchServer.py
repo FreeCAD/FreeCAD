@@ -55,6 +55,11 @@ class _CommandBimserver:
             import requests
         except:
             FreeCAD.Console.PrintError(translate("Arch","requests python module not found, aborting. Please install python-requests\n"))
+            return
+        try:
+            import json
+        except:
+            FreeCAD.Console.PrintError(translate("Arch","json python module not found, aborting. Please install python-json\n"))
         else:
             FreeCADGui.Control.showDialog(_BimServerTaskPanel())
 
@@ -127,12 +132,12 @@ class _BimServerTaskPanel:
                 login = loginform.editLogin.text()
                 passwd = loginform.editPassword.text()
                 store = loginform.checkStore.isChecked()
-                import requests
+                import requests, json
                 self.form.labelStatus.setText("Logging in...")
                 url2 = url + "/json"
                 data = {'request': {'interface': 'AuthInterface', 'method': 'login', 'parameters': {'username': login, 'password': passwd}}}
                 try:
-                    resp = requests.post(url2,json = data)
+                    resp = requests.post(url2,data = json.dumps(data))
                 except:
                     FreeCAD.Console.PrintError(translate("Arch","Unable to connect to BimServer at")+" "+url+"\n")
                     self.form.labelStatus.setText(translate("Arch","Connection failed."))
@@ -166,14 +171,14 @@ class _BimServerTaskPanel:
         self.setLogged(False)
         self.Projects = []
         self.form.labelStatus.setText("")
-        import requests
+        import requests, json
         url,token = self.getPrefs()
         if url and token:
             self.form.labelStatus.setText(translate("Arch","Getting projects list..."))
             url += "/json"
             data = { "token": token, "request": { "interface": "SettingsInterface", "method": "getServerSettings", "parameters": { } } }
             try:
-                resp = requests.post(url,json = data)
+                resp = requests.post(url,data = json.dumps(data))
             except:
                 FreeCAD.Console.PrintError(translate("Arch","Unable to connect to BimServer at")+" "+url[:-5]+"\n")
                 self.form.labelStatus.setText(translate("Arch","Connection failed."))
@@ -186,7 +191,7 @@ class _BimServerTaskPanel:
                 else:
                     self.form.labelServerName.setText(name)
             data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getAllProjects", "parameters": { "onlyTopLevel": "false", "onlyActive": "true" } } }
-            resp = requests.post(url,json = data)
+            resp = requests.post(url,data = json.dumps(data))
             if resp.ok:
                 try:
                     projects = resp.json()["response"]["result"]
@@ -206,7 +211,7 @@ class _BimServerTaskPanel:
         self.form.labelStatus.setText("")
         self.form.listRevisions.clear()
         self.Revisions = []
-        import requests
+        import requests, json
         url,token = self.getPrefs()
         if url and token:
             url += "/json"
@@ -215,7 +220,7 @@ class _BimServerTaskPanel:
                 self.form.labelStatus.setText(translate("Arch","Getting revisions..."))
                 for rev in p["revisions"]:
                     data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getRevision", "parameters": { "roid": rev } } }
-                    resp = requests.post(url,json = data)
+                    resp = requests.post(url,data = json.dumps(data))
                     if resp.ok:
                         try:
                             name = resp.json()["response"]["result"]["comment"]
@@ -232,7 +237,7 @@ class _BimServerTaskPanel:
         self.form.labelStatus.setText("")
         if (self.form.listRevisions.currentRow() >= 0) and (len(self.Revisions) > self.form.listRevisions.currentRow()):
             rev = self.Revisions[self.form.listRevisions.currentRow()]
-            import requests
+            import requests, json
             url,token = self.getPrefs()
             if url and token:
                 FreeCAD.Console.PrintMessage(translate("Arch","Downloading file from Bimserver...\n"))
@@ -241,7 +246,7 @@ class _BimServerTaskPanel:
                 serializer = None
                 for s in ["Ifc2x3tc1"]: # Ifc4 seems unreliable ATM, let's stick with good old Ifc2x3...
                     data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getSerializerByName", "parameters": { "serializerName": s } } }
-                    resp = requests.post(url,json = data)
+                    resp = requests.post(url,data = json.dumps(data))
                     if resp.ok:
                         try:
                             srl = resp.json()["response"]["result"]
@@ -258,7 +263,7 @@ class _BimServerTaskPanel:
                     tf = tf[0]
                 self.form.labelStatus.setText(translate("Arch","Downloading file..."))
                 data = { "token": token, "request": { "interface": "ServiceInterface", "method": "downloadRevisions", "parameters": { "roids": [rev["oid"]], "serializerOid": serializer["oid"], "sync": "false" } } }
-                resp = requests.post(url,json = data)
+                resp = requests.post(url,data = json.dumps(data))
                 if resp.ok:
                     try:
                         downloadid = resp.json()["response"]["result"]
@@ -266,7 +271,7 @@ class _BimServerTaskPanel:
                         FreeCAD.Console.PrintError(translate("Arch","Unable to obtain a valid download for this revision from the BimServer\n"))
                         return
                 data = { "token": token, "request": { "interface": "ServiceInterface", "method": "getDownloadData", "parameters": { "topicId": downloadid } } }
-                resp = requests.post(url,json = data)
+                resp = requests.post(url,data = json.dumps(data))
                 if resp.ok:
                     try:
                         downloaddata = resp.json()["response"]["result"]["file"]
@@ -289,7 +294,7 @@ class _BimServerTaskPanel:
         self.form.labelStatus.setText("")
         if (self.form.comboProjects.currentIndex() >= 0) and (len(self.Projects) > self.form.comboProjects.currentIndex()) and (self.form.comboRoot.currentIndex() >= 0):
             project = self.Projects[self.form.comboProjects.currentIndex()]
-            import requests
+            import requests, json
             url,token = self.getPrefs()
             if url and token:
                 url += "/json"
@@ -299,7 +304,7 @@ class _BimServerTaskPanel:
                 import ifcopenshell
                 schema = ifcopenshell.schema_identifier.lower()
                 data = { "token": token, "request": { "interface": "PluginInterface",  "method": "getAllDeserializers", "parameters": { "onlyEnabled": "true" } } }
-                resp = requests.post(url,json = data)
+                resp = requests.post(url,data = json.dumps(data))
                 if resp.ok:
                     try:
                         for d in resp.json()["response"]["result"]:
@@ -325,7 +330,7 @@ class _BimServerTaskPanel:
                 FreeCAD.Console.PrintMessage(translate("Arch","Uploading file to Bimserver...\n"))
                 self.form.labelStatus.setText(translate("Arch","Uploading file..."))
                 data = { "token": token, "request": { "interface": "ServiceInterface", "method": "checkin", "parameters": { "poid": project["oid"], "comment": self.form.editComment.text(), "deserializerOid": deserializer["oid"], "fileSize": os.path.getsize(tf), "fileName": os.path.basename(tf), "data": ifcdata, "merge": "false", "sync": "true" } } }
-                resp = requests.post(url,json = data)
+                resp = requests.post(url,data = json.dumps(data))
                 if resp.ok:
                     if resp.json()["response"]["result"]:
                         FreeCAD.Console.PrintMessage(translate("Arch","File upload successful\n"))

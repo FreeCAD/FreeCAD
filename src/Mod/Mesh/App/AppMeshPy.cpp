@@ -167,10 +167,15 @@ private:
             unsigned long segmct = mesh.countSegments();
             if (segmct > 1) {
                 for (unsigned long i=0; i<segmct; i++) {
-                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(mesh.getSegment(i).getIndices()));
+                    const Segment& group = mesh.getSegment(i);
+                    std::string groupName = group.getName();
+                    if (groupName.empty())
+                        groupName = file.fileNamePure();
+
+                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
                     Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                        (pcDoc->addObject("Mesh::Feature", file.fileNamePure().c_str()));
-                    pcFeature->Label.setValue(file.fileNamePure().c_str());
+                        (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
+                    pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
                     pcFeature->purgeTouched();
                 }
@@ -227,10 +232,15 @@ private:
             unsigned long segmct = mesh.countSegments();
             if (segmct > 1) {
                 for (unsigned long i=0; i<segmct; i++) {
-                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(mesh.getSegment(i).getIndices()));
+                    const Segment& group = mesh.getSegment(i);
+                    std::string groupName = group.getName();
+                    if (groupName.empty())
+                        groupName = file.fileNamePure();
+
+                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
                     Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                        (pcDoc->addObject("Mesh::Feature", file.fileNamePure().c_str()));
-                    pcFeature->Label.setValue(file.fileNamePure().c_str());
+                        (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
+                    pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
                     pcFeature->purgeTouched();
                 }

@@ -1,25 +1,25 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013 - Joachim Zettler                                  *
-#*   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013 - Joachim Zettler                                  *
+# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 
 import FreeCAD
@@ -64,24 +64,24 @@ def readResult(frd_input):
     elemType = 0
 
     for line in frd_file:
-        #Check if we found nodes section
+        # Check if we found nodes section
         if line[4:6] == "2C":
             nodes_found = True
-        #first lets extract the node and coordinate information from the results file
+        # first lets extract the node and coordinate information from the results file
         if nodes_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             nodes_x = float(line[13:25])
             nodes_y = float(line[25:37])
             nodes_z = float(line[37:49])
             nodes[elem] = FreeCAD.Vector(nodes_x, nodes_y, nodes_z)
-        #Check if we found nodes section
+        # Check if we found nodes section
         if line[4:6] == "3C":
             elements_found = True
-        #first lets extract element number
+        # first lets extract element number
         if elements_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             elemType = int(line[14:18])
-        #then import elements
+        # then import elements
         if elements_found and (line[1:3] == "-2"):
             # node order fits with node order in writeAbaqus() in FemMesh.cpp
             if elemType == 1:
@@ -236,13 +236,13 @@ def readResult(frd_input):
                 nd2 = int(line[13:23])
                 elements_seg2[elem] = (nd1, nd2)
 
-        #Check if we found new eigenmode
+        # Check if we found new eigenmode
         if line[5:10] == "PMODE":
             eigenmode = int(line[30:36])
-        #Check if we found displacement section
+        # Check if we found displacement section
         if line[5:9] == "DISP":
             mode_disp_found = True
-        #we found a displacement line in the frd file
+        # we found a displacement line in the frd file
         if mode_disp_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             mode_disp_x = float(line[13:25])
@@ -251,7 +251,7 @@ def readResult(frd_input):
             mode_disp[elem] = FreeCAD.Vector(mode_disp_x, mode_disp_y, mode_disp_z)
         if line[5:11] == "STRESS":
             mode_stress_found = True
-        #we found a displacement line in the frd file
+        # we found a displacement line in the frd file
         if mode_stress_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             stress_1 = float(line[13:25])
@@ -261,7 +261,7 @@ def readResult(frd_input):
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
-        #Check for the end of a section
+        # Check for the end of a section
         if line[1:3] == "-3":
             if mode_disp_found:
                 mode_disp_found = False

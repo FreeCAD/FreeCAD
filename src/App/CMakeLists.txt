@@ -111,6 +111,7 @@ SET(Document_CPP_SRCS
     OriginFeature.cpp
     Range.cpp
     Transactions.cpp
+    TransactionalObject.cpp
     VRMLObject.cpp
     MaterialObject.cpp
     MergeDocuments.cpp
@@ -143,6 +144,7 @@ SET(Document_HPP_SRCS
     OriginFeature.h
     Range.h
     Transactions.h
+    TransactionalObject.h
     VRMLObject.h
     MaterialObject.h
     MergeDocuments.h

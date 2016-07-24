@@ -1172,7 +1172,7 @@ void FemMesh::write(const char *FileName) const
          myMesh->ExportUNV(File.filePath().c_str());
     }
     else if (File.hasExtension("med") ) {
-         myMesh->ExportMED(File.filePath().c_str());
+         myMesh->ExportMED(File.filePath().c_str(),File.fileNamePure().c_str(),false,2); // 2 means MED_V2_2 version !
     }
     else if (File.hasExtension("stl") ) {
         // read brep-file

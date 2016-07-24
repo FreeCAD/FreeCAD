@@ -817,7 +817,7 @@ bool _ViscousBuilder2D::findEdgesWithLayers()
                   {
                     hasVL = false;
                     for ( hyp = allHyps.begin(); hyp != allHyps.end() && !hasVL; ++hyp )
-                      if ( viscHyp = dynamic_cast<const THypVL*>( *hyp ))
+                      if ( ( viscHyp = dynamic_cast<const THypVL*>( *hyp ) ))
                         hasVL = viscHyp->IsShapeWithLayers( neighbourID );
                   }
                   if ( !hasVL )

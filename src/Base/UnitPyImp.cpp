@@ -1,12 +1,12 @@
 
 #include "PreCompiled.h"
 
-#include "Base/Unit.h"
+#include <Base/Unit.h>
 
 // inclusion of the generated files (generated out of UnitPy.xml)
-#include "UnitPy.h"
-#include "QuantityPy.h"
-#include "UnitPy.cpp"
+#include <Base/UnitPy.h>
+#include <Base/QuantityPy.h>
+#include <Base/UnitPy.cpp>
 
 using namespace Base;
 
@@ -14,9 +14,9 @@ using namespace Base;
 std::string UnitPy::representation(void) const
 {
     const UnitSignature &  Sig = getUnitPtr()->getSignature();
-	std::stringstream ret;
+    std::stringstream ret;
     ret << "Unit: "; 
-	ret << getUnitPtr()->getString().toUtf8().constData() << " (";
+    ret << getUnitPtr()->getString().toUtf8().constData() << " (";
     ret << Sig.Length << ",";                 
     ret << Sig.Mass  << ",";                    
     ret << Sig.Time  << ",";                   
@@ -29,7 +29,7 @@ std::string UnitPy::representation(void) const
     if(! type.empty())
         ret << " [" << type << "]";
 
-	return ret.str();
+    return ret.str();
 }
 
 PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -311,5 +311,3 @@ PyObject * UnitPy::number_hex_handler (PyObject *self)
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
-
-

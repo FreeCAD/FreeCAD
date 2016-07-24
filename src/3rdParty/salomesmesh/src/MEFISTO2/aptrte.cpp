@@ -41,9 +41,10 @@ extern "C"
       __stdcall
   #endif
   #endif
-      areteideale()//( R3 xyz, R3 direction )
+      areteideale(R &_areteideale)
   {
-    return aretemaxface_;
+        _areteideale = aretemaxface_;
+	return(_areteideale);
   }
 }
 //calcul de la longueur ideale de l'arete au sommet xyz (z ici inactif)
@@ -245,7 +246,7 @@ void  aptrte( Z   nutysu, R      aretmx,
     ns0 = nudslf[n-1];
     mnpxyd[ns0].x = uvslf[ns0].x;
     mnpxyd[ns0].y = uvslf[ns0].y;
-    mnpxyd[ns0].z = areteideale();//( mnpxyd[ns0], direction );
+    mnpxyd[ns0].z = areteideale((R &)mnpxyd[ns0].z);//( mnpxyd[ns0], direction );
 //     MESSAGE("Sommet " << ns0 << ": " << mnpxyd[ns0].x
 //       << " " << mnpxyd[ns0].y << " longueur arete=" << mnpxyd[ns0].z);
 
@@ -300,7 +301,7 @@ void  aptrte( Z   nutysu, R      aretmx,
 //fin   ajout  5/10/2006  ................................................
       mnpxyd[ns].x = uvslf[ns].x;
       mnpxyd[ns].y = uvslf[ns].y;
-      mnpxyd[ns].z = areteideale();//( mnpxyd[ns], direction );
+      mnpxyd[ns].z = areteideale((R &)mnpxyd[ns].z);//( mnpxyd[ns], direction );
 //       MESSAGE("Sommet " << ns << ": " << mnpxyd[ns].x
 //         << " " << mnpxyd[ns].y << " longueur arete=" << mnpxyd[ns].z);
 
@@ -392,7 +393,7 @@ void  aptrte( Z   nutysu, R      aretmx,
     //les 2 coordonnees du point i de sommet nbs
     mnpxyd[ns1].x = uvpti[i].x;
     mnpxyd[ns1].y = uvpti[i].y;
-    mnpxyd[ns1].z = areteideale();//( mnpxyd[ns1], direction );
+    mnpxyd[ns1].z = areteideale((R &)mnpxyd[ns1].z);//( mnpxyd[ns1], direction );
     //le numero i du point interne
     mnslig[ns1] = i+1;
     ns1++;

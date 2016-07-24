@@ -27,6 +27,7 @@
 #endif
 
 #include <QString>
+#include <QLocale>
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaCentimeters.h"
@@ -55,5 +56,9 @@ QString UnitsSchemaCentimeters::schemaTranslate(Base::Quantity quant,double &fac
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-    return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
+    //return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
+    QLocale Lc = QLocale::system();
+    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
+    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
+    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
 }

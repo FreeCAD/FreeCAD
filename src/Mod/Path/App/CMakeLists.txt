@@ -31,6 +31,7 @@ generate_from_xml(CommandPy)
 generate_from_xml(PathPy)
 generate_from_xml(ToolPy)
 generate_from_xml(TooltablePy)
+generate_from_xml(FeaturePathCompoundPy)
 
 SET(Python_SRCS
     CommandPy.xml
@@ -40,6 +41,8 @@ SET(Python_SRCS
     ToolPy.xml
     TooltablePy.xml
     TooltablePyImp.cpp
+    FeaturePathCompoundPy.xml
+    FeaturePathCompoundPyImp.cpp
 )
 
 SET(Mod_SRCS

@@ -46,6 +46,7 @@ namespace Base {
 
 namespace App
 {
+    class TransactionalObject;
     class DocumentObject;
     class DocumentObjectExecReturn;
     class Document;
@@ -115,6 +116,10 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on created object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionAppend;
+    /// signal on removed object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionRemove;
     /// signal on undo
     boost::signal<void (const App::Document&)> signalUndo;
     /// signal on redo
@@ -308,9 +313,10 @@ public:
 
     friend class Application;
     /// because of transaction handling
+    friend class TransactionalObject;
     friend class DocumentObject;
     friend class Transaction;
-    friend class TransactionObject;
+    friend class TransactionDocumentObject;
 
     /// Destruction
     virtual ~Document();
@@ -329,7 +335,7 @@ protected:
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed
-    void onBeforeChangeProperty(const DocumentObject *Who, const Property *What);
+    void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature

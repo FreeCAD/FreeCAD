@@ -39,7 +39,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self, analysis_obj, solver_obj,
                  mesh_obj, mat_obj,
                  fixed_obj,
-                 force_obj, pressure_obj,
+                 selfweight_obj, force_obj, pressure_obj,
                  displacement_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type=None, eigenmode_parameters=None,
@@ -47,7 +47,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         FemInputWriter.FemInputWriter.__init__(self, analysis_obj, solver_obj,
                                                mesh_obj, mat_obj,
                                                fixed_obj,
-                                               force_obj, pressure_obj,
+                                               selfweight_obj, force_obj, pressure_obj,
                                                displacement_obj,
                                                beamsection_obj, shellthickness_obj,
                                                analysis_type, eigenmode_parameters,
@@ -63,18 +63,26 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfile = open(self.file_name, 'a')
         inpfile.write('\n\n')
         self.write_element_sets_material_and_femelement_type(inpfile)
-        self.write_node_sets_constraints_fixed(inpfile)
-        self.write_node_sets_constraints_displacement(inpfile)
+        if self.fixed_objects:
+            self.write_node_sets_constraints_fixed(inpfile)
+        if self.displacement_objects:
+            self.write_node_sets_constraints_displacement(inpfile)
         self.write_materials(inpfile)
         self.write_femelementsets(inpfile)
         self.write_step_begin(inpfile)
-        self.write_constraints_fixed(inpfile)
-        self.write_constraints_displacement(inpfile)
+        if self.fixed_objects:
+            self.write_constraints_fixed(inpfile)
+        if self.displacement_objects:
+            self.write_constraints_displacement(inpfile)
         if self.analysis_type is None or self.analysis_type == "static":
-            self.write_constraints_force(inpfile)
-            self.write_constraints_pressure(inpfile)
+            if self.selfweight_objects:
+                self.write_constraints_selfweight(inpfile)
+            if self.force_objects:
+                self.write_constraints_force(inpfile)
+            if self.pressure_objects:
+                self.write_constraints_pressure(inpfile)
         elif self.analysis_type == "frequency":
-            self.write_frequency(inpfile)
+            self.write_analysis_frequency(inpfile)
         self.write_outputs_types(inpfile)
         self.write_step_end(inpfile)
         self.write_footer(inpfile)
@@ -125,7 +133,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Node set for fixed constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.fixed_objects:
+        for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
@@ -137,7 +145,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Node sets for prescribed displacement constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.displacement_objects:
+        for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
@@ -210,7 +218,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
 
     def write_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** Constaints\n')
+        f.write('** Constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             fix_obj_name = femobj['Object'].Name
@@ -260,6 +268,19 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     f.write(disp_obj_name + ',6,6,' + str(disp_obj.zRotation) + '\n')
         f.write('\n')
 
+    def write_constraints_selfweight(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Self weight\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for femobj in self.selfweight_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            selwei_obj_name = femobj['Object'].Name
+            f.write('** ' + selwei_obj_name + '\n')
+            f.write('*DLOAD\n')
+            f.write('Eall,GRAV,9810,0,0,-1\n')
+            f.write('\n')
+        # die grav (erdbeschleunigung) ist fuer alle gleich
+        # die verschidene density wurde in den material sets geschrieben !
+
     def write_constraints_force(self, f):
         # check shape type of reference shape and get node loads
         self.get_constraints_force_nodeloads()
@@ -292,7 +313,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Element + CalculiX face + load in [MPa]\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.pressure_objects:
+        for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             prs_obj = femobj['Object']
             f.write('*DLOAD\n')
             for o, elem_tup in prs_obj.References:
@@ -305,7 +326,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                         for i in v:
                             f.write("{},P{},{}\n".format(i[0], i[1], rev * prs_obj.Pressure))
 
-    def write_frequency(self, f):
+    def write_analysis_frequency(self, f):
         f.write('\n***********************************************************\n')
         f.write('** Frequency analysis\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))

@@ -27,8 +27,12 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <bitset>
 #include <QIcon>
 #include <boost/signals.hpp>
+
+#include <App/TransactionalObject.h>
+#include <Base/Vector3D.h>
 
 class SbVec2s;
 class SbVec3f;
@@ -56,9 +60,6 @@ namespace App {
 
 class SoGroup;
 
-#include <App/PropertyContainer.h>
-#include <Base/Vector3D.h>
-
 
 namespace Gui {
     namespace TaskView {
@@ -67,6 +68,11 @@ namespace Gui {
 class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
+
+enum ViewStatus {
+    UpdateData = 0,
+    Detach = 1
+};
 
 
 
@@ -77,7 +83,7 @@ class ObjectItem;
   * have to be implemented for any object type in order to 
   * show them in the 3DView and TreeView.
   */
-class GuiExport ViewProvider : public App::PropertyContainer
+class GuiExport ViewProvider : public App::TransactionalObject
 {
     PROPERTY_HEADER(Gui::ViewProvider);
 
@@ -209,6 +215,11 @@ public:
     virtual void updateData(const App::Property*)=0;
     bool isUpdatesEnabled () const;
     void setUpdatesEnabled (bool enable);
+
+    /// return the status bits
+    unsigned long getStatus() const {return StatusBits.to_ulong();}
+    bool testStatus(ViewStatus pos) const {return StatusBits.test((size_t)pos);}
+    void setStatus(ViewStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
 
     std::string toString() const;
     PyObject* getPyObject();
@@ -350,6 +361,7 @@ protected:
     SoSeparator *pcAnnotation;
     ViewProviderPy* pyViewObject;
     std::string overrideMode;
+    std::bitset<32> StatusBits;
 
 private:
     void setModeSwitch();
@@ -358,7 +370,6 @@ private:
     int viewOverrideMode;
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
-    bool _updateData;
 
     // friends
     friend class ViewProviderPythonFeaturePy;

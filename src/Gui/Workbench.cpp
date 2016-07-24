@@ -419,6 +419,16 @@ void Workbench::removeTaskWatcher(void)
     qApp->translate("Workbench", "Special Ops");
 #endif
 
+#if 0 // needed for the application menu on OSX
+    qApp->translate("MAC_APPLICATION_MENU", "Services");
+    qApp->translate("MAC_APPLICATION_MENU", "Hide %1");
+    qApp->translate("MAC_APPLICATION_MENU", "Hide Others");
+    qApp->translate("MAC_APPLICATION_MENU", "Show All");
+    qApp->translate("MAC_APPLICATION_MENU", "Preferences...");
+    qApp->translate("MAC_APPLICATION_MENU", "Quit %1");
+    qApp->translate("MAC_APPLICATION_MENU", "About %1");
+#endif
+
 TYPESYSTEM_SOURCE(Gui::StdWorkbench, Gui::Workbench)
 
 StdWorkbench::StdWorkbench()

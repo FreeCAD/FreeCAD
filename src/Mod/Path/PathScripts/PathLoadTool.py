@@ -29,6 +29,7 @@ import Path
 # import PathGui
 import PathScripts
 import PathUtils
+import Part
 # from PathScripts import PathProject
 from PySide import QtCore, QtGui
 
@@ -43,7 +44,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 
-class LoadTool:
+class LoadTool():
     def __init__(self, obj):
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The active tool")
         obj.ToolNumber = (0, 0, 10000, 1)
@@ -58,14 +59,12 @@ class LoadTool:
         obj.setEditorMode('Placement', mode)
 
     def execute(self, obj):
-#        if obj.ToolNumber != 0:
 
         tool = PathUtils.getTool(obj, obj.ToolNumber)
         if tool is not None:
             obj.Label = obj.Name + ": " + tool.Name
         else:
             obj.Label = obj.Name + ": UNDEFINED TOOL"
-
 
         commands = ""
         commands += "(" + obj.Label + ")"+'\n'
@@ -90,6 +89,7 @@ class LoadTool:
 
 
 class _ViewProviderLoadTool:
+
     def __init__(self, vobj):
         vobj.Proxy = self
         mode = 2
@@ -134,11 +134,14 @@ class _ViewProviderLoadTool:
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+
+        FreeCAD.ActiveDocument.recompute()
+
         return True
 
     def unsetEdit(self, vobj, mode):
         # this is executed when the user cancels or terminates edit mode
-        pass
+        return False
 
 
 class CommandPathLoadTool:
@@ -186,14 +189,19 @@ class TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolControl.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolControl.ui")
         self.updating = False
+        self.toolrep = None
+
 
     def accept(self):
         self.getFields()
 
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
+        if self.toolrep is not None:
+            FreeCAD.ActiveDocument.removeObject(self.toolrep.Name)
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
+
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -241,13 +249,6 @@ class TaskPanel:
             self.form.txtToolDiameter.setText("UNDEFINED")
 
 
-        #     self.form.cboToolSelect.addItem(tool.Name)
-
-        # index = self.form.cboToolSelect.findText(self.obj.SpindleDir, QtCore.Qt.MatchFixedString)
-        # if index >= 0:
-        #     self.form.cboSpindleDirection.setCurrentIndex(index)
-
-
     def open(self):
         self.s = SelObserver()
         # install the function mode resident
@@ -263,50 +264,19 @@ class TaskPanel:
 
     def resetObject(self, remove=None):
         "transfers the values from the widget to the object"
-        # loc = []
-        # h = []
-        # l = []
-        # a = []
-
-        # for i in range(self.form.tagTree.topLevelItemCount()):
-        #     it = self.form.tagTree.findItems(
-        #             str(i+1), QtCore.Qt.MatchExactly, 0)[0]
-        #     if (remove is None) or (remove != i):
-        #         if it.text(1):
-        #             x = float(it.text(1).split()[0].rstrip(","))
-        #             y = float(it.text(1).split()[1].rstrip(","))
-        #             z = float(it.text(1).split()[2].rstrip(","))
-        #             loc.append(Vector(x, y, z))
-
-        #         else:
-        #             loc.append(0.0)
-        #         if it.text(2):
-        #             h.append(float(it.text(2)))
-        #         else:
-        #             h.append(4.0)
-        #         if it.text(3):
-        #             l.append(float(it.text(3)))
-        #         else:
-        #             l.append(5.0)
-        #         if it.text(4):
-        #             a.append(float(it.text(4)))
-        #         else:
-        #             a.append(45.0)
-
-        # self.obj.locs = loc
-        # self.obj.heights = h
-        # self.obj.lengths = l
-        # self.obj.angles = a
-
-        # self.obj.touch()
         FreeCAD.ActiveDocument.recompute()
 
     def setupUi(self):
-        pass
-        # Connect Signals and Slots
-        # Base Controls
-        # self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
+        # setup the form fields
         self.setFields()
+
+        # build the tool representation
+        if self.form.txtToolDiameter.text() != "UNDEFINED":
+            radius = float(self.form.txtToolDiameter.text()) / 2
+            length = radius * 8
+            t = Part.makeCylinder(radius, length)
+            self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature", "tool")
+            self.toolrep.Shape = t
 
 class SelObserver:
     def __init__(self):

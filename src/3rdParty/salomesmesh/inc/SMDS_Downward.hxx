@@ -90,7 +90,7 @@ public:
   static int getCellDimension(unsigned char cellType);
 protected:
   SMDS_Downward(SMDS_UnstructuredGrid *grid, int nbDownCells);
-  ~SMDS_Downward();
+  virtual ~SMDS_Downward();
   int addCell(int vtkId = -1);
   virtual void initCell(int cellId);
   virtual void allocate(int nbElems) = 0;

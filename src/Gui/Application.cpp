@@ -88,6 +88,7 @@
 #include "SpaceballEvent.h"
 #include "Control.h"
 #include "DocumentRecovery.h"
+#include "TransactionObject.h"
 #include "TaskView/TaskView.h"
 
 #include "SplitView3DInventor.h"
@@ -850,6 +851,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         return;
     }
 
+#ifdef FC_DEBUG
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
@@ -858,6 +860,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     else {
         Base::Console().Log("No active document\n");
     }
+#endif
 
     // notify all views attached to the application (not views belong to a special document)
     for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();++It)
@@ -933,9 +936,11 @@ void Application::onUpdate(void)
 /// Gets called if a view gets activated, this manages the whole activation scheme
 void Application::viewActivated(MDIView* pcView)
 {
+#ifdef FC_DEBUG
     // May be useful for error detection
     Base::Console().Log("Active view is %s (at %p)\n",
                  (const char*)pcView->windowTitle().toUtf8(),pcView);
+#endif
 
     signalActivateView(pcView);
 
@@ -1559,6 +1564,10 @@ void Application::initTypes(void)
     Gui::PythonBaseWorkbench                    ::init();
     Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
+
+    // register transaction type
+    new App::TransactionProducer<TransactionViewProvider>
+            (ViewProviderDocumentObject::getClassTypeId());
 }
 
 void Application::runApplication(void)

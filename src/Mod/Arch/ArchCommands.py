@@ -54,12 +54,14 @@ def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
     type (Wall, Structure, Window, WindowGlass)'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    transparency = 0.0
     if objectType == "Wall":
         c = p.GetUnsigned("WallColor",4294967295)
     elif objectType == "Structure":
         c = p.GetUnsigned("StructureColor",2847259391)
     elif objectType == "WindowGlass":
         c = p.GetUnsigned("WindowGlassColor",1772731135)
+        transparency = p.GetInt("WindowTransparency",85)/100.0
     elif objectType == "Rebar":
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
@@ -69,7 +71,7 @@ def getDefaultColor(objectType):
     r = float((c>>24)&0xFF)/255.0
     g = float((c>>16)&0xFF)/255.0
     b = float((c>>8)&0xFF)/255.0
-    result = (r,g,b,1.0)
+    result = (r,g,b,transparency)
     return result
 
 def addComponents(objectsList,host):

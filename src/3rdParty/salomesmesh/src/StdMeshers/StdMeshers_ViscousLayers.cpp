@@ -1629,7 +1629,7 @@ bool _ViscousBuilder::findSolidsWithLayers()
     list< const SMESHDS_Hypothesis *>::const_iterator hyp = allHyps.begin();
     const StdMeshers_ViscousLayers* viscHyp = 0;
     for ( ; hyp != allHyps.end(); ++hyp )
-      if ( viscHyp = dynamic_cast<const StdMeshers_ViscousLayers*>( *hyp ))
+      if ( ( viscHyp = dynamic_cast<const StdMeshers_ViscousLayers*>( *hyp )))
       {
         TopoDS_Shape hypShape;
         filter.Init( filter.Is( viscHyp ));
@@ -6240,7 +6240,11 @@ bool _ViscousBuilder::refine(_SolidData& data)
       if ( baseShapeId != prevBaseId )
       {
         map< TGeomID, TNode2Edge* >::iterator s2ne = data._s2neMap.find( baseShapeId );
-        n2eMap = ( s2ne == data._s2neMap.end() ) ? 0 : n2eMap = s2ne->second;
+        if (s2ne == data._s2neMap.end())
+            n2eMap = 0;
+        else
+            n2eMap = s2ne->second;
+        //n2eMap = ( s2ne == data._s2neMap.end() ) ? 0 : n2eMap = s2ne->second;
         prevBaseId = baseShapeId;
       }
       _LayerEdge* edgeOnSameNode = 0;

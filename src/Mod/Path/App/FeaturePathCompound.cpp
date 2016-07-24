@@ -29,6 +29,8 @@
 #include "FeaturePathCompound.h"
 #include "Command.h"
 #include "Path.h"
+#include "FeaturePathCompoundPy.h"
+#include <App/FeaturePythonPyImp.h>
 
 using namespace Path;
 using namespace App;
@@ -101,6 +103,15 @@ void FeatureCompound::removeObject(DocumentObject* obj)
             break;
         }
     }
+}
+
+PyObject *FeatureCompound::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePathCompoundPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 // Python Path Compound feature ---------------------------------------------------------

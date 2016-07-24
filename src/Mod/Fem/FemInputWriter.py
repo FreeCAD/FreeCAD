@@ -44,7 +44,7 @@ class FemInputWriter():
     def __init__(self, analysis_obj, solver_obj,
                  mesh_obj, mat_obj,
                  fixed_obj,
-                 force_obj, pressure_obj,
+                 selfweight_obj, force_obj, pressure_obj,
                  displacement_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type, eigenmode_parameters,
@@ -54,6 +54,7 @@ class FemInputWriter():
         self.mesh_object = mesh_obj
         self.material_objects = mat_obj
         self.fixed_objects = fixed_obj
+        self.selfweight_objects = selfweight_obj
         self.force_objects = force_obj
         self.pressure_objects = pressure_obj
         self.displacement_objects = displacement_obj
@@ -102,14 +103,14 @@ class FemInputWriter():
                 # frc_obj.References could be empty ! # TODO in FemTools: check
                 FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
             if femobj['RefShapeType'] == 'Vertex':
-                #print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
+                # print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
                 pass
             elif femobj['RefShapeType'] == 'Face' and FemMeshTools.is_solid_femmesh(self.femmesh) and not FemMeshTools.has_no_face_data(self.femmesh):
-                #print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
+                # print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
             else:
-                #print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
+                # print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femelement_table:

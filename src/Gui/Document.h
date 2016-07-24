@@ -51,6 +51,7 @@ class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
+class TransactionViewProvider;
 enum  HighlightMode;
 
 /** The Gui Document
@@ -75,12 +76,16 @@ protected:
     void slotDeletedObject(const App::DocumentObject&);
     void slotChangedObject(const App::DocumentObject&, const App::Property&);
     void slotRelabelObject(const App::DocumentObject&);
+    void slotTransactionAppend(const App::DocumentObject&, App::Transaction*);
+    void slotTransactionRemove(const App::DocumentObject&, App::Transaction*);
     void slotActivatedObject(const App::DocumentObject&);
     void slotStartRestoreDocument(const App::Document&);
     void slotFinishRestoreDocument(const App::Document&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
     //@}
+
+    void addViewProvider(Gui::ViewProviderDocumentObject*);
 
 public:
     /** @name Signals of the document */
@@ -254,6 +259,8 @@ private:
     /// redo names list
     std::list<std::string> listRedoNames;
     //@}
+
+    friend class TransactionViewProvider;
 };
 
 } // namespace Gui

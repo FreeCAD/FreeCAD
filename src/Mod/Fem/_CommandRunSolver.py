@@ -1,24 +1,24 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 __title__ = "Command Run Solver"
 __author__ = "Juergen Riegel"
@@ -73,15 +73,15 @@ class _CommandRunSolver(FemCommands):
                 QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
                 return
             self.fea.run()  # test z88
-            #self.fea.finished.connect(load_results)
-            #QtCore.QThreadPool.globalInstance().start(self.fea)
+            # self.fea.finished.connect(load_results)
+            # QtCore.QThreadPool.globalInstance().start(self.fea)
         else:
             QtGui.QMessageBox.critical(None, "Not known solver type", message)
 
     def show_results_on_mesh(self):
-        #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
+        # FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
         # or confirmation that it's safe to call restore_result_dialog
-        #FIXME if an analysis has multiple results (frequence) the first result object found is restored
+        # FIXME if an analysis has multiple results (frequence) the first result object found is restored
         import _TaskPanelShowResult
         tp = _TaskPanelShowResult._TaskPanelShowResult()
         tp.restore_result_dialog()
