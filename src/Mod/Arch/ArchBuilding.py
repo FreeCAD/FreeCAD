@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011                                                    *
@@ -214,15 +216,15 @@ class _CommandBuilding:
                 else:
                     warning = True
         if warning :
-            message = "You can put anything but Site and Building object in a Building object.\n\
+            message = translate( "Arch" , "You can put anything but Site and Building object in a Building object.\n\
 Building object are not allowed to accept Site and Building object.\n\
 Site and Building objects will be removed from the selection.\n\
-You can change that in the preferences.\n"
-            self.printMessage( message )
+You can change that in the preferences.\n" )
+            ArchCommands.printMessage( message )
         if sel and len(buildingobj) == 0:
-            message = "There is no valid object in the selection.\n\
-Building creation aborted.\n"
-            self.printMessage( message )
+            message = translate( "Arch" , "There is no valid object in the selection.\n\
+Building creation aborted.\n" )
+            ArchCommands.printMessage( message )
         else :
             ss = "[ "
             for o in buildingobj:
@@ -233,11 +235,6 @@ Building creation aborted.\n"
             FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
-
-    def printMessage(self, message):
-        FreeCAD.Console.PrintMessage(translate("Arch", message))
-        if FreeCAD.GuiUp :
-            reply = QtGui.QMessageBox.information(None,"", message)
 
 class _Building(ArchFloor._Floor):
     "The Building object"
