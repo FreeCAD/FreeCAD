@@ -937,6 +937,16 @@ def getExtrusionData(shape):
             return [faces[p[0]][0],faces[p[1]][0].CenterOfMass.sub(faces[p[0]][0].CenterOfMass)]
     return None
 
+def printMessage( message ):
+    FreeCAD.Console.PrintMessage( message )
+    if FreeCAD.GuiUp :
+        reply = QtGui.QMessageBox.information( None , "" , message.decode('utf8') )
+
+def printWarning( message ):
+    FreeCAD.Console.PrintMessage( message )
+    if FreeCAD.GuiUp :
+        reply = QtGui.QMessageBox.warning( None , "" , message.decode('utf8') )
+
 
 # command definitions ###############################################
 

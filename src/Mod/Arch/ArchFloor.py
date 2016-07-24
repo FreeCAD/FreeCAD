@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011                                                    *
@@ -72,15 +74,15 @@ class _CommandFloor:
                 else:
                     warning = True
         if warning :
-            message = "You can put anything but Site, Building, Floor object in a Floor object.\n\
+            message = translate( "Arch" , "You can put anything but Site, Building, Floor object in a Floor object.\n\
 Floor object are not allowed to accept Site or Building object.\n\
 Site, Building and Floor objects will be removed from the selection.\n\
-You can change that in the preferences.\n"
-            self.printMessage( message )
+You can change that in the preferences.\n" )
+            ArchCommands.printMessage( message )
         if sel and len(floorobj) == 0:
-            message = "There is no valid object in the selection.\n\
-Floor creation aborted.\n"
-            self.printMessage( message )
+            message = translate( "Arch" , "There is no valid object in the selection.\n\
+Floor creation aborted.\n" )
+            ArchCommands.printMessage( message )
         else :
             ss = "[ "
             for o in floorobj:
@@ -91,11 +93,6 @@ Floor creation aborted.\n"
             FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
-
-    def printMessage(self, message):
-        FreeCAD.Console.PrintMessage(translate("Arch", message))
-        if FreeCAD.GuiUp :
-            reply = QtGui.QMessageBox.information(None,"", message)
 
 class _Floor:
     "The Floor object"
