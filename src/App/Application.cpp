@@ -2089,6 +2089,19 @@ void Application::ExtractUserPath()
         // the application due to branding reasons.
         appData += PATHSEP;
         mConfig["UserAppData"] = appData;
+
+        // Create the default macro directory
+        fi.setFile(getUserMacroDir());
+        if (!fi.exists() && !Py_IsInitialized()) {
+            if (!fi.createDirectory()) {
+                // If the creation fails only write an error but do not raise an
+                // exception because it doesn't prevent FreeCAD from working
+                std::string error = "Cannot create directory ";
+                error += fi.fileName();
+                // Want more details on console
+                std::cerr << error << std::endl;
+            }
+        }
     }
 #else
 # error "Implement ExtractUserPath() for your platform."
