@@ -340,6 +340,20 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
     MeshCore::MeshOutput aWriter(this->_kernel, mat);
     if (objectname)
         aWriter.SetObjectName(objectname);
+
+    // go through the segment list and put them to the exporter when
+    // the "save" flag is set
+    std::vector<MeshCore::Group> groups;
+    for (std::size_t index = 0; index < this->_segments.size(); index++) {
+        if (this->_segments[index].isSaved()) {
+            MeshCore::Group g;
+            g.indices = this->_segments[index].getIndices();
+            g.name = this->_segments[index].getName();
+            groups.push_back(g);
+        }
+    }
+    aWriter.SetGroups(groups);
+
     aWriter.Transform(this->_Mtrx);
     aWriter.SaveAny(file, f);
 }
@@ -351,6 +365,20 @@ void MeshObject::save(std::ostream& str, MeshCore::MeshIO::Format f,
     MeshCore::MeshOutput aWriter(this->_kernel, mat);
     if (objectname)
         aWriter.SetObjectName(objectname);
+
+    // go through the segment list and put them to the exporter when
+    // the "save" flag is set
+    std::vector<MeshCore::Group> groups;
+    for (std::size_t index = 0; index < this->_segments.size(); index++) {
+        if (this->_segments[index].isSaved()) {
+            MeshCore::Group g;
+            g.indices = this->_segments[index].getIndices();
+            g.name = this->_segments[index].getName();
+            groups.push_back(g);
+        }
+    }
+    aWriter.SetGroups(groups);
+
     aWriter.Transform(this->_Mtrx);
     aWriter.SaveFormat(str, f);
 }
@@ -1566,6 +1594,8 @@ MeshObject* MeshObject::createCube(float length, float width, float height, floa
 void MeshObject::addSegment(const Segment& s)
 {
     addSegment(s.getIndices());
+    this->_segments.back().setName(s.getName());
+    this->_segments.back().save(s.isSaved());
 }
 
 void MeshObject::addSegment(const std::vector<unsigned long>& inds)

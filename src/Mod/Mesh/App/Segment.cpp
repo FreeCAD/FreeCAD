@@ -32,16 +32,22 @@
 
 #include "Segment.h"
 #include "Mesh.h"
-#include "MeshPy.h"
+#include <Mod/Mesh/App/MeshPy.h>
 
 using namespace Mesh;
 
-Segment::Segment(MeshObject* mesh, bool mod) : _mesh(mesh), _modifykernel(mod)
+Segment::Segment(MeshObject* mesh, bool mod)
+  : _mesh(mesh)
+  , _save(false)
+  , _modifykernel(mod)
 {
 }
 
 Segment::Segment(MeshObject* mesh, const std::vector<unsigned long>& inds, bool mod)
-  : _mesh(mesh), _indices(inds), _modifykernel(mod)
+  : _mesh(mesh)
+  , _indices(inds)
+  , _save(false)
+  , _modifykernel(mod)
 {
     if (_modifykernel)
         _mesh->updateMesh(inds);
