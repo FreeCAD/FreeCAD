@@ -50,6 +50,7 @@ public:
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
     virtual bool load(QByteArray *svgString);
+    virtual QRectF boundingRect(void) const override;
 
 protected:
     QSvgRenderer *m_svgRender;

@@ -290,7 +290,6 @@ void QGIView::draw()
 
 void QGIView::drawBorder()
 {
-    prepareGeometryChange();
     if (!borderVisible) {
          m_label.hide();
          m_border.hide();
@@ -332,6 +331,7 @@ void QGIView::drawBorder()
                               displayArea.top(),
                               frameWidth,
                               frameHeight);
+    prepareGeometryChange();
     m_border.setRect(frameArea);
     m_border.setPos(0.,0.);
 

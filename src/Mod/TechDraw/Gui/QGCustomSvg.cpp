@@ -26,6 +26,8 @@
 #include <QStyleOptionGraphicsItem>
 #endif
 
+#include <Base/Console.h>
+
 #include <QRectF>
 #include "QGCustomSvg.h"
 
@@ -37,6 +39,7 @@ QGCustomSvg::QGCustomSvg()
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     m_svgRender = new QSvgRenderer();
 }
@@ -69,8 +72,18 @@ void QGCustomSvg::centerAt(double cX, double cY)
 bool QGCustomSvg::load(QByteArray *svgBytes)
 {
     bool success = m_svgRender->load(*svgBytes);
+    prepareGeometryChange();
     setSharedRenderer(m_svgRender);
     return(success);
+}
+
+QRectF QGCustomSvg::boundingRect() const
+{
+    QRectF box = m_svgRender->viewBoxF();
+    double w = box.width();
+    double h = box.height();
+    QRectF newRect(0,0,w*scale(),h*scale());
+    return newRect.adjusted(-1.,-1.,1.,1.);
 }
 
 void QGCustomSvg::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
