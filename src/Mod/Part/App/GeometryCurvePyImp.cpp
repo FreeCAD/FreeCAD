@@ -322,6 +322,32 @@ PyObject* GeometryCurvePy::length(PyObject *args)
     return 0;
 }
 
+PyObject* GeometryCurvePy::parameterAtDistance(PyObject *args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double abscissa;
+            double u = 0;
+            if (!PyArg_ParseTuple(args, "d|d", &abscissa,&u))
+                return 0;
+            GeomAdaptor_Curve adapt(c);
+            GCPnts_AbscissaPoint abscissaPoint(adapt,abscissa,u);
+            double parm = abscissaPoint.Parameter();
+            return PyFloat_FromDouble(parm);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
+}
+
 PyObject* GeometryCurvePy::value(PyObject *args)
 {
     Handle_Geom_Geometry g = getGeometryPtr()->handle();
@@ -418,12 +444,12 @@ PyObject* GeometryCurvePy::makeRuledSurface(PyObject *args)
         }
         // check the result surface type
         if (aSurf->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
-            Handle_Geom_RectangularTrimmedSurface aTSurf = 
+            Handle_Geom_RectangularTrimmedSurface aTSurf =
                 Handle_Geom_RectangularTrimmedSurface::DownCast(aSurf);
             return new RectangularTrimmedSurfacePy(new GeomTrimmedSurface(aTSurf));
         }
         else if (aSurf->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
-            Handle_Geom_BSplineSurface aBSurf = 
+            Handle_Geom_BSplineSurface aBSurf =
                 Handle_Geom_BSplineSurface::DownCast(aSurf);
             return new BSplineSurfacePy(new GeomBSplineSurface(aBSurf));
         }
@@ -610,7 +636,7 @@ PyObject *GeometryCurvePy::getCustomAttributes(const char* /*attr*/) const
 
 int GeometryCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 // Specialized intersection functions

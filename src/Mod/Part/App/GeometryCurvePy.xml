@@ -63,6 +63,12 @@ Part.show(s)
 length([uMin,uMax,Tol]) -> Float</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="parameterAtDistance">
+			<Documentation>
+				<UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter. 
+parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="value">
 			<Documentation>
 				<UserDocu>Computes the point of parameter u on this curve</UserDocu>
