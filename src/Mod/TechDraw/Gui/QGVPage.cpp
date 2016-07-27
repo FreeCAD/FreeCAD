@@ -85,8 +85,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
     , pageTemplate(0)
     , m_renderer(Native)
     , drawBkg(true)
-    , m_backgroundItem(0)
-    , m_outlineItem(0)
     , pageGui(0)
 {
     assert(vp);
@@ -103,11 +101,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
     setCursor(QCursor(Qt::ArrowCursor));
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
-    //m_backgroundItem = new QGraphicsRectItem();
-    //m_backgroundItem->setCacheMode(QGraphicsItem::NoCache);
-    //m_backgroundItem->setZValue(ZVALUE::BACKGROUND);
-//     scene()->addItem(m_backgroundItem); // TODO IF SEGFAULTS WITH DRAW ENABLE THIS (REDRAWS ARE SLOWER :s)
-
     bkgBrush = new QBrush(QColor::fromRgb(70,70,70));
 
     resetCachedContent();
@@ -115,7 +108,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
 QGVPage::~QGVPage()
 {
     delete bkgBrush;
-    //delete m_backgroundItem;
+
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -382,35 +375,6 @@ QGIView * QGVPage::findParent(QGIView *view) const
     return 0;
 }
 
-void QGVPage::setPageFeature(TechDraw::DrawPage *page)
-{
-    //redundant
-#if 0
-    // TODO verify if the pointer should even be used. Not really safe
-    pageFeat = page;
-
-    float pageWidth  = pageGui->getPageObject()->getPageWidth();
-    float pageHeight = pageGui->getPageObject()->getPageHeight();
-
-    QRectF paperRect(0, -pageHeight, pageWidth, pageHeight);
-
-    QBrush brush(Qt::white);
-
-    m_backgroundItem->setBrush(brush);
-    m_backgroundItem->setRect(paperRect);
-
-    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect();
-    shadow->setBlurRadius(10.0);
-    shadow->setColor(Qt::white);
-    shadow->setOffset(0,0);
-    m_backgroundItem->setGraphicsEffect(shadow);
-
-    QRectF myRect = paperRect;
-    myRect.adjust(-20,-20,20,20);
-    setSceneRect(myRect);
-#endif
-}
-
 void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
 {
     // Remove currently set background template
@@ -418,11 +382,9 @@ void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
     removeTemplate();
 
     if(obj->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
-        //TechDraw::DrawParametricTemplate *dwgTemplate = static_cast<TechDraw::DrawParametricTemplate *>(obj);
         QGIDrawingTemplate *qTempItem = new QGIDrawingTemplate(scene());
         pageTemplate = qTempItem;
     } else if(obj->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
-        //TechDraw::DrawSVGTemplate *dwgTemplate = static_cast<TechDraw::DrawSVGTemplate *>(obj);
         QGISVGTemplate *qTempItem = new QGISVGTemplate(scene(),this);
         pageTemplate = qTempItem;
     }
@@ -463,22 +425,6 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 #else
     Q_UNUSED(highQualityAntialiasing);
 #endif
-}
-
-void QGVPage::setViewBackground(bool enable)
-{
-//    if (!m_backgroundItem)
-//        return;
-
-//    m_backgroundItem->setVisible(enable);
-}
-
-void QGVPage::setViewOutline(bool enable)
-{
-    if (!m_outlineItem)
-        return;
-
-    m_outlineItem->setVisible(enable);
 }
 
 void QGVPage::toggleMarkers(bool enable)
