@@ -40,6 +40,8 @@
     #include <QPrintPreviewDialog>
 #endif  // #ifndef _PreComp_
 
+#include <math.h>
+
 #include "MDIViewPage.h"
 
 #include <Base/Stream.h>
@@ -92,27 +94,15 @@ using namespace TechDrawGui;
 
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent),
-    //m_view(new QGVPage(pageVp)),
+    m_orientation(QPrinter::Landscape),
+    m_paperSize(QPrinter::A4),
     pageGui(pageVp),
     m_frameState(true)
 {
     m_view = new QGVPage(pageVp,m_scene,this);
 
-    m_backgroundAction = new QAction(tr("&Background"), this);
-    m_backgroundAction->setEnabled(false);
-    m_backgroundAction->setCheckable(true);
-    m_backgroundAction->setChecked(true);
-    connect(m_backgroundAction, SIGNAL(toggled(bool)), m_view, SLOT(setViewBackground(bool)));
-
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
     connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
-
-    //m_outlineAction is obs? never set to Enabled?
-    m_outlineAction = new QAction(tr("&Outline"), this);
-    m_outlineAction->setEnabled(false);
-    m_outlineAction->setCheckable(true);
-    m_outlineAction->setChecked(false);
-    connect(m_outlineAction, SIGNAL(toggled(bool)), m_view, SLOT(setViewOutline(bool)));    //in QGVPage
 
     m_nativeAction = new QAction(tr("&Native"), this);
     m_nativeAction->setCheckable(true);
@@ -147,9 +137,6 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     setWindowTitle(tr("dummy[*]"));      //Yuck. prevents "QWidget::setWindowModified: The window title does not contain a '[*]' placeholder"
     setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
 
-    m_orientation = QPrinter::Landscape;
-    m_pageSize = QPrinter::A4;
-
     // Connect Signals and Slots
     QObject::connect(
         m_view->scene(), SIGNAL(selectionChanged()),
@@ -157,7 +144,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
        );
 
 
-     // A fresh page is added and we iterate through its collected children and add these to Canvas View
+     // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
      // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
      // we'll have to make this recursive. -WF
     const std::vector<App::DocumentObject*> &grp = pageGui->getPageObject()->Views.getValues();
@@ -220,48 +207,6 @@ void MDIViewPage::setDimensionGroups(void)
     }
 }
 
-
-void MDIViewPage::findPrinterSettings(const QString& fileName)
-{
-    if (fileName.indexOf(QLatin1String("Portrait"), Qt::CaseInsensitive) >= 0) {
-        m_orientation = QPrinter::Portrait;
-    }
-    else {
-        m_orientation = QPrinter::Landscape;
-    }
-
-    QMap<QPrinter::PageSize, QString> pageSizes;
-    pageSizes[QPrinter::A0] = QString::fromLatin1("A0");
-    pageSizes[QPrinter::A1] = QString::fromLatin1("A1");
-    pageSizes[QPrinter::A2] = QString::fromLatin1("A2");
-    pageSizes[QPrinter::A3] = QString::fromLatin1("A3");
-    pageSizes[QPrinter::A4] = QString::fromLatin1("A4");
-    pageSizes[QPrinter::A5] = QString::fromLatin1("A5");
-    pageSizes[QPrinter::A6] = QString::fromLatin1("A6");
-    pageSizes[QPrinter::A7] = QString::fromLatin1("A7");
-    pageSizes[QPrinter::A8] = QString::fromLatin1("A8");
-    pageSizes[QPrinter::A9] = QString::fromLatin1("A9");
-    pageSizes[QPrinter::B0] = QString::fromLatin1("B0");
-    pageSizes[QPrinter::B1] = QString::fromLatin1("B1");
-    pageSizes[QPrinter::B2] = QString::fromLatin1("B2");
-    pageSizes[QPrinter::B3] = QString::fromLatin1("B3");
-    pageSizes[QPrinter::B4] = QString::fromLatin1("B4");
-    pageSizes[QPrinter::B5] = QString::fromLatin1("B5");
-    pageSizes[QPrinter::B6] = QString::fromLatin1("B6");
-    pageSizes[QPrinter::B7] = QString::fromLatin1("B7");
-    pageSizes[QPrinter::B8] = QString::fromLatin1("B8");
-    pageSizes[QPrinter::B9] = QString::fromLatin1("B9");
-    pageSizes[QPrinter::Letter] = QString::fromLatin1("Letter");
-    pageSizes[QPrinter::Legal] = QString::fromLatin1("Legal");
-    for (QMap<QPrinter::PageSize, QString>::iterator it = pageSizes.begin(); it != pageSizes.end(); ++it) {
-        if (fileName.startsWith(it.value(), Qt::CaseInsensitive)) {
-            m_pageSize = it.key();
-            break;
-        }
-    }
-}
-
-
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
@@ -290,8 +235,6 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
 void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu;
-    menu.addAction(m_backgroundAction);
-    menu.addAction(m_outlineAction);
     menu.addAction(m_exportSVGAction);
     QMenu* submenu = menu.addMenu(tr("&Renderer"));
     submenu->addAction(m_nativeAction);
@@ -305,10 +248,17 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
 
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
+    //why doesn't setting the template set the papersize???
     m_view->setPageTemplate(obj);
     double width  =  obj->Width.getValue();
     double height =  obj->Height.getValue();
     m_view->scene()->setSceneRect(QRectF(-1.,-height,width+1.,height));         //the +/- 1 is because of the way the template is define???
+    m_paperSize = getPaperSize(int(round(width)),int(round(height)));
+    if (width > height) {
+        m_orientation = QPrinter::Landscape;
+    } else {
+        m_orientation = QPrinter::Portrait;
+    }
 }
 
 
@@ -576,7 +526,6 @@ void MDIViewPage::onRelabel(Gui::Document *pDoc)
     }
 }
 
-
 void MDIViewPage::printPdf()
 {
     Gui::FileOptionsDialog dlg(this, 0);
@@ -599,6 +548,8 @@ void MDIViewPage::printPdf()
     gridLayout->addWidget(listWidget, 0, 0, 1, 1);
     formLayout->addWidget(groupBox, 0, 0, 1, 1);
 
+    //the "Extended" part of the dialog
+    //doesn't have any impact on result?
     groupBox->setTitle(tr("Page sizes"));
     item = new QListWidgetItem(tr("A0"), listWidget);
     item->setData(Qt::UserRole, QVariant(QPrinter::A0));
@@ -619,7 +570,7 @@ void MDIViewPage::printPdf()
     //listWidget->item(4)->setSelected(true); // by default A4
     int index = 4; // by default A4
     for (int i=0; i<listWidget->count(); i++) {
-        if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_pageSize) {
+        if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_paperSize) {
             index = i;
             break;
         }
@@ -635,11 +586,13 @@ void MDIViewPage::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         printer.setOrientation(m_orientation);
+        printer.setPaperSize(m_paperSize);
         QList<QListWidgetItem*> items = listWidget->selectedItems();
-        if (items.size() == 1) {
-            int AX = items.front()->data(Qt::UserRole).toInt();
-            printer.setPaperSize(QPrinter::PageSize(AX));
-        }
+
+//        if (items.size() == 1) {
+//            int AX = items.front()->data(Qt::UserRole).toInt();
+//            printer.setPaperSize(QPrinter::PaperSize(AX));
+//        }
 
         print(&printer);
     }
@@ -650,7 +603,7 @@ void MDIViewPage::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPageSize(m_pageSize);
+    printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -658,12 +611,11 @@ void MDIViewPage::print()
     }
 }
 
-
 void MDIViewPage::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPageSize(m_pageSize);
+    printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
 
     QPrintPreviewDialog dlg(&printer, this);
@@ -690,8 +642,8 @@ void MDIViewPage::print(QPrinter* printer)
     if (printer->outputFormat() == QPrinter::NativeFormat) {
         int w = printer->widthMM();
         int h = printer->heightMM();
-        QPrinter::PaperSize realPaperSize = getPageSize(w, h);
-        QPrinter::PaperSize curPaperSize = printer->paperSize();
+        QPrinter::PaperSize psPrtCalcd = getPaperSize(w, h);
+        QPrinter::PaperSize psPrtSetting = printer->paperSize();
 
         // for the preview a 'Picture' paint engine is used which we don't
         // care if it uses wrong printer settings
@@ -705,7 +657,7 @@ void MDIViewPage::print(QPrinter* printer)
             if (ret != QMessageBox::Yes)
                 return;
         }
-        else if (doPrint && realPaperSize != m_pageSize) {
+        else if (doPrint && psPrtCalcd != m_paperSize) {
             int ret = QMessageBox::warning(this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
@@ -713,7 +665,7 @@ void MDIViewPage::print(QPrinter* printer)
             if (ret != QMessageBox::Yes)
                 return;
         }
-        else if (doPrint && curPaperSize != m_pageSize) {
+        else if (doPrint && psPrtSetting != m_paperSize) {
             int ret = QMessageBox::warning(this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
@@ -756,8 +708,7 @@ void MDIViewPage::print(QPrinter* printer)
 }
 
 
-//QPrinter::PageSize is obsolete. Use QPrinter::PaperSize instead.
-QPrinter::PageSize MDIViewPage::getPageSize(int w, int h) const
+QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
 {
     static const float paperSizes[][2] = {
         {210, 297}, // A4
@@ -792,23 +743,24 @@ QPrinter::PageSize MDIViewPage::getPageSize(int w, int h) const
         {279.4f, 431.8f} // Tabloid
     };
 
-    QPrinter::PageSize ps = QPrinter::Custom;
+    QPrinter::PaperSize ps = QPrinter::Custom;
     for (int i=0; i<30; i++) {
         if (std::abs(paperSizes[i][0]-w) <= 1 &&
             std::abs(paperSizes[i][1]-h) <= 1) {
-            ps = static_cast<QPrinter::PageSize>(i);
+            ps = static_cast<QPrinter::PaperSize>(i);
             break;
         }
         else
         if (std::abs(paperSizes[i][0]-h) <= 1 &&
             std::abs(paperSizes[i][1]-w) <= 1) {
-            ps = static_cast<QPrinter::PageSize>(i);
+            ps = static_cast<QPrinter::PaperSize>(i);
             break;
         }
     }
-
     return ps;
 }
+
+
 void MDIViewPage::setFrameState(bool state)
 {
     m_frameState = state;
