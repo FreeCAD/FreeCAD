@@ -95,8 +95,7 @@ protected:
     int attachView(App::DocumentObject *obj);
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
-    void findPrinterSettings(const QString&);
-    QPrinter::PageSize getPageSize(int w, int h) const;
+    QPrinter::PaperSize getPaperSize(int w, int h) const;
     void setDimensionGroups(void);
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
 
@@ -106,8 +105,6 @@ private:
     QAction *m_exportSVGAction;
     QAction *m_imageAction;
     QAction *m_highQualityAntialiasingAction;
-    QAction *m_backgroundAction;
-    QAction *m_outlineAction;
 
     std::string m_objectName;
     bool isSelectionBlocked;
@@ -115,7 +112,7 @@ private:
 
     QString m_currentPath;
     QPrinter::Orientation m_orientation;
-    QPrinter::PageSize m_pageSize;
+    QPrinter::PaperSize m_paperSize;
     ViewProviderPage *pageGui;
 
     bool m_frameState;

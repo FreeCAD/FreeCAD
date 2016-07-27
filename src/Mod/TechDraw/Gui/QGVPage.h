@@ -77,7 +77,6 @@ public:
     const std::vector<QGIView *> & getViews() const { return views; }
     int addView(QGIView * view);
     void setViews(const std::vector<QGIView *> &view) {views = view; }
-    void setPageFeature(TechDraw::DrawPage *page);
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
 
     QGITemplate * getTemplate() const;
@@ -93,8 +92,6 @@ public:
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
-    void setViewBackground(bool enable);
-    void setViewOutline(bool enable);
 
 protected:
     void wheelEvent(QWheelEvent *event);
@@ -113,8 +110,6 @@ private:
     RendererType m_renderer;
 
     bool drawBkg;
-    QGraphicsRectItem *m_backgroundItem;
-    QGraphicsRectItem *m_outlineItem;
     QBrush* bkgBrush;
     QImage m_image;
     ViewProviderPage *pageGui;
