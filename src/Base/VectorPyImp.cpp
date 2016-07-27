@@ -74,7 +74,7 @@ int VectorPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    if (PyArg_ParseTuple(args,"O!",&(PyTuple_Type), &object)) {
+    if (PyArg_ParseTuple(args,"O", &object)) {
         try {
             *ptr = getVectorFromTuple<double>(object);
             return 0;
