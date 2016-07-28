@@ -31,8 +31,7 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
-#include "QGCustomBorder.h"
-#include "QGCustomLabel.h"
+
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -41,6 +40,8 @@ QT_END_NAMESPACE
 
 namespace TechDrawGui
 {
+class QGCustomBorder;
+class QGCustomLabel;
 
 class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
 {
@@ -113,8 +114,8 @@ protected:
     QColor m_colPre;
     QColor m_colSel;
     QFont m_font;
-    QGCustomLabel m_label;
-    QGCustomBorder m_border;
+    QGCustomLabel* m_label;
+    QGCustomBorder* m_border;
     QPen m_decorPen;
 };
 

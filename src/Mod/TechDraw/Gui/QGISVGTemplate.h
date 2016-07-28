@@ -23,11 +23,10 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 
-#include <QGraphicsSvgItem>
-#include <QSvgRenderer>
-
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
+class QGraphicsSvgItem;
+class QSvgRenderer;
 QT_END_NAMESPACE
 
 namespace TechDraw {
@@ -62,8 +61,8 @@ protected:
 
 protected:
     TechDraw::DrawSVGTemplate * getSVGTemplate();
-    QGraphicsSvgItem m_svgItem;
-    QSvgRenderer m_svgRender;
+    QGraphicsSvgItem *m_svgItem;
+    QSvgRenderer *m_svgRender;
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };  // class QGISVGTemplate
 

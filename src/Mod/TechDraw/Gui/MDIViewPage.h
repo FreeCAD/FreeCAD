@@ -80,7 +80,7 @@ public:
 
     QGVPage* getQGVPage(void) {return m_view;};
 
-    QGraphicsScene m_scene;
+    QGraphicsScene* m_scene;
 
 public Q_SLOTS:
     void setRenderer(QAction *action);
