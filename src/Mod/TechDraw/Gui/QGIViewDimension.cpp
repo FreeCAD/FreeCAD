@@ -183,13 +183,12 @@ QGIViewDimension::QGIViewDimension() :
         dlabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    m_pen.setWidthF(0.5);
-    m_clPen.setWidthF(m_pen.widthF() * 0.80);
-    m_clPen.setColor(QColor(128,128,128));  // TODO: centre line colour preference?
-
     addToGroup(dimLines);
     addToGroup(datumLabel);
     addToGroup(centerMark);
+
+    m_pen.setStyle(Qt::SolidLine);
+    m_clPen.setColor(QColor(128,128,128));  // TODO: centre line colour preference?
 
     toggleBorder(false);
 }
@@ -313,7 +312,9 @@ void QGIViewDimension::draw()
     if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
         return;
     }
-    m_pen.setStyle(Qt::SolidLine);
+
+    m_pen.setWidthF(dim->LineWidth.getValue());
+    m_clPen.setWidthF(m_pen.widthF() * 0.80);                          //magic number!!!!
 
     // Crude method of determining state [TODO] improve
     if(isSelected()) {
