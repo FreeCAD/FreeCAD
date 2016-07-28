@@ -75,7 +75,7 @@ protected:
     double posY;
 
 private:
-    QPen m_pen;
+    //QPen m_pen;
     QColor m_colNormal;
     QColor m_colPre;
     QColor m_colSel;
@@ -107,18 +107,18 @@ public Q_SLOTS:
 
 protected:
     void draw();
-    // Selection detection
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void setSvgPens(void);
+    virtual void setPens(void);
 
 protected:
     bool hasHover;
-    QGraphicsItem*datumLabel;                                         //dimension text
-    QGraphicsItem*arrows;                                             //dimension lines + extension lines
-    QGraphicsItem*centreLines;
-
-    std::vector<QGraphicsItem*> arw;                                  //arrowheads
-    std::vector<TechDrawGeometry::BaseGeom *> projGeom;
-    QPen pen;
+    QGIDatumLabel* datumLabel;                                         //dimension text
+    QGraphicsPathItem *dimLines;                                       //dimension lines + extension lines
+    QGraphicsPathItem* centerMark;
+    std::vector<QGraphicsPathItem *> arrowHeads;
+    QPen m_pen;
+    QPen m_clPen;
 };
 
 } // namespace MDIViewPageGui
