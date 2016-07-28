@@ -46,6 +46,8 @@
   # include <math.h>
   # include <QGraphicsPathItem>
   # include <QGraphicsTextItem>
+  # include <QPaintDevice>
+  # include <QSvgGenerator>
 #endif
 
 #include <Precision.hxx>
@@ -161,8 +163,8 @@ QGIViewDimension::QGIViewDimension() :
     QGraphicsPathItem *clines       = new QGraphicsPathItem();
 
     datumLabel  = dlabel;
-    arrows      = arrws;
-    centreLines = clines;
+    dimLines      = arrws;
+    centerMark = clines;
 
     // connecting the needed slots and signals
     QObject::connect(
@@ -181,12 +183,13 @@ QGIViewDimension::QGIViewDimension() :
         dlabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    pen.setCosmetic(true);
-    pen.setWidthF(1.);
+    m_pen.setWidthF(0.5);
+    m_clPen.setWidthF(m_pen.widthF() * 0.80);
+    m_clPen.setColor(QColor(128,128,128));  // TODO: centre line colour preference?
 
-    addToGroup(arrows);
+    addToGroup(dimLines);
     addToGroup(datumLabel);
-    addToGroup(centreLines);
+    addToGroup(centerMark);
 
     toggleBorder(false);
 }
@@ -310,15 +313,15 @@ void QGIViewDimension::draw()
     if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
         return;
     }
-    pen.setStyle(Qt::SolidLine);
+    m_pen.setStyle(Qt::SolidLine);
 
     // Crude method of determining state [TODO] improve
     if(isSelected()) {
-        pen.setColor(getSelectColor());
+        m_pen.setColor(getSelectColor());
     } else if (hasHover) {
-        pen.setColor(getPreColor());
+        m_pen.setColor(getPreColor());
     } else {
-        pen.setColor(getNormalColor());
+        m_pen.setColor(getNormalColor());
     }
 
     QString labelText = lbl->toPlainText();
@@ -514,9 +517,9 @@ void QGIViewDimension::draw()
         path.moveTo(dim2Tip.x, dim2Tip.y);
         path.lineTo(dim2Tail.x, dim2Tail.y);
 
-        QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (arrows);
+        QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (dimLines);
         arrw->setPath(path);
-        arrw->setPen(pen);
+        arrw->setPen(m_pen);
 
         // Note Bounding Box size is not the same width or height as text (only used for finding center)
         float bbX  = lbl->boundingRect().width();
@@ -526,30 +529,30 @@ void QGIViewDimension::draw()
         lbl->setRotation((angle * 180 / M_PI) + angleOption);
 
 
-        if(arw.size() != 2) {
+        if(arrowHeads.size() != 2) {
             prepareGeometryChange();
-            for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
+            for(std::vector<QGraphicsPathItem*>::iterator it = arrowHeads.begin(); it != arrowHeads.end(); ++it) {
                 removeFromGroup(*it);
                 delete (*it);
             }
-            arw.clear();
+            arrowHeads.clear();
 
             // These items are added to the scene-graph so should be handled by the canvas
             QGIArrow *ar1 = new QGIArrow();        //arrowhead
             QGIArrow *ar2 = new QGIArrow();
-            arw.push_back(ar1);
-            arw.push_back(ar2);
+            arrowHeads.push_back(ar1);
+            arrowHeads.push_back(ar2);
 
             ar1->draw();
             ar2->flip(true);
             ar2->draw();
 
-            addToGroup(arw.at(0));
-            addToGroup(arw.at(1));
+            addToGroup(arrowHeads.at(0));
+            addToGroup(arrowHeads.at(1));
         }
 
-        QGIArrow *ar1 = dynamic_cast<QGIArrow *>(arw.at(0));
-        QGIArrow *ar2 = dynamic_cast<QGIArrow *>(arw.at(1));
+        QGIArrow *ar1 = dynamic_cast<QGIArrow *>(arrowHeads.at(0));
+        QGIArrow *ar2 = dynamic_cast<QGIArrow *>(arrowHeads.at(1));
 
         angle = atan2f(dir[1],dir[0]);
         float arrowAngle = angle * 180 / M_PI;
@@ -750,12 +753,12 @@ void QGIViewDimension::draw()
             path.lineTo(arrow2Tip.x, arrow2Tip.y);
         }
 
-        QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (arrows);
+        QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (dimLines);
         arrw->setPath(path);
-        arrw->setPen(pen);
+        arrw->setPen(m_pen);
 
         // Add or remove centre lines
-        QGraphicsPathItem *clines = dynamic_cast<QGraphicsPathItem *> (centreLines);
+        QGraphicsPathItem *clines = dynamic_cast<QGraphicsPathItem *> (centerMark);
         QPainterPath clpath;
 
         if(dim->CentreLines.getValue()) {
@@ -773,37 +776,34 @@ void QGIViewDimension::draw()
             // Vertical Line
             clpath.moveTo(centre.x - clDist, centre.y);
             clpath.lineTo(centre.x + clDist, centre.y);
-
-            QPen clPen(QColor(128,128,128));  // TODO: centre line colour preference?
-            clines->setPen(clPen);
         }
 
         clines->setPath(clpath);
 
         // Create Two Arrows always (but sometimes hide one!)
-        if(arw.size() != 2) {
+        if(arrowHeads.size() != 2) {
             prepareGeometryChange();
-            for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
+            for(std::vector<QGraphicsPathItem*>::iterator it = arrowHeads.begin(); it != arrowHeads.end(); ++it) {
                 removeFromGroup(*it);
                 delete (*it);
             }
-            arw.clear();
+            arrowHeads.clear();
 
             // These items are added to the group so group will handle deletion
             QGIArrow *ar1 = new QGIArrow();
             QGIArrow *ar2 = new QGIArrow();
-            arw.push_back(ar1);
-            arw.push_back(ar2);
+            arrowHeads.push_back(ar1);
+            arrowHeads.push_back(ar2);
 
             ar1->draw();
             ar2->flip(true);
             ar2->draw();
-            addToGroup(arw.at(0));
-            addToGroup(arw.at(1));
+            addToGroup(arrowHeads.at(0));
+            addToGroup(arrowHeads.at(1));
         }
 
-        QGIArrow *ar1 = dynamic_cast<QGIArrow *>(arw.at(0));
-        QGIArrow *ar2 = dynamic_cast<QGIArrow *>(arw.at(1));
+        QGIArrow *ar1 = dynamic_cast<QGIArrow *>(arrowHeads.at(0));
+        QGIArrow *ar2 = dynamic_cast<QGIArrow *>(arrowHeads.at(1));
 
         float arAngle = atan2(dirDimLine.y, dirDimLine.x) * 180 / M_PI;
 
@@ -915,12 +915,12 @@ void QGIViewDimension::draw()
         dLinePath.lineTo(kinkPoint.x, kinkPoint.y);
         dLinePath.lineTo(pointOnCurve.x, pointOnCurve.y);
 
-        QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (arrows);
+        QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (dimLines);
         arrw->setPath(dLinePath);
-        arrw->setPen(pen);
+        arrw->setPen(m_pen);
 
         // Add or remove centre lines  (wf - this is centermark, not centerlines)
-        QGraphicsPathItem *clines = dynamic_cast<QGraphicsPathItem *> (centreLines);
+        QGraphicsPathItem *clines = dynamic_cast<QGraphicsPathItem *> (centerMark);
         QPainterPath clpath;
         if(dim->CentreLines.getValue()) {
             // Add centre lines to the circle
@@ -935,37 +935,35 @@ void QGIViewDimension::draw()
             // Horizontal Line
             clpath.moveTo(curveCenter.x - clDist, curveCenter.y);
             clpath.lineTo(curveCenter.x + clDist, curveCenter.y);
-            QPen clPen(QColor(128,128,128));  // TODO: centre line preference?
-            clines->setPen(clPen);
         }
         clines->setPath(clpath);
 
         // Always create Two Arrows (but sometimes hide 1!)
         QGIArrow *ar1;
         QGIArrow *ar2;
-        if(arw.size() != 2) {
+        if(arrowHeads.size() != 2) {
             prepareGeometryChange();
-            for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
+            for(std::vector<QGraphicsPathItem*>::iterator it = arrowHeads.begin(); it != arrowHeads.end(); ++it) {
                 removeFromGroup(*it);
                 delete (*it);
             }
-            arw.clear();
+            arrowHeads.clear();
 
             // These items are added to the scene-graph so should be handled by the canvas
             ar1 = new QGIArrow();
             ar2 = new QGIArrow();
-            arw.push_back(ar1);
-            arw.push_back(ar2);
+            arrowHeads.push_back(ar1);
+            arrowHeads.push_back(ar2);
 
             ar1->flip(true);
             ar1->draw();
             ar2->draw();
-            addToGroup(arw.at(0));
-            addToGroup(arw.at(1));
+            addToGroup(arrowHeads.at(0));
+            addToGroup(arrowHeads.at(1));
         }
 
-        ar1 = dynamic_cast<QGIArrow *>(arw.at(0));
-        ar2 = dynamic_cast<QGIArrow *>(arw.at(1));
+        ar1 = dynamic_cast<QGIArrow *>(arrowHeads.at(0));
+        ar2 = dynamic_cast<QGIArrow *>(arrowHeads.at(1));
 
         Base::Vector3d ar1Pos = pointOnCurve;
         float arAngle = atan2(dirDimLine.y, dirDimLine.x) * 180 / M_PI;
@@ -1155,35 +1153,35 @@ void QGIViewDimension::draw()
                     path.arcTo(arcRect, endangle * 180 / M_PI, -range * 180 / M_PI);
                 }
 
-                QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (arrows);
+                QGraphicsPathItem *arrw = dynamic_cast<QGraphicsPathItem *> (dimLines);
                 arrw->setPath(path);
-                arrw->setPen(pen);
+                arrw->setPen(m_pen);
 
-                // Add the arrows
-                if(arw.size() != 2) {
+                // Add the dimLines
+                if(arrowHeads.size() != 2) {
                     prepareGeometryChange();
-                    for(std::vector<QGraphicsItem*>::iterator it = arw.begin(); it != arw.end(); ++it) {
+                    for(std::vector<QGraphicsPathItem*>::iterator it = arrowHeads.begin(); it != arrowHeads.end(); ++it) {
                         removeFromGroup(*it);
                         delete (*it);
                     }
-                    arw.clear();
+                    arrowHeads.clear();
 
                     // These items are added to the scene-graph so should be handled by the canvas
                     QGIArrow *ar1 = new QGIArrow();
                     QGIArrow *ar2 = new QGIArrow();
-                    arw.push_back(ar1);
-                    arw.push_back(ar2);
+                    arrowHeads.push_back(ar1);
+                    arrowHeads.push_back(ar2);
 
                     ar1->flip(true);
                     ar1->draw();
                     ar2->draw();
 
-                    addToGroup(arw.at(0));
-                    addToGroup(arw.at(1));
+                    addToGroup(arrowHeads.at(0));
+                    addToGroup(arrowHeads.at(1));
                 }
 
-                QGIArrow *ar1 = dynamic_cast<QGIArrow *>(arw.at(0));
-                QGIArrow *ar2 = dynamic_cast<QGIArrow *>(arw.at(1));
+                QGIArrow *ar1 = dynamic_cast<QGIArrow *>(arrowHeads.at(0));
+                QGIArrow *ar2 = dynamic_cast<QGIArrow *>(arrowHeads.at(1));
 
                 Base::Vector3d norm1 = p1-p0; //(-dir1.y, dir1.x, 0.);
                 Base::Vector3d norm2 = p2-p0; //(-dir2.y, dir2.x, 0.);
@@ -1263,11 +1261,44 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
     return QGIView::itemChange(change, value);
 }
 
-void QGIViewDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
+void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
-    QGIView::paint(painter, &myOption, widget);
+
+    QPaintDevice* hw = painter->device();
+    QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
+    double saveWidth = m_pen.widthF();
+    double saveClWidth = m_clPen.widthF();
+    if (svg) {
+        setSvgPens();
+    } else {
+        setPens();
+    }
+    QGIView::paint (painter, &myOption, widget);
+    m_pen.setWidthF(saveWidth);
+    m_clPen.setWidthF(saveClWidth);
 }
+
+void QGIViewDimension::setSvgPens(void)
+{
+    double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
+    m_pen.setWidthF(m_pen.widthF()/svgLineFactor);
+    dimLines->setPen(m_pen);
+    for (auto& a:arrowHeads) {
+        a->setPen(m_pen);
+    }
+    m_clPen.setWidthF(m_clPen.widthF()/svgLineFactor);
+    centerMark->setPen(m_clPen);
+}
+
+void QGIViewDimension::setPens(void)
+{
+    dimLines->setPen(m_pen);
+    for (auto& a:arrowHeads) {
+        a->setPen(m_pen);
+    }
+    centerMark->setPen(m_clPen);
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
