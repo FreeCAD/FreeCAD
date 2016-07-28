@@ -27,11 +27,11 @@
 #include <QPainter>
 
 #include "QGIView.h"
-#include "QGCustomRect.h"
-#include "QGCustomClip.h"
 
 namespace TechDrawGui
 {
+class QGCustomRect;
+class QGCustomClip;
 
 class TechDrawGuiExport QGIViewClip : public QGIView
 {
@@ -52,8 +52,8 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
-    QGCustomRect m_frame;
-    QGCustomClip m_cliparea;
+    QGCustomRect* m_frame;
+    QGCustomClip* m_cliparea;
 
 };
 

@@ -53,7 +53,7 @@ class TechDrawGuiExport QGVPage : public QGraphicsView
 public:
     enum RendererType { Native, OpenGL, Image };
 
-    QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent = 0);
+    QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent = 0);
     ~QGVPage();
 
     void setRenderer(RendererType type = Native);
