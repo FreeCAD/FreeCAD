@@ -196,7 +196,7 @@
            <string>Only subtypes of this element will be imported. Keep value as &quot;IfcProduct&quot; to import all building elements.</string>
           </property>
           <property name="text">
-           <string>IfcProduct</string>
+           <string notr="true">IfcProduct</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcRootElement</cstring>
