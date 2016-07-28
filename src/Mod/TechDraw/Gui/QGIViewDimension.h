@@ -26,6 +26,7 @@
 #include <QObject>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
+#include <QGraphicsPathItem>
 #include "QGIView.h"
 #include "QGCustomText.h"
 
@@ -39,13 +40,14 @@ class BaseGeom;
 
 namespace TechDrawGui
 {
+class QGIArrow;
 
 class QGIDatumLabel : public QGCustomText
 {
 Q_OBJECT
 
 public:
-    explicit QGIDatumLabel(int ref = -1, QGraphicsScene *scene = 0 );
+    explicit QGIDatumLabel();
     ~QGIDatumLabel() {}
 
     enum {Type = QGraphicsItem::UserType + 107};
@@ -70,15 +72,10 @@ protected:
     // Selection detection
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    int reference;
     double posX;
     double posY;
 
 private:
-    //QPen m_pen;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
 };
 
 class TechDrawGuiExport QGIViewDimension : public QObject, public QGIView
@@ -114,10 +111,11 @@ protected:
 protected:
     bool hasHover;
     QGIDatumLabel* datumLabel;                                         //dimension text
-    QGraphicsPathItem *dimLines;                                       //dimension lines + extension lines
+    QGraphicsPathItem* dimLines;                                       //dimension lines + extension lines
     QGraphicsPathItem* centerMark;
-    std::vector<QGraphicsPathItem *> arrowHeads;
-    QPen m_pen;
+    QGIArrow* aHead1;
+    QGIArrow* aHead2;
+    //QPen m_pen;
     QPen m_clPen;
 };
 

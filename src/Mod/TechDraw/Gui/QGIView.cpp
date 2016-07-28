@@ -48,7 +48,11 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
+#include "QGCustomBorder.h"
+#include "QGCustomLabel.h"
 #include "QGIView.h"
+#include "QGCustomBorder.h"
+#include "QGCustomLabel.h"
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
 
@@ -79,8 +83,10 @@ QGIView::QGIView()
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
 
-    addToGroup(&m_label);
-    addToGroup(&m_border);
+    m_label = new QGCustomLabel();
+    addToGroup(m_label);
+    m_border = new QGCustomBorder();
+    addToGroup(m_border);
 
     isVisible(true);
 }
@@ -291,27 +297,27 @@ void QGIView::draw()
 void QGIView::drawBorder()
 {
     if (!borderVisible) {
-         m_label.hide();
-         m_border.hide();
+         m_label->hide();
+         m_border->hide();
         return;
     }
 
     //double margin = 2.0;
-    m_label.hide();
-    m_border.hide();
+    m_label->hide();
+    m_border->hide();
 
-    m_label.setDefaultTextColor(m_colCurrent);
+    m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_label.setFont(m_font);
+    m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
-    m_label.setPlainText(labelStr);
-    QRectF labelArea = m_label.boundingRect();
-    double labelWidth = m_label.boundingRect().width();
-    double labelHeight = m_label.boundingRect().height();
+    m_label->setPlainText(labelStr);
+    QRectF labelArea = m_label->boundingRect();
+    double labelWidth = m_label->boundingRect().width();
+    double labelHeight = m_label->boundingRect().height();
 
-    m_border.hide();
+    m_border->hide();
     m_decorPen.setColor(m_colCurrent);
-    m_border.setPen(m_decorPen);
+    m_border->setPen(m_decorPen);
 
     QRectF displayArea = customChildrenBoundingRect();
     double displayWidth = displayArea.width();
@@ -324,19 +330,19 @@ void QGIView::drawBorder()
     double frameHeight = labelHeight + displayHeight;
     QPointF displayCenter = displayArea.center();
 
-    m_label.setX(displayCenter.x() - labelArea.width()/2.);
-    m_label.setY(displayArea.bottom());
+    m_label->setX(displayCenter.x() - labelArea.width()/2.);
+    m_label->setY(displayArea.bottom());
 
     QRectF frameArea = QRectF(displayCenter.x() - frameWidth/2.,
                               displayArea.top(),
                               frameWidth,
                               frameHeight);
     prepareGeometryChange();
-    m_border.setRect(frameArea);
-    m_border.setPos(0.,0.);
+    m_border->setRect(frameArea);
+    m_border->setPos(0.,0.);
 
-    m_label.show();
-    m_border.show();
+    m_label->show();
+    m_border->show();
 }
 
 void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -365,7 +371,7 @@ QRectF QGIView::customChildrenBoundingRect() {
 
 QRectF QGIView::boundingRect() const
 {
-    return m_border.rect().adjusted(-2.,-2.,2.,2.);     //allow for border line width  //TODO: fiddle brect if border off?
+    return m_border->rect().adjusted(-2.,-2.,2.,2.);     //allow for border line width  //TODO: fiddle brect if border off?
 }
 
 QGIView* QGIView::getQGIVByName(std::string name)

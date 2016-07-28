@@ -80,7 +80,7 @@
 
 using namespace TechDrawGui;
 
-QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
+QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     : QGraphicsView(parent)
     , pageTemplate(0)
     , m_renderer(Native)
@@ -92,7 +92,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
     const char* name = vp->getPageObject()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
 
-    setScene(&s);
+    setScene(s);
     //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
     setTransformationAnchor(AnchorUnderMouse);
