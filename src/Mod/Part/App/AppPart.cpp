@@ -221,6 +221,19 @@ PyMODINIT_FUNC initPart()
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
 
+    try{
+        //import all submodules of BOPTools, to make them easy to browse in Py console.
+        //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
+        //because the latter crashed when importAll failed with exception.
+        Base::Interpreter().runString("__import__('BOPTools').importAll()");
+
+        Py::Object bt = Base::Interpreter().runStringObject("__import__('BOPTools')");
+        module.setAttr(std::string("BOPTools"),bt);
+    } catch (Base::PyException &err){
+        Base::Console().Error("Failed to import BOPTools package:\n");
+        err.ReportException();
+    }
+
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
     Part::PropertyGeometryList  ::init();
