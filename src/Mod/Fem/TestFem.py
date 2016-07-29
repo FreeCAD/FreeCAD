@@ -42,14 +42,20 @@ test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
 
 static_base_name = 'cube_static'
 frequency_base_name = 'cube_frequency'
+thermomech_base_name = 'spine_thermomech'
 static_analysis_dir = temp_dir + '/FEM_static'
 frequency_analysis_dir = temp_dir + '/FEM_frequency'
+thermomech_analysis_dir = temp_dir + '/FEM_thermomech'
 static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
 static_expected_values = test_file_dir + "/cube_static_expected_values"
 frequency_analysis_inp_file = test_file_dir + '/' + frequency_base_name + '.inp'
 frequency_expected_values = test_file_dir + "/cube_frequency_expected_values"
+thermomech_analysis_inp_file = test_file_dir + '/' + thermomech_base_name + '.inp'
+thermomech_expected_values = test_file_dir + "/spine_thermomech_expected_values"
 mesh_points_file = test_file_dir + '/mesh_points.csv'
 mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
+spine_points_file = test_file_dir + '/spine_points.csv'
+spine_volumes_file = test_file_dir + '/spine_volumes.csv'
 
 
 def fcc_print(message):
@@ -310,6 +316,124 @@ class FemTest(unittest.TestCase):
         pass
 
 
+class TherMechFemTest(unittest.TestCase):
+
+    def setUp(self):
+        try:
+            FreeCAD.setActiveDocument("TherMechFemTest")
+        except:
+            FreeCAD.newDocument("TherMechFemTest")
+        finally:
+            FreeCAD.setActiveDocument("TherMechFemTest")
+        self.active_doc = FreeCAD.ActiveDocument
+        self.box = self.active_doc.addObject("Part::Box", "Box")
+        self.box.Height = 25.4
+        self.box.Width = 25.4
+        self.box.Length = 203.2
+        self.active_doc.recompute()
+
+    def create_new_analysis(self):
+        self.analysis = FemAnalysis.makeFemAnalysis('Analysis')
+        self.active_doc.recompute()
+
+    def create_new_solver(self):
+        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
+        self.active_doc.recompute()
+        
+    def create_new_mesh(self):
+        self.mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        self.mesh = Fem.FemMesh()
+        with open(spine_points_file, 'r') as points_file:
+            reader = csv.reader(points_file)
+            for p in reader:
+                self.mesh.addNode(float(p[1]), float(p[2]), float(p[3]), int(p[0]))
+
+        with open(spine_volumes_file, 'r') as volumes_file:
+            reader = csv.reader(volumes_file)
+            for v in reader:
+                self.mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
+                                    int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
+                                    int(v[0]))
+
+        self.mesh_object.FemMesh = self.mesh
+        self.active_doc.recompute()
+        
+    def create_new_material(self):
+        self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
+        mat = self.new_material_object.Material
+        mat['Name'] = "Steel-Generic"
+        mat['YoungsModulus'] = "200000 MPa"
+        mat['PoissonRatio'] = "0.30"
+        mat['Density'] = "7900 kg/m^3"
+        mat['ThermalConductivity'] = "43.27 W/m/K" #SvdW: Change to Ansys model values
+        mat['ThermalExpansionCoefficient'] = "12 um/m/K"
+        mat['SpecificHeat'] = "500 J/kg/K" #SvdW: Change to Ansys model values
+        self.new_material_object.Material = mat
+
+    def create_fixed_constraint(self):
+        self.fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        self.fixed_constraint.References = [(self.box, "Face1")]
+
+    def create_initialtemperature_constraint(self):
+        self.initialtemperature_constraint = self.active_doc.addObject("Fem::ConstraintInitialTemperature", "FemConstraintInitialTemperature")
+        self.initialtemperature_constraint.initialTemperature = 300.0
+
+    def create_temperature_constraint(self):
+        self.temperature_constraint = self.active_doc.addObject("Fem::ConstraintTemperature", "FemConstraintTemperature")
+        self.temperature_constraint.References = [(self.box, "Face1")]
+        self.temperature_constraint.Temperature = 310.93
+        
+    def create_heatflux_constraint(self):
+        self.heatflux_constraint = self.active_doc.addObject("Fem::ConstraintHeatflux", "FemConstraintHeatflux")
+        self.heatflux_constraint.References = [(self.box, "Face3"),(self.box, "Face4"),(self.box, "Face5"),(self.box, "Face6")]
+        self.heatflux_constraint.AmbientTemp = 255.3722
+        self.heatflux_constraint.FilmCoef = 5.678
+
+    def force_unix_line_ends(self, line_list):
+        new_line_list = []
+        for l in line_list:
+            if l.endswith("\r\n"):
+                l = l[:-2] + '\n'
+            new_line_list.append(l)
+        return new_line_list
+
+    def compare_inp_files(self, file_name1, file_name2):
+        file1 = open(file_name1, 'r')
+        f1 = file1.readlines()
+        file1.close()
+        lf1 = [l for l in f1 if not l.startswith('**   written ') if not l.startswith('**   file ')]
+        lf1 = self.force_unix_line_ends(lf1)
+        file2 = open(file_name2, 'r')
+        f2 = file2.readlines()
+        file2.close()
+        lf2 = [l for l in f2 if not l.startswith('**   written ') if not l.startswith('**   file ')]
+        lf2 = self.force_unix_line_ends(lf2)
+        import difflib
+        diff = difflib.unified_diff(lf1, lf2, n=0)
+        result = ''
+        for l in diff:
+            result += l
+        if result:
+            result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
+        return result
+
+    def compare_stats(self, fea, stat_file=None):
+        if stat_file:
+            sf = open(stat_file, 'r')
+            sf_content = sf.readlines()
+            sf.close()
+            sf_content = self.force_unix_line_ends(sf_content)
+        stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
+        stats = []
+        for s in stat_types:
+            stats.append("{}: {}\n".format(s, fea.get_stats(s)))
+        if sf_content != stats:
+            fcc_print("Expected stats from {}".format(stat_file))
+            fcc_print(sf_content)
+            fcc_print("Stats read from {}.frd file".format(fea.base_name))
+            fcc_print(stats)
+            return True
+        return False
 # helpers
 def open_cube_test():
     cube_file = test_file_dir + '/cube.fcstd'
