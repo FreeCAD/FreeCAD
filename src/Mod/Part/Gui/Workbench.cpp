@@ -71,6 +71,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     join->setCommand("Join");
     *join << "Part_JoinConnect" << "Part_JoinEmbed" << "Part_JoinCutout";
 
+    Gui::MenuItem* split = new Gui::MenuItem;
+    split->setCommand("Split");
+    *split << "Part_BooleanFragments" << "Part_Slice" << "Part_XOR";
+
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part");
@@ -78,7 +82,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << prim << "Part_Primitives" << "Part_Builder" << "Separator"
           << "Part_ShapeFromMesh" << "Part_MakeSolid" << "Part_ReverseShape"
           << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry"
-          << "Separator" << bop << join << "Separator"
+          << "Separator" << bop << join << split << "Separator"
           << "Part_CrossSections" << "Part_Compound" << "Part_MakeFace" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
           << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
@@ -123,7 +127,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
     *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common"
-            << "Part_CompJoinFeatures" << "Part_CheckGeometry" << "Part_Section"
+            << "Part_CompJoinFeatures" << "Part_CompSplitFeatures" << "Part_CheckGeometry" << "Part_Section"
             << "Part_CrossSections";
 	     
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);

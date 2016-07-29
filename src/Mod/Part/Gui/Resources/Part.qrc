@@ -5,6 +5,7 @@
         <file>icons/PartFeatureImport.xpm</file>
         <file>icons/Part_Attachment.svg</file>
         <file>icons/Part_Booleans.svg</file>
+        <file>icons/Part_BooleanFragments.svg</file>
         <file>icons/Part_Box.svg</file>
         <file>icons/Part_Chamfer.svg</file>
         <file>icons/Part_Common.svg</file>
@@ -28,10 +29,12 @@
         <file>icons/Part_CrossSections.svg</file>
         <file>icons/Part_Shapebuilder.png</file>
         <file>icons/Part_ShapeInfo.svg</file>
+        <file>icons/Part_Slice.svg</file>
         <file>icons/Part_Sphere.svg</file>
         <file>icons/Part_Sweep.svg</file>
         <file>icons/Part_Thickness.svg</file>
         <file>icons/Part_Torus.svg</file>
+        <file>icons/Part_XOR.svg</file>
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
         <file>icons/Part_CheckGeometry.svg</file>
