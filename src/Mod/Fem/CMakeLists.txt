@@ -106,6 +106,10 @@ INSTALL(
         test_files/ccx/cube.fcstd
 		test_files/ccx/spine_points.csv
         test_files/ccx/spine_volumes.csv
+		test_files/ccx/spine_thermomech.inp
+		test_files/ccx/spine_thermomech.dat
+		test_files/ccx/spine_thermomech.frd
+		test_files/ccx/spine_thermomech_expected_values
 		test_files/ccx/spine_thermomech.fcstd
 
     DESTINATION
