@@ -434,6 +434,91 @@ class TherMechFemTest(unittest.TestCase):
             fcc_print(stats)
             return True
         return False
+
+    def test_new_analysis(self):
+        fcc_print('--------------- Start of FEM tests ---------------')
+        fcc_print('Checking FEM new analysis...')
+        self.create_new_analysis()
+        self.assertTrue(self.analysis, "FemTest of new analysis failed")
+        
+        fcc_print('Checking FEM new solver...')
+        self.create_new_solver()
+        self.assertTrue(self.solver_object, "FemTest of new solver failed")
+        self.analysis.Member = self.analysis.Member + [self.solver_object]
+        
+        fcc_print('Checking FEM new mesh...')
+        self.create_new_mesh()
+        self.assertTrue(self.mesh, "FemTest of new mesh failed")
+        self.analysis.Member = self.analysis.Member + [self.mesh_object]
+        
+        fcc_print('Checking FEM new material...')
+        self.create_new_material()
+        self.assertTrue(self.new_material_object, "FemTest of new material failed")
+        self.analysis.Member = self.analysis.Member + [self.new_material_object]
+        
+        fcc_print('Checking FEM new fixed constraint...')
+        self.create_fixed_constraint()
+        self.assertTrue(self.fixed_constraint, "FemTest of new fixed constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.fixed_constraint]
+    
+        fcc_print('Checking FEM new initial temperature constraint...')
+        self.create_initialtemperature_constraint()
+        self.assertTrue(self.initialtemperature_constraint, "FemTest of new initial temperature constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.initialtemperature_constraint]
+        
+        fcc_print('Checking FEM new temperature constraint...')
+        self.create_temperature_constraint()
+        self.assertTrue(self.temperature_constraint, "FemTest of new temperature constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.temperature_constraint]
+        
+        fcc_print('Checking FEM new heatflux constraint...')
+        self.create_heatflux_constraint()
+        self.assertTrue(self.heatflux_constraint, "FemTest of new heatflux constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.heatflux_constraint]
+        
+        fea = FemToolsCcx.FemToolsCcx(self.analysis, test_mode=True)
+        fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
+        fea.setup_working_dir(thermomech_analysis_dir)
+        self.assertTrue(True if fea.working_dir == thermomech_analysis_dir else False,
+                        "Setting working directory {} failed".format(thermomech_analysis_dir))
+
+        fcc_print('Setting analysis type to \'thermomech\"')
+        fea.set_analysis_type("thermomech")
+        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting anlysis type to \'thermomech\' failed")
+
+        fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
+        error = fea.check_prerequisites()
+        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
+
+        fcc_print('Checking FEM inp file write...')
+
+        fcc_print('Writing {}/{}.inp for thermomech analysis'.format(thermomech_analysis_dir, mesh_name))
+        error = fea.write_inp_file()
+        self.assertFalse(error, "Writing failed")
+
+        fcc_print('Comparing {} to {}/{}.inp'.format(thermomech_analysis_inp_file, thermomech_analysis_dir, mesh_name))
+        ret = self.compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + "/" + mesh_name + '.inp')
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+
+        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
+        fea.setup_working_dir(test_file_dir)
+        self.assertTrue(True if fea.working_dir == test_file_dir else False,
+                        "Setting working directory {} failed".format(test_file_dir))
+
+        fcc_print('Setting base name to read test {}.frd file...'.format('spine_thermomech'))
+        fea.set_base_name(thermomech_base_name)
+        self.assertTrue(True if fea.base_name == thermomech_base_name else False,
+                        "Setting base name to {} failed".format(thermomech_base_name))
+
+        fcc_print('Setting inp file name to read test {}.frd file...'.format('spine_thermomech'))
+        fea.set_inp_file_name()
+        self.assertTrue(True if fea.inp_file_name == thermomech_analysis_inp_file else False,
+                        "Setting inp file name to {} failed".format(thermomech_analysis_inp_file))
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TherMechFemTest")
+        pass
+
 # helpers
 def open_cube_test():
     cube_file = test_file_dir + '/cube.fcstd'
