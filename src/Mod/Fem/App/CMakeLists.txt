@@ -134,7 +134,7 @@ SET(FemScripts_SRCS
 
 SET(FemTests_SRCS
     test_files/ccx/mesh_points.csv
-    test_files/ccx/mesh_volumes.csv
+    test_files/ccx/mesh_volumes.csv	
     test_files/ccx/cube_frequency.inp
     test_files/ccx/cube_frequency.dat
     test_files/ccx/cube_frequency.frd
@@ -144,6 +144,8 @@ SET(FemTests_SRCS
     test_files/ccx/cube_static.frd
     test_files/ccx/cube_static_expected_values
     test_files/ccx/cube.fcstd
+	test_files/ccx/spine_points.csv
+    test_files/ccx/spine_volumes.csv
 	test_files/ccx/spine_thermomech.fcstd
 )
 
