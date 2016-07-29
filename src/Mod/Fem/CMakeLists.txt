@@ -104,6 +104,8 @@ INSTALL(
         test_files/ccx/cube_static.frd
         test_files/ccx/cube_static_expected_values
         test_files/ccx/cube.fcstd
+		test_files/ccx/spine_thermomech.fcstd
+
     DESTINATION
         Mod/Fem/test_files/ccx
 )
