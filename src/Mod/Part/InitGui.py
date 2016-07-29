@@ -43,9 +43,9 @@ class PartWorkbench ( Workbench ):
         import PartGui
         import Part
         try:
-            import JoinFeatures
-        except ImportError:
-            print "JoinFeatures module cannot be loaded"
+            Part.BOPTools.addCommands()
+        except Exception as err:
+            FreeCAD.Console.PrintError("Features from BOPTools package cannot be loaded. {err}\n".format(err= err.message))        
 
     def GetClassName(self):
         return "PartGui::Workbench"
