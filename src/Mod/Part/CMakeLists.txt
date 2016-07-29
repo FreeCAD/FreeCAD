@@ -26,3 +26,17 @@ INSTALL(
     DESTINATION
         Mod/Part/AttachmentEditor
        )
+
+INSTALL(
+    FILES
+        BOPTools/__init__.py
+        BOPTools/GeneralFuseResult.py
+        BOPTools/JoinAPI.py
+        BOPTools/JoinFeatures.py
+        BOPTools/ShapeMerge.py
+        BOPTools/SplitAPI.py
+        BOPTools/SplitFeatures.py
+        BOPTools/Utils.py
+    DESTINATION
+        Mod/Part/BOPTools
+       )
