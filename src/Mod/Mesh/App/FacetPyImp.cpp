@@ -25,8 +25,8 @@
 
 #include "Mesh.h"
 #include "Facet.h"
-#include "FacetPy.h"
-#include "FacetPy.cpp"
+#include <Mod/Mesh/App/FacetPy.h>
+#include <Mod/Mesh/App/FacetPy.cpp>
 
 #include <Base/VectorPy.h>
 
@@ -168,6 +168,17 @@ Py::Tuple FacetPy::getNeighbourIndices(void) const
         idxTuple.setItem(i, Py::Long(face->NIndex[i]));
     }
     return idxTuple;
+}
+
+Py::Float FacetPy::getArea(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound())
+      { return Py::Float(0.0); }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::Float(tria.Area());
 }
 
 PyObject *FacetPy::getCustomAttributes(const char* attr) const

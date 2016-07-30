@@ -280,7 +280,8 @@ public:
   /**
    * Construction.
    */
-  MeshEvalDegeneratedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  MeshEvalDegeneratedFacets (const MeshKernel &rclM, float fEps)
+      : MeshEvaluation(rclM), fEpsilon(fEps) {}
   /** 
    * Destruction.
    */
@@ -297,6 +298,9 @@ public:
    * Returns the indices of all corrupt facets.
    */
   std::vector<unsigned long> GetIndices() const;
+
+private:
+  float fEpsilon;
 };
 
 /**
@@ -310,7 +314,8 @@ public:
   /**
    * Construction.
    */
-  MeshFixDegeneratedFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  MeshFixDegeneratedFacets (MeshKernel &rclM, float fEps)
+      : MeshValidation(rclM), fEpsilon(fEps) { }
   /** 
    * Destruction.
    */
@@ -325,6 +330,8 @@ public:
    */
   unsigned long RemoveEdgeTooSmall (float fMinEdgeLength = MeshDefinitions::_fMinPointDistance,
                                     float fMinEdgeAngle  = MeshDefinitions::_fMinEdgeAngle);
+private:
+  float fEpsilon;
 };
 
 /**
@@ -367,7 +374,8 @@ public:
   /**
    * Construction.
    */
-  MeshFixDeformedFacets (MeshKernel &rclM, float fAngle) : MeshValidation( rclM ), fMaxAngle(fAngle) { }
+  MeshFixDeformedFacets (MeshKernel &rclM, float fAngle, float fEps)
+      : MeshValidation(rclM), fMaxAngle(fAngle), fEpsilon(fEps) { }
   /** 
    * Destruction.
    */
@@ -379,6 +387,7 @@ public:
 
 private:
   float fMaxAngle;
+  float fEpsilon;
 };
 
 /**

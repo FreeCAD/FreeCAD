@@ -26,12 +26,12 @@
 #include <Base/Handle.h>
 
 #include "Core/Evaluation.h"
-#include "MeshPy.h"
 #include "MeshFeature.h"
 
 // inclusion of the generated files (generated out of MeshFeaturePy.xml)
-#include "MeshFeaturePy.h"
-#include "MeshFeaturePy.cpp"
+#include <Mod/Mesh/App/MeshPy.h>
+#include <Mod/Mesh/App/MeshFeaturePy.h>
+#include <Mod/Mesh/App/MeshFeaturePy.cpp>
 
 using namespace Mesh;
 
@@ -94,7 +94,18 @@ PyObject*  MeshFeaturePy::removeNonManifolds(PyObject *args)
     MeshObject* kernel = obj->Mesh.startEditing();
     kernel->removeNonManifolds();
     obj->Mesh.finishEditing();
-    Py_Return
+    Py_Return;
+}
+
+PyObject*  MeshFeaturePy::removeNonManifoldPoints(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Mesh::Feature* obj = getFeaturePtr();
+    MeshObject* kernel = obj->Mesh.startEditing();
+    kernel->removeNonManifoldPoints();
+    obj->Mesh.finishEditing();
+    Py_Return;
 }
 
 PyObject*  MeshFeaturePy::fixIndices(PyObject *args)
@@ -114,13 +125,14 @@ PyObject*  MeshFeaturePy::fixIndices(PyObject *args)
 
 PyObject*  MeshFeaturePy::fixDegenerations(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
+    if (!PyArg_ParseTuple(args, "|f", &fEpsilon))
         return NULL;
 
     PY_TRY {
         Mesh::Feature* obj = getFeaturePtr();
         MeshObject* kernel = obj->Mesh.startEditing();
-        kernel->validateDegenerations();
+        kernel->validateDegenerations(fEpsilon);
         obj->Mesh.finishEditing();
     } PY_CATCH;
 

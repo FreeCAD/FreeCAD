@@ -905,6 +905,14 @@ PyObject*  MeshPy::removeNonManifolds(PyObject *args)
     Py_Return
 }
 
+PyObject*  MeshPy::removeNonManifoldPoints(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    getMeshObjectPtr()->removeNonManifoldPoints();
+    Py_Return
+}
+
 PyObject*  MeshPy::hasSelfIntersections(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -1073,11 +1081,12 @@ PyObject*  MeshPy::fixIndices(PyObject *args)
 PyObject*  MeshPy::fixDeformations(PyObject *args)
 {
     float fMaxAngle;
-    if (!PyArg_ParseTuple(args, "f", &fMaxAngle))
+    float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
+    if (!PyArg_ParseTuple(args, "f|f", &fMaxAngle, &fEpsilon))
         return NULL;
 
     PY_TRY {
-        getMeshObjectPtr()->validateDeformations(fMaxAngle);
+        getMeshObjectPtr()->validateDeformations(fMaxAngle, fEpsilon);
     } PY_CATCH;
 
     Py_Return; 
@@ -1085,11 +1094,12 @@ PyObject*  MeshPy::fixDeformations(PyObject *args)
 
 PyObject*  MeshPy::fixDegenerations(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
+    if (!PyArg_ParseTuple(args, "|f", &fEpsilon))
         return NULL;
 
     PY_TRY {
-        getMeshObjectPtr()->validateDegenerations();
+        getMeshObjectPtr()->validateDegenerations(fEpsilon);
     } PY_CATCH;
 
     Py_Return; 

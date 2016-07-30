@@ -75,5 +75,11 @@ Get a list of intersection points with another triangle.
 			</Documentation>
 			<Parameter Name="NeighbourIndices" Type="Tuple"/>
 		</Attribute>
-	</PythonExport>
+        <Attribute Name="Area" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The area of the facet</UserDocu>
+            </Documentation>
+            <Parameter Name="Area" Type="Float"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>
