@@ -156,6 +156,7 @@ public:
     int getFeedbackSize(void) const;
 
     void setRenderType(const RenderType type);
+    RenderType getRenderType() const;
     void renderToFramebuffer(QGLFramebufferObject*);
 
     virtual void setViewing(SbBool enable);
