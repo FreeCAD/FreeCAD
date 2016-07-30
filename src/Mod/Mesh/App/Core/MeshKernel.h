@@ -141,12 +141,24 @@ public:
     /** Returns the array of all data points. */
     const MeshPointArray& GetPoints (void) const { return _aclPointArray; }
 
+    /** Returns a modifier for the point array */
+    MeshPointModifier ModifyPoints()
+    {
+        return MeshPointModifier(_aclPointArray);
+    }
+
     /** Returns the array of all facets */
     const MeshFacetArray& GetFacets (void) const { return _aclFacetArray; }
     /** Returns an array of facets to the given indices. The indices
      * must not be out of range.
      */
     MeshFacetArray GetFacets(const std::vector<unsigned long>&) const;
+
+    /** Returns a modifier for the facet array */
+    MeshFacetModifier ModifyFacets()
+    {
+        return MeshFacetModifier(_aclFacetArray);
+    }
 
     /** Returns the array of all edges.
      *  Notice: The Edgelist will be temporary generated. Changes on the mesh
@@ -351,8 +363,12 @@ public:
      * @note This method overwrites the free usable property of each mesh point.
      */
     void DeletePoints (const std::vector<unsigned long> &raulPoints);
+    /** Removes all as INVALID marked points and facets from the structure. */
+    void RemoveInvalids ();
     /** Rebuilds the neighbour indices for all facets. */
     void RebuildNeighbours (void);
+    /** Removes unreferenced points or facets with invalid indices from the mesh. */
+    void Cleanup();
     /** Clears the whole data structure. */
     void Clear (void);
     /** Replaces the current data structure with the structure built up of the array 
@@ -385,7 +401,7 @@ public:
     inline void SetPoint (unsigned long ulPtIndex, const Base::Vector3f &rPoint);
     /** Sets the point at the given index to the new \a rPoint. */
     inline void SetPoint (unsigned long ulPtIndex, float x, float y, float z);
-    /** Smothes the mesh kernel. */
+    /** Smoothes the mesh kernel. */
     void Smooth(int iterations, float d_max);
     /**
      * CheckFacets() is invoked within this method and all found facets get deleted from the mesh structure. 
@@ -405,8 +421,6 @@ public:
 protected:
     /** Rebuilds the neighbour indices for subset of all facets from index \a index on. */
     void RebuildNeighbours (unsigned long);
-    /** Removes all as INVALID marked points and facets from the structure. */
-    void RemoveInvalids ();
     /** Checks if this point is associated to no other facet and deletes if so.
      * The point indices of the facets get adjusted.
      * \a ulIndex is the index of the point to be deleted. \a ulFacetIndex is the index
@@ -433,11 +447,6 @@ protected:
     friend class MeshFastFacetIterator;
     friend class MeshAlgorithm;
     friend class MeshTopoAlgorithm;
-    friend class MeshFixNeighbourhood;
-    friend class MeshFixDegenerations;
-    friend class MeshFixSingleFacet;
-    friend class MeshFixInvalids;
-    friend class MeshFixDegeneratedFacets;
     friend class MeshFixDuplicatePoints;
     friend class MeshBuilder;
     friend class MeshTrimming;

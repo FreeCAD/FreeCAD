@@ -43,6 +43,7 @@
 #include "Evaluation.h"
 #include "Builder.h"
 #include "Smoothing.h"
+#include "MeshIO.h"
 
 using namespace MeshCore;
 
@@ -383,6 +384,12 @@ void MeshKernel::Merge(const MeshPointArray& rPoints, const MeshFacetArray& rFac
     // scratch. Fortunately, this needs only to be done for the newly inserted
     // facets -- not for all
     RebuildNeighbours(countFacets);
+}
+
+void MeshKernel::Cleanup()
+{
+    MeshCleanup meshCleanup(_aclPointArray, _aclFacetArray);
+    meshCleanup.RemoveInvalids();
 }
 
 void MeshKernel::Clear (void)

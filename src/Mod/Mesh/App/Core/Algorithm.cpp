@@ -43,29 +43,26 @@ using Base::BoundBox2D;
 using Base::Polygon2D;
 
 
-bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base::Vector3f &rcView, const MeshFacetGrid &rclGrid ) const
+bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base::Vector3f &rcView, const MeshFacetGrid &rclGrid) const
 {
-  Base::Vector3f cDirection = rcVertex-rcView;
-  float fDistance = cDirection.Length();
-  Base::Vector3f cIntsct; unsigned long uInd;
+    Base::Vector3f cDirection = rcVertex - rcView;
+    float fDistance = cDirection.Length();
+    Base::Vector3f cIntsct; unsigned long uInd;
 
-  // search for the nearest facet to rcView in direction to rcVertex
-  if ( NearestFacetOnRay( rcView, cDirection, /*1.2f*fDistance,*/ rclGrid, cIntsct, uInd) )
-  {
-    // now check if the facet overlays the point
-    float fLen = Base::Distance( rcView, cIntsct );
-    if ( fLen < fDistance )
-    {
-      // is it the same point?
-      if ( Base::Distance(rcVertex, cIntsct) > 0.001f )
-      {
-        // ok facet overlays the vertex
-        return false;
-      }
+    // search for the nearest facet to rcView in direction to rcVertex
+    if (NearestFacetOnRay(rcView, cDirection, /*1.2f*fDistance,*/ rclGrid, cIntsct, uInd)) {
+        // now check if the facet overlays the point
+        float fLen = Base::Distance(rcView, cIntsct);
+        if (fLen < fDistance) {
+            // is it the same point?
+            if (Base::Distance(rcVertex, cIntsct) > 0.001f) {
+                // ok facet overlays the vertex
+                return false;
+            }
+        }
     }
-  }
 
-  return true; // no facet between the two points
+    return true; // no facet between the two points
 }
 
 bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes,
@@ -226,10 +223,10 @@ bool MeshAlgorithm::FirstFacetToVertex(const Base::Vector3f &rPt, float fMaxDist
         }
         else {
             // if not then check the distance to the border of the triangle
-            Base::Vector3f res = rPt;
+            Base::Vector3f res;
             float fDist;
             unsigned short uSide;
-            cFacet.ProjectPointToPlane(res);
+            cFacet.ProjectPointToPlane(rPt, res);
             cFacet.NearestEdgeToPoint(res, fDist, uSide);
             if (fDist < fEps) {
                 found = true;

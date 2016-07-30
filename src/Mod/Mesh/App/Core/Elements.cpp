@@ -349,9 +349,9 @@ bool MeshGeomFacet::Weights(const Base::Vector3f& rclP, float& w0, float& w1, fl
   return fabs(w0+w1+w2-1.0f)<0.001f;
 }
 
-void MeshGeomFacet::ProjectPointToPlane (Base::Vector3f &rclPoint) const
+void MeshGeomFacet::ProjectPointToPlane (const Base::Vector3f &rclPoint, Base::Vector3f &rclProj) const
 {
-  rclPoint.ProjectToPlane(_aclPoints[0], GetNormal());
+  rclPoint.ProjectToPlane(_aclPoints[0], GetNormal(), rclProj);
 }
 
 void MeshGeomFacet::ProjectFacetToPlane (MeshGeomFacet &rclFacet) const

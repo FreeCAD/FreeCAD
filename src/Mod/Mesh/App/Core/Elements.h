@@ -349,7 +349,7 @@ public:
   /**
    * Calculates the projection of a point onto the plane defined by the triangle.
    */
-  void ProjectPointToPlane (Base::Vector3f &rclPoint) const;
+  void ProjectPointToPlane (const Base::Vector3f &rclPoint, Base::Vector3f &rclProj) const;
   /**
    * Calculates the projection of a facet onto the plane defined by the triangle.
    */
@@ -590,6 +590,58 @@ public:
      * Decrements all point indices that are higher than \a ulIndex.
      */
     void DecrementIndices (unsigned long ulIndex);
+};
+
+/**
+ * MeshPointModifier is a helper class that allows to modify the
+ * point array of a mesh kernel but with limited access.
+ */
+class MeshExport MeshPointModifier
+{
+public:
+    MeshPointModifier(MeshPointArray& points)
+        : rPoints(points)
+    {
+    }
+
+    MeshPointModifier(const MeshPointModifier& c)
+        : rPoints(c.rPoints)
+    {
+    }
+
+private:
+    MeshPointArray& rPoints;
+};
+
+/**
+ * MeshFacetModifier is a helper class that allows to modify the
+ * facet array of a mesh kernel but with limited access.
+ */
+class MeshExport MeshFacetModifier
+{
+public:
+    MeshFacetModifier(MeshFacetArray& facets)
+        : rFacets(facets)
+    {
+    }
+
+    MeshFacetModifier(const MeshFacetModifier& c)
+        : rFacets(c.rFacets)
+    {
+    }
+
+    /**
+     * Replaces the index of the corner point of the facet at position \a pos
+     * that is equal to \a old by \a now. If the facet does not have a corner
+     * point with this index nothing happens.
+     */
+    void Transpose(unsigned long pos, unsigned long old, unsigned long now)
+    {
+        rFacets[pos].Transpose(old, now);
+    }
+
+private:
+    MeshFacetArray& rFacets;
 };
 
 inline MeshPoint::MeshPoint (const Base::Vector3f &rclPt)
