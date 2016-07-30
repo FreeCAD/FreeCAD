@@ -702,7 +702,7 @@ void ParameterCorrection::ProjectControlPointsOnPlane()
         for (unsigned k=0;k<_usVCtrlpoints;k++) {
             gp_Pnt pole = _vCtrlPntsOfSurf(j,k);
             Base::Vector3d pnt(pole.X(), pole.Y(), pole.Z());
-            pnt.ProjToPlane(base, _clW);
+            pnt.ProjectToPlane(base, _clW);
             pole.SetX(pnt.x);
             pole.SetY(pnt.y);
             pole.SetZ(pnt.z);

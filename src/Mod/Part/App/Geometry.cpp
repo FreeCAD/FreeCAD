@@ -3537,8 +3537,8 @@ bool findFilletCenter(const GeomLineSegment *lineSeg1, const GeomLineSegment *li
 
     // Just project the given reference points onto the lines, just in case they are not already lying on
     Base::Vector3d normPnt1, normPnt2;
-    normPnt1.ProjToLine(refPnt1-l1p1, l1p2-l1p1);
-    normPnt2.ProjToLine(refPnt2-l2p1, l2p2-l2p1);
+    normPnt1.ProjectToLine(refPnt1-l1p1, l1p2-l1p1);
+    normPnt2.ProjectToLine(refPnt2-l2p1, l2p2-l2p1);
     normPnt1 += refPnt1;
     normPnt2 += refPnt2;
 
@@ -3587,8 +3587,8 @@ double suggestFilletRadius(const GeomLineSegment *lineSeg1, const GeomLineSegmen
     Base::Vector3d dirBisect = (dir1.Normalize() + dir2.Normalize()).Normalize();
 
     Base::Vector3d projPnt1, projPnt2;
-    projPnt1.ProjToLine(refPnt1-corner, dir1);
-    projPnt2.ProjToLine(refPnt2-corner, dir2);
+    projPnt1.ProjectToLine(refPnt1-corner, dir1);
+    projPnt2.ProjectToLine(refPnt2-corner, dir2);
     projPnt1 += refPnt1;
     projPnt2 += refPnt2;
 
@@ -3617,8 +3617,8 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
 
     Base::Vector3d radDir1, radDir2;
-    radDir1.ProjToLine(center - corner, dir1);
-    radDir2.ProjToLine(center - corner, dir2);
+    radDir1.ProjectToLine(center - corner, dir1);
+    radDir2.ProjectToLine(center - corner, dir2);
 
     // Angle Variables
     double startAngle, endAngle, range;

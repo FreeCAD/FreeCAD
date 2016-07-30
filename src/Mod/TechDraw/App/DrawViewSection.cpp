@@ -164,7 +164,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         // Project each bounding box point onto projection plane and find larges u,v values
 
         Base::Vector3d pnt = (*it);
-        pnt.ProjToPlane(plnPnt, plnNorm);
+        pnt.ProjectToPlane(plnPnt, plnNorm);
 
         uMax = std::max(uMax, std::abs(plnPnt[0] - pnt[0]));
         vMax = std::max(vMax, std::abs(plnPnt[1] - pnt[1]));

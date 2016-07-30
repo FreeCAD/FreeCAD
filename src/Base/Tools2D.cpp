@@ -54,7 +54,7 @@ double Vector2D::GetAngle (const Vector2D &rclVect) const
     return -FLOAT_MAX; // division by zero
 }
 
-void Vector2D::ProjToLine (const Vector2D &rclPt, const Vector2D &rclLine)
+void Vector2D::ProjectToLine (const Vector2D &rclPt, const Vector2D &rclLine)
 {
   double l  = rclLine.Length();
   double t1 = (rclPt * rclLine) / l;

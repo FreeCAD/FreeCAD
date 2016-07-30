@@ -89,7 +89,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
         Base::Vector3d base = mf->Base.getValue();
         Base::Vector3d norm = mf->Normal.getValue();
         Base::Vector3d cent = bbox.GetCenter();
-        base = cent.ProjToPlane(base, norm);
+        base = cent.ProjectToPlane(base, norm);
 
         // setup the graph for editing the mirror plane
         SoTransform* trans = new SoTransform;

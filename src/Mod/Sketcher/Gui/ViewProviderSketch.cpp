@@ -1204,7 +1204,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
                 // calculate the projection of p1 onto line2
-                p2.ProjToLine(p1-l2p1, l2p2-l2p1);
+                p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
                 p2 += p1;
             } else
                 return;
@@ -3516,7 +3516,7 @@ Restart:
                                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
                                 // calculate the projection of p1 onto line2
-                                pnt2.ProjToLine(pnt1-l2p1, l2p2-l2p1);
+                                pnt2.ProjectToLine(pnt1-l2p1, l2p2-l2p1);
                                 pnt2 += pnt1;
                             } else
                                 break;

@@ -364,7 +364,7 @@ PyObject*  VectorPy::projectToLine(PyObject *args)
     VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
     VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
 
-    this_ptr->ProjToLine(*base_ptr, *line_ptr);
+    this_ptr->ProjectToLine(*base_ptr, *line_ptr);
 
     return Py::new_reference_to(this);
 }
@@ -390,7 +390,7 @@ PyObject*  VectorPy::projectToPlane(PyObject *args)
     VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
     VectorPy::PointerType line_ptr = reinterpret_cast<VectorPy::PointerType>(line_vec->_pcTwinPointer);
 
-    this_ptr->ProjToPlane(*base_ptr, *line_ptr);
+    this_ptr->ProjectToPlane(*base_ptr, *line_ptr);
 
     return Py::new_reference_to(this);
 }
