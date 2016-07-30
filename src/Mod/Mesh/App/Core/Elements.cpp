@@ -252,7 +252,7 @@ bool MeshGeomFacet::IsPointOf (const Base::Vector3f &rclPoint, float fDistance) 
   float     fLP, fLE;
 
   clNorm.Normalize();
-  clProjPt.ProjToPlane(_aclPoints[0], clNorm);
+  clProjPt.ProjectToPlane(_aclPoints[0], clNorm);
 
     
   // Kante P0 --> P1
@@ -351,7 +351,7 @@ bool MeshGeomFacet::Weights(const Base::Vector3f& rclP, float& w0, float& w1, fl
 
 void MeshGeomFacet::ProjectPointToPlane (Base::Vector3f &rclPoint) const
 {
-  rclPoint.ProjToPlane(_aclPoints[0], GetNormal());
+  rclPoint.ProjectToPlane(_aclPoints[0], GetNormal());
 }
 
 void MeshGeomFacet::ProjectFacetToPlane (MeshGeomFacet &rclFacet) const

@@ -833,7 +833,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
     for (int i = 0; i < 6; i++) {
         Vector3<_Precision> clTemp = rclPt;
         CalcPlane(i, cBase, cNormal);
-        clTemp.ProjToPlane(cBase, cNormal);
+        clTemp.ProjectToPlane(cBase, cNormal);
         _Precision fDist = (clTemp - rclPt).Length();
         if (fDist < fMinDist) {
             fMinDist = fDist;

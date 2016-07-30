@@ -759,7 +759,7 @@ public:
                 EditCurve[EditCurve.size()-1] = onSketchPos;
                 if (TransitionMode == TRANSITION_MODE_Tangent) {
                     Base::Vector2D Tangent(dirVec.x,dirVec.y);
-                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Tangent);
+                    EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Tangent);
                     if (EditCurve[1] * Tangent < 0) {
                         EditCurve[1] = EditCurve[2];
                         suppressTransition = true;
@@ -770,7 +770,7 @@ public:
                 else if (TransitionMode == TRANSITION_MODE_Perpendicular_L ||
                          TransitionMode == TRANSITION_MODE_Perpendicular_R) {
                     Base::Vector2D Perpendicular(-dirVec.y,dirVec.x);
-                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Perpendicular);
+                    EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Perpendicular);
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
                 }
 
@@ -2452,7 +2452,7 @@ private:
                 Base::Vector2D cursor = Base::Vector2D(onSketchPos - f); // vector from f to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2D w_1 = cursor;
-                w_1.ProjToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
+                w_1.ProjectToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
                 Base::Vector2D w_2 = (cursor - w_1);
                 b = w_2.Length();
 
@@ -2512,7 +2512,7 @@ private:
                 Base::Vector2D cursor = Base::Vector2D(onSketchPos - centroid); // vector from centroid to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2D w_1 = cursor;
-                w_1.ProjToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
+                w_1.ProjectToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
                 Base::Vector2D w_2 = (cursor - w_1);
                 if (w_2.Length() > fixedAxisLength) {
                     // b is fixed, we are seeking a

@@ -303,7 +303,7 @@ bool MeshProjection::isPointInsideDistance (const Base::Vector3f& p1,
     // project point on line
     Base::Vector3f proj, dir(p2 - p1);
     Base::Vector3f move(pt - p1);
-    proj.ProjToLine(move, dir);
+    proj.ProjectToLine(move, dir);
     proj = pt + proj;
     return (((p1 - proj) * (p2 - proj)) < 0.0f);
 }

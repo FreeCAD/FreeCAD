@@ -263,7 +263,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                 continue;
 
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
-            projPnt = projPnt.ProjToLine(center - tmpPos, tmpDir);
+            projPnt = projPnt.ProjectToLine(center - tmpPos, tmpDir);
             double projDist = std::abs(projPnt.Length() - radius);
 
             // Find if nearest
@@ -311,7 +311,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                 continue;
 
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
-            projPnt = projPnt.ProjToLine(center - tmpPos, tmpDir);
+            projPnt = projPnt.ProjectToLine(center - tmpPos, tmpDir);
             double projDist = std::abs(projPnt.Length() - radius);
 
             if (projDist < tangDeviation) {

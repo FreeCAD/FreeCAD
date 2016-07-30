@@ -1190,8 +1190,8 @@ void QGIViewDimension::draw()
 
                 Base::Vector3d avg = (norm1 + norm2) / 2.;
 
-                norm1 = norm1.ProjToLine(avg, norm1);
-                norm2 = norm2.ProjToLine(avg, norm2);
+                norm1 = norm1.ProjectToLine(avg, norm1);
+                norm2 = norm2.ProjectToLine(avg, norm2);
 
                 ar1->setPos(ar1Pos.x,ar1Pos.y );
                 ar2->setPos(ar2Pos.x,ar2Pos.y );

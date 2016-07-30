@@ -962,8 +962,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                 delete arc;
                 return -1;
             }
-            dist1.ProjToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir1);
-            dist2.ProjToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir2);
+            dist1.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir1);
+            dist2.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir2);
             Part::Geometry *newgeo = dynamic_cast<Part::Geometry* >(arc);
             filletId = addGeometry(newgeo);
             if (filletId < 0) {
