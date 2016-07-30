@@ -1270,6 +1270,11 @@ void View3DInventorViewer::setRenderType(const RenderType type)
     }
 }
 
+View3DInventorViewer::RenderType View3DInventorViewer::getRenderType() const
+{
+    return this->renderType;
+}
+
 void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
 {
     static_cast<QGLWidget*>(this->viewport())->makeCurrent();
