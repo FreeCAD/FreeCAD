@@ -38,6 +38,7 @@
 #include "Algorithm.h"
 #include "Evaluation.h"
 #include "Triangulation.h"
+#include "Definitions.h"
 #include <Base/Console.h>
 
 using namespace MeshCore;
@@ -585,10 +586,10 @@ bool MeshTopoAlgorithm::IsSwapEdgeLegal(unsigned long ulFacetPos, unsigned long 
 
   // do not allow to create degenerated triangles
   MeshGeomFacet cT3(cP4, cP3, cP1);
-  if ( cT3.IsDegenerated() )
+  if ( cT3.IsDegenerated(MeshDefinitions::_fMinPointDistanceP2) )
     return false;
   MeshGeomFacet cT4(cP3, cP4, cP2);
-  if ( cT4.IsDegenerated() )
+  if ( cT4.IsDegenerated(MeshDefinitions::_fMinPointDistanceP2) )
     return false;
 
   // We must make sure that the two adjacent triangles builds a convex polygon, otherwise 

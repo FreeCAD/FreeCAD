@@ -1240,6 +1240,10 @@ void MeshObject::removeNonManifolds()
         f_fix.Fixup();
         deletedFacets(f_fix.GetDeletedFaces());
     }
+}
+
+void MeshObject::removeNonManifoldPoints()
+{
     MeshCore::MeshEvalPointManifolds p_eval(_kernel);
     if (!p_eval.Evaluate()) {
         std::vector<unsigned long> faces;
@@ -1371,19 +1375,19 @@ void MeshObject::validateIndices()
         this->_segments.clear();
 }
 
-void MeshObject::validateDeformations(float fMaxAngle)
+void MeshObject::validateDeformations(float fMaxAngle, float fEps)
 {
     unsigned long count = _kernel.CountFacets();
-    MeshCore::MeshFixDeformedFacets eval(_kernel, fMaxAngle);
+    MeshCore::MeshFixDeformedFacets eval(_kernel, fMaxAngle, fEps);
     eval.Fixup();
     if (_kernel.CountFacets() < count)
         this->_segments.clear();
 }
 
-void MeshObject::validateDegenerations()
+void MeshObject::validateDegenerations(float fEps)
 {
     unsigned long count = _kernel.CountFacets();
-    MeshCore::MeshFixDegeneratedFacets eval(_kernel);
+    MeshCore::MeshFixDegeneratedFacets eval(_kernel, fEps);
     eval.Fixup();
     if (_kernel.CountFacets() < count)
         this->_segments.clear();

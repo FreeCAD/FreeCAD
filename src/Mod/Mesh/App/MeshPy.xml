@@ -220,6 +220,11 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove non-manifolds</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="removeNonManifoldPoints">
+			<Documentation>
+				<UserDocu>Remove non-manifold points</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="hasSelfIntersections" Const="true">
 			<Documentation>
 				<UserDocu>Check if the mesh intersects itself</UserDocu>

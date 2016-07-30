@@ -270,12 +270,13 @@ public:
     void flipNormals();
     void harmonizeNormals();
     void validateIndices();
-    void validateDeformations(float fMaxAngle);
-    void validateDegenerations();
+    void validateDeformations(float fMaxAngle, float fEps);
+    void validateDegenerations(float fEps);
     void removeDuplicatedPoints();
     void removeDuplicatedFacets();
     bool hasNonManifolds() const;
     void removeNonManifolds();
+    void removeNonManifoldPoints();
     bool hasSelfIntersections() const;
     void removeSelfIntersections();
     void removeSelfIntersections(const std::vector<unsigned long>&);

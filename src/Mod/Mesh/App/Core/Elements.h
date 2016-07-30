@@ -358,7 +358,7 @@ public:
    * Checks whether the triangle is degenerated. A triangle is degenerated if its area
    * is less than an epsilon.
    */
-  bool IsDegenerated() const;
+  bool IsDegenerated(float epsilon) const;
   /**
    * Checks whether the triangle is deformed. The definition of a deformed triangles is not as strong
    * as the definition of a degenerated triangle. A triangle is deformed if the maximum angle exceeds 120 deg

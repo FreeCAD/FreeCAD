@@ -388,8 +388,14 @@ void MeshGeomFacet::Enlarge (float fDist)
   _aclPoints[2] = clPNew[2];
 }
 
-bool MeshGeomFacet::IsDegenerated() const
+bool MeshGeomFacet::IsDegenerated(float epsilon) const
 {
+    // if we do a strict test then compute the area
+    if (epsilon == 0) {
+        float fArea = Area();
+        return fArea < epsilon;
+    }
+
     // The triangle has the points A,B,C where we can define the vector u and v
     // u = b-a and v = c-a. Then we define the line g: r = a+t*u and the plane
     // E: (x-c)*u=0. The intersection point of g and E is S.
@@ -409,11 +415,16 @@ bool MeshGeomFacet::IsDegenerated() const
     // BTW (u*u)*(v*v)-(u*v)*(u*v) is the same as (uxv)*(uxv).
     Base::Vector3f u = _aclPoints[1] - _aclPoints[0];
     Base::Vector3f v = _aclPoints[2] - _aclPoints[0];
-    float eps = MeshDefinitions::_fMinPointDistanceP2;
-    float uu = u*u; if (uu < eps) return true;
-    float vv = v*v; if (vv < eps) return true;
+    float eps = epsilon;
+    float uu = u*u;
+    if (uu < eps)
+        return true;
+    float vv = v*v;
+    if (vv < eps)
+        return true;
     float uv = u*v;
-    if (uu*vv-uv*uv < eps*std::max<float>(uu,vv))
+    float crosssqr = uu*vv-uv*uv;
+    if (crosssqr < eps*std::max<float>(uu,vv))
         return true;
     return false;
 }
