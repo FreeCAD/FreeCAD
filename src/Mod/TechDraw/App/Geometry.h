@@ -24,6 +24,8 @@
 #define TECHDRAW_GEOMETRY_H
 
 #include <Base/Tools2D.h>
+#include <Base/Vector3D.h>
+
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
@@ -138,7 +140,7 @@ class TechDrawExport AOC: public Circle
         Base::Vector2D endPnt;
         Base::Vector2D midPnt;
 
-        /// Angle in radian
+        /// Angle in radian  ??angle with horizontal?
         double startAngle;
 
         /// Angle in radian
@@ -147,6 +149,10 @@ class TechDrawExport AOC: public Circle
         /// Arc is drawn clockwise from startAngle to endAngle if true, counterclockwise if false
         bool cw;  // TODO: Instead of this (and similar one in AOE), why not reorder startAngle and endAngle?
         bool largeArc;
+
+        bool isOnArc(Base::Vector3d v);
+        bool intersectsArc(Base::Vector3d p1,Base::Vector3d p2);
+        double distToArc(Base::Vector3d p);
 };
 
 /// Handles degree 1 to 3 Bezier segments

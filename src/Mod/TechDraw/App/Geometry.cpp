@@ -29,6 +29,10 @@
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_HCurve.hxx>
 #include <BRepLib.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <Precision.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
@@ -43,12 +47,13 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
+#include <cmath>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
-#include <Base/Vector3D.h>
+//#include <Base/Vector3D.h>
 #include "Geometry.h"
 
 using namespace TechDrawGeometry;
@@ -231,8 +236,8 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
     gp_Vec v3(0,0,1);
     double a = v3.DotCross(v1,v2);
 
-    startAngle = f;
-    endAngle = l;
+    startAngle = fmod(f,2.0*M_PI);
+    endAngle = fmod(l,2.0*M_PI);
     cw = (a < 0) ? true: false;
     largeArc = (l-f > M_PI) ? true : false;
 
@@ -272,14 +277,72 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     gp_Vec v3(0,0,1);
     double a = v3.DotCross(v1,v2);
 
-    startAngle = f;
-    endAngle = l;
+    startAngle = fmod(f,2.0*M_PI);
+    endAngle = fmod(l,2.0*M_PI);
     cw = (a < 0) ? true: false;
     largeArc = (l-f > M_PI) ? true : false;
 
     startPnt = Base::Vector2D(s.X(), s.Y());
     endPnt = Base::Vector2D(ePt.X(), ePt.Y());
     midPnt = Base::Vector2D(m.X(), m.Y());
+}
+
+bool AOC::isOnArc(Base::Vector3d p)
+{
+    bool result = false;
+    double minDist = -1.0;
+    gp_Pnt pnt(p.x,p.y,p.z);
+    TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
+    BRepExtrema_DistShapeShape extss(occEdge, v);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            minDist = extss.Value();
+            if (minDist < Precision::Confusion()) {
+                result = true;
+            }
+        }
+    }
+    return result;
+}
+
+double AOC::distToArc(Base::Vector3d p)
+{
+    double minDist = -1.0;
+    gp_Pnt pnt(p.x,p.y,p.z);
+    TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
+    BRepExtrema_DistShapeShape extss(occEdge, v);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            minDist = extss.Value();
+        }
+    }
+    return minDist;
+}
+
+
+bool AOC::intersectsArc(Base::Vector3d p1,Base::Vector3d p2)
+{
+    bool result = false;
+    double minDist = -1.0;
+    gp_Pnt pnt1(p1.x,p1.y,p1.z);
+    TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(pnt1);
+    gp_Pnt pnt2(p2.x,p2.y,p2.z);
+    TopoDS_Vertex v2 = BRepBuilderAPI_MakeVertex(pnt2);
+    BRepBuilderAPI_MakeEdge mkEdge(v1,v2);
+    TopoDS_Edge line = mkEdge.Edge();
+    BRepExtrema_DistShapeShape extss(occEdge, line);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            minDist = extss.Value();
+            if (minDist < Precision::Confusion()) {
+                result = true;
+            }
+        }
+    }
+    return result;
 }
 
 
