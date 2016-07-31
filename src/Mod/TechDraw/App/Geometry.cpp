@@ -38,6 +38,7 @@
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Vec.hxx>
+#include <gp_Ax2.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -255,6 +256,8 @@ Circle::Circle(const TopoDS_Edge &e)
 
     gp_Circ circ = c.Circle();
     const gp_Pnt& p = circ.Location();
+    const gp_Ax2& p1 = circ.Position();
+    const gp_Pnt& l = p1.Location();
 
     radius = circ.Radius();
     center = Base::Vector2D(p.X(), p.Y());
@@ -436,6 +439,15 @@ bool BSpline::isLine()
 
 
 //**** Vertex
+Vertex::Vertex(double x, double y)
+{
+    pnt = Base::Vector2D(x, y);
+    extractType = ExtractionType::Plain;       //obs?
+    visible = false;
+    ref3D = -1;                        //obs. never used.
+    isCenter = false;
+}
+
 bool Vertex::isEqual(Vertex* v, double tol)
 {
     bool result = false;

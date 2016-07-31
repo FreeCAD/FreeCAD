@@ -89,8 +89,8 @@ PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
 
 DrawViewPart::DrawViewPart(void) : geometryObject(0)
 {
-    static const char *group = "Shape view";
-    static const char *vgroup = "Drawing view";
+    static const char *group = "Projection";
+    static const char *fgroup = "Format";
 
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection normal direction");
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
@@ -98,11 +98,13 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Smooth lines on/off");
     ADD_PROPERTY_TYPE(ShowSeamLines ,(false),group,App::Prop_None,"Seam lines on/off");
     //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
-    ADD_PROPERTY_TYPE(LineWidth,(0.7f),vgroup,App::Prop_None,"The thickness of visible lines");
-    ADD_PROPERTY_TYPE(HiddenWidth,(0.15),vgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
-    ADD_PROPERTY_TYPE(Tolerance,(0.05f),vgroup,App::Prop_None,"The tessellation tolerance");        //tessellation?
+    ADD_PROPERTY_TYPE(Tolerance,(0.05f),group,App::Prop_None,"Internal tolerance");
     Tolerance.setConstraints(&floatRange);
     ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Direction to use as X-axis in projection");
+    ADD_PROPERTY_TYPE(LineWidth,(0.7f),fgroup,App::Prop_None,"The thickness of visible lines");
+    ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
+    ADD_PROPERTY_TYPE(ShowCenters ,(true),fgroup,App::Prop_None,"Center marks on/off");
+    ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
 
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
@@ -158,9 +160,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
             view->touch();
         }
     }
-
-    touch();
-
     return DrawView::execute();
 }
 
@@ -192,7 +191,9 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &ShowSmoothLines ||
             prop == &ShowSeamLines   ||
             prop == &LineWidth       ||
-            prop == &HiddenWidth     ) {
+            prop == &HiddenWidth     ||
+            prop == &ShowCenters     ||
+            prop == &CenterScale ) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;

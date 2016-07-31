@@ -70,6 +70,8 @@ public:
     App::PropertyBool   ShowSeamLines;
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
+    App::PropertyBool   ShowCenters;
+    App::PropertyFloat  CenterScale;
     App::PropertyFloatConstraint  Tolerance;
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
