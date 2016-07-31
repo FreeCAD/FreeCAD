@@ -27,6 +27,7 @@
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsPathItem>
+#include <Base/Vector3D.h>
 #include "QGIView.h"
 #include "QGCustomText.h"
 
@@ -36,6 +37,7 @@ class DrawViewDimension;
 
 namespace TechDrawGeometry {
 class BaseGeom;
+class AOC;
 }
 
 namespace TechDrawGui

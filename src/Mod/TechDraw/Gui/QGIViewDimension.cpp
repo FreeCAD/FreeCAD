@@ -768,6 +768,8 @@ void QGIViewDimension::draw()
 
         Base::Vector3d pointOnCurve,curveCenter;
         double radius;
+        TechDrawGeometry::AOC* geomArc;
+        bool isArc = false;
         if(dim->References2D.getValues().size() == 1 &&
            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
             int idx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
@@ -783,7 +785,9 @@ void QGIViewDimension::draw()
                 curveCenter = Base::Vector3d(circ->center.fX,circ->center.fY,0.0);
                 pointOnCurve = Base::Vector3d(curveCenter.x + radius, curveCenter.y,0.0);
             } else if (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) {
+                isArc = true;
                 TechDrawGeometry::AOC *circ = static_cast<TechDrawGeometry::AOC *>(geom);
+                geomArc = circ;
                 radius = circ->radius;
                 curveCenter = Base::Vector3d(circ->center.fX,circ->center.fY,0.0);
                 pointOnCurve = Base::Vector3d(circ->midPnt.fX, circ->midPnt.fY,0.0);
@@ -837,6 +841,42 @@ void QGIViewDimension::draw()
             pointOnCurve = curveCenter - dirDimLine * radius;
             kinkPoint = dLineStart;                              //no kink
         }
+
+        //handle partial arc weird cases
+        if (isArc) {
+            Base::Vector3d midPt(geomArc->midPnt.fX, geomArc->midPnt.fY,0.0);
+            Base::Vector3d startPt(geomArc->startPnt.fX, geomArc->startPnt.fY,0.0);
+            Base::Vector3d endPt(geomArc->endPnt.fX, geomArc->endPnt.fY,0.0);
+            if (outerPlacement &&
+                !geomArc->intersectsArc(curveCenter,kinkPoint) ) {
+                pointOnCurve = midPt;
+            } else if (!outerPlacement) {
+                if ((midPt - lblCenter).Length() > (midPt - curveCenter).Length()) {     //label is farther than center
+                    dirDimLine = dirDimLine * -1;
+                }
+                dLineStart = curveCenter + dirDimLine * margin;
+                pointOnCurve = curveCenter + dirDimLine * radius;
+                kinkPoint = dLineStart;
+                if (!geomArc->intersectsArc(dLineStart,pointOnCurve)) {   //keep pathological case within arc
+                    if ((pointOnCurve - endPt).Length() < (pointOnCurve - startPt).Length()) {
+                        if (!geomArc->cw ) {
+                            pointOnCurve = endPt;
+                        } else {
+                            pointOnCurve = startPt;
+                        }
+                    } else {
+                        if (!geomArc->cw) {
+                            pointOnCurve = startPt;
+                        } else {
+                            pointOnCurve = endPt;
+                        }
+                    }
+                    dLineStart = curveCenter + (pointOnCurve - curveCenter).Normalize() * margin;
+                    kinkPoint = dLineStart;
+                }
+            }
+        }
+
         QPainterPath dLinePath;                                                 //radius dimension line path
         dLinePath.moveTo(dLineStart.x, dLineStart.y);
         dLinePath.lineTo(kinkPoint.x, kinkPoint.y);
@@ -862,19 +902,16 @@ void QGIViewDimension::draw()
         }
         centerMark->setPath(clpath);
 
-        aHead1->flip(true);
         aHead1->draw();
-        aHead2->draw();
 
         Base::Vector3d ar1Pos = pointOnCurve;
-        float arAngle = atan2(dirDimLine.y, dirDimLine.x) * 180 / M_PI;
+        Base::Vector3d dirArrowLine = (pointOnCurve - kinkPoint).Normalize();
+        float arAngle = atan2(dirArrowLine.y, dirArrowLine.x) * 180 / M_PI;
 
         aHead1->setPos(ar1Pos.x, ar1Pos.y);
         aHead1->setRotation(arAngle);
         aHead1->setHighlighted(isSelected() || hasHover);
         aHead1->show();
-        aHead2->setRotation(arAngle);
-        aHead2->setHighlighted(isSelected() || hasHover);
         aHead2->hide();
     } else if(strcmp(dimType, "Angle") == 0) {
         // Only use two straight line edeges for angle
@@ -1171,6 +1208,5 @@ void QGIViewDimension::setPens(void)
     aHead2->setPen(m_pen);
     centerMark->setPen(m_clPen);
 }
-
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
