@@ -407,8 +407,13 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
     // (u*u)*(v*v)-(u*v)*(u*v) < max(eps*(u*u),eps*(v*v)).
     //
     // BTW (u*u)*(v*v)-(u*v)*(u*v) is the same as (uxv)*(uxv).
-    Base::Vector3f u = _aclPoints[1] - _aclPoints[0];
-    Base::Vector3f v = _aclPoints[2] - _aclPoints[0];
+    Base::Vector3d p1(this->_aclPoints[0].x,this->_aclPoints[0].y,this->_aclPoints[0].z);
+    Base::Vector3d p2(this->_aclPoints[1].x,this->_aclPoints[1].y,this->_aclPoints[1].z);
+    Base::Vector3d p3(this->_aclPoints[2].x,this->_aclPoints[2].y,this->_aclPoints[2].z);
+
+    Base::Vector3d u = p2 - p1;
+    Base::Vector3d v = p3 - p1;
+
     double eps = epsilon;
     double uu = u*u;
     if (uu <= eps)
