@@ -221,16 +221,20 @@ class TechDrawExport Face
 class TechDrawExport Vertex
 {
     public:
-        Vertex(double x, double y) { pnt = Base::Vector2D(x, y); }
-        Vertex(Base::Vector2D v) { pnt = v; }
+        Vertex(double x, double y);
+        Vertex(Base::Vector2D v) : Vertex(v.fX,v.fY) {}
         ~Vertex() = default;
 
         Base::Vector2D pnt;
-        ExtractionType extractType;
+        ExtractionType extractType;       //obs?
         bool visible;
-        int ref3D;
+        int ref3D;                        //obs. never used.
+        bool isCenter;
         TopoDS_Vertex occVertex;
         bool isEqual(Vertex* v, double tol);
+        Base::Vector3d getAs3D(void) {return Base::Vector3d(pnt.fX,pnt.fY,0.0);}
+        double x() {return pnt.fX;}
+        double y() {return pnt.fY;}
 };
 
 /// Encapsulates some useful static methods
