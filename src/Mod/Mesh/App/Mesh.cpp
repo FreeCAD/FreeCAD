@@ -35,6 +35,7 @@
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 #include <Base/ViewProj.h>
 
 #include "Core/Builder.h"
@@ -1085,9 +1086,11 @@ void MeshObject::refine()
     unsigned long cnt = _kernel.CountFacets();
     MeshCore::MeshFacetIterator cF(_kernel);
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
+
+    // x < 30 deg => cos(x) > sqrt(3)/2 or x > 120 deg => cos(x) < -0.5
     for (unsigned long i=0; i<cnt; i++) {
         cF.Set(i);
-        if (!cF->IsDeformed())
+        if (!cF->IsDeformed(0.86f, -0.5f))
             topalg.InsertVertexAndSwapEdge(i, cF->GetGravityPoint(), 0.1f);
     }
 
@@ -1378,7 +1381,10 @@ void MeshObject::validateIndices()
 void MeshObject::validateDeformations(float fMaxAngle, float fEps)
 {
     unsigned long count = _kernel.CountFacets();
-    MeshCore::MeshFixDeformedFacets eval(_kernel, fMaxAngle, fEps);
+    MeshCore::MeshFixDeformedFacets eval(_kernel,
+                                         Base::toRadians(30.0f),
+                                         Base::toRadians(120.0f),
+                                         fMaxAngle, fEps);
     eval.Fixup();
     if (_kernel.CountFacets() < count)
         this->_segments.clear();

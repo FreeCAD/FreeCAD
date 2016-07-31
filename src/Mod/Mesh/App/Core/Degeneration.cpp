@@ -603,9 +603,12 @@ unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength
 
 bool MeshEvalDeformedFacets::Evaluate()
 {
+    float fCosMinAngle = cos(fMinAngle);
+    float fCosMaxAngle = cos(fMaxAngle);
+
     MeshFacetIterator it(_rclMesh);
     for (it.Init(); it.More(); it.Next()) {
-        if (it->IsDeformed())
+        if (it->IsDeformed(fCosMinAngle, fCosMaxAngle))
             return false;
     }
 
@@ -614,10 +617,13 @@ bool MeshEvalDeformedFacets::Evaluate()
 
 std::vector<unsigned long> MeshEvalDeformedFacets::GetIndices() const
 {
+    float fCosMinAngle = cos(fMinAngle);
+    float fCosMaxAngle = cos(fMaxAngle);
+
     std::vector<unsigned long> aInds;
     MeshFacetIterator it(_rclMesh);
     for (it.Init(); it.More(); it.Next()) {
-        if (it->IsDeformed())
+        if (it->IsDeformed(fCosMinAngle, fCosMaxAngle))
             aInds.push_back(it.Position());
     }
 
@@ -626,6 +632,9 @@ std::vector<unsigned long> MeshEvalDeformedFacets::GetIndices() const
 
 bool MeshFixDeformedFacets::Fixup()
 {
+    float fCosMinAngle = cos(fMinAngle);
+    float fCosMaxAngle = cos(fMaxAngle);
+
     Base::Vector3f u,v;
     MeshTopoAlgorithm cTopAlg(_rclMesh);
 
@@ -650,10 +659,10 @@ bool MeshFixDeformedFacets::Fixup()
             // first check for angle > 120 deg: in this case we swap with the opposite edge
             for (int i=0; i<3; i++) {
                 float fCosAngle = fCosAngles[i];
-                if (fCosAngle < -0.5f) {
+                if (fCosAngle < fCosMaxAngle) {
                     const MeshFacet& face = it.GetReference();
                     unsigned long uNeighbour = face._aulNeighbours[(i+1)%3];
-                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxAngle)) {
+                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxSwapAngle)) {
                         cTopAlg.SwapEdge(it.Position(), uNeighbour);
                         done = true;
                     }
@@ -668,17 +677,17 @@ bool MeshFixDeformedFacets::Fixup()
             // now check for angle < 30 deg: in this case we swap with one of the edges the corner is part of
             for (int j=0; j<3; j++) {
                 float fCosAngle = fCosAngles[j];
-                if (fCosAngle > 0.86f) {
+                if (fCosAngle > fCosMinAngle) {
                     const MeshFacet& face = it.GetReference();
 
                     unsigned long uNeighbour = face._aulNeighbours[j];
-                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxAngle)) {
+                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxSwapAngle)) {
                         cTopAlg.SwapEdge(it.Position(), uNeighbour);
                         break;
                     }
 
                     uNeighbour = face._aulNeighbours[(j+2)%3];
-                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxAngle)) {
+                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxSwapAngle)) {
                         cTopAlg.SwapEdge(it.Position(), uNeighbour);
                         break;
                     }
