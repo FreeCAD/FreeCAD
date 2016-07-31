@@ -55,6 +55,7 @@
 #include "QGIFace.h"
 #include "QGIEdge.h"
 #include "QGIVertex.h"
+#include "QGICMark.h"
 #include "QGIViewPart.h"
 
 using namespace TechDrawGui;
@@ -135,7 +136,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
           path.addEllipse(x, y, geom->radius * 2, geom->radius * 2);            //topleft@(x,y) radx,rady
           //Base::Console().Message("TRACE -drawPainterPath - making an CIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
-
         } break;
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
@@ -351,12 +351,25 @@ void QGIViewPart::drawViewPart()
     // Draw Vertexs:
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
+    bool showCenters = viewPart->ShowCenters.getValue();
+    double cAdjust = viewPart->CenterScale.getValue();
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
-        QGIVertex *item = new QGIVertex(i);
-        addToGroup(item);
-        item->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
-        item->setRadius(lineWidth * vertexScaleFactor);
-        item->setZValue(ZVALUE::VERTEX);
+        if ((*vert)->isCenter) {
+            if (showCenters) {
+                QGICMark* cmItem = new QGICMark(i);
+                addToGroup(cmItem);
+                cmItem->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
+                cmItem->setThick(0.5 * lineWidth * lineScaleFactor);
+                cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
+                cmItem->setZValue(ZVALUE::VERTEX);
+            }
+        } else {
+            QGIVertex *item = new QGIVertex(i);
+            addToGroup(item);
+            item->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
+            item->setRadius(lineWidth * vertexScaleFactor);
+            item->setZValue(ZVALUE::VERTEX);
+        }
      }
 }
 
@@ -551,11 +564,15 @@ void QGIViewPart::toggleVertices(bool state)
     QList<QGraphicsItem*> items = childItems();
     for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
+        QGICMark *mark = dynamic_cast<QGICMark *>(*it);
+
         if(vert) {
-            if(state)
-                vert->show();
-            else
-                vert->hide();
+            if (!mark) {             //leave center marks showing
+                if(state)
+                    vert->show();
+                else
+                    vert->hide();
+            }
         }
     }
 }

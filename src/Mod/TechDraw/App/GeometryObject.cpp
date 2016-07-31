@@ -248,8 +248,17 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             BaseGeom* lastAdded = edgeGeom.back();
             //if (edgeGeom.empty()) {horrible_death();} //back() undefined behavior (can't happen? baseFactory always returns a Base?)
             bool v1Add = true, v2Add = true;
+            bool c1Add = true;
             TechDrawGeometry::Vertex* v1 = new TechDrawGeometry::Vertex(lastAdded->getStartPoint());
             TechDrawGeometry::Vertex* v2 = new TechDrawGeometry::Vertex(lastAdded->getEndPoint());
+            TechDrawGeometry::Circle* circle = dynamic_cast<TechDrawGeometry::Circle*>(lastAdded);
+            TechDrawGeometry::Vertex* c1 = nullptr;
+            if (circle) {
+                c1 = new TechDrawGeometry::Vertex(circle->center);
+                c1->isCenter = true;
+                c1->visible = true;
+            }
+
             std::vector<Vertex *>::iterator itVertex = vertexGeom.begin();
             for (; itVertex != vertexGeom.end(); itVertex++) {
                 if ((*itVertex)->isEqual(v1,Tolerance)) {
@@ -258,6 +267,12 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 if ((*itVertex)->isEqual(v2,Tolerance)) {
                     v2Add = false;
                 }
+                if (circle) {
+                    if ((*itVertex)->isEqual(c1,Tolerance)) {
+                        c1Add = true;
+                    }
+                }
+
             }
             if (v1Add) {
                 vertexGeom.push_back(v1);
@@ -271,8 +286,16 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             } else {
                 delete v2;
             }
-        }
 
+            if (circle) {
+                if (c1Add) {
+                    vertexGeom.push_back(c1);
+                    c1->visible = true;
+                } else {
+                    delete c1;
+                }
+            }
+        }
     }
 }
 
