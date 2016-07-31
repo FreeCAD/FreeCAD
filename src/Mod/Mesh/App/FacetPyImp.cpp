@@ -128,6 +128,22 @@ PyObject*  FacetPy::intersect(PyObject *args)
     }
 }
 
+PyObject*  FacetPy::isDegenerated(PyObject *args)
+{
+    float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
+    if (!PyArg_ParseTuple(args, "|f", &fEpsilon))
+        return NULL;
+
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        throw Py::RuntimeError("Unbound facet");
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::new_reference_to(Py::Boolean(tria.IsDegenerated(fEpsilon)));
+}
+
 Py::List FacetPy::getPoints(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();
@@ -160,8 +176,9 @@ Py::Tuple FacetPy::getPointIndices(void) const
 Py::Tuple FacetPy::getNeighbourIndices(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();
-    if (!face->isBound())
-      { return Py::Tuple(); }
+    if (!face->isBound()) {
+        return Py::Tuple();
+    }
 
     Py::Tuple idxTuple(3);
     for (int i=0; i<3; i++) {
@@ -173,8 +190,9 @@ Py::Tuple FacetPy::getNeighbourIndices(void) const
 Py::Float FacetPy::getArea(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();
-    if (!face->isBound())
-      { return Py::Float(0.0); }
+    if (!face->isBound()) {
+        return Py::Float(0.0);
+    }
 
     const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
     MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);

@@ -1000,6 +1000,22 @@ PyObject*  MeshPy::countNonUniformOrientedFacets(PyObject *args)
     return Py_BuildValue("k", count); 
 }
 
+PyObject*  MeshPy::getNonUniformOrientedFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshEvalOrientation cMeshEval(kernel);
+    std::vector<unsigned long> inds = cMeshEval.GetIndices();
+    Py::Tuple tuple(inds.size());
+    for (std::size_t i=0; i<inds.size(); i++) {
+        tuple.setItem(i, Py::Long(inds[i]));
+    }
+
+    return Py::new_reference_to(tuple);
+}
+
 PyObject*  MeshPy::harmonizeNormals(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
