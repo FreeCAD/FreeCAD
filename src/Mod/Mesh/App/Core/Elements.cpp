@@ -428,26 +428,24 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
     return false;
 }
 
-bool MeshGeomFacet::IsDeformed() const
+bool MeshGeomFacet::IsDeformed(float fCosOfMinAngle, float fCosOfMaxAngle) const
 {
-  float fCosAngle;
-  Base::Vector3f u,v;
+    float fCosAngle;
+    Base::Vector3f u,v;
 
-  for (int i=0; i<3; i++)
-  {
-    u = _aclPoints[(i+1)%3]-_aclPoints[i];
-    v = _aclPoints[(i+2)%3]-_aclPoints[i];
-    u.Normalize();
-    v.Normalize();
+    for (int i=0; i<3; i++) {
+        u = _aclPoints[(i+1)%3]-_aclPoints[i];
+        v = _aclPoints[(i+2)%3]-_aclPoints[i];
+        u.Normalize();
+        v.Normalize();
 
-    fCosAngle = u * v;
+        fCosAngle = u * v;
 
-    // x < 30 deg => cos(x) > sqrt(3)/2 or x > 120 deg => cos(x) < -0.5
-    if (fCosAngle > 0.86f || fCosAngle < -0.5f)
-      return true;
-  }
+        if (fCosAngle > fCosOfMinAngle || fCosAngle < fCosOfMaxAngle)
+            return true;
+    }
 
-  return false;
+    return false;
 }
 
 bool MeshGeomFacet::IntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
