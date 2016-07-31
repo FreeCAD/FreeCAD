@@ -250,7 +250,12 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Get the number of wrong oriented facets</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="hasInvalidPoints" Const="true">
+        <Methode Name="getNonUniformOrientedFacets" Const="true">
+            <Documentation>
+                <UserDocu>Get a tuple of wrong oriented facets</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasInvalidPoints" Const="true">
 			<Documentation>
 				<UserDocu>Check if the mesh has points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>
