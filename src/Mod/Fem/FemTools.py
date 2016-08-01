@@ -322,6 +322,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
                 message += "Neither constraint force nor constraint pressure or a constraint selfweight defined in the static analysis\n"
+        if self.analysis_type == "thermomech":
+            if not self.initialtemperature_constraints:
+                message += "No initial temperature defined in the thermomechanical analysis\n"
+            if len(self.initialtemperature_constraints) > 1:
+                message += "Only one initial temperature is allowed in thermomechanical analysis\n"
         if self.beam_sections:
             if self.shell_thicknesses:
                 # this needs to be checked only once either here or in shell_thicknesses
