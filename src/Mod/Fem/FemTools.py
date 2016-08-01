@@ -367,10 +367,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             _number = number
         else:
             try:
-                _number = self.solver.NumberOfEigenmodes
+                _number = self.solver.EigenmodesCount
             except:
                 #Not yet in prefs, so it will always default to 10
-                _number = self.fem_prefs.GetInteger("NumberOfEigenmodes", 10)
+                _number = self.fem_prefs.GetInteger("EigenmodesCount", 10)
         if _number < 1:
             _number = 1
 
