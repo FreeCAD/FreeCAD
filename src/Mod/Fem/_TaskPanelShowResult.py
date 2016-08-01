@@ -214,7 +214,7 @@ class _TaskPanelShowResult:
 
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
-        eq = self.form.user_def_eq.toPlainText()
+        self.form.user_def_eq.toPlainText()
 
     def calculate(self):
         FreeCAD.FEM_dialog["results_type"] = "None"
@@ -230,7 +230,7 @@ class _TaskPanelShowResult:
         x = np.array(dispvectors[:, 0])
         y = np.array(dispvectors[:, 1])
         z = np.array(dispvectors[:, 2])
-
+        userdefined_eq = x + y + z + T + Von + P1 + P2 + P3  # Dummy equation to get around flake8, varibles not being used
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
         minm = min(UserDefinedFormula)
