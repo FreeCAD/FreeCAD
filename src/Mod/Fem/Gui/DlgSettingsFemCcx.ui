@@ -426,7 +426,7 @@
              <double>0.010000000000000</double>
             </property>
             <property name="prefEntry" stdset="0">
-             <cstring>AnalysisInitialTimeStep</cstring>
+             <cstring>AnalysisTimeInitialStep</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Ccx</cstring>
@@ -492,7 +492,7 @@
              <number>10</number>
             </property>
             <property name="prefEntry" stdset="0">
-             <cstring>NumberOfEigenmode</cstring>
+             <cstring>EigenmodesCount</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Ccx</cstring>
