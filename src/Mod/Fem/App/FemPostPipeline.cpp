@@ -375,7 +375,55 @@ void FemPostPipeline::load(FemResultObject* res) {
         const std::vector<double>& vec = res->StressValues.getValues();
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
-        data->SetName("Stress");
+        data->SetName("Von Mises stress");
+        
+        for(size_t i=0; i<vec.size(); ++i)
+            data->SetValue(i, vec[i]);
+        
+        grid->GetPointData()->AddArray(data);
+    }
+
+    if(!res->StressValues.getValues().empty()) {
+        const std::vector<double>& vec = res->MaxShear.getValues();
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfValues(vec.size());
+        data->SetName("Max shear stress (Tresca)");
+
+        for(size_t i=0; i<vec.size(); ++i)
+            data->SetValue(i, vec[i]);
+
+        grid->GetPointData()->AddArray(data);
+    }
+
+    if(!res->StressValues.getValues().empty()) {
+        const std::vector<double>& vec = res->PrincipalMax.getValues();
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfValues(vec.size());
+        data->SetName("Maximum Principal stress");
+
+        for(size_t i=0; i<vec.size(); ++i)
+            data->SetValue(i, vec[i]);
+
+        grid->GetPointData()->AddArray(data);
+    }
+
+    if(!res->StressValues.getValues().empty()) {
+        const std::vector<double>& vec = res->PrincipalMin.getValues();
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfValues(vec.size());
+        data->SetName("Minimum Principal stress");
+
+        for(size_t i=0; i<vec.size(); ++i)
+            data->SetValue(i, vec[i]);
+
+        grid->GetPointData()->AddArray(data);
+    }
+
+    if(!res->StressValues.getValues().empty()) {
+        const std::vector<double>& vec = res->Temperature.getValues();
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfValues(vec.size());
+        data->SetName("Temperature");
         
         for(size_t i=0; i<vec.size(); ++i)
             data->SetValue(i, vec[i]);
