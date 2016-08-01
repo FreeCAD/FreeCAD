@@ -41,23 +41,24 @@ import os
 
 
 class FemInputWriter():
-    def __init__(self, analysis_obj, solver_obj,
+    def __init__(self,
+                 analysis_obj, solver_obj,
                  mesh_obj, mat_obj,
-                 fixed_obj,
+                 fixed_obj, displacement_obj,
                  selfweight_obj, force_obj, pressure_obj,
-                 displacement_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type, eigenmode_parameters,
-                 dir_name):
+                 dir_name
+                 ):
         self.analysis = analysis_obj
         self.solver_obj = solver_obj
         self.mesh_object = mesh_obj
         self.material_objects = mat_obj
         self.fixed_objects = fixed_obj
+        self.displacement_objects = displacement_obj
         self.selfweight_objects = selfweight_obj
         self.force_objects = force_obj
         self.pressure_objects = pressure_obj
-        self.displacement_objects = displacement_obj
         self.beamsection_objects = beamsection_obj
         self.shellthickness_objects = shellthickness_obj
         self.analysis_type = analysis_type

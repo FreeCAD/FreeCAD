@@ -88,14 +88,15 @@ class FemToolsCcx(FemTools.FemTools):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.FemInputWriterCcx(self.analysis, self.solver,
+            inp_writer = iw.FemInputWriterCcx(
+                                              self.analysis, self.solver,
                                               self.mesh, self.materials,
-                                              self.fixed_constraints,
+                                              self.fixed_constraints, self.displacement_constraints,
                                               self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
-                                              self.displacement_constraints,
                                               self.beam_sections, self.shell_thicknesses,
                                               self.analysis_type, self.eigenmode_parameters,
-                                              self.working_dir)
+                                              self.working_dir
+                                             )
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
