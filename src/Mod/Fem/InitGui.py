@@ -60,7 +60,6 @@ class FemWorkbench (Workbench):
         import _CommandSolverZ88
         import _CommandConstraintSelfWeight
 
-
         import subprocess
         from platform import system
         ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")
@@ -78,7 +77,6 @@ class FemWorkbench (Workbench):
                     FreeCAD.Console.PrintError("CalculiX ccx binary not found! Please set it manually in FEM preferences.\n")
             except Exception as e:
                 FreeCAD.Console.PrintError(e.message)
-        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         import os
         working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")

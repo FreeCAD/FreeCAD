@@ -44,17 +44,18 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                  analysis_type=None, eigenmode_parameters=None,
                  dir_name=None
                  ):
-        FemInputWriter.FemInputWriter.__init__(self,
-                                               analysis_obj, solver_obj,
-                                               mesh_obj, mat_obj,
-                                               fixed_obj, displacement_obj,
-                                               contact_obj, planerotation_obj,
-                                               selfweight_obj, force_obj, pressure_obj,
-                                               temperature_obj, heatflux_obj, initialtemperature_obj,
-                                               beamsection_obj, shellthickness_obj,
-                                               analysis_type, eigenmode_parameters,
-                                               dir_name
-                                               )
+
+        FemInputWriter.FemInputWriter.__init__(
+            self,
+            analysis_obj, solver_obj,
+            mesh_obj, mat_obj,
+            fixed_obj, displacement_obj,
+            contact_obj, planerotation_obj,
+            selfweight_obj, force_obj, pressure_obj,
+            temperature_obj, heatflux_obj, initialtemperature_obj,
+            beamsection_obj, shellthickness_obj,
+            analysis_type, eigenmode_parameters,
+            dir_name)
         self.file_name = self.dir_name + '/z88'
         print('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name)
         print('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name)

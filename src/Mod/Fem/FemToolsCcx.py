@@ -88,16 +88,15 @@ class FemToolsCcx(FemTools.FemTools):
         self.inp_file_name = ""
         try:
             inp_writer = iw.FemInputWriterCcx(
-                                              self.analysis, self.solver,
-                                              self.mesh, self.materials,
-                                              self.fixed_constraints, self.displacement_constraints,
-                                              self.contact_constraints, self.planerotation_constraints,
-                                              self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
-                                              self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
-                                              self.beam_sections, self.shell_thicknesses,
-                                              self.analysis_type, self.eigenmode_parameters,
-                                              self.working_dir
-                                             )
+                self.analysis, self.solver,
+                self.mesh, self.materials,
+                self.fixed_constraints, self.displacement_constraints,
+                self.contact_constraints, self.planerotation_constraints,
+                self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
+                self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
+                self.beam_sections, self.shell_thicknesses,
+                self.analysis_type, self.eigenmode_parameters,
+                self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
@@ -158,7 +157,7 @@ class FemToolsCcx(FemTools.FemTools):
             if not ont_backup:
                 ont_backup = str(num_cpu_pref)
             if num_cpu_pref > 1:
-                _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref)) # if user picked a number use that instead
+                _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref))  # if user picked a number use that instead
             else:
                 _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
             # change cwd because ccx may crash if directory has no write permission
