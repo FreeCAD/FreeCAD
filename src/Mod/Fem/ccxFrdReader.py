@@ -38,11 +38,6 @@ if open.__module__ == '__builtin__':
 
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
 def readResult(frd_input):
-    # get line count
-    frd_file = pyopen(frd_input, "r")
-    num_lines_frd = float(sum(1 for line in frd_file))
-    frd_file.close()
-
     frd_file = pyopen(frd_input, "r")
     nodes = {}
     elements_hexa8 = {}
@@ -74,7 +69,6 @@ def readResult(frd_input):
     elemType = 0
     timestep = 0
     timetemp = 0
-    linenum = 0
 
     for line in frd_file:
         # Check if we found nodes section
