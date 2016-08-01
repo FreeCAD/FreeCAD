@@ -68,6 +68,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         # reopen file with "append" and add the analysis definition
         inpfile = open(self.file_name, 'a')
         inpfile.write('\n\n')
+
+        # node and element sets
         self.write_element_sets_material_and_femelement_type(inpfile)
         if self.fixed_objects:
             self.write_node_sets_constraints_fixed(inpfile)
@@ -79,14 +81,20 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_surfaces_contraints_contact(inpfile)
         if self.analysis_type == "thermomech" and self.temperature_objects:
             self.write_node_sets_constraints_temperature(inpfile)
+
+        # materials and fem element types
         self.write_materials(inpfile)
         if self.analysis_type == "thermomech" and self.initialtemperature_objects:
             self.write_constraints_initialtemperature(inpfile)
         self.write_femelementsets(inpfile)
+
+        # constraints independent from steps
         if self.planerotation_objects:
             self.write_constraints_planerotation(inpfile)
         if self.contact_objects:
             self.write_constraints_contact(inpfile)
+
+        # steps and constraints dependent on steps
         if self.analysis_type == "thermomech":
             self.write_step_begin_thermomech(inpfile)
             self.write_analysis_thermomech(inpfile)
@@ -111,6 +119,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.write_outputs_types(inpfile)
         self.write_step_end(inpfile)
 
+        # footer
         self.write_footer(inpfile)
         inpfile.close()
         return self.file_name
