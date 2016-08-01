@@ -495,6 +495,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
+    #    Prin1 Principal stress 1
+    #    Prin2 Principal stress 2
+    #    Prin3 Principal stress 3
+    #    MaxSear maximum shear stress
     #  - None - always return (0.0, 0.0, 0.0)
     def get_stats(self, result_type):
         stats = (0.0, 0.0, 0.0)
@@ -505,6 +509,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                          "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
                          "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
                          "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
+                         "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
+                         "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
+                         "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
+                         "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
                          "None": (0.0, 0.0, 0.0)}
                 stats = match[result_type]
         return stats
