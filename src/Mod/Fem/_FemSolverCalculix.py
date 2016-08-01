@@ -50,6 +50,15 @@ class _FemSolverCalculix():
         analysis_type = fem_prefs.GetInt("AnalysisType", 0)
         obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types[analysis_type]
 
+        known_geom_nonlinear_types = ["linear", "nonlinear"]
+        obj.addProperty("App::PropertyEnumeration", "GeometricalNonlinearity", "Fem", "Type of geometrical nonlinearity")
+        obj.GeometricalNonlinearity = known_geom_nonlinear_types
+        geom = ccx_prefs.GetBool("NonlinearGeometry", False)
+        if geom is True:
+            obj.GeometricalNonlinearity = known_geom_nonlinear_types[1]  # nonlinear
+        else:
+            obj.GeometricalNonlinearity = known_geom_nonlinear_types[0]  # linear
+
         obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
         noe = fem_prefs.GetInt("NumberOfEigenmodes", 10)
         obj.NumberOfEigenmodes = (noe, 1, 100, 1)
