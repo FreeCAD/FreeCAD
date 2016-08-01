@@ -365,10 +365,11 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         elif self.solver_obj.GeometricalNonlinearity == "nonlinear" and self.analysis_type == 'frequency':
             print('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!')
         f.write(static_frequency_step + '\n')
-        f.write('*CONTROLS,PARAMETERS=TIME INCREMENTATION\n')
-        f.write('4,8,9,200,10,400,,200,\n')
-        f.write('0.25,0.5,0.75,0.85,,,1.5,\n')
-        f.write('*STATIC')
+        if self.solver_obj.IterationsControlParameterTimeUse:
+            f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
+            f.write(self.solver_obj.IterationsControlParameterIter + '\n')
+            f.write(self.solver_obj.IterationsControlParameterCutb + '\n')
+        analysis_static = '*STATIC'
         if self.solver_obj.MatrixSolverType == "default":
             pass
         elif self.solver_obj.MatrixSolverType == "spooles":
@@ -388,10 +389,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             thermomech_step += ', NLGEOM'
         thermomech_step += ', INC=' + str(self.solver_obj.IterationsMaximum)
         f.write(thermomech_step + '\n')
-        f.write(step)
-        f.write('*CONTROLS,PARAMETERS=TIME INCREMENTATION\n')
-        f.write('4,8,9,200,10,400,,200,\n')
-        f.write('0.25,0.5,0.75,0.85,,,1.5,\n')
+        if self.solver_obj.IterationsControlParameterTimeUse:
+            f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
+            f.write(self.solver_obj.IterationsControlParameterIter + '\n')
+            f.write(self.solver_obj.IterationsControlParameterCutb + '\n')
 
     def write_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')

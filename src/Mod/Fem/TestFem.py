@@ -78,6 +78,7 @@ class FemTest(unittest.TestCase):
         self.solver_object.GeometricalNonlinearity = 'linear'
         self.solver_object.SteadyState = True
         self.solver_object.MatrixSolverType = 'default'
+        self.solver_object.IterationsControlParameterTimeUse = False
         self.active_doc.recompute()
 
     def create_new_mesh(self):
