@@ -2,6 +2,7 @@
 # *                                                                         *
 # *   Copyright (c) 2013 - Joachim Zettler                                  *
 # *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -27,7 +28,7 @@ import os
 from math import pow, sqrt
 
 __title__ = "FreeCAD Calculix library"
-__author__ = "Juergen Riegel "
+__author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 if open.__module__ == '__builtin__':
@@ -36,6 +37,11 @@ if open.__module__ == '__builtin__':
 
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
 def readResult(frd_input):
+    # get line count
+    frd_file = pyopen(frd_input, "r")
+    num_lines_frd = float(sum(1 for line in frd_file))
+    frd_file.close()
+
     frd_file = pyopen(frd_input, "r")
     nodes = {}
     elements_hexa8 = {}
@@ -53,15 +59,21 @@ def readResult(frd_input):
     mode_results = {}
     mode_disp = {}
     mode_stress = {}
+    mode_temp = {}
 
     mode_disp_found = False
     nodes_found = False
     mode_stress_found = False
+    mode_temp_found = False
+    mode_time_found = False
     elements_found = False
     input_continues = False
     eigenmode = 0
     elem = -1
     elemType = 0
+    timestep = 0
+    timetemp = 0
+    linenum = 0
 
     for line in frd_file:
         # Check if we found nodes section
@@ -261,6 +273,20 @@ def readResult(frd_input):
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
+        # Check if we found a time step
+        if line[4:10] == "1PSTEP":
+            mode_time_found = True
+        if mode_time_found and (line[2:7] == "100CL"):
+            timetemp = float(line[13:25])
+            if timetemp > timestep:
+                timestep = timetemp
+        if line[5:11] == "NDTEMP":
+            mode_temp_found = True
+        # we found a temperatures line in the frd file
+        if mode_temp_found and (line[1:3] == "-1"):
+            elem = int(line[4:13])
+            temperature = float(line[13:25])
+            mode_temp[elem] = (temperature)
         # Check for the end of a section
         if line[1:3] == "-3":
             if mode_disp_found:
@@ -269,11 +295,31 @@ def readResult(frd_input):
             if mode_stress_found:
                 mode_stress_found = False
 
+            if mode_temp_found:
+                mode_temp_found = False
+
+            if mode_time_found:
+                mode_time_found = False
+
+            if mode_disp and mode_stress and mode_temp:
+                mode_results = {}
+                mode_results['number'] = eigenmode
+                mode_results['disp'] = mode_disp
+                mode_results['stress'] = mode_stress
+                mode_results['temp'] = mode_temp
+                mode_results['time'] = timestep
+                results.append(mode_results)
+                mode_disp = {}
+                mode_stress = {}
+                mode_temp = {}
+                eigenmode = 0
+
             if mode_disp and mode_stress:
                 mode_results = {}
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
                 mode_results['stress'] = mode_stress
+                mode_results['time'] = 0  # Dont return time if static
                 results.append(mode_results)
                 mode_disp = {}
                 mode_stress = {}
@@ -340,10 +386,15 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 mesh_object.FemMesh = mesh
                 analysis_object.Member = analysis_object.Member + [mesh_object]
 
+        number_of_increments = len(m['Results'])
         for result_set in m['Results']:
             eigenmode_number = result_set['number']
+            step_time = result_set['time']
+            step_time = round(step_time, 2)
             if eigenmode_number > 0:
                 results_name = result_name_prefix + 'mode_' + str(eigenmode_number) + '_results'
+            elif number_of_increments > 1:
+                results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
             else:
                 results_name = result_name_prefix + 'results'
             results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', results_name)
@@ -373,6 +424,24 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 results.NodeNumbers = disp.keys()
                 if(mesh_object):
                     results.Mesh = mesh_object
+
+            # Read temperatures if they exist
+            try:
+                Temperature = result_set['temp']
+                if len(Temperature) > 0:
+                    if len(Temperature.values()) != len(disp.values()):
+                        Temp = []
+                        Temp_extra_nodes = Temperature.values()
+                        nodes = len(disp.values())
+                        for i in range(nodes):
+                            Temp_value = Temp_extra_nodes[i]
+                            Temp.append(Temp_value)
+                        results.Temperature = map((lambda x: x), Temp)
+                    else:
+                        results.Temperature = map((lambda x: x), Temperature.values())
+                    results.Time = step_time
+            except:
+                pass
 
             stress = result_set['stress']
             if len(stress) > 0:
