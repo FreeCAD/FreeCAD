@@ -86,6 +86,7 @@ class FemToolsZ88(FemTools.FemTools):
                                               self.fixed_constraints, self.displacement_constraints,
                                               self.contact_constraints, self.planerotation_constraints,
                                               self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
+                                              self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
                                               self.beam_sections, self.shell_thicknesses,
                                               self.analysis_type, None,
                                               self.working_dir
