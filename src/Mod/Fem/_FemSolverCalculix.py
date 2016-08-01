@@ -41,6 +41,7 @@ class _FemSolverCalculix():
         obj.SolverType = str(self.Type)
 
         fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
 
         obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations")
         obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
@@ -71,6 +72,28 @@ class _FemSolverCalculix():
         obj.addProperty("App::PropertyFloatConstraint", "EigenmodeHighLimit", "Fem", "High frequency limit for eigenmode calculations")
         ehl = ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
+
+        obj.addProperty("App::PropertyIntegerConstraint", "Maxiterations", "Fem", "Number of iterations allowed before stopping jobs")
+        niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
+        obj.Maxiterations = (niter)
+
+        obj.addProperty("App::PropertyFloatConstraint", "InitialTimeStep", "Fem", "Initial time steps")
+        ini = ccx_prefs.GetFloat("AnalysisInitialTimeStep", 1.0)
+        obj.InitialTimeStep = (ini)
+
+        obj.addProperty("App::PropertyFloatConstraint", "EndTime", "Fem", "Initial time steps")
+        eni = ccx_prefs.GetFloat("AnalysisTime", 1.0)
+        obj.EndTime = (eni)
+
+        obj.addProperty("App::PropertyBool", "SteadyState", "Fem", "Run steady state or transient analysis")
+        sted = ccx_prefs.GetBool("StaticAnalysis", True)
+        obj.SteadyState = (sted)
+
+        known_ccx_solver_types = ["default", "spooles", "iterativescaling", "iterativecholesky"]
+        obj.addProperty("App::PropertyEnumeration", "MatrixSolverType", "Fem", "Type of solver to use")
+        obj.MatrixSolverType = known_ccx_solver_types
+        solver_type = ccx_prefs.GetInt("Solver", 0)
+        obj.MatrixSolverType = known_ccx_solver_types[solver_type]
 
     def execute(self, obj):
         return
