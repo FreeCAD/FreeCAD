@@ -390,12 +390,6 @@ void MeshGeomFacet::Enlarge (float fDist)
 
 bool MeshGeomFacet::IsDegenerated(float epsilon) const
 {
-    // if we do a strict test then compute the area
-    if (epsilon == 0) {
-        float fArea = Area();
-        return fArea < epsilon;
-    }
-
     // The triangle has the points A,B,C where we can define the vector u and v
     // u = b-a and v = c-a. Then we define the line g: r = a+t*u and the plane
     // E: (x-c)*u=0. The intersection point of g and E is S.
@@ -413,42 +407,45 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
     // (u*u)*(v*v)-(u*v)*(u*v) < max(eps*(u*u),eps*(v*v)).
     //
     // BTW (u*u)*(v*v)-(u*v)*(u*v) is the same as (uxv)*(uxv).
-    Base::Vector3f u = _aclPoints[1] - _aclPoints[0];
-    Base::Vector3f v = _aclPoints[2] - _aclPoints[0];
-    float eps = epsilon;
-    float uu = u*u;
-    if (uu < eps)
+    Base::Vector3d p1(this->_aclPoints[0].x,this->_aclPoints[0].y,this->_aclPoints[0].z);
+    Base::Vector3d p2(this->_aclPoints[1].x,this->_aclPoints[1].y,this->_aclPoints[1].z);
+    Base::Vector3d p3(this->_aclPoints[2].x,this->_aclPoints[2].y,this->_aclPoints[2].z);
+
+    Base::Vector3d u = p2 - p1;
+    Base::Vector3d v = p3 - p1;
+
+    double eps = epsilon;
+    double uu = u*u;
+    if (uu <= eps)
         return true;
-    float vv = v*v;
-    if (vv < eps)
+    double vv = v*v;
+    if (vv <= eps)
         return true;
-    float uv = u*v;
-    float crosssqr = uu*vv-uv*uv;
-    if (crosssqr < eps*std::max<float>(uu,vv))
+    double uv = u*v;
+    double crosssqr = uu*vv-uv*uv;
+    if (crosssqr <= eps*std::max<double>(uu,vv))
         return true;
     return false;
 }
 
-bool MeshGeomFacet::IsDeformed() const
+bool MeshGeomFacet::IsDeformed(float fCosOfMinAngle, float fCosOfMaxAngle) const
 {
-  float fCosAngle;
-  Base::Vector3f u,v;
+    float fCosAngle;
+    Base::Vector3f u,v;
 
-  for (int i=0; i<3; i++)
-  {
-    u = _aclPoints[(i+1)%3]-_aclPoints[i];
-    v = _aclPoints[(i+2)%3]-_aclPoints[i];
-    u.Normalize();
-    v.Normalize();
+    for (int i=0; i<3; i++) {
+        u = _aclPoints[(i+1)%3]-_aclPoints[i];
+        v = _aclPoints[(i+2)%3]-_aclPoints[i];
+        u.Normalize();
+        v.Normalize();
 
-    fCosAngle = u * v;
+        fCosAngle = u * v;
 
-    // x < 30 deg => cos(x) > sqrt(3)/2 or x > 120 deg => cos(x) < -0.5
-    if (fCosAngle > 0.86f || fCosAngle < -0.5f)
-      return true;
-  }
+        if (fCosAngle > fCosOfMinAngle || fCosAngle < fCosOfMaxAngle)
+            return true;
+    }
 
-  return false;
+    return false;
 }
 
 bool MeshGeomFacet::IntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const

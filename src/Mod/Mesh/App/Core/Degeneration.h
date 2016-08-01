@@ -346,7 +346,8 @@ public:
   /**
    * Construction.
    */
-  MeshEvalDeformedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  MeshEvalDeformedFacets (const MeshKernel &rclM, float fMinAngle, float fMaxAngle)
+      : MeshEvaluation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle) { }
   /** 
    * Destruction.
    */
@@ -359,6 +360,10 @@ public:
    * Returns the indices of deformed facets.
    */
   std::vector<unsigned long> GetIndices() const;
+
+private:
+  float fMinAngle;
+  float fMaxAngle;
 };
 
 /**
@@ -374,8 +379,9 @@ public:
   /**
    * Construction.
    */
-  MeshFixDeformedFacets (MeshKernel &rclM, float fAngle, float fEps)
-      : MeshValidation(rclM), fMaxAngle(fAngle), fEpsilon(fEps) { }
+  MeshFixDeformedFacets (MeshKernel &rclM, float fMinAngle, float fMaxAngle, float fSwapAngle, float fEps)
+      : MeshValidation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle),
+        fMaxSwapAngle(fSwapAngle), fEpsilon(fEps) { }
   /** 
    * Destruction.
    */
@@ -386,7 +392,9 @@ public:
   bool Fixup ();
 
 private:
+  float fMinAngle;
   float fMaxAngle;
+  float fMaxSwapAngle;
   float fEpsilon;
 };
 
