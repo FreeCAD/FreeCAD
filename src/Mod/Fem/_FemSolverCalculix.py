@@ -90,7 +90,8 @@ class _FemSolverCalculix():
         obj.SteadyState = (sted)
 
         obj.addProperty("App::PropertyBool", "IterationsControlParameterTimeUse", "Fem", "Use the user defined time incrementation control parameter")
-        obj.IterationsControlParameterTimeUse = False
+        use_non_ccx_iterations_param = ccx_prefs.GetInt("UseNonCcxIterationParam", False)
+        obj.IterationsControlParameterTimeUse = use_non_ccx_iterations_param
 
         ccx_default_time_incrementation_control_parameter = {
             # iteration parameter

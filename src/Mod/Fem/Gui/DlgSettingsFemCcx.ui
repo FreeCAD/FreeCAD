@@ -220,16 +220,6 @@
        <layout class="QHBoxLayout" name="horizontalLayout_1">
         <item>
          <layout class="QGridLayout" name="gl_solver">
-          <item row="1" column="0">
-           <widget class="QLabel" name="l_solver">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>Matrix Solver</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
            <widget class="Gui::PrefComboBox" name="cmb_solver">
             <property name="enabled">
@@ -266,10 +256,32 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="l_non_lin_geom">
+          <item row="0" column="1">
+           <widget class="Gui::PrefSpinBox" name="sb_ccx_numcpu">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>40</number>
+            </property>
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>AnalysisNumCPUs</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="l_use_iterations_param">
             <property name="text">
-             <string>Non-Linear Geometry</string>
+             <string>Time Incrementation control paramter</string>
             </property>
            </widget>
           </item>
@@ -289,6 +301,23 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="l_solver">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>Matrix Solver</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="l_non_lin_geom">
+            <property name="text">
+             <string>Non-Linear Geometry</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="l_ccx_numcpu">
             <property name="text">
@@ -296,22 +325,16 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="Gui::PrefSpinBox" name="sb_ccx_numcpu">
-            <property name="minimum">
-             <number>1</number>
+          <item row="4" column="1">
+           <widget class="Gui::PrefCheckBox" name="cb_use_iterations_param">
+            <property name="text">
+             <string>Use non ccx defaults</string>
             </property>
-            <property name="maximum">
-             <number>40</number>
-            </property>
-            <property name="singleStep">
-             <number>1</number>
-            </property>
-            <property name="value">
-             <number>1</number>
+            <property name="checked">
+             <bool>false</bool>
             </property>
             <property name="prefEntry" stdset="0">
-             <cstring>AnalysisNumCPUs</cstring>
+             <cstring>UseNonCcxIterationParam</cstring>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Ccx</cstring>
