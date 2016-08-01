@@ -47,36 +47,53 @@ void DlgSettingsFemCcxImp::saveSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
     hGrp->SetInt("Solver", cmb_solver->currentIndex());
-        
-    //OvG: Solver settings
+    hGrp->SetInt("AnalysisType", cb_analysis_type->currentIndex());
+
     sb_ccx_numcpu->onSave();         //Number of CPUs
     cmb_solver->onSave();
     cb_ccx_non_lin_geom->onSave();
-    cb_hide_constraint->onSave();
-    
+
     cb_static->onSave();
     sb_ccx_max_iterations->onSave(); //Max number of iterations
     dsb_ccx_initial_time_step->onSave(); //Initial time step
     dsb_ccx_analysis_time->onSave(); //Analysis time
+
+    cb_analysis_type->onSave();
+    sb_eigenmode_number->onSave();
+    dsb_eigenmode_high_limit->onSave();
+    dsb_eigenmode_low_limit->onSave();
+
+    cb_int_editor->onSave();
+    fc_ext_editor->onSave();
+    fc_ccx_binary->onSave();
 }
 
 void DlgSettingsFemCcxImp::loadSettings()
 {
-    //OvG: Solver settings
     sb_ccx_numcpu->onRestore();         //Number of CPUs
     cmb_solver->onRestore();
     cb_ccx_non_lin_geom->onRestore();
-    cb_hide_constraint->onRestore();
-    
+
     cb_static->onRestore();
     sb_ccx_max_iterations->onRestore(); //Max number of iterations
     dsb_ccx_initial_time_step->onRestore(); //Initial time step
     dsb_ccx_analysis_time->onRestore(); //Analysis time
 
+    cb_analysis_type->onRestore();
+    sb_eigenmode_number->onRestore();
+    dsb_eigenmode_high_limit->onRestore();
+    dsb_eigenmode_low_limit->onRestore();
+
+    cb_int_editor->onRestore();
+    fc_ext_editor->onRestore();
+    fc_ccx_binary->onRestore();
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
-        int index =  hGrp->GetInt("Solver", 0);
+    int index =  hGrp->GetInt("Solver", 0);
     if (index > -1) cmb_solver->setCurrentIndex(index);
+    index =  hGrp->GetInt("AnalysisType", 0);
+    if (index > -1) cb_analysis_type->setCurrentIndex(index);
 }
 
 /**
@@ -85,6 +102,9 @@ void DlgSettingsFemCcxImp::loadSettings()
 void DlgSettingsFemCcxImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        int c_index = cb_analysis_type->currentIndex();
+        retranslateUi(this);
+        cb_analysis_type->setCurrentIndex(c_index);
     }
     else {
         QWidget::changeEvent(e);
