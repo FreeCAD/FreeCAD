@@ -114,53 +114,63 @@ void TaskFemConstraintFixed::updateUI()
 void TaskFemConstraintFixed::addToSelection()
 {	    
 	std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-	if (selection.size()==0){
-		QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
-		return;
-	} 
-	Fem::ConstraintFixed* pcConstraint = static_cast<Fem::ConstraintFixed*>(ConstraintView->getObject());
-	std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-	std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
-	for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
-	    if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
-               QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
-               return;
-             }
-        
+    if (selection.size()==0){
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
+    }
+
+    Fem::ConstraintFixed* pcConstraint = static_cast<Fem::ConstraintFixed*>(ConstraintView->getObject());
+    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
+    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
+
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
+        if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
+            QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
+            return;
+        }
+
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-	
-	if (subNames.size()>0){ 	
-		for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
-			bool addMe=true;
-			if ((subNames[subIt].substr(0,4) != "Face") && (subNames[subIt].substr(0,4) != "Edge") && (subNames[subIt].substr(0,6) != "Vertex")) {
-				QMessageBox::warning(this, tr("Selection error"), tr("Mixed shape types are not possible. Use a second constraint instead"));
-				return;
-			}
-			for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
-				itr!= SubElements.end();
-				itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
-			{// for every sub element in selection that matches one in old list
-				if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
-					addMe=false;
-				}
-			}
-				if (addMe){
-					disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-						this, SLOT(setSelection(QListWidgetItem*)));
-					Objects.push_back(obj);
-					SubElements.push_back(subNames[subIt]);
-					ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
-					connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-						this, SLOT(setSelection(QListWidgetItem*)));
-				}
-		}
-	}  
-	//Update UI
-	pcConstraint->References.setValues(Objects,SubElements);
-	updateUI();
-	}
+        for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
+            bool addMe=true;
+            for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
+                   itr!= SubElements.end();
+                   itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
+            {// for every sub element in selection that matches one in old list
+                if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
+                    addMe=false;
+                }
+            }
+            // limit constraint such that only vertexes or faces or edges can be used depending on what was selected first
+            std::string searchStr("");
+            if (subNames[subIt].find("Vertex")!=std::string::npos)
+                searchStr="Vertex";
+            else if (subNames[subIt].find("Edge")!=std::string::npos)
+                searchStr="Edge";
+            else
+                searchStr="Face";
+            for (unsigned int iStr=0;iStr<(SubElements.size());++iStr){
+                if ((SubElements[iStr].find(searchStr)==std::string::npos)&&(SubElements.size()>0)){
+                    QString msg = tr("Only one type of selection (vertex,face or edge) per constraint allowed!");
+                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    addMe=false;
+                    break;
+                }
+            }
+            if (addMe){
+                disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
+                Objects.push_back(obj);
+                SubElements.push_back(subNames[subIt]);
+                ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
+            }
+        }
+    }
+    //Update UI
+    pcConstraint->References.setValues(Objects,SubElements);
+    updateUI();
 }
 
 void TaskFemConstraintFixed::removeFromSelection()
