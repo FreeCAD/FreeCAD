@@ -405,14 +405,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
                             if r.Item:
                                 for p in ifcfile.by_type("IfcProduct"):
-                                    if p.Representation:
-                                        for it in p.Representation.Representations:
-                                            if it.Items:
-                                                if it.Items[0].id() == r.Item.id():
-                                                    colors[p.id()] = (c.Red,c.Green,c.Blue)
-                                                elif it.Items[0].is_a("IfcBooleanResult"):
-                                                    if (it.Items[0].FirstOperand.id() == r.Item.id()):
+                                    if hasattr(p,"Representation"):
+                                        if p.Representation:
+                                            for it in p.Representation.Representations:
+                                                if it.Items:
+                                                    if it.Items[0].id() == r.Item.id():
                                                         colors[p.id()] = (c.Red,c.Green,c.Blue)
+                                                    elif it.Items[0].is_a("IfcBooleanResult"):
+                                                        if (it.Items[0].FirstOperand.id() == r.Item.id()):
+                                                            colors[p.id()] = (c.Red,c.Green,c.Blue)
                         else:
                             for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
                                 for it in m.Representations:
