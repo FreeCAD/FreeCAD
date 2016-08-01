@@ -64,6 +64,7 @@ set(FemGui_MOC_HDRS
     TaskFemConstraintGear.h
     TaskFemConstraintPulley.h
     TaskFemConstraintDisplacement.h
+    TaskFemConstraintPlaneRotation.h
     TaskFemConstraintContact.h    
     TaskTetParameter.h
     TaskAnalysisInfo.h
@@ -91,6 +92,7 @@ set(FemGui_UIC_SRCS
     TaskFemConstraintForce.ui
     TaskFemConstraintPressure.ui
     TaskFemConstraintDisplacement.ui
+    TaskFemConstraintPlaneRotation.ui
     TaskFemConstraintContact.ui
     TaskTetParameter.ui
     TaskAnalysisInfo.ui
@@ -137,6 +139,9 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintDisplacement.ui
     TaskFemConstraintDisplacement.cpp
     TaskFemConstraintDisplacement.h
+    TaskFemConstraintPlaneRotation.ui
+    TaskFemConstraintPlaneRotation.cpp
+    TaskFemConstraintPlaneRotation.h
     TaskFemConstraintContact.ui
     TaskFemConstraintContact.cpp
     TaskFemConstraintContact.h
@@ -184,6 +189,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintPulley.h
     ViewProviderFemConstraintDisplacement.cpp
     ViewProviderFemConstraintDisplacement.h
+    ViewProviderFemConstraintPlaneRotation.cpp
+    ViewProviderFemConstraintPlaneRotation.h
     ViewProviderFemConstraintContact.cpp
     ViewProviderFemConstraintContact.h
     ViewProviderResult.cpp

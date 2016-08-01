@@ -354,6 +354,47 @@ bool CmdFemConstraintFixed::isActive(void)
 
 //=====================================================================================
 
+DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
+
+CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
+  : Command("Fem_ConstraintPlaneRotation")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint plane rotation");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for plane rotation face");
+    sWhatsThis      = "Fem_ConstraintPlaneRotation";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-planerotation";
+}
+
+void CmdFemConstraintPlaneRotation::activated(int iMsg)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintPlaneRotation");
+
+    openCommand("Make FEM constraint Plane Rotation face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPlaneRotation\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintPlaneRotation::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+//=====================================================================================
 DEF_STD_CMD_A(CmdFemConstraintContact);
 
 CmdFemConstraintContact::CmdFemConstraintContact()
@@ -1188,7 +1229,8 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintGear());
     rcCmdMgr.addCommand(new CmdFemConstraintPulley());
     rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
-    rcCmdMgr.addCommand(new CmdFemConstraintContact()); 
+    rcCmdMgr.addCommand(new CmdFemConstraintPlaneRotation());
+    rcCmdMgr.addCommand(new CmdFemConstraintContact());
 
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
