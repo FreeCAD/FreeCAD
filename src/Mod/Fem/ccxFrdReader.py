@@ -26,6 +26,7 @@
 import FreeCAD
 import os
 from math import pow, sqrt
+import numpy as np
 
 __title__ = "FreeCAD Calculix library"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
@@ -351,6 +352,18 @@ def calculate_von_mises(i):
     return vm_stress
 
 
+def calculate_principal_stress(i):
+    sigma = np.array([[i[0], i[3], i[4]],
+                      [i[3], i[1], i[5]],
+                      [i[4], i[5], i[2]]])
+    # compute principal stresses
+    eigvals = list(np.linalg.eigvalsh(sigma))
+    eigvals.sort()
+    eigvals.reverse()
+    maxshear = (eigvals[0] - eigvals[2]) / 2.0
+    return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+
+
 def importFrd(filename, analysis=None, result_name_prefix=None):
     if result_name_prefix is None:
         result_name_prefix = ''
@@ -404,7 +417,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                     break
 
             disp = result_set['disp']
-            l = len(disp)
+            no_of_values = len(disp)
             displacement = []
             for k, v in disp.iteritems():
                 displacement.append(v)
@@ -446,13 +459,30 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             stress = result_set['stress']
             if len(stress) > 0:
                 mstress = []
+                prinstress1 = []
+                prinstress2 = []
+                prinstress3 = []
+                shearstress = []
                 for i in stress.values():
                     mstress.append(calculate_von_mises(i))
+                    prin1, prin2, prin3, shear = calculate_principal_stress(i)
+                    prinstress1.append(prin1)
+                    prinstress2.append(prin2)
+                    prinstress3.append(prin3)
+                    shearstress.append(shear)
                 if eigenmode_number > 0:
                     results.StressValues = map((lambda x: x * scale), mstress)
+                    results.PrincipalMax = map((lambda x: x * scale), prinstress1)
+                    results.PrincipalMed = map((lambda x: x * scale), prinstress2)
+                    results.PrincipalMin = map((lambda x: x * scale), prinstress3)
+                    results.MaxShear = map((lambda x: x * scale), shearstress)
                     results.Eigenmode = eigenmode_number
                 else:
                     results.StressValues = mstress
+                    results.PrincipalMax = prinstress1
+                    results.PrincipalMed = prinstress2
+                    results.PrincipalMin = prinstress3
+                    results.MaxShear = shearstress
 
             if (results.NodeNumbers != 0 and results.NodeNumbers != stress.keys()):
                 print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
@@ -461,11 +491,23 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
             x_min, y_min, z_min = map(min, zip(*displacement))
             sum_list = map(sum, zip(*displacement))
-            x_avg, y_avg, z_avg = [i / l for i in sum_list]
+            x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
 
             s_max = max(results.StressValues)
             s_min = min(results.StressValues)
-            s_avg = sum(results.StressValues) / l
+            s_avg = sum(results.StressValues) / no_of_values
+            p1_min = min(results.PrincipalMax)
+            p1_avg = sum(results.PrincipalMax) / no_of_values
+            p1_max = max(results.PrincipalMax)
+            p2_min = min(results.PrincipalMed)
+            p2_avg = sum(results.PrincipalMed) / no_of_values
+            p2_max = max(results.PrincipalMed)
+            p3_min = min(results.PrincipalMin)
+            p3_avg = sum(results.PrincipalMin) / no_of_values
+            p3_max = max(results.PrincipalMin)
+            ms_min = min(results.MaxShear)
+            ms_avg = sum(results.MaxShear) / no_of_values
+            ms_max = max(results.MaxShear)
 
             disp_abs = []
             for d in displacement:
@@ -474,13 +516,17 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
             a_max = max(disp_abs)
             a_min = min(disp_abs)
-            a_avg = sum(disp_abs) / l
+            a_avg = sum(disp_abs) / no_of_values
 
             results.Stats = [x_min, x_avg, x_max,
                              y_min, y_avg, y_max,
                              z_min, z_avg, z_max,
                              a_min, a_avg, a_max,
-                             s_min, s_avg, s_max]
+                             s_min, s_avg, s_max,
+                             p1_min, p1_avg, p1_max,
+                             p2_min, p2_avg, p2_max,
+                             p3_min, p3_avg, p3_max,
+                             ms_min, ms_avg, ms_max]
             analysis_object.Member = analysis_object.Member + [results]
 
         if(FreeCAD.GuiUp):
