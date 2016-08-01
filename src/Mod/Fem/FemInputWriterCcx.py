@@ -40,6 +40,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                  analysis_obj, solver_obj,
                  mesh_obj, mat_obj,
                  fixed_obj, displacement_obj,
+                 contact_obj,
                  selfweight_obj, force_obj, pressure_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type=None, eigenmode_parameters=None,
@@ -49,6 +50,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                                                analysis_obj, solver_obj,
                                                mesh_obj, mat_obj,
                                                fixed_obj, displacement_obj,
+                                               contact_obj,
                                                selfweight_obj, force_obj, pressure_obj,
                                                beamsection_obj, shellthickness_obj,
                                                analysis_type, eigenmode_parameters,
@@ -69,8 +71,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_node_sets_constraints_fixed(inpfile)
         if self.displacement_objects:
             self.write_node_sets_constraints_displacement(inpfile)
+        if self.contact_objects:
+            self.write_surfaces_contraints_contact(inpfile)
         self.write_materials(inpfile)
         self.write_femelementsets(inpfile)
+        if self.contact_objects:
+            self.write_constraints_contact(inpfile)
         self.write_step_begin(inpfile)
         if self.fixed_objects:
             self.write_constraints_fixed(inpfile)
@@ -151,6 +157,30 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
+
+    def write_surfaces_contraints_contact(self, f):
+        # get surface nodes and write them to file
+        f.write('\n***********************************************************\n')
+        f.write('** Surfaces for contact constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        obj = 0
+        for femobj in self.contact_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            contact_obj = femobj['Object']
+            cnt = 0
+            obj = obj + 1
+            for o, elem_tup in contact_obj.References:
+                for elem in elem_tup:
+                    ref_shape = o.Shape.getElement(elem)
+                    cnt = cnt + 1
+                    if ref_shape.ShapeType == 'Face':
+                        if cnt == 1:
+                            name = "DEP" + str(obj)
+                        else:
+                            name = "IND" + str(obj)
+                        f.write('*SURFACE, NAME =' + name + '\n')
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
+                        for i in v:
+                            f.write("{},S{}\n".format(i[0], i[1]))
 
     def write_materials(self, f):
         f.write('\n***********************************************************\n')
@@ -285,6 +315,28 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 elif not disp_obj.rotzFree:
                     f.write(disp_obj_name + ',6,6,' + str(disp_obj.zRotation) + '\n')
         f.write('\n')
+
+    def write_constraints_contact(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Contact Constraints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        obj = 0
+        for femobj in self.contact_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            obj = obj + 1
+            contact_obj = femobj['Object']
+            f.write('*CONTACT PAIR, INTERACTION=INT' + str(obj) + ',TYPE=SURFACE TO SURFACE\n')
+            ind_surf = "IND" + str(obj)
+            dep_surf = "DEP" + str(obj)
+            f.write(dep_surf + ',' + ind_surf + '\n')
+            f.write('*SURFACE INTERACTION, NAME=INT' + str(obj) + '\n')
+            f.write('*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n')
+            slope = contact_obj.Slope
+            f.write(str(slope) + ' \n')
+            friction = contact_obj.Friction
+            if friction > 0:
+                f.write('*FRICTION \n')
+                stick = (slope / 10.0)
+                f.write(str(friction) + ', ' + str(stick) + ' \n')
 
     def write_constraints_selfweight(self, f):
         f.write('\n***********************************************************\n')
