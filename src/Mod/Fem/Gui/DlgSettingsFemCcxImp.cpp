@@ -52,6 +52,7 @@ void DlgSettingsFemCcxImp::saveSettings()
     sb_ccx_numcpu->onSave();         //Number of CPUs
     cmb_solver->onSave();
     cb_ccx_non_lin_geom->onSave();
+    cb_use_iterations_param->onSave();
 
     cb_static->onSave();
     sb_ccx_max_iterations->onSave(); //Max number of iterations
@@ -73,6 +74,7 @@ void DlgSettingsFemCcxImp::loadSettings()
     sb_ccx_numcpu->onRestore();         //Number of CPUs
     cmb_solver->onRestore();
     cb_ccx_non_lin_geom->onRestore();
+    cb_use_iterations_param->onRestore();
 
     cb_static->onRestore();
     sb_ccx_max_iterations->onRestore(); //Max number of iterations
