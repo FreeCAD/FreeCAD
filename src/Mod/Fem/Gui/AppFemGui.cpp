@@ -52,6 +52,9 @@
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
 #include "ViewProviderFemConstraintDisplacement.h"
+#include "ViewProviderFemConstraintTemperature.h"
+#include "ViewProviderFemConstraintHeatflux.h"
+#include "ViewProviderFemConstraintInitialTemperature.h"
 #include "ViewProviderFemConstraintPlaneRotation.h"
 #include "ViewProviderFemConstraintContact.h"
 #include "ViewProviderResult.h"
@@ -119,6 +122,9 @@ PyMODINIT_FUNC initFemGui()
     FemGui::ViewProviderFemConstraintGear         ::init();
     FemGui::ViewProviderFemConstraintPulley       ::init();
     FemGui::ViewProviderFemConstraintDisplacement ::init();
+    FemGui::ViewProviderFemConstraintHeatflux     ::init();
+    FemGui::ViewProviderFemConstraintTemperature  ::init();
+    FemGui::ViewProviderFemConstraintInitialTemperature  ::init();
     FemGui::ViewProviderFemConstraintPlaneRotation::init();
     FemGui::ViewProviderFemConstraintContact      ::init();
     FemGui::ViewProviderResult                    ::init();
