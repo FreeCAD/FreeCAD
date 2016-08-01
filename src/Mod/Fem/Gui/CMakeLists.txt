@@ -64,6 +64,7 @@ set(FemGui_MOC_HDRS
     TaskFemConstraintGear.h
     TaskFemConstraintPulley.h
     TaskFemConstraintDisplacement.h
+    TaskFemConstraintContact.h    
     TaskTetParameter.h
     TaskAnalysisInfo.h
     TaskDriver.h
@@ -90,6 +91,7 @@ set(FemGui_UIC_SRCS
     TaskFemConstraintForce.ui
     TaskFemConstraintPressure.ui
     TaskFemConstraintDisplacement.ui
+    TaskFemConstraintContact.ui
     TaskTetParameter.ui
     TaskAnalysisInfo.ui
     TaskDriver.ui
@@ -135,6 +137,9 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintDisplacement.ui
     TaskFemConstraintDisplacement.cpp
     TaskFemConstraintDisplacement.h
+    TaskFemConstraintContact.ui
+    TaskFemConstraintContact.cpp
+    TaskFemConstraintContact.h
 )
 SOURCE_GROUP("Constraint-Dialogs" FILES ${FemGui_DLG_SRCS})
 
@@ -179,6 +184,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintPulley.h
     ViewProviderFemConstraintDisplacement.cpp
     ViewProviderFemConstraintDisplacement.h
+    ViewProviderFemConstraintContact.cpp
+    ViewProviderFemConstraintContact.h
     ViewProviderResult.cpp
     ViewProviderResult.h
 )
