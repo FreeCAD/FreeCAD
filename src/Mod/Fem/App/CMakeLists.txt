@@ -83,7 +83,6 @@ SET(FemScripts_SRCS
     _CommandShellThickness.py
     _CommandSolverCalculix.py
     _CommandSolverZ88.py
-    _FemAnalysis.py
     _FemBeamSection.py
     _FemConstraintSelfWeight.py
     _FemShellThickness.py
@@ -95,7 +94,6 @@ SET(FemScripts_SRCS
     _TaskPanelFemSolverCalculix.py
     _TaskPanelMechanicalMaterial.py
     _TaskPanelShowResult.py
-    _ViewProviderFemAnalysis.py
     _ViewProviderFemBeamSection.py
     _ViewProviderFemConstraintSelfWeight.py
     _ViewProviderFemShellThickness.py
