@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>518</height>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,20 +17,140 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
+      <widget class="QGroupBox" name="gb_calculix">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="title">
+        <string>CalculiX</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetNoConstraint</enum>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="Gui::PrefCheckBox" name="cb_int_editor">
+            <property name="text">
+             <string>Use internal editor for .inp files</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>UseInternalEditor</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gl_calculix">
+            <item row="2" column="0">
+             <widget class="QLabel" name="l_ext_editor">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>External editor:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="Gui::PrefFileChooser" name="fc_ext_editor" native="true">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>ExternalEditorPath</cstring>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="Gui::PrefFileChooser" name="fc_ccx_binary" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="sizeIncrement">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Leave blank to use default CalculiX ccx binary file</string>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>ccxBinaryPath</cstring>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="l_ccx_binary">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>ccx binary</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QGroupBox" name="gb_calculix_anpreferences">
        <property name="title">
-        <string>Solver preferences</string>
+        <string>Solver defaults</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_1">
         <item>
          <layout class="QGridLayout" name="gl_ccx_solver">
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_ccx_numcpu">
-            <property name="text">
-             <string>Number of CPU's to use (Spooles only)</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
            <widget class="Gui::PrefSpinBox" name="sb_ccx_numcpu">
             <property name="minimum">
@@ -127,27 +247,64 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="l_hide_constraint">
+          <item row="0" column="0">
+           <widget class="QLabel" name="l_ccx_numcpu">
             <property name="text">
-             <string>Hide Constraints when plotting results</string>
+             <string>Number of CPU's to use (Spooles only)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="l_type">
+            <property name="text">
+             <string>Type</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="Gui::PrefCheckBox" name="cb_hide_constraint">
-            <property name="text">
-             <string>Hide</string>
+           <widget class="Gui::PrefComboBox" name="cb_analysis_type">
+            <property name="minimumSize">
+             <size>
+              <width>148</width>
+              <height>0</height>
+             </size>
             </property>
-            <property name="checked">
-             <bool>false</bool>
+            <property name="toolTip">
+             <string>Default type on analysis</string>
             </property>
             <property name="prefEntry" stdset="0">
-             <cstring>HideConstraint</cstring>
+             <cstring>AnalysisType</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
+             <cstring>Mod/Fem</cstring>
             </property>
+            <item>
+             <property name="text">
+              <string>Static</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>:/icons/fem-new-analysis.svg</normaloff>:/icons/fem-new-analysis.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Frequency</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/Fem.qrc">
+               <normaloff>:/icons/fem-frequency-analysis.svg</normaloff>:/icons/fem-frequency-analysis.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Thermomech</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>:/icons/fem-new-analysis.svg</normaloff>:/icons/fem-new-analysis.svg</iconset>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>
@@ -158,7 +315,7 @@
      <item>
       <widget class="QGroupBox" name="thermal_analysis_params">
        <property name="title">
-        <string>Thermo mechanical analysis settings</string>
+        <string>Thermo mechanical defaults</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -284,6 +441,117 @@
        </layout>
       </widget>
      </item>
+     <item>
+      <widget class="QGroupBox" name="gb_solver_params">
+       <property name="title">
+        <string>Frequency defaults</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="1" column="1">
+           <widget class="Gui::PrefSpinBox" name="sb_eigenmode_number">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>10</number>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>NumberOfEigenmode</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="l_eigenmode_number">
+            <property name="text">
+             <string>Eigenmode number</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="l_eigenmode_high_limit">
+            <property name="text">
+             <string>High frequency limit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::PrefDoubleSpinBox" name="dsb_eigenmode_high_limit">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <double>1000000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>1000000.000000000000000</double>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>EigenmodeHighLimit</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="l_eigenmode_low_limit">
+            <property name="text">
+             <string>Low frequency limit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::PrefDoubleSpinBox" name="dsb_eigenmode_low_limit">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1000000.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>10000.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>EigenmodeLowLimit</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="l_hz_2">
+            <property name="text">
+             <string>Hz</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="l_hz">
+            <property name="text">
+             <string>Hz</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -321,6 +589,16 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
