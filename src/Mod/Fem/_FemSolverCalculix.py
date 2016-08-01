@@ -60,9 +60,9 @@ class _FemSolverCalculix():
         else:
             obj.GeometricalNonlinearity = known_geom_nonlinear_types[0]  # linear
 
-        obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
-        noe = ccx_prefs.GetInt("NumberOfEigenmodes", 10)
-        obj.NumberOfEigenmodes = (noe, 1, 100, 1)
+        obj.addProperty("App::PropertyIntegerConstraint", "EigenmodesCount", "Fem", "Number of modes for frequency calculations")
+        noe = ccx_prefs.GetInt("EigenmodesCount", 10)
+        obj.EigenmodesCount = (noe, 1, 100, 1)
 
         obj.addProperty("App::PropertyFloatConstraint", "EigenmodeLowLimit", "Fem", "Low frequency limit for eigenmode calculations")
         # Not yet in prefs, so it will always default to 0.0
@@ -73,21 +73,21 @@ class _FemSolverCalculix():
         ehl = ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
-        obj.addProperty("App::PropertyIntegerConstraint", "Maxiterations", "Fem", "Number of iterations allowed before stopping jobs")
+        obj.addProperty("App::PropertyIntegerConstraint", "IterationsMaximum", "Fem", "Number of iterations allowed before stopping jobs")
         niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
-        obj.Maxiterations = (niter)
+        obj.IterationsMaximum = niter
 
-        obj.addProperty("App::PropertyFloatConstraint", "InitialTimeStep", "Fem", "Initial time steps")
-        ini = ccx_prefs.GetFloat("AnalysisInitialTimeStep", 1.0)
-        obj.InitialTimeStep = (ini)
+        obj.addProperty("App::PropertyFloatConstraint", "TimeInitialStep", "Fem", "Initial time steps")
+        ini = ccx_prefs.GetFloat("AnalysisTimeInitialStep", 1.0)
+        obj.TimeInitialStep = ini
 
-        obj.addProperty("App::PropertyFloatConstraint", "EndTime", "Fem", "Initial time steps")
+        obj.addProperty("App::PropertyFloatConstraint", "TimeEnd", "Fem", "End time analysis")
         eni = ccx_prefs.GetFloat("AnalysisTime", 1.0)
-        obj.EndTime = (eni)
+        obj.TimeEnd = eni
 
         obj.addProperty("App::PropertyBool", "SteadyState", "Fem", "Run steady state or transient analysis")
         sted = ccx_prefs.GetBool("StaticAnalysis", True)
-        obj.SteadyState = (sted)
+        obj.SteadyState = sted
 
         obj.addProperty("App::PropertyBool", "IterationsControlParameterTimeUse", "Fem", "Use the user defined time incrementation control parameter")
         use_non_ccx_iterations_param = ccx_prefs.GetInt("UseNonCcxIterationParam", False)
