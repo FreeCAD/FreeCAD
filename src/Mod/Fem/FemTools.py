@@ -153,6 +153,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
 
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
@@ -189,6 +190,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # set of displacements for the analysis. Updated with update_objects
         # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
         self.displacement_constraints = []
+        ## @var contact_constraints
+        #  set of contact constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintContact" type
+        self.contact_constraints = []
 
         found_solver_for_use = False
         for m in self.analysis.Member:
@@ -235,6 +240,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 displacement_constraint_dict = {}
                 displacement_constraint_dict['Object'] = m
                 self.displacement_constraints.append(displacement_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintContact"):
+                contact_constraint_dict = {}
+                contact_constraint_dict['Object'] = m
+                self.contact_constraints.append(contact_constraint_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
