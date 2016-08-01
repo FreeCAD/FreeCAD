@@ -36,11 +36,11 @@ class AppFemExport ConstraintPlaneRotation : public Fem::Constraint
 public:
     /// Constructor
     ConstraintPlaneRotation(void);
-    
+
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
-    
+
 
     /// recalculate the object
     virtual App::DocumentObjectExecReturn *execute(void);

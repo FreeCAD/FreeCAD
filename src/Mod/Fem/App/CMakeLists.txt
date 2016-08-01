@@ -34,7 +34,7 @@ set(Fem_LIBS
         SMDS
         SMESHDS
     )
-    
+
 if(BUILD_FEM_NETGEN)
     set(Fem_LIBS
         ${Fem_LIBS}
@@ -209,11 +209,11 @@ SET(FemConstraints_SRCS
     FemConstraintPlaneRotation.cpp
     FemConstraintPlaneRotation.h
     FemConstraintContact.cpp
-    FemConstraintContact.h      
+    FemConstraintContact.h
     )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
-if(BUILD_FEM_VTK) 
+if(BUILD_FEM_VTK)
     SET(FemPost_SRCS
         PropertyPostDataObject.h
         PropertyPostDataObject.cpp

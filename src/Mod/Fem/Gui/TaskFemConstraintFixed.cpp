@@ -67,21 +67,21 @@ TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed *C
     action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
     ui->lw_references->addAction(action);
     ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
-    
+
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     this->groupLayout()->addWidget(proxy);
 
 /* Note: */
     // Get the feature data
     Fem::ConstraintFixed* pcConstraint = static_cast<Fem::ConstraintFixed*>(ConstraintView->getObject());
-    
+
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
+
     // Fill data into dialog elements
-    
+
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
@@ -89,7 +89,7 @@ TaskFemConstraintFixed::TaskFemConstraintFixed(ViewProviderFemConstraintFixed *C
     if (Objects.size() > 0) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
-    
+
     //Selection buttons
     connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
     connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
@@ -112,7 +112,7 @@ void TaskFemConstraintFixed::updateUI()
 }
 
 void TaskFemConstraintFixed::addToSelection()
-{	    
+{
 	std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
     if (selection.size()==0){
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
@@ -190,10 +190,10 @@ void TaskFemConstraintFixed::removeFromSelection()
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
             return;
         }
-        
+
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        
+
         for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
             for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
                 itr!= SubElements.end();
@@ -205,7 +205,7 @@ void TaskFemConstraintFixed::removeFromSelection()
             }
         }
     }
-    
+
     std::sort(itemsToDel.begin(),itemsToDel.end());
     while (itemsToDel.size()>0){
         Objects.erase(Objects.begin()+itemsToDel.back());
@@ -215,21 +215,21 @@ void TaskFemConstraintFixed::removeFromSelection()
     //Update UI
     disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     ui->lw_references->clear();
     for (unsigned int j=0;j<Objects.size();j++){
         ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
     }
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
 }
 
 void TaskFemConstraintFixed::setSelection(QListWidgetItem* item){
     std::string docName=ConstraintView->getObject()->getDocument()->getName();
-    
+
     std::string s = item->text().toStdString();
     std::string delimiter = ":";
 
@@ -240,7 +240,7 @@ void TaskFemConstraintFixed::setSelection(QListWidgetItem* item){
     objName = s.substr(0, pos);
     s.erase(0, pos + delimiter.length());
     subName=s;
-    
+
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
@@ -292,7 +292,7 @@ void TaskDlgFemConstraintFixed::open()
 bool TaskDlgFemConstraintFixed::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintFixed* parameters = static_cast<const TaskFemConstraintFixed*>(parameter);   
+    const TaskFemConstraintFixed* parameters = static_cast<const TaskFemConstraintFixed*>(parameter);
     std::string scale = parameters->getScale();  //OvG: determine modified scale
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     return TaskDlgFemConstraint::accept();

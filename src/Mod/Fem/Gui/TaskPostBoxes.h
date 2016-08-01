@@ -39,19 +39,19 @@ class Ui_TaskPostWarpVector;
 class Ui_TaskPostCut;
 
 
-namespace FemGui { 
+namespace FemGui {
 
 class TaskPostBox : public Gui::TaskView::TaskBox {
-    
+
     Q_OBJECT
-    
+
 public:
     TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget *parent = 0);
     ~TaskPostBox();
-    
-    virtual void applyPythonCode() = 0; 
+
+    virtual void applyPythonCode() = 0;
     virtual bool isGuiTaskOnly() {return false;}; //return true if only gui properties are manipulated
-        
+
 protected:
     App::DocumentObject*                getObject() {return m_object;};
     template<typename T>
@@ -59,10 +59,10 @@ protected:
     Gui::ViewProviderDocumentObject*    getView() {return m_view;};
     template<typename T>
     T* getTypedView() {return static_cast<T*>(m_view);};
-    
+
     bool autoApply();
     void recompute();
-    
+
     static void updateEnumerationList(App::PropertyEnumeration&, QComboBox* box);
 
 private:
@@ -92,12 +92,12 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button 
+    /// is called by the framework if the user presses the help button
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
     virtual void modifyStandardButtons(QDialogButtonBox*);
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
 
 protected:
@@ -116,48 +116,48 @@ public:
 
     virtual void applyPythonCode();
     virtual bool isGuiTaskOnly() {return true;};
-    
+
 private Q_SLOTS:
     void on_Representation_activated(int i);
     void on_Field_activated(int i);
     void on_VectorMode_activated(int i);
     void on_Transparency_valueChanged(int i);
-    
-private:  
+
+private:
     QWidget* proxy;
     Ui_TaskPostDisplay* ui;
 };
 
 class TaskPostFunction : public TaskPostBox {
-  
+
     Q_OBJECT
-    
+
 public:
     TaskPostFunction(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
     virtual ~TaskPostFunction();
-    
+
     virtual void applyPythonCode();
 };
 
 class TaskPostClip : public TaskPostBox {
-    
+
     Q_OBJECT
-    
+
 public:
     TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = 0);
     virtual ~TaskPostClip();
-    
+
     virtual void applyPythonCode();
-    
+
 private Q_SLOTS:
     void on_CreateButton_triggered(QAction* a);
     void on_FunctionBox_currentIndexChanged(int idx);
     void on_InsideOut_toggled(bool val);
     void on_CutCells_toggled(bool val);
-    
+
 private:
     void collectImplicitFunctions();
-    
+
     App::PropertyLink* m_functionProperty;
     QWidget* proxy;
     Ui_TaskPostClip* ui;
@@ -165,43 +165,43 @@ private:
 };
 
 class TaskPostScalarClip : public TaskPostBox {
-    
+
     Q_OBJECT
-    
+
 public:
     TaskPostScalarClip(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
     virtual ~TaskPostScalarClip();
-    
+
     virtual void applyPythonCode();
-    
+
 private Q_SLOTS:
     void on_Slider_valueChanged(int v);
     void on_Value_valueChanged(double v);
     void on_Scalar_currentIndexChanged(int idx);
     void on_InsideOut_toggled(bool val);
-    
+
 private:
     QWidget* proxy;
     Ui_TaskPostScalarClip* ui;
 };
 
 class TaskPostWarpVector : public TaskPostBox {
-    
+
     Q_OBJECT
-    
+
 public:
     TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
     virtual ~TaskPostWarpVector();
-    
+
     virtual void applyPythonCode();
-    
+
 private Q_SLOTS:
     void on_Slider_valueChanged(int v);
     void on_Value_valueChanged(double v);
     void on_Max_valueChanged(double v);
     void on_Min_valueChanged(double v);
     void on_Vector_currentIndexChanged(int idx);
-    
+
 private:
     QWidget* proxy;
     Ui_TaskPostWarpVector* ui;
@@ -210,22 +210,22 @@ private:
 
 
 class TaskPostCut : public TaskPostBox {
-    
+
     Q_OBJECT
-    
+
 public:
     TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = 0);
     virtual ~TaskPostCut();
-    
+
     virtual void applyPythonCode();
-    
+
 private Q_SLOTS:
     void on_CreateButton_triggered(QAction* a);
     void on_FunctionBox_currentIndexChanged(int idx);
-    
+
 private:
     void collectImplicitFunctions();
-    
+
     App::PropertyLink* m_functionProperty;
     QWidget* proxy;
     Ui_TaskPostCut* ui;

@@ -124,36 +124,36 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
             //Define base and normal directions
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);//normal
- 
+
  /* Note:
   * This next part draws a temperature gauge in 3D to indicate the constraint visually.
-  * This serves as an example. Change or remove as needs be. 
+  * This serves as an example. Change or remove as needs be.
   * It is possible to draw almost any basic 3D shape. See inventor's documentation
   * This gets drawn at every point.
   *  */
-            
+
 			///Visual indication
 			//define separator
 			SoSeparator* sep = new SoSeparator();
-			
+
 			///draw a temp gauge,with sphere and a cylinder
 			//first move to correct postion
 			SoTranslation* trans = new SoTranslation();
 			SbVec3f newPos=base+scaledradius*dir*0.08;
 			trans->translation.setValue(newPos);
 			sep->addChild(trans);
-			
+
 			//adjust orientation
 			SoRotation* rot = new SoRotation();
 			rot->rotation.setValue(SbRotation(SbVec3f(1,0,0),dir));
 			sep->addChild(rot);
-			
+
 			//define color of shape
 			SoMaterial* myMaterial = new SoMaterial;
 			myMaterial->diffuseColor.set1Value(0,SbColor(0,1,0));//RGB
 			//myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
 			sep->addChild(myMaterial);
-			
+
 			//draw a sphere
 			//SoSphere* sph = new SoSphere();
 			//sph->radius.setValue(scaledradius*0.75);
@@ -180,9 +180,9 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
 			//cyl2->height.setValue(scaledheight*0.25);
 			//cyl2->radius.setValue(scaledradius*0.375);
 			//sep->addChild(cyl2);
-			
+
 			pShapeSep->addChild(sep);
-			
+
             n++;
         }
     }

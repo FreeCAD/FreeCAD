@@ -69,20 +69,20 @@ set(FemGui_MOC_HDRS
     TaskFemConstraintHeatflux.h
     TaskFemConstraintInitialTemperature.h
     TaskFemConstraintPlaneRotation.h
-    TaskFemConstraintContact.h    
+    TaskFemConstraintContact.h
     TaskTetParameter.h
     TaskAnalysisInfo.h
     TaskDriver.h
     TaskDlgAnalysis.h
     TaskDlgMeshShapeNetgen.h
 )
-if(BUILD_FEM_VTK) 
+if(BUILD_FEM_VTK)
     set(FemGui_MOC_HDRS
         ${FemGui_MOC_HDRS}
         TaskPostBoxes.h
         ViewProviderFemPostFunction.h
     )
-endif(BUILD_FEM_VTK) 
+endif(BUILD_FEM_VTK)
 fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
@@ -241,7 +241,7 @@ SET(FemGui_SRCS_TaskBoxes
     TaskTetParameter.cpp
     TaskTetParameter.h
 )
-if(BUILD_FEM_VTK) 
+if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_TaskBoxes
         ${FemGui_SRCS_TaskBoxes}
         PlaneWidget.ui
@@ -254,7 +254,7 @@ if(BUILD_FEM_VTK)
         TaskPostBoxes.h
         TaskPostBoxes.cpp
     )
-endif(BUILD_FEM_VTK) 
+endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 
 SET(FemGui_SRCS_TaskDlg
@@ -285,7 +285,7 @@ SET(FemGui_SRCS_Module
 )
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
 
-if(BUILD_FEM_VTK) 
+if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_Post
         ViewProviderFemPostObject.h
         ViewProviderFemPostObject.cpp

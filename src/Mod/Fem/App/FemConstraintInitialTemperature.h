@@ -39,14 +39,14 @@ class AppFemExport ConstraintInitialTemperature : public Fem::Constraint
 public:
     /// Constructor
     ConstraintInitialTemperature(void);
-    
+
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 
     //Temperature parameters
-    App::PropertyFloat initialTemperature; 
-    
+    App::PropertyFloat initialTemperature;
+
 
     /// recalculate the object
     virtual App::DocumentObjectExecReturn *execute(void);
