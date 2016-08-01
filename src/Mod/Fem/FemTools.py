@@ -257,6 +257,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         if not self.mesh:
             message += "No mesh object defined in the analysis\n"
+        if self.mesh:
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount > 0:
+                message += "FEM mesh has no volume elements, either define a shell thicknesses or provide a FEM mesh with volume elements.\n"
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount > 0:
+                message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
+                message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
         if not self.materials:
             message += "No material object defined in the analysis\n"
         has_no_references = False
@@ -272,12 +279,20 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
                 message += "Neither constraint force nor constraint pressure or a constraint selfweight defined in the static analysis\n"
         if self.beam_sections:
+            if self.shell_thicknesses:
+                # this needs to be checked only once either here or in shell_thicknesses
+                message += "Beam Sections and shell thicknesses in one analysis is not supported at the moment.\n"
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
                     if has_no_references is True:
                         message += "More than one beam section has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.FaceCount > 0 or self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Beam sections defined but FEM mesh has volume or shell elements.\n"
+                if self.mesh.FemMesh.EdgeCount == 0:
+                    message += "Beam sections defined but FEM mesh has no edge elements.\n"
         if self.shell_thicknesses:
             has_no_references = False
             for s in self.shell_thicknesses:
@@ -285,6 +300,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     if has_no_references is True:
                         message += "More than one shell thickness has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Shell thicknesses defined but FEM mesh has volume elements.\n"
+                if self.mesh.FemMesh.FaceCount == 0:
+                    message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
         return message
 
     ## Sets eigenmode parameters for CalculiX frequency analysis
