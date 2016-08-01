@@ -190,6 +190,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # set of displacements for the analysis. Updated with update_objects
         # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
         self.displacement_constraints = []
+        ## @var planerotation_constraints
+        #  set of plane rotation constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintPlaneRotation" type
+        self.planerotation_constraints = []
         ## @var contact_constraints
         #  set of contact constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintContact" type
@@ -240,6 +244,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 displacement_constraint_dict = {}
                 displacement_constraint_dict['Object'] = m
                 self.displacement_constraints.append(displacement_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
+                planerotation_constraint_dict = {}
+                planerotation_constraint_dict['Object'] = m
+                self.planerotation_constraints.append(planerotation_constraint_dict)
             elif m.isDerivedFrom("Fem::ConstraintContact"):
                 contact_constraint_dict = {}
                 contact_constraint_dict['Object'] = m
