@@ -47,7 +47,7 @@ class _FemSolverCalculix():
 
         obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
         obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types
-        analysis_type = fem_prefs.GetInt("AnalysisType", 0)
+        analysis_type = ccx_prefs.GetInt("AnalysisType", 0)
         obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types[analysis_type]
 
         known_geom_nonlinear_types = ["linear", "nonlinear"]
@@ -60,16 +60,16 @@ class _FemSolverCalculix():
             obj.GeometricalNonlinearity = known_geom_nonlinear_types[0]  # linear
 
         obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
-        noe = fem_prefs.GetInt("NumberOfEigenmodes", 10)
+        noe = ccx_prefs.GetInt("NumberOfEigenmodes", 10)
         obj.NumberOfEigenmodes = (noe, 1, 100, 1)
 
         obj.addProperty("App::PropertyFloatConstraint", "EigenmodeLowLimit", "Fem", "Low frequency limit for eigenmode calculations")
         # Not yet in prefs, so it will always default to 0.0
-        ell = fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
+        ell = ccx_prefs.GetFloat("EigenmodeLowLimit", 0.0)
         obj.EigenmodeLowLimit = (ell, 0.0, 1000000.0, 10000.0)
 
         obj.addProperty("App::PropertyFloatConstraint", "EigenmodeHighLimit", "Fem", "High frequency limit for eigenmode calculations")
-        ehl = fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
+        ehl = ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
     def execute(self, obj):
