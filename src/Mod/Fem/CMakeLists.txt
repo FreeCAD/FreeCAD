@@ -36,8 +36,6 @@ INSTALL(
         TaskPanelShowResult.ui
 
         FemAnalysis.py
-        _FemAnalysis.py
-        _ViewProviderFemAnalysis.py
         _CommandAnalysis.py
 
         FemBeamSection.py

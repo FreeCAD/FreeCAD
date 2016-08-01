@@ -30,9 +30,4 @@ __url__ = "http://www.freecadweb.org"
 def makeFemAnalysis(name):
     '''makeFemAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
-    import _FemAnalysis
-    _FemAnalysis._FemAnalysis(obj)
-    import _ViewProviderFemAnalysis
-    _ViewProviderFemAnalysis._ViewProviderFemAnalysis()
-    # FreeCAD.ActiveDocument.recompute()
     return obj
