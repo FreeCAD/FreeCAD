@@ -200,6 +200,8 @@ SET(FemConstraints_SRCS
     FemConstraintPulley.h
     FemConstraintDisplacement.h
     FemConstraintDisplacement.cpp
+    FemConstraintPlaneRotation.cpp
+    FemConstraintPlaneRotation.h
     FemConstraintContact.cpp
     FemConstraintContact.h      
     )
