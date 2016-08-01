@@ -283,8 +283,8 @@
               <string>Static</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>:/icons/fem-new-analysis.svg</normaloff>:/icons/fem-new-analysis.svg</iconset>
+              <iconset resource="Resources/Fem.qrc">
+               <normaloff>:/icons/fem-static-analysis.svg</normaloff>:/icons/fem-static-analysis.svg</iconset>
              </property>
             </item>
             <item>
@@ -301,8 +301,8 @@
               <string>Thermomech</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>:/icons/fem-new-analysis.svg</normaloff>:/icons/fem-new-analysis.svg</iconset>
+              <iconset resource="Resources/Fem.qrc">
+               <normaloff>:/icons/fem-thermomechanical-analysis.svg</normaloff>:/icons/fem-thermomechanical-analysis.svg</iconset>
              </property>
             </item>
            </widget>
