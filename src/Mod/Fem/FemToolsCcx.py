@@ -153,9 +153,14 @@ class FemToolsCcx(FemTools.FemTools):
         self.ccx_stderr = ""
         if self.inp_file_name != "" and self.ccx_binary_present:
             ont_backup = os.environ.get('OMP_NUM_THREADS')
+            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+            num_cpu_pref = self.ccx_prefs.GetInt("AnalysisNumCPUs", 1)  # If number of CPU's specified
             if not ont_backup:
-                ont_backup = ""
-            _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
+                ont_backup = str(num_cpu_pref)
+            if num_cpu_pref > 1:
+                _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref)) # if user picked a number use that instead
+            else:
+                _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
             # change cwd because ccx may crash if directory has no write permission
             # there is also a limit of the length of file names so jump to the document directory
             cwd = QtCore.QDir.currentPath()
