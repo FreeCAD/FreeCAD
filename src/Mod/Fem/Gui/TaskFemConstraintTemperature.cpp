@@ -70,24 +70,24 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
     ui->lw_references->addAction(action);
     ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
-    
+
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
     Fem::ConstraintTemperature* pcConstraint = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
-    
+
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
+
     // Fill data into dialog elements
     ui->if_temperature->setMinimum(0);
     ui->if_temperature->setMaximum(FLOAT_MAX);
     Base::Quantity t = Base::Quantity(pcConstraint->Temperature.getValue(), Base::Unit::Temperature);
     ui->if_temperature->setValue(t);
-    
+
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
@@ -95,7 +95,7 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     if (Objects.size() > 0) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
-    
+
     //Selection buttons
     connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
     connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
@@ -128,13 +128,13 @@ void TaskFemConstraintTemperature::addToSelection()
     Fem::ConstraintTemperature* pcConstraint = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
+
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
         if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
             return;
         }
-        
+
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
         for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
@@ -180,10 +180,10 @@ void TaskFemConstraintTemperature::removeFromSelection()
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
             return;
         }
-        
+
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        
+
         for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
             for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
                 itr!= SubElements.end();
@@ -195,7 +195,7 @@ void TaskFemConstraintTemperature::removeFromSelection()
             }
         }
     }
-    
+
     std::sort(itemsToDel.begin(),itemsToDel.end());
     while (itemsToDel.size()>0){
         Objects.erase(Objects.begin()+itemsToDel.back());
@@ -205,21 +205,21 @@ void TaskFemConstraintTemperature::removeFromSelection()
     //Update UI
     disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     ui->lw_references->clear();
     for (unsigned int j=0;j<Objects.size();j++){
         ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
     }
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
 }
 
 void TaskFemConstraintTemperature::setSelection(QListWidgetItem* item){
     std::string docName=ConstraintView->getObject()->getDocument()->getName();
-    
+
     std::string s = item->text().toStdString();
     std::string delimiter = ":";
 
@@ -230,7 +230,7 @@ void TaskFemConstraintTemperature::setSelection(QListWidgetItem* item){
     objName = s.substr(0, pos);
     s.erase(0, pos + delimiter.length());
     subName=s;
-    
+
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
@@ -252,7 +252,7 @@ const std::string TaskFemConstraintTemperature::getReferences() const
 double TaskFemConstraintTemperature::get_temperature() const{
     Base::Quantity temperature =  ui->if_temperature->getQuantity();
     double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
-    return temperature_in_kelvin; 
+    return temperature_in_kelvin;
 }
 
 void TaskFemConstraintTemperature::changeEvent(QEvent *e)
@@ -299,7 +299,7 @@ bool TaskDlgFemConstraintTemperature::accept()
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Temperature = %f",
             name.c_str(), parameterTemperature->get_temperature());
-            
+
         std::string scale = parameterTemperature->getScale();  //OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }

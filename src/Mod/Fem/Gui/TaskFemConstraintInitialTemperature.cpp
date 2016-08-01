@@ -65,14 +65,14 @@ TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(ViewPro
     ui = new Ui_TaskFemConstraintInitialTemperature();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
-    
+
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
-    Fem::ConstraintInitialTemperature* pcConstraint = static_cast<Fem::ConstraintInitialTemperature*>(ConstraintView->getObject());   
+    Fem::ConstraintInitialTemperature* pcConstraint = static_cast<Fem::ConstraintInitialTemperature*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
+
     // Fill data into dialog elements
     ui->if_temperature->setMinimum(0);
     ui->if_temperature->setMaximum(FLOAT_MAX);
@@ -127,7 +127,7 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.initialTemperature = %f",
             name.c_str(), parameterTemperature->get_temperature());
-            
+
         std::string scale = parameterTemperature->getScale();  //OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }

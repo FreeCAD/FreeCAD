@@ -55,7 +55,7 @@ public:
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
-    
+
     void addToSelection();
     void removeFromSelection();
     void setSelection(QListWidgetItem* item);
@@ -67,7 +67,7 @@ private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintTemperature* ui;
-    
+
 };
 
 class TaskDlgFemConstraintTemperature : public TaskDlgFemConstraint

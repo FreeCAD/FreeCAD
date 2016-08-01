@@ -53,7 +53,7 @@ public:
     const vtkSmartPointer<vtkDataObject>& getValue(void) const;
     /// check if we hold a dataset or a dataobject (which would mean a composite data structure)
     bool isDataSet();
-    bool isComposite();    
+    bool isComposite();
     int  getDataType();
     //@}
 

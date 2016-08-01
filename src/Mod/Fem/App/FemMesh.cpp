@@ -91,7 +91,7 @@ FemMesh::FemMesh()
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
-{    
+{
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
 }
@@ -121,7 +121,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     _Mtrx = mesh._Mtrx;
 
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
-    
+
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -454,7 +454,7 @@ std::list<int> FemMesh::getFacesByFace(const TopoDS_Face &face) const
         // For curved faces it is possible that a volume contributes more than one face
         if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
             result.push_back(face->GetID());
-        }        
+        }
     }
 
     result.sort();

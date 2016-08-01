@@ -70,7 +70,7 @@ private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintContact* ui;
-    
+
 };
 
 class TaskDlgFemConstraintContact : public TaskDlgFemConstraint

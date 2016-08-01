@@ -36,20 +36,20 @@ class AppFemExport ConstraintContact : public Fem::Constraint
 public:
     /// Constructor
     ConstraintContact(void);
-    
+
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
-    
+
 /*Note*/
     //Constraint parameters
     /******
-     * Add the constraint parameters here, the variables or data 
-     * that needs to be eventually send over to the calculix input file. 
+     * Add the constraint parameters here, the variables or data
+     * that needs to be eventually send over to the calculix input file.
      * This is only the definitions of the variables
      ******/
     //ex.
-    App::PropertyFloat Slope; 
+    App::PropertyFloat Slope;
     App::PropertyFloat Friction;
 
     //etc

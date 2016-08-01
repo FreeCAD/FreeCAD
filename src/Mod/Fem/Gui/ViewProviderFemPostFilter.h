@@ -37,9 +37,9 @@ public:
     /// constructor.
     ViewProviderFemPostClip();
     ~ViewProviderFemPostClip();
-    
+
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);    
+    virtual void setupTaskDialog(TaskDlgPost* dlg);
 };
 
 class FemGuiExport ViewProviderFemPostScalarClip : public ViewProviderFemPostObject {
@@ -50,9 +50,9 @@ public:
     /// constructor.
     ViewProviderFemPostScalarClip();
     ~ViewProviderFemPostScalarClip();
-    
+
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);    
+    virtual void setupTaskDialog(TaskDlgPost* dlg);
 };
 
 class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObject {
@@ -63,9 +63,9 @@ public:
     /// constructor.
     ViewProviderFemPostWarpVector();
     ~ViewProviderFemPostWarpVector();
-    
+
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);    
+    virtual void setupTaskDialog(TaskDlgPost* dlg);
 };
 
 class FemGuiExport ViewProviderFemPostCut : public ViewProviderFemPostObject {
@@ -76,9 +76,9 @@ public:
     /// constructor.
     ViewProviderFemPostCut();
     ~ViewProviderFemPostCut();
-    
+
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);    
+    virtual void setupTaskDialog(TaskDlgPost* dlg);
 };
 
 } //namespace FemGui

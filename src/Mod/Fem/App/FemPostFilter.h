@@ -47,129 +47,129 @@ public:
     /// Constructor
     FemPostFilter(void);
     virtual ~FemPostFilter();
-    
+
     App::PropertyLink Input;
 
     virtual App::DocumentObjectExecReturn* execute(void);
-    
-protected:       
+
+protected:
     vtkDataObject* getInputData();
-    
+
     //pipeline handling for derived filter
     struct FilterPipeline {
        vtkSmartPointer<vtkAlgorithm>                    source, target;
        std::vector<vtkSmartPointer<vtkAlgorithm> >      algorithmStorage;
     };
-    
+
     void addFilterPipeline(const FilterPipeline& p, std::string name);
     void setActiveFilterPipeline(std::string name);
-    FilterPipeline& getFilterPipeline(std::string name);    
+    FilterPipeline& getFilterPipeline(std::string name);
 private:
-    //handling of multiple pipelines which can be the filter 
+    //handling of multiple pipelines which can be the filter
     std::map<std::string, FilterPipeline> m_pipelines;
     std::string m_activePipeline;
 };
 
 class AppFemExport FemPostClipFilter : public FemPostFilter {
-  
+
     PROPERTY_HEADER(Fem::FemPostClipFilter);
-    
+
 public:
-    FemPostClipFilter(void);        
+    FemPostClipFilter(void);
     virtual ~FemPostClipFilter();
-    
+
     App::PropertyLink           Function;
     App::PropertyBool           InsideOut;
     App::PropertyBool           CutCells;
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostClip";
     }
     virtual short int mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
-    
+
 protected:
     virtual void onChanged(const App::Property* prop);
-    
-private:    
+
+private:
     vtkSmartPointer<vtkTableBasedClipDataSet>   m_clipper;
     vtkSmartPointer<vtkExtractGeometry>         m_extractor;
 };
 
 
 class AppFemExport FemPostScalarClipFilter : public FemPostFilter {
-  
+
     PROPERTY_HEADER(Fem::FemPostScalarClipFilter);
-    
+
 public:
-    FemPostScalarClipFilter(void);        
+    FemPostScalarClipFilter(void);
     virtual ~FemPostScalarClipFilter();
 
     App::PropertyBool            InsideOut;
     App::PropertyFloatConstraint Value;
     App::PropertyEnumeration     Scalars;
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostScalarClip";
     }
     virtual short int mustExecute(void) const;
-    
+
 protected:
     virtual App::DocumentObjectExecReturn* execute(void);
     virtual void onChanged(const App::Property* prop);
     void setConstraintForField();
-    
-private:    
+
+private:
     vtkSmartPointer<vtkTableBasedClipDataSet>   m_clipper;
     App::Enumeration                            m_scalarFields;
     App::PropertyFloatConstraint::Constraints   m_constraints;
 };
 
 class AppFemExport FemPostWarpVectorFilter : public FemPostFilter {
-  
+
     PROPERTY_HEADER(Fem::FemPostWarpVectorFilter);
-    
+
 public:
-    FemPostWarpVectorFilter(void);        
+    FemPostWarpVectorFilter(void);
     virtual ~FemPostWarpVectorFilter();
 
     App::PropertyFloat        Factor;
     App::PropertyEnumeration  Vector;
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostWarpVector";
     }
     virtual short int mustExecute(void) const;
-    
+
 protected:
     virtual App::DocumentObjectExecReturn* execute(void);
     virtual void onChanged(const App::Property* prop);
-    
-private:    
+
+private:
     vtkSmartPointer<vtkWarpVector>   m_warp;
     App::Enumeration                 m_vectorFields;
 };
 
 class AppFemExport FemPostCutFilter : public FemPostFilter {
-  
+
     PROPERTY_HEADER(Fem::FemPostCutFilter);
-    
+
 public:
-    FemPostCutFilter(void);        
+    FemPostCutFilter(void);
     virtual ~FemPostCutFilter();
 
     App::PropertyLink  Function;
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostCut";
     }
     virtual short int mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
-    
+
 protected:
     virtual void onChanged(const App::Property* prop);
-    
-private:    
+
+private:
     vtkSmartPointer<vtkCutter>   m_cutter;
 };
 

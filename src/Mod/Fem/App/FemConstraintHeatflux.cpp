@@ -43,10 +43,10 @@ PROPERTY_SOURCE(Fem::ConstraintHeatflux, Fem::Constraint);
 
 ConstraintHeatflux::ConstraintHeatflux()
 {
-    ADD_PROPERTY(AmbientTemp,(0.0)); 
-    /*ADD_PROPERTY(FaceTemp,(0.0));*/ 
-    ADD_PROPERTY(FilmCoef,(0.0)); 
-    
+    ADD_PROPERTY(AmbientTemp,(0.0));
+    /*ADD_PROPERTY(FaceTemp,(0.0));*/
+    ADD_PROPERTY(FilmCoef,(0.0));
+
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintHeatflux",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Points where symbols are drawn");
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintHeatflux",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
