@@ -89,6 +89,38 @@ class _FemSolverCalculix():
         sted = ccx_prefs.GetBool("StaticAnalysis", True)
         obj.SteadyState = (sted)
 
+        obj.addProperty("App::PropertyBool", "IterationsControlParameterTimeUse", "Fem", "Use the user defined time incrementation control parameter")
+        obj.IterationsControlParameterTimeUse = False
+
+        ccx_default_time_incrementation_control_parameter = {
+            # iteration parameter
+            'I_0': 4,
+            'I_R': 8,
+            'I_P': 9,
+            'I_C': 200,  # ccx default = 16
+            'I_L': 10,
+            'I_G': 400,  # ccx default = 4
+            'I_S': None,
+            'I_A': 200,  # ccx default = 5
+            'I_J': None,
+            'I_T': None,
+            # cutback parameter
+            'D_f': 0.25,
+            'D_C': 0.5,
+            'D_B': 0.75,
+            'D_A': 0.85,
+            'D_S': None,
+            'D_H': None,
+            'D_D': 1.5,
+            'W_G': None}
+        p = ccx_default_time_incrementation_control_parameter
+        p_iter = '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}'.format(p['I_0'], p['I_R'], p['I_P'], p['I_C'], p['I_L'], p['I_G'], '', p['I_A'], '', '')
+        p_cutb = '{0},{1},{2},{3},{4},{5},{6},{7}'.format(p['D_f'], p['D_C'], p['D_B'], p['D_A'], '', '', p['D_D'], '')
+        obj.addProperty("App::PropertyString", "IterationsControlParameterIter", "Fem", "User defined time incrementation iterations control parameter")
+        obj.IterationsControlParameterIter = p_iter
+        obj.addProperty("App::PropertyString", "IterationsControlParameterCutb", "Fem", "User defined time incrementation cutbacks control parameter")
+        obj.IterationsControlParameterCutb = p_cutb
+
         known_ccx_solver_types = ["default", "spooles", "iterativescaling", "iterativecholesky"]
         obj.addProperty("App::PropertyEnumeration", "MatrixSolverType", "Fem", "Type of solver to use")
         obj.MatrixSolverType = known_ccx_solver_types
