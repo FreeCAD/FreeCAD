@@ -155,12 +155,22 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Materials\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('** Young\'s modulus unit is MPa = N/mm2\n')
+        f.write('** Density\'s unit is t/mm^3\n')
         for femobj in self.material_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             mat_obj = femobj['Object']
-            # get material properties
-            YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
-            YM_in_MPa = YM.getValueAs('MPa')
-            PR = float(mat_obj.Material['PoissonRatio'])
+            # get material properties - Currently in SI units: M/kg/s/Kelvin
+            YM_in_MPa = 1
+            PR = 1
+            density_in_tonne_per_mm3 = 1
+            try:
+                YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
+                YM_in_MPa = YM.getValueAs('MPa')
+            except:
+                FreeCAD.Console.PrintError("No YoungsModulus defined for material: default used\n")
+            try:
+                PR = float(mat_obj.Material['PoissonRatio'])
+            except:
+                FreeCAD.Console.PrintError("No PoissonRatio defined for material: default used\n")
             mat_info_name = mat_obj.Material['Name']
             mat_name = mat_obj.Name
             # write material properties
@@ -168,10 +178,13 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
             f.write('*ELASTIC \n')
             f.write('{0},  {1:.3f}\n'.format(YM_in_MPa, PR))
-            density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
-            density_in_tone_per_mm3 = float(density.getValueAs('t/mm^3'))
+            try:
+                density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
+                density_in_tonne_per_mm3 = float(density.getValueAs('t/mm^3'))
+            except:
+                FreeCAD.Console.PrintError("No Density defined for material: default used\n")
             f.write('*DENSITY \n')
-            f.write('{0:.3e}, \n'.format(density_in_tone_per_mm3))
+            f.write('{0:.3e}, \n'.format(density_in_tonne_per_mm3))
 
     def write_femelementsets(self, f):
         f.write('\n***********************************************************\n')
