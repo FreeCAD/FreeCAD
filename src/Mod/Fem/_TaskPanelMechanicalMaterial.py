@@ -122,7 +122,7 @@ class _TaskPanelMechanicalMaterial:
     def ym_changed(self, value):
         import Units
         # FreeCADs standard unit for stress is kPa
-        old_ym = Units.Quantity(self.material['YoungsModulus'])
+        old_ym = Units.Quantity(self.material['YoungsModulus']).getValueAs("kPa")
         variation = 0.001
         if value:
             if not (1 - variation < float(old_ym) / value < 1 + variation):
@@ -134,15 +134,14 @@ class _TaskPanelMechanicalMaterial:
     def density_changed(self, value):
         import Units
         # FreeCADs standard unit for density is kg/mm^3
-        old_density = Units.Quantity(self.material['Density'])
+        old_density = Units.Quantity(self.material['Density']).getValueAs("kg/m^3")
         variation = 0.001
         if value:
             if not (1 - variation < float(old_density) / value < 1 + variation):
                 # density has changed
                 material = self.material
                 value_in_kg_per_m3 = value * 1e9
-                material['Density'] = unicode(value_in_kg_per_m3) + " kg/m^3"
-                # material['Density'] = unicode(value) + " kg/mm^3"
+                material['Density'] = unicode(value_in_kg_per_m3) + " kg/m^3"  # SvdW:Keep density in SI units for easier readability
                 self.material = material
 
     def pr_changed(self, value):
