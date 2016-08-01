@@ -39,6 +39,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                  fixed_obj, displacement_obj,
                  contact_obj, planerotation_obj,
                  selfweight_obj, force_obj, pressure_obj,
+                 temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type=None, eigenmode_parameters=None,
                  dir_name=None
@@ -49,6 +50,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                                                fixed_obj, displacement_obj,
                                                contact_obj, planerotation_obj,
                                                selfweight_obj, force_obj, pressure_obj,
+                                               temperature_obj, heatflux_obj, initialtemperature_obj,
                                                beamsection_obj, shellthickness_obj,
                                                analysis_type, eigenmode_parameters,
                                                dir_name

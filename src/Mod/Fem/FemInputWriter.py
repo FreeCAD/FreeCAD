@@ -47,6 +47,7 @@ class FemInputWriter():
                  fixed_obj, displacement_obj,
                  contact_obj, planerotation_obj,
                  selfweight_obj, force_obj, pressure_obj,
+                 temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
                  analysis_type, eigenmode_parameters,
                  dir_name
@@ -62,6 +63,9 @@ class FemInputWriter():
         self.selfweight_objects = selfweight_obj
         self.force_objects = force_obj
         self.pressure_objects = pressure_obj
+        self.temperature_objects = temperature_obj
+        self.heatflux_objects = heatflux_obj
+        self.initialtemperature_objects = initialtemperature_obj
         self.beamsection_objects = beamsection_obj
         self.shellthickness_objects = shellthickness_obj
         self.analysis_type = analysis_type
@@ -102,6 +106,11 @@ class FemInputWriter():
     def get_constraints_planerotation_nodes(self):
         # get nodes
         for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+
+    def get_constraints_temperature_nodes(self):
+        # get nodes
+        for femobj in self.temperature_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
 
     def get_constraints_force_nodeloads(self):
