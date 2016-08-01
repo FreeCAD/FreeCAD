@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>257</width>
-    <height>233</height>
+    <width>309</width>
+    <height>207</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,27 +15,32 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QPushButton" name="buttonReference">
+    <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Add reference</string>
+      <string>Select multiple face(s), click Add or Remove</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="listReferences"/>
+    <layout class="QHBoxLayout" name="hLayout1">
+     <item>
+      <widget class="QPushButton" name="btnAdd">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRemove">
+       <property name="text">
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>17</width>
-       <height>56</height>
-      </size>
-     </property>
-    </spacer>
+    <widget class="QListWidget" name="lw_references"/>
    </item>
   </layout>
  </widget>
