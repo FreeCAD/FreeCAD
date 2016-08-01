@@ -116,6 +116,10 @@ public:
 	static Unit Work;   
 	static Unit Power;  
 
+    static Unit ThermalConductivity;
+    static Unit ThermalExpansionCoefficient;
+    static Unit SpecificHeat;
+    static Unit ThermalTransferCoefficient;
 
     //@}
 protected:
