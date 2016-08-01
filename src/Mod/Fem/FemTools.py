@@ -151,6 +151,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
         # [{'Object':force_constraints, 'NodeLoad':value}, {}, ...
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':temerature_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':heatflux_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':initialtemperature_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
@@ -190,6 +193,18 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # set of displacements for the analysis. Updated with update_objects
         # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
         self.displacement_constraints = []
+        ## @var temperature_constraints
+        # set of temperatures for the analysis. Updated with update_objects
+        # Individual temperature_constraints are Proxy.Type "FemConstraintTemperature"
+        self.temperature_constraints = []
+        ## @var heatflux_constraints
+        # set of heatflux constraints for the analysis. Updated with update_objects
+        # Individual heatflux_constraints are Proxy.Type "FemConstraintHeatflux"
+        self.heatflux_constraints = []
+        ## @var initialtemperature_constraints
+        # set of initial temperatures for the analysis. Updated with update_objects
+        # Individual initialTemperature_constraints are Proxy.Type "FemConstraintInitialTemperature"
+        self.initialtemperature_constraints = []
         ## @var planerotation_constraints
         #  set of plane rotation constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintPlaneRotation" type
@@ -240,10 +255,22 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
-            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):  # OvG: Replacement reference to C++ implementation of Displacement Constraint
+            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):
                 displacement_constraint_dict = {}
                 displacement_constraint_dict['Object'] = m
                 self.displacement_constraints.append(displacement_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintTemperature"):
+                temperature_constraint_dict = {}
+                temperature_constraint_dict['Object'] = m
+                self.temperature_constraints.append(temperature_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintHeatflux"):
+                heatflux_constraint_dict = {}
+                heatflux_constraint_dict['Object'] = m
+                self.heatflux_constraints.append(heatflux_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintInitialTemperature"):
+                initialtemperature_constraint_dict = {}
+                initialtemperature_constraint_dict['Object'] = m
+                self.initialtemperature_constraints.append(initialtemperature_constraint_dict)
             elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
                 planerotation_constraint_dict = {}
                 planerotation_constraint_dict['Object'] = m
