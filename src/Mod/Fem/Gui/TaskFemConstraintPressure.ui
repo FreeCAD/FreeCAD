@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>257</width>
-    <height>250</height>
+    <width>226</width>
+    <height>253</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,19 +15,37 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QPushButton" name="b_add_reference">
+    <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Add reference</string>
+      <string>Select multiple face(s), click Add or Remove</string>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hLayout1">
+     <item>
+      <widget class="QPushButton" name="btnAdd">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRemove">
+       <property name="text">
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QListWidget" name="lw_references"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutPressure">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="l_pressure">
+      <widget class="QLabel" name="labelParameter1">
        <property name="text">
         <string>Pressure</string>
        </property>
@@ -36,7 +54,7 @@
      <item>
       <widget class="Gui::InputField" name="if_pressure">
        <property name="text">
-        <string>1 MPa</string>
+        <string>0 MPa</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -46,24 +64,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="cb_reverse_direction">
+    <widget class="QCheckBox" name="checkBoxReverse">
      <property name="text">
-      <string>Reverse direction</string>
+      <string>Reverse Direction</string>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>17</width>
-       <height>56</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
