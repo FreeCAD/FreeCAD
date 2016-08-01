@@ -52,9 +52,9 @@ class SoIndexedFaceSet;
 class SoIndexedLineSet;
 class SoIndexedMarkerSet;
 class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
+class SoDrawStyle;
+class SoIndexedFaceSet;
+class SoIndexedLineSet;
 class SoIndexedTriangleStripSet;
 
 namespace Gui {
@@ -66,7 +66,7 @@ namespace FemGui
 
 class TaskDlgPost;
 
-class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject, 
+class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject,
                                                public Base::Observer<int>
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemPostObject);
@@ -77,7 +77,7 @@ public:
 
     /// destructor.
     ~ViewProviderFemPostObject();
-    
+
     App::PropertyEnumeration            Field;
     App::PropertyEnumeration            VectorMode;
     App::PropertyPercent                Transperency;
@@ -87,24 +87,24 @@ public:
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
     void onChanged(const App::Property* prop);
-    
+
     //edit handling
     virtual bool doubleClicked(void);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
-    
+
     virtual void hide(void);
     virtual void show(void);
-    
+
     virtual SoSeparator* getFrontRoot(void) const;
-    
+
     //observer for the color bar
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
-    
+
       /** @name Selection handling
       * This group of methodes do the selection handling.
       * Here you can define how the selection for your ViewProvider
-      * works. 
+      * works.
      */
     //@{
 //     /// indicates if the ViewProvider use the new Selection model
@@ -116,15 +116,15 @@ public:
 //     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
 //     //@}
 
-protected:    
+protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void update();
-    
+
     SoCoordinate3*              m_coordinates;
     SoIndexedPointSet*          m_markers;
     SoIndexedLineSet*           m_lines;
-    SoIndexedFaceSet*           m_faces;    
+    SoIndexedFaceSet*           m_faces;
     SoIndexedTriangleStripSet*  m_triangleStrips;
     SoMaterial*                 m_material;
     SoMaterialBinding*          m_materialBinding;
@@ -143,7 +143,7 @@ protected:
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
     vtkSmartPointer<vtkExtractEdges>            m_wireframe, m_wireframeSurface;
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
-    
+
 private:
     void updateProperties();
     void update3D();
@@ -151,8 +151,8 @@ private:
                         vtkDataArray *tcoords);
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransperency();
-    
-    App::Enumeration m_coloringEnum, m_vectorEnum;   
+
+    App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges;
 };
 

@@ -60,7 +60,7 @@ private Q_SLOTS:
     void onAmbientTempChanged(double val);
     /*void onFaceTempChanged(double val);*/
     void onFilmCoefChanged(double val);
-    
+
     void addToSelection();
     void removeFromSelection();
     void setSelection(QListWidgetItem* item);

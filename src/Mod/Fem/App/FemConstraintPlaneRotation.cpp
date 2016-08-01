@@ -41,7 +41,7 @@ PROPERTY_SOURCE(Fem::ConstraintPlaneRotation, Fem::Constraint);
 
 ConstraintPlaneRotation::ConstraintPlaneRotation()
 {
-    
+
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintPlaneRotation",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Points where symbols are drawn");
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintPlaneRotation",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),

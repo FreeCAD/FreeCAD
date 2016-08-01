@@ -42,10 +42,10 @@ PROPERTY_SOURCE(Fem::ConstraintContact, Fem::Constraint);
 ConstraintContact::ConstraintContact()
 {
 /*Note: Initialise parameters here*/
-    ADD_PROPERTY(Slope,(0.0)); 
+    ADD_PROPERTY(Slope,(0.0));
     ADD_PROPERTY(Friction,(0.0));
 /* */
-    
+
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintContact",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Points where symbols are drawn");
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintContact",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),

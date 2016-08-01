@@ -37,11 +37,11 @@ public:
     /// constructor.
     ViewProviderFemPostPipeline();
     ~ViewProviderFemPostPipeline();
-    
+
     virtual std::vector< App::DocumentObject* > claimChildren(void) const;
     virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
     virtual void updateData(const App::Property* prop);
-    
+
 protected:
     void updateFunctionSize();
 

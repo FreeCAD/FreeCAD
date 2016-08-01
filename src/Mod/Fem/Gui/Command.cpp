@@ -992,7 +992,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
         std::string FeatName = cmd->getUniqueObjectName(Name.c_str());
 
         cmd->openCommand("Create filter");
-        cmd->doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Fem::FemPost%sFilter','%s')", Name.c_str(), FeatName.c_str());  
+        cmd->doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Fem::FemPost%sFilter','%s')", Name.c_str(), FeatName.c_str());
         cmd->doCommand(Gui::Command::Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
         cmd->doCommand(Gui::Command::Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
         cmd->doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
@@ -1151,12 +1151,12 @@ void CmdFemPostFunctions::activated(int iMsg)
             doCommand(Doc,"App.ActiveDocument.%s.Functions = App.ActiveDocument.%s", pipeline->getNameInDocument(), FuncName.c_str());
             provider = static_cast<Fem::FemPostFunctionProvider*>(getDocument()->getObject(FuncName.c_str()));
         }
-        else 
+        else
             provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue());
 
         //build the object
-        std::string FeatName = getUniqueObjectName(name.c_str());       
-        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPost%sFunction','%s')", name.c_str(), FeatName.c_str());  
+        std::string FeatName = getUniqueObjectName(name.c_str());
+        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPost%sFunction','%s')", name.c_str(), FeatName.c_str());
         doCommand(Doc,"__list__ = App.ActiveDocument.%s.Functions", provider->getNameInDocument());
         doCommand(Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
         doCommand(Doc,"App.ActiveDocument.%s.Functions = __list__", provider->getNameInDocument());
@@ -1169,7 +1169,7 @@ void CmdFemPostFunctions::activated(int iMsg)
         box.GetCenter(center);
 
         if (iMsg==0)
-            doCommand(Doc,"App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)", FeatName.c_str(), center[0], 
+            doCommand(Doc,"App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)", FeatName.c_str(), center[0],
                                     center[1], center[2]);
         else if (iMsg==1) {
             doCommand(Doc,"App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", FeatName.c_str(), center[0],
@@ -1269,7 +1269,7 @@ void CmdFemPostApllyChanges::activated(int iMsg)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
 
-    if (iMsg == 1) 
+    if (iMsg == 1)
         hGrp->SetBool("PostAutoRecompute", true);
     else
         hGrp->SetBool("PostAutoRecompute", false);
@@ -1318,9 +1318,9 @@ void CmdFemPostPipelineFromResult::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Pipeline");
 
         openCommand("Create pipeline from result");
-        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());  
+        doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());
 
-        //TODO: use python function call for this 
+        //TODO: use python function call for this
         static_cast<Fem::FemPostPipeline*>(getDocument()->getObject(FeatName.c_str()))->load(result);
 
         this->updateActive();

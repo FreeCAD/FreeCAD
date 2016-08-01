@@ -52,11 +52,11 @@ FemPostObject::~FemPostObject()
 vtkBoundingBox FemPostObject::getBoundingBox() {
 
     vtkBoundingBox box;
-    
+
     if(Data.getValue() && Data.getValue()->IsA("vtkDataSet"))
         box.AddBounds(vtkDataSet::SafeDownCast(Data.getValue())->GetBounds());
-    
+
     //TODO: add calculation of multiblock and Multipiece datasets
-    
+
     return box;
 }

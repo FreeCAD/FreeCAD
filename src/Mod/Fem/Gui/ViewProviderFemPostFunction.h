@@ -65,52 +65,52 @@ namespace FemGui
 {
 
 class ViewProviderFemPostFunction;
-    
+
 class FemGuiExport FunctionWidget : public QWidget {
-  
+
     Q_OBJECT
 public:
     FunctionWidget() {};
     virtual ~FunctionWidget() {};
-    
+
     virtual void applyPythonCode() = 0;
     virtual void setViewProvider(ViewProviderFemPostFunction* view);
-    void onObjectsChanged(const App::DocumentObject& obj, const App::Property&); 
-    
+    void onObjectsChanged(const App::DocumentObject& obj, const App::Property&);
+
 protected:
     ViewProviderFemPostFunction* getView()  {return m_view;};
     Fem::FemPostFunction*        getObject(){return m_object;};
-    
+
     bool blockObjectUpdates() {return m_block;};
-    void setBlockObjectUpdates(bool val) {m_block = val;};    
-    
+    void setBlockObjectUpdates(bool val) {m_block = val;};
+
     virtual void onChange(const App::Property& p) = 0;
-    
+
 private:
     bool                                        m_block;
     ViewProviderFemPostFunction*                m_view;
     Fem::FemPostFunction*                       m_object;
-    boost::signalslib::scoped_connection        m_connection;      
+    boost::signalslib::scoped_connection        m_connection;
 };
-    
+
 class FemGuiExport ViewProviderFemPostFunctionProvider : public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemPostFunction);
 
-public:    
+public:
     ViewProviderFemPostFunctionProvider();
     virtual ~ViewProviderFemPostFunctionProvider();
 
     App::PropertyFloat SizeX;
     App::PropertyFloat SizeY;
     App::PropertyFloat SizeZ;
-    
+
 protected:
     virtual std::vector< App::DocumentObject* > claimChildren(void) const;
     virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;
     virtual void onChanged(const App::Property* prop);
     virtual void updateData(const App::Property*);
-    
+
     void updateSize();
 };
 
@@ -122,7 +122,7 @@ public:
     /// constructor.
     ViewProviderFemPostFunction();
     ~ViewProviderFemPostFunction();
-    
+
     App::PropertyFloat AutoScaleFactorX;
     App::PropertyFloat AutoScaleFactorY;
     App::PropertyFloat AutoScaleFactorZ;
@@ -130,33 +130,33 @@ public:
     void attach(App::DocumentObject *pcObject);
     bool doubleClicked(void);
     std::vector<std::string> getDisplayModes() const;
-    
-    //creates the widget used in the task dalogs, either for the function itself or for 
+
+    //creates the widget used in the task dalogs, either for the function itself or for
     //the fiter using it
     virtual FunctionWidget* createControlWidget() {return NULL;};
 
-protected:    
+protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void onChanged(const App::Property* prop);
-    
+
     void setAutoScale(bool value) {m_autoscale = value;};
     bool autoScale()              {return m_autoscale;};
-    
+
     bool isDragging() {return m_isDragging;};
-    
+
     virtual SoTransformManip*   setupManipulator();
     virtual void                draggerUpdate(SoDragger* m) {};
     SoTransformManip*           getManipulator() {return m_manip;};
     SoSeparator*                getGeometryNode() {return m_geometrySeperator;};
     SoScale*                    getScaleNode() {return m_scale;};
     SoTransform*                getTransformNode() {return m_transform;};
-    
+
 private:
     static void dragStartCallback(void * data, SoDragger * d);
     static void dragFinishCallback(void * data, SoDragger * d);
     static void dragMotionCallback(void * data, SoDragger * d);
-    
+
     SoSeparator*        m_geometrySeperator;
     SoTransformManip*   m_manip;
     SoScale*            m_scale;
@@ -167,7 +167,7 @@ private:
 //###############################################################################################
 
 class FemGuiExport PlaneWidget : public FunctionWidget {
-    
+
     Q_OBJECT
 public:
     PlaneWidget();
@@ -180,21 +180,21 @@ public:
 private Q_SLOTS:
     void originChanged(double val);
     void normalChanged(double val);
-    
+
 private:
     Ui_PlaneWidget* ui;
 };
 
 class FemGuiExport ViewProviderFemPostPlaneFunction : public ViewProviderFemPostFunction {
-  
+
     PROPERTY_HEADER(FemGui::ViewProviderFemPostPlaneFunction);
-    
+
 public:
-    ViewProviderFemPostPlaneFunction();     
+    ViewProviderFemPostPlaneFunction();
     virtual ~ViewProviderFemPostPlaneFunction();
-    
+
     virtual FunctionWidget* createControlWidget();
-    
+
 protected:
     virtual void draggerUpdate(SoDragger* mat);
     virtual void updateData(const App::Property*);
@@ -203,7 +203,7 @@ protected:
 //###############################################################################################
 
 class FemGuiExport SphereWidget : public FunctionWidget {
-    
+
     Q_OBJECT
 public:
     SphereWidget();
@@ -216,22 +216,22 @@ public:
 private Q_SLOTS:
     void centerChanged(double val);
     void radiusChanged(double val);
-    
+
 private:
     Ui_SphereWidget* ui;
 };
 
 class FemGuiExport ViewProviderFemPostSphereFunction : public ViewProviderFemPostFunction {
-  
+
     PROPERTY_HEADER(FemGui::ViewProviderFemPostSphereFunction);
-    
+
 public:
-    ViewProviderFemPostSphereFunction();     
+    ViewProviderFemPostSphereFunction();
     virtual ~ViewProviderFemPostSphereFunction();
-    
+
     virtual SoTransformManip* setupManipulator();
     virtual FunctionWidget* createControlWidget();
-    
+
 protected:
     virtual void draggerUpdate(SoDragger* mat);
     virtual void updateData(const App::Property*);

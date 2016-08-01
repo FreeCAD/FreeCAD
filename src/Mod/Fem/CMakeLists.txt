@@ -4,7 +4,7 @@ if(BUILD_FEM_VTK)
 endif(BUILD_FEM_VTK)
 
 include(${VTK_USE_FILE})
-    
+
 add_subdirectory(App)
 
 if(BUILD_GUI)

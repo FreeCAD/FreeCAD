@@ -59,7 +59,7 @@ private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintInitialTemperature* ui;
-    
+
 };
 
 class TaskDlgFemConstraintInitialTemperature : public TaskDlgFemConstraint
