@@ -347,6 +347,15 @@
                <normaloff>:/icons/fem-frequency-analysis.svg</normaloff>:/icons/fem-frequency-analysis.svg</iconset>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Thermomech</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/Fem.qrc">
+               <normaloff>:/icons/fem-new-analysis.svg</normaloff>:/icons/fem-new-analysis.svg</iconset>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="1" column="0">
