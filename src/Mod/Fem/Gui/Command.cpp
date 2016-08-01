@@ -439,7 +439,50 @@ bool CmdFemConstraintContact::isActive(void)
 }
 
 //=====================================================================================
+DEF_STD_CMD_A(CmdFemConstraintHeatflux);
 
+CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
+  : Command("Fem_ConstraintHeatflux")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint heatflux ");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a heatflux acting on a face");
+    sWhatsThis      = "Fem_ConstraintHeatflux";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-heatflux";
+}
+
+void CmdFemConstraintHeatflux::activated(int iMsg)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintHeatflux");
+
+    openCommand("Make FEM constraint heatflux on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.AmbientTemp = 300.0",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.FilmCoef = 10.0",FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
+                             Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintHeatflux::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+//=====================================================================================
 DEF_STD_CMD_A(CmdFemConstraintForce);
 
 CmdFemConstraintForce::CmdFemConstraintForce()
@@ -652,6 +695,92 @@ void CmdFemConstraintDisplacement::activated(int iMsg)
 }
 
 bool CmdFemConstraintDisplacement::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+//=====================================================================================
+
+DEF_STD_CMD_A(CmdFemConstraintTemperature);
+
+CmdFemConstraintTemperature::CmdFemConstraintTemperature()
+  : Command("Fem_ConstraintTemperature")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint temperature ");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature acting on a face");
+    sWhatsThis      = "Fem_ConstraintTemperature";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-temperature";
+}
+
+void CmdFemConstraintTemperature::activated(int iMsg)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintTemperature");
+
+    openCommand("Make FEM constraint temperature on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
+                             Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintTemperature::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+//=====================================================================================
+
+DEF_STD_CMD_A(CmdFemConstraintInitialTemperature);
+
+CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
+  : Command("Fem_ConstraintInitialTemperature")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Constraint initial temperature");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for initial temperature acting on a body");
+    sWhatsThis      = "Fem_ConstraintInitialTemperature";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-InitialTemperature";
+}
+
+void CmdFemConstraintInitialTemperature::activated(int iMsg)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintInitialTemperature");
+
+    openCommand("Make FEM constraint intial temperature on body");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintInitialTemperature\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
+                             Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr().c_str()); //OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintInitialTemperature::isActive(void)
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -1229,6 +1358,9 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintGear());
     rcCmdMgr.addCommand(new CmdFemConstraintPulley());
     rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
+    rcCmdMgr.addCommand(new CmdFemConstraintTemperature());
+    rcCmdMgr.addCommand(new CmdFemConstraintHeatflux());
+    rcCmdMgr.addCommand(new CmdFemConstraintInitialTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintPlaneRotation());
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
 
