@@ -305,6 +305,17 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         elif self.solver_obj.GeometricalNonlinearity == "nonlinear" and self.analysis_type == 'frequency':
             print('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!')
         f.write(static_frequency_step + '\n')
+        f.write('*STATIC')
+        if self.solver_obj.MatrixSolverType == "default":
+            pass
+        elif self.solver_obj.MatrixSolverType == "spooles":
+            analysis_static += ', SOLVER=SPOOLES'
+        elif self.solver_obj.MatrixSolverType == "iterativescaling":
+            analysis_static += ', SOLVER=ITERATIVE SCALING'
+        elif self.solver_obj.MatrixSolverType == "iterativecholesky":
+            analysis_static += ', SOLVER=ITERATIVE CHOLESKY'
+        f.write(analysis_static + '\n')
+
 
     def write_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
