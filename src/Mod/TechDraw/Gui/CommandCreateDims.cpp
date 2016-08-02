@@ -114,6 +114,7 @@ bool _checkPartFeature(Gui::Command* cmd);
 int _isValidSingleEdge(Gui::Command* cmd);
 bool _isValidVertexes(Gui::Command* cmd);
 int _isValidEdgeToEdge(Gui::Command* cmd);
+bool _isValidVertexToEdge(Gui::Command* cmd);
 
 enum EdgeType{
         isInvalid,
@@ -218,6 +219,12 @@ void CmdTechDrawNewDimension::activated(int iMsg)
             default:
                 break;
         }
+    } else if (_isValidVertexToEdge(this)) {
+        dimType = "Distance";
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr("Can't make a Dimension from this selection"));
@@ -512,6 +519,11 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
+    } else if (_isValidVertexToEdge(this)) {
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
         edgeMsg << "Can't make a length Dimension from this selection (edge type: " << edgeType << ")";
@@ -604,6 +616,11 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else if (_isValidEdgeToEdge(this) == isHorizontal) {
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if (_isValidVertexToEdge(this)) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
@@ -701,6 +718,11 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else if (_isValidEdgeToEdge(this) == isVertical) {
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if (_isValidVertexToEdge(this)) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
@@ -1062,4 +1084,40 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
         }
     }
     return edgeType;
+}
+
+//! verify that the Selection contains valid geometries for a Vertex to Edge Dimension
+bool _isValidVertexToEdge(Gui::Command* cmd) {
+    bool result = false;
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* objFeat0 = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    //TechDraw::DrawViewPart* objFeat1 = dynamic_cast<TechDraw::DrawViewPart *>(selection[1].getObject());
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
+    if(SubNames.size() == 2) {                                         //there are 2
+        int eId,vId;
+        TechDrawGeometry::BaseGeom* e;
+        TechDrawGeometry::Vertex* v;
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
+            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
+            eId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            vId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+        } else if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge" &&
+            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex") {
+            eId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+            vId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+        } else {
+            return false;
+        }
+        e = objFeat0->getProjEdgeByIndex(eId);
+        v = objFeat0->getProjVertexByIndex(vId);
+        if ((!e) || (!v)) {
+            Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
+            return false;
+        }
+        if (e->geomType != TechDrawGeometry::GENERIC)  {      //only vertex-line for now.
+            return false;
+        }
+        result = true;
+    }
+    return result;
 }

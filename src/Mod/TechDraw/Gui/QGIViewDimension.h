@@ -114,11 +114,8 @@ protected:
     bool hasHover;
     QGIDatumLabel* datumLabel;                                         //dimension text
     QGraphicsPathItem* dimLines;                                       //dimension lines + extension lines
-    QGraphicsPathItem* centerMark;
     QGIArrow* aHead1;
     QGIArrow* aHead2;
-    //QPen m_pen;
-    QPen m_clPen;
 };
 
 } // namespace MDIViewPageGui

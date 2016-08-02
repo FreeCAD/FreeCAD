@@ -79,7 +79,8 @@ enum RefType{
         invalidRef,
         oneEdge,
         twoEdge,
-        twoVertex
+        twoVertex,
+        vertexEdge
     };
 
 DrawViewDimension::DrawViewDimension(void)
@@ -92,7 +93,6 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),"Format",App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(4)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
-    ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
     ADD_PROPERTY_TYPE(FormatSpec,("%value%") ,"Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
     ADD_PROPERTY_TYPE(LineWidth,(0.5)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
 
@@ -129,7 +129,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         if (prop == &References2D  ||
             prop == &Font        ||
             prop == &Fontsize    ||
-            prop == &CentreLines ||
             prop == &FormatSpec  ||
             prop == &LineWidth) {
             try {
@@ -270,71 +269,77 @@ double DrawViewDimension::getDimValue() const
         // Projected Values
         const std::vector<App::DocumentObject*> &objects = References2D.getValues();
         const std::vector<std::string> &subElements      = References2D.getSubValues();
-        if (Type.isValue("Distance") && getRefType() == oneEdge) {
-            //TODO: Check for straight line Edge?
-            int idx = DrawUtil::getIndexFromName(subElements[0]);
-            TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-            TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
-            Base::Vector2D start = gen->points[0];
-            Base::Vector2D end = gen->points[1];
-            Base::Vector2D line = end - start;
-            result = line.Length() / getViewPart()->Scale.getValue();
-        } else if (Type.isValue("Distance") && getRefType() == twoEdge) {
-            //only works for straight line edges
-            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
-            TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
-            TechDrawGeometry::Generic* gen0 = static_cast<TechDrawGeometry::Generic*>(geom0);
-            TechDrawGeometry::Generic* gen1 = static_cast<TechDrawGeometry::Generic*>(geom1);
-            Base::Vector2D s0 = gen0->points[0];
-            Base::Vector2D e0 = gen0->points[1];
-            Base::Vector2D s1 = gen1->points[0];
-            Base::Vector2D e1 = gen1->points[1];
-            result = dist2Segs(s0,e0,s1,e1) / getViewPart()->Scale.getValue();
-        } else if (Type.isValue("Distance") && getRefType() == twoVertex) {
-            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-            TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
-            Base::Vector2D start = v0->pnt;
-            Base::Vector2D end = v1->pnt;
-            Base::Vector2D line = end - start;
-            result = line.Length() / getViewPart()->Scale.getValue();
-        } else if (Type.isValue("DistanceX") && getRefType() == oneEdge) {
-            int idx = DrawUtil::getIndexFromName(subElements[0]);
-            TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-            TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
-            Base::Vector2D start = gen->points[0];
-            Base::Vector2D end = gen->points[1];
-            Base::Vector2D line = end - start;
-            return fabs(line.fX) / getViewPart()->Scale.getValue();
-        } else if (Type.isValue("DistanceY") && getRefType() == oneEdge) {
-            int idx = DrawUtil::getIndexFromName(subElements[0]);
-            TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-            TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
-            Base::Vector2D start = gen->points[0];
-            Base::Vector2D end = gen->points[1];
-            Base::Vector2D line = end - start;
-            result = fabs(line.fY) / getViewPart()->Scale.getValue();
-        } else if (Type.isValue("DistanceX") && getRefType() == twoVertex) {
-            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-            TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
-            Base::Vector2D start = v0->pnt;
-            Base::Vector2D end = v1->pnt;
-            Base::Vector2D line = end - start;
-            result = fabs(line.fX) / getViewPart()->Scale.getValue();
-        } else if (Type.isValue("DistanceY") && getRefType() == twoVertex) {
-            int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-            int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-            TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
-            Base::Vector2D start = v0->pnt;
-            Base::Vector2D end = v1->pnt;
-            Base::Vector2D line = end - start;
-            result = fabs(line.fY) / getViewPart()->Scale.getValue();
+        if ( Type.isValue("Distance")  ||
+             Type.isValue("DistanceX") ||
+             Type.isValue("DistanceY") )  {
+            if (getRefType() == oneEdge) {
+                //TODO: Check for straight line Edge?
+                int idx = DrawUtil::getIndexFromName(subElements[0]);
+                TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+                TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
+                Base::Vector2D start = gen->points[0];
+                Base::Vector2D end = gen->points[1];
+                Base::Vector2D line = end - start;
+                if (Type.isValue("Distance")) {
+                    result = line.Length() / getViewPart()->Scale.getValue();
+                } else if (Type.isValue("DistanceX")) {
+                    return fabs(line.fX) / getViewPart()->Scale.getValue();
+                } else {
+                    result = fabs(line.fY) / getViewPart()->Scale.getValue();
+                }
+            }else if (getRefType() == twoEdge) {
+                //only works for straight line edges
+                int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+                int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+                TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
+                TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+                TechDrawGeometry::Generic* gen0 = static_cast<TechDrawGeometry::Generic*>(geom0);
+                TechDrawGeometry::Generic* gen1 = static_cast<TechDrawGeometry::Generic*>(geom1);
+                Base::Vector2D s0 = gen0->points[0];
+                Base::Vector2D e0 = gen0->points[1];
+                Base::Vector2D s1 = gen1->points[0];
+                Base::Vector2D e1 = gen1->points[1];
+                if (Type.isValue("Distance")) {
+                    //we don't do horiz/vertical edge to edge
+                    result = dist2Segs(s0,e0,s1,e1) / getViewPart()->Scale.getValue();
+                }
+            } else if (getRefType() == twoVertex) {
+                int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+                int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+                TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+                TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+                Base::Vector2D start = v0->pnt;
+                Base::Vector2D end = v1->pnt;
+                Base::Vector2D line = end - start;
+                if (Type.isValue("Distance")) {
+                    result = line.Length() / getViewPart()->Scale.getValue();
+                } else if (Type.isValue("DistanceX")) {
+                    result = fabs(line.fX) / getViewPart()->Scale.getValue();
+                } else {
+                    result = fabs(line.fY) / getViewPart()->Scale.getValue();
+                }
+            } else if (getRefType() == vertexEdge) {
+                int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+                int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+                TechDrawGeometry::BaseGeom* e;
+                TechDrawGeometry::Vertex* v;
+                if (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") {
+                    e = getViewPart()->getProjEdgeByIndex(idx0);
+                    v = getViewPart()->getProjVertexByIndex(idx1);
+                } else {
+                    e = getViewPart()->getProjEdgeByIndex(idx1);
+                    v = getViewPart()->getProjVertexByIndex(idx0);
+                }
+                Base::Vector2D nearPoint = e->nearPoint(v->pnt);
+                Base::Vector2D line = nearPoint - v->pnt;
+                if (Type.isValue("Distance")) {
+                    result = e->minDist(v->pnt) / getViewPart()->Scale.getValue();
+                } else if (Type.isValue("DistanceX")) {
+                    result = fabs(line.fX) / getViewPart()->Scale.getValue();
+                } else {
+                    result = fabs(line.fY) / getViewPart()->Scale.getValue();
+                }
+            }  //else tarfu
         } else if(Type.isValue("Radius")){
             //only 1 reference for a Radius
             int idx = DrawUtil::getIndexFromName(subElements[0]);
@@ -432,8 +437,13 @@ int DrawViewDimension::getRefType() const
         } else if ((DrawUtil::getGeomTypeFromName(subElements[0]) == "Vertex") &&
                    (DrawUtil::getGeomTypeFromName(subElements[1]) == "Vertex")) {
             refType = twoVertex;
+        } else if (((DrawUtil::getGeomTypeFromName(subElements[0]) == "Vertex") &&
+                    (DrawUtil::getGeomTypeFromName(subElements[1]) == "Edge"))   ||
+                   ((DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") &&
+                   (DrawUtil::getGeomTypeFromName(subElements[1]) == "Vertex")) ) {
+            refType = vertexEdge;
         }
-    //} else add different types here - Vertex-Edge, Vertex-Face, ...
+        //} else add different types here - Vertex-Face, ...
     }
     return refType;
 }
