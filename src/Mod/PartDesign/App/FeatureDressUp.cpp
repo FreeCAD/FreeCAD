@@ -94,8 +94,8 @@ void DressUp::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::stri
 
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
-    TopExp::MapShapesAndAncestors(TopShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
-    TopExp::MapShapes(TopShape._Shape, TopAbs_EDGE, mapOfEdges);
+    TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+    TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
     unsigned int i = 0;
     while(i < SubNames.size())

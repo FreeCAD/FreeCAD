@@ -124,7 +124,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return new App::DocumentObjectExecReturn("FVP - Linked object is not a Part object");
     }
 
-    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
+    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
     if (shape.IsNull()) {
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }

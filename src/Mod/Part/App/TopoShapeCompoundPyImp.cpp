@@ -69,7 +69,7 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                    getTopoShapePtr()->_Shape;
+                    getTopoShapePtr()->getShape();
                 if (!sh.IsNull())
                     builder.Add(Comp, sh);
             }
@@ -81,7 +81,7 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
 
-    getTopoShapePtr()->_Shape = Comp;
+    getTopoShapePtr()->setShape(Comp);
     return 0;
 }
 
@@ -92,11 +92,11 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
         return NULL;
 
     BRep_Builder builder;
-    TopoDS_Shape& comp = getTopoShapePtr()->_Shape;
+    TopoDS_Shape comp = getTopoShapePtr()->getShape();
     
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
-            getTopoShapePtr()->_Shape;
+            getTopoShapePtr()->getShape();
         if (!sh.IsNull())
             builder.Add(comp, sh);
     }
@@ -117,7 +117,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
         return 0;
 
     try {
-        const TopoDS_Shape& s = getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& s = getTopoShapePtr()->getShape();
 
         Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
         Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
@@ -135,7 +135,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
             builder.Add(comp, hWires->Value(i));
         }
 
-        getTopoShapePtr()->_Shape = comp;
+        getTopoShapePtr()->setShape(comp);
         return new TopoShapeCompoundPy(new TopoShape(comp));
     }
     catch (Standard_Failure) {

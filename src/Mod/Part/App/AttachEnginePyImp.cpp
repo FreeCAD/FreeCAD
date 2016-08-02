@@ -300,7 +300,7 @@ PyObject* AttachEnginePy::getRefTypeOfShape(PyObject* args)
         return NULL;
 
     try{
-        TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
+        TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
         eRefType rt = AttachEngine::getShapeType(shape);
         return Py::new_reference_to(Py::String(AttachEngine::getRefTypeName(rt)));
     } ATTACHERPY_STDCATCH_METH;

@@ -121,7 +121,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     const Part::TopoShape &partTopo = static_cast<Part::Feature*>(link)->Shape.getShape();
 
-    if (partTopo._Shape.IsNull())
+    if (partTopo.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
     gp_Pln pln = getSectionPlane();
@@ -196,7 +196,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     TopoDS_Shape prism = BRepPrimAPI_MakePrism(aProjFace, wMax * gp_Vec(pln.Axis().Direction()), 0, 1).Shape();
 
     // We need to copy the shape to not modify the BRepstructure
-    BRepBuilderAPI_Copy BuilderCopy(partTopo._Shape);
+    BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
     BRepAlgoAPI_Cut mkCut(myShape, prism);

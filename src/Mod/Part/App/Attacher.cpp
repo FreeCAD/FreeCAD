@@ -780,7 +780,8 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
                     throw Base::Exception("AttachEngine3D: null subshape");
                 shapes[i] = &(storage[storage.size()-1]);
             } else {
-                shapes[i] = &(shape->_Shape);
+                TopoDS_Shape myShape = shape->getShape();
+                shapes[i] = &myShape;
             }
         } else if (  geof->isDerivedFrom(App::Plane::getClassTypeId())  ){
             //obtain Z axis and origin of placement

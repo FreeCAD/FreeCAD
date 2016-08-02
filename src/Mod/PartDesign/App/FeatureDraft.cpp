@@ -273,7 +273,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 
         do {
             success = true;
-            mkDraft.Init(baseShape._Shape);
+            mkDraft.Init(baseShape.getShape());
 
             for (std::vector<std::string>::iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
                 TopoDS_Face face = TopoDS::Face(baseShape.getSubShape(it->c_str()));

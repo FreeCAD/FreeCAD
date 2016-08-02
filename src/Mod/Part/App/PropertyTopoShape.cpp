@@ -96,7 +96,6 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh)
 
 const TopoDS_Shape& PropertyPartShape::getValue(void)const 
 {
-    _OCCShape = _Shape.getShape();
     return _OCCShape;
 }
 
@@ -282,7 +281,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
     if (writer.getMode("BinaryBrep")) {
         TopoShape shape;
-        shape._Shape.setShape(myShape);
+        shape.setShape(myShape);
         shape.exportBinary(writer.Stream());
     }
     else {

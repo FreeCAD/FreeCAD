@@ -88,12 +88,12 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeChamfer mkChamfer(baseShape._Shape);
+        BRepFilletAPI_MakeChamfer mkChamfer(baseShape.getShape());
 
         TopTools_IndexedMapOfShape mapOfEdges;
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
-        TopExp::MapShapesAndAncestors(baseShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
-        TopExp::MapShapes(baseShape._Shape, TopAbs_EDGE, mapOfEdges);
+        TopExp::MapShapesAndAncestors(baseShape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+        TopExp::MapShapes(baseShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
@@ -110,7 +110,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopTools_ListOfShape aLarg;
-        aLarg.Append(baseShape._Shape);
+        aLarg.Append(baseShape.getShape());
         if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
         }

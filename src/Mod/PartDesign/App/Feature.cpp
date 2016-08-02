@@ -131,7 +131,7 @@ const Part::TopoShape Feature::getBaseTopoShape() const {
     const Part::Feature* BaseObject = getBaseObject();
 
     const Part::TopoShape& result = BaseObject->Shape.getShape();
-    if (result._Shape.IsNull())
+    if (result.getShape().IsNull())
         throw Base::Exception("Base feature's TopoShape is invalid");
 
     return result;

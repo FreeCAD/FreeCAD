@@ -171,7 +171,7 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
             builder.MakeCompound(comp);
             std::vector<Part::TopoShape*> v = i->second;
             for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
-                const TopoDS_Shape& sh = (*j)->_Shape;
+                const TopoDS_Shape& sh = (*j)->getShape();
                 if (!sh.IsNull())
                     builder.Add(comp, sh);
             }
@@ -266,7 +266,7 @@ void DraftDxfRead::AddGraphics() const
             std::vector<Part::TopoShape*> v = i->second;
             if(k.substr(0, 6) != "BLOCKS") {
                 for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
-                    const TopoDS_Shape& sh = (*j)->_Shape;
+                    const TopoDS_Shape& sh = (*j)->getShape();
                     if (!sh.IsNull())
                         builder.Add(comp, sh);
                 }
