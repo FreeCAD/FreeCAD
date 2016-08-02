@@ -58,6 +58,7 @@ PyMODINIT_FUNC initPathGui()
         return;
     }
     try {
+        Base::Interpreter().runString("import PartGui");
         Base::Interpreter().runString("import Path");
     }
     catch(const Base::Exception& e) {

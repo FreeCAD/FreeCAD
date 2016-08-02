@@ -487,7 +487,7 @@ class CommandPathPocket:
         return {'Pixmap': 'Path-Pocket',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket"),
                 'Accel': "P, O",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a loop of edges or a face")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces")}
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
