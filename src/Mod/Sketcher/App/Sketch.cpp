@@ -2508,9 +2508,9 @@ TopoShape Sketch::toShape(void) const
             TopoDS_Shape sh = it->geo->toShape();
             if (first) {
                 first = false;
-                result._Shape = sh;
+                result.setShape(sh);
             } else {
-                result._Shape = result.fuse(sh);
+                result.setShape(result.fuse(sh));
             }
         }
     }
@@ -2580,7 +2580,7 @@ TopoShape Sketch::toShape(void) const
         builder.MakeCompound(comp);
         for (std::list<TopoDS_Wire>::iterator wt = wires.begin(); wt != wires.end(); ++wt)
             builder.Add(comp, *wt);
-        result._Shape = comp;
+        result.setShape(comp);
     }
     // FIXME: if free edges are left over its probably better to
     // create a compound with the closed structures and let the

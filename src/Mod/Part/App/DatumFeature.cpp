@@ -54,7 +54,7 @@ TopoDS_Shape Datum::getShape() const
 {
     Part::TopoShape sh = Shape.getShape();
     sh.setPlacement(Placement.getValue());
-    return sh._Shape;
+    return sh.getShape();
 }
 
 Base::Vector3d Datum::getBasePoint () const {
