@@ -14,16 +14,7 @@
    <string>FEM</string>
   </property>
   <layout class="QGridLayout" name="gridLayout1">
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <property name="spacing">
@@ -306,7 +297,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Keep results on calculation Re-Run</string>
+             <string>Keep results on calculation re-run</string>
             </property>
             <property name="checked">
              <bool>false</bool>
@@ -341,7 +332,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Hide Constraints when plotting results</string>
+             <string>Hide constraints when open result dialog</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
