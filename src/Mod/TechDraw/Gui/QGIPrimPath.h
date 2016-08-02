@@ -45,11 +45,14 @@ public:
 
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual QPainterPath shape() const { return path(); };
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
     virtual void setPrettyPre();
     virtual void setPrettySel();
+    virtual void setWidth(double w);
+    virtual double getWidth() { return m_width;}
 
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -65,6 +68,7 @@ protected:
     QPen m_pen;
     QColor m_colCurrent;
     Qt::PenStyle m_styleCurrent;
+    double m_width;
 
 private:
 

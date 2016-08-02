@@ -40,7 +40,8 @@
 
 using namespace TechDrawGui;
 
-QGIPrimPath::QGIPrimPath()
+QGIPrimPath::QGIPrimPath():
+    m_width(0)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -56,6 +57,7 @@ QGIPrimPath::QGIPrimPath()
     m_styleCurrent = Qt::SolidLine;
     m_pen.setStyle(m_styleCurrent);
     m_pen.setCapStyle(Qt::RoundCap);
+    m_pen.setWidthF(m_width);
 }
 
 QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -146,6 +148,12 @@ QColor QGIPrimPath::getSelectColor()
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
     return fcColor.asValue<QColor>();
+}
+
+void QGIPrimPath::setWidth(double w)
+{
+    m_width = w;
+    m_pen.setWidthF(m_width);
 }
 
 Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
