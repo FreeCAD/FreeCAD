@@ -65,7 +65,6 @@ class ObjectPathEngrave:
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
         obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
         obj.addProperty("App::PropertyInteger", "StartVertex", "Path", "The vertex index to start the path from")
 
@@ -161,7 +160,7 @@ class ObjectPathEngrave:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
                     output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value)  # Rapid sto starting position
-                    output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(last.z) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
+                    output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                 if isinstance(edge.Curve, Part.Circle):
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
@@ -174,7 +173,7 @@ class ObjectPathEngrave:
                         output += "G2"
                     else:
                         output += "G3"
-                    output += " X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += " X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value)
                     output += " I" + PathUtils.fmt(relcenter.x) + " J" + PathUtils.fmt(relcenter.y) + " K" + PathUtils.fmt(relcenter.z)
                     output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
@@ -183,7 +182,7 @@ class ObjectPathEngrave:
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
                         point = edge.Vertexes[0].Point
-                    output += "G1 X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += "G1 X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value)
                     output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
@@ -195,15 +194,13 @@ class ObjectPathEngrave:
         if len(baselist) == 0:  # When adding the first base object, guess at heights
             try:
                 bb = ss.Shape.BoundBox  # parent boundbox
-                obj.StartDepth = bb.ZMax
                 obj.ClearanceHeight = bb.ZMax + 5.0
                 obj.SafeHeight = bb.ZMax + 3.0
                 obj.FinalDepth = bb.ZMax - 1
             except:
-                obj.StartDepth = 5.0
-                obj.FinalDepth = 4.0
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0
+                obj.FinalDepth = 4.0
 
         item = (ss, "")
         if item in baselist:
@@ -262,7 +259,6 @@ class CommandPathEngrave:
         FreeCADGui.doCommand('PathScripts.PathEngrave.ObjectPathEngrave(obj)')
 
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')
-        FreeCADGui.doCommand('obj.StartDepth= 0')
         FreeCADGui.doCommand('obj.FinalDepth= -0.1')
         FreeCADGui.doCommand('obj.SafeHeight= 5.0')
         FreeCADGui.doCommand('obj.Active = True')
@@ -292,8 +288,6 @@ class TaskPanel:
 
     def getFields(self):
         if self.obj:
-            if hasattr(self.obj, "StartDepth"):
-                self.obj.StartDepth = self.form.startDepth.text()
             if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = self.form.finalDepth.text()
             if hasattr(self.obj, "SafeHeight"):
@@ -304,7 +298,6 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
         self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
@@ -367,7 +360,6 @@ class TaskPanel:
     def setupUi(self):
 
         # Connect Signals and Slots
-        self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)
