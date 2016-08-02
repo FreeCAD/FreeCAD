@@ -93,6 +93,7 @@ public:
 
 private:
     TopoShape _Shape;
+    TopoDS_Shape _OCCShape;
 };
 
 struct PartExport ShapeHistory {

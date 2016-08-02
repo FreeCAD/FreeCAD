@@ -82,6 +82,7 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 {
     aboutToSetValue();
     _Shape = sh;
+    _OCCShape = sh.getShape();
     hasSetValue();
 }
 
@@ -89,12 +90,14 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh)
 {
     aboutToSetValue();
     _Shape.setShape(sh);
+    _OCCShape = sh;
     hasSetValue();
 }
 
 const TopoDS_Shape& PropertyPartShape::getValue(void)const 
 {
-    return _Shape.getShape();
+    _OCCShape = _Shape.getShape();
+    return _OCCShape;
 }
 
 const TopoShape& PropertyPartShape::getShape() const
