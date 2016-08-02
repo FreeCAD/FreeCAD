@@ -171,7 +171,6 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
     std::string dimType;
-    bool centerLine = false;
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -185,7 +184,6 @@ void CmdTechDrawNewDimension::activated(int iMsg)
             subs.push_back(SubNames[0]);
         } else if (edgeType == isCircle) {
             dimType = "Radius";
-            centerLine = true;
         } else {
             dimType = "Radius";
         }
@@ -235,12 +233,6 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,dimType.c_str());
-
-    if (centerLine) {
-        doCommand(Doc,"App.activeDocument().%s.CentreLines = True", FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.CentreLines = False", FeatName.c_str());
-    }
 
     std::string contentStr;
     if (dimType == "Radius") {
@@ -310,14 +302,12 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
-    bool centerLine = false;
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
     int edgeType = _isValidSingleEdge(this);
     if (edgeType == isCircle) {
-        centerLine = true;
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
     } else {
@@ -332,13 +322,6 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Radius");
-
-    if (centerLine) {
-        doCommand(Doc,"App.activeDocument().%s.CentreLines = True", FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.CentreLines = False", FeatName.c_str());
-    }
-
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = 'R%%value%%'", FeatName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -403,14 +386,12 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 
     TechDraw::DrawViewDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("Dimension");
-    bool centerLine = false;
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
     int edgeType = _isValidSingleEdge(this);
     if (edgeType == isCircle) {
-        centerLine = true;
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
     } else {
@@ -426,11 +407,6 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
 
-    if (centerLine) {
-        doCommand(Doc,"App.activeDocument().%s.CentreLines = True", FeatName.c_str());
-    } else {
-        doCommand(Doc,"App.activeDocument().%s.CentreLines = False", FeatName.c_str());
-    }
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\xe2\x8c\x80%%value%%'", FeatName.c_str()); // utf-8 encoded diameter symbol
 
