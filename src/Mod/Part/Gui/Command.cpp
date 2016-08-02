@@ -1722,9 +1722,9 @@ void CmdPartRuledSurface::activated(int iMsg)
         const Part::Feature* part1 = static_cast<const Part::Feature*>(result[0].getObject());
         const Part::Feature* part2 = static_cast<const Part::Feature*>(result[1].getObject());
         const Part::TopoShape& shape1 = part1->Shape.getValue();
-        curve1 = shape1._Shape;
+        curve1 = shape1.getShape();
         const Part::TopoShape& shape2 = part2->Shape.getValue();
-        curve2 = shape2._Shape;
+        curve2 = shape2.getShape();
         obj1 = part1->getNameInDocument();
         obj2 = part2->getNameInDocument();
 

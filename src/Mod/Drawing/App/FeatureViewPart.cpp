@@ -103,7 +103,7 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
         return new App::DocumentObjectExecReturn("No object linked");
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
+    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
     if (shape.IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
     Base::Vector3d Dir = Direction.getValue();

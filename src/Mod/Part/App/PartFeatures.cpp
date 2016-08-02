@@ -96,29 +96,29 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
         TopoDS_Shape curve1;
         const Part::TopoShape& shape1 = static_cast<Part::Feature*>(c1)->Shape.getValue();
-        if (!shape1._Shape.IsNull()) {
+        if (!shape1.getShape().IsNull()) {
             if (!element1[0].empty()) {
                 curve1 = shape1.getSubShape(element1[0].c_str());
             }
             else {
-                if (shape1._Shape.ShapeType() == TopAbs_EDGE)
-                    curve1 = shape1._Shape;
-                else if (shape1._Shape.ShapeType() == TopAbs_WIRE)
-                    curve1 = shape1._Shape;
+                if (shape1.getShape().ShapeType() == TopAbs_EDGE)
+                    curve1 = shape1.getShape();
+                else if (shape1.getShape().ShapeType() == TopAbs_WIRE)
+                    curve1 = shape1.getShape();
             }
         }
 
         TopoDS_Shape curve2;
         const Part::TopoShape& shape2 = static_cast<Part::Feature*>(c2)->Shape.getValue();
-        if (!shape2._Shape.IsNull()) {
+        if (!shape2.getShape().IsNull()) {
             if (!element2[0].empty()) {
                 curve2 = shape2.getSubShape(element2[0].c_str());
             }
             else {
-                if (shape2._Shape.ShapeType() == TopAbs_EDGE)
-                    curve2 = shape2._Shape;
-                else if (shape2._Shape.ShapeType() == TopAbs_WIRE)
-                    curve2 = shape2._Shape;
+                if (shape2.getShape().ShapeType() == TopAbs_EDGE)
+                    curve2 = shape2.getShape();
+                else if (shape2.getShape().ShapeType() == TopAbs_WIRE)
+                    curve2 = shape2.getShape();
             }
         }
 
@@ -339,7 +339,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
 
     TopoDS_Shape path;
     const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
-    if (!shape._Shape.IsNull()) {
+    if (!shape.getShape().IsNull()) {
         try {
             if (!subedge.empty()) {
                 BRepBuilderAPI_MakeWire mkWire;
@@ -349,15 +349,15 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 }
                 path = mkWire.Wire();
             }
-            else if (shape._Shape.ShapeType() == TopAbs_EDGE) {
-                path = shape._Shape;
+            else if (shape.getShape().ShapeType() == TopAbs_EDGE) {
+                path = shape.getShape();
             }
-            else if (shape._Shape.ShapeType() == TopAbs_WIRE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape._Shape));
+            else if (shape.getShape().ShapeType() == TopAbs_WIRE) {
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape.getShape()));
                 path = mkWire.Wire();
             }
-            else if (shape._Shape.ShapeType() == TopAbs_COMPOUND) {
-                TopoDS_Iterator it(shape._Shape);
+            else if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
+                TopoDS_Iterator it(shape.getShape());
                 for (; it.More(); it.Next()) {
                     if (it.Value().IsNull())
                         return new App::DocumentObjectExecReturn("In valid element in spine.");
@@ -369,7 +369,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
 
                 Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
                 Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-                for (TopExp_Explorer xp(shape._Shape, TopAbs_EDGE); xp.More(); xp.Next())
+                for (TopExp_Explorer xp(shape.getShape(), TopAbs_EDGE); xp.More(); xp.Next())
                     hEdges->Append(xp.Current());
 
                 ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_True, hWires);
@@ -580,7 +580,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
 
     int countSolids = 0;
     TopExp_Explorer xp;
-    xp.Init(shape._Shape,TopAbs_SOLID);
+    xp.Init(shape.getShape(),TopAbs_SOLID);
     for (;xp.More(); xp.Next()) {
         countSolids++;
     }

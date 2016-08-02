@@ -120,7 +120,7 @@ void Constraint::onChanged(const App::Property* prop)
             App::DocumentObject* obj = Objects[i];
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
             const Part::TopoShape& toposhape = feat->Shape.getShape();
-            if (!toposhape._Shape.IsNull()) {
+            if (!toposhape.getShape().IsNull()) {
                 sh = toposhape.getSubShape(SubElements[i].c_str());
 
                 if (sh.ShapeType() == TopAbs_FACE) {
@@ -175,7 +175,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vecto
             normals.push_back(NormalDirection.getValue());
             //OvG: Scale by whole object mass in case of a vertex
             GProp_GProps props;
-            BRepGProp::VolumeProperties(toposhape._Shape, props);
+            BRepGProp::VolumeProperties(toposhape.getShape(), props);
             double lx = props.Mass();
             *scale = this->calcDrawScaleFactor(sqrt(lx)*0.5); //OvG: setup draw scale for constraint
         } else if (sh.ShapeType() == TopAbs_EDGE) {

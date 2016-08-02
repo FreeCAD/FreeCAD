@@ -83,7 +83,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     try {
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
-            ->getTopoShapePtr()->_Shape;
+            ->getTopoShapePtr()->getShape();
         //first, if we were given a compsolid, try making a solid out of it
         TopExp_Explorer CSExp (shape, TopAbs_COMPSOLID);
         TopoDS_CompSolid compsolid;
@@ -109,11 +109,11 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
             TopoDS_Solid solid = mkSolid.Solid();
             BRepLib::OrientClosedSolid(solid);
-            getTopoShapePtr()->_Shape = solid;
+            getTopoShapePtr()->setShape(solid);
         } else if (count == 1) {
             BRepBuilderAPI_MakeSolid mkSolid(compsolid);
             TopoDS_Solid solid = mkSolid.Solid();
-            getTopoShapePtr()->_Shape = solid;
+            getTopoShapePtr()->setShape(solid);
         } else if (count > 1) {
             Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
         }
@@ -132,7 +132,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 Py::Object TopoShapeSolidPy::getMass(void) const
 {
     GProp_GProps props;
-    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
     double c = props.Mass();
     return Py::Float(c);
 }
@@ -140,7 +140,7 @@ Py::Object TopoShapeSolidPy::getMass(void) const
 Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
 {
     GProp_GProps props;
-    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
     gp_Pnt c = props.CentreOfMass();
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
 }
@@ -148,7 +148,7 @@ Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
 Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
 {
     GProp_GProps props;
-    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
     gp_Mat m = props.MatrixOfInertia();
     Base::Matrix4D mat;
     for (int i=0; i<3; i++) {
@@ -162,7 +162,7 @@ Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
 Py::Object TopoShapeSolidPy::getStaticMoments(void) const
 {
     GProp_GProps props;
-    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
     Standard_Real lx,ly,lz;
     props.StaticMoments(lx,ly,lz);
     Py::Tuple tuple(3);
@@ -175,7 +175,7 @@ Py::Object TopoShapeSolidPy::getStaticMoments(void) const
 Py::Dict TopoShapeSolidPy::getPrincipalProperties(void) const
 {
     GProp_GProps props;
-    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
     GProp_PrincipalProps pprops = props.PrincipalProperties();
 
     Py::Dict dict;
@@ -208,7 +208,7 @@ Py::Dict TopoShapeSolidPy::getPrincipalProperties(void) const
 Py::Object TopoShapeSolidPy::getOuterShell(void) const
 {
     TopoDS_Shell shell;
-    const TopoDS_Shape& shape = getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (!shape.IsNull() && shape.ShapeType() == TopAbs_SOLID)
 #if OCC_VERSION_HEX >= 0x060600
         shell = BRepClass3d::OuterShell(TopoDS::Solid(shape));
@@ -229,7 +229,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
 
     try {
         GProp_GProps props;
-        BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+        BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
         double r = props.MomentOfInertia(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
@@ -252,7 +252,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
 
     try {
         GProp_GProps props;
-        BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+        BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
         double r = props.RadiusOfGyration(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
@@ -269,7 +269,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     PyObject *obj;
     Standard_Real offset;
 
-    const TopoDS_Shape& shape = getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     BRepOffset_MakeOffset builder;
     // Set here an offset value higher than the tolerance
     builder.Initialize(shape,1.0,Precision::Confusion(),BRepOffset_Skin,Standard_False,Standard_False,GeomAbs_Intersection);
@@ -287,7 +287,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                 // set offset of the requested faces
-                const TopoDS_Shape& face = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
+                const TopoDS_Shape& face = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
                 builder.SetOffsetOnFace(TopoDS::Face(face), offset);
             }
         }
@@ -300,7 +300,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
         for (Py::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             if (PyObject_TypeCheck((*it).first.ptr(), &(Part::TopoShapePy::Type))) {
                 // set offset of the requested faces
-                const TopoDS_Shape& face = static_cast<TopoShapePy*>((*it).first.ptr())->getTopoShapePtr()->_Shape;
+                const TopoDS_Shape& face = static_cast<TopoShapePy*>((*it).first.ptr())->getTopoShapePtr()->getShape();
                 Standard_Real value = (double)Py::Float((*it).second.ptr());
                 builder.SetOffsetOnFace(TopoDS::Face(face), value);
             }

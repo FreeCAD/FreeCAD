@@ -220,13 +220,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     }
 
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
-    if (supportTopShape._Shape.IsNull())
+    if (supportTopShape.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
 
     // create an untransformed copy of the support shape
     Part::TopoShape supportShape(supportTopShape);
     supportShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape support = supportShape._Shape;
+    TopoDS_Shape support = supportShape.getShape();
 
     typedef std::set<std::vector<gp_Trsf>::const_iterator> trsf_it;
     typedef std::map<App::DocumentObject*,  trsf_it> rej_it_map;
@@ -245,7 +245,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         if ((*o)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(*o);
-            shape = feature->AddSubShape.getShape()._Shape;
+            shape = feature->AddSubShape.getShape().getShape();
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
             
