@@ -132,6 +132,39 @@ Base::Vector2D BaseGeom::getEndPoint()
 }
 
 
+double BaseGeom::minDist(Base::Vector2D p)
+{
+    double minDist = -1.0;
+    gp_Pnt pnt(p.fX,p.fY,0.0);
+    TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
+    BRepExtrema_DistShapeShape extss(occEdge, v);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            minDist = extss.Value();
+        }
+    }
+    return minDist;
+}
+
+//!find point on me nearest to p
+Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
+{
+    gp_Pnt pnt(p.fX,p.fY,0.0);
+    Base::Vector2D result(0.0,0.0);
+    TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
+    BRepExtrema_DistShapeShape extss(occEdge, v);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            gp_Pnt p1;
+            p1 = extss.PointOnShape1(1);
+            result =  Base::Vector2D(p1.X(),p1.Y());
+        }
+    }
+    return result;
+}
+
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
 {
@@ -256,8 +289,8 @@ Circle::Circle(const TopoDS_Edge &e)
 
     gp_Circ circ = c.Circle();
     const gp_Pnt& p = circ.Location();
-    const gp_Ax2& p1 = circ.Position();
-    const gp_Pnt& l = p1.Location();
+    //const gp_Ax2& p1 = circ.Position();
+    //const gp_Pnt& l = p1.Location();
 
     radius = circ.Radius();
     center = Base::Vector2D(p.X(), p.Y());
@@ -311,17 +344,20 @@ bool AOC::isOnArc(Base::Vector3d p)
 
 double AOC::distToArc(Base::Vector3d p)
 {
-    double minDist = -1.0;
-    gp_Pnt pnt(p.x,p.y,p.z);
-    TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
-    BRepExtrema_DistShapeShape extss(occEdge, v);
-    if (extss.IsDone()) {
-        int count = extss.NbSolution();
-        if (count != 0) {
-            minDist = extss.Value();
-        }
-    }
-    return minDist;
+    Base::Vector2D p2(p.x,p.y);
+    double result = minDist(p2);
+    return result;
+//    double minDist = -1.0;
+//    gp_Pnt pnt(p.x,p.y,p.z);
+//    TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
+//    BRepExtrema_DistShapeShape extss(occEdge, v);
+//    if (extss.IsDone()) {
+//        int count = extss.NbSolution();
+//        if (count != 0) {
+//            minDist = extss.Value();
+//        }
+//    }
+//    return minDist;
 }
 
 

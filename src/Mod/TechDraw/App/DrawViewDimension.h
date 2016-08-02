@@ -54,7 +54,6 @@ public:
     /// Properties for Visualisation
     App::PropertyString  Font;
     App::PropertyFloat   Fontsize;
-    App::PropertyBool    CentreLines;
     App::PropertyString  FormatSpec;
     App::PropertyFloat   LineWidth;
 

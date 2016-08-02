@@ -147,8 +147,6 @@ QGIViewDimension::QGIViewDimension() :
     addToGroup(datumLabel);
     dimLines = new QGraphicsPathItem();
     addToGroup(dimLines);
-    centerMark = new QGraphicsPathItem();
-    addToGroup(centerMark);
     aHead1 = new QGIArrow();
     addToGroup(aHead1);
     aHead2 = new QGIArrow();
@@ -172,7 +170,6 @@ QGIViewDimension::QGIViewDimension() :
         this  , SLOT  (hover(bool)));
 
     m_pen.setStyle(Qt::SolidLine);
-    m_clPen.setColor(QColor(128,128,128));  // TODO: centre line colour preference?
 
     toggleBorder(false);
 }
@@ -290,7 +287,6 @@ void QGIViewDimension::draw()
     }
 
     m_pen.setWidthF(dim->LineWidth.getValue());
-    m_clPen.setWidthF(m_pen.widthF() * 0.80);                          //magic number!!!!
 
     // Crude method of determining state [TODO] improve
     if(isSelected()) {
@@ -394,6 +390,41 @@ void QGIViewDimension::draw()
                 //TODO: Exception here seems drastic. Can we fail more gracefully?
                 throw Base::Exception("FVD::draw -Invalid reference for dimension type (1)");
             }
+        } else if(dim->References2D.getValues().size() == 2) {
+            int vx,ex;
+            TechDrawGeometry::BaseGeom* e;
+            TechDrawGeometry::Vertex* v;
+            if ((TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge")  &&
+                (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex")) {
+                ex = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+                vx = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+            } else if ((TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex")  &&
+                       (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge"))  {
+                ex = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+                vx = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            } else {
+                Base::Console().Log("INFO - qgivd::draw - vertexEdge dim is not vertexEdge!\n");
+                return;
+            }
+            e = refObj->getProjEdgeByIndex(ex);
+            v = refObj->getProjVertexByIndex(vx);
+            if (!e || !v) {
+                Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d or %d of %d\n",
+                                    ex,vx,refObj->getEdgeGeometry().size());
+                return;
+            }
+            Base::Vector3d pnt(v->pnt.fX,v->pnt.fY, 0.0);
+            Base::Vector3d edgeStart(e->getStartPoint().fX,e->getStartPoint().fY,0.0);
+            Base::Vector3d edgeEnd(e->getEndPoint().fX,e->getEndPoint().fY,0.0);
+            Base::Vector3d displace;
+            displace.ProjectToLine(pnt - edgeStart, edgeEnd - edgeStart);
+            Base::Vector3d ptOnLine = pnt + displace;
+
+            distStart = pnt;
+            distEnd = ptOnLine;
+            //need to figure out Distance? from slope of distEnd-distStart?
+        } else {
+            Base::Console().Message("TARFU - invalid references for Dimension!!");
         }
 
         Base::Vector3d dir, norm;                                               //direction/normal vectors of dimLine
@@ -709,28 +740,6 @@ void QGIViewDimension::draw()
 
         dimLines->setPath(path);
 
-        // Add or remove centre lines
-        QPainterPath clpath;
-
-        if(dim->CentreLines.getValue()) {
-            // Add centre lines to the circle
-
-            double clDist = margin; // Centre Line Size
-            if( margin / radius  > 0.2) {
-                // Tolerance if centre line is greater than 0.3x radius then set to limit
-                clDist = radius * 0.2;
-            }
-            // Vertical Line
-            clpath.moveTo(centre.x, centre.y + clDist);
-            clpath.lineTo(centre.x, centre.y - clDist);
-
-            // Vertical Line
-            clpath.moveTo(centre.x - clDist, centre.y);
-            clpath.lineTo(centre.x + clDist, centre.y);
-        }
-
-        centerMark->setPath(clpath);
-
         aHead1->draw();
         aHead2->flip(true);
         aHead2->draw();
@@ -885,24 +894,6 @@ void QGIViewDimension::draw()
         dLinePath.lineTo(pointOnCurve.x, pointOnCurve.y);
 
         dimLines->setPath(dLinePath);
-
-        // Add or remove centre lines  (wf - this is centermark, not centerlines)
-        QPainterPath clpath;
-        if(dim->CentreLines.getValue()) {
-            // Add centre lines to the circle
-            double clDist = margin; // Centre Line Size
-            if( margin / radius  > 0.2) {
-                // Tolerance if centre line is greater than 0.3x radius then set to limit
-                clDist = radius * 0.2;
-            }
-            // Vertical Line
-            clpath.moveTo(curveCenter.x, curveCenter.y + clDist);
-            clpath.lineTo(curveCenter.x, curveCenter.y - clDist);
-            // Horizontal Line
-            clpath.moveTo(curveCenter.x - clDist, curveCenter.y);
-            clpath.lineTo(curveCenter.x + clDist, curveCenter.y);
-        }
-        centerMark->setPath(clpath);
 
         aHead1->draw();
 
@@ -1181,7 +1172,6 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     QPaintDevice* hw = painter->device();
     QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
     double saveWidth = m_pen.widthF();
-    double saveClWidth = m_clPen.widthF();
     if (svg) {
         setSvgPens();
     } else {
@@ -1189,7 +1179,6 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     }
     QGIView::paint (painter, &myOption, widget);
     m_pen.setWidthF(saveWidth);
-    m_clPen.setWidthF(saveClWidth);
 }
 
 void QGIViewDimension::setSvgPens(void)
@@ -1199,8 +1188,6 @@ void QGIViewDimension::setSvgPens(void)
     dimLines->setPen(m_pen);
     aHead1->setPen(m_pen);
     aHead2->setPen(m_pen);
-    m_clPen.setWidthF(m_clPen.widthF()/svgLineFactor);
-    centerMark->setPen(m_clPen);
 }
 
 void QGIViewDimension::setPens(void)
@@ -1208,7 +1195,6 @@ void QGIViewDimension::setPens(void)
     dimLines->setPen(m_pen);
     aHead1->setPen(m_pen);
     aHead2->setPen(m_pen);
-    centerMark->setPen(m_clPen);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
