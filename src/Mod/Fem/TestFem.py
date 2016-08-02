@@ -339,7 +339,7 @@ class TherMechFemTest(unittest.TestCase):
     def create_new_solver(self):
         self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
         self.active_doc.recompute()
-        
+
     def create_new_mesh(self):
         self.mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
         self.mesh = Fem.FemMesh()
@@ -357,7 +357,7 @@ class TherMechFemTest(unittest.TestCase):
 
         self.mesh_object.FemMesh = self.mesh
         self.active_doc.recompute()
-        
+
     def create_new_material(self):
         self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
         mat = self.new_material_object.Material
@@ -365,9 +365,9 @@ class TherMechFemTest(unittest.TestCase):
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
         mat['Density'] = "7900 kg/m^3"
-        mat['ThermalConductivity'] = "43.27 W/m/K" #SvdW: Change to Ansys model values
+        mat['ThermalConductivity'] = "43.27 W/m/K"  # SvdW: Change to Ansys model values
         mat['ThermalExpansionCoefficient'] = "12 um/m/K"
-        mat['SpecificHeat'] = "500 J/kg/K" #SvdW: Change to Ansys model values
+        mat['SpecificHeat'] = "500 J/kg/K"  # SvdW: Change to Ansys model values
         self.new_material_object.Material = mat
 
     def create_fixed_constraint(self):
@@ -382,10 +382,10 @@ class TherMechFemTest(unittest.TestCase):
         self.temperature_constraint = self.active_doc.addObject("Fem::ConstraintTemperature", "FemConstraintTemperature")
         self.temperature_constraint.References = [(self.box, "Face1")]
         self.temperature_constraint.Temperature = 310.93
-        
+
     def create_heatflux_constraint(self):
         self.heatflux_constraint = self.active_doc.addObject("Fem::ConstraintHeatflux", "FemConstraintHeatflux")
-        self.heatflux_constraint.References = [(self.box, "Face3"),(self.box, "Face4"),(self.box, "Face5"),(self.box, "Face6")]
+        self.heatflux_constraint.References = [(self.box, "Face3"), (self.box, "Face4"), (self.box, "Face5"), (self.box, "Face6")]
         self.heatflux_constraint.AmbientTemp = 255.3722
         self.heatflux_constraint.FilmCoef = 5.678
 
@@ -440,42 +440,42 @@ class TherMechFemTest(unittest.TestCase):
         fcc_print('Checking FEM new analysis...')
         self.create_new_analysis()
         self.assertTrue(self.analysis, "FemTest of new analysis failed")
-        
+
         fcc_print('Checking FEM new solver...')
         self.create_new_solver()
         self.assertTrue(self.solver_object, "FemTest of new solver failed")
         self.analysis.Member = self.analysis.Member + [self.solver_object]
-        
+
         fcc_print('Checking FEM new mesh...')
         self.create_new_mesh()
         self.assertTrue(self.mesh, "FemTest of new mesh failed")
         self.analysis.Member = self.analysis.Member + [self.mesh_object]
-        
+
         fcc_print('Checking FEM new material...')
         self.create_new_material()
         self.assertTrue(self.new_material_object, "FemTest of new material failed")
         self.analysis.Member = self.analysis.Member + [self.new_material_object]
-        
+
         fcc_print('Checking FEM new fixed constraint...')
         self.create_fixed_constraint()
         self.assertTrue(self.fixed_constraint, "FemTest of new fixed constraint failed")
         self.analysis.Member = self.analysis.Member + [self.fixed_constraint]
-    
+
         fcc_print('Checking FEM new initial temperature constraint...')
         self.create_initialtemperature_constraint()
         self.assertTrue(self.initialtemperature_constraint, "FemTest of new initial temperature constraint failed")
         self.analysis.Member = self.analysis.Member + [self.initialtemperature_constraint]
-        
+
         fcc_print('Checking FEM new temperature constraint...')
         self.create_temperature_constraint()
         self.assertTrue(self.temperature_constraint, "FemTest of new temperature constraint failed")
         self.analysis.Member = self.analysis.Member + [self.temperature_constraint]
-        
+
         fcc_print('Checking FEM new heatflux constraint...')
         self.create_heatflux_constraint()
         self.assertTrue(self.heatflux_constraint, "FemTest of new heatflux constraint failed")
         self.analysis.Member = self.analysis.Member + [self.heatflux_constraint]
-        
+
         fea = FemToolsCcx.FemToolsCcx(self.analysis, test_mode=True)
         fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
         fea.setup_working_dir(thermomech_analysis_dir)
@@ -518,6 +518,7 @@ class TherMechFemTest(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("TherMechFemTest")
         pass
+
 
 # helpers
 def open_cube_test():
