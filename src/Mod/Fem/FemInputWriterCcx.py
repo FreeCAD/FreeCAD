@@ -583,7 +583,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         elif self.solver_obj.MatrixSolverType == "iterativecholesky":
             thermomech_analysis += ', SOLVER=ITERATIVE CHOLESKY'
         if self.solver_obj.SteadyState:
-            thermomech_analysis += ', STEADY STATE\n'
+            thermomech_analysis += ', STEADY STATE'
             self.solver_obj.TimeInitialStep = 1.0  # Set time to 1 and ignore user inputs for steady state
             self.solver_obj.TimeEnd = 1.0
         thermomech_time = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)  # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
