@@ -24,7 +24,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathGui
+import PathScripts.PathUtils as P
 from PySide import QtCore, QtGui
 
 """Path Dressup object and FreeCAD command"""
@@ -99,6 +99,11 @@ class ViewProviderDressup:
     def __setstate__(self, state):
         return None
 
+    def onDelete(self, arg1=None, arg2=None):
+        '''this makes sure that the base operation is added back to the project and visible'''
+        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+        P.addToProject(arg1.Object.Base)
+        return True
 
 class CommandPathDressup:
 

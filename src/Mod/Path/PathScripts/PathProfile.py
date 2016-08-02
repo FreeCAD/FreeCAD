@@ -303,7 +303,7 @@ print "y - " + str(point.y)
                     # we only consider the outer wire if this is a Face
                     # Horizontal and vertical faces are handled differently
                     shape = getattr(b[0].Shape, sub)
-                    if numpy.isclose(shape.normalAt(0, 0).z, 1):  # horizontal face
+                    if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
                         hfaces.append(shape)
 
                     elif numpy.isclose(shape.normalAt(0, 0).z, 0):  # vertical face
