@@ -234,6 +234,14 @@ TopoShape::TopoShape(const TopoShape& shape)
 {
 }
 
+void TopoShape::setShape(const TopoDS_Shape& shape){
+    this->_Shape = shape;
+}
+
+TopoDS_Shape TopoShape::getShape() const{
+    return this->_Shape;
+}
+
 std::vector<const char*> TopoShape::getElementTypes(void) const
 {
     std::vector<const char*> temp(3);
