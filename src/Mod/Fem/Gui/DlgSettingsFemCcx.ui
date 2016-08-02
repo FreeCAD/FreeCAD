@@ -281,14 +281,14 @@
           <item row="4" column="0">
            <widget class="QLabel" name="l_use_iterations_param">
             <property name="text">
-             <string>Time Incrementation control paramter</string>
+             <string>Time incrementation control parameter</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_ccx_non_lin_geom">
             <property name="text">
-             <string>Non linear geometry</string>
+             <string>Use non-linear geometry</string>
             </property>
             <property name="checked">
              <bool>false</bool>
@@ -307,14 +307,14 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Matrix Solver</string>
+             <string>Matrix solver</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="l_non_lin_geom">
             <property name="text">
-             <string>Non-Linear Geometry</string>
+             <string>Non-linear geometry</string>
             </property>
            </widget>
           </item>
@@ -382,7 +382,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="l_ccx_max_iterations">
             <property name="text">
-             <string>Maximum Number of iterations</string>
+             <string>Maximum number of iterations</string>
             </property>
            </widget>
           </item>
@@ -443,14 +443,14 @@
           <item row="5" column="0">
            <widget class="QLabel" name="l_ccx_analysis_time">
             <property name="text">
-             <string>End Time</string>
+             <string>End time</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
            <widget class="Gui::PrefCheckBox" name="cb_static">
             <property name="text">
-             <string>Steady State</string>
+             <string>Use steady state</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -466,7 +466,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="l_static">
             <property name="text">
-             <string>Analysis type</string>
+             <string>Analysis type (transient or steady state)</string>
             </property>
            </widget>
           </item>
