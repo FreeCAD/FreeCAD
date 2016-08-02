@@ -76,6 +76,8 @@ class TechDrawExport BaseGeom
         std::vector<Base::Vector2D> findEndPoints();
         Base::Vector2D getStartPoint();
         Base::Vector2D getEndPoint();
+        double minDist(Base::Vector2D p);
+        Base::Vector2D nearPoint(Base::Vector2D p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
 };
 
