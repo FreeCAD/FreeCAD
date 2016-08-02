@@ -554,8 +554,8 @@ void QGIViewDimension::draw()
         aHead1->setPos(dim1Tip.x, dim1Tip.y);
         aHead2->setPos(dim2Tail.x, dim2Tail.y);
 
-        aHead1->setHighlighted(isSelected() || hasHover);    //setPrettyxxx??
-        aHead2->setHighlighted(isSelected() || hasHover);
+        //aHead1->setHighlighted(isSelected() || hasHover);    //setPrettyxxx??
+        //aHead2->setHighlighted(isSelected() || hasHover);
 
     } else if(strcmp(dimType, "Diameter") == 0) {
         // terminology: Dimension Text, Dimension Line(s), Extension Lines, Arrowheads
@@ -746,8 +746,8 @@ void QGIViewDimension::draw()
 
         float arAngle = atan2(dirDimLine.y, dirDimLine.x) * 180 / M_PI;
 
-        aHead1->setHighlighted(isSelected() || hasHover);
-        aHead2->setHighlighted(isSelected() || hasHover);
+        //aHead1->setHighlighted(isSelected() || hasHover);
+        //aHead2->setHighlighted(isSelected() || hasHover);
         aHead2->show();
 
         if(outerPlacement) {
@@ -903,7 +903,7 @@ void QGIViewDimension::draw()
 
         aHead1->setPos(ar1Pos.x, ar1Pos.y);
         aHead1->setRotation(arAngle);
-        aHead1->setHighlighted(isSelected() || hasHover);
+        //aHead1->setHighlighted(isSelected() || hasHover);
         aHead1->show();
         aHead2->hide();
     } else if(strcmp(dimType, "Angle") == 0) {
@@ -1111,8 +1111,8 @@ void QGIViewDimension::draw()
                     aHead2->setRotation(ar2angle);
                 }
 
-                aHead1->setHighlighted(isSelected() || hasHover);
-                aHead2->setHighlighted(isSelected() || hasHover);
+                //aHead1->setHighlighted(isSelected() || hasHover);
+                //aHead2->setHighlighted(isSelected() || hasHover);
 
                 // Set the angle of the datum text
 
@@ -1136,6 +1136,17 @@ void QGIViewDimension::draw()
     }  //endif Distance/Diameter/Radius/Angle
 
     // redraw the Dimension and the parent View
+    if (hasHover) {
+        aHead1->setPrettyPre();
+        aHead2->setPrettyPre();
+    } else if (isSelected()) {
+        aHead1->setPrettySel();
+        aHead2->setPrettySel();
+    } else {
+        aHead1->setPrettyNormal();
+        aHead2->setPrettyNormal();
+    }
+
     update();
     if (parentItem()) {
         //TODO: parent redraw still required with new frame/label??
@@ -1172,6 +1183,7 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     QPaintDevice* hw = painter->device();
     QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
     double saveWidth = m_pen.widthF();
+    double arrowSaveWidth = aHead1->getWidth();
     if (svg) {
         setSvgPens();
     } else {
@@ -1179,6 +1191,8 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     }
     QGIView::paint (painter, &myOption, widget);
     m_pen.setWidthF(saveWidth);
+    aHead1->setWidth(arrowSaveWidth);
+    aHead2->setWidth(arrowSaveWidth);
 }
 
 void QGIViewDimension::setSvgPens(void)
@@ -1186,15 +1200,13 @@ void QGIViewDimension::setSvgPens(void)
     double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
     m_pen.setWidthF(m_pen.widthF()/svgLineFactor);
     dimLines->setPen(m_pen);
-    aHead1->setPen(m_pen);
-    aHead2->setPen(m_pen);
+    aHead1->setWidth(aHead1->getWidth()/svgLineFactor);
+    aHead2->setWidth(aHead2->getWidth()/svgLineFactor);
 }
 
 void QGIViewDimension::setPens(void)
 {
     dimLines->setPen(m_pen);
-    aHead1->setPen(m_pen);
-    aHead2->setPen(m_pen);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

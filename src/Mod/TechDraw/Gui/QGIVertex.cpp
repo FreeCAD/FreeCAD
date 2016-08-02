@@ -65,6 +65,5 @@ void QGIVertex::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     m_brush.setColor(m_colCurrent);
     m_brush.setStyle(m_fill);
     setBrush(m_brush);
-    //setRect(-m_radius,-m_radius,2.*m_radius,2.*m_radius);
     QGIPrimPath::paint (painter, &myOption, widget);
 }
