@@ -341,6 +341,7 @@ class TherMechFemTest(unittest.TestCase):
         self.solver_object.GeometricalNonlinearity = 'linear'
         self.solver_object.SteadyState = True
         self.solver_object.MatrixSolverType = 'default'
+        self.solver_object.IterationsMaximum = 2000
         self.solver_object.IterationsControlParameterTimeUse = True
         self.active_doc.recompute()
 
