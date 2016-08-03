@@ -111,7 +111,7 @@ PyObject* FemMeshPy::setShape(PyObject *args)
         return 0;
 
     try {
-        TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
+        TopoDS_Shape shape = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
         getFemMeshPtr()->getSMesh()->ShapeToMesh(shape);
     }
     catch (const std::exception& e) {
@@ -134,7 +134,7 @@ PyObject* FemMeshPy::addHypothesis(PyObject *args)
     if (shp == 0)
         shape = getFemMeshPtr()->getSMesh()->GetShapeToMesh();
     else
-        shape = static_cast<Part::TopoShapePy*>(shp)->getTopoShapePtr()->_Shape;
+        shape = static_cast<Part::TopoShapePy*>(shp)->getTopoShapePtr()->getShape();
 
     try {
         Py::Object obj(hyp);
@@ -583,7 +583,7 @@ PyObject* FemMeshPy::getFacesByFace(PyObject *args)
          return 0;
 
     try {
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         if (sh.IsNull()) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
             return 0;
@@ -613,7 +613,7 @@ PyObject* FemMeshPy::getVolumesByFace(PyObject *args)
          return 0;
 
     try {
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         if (sh.IsNull()) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
             return 0;
@@ -646,7 +646,7 @@ PyObject* FemMeshPy::getccxVolumesByFace(PyObject *args)
          return 0;
 
     try {
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         if (sh.IsNull()) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
             return 0;
@@ -698,7 +698,7 @@ PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
          return 0;
 
     try {
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapeSolidPy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeSolidPy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Solid& fc = TopoDS::Solid(sh);
         if (sh.IsNull()) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Solid is empty");
@@ -726,7 +726,7 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
          return 0;
 
     try {
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Face& fc = TopoDS::Face(sh);
         if (sh.IsNull()) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
@@ -754,7 +754,7 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
          return 0;
 
     try {
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapeEdgePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeEdgePy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Edge& fc = TopoDS::Edge(sh);
         if (sh.IsNull()) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Edge is empty");
@@ -782,7 +782,7 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
          return 0;
 
     try {
-        const TopoDS_Shape& sh = static_cast<Part::TopoShapeVertexPy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeVertexPy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Vertex& fc = TopoDS::Vertex(sh);
         if (sh.IsNull()) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Vertex is empty");
