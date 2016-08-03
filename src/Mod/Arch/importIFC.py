@@ -735,7 +735,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
                 if host in objects.keys():
-                    cobs = [objects[child] for child in children if child in objects.keys()]
+                    cobs = []
+                    childs_to_delete = []
+                    for child in children:
+                        if child in objects.keys():
+                            cobs.append(objects[child])
+                            childs_to_delete.append(child)
+                    for c in childs_to_delete:
+                        children.remove(c)  # to not process the child again in remaining groups
                     if cobs:
                         if DEBUG: print "adding ",len(cobs), " object(s) to ", objects[host].Label
                         Arch.addComponents(cobs,objects[host])
@@ -753,14 +760,18 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # processing remaining (normal) groups
     for host,children in groups.items():
         if ifcfile[host].is_a("IfcGroup"):
-            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",ifcfile[host].Name)
+            if ifcfile[host].Name:
+                grp_name = ifcfile[host].Name
+            else:
+                if DEBUG: print "no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!"
+                grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
+            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
             objects[host] = grp
             for child in children:
                 if child in objects.keys():
                     grp.addObject(objects[child])
                 else:
-                    if DEBUG: print "unable to add object to group: ",ifcfile[host]
-
+                    if DEBUG: print "unable to add object: #", child, "  to group: #", ifcfile[host].id(), ", ", grp_name
 
     if MERGE_MODE_ARCH == 3:
 
