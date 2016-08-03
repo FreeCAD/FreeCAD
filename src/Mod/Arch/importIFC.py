@@ -537,9 +537,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 # workaround to remove the bad placement: exporting/reimporting as step
                                 if not ex[0].Placement.isNull():
                                     import tempfile
-                                    tf = tempfile.mkstemp(suffix=".stp")[1]
+                                    fd, tf = tempfile.mkstemp(suffix=".stp")
                                     ex[0].exportStep(tf)
                                     f = Part.read(tf)
+                                    os.close(fd)
                                     os.remove(tf)
                                 else:
                                     f = ex[0]
