@@ -1,254 +1,328 @@
-#***************************************************************************
-#*   (c) sliptonic (shopinthewoods@gmail.com) 2014                        *
-#*                                                                         *
-#*   This file is part of the FreeCAD CAx development system.              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Lesser General Public License for more details.                   *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************/
+import datetime
+from PathScripts import PostUtils
+
+# ***************************************************************************
+# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Lesser General Public License for more details.                   *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************/
 
 
 '''
-This is an postprocessor file for the Path workbench. It will output path data in a format suitable for OpenSBP controllers like shopbot.  This postprocessor, once placed in the appropriate PathScripts folder, can be used directly from inside FreeCAD,
-via the GUI importer or via python scripts with:
+This is an postprocessor file for the Path workbench. It will output path data
+in a format suitable for OpenSBP controllers like shopbot.  This postprocessor,
+once placed in the appropriate PathScripts folder, can be used directly from
+inside FreeCAD, via the GUI importer or via python scripts with:
 
 import Path
 Path.write(object,"/path/to/file.ncc","post_opensbp")
+
+DONE:
+    uses native commands
+    handles feed and jog moves
+    handles XY, Z, and XYZ feed speeds
+    handles arcs
+ToDo
+    comments may not format correctly
+    drilling.  Haven't looked at it.
+    many other things
+
 '''
 
-import datetime
 now = datetime.datetime.now()
-from PathScripts import PostUtils
 
 OUTPUT_COMMENTS = False
 OUTPUT_HEADER = True
 SHOW_EDITOR = True
 COMMAND_SPACE = ","
 
-#Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = '''
-'''
-#Postamble text will appear following the last operation.
-POSTAMBLE = '''
-'''
- 
-#Pre operation text will be inserted before every operation
-PRE_OPERATION = '''
-'''
- 
-#Post operation text will be inserted after every operation
-POST_OPERATION = '''
-'''
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = ''''''
+# Postamble text will appear following the last operation.
+POSTAMBLE = ''''''
 
-#Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = ''''A tool change is about to happen
-'''
+# Pre operation text will be inserted before every operation
+PRE_OPERATION = ''''''
+
+# Post operation text will be inserted after every operation
+POST_OPERATION = ''''''
+
+# Tool Change commands will be inserted before a tool change
+TOOL_CHANGE = ''''''
+
+# to distinguish python built-in open function from the one declared below
+if open.__module__ == '__builtin__':
+    pythonopen = open
+
+CurrentState = {}
 
 
-def move(commandline):
-    print "processing a move"
-    txt = ""
-    if commandline['F'] != None : #Feed Rate has changed
-        print "command contains an F"
-        txt += feedrate(commandline)
-        
-    if commandline['command'] == 'G0': 
-        txt += "J3"
-    else:
-        txt += "M3"
+def export(objectslist, filename):
+    global CurrentState
 
-    for p in ['X','Y','Z']:
-        if commandline[p] == None:
-            txt += "," + format(CurrentState[p], '.4f')
+    for obj in objectslist:
+        if not hasattr(obj, "Path"):
+            s = "the object " + obj.Name
+            s += " is not a path. Please select only path and Compounds."
+            print s
+            return
+
+    CurrentState = {
+        'X': 0, 'Y': 0, 'Z': 0, 'F': 0, 'S': 0,
+        'JSXY': 0, 'JSZ': 0, 'MSXY': 0, 'MSZ': 0
+    }
+    print "postprocessing..."
+    gcode = ""
+
+    # write header
+    if OUTPUT_HEADER:
+        gcode += linenumber() + "'Exported by FreeCAD\n"
+        gcode += linenumber() + "'Post Processor: " + __name__ + "\n"
+        gcode += linenumber() + "'Output Time:" + str(now) + "\n"
+
+    # Write the preamble
+    if OUTPUT_COMMENTS:
+        gcode += linenumber() + "(begin preamble)\n"
+    for line in PREAMBLE.splitlines(True):
+        gcode += linenumber() + line
+
+    for obj in objectslist:
+
+        # do the pre_op
+        if OUTPUT_COMMENTS:
+            gcode += linenumber() + "(begin operation: " + obj.Label + ")\n"
+        for line in PRE_OPERATION.splitlines(True):
+            gcode += linenumber() + line
+
+        gcode += parse(obj)
+
+        # do the post_op
+        if OUTPUT_COMMENTS:
+            gcode += linenumber() + "(finish operation: " + obj.Label + ")\n"
+        for line in POST_OPERATION.splitlines(True):
+            gcode += linenumber() + line
+
+    # do the post_amble
+    if OUTPUT_COMMENTS:
+        gcode += "(begin postamble)\n"
+    for line in POSTAMBLE.splitlines(True):
+        gcode += linenumber() + line
+
+    if SHOW_EDITOR:
+        dia = PostUtils.GCodeEditorDialog()
+        dia.editor.setText(gcode)
+        result = dia.exec_()
+        if result:
+            final = dia.editor.toPlainText()
         else:
-            txt += "," + format(eval(commandline[p]), '.4f')
-            CurrentState[p] = eval(commandline[p])
-    txt += "\n"
-    return txt
+            final = gcode
+    else:
+        final = gcode
+
+    print "done postprocessing."
+
+    # Write the output
+    gfile = pythonopen(filename, "wb")
+    gfile.write(gcode)
+    gfile.close()
 
 
+def move(command):
+    global CurrentState
 
-def feedrate(commandline):
-    #figure out what kind of feed rate we're talking about jog or move
-    NOCHANGE = False
     txt = ""
-    setspeed = eval(commandline['F'])
-    if commandline['command'] == 'G1': #move
-        movetype = "MS"
-    else:  #jog
-        movetype = "JS"
-    print "movetype: " + movetype
-    
-    if commandline['X'] == None:
-        newX = CurrentState['X']
-    else:
-        newX = eval(commandline['X'])
 
-    if commandline['Y'] == None: 
-        newY = CurrentState['Y']
-    else:
-        newY = eval(commandline['Y'])
+    # if 'F' in command.Parameters:
+    #     txt += feedrate(command)
 
-    if commandline['Z'] == None: 
-        newZ = CurrentState['Z']
-    else:
-        newZ = eval(commandline['Z'])
+    axis = ""
+    for p in ['X', 'Y', 'Z']:
+        if p in command.Parameters:
+            if command.Parameters[p] != CurrentState[p]:
+                axis += p
 
-    if newX == CurrentState['X'] and newY == CurrentState['Y']:
-        # ZMove only
-        AXISMOVE = "Z"
+    if 'F' in command.Parameters:
+        speed = command.Parameters['F']
+        if speed != CurrentState['F']:
+            if command.Name in ['G1', 'G01']:  # move
+                movetype = "MS"
+            else:  # jog
+                movetype = "JS"
+            zspeed = ""
+            xyspeed = ""
+            if 'Z' in axis:
+                zspeed = "{:f}".format(speed)
+            if ('X' in axis) or ('Y' in axis):
+                xyspeed = "{:f}".format(speed)
+            txt += "{},{},{}\n".format(movetype, zspeed, xyspeed)
 
-        if CurrentState[movetype+'Z'] == setspeed:
-            NOCHANGE = True
+    if command.Name in ['G0', 'G00']:
+        pref = "J"
     else:
-        AXISMOVE = "XY"
-        if CurrentState[movetype+'XY'] == setspeed:
-            NOCHANGE = True
-    if AXISMOVE == "XY" and newZ != CurrentState['Z']:
-        AXISMOVE = "XYZ"
-        if CurrentState[movetype+'XY'] == setspeed and CurrentState[movetype+'Z'] == setspeed:
-            NOCHANGE = True
-    print "axismove: " + AXISMOVE
-    #figure out if it has actually changed.
-    if NOCHANGE == True:
-        txt = ""
-    else: #something changed
-        if AXISMOVE == "XY":
-            txt += movetype + "," + format(setspeed, '.4f')
-            CurrentState[movetype+'XY'] = setspeed
-        elif AXISMOVE == "Z":
-            txt += movetype + ",," + format(setspeed, '.4f')
-            CurrentState[movetype+'Z'] = setspeed
-        else: #XYZMOVE
-            txt += movetype + "," + format(setspeed, '.4f') + "," + format(setspeed, '.4f') 
-            print txt
-            CurrentState[movetype+'XY'] = setspeed 
-            CurrentState[movetype+'Z'] = setspeed
-        
+        pref = "M"
+
+    if axis == "X":
+        txt += pref + "X"
+        txt += "," + format(command.Parameters["X"], '.4f')
         txt += "\n"
+    elif axis == "Y":
+        txt += pref + "Y"
+        txt += "," + format(command.Parameters["Y"], '.4f')
+        txt += "\n"
+    elif axis == "Z":
+        txt += pref + "Z"
+        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += "\n"
+    elif axis == "XY":
+        txt += pref + "2"
+        txt += "," + format(command.Parameters["X"], '.4f')
+        txt += "," + format(command.Parameters["Y"], '.4f')
+        txt += "\n"
+    elif axis == "XZ":
+        txt += pref + "X"
+        txt += "," + format(command.Parameters["X"], '.4f')
+        txt += "\n"
+        txt += pref + "Z"
+        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += "\n"
+    elif axis == "XYZ":
+        txt += pref + "3"
+        txt += "," + format(command.Parameters["X"], '.4f')
+        txt += "," + format(command.Parameters["Y"], '.4f')
+        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += "\n"
+    elif axis == "YZ":
+        txt += pref + "Y"
+        txt += "," + format(command.Parameters["Y"], '.4f')
+        txt += "\n"
+        txt += pref + "Z"
+        txt += "," + format(command.Parameters["Z"], '.4f')
+        txt += "\n"
+    elif axis == "":
+        print "warning: skipping duplicate move."
+    else:
+        print CurrentState
+        print command
+        print "I don't know how to handle '{}' for a move.".format(axis)
 
     return txt
 
 
-def arc(commandline):
-    if commandline['command'] == 'G2': #CW
+def arc(command):
+    if command.Name == 'G2':  # CW
         dirstring = "1"
-    else: #G3 means CCW
+    else:  # G3 means CCW
         dirstring = "-1"
-    txt = "CG,," 
-    txt += format(eval(commandline['X']), '.4f') + "," 
-    txt += format(eval(commandline['Y']), '.4f') + "," 
-    txt += format(eval(commandline['I']), '.4f') + ","
-    txt += format(eval(commandline['J']), '.4f') + ","
+    txt = "CG,,"
+    txt += format(command.Parameters['X'], '.4f') + ","
+    txt += format(command.Parameters['Y'], '.4f') + ","
+    txt += format(command.Parameters['I'], '.4f') + ","
+    txt += format(command.Parameters['J'], '.4f') + ","
     txt += "T" + ","
     txt += dirstring
     txt += "\n"
     return txt
 
-def tool_change(commandline):
-    print "tool change"
+
+def tool_change(command):
     txt = ""
-    if OUTPUT_COMMENTS: txt += "'a tool change happens now\n"
+    if OUTPUT_COMMENTS:
+        txt += "'a tool change happens now\n"
     for line in TOOL_CHANGE.splitlines(True):
         txt += line
-    txt += "&ToolName = " + commandline['T']
-    txt += "\n"   
-    txt += "&Tool=" + commandline['T']
+    txt += "&ToolName=" + str(command.Parameters['T'])
     txt += "\n"
-
+    txt += "&Tool=" + str(command.Parameters['T'])
+    txt += "\n"
     return txt
 
-def comment(commandline):
-    print "a comment"
 
-def spindle(commandline):
-    txt =""
-    if commandline['command'] == "M3": #CW
+def comment(command):
+    print "a comment"
+    return
+
+
+def spindle(command):
+    txt = ""
+    if command.Name == "M3":  # CW
         pass
     else:
         pass
-    txt += "TR," + commandline['S']
+    txt += "TR," + str(command.Parameters['S']) + "\n"
+    txt += "C6\n"
+    txt += "PAUSE 2\n"
     return txt
 
-#Supported Commands
-scommands = {"G0": move,
+
+# Supported Commands
+scommands = {
+    "G0": move,
     "G1": move,
     "G2": arc,
     "G3": arc,
     "M6": tool_change,
     "M3": spindle,
+    "G00": move,
+    "G01": move,
+    "G02": arc,
+    "G03": arc,
+    "M06": tool_change,
+    "M03": spindle,
     "message": comment
-    }
+}
 
-CurrentState = {'X':0, 'Y':0, 'Z':0, 'F':0, 'S':0, 'JSXY':0, 'JSZ':0, 'MSXY':0, 'MSZ':0}
 
-def parse(inputstring):
-    "parse(inputstring): returns a parsed output string"
-    print "postprocessing..."
-    
+def parse(pathobj):
+    global CurrentState
+
     output = ""
-    params = ['X','Y','Z','A','B','I','J','K','F','S','T'] #This list control the order of parameters
- 
-    # write some stuff first
-    if OUTPUT_HEADER:
-        print "outputting header"
-        output += "'Exported by FreeCAD\n"
-        output += "'Post Processor: " + __name__ +"\n"
-        output += "'Output Time:"+str(now)+"\n"
+    params = ['X', 'Y', 'Z', 'A', 'B', 'I', 'J', 'K', 'F', 'S', 'T']
+    # Above list controls the order of parameters
 
-    #Write the preamble 
-    if OUTPUT_COMMENTS: output += "'begin preamble\n"
-    for line in PREAMBLE.splitlines(True):
-        output += line
+    if hasattr(pathobj, "Group"):  # We have a compound or project.
+        if OUTPUT_COMMENTS:
+            output += linenumber() + "(compound: " + pathobj.Label + ")\n"
+        for p in pathobj.Group:
+            output += parse(p)
+    else:  # parsing simple path
+        # groups might contain non-path things like stock.
+        if not hasattr(pathobj, "Path"):
+            return output
+        if OUTPUT_COMMENTS:
+            output += linenumber() + "(Path: " + pathobj.Label + ")\n"
+        for c in pathobj.Path.Commands:
+            command = c.Name
+            if command in scommands:
+                output += scommands[command](c)
+                if c.Parameters:
+                    CurrentState.update(c.Parameters)
+            else:
+                print "I don't know what the hell the command: ",
+                print command + " means.  Maybe I should support it."
+    return output
 
-    # treat the input line by line
-    lines = inputstring.splitlines(True)
 
-    for line in lines:
-        commandline = PostUtils.stringsplit(line)
-        command = commandline['command']        
-        try:
-            print commandline
-            print "command: " + command
-            print command in scommands
-            output += scommands[command](commandline)
-        except:
-            print "I don't know what the hell the command:  " + command + " means.  Maybe I should support it."
-
-    print "finished"    
-    # write some more stuff at the end
-    if OUTPUT_COMMENTS: output += "'begin postamble\n" 
-    for line in POSTAMBLE.splitlines(True):
-        output += line
-
-    if SHOW_EDITOR:
-        dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(output)
-        result = dia.exec_()
-        if result:
-            final = dia.editor.toPlainText()
-        else:
-            final = output
-    else:
-        final = output
-
-    print "done postprocessing."
-    return final
+def linenumber():
+    return ""
 
 
 print __name__ + " gcode postprocessor loaded."
 
+# eof

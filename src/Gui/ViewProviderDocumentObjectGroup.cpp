@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QPixmap>
+# include <QMessageBox>
 #endif
 
 #include <App/DocumentObjectGroup.h>
@@ -131,7 +132,10 @@ bool ViewProviderDocumentObjectGroup::canDragObjects() const
 
 void ViewProviderDocumentObjectGroup::dragObject(App::DocumentObject* obj)
 {
-    static_cast<App::DocumentObjectGroup*>(getObject())->removeObject(obj);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
+            "App.getDocument(\"%s\").getObject(\"%s\"))",
+            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
+            obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
 bool ViewProviderDocumentObjectGroup::canDropObjects() const
@@ -141,7 +145,10 @@ bool ViewProviderDocumentObjectGroup::canDropObjects() const
 
 void ViewProviderDocumentObjectGroup::dropObject(App::DocumentObject* obj)
 {
-    static_cast<App::DocumentObjectGroup*>(getObject())->addObject(obj);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").addObject("
+            "App.getDocument(\"%s\").getObject(\"%s\"))",
+            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
+            obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
@@ -152,11 +159,71 @@ std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) 
 
 bool ViewProviderDocumentObjectGroup::onDelete(const std::vector<std::string> &)
 {
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                                     ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    App::DocumentObjectGroup *group = static_cast<App::DocumentObjectGroup *> (getObject());
+    // If the group is nonempty ask the user if he wants to delete it's content
+    if ( group->Group.getSize () ) {
+        QMessageBox::StandardButton choice = 
+            QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
+                QObject::tr ( "The %1 is not empty, delete it's content as well?")
+                    .arg ( QString::fromUtf8 ( group->Label.getValue () ) ), 
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
+
+        if ( choice == QMessageBox::Yes ) {
+            Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
+                    ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+        }
+    }
     return true;
 }
 
+bool ViewProviderDocumentObjectGroup::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it)
+        if ((*it)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
+            if (static_cast<App::DocumentObjectGroup*>(getObject())->isChildOf(
+                static_cast<const App::DocumentObjectGroup*>(*it))) {
+                return false;
+            }
+        }
+
+    return true;
+}
+void ViewProviderDocumentObjectGroup::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+        // Open command
+        App::DocumentObjectGroup* grp = static_cast<App::DocumentObjectGroup*>(getObject());
+        App::Document* doc = grp->getDocument();
+        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+        gui->openCommand("Move object");
+        for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it) {
+            // get document object
+            const App::DocumentObject* obj = *it;
+            const App::DocumentObjectGroup* par = App::DocumentObjectGroup::getGroupOfObject(obj);
+            if (par) {
+                // allow an object to be in one group only
+                QString cmd;
+                cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
+                                  .arg(QString::fromLatin1(doc->getName()))
+                                  .arg(QString::fromLatin1(par->getNameInDocument()))
+                                  .arg(QString::fromLatin1(obj->getNameInDocument()));
+                Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+            }
+
+            // build Python command for execution
+            QString cmd;
+            cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+                              "App.getDocument(\"%1\").getObject(\"%3\"))")
+                              .arg(QString::fromLatin1(doc->getName()))
+                              .arg(QString::fromLatin1(grp->getNameInDocument()))
+                              .arg(QString::fromLatin1(obj->getNameInDocument()));
+            
+            Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        }
+        gui->commitCommand();
+
+}
 
 void ViewProviderDocumentObjectGroup::hide(void)
 {

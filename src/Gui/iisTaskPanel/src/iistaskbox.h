@@ -9,6 +9,11 @@
 #define IISTASKBOX_H
 
 #include <QtGui>
+#include <QWidget>
+#include <QFrame>
+#include <QBoxLayout>
+#include <QPaintEvent>
+#include <QPixmap>
 
 #include "iistaskpanel_global.h"
 

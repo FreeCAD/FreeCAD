@@ -28,6 +28,7 @@
 #include "PropertyRowHeights.h"
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <App/Range.h>
 #include "Utils.h"
 #include <PropertyRowHeightsPy.h>
 
@@ -126,7 +127,7 @@ void PropertyRowHeights::Restore(Base::XMLReader &reader)
 
         try {
             if (name && height) {
-                int row = decodeRow(name);
+                int row = App::decodeRow(name);
                 int rowHeight = atoi(height);
 
                 setValue(row, rowHeight);

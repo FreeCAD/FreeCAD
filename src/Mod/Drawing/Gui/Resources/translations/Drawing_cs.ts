@@ -207,13 +207,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Spreadsheet View</source>
-        <translation type="unfinished">&amp;Spreadsheet View</translation>
+        <translation>Zobrazení Tabulky</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-        <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+        <translation>Vloží zobrazení vybrané tabulky v aktivním výkresu</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF soubor</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -360,12 +360,12 @@ Chcete pokračovat?</translation>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Otevření souboru selhalo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
-        <translation type="unfinished">Can&apos;t open file &apos;%1&apos; for writing.</translation>
+        <translation>Soubor &quot;%1&quot; nelze otevřít pro zápis.</translation>
     </message>
 </context>
 <context>
@@ -597,12 +597,12 @@ Chcete pokračovat?</translation>
     <message>
         <location line="+125"/>
         <source>Show hidden lines</source>
-        <translation type="unfinished">Show hidden lines</translation>
+        <translation>Zobrazit skrité čáry</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Show smooth lines</source>
-        <translation type="unfinished">Show smooth lines</translation>
+        <translation>Zobrazit hladké čáry</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -670,22 +670,22 @@ Chcete pokračovat?</translation>
     <message>
         <location line="+14"/>
         <source>No active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádný aktivní dokument</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Pro dokončení operace není žádný aktivní dokument</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished"></translation>
+        <translation>Není aktivní pohled</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Pro dokončení operace není žádný aktivní pohled</translation>
     </message>
 </context>
 <context>
@@ -816,7 +816,7 @@ Chcete pokračovat?</translation>
         <location line="+519"/>
         <location line="+52"/>
         <source>Scalable Vector Graphic</source>
-        <translation type="unfinished">Scalable Vector Graphic</translation>
+        <translation>Škálovatelná vektorová grafika</translation>
     </message>
     <message>
         <location line="-310"/>
@@ -852,12 +852,12 @@ Chcete pokračovat?</translation>
     <message>
         <location line="+6"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Všechny soubory</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+        <translation>Vyberte právě jeden objekt Tabulky.</translation>
     </message>
     <message>
         <source>SVG (*.svg)</source>

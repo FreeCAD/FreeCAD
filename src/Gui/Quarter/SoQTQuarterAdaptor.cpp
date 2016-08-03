@@ -162,6 +162,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
     m_seekperiod = 2.0f;
     m_inseekmode = false;
     m_storedcamera = 0;
+    m_viewingflag = false;
 
     m_seeksensor = new SoTimerSensor(SoQTQuarterAdaptor::seeksensorCB, (void*)this);
     getSoEventManager()->setNavigationState(SoEventManager::NO_NAVIGATION);
@@ -195,19 +196,20 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget() const
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
 {
     if(!getSoRenderManager()->getCamera()->isOfType(SoPerspectiveCamera::getClassTypeId()) &&
-            !getSoRenderManager()->getCamera()->isOfType(SoOrthographicCamera::getClassTypeId())) {
+       !getSoRenderManager()->getCamera()->isOfType(SoOrthographicCamera::getClassTypeId())) {
         Base::Console().Warning("Quarter::setCameraType",
                                 "Only SoPerspectiveCamera and SoOrthographicCamera is supported.");
         return;
     }
 
 
+    SoCamera* cam = getSoRenderManager()->getCamera();
     SoType perspectivetype = SoPerspectiveCamera::getClassTypeId();
-    SbBool oldisperspective = getSoRenderManager()->getCamera()->getTypeId().isDerivedFrom(perspectivetype);
+    SbBool oldisperspective = cam ? cam->getTypeId().isDerivedFrom(perspectivetype) : false;
     SbBool newisperspective = type.isDerivedFrom(perspectivetype);
 
     if((oldisperspective && newisperspective) ||
-            (!oldisperspective && !newisperspective)) // Same old, same old..
+       (!oldisperspective && !newisperspective)) // Same old, same old..
         return;
 
 
@@ -280,6 +282,16 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const So
     float focaldist = in->focalDistance.getValue();
 
     out->height = 2.0f * focaldist * (float)tan(in->heightAngle.getValue() / 2.0);
+}
+
+SoCamera* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCamera(void) const
+{
+    return getSoRenderManager()->getCamera();
+}
+
+const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRegion(void) const
+{
+    return getSoRenderManager()->getViewportRegion();
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
@@ -505,7 +517,12 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition(void)
 {
-    SoType t = getSoRenderManager()->getCamera()->getTypeId();
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    if (!cam) {
+        return;
+    }
+
+    SoType t = cam->getTypeId();
     assert(t.isDerivedFrom(SoNode::getClassTypeId()));
     assert(t.canCreateInstance());
 
@@ -521,6 +538,11 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition(void)
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition(void)
 {
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    if (!cam) {
+        return;
+    }
+
     if(!m_storedcamera) {
         return;
     }

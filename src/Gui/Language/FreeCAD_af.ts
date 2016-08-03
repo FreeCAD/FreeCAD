@@ -1240,10 +1240,6 @@ Definieer asseblief &apos;n ander kortpad.</translation>
         <translation>Makronaam:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makrobestemming:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Voer uit</translation>
     </message>
@@ -1265,15 +1261,15 @@ Definieer asseblief &apos;n ander kortpad.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Hierdie lêer bestaan reeds.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1805,14 +1801,6 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
         <translation>Kamerasoort</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Ortografiese weergawe</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Perspektief weergawe</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1880,13 +1868,17 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>%1 navigasie</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished">Anti-aliasing</translation>
@@ -2712,6 +2704,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Finish</source>
         <translation>Voltooi</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Vee uit</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4819,10 +4847,6 @@ Wees bewus dat die punt waar jy kliek belangrik is.</translation>
         <translation>Navigasiestyle</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>%1 navigasie</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>Skuif annotasie</translation>
     </message>
@@ -4860,11 +4884,11 @@ Wees bewus dat die punt waar jy kliek belangrik is.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Verwyder makro</translation>
+        <translation>Verwyder makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

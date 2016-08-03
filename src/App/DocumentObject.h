@@ -24,8 +24,9 @@
 #ifndef APP_DOCUMENTOBJECT_H
 #define APP_DOCUMENTOBJECT_H
 
-#include <App/PropertyContainer.h>
+#include <App/TransactionalObject.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyExpressionEngine.h>
 
 #include <Base/TimeInfo.h>
@@ -47,6 +48,7 @@ enum ObjectStatus {
     New = 2,
     Recompute = 3,
     Restore = 4,
+    Delete = 5,
     Expand = 16
 };
 
@@ -74,7 +76,7 @@ public:
 
 /** Base class of all Classes handled in the Document
  */
-class AppExport DocumentObject: public App::PropertyContainer
+class AppExport DocumentObject: public App::TransactionalObject
 {
     PROPERTY_HEADER(App::DocumentObject);
 
@@ -93,6 +95,8 @@ public:
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
+    virtual bool isAttachedToDocument() const;
+    virtual const char* detachFromDocument();
     /// gets the document in which this Object is handled
     App::Document *getDocument(void) const;
 
@@ -114,6 +118,8 @@ public:
     bool isRecomputing() const {return StatusBits.test(3);}
     /// returns true if this objects is currently restoring from file
     bool isRestoring() const {return StatusBits.test(4);}
+    /// returns true if this objects is currently restoring from file
+    bool isDeleting() const {return StatusBits.test(5);}
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
     /// return the status bits
@@ -128,6 +134,21 @@ public:
     std::vector<App::DocumentObject*> getInList(void) const;
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
+
+    /**
+     * @brief testIfLinkIsDAG tests a link that is about to be created for
+     * circular references.
+     * @param objToLinkIn (input). The object this object is to depend on after
+     * the link is going to be created.
+     * @return true if link can be created (no cycles will be made). False if
+     * the link will cause a circular dependency and break recomputes. Throws an
+     * error if the document already has a circular dependency.
+     * That is, if the return is true, the link is allowed.
+     */
+    bool testIfLinkDAGCompatible(DocumentObject* linkTo) const;
+    bool testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const;
+    bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
+    bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
 
 
 public:
@@ -194,7 +215,7 @@ protected:
      *  2 - object is marked as 'new'
      *  3 - object is marked as 'recompute', i.e. the object gets recomputed now
      *  4 - object is marked as 'restoring', i.e. the object gets loaded at the moment
-     *  5 - reserved
+     *  5 - object is marked as 'deleting', i.e. the object gets deleted at the moment
      *  6 - reserved
      *  7 - reserved
      * 16 - object is marked as 'expanded' in the tree view
@@ -213,6 +234,10 @@ protected:
     virtual void onDocumentRestored() {}
     /// get called after setting the document
     virtual void onSettingDocument() {}
+    /// get called after a brand new object was created
+    virtual void setupObject() {}
+    /// get called when object is going to be removed from the document
+    virtual void unsetupObject() {}
 
      /// python object of this class and all descendend
 protected: // attributes

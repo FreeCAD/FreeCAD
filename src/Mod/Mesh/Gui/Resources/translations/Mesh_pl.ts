@@ -76,7 +76,7 @@
     </message>
     <message>
         <source>Face info</source>
-        <translation>Dane fasetki</translation>
+        <translation>Dane powierzchni</translation>
     </message>
     <message>
         <source>Information about face</source>
@@ -229,7 +229,7 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation>Utwórz siatkę z obwiedni...</translation>
+        <translation>Utwórz siatkę z kształtu...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished">Merge</translation>
+        <translation>Scal</translation>
     </message>
     <message>
         <source>Merges selected meshes into one</source>
-        <translation type="unfinished">Merges selected meshes into one</translation>
+        <translation>Scala wybrane siatki w jedną</translation>
     </message>
 </context>
 <context>
@@ -565,7 +565,7 @@
     </message>
     <message>
         <source>Degenerated faces</source>
-        <translation>Fasetki zniekształcone</translation>
+        <translation>Powierzchnie zniekształcone</translation>
     </message>
     <message>
         <source>Face indices</source>
@@ -577,7 +577,7 @@
     </message>
     <message>
         <source>Duplicated faces</source>
-        <translation>Zduplikowane fasetki</translation>
+        <translation>Zduplikowane powierzchnie</translation>
     </message>
     <message>
         <source>Duplicated points</source>
@@ -700,7 +700,7 @@
     </message>
     <message>
         <source>Duplicated faces</source>
-        <translation>Zduplikowane fasetki</translation>
+        <translation>Zduplikowane powierzchnie</translation>
     </message>
     <message>
         <source>No self-intersections</source>
@@ -838,27 +838,27 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
         <source>Mesh Formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Formaty siatek</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Export</translation>
     </message>
     <message>
         <source>Defines the deviation of tessellation to the actual surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Definiuje odchylenie teselacji rzeczywistej powierzchni</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt; &lt;body style=&quot;white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;span style=&quot;font-weight:600;&quot;&gt; Tesselacja&lt;/span&gt;&lt;/p&gt; &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt; &lt;span style=&quot;font-weight:400;&quot;&gt; Określa maksymalne odchylenie mozaikowych oczek siatki  na powierzchni. Im jest mniejsza wartość tym mniejsza szybkość renderowania i ladniejszy wygląd.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Maximum mesh deviation</source>
-        <translation type="unfinished"></translation>
+        <translation>Odchylenie maksymalne siatki</translation>
     </message>
     <message>
         <source>mm</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>
@@ -1306,11 +1306,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Delete selected faces</source>
-        <translation>Usuń zaznaczone fasetki</translation>
+        <translation>Usuń zaznaczone powierzchnie</translation>
     </message>
     <message>
         <source>Clear selected faces</source>
-        <translation>Wyczyść zaznaczone fasetki</translation>
+        <translation>Wyczyść zaznaczone powierzchnie</translation>
     </message>
     <message>
         <source>Annotation</source>
@@ -1326,23 +1326,23 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished">Display components</translation>
+        <translation>Wyświetl komponenty</translation>
     </message>
     <message>
         <source>All Mesh Files</source>
-        <translation type="unfinished">All Mesh Files</translation>
+        <translation>Wszystkie pliki siatek</translation>
     </message>
     <message>
         <source>Binary STL</source>
-        <translation type="unfinished">Binary STL</translation>
+        <translation>Binarny STL</translation>
     </message>
     <message>
         <source>ASCII STL</source>
-        <translation type="unfinished">ASCII STL</translation>
+        <translation>ASCII STL</translation>
     </message>
     <message>
         <source>Binary Mesh</source>
-        <translation type="unfinished">Binary Mesh</translation>
+        <translation>Binarny plik siatki</translation>
     </message>
     <message>
         <source>Alias Mesh</source>
@@ -1350,19 +1350,19 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Object File Format</source>
-        <translation type="unfinished">Object File Format</translation>
+        <translation>Format pliku obiektu</translation>
     </message>
     <message>
         <source>Inventor V2.1 ascii</source>
-        <translation type="unfinished">Inventor V2.1 ascii</translation>
+        <translation>Inventor V2.1 w ASCII</translation>
     </message>
     <message>
         <source>Stanford Polygon</source>
-        <translation type="unfinished">Stanford Polygon</translation>
+        <translation>Stanford Polygon</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <source>X3D Extensible 3D</source>
@@ -1370,11 +1370,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>VRML V2.0</source>
-        <translation type="unfinished">VRML V2.0</translation>
+        <translation>VRML V2.0</translation>
     </message>
     <message>
         <source>Compressed VRML 2.0</source>
-        <translation type="unfinished">Compressed VRML 2.0</translation>
+        <translation>Skompresowany VRML 2.0</translation>
     </message>
     <message>
         <source>Nastran</source>
@@ -1386,11 +1386,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>[Points: %1, Edges: %2, Faces: %3]</source>
-        <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+        <translation>[Punktów: %1, Krawędzi: %2, Powierzchni: %3]</translation>
     </message>
     <message>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Import-Eksport</translation>
     </message>
 </context>
 <context>

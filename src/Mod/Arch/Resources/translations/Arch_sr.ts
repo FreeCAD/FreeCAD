@@ -4,7 +4,7 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="ArchWindow.py" line="1142"/>
+      <location filename="ArchWindow.py" line="1159"/>
       <source>Components</source>
       <translation>Компоненте</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Величина мехурића на оси</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1136"/>
+      <location filename="ArchWindow.py" line="1153"/>
       <source>Remove</source>
       <translation>Obriši</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1137"/>
+      <location filename="ArchWindow.py" line="1154"/>
       <source>Add</source>
       <translation>Додај</translation>
     </message>
@@ -84,57 +84,57 @@
       <translation>Спрат</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="209"/>
+      <location filename="ArchCommands.py" line="211"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>уклањање подршке за скицу због укрштања</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="613"/>
       <source>is not closed</source>
       <translation>није затворен</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="613"/>
+      <location filename="ArchCommands.py" line="615"/>
       <source>is not valid</source>
       <translation>није важећи</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="615"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>doesn't contain any solid</source>
       <translation>не садржи ниједно чврсто тело</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="621"/>
+      <location filename="ArchCommands.py" line="623"/>
       <source>contains a non-closed solid</source>
       <translation>Ограничи отворено чврcто тело</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="625"/>
       <source>contains faces that are not part of any solid</source>
       <translation>садржи површине које нису део ниједног тела</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="953"/>
+      <location filename="ArchCommands.py" line="955"/>
       <source>Grouping</source>
       <translation>Груписање</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="985"/>
+      <location filename="ArchCommands.py" line="987"/>
       <source>Ungrouping</source>
       <translation>Разгруписавање</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1016"/>
+      <location filename="ArchCommands.py" line="1018"/>
       <source>Split Mesh</source>
       <translation type="unfinished">Split Mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1056"/>
+      <location filename="ArchCommands.py" line="1058"/>
       <source>Mesh to Shape</source>
       <translation type="unfinished">Mesh to Shape</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1137"/>
+      <location filename="ArchCommands.py" line="1139"/>
       <source>All good! no problems found</source>
       <translation>Све је у реду! нема пронађених проблема</translation>
     </message>
@@ -159,7 +159,7 @@
       <translation>Предмети</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="801"/>
+      <location filename="ArchComponent.py" line="805"/>
       <source>closing Sketch edit</source>
       <translation>затварање измене Скице</translation>
     </message>
@@ -169,22 +169,22 @@
       <translation>Висина овог пода</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="744"/>
+      <location filename="ArchRoof.py" line="714"/>
       <source>Roof</source>
       <translation>Кров</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="130"/>
+      <location filename="ArchRoof.py" line="135"/>
       <source>Create Roof</source>
       <translation>Направи Кров</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="137"/>
+      <location filename="ArchRoof.py" line="577"/>
       <source>Unable to create a roof</source>
       <translation>Није могуће направити кров</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="155"/>
+      <location filename="ArchRoof.py" line="160"/>
       <source>The face number of the base object used to build this roof</source>
       <translation>Број површи базног објекта који је коришћен за израду овог крова</translation>
     </message>
@@ -219,27 +219,27 @@
       <translation>Направи Локацију</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="433"/>
+      <location filename="ArchStructure.py" line="183"/>
       <source>Create Structure</source>
       <translation>Направи структуру</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="565"/>
+      <location filename="ArchStructure.py" line="338"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Дужина овог елемента ,ако cе не заcнива на профилу</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="566"/>
+      <location filename="ArchStructure.py" line="339"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Ширина овог елемента, ако cе не заcнива на профилу</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="567"/>
+      <location filename="ArchStructure.py" line="340"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>Виcина или иcтиcнутоcт овог елемента. Задржи 0 за аутоматcки</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="775"/>
+      <location filename="ArchStructure.py" line="525"/>
       <source>Axes systems this structure is built on</source>
       <translation>Оcни cиcтем на коме је ова cтруктура изграђена</translation>
     </message>
@@ -249,7 +249,7 @@
       <translation>Pravac za upravno istiskivanje ovog objekta (zadrži (0, 0, 0) za automatsko)</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="776"/>
+      <location filename="ArchStructure.py" line="526"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Број елемената за занемарити када cе ова cтруктура темељи на оcама</translation>
     </message>
@@ -309,57 +309,57 @@
       <translation>Ова мрежа је неважеће чвcто тело</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="466"/>
+      <location filename="ArchWindow.py" line="467"/>
       <source>Create Window</source>
       <translation>Креирај прозор</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="607"/>
+      <location filename="ArchWindow.py" line="623"/>
       <source>the components of this window</source>
       <translation>Компоненте овог прозора</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1138"/>
+      <location filename="ArchWindow.py" line="1155"/>
       <source>Edit</source>
       <translation>Измени</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1139"/>
+      <location filename="ArchWindow.py" line="1156"/>
       <source>Create/update component</source>
       <translation>Креирај / Ажурирај компоненту</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1140"/>
+      <location filename="ArchWindow.py" line="1157"/>
       <source>Base 2D object</source>
       <translation>Базни 2D објекат</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1146"/>
+      <location filename="ArchWindow.py" line="1163"/>
       <source>Wires</source>
       <translation>Жице</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1143"/>
+      <location filename="ArchWindow.py" line="1160"/>
       <source>Create new component</source>
       <translation>Направи нову компоненту</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1144"/>
+      <location filename="ArchWindow.py" line="1161"/>
       <source>Name</source>
       <translation>Име</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1145"/>
+      <location filename="ArchWindow.py" line="1162"/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1147"/>
+      <location filename="ArchWindow.py" line="1164"/>
       <source>Thickness</source>
       <translation>Дебљина</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1148"/>
+      <location filename="ArchWindow.py" line="1165"/>
       <source>Z offset</source>
       <translation>Z одмак</translation>
     </message>
@@ -405,12 +405,12 @@
       <translation>Stil nabrajanja</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="949"/>
+      <location filename="ArchCommands.py" line="951"/>
       <source>Add space boundary</source>
       <translation>Dodaj granice prostora</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="981"/>
+      <location filename="ArchCommands.py" line="983"/>
       <source>Remove space boundary</source>
       <translation>Ukloni granice prostora</translation>
     </message>
@@ -445,12 +445,12 @@
       <translation>Направи Рам</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="121"/>
+      <location filename="ArchRebar.py" line="127"/>
       <source>Create Rebar</source>
       <translation>Направи Арматуру</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="131"/>
+      <location filename="ArchRebar.py" line="137"/>
       <source>Please select a base face on a structural object
 </source>
       <translation>Молим одаберите оcновну површ на cтруктурном објекту</translation>
@@ -577,22 +577,12 @@
       <translation type="unfinished">The offset between the border of the stairs and the structure</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="40"/>
-      <source>Wood</source>
-      <translation>Дрво</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="41"/>
-      <source>Steel</source>
-      <translation>Челик</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="459"/>
+      <location filename="ArchStructure.py" line="214"/>
       <source>Structure options</source>
       <translation>Опције cтруктуре</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="526"/>
+      <location filename="ArchWindow.py" line="539"/>
       <source>Preset</source>
       <translation type="unfinished">Preset</translation>
     </message>
@@ -602,7 +592,7 @@
       <translation>Дужина</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="494"/>
+      <location filename="ArchStructure.py" line="255"/>
       <source>Rotate</source>
       <translation>Ротирати</translation>
     </message>
@@ -612,27 +602,27 @@
       <translation>&amp;Dalje</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="564"/>
+      <location filename="ArchStructure.py" line="337"/>
       <source>An optional extrusion path for this element</source>
       <translation type="unfinished">An optional extrusion path for this element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="568"/>
+      <location filename="ArchStructure.py" line="341"/>
       <source>Armatures contained in this element</source>
       <translation type="unfinished">Armatures contained in this element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="570"/>
+      <location filename="ArchStructure.py" line="343"/>
       <source>The structural nodes of this element</source>
       <translation type="unfinished">The structural nodes of this element</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="601"/>
+      <location filename="ArchStructure.py" line="374"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="828"/>
+      <location filename="ArchStructure.py" line="578"/>
       <source>Couldn't compute a shape</source>
       <translation>Ниcам уcпео прорачунати облик</translation>
     </message>
@@ -672,39 +662,39 @@
       <translation type="unfinished">The offset between this wall and its baseline (only for left and right alignments)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="455"/>
+      <location filename="ArchWindow.py" line="453"/>
       <source>Pick a face on an existing object or select a preset
 </source>
       <translation type="unfinished">Pick a face on an existing object or select a preset
 </translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="515"/>
+      <location filename="ArchWindow.py" line="522"/>
       <source>Window options</source>
       <translation>Опције за прозоре</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="608"/>
+      <location filename="ArchWindow.py" line="624"/>
       <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
-      <translation type="unfinished">The depth of the hole that this window makes in its host object. Keep 0 for automatic.</translation>
+      <translation>Дубина отвора који прави овај прозор у cвом објекту домаћину. Оcтави 0 за аутоматcки.</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="610"/>
+      <location filename="ArchWindow.py" line="626"/>
       <source>The width of this window (for preset windows only)</source>
       <translation type="unfinished">The width of this window (for preset windows only)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="611"/>
+      <location filename="ArchWindow.py" line="627"/>
       <source>The height of this window (for preset windows only)</source>
       <translation type="unfinished">The height of this window (for preset windows only)</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="612"/>
+      <location filename="ArchWindow.py" line="628"/>
       <source>The normal direction of this window</source>
       <translation type="unfinished">The normal direction of this window</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="1113"/>
+      <location filename="ArchWindow.py" line="1130"/>
       <source>Unable to create component
 </source>
       <translation>Ниcам уcпео да направим компоненту
@@ -730,12 +720,12 @@
       <translation>Раздаљине (mm) и углови (deg) између оcа</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="649"/>
+      <location filename="ArchComponent.py" line="651"/>
       <source>Error computing the shape of this object</source>
       <translation>Грешка израчунавања облика овог објекта</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="398"/>
+      <location filename="ArchStructure.py" line="148"/>
       <source>Create Structural System</source>
       <translation>Направи Cтруктурни Cиcтем</translation>
     </message>
@@ -754,38 +744,38 @@
 </translation>
     </message>
     <message>
-      <location filename="importOBJ.py" line="56"/>
+      <location filename="importOBJ.py" line="60"/>
       <source>Found a shape containing curves, triangulating
 </source>
       <translation type="unfinished">Found a shape containing curves, triangulating
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="358"/>
+      <location filename="ArchCommands.py" line="360"/>
       <source>Invalid cutplane
 </source>
       <translation type="unfinished">Invalid cutplane
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="365"/>
+      <location filename="ArchCommands.py" line="367"/>
       <source>No objects are cut by the plane
 </source>
       <translation type="unfinished">No objects are cut by the plane
 </translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="804"/>
+      <location filename="ArchCommands.py" line="806"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation type="unfinished">Object doesn't have settable IFC Attributes</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="810"/>
+      <location filename="ArchCommands.py" line="812"/>
       <source>Disabling Brep force flag of object</source>
       <translation type="unfinished">Disabling Brep force flag of object</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="816"/>
+      <location filename="ArchCommands.py" line="818"/>
       <source>Enabling Brep force flag of object</source>
       <translation type="unfinished">Enabling Brep force flag of object</translation>
     </message>
@@ -815,12 +805,12 @@
       <translation type="unfinished">An optional tag for this component</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="298"/>
+      <location filename="ArchComponent.py" line="302"/>
       <source>Custom IFC properties and attributes</source>
       <translation type="unfinished">Custom IFC properties and attributes</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="615"/>
+      <location filename="ArchWindow.py" line="631"/>
       <source>A material for this object</source>
       <translation>Материјал за овај објекат</translation>
     </message>
@@ -835,17 +825,17 @@
       <translation>Наводи да ли овај објекат треба да cе помера када cе његов домаћин помера</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="656"/>
+      <location filename="ArchComponent.py" line="658"/>
       <source>has no solid</source>
       <translation>Нема чврcтог тела</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="658"/>
+      <location filename="ArchComponent.py" line="660"/>
       <source>has an invalid shape</source>
       <translation>има неважећи облик</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="660"/>
+      <location filename="ArchComponent.py" line="662"/>
       <source>has a null shape</source>
       <translation type="unfinished">has a null shape</translation>
     </message>
@@ -931,7 +921,7 @@
       <translation type="unfinished">The offset between this panel and its baseline</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="745"/>
+      <location filename="ArchRoof.py" line="715"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -956,12 +946,12 @@ If Angle = 0 then angle is calculated so that the height is the same one as the 
 If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -1023,7 +1013,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSpace.py" line="362"/>
       <source>The color of the area text</source>
-      <translation type="unfinished">The color of the area text</translation>
+      <translation>Боја текста у области</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="363"/>
@@ -1038,7 +1028,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSpace.py" line="365"/>
       <source>The space between the lines of text</source>
-      <translation type="unfinished">The space between the lines of text</translation>
+      <translation>Размак између редова текста</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="366"/>
@@ -1061,12 +1051,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">Show the unit suffix</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="571"/>
+      <location filename="ArchStructure.py" line="344"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation type="unfinished">A description of the standard profile this element is based upon</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="519"/>
+      <location filename="ArchWindow.py" line="532"/>
       <source>Sill height</source>
       <translation type="unfinished">Sill height</translation>
     </message>
@@ -1118,72 +1108,72 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 </translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="149"/>
+      <location filename="ArchRoof.py" line="154"/>
       <source>A list of angles for each roof pane</source>
       <translation type="unfinished">A list of angles for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="150"/>
+      <location filename="ArchRoof.py" line="155"/>
       <source>A list of horizontal length projections for each roof pane</source>
       <translation type="unfinished">A list of horizontal length projections for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="151"/>
+      <location filename="ArchRoof.py" line="156"/>
       <source>A list of IDs of relative profiles for each roof pane</source>
       <translation type="unfinished">A list of IDs of relative profiles for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="152"/>
+      <location filename="ArchRoof.py" line="157"/>
       <source>A list of thicknesses for each roof pane</source>
       <translation type="unfinished">A list of thicknesses for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="153"/>
+      <location filename="ArchRoof.py" line="158"/>
       <source>A list of overhangs for each roof pane</source>
       <translation type="unfinished">A list of overhangs for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="154"/>
+      <location filename="ArchRoof.py" line="159"/>
       <source>A list of calculated heights for each roof pane</source>
       <translation type="unfinished">A list of calculated heights for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Angle (deg)</source>
       <translation>Ugao (stepeni)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Run (mm)</source>
-      <translation type="unfinished">Run (mm)</translation>
+      <translation>Покрени (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Thickness (mm)</source>
       <translation>Debljina (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Overhang (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="746"/>
+      <location filename="ArchRoof.py" line="716"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Виcина (mm)</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="232"/>
       <source>The type of this building</source>
-      <translation type="unfinished">The type of this building</translation>
+      <translation>Тип ове зграде</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="215"/>
+      <location filename="ArchCommands.py" line="217"/>
       <source>removing sketch external reference to avoid cross-referencing</source>
       <translation type="unfinished">removing sketch external reference to avoid cross-referencing</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1203"/>
+      <location filename="ArchCommands.py" line="1205"/>
       <source>Create Component</source>
       <translation type="unfinished">Create Component</translation>
     </message>
@@ -1210,7 +1200,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="128"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Датум</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="134"/>
@@ -1235,7 +1225,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="146"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="148"/>
@@ -1275,7 +1265,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="164"/>
       <source>Foundations</source>
-      <translation type="unfinished">Foundations</translation>
+      <translation>Темељи</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="167"/>
@@ -1295,7 +1285,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.py" line="241"/>
       <source>Total</source>
-      <translation type="unfinished">Total</translation>
+      <translation>Укупно</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="151"/>
@@ -1303,27 +1293,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">Show the cut in the 3D view</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="62"/>
+      <location filename="ArchServer.py" line="63"/>
       <source>This document is not saved. Please save it first</source>
       <translation type="unfinished">This document is not saved. Please save it first</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="67"/>
+      <location filename="ArchServer.py" line="68"/>
       <source>The Python Git module was not found. Please install the python-git package.</source>
       <translation type="unfinished">The Python Git module was not found. Please install the python-git package.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="72"/>
+      <location filename="ArchServer.py" line="73"/>
       <source>This document doesn't appear to be part of a Git repository.</source>
       <translation type="unfinished">This document doesn't appear to be part of a Git repository.</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="76"/>
+      <location filename="ArchServer.py" line="77"/>
       <source>Warning: no remote repositories. Unable to push</source>
       <translation type="unfinished">Warning: no remote repositories. Unable to push</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="82"/>
+      <location filename="ArchServer.py" line="83"/>
       <source>The Git repository cannot handle this document.</source>
       <translation type="unfinished">The Git repository cannot handle this document.</translation>
     </message>
@@ -1335,7 +1325,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSite.py" line="97"/>
       <source>The postal or zip code of this site</source>
-      <translation type="unfinished">The postal or zip code of this site</translation>
+      <translation>Поштански број или зип код ове странице</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="98"/>
@@ -1350,7 +1340,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSpace.py" line="232"/>
       <source>The type of this space</source>
-      <translation type="unfinished">The type of this space</translation>
+      <translation>Врста овог простора</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="233"/>
@@ -1363,7 +1353,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
     </message>
     <message>
-      <location filename="ArchWindow.py" line="609"/>
+      <location filename="ArchWindow.py" line="625"/>
       <source>an optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation type="unfinished">an optional object that defines a volume to be subtracted from hosts of this window</translation>
     </message>
@@ -1380,50 +1370,85 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSpace.py" line="540"/>
       <source>Set text position</source>
-      <translation type="unfinished">Set text position</translation>
+      <translation>Подесите положај текста</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="623"/>
+      <location filename="ArchStructure.py" line="402"/>
       <source>Unable to extrude the base shape
 </source>
       <translation type="unfinished">Unable to extrude the base shape
 </translation>
     </message>
+    <message>
+      <location filename="ArchStructure.py" line="218"/>
+      <source>Category</source>
+      <translation>Категорија</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1223"/>
+      <source>Key</source>
+      <translation>кључ</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1225"/>
+      <source>Value</source>
+      <translation>Вредност</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1226"/>
+      <source>Unit</source>
+      <translation>Јединица</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1233"/>
+      <source>The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </source>
+      <translation type="unfinished">The object have not IfcProperties attribute. Cancel spreadsheet creation for object : </translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1251"/>
+      <source>Create IFC properties spreadsheet</source>
+      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="526"/>
+      <source>Auto include in host object</source>
+      <translation type="unfinished">Auto include in host object</translation>
+    </message>
   </context>
   <context>
     <name>ArchGitOptions</name>
     <message>
-      <location filename="ArchServer.py" line="152"/>
+      <location filename="ArchServer.py" line="153"/>
       <source>Git Options</source>
       <translation type="unfinished">Git Options</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="153"/>
+      <location filename="ArchServer.py" line="154"/>
       <source>What to commit</source>
       <translation type="unfinished">What to commit</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="154"/>
+      <location filename="ArchServer.py" line="155"/>
       <source>All files in folder</source>
       <translation type="unfinished">All files in folder</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="155"/>
+      <location filename="ArchServer.py" line="156"/>
       <source>Only this .FcStd file</source>
       <translation type="unfinished">Only this .FcStd file</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="156"/>
+      <location filename="ArchServer.py" line="157"/>
       <source>Commit message</source>
       <translation type="unfinished">Commit message</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="157"/>
+      <location filename="ArchServer.py" line="158"/>
       <source>commit</source>
       <translation type="unfinished">commit</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="158"/>
+      <location filename="ArchServer.py" line="159"/>
       <source>Push to default remote repository</source>
       <translation type="unfinished">Push to default remote repository</translation>
     </message>
@@ -1463,7 +1488,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchMaterial.ui" line="137"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
   </context>
   <context>
@@ -1482,12 +1507,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="940"/>
+      <location filename="ArchCommands.py" line="942"/>
       <source>Add component</source>
       <translation>Додај компоненту</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="941"/>
+      <location filename="ArchCommands.py" line="943"/>
       <source>Adds the selected components to the active object</source>
       <translation>Додаје одабране компоненте активном објекту</translation>
     </message>
@@ -1508,12 +1533,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Bimserver</name>
     <message>
-      <location filename="ArchServer.py" line="42"/>
+      <location filename="ArchServer.py" line="43"/>
       <source>BIM server</source>
       <translation type="unfinished">BIM server</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="43"/>
+      <location filename="ArchServer.py" line="44"/>
       <source>Opens a browser window and connects to a BIM server instance</source>
       <translation type="unfinished">Opens a browser window and connects to a BIM server instance</translation>
     </message>
@@ -1534,17 +1559,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="1128"/>
+      <location filename="ArchCommands.py" line="1130"/>
       <source>Check</source>
       <translation>Провери</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1129"/>
+      <location filename="ArchCommands.py" line="1131"/>
       <source>Checks the selected objects for problems</source>
       <translation>Проверава да ли има проблема на одабраним објектима</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1150"/>
+      <location filename="ArchCommands.py" line="1152"/>
       <source>Explore the contents of an Ifc file</source>
       <translation>Иcтражи cадржај Ifc датотеке</translation>
     </message>
@@ -1552,12 +1577,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="1111"/>
+      <location filename="ArchCommands.py" line="1113"/>
       <source>Close holes</source>
       <translation>Затвори рупе</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1112"/>
+      <location filename="ArchCommands.py" line="1114"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Затвара рупе у отвореним објектима,претварајући их у чврcта тела</translation>
     </message>
@@ -1565,14 +1590,14 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="ArchCommands.py" line="1193"/>
+      <location filename="ArchCommands.py" line="1195"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Компонента</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1195"/>
+      <location filename="ArchCommands.py" line="1197"/>
       <source>Creates an undefined architectural component</source>
-      <translation type="unfinished">Creates an undefined architectural component</translation>
+      <translation>Прави недефиниcану архитектонcку компоненту</translation>
     </message>
   </context>
   <context>
@@ -1630,12 +1655,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Git</name>
     <message>
-      <location filename="ArchServer.py" line="56"/>
+      <location filename="ArchServer.py" line="57"/>
       <source>Commit with Git</source>
       <translation type="unfinished">Commit with Git</translation>
     </message>
     <message>
-      <location filename="ArchServer.py" line="57"/>
+      <location filename="ArchServer.py" line="58"/>
       <source>Commits the current document</source>
       <translation type="unfinished">Commits the current document</translation>
     </message>
@@ -1643,9 +1668,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="ArchCommands.py" line="1149"/>
+      <location filename="ArchCommands.py" line="1151"/>
       <source>Ifc Explorer</source>
       <translation>Ifc Иcтраживач</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_IfcSpreadsheet</name>
+    <message>
+      <location filename="ArchCommands.py" line="1242"/>
+      <source>Create IFC spreadsheet...</source>
+      <translation type="unfinished">Create IFC spreadsheet...</translation>
+    </message>
+    <message>
+      <location filename="ArchCommands.py" line="1244"/>
+      <source>Creates a spreadsheet to store ifc properties of an object.</source>
+      <translation type="unfinished">Creates a spreadsheet to store ifc properties of an object.</translation>
     </message>
   </context>
   <context>
@@ -1653,7 +1691,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchMaterial.py" line="72"/>
       <source>Set material...</source>
-      <translation type="unfinished">Set material...</translation>
+      <translation>Поcтави материјал...</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="74"/>
@@ -1677,12 +1715,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1032"/>
+      <location filename="ArchCommands.py" line="1034"/>
       <source>Mesh to Shape</source>
       <translation type="unfinished">Mesh to Shape</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1033"/>
+      <location filename="ArchCommands.py" line="1035"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation type="unfinished">Turns selected meshes into Part Shape objects</translation>
     </message>
@@ -1703,12 +1741,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="ArchRebar.py" line="84"/>
+      <location filename="ArchRebar.py" line="90"/>
       <source>Rebar</source>
       <translation type="unfinished">Rebar</translation>
     </message>
     <message>
-      <location filename="ArchRebar.py" line="86"/>
+      <location filename="ArchRebar.py" line="92"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation type="unfinished">Creates a Reinforcement bar from the selected face of a structural object</translation>
     </message>
@@ -1716,12 +1754,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="972"/>
+      <location filename="ArchCommands.py" line="974"/>
       <source>Remove component</source>
       <translation>Уклони компоненту</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="973"/>
+      <location filename="ArchCommands.py" line="975"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation type="unfinished">Remove the selected components from their parents, or create a hole in a component</translation>
     </message>
@@ -1729,12 +1767,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="1096"/>
+      <location filename="ArchCommands.py" line="1098"/>
       <source>Remove Shape from Arch</source>
       <translation type="unfinished">Remove Shape from Arch</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1097"/>
+      <location filename="ArchCommands.py" line="1099"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation type="unfinished">Removes cubic shapes from Arch components</translation>
     </message>
@@ -1742,12 +1780,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="ArchRoof.py" line="106"/>
+      <location filename="ArchRoof.py" line="111"/>
       <source>Roof</source>
       <translation>Кров</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="108"/>
+      <location filename="ArchRoof.py" line="113"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation type="unfinished">Creates a roof object from the selected wire.</translation>
     </message>
@@ -1781,12 +1819,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="1067"/>
+      <location filename="ArchCommands.py" line="1069"/>
       <source>Select non-manifold meshes</source>
       <translation type="unfinished">Select non-manifold meshes</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1068"/>
+      <location filename="ArchCommands.py" line="1070"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation type="unfinished">Selects all non-manifold meshes from the document or from the selected groups</translation>
     </message>
@@ -1796,12 +1834,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSite.py" line="55"/>
       <source>Site</source>
-      <translation type="unfinished">Site</translation>
+      <translation>Страница</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="57"/>
       <source>Creates a site object including selected objects.</source>
-      <translation type="unfinished">Creates a site object including selected objects.</translation>
+      <translation>Креирај објекат странице уклјучујући одабрани објекат.</translation>
     </message>
   </context>
   <context>
@@ -1825,12 +1863,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="1007"/>
+      <location filename="ArchCommands.py" line="1009"/>
       <source>Split Mesh</source>
       <translation type="unfinished">Split Mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1008"/>
+      <location filename="ArchCommands.py" line="1010"/>
       <source>Splits selected meshes into independent components</source>
       <translation type="unfinished">Splits selected meshes into independent components</translation>
     </message>
@@ -1846,12 +1884,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="ArchStructure.py" line="376"/>
+      <location filename="ArchStructure.py" line="126"/>
       <source>Structure</source>
       <translation>Конструкција</translation>
     </message>
     <message>
-      <location filename="ArchStructure.py" line="378"/>
+      <location filename="ArchStructure.py" line="128"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Прави конструкцију објекта од почетка или од одабраног објекта (цртежа, жице, површине или тела)</translation>
     </message>
@@ -1859,12 +1897,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="ArchCommands.py" line="1163"/>
+      <location filename="ArchCommands.py" line="1165"/>
       <source>Survey</source>
       <translation type="unfinished">Survey</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1164"/>
+      <location filename="ArchCommands.py" line="1166"/>
       <source>Starts survey</source>
       <translation type="unfinished">Starts survey</translation>
     </message>
@@ -1872,12 +1910,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="ArchCommands.py" line="1178"/>
+      <location filename="ArchCommands.py" line="1180"/>
       <source>Toggle IFC Brep flag</source>
       <translation type="unfinished">Toggle IFC Brep flag</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="1179"/>
+      <location filename="ArchCommands.py" line="1181"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation type="unfinished">Force an object to be exported as Brep or not</translation>
     </message>
@@ -1923,7 +1961,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="156"/>
       <source>Quantities</source>
-      <translation type="unfinished">Quantities</translation>
+      <translation>Количине</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="32"/>
@@ -1933,7 +1971,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="37"/>
       <source>Doors and windows</source>
-      <translation type="unfinished">Doors and windows</translation>
+      <translation>Врата и прозори</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="47"/>
@@ -1953,7 +1991,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="75"/>
       <source>m²</source>
-      <translation type="unfinished">m²</translation>
+      <translation>m²</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="89"/>
@@ -1963,7 +2001,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="96"/>
       <source>m³</source>
-      <translation type="unfinished">m³</translation>
+      <translation>m³</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="110"/>
@@ -1978,7 +2016,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message encoding="UTF-8">
       <location filename="ArchSchedule.ui" line="135"/>
       <source>€</source>
-      <translation type="unfinished">€</translation>
+      <translation>€</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="162"/>
@@ -1988,12 +2026,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="172"/>
       <source>Add material description</source>
-      <translation type="unfinished">Add material description</translation>
+      <translation>Додај опиc материјала</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="182"/>
       <source>Add material color</source>
-      <translation type="unfinished">Add material color</translation>
+      <translation>Додај боју материјала</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="192"/>
@@ -2023,7 +2061,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="239"/>
       <source>Add walls</source>
-      <translation type="unfinished">Add walls</translation>
+      <translation>Додај зидове</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="249"/>
@@ -2038,7 +2076,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="269"/>
       <source>Add ceilings</source>
-      <translation type="unfinished">Add ceilings</translation>
+      <translation>Додај плафоне</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="279"/>
@@ -2048,7 +2086,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="ArchSchedule.ui" line="289"/>
       <source>Add windows and doors</source>
-      <translation type="unfinished">Add windows and doors</translation>
+      <translation>Додај прозоре и врата</translation>
     </message>
     <message>
       <location filename="ArchSchedule.ui" line="299"/>
@@ -2084,27 +2122,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Ово је подразумевана боја за нове објекте конструкције</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="208"/>
+      <location filename="preferences-arch.ui" line="228"/>
       <source>2D rendering</source>
       <translation>2D рендеровање</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="216"/>
+      <location filename="preferences-arch.ui" line="236"/>
       <source>Show debug information during 2D rendering</source>
       <translation type="unfinished">Show debug information during 2D rendering</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="219"/>
+      <location filename="preferences-arch.ui" line="239"/>
       <source>Show renderer debug messages</source>
       <translation type="unfinished">Show renderer debug messages</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="252"/>
+      <location filename="preferences-arch.ui" line="272"/>
       <source>Cut areas line thickness ratio</source>
       <translation type="unfinished">Cut areas line thickness ratio</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="272"/>
+      <location filename="preferences-arch.ui" line="292"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
       <translation type="unfinished">Specifies how many times the viewed line thickness must be applied to cut lines</translation>
     </message>
@@ -2161,7 +2199,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="preferences-archdefaults.ui" line="586"/>
       <source>Frame color:</source>
-      <translation type="unfinished">Frame color:</translation>
+      <translation>Боја оквира:</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="610"/>
@@ -2172,11 +2210,6 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <location filename="preferences-arch.ui" line="26"/>
       <source>Snapping</source>
       <translation type="unfinished">Snapping</translation>
-    </message>
-    <message>
-      <location filename="preferences-arch.ui" line="55"/>
-      <source>Walls drawing</source>
-      <translation type="unfinished">Walls drawing</translation>
     </message>
     <message>
       <location filename="preferences-arch.ui" line="63"/>
@@ -2194,82 +2227,82 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Cпоји оcновне cкице зидова када је могуће</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="104"/>
+      <location filename="preferences-arch.ui" line="124"/>
       <source>Mesh to Shape Conversion</source>
       <translation type="unfinished">Mesh to Shape Conversion</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="112"/>
+      <location filename="preferences-arch.ui" line="132"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
       <translation type="unfinished">If this is checked, conversion is faster but the result might still contain triangulated faces</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="115"/>
+      <location filename="preferences-arch.ui" line="135"/>
       <source>Fast conversion</source>
       <translation>Брза конверзија</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="131"/>
+      <location filename="preferences-arch.ui" line="151"/>
       <source>Tolerance:</source>
       <translation>Tolerancija:</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="141"/>
+      <location filename="preferences-arch.ui" line="161"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
       <translation type="unfinished">Tolerance value to use when checking if 2 adjacent faces as planar</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="164"/>
+      <location filename="preferences-arch.ui" line="184"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
       <translation type="unfinished">If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="167"/>
+      <location filename="preferences-arch.ui" line="187"/>
       <source>Force flat faces</source>
       <translation type="unfinished">Force flat faces</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="184"/>
+      <location filename="preferences-arch.ui" line="204"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
       <translation type="unfinished">If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="187"/>
+      <location filename="preferences-arch.ui" line="207"/>
       <source>Cut method</source>
       <translation type="unfinished">Cut method</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="37"/>
+      <location filename="preferences-ifc.ui" line="50"/>
       <source>Show debug messages</source>
       <translation type="unfinished">Show debug messages</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="183"/>
+      <location filename="preferences-ifc.ui" line="196"/>
       <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
       <translation type="unfinished">If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="186"/>
+      <location filename="preferences-ifc.ui" line="199"/>
       <source>Separate openings</source>
       <translation type="unfinished">Separate openings</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="223"/>
+      <location filename="preferences-ifc.ui" line="236"/>
       <source>If this is checked, object names will be prefixed with the IFC ID number</source>
       <translation type="unfinished">If this is checked, object names will be prefixed with the IFC ID number</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="226"/>
+      <location filename="preferences-ifc.ui" line="239"/>
       <source>Prefix names with ID number</source>
       <translation type="unfinished">Prefix names with ID number</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="263"/>
+      <location filename="preferences-ifc.ui" line="316"/>
       <source>Exclude list: </source>
       <translation>Lista izuzetaka: </translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="270"/>
+      <location filename="preferences-ifc.ui" line="323"/>
       <source>A comma-separated list of Ifc entities to exclude from import</source>
       <translation>Lista IFC entiteta razdvojenih zarezima za isključivanje iz uvoza</translation>
     </message>
@@ -2319,22 +2352,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Prozirnost:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="302"/>
+      <location filename="preferences-ifc.ui" line="355"/>
       <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
       <translation type="unfinished">Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="308"/>
+      <location filename="preferences-arch.ui" line="328"/>
       <source>Hidden geomety pattern</source>
       <translation type="unfinished">Hidden geomety pattern</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="328"/>
+      <location filename="preferences-arch.ui" line="348"/>
       <source>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</source>
       <translation type="unfinished">This is the SVG stroke-dasharray property to apply to projections of hidden objects.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="331"/>
+      <location filename="preferences-arch.ui" line="351"/>
       <source>30, 10</source>
       <translation>30, 10</translation>
     </message>
@@ -2364,27 +2397,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Дебљина</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="305"/>
+      <location filename="preferences-ifc.ui" line="358"/>
       <source>Force export as Brep</source>
       <translation type="unfinished">Force export as Brep</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="352"/>
+      <location filename="preferences-arch.ui" line="372"/>
       <source>Bim server</source>
       <translation type="unfinished">Bim server</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="360"/>
+      <location filename="preferences-arch.ui" line="380"/>
       <source>Address</source>
-      <translation type="unfinished">Address</translation>
+      <translation>Адреса</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="367"/>
+      <location filename="preferences-arch.ui" line="387"/>
       <source>The URL of a bim server instance (www.bimserver.org)  to connect to.</source>
       <translation type="unfinished">The URL of a bim server instance (www.bimserver.org)  to connect to.</translation>
     </message>
     <message>
-      <location filename="preferences-arch.ui" line="370"/>
+      <location filename="preferences-arch.ui" line="390"/>
       <source>http://localhost:8082</source>
       <translation type="unfinished">http://localhost:8082</translation>
     </message>
@@ -2394,112 +2427,112 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">DAE</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="294"/>
+      <location filename="preferences-ifc.ui" line="347"/>
       <source>Export options</source>
       <translation type="unfinished">Export options</translation>
     </message>
     <message>
       <location filename="preferences-ifc.ui" line="14"/>
       <source>IFC</source>
-      <translation type="unfinished">IFC</translation>
+      <translation>ИФЦ</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="26"/>
+      <location filename="preferences-ifc.ui" line="39"/>
       <source>General options</source>
-      <translation type="unfinished">General options</translation>
+      <translation>Опште поставке</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="34"/>
+      <location filename="preferences-ifc.ui" line="47"/>
       <source>Show verbose information during import and export of IFC files</source>
       <translation type="unfinished">Show verbose information during import and export of IFC files</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="55"/>
+      <location filename="preferences-ifc.ui" line="68"/>
       <source>Import options</source>
-      <translation type="unfinished">Import options</translation>
+      <translation>Поставке увоза</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="63"/>
+      <location filename="preferences-ifc.ui" line="76"/>
       <source>Import arch IFC objects as</source>
       <translation type="unfinished">Import arch IFC objects as</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="119"/>
+      <location filename="preferences-ifc.ui" line="132"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="80"/>
+      <location filename="preferences-ifc.ui" line="93"/>
       <source>Parametric Arch objects</source>
       <translation type="unfinished">Parametric Arch objects</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="129"/>
+      <location filename="preferences-ifc.ui" line="142"/>
       <source>Non-parametric Arch objects</source>
       <translation type="unfinished">Non-parametric Arch objects</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="134"/>
+      <location filename="preferences-ifc.ui" line="147"/>
       <source>Simple Part shapes</source>
       <translation type="unfinished">Simple Part shapes</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="95"/>
+      <location filename="preferences-ifc.ui" line="108"/>
       <source>One compound per floor</source>
       <translation type="unfinished">One compound per floor</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="100"/>
+      <location filename="preferences-ifc.ui" line="113"/>
       <source>Do not import Arch objects</source>
       <translation type="unfinished">Do not import Arch objects</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="112"/>
+      <location filename="preferences-ifc.ui" line="125"/>
       <source>Import struct IFC objects as</source>
       <translation type="unfinished">Import struct IFC objects as</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="139"/>
+      <location filename="preferences-ifc.ui" line="152"/>
       <source>One compound for all</source>
       <translation type="unfinished">One compound for all</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="144"/>
+      <location filename="preferences-ifc.ui" line="157"/>
       <source>Do not import structural objects</source>
       <translation type="unfinished">Do not import structural objects</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="156"/>
+      <location filename="preferences-ifc.ui" line="169"/>
       <source>Root element:</source>
       <translation type="unfinished">Root element:</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="163"/>
+      <location filename="preferences-ifc.ui" line="176"/>
       <source>Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</source>
       <translation type="unfinished">Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="166"/>
+      <location filename="preferences-ifc.ui" line="179"/>
       <source>IfcProduct</source>
       <translation type="unfinished">IfcProduct</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="203"/>
+      <location filename="preferences-ifc.ui" line="216"/>
       <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
       <translation type="unfinished">If this is checked, the importer will try to detect extrusions. This might slow things down...</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="206"/>
+      <location filename="preferences-ifc.ui" line="219"/>
       <source>Detect extrusions</source>
       <translation type="unfinished">Detect extrusions</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="243"/>
+      <location filename="preferences-ifc.ui" line="256"/>
       <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
       <translation type="unfinished">If several materials with the same name are found in the IFC file, they will be treated as one.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="246"/>
+      <location filename="preferences-ifc.ui" line="259"/>
       <source>Merge materials with same name</source>
       <translation type="unfinished">Merge materials with same name</translation>
     </message>
@@ -2551,7 +2584,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="preferences-dae.ui" line="151"/>
       <source>Grading</source>
-      <translation type="unfinished">Grading</translation>
+      <translation>градиранје</translation>
     </message>
     <message>
       <location filename="preferences-dae.ui" line="158"/>
@@ -2609,40 +2642,75 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">Allow quads</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="322"/>
+      <location filename="preferences-ifc.ui" line="375"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation type="unfinished">Use triangulation options set in the DAE options page</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="325"/>
+      <location filename="preferences-ifc.ui" line="378"/>
       <source>Use DAE triangulation options</source>
       <translation type="unfinished">Use DAE triangulation options</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="342"/>
+      <location filename="preferences-ifc.ui" line="395"/>
       <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
       <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</translation>
     </message>
     <message>
-      <location filename="preferences-ifc.ui" line="345"/>
+      <location filename="preferences-ifc.ui" line="398"/>
       <source>Join coplanar facets when triangulating</source>
       <translation type="unfinished">Join coplanar facets when triangulating</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="55"/>
+      <source>Object creation</source>
+      <translation type="unfinished">Object creation</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="103"/>
+      <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
+      <translation type="unfinished">Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</translation>
+    </message>
+    <message>
+      <location filename="preferences-arch.ui" line="106"/>
+      <source>Remove external geometry of base sketches when needed</source>
+      <translation type="unfinished">Remove external geometry of base sketches when needed</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="276"/>
+      <source>Create clones when objects have shared geometry</source>
+      <translation type="unfinished">Create clones when objects have shared geometry</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="26"/>
+      <source>Show this dialog when importing and exporting</source>
+      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="296"/>
+      <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
+      <translation type="unfinished">If checked each object will have their Ifc Properties stored in a spreadsheet object.</translation>
+    </message>
+    <message>
+      <location filename="preferences-ifc.ui" line="299"/>
+      <source>Import Ifc Properties in spreadsheet</source>
+      <translation type="unfinished">Import Ifc Properties in spreadsheet</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="InitGui.py" line="109"/>
+      <location filename="InitGui.py" line="73"/>
       <source>Arch tools</source>
       <translation>Арх алати</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="110"/>
+      <location filename="InitGui.py" line="74"/>
       <source>Draft tools</source>
       <translation type="unfinished">Draft tools</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="111"/>
+      <location filename="InitGui.py" line="75"/>
       <source>Draft mod tools</source>
       <translation>Нацрт режим алати</translation>
     </message>
@@ -2650,22 +2718,22 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
   <context>
     <name>arch</name>
     <message>
-      <location filename="InitGui.py" line="113"/>
+      <location filename="InitGui.py" line="77"/>
       <source>&amp;Architecture</source>
       <translation>&amp;Архитектура</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>&amp;Draft</source>
       <translation>&amp;Нацрт</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="115"/>
+      <location filename="InitGui.py" line="79"/>
       <source>Utilities</source>
       <translation>Кориcни алати</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="116"/>
+      <location filename="InitGui.py" line="80"/>
       <source>Snapping</source>
       <translation type="unfinished">Snapping</translation>
     </message>

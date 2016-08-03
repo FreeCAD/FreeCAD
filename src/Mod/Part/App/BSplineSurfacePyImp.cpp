@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BSplineSurface.hxx>
-# include <Handle_Geom_BSplineCurve.hxx>
+# include <Geom_BSplineCurve.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array2OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>

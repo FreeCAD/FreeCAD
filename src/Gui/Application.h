@@ -147,7 +147,9 @@ public:
     * If no such document exists 0 is returned.
     */
     Gui::Document* getDocument(const App::Document* pDoc) const;
-    /// Shows the associated view provider of the given object
+	/// Getter for the active view of the active document or null
+	Gui::MDIView* activeView(void) const;
+	/// Shows the associated view provider of the given object
     void showViewProvider(const App::DocumentObject*);
     /// Hides the associated view provider of the given object
     void hideViewProvider(const App::DocumentObject*);
@@ -220,6 +222,7 @@ public:
 
     PYFUNCDEF_S(sRunCommand);
     PYFUNCDEF_S(sAddCommand);
+    PYFUNCDEF_S(sListCommands);
 
     PYFUNCDEF_S(sHide);                     // deprecated
     PYFUNCDEF_S(sShow);                     // deprecated
@@ -232,14 +235,17 @@ public:
 
     PYFUNCDEF_S(sActiveDocument);
     PYFUNCDEF_S(sSetActiveDocument);
+    PYFUNCDEF_S(sActiveView);
     PYFUNCDEF_S(sGetDocument);
 
     PYFUNCDEF_S(sDoCommand);
     PYFUNCDEF_S(sDoCommandGui);
     PYFUNCDEF_S(sAddModule);
-    
+
     PYFUNCDEF_S(sShowDownloads);
     PYFUNCDEF_S(sShowPreferences);
+
+    PYFUNCDEF_S(sCreateViewer);
 
     static PyMethodDef    Methods[]; 
 

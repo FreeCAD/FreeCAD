@@ -42,7 +42,7 @@
 #include "MDIView.h"
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectPy.h"
+#include <Gui/ViewProviderDocumentObjectPy.h>
 
 
 using namespace Gui;
@@ -77,6 +77,30 @@ void ViewProviderDocumentObject::startRestoring()
 
 void ViewProviderDocumentObject::finishRestoring()
 {
+}
+
+bool ViewProviderDocumentObject::isAttachedToDocument() const
+{
+    return (!testStatus(Detach));
+}
+
+const char* ViewProviderDocumentObject::detachFromDocument()
+{
+    // here we can return an empty string since the object
+    // name comes from the document object
+    setStatus(Detach, true);
+    return "";
+}
+
+void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
+{
+    if (isAttachedToDocument()) {
+        App::DocumentObject* obj = getObject();
+        App::Document* doc = obj ? obj->getDocument() : 0;
+        if (doc) {
+            onBeforeChangeProperty(doc, prop);
+        }
+    }
 }
 
 void ViewProviderDocumentObject::onChanged(const App::Property* prop)
@@ -246,4 +270,12 @@ PyObject* ViewProviderDocumentObject::getPyObject()
         pyViewObject = new ViewProviderDocumentObjectPy(this);
     pyViewObject->IncRef();
     return pyViewObject;
+}
+
+bool ViewProviderDocumentObject::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    return false;
+}
+void ViewProviderDocumentObject::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
 }

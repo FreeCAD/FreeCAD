@@ -47,3 +47,11 @@ SET_BIN_DIR(StartGui StartGui /Mod/Start)
 SET_PYTHON_PREFIX_SUFFIX(StartGui)
 
 INSTALL(TARGETS StartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(StartGuiIcon_SVG
+    Resources/icons/StartWorkbench.svg
+)
+
+fc_copy_sources(StartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start" ${StartGuiIcon_SVG})
+
+INSTALL(FILES ${StartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Start/Resources/icons")

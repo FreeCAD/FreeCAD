@@ -89,9 +89,7 @@ def msg(text=None,mode=None):
 
 def formatUnit(exp,unit="mm"):
     '''returns a formatting string to set a number to the correct unit'''
-    d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-    f =  "%." + str(d) + "f " + unit
-    return f % exp
+    return FreeCAD.Units.Quantity(exp,FreeCAD.Units.Length).UserString
 
 def selectObject(arg):
     '''this is a scene even handler, to be called from the Draft tools
@@ -517,12 +515,11 @@ class Line(Creator):
         "undoes last line segment"
         if (len(self.node) > 1):
             self.node.pop()
-            last = self.node[len(self.node)-1]
+            last = self.node[-1]
             if self.obj.Shape.Edges:
                 edges = self.obj.Shape.Edges
                 if len(edges) > 1:
-                    edges.pop()
-                    newshape = Part.Wire(edges)
+                    newshape = Part.makePolygon(self.node)
                     self.obj.Shape = newshape
                 else:
                     self.obj.ViewObject.hide()
@@ -1132,7 +1129,7 @@ class Arc(Creator):
                             self.drawArc()
                         else:
                             self.ui.labelRadius.setText("Start angle")
-                            self.ui.radiusValue.setText(self.ui.AFORMAT % 0)
+                            self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
                             self.linetrack.p1(self.center)
                             self.linetrack.on()
                             self.step = 2
@@ -2346,7 +2343,7 @@ class Rotate(Modifier):
                         self.center = self.point
                         self.node = [self.point]
                         self.ui.radiusUi()
-                        self.ui.radiusValue.setText(self.ui.AFORMAT % 0)
+                        self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
                         self.ui.hasFill.hide()
                         self.ui.labelRadius.setText("Base angle")
                         self.arctrack.setCenter(self.center)
@@ -3209,7 +3206,7 @@ class ToggleConstructionMode():
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Construction',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle construcion Mode"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle Construction Mode"),
                 'Accel' : "C, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggles the Construction Mode for next objects.")}
 

@@ -119,7 +119,7 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
         pShapeSep->removeAllChildren();
 
         // This should always point outside of the cylinder
-        Base::Vector3d normal = pcConstraint->NormalDirection.getValue();        
+        Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
         Base::Vector3d base = pcConstraint->BasePoint.getValue();
         double radius = pcConstraint->Radius.getValue();
         base = base + radius * normal;

@@ -140,7 +140,7 @@
     </message>
     <message>
         <source>Result:</source>
-        <translation>Résultat :</translation>
+        <translation>Résultat:</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
@@ -1240,10 +1240,6 @@ Veuillez définir un autre raccourci.</translation>
         <translation>Nom de la macro :</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Destination de la macro :</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Lancer</translation>
     </message>
@@ -1265,15 +1261,15 @@ Veuillez définir un autre raccourci.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros utilisateur</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros du système</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Emplacement des macros de l&apos;utilisateur :</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1313,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Lecture seule</translation>
     </message>
 </context>
 <context>
@@ -1805,14 +1801,6 @@ Veuillez spécifier un autre répertoire.</translation>
         <translation>Type de caméra</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Rendu orthographique</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Rendu en perspective</translation>
-    </message>
-    <message>
         <source></source>
         <translation>Texte source</translation>
     </message>
@@ -1880,13 +1868,17 @@ Veuillez spécifier un autre répertoire.</translation>
         <source>MSAA 8x</source>
         <translation>MSAA 8 x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation>Vue isométrique</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation>Vue en perspective</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>%1 de navigation</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation>Anticrénelage</translation>
@@ -2712,6 +2704,42 @@ La colonne « État » indique si le document peut être récupéré.</translati
     <message>
         <source>Finish</source>
         <translation>Terminer</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Supprimer</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4815,10 +4843,6 @@ Be aware the point where you click matters.</source>
         <translation>Styles de navigation</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>%1 de navigation</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>Déplacer l&apos;annotation</translation>
     </message>
@@ -4856,11 +4880,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Supprimer la macro</translation>
+        <translation>Supprimer la macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas autorisé à supprimer les macros du système</translation>
     </message>
 </context>
 <context>

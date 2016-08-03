@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Create a planar image in the 3D space</source>
-        <translation>hozzon létre egy síkbeli képet a 3D-s térben</translation>
+        <translation>Hozzon létre egy síkbeli képet a 3D-s térben</translation>
     </message>
     <message>
         <source>create a planar image in the 3D space</source>
@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+325"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>A képnéző által meghatározhatatlan típusú színtér</translation>
     </message>

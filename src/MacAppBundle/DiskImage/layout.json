@@ -1,0 +1,20 @@
+{
+
+  "title": "FreeCAD",
+
+  "icon": "../FreeCAD.app/Contents/Resources/freecad.icns",
+
+  "icon-size": 80,
+
+  "background": "background.png",
+
+  "contents": [
+
+    { "x": 250, "y": 150, "type": "file", "path": "/usr/local/FreeCAD.app" },
+    { "x": 475, "y": 150, "type": "link", "path": "/Applications" }
+
+  ],
+
+  "format": "UDZO"
+}
+

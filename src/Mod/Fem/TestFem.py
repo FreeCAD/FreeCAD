@@ -1,31 +1,31 @@
 # Unit test for the FEM module
 
-#***************************************************************************
-#*   Copyright (c) 2015 - FreeCAD Developers                               *
-#*   Author: Przemo Firszt <przemo@firszt.eu>                              *
-#*                                                                         *
-#*   This file is part of the FreeCAD CAx development system.              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************/
+# ***************************************************************************
+# *   Copyright (c) 2015 - FreeCAD Developers                               *
+# *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************/
 
 import Fem
-import FemTools
+import FemToolsCcx
 import FreeCAD
 import FemAnalysis
 import FemSolverCalculix
@@ -91,13 +91,14 @@ class FemTest(unittest.TestCase):
                 self.mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
                                     int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
                                     int(v[0]))
+
         self.mesh_object.FemMesh = self.mesh
         self.active_doc.recompute()
 
     def create_new_material(self):
         self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
         mat = self.new_material_object.Material
-        mat['Name'] = "Steel"
+        mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
         mat['PoissonRatio'] = "0.30"
         mat['Density'] = "7900 kg/m^3"
@@ -109,16 +110,16 @@ class FemTest(unittest.TestCase):
 
     def create_force_constraint(self):
         self.force_constraint = self.active_doc.addObject("Fem::ConstraintForce", "FemConstraintForce")
-        self.force_constraint.References = [(self.box, "Face2")]
-        self.force_constraint.Force = 10.000000
+        self.force_constraint.References = [(self.box, "Face6")]
+        self.force_constraint.Force = 40000.0
         self.force_constraint.Direction = (self.box, ["Edge5"])
         self.force_constraint.Reversed = True
 
     def create_pressure_constraint(self):
         self.pressure_constraint = self.active_doc.addObject("Fem::ConstraintPressure", "FemConstraintPressure")
         self.pressure_constraint.References = [(self.box, "Face2")]
-        self.pressure_constraint.Pressure = 10.000000
-        self.pressure_constraint.Reversed = True
+        self.pressure_constraint.Pressure = 1000.0
+        self.pressure_constraint.Reversed = False
 
     def force_unix_line_ends(self, line_list):
         new_line_list = []
@@ -202,7 +203,7 @@ class FemTest(unittest.TestCase):
         self.assertTrue(self.pressure_constraint, "FemTest of new pressure constraint failed")
         self.analysis.Member = self.analysis.Member + [self.pressure_constraint]
 
-        fea = FemTools.FemTools(self.analysis, test_mode=True)
+        fea = FemToolsCcx.FemToolsCcx(self.analysis, self.solver_object, test_mode=True)
         fcc_print('Setting up working directory {}'.format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
         self.assertTrue(True if fea.working_dir == static_analysis_dir else False,
@@ -210,7 +211,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for static analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Checking FEM inp file write...')
 
@@ -224,7 +225,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Comparing {} to {}/{}.inp'.format(static_analysis_inp_file, static_analysis_dir, mesh_name))
         ret = self.compare_inp_files(static_analysis_inp_file, static_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemTools write_inp_file test failed.\n{}".format(ret))
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -243,7 +244,6 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM frd file read from static analysis...')
         fea.load_results()
-        fcc_print('Result object created as \"{}\"'.format(fea.result_object.Name))
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for static analysis...')
@@ -266,7 +266,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
         error = fea.check_prerequisites()
-        self.assertFalse(error, "FemTools check_prerequisites returned error message: {}".format(error))
+        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
 
         fcc_print('Writing {}/{}.inp for frequency analysis'.format(frequency_analysis_dir, mesh_name))
         error = fea.write_inp_file()
@@ -274,7 +274,7 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Comparing {} to {}/{}.inp'.format(frequency_analysis_inp_file, frequency_analysis_dir, mesh_name))
         ret = self.compare_inp_files(frequency_analysis_inp_file, frequency_analysis_dir + "/" + mesh_name + '.inp')
-        self.assertFalse(ret, "FemTools write_inp_file test failed.\n{}".format(ret))
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
 
         fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
         fea.setup_working_dir(test_file_dir)
@@ -293,8 +293,6 @@ class FemTest(unittest.TestCase):
 
         fcc_print('Checking FEM frd file read from frequency analysis...')
         fea.load_results()
-
-        fcc_print('Last result object created as \"{}\"'.format(fea.result_object.Name))
         self.assertTrue(fea.results_present, "Cannot read results from {}.frd frd file".format(fea.base_name))
 
         fcc_print('Reading stats from result object for frequency analysis...')
@@ -306,3 +304,84 @@ class FemTest(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
         pass
+
+
+# helpers
+def open_cube_test():
+    cube_file = test_file_dir + '/cube.fcstd'
+    FreeCAD.open(cube_file)
+
+
+def create_cube_test_results():
+    import os
+    import shutil
+    cube_file = test_file_dir + '/cube.fcstd'
+
+    FreeCAD.open(cube_file)
+    import FemGui
+    FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.MechanicalAnalysis)
+    import FemToolsCcx
+    fea = FemToolsCcx.FemToolsCcx()
+
+    # static
+    fea.reset_all()
+    fea.run()
+
+    fea.load_results()
+    stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
+    stats_static = []  # we only have one result object so we are fine
+    for s in stat_types:
+        stats_static.append("{}: {}\n".format(s, fea.get_stats(s)))
+    static_expected_values_file = temp_dir + '/cube_static_expected_values'
+    f = open(static_expected_values_file, 'w')
+    for s in stats_static:
+        f.write(s)
+    f.close()
+
+    # could be added in FemToolsCcx to the self object as an Attribut
+    frd_result_file = os.path.splitext(fea.inp_file_name)[0] + '.frd'
+    dat_result_file = os.path.splitext(fea.inp_file_name)[0] + '.dat'
+
+    frd_static_test_result_file = temp_dir + '/cube_static.frd'
+    dat_static_test_result_file = temp_dir + '/cube_static.dat'
+    shutil.copyfile(frd_result_file, frd_static_test_result_file)
+    shutil.copyfile(dat_result_file, dat_static_test_result_file)
+
+    # frequency
+    fea.reset_all()
+    fea.set_analysis_type('frequency')
+    fea.set_eigenmode_parameters(1)  # we should only have one result object
+    fea.run()
+
+    fea.load_results()
+    stats_frequency = []  # since we set eigenmodeno. we only have one result object so we are fine
+    for s in stat_types:
+        stats_frequency.append("{}: {}\n".format(s, fea.get_stats(s)))
+    frequency_expected_values_file = temp_dir + '/cube_frequency_expected_values'
+    f = open(frequency_expected_values_file, 'w')
+    for s in stats_frequency:
+        f.write(s)
+    f.close()
+
+    frd_frequency_test_result_file = temp_dir + '/cube_frequency.frd'
+    dat_frequency_test_result_file = temp_dir + '/cube_frequency.dat'
+    shutil.copyfile(frd_result_file, frd_frequency_test_result_file)
+    shutil.copyfile(dat_result_file, dat_frequency_test_result_file)
+
+    print('Results copied to: ' + temp_dir)
+
+
+'''
+update the results in FEM untit tests:
+start FreeCAD
+
+import TestFem
+TestFem.create_cube_test_results()
+
+copy result files from /tmp into the src dirctory
+run make
+start FreeCAD and run FEM unit test
+if FEM unit test is fine --> commit new FEM unit test results
+
+TODO compare the inp file of the helper with the inp file of FEM unit tests
+'''

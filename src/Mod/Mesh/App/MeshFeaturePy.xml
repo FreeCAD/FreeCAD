@@ -42,6 +42,11 @@ d.addObject(\"Mesh::Feature\").
 				<UserDocu>Remove non-manifolds</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="removeNonManifoldPoints">
+			<Documentation>
+				<UserDocu>Remove non-manifold points</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="fixIndices">
 			<Documentation>
 				<UserDocu>Repair any invalid indices</UserDocu>

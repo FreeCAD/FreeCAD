@@ -163,11 +163,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="StartPage.py" line="54"/>
-        <source>Latest news</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="StartPage.py" line="55"/>
         <source>On the web</source>
         <translation type="unfinished"></translation>
@@ -300,6 +295,26 @@
     <message>
         <location filename="StartPage.py" line="109"/>
         <source>Load an FEM example analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="54"/>
+        <source>Latest commits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="110"/>
+        <source>Obtain a development version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="111"/>
+        <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="112"/>
+        <source>See all commits</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

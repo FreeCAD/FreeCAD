@@ -1240,10 +1240,6 @@ Please define another shortcut.</source>
         <translation>Όνομα μακροεντολής:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Προορισμός μακροεντολής:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Εκτέλεση</translation>
     </message>
@@ -1265,15 +1261,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1806,14 +1802,6 @@ Specify another directory, please.</source>
         <translation>Τύπος κάμερας</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Ορθογραφική αποτύπωση</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Προοπτική αποτύπωση</translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1881,13 +1869,17 @@ Specify another directory, please.</source>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>Πλοήγηση %1</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished">Anti-aliasing</translation>
@@ -2713,6 +2705,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Finish</source>
         <translation>Τελείωμα</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Διαγραφή</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4827,10 +4855,6 @@ Be aware the point where you click matters.</source>
         <translation>Τεχνοτροπίες Πλοήγησης</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>Πλοήγηση %1</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>Μετακίνηση της επισήμανσης</translation>
     </message>
@@ -4868,11 +4892,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Διαγραφή μακροεντολής</translation>
+        <translation>Διαγραφή μακροεντολής</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

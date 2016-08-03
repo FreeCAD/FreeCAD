@@ -394,6 +394,30 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
     return temp;
 }
 
+int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop) const
+{
+    std::vector<Gui::SelectionObject> sel = this->getSelectionEx();
+    std::vector<App::DocumentObject*> objs; objs.reserve(sel.size()*2);
+    std::vector<std::string> subs; subs.reserve(sel.size()*2);
+    for (std::size_t iobj = 0; iobj < sel.size(); iobj++) {
+        Gui::SelectionObject &selitem = sel[iobj];
+        App::DocumentObject* obj = selitem.getObject();
+        const std::vector<std::string> &subnames = selitem.getSubNames();
+        if (subnames.size() == 0){//whole object is selected
+            objs.push_back(obj);
+            subs.push_back(std::string());
+        } else {
+            for (std::size_t isub = 0; isub < subnames.size(); isub++) {
+                objs.push_back(obj);
+                subs.push_back(subnames[isub]);
+            }
+        }
+    }
+    assert(objs.size()==subs.size());
+    prop.setValues(objs, subs);
+    return objs.size();
+}
+
 vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Type& typeId, const char* pDocName) const
 {
     std::vector<App::DocumentObject*> temp;
@@ -461,13 +485,21 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
             if (pObjectName) {
                 App::DocumentObject* pObject = pDoc->getObject(pObjectName);
                 if (!ActiveGate->allow(pDoc,pObject,pSubName)) {
-                    snprintf(buf,512,"Not allowed: %s.%s.%s ",pDocName
-                                                       ,pObjectName
-                                                       ,pSubName
-                                                       );
+                    QString msg;
+                    if (ActiveGate->notAllowedReason.length() > 0){
+                        msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+                    } else {
+                        msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
+                    }
+                    msg.append(
+                                QObject::tr(" %1.%2.%3 ")
+                               .arg(QString::fromLatin1(pDocName))
+                               .arg(QString::fromLatin1(pObjectName))
+                               .arg(QString::fromLatin1(pSubName))
+                                );
 
                     if (getMainWindow()) {
-                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+                        getMainWindow()->showMessage(msg,3000);
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                         mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
@@ -641,10 +673,17 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         if (ActiveGate) {
             if (!ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)) {
                 if (getMainWindow()) {
-                    getMainWindow()->showMessage(QString::fromLatin1("Selection not allowed by filter"),5000);
+                    QString msg;
+                    if (ActiveGate->notAllowedReason.length() > 0) {
+                        msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+                    } else {
+                        msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
+                    }
+                    getMainWindow()->showMessage(msg,5000);
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                     mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }
+                ActiveGate->notAllowedReason.clear();
                 QApplication::beep();
                 return false;
             }
@@ -676,7 +715,9 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         Notify(Chng);
         signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
         Base::Console().Log("Sel : Add Selection \"%s.%s.%s(%f,%f,%f)\"\n",pDocName,pObjectName,pSubName,x,y,z);
+#endif
 
         // allow selection
         return true;
@@ -691,10 +732,6 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
 bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
 {
-    // already in ?
-    //if (isSelected(pDocName, pObjectName, pSubName))
-    //    return true;
-
     _SelObj temp;
 
     temp.pDoc = getDocument(pDocName);
@@ -770,7 +807,9 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             signalSelectionChanged(Chng);
       
             rmvList.push_back(Chng);
+#ifdef FC_DEBUG
             Base::Console().Log("Sel : Rmv Selection \"%s.%s.%s\"\n",pDocName,pObjectName,pSubName);
+#endif
         }
         else {
             ++It;
@@ -866,7 +905,9 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         Notify(Chng);
         signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
         Base::Console().Log("Sel : Clear selection\n");
+#endif
     }
 }
 
@@ -884,7 +925,9 @@ void SelectionSingleton::clearCompleteSelection()
     Notify(Chng);
     signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
     Base::Console().Log("Sel : Clear selection\n");
+#endif
 }
 
 bool SelectionSingleton::isSelected(const char* pDocName, const char* pObjectName, const char* pSubName) const
@@ -1032,21 +1075,50 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args,
     PyObject *object;
     char* subname=0;
     float x=0,y=0,z=0;
-    if (!PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z))
-        return NULL;                             // NULL triggers exception 
+    if (PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z)) {
+        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+        if (!docObj || !docObj->getNameInDocument()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            return NULL;
+        }
 
-    App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
-    App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-    if (!docObj || !docObj->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
-        return NULL;
+        Selection().addSelection(docObj->getDocument()->getName(),
+                                 docObj->getNameInDocument(),
+                                 subname,x,y,z);
+        Py_Return;
     }
 
-    Selection().addSelection(docObj->getDocument()->getName(),
-                             docObj->getNameInDocument(),
-                             subname,x,y,z);
+    PyErr_Clear();
+    PyObject *sequence;
+    if (PyArg_ParseTuple(args, "O!O", &(App::DocumentObjectPy::Type),&object,&sequence)) {
+        App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
+        App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
+        if (!docObj || !docObj->getNameInDocument()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            return NULL;
+        }
 
-    Py_Return;
+        try {
+            if (PyTuple_Check(sequence) || PyList_Check(sequence)) {
+                Py::Sequence list(sequence);
+                for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                    std::string subname = static_cast<std::string>(Py::String(*it));
+                    Selection().addSelection(docObj->getDocument()->getName(),
+                                             docObj->getNameInDocument(),
+                                             subname.c_str());
+                }
+
+                Py_Return;
+            }
+        }
+        catch (const Py::Exception&) {
+            // do nothing here
+        }
+    }
+
+    PyErr_SetString(PyExc_ValueError, "type must be 'DocumentObject[,subname[,x,y,z]]' or 'DocumentObject, list or tuple of subnames'");
+    return 0;
 }
 
 PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)

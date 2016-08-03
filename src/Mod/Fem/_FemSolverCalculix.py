@@ -26,7 +26,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-from FemTools import FemTools
+import FemToolsCcx
 
 
 class _FemSolverCalculix():
@@ -46,16 +46,16 @@ class _FemSolverCalculix():
         obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
 
         obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
-        obj.AnalysisType = FemTools.known_analysis_types
+        obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types
         analysis_type = fem_prefs.GetInt("AnalysisType", 0)
-        obj.AnalysisType = FemTools.known_analysis_types[analysis_type]
+        obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types[analysis_type]
 
         obj.addProperty("App::PropertyIntegerConstraint", "NumberOfEigenmodes", "Fem", "Number of modes for frequency calculations")
         noe = fem_prefs.GetInt("NumberOfEigenmodes", 10)
         obj.NumberOfEigenmodes = (noe, 1, 100, 1)
 
         obj.addProperty("App::PropertyFloatConstraint", "EigenmodeLowLimit", "Fem", "Low frequency limit for eigenmode calculations")
-        #Not yet in prefs, so it will always default to 0.0
+        # Not yet in prefs, so it will always default to 0.0
         ell = fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
         obj.EigenmodeLowLimit = (ell, 0.0, 1000000.0, 10000.0)
 

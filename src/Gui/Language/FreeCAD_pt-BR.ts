@@ -1240,10 +1240,6 @@ Defina outro atalho.</translation>
         <translation>Nome da macro:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Destino da macro:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Executar</translation>
     </message>
@@ -1265,15 +1261,15 @@ Defina outro atalho.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros do usuário</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macros do sistema</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Localização das macros do usuário:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Este arquivo já existe.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Somente leitura</translation>
     </message>
 </context>
 <context>
@@ -1805,14 +1801,6 @@ Por favor especifique outro diretório.</translation>
         <translation>Tipo de câmera</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Renderização ortográfica</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Renderização perspectiva</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1880,13 +1868,17 @@ Por favor especifique outro diretório.</translation>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation>Renderização Or&amp;tográfica</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>navegação de %1</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation>Suavização de serrilhado</translation>
@@ -2708,6 +2700,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Finish</source>
         <translation>Concluir</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Excluir</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4806,10 +4834,6 @@ Be aware the point where you click matters.</source>
         <translation>Estilos de navegação</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>navegação de %1</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>Mover a anotação</translation>
     </message>
@@ -4847,11 +4871,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Excluir macro</translation>
+        <translation>Excluir macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é permitido excluir macros do sistema</translation>
     </message>
 </context>
 <context>

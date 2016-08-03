@@ -216,7 +216,7 @@
   <context>
     <name>plot_console</name>
     <message>
-      <location filename="Plot.py" line="38"/>
+      <location filename="Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
       <translation>Библиотека matplotlib, не найдена, поэтому модуль диаграмм не может быть загружен</translation>
     </message>

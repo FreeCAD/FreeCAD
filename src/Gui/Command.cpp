@@ -431,34 +431,26 @@ void Command::blockCommand(bool block)
 }
 
 /// Run a App level Action
-void Command::doCommand(DoCmd_Type eType,const char* sCmd,...)
+void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
 {
-    // temp buffer
-    size_t format_len = std::strlen(sCmd)+4024;
-    char* format = (char*) malloc(format_len);
-    va_list namelessVars;
-    va_start(namelessVars, sCmd);  // Get the "..." vars
-    vsnprintf(format, format_len, sCmd, namelessVars);
-    va_end(namelessVars);
+    va_list ap;
+    va_start(ap, sCmd);
+    QString s;
+    const QString cmd = s.vsprintf(sCmd, ap);
+    va_end(ap);
 
-    if (eType == Gui)
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,format);
-    else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,format);
-
-    try {
-        Base::Interpreter().runString(format);
-    }
-    catch (...) {
-        // free memory to avoid a leak if an exception occurred
-        free (format);
-        throw;
-    }
+    QByteArray format = cmd.toLatin1();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n",format);
+    Base::Console().Log("CmdC: %s\n", format.constData());
 #endif
-    free (format);
+
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, format.constData());
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, format.constData());
+
+    Base::Interpreter().runString(format.constData());
 }
 
 /// Run a App level Action
@@ -620,15 +612,20 @@ void Command::applyCommandData(const char* context, Action* action)
 
 const char* Command::keySequenceToAccel(int sk) const
 {
+    /* Local class to ensure free()'ing the strings allocated below */
+    typedef std::map<int, std::string> StringMap;
+    static StringMap strings;
+    StringMap::iterator i = strings.find(sk);
+
+    if (i != strings.end())
+        return i->second.c_str();
+
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
     QByteArray data = qs.toLatin1();
-#if defined (_MSC_VER)
-    return _strdup((const char*)data);
-#else
-    return strdup((const char*)data);
-#endif
+
+    return (strings[sk] = static_cast<const char*>(data)).c_str();
 }
 
 void Command::adjustCameraPosition()

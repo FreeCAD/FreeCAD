@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+325"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Nedoločen vrsta barvnega prostora za ogled slike</translation>
     </message>
@@ -107,7 +107,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;1:1 scale</source>
-        <translation>merilo &amp;1:1</translation>
+        <translation>Merilo &amp;1:1</translation>
     </message>
     <message>
         <location line="+2"/>

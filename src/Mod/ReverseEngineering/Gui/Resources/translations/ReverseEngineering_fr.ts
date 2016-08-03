@@ -44,7 +44,7 @@
 <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-        <location line="+129"/>
+        <location line="+134"/>
         <source>Reverse Engineering</source>
         <translation>Rétro-ingénierie</translation>
     </message>
@@ -68,10 +68,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation>Nuages de points structurés</translation>
+    </message>
+    <message>
         <location line="+1"/>
         <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation>Triangulation de nuages de points structurés</translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation>Voir la triangulation</translation>
+        <translation type="obsolete">Voir la triangulation</translation>
     </message>
 </context>
 <context>
@@ -203,14 +211,14 @@
 <context>
     <name>Reen_ApproxSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="-154"/>
-        <location line="+130"/>
+        <location filename="../../Command.cpp" line="-159"/>
+        <location line="+135"/>
         <source>Wrong selection</source>
         <translation>Sélection invalide</translation>
     </message>
     <message>
-        <location line="-129"/>
-        <location line="+130"/>
+        <location line="-134"/>
+        <location line="+135"/>
         <source>Please select a single point cloud.</source>
         <translation>Merci de sélectionner un point du nuage de points.</translation>
     </message>

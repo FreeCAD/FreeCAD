@@ -138,6 +138,7 @@ public:
     /** @name Editing */
     //@{
     bool doubleClicked(void){ return false; }
+    bool isFacetSelected(unsigned long facet);
     void selectComponent(unsigned long facet);
     void deselectComponent(unsigned long facet);
     void selectFacet(unsigned long facet);
@@ -145,6 +146,7 @@ public:
     void setSelection(const std::vector<unsigned long>&);
     void addSelection(const std::vector<unsigned long>&);
     void removeSelection(const std::vector<unsigned long>&);
+    void invertSelection();
     void clearSelection();
     void deleteSelection();
     void getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
@@ -154,6 +156,9 @@ public:
     std::vector<unsigned long> getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
     std::vector<unsigned long> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
     virtual void removeFacets(const std::vector<unsigned long>&);
+    /*! The size of the array must be equal to the number of facets. */
+    void setFacetTransparency(const std::vector<float>&);
+    void resetFacetTransparency();
     //@}
 
 protected:
@@ -182,7 +187,6 @@ protected:
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
-    Gui::SoFCSelection* createFromSettings() const;
 
 public:
     static void faceInfoCallback(void * ud, SoEventCallback * n);

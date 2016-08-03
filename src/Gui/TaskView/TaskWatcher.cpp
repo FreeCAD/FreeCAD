@@ -102,9 +102,6 @@ TaskWatcherCommands::TaskWatcherCommands(const char* Filter,const char* commands
     Content.push_back(tb);
 }
 
-TaskWatcherCommands::~TaskWatcherCommands()
-{
-}
 
 //==== implementer ===========================================================================
 
@@ -128,9 +125,7 @@ TaskWatcherCommandsEmptyDoc::TaskWatcherCommandsEmptyDoc(const char* commands[],
 {
 }
 
-TaskWatcherCommandsEmptyDoc::~TaskWatcherCommandsEmptyDoc()
-{
-}
+
 
 //==== implementer ===========================================================================
 
@@ -168,5 +163,6 @@ bool TaskWatcherCommandsEmptySelection::shouldShow()
 {
     return (App::GetApplication().getActiveDocument() && Gui::Selection().size() == 0);
 }
+
 
 #include "moc_TaskWatcher.cpp"

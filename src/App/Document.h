@@ -30,6 +30,7 @@
 
 #include "PropertyContainer.h"
 #include "PropertyStandard.h"
+#include "PropertyLinks.h"
 
 #include <map>
 #include <vector>
@@ -45,6 +46,7 @@ namespace Base {
 
 namespace App
 {
+    class TransactionalObject;
     class DocumentObject;
     class DocumentObjectExecReturn;
     class Document;
@@ -84,17 +86,21 @@ public:
     PropertyUUID   Uid;
     /** License string
       * Holds the short license string for the Item, e.g. CC-BY
-      * for the Creative Commons license suit. 
+      * for the Creative Commons license suit.
       */
     App::PropertyString  License;
     /// License descripton/contract URL
     App::PropertyString  LicenseURL;
     /// Meta descriptons
     App::PropertyMap     Meta;
-    /// Meta descriptons
+    /// Material descriptons, used and defined in the Material module.
     App::PropertyMap     Material;
     /// read-only name of the temp dir created wen the document is opened
-    PropertyString TransientDir;
+    PropertyString		TransientDir;
+	/// Tip object of the document (if any)
+	PropertyLink		Tip;
+ 	/// Tip object of the document (if any)
+	PropertyString		TipName;
     //@}
 
     /** @name Signals of the document */
@@ -110,13 +116,17 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on created object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionAppend;
+    /// signal on removed object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionRemove;
     /// signal on undo
     boost::signal<void (const App::Document&)> signalUndo;
     /// signal on redo
     boost::signal<void (const App::Document&)> signalRedo;
     /** signal on load/save document
      * this signal is given when the document gets streamed.
-     * you can use this hook to write additional information in 
+     * you can use this hook to write additional information in
      * the file (like the Gui::Document it does).
      */
     boost::signal<void (Base::Writer   &)> signalSaveDocument;
@@ -162,9 +172,14 @@ public:
     /** @name Object handling  */
     //@{
     /** Add a feature of sType with sName (ASCII) to this document and set it active.
-     * Unicode names are set through the Label property.
+     * Unicode names are set through the Label propery.
+     * @param sType       the type of created object
+     * @param pObjectName if nonNULL use that name otherwise generate a new uniq name based on the \a sType
+     * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
      */
-    DocumentObject *addObject(const char* sType, const char* pObjectName=0);
+    DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
+    /// Remove a feature out of the document
+    void remObject(const char* sName);
     /** Add an existing feature with sName (ASCII) to this document and set it active.
      * Unicode names are set through the Label property.
      * This is an overloaded function of the function above and can be used to create
@@ -173,8 +188,8 @@ public:
      * is raisedd.
      */
     void addObject(DocumentObject*, const char* pObjectName=0);
-    /// Remove a feature out of the document
-    void remObject(const char* sName);
+    
+
     /** Copy an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are copied as well. By default \a recursive is false.
@@ -192,6 +207,8 @@ public:
     DocumentObject *getActiveObject(void) const;
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
+    /// Returns true if the DocumentObject is contained in this document
+    const bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
     const char *getObjectName(DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
@@ -236,16 +253,16 @@ public:
     /** @name methods for the UNDO REDO and Transaction handling */
     //@{
     /// switch the level of Undo/Redo
-    void setUndoMode(int iMode);  
+    void setUndoMode(int iMode);
     /// switch the level of Undo/Redo
-    int getUndoMode(void) const;  
+    int getUndoMode(void) const;
     /// switch the tranaction mode
     void setTransactionMode(int iMode);
     /// Open a new command Undo/Redo, an UTF-8 name can be specified
     void openTransaction(const char* name=0);
     // Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
-    /// Abort the  actually running transaction. 
+    /// Abort the  actually running transaction.
     void abortTransaction();
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
@@ -296,11 +313,12 @@ public:
 
     friend class Application;
     /// because of transaction handling
+    friend class TransactionalObject;
     friend class DocumentObject;
     friend class Transaction;
-    friend class TransactionObject;
+    friend class TransactionDocumentObject;
 
-    /// Destruction 
+    /// Destruction
     virtual ~Document();
 
 protected:
@@ -317,7 +335,7 @@ protected:
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed
-    void onBeforeChangeProperty(const DocumentObject *Who, const Property *What);
+    void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature

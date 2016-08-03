@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="BaseClassPy"
+    Name="MeasurementPy"
+    Twin="Measurement"
+    TwinPointer="Measurement"
+    Include="Mod/Measure/App/Measurement.h"
+    Namespace="Measure"
+    FatherInclude="Base/BaseClassPy.h"
+    Constructor="true"
+    FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
+      <UserDocu>Make a measurement</UserDocu>
+    </Documentation>
+    <Methode Name="addReference3D">
+      <Documentation>
+        <UserDocu>add a geometric reference</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="has3DReferences">
+      <Documentation>
+        <UserDocu>does Measurement have links to 3D geometry</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clear">
+      <Documentation>
+        <UserDocu>measure the difference between references to obtain resultant vector</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delta">
+      <Documentation>
+        <UserDocu>measure the difference between references to obtain resultant vector</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="length">
+      <Documentation>
+        <UserDocu>measure the length of the references</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="angle">
+        <Documentation>
+            <UserDocu>measure the angle between two edges</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="radius">
+      <Documentation>
+        <UserDocu>measure the radius of an arc or circle edge</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="com">
+      <Documentation>
+        <UserDocu>measure the center of mass for selected volumes</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

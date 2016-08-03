@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011                                                    *
@@ -61,26 +63,32 @@ class _CommandSite:
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        ok = False
-        if (len(sel) == 1):
-            if Draft.getType(sel[0]) in ["Cell","Building","Floor"]:
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("obj = Arch.makeSite()")
-                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
-                FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
-
-                nobj = makeSite()
-                ArchCommands.copyProperties(sel[0],nobj)
-                FreeCAD.ActiveDocument.removeObject(sel[0].Name)
-                FreeCAD.ActiveDocument.commitTransaction()
-                ok = True
-        if not ok:
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        link = p.GetBool("FreeLinking",False)
+        siteobj = []
+        warning = False
+        for obj in sel :
+            if Draft.getType(obj) == "Building":
+                siteobj.append(obj)
+            else :
+                if link == True :
+                    siteobj.append(obj)
+                else:
+                    warning = True
+        if warning :
+            message = translate( "Arch" ,  "Please select only Building objects or nothing!\n\
+Site are not allowed to accept other object than Building.\n\
+Other objects will be removed from the selection.\n\
+You can change that in the preferences." )
+            ArchCommands.printMessage( message )
+        if sel and len(siteobj) == 0:
+            message = translate( "Arch" ,  "There is no valid object in the selection.\n\
+Site creation aborted." )
+            ArchCommands.printMessage( message )
+        else :
+            ss = "[ "
+            for o in siteobj:
+                ss += "FreeCAD.ActiveDocument." + o.Name + ", "
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Site"))
             FreeCADGui.addModule("Arch")
@@ -92,13 +100,14 @@ class _Site(ArchFloor._Floor):
     "The Site object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Terrain","Arch",translate("Arch","The terrain of this site"))
-        obj.addProperty("App::PropertyString","Address","Arch",translate("Arch","The street and housenumber of this site"))
-        obj.addProperty("App::PropertyString","PostalCode","Arch",translate("Arch","The postal or zip code of this site"))
-        obj.addProperty("App::PropertyString","City","Arch",translate("Arch","The city of this site"))
-        obj.addProperty("App::PropertyString","Country","Arch",translate("Arch","The country of this site"))
-        obj.addProperty("App::PropertyString","Coordinates","Arch",translate("Arch","The geographic coordinates of this site"))
-        obj.addProperty("App::PropertyString","Url","Arch",translate("Arch","An url that shows this site in a mapping website"))
+        obj.addProperty("App::PropertyLink","Terrain","Arch","The terrain of this site")
+        obj.addProperty("App::PropertyString","Address","Arch","The street and housenumber of this site")
+        obj.addProperty("App::PropertyString","PostalCode","Arch","The postal or zip code of this site")
+        obj.addProperty("App::PropertyString","City","Arch","The city of this site")
+        obj.addProperty("App::PropertyString","Country","Arch","The country of this site")
+        obj.addProperty("App::PropertyFloat","Latitude","Arch","The latitude of this site")
+        obj.addProperty("App::PropertyFloat","Longitude","Arch","The latitude of this site")
+        obj.addProperty("App::PropertyString","Url","Arch","An url that shows this site in a mapping website")
         self.Type = "Site"
         obj.setEditorMode('Height',2)
 

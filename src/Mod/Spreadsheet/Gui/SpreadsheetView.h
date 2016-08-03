@@ -69,7 +69,7 @@ public:
 
     Spreadsheet::Sheet * getSheet() { return sheet; }
 
-    std::vector<Spreadsheet::Range> selectedRanges() const;
+    std::vector<App::Range> selectedRanges() const;
 
     QModelIndexList selectedIndexes() const;
 

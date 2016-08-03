@@ -27,8 +27,12 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <bitset>
 #include <QIcon>
 #include <boost/signals.hpp>
+
+#include <App/TransactionalObject.h>
+#include <Base/Vector3D.h>
 
 class SbVec2s;
 class SbVec3f;
@@ -56,9 +60,6 @@ namespace App {
 
 class SoGroup;
 
-#include <App/PropertyContainer.h>
-#include <Base/Vector3D.h>
-
 
 namespace Gui {
     namespace TaskView {
@@ -67,6 +68,11 @@ namespace Gui {
 class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
+
+enum ViewStatus {
+    UpdateData = 0,
+    Detach = 1
+};
 
 
 
@@ -77,7 +83,7 @@ class ObjectItem;
   * have to be implemented for any object type in order to 
   * show them in the 3DView and TreeView.
   */
-class GuiExport ViewProvider : public App::PropertyContainer
+class GuiExport ViewProvider : public App::TransactionalObject
 {
     PROPERTY_HEADER(Gui::ViewProvider);
 
@@ -108,7 +114,7 @@ public:
     { return std::vector<App::DocumentObject*>(); }
 
     /** @name Selection handling
-      * This group of methodes do the selection handling.
+      * This group of methods do the selection handling.
       * Here you can define how the selection for your ViewProfider
       * works. 
      */
@@ -125,8 +131,13 @@ public:
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const
     { return std::vector<Base::Vector3d>(); }
-    /// get called if the object is about to get deleted. Here you can delete other objects to or switch visibility of others.
-    virtual bool onDelete(const std::vector<std::string> &)
+    /**
+     * Get called if the object is about to get deleted.
+     * Here you can delete other objects, switch their visibility or prevent the deletion of the object.
+     * @param subNames  list of selected subelements
+     * @return          true if the deletion is approoved by the view provider.
+     */
+    virtual bool onDelete(const std::vector<std::string> &subNames)
     { return true;}
     //@}
 
@@ -165,6 +176,11 @@ public:
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const
     { return true; }
+    /** Tell the tree view if this object should apear there */
+    virtual bool showInTree() const
+    {
+      return true;
+    }
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*)
     { }
@@ -190,7 +206,7 @@ public:
     //@}
 
     /** update the content of the ViewProvider
-     * this method have to implement the recalcualtion
+     * this method have to implement the recalculation
      * of the ViewProvider. There are different reasons to 
      * update. E.g. only the view attribute has changed, or
      * the data has manipulated.
@@ -199,6 +215,11 @@ public:
     virtual void updateData(const App::Property*)=0;
     bool isUpdatesEnabled () const;
     void setUpdatesEnabled (bool enable);
+
+    /// return the status bits
+    unsigned long getStatus() const {return StatusBits.to_ulong();}
+    bool testStatus(ViewStatus pos) const {return StatusBits.test((size_t)pos);}
+    void setStatus(ViewStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
 
     std::string toString() const;
     PyObject* getPyObject();
@@ -223,6 +244,7 @@ public:
     bool isVisible() const;
     /// Overrides the display mode with mode.
     virtual void setOverrideMode(const std::string &mode);
+    const std::string getOverrideMode();
     //@}
 
 
@@ -308,6 +330,8 @@ protected:
     void addDisplayMaskMode( SoNode *node, const char* type );
     /// Activates the display mask mode \a type
     void setDisplayMaskMode( const char* type );
+    /// Get the node to the display mask mode \a type
+    SoNode* getDisplayMaskMode(const char* type) const;
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
@@ -336,6 +360,8 @@ protected:
     /// The root separator for annotations
     SoSeparator *pcAnnotation;
     ViewProviderPy* pyViewObject;
+    std::string overrideMode;
+    std::bitset<32> StatusBits;
 
 private:
     void setModeSwitch();
@@ -344,7 +370,6 @@ private:
     int viewOverrideMode;
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
-    bool _updateData;
 
     // friends
     friend class ViewProviderPythonFeaturePy;

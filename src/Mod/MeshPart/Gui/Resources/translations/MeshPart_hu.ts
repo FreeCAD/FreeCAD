@@ -34,7 +34,7 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Meshing options</translation>
+        <translation>Kapcsolás beállítások</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -44,82 +44,82 @@
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation>Maximális élhossz:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation>Finomság:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation>Nagyon durva</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation>Durva</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation>Mérsékelt</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation>Finom</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation>Nagyon finom</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation>Felhasználó által definiált</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Mesh size grading:</translation>
+        <translation>Háló nagyság osztályozása:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation>Élenkénti elemek:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Elements per curvature radius:</translation>
+        <translation>Ív-sugáronkénti elemek:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimize surface</translation>
+        <translation>Felület optimalizálás</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Second order elements</translation>
+        <translation>Másod rendezésű elemek</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quad dominated</translation>
+        <translation>Quad uralja</translation>
     </message>
     <message>
         <source>Settings</source>

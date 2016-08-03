@@ -29,72 +29,51 @@
 
 
 class TestWorkbench ( Workbench ):
-	"Test workbench object"
-	Icon = """
-			/* XPM */
-			static const char *test_icon[]={
-			"16 16 2 1",
-			"a c #000000",
-			". c None",
-			"................",
-			"................",
-			"..############..",
-			"..############..",
-			"..############..",
-			"......####......",
-			"......####......",
-			"......####......",
-			"......####......",
-			"......####......",
-			"......####......",
-			"......####......",
-			"......####......",
-			"......####......",
-			"................",
-			"................"};
-			"""
-	MenuText = "Test framework"
-	ToolTip = "Test framework"
-	
-	def Initialize(self):
-		import TestGui
+    "Test workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Test/Resources/icons/TestWorkbench.svg"
+        self.__class__.MenuText = "Test framework"
+        self.__class__.ToolTip = "Test framework"
 
-		list = ["Test_Test","Test_TestAll","Test_TestDoc","Test_TestBase"]
-		self.appendToolbar("TestTools",list)
+    def Initialize(self):
+        import TestGui
 
-		menu = ["Test &Commands","TestToolsGui"]
-		list = ["Std_TestQM","Std_TestReloadQM","Test_Test","Test_TestAll","Test_TestDoc","Test_TestBase"]
-		self.appendCommandbar("TestToolsGui",list)
-		self.appendMenu(menu,list)
+        list = ["Test_Test","Test_TestAll","Test_TestDoc","Test_TestBase"]
+        self.appendToolbar("TestTools",list)
 
-		menu = ["Test &Commands","TestToolsText"]
-		list = ["Test_TestAllText","Test_TestDocText","Test_TestBaseText"]
-		self.appendCommandbar("TestToolsText",list)
-		self.appendMenu(menu,list)
+        menu = ["Test &Commands","TestToolsGui"]
+        list = ["Std_TestQM","Std_TestReloadQM","Test_Test","Test_TestAll","Test_TestDoc","Test_TestBase"]
+        self.appendCommandbar("TestToolsGui",list)
+        self.appendMenu(menu,list)
 
-		menu = ["Test &Commands","TestToolsMenu"]
-		list = ["Test_TestCreateMenu", "Test_TestDeleteMenu", "Test_TestWork"]
-		self.appendCommandbar("TestToolsMenu",list)
-		self.appendMenu(menu,list)
+        menu = ["Test &Commands","TestToolsText"]
+        list = ["Test_TestAllText","Test_TestDocText","Test_TestBaseText"]
+        self.appendCommandbar("TestToolsText",list)
+        self.appendMenu(menu,list)
 
-		menu = ["Test &Commands","TestFeatureMenu"]
-		list = ["Test_InsertFeature"]
-		self.appendCommandbar("TestFeature",list)
-		self.appendMenu(menu,list)
+        menu = ["Test &Commands","TestToolsMenu"]
+        list = ["Test_TestCreateMenu", "Test_TestDeleteMenu", "Test_TestWork"]
+        self.appendCommandbar("TestToolsMenu",list)
+        self.appendMenu(menu,list)
 
-		menu = ["Test &Commands","Progress bar"]
-		list = ["Std_TestProgress1", "Std_TestProgress2", "Std_TestProgress3", "Std_TestProgress4", "Std_TestProgress5"]
-		self.appendMenu(menu,list)
+        menu = ["Test &Commands","TestFeatureMenu"]
+        list = ["Test_InsertFeature"]
+        self.appendCommandbar("TestFeature",list)
+        self.appendMenu(menu,list)
 
-		menu = ["Test &Commands","Console"]
-		list = ["Std_TestConsoleOutput"]
-		self.appendMenu(menu,list)
+        menu = ["Test &Commands","Progress bar"]
+        list = ["Std_TestProgress1", "Std_TestProgress2", "Std_TestProgress3", "Std_TestProgress4", "Std_TestProgress5"]
+        self.appendMenu(menu,list)
 
-		menu = ["Test &Commands","MDI"]
-		list = ["Std_MDITest1", "Std_MDITest2", "Std_MDITest3"]
-		self.appendMenu(menu,list)
+        menu = ["Test &Commands","Console"]
+        list = ["Std_TestConsoleOutput"]
+        self.appendMenu(menu,list)
 
-		list = ["Std_ViewExample1", "Std_ViewExample2", "Std_ViewExample3"]
-		self.appendMenu("Inventor View",list)
+        menu = ["Test &Commands","MDI"]
+        list = ["Std_MDITest1", "Std_MDITest2", "Std_MDITest3"]
+        self.appendMenu(menu,list)
+
+        list = ["Std_ViewExample1", "Std_ViewExample2", "Std_ViewExample3"]
+        self.appendMenu("Inventor View",list)
 
 Gui.addWorkbench(TestWorkbench())

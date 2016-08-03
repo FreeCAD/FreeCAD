@@ -28,6 +28,7 @@
 # include <QEventLoop>
 # include <QFileDialog>
 # include <QLabel>
+# include <QTextStream>
 # include <QStatusBar>
 # include <QPointer>
 # include <QProcess>
@@ -44,6 +45,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
+#include <App/Origin.h>
 
 #include "Action.h"
 #include "Application.h"
@@ -333,10 +335,13 @@ void StdCmdMergeProjects::activated(int iMsg)
             return;
         }
 
+        doc->openTransaction("Merge project");
         Base::FileInfo fi((const char*)project.toUtf8());
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments md(doc);
         md.importObjects(str);
+        str.close();
+        doc->commitTransaction();
     }
 }
 
@@ -458,6 +463,7 @@ StdCmdSaveAs::StdCmdSaveAs()
   sPixmap       = "document-save-as";
 #endif
   sAccel        = keySequenceToAccel(QKeySequence::SaveAs);
+  eType         = 0;
 }
 
 void StdCmdSaveAs::activated(int iMsg)
@@ -531,11 +537,13 @@ StdCmdRevert::StdCmdRevert()
 
 void StdCmdRevert::activated(int iMsg)
 {
-    QMessageBox msgBox;
+    QMessageBox msgBox(Gui::getMainWindow());
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setWindowTitle(qApp->translate("Std_Revert","Revert document"));
     msgBox.setText(qApp->translate("Std_Revert","This will discard all the changes since last file save."));
-    msgBox.setInformativeText(qApp->translate("Std_Revert","Are you sure?"));
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Cancel);
+    msgBox.setInformativeText(qApp->translate("Std_Revert","Do you want to continue?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
     if (ret == QMessageBox::Yes)
         doCommand(Command::App,"App.ActiveDocument.restore()");
@@ -555,7 +563,7 @@ DEF_STD_CMD_A(StdCmdProjectInfo);
 StdCmdProjectInfo::StdCmdProjectInfo()
   :Command("Std_ProjectInfo")
 {
-  // seting the 
+  // seting the
   sGroup        = QT_TR_NOOP("File");
   sMenuText     = QT_TR_NOOP("Project i&nformation...");
   sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
@@ -586,7 +594,7 @@ DEF_STD_CMD_A(StdCmdProjectUtil);
 StdCmdProjectUtil::StdCmdProjectUtil()
   :Command("Std_ProjectUtil")
 {
-    // seting the 
+    // seting the
     sGroup        = QT_TR_NOOP("Tools");
     sWhatsThis    = "Std_ProjectUtil";
     sMenuText     = QT_TR_NOOP("Project utility...");
@@ -920,10 +928,12 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
 void StdCmdDuplicateSelection::activated(int iMsg)
 {
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
+    std::set<App::DocumentObject*> unique_objs;
     std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
     for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
         if (it->pObject && it->pObject->getDocument()) {
-            objs[it->pObject->getDocument()].push_back(it->pObject);
+            if (unique_objs.insert(it->pObject).second)
+                objs[it->pObject->getDocument()].push_back(it->pObject);
         }
     }
 
@@ -1064,15 +1074,22 @@ void StdCmdDelete::activated(int iMsg)
             }
             else {
                 // check if we can delete the object
+                std::set<QString> affectedLabels;
                 for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
                     App::DocumentObject* obj = ft->getObject();
                     std::vector<App::DocumentObject*> links = obj->getInList();
                     if (!links.empty()) {
                         // check if the referenced objects are groups or are selected too
                         for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
-                            if (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) && !rSel.isSelected(*lt)) {
+                            if (
+                                  (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) &&
+                                  (!(*lt)->getTypeId().isDerivedFrom(App::Origin::getClassTypeId())) &&
+                                  (!rSel.isSelected(*lt)) &&
+                                  (!(*lt)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::BodyBase")))
+                                ){
+                                // TODO Do something with this hack of Part::BodyBase (2015-09-09, Fat-Zer)
                                 autoDeletion = false;
-                                break;
+                                affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
                             }
                         }
 
@@ -1083,10 +1100,16 @@ void StdCmdDelete::activated(int iMsg)
                 }
 
                 if (!autoDeletion) {
+                    QString bodyMessage;
+                    QTextStream bodyMessageStream(&bodyMessage);
+                    bodyMessageStream << qApp->translate("Std_Delete",
+                                                         "The following, referencing objects might break.\n\n"
+                                                         "Are you sure you want to continue?\n\n");
+                    for (const auto &currentLabel : affectedLabels)
+                      bodyMessageStream << currentLabel << '\n';
+
                     int ret = QMessageBox::question(Gui::getMainWindow(),
-                        qApp->translate("Std_Delete", "Object dependencies"),
-                        qApp->translate("Std_Delete", "This object is referenced by other objects and thus these objects might get broken.\n"
-                                                      "Are you sure to continue?"),
+                        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
                         QMessageBox::Yes, QMessageBox::No);
                     if (ret == QMessageBox::Yes)
                         autoDeletion = true;
@@ -1109,6 +1132,7 @@ void StdCmdDelete::activated(int iMsg)
                 }
             }
         }
+        doCommand(Doc,"App.getDocument(\"%s\").recompute()", (*it)->getName());
     }
 }
 
@@ -1142,7 +1166,7 @@ void StdCmdRefresh::activated(int iMsg)
         //testing the changes of properties.
         //openCommand("Refresh active document");
         doCommand(Doc,"App.activeDocument().recompute()");
-        //commitCommand(); 
+        //commitCommand();
     }
 }
 

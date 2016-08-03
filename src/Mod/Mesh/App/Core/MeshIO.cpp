@@ -39,6 +39,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/Placement.h>
+#include <Base/Tools.h>
 #include <zipios++/gzipoutputstream.h>
 
 #include <cmath>
@@ -164,6 +165,32 @@ bool MeshInput::LoadAny(const char* FileName)
     }
 }
 
+bool  MeshInput::LoadFormat(std::istream &str, MeshIO::Format fmt)
+{
+    switch (fmt) {
+    case MeshIO::BMS:
+        _rclMesh.Read(str);
+        return true;
+    case MeshIO::APLY:
+    case MeshIO::PLY:
+        return LoadPLY(str);
+    case MeshIO::ASTL:
+        return LoadAsciiSTL(str);
+    case MeshIO::BSTL:
+        return LoadBinarySTL(str);
+    case MeshIO::OBJ:
+        return LoadOBJ(str);
+    case MeshIO::OFF:
+        return LoadOFF(str);
+    case MeshIO::IV:
+        return LoadInventor(str);
+    case MeshIO::NAS:
+        return LoadNastran(str);
+    default:
+        throw Base::FileException("Not supported file format");
+    }
+}
+
 /** Loads an STL file either in binary or ASCII format. 
  * Therefore the file header gets checked to decide if the file is binary or not.
  */
@@ -229,6 +256,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 /** Loads an OBJ file. */
 bool MeshInput::LoadOBJ (std::istream &rstrIn)
 {
+    boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
@@ -236,6 +264,12 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
+    boost::regex rx_t("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
     boost::regex rx_f3("^f\\s+([0-9]+)/?[0-9]*/?[0-9]*"
                          "\\s+([0-9]+)/?[0-9]*/?[0-9]*"
                          "\\s+([0-9]+)/?[0-9]*/?[0-9]*\\s*$");
@@ -252,7 +286,6 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     std::string line;
     float fX, fY, fZ;
     unsigned int  i1=1,i2=1,i3=1,i4=1;
-    MeshGeomFacet clFacet;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad() == true)
@@ -263,19 +296,20 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         return false;
 
     MeshIO::Binding rgb_value = MeshIO::OVERALL;
-    bool readvertices=false;
+    bool new_segment = true;
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = tolower(*it);
+        // when a group name comes don't make it lower case
+        if (!line.empty() && line[0] != 'g') {
+            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
+                *it = tolower(*it);
+        }
         if (boost::regex_match(line.c_str(), what, rx_p)) {
-            readvertices = true;
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
         }
         else if (boost::regex_match(line.c_str(), what, rx_c)) {
-            readvertices = true;
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
@@ -289,10 +323,28 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
         }
+        else if (boost::regex_match(line.c_str(), what, rx_t)) {
+            fX = (float)std::atof(what[1].first);
+            fY = (float)std::atof(what[4].first);
+            fZ = (float)std::atof(what[7].first);
+            float r = static_cast<float>(std::atof(what[10].first));
+            float g = static_cast<float>(std::atof(what[13].first));
+            float b = static_cast<float>(std::atof(what[16].first));
+            meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+
+            App::Color c(r,g,b);
+            unsigned long prop = static_cast<uint32_t>(c.getPackedValue());
+            meshPoints.back().SetProperty(prop);
+            rgb_value = MeshIO::PER_VERTEX;
+        }
+        else if (boost::regex_match(line.c_str(), what, rx_g)) {
+            new_segment = true;
+            _groupNames.push_back(Base::Tools::escapedUnicodeToUtf8(what[1].first));
+        }
         else if (boost::regex_match(line.c_str(), what, rx_f3)) {
             // starts a new segment
-            if (readvertices) {
-                readvertices = false;
+            if (new_segment) {
+                new_segment = false;
                 segment++;
             }
 
@@ -306,8 +358,8 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         }
         else if (boost::regex_match(line.c_str(), what, rx_f4)) {
             // starts a new segment
-            if (readvertices) {
-                readvertices = false;
+            if (new_segment) {
+                new_segment = false;
                 segment++;
             }
 
@@ -344,9 +396,13 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 
     this->_rclMesh.Clear(); // remove all data before
 
-    MeshKernel tmp;
-    tmp.Adopt(meshPoints,meshFacets);
-    this->_rclMesh.Merge(tmp);
+    MeshCleanup meshCleanup(meshPoints,meshFacets);
+    if (_material)
+        meshCleanup.SetMaterial(_material);
+    meshCleanup.RemoveInvalids();
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(),meshFacets);
+    meshAdj.SetFacetNeighbourhood();
+    this->_rclMesh.Adopt(meshPoints,meshFacets);
 
     return true;
 }
@@ -486,29 +542,14 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     }
 
     this->_rclMesh.Clear(); // remove all data before
-    // Don't use Assign() because Merge() checks which points are really needed.
-    // This method sets already the correct neighbourhood
-    unsigned long ct = meshPoints.size();
-    std::list<unsigned long> removeFaces;
-    for (MeshFacetArray::_TConstIterator it = meshFacets.begin(); it != meshFacets.end(); ++it) {
-        bool ok = true;
-        for (int i=0;i<3;i++) {
-            if (it->_aulPoints[i] >= ct) {
-                Base::Console().Warning("Face index %lu out of range\n", it->_aulPoints[i]);
-                ok = false;
-            }
-        }
 
-        if (!ok)
-            removeFaces.push_front(it-meshFacets.begin());
-    }
-
-    for (std::list<unsigned long>::iterator it = removeFaces.begin(); it != removeFaces.end(); ++it)
-        meshFacets.erase(meshFacets.begin() + *it);
-
-    MeshKernel tmp;
-    tmp.Adopt(meshPoints,meshFacets);
-    this->_rclMesh.Merge(tmp);
+    MeshCleanup meshCleanup(meshPoints,meshFacets);
+    if (_material)
+        meshCleanup.SetMaterial(_material);
+    meshCleanup.RemoveInvalids();
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(),meshFacets);
+    meshAdj.SetFacetNeighbourhood();
+    this->_rclMesh.Adopt(meshPoints,meshFacets);
 
     return true;
 }
@@ -978,16 +1019,15 @@ bool MeshInput::LoadPLY (std::istream &inp)
     }
 
     this->_rclMesh.Clear(); // remove all data before
-#if 1
-    MeshCleanup(meshPoints,meshFacets).RemoveInvalids();
+
+    MeshCleanup meshCleanup(meshPoints,meshFacets);
+    if (_material)
+        meshCleanup.SetMaterial(_material);
+    meshCleanup.RemoveInvalids();
     MeshPointFacetAdjacency meshAdj(meshPoints.size(),meshFacets);
     meshAdj.SetFacetNeighbourhood();
     this->_rclMesh.Adopt(meshPoints,meshFacets);
-#else
-    MeshKernel tmp;
-    tmp.Adopt(meshPoints,meshFacets);
-    this->_rclMesh.Merge(tmp);
-#endif
+
     return true;
 }
 
@@ -1036,11 +1076,12 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
     }
 
     this->_rclMesh.Clear(); // remove all data before
-    // Don't use Assign() because Merge() checks which points are really needed.
-    // This method sets already the correct neighbourhood
-    MeshKernel tmp;
-    tmp.Adopt(meshPoints,meshFacets);
-    this->_rclMesh.Merge(tmp);
+
+    MeshCleanup meshCleanup(meshPoints,meshFacets);
+    meshCleanup.RemoveInvalids();
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(),meshFacets);
+    meshAdj.SetFacetNeighbourhood();
+    this->_rclMesh.Adopt(meshPoints,meshFacets);
 
     return true;
 }
@@ -1121,8 +1162,8 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
 {
     char szInfo[80];
     Base::Vector3f clVects[4];
-    uint16_t usAtt; 
-    uint32_t ulCt;
+    uint16_t usAtt = 0;
+    uint32_t ulCt = 0;
 
     if (!rstrIn || rstrIn.bad() == true)
         return false;
@@ -1515,52 +1556,52 @@ void MeshOutput::Transform(const Base::Matrix4D& mat)
 bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
 {
     // ask for write permission
-    Base::FileInfo fi(FileName);
-    Base::FileInfo di(fi.dirPath().c_str());
-    if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable())
+    Base::FileInfo file(FileName);
+    Base::FileInfo directory(file.dirPath());
+    if ((file.exists() && !file.isWritable()) || !directory.exists() || !directory.isWritable())
         throw Base::FileException("No write permission for file",FileName);
 
     MeshIO::Format fileformat = format;
     if (fileformat == MeshIO::Undefined) {
-        if (fi.hasExtension("bms")) {
+        if (file.hasExtension("bms")) {
             fileformat = MeshIO::BMS;
         }
-        else if (fi.hasExtension("stl")) {
+        else if (file.hasExtension("stl")) {
             fileformat = MeshIO::BSTL;
         }
-        else if (fi.hasExtension("ast")) {
+        else if (file.hasExtension("ast")) {
             fileformat = MeshIO::ASTL;
         }
-        else if (fi.hasExtension("obj")) {
+        else if (file.hasExtension("obj")) {
             fileformat = MeshIO::OBJ;
         }
-        else if (fi.hasExtension("off")) {
+        else if (file.hasExtension("off")) {
             fileformat = MeshIO::OFF;
         }
-        else if (fi.hasExtension("ply")) {
+        else if (file.hasExtension("ply")) {
             fileformat = MeshIO::PLY;
         }
-        else if (fi.hasExtension("iv")) {
+        else if (file.hasExtension("iv")) {
             fileformat = MeshIO::IV;
         }
-        else if (fi.hasExtension("x3d")) {
+        else if (file.hasExtension("x3d")) {
             fileformat = MeshIO::X3D;
         }
-        else if (fi.hasExtension("py")) {
+        else if (file.hasExtension("py")) {
             fileformat = MeshIO::PY;
         }
-        else if (fi.hasExtension("wrl") || fi.hasExtension("vrml")) {
+        else if (file.hasExtension("wrl") || file.hasExtension("vrml")) {
             fileformat = MeshIO::VRML;
         }
-        else if (fi.hasExtension("wrz")) {
+        else if (file.hasExtension("wrz")) {
             fileformat = MeshIO::WRZ;
         }
-        else if (fi.hasExtension("nas") || fi.hasExtension("bdf")) {
+        else if (file.hasExtension("nas") || file.hasExtension("bdf")) {
             fileformat = MeshIO::NAS;
         }
     }
 
-    Base::ofstream str(fi, std::ios::out | std::ios::binary);
+    Base::ofstream str(file, std::ios::out | std::ios::binary);
 
     if (fileformat == MeshIO::BMS) {
         _rclMesh.Write(str);
@@ -1650,6 +1691,42 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     }
 
     return true;
+}
+
+bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
+{
+    switch (fmt) {
+    case MeshIO::BMS:
+        _rclMesh.Write(str);
+        return true;
+    case MeshIO::ASTL:
+        return SaveAsciiSTL(str);
+    case MeshIO::BSTL:
+        return SaveBinarySTL(str);
+    case MeshIO::OBJ:
+        return SaveOBJ(str);
+    case MeshIO::OFF:
+        return SaveOFF(str);
+    case MeshIO::IV:
+        return SaveInventor(str);
+    case MeshIO::X3D:
+        return SaveX3D(str);
+    case MeshIO::VRML:
+        return SaveVRML(str);
+    case MeshIO::WRZ:
+        // it's up to the client to create the needed stream
+        return SaveVRML(str);
+    case MeshIO::NAS:
+        return SaveNastran(str);
+    case MeshIO::PLY:
+        return SaveBinaryPLY(str);
+    case MeshIO::APLY:
+        return SaveAsciiPLY(str);
+    case MeshIO::PY:
+        return SavePython(str);
+    default:
+        throw Base::FileException("Not supported file format");
+    }
 }
 
 /** Saves the mesh object into an ASCII file. */
@@ -1821,12 +1898,26 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
         seq.next(true); // allow to cancel
     }
 
-    // facet indices (no texture and normal indices)
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        out << "f " << it->_aulPoints[0]+1 << " "
-                    << it->_aulPoints[1]+1 << " "
-                    << it->_aulPoints[2]+1 << std::endl;
-        seq.next(true); // allow to cancel
+    if (_groups.empty()) {
+        // facet indices (no texture and normal indices)
+        for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
+            out << "f " << it->_aulPoints[0]+1 << " "
+                        << it->_aulPoints[1]+1 << " "
+                        << it->_aulPoints[2]+1 << std::endl;
+            seq.next(true); // allow to cancel
+        }
+    }
+    else {
+        for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
+            out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << std::endl;
+            for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
+                const MeshFacet& f = rFacets[*it];
+                out << "f " << f._aulPoints[0]+1 << " "
+                            << f._aulPoints[1]+1 << " "
+                            << f._aulPoints[2]+1 << std::endl;
+                seq.next(true); // allow to cancel
+            }
+        }
     }
 
     return true;
@@ -2519,11 +2610,17 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 MeshCleanup::MeshCleanup(MeshPointArray& p, MeshFacetArray& f)
   : pointArray(p)
   , facetArray(f)
+  , materialArray(0)
 {
 }
 
 MeshCleanup::~MeshCleanup()
 {
+}
+
+void MeshCleanup::SetMaterial(Material* mat)
+{
+    materialArray = mat;
 }
 
 void MeshCleanup::RemoveInvalids()
@@ -2562,6 +2659,21 @@ void MeshCleanup::RemoveInvalidFacets()
     std::size_t countInvalidFacets = std::count_if(facetArray.begin(), facetArray.end(),
                     std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
     if (countInvalidFacets > 0) {
+
+        // adjust the material array if needed
+        if (materialArray && materialArray->binding == MeshIO::PER_FACE &&
+            materialArray->diffuseColor.size() == facetArray.size()) {
+            std::vector<App::Color> colors;
+            colors.reserve(facetArray.size() - countInvalidFacets);
+            for (std::size_t index = 0; index < facetArray.size(); index++) {
+                if (facetArray[index].IsValid()) {
+                    colors.push_back(materialArray->diffuseColor[index]);
+                }
+            }
+
+            materialArray->diffuseColor.swap(colors);
+        }
+
         MeshFacetArray copy_facets(facetArray.size() - countInvalidFacets);
         // copy all valid facets to the new array
         std::remove_copy_if(facetArray.begin(), facetArray.end(), copy_facets.begin(),
@@ -2598,6 +2710,21 @@ void MeshCleanup::RemoveInvalidPoints()
 
         // delete point, number of valid points
         std::size_t validPoints = pointArray.size() - countInvalidPoints;
+
+        // adjust the material array if needed
+        if (materialArray && materialArray->binding == MeshIO::PER_VERTEX &&
+            materialArray->diffuseColor.size() == pointArray.size()) {
+            std::vector<App::Color> colors;
+            colors.reserve(validPoints);
+            for (std::size_t index = 0; index < pointArray.size(); index++) {
+                if (pointArray[index].IsValid()) {
+                    colors.push_back(materialArray->diffuseColor[index]);
+                }
+            }
+
+            materialArray->diffuseColor.swap(colors);
+        }
+
         MeshPointArray copy_points(validPoints);
         // copy all valid facets to the new array
         std::remove_copy_if(pointArray.begin(), pointArray.end(), copy_points.begin(),

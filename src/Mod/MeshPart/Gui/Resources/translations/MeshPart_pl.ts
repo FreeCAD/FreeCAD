@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>Create mesh from shape...</source>
-        <translation>Utwórz siatkę z obwiedni...</translation>
+        <translation>Utwórz siatkę z kształtu...</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -159,11 +159,11 @@
     </message>
     <message>
         <source>Set alias</source>
-        <translation type="unfinished">Set alias</translation>
+        <translation>Nastavit alias</translation>
     </message>
     <message>
         <source>Set alias for selected cell</source>
-        <translation type="unfinished">Set alias for selected cell</translation>
+        <translation>Nastavit alias vybrané buňky</translation>
     </message>
 </context>
 <context>
@@ -313,7 +313,7 @@
     </message>
     <message>
         <source>Alias for this cell</source>
-        <translation>Zástupce pro tuto buňku</translation>
+        <translation>Alias pro tuto buňku</translation>
     </message>
 </context>
 <context>
@@ -429,7 +429,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepojmenovaný</translation>
     </message>
 </context>
 <context>

@@ -1,30 +1,30 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_LocalLength.cxx
 //           Moved here from SMESH_LocalLength.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_LocalLength.cxx,v 1.8.2.1 2008/11/27 13:03:50 abd Exp $
 //
 #include "StdMeshers_LocalLength.hxx"
 
@@ -77,11 +77,11 @@ StdMeshers_LocalLength::~StdMeshers_LocalLength()
  */
 //=============================================================================
 
-void StdMeshers_LocalLength::SetLength(double length) throw(SMESH_Exception)
+void StdMeshers_LocalLength::SetLength(double length) throw(SALOME_Exception)
 {
   double oldLength = _length;
   if (length <= 0)
-    throw SMESH_Exception(LOCALIZED("length must be positive"));
+    throw SALOME_Exception(LOCALIZED("length must be positive"));
   _length = length;
   const double precision = 1e-7;
   if (fabs(oldLength - _length) > precision)
@@ -104,11 +104,11 @@ double StdMeshers_LocalLength::GetLength() const
  *  
  */
 //=============================================================================
-void StdMeshers_LocalLength::SetPrecision (double thePrecision) throw(SMESH_Exception)
+void StdMeshers_LocalLength::SetPrecision (double thePrecision) throw(SALOME_Exception)
 {
   double oldPrecision = _precision;
   if (_precision < 0)
-    throw SMESH_Exception(LOCALIZED("precision cannot be negative"));
+    throw SALOME_Exception(LOCALIZED("precision cannot be negative"));
   _precision = thePrecision;
   const double precision = 1e-8;
   if (fabs(oldPrecision - _precision) > precision)
@@ -148,13 +148,13 @@ istream & StdMeshers_LocalLength::LoadFrom(istream & load)
   bool isOK = true;
   double a;
 
-  isOK = !(load >> a).bad();
+  isOK = (bool)(load >> a);
   if (isOK)
     this->_length = a;
   else
     load.clear(ios::badbit | load.rdstate());
 
-  isOK = !(load >> a).bad();
+  isOK = (bool)(load >> a);
   if (isOK)
     this->_precision = a;
   else
@@ -216,7 +216,9 @@ bool StdMeshers_LocalLength::SetParametersByMesh(const SMESH_Mesh*   theMesh,
   {
     const TopoDS_Edge& edge = TopoDS::Edge( edgeMap( iE ));
     Handle(Geom_Curve) C = BRep_Tool::Curve( edge, L, UMin, UMax );
-    GeomAdaptor_Curve AdaptCurve(C);
+    if ( C.IsNull() )
+      continue;
+    GeomAdaptor_Curve AdaptCurve(C, UMin, UMax);
 
     vector< double > params;
     SMESHDS_Mesh* aMeshDS = const_cast< SMESH_Mesh* >( theMesh )->GetMeshDS();
@@ -234,7 +236,6 @@ bool StdMeshers_LocalLength::SetParametersByMesh(const SMESH_Mesh*   theMesh,
 
   return nbEdges;
 }
-
 //================================================================================
 /*!
  * \brief Initialize my parameter values by default parameters.
@@ -247,3 +248,4 @@ bool StdMeshers_LocalLength::SetParametersByDefaults(const TDefaults&  dflts,
 {
   return ( _length = dflts._elemLength );
 }
+

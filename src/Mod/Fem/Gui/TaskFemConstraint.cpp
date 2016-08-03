@@ -116,7 +116,7 @@ const std::string TaskFemConstraint::getReferences(const std::vector<std::string
 }
 
 const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculated scale for constraint display
-{   
+{
     std::string result;
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
     result = boost::lexical_cast<std::string>(pcConstraint->Scale.getValue());
@@ -181,6 +181,11 @@ const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, con
 
 //==== calls from the TaskView ===============================================================
 
+void TaskDlgFemConstraint::open()
+{
+    ConstraintView->setVisible(true);
+    Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+}
 
 bool TaskDlgFemConstraint::accept()
 {

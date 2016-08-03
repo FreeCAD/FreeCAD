@@ -138,6 +138,7 @@ public:
     { return Base::Vector3d(); }
     /** Get points from object with given accuracy */
     virtual void getPoints(std::vector<Base::Vector3d> &Points,
+        std::vector<Base::Vector3d> &Normals,
         float Accuracy, uint16_t flags=0) const {}
     /** Get lines from object with given accuracy */
     virtual void getLines(std::vector<Base::Vector3d> &Points,std::vector<Line> &lines,

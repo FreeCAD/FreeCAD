@@ -18,6 +18,7 @@ SET(PathScripts_SRCS
     PathScripts/PostUtils.py
     PathScripts/example_pre.py
     PathScripts/opensbp_pre.py
+    PathScripts/opensbp_post.py
     PathScripts/example_post.py
     PathScripts/linuxcnc_post.py
     PathScripts/centroid_post.py
@@ -29,6 +30,7 @@ SET(PathScripts_SRCS
     PathScripts/PathPocket.py
     PathScripts/PathDrilling.py
     PathScripts/PathDressup.py
+    PathScripts/DragknifeDressup.py
     PathScripts/PathHop.py
     PathScripts/PathUtils.py
     PathScripts/PathSelection.py
@@ -48,7 +50,7 @@ SET(PathScripts_SRCS
     PathScripts/PathFromShape.py
     PathScripts/DlgSettingsPath.ui
     PathScripts/PathKurveUtils.py
-    PathScripts/PathKurve.py
+    PathScripts/PathAreaUtils.py
     PathScripts/slic3r_pre.py
     PathScripts/PathFaceProfile.py
     PathScripts/PathFacePocket.py
@@ -56,17 +58,43 @@ SET(PathScripts_SRCS
     PathScripts/PathCustom.py
     PathScripts/PathInspect.py
     PathScripts/PathSimpleCopy.py
+    PathScripts/PathEngrave.py
+    PathScripts/PathSurface.py
+    PathScripts/PathRemote.py
+    PathScripts/PathSanity.py
+
+)
+
+SET(PathScripts_NC_SRCS
+    PathScripts/nc/nc.py
+    PathScripts/nc/iso.py
+    PathScripts/nc/__init__.py
+    PathScripts/nc/format.py
+    PathScripts/nc/iso_codes.py
+)
+
+SET(all_files
+    ${PathScripts_SRCS}
+    ${PathScripts_NC_SRCS}
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
-    SOURCES ${PathScripts_SRCS}
+    SOURCES ${all_files}
 )
 
-fc_copy_sources(PathScripts "${CMAKE_BINARY_DIR}/Mod/Path" ${PathScripts_SRCS})
+fc_copy_sources(PathScripts "${CMAKE_BINARY_DIR}/Mod/Path" ${all_files})
 
 INSTALL(
     FILES
         ${PathScripts_SRCS}
     DESTINATION
         Mod/Path/PathScripts
-       )
+)
+
+INSTALL(
+    FILES
+        ${PathScripts_NC_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/nc
+)
+

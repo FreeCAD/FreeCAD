@@ -54,12 +54,14 @@ def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
     type (Wall, Structure, Window, WindowGlass)'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    transparency = 0.0
     if objectType == "Wall":
         c = p.GetUnsigned("WallColor",4294967295)
     elif objectType == "Structure":
         c = p.GetUnsigned("StructureColor",2847259391)
     elif objectType == "WindowGlass":
         c = p.GetUnsigned("WindowGlassColor",1772731135)
+        transparency = p.GetInt("WindowTransparency",85)/100.0
     elif objectType == "Rebar":
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
@@ -69,7 +71,7 @@ def getDefaultColor(objectType):
     r = float((c>>24)&0xFF)/255.0
     g = float((c>>16)&0xFF)/255.0
     b = float((c>>8)&0xFF)/255.0
-    result = (r,g,b,1.0)
+    result = (r,g,b,transparency)
     return result
 
 def addComponents(objectsList,host):
@@ -364,7 +366,7 @@ def getCutVolume(cutplane,shapes):
     u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
-        FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
+        #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
         return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
@@ -730,6 +732,9 @@ def survey(callback=False):
                     for o in newsels:
                         if o.Object.isDerivedFrom("Part::Feature"):
                             n = o.Object.Label
+                            showUnit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True)
+                            t = ""
+                            u = FreeCAD.Units.Quantity()
                             if not o.HasSubObjects:
                                 # entire object
                                 anno = FreeCAD.ActiveDocument.addObject("App::AnnotationLabel","surveyLabel")
@@ -738,27 +743,29 @@ def survey(callback=False):
                                 else:
                                     anno.BasePosition = o.Object.Shape.BoundBox.Center
                                 FreeCAD.SurveyObserver.labels.append(anno.Name)
-                                t = ""
                                 if o.Object.Shape.Solids:
-                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
-                                    t = t.getUserPreferred()[0]
+                                    u = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
+                                    t = u.getUserPreferred()[0]
                                     t = t.encode("utf8").replace("^3","³")
                                     anno.LabelText = "v " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + t.decode("utf8") + "\n")
                                 elif o.Object.Shape.Faces:
-                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
-                                    t = t.getUserPreferred()[0]
+                                    u = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
+                                    t = u.getUserPreferred()[0]
                                     t = t.encode("utf8").replace("^2","²")
                                     anno.LabelText = "a " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + t.decode("utf8") + "\n")
                                 else:
-                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
-                                    t = t.getUserPreferred()[0]
+                                    u = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
+                                    t = u.getUserPreferred()[0]
                                     t = t.encode("utf8")
                                     anno.LabelText = "l " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t.decode("utf8") + "\n")
                                 if FreeCAD.GuiUp and t:
-                                    QtGui.qApp.clipboard().setText(t)
+                                    if showUnit:
+                                        QtGui.qApp.clipboard().setText(t)
+                                    else:
+                                        QtGui.qApp.clipboard().setText(str(u.Value))
                             else:
                                 # single element(s)
                                 for el in o.SubElementNames:
@@ -772,27 +779,29 @@ def survey(callback=False):
                                         else:
                                             anno.BasePosition = e.BoundBox.Center
                                     FreeCAD.SurveyObserver.labels.append(anno.Name)
-                                    t = ""
                                     if "Face" in el:
-                                        t = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
-                                        t = t.getUserPreferred()[0]
+                                        u = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
+                                        t = u.getUserPreferred()[0]
                                         t = t.encode("utf8").replace("^2","²")
                                         anno.LabelText = "a " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t.decode("utf8")  + "\n")
                                     elif "Edge" in el:
-                                        t = FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
-                                        t = t.getUserPreferred()[0]
+                                        u= FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
+                                        t = u.getUserPreferred()[0]
                                         t = t.encode("utf8")
                                         anno.LabelText = "l " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t.decode("utf8") + "\n")
                                     elif "Vertex" in el:
-                                        t = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
-                                        t = t.getUserPreferred()[0]
+                                        u = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
+                                        t = u.getUserPreferred()[0]
                                         t = t.encode("utf8")
                                         anno.LabelText = "z " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t.decode("utf8") + "\n")
                                     if FreeCAD.GuiUp and t:
-                                        QtGui.qApp.clipboard().setText(t)
+                                        if showUnit:
+                                            QtGui.qApp.clipboard().setText(t)
+                                        else:
+                                            QtGui.qApp.clipboard().setText(str(u.Value))
 
                     FreeCAD.SurveyObserver.selection.extend(newsels)
 
@@ -885,13 +894,12 @@ def rebuildArchShape(objects=None):
                                                 solid = Part.Solid(solid)
                                             #print "rebuilt solid: isValid is ",solid.isValid()
                                             if solid.isValid():
-                                                print "Success"
                                                 obj.Base.Shape = solid
                                                 success = True
                     except:
                         pass
         if not success:
-            print "Failed"
+            print "Failed to rebuild a valid solid for object ",obj.Name
     FreeCAD.ActiveDocument.recompute()
 
 
@@ -928,6 +936,16 @@ def getExtrusionData(shape):
         if ok:
             return [faces[p[0]][0],faces[p[1]][0].CenterOfMass.sub(faces[p[0]][0].CenterOfMass)]
     return None
+
+def printMessage( message ):
+    FreeCAD.Console.PrintMessage( message )
+    if FreeCAD.GuiUp :
+        reply = QtGui.QMessageBox.information( None , "" , message.decode('utf8') )
+
+def printWarning( message ):
+    FreeCAD.Console.PrintMessage( message )
+    if FreeCAD.GuiUp :
+        reply = QtGui.QMessageBox.warning( None , "" , message.decode('utf8') )
 
 
 # command definitions ###############################################
@@ -1208,7 +1226,13 @@ class _CommandComponent:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
-def makeIfcSpreadsheet(obj=None):
+def makeIfcSpreadsheet(archobj=None):
+    ifc_container = None
+    for obj in FreeCAD.ActiveDocument.Objects :
+        if obj.Name == "IfcPropertiesContainer" :
+            ifc_container = obj
+    if not ifc_container :
+        ifc_container = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup','IfcPropertiesContainer')
     import Spreadsheet
     ifc_spreadsheet = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet','IfcProperties')
     ifc_spreadsheet.set('A1', translate("Arch","Category"))
@@ -1216,14 +1240,15 @@ def makeIfcSpreadsheet(obj=None):
     ifc_spreadsheet.set('C1', translate("Arch","Type"))
     ifc_spreadsheet.set('D1', translate("Arch","Value"))
     ifc_spreadsheet.set('E1', translate("Arch","Unit"))
-    if obj :
-        if hasattr(obj,"IfcProperties"):
-            obj.IfcProperties = ifc_spreadsheet
+    ifc_container.addObject(ifc_spreadsheet)
+    if archobj :
+        if hasattr(obj,"IfcProperties") :
+            archobj.IfcProperties = ifc_spreadsheet
             return ifc_spreadsheet
         else :
-            FreeCAD.Console.PrintWarning(translate("Arch", "The object have not IfcProperties attribute. Cancel spreadsheet creation for object : ") + obj.Label)
+            FreeCAD.Console.PrintWarning(translate("Arch", "The object have not IfcProperties attribute. Cancel spreadsheet creation for object : ") + archobj.Label)
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
-    else:
+    else :
         return ifc_spreadsheet
 
 class _CommandIfcSpreadsheet:

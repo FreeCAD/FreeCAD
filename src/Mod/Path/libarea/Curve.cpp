@@ -1,30 +1,6 @@
 // Curve.cpp
-
-/*==============================
-Copyright (c) 2011-2015 Dan Heeks
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
+// Copyright 2011, Dan Heeks
+// This program is released under the BSD license. See the file COPYING for details.
 
 #include "Curve.h"
 #include "Circle.h"
@@ -86,10 +62,10 @@ bool CCurve::CheckForArc(const CVertex& prev_vt, std::list<const CVertex*>& migh
 	if(might_be_an_arc.size() < 2)return false;
 
 	// find middle point
-	int num = static_cast<int>(might_be_an_arc.size());
-	int i = 0;
+	std::size_t num = might_be_an_arc.size();
+	std::size_t i = 0;
 	const CVertex* mid_vt = NULL;
-	int mid_i = (num-1)/2;
+	std::size_t mid_i = (num-1)/2;
 	for(std::list<const CVertex*>::iterator It = might_be_an_arc.begin(); It != might_be_an_arc.end(); It++, i++)
 	{
 		if(i == mid_i)
@@ -217,7 +193,13 @@ void CCurve::FitArcs()
 	{
 		CVertex& vt = *It;
 		if(vt.m_type || i == 0)
+		{
+			if (i != 0)
+			{
+				AddArcOrLines(false, new_vertices, might_be_an_arc, arc, arc_found, arc_added);
+			}
 			new_vertices.push_back(vt);
+		}
 		else
 		{
 			might_be_an_arc.push_back(&vt);
@@ -720,13 +702,6 @@ static geoff_geometry::Span MakeSpan(const Span& span)
 	return geoff_geometry::Span(span.m_v.m_type, geoff_geometry::Point(span.m_p.x, span.m_p.y), geoff_geometry::Point(span.m_v.m_p.x, span.m_v.m_p.y), geoff_geometry::Point(span.m_v.m_c.x, span.m_v.m_c.y));
 }
 
-#if 0
-static Span MakeCSpan(const geoff_geometry::Span &sp)
-{
-	return Span(Point(sp.p0.x, sp.p0.y), CVertex(sp.dir, Point(sp.p1.x, sp.p1.y), Point(sp.pc.x, sp.pc.y)));
-}
-#endif
-
 bool CCurve::Offset(double leftwards_value)
 {
 	// use the kurve code donated by Geoff Hawkesford, to offset the curve as an open curve
@@ -913,6 +888,7 @@ double CCurve::PointToPerim(const Point& p)const
 {
 	double best_dist = 0.0;
 	double perim_at_best_dist = 0.0;
+	//Point best_point = Point(0, 0);
 	bool best_dist_found = false;
 
 	double perim = 0.0;

@@ -25,12 +25,12 @@
 #define PARTDESIGN_Hole_H
 
 #include <App/PropertyUnits.h>
-#include "FeatureSubtractive.h"
+#include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Hole : public Subtractive
+class PartDesignExport Hole : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Hole);
 

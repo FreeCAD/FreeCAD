@@ -244,7 +244,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     ADD_PROPERTY(LineColor,(0,0,0));
 
     // Create the selection node
-    pcHighlight = createFromSettings();
+    pcHighlight = Gui::ViewProviderBuilder::createSelection();
     pcHighlight->ref();
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
@@ -323,40 +323,6 @@ ViewProviderMesh::~ViewProviderMesh()
     pShapeHints->unref();
     pcMatBinding->unref();
     pLineColor->unref();
-}
-
-Gui::SoFCSelection* ViewProviderMesh::createFromSettings() const
-{
-    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
-
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    bool enablePre = hGrp->GetBool("EnablePreselection", true);
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    if (!enablePre) {
-        sel->highlightMode = Gui::SoFCSelection::OFF;
-    }
-    else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = sel->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        sel->colorHighlight.setValue(highlightColor);
-    }
-    if (!enableSel || !Selectable.getValue()) {
-        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    }
-    else {
-        // Do the same with the selection color
-        SbColor selectionColor = sel->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        sel->colorSelection.setValue(selectionColor);
-    }
-
-    return sel;
 }
 
 void ViewProviderMesh::onChanged(const App::Property* prop)
@@ -474,7 +440,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
     // faces+wires
-    Gui::SoFCSelection* selGroup = createFromSettings();
+    Gui::SoFCSelection* selGroup = Gui::ViewProviderBuilder::createSelection();
     selGroup->objectName = getObject()->getNameInDocument();
     selGroup->documentName = getObject()->getDocument()->getName();
     selGroup->subElementName = "Main";
@@ -1616,6 +1582,32 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
+void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
+{
+    App::Color c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
+    SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+    for (std::size_t index = 0; index < facetTransparency.size(); ++index)
+        cols[index].setValue(c.r, c.g, c.b);
+    pcShapeMaterial->diffuseColor.finishEditing();
+
+    pcShapeMaterial->transparency.setNum(facetTransparency.size());
+    float* tran = pcShapeMaterial->transparency.startEditing();
+    for (std::size_t index = 0; index < facetTransparency.size(); ++index)
+        tran[index] = facetTransparency[index];
+
+    pcShapeMaterial->transparency.finishEditing();
+    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+}
+
+void ViewProviderMesh::resetFacetTransparency()
+{
+    pcMatBinding->value = SoMaterialBinding::OVERALL;
+    App::Color c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    pcShapeMaterial->transparency.setValue(0);
+}
+
 void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
 {
     // Get the attached mesh property
@@ -1697,6 +1689,13 @@ void ViewProviderMesh::deselectFacet(unsigned long facet)
     }
 }
 
+bool ViewProviderMesh::isFacetSelected(unsigned long facet)
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
+    return faces[facet].IsFlag(MeshCore::MeshFacet::SELECTED);
+}
+
 void ViewProviderMesh::selectComponent(unsigned long uFacet)
 {
     std::vector<unsigned long> selection;
@@ -1764,6 +1763,24 @@ void ViewProviderMesh::removeSelection(const std::vector<unsigned long>& indices
         highlightSelection();
     else
         unhighlightSelection();
+}
+
+void ViewProviderMesh::invertSelection()
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
+    unsigned long num_notsel = std::count_if(faces.begin(), faces.end(),
+        std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
+        MeshCore::MeshFacet::SELECTED));
+    std::vector<unsigned long> notselect;
+    notselect.reserve(num_notsel);
+    MeshCore::MeshFacetArray::_TConstIterator beg = faces.begin();
+    MeshCore::MeshFacetArray::_TConstIterator end = faces.end();
+    for (MeshCore::MeshFacetArray::_TConstIterator jt = beg; jt != end; ++jt) {
+        if (!jt->IsFlag(MeshCore::MeshFacet::SELECTED))
+            notselect.push_back(jt-beg);
+    }
+    setSelection(notselect);
 }
 
 void ViewProviderMesh::clearSelection()

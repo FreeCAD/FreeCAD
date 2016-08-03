@@ -71,11 +71,10 @@ recompute path. Also enables more complicated dependencies beyond trees.
 
 
 #include "Document.h"
-#include "DocumentPy.h"
 #include "Application.h"
 #include "DocumentObject.h"
-#include "PropertyLinks.h"
 #include "MergeDocuments.h"
+#include <App/DocumentPy.h>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -110,7 +109,7 @@ using namespace zipios;
 
 #if FC_DEBUG
 #  define FC_LOGFEATUREUPDATE
-#endif 
+#endif
 
 // typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
 typedef boost::adjacency_list <
@@ -136,12 +135,10 @@ struct DocumentP
     std::map<std::string,DocumentObject*> objectMap;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
-    Transaction *activeTransaction;
     int iTransactionMode;
-    int iTransactionCount;
-    std::map<int,Transaction*> mTransactions;
     std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
+    bool undoing; ///< document in the middle of undo or redo
     bool closable;
     bool keepTrailingDigits;
     int iUndoMode;
@@ -153,10 +150,9 @@ struct DocumentP
     DocumentP() {
         activeObject = 0;
         activeUndoTransaction = 0;
-        activeTransaction = 0;
         iTransactionMode = 0;
-        iTransactionCount = 0;
         rollback = false;
+        undoing = false;
         closable = true;
         keepTrailingDigits = true;
         iUndoMode = 0;
@@ -573,9 +569,10 @@ bool Document::undo(void)
         // redo
         d->activeUndoTransaction = new Transaction();
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
-
+        d->undoing = true;
         // applying the undo
         mUndoTransactions.back()->apply(*this,false);
+        d->undoing = false;
 
         // save the redo
         mRedoTransactions.push_back(d->activeUndoTransaction);
@@ -604,7 +601,9 @@ bool Document::redo(void)
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
+        d->undoing = true;
         mRedoTransactions.back()->apply(*this,true);
+        d->undoing = false;
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
 
@@ -821,7 +820,7 @@ void Document::onChanged(const Property* prop)
     }
 }
 
-void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property *What)
+void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Property *What)
 {
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
@@ -829,66 +828,13 @@ void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property 
 
 void Document::onChangedProperty(const DocumentObject *Who, const Property *What)
 {
-    if (d->activeTransaction && !d->rollback)
-        d->activeTransaction->addObjectChange(Who,What);
     signalChangedObject(*Who, *What);
 }
 
 void Document::setTransactionMode(int iMode)
 {
-    /*  if(_iTransactionMode == 0 && iMode == 1)
-        beginTransaction();
-
-      if(activTransaction && iMode == 0)
-        endTransaction();
-      */
     d->iTransactionMode = iMode;
 }
-
-#if 0
-/// starts a new transaction
-int  Document::beginTransaction(void)
-{
-    if (activTransaction)
-        endTransaction();
-
-    iTransactionCount++;
-
-    activTransaction = new Transaction(iTransactionCount);
-    d->mTransactions[iTransactionCount] = activTransaction;
-
-    return iTransactionCount;
-}
-
-/// revert all changes to the document since beginTransaction()
-void Document::rollbackTransaction(void)
-{
-    // ToDo
-    assert(0);
-    endTransaction();
-}
-
-/// ends the open Transaction
-int  Document::endTransaction(void)
-{
-    activTransaction = 0;
-    return iTransactionCount;
-}
-
-/// returns the named Transaction
-const Transaction *Document::getTransaction(int pos) const
-{
-    if (pos == -1)
-        return activTransaction;
-    else {
-        std::map<int,Transaction*>::const_iterator Pos(d->mTransactions.find(pos));
-        if (Pos != d->mTransactions.end())
-            return Pos->second;
-        else
-            return 0;
-    }
-}
-#endif
 
 //--------------------------------------------------------------------------
 // constructor
@@ -926,6 +872,10 @@ Document::Document(void)
     Base::Uuid id;
     ADD_PROPERTY_TYPE(Id,(""),0,Prop_None,"ID of the document");
     ADD_PROPERTY_TYPE(Uid,(id),0,Prop_ReadOnly,"UUID of the document");
+
+    // license stuff
+    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
     // license stuff
     int licenseId = App::GetApplication().GetParameterGroupByPath
@@ -983,6 +933,10 @@ Document::Document(void)
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
         "Transient directory, where the files live while the document is open");
+    ADD_PROPERTY_TYPE(Tip,(0),0,PropertyType(Prop_Transient),
+        "Link of the tip object of the document");
+    ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
+        "Link of the tip object of the document");
     Uid.touch();
 }
 
@@ -1103,7 +1057,7 @@ void Document::Restore(Base::XMLReader &reader)
             string name = reader.getAttribute("name");
 
             try {
-                addObject(type.c_str(),name.c_str());
+                addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             }
             catch ( Base::Exception& ) {
                 Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -1130,6 +1084,10 @@ void Document::Restore(Base::XMLReader &reader)
     else if ( scheme >= 3 ) {
         // read the feature types
         readObjects(reader);
+
+		// tip object handling. First the whole document has to be read, then we
+		// can restore the Tip link out of the TipName Property:
+		Tip.setValue(getObject(TipName.getValue()));
     }
 
     reader.readEndElement("Document");
@@ -1215,7 +1173,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(),name.c_str());
+            App::DocumentObject* obj = addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             if (obj) {
                 objs.push_back(obj);
                 // use this name for the later access because an object with
@@ -1336,6 +1294,11 @@ bool Document::save (void)
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     if (*(FileName.getValue()) != '\0') {
+        // Save the name of the tip object in order to handle in Restore()
+        if(Tip.getValue()) {
+            TipName.setValue(Tip.getValue()->getNameInDocument());
+        }
+
         std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
         // set author if needed
@@ -1447,8 +1410,14 @@ void Document::restore (void)
     // clean up if the document is not empty
     // !TODO mind exeptions while restoring!
     clearUndos();
+    // first notify the objects to being deleted and then delete them in a second loop (#0002521)
+    // FIXME: To delete every object individually is inefficient. Add a new signal 'signalClear'
+    // and then clear everything in one go.
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         signalDeletedObject(*(*obj));
+        signalTransactionRemove(*(*obj), 0);
+    }
+    for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         delete *obj;
     }
     d->objectArray.clear();
@@ -1484,7 +1453,7 @@ void Document::restore (void)
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
     reader.readFiles(zipstream);
-    
+
     // reset all touched
     for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
         It->second->connectRelabelSignals();
@@ -1507,7 +1476,7 @@ bool Document::isSaved() const
  * matches with the file name where the document is stored to.
  * In contrast to Label the method getName() returns the internal name of the document that only
  * matches with Label when loading or creating a document because then both are set to the same value.
- * Since the internal name cannot be changed during runtime it must differ from the Label after saving 
+ * Since the internal name cannot be changed during runtime it must differ from the Label after saving
  * the document the first time or saving it under a new file name.
  * @ note More than one document can have the same label name.
  * @ note The internal is always guaranteed to be unique because @ref Application::newDocument() checks
@@ -1604,7 +1573,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         Vertex v = add_vertex(DepList);
         ObjectMap[*it] = v;
         VertexMap[v] = *it;
-    }  
+    }
 
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
         std::vector<DocumentObject*> outList = (*it)->getOutList();
@@ -1639,8 +1608,11 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         // this sort gives the execute
         boost::topological_sort(DepList, std::front_inserter(make_order));
     }
-    catch (const std::exception&) {
-        return std::vector<App::DocumentObject*>();
+    catch (const std::exception& e) {
+        std::stringstream ss;
+        ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
+        ss << e.what();
+        throw Base::Exception(ss.str().c_str());
     }
 
     std::set<Vertex> out;
@@ -1751,7 +1723,7 @@ void Document::recompute()
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
-        if (!Cur) continue;
+        if (!Cur || !isIn(Cur)) continue;
 #ifdef FC_LOGFEATUREUPDATE
         std::clog << Cur->getNameInDocument() << " dep on:" ;
 #endif
@@ -1816,7 +1788,7 @@ void Document::recompute()
 
     // reset all touched
     for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
-        if (it->second)
+        if ((it->second) && isIn(it->second))
             it->second->purgeTouched();
     }
     d->vertexMap.clear();
@@ -1914,7 +1886,7 @@ void Document::recomputeFeature(DocumentObject* Feat)
         _recomputeFeature(Feat);
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
+DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
@@ -1933,9 +1905,6 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
 
     // do no transactions if we do a rollback!
     if (!d->rollback) {
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
@@ -1961,9 +1930,20 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
 
     pcObject->Label.setValue( ObjectName );
 
+    // Call the object-specific initialization
+    if (!d->undoing && !d->rollback && isNew) {
+        pcObject->setupObject ();
+    }
+
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->StatusBits.set(2);
     signalNewObject(*pcObject);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+    }
+
     signalActivatedObject(*pcObject);
 
     // return the Object
@@ -1980,9 +1960,6 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // do no transactions if we do a rollback!
     if (!d->rollback) {
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
@@ -2009,6 +1986,12 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->StatusBits.set(2);
     signalNewObject(*pcObject);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+    }
+
     signalActivatedObject(*pcObject);
 }
 
@@ -2021,16 +2004,19 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
+    if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
+
     // send the signal
     signalNewObject(*pcObject);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+    }
 
     d->activeObject = pcObject;
     signalActivatedObject(*pcObject);
@@ -2050,7 +2036,25 @@ void Document::remObject(const char* sName)
     if (d->activeObject == pos->second)
         d->activeObject = 0;
 
+    // Mark the object as about to be deleted
+    pos->second->StatusBits.set (ObjectStatus::Delete);
+    if (!d->undoing && !d->rollback) {
+        pos->second->unsetupObject();
+    }
+
     signalDeletedObject(*(pos->second));
+    pos->second->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        // in this case transaction delete or save the object
+        signalTransactionRemove(*pos->second, d->activeUndoTransaction);
+    }
+    else {
+        // if not saved in undo -> delete object
+        signalTransactionRemove(*pos->second, 0);
+    }
+
     if (!d->vertexMap.empty()) {
         // recompute of document is running
         for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
@@ -2064,23 +2068,23 @@ void Document::remObject(const char* sName)
     // Before deleting we must nullify all dependant objects
     breakDependency(pos->second, true);
 
+    //and remove the tip if needed
+    if(Tip.getValue() && strcmp(Tip.getValue()->getNameInDocument(), sName)==0) {
+        Tip.setValue(nullptr);
+        TipName.setValue("");
+    }
+
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectDel(pos->second);
-
+    if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction) {
             // in this case transaction delete or save the object
             d->activeUndoTransaction->addObjectNew(pos->second);
-            // set name cache false
-            //pos->second->pcNameInDocument = 0;
         }
-        else
+        else {
             // if not saved in undo -> delete object
             delete pos->second;
+        }
     }
 
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
@@ -2098,29 +2102,41 @@ void Document::remObject(const char* sName)
 /// Remove an object out of the document (internal)
 void Document::_remObject(DocumentObject* pcObject)
 {
+    // TODO Refactoring: share code with Document::remObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject);
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
 
+
     if (d->activeObject == pcObject)
         d->activeObject = 0;
 
+    // Mark the object as about to be deleted
+    pcObject->StatusBits.set (ObjectStatus::Delete);
+    if (!d->undoing && !d->rollback) {
+        pcObject->unsetupObject();
+    }
     signalDeletedObject(*pcObject);
+    // TODO Check me if it's needed (2015-09-01, Fat-Zer)
+    pcObject->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
+
+    //remove the tip if needed
+    if (Tip.getValue() == pcObject) {
+        Tip.setValue(nullptr);
+        TipName.setValue("");
+    }
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectDel(pcObject);
-
+    if (!d->rollback) {
         // Undo stuff
-        if (d->activeUndoTransaction)
+        if (d->activeUndoTransaction) {
+            signalTransactionRemove(*pcObject, d->activeUndoTransaction);
             d->activeUndoTransaction->addObjectNew(pcObject);
+        }
     }
+
     // remove from map
     d->objectMap.erase(pos);
-    //// set name cache false
-    //pcObject->pcNameInDocument = 0;
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if (*it == pcObject) {
@@ -2288,6 +2304,16 @@ DocumentObject * Document::getObject(const char *Name) const
         return pos->second;
     else
         return 0;
+}
+
+// Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
+const bool Document::isIn(const DocumentObject *pFeat) const
+{
+    for (std::map<std::string,DocumentObject*>::const_iterator o = d->objectMap.begin(); o != d->objectMap.end(); o++)
+        if (o->second == pFeat)
+            return true;
+
+    return false;
 }
 
 const char * Document::getObjectName(DocumentObject *pFeat) const

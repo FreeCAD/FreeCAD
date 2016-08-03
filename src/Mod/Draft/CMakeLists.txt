@@ -44,3 +44,11 @@ INSTALL(
     DESTINATION
         Mod/Draft
 )
+
+SET(DraftGuiIcon_SVG
+    Resources/icons/DraftWorkbench.svg
+)
+
+fc_copy_sources(Draft "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Draft" ${DraftGuiIcon_SVG})
+
+INSTALL(FILES ${DraftGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Draft/Resources/icons")

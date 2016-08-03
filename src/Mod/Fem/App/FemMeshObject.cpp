@@ -57,7 +57,7 @@ PyObject *FemMeshObject::getPyObject()
         // ref counter is set to 1
         PythonObject = Py::Object(new DocumentObjectPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 void FemMeshObject::onChanged(const Property* prop)
@@ -66,7 +66,7 @@ void FemMeshObject::onChanged(const Property* prop)
 
     // if the placement has changed apply the change to the mesh data as well
     if (prop == &this->Placement) {
-        const_cast<Fem::FemMesh&>(this->FemMesh.getValue()).setTransform(this->Placement.getValue().toMatrix());  
+        const_cast<Fem::FemMesh&>(this->FemMesh.getValue()).setTransform(this->Placement.getValue().toMatrix());
     }
 
 }

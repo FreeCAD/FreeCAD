@@ -33,16 +33,15 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
-#include "SpreadsheetExpression.h"
 #include "Sheet.h"
 #include "SheetObserver.h"
 #include "Utils.h"
-#include "Range.h"
 #include "SheetPy.h"
 #include <ostream>
 #include <fstream>
@@ -1337,4 +1336,25 @@ void PropertySpreadsheetQuantity::Paste(const Property &from)
     _dValue = static_cast<const PropertySpreadsheetQuantity*>(&from)->_dValue;
     _Unit = static_cast<const PropertySpreadsheetQuantity*>(&from)->_Unit;
     hasSetValue();
+}
+
+// Python sheet feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
+template<> const char* Spreadsheet::SheetPython::getViewProviderName(void) const {
+    return "SpreadsheetGui::ViewProviderSheet";
+}
+template<> PyObject* Spreadsheet::SheetPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<Spreadsheet::SheetPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+/// @endcond
+
+// explicit template instantiation
+template class SpreadsheetExport FeaturePythonT<Spreadsheet::Sheet>;
 }

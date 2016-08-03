@@ -39,6 +39,7 @@
 #include "Command.h"
 #include "InputField.h"
 #include "BitmapFactory.h"
+#include "propertyeditor/PropertyItem.h"
 
 using namespace Gui;
 using namespace App;

@@ -5,6 +5,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QSizePolicy>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPainter>
+#include <QTimer>
+
 #include "iistaskheader.h"
 #include "iistaskpanelscheme.h"
 #include "iisiconlabel.h"

@@ -30,7 +30,7 @@
     </Methode>
     <Methode Name="toggleConstruction">
       <Documentation>
-        <UserDocu>switch a geometry to a construcion line</UserDocu>
+        <UserDocu>switch a geometry to a construction line</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setConstruction">

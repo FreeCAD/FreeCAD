@@ -14,7 +14,7 @@
 
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-      <UserDocu>With this objects you can handle sketches</UserDocu>
+      <UserDocu>With this object you can handle sketches</UserDocu>
     </Documentation>
     <Attribute Name="First" ReadOnly="false">
       <Documentation>
@@ -27,6 +27,12 @@
         <UserDocu>Second geometry index the Constraint refers to</UserDocu>
       </Documentation>
       <Parameter Name="Second" Type="Int"/>
+    </Attribute>
+    <Attribute Name="Value" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Value of the Constraint</UserDocu>
+      </Documentation>
+      <Parameter Name="Value" Type="Float"/>
     </Attribute>
     <Attribute Name="Name" ReadOnly="false">
       <Documentation>

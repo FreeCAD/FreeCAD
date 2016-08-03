@@ -61,3 +61,11 @@ SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
 SET_PYTHON_PREFIX_SUFFIX(InspectionGui)
 
 INSTALL(TARGETS InspectionGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(InspectionGuiIcon_SVG
+    Resources/icons/InspectionWorkbench.svg
+)
+
+fc_copy_sources(InspectionGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Inspection" ${InspectionGuiIcon_SVG})
+
+INSTALL(FILES ${InspectionGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Inspection/Resources/icons")

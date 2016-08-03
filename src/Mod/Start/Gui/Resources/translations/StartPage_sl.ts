@@ -106,7 +106,7 @@
     <message>
       <location filename="StartPage.py" line="73"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
-      <translation>Delovno okolje &lt;b&gt;arhitekturno oblikovanje&lt;/b&gt; je zasnovano posebej za delo z arhitekturnimi elementi, kot so zidovi ali okna. Začnite z izrisom oblik 2D in jih uporabite kot osnovo za gradnjo arhitekturnih objektov.</translation>
+      <translation>Delovno okolje &lt;b&gt;Arhitekturno oblikovanje&lt;/b&gt; je zasnovano posebej za delo z arhitekturnimi elementi, kot so zidovi ali okna. Začnite z izrisom oblik 2D in jih uporabite kot osnovo za gradnjo arhitekturnih objektov.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
@@ -162,11 +162,6 @@
       <location filename="StartPage.py" line="53"/>
       <source>Latest videos</source>
       <translation>Najnovejši video posnetki</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>Zadnje novice</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="55"/>
@@ -297,6 +292,31 @@
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
       <translation>Na voljo je nova izdaja FreeCADa.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Naloži primer analize MKE</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>Najnovejši prispevki</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>Pridobi razvojno različico</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>&lt;b&gt;Razvojne različice&lt;/b&gt; občasno dajo na voljo člani skupnosti in običajno vsebujejo najnovejše spremembe, vendar lahko vsebujejo tudi hrošče.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>Pokaži vse prispevke</translation>
     </message>
   </context>
 </TS>

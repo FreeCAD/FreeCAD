@@ -164,11 +164,6 @@
       <translation>Legújabb videó</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>Legfrissebb hírek</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="55"/>
       <source>On the web</source>
       <translation>A weben</translation>
@@ -261,17 +256,17 @@
     <message>
       <location filename="StartPage.py" line="87"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="74"/>
@@ -281,12 +276,12 @@
     <message>
       <location filename="StartPage.py" line="96"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+      <translation>Ez a FreeCAD weboldal szakasz a python script írásnak szentelt, példákkal, magyarázatokkal és API-parancsokkal.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="100"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+      <translation>http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="107"/>
@@ -297,6 +292,31 @@
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
       <translation>Egy új FreeCAD kiadás érhető el.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Betölt egy FEM (Finite Element Method) példa elemzést</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>Legújabb követések</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>Szerezzen be egy fejlesztői változatot</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>&lt;b&gt;Fejlesztői változatokat&lt;/b&gt; a közösség tagjai bocsátják rendelkezésre időről-időre, és általában a legújabb módosításokat tartalmazzák, de több valószínűséggel tartalmazhat hibákat.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>Lásd az összes követőt</translation>
     </message>
   </context>
 </TS>

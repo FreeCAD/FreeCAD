@@ -141,17 +141,17 @@
     <message>
       <location filename="StartPage.py" line="82"/>
       <source>file size:</source>
-      <translation>檔案大小:</translation>
+      <translation>檔案大小：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="83"/>
       <source>creation time:</source>
-      <translation>製作時間:</translation>
+      <translation>製作時間：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="84"/>
       <source>last modified:</source>
-      <translation>最後變更:</translation>
+      <translation>最後變更：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="81"/>
@@ -162,11 +162,6 @@
       <location filename="StartPage.py" line="53"/>
       <source>Latest videos</source>
       <translation>最新影片</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>最新消息</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="55"/>
@@ -181,7 +176,7 @@
     <message>
       <location filename="StartPage.py" line="85"/>
       <source>location:</source>
-      <translation>位置:</translation>
+      <translation>位置：</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="86"/>
@@ -297,6 +292,31 @@
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
       <translation>FreeCAD有新版本可以使用</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>載入有限元素分析範例</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>最新回報問題</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>取得開發中版本</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>&lt;b&gt;開發中版本&lt;/b&gt; 由社群隨時編譯，通常具有最新的更新，但也可能含有程式錯誤。</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>顯示所有回報問題</translation>
     </message>
   </context>
 </TS>

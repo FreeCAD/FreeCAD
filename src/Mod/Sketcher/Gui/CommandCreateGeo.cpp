@@ -34,7 +34,9 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
+#include <App/OriginFeature.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -45,6 +47,8 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -327,10 +331,12 @@ void CmdSketcherCreateLine::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
         break;
     }
 }
@@ -568,10 +574,12 @@ void CmdSketcherCreateRectangle::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
         break;
     }
 }
@@ -751,7 +759,7 @@ public:
                 EditCurve[EditCurve.size()-1] = onSketchPos;
                 if (TransitionMode == TRANSITION_MODE_Tangent) {
                     Base::Vector2D Tangent(dirVec.x,dirVec.y);
-                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Tangent);
+                    EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Tangent);
                     if (EditCurve[1] * Tangent < 0) {
                         EditCurve[1] = EditCurve[2];
                         suppressTransition = true;
@@ -762,7 +770,7 @@ public:
                 else if (TransitionMode == TRANSITION_MODE_Perpendicular_L ||
                          TransitionMode == TRANSITION_MODE_Perpendicular_R) {
                     Base::Vector2D Perpendicular(-dirVec.y,dirVec.x);
-                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Perpendicular);
+                    EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Perpendicular);
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
                 }
 
@@ -1183,10 +1191,12 @@ void CmdSketcherCreatePolyline::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
         break;
     }
 }
@@ -1825,6 +1835,9 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
 void CmdSketcherCompCreateArc::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -2439,7 +2452,7 @@ private:
                 Base::Vector2D cursor = Base::Vector2D(onSketchPos - f); // vector from f to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2D w_1 = cursor;
-                w_1.ProjToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
+                w_1.ProjectToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
                 Base::Vector2D w_2 = (cursor - w_1);
                 b = w_2.Length();
 
@@ -2499,7 +2512,7 @@ private:
                 Base::Vector2D cursor = Base::Vector2D(onSketchPos - centroid); // vector from centroid to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2D w_1 = cursor;
-                w_1.ProjToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
+                w_1.ProjectToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
                 Base::Vector2D w_2 = (cursor - w_1);
                 if (w_2.Length() > fixedAxisLength) {
                     // b is fixed, we are seeking a
@@ -3398,6 +3411,9 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
 void CmdSketcherCompCreateConic::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -3751,6 +3767,9 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
 void CmdSketcherCompCreateCircle::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
@@ -4471,18 +4490,50 @@ namespace SketcherGui {
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
-            App::DocumentObject *support = sketch->Support.getValue();
-            // for the moment we allow external constraints only from the support
-            if (pObj != support)
+            sketch->allowOtherBody = (QApplication::keyboardModifiers() == Qt::ControlModifier);
+
+            this->notAllowedReason = "";
+            Sketcher::SketchObject::eReasonList msg;
+            if (!sketch->isExternalAllowed(pDoc, pObj, &msg)){
+                switch(msg){
+                case Sketcher::SketchObject::rlCircularReference:
+                    this->notAllowedReason = QT_TR_NOOP("Linking this will cause circular dependency.");
+                    break;
+                case Sketcher::SketchObject::rlOtherDoc:
+                    this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
+                    break;
+                case Sketcher::SketchObject::rlOtherBody:
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another body, can't link. Hold Ctrl to allow crossreferences.");
+                    break;
+                case Sketcher::SketchObject::rlOtherPart:
+                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another part, can't link.");
+                    break;
+                default:
+                    break;
+                }
                 return false;
+            }
+
+            // Note: its better to search the support of the sketch in case the sketch support is a base plane
+            //Part::BodyBase* body = Part::BodyBase::findBodyOf(sketch);
+            //if ( body && body->hasFeature ( pObj ) && body->isAfter ( pObj, sketch ) ) {
+                // Don't allow selection after the sketch in the same body
+                // NOTE: allowness of features in other bodies is handled by SketchObject::isExternalAllowed()
+                // TODO may be this should be in SketchObject::isExternalAllowed() (2015-08-07, Fat-Zer)
+                //return false;
+            //}
+
             if (!sSubName || sSubName[0] == '\0')
                 return false;
             std::string element(sSubName);
-            // for the moment we allow only edges and vertices
             if ((element.size() > 4 && element.substr(0,4) == "Edge") ||
-                (element.size() > 6 && element.substr(0,6) == "Vertex")) {
+                (element.size() > 6 && element.substr(0,6) == "Vertex") ||
+                (element.size() > 4 && element.substr(0,4) == "Face")) {
                 return true;
             }
+            if (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+                pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+                return true;
             return  false;
         }
     };
@@ -4581,9 +4632,15 @@ public:
     virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            if (obj == NULL)
+                throw Base::Exception("Sketcher: External geometry: Invalid object in selection");
             std::string subName(msg.pSubName);
-            if ((subName.size() > 4 && subName.substr(0,4) == "Edge") ||
-                (subName.size() > 6 && subName.substr(0,6) == "Vertex")) {
+            if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+                obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
+                (subName.size() > 4 && subName.substr(0,4) == "Edge") ||
+                (subName.size() > 6 && subName.substr(0,6) == "Vertex") ||
+                (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
                     Gui::Command::openCommand("Add external geometry");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addExternal(\"%s\",\"%s\")",
@@ -4721,15 +4778,17 @@ public:
             float dy = onSketchPos.fY - StartPos.fY;
 
             lx=0;ly=0;a=0;
-            if(fabs(dx) > fabs(dy)){
+            double rev = 0;
+            if (fabs(dx) > fabs(dy)) {
                 lx = dx;
                 r = dy;
-                rev = dx/fabs(dx);
-            }else{
+                rev = Base::sgn(dx);
+            }
+            else {
                 ly = dy;
                 r = dx;
                 a = 8;
-                rev = dy/fabs(dy);
+                rev = Base::sgn(dy);
             }
 
             for (int i=0; i < 17; i++) {
@@ -4881,7 +4940,7 @@ public:
 protected:
     BoxMode Mode;
     Base::Vector2D StartPos;
-    double lx,ly,r,a,rev;
+    double lx,ly,r,a;
     std::vector<Base::Vector2D> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
@@ -4911,10 +4970,12 @@ void CmdSketcherCreateSlot::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
         break;
     case Construction:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
         break;
     }
 }
@@ -5351,6 +5412,9 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
 void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {

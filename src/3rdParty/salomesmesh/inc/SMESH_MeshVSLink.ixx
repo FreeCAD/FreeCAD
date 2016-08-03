@@ -24,6 +24,8 @@
 // Author    : Sioutis Fotios
 // Module    : SMESH
 
+#if OCC_VERSION_HEX < 0x070000
+
 #include <SMESH_MeshVSLink.jxx>
 
 #ifndef _Standard_TypeMismatch_HeaderFile
@@ -40,10 +42,10 @@ Standard_EXPORT Handle_Standard_Type& SMESH_MeshVSLink_Type_()
 
   static Handle_Standard_Transient _Ancestors[]= {aType1,aType2,aType3,aType4,NULL};
   static Handle_Standard_Type _aType = new Standard_Type("SMESH_MeshVSLink",
-			                                 sizeof(SMESH_MeshVSLink),
-			                                 1,
-			                                 (Standard_Address)_Ancestors,
-			                                 (Standard_Address)NULL);
+                                                         sizeof(SMESH_MeshVSLink),
+                                                         1,
+                                                         (Standard_Address)_Ancestors,
+                                                         (Standard_Address)NULL);
 
   return _aType;
 }
@@ -67,5 +69,6 @@ const Handle(SMESH_MeshVSLink) Handle(SMESH_MeshVSLink)::DownCast(const Handle(S
 
 const Handle(Standard_Type)& SMESH_MeshVSLink::DynamicType() const 
 { 
-  return STANDARD_TYPE(SMESH_MeshVSLink) ; 
+   return STANDARD_TYPE(SMESH_MeshVSLink) ; 
 }
+#endif

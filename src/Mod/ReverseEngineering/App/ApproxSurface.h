@@ -29,7 +29,7 @@
 #include <TColgp_Array1OfPnt.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
-#include <Handle_Geom_BSplineSurface.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <math_Matrix.hxx>
 
 #include <Base/Vector3D.h>

@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
+# include <TopoDS_Edge.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
 # include <gp_Pln.hxx>
@@ -34,6 +35,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
+# include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Ellipse.hxx>
@@ -41,6 +43,12 @@
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <GeomAPI_IntSS.hxx>
+# include <BRepProj_Projection.hxx>
+# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+# include <TColStd_Array1OfInteger.hxx>
+# include <GC_MakeCircle.hxx>
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
@@ -50,13 +58,18 @@
 
 #include <App/Document.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/Part.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 
+#include <App/OriginFeature.h>
+
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
@@ -74,6 +87,8 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Geometry,        (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch geometry");
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
+
+    allowOtherBody = true;
 
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
         if (*it) delete *it;
@@ -114,7 +129,10 @@ SketchObject::~SketchObject()
 App::DocumentObjectExecReturn *SketchObject::execute(void)
 {
     try {
-        this->positionBySupport();
+        App::DocumentObjectExecReturn* rtn = Part2DObject::execute();//to positionBySupport
+        if(rtn!=App::DocumentObject::StdReturn)
+            //error
+            return rtn;
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -250,6 +268,8 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 int SketchObject::setDatum(int ConstrId, double Datum)
 {
     // set the changed value for the constraint
+    if (this->Constraints.hasInvalidGeometry())
+        return -6;
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
@@ -942,8 +962,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                 delete arc;
                 return -1;
             }
-            dist1.ProjToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir1);
-            dist2.ProjToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir2);
+            dist1.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir1);
+            dist2.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir2);
             Part::Geometry *newgeo = dynamic_cast<Part::Geometry* >(arc);
             filletId = addGeometry(newgeo);
             if (filletId < 0) {
@@ -1681,6 +1701,62 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
 
     return -1;
+}
+
+bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn) const
+{
+    if (rsn)
+        *rsn = rlAllowed;
+
+    // Externals outside of the Document are NOT allowed
+    if (this->getDocument() != pDoc){
+        if (rsn)
+            *rsn = rlOtherDoc;
+        return false;    
+    }
+
+    //circular reference prevention
+    try {
+        if (!(this->testIfLinkDAGCompatible(pObj))){
+            if (rsn)
+                *rsn = rlCircularReference;
+            return false;
+        }
+    } catch (Base::Exception &e) {
+        Base::Console().Warning("Probably, there is a circular reference in the document. Error: %s\n", e.what());
+        return true; //prohibiting this reference won't remove the problem anyway...
+    }
+    
+
+    // Note: Checking for the body of the support doesn't work when the support are the three base planes
+    //App::DocumentObject *support = this->Support.getValue();
+    Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
+    Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
+    App::Part* part_this = App::Part::getPartOfObject(this, true);
+    App::Part* part_obj = App::Part::getPartOfObject(pObj, true);
+    if (part_this == part_obj){ //either in the same part, or in the root of document
+        if (body_this == NULL) {
+            return true;
+        } else if (body_this == body_obj) {
+            return true;
+        } else {
+            if ( this->allowOtherBody ) { // Selection outside of body not allowed if flag is not set
+                return true;
+            } else {
+                if (rsn)
+                    *rsn = rlOtherBody;
+                return false;
+            }
+        }
+    } else {
+        // cross-part link. Disallow, should be done via shapebinders only
+        if (rsn)
+            *rsn = rlOtherPart;
+        return false;
+    }
+
+    assert(0);
+    return true;
 }
 
 int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId/*=Sketcher::none*/)
@@ -2700,9 +2776,9 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
-    // so far only externals to the support of the sketch
-    if (Support.getValue() != Obj)
-        return -1;
+    // so far only externals to the support of the sketch and datum features
+    if (!isExternalAllowed(Obj->getDocument(), Obj))
+       return -1;
 
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
@@ -2711,12 +2787,18 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string>     originalSubElements = SubElements;
 
-    std::vector<std::string>::iterator it;
-    it = std::find(SubElements.begin(), SubElements.end(), SubName);
-
-    // avoid duplicates
-    if (it != SubElements.end())
+    if (Objects.size() != SubElements.size()) {
+        assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+        Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
         return -1;
+    }
+    for (size_t i = 0  ;  i < Objects.size()  ;  ++i){
+        if (Objects[i] == Obj   &&   std::string(SubName) == SubElements[i]){
+            Base::Console().Error("Link to %s already exists in this sketch.\n",SubName);
+            return -1;
+        }
+    }
+
 
     // add the new ones
     Objects.push_back(Obj);
@@ -2876,36 +2958,62 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
     return 0;
 }
 
+// Auxiliary method
+Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Plane)& gPlane, const Base::Placement& invPlm)
+{
+    double first = curve.FirstParameter();
+    bool infinite = false;
+    if (fabs(first) > 1E99) {
+        // TODO: What is OCE's definition of Infinite?
+        // TODO: The clean way to do this is to handle a new sketch geometry Geom::Line
+        // but its a lot of work to implement...
+        first = -10000;
+        //infinite = true;
+    }
+    double last = curve.LastParameter();
+    if (fabs(last) > 1E99) {
+        last = +10000;
+        //infinite = true;
+    }
+
+    gp_Pnt P1 = curve.Value(first);
+    gp_Pnt P2 = curve.Value(last);
+
+    GeomAPI_ProjectPointOnSurf proj1(P1,gPlane);
+    P1 = proj1.NearestPoint();
+    GeomAPI_ProjectPointOnSurf proj2(P2,gPlane);
+    P2 = proj2.NearestPoint();
+
+    Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
+    Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
+    invPlm.multVec(p1,p1);
+    invPlm.multVec(p2,p2);
+
+    if (Base::Distance(p1,p2) < Precision::Confusion()) {
+        Base::Vector3d p = (p1 + p2) / 2;
+        Part::GeomPoint* point = new Part::GeomPoint(p);
+        point->Construction = true;
+        return point;
+    }
+    else if (!infinite) {
+        Part::GeomLineSegment* line = new Part::GeomLineSegment();
+        line->setPoints(p1,p2);
+        line->Construction = true;
+        return line;
+    } else {
+        Part::GeomLine* line = new Part::GeomLine();
+        line->setLine(p1, p2 - p1);
+        line->Construction = true;
+        return line;
+    }
+}
+
 bool SketchObject::evaluateSupport(void)
 {
     // returns false if the shape if broken, null or non-planar
     Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
     if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return false;
-    
-    const std::vector<std::string> &sub = Support.getSubValues();
-    assert(sub.size()==1);
-    // get the selected sub shape (a Face)
-    const Part::TopoShape &shape = part->Shape.getShape();
-    
-    if (shape._Shape.IsNull())
-        return false;
-    
-    TopoDS_Shape sh;
-    try {
-        sh = shape.getSubShape(sub[0].c_str());
-    }
-    catch (Standard_Failure) {
-        return false;
-    }
-    const TopoDS_Face &face = TopoDS::Face(sh);
-    if (face.IsNull())
-        return false;
-    
-    BRepAdaptor_Surface adapt(face);
-    if (adapt.GetType() != GeomAbs_Plane)
-        return false; // No planar face
-    
     return true;
 }
 
@@ -3015,18 +3123,39 @@ void SketchObject::rebuildExternalGeometry(void)
     ExternalGeo.push_back(VLine);
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
-        const std::string SubElement=SubElements[i];
-
-        const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
-        const Part::TopoShape& refShape=refObj->Shape.getShape();
+        const std::string SubElement=SubElements[i];        
 
         TopoDS_Shape refSubShape;
-        try {
-            refSubShape = refShape.getSubShape(SubElement.c_str());
-        }
-        catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
-            throw Base::Exception(e->GetMessageString());
+
+        if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+            const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
+            refSubShape = datum->getShape();
+        } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            try {
+                const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
+                const Part::TopoShape& refShape=refObj->Shape.getShape();
+                refSubShape = refShape.getSubShape(SubElement.c_str());
+            }
+            catch (Standard_Failure) {
+                Handle_Standard_Failure e = Standard_Failure::Caught();
+                throw Base::Exception(e->GetMessageString());
+            }
+        } else  if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+            const App::Plane* pl = static_cast<const App::Plane*>(Obj);
+            Base::Placement plm = pl->Placement.getValue();
+            Base::Vector3d base = plm.getPosition();
+            Base::Rotation rot = plm.getRotation();
+            Base::Vector3d normal(0,0,1);
+            rot.multVec(normal, normal);
+            gp_Pln plane(gp_Pnt(base.x,base.y,base.z), gp_Dir(normal.x, normal.y, normal.z));
+            BRepBuilderAPI_MakeFace fBuilder(plane);
+            if (!fBuilder.IsDone())
+                throw Base::Exception("Sketcher: addExternal(): Failed to build face from App::Plane");
+
+            TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
+            refSubShape = f;
+        } else {
+            throw Base::Exception("Datum feature type is not yet supported as external geometry for a sketch");
         }
 
         switch (refSubShape.ShapeType())
@@ -3036,8 +3165,29 @@ void SketchObject::rebuildExternalGeometry(void)
                 const TopoDS_Face& face = TopoDS::Face(refSubShape);
                 BRepAdaptor_Surface surface(face);
                 if (surface.GetType() == GeomAbs_Plane) {
+                    // Check that the plane is perpendicular to the sketch plane
+                    Geom_Plane plane = surface.Plane();
+                    gp_Dir dnormal = plane.Axis().Direction();
+                    gp_Dir snormal = sketchPlane.Axis().Direction();
+                    if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
+                        // Get vector that is normal to both sketch plane normal and plane normal. This is the line's direction
+                        gp_Dir lnormal = dnormal.Crossed(snormal);
+                        BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
+                        builder.Build();
+                        if (builder.IsDone()) {
+                            const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
+                            BRepAdaptor_Curve curve(edge);
+                            if (curve.GetType() == GeomAbs_Line) {
+                                ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
+                            }
+                        }
+
+                    } else {
+                        throw Base::Exception("Selected external reference plane must be normal to sketch plane");
+                    }
+                } else {
+                    throw Base::Exception("Non-planar faces are not yet supported for external geometry of sketches");
                 }
-                throw Base::Exception("Faces are not yet supported for external geometry of sketches");
             }
             break;
         case TopAbs_EDGE:
@@ -3045,31 +3195,7 @@ void SketchObject::rebuildExternalGeometry(void)
                 const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
                 BRepAdaptor_Curve curve(edge);
                 if (curve.GetType() == GeomAbs_Line) {
-                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
-                    gp_Pnt P2 = curve.Value(curve.LastParameter());
-
-                    GeomAPI_ProjectPointOnSurf proj1(P1,gPlane);
-                    P1 = proj1.NearestPoint();
-                    GeomAPI_ProjectPointOnSurf proj2(P2,gPlane);
-                    P2 = proj2.NearestPoint();
-
-                    Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
-                    Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
-                    invPlm.multVec(p1,p1);
-                    invPlm.multVec(p2,p2);
-
-                    if (Base::Distance(p1,p2) < Precision::Confusion()) {
-                        Base::Vector3d p = (p1 + p2) / 2;
-                        Part::GeomPoint* point = new Part::GeomPoint(p);
-                        point->Construction = true;
-                        ExternalGeo.push_back(point);
-                    }
-                    else {
-                        Part::GeomLineSegment* line = new Part::GeomLineSegment();
-                        line->setPoints(p1,p2);
-                        line->Construction = true;
-                        ExternalGeo.push_back(line);
-                    }
+                    ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
                 }
                 else if (curve.GetType() == GeomAbs_Circle) {
                     gp_Dir vec1 = sketchPlane.Axis().Direction();
@@ -3163,6 +3289,30 @@ void SketchObject::rebuildExternalGeometry(void)
                                         arc->setHandle(tCurve);
                                         arc->Construction = true;
                                         ExternalGeo.push_back(arc);
+                                    }
+                                } else if (projCurve.GetType() == GeomAbs_BSplineCurve) {
+                                    // Unfortunately, a normal projection of a circle can also give a Bspline
+                                    // Split the spline into arcs
+                                    GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(projCurve.BSpline(), 2);
+                                    //int s = bSplineSplitter.NbSplits();
+                                    if ((curve.GetType() == GeomAbs_Circle) && (bSplineSplitter.NbSplits() == 2)) {
+                                        // Result of projection is actually a circle...
+                                        TColStd_Array1OfInteger splits(1, 2);
+                                        bSplineSplitter.Splitting(splits);
+                                        gp_Pnt p1 = projCurve.Value(splits(1));
+                                        gp_Pnt p2 = projCurve.Value(splits(2));
+                                        gp_Pnt p3 = projCurve.Value(0.5 * (splits(1) + splits(2)));
+                                        GC_MakeCircle circleMaker(p1, p2, p3);
+                                        Handle_Geom_Circle circ = circleMaker.Value();
+                                        Part::GeomCircle* circle = new Part::GeomCircle();
+                                        circle->setRadius(circ->Radius());
+                                        gp_Pnt center = circ->Axis().Location();
+                                        circle->setCenter(Base::Vector3d(center.X(), center.Y(), center.Z()));
+
+                                        circle->Construction = true;
+                                        ExternalGeo.push_back(circle);
+                                    } else {
+                                        throw Base::Exception("BSpline: Not yet supported geometry for external geometry");
                                     }
                                 }
                                 else if (projCurve.GetType() == GeomAbs_Ellipse) {
@@ -3833,13 +3983,8 @@ void SketchObject::onChanged(const App::Property* prop)
 void SketchObject::onDocumentRestored()
 {
     try {
-        if(Support.getValue()) {
-            validateExternalLinks();
-            rebuildExternalGeometry();            
-        }
-        else {
-            rebuildVertexIndex();
-        }
+        validateExternalLinks();
+        rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (...) {

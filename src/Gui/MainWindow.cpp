@@ -98,6 +98,7 @@
 #include "CombiView.h"
 #include "PythonConsole.h"
 #include "TaskView/TaskView.h"
+#include "DAGView/DAGView.h"
 
 #include "DlgTipOfTheDayImp.h"
 #include "DlgUndoRedo.h"
@@ -374,6 +375,20 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     pcPython->setObjectName
         (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
     pDockMgr->registerDockWindow("Std_PythonView", pcPython);
+    
+    //Dag View.
+    //work through parameter.
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+    bool enabled = group->GetBool("Enabled", false);
+    group->SetBool("Enabled", enabled); //ensure entry exists.
+    if (enabled)
+    {
+      DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
+      dagDockWindow->setObjectName
+          (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+      pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
+    }
 
 #if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
     // The MainWindowTabBar is used to show tabbed dock windows with icons
@@ -1095,17 +1110,21 @@ void MainWindow::loadWindowSettings()
 {
     QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
     QString application = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-    QString version = QString::fromLatin1(App::Application::Config()["ExeVersion"].c_str());
     int major = (QT_VERSION >> 0x10) & 0xff;
     int minor = (QT_VERSION >> 0x08) & 0xff;
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    config.beginGroup(version);
-    config.beginGroup(qtver);
-    this->resize(config.value(QString::fromLatin1("Size"), this->size()).toSize());
-    QPoint pos = config.value(QString::fromLatin1("Position"), this->pos()).toPoint();
     QRect rect = QApplication::desktop()->availableGeometry();
+    int maxHeight = rect.height();
+    int maxWidth = rect.width();
+
+    config.beginGroup(qtver);
+    QPoint pos = config.value(QString::fromLatin1("Position"), this->pos()).toPoint();
+    maxWidth -= pos.x();
+    maxHeight -= pos.y();
+    this->resize(config.value(QString::fromLatin1("Size"), QSize(maxWidth, maxHeight)).toSize());
+
     int x1,x2,y1,y2;
     // make sure that the main window is not totally out of the visible rectangle
     rect.getCoords(&x1, &y1, &x2, &y2);
@@ -1124,7 +1143,6 @@ void MainWindow::loadWindowSettings()
 
     statusBar()->setVisible(config.value(QString::fromLatin1("StatusBar"), true).toBool());
     config.endGroup();
-    config.endGroup();
 
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
@@ -1134,20 +1152,17 @@ void MainWindow::saveWindowSettings()
 {
     QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
     QString application = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-    QString version = QString::fromLatin1(App::Application::Config()["ExeVersion"].c_str());
     int major = (QT_VERSION >> 0x10) & 0xff;
     int minor = (QT_VERSION >> 0x08) & 0xff;
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    config.beginGroup(version);
     config.beginGroup(qtver);
     config.setValue(QString::fromLatin1("Size"), this->size());
     config.setValue(QString::fromLatin1("Position"), this->pos());
     config.setValue(QString::fromLatin1("Maximized"), this->isMaximized());
     config.setValue(QString::fromLatin1("MainWindowState"), this->saveState());
     config.setValue(QString::fromLatin1("StatusBar"), this->statusBar()->isVisible());
-    config.endGroup();
     config.endGroup();
 
     DockWindowManager::instance()->saveState();
@@ -1303,10 +1318,12 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
 QMimeData * MainWindow::createMimeDataFromSelection () const
 {
     std::vector<SelectionSingleton::SelObj> selobj = Selection().getCompleteSelection();
+    std::set<App::DocumentObject*> unique_objs;
     std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
     for (std::vector<SelectionSingleton::SelObj>::iterator it = selobj.begin(); it != selobj.end(); ++it) {
         if (it->pObject && it->pObject->getDocument()) {
-            objs[it->pObject->getDocument()].push_back(it->pObject);
+            if (unique_objs.insert(it->pObject).second)
+                objs[it->pObject->getDocument()].push_back(it->pObject);
         }
     }
 

@@ -16,6 +16,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
+    ${QT_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${FREETYPE_INCLUDE_DIRS}
@@ -40,6 +41,7 @@ endif(FREETYPE_FOUND)
 generate_from_xml(ArcPy)
 generate_from_xml(ArcOfCirclePy)
 generate_from_xml(ArcOfParabolaPy)
+generate_from_xml(BodyBasePy)
 generate_from_xml(CirclePy)
 generate_from_xml(ArcOfEllipsePy)
 generate_from_xml(EllipsePy)
@@ -67,7 +69,9 @@ generate_from_xml(RectangularTrimmedSurfacePy)
 generate_from_xml(SurfaceOfExtrusionPy)
 generate_from_xml(SurfaceOfRevolutionPy)
 generate_from_xml(PartFeaturePy)
+generate_from_xml(AttachableObjectPy)
 generate_from_xml(Part2DObjectPy)
+generate_from_xml(AttachEnginePy)
 generate_from_xml(TopoShapePy)
 generate_from_xml(TopoShapeCompoundPy)
 generate_from_xml(TopoShapeCompSolidPy)
@@ -134,6 +138,12 @@ SET(Features_SRCS
     FeatureGeometrySet.cpp
     CustomFeature.cpp
     CustomFeature.h
+	BodyBase.h
+	BodyBase.cpp
+	DatumFeature.cpp
+	DatumFeature.h
+    AttachableObject.h
+    AttachableObject.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -152,6 +162,8 @@ SET(Python_SRCS
     ArcOfCirclePyImp.cpp
     ArcOfParabolaPy.xml
     ArcOfParabolaPyImp.cpp
+    BodyBasePy.xml
+    BodyBasePyImp.cpp
     CirclePy.xml
     CirclePyImp.cpp
     ArcOfEllipsePy.xml
@@ -206,8 +218,12 @@ SET(Python_SRCS
     SurfaceOfRevolutionPyImp.cpp
     PartFeaturePy.xml
     PartFeaturePyImp.cpp
+    AttachableObjectPy.xml
+    AttachableObjectPyImp.cpp
     Part2DObjectPy.xml
     Part2DObjectPyImp.cpp
+    AttachEnginePy.xml
+    AttachEnginePyImp.cpp
     TopoShapePy.xml
     TopoShapePyImp.cpp
     TopoShapeCompSolidPy.xml
@@ -235,6 +251,8 @@ SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
+    Attacher.cpp
+    Attacher.h
     AppPart.cpp
     AppPartPy.cpp
     BSplineCurveBiArcs.cpp
@@ -269,6 +287,19 @@ SET(Part_Scripts
     TestPartApp.py
     MakeBottle.py
     JoinFeatures.py
+    AttachmentEditor/__init__.py
+    AttachmentEditor/Commands.py
+    AttachmentEditor/FrozenClass.py
+    AttachmentEditor/TaskAttachmentEditor.py
+    AttachmentEditor/TaskAttachmentEditor.ui
+    BOPTools/__init__.py
+    BOPTools/GeneralFuseResult.py
+    BOPTools/JoinAPI.py
+    BOPTools/JoinFeatures.py
+    BOPTools/ShapeMerge.py
+    BOPTools/SplitAPI.py
+    BOPTools/SplitFeatures.py
+    BOPTools/Utils.py
 )
 
 add_library(Part SHARED ${Part_SRCS})

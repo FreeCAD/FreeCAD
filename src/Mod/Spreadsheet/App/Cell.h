@@ -26,6 +26,7 @@
 #include <string>
 #include <set>
 #include <App/Material.h>
+#include <App/Range.h>
 #include "DisplayUnit.h"
 #include "Utils.h"
 
@@ -46,12 +47,13 @@ class PropertySheet;
 class DisplayUnit;
 
 class SpreadsheetExport Cell {
-
+private:
+    Cell(const Cell & other);
 public:
 
-    Cell(const CellAddress & _address, PropertySheet * _owner);
+    Cell(const App::CellAddress & _address, PropertySheet * _owner);
 
-    Cell(const Cell & other);
+    Cell(PropertySheet * _owner, const Cell & other);
 
     Cell& operator=( const Cell& rhs );
 
@@ -93,8 +95,6 @@ public:
 
     void clearDirty();
 
-    void setParseException(const std::string & e);
-
     void setResolveException(const std::string &e);
 
     void clearResolveException();
@@ -103,7 +103,7 @@ public:
 
     bool hasException() const { return isUsed(EXCEPTION_SET) || isUsed(PARSE_EXCEPTION_SET) || isUsed(RESOLVE_EXCEPTION_SET); }
 
-    void moveAbsolute(CellAddress newAddress);
+    void moveAbsolute(App::CellAddress newAddress);
 
     void restore(Base::XMLReader &reader);
 
@@ -119,7 +119,7 @@ public:
 
     void visit(App::ExpressionVisitor & v);
 
-    CellAddress getAddress() const { return address; }
+    App::CellAddress getAddress() const { return address; }
 
     /* Alignment */
     static const int ALIGNMENT_LEFT;
@@ -143,6 +143,8 @@ public:
     static App::Color decodeColor(const std::string &color, const App::Color &defaultColor);
 
 private:
+
+    void setParseException(const std::string & e);
 
     //void setExpression(const Expression * expr);
 
@@ -172,7 +174,7 @@ private:
     static const int PARSE_EXCEPTION_SET;
     static const int RESOLVE_EXCEPTION_SET;
 
-    CellAddress address;
+    App::CellAddress address;
     PropertySheet * owner;
 
     int used;
@@ -187,7 +189,7 @@ private:
     int rowSpan;
     int colSpan;
     std::string exceptionStr;
-    CellAddress anchor;
+    App::CellAddress anchor;
 };
 
 }

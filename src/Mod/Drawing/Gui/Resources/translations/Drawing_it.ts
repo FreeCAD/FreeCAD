@@ -668,22 +668,22 @@ Do you want to continue?</source>
     <message>
         <location line="+14"/>
         <source>No active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun documento attivo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Attualmente non esiste alcun documento attivo per completare l&apos;operazione</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna vista attiva</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Attualmente non c&apos;è nessuna vista attiva per completare l&apos;operazione</translation>
     </message>
 </context>
 <context>

@@ -44,7 +44,7 @@
 <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-        <location line="+129"/>
+        <location line="+134"/>
         <source>Reverse Engineering</source>
         <translation>リバースエンジニアリング</translation>
     </message>
@@ -68,10 +68,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation type="unfinished">Structured point clouds</translation>
+    </message>
+    <message>
         <location line="+1"/>
         <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation type="unfinished">Triangulation of structured point clouds</translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation type="unfinished">View triangulation</translation>
+        <translation type="obsolete">View triangulation</translation>
     </message>
 </context>
 <context>
@@ -84,7 +92,7 @@
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished">u-Direction</translation>
+        <translation>U方向</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -101,7 +109,7 @@
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished">v-Direction</translation>
+        <translation>V方向</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -177,7 +185,7 @@
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>パラメーター</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -203,14 +211,14 @@
 <context>
     <name>Reen_ApproxSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="-154"/>
-        <location line="+130"/>
+        <location filename="../../Command.cpp" line="-159"/>
+        <location line="+135"/>
         <source>Wrong selection</source>
         <translation>誤った選択</translation>
     </message>
     <message>
-        <location line="-129"/>
-        <location line="+130"/>
+        <location line="-134"/>
+        <location line="+135"/>
         <source>Please select a single point cloud.</source>
         <translation type="unfinished">Please select a single point cloud.</translation>
     </message>

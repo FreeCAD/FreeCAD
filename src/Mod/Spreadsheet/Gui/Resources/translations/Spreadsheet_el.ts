@@ -429,7 +429,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανώνυμο</translation>
     </message>
 </context>
 <context>

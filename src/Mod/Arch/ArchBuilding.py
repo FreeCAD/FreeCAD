@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011                                                    *
@@ -201,25 +203,34 @@ class _CommandBuilding:
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        ok = False
-        if (len(sel) == 1):
-            if Draft.getType(sel[0]) in ["Cell","Site","Floor"]:
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("obj = Arch.makeBuilding()")
-                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
-                FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
-                FreeCAD.ActiveDocument.commitTransaction()
-                ok = True
-        if not ok:
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch"," Create Building"))
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        link = p.GetBool("FreeLinking",False)
+        buildingobj = []
+        warning = False
+        for obj in sel :
+            if not Draft.getType(obj) in ["Site", "Building"] :
+                buildingobj.append(obj)
+            else :
+                if link == True :
+                    buildingobj.append(obj)
+                else:
+                    warning = True
+        if warning :
+            message = translate( "Arch" , "You can put anything but Site and Building object in a Building object.\n\
+Building object are not allowed to accept Site and Building object.\n\
+Site and Building objects will be removed from the selection.\n\
+You can change that in the preferences.\n" )
+            ArchCommands.printMessage( message )
+        if sel and len(buildingobj) == 0:
+            message = translate( "Arch" , "There is no valid object in the selection.\n\
+Building creation aborted.\n" )
+            ArchCommands.printMessage( message )
+        else :
+            ss = "[ "
+            for o in buildingobj:
+                ss += "FreeCAD.ActiveDocument." + o.Name + ", "
             ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Building"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
@@ -229,7 +240,7 @@ class _Building(ArchFloor._Floor):
     "The Building object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",translate("Arch","The type of this building"))
+        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch","The type of this building")
         self.Type = "Building"
         obj.setEditorMode('Height',2)
         obj.BuildingType = BuildingTypes

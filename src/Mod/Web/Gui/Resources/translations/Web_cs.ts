@@ -160,7 +160,7 @@
     <message>
         <location filename="../../BrowserView.cpp" line="125"/>
         <source>Open in new window</source>
-        <translation type="unfinished">Open in new window</translation>
+        <translation>Otevřít v novém okně</translation>
     </message>
 </context>
 <context>

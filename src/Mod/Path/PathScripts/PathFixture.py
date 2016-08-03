@@ -38,9 +38,9 @@ except AttributeError:
 
 class Fixture:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyEnumeration", "Fixture", "Fixture Parameters", translate("Fixture Offset", "Fixture Offset Number"))
+        obj.addProperty("App::PropertyEnumeration", "Fixture", "Fixture Parameters","Fixture Offset Number")
         obj.Fixture=['G53','G54','G55','G56','G57','G58','G59','G59.1', 'G59.2', 'G59.3', 'G59.4', 'G59.5','G59.6','G59.7', 'G59.8', 'G59.9']
-        obj.addProperty("App::PropertyBool","Active","Sequence Parameters",translate("Active","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyBool","Active","Sequence Parameters","Make False, to prevent operation from generating code")
 
         obj.Proxy = self
 

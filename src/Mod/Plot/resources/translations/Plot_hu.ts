@@ -24,7 +24,7 @@
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation>Tengelyek paramétereinek beállítása</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation type="unfinished">Save the plot as an image file</translation>
+      <translation>Nyomtatás kép fájlba</translation>
     </message>
   </context>
   <context>
@@ -216,7 +216,7 @@
   <context>
     <name>plot_console</name>
     <message>
-      <location filename="Plot.py" line="38"/>
+      <location filename="Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
       <translation>matplotlib nem található, így a tervrajz nyomtatási modult nem lehet betölteni</translation>
     </message>
@@ -238,12 +238,12 @@
     <message>
       <location filename="PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation>A rácsot a nyomtatott dokumentum felett kell aktiválni</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="126"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation>A feliratot a nyomtatott dokumentum felett kell aktiválni</translation>
     </message>
   </context>
   <context>

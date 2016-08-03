@@ -37,10 +37,11 @@
 #include <QToolBar>
 #include "qtcolorpicker.h"
 #include "Mod/Spreadsheet/App/Sheet.h"
-#include "Mod/Spreadsheet/App/Range.h"
+#include <App/Range.h>
 #include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
 
 using namespace Base;
+using namespace App;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 

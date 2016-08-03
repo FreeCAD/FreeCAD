@@ -463,7 +463,12 @@ Do you want to continue?</translation>
         <translation>Kamera-filnamn:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Strålföljning</translation>
     </message>
@@ -530,12 +535,11 @@ Do you want to continue?</translation>
         <translation>Nät exportinställningar</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Max nätdeviation:</translation>
+        <translation type="obsolete">Max nätdeviation:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Beräkna inte hörn normaler</translation>
     </message>

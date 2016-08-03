@@ -53,7 +53,28 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
 {
     Quantity *self = getQuantityPtr();
 
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+    PyObject *object;
+    if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
+        // Note: must be static_cast, not reinterpret_cast
+        *self = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
+        return 0;
+    }
+
+    PyErr_Clear(); // set by PyArg_ParseTuple()
     double f = DOUBLE_MAX;
+    if (PyArg_ParseTuple(args,"dO!",&f,&(Base::UnitPy::Type), &object)) {
+        // Note: must be static_cast, not reinterpret_cast
+        *self = Quantity(f,*(static_cast<Base::UnitPy*>(object)->getUnitPtr()));
+        return 0;
+    }
+
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+    if (PyArg_ParseTuple(args,"dO!",&f,&(Base::QuantityPy::Type), &object)) {
+        PyErr_SetString(PyExc_TypeError, "Second argument must be a Unit not a Quantity");
+        return -1;
+    }
+
     int i1=0;
     int i2=0;
     int i3=0;
@@ -63,25 +84,12 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     int i7=0;
     int i8=0;
     if (PyArg_ParseTuple(args, "|diiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
-        if(f!=DOUBLE_MAX)
+        if (f != DOUBLE_MAX) {
             *self = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
+        }
         return 0;
     }
-    PyErr_Clear(); // set by PyArg_ParseTuple()
 
-    PyObject *object;
-
-    if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
-        *self = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
-        return 0;
-    }
-    PyErr_Clear(); // set by PyArg_ParseTuple()
-    if (PyArg_ParseTuple(args,"dO!",&f,&(Base::UnitPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
-        *self = Quantity(f,*(static_cast<Base::UnitPy*>(object)->getUnitPtr()));
-        return 0;
-    }
     PyErr_Clear(); // set by PyArg_ParseTuple()
     char* string;
     if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
@@ -89,7 +97,8 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
         PyMem_Free(string);
         try {
             *self = Quantity::parse(qstr);
-        }catch(const Base::Exception& e) {
+        }
+        catch(const Base::Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
             return-1;
         }
@@ -97,7 +106,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");
+    PyErr_SetString(PyExc_TypeError, "Either quantity, float with units or string expected");
     return -1;
 }
 

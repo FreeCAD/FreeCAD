@@ -59,7 +59,7 @@ Tessellation::Tessellation(QWidget* parent)
             this, SLOT(meshingMethod(int)));
 
     ui->spinSurfaceDeviation->setMaximum(INT_MAX);
-    ui->spinMaximumEdgeLength->setMaximum(INT_MAX);
+    ui->spinMaximumEdgeLength->setRange(0, INT_MAX);
 
     // set the standard method
     ui->radioButtonStandard->setChecked(true);
@@ -245,7 +245,7 @@ bool Tessellation::accept()
 
             QString cmd;
             if (method == 0) { // Standard
-                double devFace = ui->spinSurfaceDeviation->value();
+                double devFace = ui->spinSurfaceDeviation->value().getValue();
                 cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
@@ -259,7 +259,7 @@ bool Tessellation::accept()
                     .arg(label);
             }
             else if (method == 1) { // Mefisto
-                double maxEdge = ui->spinMaximumEdgeLength->value();
+                double maxEdge = ui->spinMaximumEdgeLength->value().getValue();
                 if (!ui->spinMaximumEdgeLength->isEnabled())
                     maxEdge = 0;
                 cmd = QString::fromLatin1(

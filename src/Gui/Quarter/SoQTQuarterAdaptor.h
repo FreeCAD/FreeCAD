@@ -58,6 +58,9 @@ public:
     QWidget* getGLWidget() const;
 
     virtual void setCameraType(SoType type);
+    SoCamera * getCamera(void) const;
+
+    const SbViewportRegion & getViewportRegion(void) const;
 
     virtual void setViewing(SbBool enable);
     SbBool isViewing(void) const;

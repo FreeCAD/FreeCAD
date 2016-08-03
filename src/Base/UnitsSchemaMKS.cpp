@@ -27,6 +27,7 @@
 #endif
 
 #include <QString>
+#include <QLocale>
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaMKS.h"
@@ -60,7 +61,7 @@ QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QStr
         }else if(UnitValue < 100000000000.0 ){
             unitString = QString::fromLatin1("km");
             factor = 1000000.0;
-        }else{ // bigger then 1000 km -> scientific notation 
+        }else{ // bigger then 1000 km -> scientific notation
             unitString = QString::fromLatin1("mm");
             factor = 1.0;
         }
@@ -104,7 +105,7 @@ QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QStr
         }else if(UnitValue < 10000000000.0){
             unitString = QString::fromLatin1("GPa");
             factor = 1000000.0;
-        }else{ // bigger then 1000 GPa -> scientific notation 
+        }else{ // bigger then 1000 GPa -> scientific notation
             unitString = QString::fromLatin1("Pa");
             factor = 1.0;
         }
@@ -113,5 +114,9 @@ QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QStr
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-	return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
+	//return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
+    QLocale Lc = QLocale::system();
+    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
+    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
+    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
 }

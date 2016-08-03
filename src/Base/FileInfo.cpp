@@ -225,7 +225,24 @@ std::string FileInfo::fileName () const
 
 std::string FileInfo::dirPath () const
 {
-    return FileName.substr(0,FileName.find_last_of('/'));
+    std::size_t last_pos;
+    std::string retval;
+    last_pos = FileName.find_last_of('/');
+    if (last_pos != std::string::npos) {
+        retval = FileName.substr(0, last_pos);
+    }
+    else {
+#ifdef FC_OS_WIN32
+        wchar_t buf[MAX_PATH+1];
+        GetCurrentDirectoryW(MAX_PATH, buf);
+        retval = std::string(ConvertFromWideString(std::wstring(buf)));
+#else
+        char buf[PATH_MAX+1];
+        const char* cwd = getcwd(buf, PATH_MAX);
+        retval = std::string(cwd ? cwd : ".");
+#endif
+    }
+    return retval;
 }
 
 std::string FileInfo::fileNamePure () const

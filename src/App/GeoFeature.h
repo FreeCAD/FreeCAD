@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2002    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,6 +46,13 @@ public:
     GeoFeature(void);
     virtual ~GeoFeature();
 
+    /**
+     * @brief transformPlacement applies transform to placement of this shape.
+     * Override this function to propagate the change of placement to base
+     * features, for example. By the time of writing this comment, the function
+     * was only called by alignment task (Edit->Alignment)
+     * @param transform (input).
+     */
     virtual void transformPlacement(const Base::Placement &transform);
 };
 

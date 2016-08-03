@@ -51,7 +51,7 @@ namespace Fem{
 
 
 
-namespace FemGui { 
+namespace FemGui {
 
 
 class TaskDriver : public Gui::TaskView::TaskBox

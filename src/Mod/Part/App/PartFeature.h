@@ -68,15 +68,10 @@ public:
     virtual PyObject* getPyObject(void);
     virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 
-    /**
-     * Find the origin of a reference, e.g. the vertex or edge in a sketch that
-     * produced a face
-     */
-    const TopoDS_Shape findOriginOf(const TopoDS_Shape& reference);
-
-protected:
-    void onChanged(const App::Property* prop);
     TopLoc_Location getLocation() const;
+    
+protected:
+    virtual void onChanged(const App::Property* prop);
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common

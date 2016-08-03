@@ -1151,32 +1151,33 @@ public:
         QStringList lines;
         if (edit) {
             QString inputText = edit->toPlainText();
-            lines = inputText.split(QString::fromLatin1("\n"));
+            if (!inputText.isEmpty()) // let pass empty input, regardless of the type, so user can void the value
+                lines = inputText.split(QString::fromLatin1("\n"));
         }
-
-        if (type == 1) { // floats
-            bool ok;
-            int line=1;
-            for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
-                it->toDouble(&ok);
-                if (!ok) {
-                    QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
-                    return;
+        if (!lines.isEmpty()) {
+            if (type == 1) { // floats
+                bool ok;
+                int line=1;
+                for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
+                    it->toDouble(&ok);
+                    if (!ok) {
+                        QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
+                        return;
+                    }
+                }
+            }
+            else if (type == 2) { // integers
+                bool ok;
+                int line=1;
+                for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
+                    it->toInt(&ok);
+                    if (!ok) {
+                        QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
+                        return;
+                    }
                 }
             }
         }
-        else if (type == 2) { // integers
-            bool ok;
-            int line=1;
-            for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
-                it->toInt(&ok);
-                if (!ok) {
-                    QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
-                    return;
-                }
-            }
-        }
-
         QDialog::accept();
     }
 };

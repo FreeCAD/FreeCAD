@@ -41,7 +41,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
-# include <Handle_Adaptor3d_HCurve.hxx>
+# include <Adaptor3d_HCurve.hxx>
 #endif
 
 
@@ -542,7 +542,7 @@ PROPERTY_SOURCE(Part::Thickness, Part::Feature)
 
 Thickness::Thickness()
 {
-    ADD_PROPERTY_TYPE(Faces,(0),"Thickness",App::Prop_None,"Source shape");
+    ADD_PROPERTY_TYPE(Faces,(0),"Thickness",App::Prop_None,"Faces to be removed");
     ADD_PROPERTY_TYPE(Value,(1.0),"Thickness",App::Prop_None,"Thickness value");
     ADD_PROPERTY_TYPE(Mode,(long(0)),"Thickness",App::Prop_None,"Mode");
     Mode.setEnums(ModeEnums);

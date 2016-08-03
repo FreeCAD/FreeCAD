@@ -28,7 +28,7 @@
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/PropertyStandard.h>
 #include "Utils.h"
-#include "Range.h"
+#include <App/Range.h>
 
 // inclusion of the generated files (generated out of SheetPy.xml)
 #include "SheetPy.h"

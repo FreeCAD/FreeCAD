@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>Add tool</source>
-        <translation>Додати алат</translation>
+        <translation>Додаj алат</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -65,7 +65,7 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>Ивица на путањи...</translation>
+        <translation>Руб у Путању...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -409,7 +409,7 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished">KRL file</translation>
+        <translation>KRL датотека</translation>
     </message>
     <message>
         <location line="-61"/>

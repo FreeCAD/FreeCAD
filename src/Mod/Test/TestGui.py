@@ -1,4 +1,4 @@
-# FreeCAD Part module  
+# FreeCAD Part module
 # (c) 2001 Juergen Riegel
 #
 # Part design module
@@ -54,6 +54,7 @@ class TestCmd:
         QtUnitGui.addTest("TestSpreadsheet")
         QtUnitGui.addTest("TestDraft")
         QtUnitGui.addTest("TestArch")
+        QtUnitGui.addTest("TestTechDrawApp")
         QtUnitGui.addTest("Workbench")
         QtUnitGui.addTest("Menu")
         QtUnitGui.addTest("Menu.MenuDeleteCases")
@@ -105,8 +106,8 @@ class TestAllTextCmd:
         unittest.TextTestRunner(stream=sys.stdout,verbosity=2).run(unittest.defaultTestLoader.loadTestsFromName("TestApp.All"))
 
     def GetResources(self):
-        return {'Pixmap'  : 'Std_Tool1', 
-                'MenuText': 'Test all', 
+        return {'Pixmap'  : 'Std_Tool1',
+                'MenuText': 'Test all',
                 'ToolTip' : 'Runs all tests at once (can take very long!)'
                 }
 
@@ -197,4 +198,3 @@ FreeCADGui.addCommand('Test_TestWork'    ,TestWorkbenchCmd())
 FreeCADGui.addCommand('Test_TestCreateMenu'    ,TestCreateMenuCmd())
 FreeCADGui.addCommand('Test_TestDeleteMenu'    ,TestDeleteMenuCmd())
 FreeCADGui.addCommand('Test_InsertFeature'    ,TestInsertFeatureCmd())
-

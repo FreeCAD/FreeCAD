@@ -77,6 +77,12 @@ const char* InventorNavigationStyle::mouseButtons(ViewerMode mode)
     }
 }
 
+std::string InventorNavigationStyle::userFriendlyName() const
+{
+    // do not mark this for translation
+    return "OpenInventor";
+}
+
 SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
@@ -211,6 +217,31 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = true;
                 this->lockrecenter = true;
+            }
+            // issue #0002433: avoid to swallow the UP event if down the
+            // scene graph somewhere a dialog gets opened
+            else if (press) {
+                SbTime tmp = (ev->getTime() - mouseDownConsumedEvent.getTime());
+                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
+                // a double-click?
+                if (tmp.getValue() < dci) {
+                    mouseDownConsumedEvent = *event;
+                    mouseDownConsumedEvent.setTime(ev->getTime());
+                    processed = true;
+                }
+                else {
+                    mouseDownConsumedEvent.setTime(ev->getTime());
+                    // 'ANY' is used to mark that we don't know yet if it will
+                    // be a double-click event.
+                    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
+                }
+            }
+            else if (!press) {
+                if (mouseDownConsumedEvent.getButton() == SoMouseButtonEvent::BUTTON1) {
+                    // now handle the postponed event
+                    inherited::processSoEvent(&mouseDownConsumedEvent);
+                    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
+                }
             }
             break;
         case SoMouseButtonEvent::BUTTON2:

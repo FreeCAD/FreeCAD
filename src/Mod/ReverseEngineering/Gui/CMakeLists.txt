@@ -72,3 +72,11 @@ SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
 
 install(TARGETS ReverseEngineeringGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(ReverseEngineeringGuiIcon_SVG
+    Resources/icons/ReverseEngineeringWorkbench.svg
+)
+
+fc_copy_sources(ReverseEngineeringGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering" ${ReverseEngineeringGuiIcon_SVG})
+
+INSTALL(FILES ${ReverseEngineeringGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering/Resources/icons")

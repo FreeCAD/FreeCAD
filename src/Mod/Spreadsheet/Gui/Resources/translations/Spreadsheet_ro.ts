@@ -429,7 +429,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nedenumit</translation>
     </message>
 </context>
 <context>

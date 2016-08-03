@@ -49,8 +49,14 @@ public:
       */
     App::PropertyLinkList Originals;
 
-    /// Return first original, which serves as "Support" until Body feature becomes functional
-    App::DocumentObject* getSupportObject() const;
+    /**
+     * Returns the BaseFeature property's object(if any) otherwise return first original,
+     *         which serves as "Support" for old style workflows
+     * @param silent if couldn't determine the base feature and silent == true,
+     *               silently return a nullptr, otherwise throw Base::Exception. 
+     *               Default is false.
+     */
+    virtual Part::Feature* getBaseObject(bool silent=false) const;
 
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;
@@ -77,14 +83,17 @@ public:
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not ovelap with the support
       */
-    const std::list<gp_Trsf> getRejectedTransformations(void) { return rejected; }
+    typedef std::map<App::DocumentObject*, std::list<gp_Trsf> > rejectedMap;
+    const rejectedMap getRejectedTransformations(void) { return rejected; }
 
 protected:
     void Restore(Base::XMLReader &reader);
     virtual void positionBySupport(void);
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
+    void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
+		     TopoDS_Compound &compoundOut) const; 
 
-    std::list<gp_Trsf> rejected;
+    rejectedMap rejected;
 };
 
 } //namespace PartDesign

@@ -9,6 +9,10 @@
 #define IISTASKPANELSCHEME_H
 
 #include <QtGui>
+#include <QColor>
+#include <QPen>
+#include <QBrush>
+#include <QSize>
 
 #include "iistaskpanel_global.h"
 

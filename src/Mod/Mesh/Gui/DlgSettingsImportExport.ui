@@ -49,12 +49,9 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="maxDeviationExport">
-          <property name="suffix">
-           <string>mm</string>
-          </property>
-          <property name="decimals">
-           <number>4</number>
+         <widget class="Gui::QuantitySpinBox" name="maxDeviationExport">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
           </property>
           <property name="minimum">
            <double>0.000000000000000</double>
@@ -68,12 +65,6 @@
           <property name="value">
            <double>0.100000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>MaxDeviationExport</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Mesh</cstring>
-          </property>
          </widget>
         </item>
        </layout>
@@ -85,11 +76,11 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
+   <customwidget>
+     <class>Gui::QuantitySpinBox</class>
+     <extends>QWidget</extends>
+     <header>Gui/PrefWidgets.h</header>
+   </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

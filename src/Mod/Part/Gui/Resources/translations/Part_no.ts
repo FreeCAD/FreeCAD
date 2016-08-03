@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Fas kanter</translation>
     </message>
@@ -1189,17 +1189,17 @@
         <translation>Retning</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+6"/>
         <source>Along normal</source>
         <translation>Langs med normal</translation>
     </message>
     <message>
-        <location line="-34"/>
+        <location line="+117"/>
         <source>Length:</source>
         <translation>Lengde:</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="-110"/>
         <source>3D view</source>
         <translation>3D-Visning</translation>
     </message>
@@ -1209,7 +1209,7 @@
         <translation>Merk: Dette alternativet fungerer kun for flater</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+127"/>
         <source>Create solid</source>
         <translation>Lag solid</translation>
     </message>
@@ -1219,7 +1219,7 @@
         <translation>Taper utover vinkel</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+41"/>
         <source>Shape</source>
         <translation>Figur</translation>
     </message>
@@ -1228,7 +1228,7 @@
         <translation> </translation>
     </message>
     <message>
-        <location line="-199"/>
+        <location line="-168"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1278,22 +1278,27 @@
         <translation>Avrundingsparameter</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+91"/>
         <source>Radius:</source>
         <translation>Radius:</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-69"/>
         <source>Select faces</source>
         <translation type="unfinished">Select faces</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
+        <source>Selection</source>
+        <translation>Utvalg</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Select edges</source>
         <translation type="unfinished">Select edges</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="+47"/>
         <source>Fillet type:</source>
         <translation>Avrundingstype:</translation>
     </message>
@@ -1308,7 +1313,7 @@
         <translation>Variabel radius</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-103"/>
         <source>Shape</source>
         <translation>Figur</translation>
     </message>
@@ -1323,7 +1328,7 @@
         <translation>Ingen valg</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Lengde:</translation>
     </message>
@@ -1344,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+520"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation type="unfinished">Start length</translation>
     </message>
     <message>
-        <location line="-519"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation type="unfinished">End length</translation>
     </message>
@@ -1360,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+517"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Startradius</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Sluttradius</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Lengde</translation>
     </message>
@@ -1391,17 +1396,17 @@ Please check one or more edge entities first.</source>
         <translation>Ingen kanter merket for avrunding. Merk én eller fler kanter først.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+101"/>
+        <location filename="../../DlgFilletEdges.ui" line="+40"/>
         <source>All</source>
         <translation>Alle</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+7"/>
         <source>None</source>
         <translation>Ingen</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-248"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Kant%1</translation>
@@ -1566,7 +1571,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Boksdefinisjon</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+71"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1594,7 +1599,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Størrelse:</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+51"/>
         <source>Height:</source>
         <translation>Høyde:</translation>
     </message>
@@ -1609,12 +1614,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Lengde:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-154"/>
         <source>Position:</source>
         <translation>Posisjon:</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Direction:</source>
         <translation>Retning:</translation>
     </message>
@@ -1627,7 +1632,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Sylinderdefinisjon</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+95"/>
         <source>Parameter</source>
         <translation>Parameter</translation>
     </message>
@@ -1642,7 +1647,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Radius:</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-108"/>
         <source>Position:</source>
         <translation>Posisjon:</translation>
     </message>
@@ -1846,7 +1851,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+519"/>
+        <location filename="../../DlgPrimitives.cpp" line="+542"/>
         <source>Wedge</source>
         <translation>Kile</translation>
     </message>
@@ -2158,7 +2163,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Startpunkt</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+193"/>
+        <location filename="../../DlgPrimitives.cpp" line="+190"/>
         <source>&amp;Create</source>
         <translation>&amp;Lag</translation>
     </message>
@@ -2175,7 +2180,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">Alt + O</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-485"/>
         <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
@@ -2220,12 +2225,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+17"/>
         <source>Angle:</source>
         <translation>Vinkel:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Z:</source>
         <translation>Z:</translation>
     </message>
@@ -2235,7 +2240,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Akse:</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Shape</source>
         <translation>Figur</translation>
     </message>
@@ -2250,7 +2255,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Lag Solid</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+177"/>
+        <location filename="../../DlgRevolution.cpp" line="+178"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Merke en figur for revolusjon først.</translation>
     </message>
@@ -2590,26 +2595,30 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+8"/>
-        <source>Base point:</source>
-        <translation type="unfinished">Base point:</translation>
+        <source>Base point</source>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <source>Base point:</source>
+        <translation type="obsolete">Base point:</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>y</source>
         <translation>y</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>z</source>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+122"/>
+        <location filename="../../Mirroring.cpp" line="+123"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Velg en figur for speiling først.</translation>
     </message>
@@ -2622,7 +2631,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+165"/>
+        <location filename="../../TaskOffset.cpp" line="+166"/>
         <source>Input error</source>
         <translation>Inndatafeil</translation>
     </message>
@@ -2653,12 +2662,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Feil valg</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Velg to punkt</translation>
@@ -2683,32 +2692,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Velg to eller flere flater</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation type="unfinished">Select only one part object</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Velg to punkt for a lage en kant</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation type="unfinished">Select a list of vertices</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Velg et lukket sett med kanter</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Velg tilstøtende overflater</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Alle figurtyper kan velges</translation>
     </message>
@@ -3064,7 +3073,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Avsetting</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Mode</source>
         <translation type="unfinished">Mode</translation>
     </message>
@@ -3164,7 +3173,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Solid fra skall</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation>Forbedre figur</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Lag</translation>
     </message>

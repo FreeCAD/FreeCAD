@@ -17,8 +17,6 @@ set(Spreadsheet_LIBS
 )
 
 set(Spreadsheet_SRCS
-    SpreadsheetExpression.cpp
-    SpreadsheetExpression.h
     Cell.cpp
     Cell.h
     DisplayUnit.h
@@ -44,8 +42,6 @@ set(Spreadsheet_SRCS
     SheetObserver.h
     Utils.cpp
     Utils.h
-    Range.h
-    Range.cpp
     AppSpreadsheet.cpp
 )
 

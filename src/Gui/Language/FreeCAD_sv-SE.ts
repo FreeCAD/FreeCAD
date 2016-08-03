@@ -1240,10 +1240,6 @@ Definiera en annan genväg.</translation>
         <translation>Makronamn:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makro destination:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Utför</translation>
     </message>
@@ -1265,15 +1261,15 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Denna fil finns redan.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1806,14 +1802,6 @@ Ange en annan katalog.</translation>
         <translation>Kameratyp</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Ortografisk rendering</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Perspektivrendering</translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1881,13 +1869,17 @@ Ange en annan katalog.</translation>
         <source>MSAA 8x</source>
         <translation type="unfinished">MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>%1 navigering</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation>Kantutjämning</translation>
@@ -2711,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Finish</source>
         <translation>Gör klart</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Radera</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4821,10 +4849,6 @@ Tänk på att det har betydelse var du klickar.</translation>
         <translation>Navigationsstilar</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>%1 navigering</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>Flytta annotering</translation>
     </message>
@@ -4862,11 +4886,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Radera makro</translation>
+        <translation>Radera makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

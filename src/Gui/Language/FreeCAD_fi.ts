@@ -1240,10 +1240,6 @@ Määritä toinen pikakuvake.</translation>
         <translation>Makron nimi:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Makro kohde:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Suorita</translation>
     </message>
@@ -1265,15 +1261,15 @@ Määritä toinen pikakuvake.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Tämä tiedosto on jo olemassa.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1806,14 +1802,6 @@ Määritä toinen hakemisto, ole hyvä.</translation>
         <translation>Kameratyyppi</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Ortografinen renderointi</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Perspektiivin renderöinti</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1881,13 +1869,17 @@ Määritä toinen hakemisto, ole hyvä.</translation>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>%1 navigointi</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished">Anti-aliasing</translation>
@@ -2711,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Finish</source>
         <translation>Valmis</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Poista</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4818,10 +4846,6 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
         <translation>Navigointi tyylit</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>%1 navigointi</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>Siirrä lisähuomautusta</translation>
     </message>
@@ -4859,11 +4883,11 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Poista makro</translation>
+        <translation>Poista makro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

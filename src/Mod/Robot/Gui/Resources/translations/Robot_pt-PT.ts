@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation type="unfinished">Insert preselection position into trajectory (W)</translation>
+        <translation>Insira a pré-selecção posição na trajetória (W)</translation>
     </message>
 </context>
 <context>
@@ -246,7 +246,7 @@
     <message>
         <location line="+1"/>
         <source>set the default orientation for subsequent commands for waypoint creation</source>
-        <translation type="unfinished">set the default orientation for subsequent commands for waypoint creation</translation>
+        <translation>definir a orientação predefinida para os comandos subsequentes para a criação de waypoint</translation>
     </message>
 </context>
 <context>
@@ -348,7 +348,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+53"/>
         <source>Trajectory tools</source>
-        <translation type="unfinished">Trajectory tools</translation>
+        <translation>Ferramentas de trajetória</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -776,7 +776,7 @@
     <message>
         <location line="+18"/>
         <source>Edges: 0</source>
-        <translation type="unfinished">Edges: 0</translation>
+        <translation>Arestas: 0</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -786,12 +786,12 @@
     <message>
         <location line="+11"/>
         <source>Sizing Value:</source>
-        <translation type="unfinished">Sizing Value:</translation>
+        <translation>Valor de dimensionamento:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Use orientation of edge</source>
-        <translation type="unfinished">Use orientation of edge</translation>
+        <translation>Utiliza a orientação da aresta</translation>
     </message>
     <message>
         <source>TaskEdge2TracParameter</source>
@@ -982,7 +982,7 @@
     <message>
         <location line="+36"/>
         <source>Don&apos;t change Cont</source>
-        <translation type="unfinished">Don&apos;t change Cont</translation>
+        <translation>Não altere Cont</translation>
     </message>
     <message>
         <location line="+5"/>

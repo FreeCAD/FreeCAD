@@ -77,9 +77,16 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     double angle;
     if (PyArg_ParseTuple(args, "O!d", &(Base::VectorPy::Type), &o, &angle)) {
-        // NOTE: The last parameter defines the rotation angle in degree.
-        getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
-        return 0;
+      // NOTE: The last parameter defines the rotation angle in degree.
+      getRotationPtr()->setValue(static_cast<Base::VectorPy*>(o)->value(), Base::toRadians<double>(angle));
+      return 0;
+    }
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!d", &(Base::MatrixPy::Type), &o, &angle)) {
+      // NOTE: The last parameter defines the rotation angle in degree.
+      getRotationPtr()->setValue(static_cast<Base::MatrixPy*>(o)->value());
+      return 0;
     }
 
     PyErr_Clear();
@@ -95,6 +102,43 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         getRotationPtr()->setYawPitchRoll(y, p, r);
         return 0;
     }
+
+    double a11 = 1.0, a12 = 0.0, a13 = 0.0, a14 = 0.0;
+    double a21 = 0.0, a22 = 1.0, a23 = 0.0, a24 = 0.0;
+    double a31 = 0.0, a32 = 0.0, a33 = 1.0, a34 = 0.0;
+    double a41 = 0.0, a42 = 0.0, a43 = 0.0, a44 = 1.0;
+
+    // try read a 4x4 matrix
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "dddddddddddddddd",
+      &a11, &a12, &a13, &a14,
+      &a21, &a22, &a23, &a24,
+      &a31, &a32, &a33, &a34,
+      &a41, &a42, &a43, &a44))
+    {
+      Matrix4D mtx(a11, a12, a13, a14,
+        a21, a22, a23, a24,
+        a31, a32, a33, a34,
+        a41, a42, a43, a44);
+      getRotationPtr()->setValue(mtx);
+      return 0;
+    }
+
+    // try read a 3x3 matrix
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "ddddddddd",
+      &a11, &a12, &a13,
+      &a21, &a22, &a23,
+      &a31, &a32, &a33))
+    {
+      Matrix4D mtx(a11, a12, a13, a14,
+        a21, a22, a23, a24,
+        a31, a32, a33, a34,
+        a41, a42, a43, a44);
+      getRotationPtr()->setValue(mtx);
+      return 0;
+    }
+
 
     PyErr_Clear();
     PyObject *v1, *v2;
@@ -112,8 +156,43 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         "-- four floats (a quaternion)\n"
         "-- three floats (yaw, pitch, roll)"
         "-- Vector (rotation axis) and float (rotation angle)\n"
-        "-- two Vectors (two axes)");
+        "-- two Vectors (two axes)\n"
+        "-- Matrix object\n"
+        "-- 16 floats (4x4 matrix)\n"
+        "-- 9 floats (3x3 matrix)\n"
+       );
     return -1;
+}
+
+PyObject* RotationPy::richCompare(PyObject *v, PyObject *w, int op)
+{
+    if (PyObject_TypeCheck(v, &(RotationPy::Type)) &&
+        PyObject_TypeCheck(w, &(RotationPy::Type))) {
+        Base::Rotation r1 = *static_cast<RotationPy*>(v)->getRotationPtr();
+        Base::Rotation r2 = *static_cast<RotationPy*>(w)->getRotationPtr();
+
+        PyObject *res=0;
+        if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError,
+            "no ordering relation is defined for Rotation");
+            return 0;
+        }
+        else if (op == Py_EQ) {
+            res = (r1 == r2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else {
+            res = (r1 != r2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+    }
+    else {
+        // This always returns False
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
+    }
 }
 
 PyObject* RotationPy::invert(PyObject * args)
@@ -122,6 +201,14 @@ PyObject* RotationPy::invert(PyObject * args)
         return 0;
     this->getRotationPtr()->invert();
     Py_Return;
+}
+
+PyObject* RotationPy::inverted(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    Rotation mult = this->getRotationPtr()->inverse();
+    return new RotationPy(new Rotation(mult));
 }
 
 PyObject* RotationPy::multiply(PyObject * args)
@@ -157,14 +244,24 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::isSame(PyObject *args)
+{
+    PyObject *rot;
+    if (!PyArg_ParseTuple(args, "O!", &(RotationPy::Type), &rot))
+        return NULL;
+    Base::Rotation rot1 = * getRotationPtr();
+    Base::Rotation rot2 = * static_cast<RotationPy*>(rot)->getRotationPtr();
+    bool same = rot1.isSame(rot2);
+    return Py_BuildValue("O", (same ? Py_True : Py_False));
+}
+
 PyObject* RotationPy::isNull(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     Base::Rotation rot = * getRotationPtr();
     Base::Rotation nullrot(0,0,0,1);
-    Base::Rotation nullrotinv(0,0,0,-1);
-    bool null = (rot == nullrot) | (rot == nullrotinv);
+    bool null = rot.isSame(nullrot);
     return Py_BuildValue("O", (null ? Py_True : Py_False));
 }
 

@@ -190,22 +190,21 @@ unsigned int PropertyGreyValueList::getMemSize (void) const
 
 void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIndices )
 {
-#if 0
     // We need a sorted array
     std::vector<unsigned long> uSortedInds = uIndices;
     std::sort(uSortedInds.begin(), uSortedInds.end());
 
-    const std::vector<double>& rValueList = getValues();
+    const std::vector<float>& rValueList = getValues();
 
     assert( uSortedInds.size() <= rValueList.size() );
     if ( uSortedInds.size() > rValueList.size() )
         return;
 
-    std::vector<double> remainValue;
+    std::vector<float> remainValue;
     remainValue.reserve(rValueList.size() - uSortedInds.size());
 
     std::vector<unsigned long>::iterator pos = uSortedInds.begin();
-    for ( std::vector<double>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
+    for ( std::vector<float>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
         unsigned long index = it - rValueList.begin();
         if (pos == uSortedInds.end())
             remainValue.push_back( *it );
@@ -216,7 +215,6 @@ void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIn
     }
 
     setValues(remainValue);
-#endif
 }
 
 PropertyNormalList::PropertyNormalList()

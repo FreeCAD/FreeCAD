@@ -437,6 +437,16 @@ void InventorBuilder::addShapeHints(float crease)
            << Base::blanks(indent) << "}" << std::endl;
 }
 
+void InventorBuilder::addPolygonOffset(float factor, float units, const char* styles, bool on)
+{
+    result << Base::blanks(indent) << "PolygonOffset {" << std::endl
+           << Base::blanks(indent) << "  factor " << factor << std::endl
+           << Base::blanks(indent) << "  units " << units << std::endl
+           << Base::blanks(indent) << "  styles " << styles << std::endl
+           << Base::blanks(indent) << "  on " << (on ? "TRUE" : "FALSE") << std::endl
+           << Base::blanks(indent) << "}" << std::endl;
+}
+
 //**************************************************************************
 // points handling
 

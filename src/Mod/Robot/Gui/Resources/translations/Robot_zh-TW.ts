@@ -65,12 +65,12 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>邊緣至軌跡...</translation>
+        <translation>邊至軌跡...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Generate a Trajectory from a set of edges</source>
-        <translation>由一組邊緣產生軌跡</translation>
+        <translation>由一組邊產生軌跡</translation>
     </message>
 </context>
 <context>
@@ -415,7 +415,7 @@
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>所有檔案</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -462,7 +462,7 @@
     <message>
         <location line="+1"/>
         <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-        <translation>速度: (e.g. 1 m/s or 3 cm/s)</translation>
+        <translation>速度：(e.g. 1 m/s or 3 cm/s)</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -482,7 +482,7 @@
     <message>
         <location line="+1"/>
         <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-        <translation>加速度: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
+        <translation>加速度：(e.g. 1 m/s^2 or 3 cm/s^2)</translation>
     </message>
     <message>
         <location line="+127"/>
@@ -616,12 +616,12 @@
     <message>
         <location line="+57"/>
         <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
-        <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
+        <translation>TCP：(200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Tool: (0,0,400,0,0,0)</source>
-        <translation>工具: (0,0,400,0,0,0)</translation>
+        <translation>工具： (0,0,400,0,0,0)</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -720,7 +720,7 @@
     <message>
         <location line="+18"/>
         <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
-        <translation>位置: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
+        <translation>位置：(200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -776,22 +776,22 @@
     <message>
         <location line="+18"/>
         <source>Edges: 0</source>
-        <translation>邊緣： 0</translation>
+        <translation>邊： 0</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Cluster: 0</source>
-        <translation>群組:0</translation>
+        <translation>群組：0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Sizing Value:</source>
-        <translation>尺寸值:</translation>
+        <translation>尺寸值：</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Use orientation of edge</source>
-        <translation>使用邊緣之方向</translation>
+        <translation>使用邊之方向</translation>
     </message>
     <message>
         <source>TaskEdge2TracParameter</source>
@@ -966,7 +966,7 @@
     <message>
         <location line="+9"/>
         <source>Speed:</source>
-        <translation>速度:</translation>
+        <translation>速度：</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -977,7 +977,7 @@
     <message>
         <location line="-26"/>
         <source>Accel:</source>
-        <translation>加速:</translation>
+        <translation>加速：</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -997,7 +997,7 @@
     <message>
         <location line="+15"/>
         <source>Position and Orientation:</source>
-        <translation>位置和方向:</translation>
+        <translation>位置和方向：</translation>
     </message>
     <message>
         <location line="+9"/>

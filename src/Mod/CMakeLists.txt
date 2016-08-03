@@ -125,3 +125,12 @@ endif(BUILD_JTREADER)
 if(BUILD_PATH)
     add_subdirectory(Path)
 endif(BUILD_PATH)
+
+if(BUILD_SHOW)
+    add_subdirectory(Show)
+endif(BUILD_SHOW)
+
+if(BUILD_TECHDRAW)
+    add_subdirectory(Measure)
+    add_subdirectory(TechDraw)
+endif(BUILD_TECHDRAW)

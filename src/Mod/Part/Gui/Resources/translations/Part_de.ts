@@ -744,12 +744,12 @@
     <message>
         <location line="+1"/>
         <source>Refine shape</source>
-        <translation>Ergebnis Form kopieren</translation>
+        <translation>Form aufbereiten</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Refine the copy of a shape</source>
-        <translation>Kopie einer Form verfeinern</translation>
+        <translation>Kopie einer Form aufbereiten</translation>
     </message>
 </context>
 <context>
@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Kanten abschrägen</translation>
     </message>
@@ -1189,17 +1189,17 @@
         <translation>Richtung</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+6"/>
         <source>Along normal</source>
         <translation>Entlang der Normalen</translation>
     </message>
     <message>
-        <location line="-34"/>
+        <location line="+117"/>
         <source>Length:</source>
         <translation>Länge:</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="-110"/>
         <source>3D view</source>
         <translation>3D-Ansicht</translation>
     </message>
@@ -1209,7 +1209,7 @@
         <translation>Achtung: Diese Option wird nur für Ebenen verwendet</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+127"/>
         <source>Create solid</source>
         <translation>Erzeuge Volumenkörper</translation>
     </message>
@@ -1219,7 +1219,7 @@
         <translation>Konus-Außenwinkel</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+41"/>
         <source>Shape</source>
         <translation>Form</translation>
     </message>
@@ -1228,7 +1228,7 @@
         <translation>Text source</translation>
     </message>
     <message>
-        <location line="-199"/>
+        <location line="-168"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1278,22 +1278,27 @@
         <translation>Ausrundungsparameter</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+91"/>
         <source>Radius:</source>
         <translation>Radius:</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-69"/>
         <source>Select faces</source>
         <translation>Flächen auswählen</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
+        <source>Selection</source>
+        <translation>Auswahl</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Select edges</source>
         <translation>Kanten auswählen</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="+47"/>
         <source>Fillet type:</source>
         <translation>Ausrundungs-Typ:</translation>
     </message>
@@ -1308,7 +1313,7 @@
         <translation>Variabler Radius</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-103"/>
         <source>Shape</source>
         <translation>Form</translation>
     </message>
@@ -1323,7 +1328,7 @@
         <translation>Keine Auswahl</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Länge:</translation>
     </message>
@@ -1344,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+520"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation>Startlänge</translation>
     </message>
     <message>
-        <location line="-519"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation>Endlänge</translation>
     </message>
@@ -1360,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+517"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Start-Radius</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>End-Radius</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
@@ -1392,17 +1397,17 @@ Please check one or more edge entities first.</source>
 Bitte markieren Sie zuerst ein oder mehrere Kantengebilde.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+101"/>
+        <location filename="../../DlgFilletEdges.ui" line="+40"/>
         <source>All</source>
         <translation>Alle</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+7"/>
         <source>None</source>
         <translation>Keine</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-248"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Kante%1</translation>
@@ -1568,7 +1573,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Box-Definition</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+71"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1596,7 +1601,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Größe:</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+51"/>
         <source>Height:</source>
         <translation>Höhe:</translation>
     </message>
@@ -1611,12 +1616,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Länge:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-154"/>
         <source>Position:</source>
         <translation>Position:</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Direction:</source>
         <translation>Richtung:</translation>
     </message>
@@ -1629,7 +1634,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Zylinder-Definition</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+95"/>
         <source>Parameter</source>
         <translation>Parameter</translation>
     </message>
@@ -1644,7 +1649,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Radius:</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-108"/>
         <source>Position:</source>
         <translation>Position:</translation>
     </message>
@@ -1848,7 +1853,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+519"/>
+        <location filename="../../DlgPrimitives.cpp" line="+542"/>
         <source>Wedge</source>
         <translation>Keil</translation>
     </message>
@@ -2160,7 +2165,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Startpunkt</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+193"/>
+        <location filename="../../DlgPrimitives.cpp" line="+190"/>
         <source>&amp;Create</source>
         <translation>&amp;Erstellen</translation>
     </message>
@@ -2177,7 +2182,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="obsolete">Alt+I</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-485"/>
         <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
@@ -2222,12 +2227,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>X:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+17"/>
         <source>Angle:</source>
         <translation>Winkel:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Z:</source>
         <translation>Z:</translation>
     </message>
@@ -2237,7 +2242,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Achse:</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Shape</source>
         <translation>Form</translation>
     </message>
@@ -2252,7 +2257,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Volumenkörper erzeugen</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+177"/>
+        <location filename="../../DlgRevolution.cpp" line="+178"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Select a shape for revolution, first.</translation>
     </message>
@@ -2381,12 +2386,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     <message>
         <location line="+19"/>
         <source>Automatically refine model after boolean operation</source>
-        <translation>nach boolescher Operation automatisch Ergebnis Geometrie erstellen</translation>
+        <translation>Modell nach Boolscher Operation automatisch aufbereiten</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation>nach Skizzenoperation automatisch Ergebnis Geometrie erstellen</translation>
+        <translation>Modell nach skizzenbasierter Operation automatisch aufbereiten</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2592,26 +2597,30 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Base point:</source>
-        <translation>Basispunkt:</translation>
+        <source>Base point</source>
+        <translation>Basispunkt</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <source>Base point:</source>
+        <translation type="obsolete">Basispunkt:</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>y</source>
         <translation>y</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>z</source>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+122"/>
+        <location filename="../../Mirroring.cpp" line="+123"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Wählen Sie zuerst eine Form für die Spiegelung.</translation>
     </message>
@@ -2624,7 +2633,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
 <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+165"/>
+        <location filename="../../TaskOffset.cpp" line="+166"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
@@ -2655,12 +2664,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Falsche Auswahl</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Wähle zwei Knotenpunkte</translation>
@@ -2685,32 +2694,32 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Wähle zwei oder mehr Oberflächen aus</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Wählen Sie nur ein Teileobjekt</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Wählen Sie zwei Knoten zum Erzeugen einer Kante aus</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation>Wählen Sie eine Liste der Eckpunkte</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Wählen Sie eine geschlossene Gruppe von Kanten</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Wähle angrenzende Oberflächen aus</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Alle Form-Typen können ausgewählt werden</translation>
     </message>
@@ -3066,7 +3075,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Versetzen</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Mode</source>
         <translation>Modus</translation>
     </message>
@@ -3166,7 +3175,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Volumenkörper aus Hüllkörper</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation>Form aufbereiten</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Erstellen</translation>
     </message>

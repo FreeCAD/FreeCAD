@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
@@ -30,9 +31,12 @@
 # include <TopoDS_Edge.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
+#include <BRep_Tool.hxx>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -62,24 +66,25 @@ short Chamfer::mustExecute() const
 
 App::DocumentObjectExecReturn *Chamfer::execute(void)
 {
-    App::DocumentObject* link = Base.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
-    const Part::TopoShape& TopShape = base->Shape.getShape();
-    if (TopShape._Shape.IsNull())
-        return new App::DocumentObjectExecReturn("Cannot chamfer invalid shape");
+    // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
+    // The only difference is that the Base property also stores the edges that are to be chamfered
+    Part::TopoShape TopShape;
+    try {
+        TopShape = getBaseShape();
+    } catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 
-    const std::vector<std::string>& SubVals = Base.getSubValuesStartsWith("Edge");
-    if (SubVals.size() == 0)
+    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
+    getContiniusEdges(TopShape, SubNames);
+
+    if (SubNames.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
 
     double size = Size.getValue();
 
-    this->positionByBase();
-    // create an untransformed copy of the base shape
+    this->positionByBaseFeature();
+    // create an untransformed copy of the basefeature shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
@@ -90,7 +95,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         TopExp::MapShapesAndAncestors(baseShape._Shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
         TopExp::MapShapes(baseShape._Shape, TopAbs_EDGE, mapOfEdges);
 
-        for (std::vector<std::string>::const_iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
+        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
             mkChamfer.Add(size, edge, face);
@@ -104,7 +109,13 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        this->Shape.setValue(shape);
+        TopTools_ListOfShape aLarg;
+        aLarg.Append(baseShape._Shape);
+        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+
+        this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {

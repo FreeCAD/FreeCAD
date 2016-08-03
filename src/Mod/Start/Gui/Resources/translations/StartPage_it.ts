@@ -164,11 +164,6 @@
       <translation>Ultimi video</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>Latest news</source>
-      <translation>Ultime notizie</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="55"/>
       <source>On the web</source>
       <translation>Sul web</translation>
@@ -256,7 +251,7 @@
     <message>
       <location filename="StartPage.py" line="104"/>
       <source>Load an Architectural example model</source>
-      <translation>Caricare un esempio di modello architettonico</translation>
+      <translation>Carica un esempio di modello architettonico</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="87"/>
@@ -297,6 +292,31 @@
       <location filename="StartPage.py" line="108"/>
       <source>There is a new release of FreeCAD available.</source>
       <translation>È disponibile una nuova release di FreeCAD .</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="109"/>
+      <source>Load an FEM example analysis</source>
+      <translation>Carica un esempio di analisi FEM</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest commits</source>
+      <translation>Ultimi commit</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="110"/>
+      <source>Obtain a development version</source>
+      <translation>Ottieni una versione di sviluppo</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="111"/>
+      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
+      <translation>Le &lt;b&gt;versioni di sviluppo&lt;/b&gt; sono periodicamente rese disponibili dai membri della comunità, e di solito contengono le ultime modifiche, ma sono più soggette a contenere dei bug.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="112"/>
+      <source>See all commits</source>
+      <translation>Mostra tutti i commit</translation>
     </message>
   </context>
 </TS>

@@ -294,7 +294,7 @@
     <message>
         <location line="+1"/>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF датотека</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -360,7 +360,7 @@ Do you want to continue?</source>
     <message>
         <location line="+11"/>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Отварање датотеке неуcпешно</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -670,22 +670,22 @@ Do you want to continue?</source>
     <message>
         <location line="+14"/>
         <source>No active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Нема активног документа</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Тренутно нема активног документа да cе доврши операција</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No active view</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There is currently no active view to complete the operation</translation>
     </message>
 </context>
 <context>

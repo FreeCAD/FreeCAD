@@ -67,11 +67,13 @@ public:
     void setRemoveComponentOnClick(bool);
     void setObjects(const std::vector<Gui::SelectionObject>&);
     std::vector<App::DocumentObject*> getObjects() const;
+    void setViewer(Gui::View3DInventorViewer* v);
 
 protected:
+    void setCallback(SoEventCallbackCB *cb);
     std::list<ViewProviderMesh*> getViewProviders() const;
     Gui::View3DInventorViewer* getViewer() const;
-    void prepareBrushSelection(bool,SoEventCallbackCB *cb);
+    void prepareFreehandSelection(bool,SoEventCallbackCB *cb);
     void startInteractiveCallback(Gui::View3DInventorViewer* viewer,SoEventCallbackCB *cb);
     void stopInteractiveCallback(Gui::View3DInventorViewer* viewer);
 
@@ -83,7 +85,9 @@ private:
 private:
     bool onlyPointToUserTriangles, onlyVisibleTriangles;
     bool addToSelection, addComponent, removeComponent;
-    SoEventCallbackCB *_activeCB;
+    SoEventCallbackCB *activeCB;
+    SoEventCallbackCB *selectionCB;
+    Gui::View3DInventorViewer* ivViewer;
     mutable std::vector<Gui::SelectionObject> meshObjects;
 
     static unsigned char cross_bitmap[];

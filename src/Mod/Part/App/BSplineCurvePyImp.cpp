@@ -27,12 +27,17 @@
 # include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+# include <Standard_PrimitiveTypes.hxx>
 # include <gp_Pnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
+# include <TColgp_Array1OfVec.hxx>
 # include <TColgp_HArray1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <Handle_TColgp_HArray1OfPnt.hxx>
+# include <TColStd_HArray1OfReal.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TColStd_HArray1OfBoolean.hxx>
+
 # include <Precision.hxx>
 #endif
 
@@ -740,11 +745,29 @@ PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
     }
 }
 
-PyObject* BSplineCurvePy::approximate(PyObject *args)
+PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    Standard_Integer degMin=3;
+    Standard_Integer degMax=8;
+    char* continuity = "C2";
+    double tol3d = 1e-3;
+    char* parType = "ChordLength";
+    PyObject* par = 0;
+    double weight1 = 0;
+    double weight2 = 0;
+    double weight3 = 0;
+    
+    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
+                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", NULL};
+    
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
+                                     &obj, &degMax,
+                                     &continuity, &tol3d, &degMin, 
+                                     &parType, &par,
+                                     &weight1, &weight2, &weight3))
         return 0;
+    
     try {
         Py::Sequence list(obj);
         TColgp_Array1OfPnt pnts(1,list.size());
@@ -754,7 +777,77 @@ PyObject* BSplineCurvePy::approximate(PyObject *args)
             pnts(index++) = gp_Pnt(vec.x,vec.y,vec.z);
         }
 
-        GeomAPI_PointsToBSpline fit(pnts);
+        if (degMin > degMax) {
+            Standard_Failure::Raise("DegMin must be lower or equal to DegMax");
+        }
+        
+        GeomAbs_Shape c;
+        std::string str = continuity;
+        if (str == "C0")
+            c = GeomAbs_C0;
+        else if (str == "G1")
+            c = GeomAbs_G1;
+        else if (str == "C1")
+            c = GeomAbs_C1;
+        else if (str == "G2")
+            c = GeomAbs_G2;
+        else if (str == "C2")
+            c = GeomAbs_C2;
+        else if (str == "C3")
+            c = GeomAbs_C3;
+        else if (str == "CN")
+            c = GeomAbs_CN;
+        else
+            c = GeomAbs_C2;
+        
+        if (weight1 || weight2 || weight3) {
+            // It seems that this function only works with Continuity = C0, C1 or C2
+            if (!(c == GeomAbs_C0 || c == GeomAbs_C1 || c == GeomAbs_C2)) {
+                c = GeomAbs_C2;
+            }
+            GeomAPI_PointsToBSpline fit(pnts, weight1, weight2, weight3, degMax, c, tol3d);
+            Handle_Geom_BSplineCurve spline = fit.Curve();
+            if (!spline.IsNull()) {
+                this->getGeomBSplineCurvePtr()->setHandle(spline);
+                Py_Return;
+            }
+            else {
+                Standard_Failure::Raise("Smoothing approximation failed");
+                return 0; // goes to the catch block
+            }
+        }
+        
+        if (par) {
+            Py::Sequence plist(par);
+            TColStd_Array1OfReal parameters(1,plist.size());
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = plist.begin(); it != plist.end(); ++it) {
+                Py::Float f(*it);
+                parameters(index++) = static_cast<double>(f);
+            }
+            
+            GeomAPI_PointsToBSpline fit(pnts, parameters, degMin, degMax, c, tol3d);
+            Handle_Geom_BSplineCurve spline = fit.Curve();
+            if (!spline.IsNull()) {
+                this->getGeomBSplineCurvePtr()->setHandle(spline);
+                Py_Return;
+            }
+            else {
+                Standard_Failure::Raise("Approximation with parameters failed");
+                return 0; // goes to the catch block
+            }
+        }
+        
+        Approx_ParametrizationType pt;
+        std::string pstr = parType;
+        if (pstr == "Uniform")
+            pt = Approx_IsoParametric;
+        else if (pstr == "Centripetal")
+            pt = Approx_Centripetal;
+        else
+            pt = Approx_ChordLength;
+
+        GeomAPI_PointsToBSpline fit(pnts, pt, degMin, degMax, c, tol3d);
         Handle_Geom_BSplineCurve spline = fit.Curve();
         if (!spline.IsNull()) {
             this->getGeomBSplineCurvePtr()->setHandle(spline);
@@ -772,15 +865,26 @@ PyObject* BSplineCurvePy::approximate(PyObject *args)
     }
 }
 
-PyObject* BSplineCurvePy::interpolate(PyObject *args)
+PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;
+    PyObject* par = 0;
     double tol3d = Precision::Approximation();
     PyObject* periodic = Py_False;
-    PyObject* t1=0; PyObject* t2=0;
-    if (!PyArg_ParseTuple(args, "O|O!dO!O!",&obj, &PyBool_Type, &periodic, &tol3d,
-                                            &Base::VectorPy::Type, &t1, &Base::VectorPy::Type, &t2))
+    PyObject* t1 = 0; PyObject* t2 = 0;
+    PyObject* ts = 0; PyObject* fl = 0;
+    PyObject* scale = Py_True;
+
+    static char* kwds_interp[] = {"Points", "PeriodicFlag", "Tolerance", "InitialTangent", "FinalTangent",
+                                  "Tangents", "TangentFlags", "Parameters", "Scale", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O!dO!O!OOOO!",kwds_interp,
+                                     &obj, &PyBool_Type, &periodic, &tol3d,
+                                     &Base::VectorPy::Type, &t1,
+                                     &Base::VectorPy::Type, &t2,
+                                     &ts, &fl, &par, &PyBool_Type, &scale))
         return 0;
+
     try {
         Py::Sequence list(obj);
         Handle_TColgp_HArray1OfPnt interpolationPoints = new TColgp_HArray1OfPnt(1, list.size());
@@ -795,17 +899,59 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAPI_Interpolate aBSplineInterpolation(interpolationPoints,
-            PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d);
+        Handle_TColStd_HArray1OfReal parameters;
+        if (par) {
+            Py::Sequence plist(par);
+            parameters = new TColStd_HArray1OfReal(1, plist.size());
+            Standard_Integer pindex = 1;
+            for (Py::Sequence::iterator it = plist.begin(); it != plist.end(); ++it) {
+                Py::Float f(*it);
+                parameters->SetValue(pindex++, static_cast<double>(f));
+            }
+        }
+
+        std::auto_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
+        if (parameters.IsNull()) {
+            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints,
+                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+        }
+        else {
+            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints, parameters,
+                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+        }
+
         if (t1 && t2) {
             Base::Vector3d v1 = Py::Vector(t1,false).toVector();
             Base::Vector3d v2 = Py::Vector(t2,false).toVector();
             gp_Vec initTangent(v1.x,v1.y,v1.z), finalTangent(v2.x,v2.y,v2.z);
-            aBSplineInterpolation.Load(initTangent, finalTangent);
+            aBSplineInterpolation->Load(initTangent, finalTangent, PyObject_IsTrue(scale)
+                                        ? Standard_True : Standard_False);
         }
-        aBSplineInterpolation.Perform();
-        if (aBSplineInterpolation.IsDone()) {
-            Handle_Geom_BSplineCurve aBSplineCurve(aBSplineInterpolation.Curve());
+        else if (ts && fl) {
+            Py::Sequence tlist(ts);
+            TColgp_Array1OfVec tangents(1, tlist.size());
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = tlist.begin(); it != tlist.end(); ++it) {
+                Py::Vector v(*it);
+                Base::Vector3d vec = v.toVector();
+                tangents.SetValue(index++, gp_Vec(vec.x,vec.y,vec.z));
+            }
+
+            Py::Sequence flist(fl);
+            Handle_TColStd_HArray1OfBoolean tangentFlags = new TColStd_HArray1OfBoolean(1, flist.size());
+            Standard_Integer findex = 1;
+            for (Py::Sequence::iterator it = flist.begin(); it != flist.end(); ++it) {
+                Py::Boolean flag(*it);
+                tangentFlags->SetValue(findex++, static_cast<bool>(flag) ? Standard_True : Standard_False);
+            }
+
+            aBSplineInterpolation->Load(tangents, tangentFlags, PyObject_IsTrue(scale)
+                                        ? Standard_True : Standard_False);
+        }
+
+        aBSplineInterpolation->Perform();
+        if (aBSplineInterpolation->IsDone()) {
+            Handle_Geom_BSplineCurve aBSplineCurve(aBSplineInterpolation->Curve());
             this->getGeomBSplineCurvePtr()->setHandle(aBSplineCurve);
             Py_Return;
         }

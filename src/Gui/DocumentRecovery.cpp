@@ -36,6 +36,8 @@
 # include <QFile>
 # include <QFileInfo>
 # include <QHeaderView>
+# include <QMenu>
+# include <QMessageBox>
 # include <QPushButton>
 # include <QTextStream>
 # include <QTreeWidgetItem>
@@ -58,6 +60,7 @@
 #include <Gui/Document.h>
 
 #include <QDomDocument>
+#include <boost/interprocess/sync/file_lock.hpp>
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -443,6 +446,127 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
     }
 
     return cfg;
+}
+
+void DocumentRecovery::contextMenuEvent(QContextMenuEvent* ev)
+{
+    QList<QTreeWidgetItem*> items = d_ptr->ui.treeWidget->selectedItems();
+    if (!items.isEmpty()) {
+        QMenu menu;
+        menu.addAction(tr("Delete"), this, SLOT(onDeleteSection()));
+        menu.exec(ev->globalPos());
+    }
+}
+
+void DocumentRecovery::onDeleteSection()
+{
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setWindowTitle(tr("Cleanup"));
+    msgBox.setText(tr("Are you sure you want to delete the selected transient directories?"));
+    msgBox.setInformativeText(tr("When deleting the selected transient directory you won't be able to recover any files afterwards."));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    int ret = msgBox.exec();
+    if (ret == QMessageBox::No)
+        return;
+
+    QList<QTreeWidgetItem*> items = d_ptr->ui.treeWidget->selectedItems();
+    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+        int index = d_ptr->ui.treeWidget->indexOfTopLevelItem(*it);
+        QTreeWidgetItem* item = d_ptr->ui.treeWidget->takeTopLevelItem(index);
+
+        QString projectFile = item->toolTip(0);
+        clearDirectory(QFileInfo(tmp.filePath(projectFile)));
+        tmp.rmdir(projectFile);
+        delete item;
+    }
+
+    int numItems = d_ptr->ui.treeWidget->topLevelItemCount();
+    if (numItems == 0) {
+        d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        d_ptr->ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(true);
+    }
+}
+
+void DocumentRecovery::on_buttonCleanup_clicked()
+{
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setWindowTitle(tr("Cleanup"));
+    msgBox.setText(tr("Are you sure you want to delete all transient directories?"));
+    msgBox.setInformativeText(tr("When deleting all transient directory you won't be able to recover any files afterwards."));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    int ret = msgBox.exec();
+    if (ret == QMessageBox::No)
+        return;
+
+    d_ptr->ui.treeWidget->clear();
+    d_ptr->ui.buttonCleanup->setEnabled(false);
+    d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    d_ptr->ui.buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(true);
+
+    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
+    tmp.setFilter(QDir::Files);
+
+    QList<QFileInfo> restoreDocFiles;
+    QString exeName = QString::fromLatin1(App::GetApplication().getExecutableName());
+    QList<QFileInfo> locks = tmp.entryInfoList();
+    for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
+        QString bn = it->baseName();
+        // ignore the lock file for this instance
+        QString pid = QString::number(QCoreApplication::applicationPid());
+        if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
+            QString fn = it->absoluteFilePath();
+            boost::interprocess::file_lock flock((const char*)fn.toLocal8Bit());
+            if (flock.try_lock()) {
+                // OK, this file is a leftover from a previous crash
+                QString crashed_pid = bn.mid(exeName.length()+1);
+                // search for transient directories with this PID
+                QString filter;
+                QTextStream str(&filter);
+                str << exeName << "_Doc_*_" << crashed_pid;
+                tmp.setNameFilters(QStringList() << filter);
+                tmp.setFilter(QDir::Dirs);
+                QList<QFileInfo> dirs = tmp.entryInfoList();
+                if (!dirs.isEmpty()) {
+                    for (QList<QFileInfo>::iterator jt = dirs.begin(); jt != dirs.end(); ++jt) {
+                        clearDirectory(*jt);
+                        tmp.rmdir(jt->fileName());
+                    }
+                }
+                tmp.remove(it->fileName());
+            }
+        }
+    }
+
+    QMessageBox::information(this, tr("Finished"), tr("Transient directories deleted."));
+}
+
+void DocumentRecovery::clearDirectory(const QFileInfo& dir)
+{
+    QDir qThisDir(dir.absoluteFilePath());
+    if (!qThisDir.exists())
+        return;
+
+    // Remove all files in this directory
+    qThisDir.setFilter(QDir::Files);
+    QStringList files = qThisDir.entryList();
+    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
+        QString file = *it;
+        qThisDir.remove(file);
+    }
+
+    // Clear this directory of any sub-directories
+    qThisDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    QFileInfoList subdirs = qThisDir.entryInfoList();
+    for (QFileInfoList::iterator it = subdirs.begin(); it != subdirs.end(); ++it) {
+        clearDirectory(*it);
+        qThisDir.rmdir(it->fileName());
+    }
 }
 
 #include "moc_DocumentRecovery.cpp"

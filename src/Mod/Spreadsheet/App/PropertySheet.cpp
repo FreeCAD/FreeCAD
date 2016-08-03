@@ -38,7 +38,6 @@
 #include <Base/PyObjectBase.h>
 #include "PropertySheet.h"
 #include "Sheet.h"
-#include "SpreadsheetExpression.h"
 #include "Utils.h"
 #include <PropertySheetPy.h>
 #include <App/ExpressionVisitors.h>
@@ -158,7 +157,7 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
             const boost::sub_match<const char *> rowstr = cm[2];
 
             // A valid cell address?
-            if (Spreadsheet::validRow(rowstr.str()) >= 0 && Spreadsheet::validColumn(colstr.str()) >= 0)
+            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()) >= 0)
                 return false;
         }
         return true;
@@ -213,13 +212,20 @@ PropertySheet::PropertySheet(const PropertySheet &other)
     , mergedCells(other.mergedCells)
     , owner(other.owner)
     , propertyNameToCellMap(other.propertyNameToCellMap)
+    , cellToPropertyNameMap(other.cellToPropertyNameMap)
     , documentObjectToCellMap(other.documentObjectToCellMap)
+    , cellToDocumentObjectMap(other.cellToDocumentObjectMap)
+    , docDeps(other.docDeps)
+    , documentObjectName(other.documentObjectName)
+    , documentName(other.documentName)
+    , aliasProp(other.aliasProp)
+    , revAliasProp(other.revAliasProp)
 {
     std::map<CellAddress, Cell* >::const_iterator i = other.data.begin();
 
     /* Copy cells */
     while (i != other.data.end()) {
-        data[i->first] = new Cell(*i->second);
+        data[i->first] = new Cell(this, *i->second);
         ++i;
     }
 }
@@ -257,7 +263,7 @@ void PropertySheet::Paste(const Property &from)
             recomputeDependencies(ifrom->first);
         }
         else {
-            data[ifrom->first] = new Cell(*(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
+            data[ifrom->first] = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
         }
 
         /* Set dirty */
@@ -312,6 +318,8 @@ void PropertySheet::Save(Base::Writer &writer) const
 void PropertySheet::Restore(Base::XMLReader &reader)
 {
     int Cnt;
+
+    AtomicPropertyChange signaller(*this);
 
     reader.readElement("Cells");
     Cnt = reader.getAttributeAsInteger("Count");

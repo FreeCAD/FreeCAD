@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMirrored);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderMirrored);
 public:
     ViewProviderMirrored()
         { featureName = std::string("Mirrored");
@@ -38,7 +38,8 @@ public:
 	}
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
 
 };
 

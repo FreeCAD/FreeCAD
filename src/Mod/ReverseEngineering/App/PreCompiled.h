@@ -43,6 +43,7 @@
 #   pragma warning(disable : 4181)
 #   pragma warning(disable : 4275)
 #   pragma warning(disable : 4305)
+#   pragma warning(disable : 4522)
 #endif
 
 #ifdef _PreComp_
@@ -68,7 +69,6 @@
 #include <TColgp_Array2OfPnt.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <Geom_BSplineSurface.hxx>
-#include <Handle_Geom_BSplineSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS_Face.hxx>
 

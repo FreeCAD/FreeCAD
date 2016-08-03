@@ -68,7 +68,7 @@ public:
   inline void Scale (double fS);
   inline void Normalize (void);
   double GetAngle (const Vector2D &rclVect) const;
-  void  ProjToLine (const Vector2D &rclPt, const Vector2D &rclLine);
+  void  ProjectToLine (const Vector2D &rclPt, const Vector2D &rclLine);
 };
 
 /** BoundBox2D ********************************************/

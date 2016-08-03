@@ -1240,10 +1240,6 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
         <translation>Nume macrocomandă:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Destinație de macrocomandă:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Execută</translation>
     </message>
@@ -1265,15 +1261,15 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Acest fişier există deja.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Read-only</translation>
     </message>
 </context>
 <context>
@@ -1804,14 +1800,6 @@ Specify another directory, please.</source>
         <translation>Tipul de camerei</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Redare ortografică</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Redare din perspectivă</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1879,13 +1867,17 @@ Specify another directory, please.</source>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>Navigare %1</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished">Anti-aliasing</translation>
@@ -2710,6 +2702,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <message>
         <source>Finish</source>
         <translation>Terminare</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Ştergeţi</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4815,10 +4843,6 @@ Retineti: locul unde faceti click conteaza.</translation>
         <translation>Stiluri de navigare</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>Navigare %1</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>Muta adnotarea</translation>
     </message>
@@ -4856,11 +4880,11 @@ Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Ştergeţi macrocomanda</translation>
+        <translation>Ştergeţi macrocomanda</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>

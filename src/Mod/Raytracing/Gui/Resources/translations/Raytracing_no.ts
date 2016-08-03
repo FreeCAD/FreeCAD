@@ -463,7 +463,12 @@ Do you want to continue?</translation>
         <translation>Kamerafilnavn:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation type="unfinished">Render</translation>
     </message>
@@ -530,12 +535,11 @@ Do you want to continue?</translation>
         <translation>Maskeeksportinnstillinger</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Maks maske avvik:</translation>
+        <translation type="obsolete">Maks maske avvik:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Ikke beregn toppunkt normaler</translation>
     </message>

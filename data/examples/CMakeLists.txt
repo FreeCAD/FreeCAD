@@ -6,6 +6,7 @@ SET(Examples_Files
     PartDesignExample.FCStd
     RobotExample.FCStd
     ArchDetail.FCStd
+    FemCalculixCantilever2D.FCStd
     FemCalculixCantilever3D.FCStd
 )
 

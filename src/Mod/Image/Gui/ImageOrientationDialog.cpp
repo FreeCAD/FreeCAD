@@ -30,6 +30,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include "ui_ImageOrientationDialog.h"
 #include "ImageOrientationDialog.h"
@@ -55,7 +56,7 @@ ImageOrientationDialog::~ImageOrientationDialog()
 
 void ImageOrientationDialog::accept()
 {
-    double offset = ui->Offset_doubleSpinBox->value();
+    double offset = ui->Offset_doubleSpinBox->value().getValue();
     bool reverse = ui->Reverse_checkBox->isChecked();
     if (ui->XY_radioButton->isChecked()) {
         if (reverse) {

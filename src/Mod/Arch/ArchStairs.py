@@ -96,26 +96,26 @@ class _Stairs(ArchComponent.Component):
         # http://en.wikipedia.org/wiki/Stairs
 
         # base properties
-        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of these stairs, if no baseline is defined"))
-        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of these stairs"))
-        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The total height of these stairs"))
-        obj.addProperty("App::PropertyEnumeration","Align","Arch",translate("Arch","The alignment of these stairs on their baseline, if applicable"))
+        obj.addProperty("App::PropertyLength","Length","Arch","The length of these stairs, if no baseline is defined")
+        obj.addProperty("App::PropertyLength","Width","Arch","The width of these stairs")
+        obj.addProperty("App::PropertyLength","Height","Arch","The total height of these stairs")
+        obj.addProperty("App::PropertyEnumeration","Align","Arch","The alignment of these stairs on their baseline, if applicable")
 
         # steps properties
-        obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",translate("Arch","The number of risers in these stairs"))
-        obj.addProperty("App::PropertyLength","TreadDepth","Steps",translate("Arch","The depth of the treads of these stairs"))
-        obj.addProperty("App::PropertyLength","RiserHeight","Steps",translate("Arch","The height of the risers of these stairs"))
-        obj.addProperty("App::PropertyLength","Nosing","Steps",translate("Arch","The size of the nosing"))
-        obj.addProperty("App::PropertyLength","TreadThickness","Steps",translate("Arch","The thickness of the treads"))
-        obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",translate("Arch","The Blondel ratio, must be between 62 and 64cm or 24.5 and 25.5in"))
+        obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps","The number of risers in these stairs")
+        obj.addProperty("App::PropertyLength","TreadDepth","Steps","The depth of the treads of these stairs")
+        obj.addProperty("App::PropertyLength","RiserHeight","Steps","The height of the risers of these stairs")
+        obj.addProperty("App::PropertyLength","Nosing","Steps","The size of the nosing")
+        obj.addProperty("App::PropertyLength","TreadThickness","Steps","The thickness of the treads")
+        obj.addProperty("App::PropertyFloat","BlondelRatio","Steps","The Blondel ratio, must be between 62 and 64cm or 24.5 and 25.5in")
 
         # structural properties
-        obj.addProperty("App::PropertyEnumeration","Landings","Structure",translate("Arch","The type of landings of these stairs"))
-        obj.addProperty("App::PropertyEnumeration","Winders","Structure",translate("Arch","The type of winders in these stairs"))
-        obj.addProperty("App::PropertyEnumeration","Structure","Structure",translate("Arch","The type of structure of these stairs"))
-        obj.addProperty("App::PropertyLength","StructureThickness","Structure",translate("Arch","The thickness of the massive structure or of the stringers"))
-        obj.addProperty("App::PropertyLength","StringerWidth","Structure",translate("Arch","The width of the stringers"))
-        obj.addProperty("App::PropertyLength","StructureOffset","Structure",translate("Arch","The offset between the border of the stairs and the structure"))
+        obj.addProperty("App::PropertyEnumeration","Landings","Structure","The type of landings of these stairs")
+        obj.addProperty("App::PropertyEnumeration","Winders","Structure","The type of winders in these stairs")
+        obj.addProperty("App::PropertyEnumeration","Structure","Structure","The type of structure of these stairs")
+        obj.addProperty("App::PropertyLength","StructureThickness","Structure","The thickness of the massive structure or of the stringers")
+        obj.addProperty("App::PropertyLength","StringerWidth","Structure","The width of the stringers")
+        obj.addProperty("App::PropertyLength","StructureOffset","Structure","The offset between the border of the stairs and the structure")
 
         obj.Align = ['Left','Right','Center']
         obj.Landings = ["None","At center","At each corner"]

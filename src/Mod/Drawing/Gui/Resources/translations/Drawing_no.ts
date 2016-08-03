@@ -670,22 +670,22 @@ Vil du fortsette?</translation>
     <message>
         <location line="+14"/>
         <source>No active document</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen aktive dokumenter</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active document to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There is currently no active document to complete the operation</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>No active view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No active view</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There is currently no active view to complete the operation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There is currently no active view to complete the operation</translation>
     </message>
 </context>
 <context>

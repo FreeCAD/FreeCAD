@@ -238,174 +238,212 @@ Unit& Unit::operator = (const Unit &New)
 
 QString Unit::getString(void) const
 {
-	std::stringstream ret;
+    std::stringstream ret;
 
-	if(isEmpty())
-		return QString();
+    if (isEmpty())
+        return QString();
 
-	if(Sig.Length                  > 0 ||
-           Sig.Mass                    > 0 ||
-           Sig.Time                    > 0 ||
-           Sig.ElectricCurrent         > 0 ||
-           Sig.ThermodynamicTemperature> 0 ||
-           Sig.AmountOfSubstance       > 0 ||
-           Sig.LuminoseIntensity       > 0 ||
-           Sig.Angle                   > 0 ||
-           Sig.Density                 > 0 ){
+    if (Sig.Length                  > 0 ||
+        Sig.Mass                    > 0 ||
+        Sig.Time                    > 0 ||
+        Sig.ElectricCurrent         > 0 ||
+        Sig.ThermodynamicTemperature> 0 ||
+        Sig.AmountOfSubstance       > 0 ||
+        Sig.LuminoseIntensity       > 0 ||
+        Sig.Angle                   > 0 ||
+        Sig.Density                 > 0 ){
 
-            bool mult = false;
-            if(Sig.Length > 0){
-                mult = true;
-                ret << "mm";
-                if(Sig.Length >1)
-                    ret << "^" << Sig.Length;
-            }
-            if(Sig.Mass > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "kg";
-                if(Sig.Mass >1)
-                    ret << "^" << Sig.Mass;
-            }
-            if(Sig.Time > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "s";
-                if(Sig.Time >1)
-                    ret << "^" << Sig.Time;
-            }
-            if(Sig.ElectricCurrent > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "A";
-                if(Sig.ElectricCurrent >1)
-                    ret << "^" << Sig.ElectricCurrent;
-            }
-            if(Sig.ThermodynamicTemperature > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "K";
-                if(Sig.ThermodynamicTemperature >1)
-                    ret << "^" << Sig.ThermodynamicTemperature;
-            }
-            if(Sig.AmountOfSubstance > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "mol";
-                if(Sig.AmountOfSubstance >1)
-                    ret << "^" << Sig.AmountOfSubstance;
-            }
-            if(Sig.LuminoseIntensity > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "cd";
-                if(Sig.LuminoseIntensity >1)
-                    ret << "^" << Sig.LuminoseIntensity;
-            }
-            if(Sig.Angle > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "deg";
-                if(Sig.Angle >1)
-                    ret << "^" << Sig.Angle;
-            }
-            if(Sig.Density > 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "kg/m^3";
-                if(Sig.Density >1)
-                    ret << "^" << Sig.Density;
-            }
-        }else{
-		ret << "1";
-	}
-
-	if(Sig.Length                  < 0 ||
-           Sig.Mass                    < 0 ||
-           Sig.Time                    < 0 ||
-           Sig.ElectricCurrent         < 0 ||
-           Sig.ThermodynamicTemperature< 0 ||
-           Sig.AmountOfSubstance       < 0 ||
-           Sig.LuminoseIntensity       < 0 ||
-           Sig.Angle                   < 0 ||
-           Sig.Density                 < 0 ){
-            ret << "/";
-
-            int nnom = Sig.Length<0?1:2 +
-                Sig.Mass<0?1:2 +
-                Sig.Time<0?1:2 +
-                Sig.ElectricCurrent<0?1:2 +
-                Sig.ThermodynamicTemperature<0?1:2 +
-                Sig.AmountOfSubstance<0?1:2 +
-                Sig.LuminoseIntensity<0?1:2 +
-                Sig.Angle<0?1:2 +
-                Sig.Density<0?1:2 ;
-            if (nnom > 1) ret << '(';
-            bool mult=false;
-            if(Sig.Length < 0){
-                ret << "mm";
-                mult = true;
-                if(Sig.Length <-1)
-                    ret << "^" << abs(Sig.Length);
-            }
-            if(Sig.Mass < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "kg";
-                if(Sig.Mass <-1)
-                    ret << "^" << abs(Sig.Mass);
-            }
-            if(Sig.Time < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "s";
-                if(Sig.Time <-1)
-                    ret << "^" << abs(Sig.Time);
-            }
-            if(Sig.ElectricCurrent < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "A";
-                if(Sig.ElectricCurrent <-1)
-                    ret << "^" << abs(Sig.ElectricCurrent);
-            }
-            if(Sig.ThermodynamicTemperature < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "K";
-                if(Sig.ThermodynamicTemperature <-1)
-                    ret << "^" << abs(Sig.ThermodynamicTemperature);
-            }
-            if(Sig.AmountOfSubstance < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "mol";
-                if(Sig.AmountOfSubstance <-1)
-                    ret << "^" << abs(Sig.AmountOfSubstance);
-            }
-            if(Sig.LuminoseIntensity < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "cd";
-                if(Sig.LuminoseIntensity <-1)
-                    ret << "^" << abs(Sig.LuminoseIntensity);
-            }
-            if(Sig.Angle < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "deg";
-                if(Sig.Angle <-1)
-                    ret << "^" << abs(Sig.Angle);
-            }
-            if(Sig.Density < 0){
-                if(mult) ret<<'*';
-                mult = true;
-                ret << "kg/m^3";
-                if(Sig.Density <-1)
-                    ret << "^" << abs(Sig.Density);
-            }
-            if (nnom > 1) ret << ')';
+        bool mult = false;
+        if (Sig.Length > 0) {
+            mult = true;
+            ret << "mm";
+            if (Sig.Length > 1)
+                ret << "^" << Sig.Length;
         }
+
+        if (Sig.Mass > 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "kg";
+            if (Sig.Mass > 1)
+                ret << "^" << Sig.Mass;
+        }
+
+        if (Sig.Time > 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "s";
+            if (Sig.Time > 1)
+                ret << "^" << Sig.Time;
+        }
+
+        if (Sig.ElectricCurrent > 0) {
+            if (mult) ret<<'*';
+                mult = true;
+            ret << "A";
+            if (Sig.ElectricCurrent > 1)
+                ret << "^" << Sig.ElectricCurrent;
+        }
+
+        if (Sig.ThermodynamicTemperature > 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "K";
+            if (Sig.ThermodynamicTemperature > 1)
+                ret << "^" << Sig.ThermodynamicTemperature;
+        }
+
+        if (Sig.AmountOfSubstance > 0){
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "mol";
+            if (Sig.AmountOfSubstance > 1)
+                ret << "^" << Sig.AmountOfSubstance;
+        }
+
+        if (Sig.LuminoseIntensity > 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "cd";
+            if (Sig.LuminoseIntensity > 1)
+                ret << "^" << Sig.LuminoseIntensity;
+        }
+
+        if (Sig.Angle > 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "deg";
+            if (Sig.Angle > 1)
+                ret << "^" << Sig.Angle;
+        }
+
+        if (Sig.Density > 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "kg/m^3";
+            if (Sig.Density > 1)
+                ret << "^" << Sig.Density;
+        }
+    }
+    else {
+        ret << "1";
+    }
+
+    if (Sig.Length                  < 0 ||
+        Sig.Mass                    < 0 ||
+        Sig.Time                    < 0 ||
+        Sig.ElectricCurrent         < 0 ||
+        Sig.ThermodynamicTemperature< 0 ||
+        Sig.AmountOfSubstance       < 0 ||
+        Sig.LuminoseIntensity       < 0 ||
+        Sig.Angle                   < 0 ||
+        Sig.Density                 < 0 ){
+        ret << "/";
+
+        int nnom = 0;
+        nnom += Sig.Length<0?1:0;
+        nnom += Sig.Mass<0?1:0;
+        nnom += Sig.Time<0?1:0;
+        nnom += Sig.ElectricCurrent<0?1:0;
+        nnom += Sig.ThermodynamicTemperature<0?1:0;
+        nnom += Sig.AmountOfSubstance<0?1:0;
+        nnom += Sig.LuminoseIntensity<0?1:0;
+        nnom += Sig.Angle<0?1:0;
+        nnom += Sig.Density<0?1:0;
+
+        if (nnom > 1)
+            ret << '(';
+
+        bool mult=false;
+        if (Sig.Length < 0) {
+            ret << "mm";
+            mult = true;
+            if (Sig.Length < -1)
+                ret << "^" << abs(Sig.Length);
+        }
+
+        if (Sig.Mass < 0) {
+            if(mult)
+                ret<<'*';
+            mult = true;
+            ret << "kg";
+            if (Sig.Mass < -1)
+                ret << "^" << abs(Sig.Mass);
+        }
+
+        if (Sig.Time < 0) {
+            if(mult)
+                ret<<'*';
+            mult = true;
+            ret << "s";
+            if (Sig.Time < -1)
+                ret << "^" << abs(Sig.Time);
+        }
+
+        if (Sig.ElectricCurrent < 0) {
+            if(mult)
+                ret<<'*';
+            mult = true;
+            ret << "A";
+            if (Sig.ElectricCurrent < -1)
+                ret << "^" << abs(Sig.ElectricCurrent);
+        }
+
+        if (Sig.ThermodynamicTemperature < 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "K";
+            if (Sig.ThermodynamicTemperature < -1)
+                ret << "^" << abs(Sig.ThermodynamicTemperature);
+        }
+
+        if (Sig.AmountOfSubstance < 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "mol";
+            if (Sig.AmountOfSubstance < -1)
+                ret << "^" << abs(Sig.AmountOfSubstance);
+        }
+
+        if (Sig.LuminoseIntensity < 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "cd";
+            if (Sig.LuminoseIntensity < -1)
+                ret << "^" << abs(Sig.LuminoseIntensity);
+        }
+
+        if (Sig.Angle < 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "deg";
+            if (Sig.Angle < -1)
+                ret << "^" << abs(Sig.Angle);
+        }
+
+        if (Sig.Density < 0) {
+            if (mult)
+                ret<<'*';
+            mult = true;
+            ret << "kg/m^3";
+            if (Sig.Density < -1)
+                ret << "^" << abs(Sig.Density);
+        }
+
+        if (nnom > 1)
+            ret << ')';
+    }
 
     return QString::fromUtf8(ret.str().c_str());
 }

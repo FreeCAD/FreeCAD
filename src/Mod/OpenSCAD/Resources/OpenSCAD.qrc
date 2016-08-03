@@ -11,6 +11,7 @@
         <file>icons/OpenSCAD_MeshBooleans.svg</file>
         <file>icons/OpenSCAD_Hull.svg</file>
         <file>icons/OpenSCAD_Minkowski.svg</file>
+        <file>icons/OpenSCADWorkbench.svg</file>
         <file>ui/openscadprefs-base.ui</file>
         <file>translations/OpenSCAD_tr.qm</file>
         <file>translations/OpenSCAD_sv-SE.qm</file>

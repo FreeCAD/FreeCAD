@@ -1,5 +1,6 @@
 <RCC>
-    <qresource> 
+    <qresource>
+        <file>icons/CompleteWorkbench.svg</file>
         <file>translations/Complete_af.qm</file>
         <file>translations/Complete_de.qm</file>
         <file>translations/Complete_fi.qm</file>
@@ -27,4 +28,4 @@
         <file>translations/Complete_el.qm</file>
         <file>translations/Complete_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

@@ -136,15 +136,15 @@
     <name>DlgExpressionInput</name>
     <message>
         <source>Formula editor</source>
-        <translation type="unfinished">Formula editor</translation>
+        <translation>Уређивач формула</translation>
     </message>
     <message>
         <source>Result:</source>
-        <translation type="unfinished">Result:</translation>
+        <translation>Резултат:</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="unfinished">&amp;Discard</translation>
+        <translation>&amp;Одбаци</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -1239,10 +1239,6 @@ Please define another shortcut.</source>
         <translation>Име макронаредбе:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Дестинација макронаредбе:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Изврши</translation>
     </message>
@@ -1264,15 +1260,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">System macros</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">User macros location:</translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1312,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Само за читање</translation>
     </message>
 </context>
 <context>
@@ -1450,7 +1446,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>HTML files</source>
-        <translation type="unfinished">HTML files</translation>
+        <translation>HTML датотеке</translation>
     </message>
 </context>
 <context>
@@ -1526,7 +1522,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Clear user settings</source>
-        <translation type="unfinished">Clear user settings</translation>
+        <translation>Бриcање кориcничких поcтавки</translation>
     </message>
     <message>
         <source>Do you want to clear all your user settings?</source>
@@ -1534,7 +1530,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>If you agree all your settings will be cleared.</source>
-        <translation type="unfinished">If you agree all your settings will be cleared.</translation>
+        <translation>Ако потврдите cве ваше поcтавке ће бити избриcане.</translation>
     </message>
 </context>
 <context>
@@ -1652,7 +1648,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Project file</source>
-        <translation type="unfinished">Project file</translation>
+        <translation>Датотека пројекта</translation>
     </message>
 </context>
 <context>
@@ -1803,14 +1799,6 @@ Specify another directory, please.</source>
         <translation>Тип камере</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Ортографски приказ</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Приказ &apos;Из перспективе&apos;</translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1878,13 +1866,17 @@ Specify another directory, please.</source>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>%1 навигација</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished">Anti-aliasing</translation>
@@ -2711,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
         <source>Finish</source>
         <translation>Заврши</translation>
     </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Обриши</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadDialog</name>
@@ -3532,7 +3560,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF датотека</translation>
     </message>
 </context>
 <context>
@@ -4344,11 +4372,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>PDF file</source>
-        <translation type="unfinished">PDF file</translation>
+        <translation>PDF датотека</translation>
     </message>
     <message>
         <source>Opening file failed</source>
-        <translation type="unfinished">Opening file failed</translation>
+        <translation>Отварање датотеке неуcпешно</translation>
     </message>
     <message>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
@@ -4821,10 +4849,6 @@ Be aware the point where you click matters.</source>
         <translation>Стилови навиације</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>%1 навигација</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation type="unfinished">Move annotation</translation>
     </message>
@@ -4862,11 +4886,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Обриши макронаредбу</translation>
+        <translation>Обриши макронаредбу</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not allowed to delete system-wide macros</translation>
     </message>
 </context>
 <context>
@@ -6802,7 +6826,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation type="unfinished">Are you sure?</translation>
+        <translation>Да ли сте сигурни?</translation>
     </message>
 </context>
 <context>

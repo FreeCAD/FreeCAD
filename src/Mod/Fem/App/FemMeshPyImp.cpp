@@ -63,7 +63,7 @@ std::string FemMeshPy::representation(void) const
 
 PyObject *FemMeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of FemMeshPy and the Twin object 
+    // create a new instance of FemMeshPy and the Twin object
     return new FemMeshPy(new FemMesh);
 }
 
@@ -71,7 +71,7 @@ PyObject *FemMeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj=0;
-    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C
         return -1;                             // NULL triggers exception
 
     try {
@@ -287,7 +287,7 @@ PyObject* FemMeshPy::addFace(PyObject *args)
                 throw std::runtime_error("Failed to get node of the given indices");
             Nodes.push_back(node);
         }
-        
+
         SMDS_MeshFace* face=0;
         switch(Nodes.size()){
             case 3:
@@ -390,7 +390,7 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
                 throw std::runtime_error("Failed to get node of the given indices");
             Nodes.push_back(node);
         }
-        
+
         SMDS_MeshVolume* vol=0;
         if(ElementId != -1) {
             switch(Nodes.size()){
@@ -573,6 +573,37 @@ PyObject* FemMeshPy::setTransform(PyObject *args)
         return 0;
     }
     Py_Return;
+}
+
+
+PyObject* FemMeshPy::getFacesByFace(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        if (sh.IsNull()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
+            return 0;
+        }
+
+        const TopoDS_Face& fc = TopoDS::Face(sh);
+
+        Py::List ret;
+        std::list<int> resultSet = getFemMeshPtr()->getFacesByFace(fc);
+        for (std::list<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it) {
+            ret.append(Py::Int(*it));
+        }
+
+        return Py::new_reference_to(ret);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* FemMeshPy::getVolumesByFace(PyObject *args)
@@ -810,7 +841,7 @@ Py::Dict FemMeshPy::getNodes(void) const
     for (int i=0;aNodeIter->more();i++) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
-        // Apply the matrix to hold the BoundBox in absolute space. 
+        // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
         int id = aNode->GetID();
 
@@ -947,7 +978,7 @@ Py::Int FemMeshPy::getGroupCount(void) const
 Py::Object FemMeshPy::getVolume(void) const
 {
     return Py::Object(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
-    
+
 }
 // ===== custom attributes ============================================================
 
@@ -958,5 +989,5 @@ PyObject *FemMeshPy::getCustomAttributes(const char* /*attr*/) const
 
 int FemMeshPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

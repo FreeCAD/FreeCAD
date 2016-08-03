@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>460</width>
-    <height>500</height>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -391,6 +391,58 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>BimServerUrl</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_3">
+          <property name="toolTip">
+           <string>if this is checked, the &quot;open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+          </property>
+          <property name="text">
+           <string>Open in external browser</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BimServerBrowser</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Survey</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_2">
+          <property name="toolTip">
+           <string>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</string>
+          </property>
+          <property name="text">
+           <string>Include unit when sending measurements to clipboard</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>surveyUnits</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

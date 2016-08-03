@@ -188,12 +188,10 @@ void GLImageBox::drawImage()
         else
         {
             glPixelTransferf(GL_MAP_COLOR, 0.0);
-            float zero = 0.0;
-            float one = 1.0;
-            glPixelMapfv(GL_PIXEL_MAP_R_TO_R, 1, &zero);
-            glPixelMapfv(GL_PIXEL_MAP_G_TO_G, 1, &zero);
-            glPixelMapfv(GL_PIXEL_MAP_B_TO_B, 1, &zero);
-            glPixelMapfv(GL_PIXEL_MAP_A_TO_A, 1, &one);
+            glPixelMapfv(GL_PIXEL_MAP_R_TO_R, 0, NULL);
+            glPixelMapfv(GL_PIXEL_MAP_G_TO_G, 0, NULL);
+            glPixelMapfv(GL_PIXEL_MAP_B_TO_B, 0, NULL);
+            glPixelMapfv(GL_PIXEL_MAP_A_TO_A, 0, NULL);
         }
 
         // Get the pixel format

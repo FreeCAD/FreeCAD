@@ -15,6 +15,7 @@
 # include <Interface_Static.hxx>
 # include <IGESControl_Controller.hxx>
 # include <STEPControl_Controller.hxx>
+# include <Standard_Version.hxx>
 # include <OSD.hxx>
 # include <sstream>
 #endif
@@ -49,6 +50,7 @@
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
 #include "PartFeatures.h"
+#include "BodyBase.h"
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
@@ -89,7 +91,11 @@
 #include "ToroidPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
+#include "AttachEnginePy.h"
 #include "PropertyGeometryList.h"
+#include "DatumFeature.h"
+#include "Attacher.h"
+#include "AttachableObject.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -106,13 +112,6 @@ PyObject* Part::PartExceptionOCCDimensionError;
 
 PyMODINIT_FUNC initPart()
 {
-    std::stringstream str;
-    str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
-#ifdef OCC_VERSION_DEVELOPMENT
-    str << "." OCC_VERSION_DEVELOPMENT;
-#endif
-    App::Application::Config()["OCC_VERSION"] = str.str();
-
     Base::Console().Log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it
@@ -125,6 +124,9 @@ PyMODINIT_FUNC initPart()
 
     PyObject* partModule = Part::initModule();
     Base::Console().Log("Loading Part module... done\n");
+
+    Py::Object module(partModule);
+    module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));
 
     // Python exceptions
     //
@@ -212,10 +214,25 @@ PyMODINIT_FUNC initPart()
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
 
+    Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
+
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+
+    try{
+        //import all submodules of BOPTools, to make them easy to browse in Py console.
+        //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
+        //because the latter crashed when importAll failed with exception.
+        Base::Interpreter().runString("__import__('BOPTools').importAll()");
+
+        Py::Object bt = Base::Interpreter().runStringObject("__import__('BOPTools')");
+        module.setAttr(std::string("BOPTools"),bt);
+    } catch (Base::PyException &err){
+        Base::Console().Error("Failed to import BOPTools package:\n");
+        err.ReportException();
+    }
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
@@ -223,8 +240,17 @@ PyMODINIT_FUNC initPart()
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
 
+    Attacher::AttachEngine        ::init();
+    Attacher::AttachEngine3D      ::init();
+    Attacher::AttachEnginePlane   ::init();
+    Attacher::AttachEngineLine    ::init();
+    Attacher::AttachEnginePoint   ::init();
+
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
+    Part::AttachableObject      ::init();
+    Part::AttachableObjectPython::init();
+    Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();
     Part::CustomFeature         ::init();
@@ -266,6 +292,7 @@ PyMODINIT_FUNC initPart()
     Part::Helix                 ::init();
     Part::Spiral                ::init();
     Part::Wedge                 ::init();
+
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();
     Part::Face                  ::init();
@@ -306,7 +333,7 @@ PyMODINIT_FUNC initPart()
     Part::GeomTrimmedSurface      ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
-
+    Part::Datum                   ::init();
 
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();

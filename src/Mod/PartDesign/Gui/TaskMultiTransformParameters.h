@@ -80,10 +80,12 @@ private Q_SLOTS:
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
     virtual void onUpdateView(bool);
+    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void clearButtons();
 
 private:
     void updateUI();
@@ -113,7 +115,7 @@ public:
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    // virtual bool reject();
 };
 
 } //namespace PartDesignGui

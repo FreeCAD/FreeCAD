@@ -342,6 +342,8 @@ void TaskDlgFemConstraintForce::open()
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = QObject::tr("Constraint force");
         Gui::Command::openCommand((const char*)msg.toUtf8());
+        ConstraintView->setVisible(true);
+        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
@@ -355,7 +357,7 @@ bool TaskDlgFemConstraintForce::accept()
 
         if (parameterForce->getForce()<=0)
         {
-          QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a force greater than 0"));  
+          QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a force greater than 0"));
             return false;
         }
         else
@@ -376,7 +378,7 @@ bool TaskDlgFemConstraintForce::accept()
         }
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), parameterForce->getReverse() ? "True" : "False");
-        
+
         scale = parameterForce->getScale();  //OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }

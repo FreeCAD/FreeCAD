@@ -37,6 +37,7 @@
 #include "ui_Mirroring.h"
 #include "../App/PartFeature.h"
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -61,9 +62,9 @@ Mirroring::Mirroring(QWidget* parent)
     ui->baseX->setRange(-DBL_MAX, DBL_MAX);
     ui->baseY->setRange(-DBL_MAX, DBL_MAX);
     ui->baseZ->setRange(-DBL_MAX, DBL_MAX);
-    ui->baseX->setDecimals(Base::UnitsApi::getDecimals());
-    ui->baseY->setDecimals(Base::UnitsApi::getDecimals());
-    ui->baseZ->setDecimals(Base::UnitsApi::getDecimals());
+    ui->baseX->setUnit(Base::Unit::Length);
+    ui->baseY->setUnit(Base::Unit::Length);
+    ui->baseZ->setUnit(Base::Unit::Length);
     findShapes();
 
     Gui::ItemViewSelection sel(ui->shapes);
@@ -145,12 +146,13 @@ bool Mirroring::accept()
         normy = 1.0f;
     else
         normx = 1.0f;
-    double basex = ui->baseX->value();
-    double basey = ui->baseY->value();
-    double basez = ui->baseZ->value();
+    double basex = ui->baseX->value().getValue();
+    double basey = ui->baseY->value().getValue();
+    double basez = ui->baseZ->value().getValue();
     for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
         shape = (*it)->data(0, Qt::UserRole).toString();
-        label = (*it)->text(0);
+        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8((*it)->text(0).toUtf8());
+        label = QString::fromStdString(escapedstr);
 
         // if we already have the suffix " (Mirror #<number>)" remove it
         int pos = label.indexOf(rx);
@@ -162,7 +164,7 @@ bool Mirroring::accept()
             "__doc__=FreeCAD.getDocument(\"%1\")\n"
             "__doc__.addObject(\"Part::Mirroring\")\n"
             "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
-            "__doc__.ActiveObject.Label=\"%3\"\n"
+            "__doc__.ActiveObject.Label=u\"%3\"\n"
             "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
             "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
             "del __doc__")

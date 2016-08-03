@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -30,13 +31,14 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/FileInfo.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Property.h>
 #include <Base/PlacementPy.h>
 
-#include <CXX/Objects.hxx>
+#include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
 #include "Core/MeshKernel.h"
@@ -45,9 +47,11 @@
 #include "Core/Iterator.h"
 #include "Core/Approximation.h"
 
-#include "MeshPy.h"
+#include "WildMagic4/Wm4ContBox3.h"
+
 #include "Mesh.h"
 #include "FeatureMeshImport.h"
+#include <Mod/Mesh/App/MeshPy.h>
 
 using namespace Mesh;
 using namespace MeshCore;
@@ -63,9 +67,6 @@ public:
         );
         add_varargs_method("open",&Module::open,
             "open(string) -- Create a new document and a Mesh::Import feature to load the file into the document."
-        );
-        add_varargs_method("insert",&Module::importer,
-            "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."
         );
         add_varargs_method("insert",&Module::importer,
             "insert(string|mesh,[string]) -- Load or insert a mesh into the given or active document."
@@ -107,6 +108,10 @@ public:
         );
         add_varargs_method("polynomialFit",&Module::polynomialFit,
             "polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."
+        );
+        add_varargs_method("minimumVolumeOrientedBox",&Module::minimumVolumeOrientedBox,
+            "minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum volume oriented box containing all points.\n"
+            "The return value is a tuple of seven items: center, u, v, w directions and the lengths of the three vectors."
         );
         initialize("The functions in this module allow working with mesh objects.\n"
                    "A set of functions are provided that allow to read in registered mesh file formats\n"
@@ -163,10 +168,15 @@ private:
             unsigned long segmct = mesh.countSegments();
             if (segmct > 1) {
                 for (unsigned long i=0; i<segmct; i++) {
-                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(mesh.getSegment(i).getIndices()));
+                    const Segment& group = mesh.getSegment(i);
+                    std::string groupName = group.getName();
+                    if (groupName.empty())
+                        groupName = file.fileNamePure();
+
+                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
                     Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                        (pcDoc->addObject("Mesh::Feature", file.fileNamePure().c_str()));
-                    pcFeature->Label.setValue(file.fileNamePure().c_str());
+                        (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
+                    pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
                     pcFeature->purgeTouched();
                 }
@@ -223,10 +233,15 @@ private:
             unsigned long segmct = mesh.countSegments();
             if (segmct > 1) {
                 for (unsigned long i=0; i<segmct; i++) {
-                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(mesh.getSegment(i).getIndices()));
+                    const Segment& group = mesh.getSegment(i);
+                    std::string groupName = group.getName();
+                    if (groupName.empty())
+                        groupName = file.fileNamePure();
+
+                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
                     Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                        (pcDoc->addObject("Mesh::Feature", file.fileNamePure().c_str()));
-                    pcFeature->Label.setValue(file.fileNamePure().c_str());
+                        (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
+                    pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
                     pcFeature->purgeTouched();
                 }
@@ -285,10 +300,20 @@ private:
                     const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
                     MeshCore::MeshKernel kernel = mesh.getKernel();
                     kernel.Transform(mesh.getTransform());
-                    if (global_mesh.countFacets() == 0)
+
+                    unsigned long countFacets = global_mesh.countFacets();
+                    if (countFacets == 0)
                         global_mesh.setKernel(kernel);
                     else
                         global_mesh.addMesh(kernel);
+
+                    // now create a segment for the added mesh
+                    std::vector<unsigned long> indices;
+                    indices.resize(global_mesh.countFacets() - countFacets);
+                    std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+                    Segment segm(&global_mesh, indices, true);
+                    segm.setName(obj->Label.getValue());
+                    global_mesh.addSegment(segm);
                 }
                 else if (obj->getTypeId().isDerivedFrom(partId)) {
                     App::Property* shape = obj->getPropertyByName("Shape");
@@ -296,12 +321,25 @@ private:
                     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                         std::vector<Base::Vector3d> aPoints;
                         std::vector<Data::ComplexGeoData::Facet> aTopo;
-                        static_cast<App::PropertyComplexGeoData*>(shape)->getFaces(aPoints, aTopo,fTolerance);
-                        mesh->addFacets(aTopo, aPoints);
-                        if (global_mesh.countFacets() == 0)
-                            global_mesh = *mesh;
-                        else
-                            global_mesh.addMesh(*mesh);
+                        const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData();
+                        if (data) {
+                            data->getFaces(aPoints, aTopo, fTolerance);
+                            mesh->addFacets(aTopo, aPoints);
+
+                            unsigned long countFacets = global_mesh.countFacets();
+                            if (countFacets == 0)
+                                global_mesh = *mesh;
+                            else
+                                global_mesh.addMesh(*mesh);
+
+                            // now create a segment for the added mesh
+                            std::vector<unsigned long> indices;
+                            indices.resize(global_mesh.countFacets() - countFacets);
+                            std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+                            Segment segm(&global_mesh, indices, true);
+                            segm.setName(obj->Label.getValue());
+                            global_mesh.addSegment(segm);
+                        }
                     }
                 }
                 else {
@@ -310,6 +348,12 @@ private:
             }
         }
 
+        // if we have more than one segment set the 'save' flag
+        if (global_mesh.countSegments() > 1) {
+            for (unsigned long i = 0; i < global_mesh.countSegments(); ++i) {
+                global_mesh.getSegment(i).save(true);
+            }
+        }
         // export mesh compound
         global_mesh.save(EncodedName.c_str());
 
@@ -544,6 +588,65 @@ private:
         dict.setItem(Py::String("Residuals"), r);
 
         return dict;
+    }
+    Py::Object minimumVolumeOrientedBox(const Py::Tuple& args) {
+        PyObject *input;
+
+        if (!PyArg_ParseTuple(args.ptr(), "O",&input))
+            throw Py::Exception();
+
+        if (!PySequence_Check(input)) {
+            throw Py::TypeError("Input has to be a sequence of Base.Vector()");
+        }
+
+        Py::Sequence list(input);
+        std::vector<Wm4::Vector3d> points;
+        points.reserve(list.size());
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* value = (*it).ptr();
+            if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
+                Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+                Base::Vector3d* val = pcObject->getVectorPtr();
+                Wm4::Vector3d pt;
+                pt[0] = val->x;
+                pt[1] = val->y;
+                pt[2] = val->z;
+                points.push_back(pt);
+            }
+        }
+
+        if (points.size() < 4)
+            throw Py::RuntimeError("Too few points");
+
+        Wm4::Box3d mobox = Wm4::ContMinBox(points.size(), &(points[0]), 0.001, Wm4::Query::QT_REAL);
+        Py::Tuple result(7);
+        Base::Vector3d v;
+
+        v.x = mobox.Center[0];
+        v.y = mobox.Center[1];
+        v.z = mobox.Center[2];
+        result.setItem(0, Py::Vector(v));
+
+        v.x = mobox.Axis[0][0];
+        v.y = mobox.Axis[0][1];
+        v.z = mobox.Axis[0][2];
+        result.setItem(1, Py::Vector(v));
+
+        v.x = mobox.Axis[1][0];
+        v.y = mobox.Axis[1][1];
+        v.z = mobox.Axis[1][2];
+        result.setItem(2, Py::Vector(v));
+
+        v.x = mobox.Axis[2][0];
+        v.y = mobox.Axis[2][1];
+        v.z = mobox.Axis[2][2];
+        result.setItem(3, Py::Vector(v));
+
+        result.setItem(4, Py::Float(mobox.Extent[0]));
+        result.setItem(5, Py::Float(mobox.Extent[1]));
+        result.setItem(6, Py::Float(mobox.Extent[2]));
+
+        return result;
     }
 };
 

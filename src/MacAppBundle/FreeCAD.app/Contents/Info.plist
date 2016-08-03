@@ -41,8 +41,10 @@
 			<string>Editor</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>fcstd</string>
+				<string>FCStd</string>
 			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>freecad-doc.icns</string>
 			<key>LSIsAppleDefaultForType</key>
 			<true/>
 		</dict>

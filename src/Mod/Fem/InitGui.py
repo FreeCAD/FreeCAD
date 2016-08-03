@@ -37,7 +37,7 @@ import FreeCADGui
 class FemWorkbench (Workbench):
     "Fem workbench object"
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Fem/Resources/icons/preferences-fem.svg"
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Fem/Resources/icons/FemWorkbench.svg"
         self.__class__.MenuText = "FEM"
         self.__class__.ToolTip = "FEM workbench"
 
@@ -46,16 +46,20 @@ class FemWorkbench (Workbench):
         import Fem
         import FemGui
 
-        import _CommandMechanicalShowResult
-        import _CommandQuickAnalysis
-        import _CommandPurgeFemResults
-        import _CommandSolverJobControl
-        import _CommandFemFromShape
-        import _CommandNewMechanicalAnalysis
-        import _CommandFemShellThickness
-        import _CommandFemBeamSection
+        import _CommandShowResult
+        import _CommandRunSolver
+        import _CommandPurgeResults
+        import _CommandControlSolver
+
+        import _CommandMeshFromShape
+        import _CommandAnalysis
+        import _CommandShellThickness
+        import _CommandBeamSection
         import _CommandMechanicalMaterial
-        import _CommandFemSolverCalculix
+        import _CommandSolverCalculix
+        import _CommandSolverZ88
+        import _CommandConstraintSelfWeight
+
 
         import subprocess
         from platform import system

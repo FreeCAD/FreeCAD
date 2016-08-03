@@ -152,6 +152,26 @@ std::string Base::Tools::escapedUnicodeFromUtf8(const char *s)
     return escapedstr;
 }
 
+std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
+{
+    std::string string;
+    PyObject* unicode = PyUnicode_DecodeUnicodeEscape(s.c_str(), s.size(), "strict");
+    if (!unicode)
+        return string;
+
+    if (PyUnicode_Check(unicode)) {
+        PyObject* value = PyUnicode_AsUTF8String(unicode);
+        string = PyString_AsString(value);
+        Py_DECREF(value);
+    }
+    else if (PyString_Check(unicode)) {
+        string = PyString_AsString(unicode);
+    }
+
+    Py_DECREF(unicode);
+    return string;
+}
+
 // ----------------------------------------------------------------------------
 
 using namespace Base;

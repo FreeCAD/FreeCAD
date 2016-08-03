@@ -117,8 +117,12 @@ public:
     Vector3 & operator =  (const Vector3<_Precision>& rcVct);
     /// Scalar product
     _Precision operator *  (const Vector3<_Precision>& rcVct) const;
+    /// Scalar product
+    _Precision Dot (const Vector3<_Precision>& rcVct) const;
     /// Cross product
     Vector3 operator %  (const Vector3<_Precision>& rcVct) const;
+    /// Cross product
+    Vector3 Cross (const Vector3<_Precision>& rcVct) const;
     /// Comparing for inequality
     bool operator != (const Vector3<_Precision>& rcVct) const;
     /// Comparing for equality
@@ -159,7 +163,12 @@ public:
     void TransformToCoordinateSystem (const Vector3 &rclBase, const Vector3 &rclDirX, const Vector3 &rclDirY);
     //bool Equal(const Vector3 &rclVect) const;
     /// Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm.
-    Vector3 & ProjToPlane (const Vector3 &rclBase, const Vector3 &rclNorm);
+    Vector3 & ProjectToPlane (const Vector3 &rclBase, const Vector3 &rclNorm);
+    /**
+     * Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm
+     * and stores the result in rclProj.
+     */
+    void ProjectToPlane (const Vector3 &rclBase, const Vector3 &rclNorm, Vector3 &rclProj) const;
     /// Projects this point onto the line given by the base \a rclPoint and the direction \a rclLine.
     /**
      * Projects a point \a rclPoint onto the line defined by the origin and the direction \a rclLine.
@@ -167,10 +176,10 @@ public:
      * is the distance from \a rclPoint to the line.
      * Note: The resulting vector does not depend on the current vector.
      */
-    Vector3 & ProjToLine (const Vector3 &rclPoint, const Vector3 &rclLine);
+    Vector3 & ProjectToLine (const Vector3 &rclPoint, const Vector3 &rclLine);
     /**
      * Get the perpendicular of this point to the line defined by rclBase and rclDir.
-     * Note: Do not mix up this method with ProjToLine.
+     * Note: Do not mix up this method with ProjectToLine.
      */
     Vector3 Perpendicular(const Vector3 &rclBase, const Vector3 &rclDir) const;
     /** Computes the distance to the given plane. Depending on the side this point is located

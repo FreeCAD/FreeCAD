@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>Clone</source>
-        <translation>複製</translation>
+        <translation>完全複製</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -58,7 +58,7 @@
 <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+1778"/>
+        <location filename="../../CommandCreateGeo.cpp" line="+1779"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -147,7 +147,7 @@
 <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-        <location line="+1849"/>
+        <location line="+1851"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -202,7 +202,7 @@
     <message>
         <location line="+1"/>
         <source>Connect Edges</source>
-        <translation>連接邊緣</translation>
+        <translation>連接邊</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -213,7 +213,7 @@
 <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2541"/>
+        <location filename="../../CommandConstraints.cpp" line="+2515"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -231,7 +231,7 @@
 <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-        <location line="-1682"/>
+        <location line="-1665"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -289,7 +289,7 @@
 <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-        <location line="+163"/>
+        <location line="+154"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -311,7 +311,7 @@
 <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-        <location line="+1421"/>
+        <location line="+1420"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -329,7 +329,7 @@
 <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-        <location line="-2240"/>
+        <location line="-2230"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -347,7 +347,7 @@
 <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-        <location line="+2673"/>
+        <location line="+2663"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -365,7 +365,7 @@
 <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-        <location line="-2483"/>
+        <location line="-2473"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -383,7 +383,7 @@
 <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-        <location line="+782"/>
+        <location line="+765"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -423,7 +423,7 @@
 <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-        <location line="-515"/>
+        <location line="-498"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -441,7 +441,7 @@
 <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-        <location line="+1087"/>
+        <location line="+1070"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -459,7 +459,7 @@
 <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-        <location line="+872"/>
+        <location line="+879"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -471,7 +471,7 @@
     <message>
         <location line="+1"/>
         <source>Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</source>
-        <translation>建立一個以兩點作為光線方向，並以一邊緣做為交界面的折射拘束(司乃耳定律)</translation>
+        <translation>建立一個以兩點作為光線方向，並以一邊做為交界面的折射拘束(司乃耳定律)</translation>
     </message>
 </context>
 <context>
@@ -499,7 +499,7 @@
 <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-        <location line="-970"/>
+        <location line="-977"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -517,7 +517,7 @@
 <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-        <location line="-1294"/>
+        <location line="-1277"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-3656"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-3658"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -727,7 +727,7 @@
 <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-        <location line="+957"/>
+        <location line="+959"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -763,7 +763,7 @@
 <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-        <location line="-4900"/>
+        <location line="-4902"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -781,7 +781,7 @@
 <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-        <location line="+4946"/>
+        <location line="+4948"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -817,7 +817,7 @@
 <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-        <location line="-1259"/>
+        <location line="-1261"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -875,7 +875,7 @@
 <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-        <location line="+4341"/>
+        <location line="+4343"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -911,7 +911,7 @@
 <context>
     <name>CmdSketcherCreateText</name>
     <message>
-        <location line="-1206"/>
+        <location line="-1208"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -929,7 +929,7 @@
 <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-        <location line="+1177"/>
+        <location line="+1179"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -965,7 +965,7 @@
 <context>
     <name>CmdSketcherExternal</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-504"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-506"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -977,7 +977,7 @@
     <message>
         <location line="+1"/>
         <source>Create an edge linked to an external geometry</source>
-        <translation>與外部幾何建立相連邊緣</translation>
+        <translation>與外部幾何建立相連之邊</translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1316,7 @@
 <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2999"/>
+        <location filename="../../CommandConstraints.cpp" line="+2989"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1341,12 +1341,12 @@
     <message>
         <location line="+1"/>
         <source>Trim edge</source>
-        <translation>修剪邊緣</translation>
+        <translation>修剪邊</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Trim an edge with respect to the picked position</source>
-        <translation>依選取位置修剪邊緣</translation>
+        <translation>依選取位置修剪邊</translation>
     </message>
     <message>
         <source>Trims an edge with respect to the picked position</source>
@@ -1412,7 +1412,7 @@
     <message>
         <location filename="../../CommandAlterGeometry.cpp" line="+42"/>
         <location line="+8"/>
-        <location filename="../../CommandConstraints.cpp" line="-3412"/>
+        <location filename="../../CommandConstraints.cpp" line="-3402"/>
         <location line="+329"/>
         <location line="+97"/>
         <location line="+96"/>
@@ -1430,13 +1430,13 @@
         <location line="+7"/>
         <location line="+34"/>
         <location line="+10"/>
-        <location line="+51"/>
-        <location line="+32"/>
+        <location line="+27"/>
+        <location line="+47"/>
         <location line="+26"/>
         <location line="+46"/>
         <location line="+10"/>
-        <location line="+49"/>
-        <location line="+32"/>
+        <location line="+25"/>
+        <location line="+48"/>
         <location line="+26"/>
         <location line="+46"/>
         <location line="+12"/>
@@ -1458,7 +1458,7 @@
         <location line="+41"/>
         <location line="+271"/>
         <location line="+11"/>
-        <location line="+151"/>
+        <location line="+158"/>
         <location line="+56"/>
         <location line="+45"/>
         <location line="+12"/>
@@ -1510,13 +1510,13 @@
         <location line="-7"/>
         <location line="+8"/>
         <source>Select edge(s) from the sketch.</source>
-        <translation>由草圖選取邊緣</translation>
+        <translation>由草圖選取邊</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-3152"/>
+        <location filename="../../CommandConstraints.cpp" line="-3142"/>
         <location line="+97"/>
         <source>Select an edge from the sketch.</source>
-        <translation>於草圖中選擇邊緣</translation>
+        <translation>於草圖中選擇邊</translation>
     </message>
     <message>
         <location line="-70"/>
@@ -1528,7 +1528,7 @@
         <location line="-101"/>
         <location line="+97"/>
         <source>The selected edge has already a horizontal constraint!</source>
-        <translation>所選邊緣已有水平拘束!</translation>
+        <translation>所選之邊已有水平拘束!</translation>
     </message>
     <message>
         <location line="-107"/>
@@ -1563,13 +1563,13 @@
         <location line="+56"/>
         <location line="+97"/>
         <source>The selected edge is not a line segment</source>
-        <translation>所選邊緣非為線段</translation>
+        <translation>所選之邊非為線段</translation>
     </message>
     <message>
         <location line="-83"/>
         <location line="+97"/>
         <source>The selected edge has already a vertical constraint!</source>
-        <translation>所選邊緣已有垂直拘束!</translation>
+        <translation>所選之邊已有垂直拘束!</translation>
     </message>
     <message>
         <location line="-87"/>
@@ -1600,7 +1600,7 @@
         <location line="+92"/>
         <location line="+179"/>
         <location line="+86"/>
-        <location line="+165"/>
+        <location line="+156"/>
         <source>Select vertexes from the sketch.</source>
         <translation>由草圖中選取頂點。</translation>
     </message>
@@ -1618,7 +1618,7 @@
         <translation type="obsolete">無法於外部幾何加入固定y座標之拘束!</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-521"/>
         <source>Select one vertex from the sketch other than the origin.</source>
         <translation>從草圖中選取一個非原點之頂點</translation>
     </message>
@@ -1633,7 +1633,7 @@
         <translation>選取一點及數條曲線，或是一條曲線及數個點。您已選取 %1 條曲線及 %2 個點。</translation>
     </message>
     <message>
-        <location line="+290"/>
+        <location line="+273"/>
         <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
         <translation>無法於原點加入固定y座標之拘束!</translation>
     </message>
@@ -1661,9 +1661,9 @@
     </message>
     <message>
         <location line="+11"/>
-        <location line="+207"/>
+        <location line="+214"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
-        <translation>從草圖中選取一或兩條線條，或選取兩個邊緣及一個點。</translation>
+        <translation>從草圖中選取一或兩條線條，或選取兩個邊及一個點。</translation>
     </message>
     <message>
         <location line="-90"/>
@@ -1705,7 +1705,7 @@
         <location line="+101"/>
         <location line="+11"/>
         <source>Select at least one ellipse and one edge from the sketch.</source>
-        <translation>至少由草圖中選取一個橢圓及一個邊緣。</translation>
+        <translation>至少由草圖中選取一個橢圓及一個邊。</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1792,7 +1792,7 @@
         <translation type="obsolete">於素描中選擇兩頂點</translation>
     </message>
     <message>
-        <location line="-2850"/>
+        <location line="-2840"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
         <translation>從草圖中選取兩個或更多頂點。</translation>
@@ -1818,9 +1818,9 @@
     </message>
     <message>
         <location line="+172"/>
-        <location line="+109"/>
+        <location line="+100"/>
         <location line="+56"/>
-        <location line="+107"/>
+        <location line="+99"/>
         <source>Select exactly one line or up to two points from the sketch.</source>
         <translation>於草圖中選取一條線或最多兩個點。</translation>
     </message>
@@ -1829,7 +1829,7 @@
         <translation type="obsolete">於外部幾何無法增加水平長度拘束!</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-228"/>
         <source>Cannot add a horizontal length constraint on an axis!</source>
         <translation>無法於軸上增加水平長度拘束!</translation>
     </message>
@@ -1846,7 +1846,7 @@
         <translation type="obsolete">於外部幾何無法增加垂直長度拘束!</translation>
     </message>
     <message>
-        <location line="+163"/>
+        <location line="+154"/>
         <source>Cannot add a vertical length constraint on an axis!</source>
         <translation>無法於軸上增加垂直長度拘束!</translation>
     </message>
@@ -1859,25 +1859,25 @@
         <translation type="obsolete">無法於原始點上增加固定y座標約束</translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+120"/>
         <source>Select two or more lines from the sketch.</source>
         <translation>由草圖中選取兩條或以上線條。</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+1260"/>
+        <location line="+1267"/>
         <source>Select at least two lines from the sketch.</source>
         <translation>由草圖中選取至少兩條線。</translation>
     </message>
     <message>
-        <location line="-1246"/>
+        <location line="-1253"/>
         <source>Select a valid line</source>
         <translation>選取有效線條</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>The selected edge is not a valid line</source>
-        <translation>所選邊緣非為有效線條</translation>
+        <translation>所選之邊非為有效線段</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -1902,12 +1902,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+59"/>
         <location line="+313"/>
-        <location line="+1174"/>
+        <location line="+1181"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location line="-1461"/>
+        <location line="-1468"/>
         <location line="+312"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
@@ -1934,7 +1934,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+26"/>
         <source>One of the selected edges should be a line.</source>
-        <translation>所選邊緣中需有一條線。</translation>
+        <translation>所選之邊中需有一條線。</translation>
     </message>
     <message>
         <location line="+141"/>
@@ -1975,7 +1975,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">無法對外部幾何增加角度拘束!</translation>
     </message>
     <message>
-        <location line="+608"/>
+        <location line="+615"/>
         <source>Cannot add an angle constraint on an axis!</source>
         <translation>無法於軸上建立角度拘束!</translation>
     </message>
@@ -1986,7 +1986,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+101"/>
         <source>Select two edges from the sketch.</source>
-        <translation>由草圖中選取兩個邊緣。</translation>
+        <translation>由草圖中選取兩個邊。</translation>
     </message>
     <message>
         <source>Select atleast two lines from the sketch.</source>
@@ -1996,7 +1996,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+27"/>
         <location line="+464"/>
         <source>Select two or more compatible edges</source>
-        <translation>選擇兩個或更多相容邊緣</translation>
+        <translation>選擇兩個或更多相容之邊</translation>
     </message>
     <message>
         <location line="-458"/>
@@ -2007,7 +2007,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+24"/>
         <location line="+9"/>
         <source>Select two or more edges of similar type</source>
-        <translation>選取兩個或更多相似類型邊緣</translation>
+        <translation>選取兩個或更多相似類型之邊</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -2117,9 +2117,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>因草圖中含有相衝突之拘束,因此無法允許編輯數據</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2845"/>
-        <location line="+2288"/>
-        <location filename="../../EditDatumDialog.cpp" line="+114"/>
+        <location filename="../../CommandConstraints.cpp" line="-2835"/>
+        <location line="+2271"/>
+        <location filename="../../EditDatumDialog.cpp" line="+97"/>
         <source>Dimensional constraint</source>
         <translation>尺度拘束</translation>
     </message>
@@ -2134,13 +2134,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+102"/>
         <location line="+8"/>
         <source>Select at least two edges from the sketch.</source>
-        <translation>由草圖中選取至少兩個邊緣。</translation>
+        <translation>由草圖中選取至少兩個邊。</translation>
     </message>
     <message>
         <location line="-78"/>
         <location line="+102"/>
         <source>One selected edge is not connectable</source>
-        <translation>其中一個選取的邊緣無法連接</translation>
+        <translation>其中一個選取的邊無法連接</translation>
     </message>
     <message>
         <location line="-92"/>
@@ -2222,24 +2222,24 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+377"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+395"/>
         <source>Toggle to/from reference</source>
         <translation>於參考及一般模式間切換</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="-4"/>
         <source>Change value</source>
         <translation>變更值</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Rename</source>
         <translation>重新命名</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Center sketch</source>
-        <translation type="unfinished">Center sketch</translation>
+        <translation>將所選草圖置於視窗中央</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2251,12 +2251,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <source>Swap constraint names</source>
         <translation>調換拘束名稱</translation>
     </message>
+    <message>
+        <location line="+71"/>
+        <source>Unnamed constraint</source>
+        <translation>未命名之拘束</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only the names of named constraints can be swapped.</source>
+        <translation>僅有命名之拘束其名稱可以被調換</translation>
+    </message>
 </context>
 <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2372"/>
-        <location filename="../../EditDatumDialog.cpp" line="-98"/>
+        <location filename="../../CommandConstraints.cpp" line="-2346"/>
+        <location filename="../../EditDatumDialog.cpp" line="-81"/>
         <source>Insert angle</source>
         <translation>輸入角度</translation>
     </message>
@@ -2284,32 +2294,32 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location filename="../../EditDatumDialog.cpp" line="+1"/>
         <source>Ratio n2/n1:</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation>比例 n2/n1:</translation>
+        <translation>比例 n2/n1：</translation>
     </message>
     <message>
-        <location line="+2303"/>
+        <location line="+2277"/>
         <source>Change radius</source>
         <translation>修改半徑</translation>
     </message>
     <message>
-        <location line="-2308"/>
-        <location line="+2309"/>
+        <location line="-2282"/>
+        <location line="+2283"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
-        <translation>半徑:</translation>
+        <translation>半徑：</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+758"/>
         <source>Refractive index ratio</source>
         <translation>折射率比例</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ratio n2/n1:</source>
-        <translation>比例 n2/n1:</translation>
+        <translation>比例 n2/n1：</translation>
     </message>
     <message>
-        <location line="-3052"/>
+        <location line="-3033"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
         <translation>輸入長度</translation>
@@ -2318,7 +2328,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Length:</source>
-        <translation>長度:</translation>
+        <translation>長度：</translation>
     </message>
 </context>
 <context>
@@ -2472,7 +2482,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+3"/>
         <source>Clone</source>
-        <translation>複製</translation>
+        <translation>完全複製</translation>
     </message>
 </context>
 <context>
@@ -2490,13 +2500,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+14"/>
         <source>Default edge color</source>
-        <translation>預設邊界色彩</translation>
+        <translation>預設邊之色彩</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+66"/>
         <source>The color of edges being edited</source>
-        <translation>邊界之色彩已被修改</translation>
+        <translation>邊之色彩已被修改</translation>
     </message>
     <message>
         <location line="-40"/>
@@ -2512,7 +2522,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="-40"/>
         <source>Edit edge color</source>
-        <translation>編輯邊界色彩</translation>
+        <translation>編輯邊之色彩</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2545,9 +2555,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>完全拘束之幾何</translation>
     </message>
     <message>
-        <location line="+319"/>
+        <location line="+287"/>
+        <source>Marker size</source>
+        <translation>標注尺寸</translation>
+    </message>
+    <message>
+        <location line="+40"/>
         <source>Geometry Creation &quot;Continue Mode&quot;</source>
-        <translation>建立幾何「連續模式」</translation>
+        <translation>以「連續模式」建立幾何</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2560,7 +2575,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>於任務列中顯示進階求解器控制項目</translation>
     </message>
     <message>
-        <location line="-423"/>
+        <location line="-431"/>
         <location line="+99"/>
         <source>The color of fully constrained geometry in edit mode</source>
         <translation>完全拘束幾何於編輯模式之色彩</translation>
@@ -2591,12 +2606,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="-84"/>
         <location line="+35"/>
         <location line="+52"/>
-        <location line="+92"/>
+        <location line="+90"/>
         <source>px</source>
         <translation>px</translation>
     </message>
     <message>
-        <location line="-189"/>
+        <location line="-187"/>
         <source>Default vertex size</source>
         <translation>預設頂點尺寸</translation>
     </message>
@@ -2631,19 +2646,24 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>草圖編輯中</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+12"/>
         <source>Font size</source>
         <translation>字型尺寸</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+45"/>
         <source>Grid line pattern</source>
         <translation>網格樣式</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Ask for value after creating a distance constraint</source>
         <translation>於建立一個長度拘束後詢問數值</translation>
+    </message>
+    <message>
+        <location filename="../../SketcherSettings.cpp" line="+164"/>
+        <source>%1 px</source>
+        <translation>%1 像素</translation>
     </message>
 </context>
 <context>
@@ -2766,7 +2786,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+8"/>
         <source>Filter:</source>
-        <translation>篩選:</translation>
+        <translation>篩選：</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2794,9 +2814,14 @@ However, no constraints linking to the endpoints were found.</source>
         <translation>參考</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+85"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+24"/>
         <source>Constraints</source>
         <translation type="unfinished">Constraints</translation>
+    </message>
+    <message>
+        <location line="+176"/>
+        <source>Error</source>
+        <translation>錯誤</translation>
     </message>
 </context>
 <context>
@@ -2814,7 +2839,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+20"/>
         <source>Edge</source>
-        <translation>邊緣</translation>
+        <translation>邊</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2839,7 +2864,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+10"/>
         <source>Auto-switch to Edge</source>
-        <translation>自動切換至邊緣</translation>
+        <translation>自動切換至邊</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2919,7 +2944,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+12"/>
         <source>Grid size:</source>
-        <translation>網格尺寸:</translation>
+        <translation>格線尺寸：</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -3102,7 +3127,7 @@ However, no constraints linking to the endpoints were found.</source>
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4186"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+4183"/>
         <source>Invalid sketch</source>
         <translation>錯誤之草圖</translation>
     </message>
@@ -3137,14 +3162,14 @@ Use the sketch validation tool.</source>
         <translation>此為無效且不能編輯之草圖</translation>
     </message>
     <message>
-        <location line="+109"/>
+        <location line="+111"/>
         <source>Please remove the following constraint:</source>
-        <translation>請移除下列拘束:</translation>
+        <translation>請移除下列拘束：</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Please remove at least one of the following constraints:</source>
-        <translation>請移除下列至少一個拘束:</translation>
+        <translation>請移除下列至少一個拘束：</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3235,7 +3260,7 @@ Use the sketch validation tool.</source>
     <message>
         <location line="-2"/>
         <source>Clone</source>
-        <translation>複製</translation>
+        <translation>完全複製</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3318,7 +3343,7 @@ Use the sketch validation tool.</source>
 <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-        <location line="+1974"/>
+        <location line="+1976"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
         <translation>以中心點及一角來建立七角形</translation>
@@ -3458,7 +3483,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+3"/>
         <source>Default Solver:</source>
-        <translation>預設求解器</translation>
+        <translation>預設求解器：</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -3481,27 +3506,27 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="-310"/>
         <source>Type of function to apply in DogLeg for the Gauss step</source>
-        <translation type="unfinished">Type of function to apply in DogLeg for the Gauss step</translation>
+        <translation> DogLeg採用予高斯階梯函數之類型</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>DogLeg Gauss step:</source>
-        <translation type="unfinished">DogLeg Gauss step:</translation>
+        <translation>DogLeg 高斯階梯函數：</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>FullPivLU</source>
-        <translation type="unfinished">FullPivLU</translation>
+        <translation>FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-FullPivLU</source>
-        <translation type="unfinished">LeastNorm-FullPivLU</translation>
+        <translation>LeastNorm-FullPivLU</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LeastNorm-LDLT</source>
-        <translation type="unfinished">LeastNorm-LDLT</translation>
+        <translation>LeastNorm-LDLT</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3521,7 +3546,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+3"/>
         <source>Sketch size multiplier:</source>
-        <translation>依草圖尺寸進行倍數放大</translation>
+        <translation>草圖尺寸放大倍率：</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -3606,7 +3631,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+3"/>
         <source>Red. Sketch size multiplier:</source>
-        <translation>依草圖尺寸進行倍數放大</translation>
+        <translation>多餘草圖尺寸放大倍率：</translation>
     </message>
     <message>
         <location line="+27"/>

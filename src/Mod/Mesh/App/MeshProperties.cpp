@@ -502,13 +502,6 @@ Base::BoundBox3d PropertyMeshKernel::getBoundingBox() const
     return _meshObject->getBoundBox();
 }
 
-void PropertyMeshKernel::getFaces(std::vector<Base::Vector3d> &aPoints,
-                                  std::vector<Data::ComplexGeoData::Facet> &aTopo,
-                                  float accuracy, uint16_t flags) const
-{
-    _meshObject->getFaces(aPoints, aTopo, accuracy, flags);
-}
-
 unsigned int PropertyMeshKernel::getMemSize (void) const
 {
     unsigned int size = 0;

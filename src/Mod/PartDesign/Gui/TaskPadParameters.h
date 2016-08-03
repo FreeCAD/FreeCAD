@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderPad.h"
 
 class Ui_TaskPadParameters;
@@ -40,84 +41,59 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
-
-class TaskPadParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskPadParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskPadParameters(ViewProviderPad *PadView,bool newObj=false,QWidget *parent = 0);
+    TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = 0, bool newObj=false);
     ~TaskPadParameters();
 
-    const bool updateView() const;
-    void saveHistory(void);
-    void apply();
+    virtual void saveHistory() override;
+    virtual void apply() override;
 
 private Q_SLOTS:
     void onLengthChanged(double);
-    void onMidplane(bool);
-    void onReversed(bool);
     void onLength2Changed(double);
-    void onModeChanged(int);
+    void onOffsetChanged(double);
+    void onMidplaneChanged(bool);
+    void onReversedChanged(bool);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
-    void onUpdateView(bool);
+    void onModeChanged(int);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
-    int getMode(void) const;
     double getLength(void) const;
     double getLength2(void) const;
+    double getOffset(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
-    QByteArray getFaceName(void) const;
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    int    getMode(void) const;
+    QString getFaceName(void) const;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI(int index);
 
 private:
     QWidget* proxy;
     Ui_TaskPadParameters* ui;
-    ViewProviderPad *PadView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters : public Gui::TaskView::TaskDialog
+class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj=false);
-    ~TaskDlgPadParameters();
+    TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
 
     ViewProviderPad* getPadView() const
-    { return PadView; }
-
-
-public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-protected:
-    ViewProviderPad   *PadView;
-
-    TaskPadParameters  *parameter;
+    { return static_cast<ViewProviderPad*>(vp); }
 };
 
 } //namespace PartDesignGui

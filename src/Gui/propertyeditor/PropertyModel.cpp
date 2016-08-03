@@ -262,7 +262,6 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     }
 
     endResetModel();
-//    reset();
 }
 
 void PropertyModel::updateProperty(const App::Property& prop)

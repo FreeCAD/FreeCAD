@@ -44,6 +44,7 @@ PROPERTY_SOURCE(Mesh::FixDefects, Mesh::Feature)
 FixDefects::FixDefects()
 {
   ADD_PROPERTY(Source  ,(0));
+  ADD_PROPERTY(Epsilon  ,(0));
 }
 
 FixDefects::~FixDefects()
@@ -223,7 +224,7 @@ App::DocumentObjectExecReturn *FixDegenerations::execute(void)
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::auto_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
-        mesh->validateDegenerations();
+        mesh->validateDegenerations(static_cast<float>(Epsilon.getValue()));
         this->Mesh.setValuePtr(mesh.release());
     }
 
@@ -252,7 +253,8 @@ App::DocumentObjectExecReturn *FixDeformations::execute(void)
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::auto_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
-        mesh->validateDeformations((float)MaxAngle.getValue());
+        mesh->validateDeformations(static_cast<float>(MaxAngle.getValue()),
+                                   static_cast<float>(Epsilon.getValue()));
         this->Mesh.setValuePtr(mesh.release());
     }
 

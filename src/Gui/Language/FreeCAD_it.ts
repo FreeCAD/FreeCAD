@@ -1240,10 +1240,6 @@ Definire un&apos;altra scorciatoia.</translation>
         <translation>Nome macro:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">Percorso Macro:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>Esegui</translation>
     </message>
@@ -1265,15 +1261,15 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macro utente</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Macro di sistema</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione delle macro utente:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ Il file esiste già.</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>Sola lettura</translation>
     </message>
 </context>
 <context>
@@ -1806,14 +1802,6 @@ Specificare un&apos;altra cartella.</translation>
         <translation>Tipo di camera</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>Render ortografico</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>Render prospettico</translation>
-    </message>
-    <message>
         <source></source>
         <translation> </translation>
     </message>
@@ -1881,13 +1869,17 @@ Specificare un&apos;altra cartella.</translation>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation>Vista &amp;ortografica</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation>Vista in &amp;prospettiva</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>Navigazione %1</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation>Anti-aliasing</translation>
@@ -2711,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Finish</source>
         <translation>Termina</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Elimina</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4818,11 +4846,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>Navigation styles</source>
-        <translation>Stili di navigazione</translation>
-    </message>
-    <message>
-        <source>%1 navigation</source>
-        <translation>Navigazione %1</translation>
+        <translation>Stile di navigazione</translation>
     </message>
     <message>
         <source>Move annotation</source>
@@ -4862,11 +4886,11 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">Cancella macro</translation>
+        <translation>Cancella macro</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>Non è consentito eliminare le macro di sistema</translation>
     </message>
 </context>
 <context>
@@ -5467,7 +5491,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>Debug macro</source>
-        <translation>Debug macro</translation>
+        <translation>Debug della macro</translation>
     </message>
     <message>
         <source>Start debugging of macro</source>
@@ -5519,11 +5543,11 @@ Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
         <source>S&amp;top macro recording</source>
-        <translation>In&amp;terrompi la registrazione della macro</translation>
+        <translation>In&amp;terrompi la registrazione</translation>
     </message>
     <message>
         <source>Stop the macro recording session</source>
-        <translation>Interrompe la sessione di registrazione macro in corso</translation>
+        <translation>Interrompe la sessione di registrazione della macro in corso</translation>
     </message>
 </context>
 <context>

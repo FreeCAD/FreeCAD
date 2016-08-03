@@ -62,7 +62,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     ui->dirX->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirY->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirZ->setDecimals(Base::UnitsApi::getDecimals());
-    ui->dirLen->setDecimals(Base::UnitsApi::getDecimals());
+    ui->dirLen->setUnit(Base::Unit::Length);
     ui->taperAngle->setUnit(Base::Unit::Angle);
     ui->dirLen->setMinimumWidth(55); // needed to show all digits
     findShapes();
@@ -179,10 +179,10 @@ void DlgExtrusion::apply()
             label = name;
         }
 
-        double len = ui->dirLen->value();
         double dirX = ui->dirX->value();
         double dirY = ui->dirY->value();
         double dirZ = ui->dirZ->value();
+        double len = ui->dirLen->value().getValue();
         double angle = ui->taperAngle->value().getValue();
         bool makeSolid = ui->makeSolid->isChecked();
 

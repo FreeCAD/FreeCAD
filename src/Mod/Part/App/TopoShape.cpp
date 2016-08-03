@@ -59,6 +59,7 @@
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepCheck_ListIteratorOfListOfStatus.hxx>
 # include <BRepCheck_Result.hxx>
+# include <BRepClass_FaceClassifier.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRepMesh_Triangle.hxx>
@@ -76,6 +77,8 @@
 # include <BRepTools_ShapeSet.hxx>
 # include <BRepFill_CompatibleWires.hxx>
 # include <GCE2d_MakeSegment.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
 # include <Geom2d_Line.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 # include <GeomLProp_SLProps.hxx>
@@ -86,9 +89,10 @@
 # include <GeomFill_Pipe.hxx>
 # include <GeomFill_SectionLaw.hxx>
 # include <GeomFill_Sweep.hxx>
-# include <Handle_Law_BSpFunc.hxx>
-# include <Handle_Law_BSpline.hxx>
-# include <Handle_TopTools_HSequenceOfShape.hxx>
+# include <GeomLib.hxx>
+# include <Law_BSpFunc.hxx>
+# include <Law_BSpline.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <Law_BSpFunc.hxx>
 # include <Law_Constant.hxx>
 # include <Law_Linear.hxx>
@@ -469,6 +473,29 @@ void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 
 void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
 {
+#if OCC_VERSION_HEX >= 0x070000
+    gp_Mat m = trsf.VectorialPart();
+    gp_XYZ p = trsf.TranslationPart();
+    Standard_Real scale = trsf.ScaleFactor();
+
+    // set Rotation matrix
+    mtrx[0][0] = scale * m(1,1);
+    mtrx[0][1] = scale * m(1,2);
+    mtrx[0][2] = scale * m(1,3);
+
+    mtrx[1][0] = scale * m(2,1);
+    mtrx[1][1] = scale * m(2,2);
+    mtrx[1][2] = scale * m(2,3);
+
+    mtrx[2][0] = scale * m(3,1);
+    mtrx[2][1] = scale * m(3,2);
+    mtrx[2][2] = scale * m(3,3);
+
+    // set pos vector
+    mtrx[0][3] = p.X();
+    mtrx[1][3] = p.Y();
+    mtrx[2][3] = p.Z();
+#else
     gp_Mat m = trsf._CSFDB_Getgp_Trsfmatrix();
     gp_XYZ p = trsf._CSFDB_Getgp_Trsfloc();
     Standard_Real scale = trsf._CSFDB_Getgp_Trsfscale();
@@ -490,6 +517,7 @@ void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
     mtrx[0][3] = p._CSFDB_Getgp_XYZx();
     mtrx[1][3] = p._CSFDB_Getgp_XYZy();
     mtrx[2][3] = p._CSFDB_Getgp_XYZz();
+#endif
 }
 
 void TopoShape::setTransform(const Base::Matrix4D& rclTrf)
@@ -674,13 +702,21 @@ void TopoShape::importBrep(std::istream& str)
 
 void TopoShape::importBinary(std::istream& str)
 {
-    BinTools_ShapeSet set;
-    set.Read(str);
-    Standard_Integer index;
-    BinTools::GetInteger(str, index);
+    BinTools_ShapeSet theShapeSet;
+    theShapeSet.Read(str);
+    Standard_Integer shapeId=0, locId=0, orient=0;
+    BinTools::GetInteger(str, shapeId);
+    if (shapeId <= 0 || shapeId > theShapeSet.NbShapes())
+        return;
+
+    BinTools::GetInteger(str, locId);
+    BinTools::GetInteger(str, orient);
+    TopAbs_Orientation anOrient = static_cast<TopAbs_Orientation>(orient);
 
     try {
-        this->_Shape = set.Shape(index);
+        this->_Shape = theShapeSet.Shape(shapeId);
+        this->_Shape.Location(theShapeSet.Locations().Location (locId));
+        this->_Shape.Orientation (anOrient);
     }
     catch (Standard_Failure) {
         throw Base::RuntimeError("Failed to read shape from binary stream");
@@ -777,10 +813,25 @@ void TopoShape::exportBrep(std::ostream& out) const
 
 void TopoShape::exportBinary(std::ostream& out)
 {
-    BinTools_ShapeSet set;
-    Standard_Integer index = set.Add(this->_Shape);
-    set.Write(out);
-    BinTools::PutInteger(out, index);
+    // An example how to use BinTools_ShapeSet can be found in BinMNaming_NamedShapeDriver.cxx
+    BinTools_ShapeSet theShapeSet;
+    if (this->_Shape.IsNull()) {
+        theShapeSet.Add(this->_Shape);
+        theShapeSet.Write(out);
+        BinTools::PutInteger(out, -1);
+        BinTools::PutInteger(out, -1);
+        BinTools::PutInteger(out, -1);
+    }
+    else {
+        Standard_Integer shapeId = theShapeSet.Add(this->_Shape);
+        Standard_Integer locId = theShapeSet.Locations().Index(this->_Shape.Location());
+        Standard_Integer orient = static_cast<int>(this->_Shape.Orientation());
+
+        theShapeSet.Write(out);
+        BinTools::PutInteger(out, shapeId);
+        BinTools::PutInteger(out, locId);
+        BinTools::PutInteger(out, orient);
+    }
 }
 
 void TopoShape::dump(std::ostream& out) const
@@ -1457,6 +1508,44 @@ TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<d
     }
 
     return comp;
+}
+
+TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, Standard_Real tolerance, std::vector<TopTools_ListOfShape>* mapInOut) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX < 0x060900
+    throw Base::AttributeError("GFA is available only in OCC 6.9.0 and up.");
+#else
+    BRepAlgoAPI_BuilderAlgo mkGFA;
+    TopTools_ListOfShape GFAArguments;
+    GFAArguments.Append(this->_Shape);
+    for (const TopoDS_Shape &it: sOthers) {
+        if (it.IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            GFAArguments.Append(BRepBuilderAPI_Copy(it).Shape());
+        else
+            GFAArguments.Append(it);
+    }
+    mkGFA.SetArguments(GFAArguments);
+    if (tolerance > 0.0)
+        mkGFA.SetFuzzyValue(tolerance);
+#if OCC_VERSION_HEX >= 0x070000
+    mkGFA.SetNonDestructive(Standard_True);
+#endif
+    mkGFA.Build();
+    if (!mkGFA.IsDone())
+        throw Base::Exception("MultiFusion failed");
+    TopoDS_Shape resShape = mkGFA.Shape();
+    if (mapInOut){
+        for(TopTools_ListIteratorOfListOfShape it(GFAArguments); it.More(); it.Next()){
+            mapInOut->push_back(mkGFA.Modified(it.Value()));
+        }
+    }
+    return resShape;
+#endif
 }
 
 TopoDS_Shape TopoShape::makePipe(const TopoDS_Shape& profile) const
@@ -2508,4 +2597,112 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     _Shape.Reverse(); // seems that we have to reverse the orientation
     if (_Shape.IsNull())
         _Shape = aComp;
+}
+
+void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
+                          std::vector<Base::Vector3d> &Normals,
+                          float Accuracy, uint16_t flags) const
+{
+    if (_Shape.IsNull())
+        return;
+
+    const int minPointsPerEdge = 30;
+    const double lateralDistance = Accuracy;
+
+    // get all 3d points from free vertices
+    for (TopExp_Explorer xp(_Shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+        gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+        Points.push_back(Base::convertTo<Base::Vector3d>(p));
+        Normals.push_back(Base::Vector3d(0,0,0));
+    }
+
+    // sample inner points of all free edges
+    for (TopExp_Explorer xp(_Shape, TopAbs_EDGE, TopAbs_FACE); xp.More(); xp.Next()) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(xp.Current()));
+        GCPnts_UniformAbscissa discretizer(curve, lateralDistance, curve.FirstParameter(), curve.LastParameter());
+        if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+            int nbPoints = discretizer.NbPoints();
+            for (int i=1; i<=nbPoints; i++) {
+                gp_Pnt p = curve.Value (discretizer.Parameter(i));
+                Points.push_back(Base::convertTo<Base::Vector3d>(p));
+                Normals.push_back(Base::Vector3d(0,0,0));
+            }
+        }
+    }
+
+    // sample inner points of all faces
+    BRepClass_FaceClassifier classifier;
+    bool hasFaces = false;
+    for (TopExp_Explorer xp(_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
+        hasFaces = true;
+        int pointsPerEdge = minPointsPerEdge;
+        TopoDS_Face face = TopoDS::Face(xp.Current());
+        BRepAdaptor_Surface surface(face);
+        Handle(Geom_Surface) aSurf = BRep_Tool::Surface(face);
+
+        // parameter ranges
+        Standard_Real uFirst = surface.FirstUParameter();
+        Standard_Real uLast = surface.LastUParameter();
+        Standard_Real vFirst = surface.FirstVParameter();
+        Standard_Real vLast = surface.LastVParameter();
+
+        // get geometrical length and width of the surface
+        //
+        gp_Pnt p1, p2;
+        Standard_Real fLengthU = 0.0, fLengthV = 0.0;
+        for (int i = 1; i <= pointsPerEdge; i++) {
+            double u1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
+            double s1 = (1.0-u1)*uFirst + u1*uLast;
+            p1 = surface.Value(s1,0.0);
+
+            double u2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
+            double s2 = (1.0-u2)*uFirst + u2*uLast;
+            p2 = surface.Value(s2,0.0);
+
+            fLengthU += p1.Distance(p2);
+        }
+
+        for (int i = 1; i <= pointsPerEdge; i++) {
+            double v1 = static_cast<double>(i-1)/static_cast<double>(pointsPerEdge);
+            double t1 = (1.0-v1)*vFirst + v1*vLast;
+            p1 = surface.Value(0.0,t1);
+
+            double v2 = static_cast<double>(i)/static_cast<double>(pointsPerEdge);
+            double t2 = (1.0-v2)*vFirst + v2*vLast;
+            p2 = surface.Value(0.0,t2);
+
+            fLengthV += p1.Distance(p2);
+        }
+
+        int uPointsPerEdge = static_cast<int>(fLengthU / lateralDistance);
+        int vPointsPerEdge = static_cast<int>(fLengthV / lateralDistance);
+
+        for (int i = 0; i <= uPointsPerEdge; i++) {
+            double u = static_cast<double>(i)/static_cast<double>(uPointsPerEdge);
+            double s = (1.0-u)*uFirst + u*uLast;
+
+            for (int j = 0; j <= vPointsPerEdge; j++) {
+                double v = static_cast<double>(j)/static_cast<double>(vPointsPerEdge);
+                double t = (1.0-v)*vFirst + v*vLast;
+
+                gp_Pnt2d p2d(s,t);
+                classifier.Perform(face,p2d,1.0e-4);
+                if (classifier.State() == TopAbs_IN || classifier.State() == TopAbs_ON) {
+                    gp_Pnt p = surface.Value(s,t);
+                    Points.push_back(Base::convertTo<Base::Vector3d>(p));
+                    gp_Dir normal;
+                    if (GeomLib::NormEstim(aSurf, p2d, Precision::Confusion(), normal) <= 1) {
+                        Normals.push_back(Base::convertTo<Base::Vector3d>(normal));
+                    }
+                    else {
+                        Normals.push_back(Base::Vector3d(0,0,0));
+                    }
+                }
+            }
+        }
+    }
+
+    // if no faces are found then the normals can be cleared
+    if (!hasFaces)
+        Normals.clear();
 }

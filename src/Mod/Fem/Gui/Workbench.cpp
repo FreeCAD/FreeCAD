@@ -55,9 +55,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
-    *fem << "Fem_NewMechanicalAnalysis"
+    *fem << "Fem_Analysis"
          << "Fem_SolverCalculix"
-         << "Fem_CreateFromShape"
+         // << "Fem_SolverZ88"
+         << "Fem_MeshFromShape"
          << "Fem_MechanicalMaterial"
          << "Fem_BeamSection"
          << "Fem_ShellThickness"
@@ -67,16 +68,32 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Fem_ConstraintFixed"
          << "Fem_ConstraintDisplacement"
          << "Separator"
+         << "Fem_ConstraintSelfWeight"
          << "Fem_ConstraintForce"
          << "Fem_ConstraintPressure"
          << "Fem_ConstraintBearing"
-         << "Fem_ConstraintGear"   
+         << "Fem_ConstraintGear"
          << "Fem_ConstraintPulley"
          << "Separator"
-         << "Fem_SolverJobControl"
-         << "Fem_Quick_Analysis"
+         << "Fem_ControlSolver"
+         << "Fem_RunSolver"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
+         
+#ifdef FC_USE_VTK
+     Gui::ToolBarItem* post = new Gui::ToolBarItem(root);
+     post->setCommand("Post Processing");
+     *post  << "Fem_PostApplyChanges"
+            << "Fem_PostPipelineFromResult"
+            << "Separator"
+            << "Fem_PostCreateClipFilter"
+            << "Fem_PostCreateScalarClipFilter"
+            << "Fem_PostCreateCutFilter"
+            << "Fem_PostCreateWarpVectorFilter"
+            << "Separator"
+            << "Fem_PostCreateFunctions";
+#endif
+            
     return root;
 }
 
@@ -87,9 +104,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* fem = new Gui::MenuItem;
     root->insertItem(item, fem);
     fem->setCommand("&FEM");
-    *fem << "Fem_NewMechanicalAnalysis"
+    *fem << "Fem_Analysis"
          << "Fem_SolverCalculix"
-         << "Fem_CreateFromShape"
+         << "Fem_SolverZ88"
+         << "Fem_MeshFromShape"
          << "Fem_MechanicalMaterial"
          << "Fem_BeamSection"
          << "Fem_ShellThickness"
@@ -99,14 +117,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "Fem_ConstraintFixed"
          << "Fem_ConstraintDisplacement"
          << "Separator"
+         << "Fem_ConstraintSelfWeight"
          << "Fem_ConstraintForce"
          << "Fem_ConstraintPressure"
          << "Fem_ConstraintBearing"
-         << "Fem_ConstraintGear"   
+         << "Fem_ConstraintGear"
          << "Fem_ConstraintPulley"
          << "Separator"
-         << "Fem_SolverJobControl"
-         << "Fem_Quick_Analysis"
+         << "Fem_ControlSolver"
+         << "Fem_RunSolver"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
 

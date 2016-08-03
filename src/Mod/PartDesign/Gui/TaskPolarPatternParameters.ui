@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>225</width>
-    <height>400</height>
+    <width>253</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,18 +15,31 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayoutOriginal">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="labelOriginal">
+      <widget class="QPushButton" name="buttonAddFeature">
        <property name="text">
-        <string>Original feature</string>
+        <string>Add feature</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineOriginal"/>
+      <widget class="QPushButton" name="buttonRemoveFeature">
+       <property name="text">
+        <string>Remove feature</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="listWidgetFeatures"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -38,18 +51,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboAxis">
-       <item>
-        <property name="text">
-         <string>Normal sketch axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Select reference...</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="comboAxis"/>
      </item>
     </layout>
    </item>

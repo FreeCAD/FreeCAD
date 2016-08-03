@@ -364,7 +364,7 @@ Do you want to continue?</source>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished">All Files</translation>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -461,7 +461,12 @@ Do you want to continue?</source>
         <translation>Nazwa pliku Kamery:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation>Odchylenie maksymalne siatki:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation>Renderowanie</translation>
     </message>
@@ -528,12 +533,11 @@ Do you want to continue?</source>
         <translation>Ustawienia eksportu siatki</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Max. odchylenie siatki:</translation>
+        <translation type="obsolete">Max. odchylenie siatki:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Nie przeliczaj &apos;normalnych&apos; wierzchołków</translation>
     </message>

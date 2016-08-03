@@ -70,12 +70,12 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
     ui->lw_references->addAction(action);
     ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
-    
+
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     this->groupLayout()->addWidget(proxy);
-    
+
     // Connect decimal value inputs
     connect(ui->spinxDisplacement, SIGNAL(valueChanged(double)),  this, SLOT(x_changed(double)));
     connect(ui->spinyDisplacement, SIGNAL(valueChanged(double)),  this, SLOT(y_changed(double)));
@@ -97,7 +97,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     connect(ui->rotyfree, SIGNAL(stateChanged(int)),  this, SLOT(rotfreey(int)));
     connect(ui->rotzfix, SIGNAL(stateChanged(int)),  this, SLOT(rotfixz(int)));
     connect(ui->rotzfree, SIGNAL(stateChanged(int)),  this, SLOT(rotfreez(int)));
-    
+
     // Temporarily prevent unnecessary feature recomputes
     ui->spinxDisplacement->blockSignals(true);
     ui->spinyDisplacement->blockSignals(true);
@@ -140,10 +140,10 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     bStates[9]=pcConstraint->rotyFree.getValue();
     bStates[10]=pcConstraint->rotzFix.getValue();
     bStates[11]=pcConstraint->rotzFree.getValue();
-    
+
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
+
     // Fill data into dialog elements
     ui->spinxDisplacement->setValue(fStates[0]);
     ui->spinyDisplacement->setValue(fStates[1]);
@@ -163,7 +163,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     ui->rotyfree->setChecked(bStates[9]);
     ui->rotzfix->setChecked(bStates[10]);
     ui->rotzfree->setChecked(bStates[11]);
-    
+
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
@@ -171,7 +171,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     if (Objects.size() > 0) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
-   
+
     //Allow signals again
     ui->spinxDisplacement->blockSignals(false);
     ui->spinyDisplacement->blockSignals(false);
@@ -191,7 +191,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     ui->rotyfree->blockSignals(false);
     ui->rotzfix->blockSignals(false);
     ui->rotzfree->blockSignals(false);
-    
+
     //Selection buttons
     connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
     connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
@@ -217,7 +217,7 @@ void TaskFemConstraintDisplacement::x_changed(double val){
     if (val!=0)
     {
         ui->dispxfree->setChecked(false);
-        ui->dispxfix->setChecked(false); 
+        ui->dispxfix->setChecked(false);
     }
 }
 
@@ -225,7 +225,7 @@ void TaskFemConstraintDisplacement::y_changed(double val){
     if (val!=0)
     {
         ui->dispyfree->setChecked(false);
-        ui->dispyfix->setChecked(false); 
+        ui->dispyfix->setChecked(false);
     }
 }
 
@@ -233,7 +233,7 @@ void TaskFemConstraintDisplacement::z_changed(double val){
     if (val!=0)
     {
         ui->dispzfree->setChecked(false);
-        ui->dispzfix->setChecked(false); 
+        ui->dispzfix->setChecked(false);
     }
 }
 
@@ -241,7 +241,7 @@ void TaskFemConstraintDisplacement::x_rot(double val){
     if (val!=0)
     {
         ui->rotxfree->setChecked(false);
-        ui->rotxfix->setChecked(false); 
+        ui->rotxfix->setChecked(false);
     }
 }
 
@@ -249,7 +249,7 @@ void TaskFemConstraintDisplacement::y_rot(double val){
     if (val!=0)
     {
         ui->rotyfree->setChecked(false);
-        ui->rotyfix->setChecked(false); 
+        ui->rotyfix->setChecked(false);
     }
 }
 
@@ -257,7 +257,7 @@ void TaskFemConstraintDisplacement::z_rot(double val){
      if (val!=0)
     {
         ui->rotzfree->setChecked(false);
-        ui->rotzfix->setChecked(false); 
+        ui->rotzfix->setChecked(false);
     }
 }
 
@@ -265,7 +265,7 @@ void TaskFemConstraintDisplacement::fixx(int val){
     if (val==2)
     {
         ui->dispxfree->setChecked(false);
-        ui->spinxDisplacement->setValue(0); 
+        ui->spinxDisplacement->setValue(0);
     }
     else if (ui->spinxDisplacement->value()==0)
     {
@@ -277,7 +277,7 @@ void TaskFemConstraintDisplacement::freex(int val){
     if (val==2)
     {
         ui->dispxfix->setChecked(false);
-        ui->spinxDisplacement->setValue(0); 
+        ui->spinxDisplacement->setValue(0);
     }
     else if (ui->spinxDisplacement->value()==0)
     {
@@ -289,7 +289,7 @@ void TaskFemConstraintDisplacement::fixy(int val){
     if (val==2)
     {
         ui->dispyfree->setChecked(false);
-        ui->spinyDisplacement->setValue(0); 
+        ui->spinyDisplacement->setValue(0);
     }
     else if (ui->spinyDisplacement->value()==0)
     {
@@ -301,7 +301,7 @@ void TaskFemConstraintDisplacement::freey(int val){
     if (val==2)
     {
         ui->dispyfix->setChecked(false);
-        ui->spinyDisplacement->setValue(0); 
+        ui->spinyDisplacement->setValue(0);
     }
     else if (ui->spinyDisplacement->value()==0)
     {
@@ -313,7 +313,7 @@ void TaskFemConstraintDisplacement::fixz(int val){
     if (val==2)
     {
         ui->dispzfree->setChecked(false);
-        ui->spinzDisplacement->setValue(0); 
+        ui->spinzDisplacement->setValue(0);
     }
     else if (ui->spinzDisplacement->value()==0)
     {
@@ -325,7 +325,7 @@ void TaskFemConstraintDisplacement::freez(int val){
    if (val==2)
     {
         ui->dispzfix->setChecked(false);
-        ui->spinzDisplacement->setValue(0); 
+        ui->spinzDisplacement->setValue(0);
     }
     else if (ui->spinzDisplacement->value()==0)
     {
@@ -337,7 +337,7 @@ void TaskFemConstraintDisplacement::rotfixx(int val){
     if (val==2)
     {
         ui->rotxfree->setChecked(false);
-        ui->rotxv->setValue(0); 
+        ui->rotxv->setValue(0);
     }
     else if (ui->rotxv->value()==0)
     {
@@ -349,7 +349,7 @@ void TaskFemConstraintDisplacement::rotfreex(int val){
     if (val==2)
     {
         ui->rotxfix->setChecked(false);
-        ui->rotxv->setValue(0); 
+        ui->rotxv->setValue(0);
     }
     else if (ui->rotxv->value()==0)
     {
@@ -361,7 +361,7 @@ void TaskFemConstraintDisplacement::rotfixy(int val){
     if (val==2)
     {
         ui->rotyfree->setChecked(false);
-        ui->rotyv->setValue(0); 
+        ui->rotyv->setValue(0);
     }
     else if (ui->rotyv->value()==0)
     {
@@ -373,7 +373,7 @@ void TaskFemConstraintDisplacement::rotfreey(int val){
     if (val==2)
     {
         ui->rotyfix->setChecked(false);
-        ui->rotyv->setValue(0); 
+        ui->rotyv->setValue(0);
     }
     else if (ui->rotyv->value()==0)
     {
@@ -385,7 +385,7 @@ void TaskFemConstraintDisplacement::rotfixz(int val){
     if (val==2)
     {
         ui->rotzfree->setChecked(false);
-        ui->rotzv->setValue(0); 
+        ui->rotzv->setValue(0);
     }
     else if (ui->rotzv->value()==0)
     {
@@ -397,7 +397,7 @@ void TaskFemConstraintDisplacement::rotfreez(int val){
     if (val==2)
     {
         ui->rotzfix->setChecked(false);
-        ui->rotzv->setValue(0); 
+        ui->rotzv->setValue(0);
     }
     else if (ui->rotzv->value()==0)
     {
@@ -416,13 +416,13 @@ void TaskFemConstraintDisplacement::addToSelection()
     Fem::ConstraintDisplacement* pcConstraint = static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    
+
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
         if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
             return;
         }
-        
+
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
         for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
@@ -435,10 +435,30 @@ void TaskFemConstraintDisplacement::addToSelection()
                     addMe=false;
                 }
             }
+            // limit constraint such that only vertexes or faces or edges can be used depending on what was selected first
+            std::string searchStr("");
+            if (subNames[subIt].find("Vertex")!=std::string::npos)
+                searchStr="Vertex";
+            else if (subNames[subIt].find("Edge")!=std::string::npos)
+                searchStr="Edge";
+            else
+                searchStr="Face";
+            for (unsigned int iStr=0;iStr<(SubElements.size());++iStr){
+                if ((SubElements[iStr].find(searchStr)==std::string::npos)&&(SubElements.size()>0)){
+                    QString msg = tr("Only one type of selection (vertex,face or edge) per constraint allowed!");
+                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    addMe=false;
+                    break;
+                }
+            }
             if (addMe){
+                disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
                 Objects.push_back(obj);
                 SubElements.push_back(subNames[subIt]);
                 ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
             }
         }
     }
@@ -458,16 +478,16 @@ void TaskFemConstraintDisplacement::removeFromSelection()
     Fem::ConstraintDisplacement* pcConstraint = static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    std::vector<int> itemsToDel;
+    std::vector<unsigned int> itemsToDel;
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
         if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
             return;
         }
-        
+
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        
+
         for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
             for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
                 itr!= SubElements.end();
@@ -479,31 +499,33 @@ void TaskFemConstraintDisplacement::removeFromSelection()
             }
         }
     }
-    
+
+    std::sort(itemsToDel.begin(),itemsToDel.end());
     while (itemsToDel.size()>0){
         Objects.erase(Objects.begin()+itemsToDel.back());
         SubElements.erase(SubElements.begin()+itemsToDel.back());
         itemsToDel.pop_back();
     }
+
     //Update UI
     disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     ui->lw_references->clear();
     for (unsigned int j=0;j<Objects.size();j++){
         ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
     }
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    
+
     pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
 }
 
 void TaskFemConstraintDisplacement::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-    
     std::string s = item->text().toStdString();
+    std::string docName=ConstraintView->getObject()->getDocument()->getName();
+
     std::string delimiter = ":";
 
     size_t pos = 0;
@@ -513,16 +535,13 @@ void TaskFemConstraintDisplacement::setSelection(QListWidgetItem* item){
     objName = s.substr(0, pos);
     s.erase(0, pos + delimiter.length());
     subName=s;
-    
+
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
 
 void TaskFemConstraintDisplacement::onReferenceDeleted() {
-    int row = ui->lw_references->currentIndex().row();
-    TaskFemConstraint::onReferenceDeleted(row);
-    ui->lw_references->model()->removeRow(row);
-    ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
+    TaskFemConstraintDisplacement::removeFromSelection(); //OvG: On right-click face is automatically selected, so just remove
 }
 
 const std::string TaskFemConstraintDisplacement::getReferences() const
@@ -584,8 +603,10 @@ void TaskDlgFemConstraintDisplacement::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint normal stress");
+        QString msg = QObject::tr("Constraint displacement");
         Gui::Command::openCommand((const char*)msg.toUtf8());
+        ConstraintView->setVisible(true);
+        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
@@ -631,9 +652,9 @@ bool TaskDlgFemConstraintDisplacement::accept()
             name.c_str(), parameterDisplacement->get_rotzfree() ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.rotzFix = %s",
             name.c_str(), parameterDisplacement->get_rotzfix() ? "True" : "False");
-            
+
         std::string scale = parameterDisplacement->getScale();  //OvG: determine modified scale
-		Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

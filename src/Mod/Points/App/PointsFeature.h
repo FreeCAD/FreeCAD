@@ -62,11 +62,12 @@ public:
     //@{
     void Restore(Base::XMLReader &reader);
     void RestoreDocFile(Base::Reader &reader);
+    short mustExecute() const;
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "PointsGui::ViewProviderPoints";
+        return "PointsGui::ViewProviderScattered";
     }
 protected:
     void onChanged(const App::Property* prop);
@@ -76,31 +77,7 @@ public:
     PropertyPointKernel Points; /**< The point kernel property. */
 };
 
-/** Feature for organized points.
- */
-class PointsExport Organized : public Feature
-{
-    PROPERTY_HEADER(Points::Organized);
-
-public:
-    /// Constructor
-    Organized(void);
-    virtual ~Organized(void);
-
-    App::PropertyInteger Width;
-    App::PropertyInteger Height;
-
-    /** @name methods overide Feature */
-    //@{
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "PointsGui::ViewProviderOrganized";
-    }
-    //@}
-};
-
 typedef App::FeatureCustomT<Feature> FeatureCustom;
-typedef App::FeatureCustomT<Organized> OrganizedCustom;
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
 } //namespace Points

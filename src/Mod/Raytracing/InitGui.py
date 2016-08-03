@@ -32,46 +32,18 @@
 
 
 class RaytracingWorkbench ( Workbench ):
-	"Raytracing workbench object"
-	Icon = """
-                        /* XPM */
-                        static char * raytracing_xpm[] = {
-                        "16 16 9 1",
-                        " 	c None",
-                        ".	c #000100",
-                        "+	c #0C1731",
-                        "@	c #1D3154",
-                        "#	c #29476F",
-                        "$	c #3C6291",
-                        "%	c #7394BB",
-                        "&	c #B0BFD3",
-                        "*	c #FBFDFB",
-                        "                ",
-                        "      $$        ",
-                        "    %&%$$$#     ",
-                        "  %&***$$###    ",
-                        "  %****$###@@   ",
-                        " $%***%###@@@   ",
-                        " $$%&$###@@@+   ",
-                        " $$$####@@@++   ",
-                        " $$####@@@+++   ",
-                        " $####@@@++++   ",
-                        "  ###@@@+++++   ",
-                        "  ##@@@+++++    ",
-                        "   @@@+++++...  ",
-                        "     ++++.....  ",
-                        "                ",
-                        "                "};
-			"""
-	MenuText = "Raytracing"
-	ToolTip = "Raytracing workbench"
+    "Raytracing workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Raytracing/Resources/icons/RaytracingWorkbench.svg"
+        self.__class__.MenuText = "Raytracing"
+        self.__class__.ToolTip = "Raytracing workbench"
 
-	def Initialize(self):
-		# load the module
-		import PartGui
-		import RaytracingGui
-	def GetClassName(self):
-		return "RaytracingGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import PartGui
+        import RaytracingGui
+    def GetClassName(self):
+        return "RaytracingGui::Workbench"
 
 Gui.addWorkbench(RaytracingWorkbench())
 

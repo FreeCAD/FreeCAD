@@ -113,7 +113,7 @@ TreeWidget::TreeWidget(QWidget* parent)
 
     this->statusTimer = new QTimer(this);
 
-    connect(this->statusTimer, SIGNAL(timeout()), 
+    connect(this->statusTimer, SIGNAL(timeout()),
             this, SLOT(onTestStatus()));
     connect(this, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
             this, SLOT(onItemEntered(QTreeWidgetItem*)));
@@ -444,7 +444,10 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         }
     }
     else if (targetitem->type() == TreeWidget::ObjectType) {
-        Gui::ViewProviderDocumentObject* vp = static_cast<DocumentObjectItem*>(targetitem)->object();
+
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
+
         if (!vp->canDropObjects()) {
             event->ignore();
         }
@@ -456,6 +459,10 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         App::DocumentObject* grp = vp->getObject();
         App::Document* doc = grp->getDocument();
         QList<QModelIndex> idxs = selectedIndexes();
+
+        std::vector<const App::DocumentObject*> dropObjects;
+        dropObjects.reserve(idxs.size());
+
         for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
             QTreeWidgetItem* item = itemFromIndex(*it);
             if (item->type() != TreeWidget::ObjectType) {
@@ -468,6 +475,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 event->ignore();
                 return;
             }
+
+            dropObjects.push_back(obj);
 
             // To avoid a cylic dependency it must be made sure to not allow to
             // drag'n'drop a tree item onto a child or grandchild item of it.
@@ -506,7 +515,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     // one of the source items is also the destination item, that's not allowed
     if (this->isItemSelected(targetitem))
         return;
-    
+
     // filter out the selected items we cannot handle
     QList<QTreeWidgetItem*> items;
     QList<QModelIndex> idxs = selectedIndexes();
@@ -528,19 +537,21 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     if (targetitem->type() == TreeWidget::ObjectType) {
         // add object to group
-        Gui::ViewProviderDocumentObject* vp = static_cast<DocumentObjectItem*>(targetitem)->object();
-        App::DocumentObject* grp = vp->getObject();
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
         if (!vp->canDropObjects()) {
             return; // no group like object
         }
 
+        std::vector<const App::DocumentObject*> dropObjects;
+        dropObjects.reserve(idxs.size());
+
         // Open command
-        App::Document* doc = grp->getDocument();
-        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        gui->openCommand("Move object");
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             Gui::ViewProviderDocumentObject* vpc = static_cast<DocumentObjectItem*>(*it)->object();
             App::DocumentObject* obj = vpc->getObject();
+
+            dropObjects.push_back(obj);
 
             // does this have a parent object
             QTreeWidgetItem* parent = (*it)->parent();
@@ -552,7 +563,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             // now add the object to the target object
             vp->dropObject(obj);
         }
-        gui->commitCommand();
+        targetItemObj->drop(dropObjects,event->keyboardModifiers(),event->mouseButtons(),event->pos());
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         // Open command
@@ -655,7 +666,7 @@ void TreeWidget::onTestStatus(void)
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
     // object item selected
-    if (item && item->type() == TreeWidget::ObjectType) {
+    if ( item && item->type() == TreeWidget::ObjectType ) {
         DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
         obj->displayStatusInfo();
     }
@@ -802,7 +813,7 @@ void TreeWidget::setItemsSelected (const QList<QTreeWidgetItem *> items, bool se
     QItemSelection range;
     for (QList<QTreeWidgetItem*>::const_iterator it = items.begin(); it != items.end(); ++it)
         range.select(this->indexFromItem(*it),this->indexFromItem(*it));
-    selectionModel()->select(range, select ? 
+    selectionModel()->select(range, select ?
         QItemSelectionModel::Select :
         QItemSelectionModel::Deselect);
 }
@@ -819,7 +830,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
 
-    QGridLayout* pLayout = new QGridLayout(this); 
+    QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
     pLayout->addWidget(this->treeWidget, 0, 0 );
@@ -861,11 +872,13 @@ DocumentItem::~DocumentItem()
     connectExpObject.disconnect();
 }
 
+
+
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
     std::string name (v.getObject()->getNameInDocument());
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(name);
-    if (it != ObjectMap.end()) 
+    if (it != ObjectMap.end())
         it->second->setBackgroundColor(0,Qt::yellow);
 }
 
@@ -880,18 +893,25 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    std::string displayName = obj.getObject()->Label.getValue();
-    std::string objectName = obj.getObject()->getNameInDocument();
-    std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
-    if (it == ObjectMap.end()) {
-        // cast to non-const object
-        DocumentObjectItem* item = new DocumentObjectItem(
-            const_cast<Gui::ViewProviderDocumentObject*>(&obj), this);
-        item->setIcon(0, obj.getIcon());
-        item->setText(0, QString::fromUtf8(displayName.c_str()));
-        ObjectMap[objectName] = item;
-    } else {
-        Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
+    if (obj.showInTree()){
+        std::string displayName = obj.getObject()->Label.getValue();
+        std::string objectName = obj.getObject()->getNameInDocument();
+        std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
+        if (it == ObjectMap.end()) {
+            // cast to non-const object
+            DocumentObjectItem* item = new DocumentObjectItem(
+              const_cast<Gui::ViewProviderDocumentObject*>(&obj), this);
+            item->setIcon(0, obj.getIcon());
+            item->setText(0, QString::fromUtf8(displayName.c_str()));
+            ObjectMap[objectName] = item;
+
+            // it may be possible that the new object claims already existing objects. If this is the 
+            // case we need to make sure this is shown by the tree
+            if(!obj.claimChildren().empty())
+                slotChangeObject(obj);
+        }else {
+            Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
+        }
     }
 }
 
@@ -943,25 +963,53 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
     std::string objectName = obj->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
     if (it != ObjectMap.end()) {
-        // use new grouping style
-        std::set<QTreeWidgetItem*> children;
-        std::vector<App::DocumentObject*> group = view.claimChildren();
-        for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
-            if (*jt) {
-                const char* internalName = (*jt)->getNameInDocument();
-                if (internalName) {
-                    std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
-                    if (kt != ObjectMap.end()) {
-                        children.insert(kt->second);
-                        QTreeWidgetItem* parent = kt->second->parent();
-                        if (parent && parent != it->second) {
-                            if (it->second != kt->second) {
-                                int index = parent->indexOfChild(kt->second);
-                                parent->takeChild(index);
-                                it->second->addChild(kt->second);
-                            }
-                            else {
-                                Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+         // use new grouping style
+            DocumentObjectItem* parent_of_group = it->second;
+            std::set<QTreeWidgetItem*> children;
+            std::vector<App::DocumentObject*> group = view.claimChildren();
+                int group_index = 0; // counter of children inserted to the tree
+            for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
+                if ((*jt) && view.getObject()->getDocument()->isIn(*jt)){
+                    // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
+                    // were changed in a transaction and slotChangedObject() is triggered by one property being reset
+                    // before the invalid pointer has been removed from another. Currently this happens for PartDesign::Body
+                    // when cancelling a new feature in the dialog. First the new feature is deleted, then the Tip property is
+                    // reset, but claimChildren() accesses the Model property which still contains the pointer to the deleted feature
+                    const char* internalName = (*jt)->getNameInDocument();
+                    if (internalName) {
+                        std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
+                        if (kt != ObjectMap.end()) {
+                            DocumentObjectItem* child_of_group = kt->second;
+                            children.insert(child_of_group);
+                            QTreeWidgetItem* parent_of_child = child_of_group->parent();
+
+                            if (parent_of_child) {
+                                if (parent_of_child != parent_of_group) {
+                                    if (parent_of_group != child_of_group) {
+                                        // This child's parent must be adjusted
+                                        parent_of_child->removeChild(child_of_group);
+                                        // Insert the child at the correct position according to the order of the children returned
+                                        // by claimChildren
+                                        if (group_index <= parent_of_group->childCount())
+                                            parent_of_group->insertChild(group_index, child_of_group);
+                                        else
+                                            parent_of_group->addChild(child_of_group);
+                                        group_index++;
+                                    } else {
+                                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                    }
+                                } else {
+                                    // The child already in the right group, but we may need to ajust it's index to follow the order of claimChildren
+                                    int index=parent_of_group->indexOfChild (child_of_group);
+                                    if (index>group_index) {
+                                         parent_of_group->takeChild (index);
+                                         parent_of_group->insertChild (group_index, child_of_group);
+                                    }
+                                    group_index++;
+                                }
+                            } else {
+                                Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): "
+                                    "'%s' claimed a top level object '%s' to be it's child.\n", objectName.c_str(), internalName);
                             }
                         }
                     }
@@ -973,20 +1021,20 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                     Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
                 }
             }
-        }
-        // move all children which are not part of the group anymore to this item
-        int count = it->second->childCount();
-        for (int i=0; i < count; i++) {
-            QTreeWidgetItem* child = it->second->child(i);
-            if (children.find(child) == children.end()) {
-                it->second->takeChild(i);
-                this->addChild(child);
-            }
-        }
 
-        // set the text label
-        std::string displayName = obj->Label.getValue();
-        it->second->setText(0, QString::fromUtf8(displayName.c_str()));
+            // move all children which are not part of the group anymore to this item
+            int count = parent_of_group->childCount();
+            for (int i=0; i < count; i++) {
+                QTreeWidgetItem* child = parent_of_group->child(i);
+                if (children.find(child) == children.end()) {
+                    parent_of_group->takeChild(i);
+                    this->addChild(child);
+                }
+            }
+
+            // set the text label
+            std::string displayName = obj->Label.getValue();
+            parent_of_group->setText(0, QString::fromUtf8(displayName.c_str()));
     }
     else {
         Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot change unknown object.\n");
@@ -1032,11 +1080,17 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
         else
             jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
         break;
+    case Gui::LightBlue:
+        if(set)
+            jt->second->setBackgroundColor(0,QColor(230,230,255));
+        else
+            jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
+        break;
     default:
         break;
     }
-
     jt->second->setFont(0,f);
+        
 }
 
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
@@ -1073,7 +1127,22 @@ const Gui::Document* DocumentItem::document() const
 
 //void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
 //{
-//    // never call without Object! 
+//    // never call without Object!
+//    assert(Obj);
+//
+//
+//    std::map<std::string,DocumentObjectItem*>::iterator pos;
+//    pos = ObjectMap.find(Obj->getNameInDocument());
+//    if (pos != ObjectMap.end()) {
+//        QFont f = pos->second->font(0);
+//        f.setUnderline(mark);
+//        pos->second->setFont(0,f);
+//    }
+//}
+
+//void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
+//{
+//    // never call without Object!
 //    assert(Obj);
 //
 //
@@ -1221,6 +1290,8 @@ std::vector<DocumentObjectItem*> DocumentItem::getAllParents(DocumentObjectItem*
 
     for (std::vector<App::DocumentObject*>::iterator it = inlist.begin(); it != inlist.end(); ++it) {
         Gui::ViewProvider* vp = pDocument->getViewProvider(*it);
+        if(!vp) 
+            continue;
         std::vector<App::DocumentObject*> child = vp->claimChildren();
         for (std::vector<App::DocumentObject*>::iterator jt = child.begin(); jt != child.end(); ++jt) {
             if (*jt == obj) {
@@ -1267,7 +1338,7 @@ void DocumentObjectItem::testStatus()
     App::DocumentObject* pObject = viewObject->getObject();
 
     // if status has changed then continue
-    int currentStatus = 
+    int currentStatus =
         ((pObject->isError()          ? 1 : 0) << 2) |
         ((pObject->mustExecute() == 1 ? 1 : 0) << 1) |
         (viewObject->isShow()         ? 1 : 0);
@@ -1358,6 +1429,15 @@ void DocumentObjectItem::testStatus()
     }
 
     this->setIcon(0, icon_mod);
+}
+
+bool DocumentObjectItem::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    return viewObject->allowDrop(objList,keys,mouseBts,pos);
+}
+void DocumentObjectItem::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    viewObject->drop(objList,keys,mouseBts,pos);
 }
 
 void DocumentObjectItem::displayStatusInfo()

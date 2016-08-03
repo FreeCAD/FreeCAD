@@ -84,7 +84,6 @@ protected:
     void setupLabels();
 
 protected Q_SLOTS:
-    virtual void on_licenseButton_clicked();
     virtual void on_copyButton_clicked();
 
 private:

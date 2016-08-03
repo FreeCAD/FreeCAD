@@ -156,6 +156,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
     // create the inventor widget and set the defaults
     _viewer->setDocument(this->_pcDocument);
+    _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
     // describes a minor error but trying to fix it leads to a major issue
@@ -344,7 +345,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
-        bool on = rGrp.GetBool("ZoomAtCursor", false);
+        bool on = rGrp.GetBool("ZoomAtCursor", true);
         _viewer->navigationStyle()->setZoomAtCursor(on);
     }
     else if (strcmp(Reason,"ZoomStep") == 0) {
@@ -617,7 +618,7 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     else if(strcmp("SetStereoOff",pMsg) == 0 ) {
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO );
         return true;
-   }
+    }
     else if(strcmp("Example1",pMsg) == 0 ) {
         SoSeparator * root = new SoSeparator;
         Texture3D(root);
@@ -945,7 +946,7 @@ void View3DInventor::dropEvent (QDropEvent * e)
 
 void View3DInventor::dragEnterEvent (QDragEnterEvent * e)
 {
-    // Here we must allow uri drafs and check them in dropEvent
+    // Here we must allow uri drags and check them in dropEvent
     const QMimeData* data = e->mimeData();
     if (data->hasUrls())
         e->accept();

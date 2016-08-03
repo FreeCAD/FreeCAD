@@ -1241,10 +1241,6 @@ Please define another shortcut.</source>
         <translation>マクロ名:</translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="obsolete">マクロのコピー先:</translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation>実行</translation>
     </message>
@@ -1266,15 +1262,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>User macros</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーマクロ</translation>
     </message>
     <message>
         <source>System macros</source>
-        <translation type="unfinished"></translation>
+        <translation>システムマクロ</translation>
     </message>
     <message>
         <source>User macros location:</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザーマクロの場所:</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1314,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation>読み取り専用</translation>
     </message>
 </context>
 <context>
@@ -1805,14 +1801,6 @@ Specify another directory, please.</source>
         <translation>カメラの種類</translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation>正射投影レンダリング</translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation>透視投影レンダリング</translation>
-    </message>
-    <message>
         <source></source>
         <translation>[empty string]</translation>
     </message>
@@ -1880,13 +1868,17 @@ Specify another directory, please.</source>
         <source>MSAA 8x</source>
         <translation>MSAA 8x</translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished">Or&amp;thographic rendering</translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished">Perspective renderin&amp;g</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation>%1 ナビゲーション</translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation>アンチエイリアス</translation>
@@ -2711,6 +2703,42 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <message>
         <source>Finish</source>
         <translation>完了</translation>
+    </message>
+    <message>
+        <source>Cleanup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">削除</translation>
+    </message>
+    <message>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete all transient directories?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transient directories deleted.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4815,10 +4843,6 @@ Be aware the point where you click matters.</source>
         <translation>ナビゲーションスタイル</translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation>%1 ナビゲーション</translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation>注釈を移動</translation>
     </message>
@@ -4856,11 +4880,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
         <source>Delete macro</source>
-        <translation type="unfinished">マクロの削除</translation>
+        <translation>マクロの削除</translation>
     </message>
     <message>
         <source>Not allowed to delete system-wide macros</source>
-        <translation type="unfinished"></translation>
+        <translation>システム全体のマクロを削除することはできません</translation>
     </message>
 </context>
 <context>

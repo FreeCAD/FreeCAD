@@ -218,8 +218,6 @@ public:
     std::vector<std::pair<std::string,std::string> > GetASCIIMap(const char * sFilter = NULL) const;
     //@}
 
-    static void Init(void);
-
     friend class ParameterManager;
 
     /// returns the name
@@ -266,18 +264,39 @@ protected:
 
 };
 
+/** The parameter serializer class
+ *  This is a helper class to serialize a parameter XML document.
+ *  Does loading and saving the DOM document from and to files.
+ *  In sub-classes the load and saving of XML documents can be
+ *  customized.
+ *  @see ParameterManager
+ */
+class BaseExport ParameterSerializer
+{
+public:
+    ParameterSerializer(const std::string& fn);
+    virtual ~ParameterSerializer();
+
+    virtual void SaveDocument(const ParameterManager&);
+    virtual int LoadDocument(ParameterManager&);
+    virtual bool LoadOrCreateDocument(ParameterManager&);
+
+protected:
+    std::string filename;
+};
 
 /** The parameter manager class
  *  This class manages a parameter XML document.
- *  Does loding, saving and handling the DOM document.
+ *  Does loading, saving and handling the DOM document.
  *  @see ParameterGrp
  */
-class BaseExport ParameterManager	: public ParameterGrp
+class BaseExport ParameterManager : public ParameterGrp
 {
 public:
     ParameterManager();
     ~ParameterManager();
     static void Init(void);
+    static void Terminate(void);
 
     int   LoadDocument(const char* sFileName);
     int   LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
@@ -287,9 +306,24 @@ public:
     void  CreateDocument(void);
     void  CheckDocument() const;
 
+    /** @name Parameter serialization */
+    //@{
+    /// Sets a serializer. The ParameterManager takes ownership of the serializer.
+    void  SetSerializer(ParameterSerializer*);
+    /// Returns true if a serializer is set, otherwise false is returned.
+    bool  HasSerializer() const;
+    /// Loads an XML document by calling the serializer's load method.
+    int   LoadDocument();
+    /// Loads or creates an XML document by calling the serializer's load method.
+    bool  LoadOrCreateDocument();
+    /// Saves an XML document by calling the serializer's save method.
+    void  SaveDocument() const;
+    //@}
+
 private:
 
     XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument   *_pDocument;
+    ParameterSerializer * paramSerializer;
 
     bool          gDoNamespaces         ;
     bool          gDoSchema             ;

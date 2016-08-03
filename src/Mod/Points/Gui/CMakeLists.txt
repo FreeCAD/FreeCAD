@@ -69,3 +69,11 @@ SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
 SET_PYTHON_PREFIX_SUFFIX(PointsGui)
 
 INSTALL(TARGETS PointsGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PointsGuiIcon_SVG
+    Resources/icons/PointsWorkbench.svg
+)
+
+fc_copy_sources(PointsGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Points" ${PointsGuiIcon_SVG})
+
+INSTALL(FILES ${PointsGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Points/Resources/icons")

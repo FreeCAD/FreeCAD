@@ -141,3 +141,11 @@ SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
 
 INSTALL(TARGETS SketcherGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(SketcherGuiIcon_SVG
+    Resources/icons/SketcherWorkbench.svg
+)
+
+fc_copy_sources(SketcherGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher" ${SketcherGuiIcon_SVG})
+
+INSTALL(FILES ${SketcherGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Sketcher/Resources/icons")

@@ -45,7 +45,7 @@ class ViewProvider;
 class ViewVolumeProjection;
 }
 
-namespace FemGui { 
+namespace FemGui {
 
 class ViewProviderFemMesh;
 

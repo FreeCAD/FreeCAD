@@ -148,6 +148,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
             s.addConstraint(Sketcher.Constraint('DistanceY',1,height)) #16
             s.addConstraint(Sketcher.Constraint('DistanceX',0,width)) #17
+            s.renameConstraint(16, 'Height')
+            s.renameConstraint(17, 'Width')
             s.addConstraint(Sketcher.Constraint('DistanceY',6,2,2,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',2,2,6,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
@@ -167,6 +169,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
             s.addConstraint(Sketcher.Constraint('DistanceY',1,height)) #16
             s.addConstraint(Sketcher.Constraint('DistanceX',0,width)) #17
+            s.renameConstraint(16, 'Height')
+            s.renameConstraint(17, 'Width')
             s.addConstraint(Sketcher.Constraint('DistanceY',6,2,2,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',2,2,6,2,h1))
             s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
@@ -360,6 +364,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 FreeCAD.ActiveDocument.recompute()
             obj = makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
+            obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:
                 obj.Role = "Door"
             FreeCAD.ActiveDocument.recompute()
@@ -397,9 +402,6 @@ class _CommandWindow:
         self.Include = True
         self.baseFace = None
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        import DraftGui
-        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         
         # autobuild mode
         if FreeCADGui.Selection.getSelectionEx():
@@ -556,11 +558,11 @@ class _CommandWindow:
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
             wid = getattr(self,"val"+param)
             if param == "Width":
-                wid.setText(self.FORMAT % self.Width)
+                wid.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
             elif param == "Height":
-                wid.setText(self.FORMAT % self.Height)
+                wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
             else:
-                wid.setText(self.FORMAT % self.Thickness)
+                wid.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
                 setattr(self,param,self.Thickness)
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
@@ -618,15 +620,15 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyStringList","WindowParts","Arch",translate("Arch","the components of this window"))
-        obj.addProperty("App::PropertyLength","HoleDepth","Arch",translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
-        obj.addProperty("App::PropertyLink","Subvolume","Arch",translate("Arch","an optional object that defines a volume to be subtracted from hosts of this window"))
-        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this window (for preset windows only)"))
-        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this window (for preset windows only)"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal direction of this window"))
+        obj.addProperty("App::PropertyStringList","WindowParts","Arch","the components of this window")
+        obj.addProperty("App::PropertyLength","HoleDepth","Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic.")
+        obj.addProperty("App::PropertyLink","Subvolume","Arch","an optional object that defines a volume to be subtracted from hosts of this window")
+        obj.addProperty("App::PropertyLength","Width","Arch","The width of this window (for preset windows only)")
+        obj.addProperty("App::PropertyLength","Height","Arch","The height of this window (for preset windows only)")
+        obj.addProperty("App::PropertyVector","Normal","Arch","The normal direction of this window")
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyLink","PanelMaterial","Material",translate("Arch","A material for this object"))
-        obj.addProperty("App::PropertyLink","GlassMaterial","Material",translate("Arch","A material for this object"))
+        obj.addProperty("App::PropertyLink","PanelMaterial","Material","A material for this object")
+        obj.addProperty("App::PropertyLink","GlassMaterial","Material","A material for this object")
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
@@ -648,9 +650,17 @@ class _Window(ArchComponent.Component):
                     if obj.Base:
                         try:
                             if prop == "Height":
-                                obj.Base.setDatum(16,obj.Height.Value)
+                                if obj.Height.Value > 0:
+                                    try:
+                                        obj.Base.setDatum("Height",obj.Height.Value)
+                                    except:
+                                        obj.Base.setDatum(16,obj.Height.Value)
                             elif prop == "Width":
-                                obj.Base.setDatum(17,obj.Width.Value)
+                                if obj.Width.Value > 0:
+                                    try:
+                                        obj.Base.setDatum("Width",obj.Width.Value)
+                                    except:
+                                        obj.Base.setDatum(17,obj.Width.Value)
                         except:
                             # restoring constraints when loading a file fails
                             # because of load order, but it doesn't harm...
@@ -719,8 +729,7 @@ class _Window(ArchComponent.Component):
         base = self.processSubShapes(obj,base)
         if base:
             if not base.isNull():
-                if base.Solids:
-                    self.applyShape(obj,base,pl)
+                self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
@@ -749,7 +758,10 @@ class _Window(ArchComponent.Component):
                 width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
             if Draft.isClone(obj,"Window"):
-                orig = obj.Objects[0]
+                if hasattr(obj,"CloneOf"):
+                    orig = obj.CloneOf
+                else:
+                    orig = obj.Objects[0]
                 if orig.Base:
                     base = orig.Base
                 if hasattr(orig,"HoleDepth"):
@@ -862,9 +874,6 @@ class _ArchWindowTaskPanel:
     def __init__(self):
 
         self.obj = None
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        import DraftGui
-        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -1079,7 +1088,7 @@ class _ArchWindowTaskPanel:
                             else:
                                 f.setCurrentIndex(0)
                         elif i in [3,4]:
-                            f.setProperty("text",self.FORMAT % float(t))
+                            f.setProperty("text",FreeCAD.Units.Quantity(float(t),FreeCAD.Units.Length).UserString)
                         else:
                             f.setText(t)
 

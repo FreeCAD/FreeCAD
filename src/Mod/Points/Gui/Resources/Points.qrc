@@ -2,6 +2,7 @@
     <qresource>
         <file>icons/Points_Export_Point_cloud.svg</file>
         <file>icons/Points_Import_Point_cloud.svg</file>
+        <file>icons/PointsWorkbench.svg</file>
         <file>translations/Points_af.qm</file>
         <file>translations/Points_de.qm</file>
         <file>translations/Points_fi.qm</file>
@@ -29,4 +30,4 @@
         <file>translations/Points_el.qm</file>
         <file>translations/Points_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

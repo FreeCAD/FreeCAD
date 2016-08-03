@@ -1171,7 +1171,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1030"/>
         <source>Chamfer Edges</source>
         <translation>Zarubi stranice</translation>
     </message>
@@ -1189,17 +1189,17 @@
         <translation>Smjer</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+6"/>
         <source>Along normal</source>
         <translation>Uz normalu</translation>
     </message>
     <message>
-        <location line="-34"/>
+        <location line="+117"/>
         <source>Length:</source>
         <translation>Duljina:</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="-110"/>
         <source>3D view</source>
         <translation>3D prikaz</translation>
     </message>
@@ -1209,7 +1209,7 @@
         <translation>Napomena: Ova opcija radi samo za ravnine</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+127"/>
         <source>Create solid</source>
         <translation>Napravi čvrsto tijelo</translation>
     </message>
@@ -1219,7 +1219,7 @@
         <translation>Zašilji vanjski kut</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+41"/>
         <source>Shape</source>
         <translation>Oblik</translation>
     </message>
@@ -1228,7 +1228,7 @@
         <translation> </translation>
     </message>
     <message>
-        <location line="-199"/>
+        <location line="-168"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1278,22 +1278,27 @@
         <translation>Parametar zaobljenja</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+91"/>
         <source>Radius:</source>
         <translation>Polumjer:</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-69"/>
         <source>Select faces</source>
         <translation type="unfinished">Select faces</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
+        <source>Selection</source>
+        <translation>Izbor</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Select edges</source>
         <translation type="unfinished">Select edges</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="+47"/>
         <source>Fillet type:</source>
         <translation>Tip zaobljenja:</translation>
     </message>
@@ -1308,7 +1313,7 @@
         <translation>Promjenjivi polumjer</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-103"/>
         <source>Shape</source>
         <translation>Oblik</translation>
     </message>
@@ -1323,7 +1328,7 @@
         <translation>Nema odabira</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-763"/>
         <source>Length:</source>
         <translation>Duljina:</translation>
     </message>
@@ -1344,12 +1349,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+520"/>
+        <location line="+555"/>
         <source>Start length</source>
         <translation type="unfinished">Start length</translation>
     </message>
     <message>
-        <location line="-519"/>
+        <location line="-554"/>
         <source>End length</source>
         <translation type="unfinished">End length</translation>
     </message>
@@ -1360,17 +1365,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+517"/>
+        <location line="+552"/>
         <source>Start radius</source>
         <translation>Početni radijus</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-551"/>
         <source>End radius</source>
         <translation>Krajnji radijus</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+541"/>
         <source>Length</source>
         <translation>Dužina</translation>
     </message>
@@ -1391,17 +1396,17 @@ Please check one or more edge entities first.</source>
         <translation>Nema rubova za zaobliti. Molimo prvo označite jedan ili više rubova.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+101"/>
+        <location filename="../../DlgFilletEdges.ui" line="+40"/>
         <source>All</source>
         <translation>Sve</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+7"/>
         <source>None</source>
         <translation>Nijedan</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-248"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Rub%1</translation>
@@ -1566,7 +1571,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Definicija kutije</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+71"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1594,7 +1599,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Veličina:</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+51"/>
         <source>Height:</source>
         <translation>Duljina:</translation>
     </message>
@@ -1609,12 +1614,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Duljina:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-154"/>
         <source>Position:</source>
         <translation>Položaj:</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Direction:</source>
         <translation>Smjer:</translation>
     </message>
@@ -1627,7 +1632,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Definiranje cilindra</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+95"/>
         <source>Parameter</source>
         <translation>Parametar</translation>
     </message>
@@ -1642,7 +1647,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Polumjer:</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-108"/>
         <source>Position:</source>
         <translation>Položaj:</translation>
     </message>
@@ -1846,7 +1851,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+519"/>
+        <location filename="../../DlgPrimitives.cpp" line="+542"/>
         <source>Wedge</source>
         <translation>Klin</translation>
     </message>
@@ -2158,7 +2163,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>očetna točka</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+193"/>
+        <location filename="../../DlgPrimitives.cpp" line="+190"/>
         <source>&amp;Create</source>
         <translation>&amp;Izradi</translation>
     </message>
@@ -2175,7 +2180,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">Alt+O</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-485"/>
         <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
@@ -2220,12 +2225,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+17"/>
         <source>Angle:</source>
         <translation>Kut:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Z:</source>
         <translation>Z:</translation>
     </message>
@@ -2235,7 +2240,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Os:</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+45"/>
         <source>Shape</source>
         <translation>Oblik</translation>
     </message>
@@ -2250,7 +2255,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="unfinished">Create Solid</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+177"/>
+        <location filename="../../DlgRevolution.cpp" line="+178"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Prvo odaberite oblik.</translation>
     </message>
@@ -2590,26 +2595,30 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+8"/>
-        <source>Base point:</source>
-        <translation>Bazna točka:</translation>
+        <source>Base point</source>
+        <translation type="unfinished">Base point</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <source>Base point:</source>
+        <translation type="obsolete">Bazna točka:</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>y</source>
         <translation>y</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>z</source>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+122"/>
+        <location filename="../../Mirroring.cpp" line="+123"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Prvo odaberite oblik za zrcaljenje.</translation>
     </message>
@@ -2622,7 +2631,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+165"/>
+        <location filename="../../TaskOffset.cpp" line="+166"/>
         <source>Input error</source>
         <translation>Pogreška na ulazu</translation>
     </message>
@@ -2653,12 +2662,12 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Pogrešan odabir</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Odaberite dva vrha</translation>
@@ -2683,32 +2692,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Odaberite dvije ili više površina</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Odaberite samo jedan čvrsti objekt</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Odaberite dva vrha za stvaranje ruba</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
         <translation type="unfinished">Select a list of vertices</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Odaberite zatvoren skup bridova</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Odaberite susjedne plohu</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Sve vrste oblika se mogu odabrati</translation>
     </message>
@@ -3064,7 +3073,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Pomak</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Mode</source>
         <translation>Način</translation>
     </message>
@@ -3164,7 +3173,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Čvrsto tijelo iz ljuske</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation>Izgladi oblik</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Stvoriti</translation>
     </message>

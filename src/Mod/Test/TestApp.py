@@ -50,6 +50,7 @@ def All():
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartApp"))
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartDesignApp"))
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSpreadsheet"))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestTechDrawApp"))
     # gui tests of modules
     if (FreeCAD.GuiUp == 1):
         suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSketcherGui"))
@@ -63,7 +64,7 @@ def All():
 def TestText(s):
     s = unittest.defaultTestLoader.loadTestsFromName(s)
     r = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
-    r.run(s)
+    return r.run(s)
 
 
 def Test(s):
@@ -72,7 +73,7 @@ def Test(s):
 
 def testAll():
     r = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
-    r.run(All())
+    return r.run(All())
 
 
 def testUnit():

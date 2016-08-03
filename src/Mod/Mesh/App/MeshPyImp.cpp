@@ -136,14 +136,49 @@ PyObject* MeshPy::copy(PyObject *args)
 PyObject*  MeshPy::read(PyObject *args)
 {
     const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL;                         
-
-    PY_TRY {
+    if (PyArg_ParseTuple(args, "s",&Name)) {
         getMeshObjectPtr()->load(Name);
-    } PY_CATCH;
-    
-    Py_Return; 
+        Py_Return;
+    }
+
+    PyErr_Clear();
+
+    MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
+    std::map<std::string, MeshCore::MeshIO::Format> ext;
+    ext["BMS" ] = MeshCore::MeshIO::BMS;
+    ext["STL" ] = MeshCore::MeshIO::BSTL;
+    ext["AST" ] = MeshCore::MeshIO::ASTL;
+    ext["OBJ" ] = MeshCore::MeshIO::OBJ;
+    ext["OFF" ] = MeshCore::MeshIO::OFF;
+    ext["IV"  ] = MeshCore::MeshIO::IV;
+    ext["X3D" ] = MeshCore::MeshIO::X3D;
+    ext["VRML"] = MeshCore::MeshIO::VRML;
+    ext["WRL" ] = MeshCore::MeshIO::VRML;
+    ext["WRZ" ] = MeshCore::MeshIO::WRZ;
+    ext["NAS" ] = MeshCore::MeshIO::NAS;
+    ext["BDF" ] = MeshCore::MeshIO::NAS;
+    ext["PLY" ] = MeshCore::MeshIO::PLY;
+    ext["APLY"] = MeshCore::MeshIO::APLY;
+    ext["PY"  ] = MeshCore::MeshIO::PY;
+
+    PyObject* input;
+    char* Ext;
+    if (PyArg_ParseTuple(args, "Os",&input,&Ext)) {
+        if (ext.find(Ext) != ext.end()) {
+            format = ext[Ext];
+        }
+
+        // read mesh
+        Base::PyStreambuf buf(input);
+        std::istream str(0);
+        str.rdbuf(&buf);
+        getMeshObjectPtr()->load(str, format);
+
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "expect string or file object");
+    return NULL;
 }
 
 PyObject*  MeshPy::write(PyObject *args)
@@ -152,32 +187,30 @@ PyObject*  MeshPy::write(PyObject *args)
     char* Ext=0;
     char* ObjName=0;
     PyObject* List=0;
-    if (!PyArg_ParseTuple(args, "s|ssO!",&Name,&Ext,&ObjName,&PyList_Type,&List))
-        return NULL;
 
     MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
-    if (Ext) {
-        std::map<std::string, MeshCore::MeshIO::Format> ext;
-        ext["BMS" ] = MeshCore::MeshIO::BMS;
-        ext["STL" ] = MeshCore::MeshIO::BSTL;
-        ext["AST" ] = MeshCore::MeshIO::ASTL;
-        ext["OBJ" ] = MeshCore::MeshIO::OBJ;
-        ext["OFF" ] = MeshCore::MeshIO::OFF;
-        ext["IV"  ] = MeshCore::MeshIO::IV;
-        ext["X3D" ] = MeshCore::MeshIO::X3D;
-        ext["VRML"] = MeshCore::MeshIO::VRML;
-        ext["WRL" ] = MeshCore::MeshIO::VRML;
-        ext["WRZ" ] = MeshCore::MeshIO::WRZ;
-        ext["NAS" ] = MeshCore::MeshIO::NAS;
-        ext["BDF" ] = MeshCore::MeshIO::NAS;
-        ext["PLY" ] = MeshCore::MeshIO::PLY;
-        ext["APLY"] = MeshCore::MeshIO::APLY;
-        ext["PY"  ] = MeshCore::MeshIO::PY;
-        if (ext.find(Ext) != ext.end())
-            format = ext[Ext];
-    };
+    std::map<std::string, MeshCore::MeshIO::Format> ext;
+    ext["BMS" ] = MeshCore::MeshIO::BMS;
+    ext["STL" ] = MeshCore::MeshIO::BSTL;
+    ext["AST" ] = MeshCore::MeshIO::ASTL;
+    ext["OBJ" ] = MeshCore::MeshIO::OBJ;
+    ext["OFF" ] = MeshCore::MeshIO::OFF;
+    ext["IV"  ] = MeshCore::MeshIO::IV;
+    ext["X3D" ] = MeshCore::MeshIO::X3D;
+    ext["VRML"] = MeshCore::MeshIO::VRML;
+    ext["WRL" ] = MeshCore::MeshIO::VRML;
+    ext["WRZ" ] = MeshCore::MeshIO::WRZ;
+    ext["NAS" ] = MeshCore::MeshIO::NAS;
+    ext["BDF" ] = MeshCore::MeshIO::NAS;
+    ext["PLY" ] = MeshCore::MeshIO::PLY;
+    ext["APLY"] = MeshCore::MeshIO::APLY;
+    ext["PY"  ] = MeshCore::MeshIO::PY;
 
-    PY_TRY {
+    if (PyArg_ParseTuple(args, "s|ssO!",&Name,&Ext,&ObjName,&PyList_Type,&List)) {
+        if (Ext && ext.find(Ext) != ext.end()) {
+            format = ext[Ext];
+        }
+
         if (List) {
             MeshCore::Material mat;
             Py::List list(List);
@@ -200,9 +233,49 @@ PyObject*  MeshPy::write(PyObject *args)
         else {
             getMeshObjectPtr()->save(Name, format, 0, ObjName);
         }
-    } PY_CATCH;
 
-    Py_Return;
+        Py_Return;
+    }
+
+    PyErr_Clear();
+
+    PyObject* input;
+    if (PyArg_ParseTuple(args, "Os|sO!", &input,&Ext,&ObjName,&PyList_Type,&List)) {
+        if (ext.find(Ext) != ext.end()) {
+            format = ext[Ext];
+        }
+
+        std::auto_ptr<MeshCore::Material> mat;
+        if (List) {
+            mat.reset(new MeshCore::Material);
+            Py::List list(List);
+            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                Py::Tuple t(*it);
+                float r = (float)Py::Float(t.getItem(0));
+                float g = (float)Py::Float(t.getItem(1));
+                float b = (float)Py::Float(t.getItem(2));
+                mat->diffuseColor.push_back(App::Color(r,g,b));
+            }
+
+            if (mat->diffuseColor.size() == getMeshObjectPtr()->countPoints())
+                mat->binding = MeshCore::MeshIO::PER_VERTEX;
+            else if (mat->diffuseColor.size() == getMeshObjectPtr()->countFacets())
+                mat->binding = MeshCore::MeshIO::PER_FACE;
+            else
+                mat->binding = MeshCore::MeshIO::OVERALL;
+        }
+
+        // write mesh
+        Base::PyStreambuf buf(input);
+        std::ostream str(0);
+        str.rdbuf(&buf);
+        getMeshObjectPtr()->save(str, format, mat.get(), ObjName);
+
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "expect string or file object");
+    return NULL;
 }
 
 PyObject*  MeshPy::writeInventor(PyObject *args)
@@ -832,6 +905,14 @@ PyObject*  MeshPy::removeNonManifolds(PyObject *args)
     Py_Return
 }
 
+PyObject*  MeshPy::removeNonManifoldPoints(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    getMeshObjectPtr()->removeNonManifoldPoints();
+    Py_Return
+}
+
 PyObject*  MeshPy::hasSelfIntersections(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -919,6 +1000,22 @@ PyObject*  MeshPy::countNonUniformOrientedFacets(PyObject *args)
     return Py_BuildValue("k", count); 
 }
 
+PyObject*  MeshPy::getNonUniformOrientedFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshEvalOrientation cMeshEval(kernel);
+    std::vector<unsigned long> inds = cMeshEval.GetIndices();
+    Py::Tuple tuple(inds.size());
+    for (std::size_t i=0; i<inds.size(); i++) {
+        tuple.setItem(i, Py::Long(inds[i]));
+    }
+
+    return Py::new_reference_to(tuple);
+}
+
 PyObject*  MeshPy::harmonizeNormals(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -1000,11 +1097,12 @@ PyObject*  MeshPy::fixIndices(PyObject *args)
 PyObject*  MeshPy::fixDeformations(PyObject *args)
 {
     float fMaxAngle;
-    if (!PyArg_ParseTuple(args, "f", &fMaxAngle))
+    float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
+    if (!PyArg_ParseTuple(args, "f|f", &fMaxAngle, &fEpsilon))
         return NULL;
 
     PY_TRY {
-        getMeshObjectPtr()->validateDeformations(fMaxAngle);
+        getMeshObjectPtr()->validateDeformations(fMaxAngle, fEpsilon);
     } PY_CATCH;
 
     Py_Return; 
@@ -1012,11 +1110,12 @@ PyObject*  MeshPy::fixDeformations(PyObject *args)
 
 PyObject*  MeshPy::fixDegenerations(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
+    if (!PyArg_ParseTuple(args, "|f", &fEpsilon))
         return NULL;
 
     PY_TRY {
-        getMeshObjectPtr()->validateDegenerations();
+        getMeshObjectPtr()->validateDegenerations(fEpsilon);
     } PY_CATCH;
 
     Py_Return; 

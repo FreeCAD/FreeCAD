@@ -9,6 +9,7 @@
     Namespace="App"
     FatherInclude="Base/PyObjectBase.h"
     FatherNamespace="Base"
+    Constructor="true"
 		Delete="true">
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />

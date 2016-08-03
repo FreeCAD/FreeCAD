@@ -44,7 +44,7 @@
 <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-        <location line="+129"/>
+        <location line="+134"/>
         <source>Reverse Engineering</source>
         <translation>Обрнути инжењеринг</translation>
     </message>
@@ -68,10 +68,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation>Cтруктурирани облаци тачака</translation>
+    </message>
+    <message>
         <location line="+1"/>
         <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation>Триангулација cтруктурираних облака тачака</translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation type="unfinished">View triangulation</translation>
+        <translation type="obsolete">View triangulation</translation>
     </message>
 </context>
 <context>
@@ -90,13 +98,13 @@
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished">Degree</translation>
+        <translation>Cтепени</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished">Control points</translation>
+        <translation>Контролне тачке</translation>
     </message>
     <message>
         <location line="-35"/>
@@ -116,7 +124,7 @@
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished">Size factor</translation>
+        <translation>Фактор величине</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -126,7 +134,7 @@
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished">Total Weight</translation>
+        <translation>Укупна Тежина</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -177,7 +185,7 @@
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>Параметри</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -203,14 +211,14 @@
 <context>
     <name>Reen_ApproxSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="-154"/>
-        <location line="+130"/>
+        <location filename="../../Command.cpp" line="-159"/>
+        <location line="+135"/>
         <source>Wrong selection</source>
         <translation>Погрешан избор</translation>
     </message>
     <message>
-        <location line="-129"/>
-        <location line="+130"/>
+        <location line="-134"/>
+        <location line="+135"/>
         <source>Please select a single point cloud.</source>
         <translation type="unfinished">Please select a single point cloud.</translation>
     </message>

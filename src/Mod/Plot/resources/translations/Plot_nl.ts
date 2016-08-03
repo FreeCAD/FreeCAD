@@ -170,7 +170,7 @@
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation type="unfinished">Check it to apply transformations to all axes</translation>
+      <translation>Activeer om transformaties op alle assen toe te passen</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="263"/>
@@ -205,18 +205,18 @@
     <message>
       <location filename="TaskPanel.py" line="299"/>
       <source>X axis scale autoselection</source>
-      <translation type="unfinished">X axis scale autoselection</translation>
+      <translation>Automatische selectie van de X-as schaal</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="305"/>
       <source>Y axis scale autoselection</source>
-      <translation type="unfinished">Y axis scale autoselection</translation>
+      <translation>Automatische selectie van de Y-as schaal</translation>
     </message>
   </context>
   <context>
     <name>plot_console</name>
     <message>
-      <location filename="Plot.py" line="38"/>
+      <location filename="Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
       <translation>matplotlib kon niet worden gevonden, en dus kan de Plot module niet worden geladen</translation>
     </message>
@@ -238,12 +238,12 @@
     <message>
       <location filename="PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation>Het raster moet bovenop een 'plot' document geactiveerd worden</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="126"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation>De legende moet bovenop een 'plot' document geactiveerd worden</translation>
     </message>
   </context>
   <context>
@@ -367,12 +367,12 @@
     <message>
       <location filename="TaskPanel.py" line="145"/>
       <source>Output image file path</source>
-      <translation type="unfinished">Output image file path</translation>
+      <translation>Bestandslocatie voor resulterend beeld</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="151"/>
       <source>Show a file selection dialog</source>
-      <translation type="unfinished">Show a file selection dialog</translation>
+      <translation>Toon bestand selectie dialoog</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="157"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="TaskPanel.py" line="169"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
+      <translation>Stippen per punt, dewelke de uiteindelijke beeld resolutie definiëren</translation>
     </message>
   </context>
   <context>
