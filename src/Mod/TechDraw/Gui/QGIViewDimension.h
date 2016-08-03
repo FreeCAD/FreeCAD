@@ -43,6 +43,7 @@ class AOC;
 namespace TechDrawGui
 {
 class QGIArrow;
+class QGIDimLines;
 
 class QGIDatumLabel : public QGCustomText
 {
@@ -69,10 +70,10 @@ Q_SIGNALS:
 protected:
     // Preselection events:
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     // Selection detection
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     double posX;
     double posY;
@@ -113,9 +114,11 @@ protected:
 protected:
     bool hasHover;
     QGIDatumLabel* datumLabel;                                         //dimension text
-    QGraphicsPathItem* dimLines;                                       //dimension lines + extension lines
+    QGIDimLines* dimLines;                                       //dimension lines + extension lines
     QGIArrow* aHead1;
     QGIArrow* aHead2;
+    //QGICMark* centerMark
+    double m_lineWidth;
 };
 
 } // namespace MDIViewPageGui

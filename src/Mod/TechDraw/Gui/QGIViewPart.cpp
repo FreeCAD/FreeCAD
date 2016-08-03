@@ -258,9 +258,9 @@ void QGIViewPart::updateView(bool update)
         for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge  && edge->getHiddenEdge()) {
-                edge->setStrokeWidth(viewPart->HiddenWidth.getValue() * lineScaleFactor);
+                edge->setWidth(viewPart->HiddenWidth.getValue() * lineScaleFactor);
             } else {
-                edge->setStrokeWidth(viewPart->LineWidth.getValue() * lineScaleFactor);
+                edge->setWidth(viewPart->LineWidth.getValue() * lineScaleFactor);
             }
         }
         draw();
@@ -332,10 +332,10 @@ void QGIViewPart::drawViewPart()
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
             item->setPos(0.0,0.0);                                              //now at group(0,0)
             item->setPath(drawPainterPath(*itEdge));
-            item->setStrokeWidth(lineWidth);
+            item->setWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
             if(!(*itEdge)->visible) {
-                item->setStrokeWidth(lineWidthHid);
+                item->setWidth(lineWidthHid);
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
             }
@@ -359,7 +359,7 @@ void QGIViewPart::drawViewPart()
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
                 cmItem->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
-                cmItem->setThick(0.5 * lineWidth * lineScaleFactor);
+                cmItem->setThick(0.5 * lineWidth * lineScaleFactor);             //need minimum?
                 cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
                 cmItem->setZValue(ZVALUE::VERTEX);
             }

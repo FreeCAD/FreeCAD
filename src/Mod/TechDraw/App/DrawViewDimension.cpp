@@ -95,6 +95,7 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(Fontsize,(4)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension text size in mm");
     ADD_PROPERTY_TYPE(FormatSpec,("%value%") ,"Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
     ADD_PROPERTY_TYPE(LineWidth,(0.5)    ,"Format",(App::PropertyType)(App::Prop_None),"Dimension line weight");
+    //ADD_PROPERTY_TYPE(CentreLines,(0) ,"Format",(App::PropertyType)(App::Prop_None),"Arc Dimension Center Mark");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
@@ -130,6 +131,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             prop == &Font        ||
             prop == &Fontsize    ||
             prop == &FormatSpec  ||
+            //prop == &CentreLines ||
             prop == &LineWidth) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
