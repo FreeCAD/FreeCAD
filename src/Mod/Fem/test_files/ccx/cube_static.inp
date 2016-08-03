@@ -474,15 +474,15 @@ Eall
 **FreeCAD material name: Steel-Generic
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC 
-200000 ,  0.300
+200000, 0.300
 *DENSITY 
 7.900e-09, 
 *CONDUCTIVITY 
-1, 
+1.000, 
 *EXPANSION 
-1, 
+1.000e+00, 
 *SPECIFIC HEAT 
-1, 
+1.000e+00, 
 
 ***********************************************************
 ** Sections
