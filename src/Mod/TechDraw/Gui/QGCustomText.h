@@ -32,6 +32,8 @@ class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
+#include <Base/Parameter.h>
+
 namespace TechDrawGui
 {
 
@@ -44,20 +46,32 @@ public:
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const { return Type;}
 
+    void setHighlighted(bool state);
+    void setPrettyNormal();
+    void setPrettyPre();
+    void setPrettySel();
+
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 
 protected:
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
     QColor getNormalColor(void);
     QColor getPreColor(void);
     QColor getSelectColor(void);
     Base::Reference<ParameterGrp> getParmGroup(void);
 
+    bool isHighlighted;
+    QColor m_colCurrent;
+
 private:
 
 };
 
-} // namespace MDIViewPageGui
+}
 
 #endif // DRAWINGGUI_QGCUSTOMTEXT_H

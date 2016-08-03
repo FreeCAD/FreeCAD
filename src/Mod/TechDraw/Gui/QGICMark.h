@@ -43,7 +43,7 @@ public:
     void draw(void);
     float getSize() { return m_size; }
     void setSize(float s);
-    float getThick() { return m_thick; }
+    float getThick() { return m_width; }
     void setThick(float t);
     virtual void setPrettyNormal();
 
@@ -53,7 +53,6 @@ protected:
 
 private:
     float m_size;
-    float m_thick;
 };
 
 }

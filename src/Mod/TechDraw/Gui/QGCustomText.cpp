@@ -50,6 +50,9 @@ QGCustomText::QGCustomText()
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+
+    isHighlighted = false;
+    m_colCurrent = getNormalColor();
 }
 
 void QGCustomText::centerAt(QPointF centerPos)
@@ -70,6 +73,50 @@ void QGCustomText::centerAt(double cX, double cY)
     double newX = cX - width/2.;
     double newY = cY - height/2.;
     setPos(newX,newY);
+}
+
+QVariant QGCustomText::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemSelectedHasChanged && scene()) {
+        if(isSelected()) {
+            setPrettySel();
+        } else {
+            setPrettyNormal();
+        }
+    }
+    return QGraphicsTextItem::itemChange(change, value);
+}
+
+
+void QGCustomText::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    if (!isSelected()) {
+        setPrettyPre();
+    }
+    QGraphicsTextItem::hoverEnterEvent(event);
+}
+
+void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    if(!isSelected() && !isHighlighted) {
+        setPrettyNormal();
+    }
+    QGraphicsTextItem::hoverLeaveEvent(event);
+}
+
+void QGCustomText::setPrettyNormal() {
+    m_colCurrent = getNormalColor();
+    update();
+}
+
+void QGCustomText::setPrettyPre() {
+    m_colCurrent = getPreColor();
+    update();
+}
+
+void QGCustomText::setPrettySel() {
+    m_colCurrent = getSelectColor();
+    update();
 }
 
 void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
@@ -102,6 +149,7 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
         painter->scale(1.0,1.0);
     }
 
+    setDefaultTextColor(m_colCurrent);
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
 

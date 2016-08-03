@@ -55,6 +55,7 @@
 #include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIArrow.h"
+#include "QGIDimLines.h"
 #include "QGIViewDimension.h"
 
 using namespace TechDrawGui;
@@ -82,10 +83,10 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             Q_EMIT selected(true);
-            setDefaultTextColor(getSelectColor());
+            setPrettySel();
         } else {
             Q_EMIT selected(false);
-            setDefaultTextColor(getNormalColor());
+            setPrettyNormal();
         }
         update();
     } else if(change == ItemPositionHasChanged && scene()) {
@@ -93,7 +94,7 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
         Q_EMIT dragging();
     }
 
-    return QGraphicsItem::itemChange(change, value);
+    return QGCustomText::itemChange(change, value);
 }
 
 void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
@@ -112,8 +113,7 @@ void QGIDatumLabel::setLabelCenter()
 void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_EMIT hover(true);
-    setDefaultTextColor(getPreColor());
-    update();
+    QGCustomText::hoverEnterEvent(event);
 }
 
 void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -123,9 +123,9 @@ void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     Q_EMIT hover(false);
     if(!isSelected() && !view->isSelected()) {
-        setDefaultTextColor(getNormalColor());
-        update();
+        setPrettyNormal();
     }
+    QGraphicsTextItem::hoverLeaveEvent(event);
 }
 
 void QGIDatumLabel::mouseReleaseEvent( QGraphicsSceneMouseEvent * event)
@@ -145,12 +145,15 @@ QGIViewDimension::QGIViewDimension() :
 
     datumLabel = new QGIDatumLabel();
     addToGroup(datumLabel);
-    dimLines = new QGraphicsPathItem();
+    dimLines = new QGIDimLines();
     addToGroup(dimLines);
     aHead1 = new QGIArrow();
     addToGroup(aHead1);
     aHead2 = new QGIArrow();
     addToGroup(aHead2);
+    //centerMark = new QGICMark();
+    //addToGroup(centerMark);
+
 
     // connecting the needed slots and signals
     QObject::connect(
@@ -169,7 +172,7 @@ QGIViewDimension::QGIViewDimension() :
         datumLabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    m_pen.setStyle(Qt::SolidLine);
+    dimLines->setStyle(Qt::SolidLine);
 
     toggleBorder(false);
 }
@@ -187,6 +190,8 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
     float y = obj->Y.getValue();
 
     datumLabel->setPosFromCenter(x, y);
+
+    m_lineWidth = obj->LineWidth.getValue();
 
     updateDim();
     draw();
@@ -224,6 +229,9 @@ void QGIViewDimension::updateView(bool update)
               dim->Y.isTouched()) {
         datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
         updateDim();
+    } else if (dim->LineWidth.isTouched()) {           //never happens!!
+        m_lineWidth = dim->LineWidth.getValue();
+        updateDim();
     } else {
         updateDim();
     }
@@ -242,8 +250,9 @@ void QGIViewDimension::updateDim()
     font.setPointSizeF(dim->Fontsize.getValue());            //scene units (mm), not points
     font.setFamily(QString::fromUtf8(dim->Font.getValue()));
 
-    datumLabel->setPlainText(labelText);
     datumLabel->setFont(font);
+    prepareGeometryChange();
+    datumLabel->setPlainText(labelText);
     datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
 }
 
@@ -286,21 +295,11 @@ void QGIViewDimension::draw()
         return;
     }
 
-    m_pen.setWidthF(dim->LineWidth.getValue());
-
-    // Crude method of determining state [TODO] improve
-    if(isSelected()) {
-        m_pen.setColor(getSelectColor());
-    } else if (hasHover) {
-        m_pen.setColor(getPreColor());
-    } else {
-        m_pen.setColor(getNormalColor());
-    }
+    m_lineWidth = dim->LineWidth.getValue();
 
     QString labelText = datumLabel->toPlainText();
     Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);
 
-    //we always draw based on Projected geometry.
     //const std::vector<App::DocumentObject*> &objects = dim->References2D.getValues();
     const std::vector<std::string> &SubNames         = dim->References2D.getSubValues();
 
@@ -437,7 +436,7 @@ void QGIViewDimension::draw()
         }
 
         dir.Normalize();
-        norm = Base::Vector3d (-dir.y,dir.x, 0);
+        norm = Base::Vector3d (-dir.y,dir.x, 0);         //normal to dimension direction
 
         // Get magnitude of angle between dir and horizontal
         float angle = atan2f(dir.y,dir.x);
@@ -455,7 +454,10 @@ void QGIViewDimension::draw()
         // is replaced by its projection distStart_
         // wf: in this case we can't use one of the Distance? end points as a reference for dim/ext lines. So we use the projection of
         // startpoint(distStart) onto dimLine
-        float normproj12 = (distEnd-distStart).x * norm.x + (distEnd-distStart).y * norm.y;
+        // m = |proj(A on B)| = dot(A,unit(B)
+        // m = |proj(dimLine on normal)| = dot(dimLine,normal)
+        // newstartpt = oldstart + m*normal
+        float normproj12 = (distEnd-distStart).x * norm.x + (distEnd-distStart).y * norm.y;   //dot(dirDimline, normal)
         Base::Vector3d distStart_ = distStart + norm * normproj12;
 
         //Base::Vector3d midpos = (distStart_ + distEnd) / 2;
@@ -477,21 +479,19 @@ void QGIViewDimension::draw()
         Base::Vector3d ext2End = distEnd  + norm * (length + offset2 * scaler);
 
         // Calculate the start/end for the Dimension lines
-        Base::Vector3d  dim1Tip = distStart_ + norm * length;              //dim line 1 tip
-        Base::Vector3d  dim1Tail = lblCenter - dir * (w / 2 + margin);     //dim line 1 tail
+        //dim1Tip is the position of 1 arrow point (lhs on a horizontal)
+        //dim2Tail is the position of the other arrow point (rhs)
+        Base::Vector3d  dim1Tip = distStart_ + norm * length;
+        Base::Vector3d  dim1Tail = lblCenter - dir * (w / 2 + margin);
         Base::Vector3d  dim2Tip = lblCenter + dir * (w / 2 + margin);
         Base::Vector3d  dim2Tail = distEnd  + norm * length;
 
-        // Add a small margin
-        //distStart_ += norm * margin * 0.5;
-       // distEnd  += norm * margin * 0.5;
-
         bool flipTriang = false;
 
-        Base::Vector3d del1 = (dim2Tip-dim1Tip);
-        Base::Vector3d del2 = (dim1Tail-dim1Tip);
-        float dot1 = del1.x * dir.x + del1.y * dir.y;
-        float dot2 = del2.x * dir.x + del2.y * dir.y;
+        Base::Vector3d del1 = (dim2Tip-dim1Tip);        //tip2 to tip1? len (dimline1 + label + margins)
+        Base::Vector3d del2 = (dim1Tail-dim1Tip);       //tail1 to tip1?  len(dimline1)
+        float dot1 = del1.x * dir.x + del1.y * dir.y;   //dot (del1,dimlinedirection)  => ???
+        float dot2 = del2.x * dir.x + del2.y * dir.y;   //dot (del2,dimlinedirection)  => ???
 
         //Compare to see if Dimension text is larger than dimension
         if (dot1 > (dim2Tail - dim1Tip).Length()) {
@@ -522,6 +522,9 @@ void QGIViewDimension::draw()
         path.lineTo(ext2End.x, ext2End.y);
 
         //Dimension lines
+        //line tip goes just a bit too far. overlaps the arrowhead's point
+        //default arrow length is 5.0
+
         path.moveTo(dim1Tip.x, dim1Tip.y);
         path.lineTo(dim1Tail.x, dim1Tail.y);
 
@@ -554,9 +557,6 @@ void QGIViewDimension::draw()
         aHead1->setPos(dim1Tip.x, dim1Tip.y);
         aHead2->setPos(dim2Tail.x, dim2Tail.y);
 
-        //aHead1->setHighlighted(isSelected() || hasHover);    //setPrettyxxx??
-        //aHead2->setHighlighted(isSelected() || hasHover);
-
     } else if(strcmp(dimType, "Diameter") == 0) {
         // terminology: Dimension Text, Dimension Line(s), Extension Lines, Arrowheads
         // was datumLabel, datum line/parallel line, perpendicular line, arw
@@ -572,7 +572,6 @@ void QGIViewDimension::draw()
                 Base::Console().Log("INFO - qgivd::draw - no geom for projected edge: %d of %d\n",
                                         idx,refObj->getEdgeGeometry().size());
                 return;
-                //throw Base::Exception("Edge couldn't be found for diameter dimension");
             }
             if( (geom->geomType == TechDrawGeometry::CIRCLE) ||
                 (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) ) {
@@ -657,7 +656,6 @@ void QGIViewDimension::draw()
                 path.moveTo(centre.x - radius, centre.y);
                 path.lineTo(arrow1Tip.x, arrow1Tip.y + tip);
 
-                // Left Arrow
                 path.moveTo(arrow1Tip.x, arrow1Tip.y);                //dimension line, not arrowhead
                 path.lineTo(dLine1Tail.x, dLine1Tail.y);
 
@@ -665,7 +663,6 @@ void QGIViewDimension::draw()
                 path.moveTo(centre.x + radius, centre.y);
                 path.lineTo(arrow2Tip.x, arrow2Tip.y + tip);
 
-                // Right arrow
                 path.moveTo(dLine2Tail.x, dLine2Tail.y);
                 path.lineTo(arrow2Tip.x, arrow2Tip.y);
 
@@ -746,8 +743,6 @@ void QGIViewDimension::draw()
 
         float arAngle = atan2(dirDimLine.y, dirDimLine.x) * 180 / M_PI;
 
-        //aHead1->setHighlighted(isSelected() || hasHover);
-        //aHead2->setHighlighted(isSelected() || hasHover);
         aHead2->show();
 
         if(outerPlacement) {
@@ -772,6 +767,11 @@ void QGIViewDimension::draw()
             aHead2->setPos(arrow1Tip.x, arrow1Tip.y);
         }
 
+//        if (dim->CentreLines.getValue()) {
+//            centreMark->setPos(centre.x,centre.y);
+//            centerMark->show();
+//            dim->getViewPart()->addVertex(centre,true);
+//        }
     } else if(strcmp(dimType, "Radius") == 0) {
         // preferred terminology: Dimension Text, Dimension Line(s), Extension Lines, Arrowheads
         // radius gets 1 dimension line from the dimension text to a point on the curve
@@ -903,9 +903,13 @@ void QGIViewDimension::draw()
 
         aHead1->setPos(ar1Pos.x, ar1Pos.y);
         aHead1->setRotation(arAngle);
-        //aHead1->setHighlighted(isSelected() || hasHover);
         aHead1->show();
         aHead2->hide();
+//        if (dim->CentreLines.getValue()) {
+//            centreMark->setPos(curveCenter.x,curveCenter.y);
+//            centerMark->show();
+//            dim->getViewPart()->addVertex(curveCenter,true);
+//        }
     } else if(strcmp(dimType, "Angle") == 0) {
         // Only use two straight line edeges for angle
         if(dim->References2D.getValues().size() == 2 &&
@@ -1061,9 +1065,6 @@ void QGIViewDimension::draw()
                         isOutside = false;
                 }
 
-                // ###############
-//                 Base::Console().Log("<%f, %f, %f>\n", startangle, endangle, labelangle);
-
                 QRectF arcRect(p0.x - length, p0.y - length, 2. * length, 2. * length);
                 path.arcMoveTo(arcRect, endangle * 180 / M_PI);
                 if(isOutside) {
@@ -1111,9 +1112,6 @@ void QGIViewDimension::draw()
                     aHead2->setRotation(ar2angle);
                 }
 
-                //aHead1->setHighlighted(isSelected() || hasHover);
-                //aHead2->setHighlighted(isSelected() || hasHover);
-
                 // Set the angle of the datum text
 
                 Base::Vector3d labelNorm(-labelVec.y, labelVec.x, 0.);
@@ -1136,15 +1134,18 @@ void QGIViewDimension::draw()
     }  //endif Distance/Diameter/Radius/Angle
 
     // redraw the Dimension and the parent View
-    if (hasHover) {
+    if (hasHover && !isSelected()) {
         aHead1->setPrettyPre();
         aHead2->setPrettyPre();
+        dimLines->setPrettyPre();
     } else if (isSelected()) {
         aHead1->setPrettySel();
         aHead2->setPrettySel();
+        dimLines->setPrettySel();
     } else {
         aHead1->setPrettyNormal();
         aHead2->setPrettyNormal();
+        dimLines->setPrettyNormal();
     }
 
     update();
@@ -1182,7 +1183,6 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
 
     QPaintDevice* hw = painter->device();
     QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
-    double saveWidth = m_pen.widthF();
     double arrowSaveWidth = aHead1->getWidth();
     if (svg) {
         setSvgPens();
@@ -1190,23 +1190,22 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
         setPens();
     }
     QGIView::paint (painter, &myOption, widget);
-    m_pen.setWidthF(saveWidth);
     aHead1->setWidth(arrowSaveWidth);
     aHead2->setWidth(arrowSaveWidth);
+    dimLines->setWidth(m_lineWidth);
 }
 
 void QGIViewDimension::setSvgPens(void)
 {
     double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
-    m_pen.setWidthF(m_pen.widthF()/svgLineFactor);
-    dimLines->setPen(m_pen);
+    dimLines->setWidth(m_lineWidth/svgLineFactor);
     aHead1->setWidth(aHead1->getWidth()/svgLineFactor);
     aHead2->setWidth(aHead2->getWidth()/svgLineFactor);
 }
 
 void QGIViewDimension::setPens(void)
 {
-    dimLines->setPen(m_pen);
+    dimLines->setWidth(m_lineWidth);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

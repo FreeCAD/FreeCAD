@@ -132,6 +132,8 @@ SET(TechDrawGuiView_SRCS
     QGIPrimPath.h
     QGICMark.cpp
     QGICMark.h
+    QGIDimLines.cpp
+    QGIDimLines.h
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h

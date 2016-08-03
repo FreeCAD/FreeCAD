@@ -56,6 +56,7 @@ public:
     App::PropertyFloat   Fontsize;
     App::PropertyString  FormatSpec;
     App::PropertyFloat   LineWidth;
+    //App::PropertyBool    CentreLines;
 
     //TODO: do we need a property for the actual dimension value? how else to access from Py?
     //wf: expose getValue & getFormatedValue

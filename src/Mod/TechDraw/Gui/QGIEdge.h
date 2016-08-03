@@ -44,7 +44,6 @@ public:
     int getProjIndex() const { return projIndex; }
 
     void setCosmetic(bool state);
-    void setStrokeWidth(float width);
     void setHiddenEdge(bool b);
     bool getHiddenEdge() { return(isHiddenEdge); }
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
@@ -61,7 +60,6 @@ protected:
     Qt::PenStyle getHiddenStyle();
 
 private:
-    float strokeWidth;
 };
 
 }
