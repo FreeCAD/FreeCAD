@@ -278,7 +278,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             density_in_tonne_per_mm3 = 1
             try:
                 YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
-                YM_in_MPa = YM.getValueAs('MPa')
+                YM_in_MPa = float(YM.getValueAs('MPa'))
             except:
                 FreeCAD.Console.PrintError("No YoungsModulus defined for material: default used\n")
             try:
@@ -287,17 +287,17 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 FreeCAD.Console.PrintError("No PoissonRatio defined for material: default used\n")
             try:
                 TC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalConductivity'])
-                TC_in_WmK = TC.getValueAs('W/m/K')  # SvdW: Add factor to force units to results' base units of t/mm/s/K - W/m/K results in no factor needed
+                TC_in_WmK = float(TC.getValueAs('W/m/K'))  # SvdW: Add factor to force units to results' base units of t/mm/s/K - W/m/K results in no factor needed
             except:
                 FreeCAD.Console.PrintError("No ThermalConductivity defined for material: default used\n")
             try:
                 TEC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalExpansionCoefficient'])
-                TEC_in_mmK = TEC.getValueAs('mm/mm/K')
+                TEC_in_mmK = float(TEC.getValueAs('mm/mm/K'))
             except:
                 FreeCAD.Console.PrintError("No ThermalExpansionCoefficient defined for material: default used\n")
             try:
                 SH = FreeCAD.Units.Quantity(mat_obj.Material['SpecificHeat'])
-                SH_in_JkgK = SH.getValueAs('J/kg/K') * 1e+06  # SvdW: Add factor to force units to results' base units of t/mm/s/K
+                SH_in_JkgK = float(SH.getValueAs('J/kg/K')) * 1e+06  # SvdW: Add factor to force units to results' base units of t/mm/s/K
             except:
                 FreeCAD.Console.PrintError("No SpecificHeat defined for material: default used\n")
             mat_info_name = mat_obj.Material['Name']
@@ -306,7 +306,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('**FreeCAD material name: ' + mat_info_name + '\n')
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
             f.write('*ELASTIC \n')
-            f.write('{0},  {1:.3f}\n'.format(YM_in_MPa, PR))
+            f.write('{0:.0f}, {1:.3f}\n'.format(YM_in_MPa, PR))
             try:
                 density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
                 density_in_tonne_per_mm3 = float(density.getValueAs('t/mm^3'))
@@ -315,11 +315,11 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('*DENSITY \n')
             f.write('{0:.3e}, \n'.format(density_in_tonne_per_mm3))
             f.write('*CONDUCTIVITY \n')
-            f.write('{}, \n'.format(TC_in_WmK))
+            f.write('{0:.3f}, \n'.format(TC_in_WmK))
             f.write('*EXPANSION \n')
-            f.write('{}, \n'.format(TEC_in_mmK))
+            f.write('{0:.3e}, \n'.format(TEC_in_mmK))
             f.write('*SPECIFIC HEAT \n')
-            f.write('{}, \n'.format(SH_in_JkgK))
+            f.write('{0:.3e}, \n'.format(SH_in_JkgK))
 
     def write_femelementsets(self, f):
         f.write('\n***********************************************************\n')
