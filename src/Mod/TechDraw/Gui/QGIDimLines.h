@@ -20,62 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIPRIMPATH_H
-#define DRAWINGGUI_QGIPRIMPATH_H
+#ifndef DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
+#define DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
 
-#include <QGraphicsItem>
+# include "QGIPrimPath.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
-#include <Base/Parameter.h>
-
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIPrimPath : public QGraphicsPathItem
+class TechDrawGuiExport QGIDimLines : public QGIPrimPath
 {
 public:
-    explicit QGIPrimPath();
-    ~QGIPrimPath() {}
+    explicit QGIDimLines();
+    ~QGIDimLines() {}
 
-    enum {Type = QGraphicsItem::UserType + 170};
-
+    enum {Type = QGraphicsItem::UserType + 172};
     int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual QPainterPath shape() const { return path(); };
 
-    void setHighlighted(bool state);
-    virtual void setPrettyNormal();
-    virtual void setPrettyPre();
-    virtual void setPrettySel();
-    virtual void setWidth(double w);
-    virtual double getWidth() { return m_width;}
-    Qt::PenStyle getStyle() { return m_styleCurrent; }
-    void setStyle(Qt::PenStyle s);
+public:
+    void draw();
+    //void setHighlighted(bool state);
+    //double getLineWidth() { return m_lineWidth; }
+    //void setLineWidth(double w);
+    //QPainterPath shape() const;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    QColor getNormalColor(void);
-    QColor getPreColor(void);
-    QColor getSelectColor(void);
-    Base::Reference<ParameterGrp> getParmGroup(void);
-
-    bool isHighlighted;
-    QPen m_pen;
-    QColor m_colCurrent;
-    Qt::PenStyle m_styleCurrent;
-    double m_width;
 
 private:
-
 };
 
-} // namespace MDIViewPageGui
+}
 
-#endif // DRAWINGGUI_QGIPRIMPATH_H
+#endif // DRAWINGGUI_QGRAPHICSITEMDIMLINES_H

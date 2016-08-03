@@ -42,7 +42,7 @@ using namespace TechDrawGui;
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
     m_size = 3.0;
-    m_thick = 0.75;
+    m_width = 0.75;
     draw();
 }
 void QGICMark::draw(void)
@@ -63,8 +63,7 @@ void QGICMark::setSize(float s)
 
 void QGICMark::setThick(float t)
 {
-    m_thick = t;
-    m_pen.setWidthF(m_thick);
+    m_width = t;
     draw();
 }
 
@@ -85,8 +84,6 @@ void QGICMark::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
-
-    m_pen.setWidthF(m_thick);
 
     QGIVertex::paint (painter, &myOption, widget);
 }
