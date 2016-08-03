@@ -151,6 +151,8 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
         return 0;
     }
 
+    // TODO: is this needed?
+    getTopoShapePtr()->setShape(shell);
     Py_Return;
 }
 

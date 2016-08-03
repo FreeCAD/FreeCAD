@@ -2144,6 +2144,8 @@ void TopoShapePy::setOrientation(Py::String arg)
     }
 
     sh.Orientation(type);
+    // TODO: is this needed?
+    getTopoShapePtr()->setShape(sh);
 }
 
 Py::List TopoShapePy::getFaces(void) const

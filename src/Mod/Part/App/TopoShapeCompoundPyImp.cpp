@@ -105,6 +105,9 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
+    
+    // TODO: is this needed?
+    getTopoShapePtr()->setShape(comp);
 
     Py_Return;
 }

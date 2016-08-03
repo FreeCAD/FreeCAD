@@ -112,6 +112,8 @@ private:
             << "      finish {StdFinish } //definition on top of the project" << endl
             << "  }" << endl
             << "}" << endl   ;
+        // TODO: is this needed?
+        static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->setShape(aShape);
         return Py::String(out.str());
     }
     Py::Object getPartAsLux(const Py::Tuple& args)
@@ -134,6 +136,8 @@ private:
         out << "    \"string type\" [\"matte\"]" << endl << endl;
 
         LuxTools::writeShape(out,PartName,aShape,(float)0.1);
+        // TODO: is this needed?
+        static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->setShape(aShape);
         return Py::String(out.str());
     }
     Py::Object writePartFile(const Py::Tuple& args)
@@ -148,6 +152,8 @@ private:
 
         PovTools::writeShape(FileName,PartName,aShape,(float)0.1);
 
+        // TODO: is this needed?
+        static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->setShape(aShape);
         return Py::None();
     }
     Py::Object writeDataFile(const Py::Tuple& args)
@@ -176,6 +182,8 @@ private:
 
         TopoDS_Shape aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->getShape();
         PovTools::writeShapeCSV(FileName,aShape,Acur,Length);
+        // TODO: is this needed?
+        static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->setShape(aShape);
         return Py::None();
     }
     Py::Object writeCameraFile(const Py::Tuple& args)

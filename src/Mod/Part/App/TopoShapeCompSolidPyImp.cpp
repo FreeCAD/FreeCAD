@@ -104,6 +104,9 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
         return 0;
     }
 
+    // TODO: Is this needed?
+    getTopoShapePtr()->setShape(comp);
+
     Py_Return;
 }
 
