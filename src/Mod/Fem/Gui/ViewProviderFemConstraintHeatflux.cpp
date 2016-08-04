@@ -126,65 +126,65 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);//normal
 
-			///Temperature indication
-			//define separator
-			SoSeparator* sep = new SoSeparator();
+            ///Temperature indication
+            //define separator
+            SoSeparator* sep = new SoSeparator();
 
-			///draw a temp gauge,with sphere and a cylinder
-			//first move to correct postion
-			SoTranslation* trans = new SoTranslation();
-			SbVec3f newPos=base+scaledradius*dir*0.7;
-			trans->translation.setValue(newPos);
-			sep->addChild(trans);
+            ///draw a temp gauge,with sphere and a cylinder
+            //first move to correct postion
+            SoTranslation* trans = new SoTranslation();
+            SbVec3f newPos=base+scaledradius*dir*0.7f;
+            trans->translation.setValue(newPos);
+            sep->addChild(trans);
 
-			//adjust orientation
-			SoRotation* rot = new SoRotation();
-			rot->rotation.setValue(SbRotation(SbVec3f(0,1,0),dir));
-			sep->addChild(rot);
+            //adjust orientation
+            SoRotation* rot = new SoRotation();
+            rot->rotation.setValue(SbRotation(SbVec3f(0,1,0),dir));
+            sep->addChild(rot);
 
-			//define color of shape
-			SoMaterial* myMaterial = new SoMaterial;
-			myMaterial->diffuseColor.set1Value(0,SbColor(0.65,0.1,0.25));//RGB
-			//myMaterial->diffuseColor.set1Value(1,SbColor(.1,.1,.1));//possible to adjust sides separately
-			sep->addChild(myMaterial);
+            //define color of shape
+            SoMaterial* myMaterial = new SoMaterial;
+            myMaterial->diffuseColor.set1Value(0,SbColor(0.65f,0.1f,0.25f));//RGB
+            //myMaterial->diffuseColor.set1Value(1,SbColor(.1,.1,.1));//possible to adjust sides separately
+            sep->addChild(myMaterial);
 
-			//draw a sphere
-			SoSphere* sph = new SoSphere();
-			sph->radius.setValue(scaledradius*0.75);
-			sep->addChild(sph);
-			//translate postion
-			SoTranslation* trans2 = new SoTranslation();
-			trans2->translation.setValue(SbVec3f(0,scaledheight*0.375,0));
-			sep->addChild(trans2);
-			//draw a cylinder
-			SoCylinder* cyl = new SoCylinder();
-			cyl->height.setValue(scaledheight*0.5);
-			cyl->radius.setValue(scaledradius*0.375);
-			sep->addChild(cyl);
-			//translate postion
-			SoTranslation* trans3 = new SoTranslation();
-			trans3->translation.setValue(SbVec3f(0,scaledheight*0.375,0));
-			sep->addChild(trans3);
-			//define color of shape
-			SoMaterial *myMaterial2 = new SoMaterial;
-			myMaterial2->diffuseColor.set1Value(0,SbColor(1,1,1));//RGB
-			sep->addChild(myMaterial2);
-			//draw a cylinder
-			SoCylinder* cyl2 = new SoCylinder();
-			cyl2->height.setValue(scaledheight*0.25);
-			cyl2->radius.setValue(scaledradius*0.375);
-			sep->addChild(cyl2);
+            //draw a sphere
+            SoSphere* sph = new SoSphere();
+            sph->radius.setValue(scaledradius*0.75);
+            sep->addChild(sph);
+            //translate postion
+            SoTranslation* trans2 = new SoTranslation();
+            trans2->translation.setValue(SbVec3f(0,scaledheight*0.375,0));
+            sep->addChild(trans2);
+            //draw a cylinder
+            SoCylinder* cyl = new SoCylinder();
+            cyl->height.setValue(scaledheight*0.5);
+            cyl->radius.setValue(scaledradius*0.375);
+            sep->addChild(cyl);
+            //translate postion
+            SoTranslation* trans3 = new SoTranslation();
+            trans3->translation.setValue(SbVec3f(0,scaledheight*0.375,0));
+            sep->addChild(trans3);
+            //define color of shape
+            SoMaterial *myMaterial2 = new SoMaterial;
+            myMaterial2->diffuseColor.set1Value(0,SbColor(1,1,1));//RGB
+            sep->addChild(myMaterial2);
+            //draw a cylinder
+            SoCylinder* cyl2 = new SoCylinder();
+            cyl2->height.setValue(scaledheight*0.25);
+            cyl2->radius.setValue(scaledradius*0.375);
+            sep->addChild(cyl2);
                         //translate postion
-			SoTranslation* trans4 = new SoTranslation();
-			trans4->translation.setValue(SbVec3f(0,-scaledheight*0.375,0));
-			sep->addChild(trans4);
+            SoTranslation* trans4 = new SoTranslation();
+            trans4->translation.setValue(SbVec3f(0,-scaledheight*0.375,0));
+            sep->addChild(trans4);
                         //draw a cylinder
-			SoCylinder* cyl3 = new SoCylinder();
-			cyl3->height.setValue(scaledheight*0.05);
-			cyl3->radius.setValue(scaledradius*1);
-			sep->addChild(cyl3);
+            SoCylinder* cyl3 = new SoCylinder();
+            cyl3->height.setValue(scaledheight*0.05);
+            cyl3->radius.setValue(scaledradius*1);
+            sep->addChild(cyl3);
 
-			pShapeSep->addChild(sep);
+            pShapeSep->addChild(sep);
 
             n++;
         }
