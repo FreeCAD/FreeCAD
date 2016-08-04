@@ -40,7 +40,7 @@ using namespace Base;
 QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
     double UnitValue = std::abs(quant.getValue());
-	Unit unit = quant.getUnit();
+    Unit unit = quant.getUnit();
 
     // now do special treatment on all cases seams nececarry:
     if(unit == Unit::Length){  // Length handling ============================
@@ -93,13 +93,13 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
             factor = 1.0;
         }
     }else if (unit == Unit::ThermalConductivity){
-    	if (UnitValue < 1000){    	
-    	unitString = QString::fromLatin1("W/mm/K");
-    	factor = 1.0;
-    	}else{    	
-        unitString = QString::fromLatin1("W/m/K");
-        factor = 1000.0;
-    	}
+        if (UnitValue < 1000){
+            unitString = QString::fromLatin1("W/mm/K");
+            factor = 1.0;
+        }else{
+            unitString = QString::fromLatin1("W/m/K");
+            factor = 1000.0;
+        }
     }else if (unit == Unit::ThermalExpansionCoefficient){
         if(UnitValue < 0.001){
             unitString = QString::fromLatin1("um/m/K");
@@ -111,7 +111,7 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
     }else if (unit == Unit::SpecificHeat){
         unitString = QString::fromLatin1("J/kg/K");
         factor = 1000000.0;
-	}else if (unit == Unit::ThermalTransferCoefficient){
+    }else if (unit == Unit::ThermalTransferCoefficient){
         unitString = QString::fromLatin1("W/m^2/K");
         factor = 1.0;
     }else if ((unit == Unit::Pressure) || (unit == Unit::Stress)){

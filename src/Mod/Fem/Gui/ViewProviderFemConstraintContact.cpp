@@ -127,40 +127,39 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);//normal
 
-			///Visual indication
-			//define separator
-			SoSeparator* sep = new SoSeparator();
+            ///Visual indication
+            //define separator
+            SoSeparator* sep = new SoSeparator();
 
-			//first move to correct postion
-			SoTranslation* trans = new SoTranslation();
-			SbVec3f newPos=base+scaledheight*dir*0.12;
-			trans->translation.setValue(newPos);
-			sep->addChild(trans);
+            //first move to correct postion
+            SoTranslation* trans = new SoTranslation();
+            SbVec3f newPos=base+scaledheight*dir*0.12f;
+            trans->translation.setValue(newPos);
+            sep->addChild(trans);
 
-			//adjust orientation
-			SoRotation* rot = new SoRotation();
-			rot->rotation.setValue(SbRotation(SbVec3f(0,1,0),dir));
-			sep->addChild(rot);
+            //adjust orientation
+            SoRotation* rot = new SoRotation();
+            rot->rotation.setValue(SbRotation(SbVec3f(0,1,0),dir));
+            sep->addChild(rot);
 
-			//define color of shape
-			SoMaterial* myMaterial = new SoMaterial;
-			myMaterial->diffuseColor.set1Value(0,SbColor(1,1,1));//RGB
-			//myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
-			sep->addChild(myMaterial);
+            //define color of shape
+            SoMaterial* myMaterial = new SoMaterial;
+            myMaterial->diffuseColor.set1Value(0,SbColor(1,1,1));//RGB
+            //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
+            sep->addChild(myMaterial);
 
-			//draw a cube
-			SoCube* cbe = new SoCube();
-			cbe->depth.setValue(scaledlength*0.5);
-			cbe->height.setValue(scaledheight*0.25);
-			cbe->width.setValue(scaledwidth*0.75);
-			sep->addChild(cbe);
-			//translate postion
-			SoTranslation* trans2 = new SoTranslation();
-			trans2->translation.setValue(SbVec3f(0,0,0));
-			sep->addChild(trans2);
+            //draw a cube
+            SoCube* cbe = new SoCube();
+            cbe->depth.setValue(scaledlength*0.5);
+            cbe->height.setValue(scaledheight*0.25);
+            cbe->width.setValue(scaledwidth*0.75);
+            sep->addChild(cbe);
+            //translate postion
+            SoTranslation* trans2 = new SoTranslation();
+            trans2->translation.setValue(SbVec3f(0,0,0));
+            sep->addChild(trans2);
 
-
-			pShapeSep->addChild(sep);
+            pShapeSep->addChild(sep);
             n++;
         }
     }
