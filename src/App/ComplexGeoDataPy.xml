@@ -14,7 +14,12 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
       <UserDocu>Father of all complex geometric data types</UserDocu>
     </Documentation>
-	  <Attribute Name="BoundBox" ReadOnly="true">
+    <Methode Name="getFacesFromSubelement" Const="true">
+      <Documentation>
+        <UserDocu>Return vertexes and faces from a sub-element</UserDocu>
+      </Documentation>
+    </Methode>
+      <Attribute Name="BoundBox" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Get the BoundBox of the object</UserDocu>
 		  </Documentation>
