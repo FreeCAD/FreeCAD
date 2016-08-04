@@ -61,11 +61,15 @@ class ObjectProfile:
         obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property","The library or algorithm used to generate the path"))
         obj.Algorithm = ['OCC Native', 'libarea']
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
-        obj.ToolNumber = (0, 0, 1000, 1)
-        obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The description of the tool "))
-        obj.setEditorMode('ToolDescription', 1) # make this read onlyt
+        obj.addProperty("App::PropertyLink", "ActiveTC", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool controler in use"))
+        obj.addProperty("App::PropertyEnumeration", "ToolControllers", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool controller to use"))
+        obj.Toolcontrollers = []
+
+        # obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
+        # obj.ToolNumber = (0, 0, 1000, 1)
+        # obj.setEditorMode('ToolNumber', 1)  # make this read only
+        # obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        # obj.setEditorMode('ToolDescription', 1) # make this read onlyt
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
@@ -263,7 +267,8 @@ print "y - " + str(point.y)
         import Part  # math #DraftGeomUtils
         output = ""
 
-        toolLoad = PathUtils.getLastToolLoad(obj)
+        #toolLoad = PathUtils.getLastToolLoad(obj)
+        toolLoad = obj.activeTC
         if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
             self.horizFeed = 100
