@@ -75,7 +75,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_coordinates = new SoCoordinate3();
     m_coordinates->ref();
     m_materialBinding = new SoMaterialBinding();
-    m_materialBinding->ref();    
+    m_materialBinding->ref();
     m_material = new SoMaterial();
     m_material->ref();
     m_normalBinding = new SoNormalBinding();
@@ -100,7 +100,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     // simple color bar
     m_colorRoot = new SoSeparator();
     m_colorRoot->ref();
-    m_colorStyle = new SoDrawStyle(); 
+    m_colorStyle = new SoDrawStyle();
     m_colorStyle->ref();
     m_colorRoot->addChild(m_colorStyle);
     m_colorBar = new Gui::SoFCColorBar;
@@ -127,7 +127,7 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
 {
     m_shapeHints->unref();
     m_coordinates->unref();
-    m_materialBinding->unref();    
+    m_materialBinding->unref();
     m_drawStyle->unref();
     m_normalBinding->unref();
     m_normals->unref();
@@ -175,11 +175,11 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
 
     m_colorRoot->addChild(m_colorBar);
 
-    //all 
+    //all
     addDisplayMaskMode(m_seperator, "Default");
     setDisplayMaskMode("Default");
-    
-    setupPipeline();   
+
+    setupPipeline();
 }
 
 SoSeparator* ViewProviderFemPostObject::getFrontRoot(void) const {
@@ -227,7 +227,7 @@ void ViewProviderFemPostObject::update() {
 
     if(!setupPipeline())
         return;
-    
+
     m_currentAlgorithm->Update();
     updateProperties();
     update3D();
@@ -236,18 +236,18 @@ void ViewProviderFemPostObject::update() {
 void ViewProviderFemPostObject::updateProperties() {
 
     m_blockPropertyChanges = true;
-    vtkPolyData* poly = m_currentAlgorithm->GetOutput(); 
+    vtkPolyData* poly = m_currentAlgorithm->GetOutput();
 
     //coloring
     std::string val;
     if(Field.getEnums() && Field.getValue() >= 0)
         val = Field.getValueAsString();
-    
+
     std::vector<std::string> colorArrays;
     colorArrays.push_back("None");
-    
+
     vtkPointData* point = poly->GetPointData();
-    for(int i=0; i<point->GetNumberOfArrays(); ++i) 
+    for(int i=0; i<point->GetNumberOfArrays(); ++i)
         colorArrays.push_back(point->GetArrayName(i));
 
     vtkCellData* cell = poly->GetCellData();
@@ -270,11 +270,11 @@ void ViewProviderFemPostObject::updateProperties() {
         val = VectorMode.getValueAsString();
 
     colorArrays.clear();
-    if(Field.getValue() == 0)         
+    if(Field.getValue() == 0)
         colorArrays.push_back("Not a vector");
     else {
-        int array = Field.getValue() - 1; //0 is none   
-        vtkPolyData*  pd = m_currentAlgorithm->GetOutput();         
+        int array = Field.getValue() - 1; //0 is none
+        vtkPolyData*  pd = m_currentAlgorithm->GetOutput();
         vtkDataArray* data = pd->GetPointData()->GetArray(array);
 
         if(data->GetNumberOfComponents() == 1)
@@ -292,7 +292,7 @@ void ViewProviderFemPostObject::updateProperties() {
 
     VectorMode.setValue(empty);
     m_vectorEnum.setEnums(colorArrays);
-    VectorMode.setValue(m_vectorEnum); 
+    VectorMode.setValue(m_vectorEnum);
 
     it = std::find(colorArrays.begin(), colorArrays.end(), val);
     if(!val.empty() && it != colorArrays.end())
@@ -303,7 +303,7 @@ void ViewProviderFemPostObject::updateProperties() {
 
 void ViewProviderFemPostObject::update3D() {
 
-    vtkPolyData* pd = m_currentAlgorithm->GetOutput();  
+    vtkPolyData* pd = m_currentAlgorithm->GetOutput();
 
     vtkPointData *pntData;
     vtkPoints *points;
@@ -312,7 +312,7 @@ void ViewProviderFemPostObject::update3D() {
     vtkCellArray *cells;
     vtkIdType npts = 0;
     vtkIdType *indx = 0;
- 
+
     points = pd->GetPoints();
     pntData = pd->GetPointData();
     normals = pntData->GetNormals();
@@ -359,7 +359,7 @@ void ViewProviderFemPostObject::update3D() {
               ++soidx;
           }
           m_triangleStrips->coordIndex.set1Value(soidx, -1);
-          ++soidx;   
+          ++soidx;
       }
       m_triangleStrips->coordIndex.setNum(soidx);
       m_triangleStrips->coordIndex.finishEditing();
@@ -379,12 +379,12 @@ void ViewProviderFemPostObject::update3D() {
                 ++soidx;
             }
             m_lines->coordIndex.set1Value(soidx, -1);
-            ++soidx;  
+            ++soidx;
         }
         m_lines->coordIndex.setNum(soidx);
         m_lines->coordIndex.finishEditing();
   }
-  else 
+  else
       m_lines->coordIndex.setNum(0);
 
   // write out verts if any
@@ -447,7 +447,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         m_material->diffuseColor.setValue(SbColor(0.8,0.8,0.8));
         m_material->transparency.setValue(0.);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
-        m_materialBinding->touch();  
+        m_materialBinding->touch();
         return;
     };
 
@@ -485,7 +485,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
     }
     m_material->diffuseColor.finishEditing();
     m_materialBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
-    m_materialBinding->touch();    
+    m_materialBinding->touch();
 }
 
 void ViewProviderFemPostObject::WriteTransperency() {
@@ -530,7 +530,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
         updateProperties();
         WriteColorData(ResetColorBarRange);
         WriteTransperency();
-    } 
+    }
     else if(prop == &VectorMode && setupPipeline()) {
         WriteColorData(ResetColorBarRange);
         WriteTransperency();

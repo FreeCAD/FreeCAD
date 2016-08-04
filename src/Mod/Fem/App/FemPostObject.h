@@ -41,9 +41,9 @@ public:
     /// Constructor
     FemPostObject(void);
     virtual ~FemPostObject();
-    
+
     Fem::PropertyPostDataObject Data;
-    
+
     vtkBoundingBox getBoundingBox();
 };
 

@@ -43,38 +43,38 @@ public:
     /// Constructor
     FemPostPipeline(void);
     virtual ~FemPostPipeline();
-    
+
     App::PropertyLinkList       Filter;
     App::PropertyLink           Functions;
     App::PropertyEnumeration    Mode;
-    
+
     short mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
     //PyObject* getPyObject();
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostPipeline";
     }
-    
+
     //load data from files
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
-    
+
     //load from results
     void load(FemResultObject* res);
-    
+
     //Pipeline handling
     FemPostObject* getLastPostObject();
     bool           holdsPostObject(FemPostObject* obj);
-    
+
 protected:
     virtual void onChanged(const App::Property* prop);
-    
+
 private:
     static const char* ModeEnums[];
-    
+
     template<class TReader> void readXMLFile(std::string file) {
-    
+
         vtkSmartPointer<TReader> reader = vtkSmartPointer<TReader>::New();
         reader->SetFileName(file.c_str());
         reader->Update();

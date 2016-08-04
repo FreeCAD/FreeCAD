@@ -51,6 +51,10 @@ class _TaskPanelMechanicalMaterial:
         QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
         QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
+        QtCore.QObject.connect(self.form.input_fd_thermal_conductivity, QtCore.SIGNAL("valueChanged(double)"), self.tc_changed)
+        QtCore.QObject.connect(self.form.input_fd_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.tec_changed)
+        QtCore.QObject.connect(self.form.input_fd_specific_heat, QtCore.SIGNAL("valueChanged(double)"), self.sh_changed)
+
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
@@ -122,7 +126,7 @@ class _TaskPanelMechanicalMaterial:
     def ym_changed(self, value):
         import Units
         # FreeCADs standard unit for stress is kPa
-        old_ym = Units.Quantity(self.material['YoungsModulus'])
+        old_ym = Units.Quantity(self.material['YoungsModulus']).getValueAs("kPa")
         variation = 0.001
         if value:
             if not (1 - variation < float(old_ym) / value < 1 + variation):
@@ -134,15 +138,14 @@ class _TaskPanelMechanicalMaterial:
     def density_changed(self, value):
         import Units
         # FreeCADs standard unit for density is kg/mm^3
-        old_density = Units.Quantity(self.material['Density'])
+        old_density = Units.Quantity(self.material['Density']).getValueAs("kg/m^3")
         variation = 0.001
         if value:
             if not (1 - variation < float(old_density) / value < 1 + variation):
                 # density has changed
                 material = self.material
                 value_in_kg_per_m3 = value * 1e9
-                material['Density'] = unicode(value_in_kg_per_m3) + " kg/m^3"
-                # material['Density'] = unicode(value) + " kg/mm^3"
+                material['Density'] = unicode(value_in_kg_per_m3) + " kg/m^3"  # SvdW:Keep density in SI units for easier readability
                 self.material = material
 
     def pr_changed(self, value):
@@ -154,6 +157,42 @@ class _TaskPanelMechanicalMaterial:
                 # PoissonRatio has changed
                 material = self.material
                 material['PoissonRatio'] = unicode(value)
+                self.material = material
+
+    def tc_changed(self, value):
+        import Units
+        old_tc = Units.Quantity(self.material['ThermalConductivity']).getValueAs("W/m/K")
+        variation = 0.001
+        if value:
+            if not (1 - variation < float(old_tc) / value < 1 + variation):
+                # ThermalConductivity has changed
+                material = self.material
+                value_in_W_per_mK = value * 1e-3  # To compensate for use of SI units
+                material['ThermalConductivity'] = unicode(value_in_W_per_mK) + " W/m/K"
+                self.material = material
+
+    def tec_changed(self, value):
+        import Units
+        old_tec = Units.Quantity(self.material['ThermalExpansionCoefficient']).getValueAs("um/m/K")
+        variation = 0.001
+        if value:
+            if not (1 - variation < float(old_tec) / value < 1 + variation):
+                # ThermalExpansionCoefficient has changed
+                material = self.material
+                value_in_um_per_mK = value * 1e6  # To compensate for use of SI units
+                material['ThermalExpansionCoefficient'] = unicode(value_in_um_per_mK) + " um/m/K"
+                self.material = material
+
+    def sh_changed(self, value):
+        import Units
+        old_sh = Units.Quantity(self.material['SpecificHeat']).getValueAs("J/kg/K")
+        variation = 0.001
+        if value:
+            if not (1 - variation < float(old_sh) / value < 1 + variation):
+                # SpecificHeat has changed
+                material = self.material
+                value_in_J_per_kgK = value * 1e-6  # To compensate for use of SI units
+                material['SpecificHeat'] = unicode(value_in_J_per_kgK) + " J/kg/K"
                 self.material = material
 
     def choose_material(self, index):
@@ -194,6 +233,21 @@ class _TaskPanelMechanicalMaterial:
             density = FreeCAD.Units.Quantity(matmap['Density'])
             density_with_new_unit = density.getValueAs(density_new_unit)
             self.form.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
+        if 'ThermalConductivity' in matmap:
+            tc_new_unit = "W/m/K"
+            tc = FreeCAD.Units.Quantity(matmap['ThermalConductivity'])
+            tc_with_new_unit = tc.getValueAs(tc_new_unit)
+            self.form.input_fd_thermal_conductivity.setText("{} {}".format(tc_with_new_unit, tc_new_unit))
+        if 'ThermalExpansionCoefficient' in matmap:
+            tec_new_unit = "um/m/K"
+            tec = FreeCAD.Units.Quantity(matmap['ThermalExpansionCoefficient'])
+            tec_with_new_unit = tec.getValueAs(tec_new_unit)
+            self.form.input_fd_expansion_coefficient.setText("{} {}".format(tec_with_new_unit, tec_new_unit))
+        if 'SpecificHeat' in matmap:
+            sh_new_unit = "J/kg/K"
+            sh = FreeCAD.Units.Quantity(matmap['SpecificHeat'])
+            sh_with_new_unit = sh.getValueAs(sh_new_unit)
+            self.form.input_fd_specific_heat.setText("{} {}".format(sh_with_new_unit, sh_new_unit))
 
     def add_transient_material(self, material):
         material_name = self.get_material_name(material)
