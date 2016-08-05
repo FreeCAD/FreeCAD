@@ -302,9 +302,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if not self.mesh:
             message += "No mesh object defined in the analysis\n"
         if self.mesh:
-            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount > 0:
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount > 0 and not self.shell_thicknesses:
                 message += "FEM mesh has no volume elements, either define a shell thicknesses or provide a FEM mesh with volume elements.\n"
-            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount > 0:
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount > 0 and not self.beam_sections:
                 message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
                 message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
