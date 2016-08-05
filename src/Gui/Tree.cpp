@@ -711,6 +711,15 @@ void TreeWidget::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         this->headerItem()->setText(0, tr("Labels & Attributes"));
         this->rootItem->setText(0, tr("Application"));
+
+        this->createGroupAction->setText(tr("Create group..."));
+        this->createGroupAction->setStatusTip(tr("Create a group"));
+
+        this->relabelObjectAction->setText(tr("Rename"));
+        this->relabelObjectAction->setStatusTip(tr("Rename object"));
+
+        this->finishEditingAction->setText(tr("Finish editing"));
+        this->finishEditingAction->setStatusTip(tr("Finish editing object"));
     }
 
     QTreeWidget::changeEvent(e);
