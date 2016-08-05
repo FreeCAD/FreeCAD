@@ -125,7 +125,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         }
         else { // bigger then 1000 GPa -> scientific notation
             unitString = QString::fromLatin1("Pa");
-            factor = 1.0;
+            factor = 0.001;
         }
     }
     else if (unit == Unit::ThermalConductivity) {

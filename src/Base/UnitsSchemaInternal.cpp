@@ -152,7 +152,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
         else { // bigger -> scientific notation
             unitString = QString::fromLatin1("Pa");
-            factor = 1.0;
+            factor = 0.001;
         }
     }
     else {
