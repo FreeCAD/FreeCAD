@@ -96,6 +96,10 @@ private:
 };
 
 struct PartExport ShapeHistory {
+    /**
+    * @brief MapList: key is index of subshape (of type 'type') in source
+    * shape. Value is list of indexes of subshapes in result shape.
+    */
     typedef std::map<int, std::vector<int> > MapList;
     typedef std::vector<int> List;
 
