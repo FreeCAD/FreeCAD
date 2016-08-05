@@ -81,6 +81,7 @@ public:
     virtual std::string getFormatedValue() const;
     virtual double getDimValue() const;
     DrawViewPart* getViewPart() const;
+    virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
 
 protected:
     void onChanged(const App::Property* prop);

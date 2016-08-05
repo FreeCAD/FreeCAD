@@ -23,6 +23,7 @@
 #ifndef _TECHDRAW_FEATUREVIEWGROUP_H_
 #define _TECHDRAW_FEATUREVIEWGROUP_H_
 
+# include <QRectF>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 
@@ -63,6 +64,7 @@ public:
 
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
+    virtual QRectF getRect(void) const;
 
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
