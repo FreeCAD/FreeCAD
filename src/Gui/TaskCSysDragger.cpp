@@ -30,13 +30,13 @@
 #include <QGridLayout>
 #include <QFontMetrics>
 
-#include <TaskView/TaskView.h>
+#include <Gui/TaskView/TaskView.h>
 #include "QuantitySpinBox.h"
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <BitmapFactory.h>
-#include <ViewProviderGeometryObject.h>
-#include <SoFCCSysDragger.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/SoFCCSysDragger.h>
 
 #include "TaskCSysDragger.h"
 
@@ -57,17 +57,19 @@ static double lastTranslationIncrement = 1.0;
 static double lastRotationIncrement = degreesToRadains(15.0);
 
 TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderGeometryObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
-  vpObject(vpObjectIn), dragger(draggerIn)
+  dragger(draggerIn)
 {
-  assert(vpObject);
-  assert(dragger);
-  
+  assert(vpObjectIn);
+  assert(draggerIn);
+  vpObject = vpObjectIn->getObject();
+  dragger->ref();
+
   setupGui();
 }
 
 TaskCSysDragger::~TaskCSysDragger()
 {
-
+  dragger->unref();
 }
 
 void TaskCSysDragger::setupGui()
@@ -132,15 +134,14 @@ bool TaskCSysDragger::accept()
   lastTranslationIncrement = dragger->translationIncrement.getValue();
   lastRotationIncrement = dragger->rotationIncrement.getValue();
   
-  assert(vpObject);
-  App::DocumentObject* dObject = vpObject->getObject();
-  assert(dObject);
-  Gui::Document* document = Gui::Application::Instance->getDocument(dObject->getDocument());
-  assert(document);
-  document->commitCommand();
-  document->resetEdit();
-  document->getDocument()->recompute();
-  
+  App::DocumentObject* dObject = vpObject.getObject();
+  if (dObject) {
+    Gui::Document* document = Gui::Application::Instance->getDocument(dObject->getDocument());
+    assert(document);
+    document->commitCommand();
+    document->resetEdit();
+    document->getDocument()->recompute();
+  }
   return Gui::TaskView::TaskDialog::accept();
 }
 
