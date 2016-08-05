@@ -140,7 +140,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
     }
     else if (unit == Unit::ThermalExpansionCoefficient) {
         if (UnitValue < 0.001) {
-            unitString = QString::fromLatin1("um/m/K");
+            unitString = QString::fromUtf8("\xC2\xB5m/m/K");
             factor = 0.000001;
         }
         else {
