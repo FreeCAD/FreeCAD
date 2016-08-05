@@ -36,7 +36,7 @@
 using namespace Base;
 
 
-QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
