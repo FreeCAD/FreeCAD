@@ -60,7 +60,7 @@ public:
     virtual void resetSchemaUnits(void){}
 
     /// This method translates the quantity in a string as the user may expect it.
-    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)=0;
+    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)=0;
 };
 
 

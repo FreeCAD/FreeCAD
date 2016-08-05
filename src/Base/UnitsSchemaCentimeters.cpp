@@ -36,7 +36,7 @@
 using namespace Base;
 
 
-QString UnitsSchemaCentimeters::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
     Unit unit = quant.getUnit();
     if (unit == Unit::Length) {

@@ -41,7 +41,7 @@ class UnitsSchemaImperial1: public UnitsSchema
 public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
-    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
+    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
 };
 
 /** The schema class for the imperial unit system
@@ -53,7 +53,7 @@ class UnitsSchemaImperialDecimal: public UnitsSchema
 public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
-    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
+    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
 };
 
 /** The schema class for the imperial unit system
@@ -65,7 +65,7 @@ class UnitsSchemaImperialBuilding: public UnitsSchema
 public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
-    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
+    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
 };
 
 

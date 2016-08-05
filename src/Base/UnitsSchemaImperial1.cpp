@@ -58,7 +58,7 @@ using namespace Base;
 //    Quantity::Mile =  Quantity (1609344.0     ,Unit(1));
 //}
 
-QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
@@ -140,7 +140,7 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
     return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
 }
 
-QString UnitsSchemaImperialDecimal::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
@@ -205,7 +205,7 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(Base::Quantity quant,double 
     return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
 }
 
-QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
 {
     // this schema expresses distances in feet + inches + fractions
     // ex: 3'- 4 1/4"
