@@ -238,6 +238,7 @@ void ViewProviderGeometryObject::unsetEdit(int ModNum)
     pcRoot->removeChild(csysDragger); //should delete csysDragger
     csysDragger = nullptr;
   }
+  Gui::Control().closeDialog();
 }
 
 void ViewProviderGeometryObject::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
