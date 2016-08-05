@@ -23,6 +23,8 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
+#include <QRectF>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
@@ -54,7 +56,6 @@ public:
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *recompute(void);
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onDocumentRestored();
     //@}
@@ -71,6 +72,9 @@ public:
     DrawPage* findParentPage() const;
     bool allowAutoPos() {return autoPos;};                //sb in DPGI??
     void setAutoPos(bool state) {autoPos = state;};
+    virtual QRectF getRect() const;                       //must be overridden by derived class
+    virtual double autoScale(double w, double h) const;
+    virtual bool checkFit(DrawPage*) const;
 
 protected:
     void onChanged(const App::Property* prop);

@@ -581,6 +581,26 @@ Base::BoundBox3d DrawViewPart::getBoundingBox() const
     return bbox;
 }
 
+double DrawViewPart::getBoxX(void) const
+{
+    Base::BoundBox3d bbx = getBoundingBox();   //bbox is already scaled
+    return (bbx.MaxX - bbx.MinX);
+}
+
+double DrawViewPart::getBoxY(void) const
+{
+    Base::BoundBox3d bbx = getBoundingBox();
+    return (bbx.MaxY - bbx.MinY);
+}
+
+QRectF DrawViewPart::getRect() const
+{
+    QRectF result(0.0,0.0,getBoxX(),getBoxY());  //this is from GO and is already scaled
+    return result;
+}
+
+
+
 //! make a clean wire with sorted, oriented, connected, etc edges
 TopoDS_Wire DrawViewPart::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol)
 {

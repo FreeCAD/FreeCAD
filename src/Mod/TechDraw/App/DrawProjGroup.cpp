@@ -149,7 +149,8 @@ double DrawProjGroup::calculateAutomaticScale() const
     double scale_x = availableX / width;
     double scale_y = availableY / height;
 
-    float working_scale = std::min(scale_x, scale_y);
+    double fudgeFactor = 0.90;
+    float working_scale = fudgeFactor * std::min(scale_x, scale_y);
 
     //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
     //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
@@ -166,6 +167,15 @@ double DrawProjGroup::calculateAutomaticScale() const
 
     //now have the appropriate scale, reapply the *10^b
     return valid_scales[(exponent >= 0)][i] * pow(10, exponent);
+}
+
+QRectF DrawProjGroup::getRect() const
+{
+    DrawProjGroupItem *viewPtrs[10];
+    arrangeViewPointers(viewPtrs);
+    double width, height;
+    minimumBbViews(viewPtrs, width, height);    //min space for 1:1 drawing
+    return QRectF(0,0,Scale.getValue() * width,Scale.getValue() * height);
 }
 
 void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
@@ -543,28 +553,51 @@ void DrawProjGroup::setFrontViewOrientation(const Base::Matrix4D &newMat)
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
+    //if group hasn't been added to page yet, can't scale or distribute projItems
+    TechDraw::DrawPage *page = getPage();
+    if (!page) {
+        return DrawViewCollection::execute();
+    }
+
     if (ScaleType.isValue("Automatic")) {
-
-        //Recalculate scale
-        double autoScale = calculateAutomaticScale();
-
-        if(std::abs(Scale.getValue() - autoScale) > FLT_EPSILON) {
-            // Set this Scale
-            Scale.setValue(autoScale);
-
+        //Recalculate scale if Group is too big
+        if (!checkFit(page)) {
+            double newScale = calculateAutomaticScale();
+            if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
+                Scale.setValue(newScale);
+                //Rebuild the DPGI's
+                for( const auto it : Views.getValues() ) {
+                    auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+                    if( view ) {
+                        view->ScaleType.setValue("Custom");
+                        view->Scale.setValue(newScale);             //not sure we have to set scale here. DVP will do it based on ScaleType
+                        view->Scale.setStatus(App::Property::ReadOnly,true);
+                        //view->touch();
+                    }
+                }
+                resetPositions();
+            }
+        }
+    } else if (ScaleType.isValue("Document")) {
+        double docScale = page->Scale.getValue();
+        if(std::abs(Scale.getValue() - docScale) > FLT_EPSILON) {
+            Scale.setValue(docScale);
             //Rebuild the DPGI's
-            for( const auto it : Views.getValues() ) {
-                auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-                if( view ) {
-                    view->ScaleType.setValue("Custom");
-                    view->Scale.setValue(autoScale);
+            const std::vector<App::DocumentObject *> &views = Views.getValues();
+            for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+                App::DocumentObject *docObj = *it;
+                if(docObj->getTypeId().isDerivedFrom(DrawProjGroupItem::getClassTypeId())) {
+                    DrawProjGroupItem *view = dynamic_cast<DrawProjGroupItem *>(*it);
+                    view->ScaleType.setValue("Document");
+                    view->Scale.setValue(docScale);
                     view->Scale.setStatus(App::Property::ReadOnly,true);
-                    view->touch();
+                    //view->touch();
                 }
             }
             resetPositions();
         }
     }
+
 
     // recalculate positions for children
     if (Views.getSize()) {

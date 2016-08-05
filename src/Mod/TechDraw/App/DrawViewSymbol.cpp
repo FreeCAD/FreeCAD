@@ -61,7 +61,6 @@ DrawViewSymbol::~DrawViewSymbol()
 {
 }
 
-/// get called by the container when a Property was changed
 void DrawViewSymbol::onChanged(const App::Property* prop)
 {
     if (prop == &Symbol) {
@@ -91,7 +90,7 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
     const std::vector<std::string>& editText = EditableTexts.getValues();
 
     if (!editText.empty()) {
-        //TODO: has this ever been run? 
+        //TODO: has this ever been run?
         boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
         begin = svg.begin();
@@ -120,6 +119,32 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
     //TODO: shouldn't there be a Symbol.setValue(svg) here??? -wf
     return DrawView::execute();
 }
+
+QRectF DrawViewSymbol::getRect() const
+{
+        std::string svg = Symbol.getValue();
+        double w = 64.0;         //must default to something
+        double h = 64.0;
+        string::const_iterator begin, end;
+        begin = svg.begin();
+        end = svg.end();
+        boost::match_results<std::string::const_iterator> what;
+
+        boost::regex e1 ("width=\"([0-9.]*?)[a-zA-Z]*?\"");
+        if (boost::regex_search(begin, end, what, e1)) {
+            //std::string wText = what[0].str();             //this is the whole match 'width="100"'
+            std::string wNum  = what[1].str();               //this is just the number 100
+            w = std::stod(wNum);
+        }
+        boost::regex e2 ("Height=\"([0-9.]*?)[a-zA-Z]*?\"");
+        if (boost::regex_search(begin, end, what, e1)) {
+            //std::string hText = what[0].str();
+            std::string hNum  = what[1].str();
+            h = std::stod(hNum);
+        }
+        return (QRectF(0,0,Scale.getValue() * w,Scale.getValue() * h));
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

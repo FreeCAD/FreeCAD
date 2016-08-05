@@ -87,6 +87,9 @@ public:
     TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
     std::vector<TechDrawGeometry::BaseGeom*> getProjFaceByIndex(int idx) const;  //get edges for face idx in projection
     virtual Base::BoundBox3d getBoundingBox() const;
+    double getBoxX(void) const;
+    double getBoxY(void) const;
+    virtual QRectF getRect() const;
 
     short mustExecute() const;
 
