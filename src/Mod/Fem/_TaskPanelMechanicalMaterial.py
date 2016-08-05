@@ -29,6 +29,7 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
+import Units
 
 
 class _TaskPanelMechanicalMaterial:
@@ -81,6 +82,7 @@ class _TaskPanelMechanicalMaterial:
         self.rebuild_list_References()
 
     def accept(self):
+        # print(self.material)
         self.remove_active_sel_server()
         if self.has_equal_references_shape_types():
             self.obj.Material = self.material
@@ -123,8 +125,27 @@ class _TaskPanelMechanicalMaterial:
         import webbrowser
         webbrowser.open("http://matweb.com")
 
+    def check_material_keys(self):
+        if not 'YoungsModulus' in self.material:
+            print('YoungsModulus not found in material data of: ' + self.material['Name'])
+            self.material['YoungsModulus'] = '0 MPa'
+        if not 'Density' in self.material:
+            print('Density not found in material data of: ' + self.material['Name'])
+            self.material['Density'] = '0 kg/m^3'
+        if not 'PoissonRatio' in self.material:
+            print('PoissonRatio not found in material data of: ' + self.material['Name'])
+            self.material['PoissonRatio'] = '0'
+        if not 'ThermalConductivity' in self.material:
+            print('ThermalConductivity not found in material data of: ' + self.material['Name'])
+            self.material['ThermalConductivity'] = '0 W/m/K'
+        if not 'ThermalExpansionCoefficient' in self.material:
+            print('ThermalExpansionCoefficient not found in material data of: ' + self.material['Name'])
+            self.material['ThermalExpansionCoefficient'] = '0 um/m/K'
+        if not 'SpecificHeat' in self.material:
+            print('SpecificHeat not found in material data of: ' + self.material['Name'])
+            self.material['SpecificHeat'] = '0 J/kg/K'
+
     def ym_changed(self, value):
-        import Units
         # FreeCADs standard unit for stress is kPa
         old_ym = Units.Quantity(self.material['YoungsModulus']).getValueAs("kPa")
         variation = 0.001
@@ -136,7 +157,6 @@ class _TaskPanelMechanicalMaterial:
                 self.material = material
 
     def density_changed(self, value):
-        import Units
         # FreeCADs standard unit for density is kg/mm^3
         old_density = Units.Quantity(self.material['Density']).getValueAs("kg/m^3")
         variation = 0.001
@@ -149,7 +169,6 @@ class _TaskPanelMechanicalMaterial:
                 self.material = material
 
     def pr_changed(self, value):
-        import Units
         old_pr = Units.Quantity(self.material['PoissonRatio'])
         variation = 0.001
         if value:
@@ -160,7 +179,6 @@ class _TaskPanelMechanicalMaterial:
                 self.material = material
 
     def tc_changed(self, value):
-        import Units
         old_tc = Units.Quantity(self.material['ThermalConductivity']).getValueAs("W/m/K")
         variation = 0.001
         if value:
@@ -172,7 +190,6 @@ class _TaskPanelMechanicalMaterial:
                 self.material = material
 
     def tec_changed(self, value):
-        import Units
         old_tec = Units.Quantity(self.material['ThermalExpansionCoefficient']).getValueAs("um/m/K")
         variation = 0.001
         if value:
@@ -184,7 +201,6 @@ class _TaskPanelMechanicalMaterial:
                 self.material = material
 
     def sh_changed(self, value):
-        import Units
         old_sh = Units.Quantity(self.material['SpecificHeat']).getValueAs("J/kg/K")
         variation = 0.001
         if value:
@@ -201,6 +217,7 @@ class _TaskPanelMechanicalMaterial:
         mat_file_path = self.form.cb_materials.itemData(index)
         self.material = self.materials[mat_file_path]
         self.form.cb_materials.setCurrentIndex(index)
+        self.check_material_keys()
         self.set_mat_params_in_combo_box(self.material)
         gen_mat_desc = ""
         if 'Description' in self.material:
