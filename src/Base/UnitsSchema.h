@@ -27,14 +27,12 @@
 
 #include <string>
 #include <QString>
-#include "Quantity.h"
-
-//#include "UnitsApi.h"
+#include <Base/Quantity.h>
 
 
 namespace Base {
 
-/** Units systems*/
+/** Units systems */
 enum UnitSystem {
     SI1 = 0 , /** internal (mm,kg,s) SI system (http://en.wikipedia.org/wiki/International_System_of_Units) */
     SI2 = 1 , /** MKS (m,kg,s) SI system */
@@ -53,15 +51,15 @@ class UnitsSchema
 {
 public:
     virtual ~UnitsSchema(){}
-    /** get called if this schema gets activated.
-      * Here its theoretical possible that you can change the static factors 
-      * for certain Units (e.g. mi = 1,8km instead of mi=1.6km). 
+    /** Gets called if this schema gets activated.
+      * Here it's theoretically possible that you can change the static factors
+      * for certain units (e.g. mi = 1,8km instead of mi=1.6km).
       */
     virtual void setSchemaUnits(void){}
-    /// if you use setSchemaUnits() you have also to impment this methode to undo your changes!
+    /// If you use setSchemaUnits() you also have to impment this method to undo your changes!
     virtual void resetSchemaUnits(void){}
 
-    /// this methode translate the quantity in a string as the user may expect it
+    /// This method translates the quantity in a string as the user may expect it.
     virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)=0;
 };
 

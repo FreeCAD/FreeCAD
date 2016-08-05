@@ -38,8 +38,7 @@ namespace Base {
 class UnitsSchemaMKS: public UnitsSchema
 {
 public:
-	virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
-
+    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
 };
 
 
