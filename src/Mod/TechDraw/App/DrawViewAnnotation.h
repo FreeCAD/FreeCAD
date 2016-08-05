@@ -27,7 +27,6 @@
 #ifndef _DrawViewAnnotation_h_
 #define _DrawViewAnnotation_h_
 
-
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
@@ -39,8 +38,6 @@ namespace TechDraw
 {
 
 
-/** Base class of all View Features in the drawing module
- */
 class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 {
     PROPERTY_HEADER(TechDraw::DrawViewAnnotation);
@@ -57,6 +54,8 @@ public:
     App::PropertyInteger      LineSpace;
     App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
     App::PropertyFloat        MaxWidth;
+
+    virtual QRectF getRect() const;
 
     /** @name methods overide Feature */
     //@{

@@ -25,7 +25,6 @@
 #ifndef _DrawViewClip_h_
 #define _DrawViewClip_h_
 
-
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyLinks.h>
@@ -71,6 +70,7 @@ public:
 
     std::vector<std::string> getChildViewNames();
     bool isViewInClip(App::DocumentObject* view);
+    virtual QRectF getRect(void) const { return QRectF(0,0,Width.getValue(),Height.getValue()); }
 
 
 protected:
