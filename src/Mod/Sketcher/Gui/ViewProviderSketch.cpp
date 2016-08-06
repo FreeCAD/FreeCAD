@@ -277,8 +277,8 @@ ViewProviderSketch::ViewProviderSketch()
 
     zCross=0.001f;
     zLines=0.005f;
-    zConstr=0.006f; // constraint not construction
-    zHighLine=0.007f;
+    zConstr=0.007f; // constraint not construction
+    zHighLine=0.006f;
     zPoints=0.008f;
     zHighlight=0.009f;
     zText=0.011f;
