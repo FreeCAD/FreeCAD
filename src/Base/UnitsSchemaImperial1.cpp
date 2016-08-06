@@ -133,11 +133,7 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
         factor = 1.0;
     }
 
-    //return QString::fromLatin1("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+    return toLocale(quant, factor, unitString);
 }
 
 QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
@@ -198,11 +194,7 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
         factor = 1.0;
     }
 
-    //return QString::fromLatin1("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+    return toLocale(quant, factor, unitString);
 }
 
 QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
@@ -279,8 +271,5 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         factor = 1.0;
     }
 
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+    return toLocale(quant, factor, unitString);
 }
