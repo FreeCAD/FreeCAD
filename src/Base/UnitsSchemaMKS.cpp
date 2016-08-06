@@ -162,9 +162,5 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1.0;
     }
 
-    //return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+    return toLocale(quant, factor, unitString);
 }
