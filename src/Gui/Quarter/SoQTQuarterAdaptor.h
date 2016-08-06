@@ -85,6 +85,9 @@ public:
     void setSeekValueAsPercentage(const SbBool on);
     SbBool isSeekValuePercentage(void) const;
 
+    virtual float getPickRadius(void) const {return this->pickRadius;};
+    virtual void setPickRadius(float pickRadius);
+
     virtual void saveHomePosition(void);
     virtual void resetToHomePosition(void);
 
@@ -120,6 +123,7 @@ private:
     SbBool m_seekdistanceabs;
     SoSearchAction searchaction;
     SoGetMatrixAction matrixaction;
+    float pickRadius;
     // Home position storage.
     SoNode * m_storedcamera;
     

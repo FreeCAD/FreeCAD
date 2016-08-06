@@ -309,7 +309,7 @@ SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 
     SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
     rpaction.setPoint(screenpos);
-    rpaction.setRadius(2);
+    rpaction.setRadius(viewer->getPickRadius());
     rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
 
     SoPickedPoint * picked = rpaction.getPickedPoint();
@@ -994,7 +994,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
     if (PRIVATE(this)->dragAtCursor) {
         SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
         rpaction.setPoint(this->localPos);
-        rpaction.setRadius(2);
+        rpaction.setRadius(viewer->getPickRadius());
         rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
 
         SoPickedPoint * picked = rpaction.getPickedPoint();
@@ -1058,6 +1058,7 @@ SbBool NavigationStyle::handleEventInForeground(const SoEvent* const e)
 {
     SoHandleEventAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.setEvent(e);
+    action.setPickRadius(viewer->getPickRadius());
     action.apply(viewer->foregroundroot);
     return action.isHandled();
 }
