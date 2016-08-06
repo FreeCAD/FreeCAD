@@ -26,9 +26,9 @@ import FreeCAD
 import Path
 from PySide import QtCore, QtGui
 import os
-import sys
 import glob
 import PathLoadTool
+import Draft
 
 
 FreeCADGui = None
@@ -82,6 +82,8 @@ class ObjectPathJob:
         obj.addProperty("App::PropertyDistance", "X_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
         obj.addProperty("App::PropertyDistance", "Y_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
         obj.addProperty("App::PropertyDistance", "Z_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
+
+        obj.addProperty("App::PropertyLink", "Base", "Base", "The base object for all operations")
 
         obj.Proxy = self
 
@@ -236,6 +238,11 @@ class TaskPanel:
             self.form.cboPostProcessor.addItem(post)
         self.updating = False
 
+        self.form.cboBaseObject.addItem("")
+        for o in FreeCAD.ActiveDocument.Objects:
+            if hasattr(o, "Shape"):
+                self.form.cboBaseObject.addItem(o.Name)
+
 
     def accept(self):
         self.getFields()
@@ -266,6 +273,12 @@ class TaskPanel:
                         newlist.append(olditem)
             self.obj.Group = newlist
 
+            objName = self.form.cboBaseObject.currentText()
+            selObj = FreeCAD.ActiveDocument.getObject(objName)
+            if self.form.chkCreateClone.isChecked():
+                selObj = Draft.clone(selObj)
+            self.obj.Base = selObj
+
 
         self.obj.Proxy.execute(self.obj)
 
@@ -282,6 +295,10 @@ class TaskPanel:
         for child in self.obj.Group:
             self.form.PathsList.addItem(child.Name)
 
+        if self.obj.Base is not None:
+            index = self.form.cboBaseObject.findText(self.obj.Base.Name, QtCore.Qt.MatchFixedString)
+            if index >= 0:
+                self.form.cboBaseObject.setCurrentIndex(index)
 
 
     def open(self):
@@ -303,6 +320,7 @@ class TaskPanel:
         self.form.leLabel.editingFinished.connect(self.getFields)
         self.form.btnSelectFile.clicked.connect(self.setFile)
         self.form.PathsList.indexesMoved.connect(self.getFields)
+        self.form.cboBaseObject.currentIndexChanged.connect(self.getFields)
 
         self.setFields()
 
