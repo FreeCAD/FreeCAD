@@ -135,23 +135,33 @@ double Constraint::getValue() const
 
 Quantity Constraint::getPresentationValue() const
 {
+    Quantity quantity;
     switch (Type) {
     case Distance:
     case Radius:
-        return Quantity(Value, Unit::Length);
     case DistanceX:
     case DistanceY:
-        if (FirstPos == Sketcher::none || Second != Sketcher::Constraint::GeoUndef)
-            return Quantity(Value, Unit::Length);
-        else
-            return Quantity(Value, Unit::Length);
+        quantity.setValue(Value);
+        quantity.setUnit(Unit::Length);
+        break;
     case Angle:
-        return Quantity(toDegrees<double>(Value), Unit::Angle);
+        quantity.setValue(toDegrees<double>(Value));
+        quantity.setUnit(Unit::Angle);
+        break;
     case SnellsLaw:
-        return Value;
+        quantity.setValue(Value);
+        break;
     default:
-        return Value;
+        quantity.setValue(Value);
+        break;
     }
+
+    QuantityFormat format = quantity.getFormat();
+    format.option = QuantityFormat::None;
+    format.format = QuantityFormat::Default;
+    format.precision = 6; // QString's default
+    quantity.setFormat(format);
+    return quantity;
 }
 
 unsigned int Constraint::getMemSize (void) const
