@@ -14,7 +14,16 @@
    <string>Colors</string>
   </property>
   <layout class="QGridLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <property name="spacing">
@@ -26,7 +35,16 @@
       <string>Selection</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -47,7 +65,16 @@
       </item>
       <item row="0" column="0">
        <layout class="QGridLayout" name="_3">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
@@ -61,7 +88,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>28</red>
             <green>173</green>
@@ -70,22 +97,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SelectionColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxSelection">
-          <property name="text">
-           <string>Enable selection highlighting</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>EnableSelection</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -128,7 +139,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>225</red>
             <green>225</green>
@@ -143,6 +154,57 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxSelection">
+          <property name="text">
+           <string>Enable selection highlighting</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>EnableSelection</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Pick radius (px):</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
+          <property name="toolTip">
+           <string>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>200.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>PickRadius</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -154,7 +216,16 @@
       <string>Background color</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -175,7 +246,16 @@
       </item>
       <item row="0" column="0">
        <layout class="QGridLayout" name="_4">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
@@ -211,7 +291,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>20</red>
             <green>20</green>
@@ -244,7 +324,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>151</red>
             <green>151</green>
@@ -267,7 +347,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>111</red>
             <green>111</green>
@@ -303,7 +383,7 @@
           <property name="text">
            <string/>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>51</red>
             <green>51</green>
@@ -378,12 +458,18 @@
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>checkBoxPreselection</tabstop>
-  <tabstop>checkBoxSelection</tabstop>
   <tabstop>HighlightColor</tabstop>
+  <tabstop>checkBoxSelection</tabstop>
   <tabstop>SelectionColor</tabstop>
+  <tabstop>spinPickRadius</tabstop>
   <tabstop>radioButtonSimple</tabstop>
   <tabstop>SelectionColor_Background</tabstop>
   <tabstop>radioButtonGradient</tabstop>
