@@ -262,62 +262,44 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Materials\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('** Young\'s modulus unit is MPa = N/mm2\n')
-        f.write('** Density\'s unit is t/mm^3\n')
-        f.write('** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n')
-        f.write('** Specific Heat unit is kJ/t/K = mm^2/s^2/K\n')
+        if self.analysis_type == "frequency" or self.selfweight_objects:
+            f.write('** Density\'s unit is t/mm^3\n')
+        if self.analysis_type == "thermomech":
+            f.write('** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n')
+            f.write('** Specific Heat unit is kJ/t/K = mm^2/s^2/K\n')
         for femobj in self.material_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             mat_obj = femobj['Object']
-            # get material properties - Currently in SI units: M/kg/s/Kelvin
-            YM_in_MPa = 1
-            TC_in_WmK = 1
-            TEC_in_mmK = 1
-            SH_in_JkgK = 1
-            PR = 1
-            density_in_tonne_per_mm3 = 1
-            try:
-                YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
-                YM_in_MPa = float(YM.getValueAs('MPa'))
-            except:
-                FreeCAD.Console.PrintError("No YoungsModulus defined for material: default used\n")
-            try:
-                PR = float(mat_obj.Material['PoissonRatio'])
-            except:
-                FreeCAD.Console.PrintError("No PoissonRatio defined for material: default used\n")
-            try:
-                TC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalConductivity'])
-                TC_in_WmK = float(TC.getValueAs('W/m/K'))  # SvdW: Add factor to force units to results' base units of t/mm/s/K - W/m/K results in no factor needed
-            except:
-                FreeCAD.Console.PrintError("No ThermalConductivity defined for material: default used\n")
-            try:
-                TEC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalExpansionCoefficient'])
-                TEC_in_mmK = float(TEC.getValueAs('mm/mm/K'))
-            except:
-                FreeCAD.Console.PrintError("No ThermalExpansionCoefficient defined for material: default used\n")
-            try:
-                SH = FreeCAD.Units.Quantity(mat_obj.Material['SpecificHeat'])
-                SH_in_JkgK = float(SH.getValueAs('J/kg/K')) * 1e+06  # SvdW: Add factor to force units to results' base units of t/mm/s/K
-            except:
-                FreeCAD.Console.PrintError("No SpecificHeat defined for material: default used\n")
             mat_info_name = mat_obj.Material['Name']
             mat_name = mat_obj.Name
+            # get material properties, Currently in SI units: M/kg/s/Kelvin
+            YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
+            YM_in_MPa = float(YM.getValueAs('MPa'))
+            PR = float(mat_obj.Material['PoissonRatio'])
+            if self.analysis_type == "frequency" or self.selfweight_objects:
+                density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
+                density_in_tonne_per_mm3 = float(density.getValueAs('t/mm^3'))
+            if self.analysis_type == "thermomech":
+                TC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalConductivity'])
+                TC_in_WmK = float(TC.getValueAs('W/m/K'))  # SvdW: Add factor to force units to results' base units of t/mm/s/K - W/m/K results in no factor needed
+                TEC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalExpansionCoefficient'])
+                TEC_in_mmK = float(TEC.getValueAs('mm/mm/K'))
+                SH = FreeCAD.Units.Quantity(mat_obj.Material['SpecificHeat'])
+                SH_in_JkgK = float(SH.getValueAs('J/kg/K')) * 1e+06  # SvdW: Add factor to force units to results' base units of t/mm/s/K
             # write material properties
-            f.write('**FreeCAD material name: ' + mat_info_name + '\n')
+            f.write('** FreeCAD material name: ' + mat_info_name + '\n')
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
             f.write('*ELASTIC \n')
             f.write('{0:.0f}, {1:.3f}\n'.format(YM_in_MPa, PR))
-            try:
-                density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
-                density_in_tonne_per_mm3 = float(density.getValueAs('t/mm^3'))
-            except:
-                FreeCAD.Console.PrintError("No Density defined for material: default used\n")
-            f.write('*DENSITY \n')
-            f.write('{0:.3e}, \n'.format(density_in_tonne_per_mm3))
-            f.write('*CONDUCTIVITY \n')
-            f.write('{0:.3f}, \n'.format(TC_in_WmK))
-            f.write('*EXPANSION \n')
-            f.write('{0:.3e}, \n'.format(TEC_in_mmK))
-            f.write('*SPECIFIC HEAT \n')
-            f.write('{0:.3e}, \n'.format(SH_in_JkgK))
+            if self.analysis_type == "frequency" or self.selfweight_objects:
+                f.write('*DENSITY \n')
+                f.write('{0:.3e}, \n'.format(density_in_tonne_per_mm3))
+            if self.analysis_type == "thermomech":
+                f.write('*CONDUCTIVITY \n')
+                f.write('{0:.3f}, \n'.format(TC_in_WmK))
+                f.write('*EXPANSION \n')
+                f.write('{0:.3e}, \n'.format(TEC_in_mmK))
+                f.write('*SPECIFIC HEAT \n')
+                f.write('{0:.3e}, \n'.format(SH_in_JkgK))
 
     def write_femelementsets(self, f):
         f.write('\n***********************************************************\n')

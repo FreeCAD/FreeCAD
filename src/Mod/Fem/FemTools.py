@@ -321,6 +321,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
                 message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
+        # materials
         if not self.materials:
             message += "No material object defined in the analysis\n"
         has_no_references = False
@@ -329,17 +330,35 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 if has_no_references is True:
                     message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
+        for m in self.materials:
+            mat_map = m['Object'].Material
+            if 'YoungsModulus' not in mat_map:
+                message += "No YoungsModulus defined for at least one material.\n"
+            if 'PoissonRatio' not in mat_map:
+                message += "No PoissonRatio defined for at least one material.\n"
+            if self.analysis_type == "frequency" or self.selfweight_constraints:
+                if 'Density' not in mat_map:
+                    message += "No Density defined for at least one material.\n"
+            if self.analysis_type == "thermomech":
+                if 'ThermalConductivity' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalConductivity defined for at least one material.\n"
+                if 'ThermalExpansionCoefficient' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"
+                if 'SpecificHeat' not in mat_map:
+                    message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"
+        # constraints
         if self.analysis_type == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
-                message += "Neither a constraint fixed nor a contraint displacement defined in the static analysis\n"
+                message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
-                message += "Neither constraint force nor constraint pressure or a constraint selfweight defined in the static analysis\n"
+                message += "Static analysis: Neither constraint force nor constraint pressure or a constraint selfweight defined.\n"
         if self.analysis_type == "thermomech":
             if not self.initialtemperature_constraints:
-                message += "No initial temperature defined in the thermomechanical analysis\n"
+                message += "Thermomechanical analysis: No initial temperature defined.\n"
             if len(self.initialtemperature_constraints) > 1:
-                message += "Only one initial temperature is allowed in thermomechanical analysis\n"
+                message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
+        # beam sections and shell thicknesses
         if self.beam_sections:
             if self.shell_thicknesses:
                 # this needs to be checked only once either here or in shell_thicknesses
