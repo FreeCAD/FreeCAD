@@ -126,22 +126,22 @@ class _TaskPanelMechanicalMaterial:
         webbrowser.open("http://matweb.com")
 
     def check_material_keys(self):
-        if not 'YoungsModulus' in self.material:
+        if 'YoungsModulus' not in self.material:
             print('YoungsModulus not found in material data of: ' + self.material['Name'])
             self.material['YoungsModulus'] = '0 MPa'
-        if not 'Density' in self.material:
+        if 'Density' not in self.material:
             print('Density not found in material data of: ' + self.material['Name'])
             self.material['Density'] = '0 kg/m^3'
-        if not 'PoissonRatio' in self.material:
+        if 'PoissonRatio' not in self.material:
             print('PoissonRatio not found in material data of: ' + self.material['Name'])
             self.material['PoissonRatio'] = '0'
-        if not 'ThermalConductivity' in self.material:
+        if 'ThermalConductivity' not in self.material:
             print('ThermalConductivity not found in material data of: ' + self.material['Name'])
             self.material['ThermalConductivity'] = '0 W/m/K'
-        if not 'ThermalExpansionCoefficient' in self.material:
+        if 'ThermalExpansionCoefficient' not in self.material:
             print('ThermalExpansionCoefficient not found in material data of: ' + self.material['Name'])
             self.material['ThermalExpansionCoefficient'] = '0 um/m/K'
-        if not 'SpecificHeat' in self.material:
+        if 'SpecificHeat' not in self.material:
             print('SpecificHeat not found in material data of: ' + self.material['Name'])
             self.material['SpecificHeat'] = '0 J/kg/K'
 
