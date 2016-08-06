@@ -63,6 +63,9 @@ public:
     TopoShape(const TopoShape&);
     ~TopoShape();
 
+    void setShape(const TopoDS_Shape& shape);
+    TopoDS_Shape getShape() const;
+
     void operator = (const TopoShape&);
 
     /** @name Placement control */
@@ -232,6 +235,7 @@ public:
                   const std::vector<Facet> &faces, float Accuracy=1.0e-06);
     //@}
 
+private:
     TopoDS_Shape _Shape;
 };
 

@@ -1272,7 +1272,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     const Part::TopoShape& TopShape = base->Shape.getShape();
 
-    if (TopShape._Shape.IsNull()){
+    if (TopShape.getShape().IsNull()){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Shape of the selected Part is empty"));
         return false;

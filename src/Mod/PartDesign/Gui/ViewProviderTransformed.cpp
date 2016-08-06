@@ -179,7 +179,7 @@ void ViewProviderTransformed::recomputeFeature(void)
         TopoDS_Shape shape;
         if ((o->first)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(o->first);
-            shape = feature->AddSubShape.getShape()._Shape;
+            shape = feature->AddSubShape.getShape().getShape();
         }
 
         if (shape.IsNull()) continue;

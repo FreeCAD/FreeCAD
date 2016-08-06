@@ -216,16 +216,16 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
             return false;
         }
     }
-    else if (shape._Shape.ShapeType() == TopAbs_EDGE) {
-        pathShape = shape._Shape;
+    else if (shape.getShape().ShapeType() == TopAbs_EDGE) {
+        pathShape = shape.getShape();
     }
-    else if (shape._Shape.ShapeType() == TopAbs_WIRE) {
-        BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape._Shape));
+    else if (shape.getShape().ShapeType() == TopAbs_WIRE) {
+        BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape.getShape()));
         pathShape = mkWire.Wire();
     }
-    else if (shape._Shape.ShapeType() == TopAbs_COMPOUND) {
+    else if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
         try {
-            TopoDS_Iterator it(shape._Shape);
+            TopoDS_Iterator it(shape.getShape());
             for (; it.More(); it.Next()) {
                 if ((it.Value().ShapeType() != TopAbs_EDGE) &&
                     (it.Value().ShapeType() != TopAbs_WIRE)) {
@@ -234,7 +234,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
             }
             Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
             Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-            for (TopExp_Explorer xp(shape._Shape, TopAbs_EDGE); xp.More(); xp.Next())
+            for (TopExp_Explorer xp(shape.getShape(), TopAbs_EDGE); xp.More(); xp.Next())
                 hEdges->Append(xp.Current());
 
             ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_True, hWires);

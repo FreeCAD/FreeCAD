@@ -119,7 +119,7 @@ private:
         if (pcObjDir)
             Vector = *static_cast<Base::VectorPy*>(pcObjDir)->getVectorPtr();
 
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
 
         Py::List list;
         list.append(Py::Object(new Part::TopoShapePy(new Part::TopoShape(Alg.V)) , true));
@@ -144,7 +144,7 @@ private:
         if (pcObjDir)
             Vector = *static_cast<Base::VectorPy*>(pcObjDir)->getVectorPtr();
 
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
 
         Py::List list;
         list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.V)) , true));
@@ -177,7 +177,7 @@ private:
         Base::Vector3d Vector(0,0,1);
         if (pcObjDir)
             Vector = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
 
         bool hidden = false;
         if (type && std::string(type) == "ShowHiddenLines")
@@ -203,7 +203,7 @@ private:
         Base::Vector3d Vector(0,0,1);
         if (pcObjDir)
             Vector = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
 
         bool hidden = false;
         if (type && std::string(type) == "ShowHiddenLines")

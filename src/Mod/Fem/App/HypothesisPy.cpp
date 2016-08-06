@@ -182,7 +182,7 @@ Py::Object SMESH_HypothesisPy<T>::setParametersByMesh(const Py::Tuple& args)
         &(Part::TopoShapePy::Type), &shape))
         throw Py::Exception();
     Fem::FemMesh* m = static_cast<Fem::FemMeshPy*>(mesh)->getFemMeshPtr();
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     return Py::Boolean(hypothesis<SMESH_Hypothesis>()->SetParametersByMesh(m->getSMesh(), s));
 }
 
@@ -299,7 +299,7 @@ Py::Object StdMeshers_AutomaticLengthPy::getLength(const Py::Tuple& args)
     }
     else {
         Py::TopoShape shape(shape_or_double);
-        const TopoDS_Shape& s = shape.extensionObject()->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& s = shape.extensionObject()->getTopoShapePtr()->getShape();
         return Py::Float(hypothesis<StdMeshers_AutomaticLength>()->GetLength(m->getSMesh(),s));
     }
 
