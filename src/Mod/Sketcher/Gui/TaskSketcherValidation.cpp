@@ -36,9 +36,16 @@
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
 
+#include <BRep_Tool.hxx>
+#include <gp_Pnt.hxx>
 #include <Precision.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <algorithm>
 
 #include "ui_TaskSketcherValidation.h"
@@ -316,6 +323,28 @@ void SketcherValidation::on_fixButton_clicked()
     Gui::WaitCursor wc;
     doc->commitTransaction();
     doc->recompute();
+}
+
+void SketcherValidation::on_highlightButton_clicked()
+{
+    std::vector<Base::Vector3d> points;
+    TopoDS_Shape shape = sketch->Shape.getValue();
+
+    // build up map vertex->edge
+    TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
+    TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
+    for (int i=1; i<= vertex2Edge.Extent(); ++i) {
+        const TopTools_ListOfShape& los = vertex2Edge.FindFromIndex(i);
+        if (los.Extent() != 2) {
+            const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
+            gp_Pnt pnt = BRep_Tool::Pnt(vertex);
+            points.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+        }
+    }
+
+    hidePoints();
+    if (!points.empty())
+        showPoints(points);
 }
 
 void SketcherValidation::on_findConstraint_clicked()
