@@ -152,13 +152,13 @@ PyObject* FemMeshPy::addHypothesis(PyObject *args)
     Py_Return;
 }
 
-PyObject* FemMeshPy::setStanardHypotheses(PyObject *args)
+PyObject* FemMeshPy::setStandardHypotheses(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
     try {
-        getFemMeshPtr()->setStanardHypotheses();
+        getFemMeshPtr()->setStandardHypotheses();
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
