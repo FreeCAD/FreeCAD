@@ -353,7 +353,7 @@ void CmdPartCommon::activated(int iMsg)
     std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
 
     //test if selected object is a compound, and if it is, look how many children it has...
-    int numShapes = 0;
+    std::size_t numShapes = 0;
     if (Sel.size() == 1){
         numShapes = 1; //to be updated later in code, if
         Gui::SelectionObject selobj = Sel[0];
@@ -454,7 +454,7 @@ void CmdPartFuse::activated(int iMsg)
     std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
 
     //test if selected object is a compound, and if it is, look how many children it has...
-    int numShapes = 0;
+    std::size_t numShapes = 0;
     if (Sel.size() == 1){
         numShapes = 1; //to be updated later in code
         Gui::SelectionObject selobj = Sel[0];
