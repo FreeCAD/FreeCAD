@@ -138,6 +138,11 @@ public:
     inline void setStatus(Status pos, bool on) {
         StatusBits.set(static_cast<size_t>(pos), on);
     }
+    ///Sets property editable/grayed out in property editor
+    void setReadOnly(bool readOnly);
+    inline bool isReadOnly() const {
+        return testStatus(App::Property::ReadOnly);
+    }
     //@}
 
     /// Returns a new copy of the property (mainly for Undo/Redo and transactions)
