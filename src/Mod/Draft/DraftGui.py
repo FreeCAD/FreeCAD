@@ -140,7 +140,7 @@ def displayExternal(internValue,decimals=None,dim='Length',showUnit=True):
     from FreeCAD import Units
     if dim == 'Length':
         q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        if (decimals == None) and showunit:
+        if (decimals == None) and showUnit:
             return q.UserString
         conversion = q.getUserPreferred()[1]
         uom = q.getUserPreferred()[2]
