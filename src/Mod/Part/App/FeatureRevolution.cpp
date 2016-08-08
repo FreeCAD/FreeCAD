@@ -67,20 +67,12 @@ short Revolution::mustExecute() const
     return 0;
 }
 
-void setReadonlyness(App::Property &prop, bool on)
-{
-    unsigned long status = prop.getStatus();
-    prop.setStatus(App::Property::ReadOnly, on);
-    if (status != prop.getStatus())
-        App::GetApplication().signalChangePropertyEditor(prop);
-}
-
 void Revolution::onChanged(const App::Property* prop)
 {
     if(! this->isRestoring()){
         if(prop == &AxisLink){
-            setReadonlyness(Base, AxisLink.getValue() != nullptr);
-            setReadonlyness(Axis, AxisLink.getValue() != nullptr);
+            Base.setReadOnly(AxisLink.getValue() != nullptr);
+            Axis.setReadOnly(AxisLink.getValue() != nullptr);
         }
     }
     Part::Feature::onChanged(prop);
