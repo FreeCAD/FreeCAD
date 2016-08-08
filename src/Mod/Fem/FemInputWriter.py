@@ -49,8 +49,7 @@ class FemInputWriter():
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
-                 analysis_type, eigenmode_parameters,
-                 dir_name
+                 analysis_type, dir_name
                  ):
         self.analysis = analysis_obj
         self.solver_obj = solver_obj
@@ -69,10 +68,6 @@ class FemInputWriter():
         self.beamsection_objects = beamsection_obj
         self.shellthickness_objects = shellthickness_obj
         self.analysis_type = analysis_type
-        if eigenmode_parameters:
-            self.no_of_eigenfrequencies = eigenmode_parameters[0]
-            self.eigenfrequeny_range_low = eigenmode_parameters[1]
-            self.eigenfrequeny_range_high = eigenmode_parameters[2]
         self.dir_name = dir_name
         if not dir_name:
             print('Error: FemInputWriter has no working_dir --> we gone make a temporary one!')

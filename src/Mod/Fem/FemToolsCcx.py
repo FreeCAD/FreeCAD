@@ -69,7 +69,6 @@ class FemToolsCcx(FemTools.FemTools):
             self.results_present = False
             if self.solver:
                 self.set_analysis_type()
-                self.set_eigenmode_parameters()
                 self.setup_working_dir()
             else:
                 raise Exception('FEM: No solver found!')
@@ -95,8 +94,7 @@ class FemToolsCcx(FemTools.FemTools):
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
                 self.beam_sections, self.shell_thicknesses,
-                self.analysis_type, self.eigenmode_parameters,
-                self.working_dir)
+                self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
