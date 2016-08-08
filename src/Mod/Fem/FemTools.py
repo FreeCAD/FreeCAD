@@ -290,6 +290,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     def check_prerequisites(self):
         message = ""
+        # analysis
         if not self.analysis:
             message += "No active Analysis\n"
         if self.analysis_type not in self.known_analysis_types:
@@ -299,6 +300,18 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import os
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
+        # solver
+        if not self.solver:
+            message += "No solver object defined in the analysis\n"
+        else:
+            if self.analysis_type == "frequency":
+                if not hasattr(self.solver, "EigenmodeHighLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
+                elif not hasattr(self.solver, "EigenmodeLowLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
+                elif not hasattr(self.solver, "EigenmodesCount"):
+                    message += "Frequency analysis: Solver has no EigenmodesCount.\n"
+        # mesh
         if not self.mesh:
             message += "No mesh object defined in the analysis\n"
         if self.mesh:
@@ -355,43 +368,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 if self.mesh.FemMesh.FaceCount == 0:
                     message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
         return message
-
-    ## Sets eigenmode parameters for CalculiX frequency analysis
-    #  @param self The python object self
-    #  @param number number of eigenmodes that wll be calculated, default read for FEM prefs or 10 if not set in the FEM prefs
-    #  @param limit_low lower value of requested eigenfrequency range, default read for FEM prefs or 0.0 if not set in the FEM prefs
-    #  @param limit_high higher value of requested eigenfrequency range, default read for FEM prefs or 1000000.o if not set in the FEM prefs
-    def set_eigenmode_parameters(self, number=None, limit_low=None, limit_high=None):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        if number is not None:
-            _number = number
-        else:
-            try:
-                _number = self.solver.EigenmodesCount
-            except:
-                #Not yet in prefs, so it will always default to 10
-                _number = self.fem_prefs.GetInteger("EigenmodesCount", 10)
-        if _number < 1:
-            _number = 1
-
-        if limit_low is not None:
-            _limit_low = limit_low
-        else:
-            try:
-                _limit_low = self.solver.EigenmodeLowLimit
-            except:
-                #Not yet in prefs, so it will always default to 0.0
-                _limit_low = self.fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
-
-        if limit_high is not None:
-            _limit_high = limit_high
-        else:
-            try:
-                _limit_high = self.solver.EigenmodeHighLimit
-            except:
-                #Not yet in prefs, so it will always default to 1000000.0
-                _limit_high = self.fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
-        self.eigenmode_parameters = (_number, _limit_low, _limit_high)
 
     ## Sets base_name
     #  @param self The python object self
