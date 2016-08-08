@@ -290,6 +290,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     def check_prerequisites(self):
         message = ""
+        # analysis
         if not self.analysis:
             message += "No active Analysis\n"
         if self.analysis_type not in self.known_analysis_types:
@@ -299,6 +300,18 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import os
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
+        # solver
+        if not self.solver:
+            message += "No solver object defined in the analysis\n"
+        else:
+            if self.analysis_type == "frequency":
+                if not hasattr(self.solver, "EigenmodeHighLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
+                elif not hasattr(self.solver, "EigenmodeLowLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
+                elif not hasattr(self.solver, "EigenmodesCount"):
+                    message += "Frequency analysis: Solver has no EigenmodesCount.\n"
+        # mesh
         if not self.mesh:
             message += "No mesh object defined in the analysis\n"
         if self.mesh:
@@ -308,6 +321,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
                 message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
+        # materials
         if not self.materials:
             message += "No material object defined in the analysis\n"
         has_no_references = False
@@ -316,17 +330,35 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 if has_no_references is True:
                     message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
+        for m in self.materials:
+            mat_map = m['Object'].Material
+            if 'YoungsModulus' not in mat_map:
+                message += "No YoungsModulus defined for at least one material.\n"
+            if 'PoissonRatio' not in mat_map:
+                message += "No PoissonRatio defined for at least one material.\n"
+            if self.analysis_type == "frequency" or self.selfweight_constraints:
+                if 'Density' not in mat_map:
+                    message += "No Density defined for at least one material.\n"
+            if self.analysis_type == "thermomech":
+                if 'ThermalConductivity' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalConductivity defined for at least one material.\n"
+                if 'ThermalExpansionCoefficient' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"
+                if 'SpecificHeat' not in mat_map:
+                    message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"
+        # constraints
         if self.analysis_type == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
-                message += "Neither a constraint fixed nor a contraint displacement defined in the static analysis\n"
+                message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
         if self.analysis_type == "static":
             if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
-                message += "Neither constraint force nor constraint pressure or a constraint selfweight defined in the static analysis\n"
+                message += "Static analysis: Neither constraint force nor constraint pressure or a constraint selfweight defined.\n"
         if self.analysis_type == "thermomech":
             if not self.initialtemperature_constraints:
-                message += "No initial temperature defined in the thermomechanical analysis\n"
+                message += "Thermomechanical analysis: No initial temperature defined.\n"
             if len(self.initialtemperature_constraints) > 1:
-                message += "Only one initial temperature is allowed in thermomechanical analysis\n"
+                message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
+        # beam sections and shell thicknesses
         if self.beam_sections:
             if self.shell_thicknesses:
                 # this needs to be checked only once either here or in shell_thicknesses
@@ -355,43 +387,6 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 if self.mesh.FemMesh.FaceCount == 0:
                     message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
         return message
-
-    ## Sets eigenmode parameters for CalculiX frequency analysis
-    #  @param self The python object self
-    #  @param number number of eigenmodes that wll be calculated, default read for FEM prefs or 10 if not set in the FEM prefs
-    #  @param limit_low lower value of requested eigenfrequency range, default read for FEM prefs or 0.0 if not set in the FEM prefs
-    #  @param limit_high higher value of requested eigenfrequency range, default read for FEM prefs or 1000000.o if not set in the FEM prefs
-    def set_eigenmode_parameters(self, number=None, limit_low=None, limit_high=None):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        if number is not None:
-            _number = number
-        else:
-            try:
-                _number = self.solver.EigenmodesCount
-            except:
-                #Not yet in prefs, so it will always default to 10
-                _number = self.fem_prefs.GetInteger("EigenmodesCount", 10)
-        if _number < 1:
-            _number = 1
-
-        if limit_low is not None:
-            _limit_low = limit_low
-        else:
-            try:
-                _limit_low = self.solver.EigenmodeLowLimit
-            except:
-                #Not yet in prefs, so it will always default to 0.0
-                _limit_low = self.fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
-
-        if limit_high is not None:
-            _limit_high = limit_high
-        else:
-            try:
-                _limit_high = self.solver.EigenmodeHighLimit
-            except:
-                #Not yet in prefs, so it will always default to 1000000.0
-                _limit_high = self.fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
-        self.eigenmode_parameters = (_number, _limit_low, _limit_high)
 
     ## Sets base_name
     #  @param self The python object self
