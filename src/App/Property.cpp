@@ -32,6 +32,7 @@
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
 #include <Base/Exception.h>
+#include "Application.h"
 
 using namespace App;
 
@@ -108,6 +109,14 @@ void Property::touch()
     if (father)
         father->onChanged(this);
     StatusBits.set(0);
+}
+
+void Property::setReadOnly(bool readOnly)
+{
+    unsigned long status = this->getStatus();
+    this->setStatus(App::Property::ReadOnly, readOnly);
+    if (status != this->getStatus())
+        App::GetApplication().signalChangePropertyEditor(*this);
 }
 
 void Property::hasSetValue(void)
