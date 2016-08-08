@@ -230,7 +230,12 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Check if the mesh intersects itself</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="fixSelfIntersections">
+        <Methode Name="getSelfIntersections" Const="true">
+            <Documentation>
+                <UserDocu>Returns a tuple of indices of intersecting triangles</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="fixSelfIntersections">
 			<Documentation>
 				<UserDocu>Repair self-intersections</UserDocu>
 			</Documentation>
