@@ -85,6 +85,9 @@ class FemTest(unittest.TestCase):
         self.solver_object.SteadyState = True
         self.solver_object.MatrixSolverType = 'default'
         self.solver_object.IterationsControlParameterTimeUse = False
+        self.solver_object.EigenmodesCount = 10
+        self.solver_object.EigenmodeHighLimit = 1000000.0
+        self.solver_object.EigenmodeLowLimit = 0.0
         self.active_doc.recompute()
 
     def create_new_mesh(self):
@@ -268,11 +271,6 @@ class FemTest(unittest.TestCase):
         fea.setup_working_dir(frequency_analysis_dir)
         self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
-
-        fcc_print('Setting eigenmode calculation parameters')
-        fea.set_eigenmode_parameters(number=10, limit_low=0.0, limit_high=1000000.0)
-        self.assertTrue(True if fea.eigenmode_parameters == (10, 0.0, 1000000.0) else False,
-                        "Setting eigenmode calculation parameters failed")
 
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
         error = fea.check_prerequisites()
@@ -569,7 +567,7 @@ def create_cube_test_results():
     # frequency
     fea.reset_all()
     fea.set_analysis_type('frequency')
-    fea.set_eigenmode_parameters(1)  # we should only have one result object
+    fea.solver.EigenmodesCount = 1  # we should only have one result object
     fea.run()
 
     fea.load_results()

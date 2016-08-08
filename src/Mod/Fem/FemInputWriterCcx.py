@@ -44,8 +44,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
-                 analysis_type=None, eigenmode_parameters=None,
-                 dir_name=None
+                 analysis_type=None, dir_name=None
                  ):
 
         FemInputWriter.FemInputWriter.__init__(
@@ -57,8 +56,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             selfweight_obj, force_obj, pressure_obj,
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, shellthickness_obj,
-            analysis_type, eigenmode_parameters,
-            dir_name)
+            analysis_type, dir_name)
         self.file_name = self.dir_name + '/' + self.mesh_object.Name + '.inp'
         print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
@@ -567,7 +565,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Frequency analysis\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('*FREQUENCY\n')
-        f.write('{},{},{}\n'.format(self.no_of_eigenfrequencies, self.eigenfrequeny_range_low, self.eigenfrequeny_range_high))
+        f.write('{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit))
 
     def write_analysis_thermomech(self, f):
         f.write('\n***********************************************************\n')
