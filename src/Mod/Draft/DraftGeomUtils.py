@@ -519,40 +519,26 @@ def pocket2d(shape,offset):
                     offsetWires.append(w)
     offsetWires = [o for o in offsetWires if o != None]
     return offsetWires
-    
 
-def geom(edge,plac=FreeCAD.Placement()):
-    "returns a Line, ArcOfCircle or Circle geom from the given edge, according to the given placement"
-    if geomType(edge) == "Line":
-            return edge.Curve
-    elif geomType(edge) == "Circle":
-        if len(edge.Vertexes) == 1:
-            return Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
-        else:
-            # reorienting the arc along the correct normal
-            normal = plac.Rotation.multVec(FreeCAD.Vector(0,0,1))
-            v1 = edge.Vertexes[0].Point
-            v2 = edge.Vertexes[-1].Point
-            c = edge.Curve.Center
-            cu = Part.Circle(edge.Curve.Center,normal,edge.Curve.Radius)
-            ref = plac.Rotation.multVec(Vector(1,0,0))
-            a1 = DraftVecUtils.angle(v1.sub(c),ref,normal.negative())
-            a2 = DraftVecUtils.angle(v2.sub(c),ref,normal.negative())
+def orientEdge(edge, normal=None):
+    """Re-orients 'edge' such that it is in the x-y plane. If 'normal' is passed, this
+    is used as the basis for the rotation, otherwise the Placement property of 'edge'
+    is used"""
+    import DraftVecUtils
+    # This 'normalizes' the placement to the xy plane
+    edge = edge.copy()
+    xyDir = FreeCAD.Vector(0, 0, 1)
+    base = FreeCAD.Vector(0,0,0)
 
-            # direction check
-            if edge.Curve.Axis.getAngle(normal) > 1:
-                a1,a2 = a2,a1
-            #print("creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)")
-            
-            p= Part.ArcOfCircle(cu,a1,a2)
-            return p
-    elif geomType(edge) == "Ellipse":
-        if len(edge.Vertexes) == 1:
-            return edge.Curve
-        else:
-            return Part.ArcOfEllipse(edge.Curve,edge.FirstParameter,edge.LastParameter)
+    if normal:
+        angle = DraftVecUtils.angle(normal, xyDir)*FreeCAD.Units.Radian
+        axis  = normal.cross(xyDir)
     else:
-        return edge.Curve
+        axis = edge.Placement.Rotation.Axis
+        angle = -1*edge.Placement.Rotation.Angle*FreeCAD.Units.Radian
+
+    edge.rotate(base, axis, angle)
+    return edge.Curve
 
 def mirror (point, edge):
     "finds mirror point relative to an edge"
