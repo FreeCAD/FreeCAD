@@ -2321,7 +2321,9 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
     creating a new one. If delete is True, the original object will be deleted'''
     import Part, DraftGeomUtils
     from Sketcher import Constraint
+    import Sketcher
     from DraftTools import translate
+    import math
 
     StartPoint = 1
     EndPoint = 2
@@ -2330,12 +2332,18 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
     
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
+    for obj in objectslist:
+        if not DraftGeomUtils.isPlanar(obj.Shape):
+            FreeCAD.Console.PrintError(translate("draft","All Shapes must be co-planar"))
+            return None
     if addTo:
         nobj = addTo
     else:
-        nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",name)
+        nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch")
         deletable = nobj
         nobj.ViewObject.Autoconstraints = False
+
+    rotation = None
     for obj in objectslist:
         ok = False
         tp = getType(obj)
@@ -2344,14 +2352,31 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
             if deletable: FreeCAD.ActiveDocument.removeObject(deletable.Name)
             return None
         elif tp in ["Circle","Ellipse"]:
-            g = (DraftGeomUtils.geom(obj.Shape.Edges[0],nobj.Placement))
-            nobj.addGeometry(g)
+            if rotation is None:
+                rotation = obj.Placement.Rotation
+            edge = obj.Shape.Edges[0]
+            if len(edge.Vertexes) == 1:
+                newEdge = DraftGeomUtils.orientEdge(edge)
+                nobj.addGeometry(newEdge)
+            else:
+                # make new ArcOfCircle
+                circle = DraftGeomUtils.orientEdge(edge)
+                angle  = edge.Placement.Rotation.Angle
+                axis   = edge.Placement.Rotation.Axis
+                circle.Center = DraftVecUtils.rotate(edge.Curve.Center, -angle, axis)
+                first  = math.radians(obj.FirstAngle)
+                last   = math.radians(obj.LastAngle)
+                arc    = Part.ArcOfCircle(circle, first, last)
+                nobj.addGeometry(arc)
+
             # TODO add Radius constraits
             ok = True
         elif tp == "Rectangle":
+            if rotation is None:
+                rotation = obj.Placement.Rotation
             if obj.FilletRadius.Value == 0:
                 for edge in obj.Shape.Edges:
-                    nobj.addGeometry(edge.Curve)
+                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
                 if autoconstraints:
                     last = nobj.GeometryCount - 1
                     segs = [last-3,last-2,last-1,last]
@@ -2372,8 +2397,24 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                     closed = True
                 elif hasattr(obj,"Closed"):
                     closed = obj.Closed
+
+                if len(obj.Shape.Vertexes) < 3:
+                    FreeCAD.Console.PrintError(translate("draft","Need at least 3 points in order to convert to Sketch"))
+                    return None
+
+                # Use the first three points to make a working plane. We've already
+                # checked to make sure everything is coplanar
+                plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
+                normal = plane.Axis
+
+                if rotation is None:
+                    axis = FreeCAD.Vector(0,0,1).cross(normal)
+                    angle = DraftVecUtils.angle(normal, FreeCAD.Vector(0,0,1)) * FreeCAD.Units.Radian
+                    rotation = FreeCAD.Rotation(axis, angle)
                 for edge in obj.Shape.Edges:
-                    nobj.addGeometry(edge.Curve)
+                    # edge.rotate(FreeCAD.Vector(0,0,0), rotAxis, rotAngle)
+                    edge = DraftGeomUtils.orientEdge(edge, normal)
+                    nobj.addGeometry(edge)
                 if autoconstraints:
                     last = nobj.GeometryCount
                     segs = list(range(last-len(obj.Shape.Edges),last-1))
@@ -2386,7 +2427,9 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                     if closed:
                         nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
                 ok = True
-        if (not ok) and obj.isDerivedFrom("Part::Feature"):
+        elif obj.isDerivedFrom("Part::Feature"):
+            if rotation is None:
+                rotation = obj.Placement.Rotation
             if not DraftGeomUtils.isPlanar(obj.Shape):
                 FreeCAD.Console.PrintError(translate("draft","The given object is not planar and cannot be converted into a sketch."))
                 return None
@@ -2394,17 +2437,18 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                 if DraftGeomUtils.geomType(e) in ["BSplineCurve","BezierCurve"]:
                     FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
                     return None
-            if not addTo:
-                nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
-            edges = []
-            for e in obj.Shape.Edges:
-                g = (DraftGeomUtils.geom(e,nobj.Placement))
-                if g:
-                    nobj.addGeometry(g)
+            # if not addTo:
+                # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
+            for edge in obj.Shape.Edges:
+                nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
             ok = True
         formatObject(nobj,obj)
         if ok and delete:
             FreeCAD.ActiveDocument.removeObject(obj.Name)
+    if not rotation is None:
+        nobj.Placement.Rotation = rotation
+    else:
+        print("-----error!!! rotation is still None...")
     FreeCAD.ActiveDocument.recompute()
     return nobj
 
