@@ -31,33 +31,62 @@ import unittest
 # define the functions to test the FreeCAD base code
 #---------------------------------------------------------------------------
 
+def tryLoadingTest(testName):
+    "Loads and returns testName, or a failing TestCase if unsuccessful."
+
+    try:
+        return unittest.defaultTestLoader.loadTestsFromName(testName)
+
+    except ImportError:
+        class LoadFailed(unittest.TestCase):
+            def __init__(self, testName):
+                # setattr() first, because TestCase ctor checks for methodName.
+                setattr(self, "failed_to_load_" + testName, self._runTest)
+                super(LoadFailed, self).__init__("failed_to_load_" + testName)
+                self.testName = testName
+
+            def __name__(self):
+                return "Loading " + self.testName
+
+            def _runTest(self):
+                self.fail("Couldn't load " + self.testName)
+
+        return LoadFailed(testName)
 
 def All():
-    suite = unittest.TestSuite()
     # Base system tests
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("UnicodeTests"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("Document"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("UnitTests"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("BaseTests"))
+    tests = [ "UnicodeTests",
+              "Document",
+              "UnitTests",
+              "BaseTests" ]
+
     # Base system gui test
     if (FreeCAD.GuiUp == 1):
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("Workbench"))
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("Menu"))
+        tests += [ "Workbench",
+                   "Menu" ]
+
     # add the module tests
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestFem"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("MeshTestsApp"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSketcherApp"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartApp"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartDesignApp"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSpreadsheet"))
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestTechDrawApp"))
+    tests += [ "TestFem",
+               "MeshTestsApp",
+               "TestSketcherApp",
+               "TestPartApp",
+               "TestPartDesignApp",
+               "TestSpreadsheet",
+               "TestTechDrawApp" ]
+
     # gui tests of modules
     if (FreeCAD.GuiUp == 1):
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSketcherGui"))
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartGui"))
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartDesignGui"))
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestDraft"))
-        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestArch"))
+        tests += [ "TestSketcherGui",
+                   "TestPartGui",
+                   "TestPartDesignGui",
+                   "TestDraft",
+                   "TestArch" ]
+
+    suite = unittest.TestSuite()
+
+    for test in tests:
+        suite.addTest(tryLoadingTest(test))
+
     return suite
 
 
@@ -77,7 +106,7 @@ def testAll():
 
 
 def testUnit():
-    TestText(unittest.TestLoader().loadTestsFromName('UnitTests'))
+    TestText(unittest.TestLoader().loadTestsFromName("UnitTests"))
 
 
 def testDocument():
