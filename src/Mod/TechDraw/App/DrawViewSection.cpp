@@ -159,7 +159,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     pnts.push_back(Base::Vector3d(bb.MinX,bb.MaxY,bb.MaxZ));
     pnts.push_back(Base::Vector3d(bb.MaxX,bb.MaxY,bb.MaxZ));
 
-    double uMax = 0, vMax = 0, wMax;
+    double uMax = 0, vMax = 0, wMax = 0;
     for(std::vector<Base::Vector3d>::const_iterator it = pnts.begin(); it != pnts.end(); ++it) {
         // Project each bounding box point onto projection plane and find larges u,v values
 

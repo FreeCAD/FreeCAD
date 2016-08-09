@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                 TopTools_IndexedMapOfShape facesOfCompound;
                 TopAbs_ShapeEnum type = TopAbs_FACE;
                 TopExp::MapShapes(compoundOfArguments, type, facesOfCompound);
-                for (int iChild = 0; iChild < history.size(); iChild++){ //loop over children of source compound
+                for (std::size_t iChild = 0; iChild < history.size(); iChild++){ //loop over children of source compound
                     //for each face of a child, find the inex of the face in compound, and assign the corresponding right-hand-size of the history
                     TopTools_IndexedMapOfShape facesOfChild;
                     TopExp::MapShapes(s[iChild], type, facesOfChild);

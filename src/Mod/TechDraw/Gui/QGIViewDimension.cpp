@@ -768,7 +768,7 @@ void QGIViewDimension::draw()
 
         Base::Vector3d pointOnCurve,curveCenter;
         double radius;
-        TechDrawGeometry::AOC* geomArc;
+        TechDrawGeometry::AOC* geomArc = 0;
         bool isArc = false;
         if(dim->References2D.getValues().size() == 1 &&
            TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {
