@@ -137,7 +137,7 @@ Nall,300.0
 1.0,1.0
 
 ***********************************************************
-** Constraints
+** Fixed Constraints
 ** written by write_constraints_fixed function
 *BOUNDARY
 FemConstraintFixed,1

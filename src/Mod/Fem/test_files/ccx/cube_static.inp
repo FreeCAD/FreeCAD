@@ -485,7 +485,7 @@ Eall
 *STATIC
 
 ***********************************************************
-** Constraints
+** Fixed Constraints
 ** written by write_constraints_fixed function
 *BOUNDARY
 FemConstraintFixed,1
@@ -494,7 +494,7 @@ FemConstraintFixed,3
 
 
 ***********************************************************
-** Node loads
+** Node loads Constraints
 ** written by write_constraints_force function
 *CLOAD
 ** FemConstraintForce
