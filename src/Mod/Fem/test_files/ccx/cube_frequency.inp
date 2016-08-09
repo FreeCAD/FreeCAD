@@ -488,19 +488,19 @@ Eall
 *STATIC
 
 ***********************************************************
-** Constraints
+** Frequency analysis
+** written by write_analysis_frequency function
+*FREQUENCY
+10,0.0,1000000.0
+
+***********************************************************
+** Fixed Constraints
 ** written by write_constraints_fixed function
 *BOUNDARY
 FemConstraintFixed,1
 FemConstraintFixed,2
 FemConstraintFixed,3
 
-
-***********************************************************
-** Frequency analysis
-** written by write_analysis_frequency function
-*FREQUENCY
-10,0.0,1000000.0
 
 ***********************************************************
 ** Outputs --> frd file
