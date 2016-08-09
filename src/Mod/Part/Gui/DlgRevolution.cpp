@@ -458,7 +458,7 @@ void DlgRevolution::on_txtAxisLink_textChanged(QString)
             }
             en = false;
         }
-    } catch (Base::Exception &err){
+    } catch (Base::Exception &){
 
     } catch (...){
 
