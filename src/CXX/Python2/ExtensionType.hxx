@@ -125,7 +125,7 @@ namespace Py
 
         ~ExtensionClassMethodsTable()
         {
-            delete m_methods_table;
+            delete[] m_methods_table;
         }
 
         // check that all methods added are unique
