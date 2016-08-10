@@ -220,7 +220,7 @@ namespace Py
 #else
                 const char *default_name = "unknown";
 #endif
-                p = new PythonType( sizeof( T ), 0, default_name );
+                p = new PythonType( sizeof( PythonClassInstance ), 0, default_name );
                 p->set_tp_new( extension_object_new );
                 p->set_tp_init( extension_object_init );
                 p->set_tp_dealloc( extension_object_deallocator );
