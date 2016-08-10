@@ -3,6 +3,8 @@
         <file>icons/fem-fem-mesh-from-shape.svg</file>
         <file>icons/fem-fem-mesh-create-node-by-poly.svg</file>
         <file>icons/fem-analysis.svg</file>
+        <file>icons/fem-cfd-analysis.svg</file>
+        <file>icons/fem-constraint-fluid-boundary.svg</file>
         <file>icons/fem-solver.svg</file>
         <file>icons/fem-constraint-displacement.svg</file>
         <file>icons/fem-constraint-selfweight.svg</file>
