@@ -1,4 +1,4 @@
-# FreeCAD Part module
+﻿# FreeCAD Part module
 # (c) 2001 Juergen Riegel
 #
 # Part design module
@@ -51,6 +51,7 @@ class TestCmd:
         QtUnitGui.addTest("TestSketcherApp")
         QtUnitGui.addTest("TestPartApp")
         QtUnitGui.addTest("TestPartDesignApp")
+        QtUnitGui.addTest("TestPartDesignGui")
         QtUnitGui.addTest("TestSpreadsheet")
         QtUnitGui.addTest("TestDraft")
         QtUnitGui.addTest("TestArch")
