@@ -65,7 +65,6 @@ QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene, QWidget* srWidget)
 
 QGISVGTemplate::~QGISVGTemplate()
 {
-    clearContents();
     delete m_svgRender;
 }
 
@@ -76,15 +75,6 @@ QVariant QGISVGTemplate::itemChange(GraphicsItemChange change,
 }
 
 
-void QGISVGTemplate::clearContents()
-{
-    for (std::vector<TemplateTextField *>::iterator it = textFields.begin();
-            it != textFields.end(); ++it) {
-        delete *it;
-    }
-    textFields.clear();
-}
-
 void QGISVGTemplate::openFile(const QFile &file)
 {
 
@@ -92,8 +82,6 @@ void QGISVGTemplate::openFile(const QFile &file)
 
 void QGISVGTemplate::load(const QString &fileName)
 {
-    clearContents();
-
     if (fileName.isEmpty()){
         return;
     }
@@ -105,13 +93,11 @@ void QGISVGTemplate::load(const QString &fileName)
     m_svgRender->load(file.fileName());
 
     QSize size = m_svgRender->defaultSize();
-    //Base::Console().Log("size of svg document <%i,%i>", size.width(), size.height());
     m_svgItem->setSharedRenderer(m_svgRender);
 
     TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
 
 
-    //std::string temp = tmplte->Template.getValue();
     std::string temp = tmplte->PageResult.getValue();                    //fixes non-drawing of restored template
     if (temp.empty())
         return;
