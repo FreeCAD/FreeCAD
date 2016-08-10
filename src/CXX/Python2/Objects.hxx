@@ -49,6 +49,8 @@
 #include <iterator>
 #include <utility>
 #include <typeinfo>
+#include <algorithm>
+
 
 namespace Py
 {
@@ -101,19 +103,20 @@ namespace Py
     //
     /*
     explicit MyType (PyObject *pyob): Object(pyob) {
-    validate();
-}
+        validate();
+    }
 
     MyType(const Object& other): Object(other.ptr()) {
-    validate();
-}
+        validate();
+    }
     */
 
     // Alernate version for the constructor to allow for construction from owned pointers:
     /*
-    explicit MyType (PyObject *pyob): Object(pyob) {
-    validate();
-}
+    explicit MyType (PyObject *pyob)
+    : Object(pyob) {
+        validate();
+    }
     */
 
     // You may wish to add other constructors; see the classes below for examples.
@@ -123,14 +126,14 @@ namespace Py
     // (4) Each class needs at least these two assignment operators:
     /*
     MyType& operator= (const Object& rhs) {
-    return (*this = *rhs);
-}
+        return (*this = *rhs);
+    }
 
     Mytype& operator= (PyObject* rhsp) {
-    if(ptr() == rhsp) return *this;
-    set(rhsp);
-    return *this;
-}
+        if(ptr() == rhsp) return *this;
+        set(rhsp);
+        return *this;
+    }
     */
     // Note on accepts: constructors call the base class
     // version of a virtual when calling the base class constructor,
@@ -174,7 +177,8 @@ namespace Py
 
     public:
         // Constructor acquires new ownership of pointer unless explicitly told not to.
-        explicit Object (PyObject* pyob=Py::_None(), bool owned = false): p (pyob)
+        explicit Object (PyObject* pyob=Py::_None(), bool owned = false)
+        : p(pyob)
         {
             if(!owned)
             {
@@ -184,7 +188,8 @@ namespace Py
         }
 
         // Copy constructor acquires new ownership of pointer
-        Object (const Object& ob): p(ob.p)
+        Object (const Object& ob)
+        : p(ob.p)
         {
             Py::_XINCREF (p);
             validate();
@@ -226,9 +231,10 @@ namespace Py
         {
             // not allowed to commit suicide, however
             if(reference_count() == 1)
-            throw RuntimeError("Object::decrement_reference_count error.");
+                throw RuntimeError("Object::decrement_reference_count error.");
             Py::_XDECREF(p);
         }
+
         // Would like to call this pointer() but messes up STL in SeqBase<T>
         PyObject* ptr () const
         {
@@ -371,13 +377,13 @@ namespace Py
         void setAttr (const std::string& s, const Object& value)
         {
             if(PyObject_SetAttrString (p, const_cast<char*>(s.c_str()), *value) == -1)
-            throw AttributeError ("getAttr failed.");
+                throw AttributeError ("setAttr failed.");
         }
 
         void delAttr (const std::string& s)
         {
             if(PyObject_DelAttrString (p, const_cast<char*>(s.c_str())) == -1)
-            throw AttributeError ("delAttr failed.");
+                throw AttributeError ("delAttr failed.");
         }
 
         // PyObject_SetItem is too weird to be using from C++
@@ -385,9 +391,9 @@ namespace Py
 
         void delItem (const Object& key)
         {
-            //if(PyObject_DelItem(p, *key) == -1)
-            // failed to link on Windows?
-            throw KeyError("delItem failed.");
+            if(PyObject_DelItem(p, *key) == -1)
+                // failed to link on Windows?
+                throw KeyError("delItem failed.");
         }
 
         // Equality and comparison use PyObject_RichCompareBool
@@ -2909,7 +2915,8 @@ namespace Py
         // Queries
         List keys () const
         {
-            return List(PyMapping_Keys(ptr()), true);
+            static char keys[] = {'k', 'e', 'y', 's', 0};
+            return List(PyObject_CallMethod( ptr(), keys, NULL ), true );
         }
 
         List values () const
@@ -3212,18 +3219,35 @@ namespace Py
         // Call
         Object apply(const Tuple& args) const
         {
-            return asObject(PyObject_CallObject(ptr(), args.ptr()));
+            PyObject *result = PyObject_CallObject( ptr(), args.ptr() );
+            if( result == NULL )
+            {
+                throw Exception();
+            }
+            return asObject( result );
         }
 
         // Call with keywords
         Object apply(const Tuple& args, const Dict& kw) const
         {
-            return asObject( PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() ) );
+            PyObject *result = PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() );
+            if( result == NULL )
+            {
+                throw Exception();
+            }
+            return asObject( result );
         }
 
         Object apply(PyObject* pargs = 0) const
         {
-            return apply (Tuple(pargs));
+            if( pargs == 0 )
+            {
+                return apply( Tuple() );
+            }
+            else
+            {
+                return apply( Tuple( pargs ) );
+            }
         }
     };
 

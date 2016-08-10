@@ -191,6 +191,7 @@ ExtensionModuleBase::ExtensionModuleBase( const char *name )
 : m_module_name( name )
 , m_full_module_name( __Py_PackageContext() != NULL ? std::string( __Py_PackageContext() ) : m_module_name )
 , m_method_table()
+, m_module( NULL )
 {}
 
 ExtensionModuleBase::~ExtensionModuleBase()
@@ -222,7 +223,7 @@ public:
 void ExtensionModuleBase::initialize( const char *module_doc )
 {
     PyObject *module_ptr = new ExtensionModuleBasePtr( this );
-    Py_InitModule4
+    m_module = Py_InitModule4
     (
     const_cast<char *>( m_module_name.c_str() ),    // name
     m_method_table.table(),                         // methods
@@ -240,6 +241,11 @@ Py::Module ExtensionModuleBase::module( void ) const
 Py::Dict ExtensionModuleBase::moduleDictionary( void ) const
 {
     return module().getDict();
+}
+
+Object ExtensionModuleBase::moduleObject( void ) const
+{
+    return Object( m_module );
 }
 
 //================================================================================
