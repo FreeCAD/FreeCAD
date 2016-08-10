@@ -29,7 +29,7 @@
                 <UserDocu>Add hypothesis</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="setStanardHypotheses">
+        <Methode Name="setStandardHypotheses">
             <Documentation>
                 <UserDocu>Set some standard hypotheses for the whole shape</UserDocu>
             </Documentation>

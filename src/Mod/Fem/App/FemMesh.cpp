@@ -332,7 +332,7 @@ void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr 
     hypoth.push_back(ptr);
 }
 
-void FemMesh::setStanardHypotheses()
+void FemMesh::setStandardHypotheses()
 {
     if (!hypoth.empty())
         return;
