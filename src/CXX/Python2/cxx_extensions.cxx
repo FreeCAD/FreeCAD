@@ -1765,6 +1765,8 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
     }
 }
 
+//NOTE: This method is used in ExtensionModule.hxx but not provided by PyCXX.
+//However, it's required because without it we get linker errors.
 extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * )
 {
     try
