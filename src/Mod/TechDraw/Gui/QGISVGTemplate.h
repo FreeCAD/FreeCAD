@@ -49,8 +49,6 @@ public:
     enum {Type = QGraphicsItem::UserType + 153};
     int type() const { return Type; }
 
-    /// Currently just frees up textFields
-    void clearContents();
     void draw();
     virtual void updateView(bool update = false);
 
@@ -66,6 +64,6 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };  // class QGISVGTemplate
 
-} // namespace MDIViewPageGui
+}
 
 #endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
