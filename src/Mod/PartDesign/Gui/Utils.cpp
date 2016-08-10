@@ -42,10 +42,15 @@
 
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <Mod/PartDesign/App/DatumCS.h>
 
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+
 
 //===========================================================================
 // Helper for Body
@@ -340,5 +345,76 @@ void relinkToBody (PartDesign::Feature *feature) {
         }
     }
 }
+
+std::vector<App::DocumentObject*> collectDependencies(std::vector<App::DocumentObject*>& features)
+{
+	std::set<App::DocumentObject*> unique_objs;
+
+	for (auto const &feat : features)
+	{
+		// Get support of the sketch
+		if (feat->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+			//not sure if support feature should be moved
+			//Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(feat);
+			//App::DocumentObject* support = sketch->Support.getValue();
+			//if (support)
+			//	temp.push_back(support);
+		}
+
+		// Get coordinate system object
+		if (feat->getTypeId().isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId())) {
+			auto prim = static_cast<PartDesign::FeaturePrimitive*>(feat);
+			App::DocumentObject* cs = prim->CoordinateSystem.getValue();
+			if (cs && cs->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId())
+				unique_objs.insert(cs);
+		}
+
+		// Get parts from profile based features
+		if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+			auto prim = static_cast<PartDesign::ProfileBased*>(feat);
+			Part::Part2DObject* sk = prim->getVerifiedSketch(true);
+			if (sk) {
+				unique_objs.insert(static_cast<App::DocumentObject*>(sk));
+			}
+			if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
+				for (App::DocumentObject* obj : prop->getValues()) {
+					unique_objs.insert(obj);
+				}
+			}
+			if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
+				App::DocumentObject* axis = prop->getValue();
+				if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+					unique_objs.insert(axis);
+				}
+			}
+			if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
+				App::DocumentObject* axis = prop->getValue();
+				if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+					unique_objs.insert(axis);
+				}
+			}
+			if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+				App::DocumentObject* axis = prop->getValue();
+				if (axis && !PartDesign::Feature::isDatum(axis)){
+					unique_objs.insert(axis);
+				}
+			}
+		}
+
+		if (feat->getTypeId().isDerivedFrom(PartDesign::Boolean::getClassTypeId())) {
+			auto boolobj = static_cast<PartDesign::Boolean*>(feat);
+			for (App::DocumentObject* obj : boolobj->Bodies.getValues()) {
+				unique_objs.insert(boolobj);
+			}
+		}
+	}
+
+	std::vector<App::DocumentObject*> result;
+	result.reserve(unique_objs.size());
+	for (std::set<App::DocumentObject*>::iterator it = unique_objs.begin(); it != unique_objs.end(); ++it)
+		result.push_back(*it);
+	return result;
+}
+
 
 } /* PartDesignGui */

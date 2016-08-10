@@ -587,6 +587,11 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;
 
+	// Collect dependenies of the selected features
+	std::vector<App::DocumentObject*> dependencies = PartDesignGui::collectDependencies(features);
+	if (!dependencies.empty())
+		features.insert(std::end(features), std::begin(dependencies), std::end(dependencies));
+
     // Create a list of all bodies in this part
     std::vector<App::DocumentObject*> bodies = getDocument()->getObjectsOfType(Part::BodyBase::getClassTypeId());
 
@@ -634,7 +639,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         // If we removed the tip of the source body, make the new tip visible
         if ( featureWasTip ) {
             App::DocumentObject * sourceNewTip = source->Tip.getValue();
-            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", sourceNewTip->getNameInDocument());
+			if (sourceNewTip)
+				doCommand(Gui,"Gui.activeDocument().show(\"%s\")", sourceNewTip->getNameInDocument());
         }
 
         // Hide old tip and show new tip (the moved feature) of the target body

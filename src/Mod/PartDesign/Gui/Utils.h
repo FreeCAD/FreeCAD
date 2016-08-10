@@ -64,6 +64,9 @@ bool isAnyNonPartDesignLinksTo ( PartDesign::Feature *feature, bool respectGroup
 /// Relink all nonPartDesign features to the body instead of the given partDesign Feature
 void relinkToBody ( PartDesign::Feature *feature );
 
+/// Collect all needed dependencies of the features during the move from one body to another
+std::vector<App::DocumentObject*> collectDependencies(std::vector<App::DocumentObject*>& features);
+
 } /* PartDesignGui */
 
 #endif /* end of include guard: UTILS_H_CS5LK2ZQ */
