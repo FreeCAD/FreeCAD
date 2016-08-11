@@ -60,7 +60,7 @@ static const char* TurbulenceSpecificationHelpTexts[] = {"see Ansys fluet manual
             "or fully devloped internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
 */
 
-//HTC value type, not sure it is supported in OpenFOAM
+// HTC value type, not sure it is supported in OpenFOAM
 static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed",  "HTC","coupled", NULL};
 /* only used in TaskPanel
 static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [W/m2]", 
@@ -69,26 +69,29 @@ static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no he
 
 ConstraintFluidBoundary::ConstraintFluidBoundary()
 {
-    // momemtum boundary: pressure and velocity
+    /// momemtum boundary: pressure and velocity
     ADD_PROPERTY_TYPE(BoundaryType,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);
     ADD_PROPERTY_TYPE(Subtype,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
-                      "Subtype defines value type or more specific type");
+                      "Subtype defines more specific boudnary types");
     Subtype.setEnums(WallSubtypes);
     ADD_PROPERTY_TYPE(BoundaryValue,(0.0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
-                      "Scaler value for the specific value subtype, like pressure, velocity");
+                      "Scaler value for the specific value subtype, like pressure, velocity magnitude");
+    /// Direction should be allowed to edit in property editor, if no edge is available in CAD model
     ADD_PROPERTY_TYPE(Direction,(0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
-                      "Element giving vector direction of constraint");
-    
+                      "Vector direction of BoundaryValue");
+    ADD_PROPERTY_TYPE(Reversed,(0),"FluidBoundary",(App::PropertyType)(App::Prop_ReadOnly|App::Prop_Output),
+                      "To distinguish inlet (flow outward from solid) or outlet boundary condition");
+    /// turbulence model setup for boundary
     ADD_PROPERTY_TYPE(TurbulenceSpecification,(1),"Turbulence",(App::PropertyType)(App::Prop_None),
-                      "Turbulence boundary type");
-    TurbulenceSpecification.setEnums(TurbulenceSpecifications); //Turbulence Specification Method
+                      "Method to specify burbulence magnitude on the boundary");
+    TurbulenceSpecification.setEnums(TurbulenceSpecifications); // Turbulence Specification Method
     ADD_PROPERTY_TYPE(TurbulentIntensityValue,(0.0),"Turbulence",(App::PropertyType)(App::Prop_None),
                       "Scaler value for Turbulent intensity etc");
     ADD_PROPERTY_TYPE(TurbulentLengthValue,(0.0),"Turbulence",(App::PropertyType)(App::Prop_None),
                       "Scaler value for Turbulent length scale, hydraulic diameter etc");
-    // consider the newly added Fem::ConstraintTemperature 
+    /// consider using the newly added Fem::ConstraintTemperature, but it is too hard to export the settings
     ADD_PROPERTY_TYPE(ThermalBoundaryType,(1),"HeatTransfer",(App::PropertyType)(App::Prop_None),
                       "Thermal boundary type");
     ThermalBoundaryType.setEnums(ThermalBoundaryTypes);
@@ -98,14 +101,13 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
                       "Heat flux value for thermal boundary condition");
     ADD_PROPERTY_TYPE(HTCoeffValue,(0.0),"HeatTransfer",(App::PropertyType)(App::Prop_None),
                       "Heat transfer coefficient for convective boundary condition");
-    // geometry rendering related properties
-    ADD_PROPERTY(Reversed,(0));
+    /// geometry rendering related properties
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Points where arrows are drawn");
+    Points.setValues(std::vector<Base::Vector3d>());
     ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of arrows");
     naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indication an invalid value
-    Points.setValues(std::vector<Base::Vector3d>());
     // property from: FemConstraintFixed object
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Normals where symbols are drawn");
@@ -123,35 +125,29 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
     
-    if (prop == &BoundaryType)
-    {
+    if (prop == &BoundaryType) {
         std::string boundaryType = BoundaryType.getValueAsString();
-        if (boundaryType == "wall")
-        {
+        if (boundaryType == "wall") {
             Subtype.setEnums(WallSubtypes);
         }
-        else if (boundaryType == "interface")
-        {
+        else if (boundaryType == "interface") {
             Subtype.setEnums(InterfaceSubtypes);
         }
-        else if (boundaryType == "freestream")
-        {
+        else if (boundaryType == "freestream") {
             Subtype.setEnums(FreestreamSubtypes);
         }
-        else if(boundaryType == "inlet")
-        {
+        else if(boundaryType == "inlet") {
             Subtype.setEnums(InletSubtypes);
         }
-        else if(boundaryType == "outlet")
-        {
+        else if(boundaryType == "outlet") {
             Subtype.setEnums(OutletSubtypes);
         }
-        else
-        {
+        else {
             Base::Console().Message(boundaryType.c_str());
             Base::Console().Message(" Error: this boundaryType is not defined\n");
         }
-        //need to trigger ViewProvider::updateData() for redraw in 3D view
+        Subtype.setValue(1); // must set a default (0 or 1) as freestream has only 2 subtypes
+        // need to trigger ViewProvider::updateData() for redraw in 3D view after this method
     }
 
     if (prop == &References) {
