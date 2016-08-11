@@ -64,6 +64,19 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
 
     ui->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     actUnit.setInvalid();
+
+    units << Base::Unit::Length << Base::Unit::Mass << Base::Unit::Angle << Base::Unit::Density
+          << Base::Unit::Area << Base::Unit::Volume << Base::Unit::TimeSpan << Base::Unit::Velocity
+          << Base::Unit::Acceleration << Base::Unit::Temperature << Base::Unit::ElectricCurrent
+          << Base::Unit::AmountOfSubstance << Base::Unit::LuminoseIntensity << Base::Unit::Stress
+          << Base::Unit::Pressure << Base::Unit::Force << Base::Unit::Work << Base::Unit::Power
+          << Base::Unit::ThermalConductivity << Base::Unit::ThermalExpansionCoefficient
+          << Base::Unit::SpecificHeat << Base::Unit::ThermalTransferCoefficient;
+    for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
+        ui->unitsBox->addItem(it->getTypeString());
+    }
+
+    ui->quantitySpinBox->setUnit(units.front());
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -134,6 +147,9 @@ void DlgUnitsCalculator::returnPressed(void)
     }
 }
 
-
+void DlgUnitsCalculator::on_unitsBox_activated(int index)
+{
+    ui->quantitySpinBox->setUnit(units[index]);
+}
 
 #include "moc_DlgUnitsCalculatorImp.cpp"
