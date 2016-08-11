@@ -442,7 +442,7 @@ void QGVPage::toggleMarkers(bool enable)
         }
         QGISVGTemplate* itemTemplate = dynamic_cast<QGISVGTemplate*> (*it);
         if (itemTemplate) {
-            std::vector<TemplateTextField *> textFields = itemTemplate->getTestFields();
+            std::vector<TemplateTextField *> textFields = itemTemplate->getTextFields();
             for (auto& t:textFields) {
                 if (enable) {
                     t->show();
