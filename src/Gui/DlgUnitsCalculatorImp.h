@@ -26,6 +26,7 @@
 
 #include <memory>
 #include <Base/Quantity.h>
+#include <Base/Unit.h>
 
 namespace Gui {
 namespace Dialog {
@@ -50,6 +51,7 @@ protected:
 protected Q_SLOTS:
     void unitValueChanged(const Base::Quantity&);
     void valueChanged(const Base::Quantity&);
+    void on_unitsBox_activated(int);
 
     void copy(void);
     void help(void);
@@ -61,6 +63,7 @@ private:
     Base::Quantity actValue;
     Base::Quantity actUnit;
     std::auto_ptr<Ui_DlgUnitCalculator> ui;
+    QList<Base::Unit> units;
 };
 
 } // namespace Dialog
