@@ -107,7 +107,7 @@ class FemToolsCcx(FemTools.FemTools):
     def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
         from platform import system
         if not ccx_binary:
-            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Ccx")
+            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
             ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
         if not ccx_binary:
             if system() == "Linux":
