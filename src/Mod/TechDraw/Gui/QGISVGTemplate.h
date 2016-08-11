@@ -55,9 +55,11 @@ public:
 protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);
+    void createClickHandles(void);
     QWidget* qgview;                                  //for parenting dlgTemplateField
 
 protected:
+    bool firstTime;
     TechDraw::DrawSVGTemplate * getSVGTemplate();
     QGraphicsSvgItem *m_svgItem;
     QSvgRenderer *m_svgRender;
