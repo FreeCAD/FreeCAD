@@ -240,11 +240,10 @@ void QGIViewDimension::updateDim()
         return;
 
     const TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
-    QString labelText = QString::fromStdString(dim->getFormatedValue());
-
+    QString labelText = QString::fromUtf8(dim->getFormatedValue().data(),dim->getFormatedValue().size());
     QFont font = datumLabel->font();
     font.setPointSizeF(dim->Fontsize.getValue());            //scene units (mm), not points
-    font.setFamily(QString::fromAscii(dim->Font.getValue()));
+    font.setFamily(QString::fromUtf8(dim->Font.getValue()));
 
     datumLabel->setPlainText(labelText);
     datumLabel->setFont(font);
@@ -411,7 +410,10 @@ void QGIViewDimension::draw()
 
         // Get magnitude of angle between dir and horizontal
         float angle = atan2f(dir.y,dir.x);
-        if (angle > M_PI_2+M_PI/12) {
+        //Vertical text should be legible from the right
+        if (std::abs(angle + M_PI/2.0) < FLT_EPSILON) {
+            //noop
+        } else if (angle > M_PI_2+M_PI/12) {     //keeps some diagonal dims from turning upside down?
             angle -= (float)M_PI;
         } else if (angle <= -M_PI_2+M_PI/12) {
             angle += (float)M_PI;
