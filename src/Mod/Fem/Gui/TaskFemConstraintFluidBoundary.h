@@ -75,11 +75,12 @@ public:
 private Q_SLOTS:
     void onBoundaryTypeChanged(void);
     void onSubtypeChanged(void);
+    void onBoundaryValueChanged(double);
     void onTurbulenceSpecificationChanged(void);
     void onThermalBoundaryTypeChanged(void);
     void onReferenceDeleted(void);
     void onButtonDirection(const bool pressed = true);
-    void onCheckReverse(bool);
+    void onCheckReverse(bool); // consider remove this slot as the UI is hiden
 
 protected:
     virtual void changeEvent(QEvent *e);
