@@ -536,8 +536,8 @@ CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create fluid condition condition");
-    sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity");
+    sMenuText       = QT_TR_NOOP("Create fluid boundary condition");
+    sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
     sWhatsThis      = "Fem_ConstraintFluidBoundary";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-fluid-boundary";
@@ -550,12 +550,12 @@ void CmdFemConstraintFluidBoundary::activated(int iMsg)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("ConstraintFluidBoundary");
+    std::string FeatName = getUniqueObjectName("FluidBoundary");
 
-    openCommand("Create fluid boundary condition on face geometry");
+    openCommand("Create fluid boundary condition");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
-    //BoundaryValue  is already the default value
+    //BoundaryValue is already the default value, zero is acceptable
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
                              Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
 
