@@ -198,7 +198,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
 std::string  DrawViewDimension::getFormatedValue() const
 {
-    QString str = QString::fromUtf8(FormatSpec.getStrValue().c_str());
+    QString str = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = std::abs(getDimValue());
 
     Base::Quantity qVal;
@@ -210,7 +210,7 @@ std::string  DrawViewDimension::getFormatedValue() const
     }
     QString userStr = qVal.getUserString();
 
-    QRegExp rx(QString::fromAscii("%(\\w+)%"));                        //any word bracketed by %
+    QRegExp rx(QString::fromUtf8("%(\\w+)%"));                        //any word bracketed by %
     QStringList list;
     int pos = 0;
 
@@ -220,12 +220,12 @@ std::string  DrawViewDimension::getFormatedValue() const
     }
 
     for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it) {
-        if(*it == QString::fromAscii("%value%")){
+        if(*it == QString::fromUtf8("%value%")){
             str.replace(*it,userStr);
 //        } else {                                                       //insert additional placeholder replacement logic here
         }
     }
-    return str.toStdString();
+    return str.toUtf8().constData();
 }
 
 double DrawViewDimension::getDimValue() const
