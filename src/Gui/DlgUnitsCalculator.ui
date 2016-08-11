@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DlgUnitCalculator</class>
- <widget class="QWidget" name="DlgUnitCalculator">
+ <class>Gui::Dialog::DlgUnitCalculator</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgUnitCalculator">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>375</width>
-    <height>139</height>
+    <width>425</width>
+    <height>148</height>
    </rect>
   </property>
   <property name="windowTitle">

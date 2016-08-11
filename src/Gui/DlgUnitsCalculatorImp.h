@@ -24,21 +24,23 @@
 #ifndef GUI_DIALOG_DlgActivateWindowImp_H
 #define GUI_DIALOG_DlgActivateWindowImp_H
 
-#include "ui_DlgUnitsCalculator.h"
+#include <memory>
+#include <Base/Quantity.h>
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgUnitCalculator;
 
 /**
  * The DlgUnitsCalculator provides a unit conversion dialog
  * \author Juergen Riegel 
  */
-class DlgUnitsCalculator : public QDialog, public Ui_DlgUnitCalculator
+class DlgUnitsCalculator : public QDialog
 {
     Q_OBJECT
 
 public:
-    DlgUnitsCalculator( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+    DlgUnitsCalculator(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgUnitsCalculator();
 
 protected:
@@ -58,8 +60,7 @@ protected Q_SLOTS:
 private:
     Base::Quantity actValue;
     Base::Quantity actUnit;
-
- 
+    std::auto_ptr<Ui_DlgUnitCalculator> ui;
 };
 
 } // namespace Dialog
