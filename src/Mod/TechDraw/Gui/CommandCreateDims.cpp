@@ -237,7 +237,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
 
     std::string contentStr;
     if (dimType == "Radius") {
-        contentStr = "r%value%";
+        contentStr = "R%value%";
     }
     doCommand(Doc,"App.activeDocument().%s.FormatSpec = '%s'",FeatName.c_str()
                                                           ,contentStr.c_str());
@@ -332,7 +332,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.CentreLines = False", FeatName.c_str());
     }
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = 'r%%value%%'", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.FormatSpec = 'R%%value%%'", FeatName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References2D.setValues(objs, subs);
@@ -425,7 +425,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.CentreLines = False", FeatName.c_str());
     }
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\u00d8%%value%%'", FeatName.c_str());   // \u00d8 is Capital O with stroke
+    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\u2300%%value%%'", FeatName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References2D.setValues(objs, subs);

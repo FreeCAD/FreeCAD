@@ -60,10 +60,10 @@ void DlgTemplateField::setFieldContent(std::string content)
     leInput->setText(qs);
 }
 
-std::string DlgTemplateField::getFieldContent()
+QString DlgTemplateField::getFieldContent()
 {
     QString result = leInput->text();
-    return result.toStdString();
+    return result;
 }
 
 void DlgTemplateField::accept()

@@ -240,11 +240,10 @@ void QGIViewDimension::updateDim()
         return;
 
     const TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
-    QString labelText = QString::fromStdString(dim->getFormatedValue());
-
+    QString labelText = QString::fromUtf8(dim->getFormatedValue().data(),dim->getFormatedValue().size());
     QFont font = datumLabel->font();
     font.setPointSizeF(dim->Fontsize.getValue());            //scene units (mm), not points
-    font.setFamily(QString::fromAscii(dim->Font.getValue()));
+    font.setFamily(QString::fromUtf8(dim->Font.getValue()));
 
     datumLabel->setPlainText(labelText);
     datumLabel->setFont(font);
@@ -411,7 +410,10 @@ void QGIViewDimension::draw()
 
         // Get magnitude of angle between dir and horizontal
         float angle = atan2f(dir.y,dir.x);
-        if (angle > M_PI_2+M_PI/12) {
+        //Vertical text should be legible from the right
+        if (std::abs(angle + M_PI/2.0) < FLT_EPSILON) {
+            //noop
+        } else if (angle > M_PI_2+M_PI/12) {     //keeps some diagonal dims from turning upside down?
             angle -= (float)M_PI;
         } else if (angle <= -M_PI_2+M_PI/12) {
             angle += (float)M_PI;
@@ -596,11 +598,11 @@ void QGIViewDimension::draw()
             double tolerance = 15.0; //deg
 
             tolerance *= M_PI / 180;
-            if( (angle > -tolerance && angle < tolerance) ||           //angle = 0 or 180  (+/- 15)
-                (angle > (M_PI - tolerance) || angle < (-M_PI + tolerance)) ) {
+            if( (angle > -tolerance && angle < tolerance) ||                                       //angle = 0 or 180  (+/- 15)
+                (angle > (M_PI - tolerance) || angle < (-M_PI + tolerance)) ) {                    //dim line is Horizontal
                   posMode = HorizontalSnap;
             } else if( (angle < ( M_PI / 2. + tolerance) && angle > ( M_PI / 2. - tolerance)) ||   //angle = 90 or 270 (+/- 15)
-                       (angle < (-M_PI / 2. + tolerance) && angle > (-M_PI / 2. - tolerance)) ) {
+                       (angle < (-M_PI / 2. + tolerance) && angle > (-M_PI / 2. - tolerance)) ) {  //dim line is Vertical
                 posMode = VerticalSnap;
             }
 
@@ -670,7 +672,7 @@ void QGIViewDimension::draw()
                 path.moveTo(dLine2Tail.x, dLine2Tail.y);
                 path.lineTo(arrow2Tip.x, arrow2Tip.y);
 
-                datumLabel->setRotation(90.);
+                datumLabel->setRotation(-90.);
 
             } else {                                                   //outer placement, NoSnap
                 float tip = (margin + w / 2);                          // spacer + 0.5*lblText.width()  tip is actually tail?
