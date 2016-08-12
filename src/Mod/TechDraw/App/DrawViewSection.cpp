@@ -133,9 +133,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     Base::BoundBox3d bb = partTopo.getBoundBox();
 
     Base::Vector3d tmp1 = SectionOrigin.getValue();
-    Base::Vector3d tmp2 = SectionNormal.getValue();
-
     Base::Vector3d plnPnt(tmp1.x, tmp1.y, tmp1.z);
+    Base::Vector3d tmp2 = SectionNormal.getValue();
     Base::Vector3d plnNorm(tmp2.x, tmp2.y, tmp2.z);
 
 //    if(!bb.IsCutPlane(plnPnt, plnNorm)) {      //this test doesn't work if plane is coincident with bb!
@@ -144,12 +143,10 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         Base::Console().Warning("DVS: Using center of bounding box.\n");
         plnPnt = bb.GetCenter();
         SectionOrigin.setValue(plnPnt);
-        //return new App::DocumentObjectExecReturn("Section Plane doesn't intersect part");
     }
 
-    // Gather the points
+    // Gather the corner points of bbox
     std::vector<Base::Vector3d> pnts;
-
     pnts.push_back(Base::Vector3d(bb.MinX,bb.MinY,bb.MinZ));
     pnts.push_back(Base::Vector3d(bb.MaxX,bb.MinY,bb.MinZ));
     pnts.push_back(Base::Vector3d(bb.MinX,bb.MaxY,bb.MinZ));
@@ -159,27 +156,29 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     pnts.push_back(Base::Vector3d(bb.MinX,bb.MaxY,bb.MaxZ));
     pnts.push_back(Base::Vector3d(bb.MaxX,bb.MaxY,bb.MaxZ));
 
-    double uMax = 0, vMax = 0, wMax = 0;
+    double uMax = 0, vMax = 0, wMax = 0., dMax = 0;
     for(std::vector<Base::Vector3d>::const_iterator it = pnts.begin(); it != pnts.end(); ++it) {
-        // Project each bounding box point onto projection plane and find larges u,v values
-
+        // Project each bounding box point onto projection plane and find largest u,v,w values
         Base::Vector3d pnt = (*it);
         pnt.ProjectToPlane(plnPnt, plnNorm);
+        uMax = std::max(uMax, std::abs(plnPnt.x - pnt.x));       //one will be zero
+        vMax = std::max(vMax, std::abs(plnPnt.y - pnt.y));
+        wMax = std::max(wMax, std::abs(plnPnt.z - pnt.z));
 
-        uMax = std::max(uMax, std::abs(plnPnt[0] - pnt[0]));
-        vMax = std::max(vMax, std::abs(plnPnt[1] - pnt[1]));
-
-        //wMax is the bounding box point furthest away used for determining extrusion length
+        //dMax is the bounding box point furthest away from plane. used for determining extrusion length
         double dist = (*it).DistanceToPlane(plnPnt, plnNorm);
-        wMax = std::max(wMax, dist);
+        dMax = std::max(dMax, dist);
     }
 
-    // Build face directly onto plane
+    //use largest of u,v,w to make cutting face that covers whole shape
+    double maxParm = std::max(uMax,vMax);
+    maxParm = std::max(maxParm,wMax);
     BRepBuilderAPI_MakePolygon mkPoly;
-    gp_Pnt pn1(origin + xAxis *  uMax  + yAxis *  vMax);
-    gp_Pnt pn2(origin + xAxis *  uMax  + yAxis * -vMax);
-    gp_Pnt pn3(origin + xAxis * -uMax  + yAxis  * -vMax);
-    gp_Pnt pn4(origin + xAxis * -uMax  + yAxis  * +vMax);
+    gp_Pnt pn1(origin + xAxis *  maxParm  + yAxis *  maxParm);
+    gp_Pnt pn2(origin + xAxis *  maxParm  + yAxis * -maxParm);
+    gp_Pnt pn3(origin + xAxis * -maxParm  + yAxis  * -maxParm);
+    gp_Pnt pn4(origin + xAxis * -maxParm  + yAxis  * +maxParm);
+
     mkPoly.Add(pn1);
     mkPoly.Add(pn2);
     mkPoly.Add(pn3);
@@ -191,9 +190,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     TopoDS_Face aProjFace = mkFace.Face();
     if(aProjFace.IsNull())
         return new App::DocumentObjectExecReturn("DrawViewSection - Projected face is NULL");
-    // Create an infinite projection (investigate if infite extrusion necessary)
-//     BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0,1); // finite prism
-    TopoDS_Shape prism = BRepPrimAPI_MakePrism(aProjFace, wMax * gp_Vec(pln.Axis().Direction()), 0, 1).Shape();
+    TopoDS_Shape prism = BRepPrimAPI_MakePrism(aProjFace, dMax * gp_Vec(pln.Axis().Direction()), false, true).Shape();
 
     // We need to copy the shape to not modify the BRepstructure
     BRepBuilderAPI_Copy BuilderCopy(partTopo.getShape());
@@ -214,7 +211,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
                                                     Scale.getValue());
-        buildGeometryObject(mirroredShape,inputCenter);                         //this is original shape cut by section prism
+        buildGeometryObject(mirroredShape,inputCenter);                         //this is original shape after cut by section prism
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
