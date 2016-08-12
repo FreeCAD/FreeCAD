@@ -425,7 +425,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.CentreLines = False", FeatName.c_str());
     }
 
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\u2300%%value%%'", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\xe2\x8c\x80%%value%%'", FeatName.c_str()); // utf-8 encoded diameter symbol
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     dim->References2D.setValues(objs, subs);
