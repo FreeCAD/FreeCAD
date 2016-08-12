@@ -525,6 +525,52 @@ bool CmdFemConstraintForce::isActive(void)
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
+
+
+//=====================================================================================
+
+DEF_STD_CMD_A(CmdFemConstraintFluidBoundary);
+
+CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
+  : Command("Fem_ConstraintFluidBoundary")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create fluid boundary condition");
+    sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
+    sWhatsThis      = "Fem_ConstraintFluidBoundary";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-fluid-boundary";
+}
+
+void CmdFemConstraintFluidBoundary::activated(int iMsg)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FluidBoundary");
+
+    openCommand("Create fluid boundary condition");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
+    //BoundaryValue is already the default value, zero is acceptable
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
+                             Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts    
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintFluidBoundary::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
 //=====================================================================================
 
 DEF_STD_CMD_A(CmdFemConstraintPressure);
@@ -1363,7 +1409,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintInitialTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintPlaneRotation());
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
-
+    rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
