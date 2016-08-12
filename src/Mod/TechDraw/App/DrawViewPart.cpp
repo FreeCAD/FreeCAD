@@ -132,6 +132,12 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 
     geometryObject->setTolerance(Tolerance.getValue());
+    double s = Scale.getValue();
+    if (!s) {                                           //might be problem, might be mid property change
+        Base::Console().Log("INFO - DVP::execute - Scale: %.3f\n",s);
+        return DrawView::execute();
+    }
+
     geometryObject->setScale(Scale.getValue());
     try {
         gp_Pnt inputCenter = TechDrawGeometry::findCentroid(shape,
@@ -683,7 +689,7 @@ bool DrawViewPart::hasGeometry(void) const
 Base::Vector3d DrawViewPart::getValidXDir() const
 {
     Base::Vector3d X(1.0,0.0,0.0);
-    Base::Vector3d Y(1.0,0.0,0.0);
+    Base::Vector3d Y(0.0,1.0,0.0);
     Base::Vector3d xDir = XAxisDirection.getValue();
     if (xDir.Length() < Precision::Confusion()) {
         Base::Console().Warning("XAxisDirection has zero length - using (1,0,0)\n");
