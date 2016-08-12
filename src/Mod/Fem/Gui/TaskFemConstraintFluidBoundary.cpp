@@ -267,7 +267,7 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
     else if (boundaryType == "freestream") {
         ui->tabBasicBoundary->setEnabled(false);
         ui->labelBoundaryValue->setText(QString::fromUtf8("value not needed"));
-        ui->tabBasicBoundary->setVisible(false);
+        ui->tabBasicBoundary->setEnabled(false);
         pcConstraint->Subtype.setEnums(FreestreamSubtypes);
     }
     else if (boundaryType == "inlet") {
@@ -310,22 +310,27 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
         if (subtype == "totalPressure" || subtype == "staticPressure"){
             ui->labelBoundaryValue->setText(QString::fromUtf8("pressure [Pa]"));
             ui->buttonDirection->setEnabled(false);
+            ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "uniformVelocity") {
             ui->labelBoundaryValue->setText(QString::fromUtf8("velocity [m/s]"));
             ui->buttonDirection->setEnabled(true);
+            ui->lineDirection->setEnabled(true);
         }
         else if (subtype == "massFlowrate") {
             ui->labelBoundaryValue->setText(QString::fromUtf8("flowrate [kg/s]"));
             ui->buttonDirection->setEnabled(false);
+            ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "volumetricFlowRate") {
             ui->labelBoundaryValue->setText(QString::fromUtf8("flowrate [m3/s]"));
             ui->buttonDirection->setEnabled(false);
+            ui->lineDirection->setEnabled(false);
         }
         else {
             ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
             ui->buttonDirection->setEnabled(false);
+            ui->lineDirection->setEnabled(false);
         }
     }
     if (boundaryType == "wall") {
@@ -333,11 +338,13 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
             ui->labelBoundaryValue->setText(QString::fromUtf8("moving speed (m/s)"));
             ui->tabBasicBoundary->setEnabled(true);
             ui->buttonDirection->setEnabled(false); // moving speed must be parallel to wall
+            ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "slip") {
             ui->labelBoundaryValue->setText(QString::fromUtf8("slip speed (m/s)"));
             ui->tabBasicBoundary->setEnabled(true);
             ui->buttonDirection->setEnabled(false);
+            ui->lineDirection->setEnabled(false);
         }
         else {
             ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
@@ -452,7 +459,7 @@ void TaskFemConstraintFluidBoundary::onSelectionChanged(const Gui::SelectionChan
                 }
             }
             else {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
+                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
             pcConstraint->Direction.setValue(obj, references);
