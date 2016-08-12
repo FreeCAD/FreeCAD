@@ -284,7 +284,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", false);
+            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
             // create a temporary file and copy the content to the zip stream
             // once the tmp. filename is known use always the same because otherwise
@@ -348,7 +348,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", false);
+            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
             BRep_Builder builder;
             // create a temporary file and copy the content from the zip stream
