@@ -24,6 +24,7 @@
 #ifndef GUI_DIALOG_DlgActivateWindowImp_H
 #define GUI_DIALOG_DlgActivateWindowImp_H
 
+#include <QDialog>
 #include <memory>
 #include <Base/Quantity.h>
 #include <Base/Unit.h>
