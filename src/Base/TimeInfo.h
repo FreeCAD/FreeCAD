@@ -28,10 +28,10 @@
 
 
 #include <stdio.h>
-#if defined(FC_OS_WIN32)
-#include <sys/timeb.h>
-#else
+#if defined(FC_OS_BSD)
 #include <sys/time.h>
+#else
+#include <sys/timeb.h>
 #endif
 #include <time.h>
 
@@ -39,11 +39,11 @@
 # include <stdint.h>
 #endif
 
-#if !defined(FC_OS_WIN32)
+#if defined(FC_OS_BSD)
 struct timeb
 {
-	int64_t time;
-	unsigned short millitm;
+    int64_t time;
+    unsigned short millitm;
 };
 #endif
 
