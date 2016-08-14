@@ -85,7 +85,7 @@ public:
     void setSeekValueAsPercentage(const SbBool on);
     SbBool isSeekValuePercentage(void) const;
 
-    virtual float getPickRadius(void) const {return this->pickRadius;};
+    virtual float getPickRadius(void) const {return this->pickRadius;}
     virtual void setPickRadius(float pickRadius);
 
     virtual void saveHomePosition(void);
@@ -93,12 +93,12 @@ public:
 
     virtual void setSceneGraph(SoNode* root) {
         QuarterWidget::setSceneGraph(root);
-    };
+    }
     
     virtual bool processSoEvent(const SoEvent* event);
           
     //this functions still need to be ported
-    virtual void afterRealizeHook(void) {}; //enables spacenav and joystick in soqt, dunno if this is needed
+    virtual void afterRealizeHook(void) {} //enables spacenav and joystick in soqt, dunno if this is needed
 
 private:
     void init();
