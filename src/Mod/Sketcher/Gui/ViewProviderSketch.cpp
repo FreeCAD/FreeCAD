@@ -2569,7 +2569,7 @@ void ViewProviderSketch::drawConstraintIcons()
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
 
-            Gui::MDIView *mdi = this->getEditingView();
+            Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
             if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
                 return;
             Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -2939,7 +2939,8 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
 
 float ViewProviderSketch::getScaleFactor()
 {
-    Gui::MDIView *mdi = this->getEditingView();
+    assert(edit);
+    Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
