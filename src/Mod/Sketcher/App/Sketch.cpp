@@ -110,9 +110,8 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                         const std::vector<Constraint *> &ConstraintList,
                         int extGeoCount)
 {
-    
     Base::TimeInfo start_time;
-        
+
     clear();
 
     std::vector<Part::Geometry *> intGeoList, extGeoList;
@@ -129,7 +128,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         Geoms[i].external = true;
 
     // The Geoms list might be empty after an undo/redo
-    if (!Geoms.empty()) {                 
+    if (!Geoms.empty()) {
         addConstraints(ConstraintList);
     }
     GCSsys.clearByTag(-1);
@@ -137,13 +136,24 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
-        
-    if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
+
+    if (debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
         Base::TimeInfo end_time;
-                
+
         Base::Console().Log("Sketcher::setUpSketch()-T:%s\n",Base::TimeInfo::diffTime(start_time,end_time).c_str());
     }
-        
+
+    return GCSsys.dofsNumber();
+}
+
+int Sketch::resetSolver()
+{
+    GCSsys.clearByTag(-1);
+    GCSsys.declareUnknowns(Parameters);
+    GCSsys.initSolution(defaultSolverRedundant);
+    GCSsys.getConflicting(Conflicting);
+    GCSsys.getRedundant(Redundant);
+
     return GCSsys.dofsNumber();
 }
 
@@ -567,9 +577,10 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
 {
     std::vector<Part::Geometry *> temp;
     temp.reserve(Geoms.size());
-    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it)
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
         if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstructionElements))
             temp.push_back(it->geo->clone());
+    }
 
     return temp;
 }
@@ -2090,18 +2101,17 @@ bool Sketch::updateNonDrivingConstraints()
 
 int Sketch::solve(void)
 {
-
     Base::TimeInfo start_time;
     if (!isInitMove) { // make sure we are in single subsystem mode
         GCSsys.clearByTag(-1);
         isFine = true;
     }
-    
+
     int ret = -1;
     bool valid_solution;
     std::string solvername;
     int defaultsoltype = -1;
-    
+
     if(isInitMove){
         solvername = "DogLeg"; // DogLeg is used for dragging (same as before)
         ret = GCSsys.solve(isFine, GCS::DogLeg);        
@@ -2123,9 +2133,9 @@ int Sketch::solve(void)
                 ret = GCSsys.solve(isFine, GCS::DogLeg);
                 defaultsoltype=0;
                 break;
-        }    
+        }
     }
-    
+
     // if successfully solved try to write the parameters back
     if (ret == GCS::Success) {
         GCSsys.applySolution();
@@ -2134,11 +2144,12 @@ int Sketch::solve(void)
             GCSsys.undoSolution();
             updateGeometry();
             Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
-        }else
-        {
+        }
+        else {
             updateNonDrivingConstraints();
         }
-    } else {
+    }
+    else {
         valid_solution = false;
         if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
             
@@ -2148,11 +2159,11 @@ int Sketch::solve(void)
 
     if(!valid_solution && !isInitMove) { // Fall back to other solvers
         for (int soltype=0; soltype < 4; soltype++) {
-            
+
             if(soltype==defaultsoltype){
                     continue; // skip default solver
             }
-                
+
             switch (soltype) {
             case 0:
                 solvername = "DogLeg";
@@ -2197,7 +2208,7 @@ int Sketch::solve(void)
                 if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
                     
                     Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",solvername.c_str());
-                }                
+                }
             }
 
             if (soltype == 3) // cleanup temporary constraints of the augmented system
@@ -2222,12 +2233,12 @@ int Sketch::solve(void)
     }
 
     Base::TimeInfo end_time;
-    
+
     if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
         
         Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",solvername.c_str(),Base::TimeInfo::diffTime(start_time,end_time).c_str());
     }
-    
+
     SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);
     return ret;
 }
@@ -2316,7 +2327,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i, 0.01);
         }
     } else if (Geoms[geoId].type == Ellipse) {
-        
+
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
@@ -2328,7 +2339,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
         }
     } else if (Geoms[geoId].type == ArcOfEllipse) {
-        
+
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
@@ -2339,7 +2350,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == start || pos == end) {
-            
+
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
                 GCS::Point &p = (pos == start) ? Points[Geoms[geoId].startPointId]
@@ -2349,7 +2360,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,-1);
-            } 
+            }
+
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
@@ -2493,8 +2505,6 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
     return Base::Vector3d();
 }
 
-
-
 TopoShape Sketch::toShape(void) const
 {
     TopoShape result;
@@ -2563,6 +2573,7 @@ TopoShape Sketch::toShape(void) const
         aFix.FixClosed();
         wires.push_back(aFix.Wire());
     }
+
     if (wires.size() == 1)
         result = *wires.begin();
     else if (wires.size() > 1) {
