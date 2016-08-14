@@ -208,6 +208,13 @@ Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
     return mdi;
 }
 
+Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
+    return pGuiDoc->getViewOfNode(node);
+}
+
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
 {
     // first get the document this object is part of and get its GUI counterpart
