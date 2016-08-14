@@ -2942,7 +2942,9 @@ float ViewProviderSketch::getScaleFactor()
     Gui::MDIView *mdi = this->getEditingView();
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-        return viewer->getSoRenderManager()->getCamera()->getViewVolume(viewer->getSoRenderManager()->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
+        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+        float scale = camera->getViewVolume(camera->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
+        return scale;
     }
     else {
         return 1.f;
