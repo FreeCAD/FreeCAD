@@ -31,6 +31,7 @@
 
 class SoMaterial;
 class SoDrawStyle;
+class SoNode;
 class SoType;
 
 namespace App
@@ -116,6 +117,9 @@ protected:
       If a value different to 0 is returned it is guaranteed to be a 3d view.
      */
     Gui::MDIView* getInventorView() const;
+    /*! Get the mdi view of the document that contains the given \a node.
+     */
+    Gui::MDIView* getViewOfNode(SoNode* node) const;
     /// get called before the value is changed
     virtual void onBeforeChange(const App::Property* prop);
     /// Gets called by the container whenever a property has been changed
