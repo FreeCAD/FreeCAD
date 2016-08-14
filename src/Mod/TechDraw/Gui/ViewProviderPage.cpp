@@ -190,7 +190,7 @@ bool ViewProviderPage::showMDIViewPage()
         Gui::Document* doc = Gui::Application::Instance->getDocument
             (pcObject->getDocument());
         view = new MDIViewPage(this, doc, Gui::getMainWindow());
-        view->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromAscii("[*]"));
+        view->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromLatin1("[*]"));
         view->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
         view->updateDrawing(true);
      //   view->updateTemplate(true);   //TODO: I don't think this is necessary?  Ends up triggering a reload of SVG template, but the MDIViewPage constructor does too.
