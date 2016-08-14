@@ -51,6 +51,8 @@ public:
 
     /// solve the actual set up sketch
     int solve(void);
+    /// resets the solver
+    int resetSolver();
     /// get standard (aka fine) solver precision
     double getSolverPrecision(){ return GCSsys.getFinePrecision(); }
     /// delete all geometry and constraints, leave an empty sketch
