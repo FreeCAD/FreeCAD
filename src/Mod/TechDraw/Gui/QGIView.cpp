@@ -113,17 +113,17 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             QGraphicsItem*item = alignHash.begin().value();
             QString alignMode   = alignHash.begin().key();
 
-            if(alignMode == QString::fromAscii("Vertical")) {
+            if(alignMode == QString::fromLatin1("Vertical")) {
                 newPos.setX(item->pos().x());
-            } else if(alignMode == QString::fromAscii("Horizontal")) {
+            } else if(alignMode == QString::fromLatin1("Horizontal")) {
                 newPos.setY(item->pos().y());
-            } else if(alignMode == QString::fromAscii("45slash")) {
+            } else if(alignMode == QString::fromLatin1("45slash")) {
                 double dist = ( (newPos.x() - item->pos().x()) +
                                 (item->pos().y() - newPos.y()) ) / 2.0;
 
                 newPos.setX( item->pos().x() + dist);
                 newPos.setY( item->pos().y() - dist );
-            } else if(alignMode == QString::fromAscii("45backslash")) {
+            } else if(alignMode == QString::fromLatin1("45backslash")) {
                 double dist = ( (newPos.x() - item->pos().x()) +
                                 (newPos.y() - item->pos().y()) ) / 2.0;
 

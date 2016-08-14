@@ -218,7 +218,7 @@ void QGIViewDimension::updateView(bool update)
        dim->Font.isTouched()) {
         QFont font = datumLabel->font();
         font.setPointSizeF(dim->Fontsize.getValue());          //scene units (mm), not points
-        font.setFamily(QString::fromAscii(dim->Font.getValue()));
+        font.setFamily(QString::fromLatin1(dim->Font.getValue()));
 
         datumLabel->setFont(font);
         datumLabel->setLabelCenter();
