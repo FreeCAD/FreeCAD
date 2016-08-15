@@ -407,7 +407,7 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
                 } else if (strcmp(viewTypeCStr, "Bottom") == 0) {
                     viewPtrs[thirdAngle ? 8 : 1] = oView;
                 } else if (strcmp(viewTypeCStr, "Rear") == 0) {
-                    viewPtrs[thirdAngle ? 6 : 6] = oView;
+                    viewPtrs[6] = oView;
                 } else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
                     viewPtrs[thirdAngle ? 0 : 9] = oView;
                 } else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
