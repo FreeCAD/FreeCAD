@@ -320,7 +320,6 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
 {
     if(face.IsNull()) {
         throw Base::Exception("DrawViewSection::projectFace - input Face is NULL");
-        return TopoDS_Face();
     }
 
     gp_Ax2 transform;
