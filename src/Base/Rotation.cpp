@@ -225,7 +225,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
         else {
             // We can use any axis perpendicular to u (and v)
             Vector3d t = u % Vector3d(1.0, 0.0, 0.0);
-            if(t.Length() < FLT_EPSILON) 
+            if(t.Length() < Base::Vector3d::epsilon())
                 t = u % Vector3d(0.0, 1.0, 0.0);
             this->setValue(t.x, t.y, t.z, 0.0);
         }
@@ -361,11 +361,11 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
         neg = true;
     }
 
-    if ((1.0 - dot) > FLT_EPSILON) {
+    if ((1.0 - dot) > Base::Vector3d::epsilon()) {
         double angle = (double)acos(dot);
         double sinangle = (double)sin(angle);
         // If possible calculate spherical interpolation, otherwise use linear interpolation
-        if (sinangle > FLT_EPSILON) {
+        if (sinangle > Base::Vector3d::epsilon()) {
             scale0 = double(sin((1.0 - t) * angle)) / sinangle;
             scale1 = double(sin(t * angle)) / sinangle;
         }

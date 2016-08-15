@@ -261,6 +261,22 @@ PyObject* VectorPy::richCompare(PyObject *v, PyObject *w, int op)
     }
 }
 
+PyObject*  VectorPy::isEqual(PyObject *args)
+{
+    PyObject *obj;
+    double tolerance=0;
+    if (!PyArg_ParseTuple(args, "O!d", &(VectorPy::Type), &obj, &tolerance))
+        return 0;
+
+    VectorPy* vec = static_cast<VectorPy*>(obj);
+
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType vect_ptr = reinterpret_cast<VectorPy::PointerType>(vec->_pcTwinPointer);
+
+    Py::Boolean eq((*this_ptr).IsEqual(*vect_ptr, tolerance));
+    return Py::new_reference_to(eq);
+}
+
 PyObject*  VectorPy::scale(PyObject *args)
 {
     double factorX, factorY, factorZ;
