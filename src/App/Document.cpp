@@ -1388,7 +1388,8 @@ bool Document::save (void)
                     fn = str.str();
                 }
 
-                fi.renameFile(fn.c_str());
+                if (fi.renameFile(fn.c_str()) == false)
+                    Base::Console().Warning("Cannot rename project file to backup file\n");
             }
             else {
                 fi.deleteFile();
