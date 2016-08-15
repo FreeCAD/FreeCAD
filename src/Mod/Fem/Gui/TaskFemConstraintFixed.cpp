@@ -113,7 +113,7 @@ void TaskFemConstraintFixed::updateUI()
 
 void TaskFemConstraintFixed::addToSelection()
 {
-	std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
     if (selection.size()==0){
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;

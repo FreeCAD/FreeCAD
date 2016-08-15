@@ -62,7 +62,7 @@ App::DocumentObjectExecReturn *ConstraintHeatflux::execute(void)
 
 const char* ConstraintHeatflux::getViewProviderName(void) const
 {
-	return "FemGui::ViewProviderFemConstraintHeatflux";
+    return "FemGui::ViewProviderFemConstraintHeatflux";
 }
 
 void ConstraintHeatflux::onChanged(const App::Property* prop)

@@ -110,7 +110,7 @@ FemMesh::~FemMesh()
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     if (this != &mesh) {
-	myMesh = getGenerator()->CreateMesh(0,true);
+    myMesh = getGenerator()->CreateMesh(0,true);
         copyMeshData(mesh);
     }
     return *this;
@@ -892,7 +892,7 @@ void FemMesh::read(const char *FileName)
     }
     else if (File.hasExtension("dat") ) {
         // read brep-file
-	// vejmarie disable
+    // vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
     else if (File.hasExtension("bdf") ) {

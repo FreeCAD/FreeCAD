@@ -61,7 +61,7 @@ App::DocumentObjectExecReturn *ConstraintContact::execute(void)
 
 const char* ConstraintContact::getViewProviderName(void) const
 {
-	return "FemGui::ViewProviderFemConstraintContact";
+    return "FemGui::ViewProviderFemConstraintContact";
 }
 
 void ConstraintContact::onChanged(const App::Property* prop)

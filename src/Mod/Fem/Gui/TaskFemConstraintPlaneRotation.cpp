@@ -126,22 +126,22 @@ void TaskFemConstraintPlaneRotation::addToSelection()
     int rows = ui->lw_references->model()->rowCount();
     if (rows==1){
         QMessageBox::warning(this, tr("Selection error"), tr("Only one face can be selected for a plane rotation constraint!"));
-	Gui::Selection().clearSelection();
+        Gui::Selection().clearSelection();
         return;
     }
     else {
 
-	std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-	if (selection.size()==0){
-		QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
-		return;
-	}
-	Fem::ConstraintPlaneRotation* pcConstraint = static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
-	std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-	std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
+        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+        if (selection.size()==0){
+            QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+            return;
+        }
+        Fem::ConstraintPlaneRotation* pcConstraint = static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+        std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
+        std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-	for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
-	    if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
+        for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
+            if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
                QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
                return;
              }
@@ -149,49 +149,48 @@ void TaskFemConstraintPlaneRotation::addToSelection()
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
 
-	if (subNames.size()==1){
-		for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
-			bool addMe=true;
-			if ((subNames[subIt].substr(0,4) != "Face")) {
-				QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
-				return;
-			}
-			Part::Feature* feat = static_cast<Part::Feature*>(obj);
-			TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNames[subIt].c_str());
-			if ((subNames[subIt].substr(0,4) == "Face")) {
-				if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-					QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
-					return;
-				}
-			}
-			for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
-				itr!= SubElements.end();
-				itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
-			{// for every sub element in selection that matches one in old list
-				if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
-					addMe=false;
-				}
-			}
-				if (addMe){
-					disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-						this, SLOT(setSelection(QListWidgetItem*)));
-					Objects.push_back(obj);
-					SubElements.push_back(subNames[subIt]);
-					ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
-					connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-						this, SLOT(setSelection(QListWidgetItem*)));
-				}
-		}
-	}
-	else {
-		QMessageBox::warning(this, tr("Selection error"), tr("Only one face can be selected for a plane rotation constraint!"));
-		Gui::Selection().clearSelection();
-		return;
-	}
-	//Update UI
-	pcConstraint->References.setValues(Objects,SubElements);
-	updateUI();
-	}
+        if (subNames.size()==1){
+            for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
+                bool addMe=true;
+                if ((subNames[subIt].substr(0,4) != "Face")) {
+                    QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                    return;
+                }
+                Part::Feature* feat = static_cast<Part::Feature*>(obj);
+                TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNames[subIt].c_str());
+                if ((subNames[subIt].substr(0,4) == "Face")) {
+                    if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
+                        QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
+                        return;
+                    }
+                }
+                for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
+                    itr!= SubElements.end();
+                    itr =  std::find(++itr,SubElements.end(),subNames[subIt])){// for every sub element in selection that matches one in old list
+                    if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
+                        addMe=false;
+                    }
+                }
+                if (addMe){
+                        disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                            this, SLOT(setSelection(QListWidgetItem*)));
+                        Objects.push_back(obj);
+                        SubElements.push_back(subNames[subIt]);
+                        ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                        connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                            this, SLOT(setSelection(QListWidgetItem*)));
+                }
+            }
+        }
+        else {
+            QMessageBox::warning(this, tr("Selection error"), tr("Only one face can be selected for a plane rotation constraint!"));
+            Gui::Selection().clearSelection();
+            return;
+        }
+        //Update UI
+        pcConstraint->References.setValues(Objects,SubElements);
+        updateUI();
+        }
     }
 }
 

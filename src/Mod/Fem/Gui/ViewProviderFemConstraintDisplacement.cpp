@@ -109,7 +109,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     bool rotzFree = pcConstraint->rotzFree.getValue();
 
 #ifdef USE_MULTIPLE_COPY
-	//OvG: always need access to cp for scaling
+    //OvG: always need access to cp for scaling
     SoMultipleCopy* cpx = new SoMultipleCopy();
     SoMultipleCopy* cpy = new SoMultipleCopy();
     SoMultipleCopy* cpz = new SoMultipleCopy();
