@@ -62,7 +62,7 @@ class FemWorkbench (Workbench):
 
         import subprocess
         from platform import system
-        ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")
+        ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").GetString("ccxBinaryPath")
         if not ccx_path:
             try:
                 if system() == 'Linux':
@@ -72,7 +72,7 @@ class FemWorkbench (Workbench):
                 elif system() == 'Windows':
                     ccx_path = FreeCAD.getHomePath() + 'bin/ccx.exe'
                 if ccx_path:
-                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("ccxBinaryPath", ccx_path)
+                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
                 else:
                     FreeCAD.Console.PrintError("CalculiX ccx binary not found! Please set it manually in FEM preferences.\n")
             except Exception as e:
