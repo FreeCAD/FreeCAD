@@ -220,7 +220,6 @@ PyObject* FemMeshPy::addNode(PyObject *args)
         "-- addNode(x,y,z)\n"
         "-- addNode(x,y,z,ElemId)\n");
     return 0;
-
 }
 
 PyObject* FemMeshPy::addEdge(PyObject *args)
@@ -313,11 +312,8 @@ PyObject* FemMeshPy::addFace(PyObject *args)
             default:
                 throw std::runtime_error("Unknown node count, [3|4|6|8] are allowed"); //unknown face type
         }
-
         return Py::new_reference_to(Py::Int(face->GetID()));
-
     }
-
     PyErr_SetString(PyExc_TypeError, "addFace accepts:\n"
         "-- int,int,int\n"
         "-- [3|4|6|8 int],[int]\n");
@@ -432,7 +428,6 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
                     if (!vol)
                         throw std::runtime_error("Failed to add Hexa20 volume with given ElementId");
                     break;
-
                 default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|15|20] are allowed"); //unknown volume type
             }
         }else{
@@ -477,21 +472,15 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
                     if (!vol)
                         throw std::runtime_error("Failed to add Hexa20 volume");
                     break;
-
                 default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|15|20] are allowed"); //unknown volume type
             }
-
         }
-
         return Py::new_reference_to(Py::Int(vol->GetID()));
-
     }
-
     PyErr_SetString(PyExc_TypeError, "addVolume accepts:\n"
         "-- int,int,int,int\n"
         "-- [4|5|6|8|10|13|15|20 int],[int]\n");
     return 0;
-
 }
 
 PyObject* FemMeshPy::copy(PyObject *args)
