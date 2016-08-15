@@ -105,13 +105,13 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
     ui->lw_referencesMaster->clear();
     ui->lw_referencesSlave->clear();
     if (Objects.size() > 0){
-	for (std::size_t i = 1; i < Objects.size(); i++) {
+        for (std::size_t i = 1; i < Objects.size(); i++) {
            ui->lw_referencesMaster->addItem(makeRefText(Objects[i], SubElements[i]));
-	}
+        }
 
-	for (std::size_t i = 0; i < (Objects.size()-1); i++) {
+        for (std::size_t i = 0; i < (Objects.size()-1); i++) {
           ui->lw_referencesSlave->addItem(makeRefText(Objects[i], SubElements[i]));
-	}
+        }
 }
 
     //Selection buttons
@@ -149,7 +149,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();//gets vector of selected objects of active document
     if (rows==1){
         QMessageBox::warning(this, tr("Selection error"), tr("Only one master face and one slave face for a contact constraint!"));
-	Gui::Selection().clearSelection();
+        Gui::Selection().clearSelection();
         return;
     }
 
@@ -160,7 +160,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
 
     if ((rows==0) && (selection.size()>=2)){
         QMessageBox::warning(this, tr("Selection error"), tr("Only one slave face for a contact constraint!"));
-	Gui::Selection().clearSelection();
+        Gui::Selection().clearSelection();
         return;
     }
 
@@ -176,17 +176,17 @@ void TaskFemConstraintContact::addToSelectionSlave()
 
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-	if (subNames.size()!=1){
-	    QMessageBox::warning(this, tr("Selection error"), tr("Only one slave face for a contact constraint!"));
-	    Gui::Selection().clearSelection();
-	    return;
-	}
+        if (subNames.size()!=1){
+            QMessageBox::warning(this, tr("Selection error"), tr("Only one slave face for a contact constraint!"));
+            Gui::Selection().clearSelection();
+            return;
+        }
         for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
             bool addMe=true;
-	    if (subNames[subIt].substr(0,4) != "Face") {
-		QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
-		return;
-	    }
+            if (subNames[subIt].substr(0,4) != "Face") {
+                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                return;
+            }
             for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
                    itr!= SubElements.end();
                    itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
@@ -268,7 +268,7 @@ void TaskFemConstraintContact::addToSelectionMaster()
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();//gets vector of selected objects of active document
     if (rows==1){
         QMessageBox::warning(this, tr("Selection error"), tr("Only one master face and one slave face for a contact constraint!"));
-	Gui::Selection().clearSelection();
+        Gui::Selection().clearSelection();
         return;
     }
 
@@ -279,7 +279,7 @@ void TaskFemConstraintContact::addToSelectionMaster()
 
     if ((rows==0) && (selection.size()>=2)){
         QMessageBox::warning(this, tr("Selection error"), tr("Only one master for a contact constraint!"));
-	Gui::Selection().clearSelection();
+        Gui::Selection().clearSelection();
         return;
     }
 
@@ -295,17 +295,17 @@ void TaskFemConstraintContact::addToSelectionMaster()
 
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-	if (subNames.size()!=1){
-	    QMessageBox::warning(this, tr("Selection error"), tr("Only one master face for a contact constraint!"));
-	    Gui::Selection().clearSelection();
-	    return;
-	}
+        if (subNames.size()!=1){
+            QMessageBox::warning(this, tr("Selection error"), tr("Only one master face for a contact constraint!"));
+            Gui::Selection().clearSelection();
+            return;
+        }
         for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
             bool addMe=true;
-	    if (subNames[subIt].substr(0,4) != "Face") {
-		QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
-		return;
-	    }
+            if (subNames[subIt].substr(0,4) != "Face") {
+                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                return;
+            }
             for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
                    itr!= SubElements.end();
                    itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
