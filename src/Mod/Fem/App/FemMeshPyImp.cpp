@@ -397,40 +397,40 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
                 case 4:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Tet4 volume");
+                        throw std::runtime_error("Failed to add Tet4 volume with given ElementId");
                     break;
                 case 5:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Pyra5 volume");
+                        throw std::runtime_error("Failed to add Pyra5 volume with given ElementId");
                     break;
                 case 6:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Penta6 volume");
+                        throw std::runtime_error("Failed to add Penta6 volume with given ElementId");
                     break;
                 case 8:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Hexa8 volume");
+                        throw std::runtime_error("Failed to add Hexa8 volume with given ElementId");
                     break;
                 case 10:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Tet10 volume");
+                        throw std::runtime_error("Failed to add Tet10 volume with given ElementId");
                     break;
                 case 13:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Pyra13 volume");
+                        throw std::runtime_error("Failed to add Pyra13 volume with given ElementId");
                 case 15:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],Nodes[13],Nodes[14],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Penta15 volume");
+                        throw std::runtime_error("Failed to add Penta15 volume with given ElementId");
                 case 20:
                     vol = meshDS->AddVolumeWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9],Nodes[10],Nodes[11],Nodes[12],Nodes[13],Nodes[14],Nodes[15],Nodes[16],Nodes[17],Nodes[18],Nodes[19],ElementId);
                     if (!vol)
-                        throw std::runtime_error("Failed to add Hexa20 volume");
+                        throw std::runtime_error("Failed to add Hexa20 volume with given ElementId");
                     break;
 
                 default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|15|20] are allowed"); //unknown volume type
