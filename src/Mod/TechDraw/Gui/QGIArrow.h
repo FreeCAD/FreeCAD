@@ -23,7 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
 #define DRAWINGGUI_QGRAPHICSITEMARROW_H
 
-# include <QGraphicsItem>
+# include "QGIPrimPath.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -33,10 +33,10 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIArrow : public QGraphicsPathItem
+class TechDrawGuiExport QGIArrow : public QGIPrimPath
 {
 public:
-    explicit QGIArrow(QGraphicsScene *scene = 0 );
+    explicit QGIArrow();
     ~QGIArrow() {}
 
     enum {Type = QGraphicsItem::UserType + 109};
@@ -44,20 +44,23 @@ public:
 
 public:
     void draw();
-    void setHighlighted(bool state);
+    //void setHighlighted(bool state);
     void flip(bool state);
-    QPainterPath shape() const;
+    double getSize() { return m_size; }
+    void setSize(double s);
+    int getStyle() { return m_style; }
+    void setStyle(int s);
+    //QPainterPath shape() const;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
 protected:
-    // Preselection events:
-//     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-//     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    // Selection detection
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
-    QPen m_pen;
+    QBrush m_brush;
+    Qt::BrushStyle m_fill;
+    double m_size;
+    int m_style;
     bool isFlipped;
 };
 

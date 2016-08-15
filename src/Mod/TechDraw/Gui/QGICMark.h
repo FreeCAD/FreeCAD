@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,62 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIPRIMPATH_H
-#define DRAWINGGUI_QGIPRIMPATH_H
+#ifndef DRAWINGGUI_QGRAPHICSITEMCMARK_H
+#define DRAWINGGUI_QGRAPHICSITEMCMARK_H
 
-#include <QGraphicsItem>
-
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
-
-#include <Base/Parameter.h>
+# include "QGIVertex.h"
 
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIPrimPath : public QGraphicsPathItem
+class TechDrawGuiExport QGICMark : public QGIVertex
 {
 public:
-    explicit QGIPrimPath();
-    ~QGIPrimPath() {}
+    explicit QGICMark(int index);
+    ~QGICMark() {}
 
-    enum {Type = QGraphicsItem::UserType + 170};
-
+    enum {Type = QGraphicsItem::UserType + 171};
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual QPainterPath shape() const { return path(); };
 
-    void setHighlighted(bool state);
+    int getProjIndex() const { return projIndex; }
+
+    void draw(void);
+    float getSize() { return m_size; }
+    void setSize(float s);
+    float getThick() { return m_width; }
+    void setThick(float t);
     virtual void setPrettyNormal();
-    virtual void setPrettyPre();
-    virtual void setPrettySel();
-    virtual void setWidth(double w);
-    virtual double getWidth() { return m_width;}
-    Qt::PenStyle getStyle() { return m_styleCurrent; }
-    void setStyle(Qt::PenStyle s);
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-    QColor getNormalColor(void);
-    QColor getPreColor(void);
-    QColor getSelectColor(void);
-    Base::Reference<ParameterGrp> getParmGroup(void);
-
-    bool isHighlighted;
-    QPen m_pen;
-    QColor m_colCurrent;
-    Qt::PenStyle m_styleCurrent;
-    double m_width;
+    int projIndex;
+    QColor getCMarkColor();
 
 private:
-
+    float m_size;
 };
 
-} // namespace MDIViewPageGui
+}
 
-#endif // DRAWINGGUI_QGIPRIMPATH_H
+#endif // DRAWINGGUI_QGRAPHICSITEMCMARK_H

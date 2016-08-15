@@ -56,6 +56,7 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderSymbol";
     }
+    virtual QRectF getRect() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);

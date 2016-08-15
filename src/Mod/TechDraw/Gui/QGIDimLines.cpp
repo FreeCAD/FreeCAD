@@ -20,62 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIPRIMPATH_H
-#define DRAWINGGUI_QGIPRIMPATH_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <assert.h>
+#include <QGraphicsScene>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QGraphicsSceneHoverEvent>
+#include <QStyleOptionGraphicsItem>
+#include <QPainterPathStroker>
+#include <QPainter>
+#endif
 
-#include <QGraphicsItem>
+#include "QGIView.h"
+#include "QGIDimLines.h"
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
+using namespace TechDrawGui;
 
-#include <Base/Parameter.h>
-
-namespace TechDrawGui
+QGIDimLines::QGIDimLines()
 {
+    setCacheMode(QGraphicsItem::NoCache);
+    setAcceptHoverEvents(false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
 
-class TechDrawGuiExport QGIPrimPath : public QGraphicsPathItem
+    m_width = 0.5;
+}
+
+void QGIDimLines::draw()
 {
-public:
-    explicit QGIPrimPath();
-    ~QGIPrimPath() {}
+}
 
-    enum {Type = QGraphicsItem::UserType + 170};
+//probably don't need this paint
+void QGIDimLines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
 
-    int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual QPainterPath shape() const { return path(); };
-
-    void setHighlighted(bool state);
-    virtual void setPrettyNormal();
-    virtual void setPrettyPre();
-    virtual void setPrettySel();
-    virtual void setWidth(double w);
-    virtual double getWidth() { return m_width;}
-    Qt::PenStyle getStyle() { return m_styleCurrent; }
-    void setStyle(Qt::PenStyle s);
-
-protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-    QColor getNormalColor(void);
-    QColor getPreColor(void);
-    QColor getSelectColor(void);
-    Base::Reference<ParameterGrp> getParmGroup(void);
-
-    bool isHighlighted;
-    QPen m_pen;
-    QColor m_colCurrent;
-    Qt::PenStyle m_styleCurrent;
-    double m_width;
-
-private:
-
-};
-
-} // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGIPRIMPATH_H
+    QGIPrimPath::paint (painter, &myOption, widget);
+}

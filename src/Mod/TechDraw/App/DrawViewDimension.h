@@ -54,9 +54,9 @@ public:
     /// Properties for Visualisation
     App::PropertyString  Font;
     App::PropertyFloat   Fontsize;
-    App::PropertyBool    CentreLines;
     App::PropertyString  FormatSpec;
     App::PropertyFloat   LineWidth;
+    //App::PropertyBool    CentreLines;
 
     //TODO: do we need a property for the actual dimension value? how else to access from Py?
     //wf: expose getValue & getFormatedValue
@@ -81,6 +81,7 @@ public:
     virtual std::string getFormatedValue() const;
     virtual double getDimValue() const;
     DrawViewPart* getViewPart() const;
+    virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
 
 protected:
     void onChanged(const App::Property* prop);

@@ -61,6 +61,7 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderViewCollection";
     }
+    virtual QRectF getRect(void) const;
 
 protected:
     void onChanged(const App::Property* prop);
