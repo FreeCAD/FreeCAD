@@ -60,6 +60,7 @@ INSTALL(
         TaskPanelMechanicalMaterial.ui
 
         # solver CalculiX ccx
+        importInpMesh.py
         ccxDatReader.py
         ccxFrdReader.py
         FemInputWriterCcx.py
