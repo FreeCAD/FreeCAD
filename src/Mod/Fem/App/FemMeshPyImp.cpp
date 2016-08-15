@@ -224,13 +224,14 @@ PyObject* FemMeshPy::addNode(PyObject *args)
 
 PyObject* FemMeshPy::addEdge(PyObject *args)
 {
+    SMESH_Mesh* mesh = getFemMeshPtr()->getSMesh();
+    SMESHDS_Mesh* meshDS = mesh->GetMeshDS();
+
     int n1,n2;
     if (!PyArg_ParseTuple(args, "ii",&n1,&n2))
         return 0;
 
     try {
-        SMESH_Mesh* mesh = getFemMeshPtr()->getSMesh();
-        SMESHDS_Mesh* meshDS = mesh->GetMeshDS();
         const SMDS_MeshNode* node1 = meshDS->FindNode(n1);
         const SMDS_MeshNode* node2 = meshDS->FindNode(n2);
         if (!node1 || !node2)
@@ -244,6 +245,60 @@ PyObject* FemMeshPy::addEdge(PyObject *args)
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return 0;
     }
+    PyErr_Clear();
+
+    PyObject *obj;
+    int ElementId=-1;
+    if (PyArg_ParseTuple(args, "O!|i", &PyList_Type, &obj, &ElementId))
+    {
+        Py::List list(obj);
+        std::vector<const SMDS_MeshNode*> Nodes;
+        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Int NoNr(*it);
+            const SMDS_MeshNode* node = meshDS->FindNode(NoNr);
+            if (!node)
+                throw std::runtime_error("Failed to get node of the given indices");
+            Nodes.push_back(node);
+        }
+
+        SMDS_MeshEdge* edge=0;
+        if(ElementId != -1) {
+            switch(Nodes.size()){
+                case 2:
+                    edge = meshDS->AddEdgeWithID(Nodes[0],Nodes[1],ElementId);
+                    if (!edge)
+                        throw std::runtime_error("Failed to add edge with given ElementId");
+                    break;
+                case 3:
+                    edge = meshDS->AddEdgeWithID(Nodes[0],Nodes[1],Nodes[2],ElementId);
+                    if (!edge)
+                        throw std::runtime_error("Failed to add edge with given ElementId");
+                    break;
+                default:
+                    throw std::runtime_error("Unknown node count, [2|3] are allowed"); //unknown edge type
+            }
+        }else{
+            switch(Nodes.size()){
+                case 2:
+                    edge = meshDS->AddEdge(Nodes[0],Nodes[1]);
+                    if (!edge)
+                        throw std::runtime_error("Failed to add edge");
+                    break;
+                case 3:
+                    edge = meshDS->AddEdge(Nodes[0],Nodes[1],Nodes[2]);
+                    if (!edge)
+                        throw std::runtime_error("Failed to add edge");
+                    break;
+                default:
+                    throw std::runtime_error("Unknown node count, [2|3] are allowed"); //unknown edge type
+            }
+        }
+        return Py::new_reference_to(Py::Int(edge->GetID()));
+    }
+    PyErr_SetString(PyExc_TypeError, "addEdge accepts:\n"
+        "-- int,int\n"
+        "-- [2|3],[int]\n");
+    return 0;
 }
 
 PyObject* FemMeshPy::addFace(PyObject *args)
