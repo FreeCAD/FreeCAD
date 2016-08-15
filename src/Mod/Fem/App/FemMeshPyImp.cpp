@@ -288,29 +288,56 @@ PyObject* FemMeshPy::addFace(PyObject *args)
         }
 
         SMDS_MeshFace* face=0;
-        switch(Nodes.size()){
-            case 3:
-                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2]);
-                if (!face)
-                    throw std::runtime_error("Failed to add triangular face");
-                break;
-            case 4:
-                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3]);
-                if (!face)
-                    throw std::runtime_error("Failed to add face");
-                break;
-            case 6:
-                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5]);
-                if (!face)
-                    throw std::runtime_error("Failed to add face");
-                break;
-            case 8:
-                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7]);
-                if (!face)
-                    throw std::runtime_error("Failed to add face");
-                break;
-            default:
-                throw std::runtime_error("Unknown node count, [3|4|6|8] are allowed"); //unknown face type
+        if(ElementId != -1) {
+            switch(Nodes.size()){
+                case 3:
+                    face = meshDS->AddFaceWithID(Nodes[0],Nodes[1],Nodes[2],ElementId);
+                    if (!face)
+                        throw std::runtime_error("Failed to add triangular face with given ElementId");
+                    break;
+                case 4:
+                    face = meshDS->AddFaceWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],ElementId);
+                    if (!face)
+                        throw std::runtime_error("Failed to add face with given ElementId");
+                    break;
+                case 6:
+                    face = meshDS->AddFaceWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],ElementId);
+                    if (!face)
+                        throw std::runtime_error("Failed to add face with given ElementId");
+                    break;
+                case 8:
+                    face = meshDS->AddFaceWithID(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],ElementId);
+                    if (!face)
+                        throw std::runtime_error("Failed to add face with given ElementId");
+                    break;
+                default:
+                    throw std::runtime_error("Unknown node count, [3|4|6|8] are allowed"); //unknown face type
+            }
+        }else{
+            switch(Nodes.size()){
+                case 3:
+                    face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2]);
+                    if (!face)
+                        throw std::runtime_error("Failed to add triangular face");
+                    break;
+                case 4:
+                    face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3]);
+                    if (!face)
+                        throw std::runtime_error("Failed to add face");
+                    break;
+                case 6:
+                    face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5]);
+                    if (!face)
+                        throw std::runtime_error("Failed to add face");
+                    break;
+                case 8:
+                    face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7]);
+                    if (!face)
+                        throw std::runtime_error("Failed to add face");
+                    break;
+                default:
+                    throw std::runtime_error("Unknown node count, [4|5|6|8] are allowed"); //unknown face type
+            }
         }
         return Py::new_reference_to(Py::Int(face->GetID()));
     }
