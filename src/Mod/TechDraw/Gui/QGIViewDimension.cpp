@@ -209,9 +209,9 @@ void QGIViewDimension::hover(bool state)
 
 void QGIViewDimension::updateView(bool update)
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()))
+    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
+    if( dim == nullptr )
         return;
-    TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject());
 
     // Identify what changed to prevent complete redraw
     if(dim->Fontsize.isTouched() ||

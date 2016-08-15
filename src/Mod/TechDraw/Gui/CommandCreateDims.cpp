@@ -1012,10 +1012,16 @@ bool _isValidVertexes(Gui::Command* cmd) {
 //! verify that the Selection contains valid geometries for an Edge to Edge Dimension
 int _isValidEdgeToEdge(Gui::Command* cmd) {
 //TODO: can the edges be in 2 different features??
-    int edgeType = isInvalid;
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* objFeat0 = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    //TechDraw::DrawViewPart* objFeat1 = dynamic_cast<TechDraw::DrawViewPart *>(selection[1].getObject());
+
+    auto objFeat0( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    // getObject() can return null pointer, or dynamic_cast can fail
+    if ( !objFeat0 ) {
+        Base::Console().Error("Logic error in _isValidEdgeToEdge()\n");
+        return isInvalid;
+    }
+
+    int edgeType = isInvalid;
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&                      //they both start with "Edge"

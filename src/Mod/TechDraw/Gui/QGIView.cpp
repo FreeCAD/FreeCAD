@@ -213,15 +213,19 @@ void QGIView::setPosition(qreal x, qreal y)
 
 double QGIView::getYInClip(double y)
 {
-    QGCustomClip* parentClip = dynamic_cast<QGCustomClip*>(parentItem());
+    auto parentClip( dynamic_cast<QGCustomClip*>( parentItem() ) );
     if (parentClip) {
-        QGIViewClip* parentView = dynamic_cast<QGIViewClip*>(parentClip->parentItem());
-        TechDraw::DrawViewClip* parentFeat = dynamic_cast<TechDraw::DrawViewClip*>(parentView->getViewObject());
-        double newY = parentFeat->Height.getValue() - y;
-        return newY;
-    } else {
-        Base::Console().Log("Logic Error - getYInClip called for child (%s) not in Clip\n",getViewName());
+        auto parentView( dynamic_cast<QGIViewClip*>( parentClip->parentItem() ) );
+        if (parentView) {
+            auto parentFeat( dynamic_cast<TechDraw::DrawViewClip*>(parentView->getViewObject()) );
+            if (parentFeat) {
+                return parentFeat->Height.getValue() - y;
+            }
+        }
     }
+
+    Base::Console().Log( "Logic Error - getYInClip called for child "
+                         "(%s) not in Clip\n", getViewName() );
     return 0;
 }
 

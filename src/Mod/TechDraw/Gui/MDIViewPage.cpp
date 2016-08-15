@@ -264,50 +264,48 @@ void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 }
 
 
-int MDIViewPage::attachView(App::DocumentObject *obj)
+bool MDIViewPage::attachView(App::DocumentObject *obj)
 {
     auto typeId(obj->getTypeId());
 
     QGIView *qview(nullptr);
 
     if (typeId.isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId()) ) {
-        qview = m_view->addViewSection( dynamic_cast<TechDraw::DrawViewSection *>(obj) );
+        qview = m_view->addViewSection( static_cast<TechDraw::DrawViewSection *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
-        qview = m_view->addViewPart( dynamic_cast<TechDraw::DrawViewPart *>(obj) );
+        qview = m_view->addViewPart( static_cast<TechDraw::DrawViewPart *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()) ) {
-        qview = m_view->addProjectionGroup( dynamic_cast<TechDraw::DrawProjGroup *>(obj) );
+        qview = m_view->addProjectionGroup( static_cast<TechDraw::DrawProjGroup *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId()) ) {
-        qview =  m_view->addDrawView( dynamic_cast<TechDraw::DrawViewCollection *>(obj) );
+        qview = m_view->addDrawView( static_cast<TechDraw::DrawViewCollection *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ) {
-        qview = m_view->addViewDimension( dynamic_cast<TechDraw::DrawViewDimension *>(obj) );
+        qview = m_view->addViewDimension( static_cast<TechDraw::DrawViewDimension *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()) ) {
-        qview = m_view->addDrawViewAnnotation( dynamic_cast<TechDraw::DrawViewAnnotation *>(obj) );
+        qview = m_view->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(obj) );
+        qview = m_view->addDrawViewSymbol( static_cast<TechDraw::DrawViewSymbol *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()) ) {
-        qview = m_view->addDrawViewClip( dynamic_cast<TechDraw::DrawViewClip *>(obj) );
+        qview = m_view->addDrawViewClip( static_cast<TechDraw::DrawViewClip *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewSpreadsheet::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSpreadsheet( dynamic_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
+        qview = m_view->addDrawViewSpreadsheet( static_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
+        return true;
 
     } else {
         Base::Console().Log("Logic Error - Unknown view type in MDIViewPage::attachView\n");
     }
 
-    if(!qview)
-        return -1;
-    else
-        return m_view->getViews().size();
+    return (qview != nullptr);
 }
 
 

@@ -464,8 +464,7 @@ void QGVPage::toggleHatch(bool enable)
             int faceItemType = QGraphicsItem::UserType + 104;
             for (auto& c:partChildren) {
                 if (c->type() == faceItemType) {
-                    QGIFace* f = dynamic_cast<QGIFace*>(c);
-                    f->toggleSvg(enable);
+                    static_cast<QGIFace*>(c)->toggleSvg(enable);
                 }
             }
         }

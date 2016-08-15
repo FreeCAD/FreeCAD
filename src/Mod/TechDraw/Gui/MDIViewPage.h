@@ -92,7 +92,10 @@ protected:
     void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
     bool hasQView(App::DocumentObject *obj);
     bool orphanExists(const char *viewName, const std::vector<App::DocumentObject*> &list);
-    int attachView(App::DocumentObject *obj);
+
+    /// Attaches view of obj to m_view.  Returns true on success, false otherwise
+    bool attachView(App::DocumentObject *obj);
+
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
     QPrinter::PaperSize getPaperSize(int w, int h) const;
