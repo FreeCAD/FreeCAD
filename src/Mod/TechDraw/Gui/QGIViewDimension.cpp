@@ -54,6 +54,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
+#include "ZVALUE.h"
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIViewDimension.h"
@@ -223,7 +224,7 @@ void QGIViewDimension::updateView(bool update)
         font.setFamily(QString::fromLatin1(dim->Font.getValue()));
 
         datumLabel->setFont(font);
-        datumLabel->setLabelCenter();
+        //datumLabel->setLabelCenter();
         updateDim();
     } else if(dim->X.isTouched() ||
               dim->Y.isTouched()) {
@@ -426,7 +427,14 @@ void QGIViewDimension::draw()
             Base::Console().Message("TARFU - invalid references for Dimension!!");
         }
 
-        Base::Vector3d dir, norm;                                               //direction/normal vectors of dimLine
+        // +/- aligned method
+        // dimension text legible from bottom or right
+        // text outside arrows (not between)
+        // text to left of vertical dims
+        // text above horizontal dims
+        double offsetFudge = 2.0;
+        double textOffset = 0.75 * dim->Fontsize.getValue() + offsetFudge;
+        Base::Vector3d dir, norm;               //direction/normal vectors of distance line (not dimension Line)
         if (strcmp(dimType, "Distance") == 0 ) {
             dir = (distEnd-distStart);
         } else if (strcmp(dimType, "DistanceX") == 0 ) {
@@ -434,19 +442,37 @@ void QGIViewDimension::draw()
         } else if (strcmp(dimType, "DistanceY") == 0 ) {
             dir = Base::Vector3d (0, ((distEnd.y - distStart.y >= FLT_EPSILON) ? 1 : -1) , 0);
         }
-
         dir.Normalize();
         norm = Base::Vector3d (-dir.y,dir.x, 0);         //normal to dimension direction
 
         // Get magnitude of angle between dir and horizontal
         float angle = atan2f(dir.y,dir.x);
-        //Vertical text should be legible from the right
-        if (std::abs(angle + M_PI/2.0) < FLT_EPSILON) {
-            //noop
-        } else if (angle > M_PI_2+M_PI/12) {     //keeps some diagonal dims from turning upside down?
-            angle -= (float)M_PI;
-        } else if (angle <= -M_PI_2+M_PI/12) {
-            angle += (float)M_PI;
+        if (angle < 0.0) {
+            angle = 2 * M_PI + angle;          //map to +ve angle
+        }
+
+        //orient text right side up
+        bool isFlipped = false;
+        double angleFiddle = M_PI / 18.0;                  // 18 => 10*, 12 => 15*, ...
+        if ((angle > M_PI_2 - angleFiddle) &&              // > 80CW
+                   (angle <= M_PI)) {                      // < 180CW  +/-Q3
+            angle += M_PI;                                 // flip CW
+            isFlipped = true;
+        } else if ((angle > M_PI) &&                       // > 180CW  +/-Q4
+                   (angle <= 1.5*M_PI - angleFiddle))  {   // < 260CW
+            angle -= M_PI;                                 // flip CCW
+            isFlipped = true;
+        }
+
+        Base::Vector3d textNorm = norm;
+        if (std::abs(dir.x) < FLT_EPSILON) {
+            textNorm = Base::Vector3d(1.0,0.0,0.0);                    //force text to left of dim line
+        } else if (std::abs(dir.y) < FLT_EPSILON) {
+            textNorm = Base::Vector3d(0.0,1.0,0.0);                    //force text above dim line
+        } else {
+            if (isFlipped) {
+                textNorm = -norm;
+            }
         }
 
         // when the dimension line is not parallel to (distStart-distEnd) (ie DistanceY on side of a Cone) the projection of
@@ -459,58 +485,71 @@ void QGIViewDimension::draw()
         // newstartpt = oldstart + m*normal
         float normproj12 = (distEnd-distStart).x * norm.x + (distEnd-distStart).y * norm.y;   //dot(dirDimline, normal)
         Base::Vector3d distStart_ = distStart + norm * normproj12;
+        Base::Vector3d distMid = (distStart_ + distEnd) / 2.0;
 
-        //Base::Vector3d midpos = (distStart_ + distEnd) / 2;
+//        QFont font = datumLabel->font();                         //font metrics gives answers in pixels, not mm
+//        font.setPointSizeF(dim->Fontsize.getValue());
+//        font.setFamily(QString::fromUtf8(dim->Font.getValue()));
+//        font.setPointSizeF(dim->Fontsize.getValue());
+//        QFontMetrics fm(font);
+//        int w = fm.width(labelText);
+//        int h = fm.height();
+        double lblWidth = datumLabel->boundingRect().width();
 
-        QFontMetrics fm(datumLabel->font());
-        int w = fm.width(labelText);
-        //int h = fm.height();
-
-        Base::Vector3d vec = lblCenter - distEnd;
-        float length = vec.x * norm.x + vec.y * norm.y;
-
-        float margin = 3.f;
+        Base::Vector3d fauxCenter = lblCenter + textOffset * textNorm;
+        Base::Vector3d vec = fauxCenter - distEnd;              //endof dist line to center of dimline
+        float perpDistance = vec.x * norm.x + vec.y * norm.y;   //dot(vec,norm) the perp distance between distance & dimension lines.
+        float margin = 2.f;
         float scaler = 1.;
 
-        float offset1 = (length + normproj12 < 0) ? -margin : margin;
-        float offset2 = (length < 0) ? -margin : margin;
+        float offset1 = (perpDistance + normproj12 < 0) ? -margin : margin;
+        float offset2 = (perpDistance < 0) ? -margin : margin;
 
-        Base::Vector3d ext1End = distStart_ + norm * (length + offset1 * scaler);   //extension line 1 end
-        Base::Vector3d ext2End = distEnd  + norm * (length + offset2 * scaler);
+        Base::Vector3d ext1End = distStart_ + norm * (perpDistance + offset1 * scaler);   //extension line 1 end
+        Base::Vector3d ext2End = distEnd  + norm * (perpDistance + offset2 * scaler);
 
         // Calculate the start/end for the Dimension lines
         //dim1Tip is the position of 1 arrow point (lhs on a horizontal)
         //dim2Tail is the position of the other arrow point (rhs)
-        Base::Vector3d  dim1Tip = distStart_ + norm * length;
-        Base::Vector3d  dim1Tail = lblCenter - dir * (w / 2 + margin);
-        Base::Vector3d  dim2Tip = lblCenter + dir * (w / 2 + margin);
-        Base::Vector3d  dim2Tail = distEnd  + norm * length;
+        //case 1: inner placement: text between extensions & fits. arros point out from inside
+        //case 2: inner placement2: text too big to fit. arrows point in from outside
+        //case 3: outer placement: text is outside extensions.  arrows point in, 1 arrow tracks dimText
+
+        //case1 - inner placement, text fits within extension lines
+        Base::Vector3d  dim1Tip = distStart_ + norm * perpDistance;
+        Base::Vector3d  dim1Tail = distMid + norm * perpDistance;
+        Base::Vector3d  dim2Tip = distMid + norm * perpDistance;
+        Base::Vector3d  dim2Tail = distEnd  + norm * perpDistance;
 
         bool flipTriang = false;
 
-        Base::Vector3d del1 = (dim2Tip-dim1Tip);        //tip2 to tip1? len (dimline1 + label + margins)
-        Base::Vector3d del2 = (dim1Tail-dim1Tip);       //tail1 to tip1?  len(dimline1)
-        float dot1 = del1.x * dir.x + del1.y * dir.y;   //dot (del1,dimlinedirection)  => ???
-        float dot2 = del2.x * dir.x + del2.y * dir.y;   //dot (del2,dimlinedirection)  => ???
+        double dimSpan = (dim2Tail - dim1Tip).Length();
+        double fauxToDim1 = (fauxCenter - dim1Tip).Length();     //label to end #1
+        double fauxToDim2 = (fauxCenter - dim2Tail).Length();
+        double tailLength = 10.f * scaler;
 
-        //Compare to see if Dimension text is larger than dimension
-        if (dot1 > (dim2Tail - dim1Tip).Length()) {
-            // Increase Margin to improve visability
-            float tmpMargin = 10.f * scaler;
-            dim2Tip = dim2Tail;
-            if(dot2 > (dim2Tail - dim1Tip).Length()) {
-                dim2Tip = dim1Tail;
-                dim1Tail = dim1Tip - dir * tmpMargin;
-                flipTriang = true;
-            }
-        } else if (dot2 < 0.f) {
-            float tmpMargin = 10.f * scaler;
-            dim1Tail = dim1Tip;
-            if(dot1 < 0.f) {
-                dim1Tail = dim2Tip;
-                dim2Tip = dim2Tail + dir * tmpMargin;
-                flipTriang = true;
-            }
+        //case2 - innerPlacement * text > span
+        if ((lblWidth > dimSpan)  &&
+            (fauxToDim1 < dimSpan) &&
+            (fauxToDim2 < dimSpan)) {   //fauxcenter is between extensions
+            dim1Tail = dim1Tip - tailLength * dir;
+            dim2Tip = dim2Tail + tailLength * dir;
+            flipTriang = true;
+        }
+
+        //case3 - outerPlacement
+        if ((fauxToDim1 < fauxToDim2) &&
+            (dimSpan < fauxToDim2) ) {
+            dim1Tail = fauxCenter;
+            dim2Tip = dim2Tail + tailLength * dir;
+            flipTriang = true;
+        } else if ((fauxToDim2 < fauxToDim1) &&
+            (dimSpan < fauxToDim1) ) {
+            dim1Tail = dim1Tip - tailLength * dir;
+            dim2Tip = fauxCenter;
+            flipTriang = true;
+        } else {
+            //a different case
         }
 
         // Extension lines
@@ -523,7 +562,7 @@ void QGIViewDimension::draw()
 
         //Dimension lines
         //line tip goes just a bit too far. overlaps the arrowhead's point
-        //default arrow length is 5.0
+        //default arrow perpDistance is 5.0
 
         path.moveTo(dim1Tip.x, dim1Tip.y);
         path.lineTo(dim1Tail.x, dim1Tail.y);
@@ -543,7 +582,7 @@ void QGIViewDimension::draw()
         aHead1->draw();
         aHead2->flip(true);
         aHead2->draw();
-        angle = atan2f(dir[1],dir[0]);
+        angle = atan2f(dir.y,dir.x);
         float arrowAngle = angle * 180 / M_PI;
         arrowAngle -= 180.;
         if(flipTriang){
