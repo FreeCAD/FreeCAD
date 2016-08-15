@@ -910,7 +910,7 @@ PyObject*  MeshPy::removeNonManifolds(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     getMeshObjectPtr()->removeNonManifolds();
-    Py_Return
+    Py_Return;
 }
 
 PyObject*  MeshPy::removeNonManifoldPoints(PyObject *args)
@@ -918,7 +918,7 @@ PyObject*  MeshPy::removeNonManifoldPoints(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     getMeshObjectPtr()->removeNonManifoldPoints();
-    Py_Return
+    Py_Return;
 }
 
 PyObject*  MeshPy::hasSelfIntersections(PyObject *args)
