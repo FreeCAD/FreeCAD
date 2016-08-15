@@ -217,15 +217,11 @@ void DrawProjGroup::moveToCentre(void)
 
 App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 {
-    const std::vector<App::DocumentObject *> &views = Views.getValues();
-    for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-
-        DrawView *view = dynamic_cast<DrawView *>(*it);
-        if(view->getTypeId() == DrawProjGroupItem::getClassTypeId()) {
-            DrawProjGroupItem *projPtr = dynamic_cast<DrawProjGroupItem *>(*it);
-
-            if( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 )
-                return *it;
+    for( auto it : Views.getValues() ) {
+        auto projPtr( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( projPtr && 
+            strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
+            return it;
         }
     }
 
@@ -234,17 +230,10 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 
 bool DrawProjGroup::hasProjection(const char *viewProjType) const
 {
-    const std::vector<App::DocumentObject *> &views = Views.getValues();
-
-    for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-
-        TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
-        if(view->getTypeId() == TechDraw::DrawProjGroupItem::getClassTypeId()) {
-            TechDraw::DrawProjGroupItem *projPtr = dynamic_cast<TechDraw::DrawProjGroupItem *>(*it);
-
-            if( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
-                return true;
-            }
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+        if( view && strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
+            return true;
         }
     }
     return false;
@@ -269,14 +258,14 @@ bool DrawProjGroup::checkViewProjType(const char *in)
 
 App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 {
-    DrawProjGroupItem *view = NULL;
+    DrawProjGroupItem *view( nullptr );
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
-        App::DocumentObject *docObj = getDocument()->addObject("TechDraw::DrawProjGroupItem",
-                                                               FeatName.c_str());
+        auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",
+                                               FeatName.c_str() ) );
 
-        view = dynamic_cast<TechDraw::DrawProjGroupItem *>( docObj );
+        view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
         view->Source.setValue( Source.getValue() );
         view->ScaleType.setValue( ScaleType.getValue() );
         view->Scale.setValue( Scale.getValue() );
@@ -351,23 +340,19 @@ void DrawProjGroup::setViewOrientation(DrawProjGroupItem *v, const char *projTyp
 int DrawProjGroup::removeProjection(const char *viewProjType)
 {
     if ( checkViewProjType(viewProjType) ) {
-        if(!hasProjection(viewProjType)) {
+        if( !hasProjection(viewProjType) ) {
             throw Base::Exception("The projection doesn't exist in the group");
         }
 
         // Iterate through the child views and find the projection type
-        const std::vector<App::DocumentObject *> &views = Views.getValues();
-        for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-
-            TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
-            if(view->getTypeId() == TechDraw::DrawProjGroupItem::getClassTypeId()) {
-                TechDraw::DrawProjGroupItem *projPtr = dynamic_cast<TechDraw::DrawProjGroupItem *>(*it);
-
+        for( auto it : Views.getValues() ) {
+            auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+            if( projPtr ) {
                 if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
                     // Remove from the document
-                    getDocument()->remObject((*it)->getNameInDocument());
+                    getDocument()->remObject( it->getNameInDocument() );
                     moveToCentre();
-                    return views.size();
+                    return Views.getValues().size();
                 }
             }
         }
@@ -382,7 +367,7 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
         viewPtrs[i] = NULL;
     }
 
-    DrawProjGroupItem *anchorView = dynamic_cast<DrawProjGroupItem *>(Anchor.getValue());
+    auto anchorView( dynamic_cast<DrawProjGroupItem *>(Anchor.getValue()) );
 
     if (!anchorView) {  //TODO: Consider not requiring an anchor view, or allowing ones other than "Front"
         throw Base::Exception("No anchor view set in DrawProjGroup::arrangeViewPointers()");
@@ -397,8 +382,6 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
     }
 
     // Iterate through views and populate viewPtrs
-    DrawProjGroupItem* oView;
-    std::vector<App::DocumentObject *> views = Views.getValues();
     if ( strcmp(projType, "Third Angle") == 0 ||
          strcmp(projType, "First Angle") == 0    ) {
         //   Third Angle:  FTL  T  FTRight
@@ -409,10 +392,9 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
         //                  Right   F   L  Rear
         //                 FTRight  T  FTL
         bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
-        for (std::vector<App::DocumentObject*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-            if ((*it)->getTypeId().isDerivedFrom(DrawProjGroupItem::getClassTypeId())) {
-                oView = dynamic_cast<DrawProjGroupItem *>(*it);
-
+        for (auto it : Views.getValues()) {
+            auto oView( dynamic_cast<DrawProjGroupItem *>(it) );
+            if (oView) {
                 const char *viewTypeCStr = oView->Type.getValueAsString();
                 if (strcmp(viewTypeCStr, "Front") == 0) {
                     viewPtrs[thirdAngle ? 4 : 4] = oView;
@@ -535,10 +517,9 @@ bool DrawProjGroup::distributeProjections()
 //!allow child DPGI's to be automatically positioned
 void DrawProjGroup::resetPositions(void)
 {
-    const std::vector<App::DocumentObject *> &views = Views.getValues();
-    for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        DrawView *view = dynamic_cast<DrawView *>(*it);
-        if(view->getTypeId() == DrawProjGroupItem::getClassTypeId()) {
+    for( auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( view ) {
             view->setAutoPos(true);
             //X,Y == 0??
         }
@@ -550,12 +531,11 @@ void DrawProjGroup::setFrontViewOrientation(const Base::Matrix4D &newMat)
 {
     viewOrientationMatrix.setValue(newMat);
 
-    DrawProjGroupItem *view;
-    std::vector<App::DocumentObject *> views = Views.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawProjGroupItem::getClassTypeId())) {
-            view = dynamic_cast<DrawProjGroupItem *>(*it);
+    for( auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( view ) {
             setViewOrientation(view, view->Type.getValueAsString());
+            // TODO: Seems we should ensure that modifying the view triggers this automatically? IR
             view->touch();
         }
     }
@@ -573,11 +553,9 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
             Scale.setValue(autoScale);
 
             //Rebuild the DPGI's
-            const std::vector<App::DocumentObject *> &views = Views.getValues();
-            for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-                App::DocumentObject *docObj = *it;
-                if(docObj->getTypeId().isDerivedFrom(DrawProjGroupItem::getClassTypeId())) {
-                    DrawProjGroupItem *view = dynamic_cast<DrawProjGroupItem *>(*it);
+            for( const auto it : Views.getValues() ) {
+                auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+                if( view ) {
                     view->ScaleType.setValue("Custom");
                     view->Scale.setValue(autoScale);
                     view->Scale.setStatus(App::Property::ReadOnly,true);
