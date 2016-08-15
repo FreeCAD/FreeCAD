@@ -25,6 +25,7 @@
 #include <math_Gauss.hxx>
 #include <math_Householder.hxx>
 #include <Geom_BSplineSurface.hxx>
+#include <Precision.hxx>
 
 #include <QFuture>
 #include <QFutureWatcher>
@@ -887,10 +888,10 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
             }
 
             fDeltaU =  ( (P-X) * Xu ) / ( (P-X)*Xuu - Xu*Xu );
-            if (fabs(fDeltaU) < FLOAT_EPS)
+            if (fabs(fDeltaU) < Precision::Confusion())
                 fDeltaU = 0.0;
             fDeltaV =  ( (P-X) * Xv ) / ( (P-X)*Xvv - Xv*Xv );
-            if (fabs(fDeltaV) < FLOAT_EPS)
+            if (fabs(fDeltaV) < Precision::Confusion())
                 fDeltaV = 0.0;
 
             //Ersetze die alten u/v-Werte durch die neuen
@@ -917,7 +918,7 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
 
         i++;
     }
-    while(i<iIter && fMaxDiff > FLOAT_EPS && fMaxScalar < 0.99);
+    while(i<iIter && fMaxDiff > Precision::Confusion() && fMaxScalar < 0.99);
 }
 
 bool BSplineParameterCorrection::SolveWithoutSmoothing()

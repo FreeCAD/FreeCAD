@@ -26,8 +26,7 @@
 
 
 #include <cmath>
-
-#define FLOAT_EPS   1.0e-4f 
+#include <cfloat>
 
 #ifndef  F_PI
 # define F_PI  3.1415926f
@@ -36,9 +35,13 @@
 #ifndef  D_PI
 # define D_PI  3.141592653589793
 #endif
-  
+
 #ifndef  FLOAT_MAX
-# define FLOAT_MAX 1e30f
+# define FLOAT_MAX 3.402823466E+38F
+#endif
+
+#ifndef  FLOAT_MIN
+# define FLOAT_MIN 1.175494351E-38F
 #endif
 
 #ifndef  DOUBLE_MAX
@@ -58,16 +61,16 @@ template <>
 struct float_traits<float> {
     typedef float float_type;
     static inline float_type pi() { return F_PI; }
-    static inline float_type epsilon() { return FLOAT_EPS; }
-    static inline float_type maximum() { return FLOAT_MAX; }
+    static inline float_type epsilon() { return FLT_EPSILON; }
+    static inline float_type maximum() { return FLT_MAX; }
 };
 
 template <>
 struct float_traits<double> {
     typedef double float_type;
     static inline float_type pi() { return D_PI; }
-    static inline float_type epsilon() { return FLOAT_EPS; }
-    static inline float_type maximum() { return FLOAT_MAX; }
+    static inline float_type epsilon() { return FLT_EPSILON; }
+    static inline float_type maximum() { return DBL_MAX; }
 };
 
 /** The Vector Base class. */
@@ -161,7 +164,15 @@ public:
     * \note \a rclDirX must be perpendicular to \a rclDirY, i.e. \a rclDirX * \a rclDirY = 0..
     */
     void TransformToCoordinateSystem (const Vector3 &rclBase, const Vector3 &rclDirX, const Vector3 &rclDirY);
-    //bool Equal(const Vector3 &rclVect) const;
+    /**
+     * @brief IsEqual
+     * @param rclPnt
+     * @param tol
+     * @return true or false
+     * If the distance to point \a rclPnt is within the tolerance \a tol both points are considered
+     * equal.
+     */
+    bool IsEqual(const Vector3 &rclPnt, _Precision tol) const;
     /// Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm.
     Vector3 & ProjectToPlane (const Vector3 &rclBase, const Vector3 &rclNorm);
     /**

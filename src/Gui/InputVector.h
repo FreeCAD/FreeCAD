@@ -191,7 +191,7 @@ private:
             bool ok;
             Base::Vector3d dir = this->getUserDirection(&ok);
             if (ok) {
-                if (dir.Length() < FLT_EPSILON) {
+                if (dir.Length() < Base::Vector3d::epsilon()) {
                     QMessageBox::critical(this, LocationDialog::tr("Wrong direction"),
                         LocationDialog::tr("Direction must not be the null vector"));
                     return;
@@ -304,7 +304,7 @@ public:
 public:
     void setDirection(const Base::Vector3d& dir)
     {
-        if (dir.Length() < FLT_EPSILON) {
+        if (dir.Length() < Base::Vector3d::epsilon()) {
             return;
         }
 
@@ -336,7 +336,7 @@ public:
             bool ok;
             Base::Vector3d dir = dlg->getUserDirection(&ok);
             if (ok) {
-                if (dir.Length() < FLT_EPSILON) {
+                if (dir.Length() < Base::Vector3d::epsilon()) {
                     QMessageBox::critical(dlg, LocationDialog::tr("Wrong direction"),
                         LocationDialog::tr("Direction must not be the null vector"));
                     return false;
