@@ -723,15 +723,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
 
-	int numFaces = data->NbFaces();
-	int numNodes = data->NbNodes();
-	int numEdges = data->NbEdges();
+    int numFaces = data->NbFaces();
+    int numNodes = data->NbNodes();
+    int numEdges = data->NbEdges();
 
     if(numFaces+numNodes+numEdges == 0) return;
     Base::TimeInfo Start;
     Base::Console().Log("Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
 
-	const SMDS_MeshInfo& info = data->GetMeshInfo();
+    const SMDS_MeshInfo& info = data->GetMeshInfo();
     int numTria = info.NbTriangles();
     int numQuad = info.NbQuadrangles();
 

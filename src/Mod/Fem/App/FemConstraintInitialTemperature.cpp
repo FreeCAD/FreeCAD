@@ -61,7 +61,7 @@ App::DocumentObjectExecReturn *ConstraintInitialTemperature::execute(void)
 
 const char* ConstraintInitialTemperature::getViewProviderName(void) const
 {
-	return "FemGui::ViewProviderFemConstraintInitialTemperature";
+    return "FemGui::ViewProviderFemConstraintInitialTemperature";
 }
 
 void ConstraintInitialTemperature::onChanged(const App::Property* prop)

@@ -57,7 +57,7 @@ App::DocumentObjectExecReturn *ConstraintPlaneRotation::execute(void)
 
 const char* ConstraintPlaneRotation::getViewProviderName(void) const
 {
-	return "FemGui::ViewProviderFemConstraintPlaneRotation";
+    return "FemGui::ViewProviderFemConstraintPlaneRotation";
 }
 
 void ConstraintPlaneRotation::onChanged(const App::Property* prop)
