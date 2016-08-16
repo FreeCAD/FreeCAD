@@ -655,11 +655,12 @@ void CmdRaytracingRender::activated(int iMsg)
             h << height;
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
             doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].getFeatName());
-            doCommand(Doc,"import subprocess,tempfile");
-            doCommand(Doc,"TempFile = tempfile.mkstemp(suffix='.pov')[1]");
+            doCommand(Doc,"import os,subprocess,tempfile");
+            doCommand(Doc,"fd, TempFile = tempfile.mkstemp(suffix='.pov')");
             doCommand(Doc,"f = open(TempFile,'wb')");
             doCommand(Doc,"f.write(PageFile.read())");
             doCommand(Doc,"f.close()");
+            doCommand(Doc,"os.close(fd)");
 #ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
             doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" /EXIT /RENDER '+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
