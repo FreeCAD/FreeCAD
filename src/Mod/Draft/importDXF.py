@@ -1009,6 +1009,9 @@ def addToBlock(obj,layer):
 def processdxf(document,filename,getShapes=False):
     "this does the translation of the dxf contents into FreeCAD Part objects"
     global drawing # for debugging - so drawing is still accessible to python after the script ran
+    if not dxfReader:
+        getDXFlibs()
+        readPreferences()
     FreeCAD.Console.PrintMessage("opening "+filename+"...\n")
     drawing = dxfReader.readDXF(filename)
     global layers
