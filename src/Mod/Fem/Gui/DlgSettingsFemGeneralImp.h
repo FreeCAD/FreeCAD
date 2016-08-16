@@ -23,21 +23,21 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_DLGSETTINGSFEMIMP_H
-#define FEMGUI_DLGSETTINGSFEMIMP_H
+#ifndef FEMGUI_DLGSETTINGSFEMGENERALIMP_H
+#define FEMGUI_DLGSETTINGSFEMGENERALIMP_H
 
-#include "ui_DlgSettingsFem.h"
+#include "ui_DlgSettingsFemGeneral.h"
 #include <Gui/PropertyPage.h>
 
 namespace FemGui {
 
-class DlgSettingsFemImp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemImp
+class DlgSettingsFemGeneralImp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemGeneralImp
 {
     Q_OBJECT
 
 public:
-    DlgSettingsFemImp( QWidget* parent = 0 );
-    ~DlgSettingsFemImp();
+    DlgSettingsFemGeneralImp( QWidget* parent = 0 );
+    ~DlgSettingsFemGeneralImp();
 
 protected:
     void saveSettings();
@@ -47,4 +47,4 @@ protected:
 
 } // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMIMP_H
+#endif // FEMGUI_DLGSETTINGSFEMGENERALIMP_H
