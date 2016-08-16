@@ -27,6 +27,7 @@
 #endif
 
 #include "Unit.h"
+#include "Quantity.h"
 #include "Exception.h"
 
 using namespace Base;
@@ -79,27 +80,27 @@ Unit::Unit(int8_t Length,
                (int32_t)Density);
 
     Sig.Length                   = Length;
-    Sig.Mass                     = Mass;                     
-    Sig.Time                     = Time;                     
-    Sig.ElectricCurrent          = ElectricCurrent;          
-    Sig.ThermodynamicTemperature = ThermodynamicTemperature; 
-    Sig.AmountOfSubstance        = AmountOfSubstance;        
-    Sig.LuminoseIntensity        = LuminoseIntensity;        
-    Sig.Angle                    = Angle;                    
+    Sig.Mass                     = Mass;
+    Sig.Time                     = Time;
+    Sig.ElectricCurrent          = ElectricCurrent;
+    Sig.ThermodynamicTemperature = ThermodynamicTemperature;
+    Sig.AmountOfSubstance        = AmountOfSubstance;
+    Sig.LuminoseIntensity        = LuminoseIntensity;
+    Sig.Angle                    = Angle;
     Sig.Density                  = Density;
 }
 
 
 Unit::Unit()
 {
-    Sig.Length                   = 0;                   
-    Sig.Mass                     = 0;                     
-    Sig.Time                     = 0;                     
-    Sig.ElectricCurrent          = 0;          
-    Sig.ThermodynamicTemperature = 0; 
-    Sig.AmountOfSubstance        = 0;        
-    Sig.LuminoseIntensity        = 0;        
-    Sig.Angle                    = 0;                    
+    Sig.Length                   = 0;
+    Sig.Mass                     = 0;
+    Sig.Time                     = 0;
+    Sig.ElectricCurrent          = 0;
+    Sig.ThermodynamicTemperature = 0;
+    Sig.AmountOfSubstance        = 0;
+    Sig.LuminoseIntensity        = 0;
+    Sig.Angle                    = 0;
     Sig.Density                  = 0;
 }
 
@@ -108,12 +109,25 @@ Unit::Unit(const Unit& that)
     this->Sig = that.Sig;
 }
 
-Unit::Unit(const std::string& Pars)
+Unit::Unit(const QString& expr)
 {
-   
+    try {
+        *this = Quantity::parse(expr).getUnit();
+    }
+    catch (...) {
+        Sig.Length                   = 0;
+        Sig.Mass                     = 0;
+        Sig.Time                     = 0;
+        Sig.ElectricCurrent          = 0;
+        Sig.ThermodynamicTemperature = 0;
+        Sig.AmountOfSubstance        = 0;
+        Sig.LuminoseIntensity        = 0;
+        Sig.Angle                    = 0;
+        Sig.Density                  = 0;
+    }
 }
 
-Unit Unit::pow(char exp)const
+Unit Unit::pow(char exp) const
 {
     checkRange("pow()",
                (int32_t)Sig.Length * (int32_t)exp,
@@ -223,15 +237,15 @@ Unit Unit::operator /(const Unit &right) const
 
 Unit& Unit::operator = (const Unit &New)
 {
-    Sig.Length                   = New.Sig.Length;                      
-    Sig.Mass                     = New.Sig.Mass   ;                 
-    Sig.Time                     = New.Sig.Time    ;                
-    Sig.ElectricCurrent          = New.Sig.ElectricCurrent         ;
+    Sig.Length                   = New.Sig.Length;
+    Sig.Mass                     = New.Sig.Mass;
+    Sig.Time                     = New.Sig.Time;
+    Sig.ElectricCurrent          = New.Sig.ElectricCurrent;
     Sig.ThermodynamicTemperature = New.Sig.ThermodynamicTemperature;
-    Sig.AmountOfSubstance        = New.Sig.AmountOfSubstance       ;
-    Sig.LuminoseIntensity        = New.Sig.LuminoseIntensity       ;
-    Sig.Angle                    = New.Sig.Angle    ;
-    Sig.Density                  = New.Sig.Density    ;
+    Sig.AmountOfSubstance        = New.Sig.AmountOfSubstance;
+    Sig.LuminoseIntensity        = New.Sig.LuminoseIntensity;
+    Sig.Angle                    = New.Sig.Angle;
+    Sig.Density                  = New.Sig.Density;
 
     return *this;
 }

@@ -171,7 +171,7 @@ public:
 
 InterpreterSingleton::InterpreterSingleton()
 {
-    //Py_Initialize();
+    this->_global = 0;
 }
 
 InterpreterSingleton::~InterpreterSingleton()
