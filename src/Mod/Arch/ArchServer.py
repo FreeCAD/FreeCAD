@@ -282,12 +282,14 @@ class _BimServerTaskPanel:
                         FreeCAD.Console.PrintMessage(translate("Arch","Opening file...\n"))
                         self.form.labelStatus.setText(translate("Arch","Opening file..."))
                         if not tf:
-                            tf = tempfile.mkstemp(suffix=".ifc")[1]
+                            th,tf = tempfile.mkstemp(suffix=".ifc")
                         f = open(tf,"wb")
                         f.write(base64.b64decode(downloaddata))
                         f.close()
+                        os.close(th)
                         import importIFC
                         importIFC.open(tf)
+                        os.remove(tf)
         self.form.labelStatus.setText("")
 
     def uploadFile(self):
