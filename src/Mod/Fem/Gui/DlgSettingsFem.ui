@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>FEM</string>
+   <string>General</string>
   </property>
   <layout class="QGridLayout" name="gridLayout1">
    <property name="margin">
@@ -68,7 +68,7 @@
                <cstring>WorkingDir</cstring>
               </property>
               <property name="prefPath" stdset="0">
-               <cstring>Mod/Fem</cstring>
+               <cstring>Mod/Fem/General</cstring>
               </property>
              </widget>
             </item>
@@ -153,7 +153,7 @@
                <cstring>z88BinaryPath</cstring>
               </property>
               <property name="prefPath" stdset="0">
-               <cstring>Mod/Fem</cstring>
+               <cstring>Mod/Fem/General</cstring>
               </property>
              </widget>
             </item>
@@ -197,7 +197,7 @@
              <cstring>UseBuiltInMaterials</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -213,7 +213,7 @@
              <cstring>UseMaterialsFromConfigDir</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -229,7 +229,7 @@
              <cstring>UseMaterialsFromCustomDir</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -256,7 +256,7 @@
                <cstring>CustomMaterialsDir</cstring>
               </property>
               <property name="prefPath" stdset="0">
-               <cstring>Mod/Fem</cstring>
+               <cstring>Mod/Fem/General</cstring>
               </property>
              </widget>
             </item>
@@ -306,7 +306,7 @@
              <cstring>KeepResultsOnReRun</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -322,7 +322,7 @@
              <cstring>RestoreResultDialog</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -344,7 +344,7 @@
              <cstring>HideConstraint</cstring>
             </property>
             <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem</cstring>
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
