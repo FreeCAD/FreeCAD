@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FemGui::DlgSettingsFemImp</class>
- <widget class="QWidget" name="FemGui::DlgSettingsFemImp">
+ <class>FemGui::DlgSettingsFemGeneralImp</class>
+ <widget class="QWidget" name="FemGui::DlgSettingsFemGeneralImp">
   <property name="geometry">
    <rect>
     <x>0</x>
