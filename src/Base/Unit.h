@@ -65,7 +65,7 @@ public:
     Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminoseIntensity=0,int8_t Angle=0, int8_t Density=0);
     Unit(void);
     Unit(const Unit&);
-    Unit(const std::string& Pars);
+    Unit(const QString& expr);
     /// Destruction
     ~Unit () {}
 

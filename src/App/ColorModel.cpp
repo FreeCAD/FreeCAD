@@ -52,7 +52,7 @@ ColorModel::~ColorModel ()
 ColorModel& ColorModel::operator = (const ColorModel &rclM)
 {
     // first check if both objects are identical
-    if (this->_pclColors && this->_pclColors == rclM._pclColors)
+    if (this == &rclM)
         return *this;
 
     delete [] _pclColors;
