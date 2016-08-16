@@ -67,13 +67,14 @@ class PathWorkbench (Workbench):
         from PathScripts import PathRemote
         from PathScripts import PathSanity
         from PathScripts import DragknifeDressup
+        from PathScripts import PathContour
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity"]
+        projcmdlist = ["Path_Job", "Path_Post","Separator", "Path_Inspect", "Path_Sanity"]
         toolcmdlist = ["Path_ToolLibraryEdit", "Path_LoadTool"]
         prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment",
                        "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
-        opcmdlist = ["Path_Profile", "Path_Pocket",
+        opcmdlist = ["Path_Contour", "Path_Profile", "Path_Pocket",
                      "Path_Drilling", "Path_Engrave", "Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array",
                       "Path_SimpleCopy" ]

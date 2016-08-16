@@ -26,14 +26,15 @@ import FreeCAD
 import FreeCADGui
 import Part
 import math
+import Draft
 import Path
+import TechDraw
 from DraftGeomUtils import geomType
 from DraftGeomUtils import findWires
 import DraftVecUtils
 import PathScripts
 from PathScripts import PathJob
 import itertools
-from PySide import QtGui
 
 def cleanedges(splines, precision):
     '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
@@ -83,6 +84,9 @@ def curvetowire(obj, steps):
 # fixme set at 4 decimal places for testing
 def fmt(val): return format(val, '.4f')
 
+def silhouette(obj):
+    w = TechDraw.findOuterWire(obj.Shape.Edges)
+    return w
 
 def isSameEdge(e1, e2):
     """isSameEdge(e1,e2): return True if the 2 edges are both lines or arcs/circles and have the same
@@ -146,6 +150,26 @@ def is_clockwise(obj):
         sum += (0 - lastLocation["X"]) * (0 + lastLocation["Y"])
 
     return sum >= 0
+
+def loopdetect(obj, edge1, edge2):
+    '''
+    Returns a loop wire that includes the two edges.
+    Useful for detecting boundaries of negative space features ie 'holes'
+    If a unique loop is not found, returns None
+    '''
+    candidates = []
+    for wire in obj.Shape.Wires:
+        for e in wire.Edges:
+            if e.hashCode() == edge1.hashCode():
+                candidates.append((wire.hashCode(),wire))
+            if e.hashCode() == edge2.hashCode():
+                candidates.append((wire.hashCode(),wire))
+    loop = set([x for x in candidates if candidates.count(x) > 1]) #return the duplicate item
+    if len(loop) != 1:
+        return None
+    loopwire = next(x for x in loop)[1]
+    return loopwire
+
 
 def check_clockwise(poly):
     '''
@@ -396,7 +420,9 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
     return offset
 
 
-def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart, ZFinalDepth, firstedge=None, PathClosed=True, SegLen=0.5, VertFeed=1.0, HorizFeed=2.0, PlungeAngle=90.0):
+def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart,
+                ZFinalDepth, firstedge=None, PathClosed=True, SegLen=0.5,
+                VertFeed=1.0, HorizFeed=2.0, VertJog=1.0, HorizJog = 2.0, PlungeAngle=90.0):
     ''' makes the path - just a simple profile for now '''
     offset = SortPath(wire, Side, radius, clockwise, firstedge, SegLen=SegLen)
     if len(offset.Edges) == 0:
@@ -404,9 +430,9 @@ def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart, ZFinal
 
     toolpath = offset.Edges[:]
     paths = ""
-    paths += "G0 Z" + str(ZClearance) + "\n"
+    paths += "G0 Z" + str(ZClearance) + "F " + fmt(VertJog) + "\n"
     first = toolpath[0].Vertexes[0].Point
-    paths += "G0 X" + str(fmt(first.x)) + "Y" + str(fmt(first.y)) + "\n"
+    paths += "G0 X" + str(fmt(first.x)) + "Y" + str(fmt(first.y)) + "F " + fmt(HorizJog) + "\n"
     Zprevious = ZStart
     ZCurrent = ZStart - StepDown
 
@@ -414,9 +440,9 @@ def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart, ZFinal
         paths += convert(toolpath, Z=ZCurrent, Zprevious=Zprevious, PlungeAngle=PlungeAngle,
                          vf=VertFeed, hf=HorizFeed)
         if not PathClosed:
-            paths += "G0 Z" + str(ZClearance)
+            paths += "G0 Z" + str(ZClearance) + "F " + fmt(VertJog)
             paths += "G0 X" + str(fmt(first.x)) + "Y" + \
-                str(fmt(first.y)) + "\n"
+                str(fmt(first.y)) + "F " + fmt(HorizJog) + "\n"
         Zprevious = ZCurrent
         ZCurrent = ZCurrent - abs(StepDown)
 
@@ -434,7 +460,7 @@ def MakePath(wire, Side, radius, clockwise, ZClearance, StepDown, ZStart, ZFinal
         paths += convert(toolpath, Z=ZFinalDepth, Zprevious=Zprevious, StopLength=StopLength,
                          vf=VertFeed, hf=HorizFeed)
 
-    paths += "G0 Z" + str(ZClearance)
+    paths += "G0 Z" + str(ZClearance) + "F " + fmt(VertJog) + "\n"
     return paths
 
 # the next two functions are for automatically populating tool
@@ -456,13 +482,6 @@ def changeTool(obj, job):
                 if g == obj:
                     return tlnum
 
-def getLastTool(obj):
-    toolNum = obj.ToolNumber
-    if obj.ToolNumber == 0:
-        # find tool from previous toolchange
-        job = findJob()
-        toolNum = changeTool(obj, job)
-    return getTool(obj, toolNum)
 
 def getLastToolLoad(obj):
     # This walks up the hierarchy and tries to find the closest preceding
@@ -506,6 +525,22 @@ def getLastToolLoad(obj):
             except:
                 continue
     return tc
+
+def getToolControllers(obj):
+    controllers = []
+    try:
+        parent = obj.InList[0]
+    except:
+        parent = None
+
+    if parent is not None:
+        sibs = parent.Group
+        for g in sibs:
+            if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                controllers.append(g.Name)
+    return controllers
+
+
 
 def getTool(obj, number=0):
     "retrieves a tool from a hosting object with a tooltable, if any"
