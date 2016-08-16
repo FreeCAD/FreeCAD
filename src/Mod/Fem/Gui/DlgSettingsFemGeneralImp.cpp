@@ -26,23 +26,23 @@
 #include "PreCompiled.h"
 
 #include "Gui/Application.h"
-#include "DlgSettingsFemImp.h"
+#include "DlgSettingsFemGeneralImp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
-DlgSettingsFemImp::DlgSettingsFemImp( QWidget* parent )
+DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
 }
 
-DlgSettingsFemImp::~DlgSettingsFemImp()
+DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgSettingsFemImp::saveSettings()
+void DlgSettingsFemGeneralImp::saveSettings()
 {
     fc_analysis_working_directory->onSave();
 
@@ -58,7 +58,7 @@ void DlgSettingsFemImp::saveSettings()
     cb_hide_constraint->onSave();
 }
 
-void DlgSettingsFemImp::loadSettings()
+void DlgSettingsFemGeneralImp::loadSettings()
 {
     fc_analysis_working_directory->onRestore();
 
@@ -77,7 +77,7 @@ void DlgSettingsFemImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemImp::changeEvent(QEvent *e)
+void DlgSettingsFemGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
     }
@@ -86,4 +86,4 @@ void DlgSettingsFemImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsFemImp.cpp"
+#include "moc_DlgSettingsFemGeneralImp.cpp"

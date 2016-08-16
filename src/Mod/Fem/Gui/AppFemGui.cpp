@@ -33,7 +33,7 @@
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 #include "PropertyFemMeshItem.h"
-#include "DlgSettingsFemImp.h"
+#include "DlgSettingsFemGeneralImp.h"
 #include "DlgSettingsFemCcxImp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
@@ -148,7 +148,7 @@ PyMODINIT_FUNC initFemGui()
 
 
     // register preferences pages
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
 
      // add resources and reloads the translators
