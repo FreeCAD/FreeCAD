@@ -125,10 +125,11 @@ class SH3DHandler(xml.sax.ContentHandler):
         elif tag == "pieceOfFurniture":
             name = attributes["name"]
             data = self.z.read(attributes["model"])
-            tf = tempfile.mkstemp(suffix=".obj")[1]
+            th,tf = tempfile.mkstemp(suffix=".obj")
             f = pyopen(tf,"wb")
             f.write(data)
             f.close()
+            os.close(th)
             m = Mesh.read(tf)
             fx = (float(attributes["width"])/100)/m.BoundBox.XLength
             fy = (float(attributes["height"])/100)/m.BoundBox.YLength
@@ -153,10 +154,11 @@ class SH3DHandler(xml.sax.ContentHandler):
         elif tag == "doorOrWindow":
             name = attributes["name"]
             data = self.z.read(attributes["model"])
-            tf = tempfile.mkstemp(suffix=".obj")[1]
+            th,tf = tempfile.mkstemp(suffix=".obj")
             f = pyopen(tf,"wb")
             f.write(data)
             f.close()
+            os.close(th)
             m = Mesh.read(tf)
             fx = (float(attributes["width"])/100)/m.BoundBox.XLength
             fy = (float(attributes["height"])/100)/m.BoundBox.YLength

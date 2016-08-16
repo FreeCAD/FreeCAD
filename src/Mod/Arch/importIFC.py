@@ -923,10 +923,11 @@ def export(exportList,filename):
     template = template.replace("$project",FreeCAD.ActiveDocument.Name)
     template = template.replace("$filename",filename)
     template = template.replace("$timestamp",str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
-    templatefile = tempfile.mkstemp(suffix=".ifc")[1]
+    templatefilehandle,templatefile = tempfile.mkstemp(suffix=".ifc")
     of = pyopen(templatefile,"wb")
     of.write(template.encode("utf8"))
     of.close()
+    os.close(templatefilehandle)
     global ifcfile, surfstyles, clones, sharedobjects
     ifcfile = ifcopenshell.open(templatefile)
     history = ifcfile.by_type("IfcOwnerHistory")[0]
@@ -1280,6 +1281,8 @@ def export(exportList,filename):
     if STORE_UID:
         # some properties might have been changed
         FreeCAD.ActiveDocument.recompute()
+        
+    os.remove(templatefile)
 
 
 def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1):
