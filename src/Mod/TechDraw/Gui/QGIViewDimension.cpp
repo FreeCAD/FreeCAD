@@ -446,7 +446,7 @@ void QGIViewDimension::draw()
         norm = Base::Vector3d (-dir.y,dir.x, 0);         //normal to dimension direction
 
         // Get magnitude of angle between dir and horizontal
-        float angle = atan2f(dir.y,dir.x);
+        double angle = atan2f(dir.y,dir.x);
         if (angle < 0.0) {
             angle = 2 * M_PI + angle;          //map to +ve angle
         }
