@@ -50,7 +50,8 @@ class LoadTool():
         obj.SpindleDir = ['Forward', 'Reverse']
         obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property","Feed rate for vertical moves in Z"))
         obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property","Feed rate for horizontal moves"))
-
+        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"))
         obj.Proxy = self
         mode = 2
         obj.setEditorMode('Placement', mode)
@@ -211,12 +212,17 @@ class TaskPanel:
     def getFields(self):
         if self.obj:
 
-            if hasattr(self.obj, "VertFeed"):
+            if hasattr(self.obj, "Label"):
                 self.obj.Label = self.form.tcoName.text()
             if hasattr(self.obj, "VertFeed"):
                 self.obj.VertFeed = self.form.vertFeed.text()
             if hasattr(self.obj, "HorizFeed"):
                 self.obj.HorizFeed = self.form.horizFeed.text()
+            if hasattr(self.obj, "VertRapid"):
+                self.obj.VertRapid = self.form.vertRapid.text()
+            if hasattr(self.obj, "HorizRapid"):
+                self.obj.HorizRapid = self.form.horizRapid.text()
+
             if hasattr(self.obj, "SpindleSpeed"):
                 self.obj.SpindleSpeed = self.form.spindleSpeed.value()
             if hasattr(self.obj, "SpindleDir"):
@@ -229,6 +235,9 @@ class TaskPanel:
 
         self.form.vertFeed.setText(str(self.obj.VertFeed.Value))
         self.form.horizFeed.setText(str(self.obj.HorizFeed.Value))
+        self.form.vertRapid.setText(str(self.obj.VertRapid.Value))
+        self.form.horizRapid.setText(str(self.obj.HorizRapid.Value))
+
         self.form.spindleSpeed.setValue(self.obj.SpindleSpeed)
         self.form.tcoName.setText(str(self.obj.Label))
 

@@ -207,8 +207,9 @@ def parse(pathobj):
             for param in params:
                 if param in c.Parameters:
                     if param == 'F':
-                        outstring.append(
-                            param + format(c.Parameters['F'], '.2f'))
+                        if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
+                            outstring.append(
+                                param + format(c.Parameters['F'], '.2f'))
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     else:

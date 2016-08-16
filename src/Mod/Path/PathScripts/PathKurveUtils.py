@@ -148,7 +148,7 @@ def profile(curve, side_of_line, radius=1.0, vertfeed=0.0, horizfeed=0.0, offset
 
     output = ""
     output += "G0 Z" + str(clearance) + "\n"
-
+    print "in profile: 151"
     offset_curve = area.Curve(curve)
     if offset_curve.getNumVertices() <= 1:
         raise Exception, "Sketch has no elements!"
@@ -297,28 +297,32 @@ and have not been throughly optimized, understood, or tested for FreeCAD.'''
 
 
 def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
-             horizfeed=0.0, offset_extra=0.0, roll_radius=2.0,
-             roll_on=None, roll_off=None, depthparams=None,
+             horizfeed=0.0, vertrapid=0.0, horizrapid=0.0, offset_extra=0.0,
+             roll_radius=2.0, roll_on=None, roll_off=None, depthparams=None,
              extend_at_start=0.0, extend_at_end=0.0, lead_in_line_len=0.0,
              lead_out_line_len=0.0):
 
-    # print "direction: " + str(direction)
-    # print "radius: " + str(radius)
-    # print "vertfeed: " + str(vertfeed)
-    # print "horizfeed: " + str(horizfeed)
-    # print "offset_extra: " + str(offset_extra)
-    # print "roll_radius: " + str(roll_radius)
-    # print "roll_on: " + str(roll_on)
-    # print "roll_off: " + str(roll_off)
-    # print "depthparams: " + str(depthparams)
-    # print "extend_at_start: " + str(extend_at_start)
-    # print "extend_at_end: " + str(extend_at_end)
-    # print "lead_in_line_len: " + str(lead_in_line_len)
-    # print "lead_out_line_len: " + str(lead_out_line_len)
+    print "direction: " + str(direction)
+    print "radius: " + str(radius)
+    print "vertfeed: " + str(vertfeed)
+    print "horizfeed: " + str(horizfeed)
+    print "offset_extra: " + str(offset_extra)
+    print "roll_radius: " + str(roll_radius)
+    print "roll_on: " + str(roll_on)
+    print "roll_off: " + str(roll_off)
+    print "depthparams: " + str(depthparams)
+    print "extend_at_start: " + str(extend_at_start)
+    print "extend_at_end: " + str(extend_at_end)
+    print "lead_in_line_len: " + str(lead_in_line_len)
+    print "lead_out_line_len: " + str(lead_out_line_len)
+    print "in profile2: 318"
 
     global tags
     direction = direction.lower()
     offset_curve = area.Curve(curve)
+    print "curve: " , str(curve) 
+    print "result curve: ", offset_curve.__dict__
+
     if direction == "on":
         use_CRC() == False
 
@@ -340,8 +344,10 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
                         using_area_for_offset = True
                         a = area.Area()
                         a.append(curve)
+                        print "curve, offset: " , str(curve), str(offset)
                         a.Offset(-offset)
                         for curve in a.getCurves():
+                            print "result curve: ", curve
                             curve_cw = curve.IsClockwise()
                             if cw != curve_cw:
                                 curve.Reverse()
@@ -424,15 +430,17 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
         # start point
         if (endpoint is None) or (endpoint != s):
             if use_CRC():
-                rapid(crc_start_point.x, crc_start_point.y)
+                rapid(crc_start_point.x, crc_start_point.y) + "F " + horizrapid + "\n"
             else:
-                rapid(s.x, s.y)
+                rapid(s.x, s.y) #+ "F " + str(horizrapid) + "\n"
 
             # rapid down to just above the material
             if endpoint is None:
-                rapid(z=mat_depth + depthparams.rapid_safety_space)
+                rapid(z=mat_depth + depthparams.rapid_safety_space) #+ "F " + vertrapid + "\n"
+
             else:
-                rapid(z=mat_depth)
+                rapid(z=mat_depth) #+ "F " + str(vertrapid) + "\n"
+
 
         # feed down to depth
         mat_depth = depth
@@ -481,7 +489,7 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
             add_CRC_end_line(offset_curve, roll_on_curve, roll_off_curve,
                              radius, direction, crc_end_point, lead_out_line_len)
             if direction == "on":
-                rapid(z=depthparams.clearance_height)
+                rapid(z=depthparams.clearance_height) #+ "F " + vertrapid + "\n"
             else:
                 feed(crc_end_point.x, crc_end_point.y)
 
@@ -493,11 +501,11 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
 
         if endpoint != s:
             # rapid up to the clearance height
-            rapid(z=depthparams.clearance_height)
+            rapid(z=depthparams.clearance_height)# + "F " + vertrapid + "\n"
 
         prev_depth = depth
 
-    rapid(z=depthparams.clearance_height)
+    rapid(z=depthparams.clearance_height)# + "F " + vertrapid + "\n"
 
     del offset_curve
 

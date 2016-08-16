@@ -230,7 +230,7 @@ class ObjectPocket:
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
-        output += 'G0 Z' + fmt(obj.ClearanceHeight.Value) + "\n"
+        output += 'G0 Z' + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
 
         offsets = []
         nextradius = self.radius + extraoffset
@@ -318,9 +318,9 @@ class ObjectPocket:
                             else:
                                 print "WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp"
                                 startPoint = edge.Vertexes[0].Point
-                                output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "\n"
+                                output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
                                 output += "G0 X" + fmt(startPoint.x) + " Y" + fmt(startPoint.y) +\
-                                          " Z" + fmt(obj.ClearanceHeight.Value) + "\n"
+                                          " Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.horizRapid) + "\n"
                             first = False
                         # then move slow down to our starting point for our profile
                         last = edge.Vertexes[0].Point
@@ -349,7 +349,7 @@ class ObjectPocket:
                         last = point
 
         # move back up
-        output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "\n"
+        output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
         return output
 
     # To reload this from FreeCAD, use: import PathScripts.PathPocket; reload(PathScripts.PathPocket)
@@ -359,12 +359,16 @@ class ObjectPocket:
         if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
             self.horizFeed = 100
+            self.vertRapid = 100
+            self.horiRrapid = 100
             self.radius = 0.25
             obj.ToolNumber = 0
             obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
+            self.vertRapid = toolLoad.VertRapid.Value
+            self.horizRapid = toolLoad.HorizRapid.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             if tool.Diameter == 0:
                 self.radius = 0.25
