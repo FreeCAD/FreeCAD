@@ -470,6 +470,7 @@ ObjectIdentifier::Component::Component(const String &_component, ObjectIdentifie
     , type(_type)
     , index(_index)
     , key(_key)
+    , keyIsString(false)
 {
 }
 
