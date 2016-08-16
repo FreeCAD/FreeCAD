@@ -79,7 +79,7 @@ class FemWorkbench (Workbench):
                 FreeCAD.Console.PrintError(e.message)
 
         import os
-        working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+        working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General").GetString("WorkingDir")
         if not (os.path.isdir(working_dir)):
             try:
                 os.makedirs(working_dir)
@@ -89,7 +89,7 @@ class FemWorkbench (Workbench):
                 working_dir = tempfile.gettempdir()
                 print ("Dir \'{}\' will be used instead.".format(working_dir))
         if working_dir:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("WorkingDir", working_dir)
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General").SetString("WorkingDir", working_dir)
         else:
             FreeCAD.Console.PrintError("Setting working directory \'{}\' for ccx failed!\n")
 

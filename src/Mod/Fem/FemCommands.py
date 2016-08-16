@@ -103,7 +103,7 @@ class FemCommands(object):
                 for acnstrmesh in FemGui.getActiveAnalysis().Member:
                     # if "Constraint" in acnstrmesh.TypeId:
                     #     acnstrmesh.ViewObject.Visibility = False
-                    fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+                    fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
                     hide_constraints = fem_prefs.GetBool("HideConstraint", False)
                     if hide_constraints:
                         if "Constraint" in acnstrmesh.TypeId:
