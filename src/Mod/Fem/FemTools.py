@@ -85,7 +85,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
     #  @param self The python object self
     def reset_mesh_purge_results_checked(self):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
             self.purge_results()
@@ -420,7 +420,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             try:
                 self.analysis_type = self.solver.AnalysisType
             except:
-                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
                 self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
 
     ## Sets working dir for solver execution. Called with no working_dir uses WorkingDir from FEM preferences
@@ -432,7 +432,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.working_dir = working_dir
         else:
             self.working_dir = ''
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
             if self.fem_prefs.GetString("WorkingDir"):
                 try:
                     self.working_dir = self.fem_prefs.GetString("WorkingDir")

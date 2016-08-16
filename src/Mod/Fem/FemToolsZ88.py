@@ -100,7 +100,7 @@ class FemToolsZ88(FemTools.FemTools):
     def setup_z88(self, z88_binary=None):
         from platform import system
         if not z88_binary:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
             z88_binary = self.fem_prefs.GetString("z88BinaryPath", "")
         if not z88_binary:
             if system() == "Linux":
