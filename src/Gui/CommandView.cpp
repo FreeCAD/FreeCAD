@@ -812,13 +812,13 @@ void StdCmdToggleSelectability::activated(int iMsg)
  
         for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
-            if(pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
-                    if (dynamic_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
-                        doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
-                                     , (*it)->getName(), (*ft)->getNameInDocument());
-                    else
-                        doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
-                                     , (*it)->getName(), (*ft)->getNameInDocument());
+            if (pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
+                if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
+                    doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
+                                 , (*it)->getName(), (*ft)->getNameInDocument());
+                else
+                    doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
+                                 , (*it)->getName(), (*ft)->getNameInDocument());
             }
         }
     }
