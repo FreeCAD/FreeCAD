@@ -56,6 +56,7 @@ ColorModel& ColorModel::operator = (const ColorModel &rclM)
         return *this;
 
     delete [] _pclColors;
+    _pclColors = 0;
 
     _usColors = rclM._usColors;
     if (_usColors == 0)
