@@ -27,7 +27,7 @@ import Path
 from PySide import QtCore, QtGui
 import os
 import glob
-import PathLoadTool
+#import PathLoadTool
 import Draft
 
 
@@ -123,14 +123,14 @@ class ObjectPathJob:
                 obj.Y_Min = current_post.CORNER_MIN['y']
                 obj.Z_Min = current_post.CORNER_MIN['z']
 
-    def getToolControllers(self, obj):
-        '''returns a list of ToolControllers for the current job'''
-        controllers = []
-        for o in obj.Group:
-            if "Proxy" in o.PropertiesList:
-                if isinstance(o.Proxy, PathLoadTool.LoadTool):
-                    controllers.append (o.Name)
-        return controllers
+    # def getToolControllers(self, obj):
+    #     '''returns a list of ToolControllers for the current job'''
+    #     controllers = []
+    #     for o in obj.Group:
+    #         if "Proxy" in o.PropertiesList:
+    #             if isinstance(o.Proxy, PathLoadTool.LoadTool):
+    #                 controllers.append (o.Name)
+    #     return controllers
 
 
     def execute(self, obj):
@@ -204,19 +204,23 @@ class CommandJob:
         FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
         FreeCADGui.addModule('PathScripts.PathUtils')
         FreeCADGui.addModule('PathScripts.PathLoadTool')
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")')
-        FreeCADGui.doCommand('PathScripts.PathJob.ObjectPathJob(obj)')
-        FreeCADGui.doCommand('PathScripts.PathLoadTool.CommandPathLoadTool.Create(obj.Name)')
-        FreeCADGui.doCommand('obj.ViewObject.startEditing()')
-        # FreeCADGui.doCommand('tool = Path.Tool()')
-        # FreeCADGui.doCommand('tool')
-        # FreeCADGui.doCommand('tool.Diameter = 5.0')
-        # FreeCADGui.doCommand('tool.Name = "Default Tool"')
-        # FreeCADGui.doCommand('tool.cuttingEdgeHeight = 15.0')
-        # FreeCADGui.doCommand('tool.ToolType = "EndMill"')
-        # FreeCADGui.doCommand('tool.Material = "HighSpeedSteel"')
-        # FreeCADGui.doCommand('obj.ToolTable.addTools(tool)')
-
+        snippet = '''
+import PathScripts.PathLoadTool as PathLoadTool
+obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
+PathScripts.PathJob.ObjectPathJob(obj)
+PathLoadTool.CommandPathLoadTool.Create(obj.Name)
+tl = obj.Group[0]
+obj.ViewObject.startEditing()
+tool = Path.Tool()
+tool.Diameter = 5.0
+tool.Name = "Default Tool"
+tool.CuttingEdgeHeight = 15.0
+tool.ToolType = "EndMill"
+tool.Material = "HighSpeedSteel"
+obj.Tooltable.addTools(tool)
+tl.ToolNumber = 1
+'''
+        FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
 
 
