@@ -36,7 +36,7 @@
 using namespace MeshCore;
 
 
-MeshBuilder::MeshBuilder (MeshKernel& kernel) : _meshKernel(kernel), _seq(0)
+MeshBuilder::MeshBuilder (MeshKernel& kernel) : _meshKernel(kernel), _seq(0), _ptIdx(0)
 {
     _fSaveTolerance = MeshDefinitions::_fMinPointDistanceD1;
 }

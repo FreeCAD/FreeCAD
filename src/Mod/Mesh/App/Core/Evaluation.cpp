@@ -508,7 +508,7 @@ void MeshEvalPointManifolds::GetFacetIndices (std::vector<unsigned long> &facets
 bool MeshEvalSingleFacet::Evaluate ()
 {
   // get all non-manifolds
-  MeshEvalTopology::Evaluate();
+  (void)MeshEvalTopology::Evaluate();
 /*
   // for each (multiple) single linked facet there should
   // exist two valid facets sharing the same edge 

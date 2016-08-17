@@ -409,7 +409,12 @@ namespace MeshGui {
 /* TRANSLATOR MeshGui::MeshFillHole */
 
 MeshFillHole::MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent)
-  : QObject(parent), myMesh(0), myNumPoints(0), myHoleFiller(hf)
+  : QObject(parent)
+  , myMesh(0)
+  , myNumPoints(0)
+  , myVertex1(0)
+  , myVertex2(0)
+  , myHoleFiller(hf)
 {
     myBoundariesRoot = new SoSeparator;
     myBoundariesRoot->ref();

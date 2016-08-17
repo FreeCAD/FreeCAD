@@ -1028,7 +1028,7 @@ void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
                                             std::vector<unsigned long>& indices) const
 {
 #if 1
-    bool ok = true;
+    const bool ok = true;
     Base::Polygon2D polygon;
     for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
         polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
@@ -1890,6 +1890,8 @@ PROPERTY_SOURCE(MeshGui::ViewProviderIndexedFaceSet, MeshGui::ViewProviderMesh)
 
 ViewProviderIndexedFaceSet::ViewProviderIndexedFaceSet()
 {
+    pcMeshCoord = 0;
+    pcMeshFaces = 0;
 }
 
 ViewProviderIndexedFaceSet::~ViewProviderIndexedFaceSet()
@@ -1979,6 +1981,8 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshObject, MeshGui::ViewProviderMesh)
 
 ViewProviderMeshObject::ViewProviderMeshObject()
 {
+    pcMeshNode = 0;
+    pcMeshShape = 0;
 }
 
 ViewProviderMeshObject::~ViewProviderMeshObject()

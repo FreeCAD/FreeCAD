@@ -145,7 +145,7 @@ void ViewProviderMeshOrientation::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderMeshOrientation::showDefects(const std::vector<unsigned long>& inds)
 {
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
 
     pcCoords->point.deleteValues(0);
@@ -212,7 +212,7 @@ void ViewProviderMeshNonManifolds::showDefects(const std::vector<unsigned long>&
 {
     if ((inds.size() % 2) != 0)
         return;
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
 
     pcCoords->point.deleteValues(0);
@@ -275,7 +275,7 @@ void ViewProviderMeshNonManifoldPoints::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderMeshNonManifoldPoints::showDefects(const std::vector<unsigned long>& inds)
 {
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(inds.size());
@@ -339,7 +339,7 @@ void ViewProviderMeshDuplicatedFaces::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderMeshDuplicatedFaces::showDefects(const std::vector<unsigned long>& inds)
 {
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
 
     pcCoords->point.deleteValues(0);
@@ -404,7 +404,7 @@ void ViewProviderMeshDuplicatedPoints::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderMeshDuplicatedPoints::showDefects(const std::vector<unsigned long>& inds)
 {
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(inds.size());
@@ -461,7 +461,7 @@ void ViewProviderMeshDegenerations::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderMeshDegenerations::showDefects(const std::vector<unsigned long>& inds)
 {
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
 
     pcCoords->point.deleteValues(0);
@@ -567,7 +567,7 @@ void ViewProviderMeshIndices::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderMeshIndices::showDefects(const std::vector<unsigned long>& inds)
 {
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
 
     if (!inds.empty()) {
@@ -636,7 +636,7 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<unsigned l
 {
     if (indices.size() % 2 != 0)
         return;
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     MeshCore::MeshEvalSelfIntersection eval(rMesh);
   
@@ -714,7 +714,7 @@ void ViewProviderMeshFolds::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderMeshFolds::showDefects(const std::vector<unsigned long>& inds)
 {
-    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
 
     pcCoords->point.deleteValues(0);

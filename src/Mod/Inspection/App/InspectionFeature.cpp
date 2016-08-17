@@ -751,8 +751,11 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         }
     }
 
-    fRMS = fRMS / countRMS;
-    fRMS = sqrt(fRMS);
+    if (countRMS > 0) {
+        fRMS = fRMS / countRMS;
+        fRMS = sqrt(fRMS);
+    }
+
     Base::Console().Message("RMS value for '%s' with search radius=%.4f is: %.4f\n",
         this->Label.getValue(), this->SearchRadius.getValue(), fRMS);
 
