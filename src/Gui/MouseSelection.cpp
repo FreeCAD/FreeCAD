@@ -505,32 +505,31 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
     const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
 
     if (press) {
-        switch(button)
-        {
+        switch(button) {
         case SoMouseButtonEvent::BUTTON1:
-        {
-            if (!polyline.isWorking()) {
-                polyline.setWorking(true);
-                polyline.clear();
-            };
-            polyline.addNode(pos);
-            polyline.setCoords(pos.x(), pos.y());
-            m_iXnew = pos.x();  m_iYnew = pos.y();
-            m_iXold = pos.x();  m_iYold = pos.y();
-        }
-        break;
+            {
+                if (!polyline.isWorking()) {
+                    polyline.setWorking(true);
+                    polyline.clear();
+                }
+
+                polyline.addNode(pos);
+                polyline.setCoords(pos.x(), pos.y());
+                m_iXnew = pos.x();  m_iYnew = pos.y();
+                m_iXold = pos.x();  m_iYold = pos.y();
+            }
+            break;
 
         case SoMouseButtonEvent::BUTTON2:
-        {
-             polyline.addNode(pos);
-             m_iXnew = pos.x();  m_iYnew = pos.y();
-             m_iXold = pos.x();  m_iYold = pos.y();
-        }
-        break;
+            {
+                 polyline.addNode(pos);
+                 m_iXnew = pos.x();  m_iYnew = pos.y();
+                 m_iXold = pos.x();  m_iYold = pos.y();
+            }
+            break;
 
         default:
-        {
-        }   break;
+            break;
         }
     }
     // release
@@ -542,31 +541,31 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
                 releaseMouseModel();
                 return Finish;
             }
+            break;
         case SoMouseButtonEvent::BUTTON2:
-        {
-            QCursor cur = _pcView3D->getWidget()->cursor();
-            _pcView3D->getWidget()->setCursor(m_cPrevCursor);
+            {
+                QCursor cur = _pcView3D->getWidget()->cursor();
+                _pcView3D->getWidget()->setCursor(m_cPrevCursor);
 
-            // The pop-up menu should be shown when releasing mouse button because
-            // otherwise the navigation style doesn't get the UP event and gets into
-            // an inconsistent state.
-            int id = popupMenu();
+                // The pop-up menu should be shown when releasing mouse button because
+                // otherwise the navigation style doesn't get the UP event and gets into
+                // an inconsistent state.
+                int id = popupMenu();
 
-            if (id == Finish || id == Cancel) {
-                releaseMouseModel();
+                if (id == Finish || id == Cancel) {
+                    releaseMouseModel();
+                }
+                else if (id == Restart) {
+                    _pcView3D->getWidget()->setCursor(cur);
+                }
+
+                polyline.setWorking(false);
+                return id;
             }
-            else if (id == Restart) {
-                _pcView3D->getWidget()->setCursor(cur);
-            }
-
-            polyline.setWorking(false);
-            return id;
-        }
-        break;
+            break;
 
         default:
-        {
-        }   break;
+            break;
         }
     }
 
