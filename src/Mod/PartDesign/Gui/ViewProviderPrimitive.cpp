@@ -56,7 +56,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive,PartDesignGui::ViewProvider
 
 ViewProviderPrimitive::ViewProviderPrimitive()
 {
-    
+    previewFaceSet = 0;
 }
 
 ViewProviderPrimitive::~ViewProviderPrimitive()
