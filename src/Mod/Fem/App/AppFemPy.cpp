@@ -140,8 +140,7 @@ private:
         FemMeshObject *pcFeature = static_cast<FemMeshObject *>
             (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
         pcFeature->Label.setValue(file.fileNamePure().c_str());
-        pcFeature->FemMesh.setValuePtr(mesh.get());
-        (void)mesh.release();
+        pcFeature->FemMesh.setValuePtr(mesh.release());
         pcFeature->purgeTouched();
 
         return Py::None();
@@ -175,8 +174,7 @@ private:
             FemMeshObject *pcFeature = static_cast<FemMeshObject *>
                 (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
             pcFeature->Label.setValue(file.fileNamePure().c_str());
-            pcFeature->FemMesh.setValuePtr(mesh.get());
-            (void)mesh.release();
+            pcFeature->FemMesh.setValuePtr(mesh.release());
             pcFeature->purgeTouched();
         }
         catch(Base::Exception& e) {

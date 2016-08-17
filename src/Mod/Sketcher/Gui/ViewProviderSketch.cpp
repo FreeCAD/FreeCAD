@@ -2698,7 +2698,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 
     // Tracks all constraint IDs that are combined into this icon
     QString idString;
-    int lastVPad;
+    int lastVPad = 0;
 
     QStringList labels;
     std::vector<int> ids;
