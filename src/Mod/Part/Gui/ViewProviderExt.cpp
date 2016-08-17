@@ -657,7 +657,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& col
     else if (colors.size() == 1) {
         pcShapeBind->value = SoMaterialBinding::OVERALL;
         pcShapeMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
-        pcShapeMaterial->transparency = colors[0].a;
+        //pcShapeMaterial->transparency = colors[0].a; do not get transparency from DiffuseColor in this case
     }
 }
 
