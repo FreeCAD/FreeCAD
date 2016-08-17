@@ -634,8 +634,6 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
     catch(...) {
         throw Py::Exception("Unknown C++ exception");
     }
-
-    return Py::None();
 }
 
 Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)

@@ -1425,25 +1425,25 @@ PyObject* Document::getPyObject(void)
 void Document::handleChildren3D(ViewProvider* viewProvider)
 {
     // check for children
-    if (viewProvider->getChildRoot()) {
+    if (viewProvider && viewProvider->getChildRoot()) {
         std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
         SoGroup* childGroup =  viewProvider->getChildRoot();
 
         // size not the same -> build up the list new
-        if(childGroup->getNumChildren() != static_cast<int>(children.size())){
+        if (childGroup->getNumChildren() != static_cast<int>(children.size())) {
 
             childGroup->removeAllChildren();
 
-            for(std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it){
+            for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
                 ViewProvider* ChildViewProvider = getViewProvider(*it);
-                if(ChildViewProvider) {
+                if (ChildViewProvider) {
                     SoSeparator* childRootNode =  ChildViewProvider->getRoot();
                     childGroup->addChild(childRootNode);
 
                     // cycling to all views of the document to remove the viewprovider from the viewer itself
                     for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
                         View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-                        if (activeView && viewProvider && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+                        if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
                             // Note about hasViewProvider()
                             //remove the viewprovider serves the purpose of detaching the inventor nodes from the
                             //top level root in the viewer. However, if some of the children were grouped beneath the object
