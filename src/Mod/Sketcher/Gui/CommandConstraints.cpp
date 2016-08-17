@@ -1659,7 +1659,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() != 2 && SubNames.size() != 3) {
+    if (!Obj || (SubNames.size() != 2 && SubNames.size() != 3)) {
         strError = QObject::tr("Wrong number of selected objects!","perpendicular constraint");
         if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
