@@ -1219,6 +1219,15 @@ class Snapper:
             if self.grid.Visible:
                 self.grid.set()
             self.setTrackers()
+            
+    def respawnGrid(self):
+        "recreates a grid in the current view if needed"
+        if self.grid:
+            if Draft.getParam("grid",True):
+                if FreeCADGui.ActiveDocument:
+                    s = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+                    if not s.getByName("gridTracker"):
+                        self.grid = DraftTrackers.gridTracker()
 
     def setTrackers(self):
         v = Draft.get3DView()

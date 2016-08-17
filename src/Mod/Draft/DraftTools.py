@@ -4318,6 +4318,7 @@ class ToggleGrid():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             if FreeCADGui.Snapper.grid:
+                FreeCADGui.Snapper.respawnGrid()
                 if FreeCADGui.Snapper.grid.Visible:
                     FreeCADGui.Snapper.grid.off()
                     FreeCADGui.Snapper.forceGridOff=True
