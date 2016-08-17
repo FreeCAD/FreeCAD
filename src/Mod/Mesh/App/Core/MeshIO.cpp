@@ -1793,7 +1793,8 @@ bool MeshOutput::SaveBinarySTL (std::ostream &rstrOut) const
         return false;
 
     Base::SequencerLauncher seq("saving...", _rclMesh.CountFacets() + 1);  
- 
+
+    // stl_header has a length of 80
     strcpy(szInfo, stl_header.c_str());
     rstrOut.write(szInfo, std::strlen(szInfo));
 

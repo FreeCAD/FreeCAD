@@ -36,7 +36,11 @@
 using namespace MeshCore;
 
 
-AbstractSmoothing::AbstractSmoothing(MeshKernel& m) : kernel(m)
+AbstractSmoothing::AbstractSmoothing(MeshKernel& m)
+  : kernel(m)
+  , tolerance(0)
+  , component(Normal)
+  , continuity(C0)
 {
 }
 

@@ -65,6 +65,8 @@ ViewProviderMeshTransformDemolding::ViewProviderMeshTransformDemolding()
 {
   pcTrackballDragger = new SoTrackballDragger;
   pcTrackballDragger->ref();
+  pcTransformDrag = 0;
+  pcColorMat = 0;
 }
 
 ViewProviderMeshTransformDemolding::~ViewProviderMeshTransformDemolding()
@@ -122,7 +124,7 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject *pcFeat)
   calcNormalVector();
   calcMaterialIndex(SbRotation());
   // geting center point
-  center = dynamic_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
+  center = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
 
   //SoGetBoundingBoxAction  boxAction;
   //pcHighlight->getBoundingBox(&boxAction);
@@ -131,7 +133,7 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderMeshTransformDemolding::calcNormalVector(void)
 {
-  const MeshKernel& cMesh = dynamic_cast<Feature*>(pcObject)->Mesh.getValue().getKernel();
+  const MeshKernel& cMesh = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel();
 
   MeshFacetIterator cFIt(cMesh);
   for( cFIt.Init(); cFIt.More(); cFIt.Next())
