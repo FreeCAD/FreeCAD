@@ -751,6 +751,10 @@ class ViewProviderComponent:
 
     def claimChildren(self):
         if hasattr(self,"Object"):
+            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            swalA = prefs.GetBool("swallowAdditions",True)
+            swalS = prefs.GetBool("swallowSubtractions",True)
+            swalW = prefs.GetBool("swallowWindows",True)
             c = []
             if hasattr(self.Object,"Base"):
                 if Draft.getType(self.Object) != "Wall":
@@ -759,12 +763,15 @@ class ViewProviderComponent:
                     c = []
                 else:
                     c = [self.Object.Base]
-            if hasattr(self.Object,"Additions"):
+            if hasattr(self.Object,"Additions") and swalA:
                 c.extend(self.Object.Additions)
-            if hasattr(self.Object,"Subtractions"):
+            if hasattr(self.Object,"Subtractions") and swalS:
                 for s in self.Object.Subtractions:
                     if Draft.getType(self.Object) == "Wall":
                         if Draft.getType(s) == "Roof":
+                            continue
+                    if (Draft.getType(s) == "Window") or Draft.isCloneOf(s,"Window"):
+                        if not swalW:
                             continue
                     c.append(s)
             if hasattr(self.Object,"Armatures"):
