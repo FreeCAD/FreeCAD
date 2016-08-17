@@ -843,6 +843,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def unsetEdit(self,vobj,mode):
         vobj.DisplayMode = self.sets[0]
         vobj.Transparency = self.sets[1]
+        vobj.DiffuseColor = vobj.DiffuseColor # reset face colors
         if self.Object.Base:
             self.Object.Base.ViewObject.hide()
         FreeCADGui.Control.closeDialog()
