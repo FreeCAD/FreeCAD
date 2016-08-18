@@ -661,17 +661,19 @@ class Component:
                         if not placement.isNull():
                             obj.Placement = placement
                     else:
-                        FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
                         if allownosolid:
                             obj.Shape = shape
                             if not placement.isNull():
                                 obj.Placement = placement
+                        else:
+                            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
                 else:
-                    FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
                     if allowinvalid:
                         obj.Shape = shape
                         if not placement.isNull():
                             obj.Placement = placement
+                    else:
+                        FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
             else:
                 FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has a null shape")+"\n")
 
