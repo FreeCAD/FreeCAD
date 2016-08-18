@@ -280,7 +280,7 @@ class _Equipment(ArchComponent.Component):
                     base = base.removeSplitteR()
                 if base:
                     base = self.processSubShapes(obj,base,pl)
-                    self.applyShape(obj,base,pl)
+                    self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)
 
 
 class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
