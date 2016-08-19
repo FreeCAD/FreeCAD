@@ -569,15 +569,42 @@ class Line(Creator):
 
 class Wire(Line):
     "a FreeCAD command for creating a wire"
+
     def __init__(self):
         Line.__init__(self,wiremode=True)
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Wire',
                 'Accel' : "W, I",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "DWire"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
+
     def Activated(self):
-        Line.Activated(self,name=translate("draft","DWire"))
+
+        # allow to convert several Draft Lines to a Wire
+        if len(FreeCADGui.Selection.getSelection()) > 1:
+            edges = []
+            for o in FreeCADGui.Selection.getSelection():
+                if Draft.getType(o) != "Wire":
+                    edges  = []
+                    break
+                edges.extend(o.Shape.Edges)
+            if edges:
+                try:
+                    import Part
+                    w = Part.Wire(edges)
+                except:
+                    msg(translate("draft", "Unable to create a Wire from selected objects\n"),mode="error")
+                else:
+                    pts = ",".join([str(v.Point) for v in w.Vertexes])
+                    pts = pts.replace("Vector","FreeCAD.Vector")
+                    rems = ["FreeCAD.ActiveDocument.removeObject(\""+o.Name+"\")" for o in FreeCADGui.Selection.getSelection()]
+                    FreeCADGui.addModule("Draft")
+                    todo.delayCommit([(translate("draft","Convert to Wire"),
+                            ['Draft.makeWire(['+pts+'])']+rems)])
+                    return
+
+            Line.Activated(self,name=translate("draft","DWire"))
 
 
 class BSpline(Line):
