@@ -192,9 +192,9 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->lineRef4->blockSignals(false);
     ui->listOfModes->blockSignals(false);
 
+    this->iActiveRef = 0;
     if (pcDatum->Support.getSize() == 0){
         autoNext = true;
-        this->iActiveRef = 0;
     } else {
         autoNext = false;
     }

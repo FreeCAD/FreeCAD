@@ -64,7 +64,7 @@ TYPESYSTEM_SOURCE(Measure::Measurement, Base::BaseClass)
 
 Measurement::Measurement()
 {
-
+    measureType = Invalid;
 }
 
 Measurement::~Measurement()
