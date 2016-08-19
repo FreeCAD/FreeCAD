@@ -926,10 +926,11 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs) {
 
 bool _checkDrawViewPart(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if(!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("No DrawViewPart in selection."));
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( !objFeat ) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                              QObject::tr("Incorrect selection"),
+                              QObject::tr("No DrawViewPart in selection.") );
         return false;
     }
     return true;
@@ -953,9 +954,14 @@ bool _checkPartFeature(Gui::Command* cmd) {
 
 //! verify that Selection contains a valid Geometry for a single Edge Dimension
 int _isValidSingleEdge(Gui::Command* cmd) {
-    int edgeType = isInvalid;
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    auto edgeType( isInvalid );
+    auto selection( cmd->getSelection().getSelectionEx() );
+
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( objFeat == nullptr ) {
+        return isInvalid;
+    }
+
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"

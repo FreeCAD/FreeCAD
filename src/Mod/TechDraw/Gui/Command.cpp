@@ -302,13 +302,13 @@ void CmdTechDrawNewView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     Gui::WaitCursor wc;
-    const std::vector<App::DocumentObject*> selectedProjections = getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId());
+    const auto selectedProjections( getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()) );
 
     float newScale = 1.0;
     float newRotation = 0.0;
     Base::Vector3d newDirection(0.0, 0.0, 1.0);
     if (!selectedProjections.empty()) {
-        const TechDraw::DrawView* const myView = dynamic_cast<TechDraw::DrawView*>(selectedProjections.front());
+        const auto myView( static_cast<TechDraw::DrawView*>(selectedProjections.front()) );
 
         newScale = myView->Scale.getValue();
         newRotation = myView->Rotation.getValue();
@@ -435,7 +435,7 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",multiViewName.c_str(),SourceName.c_str());
 
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
-    TechDraw::DrawProjGroup *multiView = dynamic_cast<TechDraw::DrawProjGroup *>(docObj);
+    auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
 
     // set the anchor
     std::string anchor = "Front";
@@ -642,32 +642,31 @@ CmdTechDrawClipMinus::CmdTechDrawClipMinus()
 
 void CmdTechDrawClipMinus::activated(int iMsg)
 {
-    std::vector<App::DocumentObject*> dObj = getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId());
+    auto dObj( getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()) );
     if (dObj.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one Drawing View object."));
+        QMessageBox::warning( Gui::getMainWindow(),
+                              QObject::tr("Wrong selection"),
+                              QObject::tr("Select exactly one Drawing View object.") );
         return;
     }
-    TechDraw::DrawView* view = dynamic_cast<TechDraw::DrawView*>(dObj.front());
 
-    bool clipFound = false;
+    auto view( static_cast<TechDraw::DrawView*>(dObj.front()) );
+
     TechDraw::DrawPage* page = view->findParentPage();
     const std::vector<App::DocumentObject*> pViews = page->Views.getValues();
-    TechDraw::DrawViewClip* clip = 0;
-    for (auto& v:pViews)     {
-        clip = nullptr;
-        if (v->isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
-            clip = dynamic_cast<TechDraw::DrawViewClip*>(v);
-            if (clip->isViewInClip(view)) {
-                clipFound = true;
-                break;
-            }
+    TechDraw::DrawViewClip *clip(nullptr);
+    for (auto &v : pViews) {
+        clip = dynamic_cast<TechDraw::DrawViewClip*>(v);
+        if (clip && clip->isViewInClip(view)) {
+            break;
         }
+        clip = nullptr;
     }
 
-    if (!clipFound) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("View does not belong to a Clip"));
+    if (!clip) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                              QObject::tr("Wrong selection"),
+                              QObject::tr("View does not belong to a Clip") );
         return;
     }
 

@@ -196,7 +196,10 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 {
     // Get the currently assigned anchor view
     App::DocumentObject *anchorObj = getDrawView()->Anchor.getValue();
-    TechDraw::DrawView *anchorView = dynamic_cast<TechDraw::DrawView *>(anchorObj);
+    auto anchorView( dynamic_cast<TechDraw::DrawView *>(anchorObj) );
+    if( anchorView == nullptr ) {
+        return nullptr;
+    }
 
     // Locate the anchor view's qgraphicsitemview
     QList<QGraphicsItem*> list = childItems();
