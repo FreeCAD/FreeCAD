@@ -54,6 +54,7 @@ using namespace Gui;
 
 TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent, bool newObj)
     : TaskSketchBasedParameters(PocketView, parent, "PartDesign_Pocket",tr("Pocket parameters"))
+    , oldLength(0)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
