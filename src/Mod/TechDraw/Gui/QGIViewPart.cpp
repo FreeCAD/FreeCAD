@@ -231,14 +231,13 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
 void QGIViewPart::updateView(bool update)
 {
-    if (getViewObject() == 0 ||
-        !getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    if( viewPart == nullptr ) {
         return;
     }
 
     QGIView::updateView(update);
 
-    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
 
     if (update ||
        viewPart->isTouched() ||
@@ -276,12 +275,10 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
-    if ( getViewObject() == 0 ||
-         !getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    if ( viewPart == nullptr ) {
         return;
     }
-
-    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
 
     float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
