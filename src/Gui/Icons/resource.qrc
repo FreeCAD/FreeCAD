@@ -146,6 +146,7 @@
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>
         <file>Std_WindowTileVer.svg</file>
+        <file>WhatsThis.svg</file>
         <file>colors.svg</file>
         <file>px.svg</file>
     </qresource>
