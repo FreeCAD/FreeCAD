@@ -53,8 +53,6 @@
 #include <App/Application.h>
 
 #include "BitmapFactory.h"
-#include "Icons/images.cpp"
-#include "Icons/BmpFactoryIcons.cpp"
 
 using namespace Gui;
 
@@ -118,8 +116,6 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
         _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));
-
-        RegisterIcons();
     }
 
     return *_pcSingleton;
