@@ -60,20 +60,16 @@ void QGIViewSection::draw()
 
 void QGIViewSection::drawSectionFace()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId()))
-        return;
-
-    TechDraw::DrawViewSection *section = dynamic_cast<TechDraw::DrawViewSection *>(getViewObject());
-    if (!section->hasGeometry()) {
+    auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
+    if( section == nullptr ) {
         return;
     }
 
-    if (!section->ShowCutSurface.getValue()) {
+    if ( !section->hasGeometry() || !section->ShowCutSurface.getValue() ) {
         return;
     }
 
-    std::vector<TechDrawGeometry::Face*> sectionFaces;
-    sectionFaces = section->getFaceGeometry();
+    auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
         Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
@@ -92,10 +88,10 @@ void QGIViewSection::drawSectionFace()
 
 void QGIViewSection::updateView(bool update)
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
+    auto viewPart( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
+    if( viewPart == nullptr ) {
         return;
-
-    TechDraw::DrawViewSection *viewPart = dynamic_cast<TechDraw::DrawViewSection *>(getViewObject());
+    }
 
     if(update ||
        viewPart->SectionNormal.isTouched() ||

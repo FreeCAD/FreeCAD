@@ -86,10 +86,9 @@ void QGIViewAnnotation::setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj)
 
 void QGIViewAnnotation::updateView(bool update)
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()))
+    auto viewAnno( dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject()) );
+    if( viewAnno == nullptr)
         return;
-
-    TechDraw::DrawViewAnnotation *viewAnno = dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject());
 
     if (update ||
         viewAnno->isTouched() ||
@@ -118,10 +117,10 @@ void QGIViewAnnotation::draw()
 
 void QGIViewAnnotation::drawAnnotation()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()))
+    auto viewAnno( dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject()) );
+    if( viewAnno == nullptr ) {
         return;
-
-    TechDraw::DrawViewAnnotation *viewAnno = dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject());
+    }
 
     const std::vector<std::string>& annoText = viewAnno->Text.getValues();
 

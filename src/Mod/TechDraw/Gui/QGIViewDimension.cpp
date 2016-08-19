@@ -242,10 +242,11 @@ void QGIViewDimension::updateView(bool update)
 
 void QGIViewDimension::updateDim()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()))
+    const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject()) );
+    if( dim == nullptr ) {
         return;
+    }
 
-    const TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
     QString labelText = QString::fromUtf8(dim->getFormatedValue().data(),dim->getFormatedValue().size());
     QFont font = datumLabel->font();
     font.setPointSizeF(dim->Fontsize.getValue());            //scene units (mm), not points
@@ -264,10 +265,11 @@ void QGIViewDimension::datumLabelDragged()
 
 void QGIViewDimension::datumLabelDragFinished()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()))
-        return;
+    auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject()) );
 
-    TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject());
+    if( dim == nullptr ) {
+        return;
+    }
 
     double x = datumLabel->X(),
            y = datumLabel->Y();

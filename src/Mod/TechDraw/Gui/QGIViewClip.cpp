@@ -80,10 +80,10 @@ QVariant QGIViewClip::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void QGIViewClip::updateView(bool update)
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()))
+    auto viewClip( dynamic_cast<TechDraw::DrawViewClip *>(getViewObject()) );
+    if( viewClip == nullptr ) {
         return;
-
-    TechDraw::DrawViewClip *viewClip = dynamic_cast<TechDraw::DrawViewClip *>(getViewObject());
+    }
 
     if (update ||
         viewClip->isTouched() ||
@@ -111,10 +111,11 @@ void QGIViewClip::draw()
 
 void QGIViewClip::drawClip()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()))
-        return;
+    auto viewClip( dynamic_cast<TechDraw::DrawViewClip *>(getViewObject()) );
 
-    TechDraw::DrawViewClip *viewClip = dynamic_cast<TechDraw::DrawViewClip *>(getViewObject());
+    if( viewClip == nullptr ) {
+        return;
+    }
 
     prepareGeometryChange();
     double h = viewClip->Height.getValue();

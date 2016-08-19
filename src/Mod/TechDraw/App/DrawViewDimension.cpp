@@ -367,7 +367,11 @@ double DrawViewDimension::getDimValue() const
             }
             int idx0 = DrawUtil::getIndexFromName(subElements[0]);
             int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-            TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(objects[0]);
+            auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(objects[0]) );
+            if( viewPart == nullptr ) {
+                Base::Console().Message("INFO - DVD::getDimValue - References2D not DrawViewPart\n");
+                return 0.0;
+            }
             TechDrawGeometry::BaseGeom* edge0 = viewPart->getProjEdgeByIndex(idx0);
             TechDrawGeometry::BaseGeom* edge1 = viewPart->getProjEdgeByIndex(idx1);
 

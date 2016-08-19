@@ -166,8 +166,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     setDimensionGroups();
 
     App::DocumentObject *obj = pageGui->getPageObject()->Template.getValue();
-    if(obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
-        TechDraw::DrawTemplate *pageTemplate = dynamic_cast<TechDraw::DrawTemplate *>(obj);
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    if( pageTemplate ) {
         attachTemplate(pageTemplate);
     }
 
