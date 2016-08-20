@@ -1,0 +1,36 @@
+diff -u -r med-3.2.0.orig/include/med_utils.h.in med-3.2.0/include/med_utils.h.in
+--- med-3.2.0.orig/include/med_utils.h.in
++++ med-3.2.0/include/med_utils.h.in
+@@ -251,7 +251,7 @@
+ 					fprintf(stderr,"%s = %llu\n",#entier,entier) ;\
+ 					fflush(stderr) ;\
+ 				}
+-# define ISCRUTE_id(entier) ISCRUTE_int(entier)
++# define ISCRUTE_id(entier) ISCRUTE_llong(entier)
+ # define RSCRUTE(reel)		{\
+ 					ICI ;\
+ 					fprintf(stderr,"%s = %f\n",#reel,reel) ;\
+diff -u -r med-3.2.0.orig/src/2.3.6/ci/MEDequivInfo.c med-3.2.0/src/2.3.6/ci/MEDequivInfo.c
+--- med-3.2.0.orig/src/2.3.6/ci/MEDequivInfo.c
++++ med-3.2.0/src/2.3.6/ci/MEDequivInfo.c
+@@ -24,7 +24,7 @@
+ #include <stdlib.h>
+ 
+ int
+-MEDequivInfo(int fid, char *maa, int ind, char *eq, char *des)
++MEDequivInfo(med_idt fid, char *maa, int ind, char *eq, char *des)
+ {
+   med_idt eqid;
+   med_err ret;
+diff -u -r med-3.2.0.orig/src/hdfi/_MEDselectAllEntitiesNoI.c med-3.2.0/src/hdfi/_MEDselectAllEntitiesNoI.c
+--- med-3.2.0.orig/src/hdfi/_MEDselectAllEntitiesNoI.c
++++ med-3.2.0/src/hdfi/_MEDselectAllEntitiesNoI.c
+@@ -65,7 +65,7 @@
+   if ( (_memspace[0] = H5Screate_simple (1, _memspacesize, NULL)) <0) {
+     MED_ERR_(_ret,MED_ERR_CREATE,MED_ERR_MEMSPACE,MED_ERR_SIZE_MSG);
+     ISCRUTE_size(*_memspacesize);
+-    ISCRUTE_int(_memspace[0]);
++    ISCRUTE_id(_memspace[0]);
+     goto ERROR;
+   }
+ 
