@@ -108,8 +108,6 @@ private:
             out << "Server failed to listen at address " << addr << " and port " << port;
             throw Py::RuntimeError(out.str());
         }
-
-        return Py::None();
     }
 
     Py::Object registerServerFirewall(const Py::Tuple& args)

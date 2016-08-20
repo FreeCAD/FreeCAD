@@ -105,7 +105,7 @@ App::DocumentObjectExecReturn *LuxProject::execute(void)
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
                 if ((*It)->getTypeId().isDerivedFrom(Raytracing::RaySegment::getClassTypeId())) {
-                    Raytracing::RaySegment *View = dynamic_cast<Raytracing::RaySegment *>(*It);
+                    Raytracing::RaySegment *View = static_cast<Raytracing::RaySegment *>(*It);
                     ofile << View->Result.getValue();
                     ofile << endl;
                 }

@@ -45,6 +45,7 @@ using namespace Reen;
 
 SplineBasisfunction::SplineBasisfunction(int iSize)
   : _vKnotVector(0,iSize-1)
+  , _iOrder(1)
 {
 }
 
@@ -557,6 +558,8 @@ ParameterCorrection::ParameterCorrection(unsigned usUOrder, unsigned usVOrder,
   , _usVOrder(usVOrder)
   , _usUCtrlpoints(usUCtrlpoints)
   , _usVCtrlpoints(usVCtrlpoints)
+  , _pvcPoints(0)
+  , _pvcUVParam(0)
   , _vCtrlPntsOfSurf(0,usUCtrlpoints-1,0,usVCtrlpoints-1)
   , _vUKnots(0,usUCtrlpoints-usUOrder+1)
   , _vVKnots(0,usVCtrlpoints-usVOrder+1)

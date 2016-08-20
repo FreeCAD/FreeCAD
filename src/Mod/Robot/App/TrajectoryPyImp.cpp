@@ -28,10 +28,9 @@
 #include "Mod/Robot/App/Trajectory.h"
 
 // inclusion of the generated files (generated out of TrajectoryPy.xml)
-#include "TrajectoryPy.h"
-#include "TrajectoryPy.cpp"
-
-#include "WaypointPy.h"
+#include <Mod/Robot/App/TrajectoryPy.h>
+#include <Mod/Robot/App/TrajectoryPy.cpp>
+#include <Mod/Robot/App/WaypointPy.h>
 
 using namespace Robot;
 
