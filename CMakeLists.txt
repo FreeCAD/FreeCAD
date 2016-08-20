@@ -618,9 +618,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     find_package(SWIG)
 
     IF(NOT SWIG_FOUND)
-        MESSAGE("==================================================\n"
-                "SWIG not found, don't build SWIG binding for pivy.\n"
-                "==================================================\n")
+        MESSAGE("=====================================================\n"
+                "SWIG not found, will not build SWIG binding for pivy.\n"
+                "=====================================================\n")
     ENDIF(NOT SWIG_FOUND)
 
 # -------------------------------- Eigen --------------------------------
@@ -651,15 +651,15 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     include(${QT_USE_FILE})
 
     IF(NOT QT4_FOUND)
-        MESSAGE(FATAL_ERROR "=======================\n"
-                            "Qt libraries not found.\n"
-                            "=======================\n")
+        MESSAGE(FATAL_ERROR "========================\n"
+                            "Qt4 libraries not found.\n"
+                            "========================\n")
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("=====================================================\n"
-                "Qt Webkit not found, don't build browser integration.\n"
-                "=====================================================\n")
+        MESSAGE("========================================================\n"
+                "Qt Webkit not found, will not build browser integration.\n"
+                "========================================================\n")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 
