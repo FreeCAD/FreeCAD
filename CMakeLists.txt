@@ -636,6 +636,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # sets ${QT_LIBRARIES}
 
+    # If using MacPorts, help the Qt4 finder.
+    if(MACPORTS_PREFIX)
+        if(NOT QT_QMAKE_EXECUTABLE)
+            set(QT_QMAKE_EXECUTABLE ${MACPORTS_PREFIX}/libexec/qt4/bin/qmake)
+        endif()
+    endif()
+
     SET(QT_MIN_VERSION 4.5.0)
     set(QT_USE_QTNETWORK TRUE)
     set(QT_USE_QTXML TRUE)
