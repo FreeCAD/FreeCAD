@@ -772,7 +772,7 @@ class ViewProviderComponent:
                     if Draft.getType(self.Object) == "Wall":
                         if Draft.getType(s) == "Roof":
                             continue
-                    if (Draft.getType(s) == "Window") or Draft.isCloneOf(s,"Window"):
+                    if (Draft.getType(s) == "Window") or Draft.isClone(s,"Window"):
                         if not swalW:
                             continue
                     c.append(s)
