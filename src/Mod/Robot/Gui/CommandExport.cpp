@@ -72,17 +72,17 @@ void CmdRobotExportKukaCompact::activated(int iMsg)
 
     Robot::RobotObject *pcRobotObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[0].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[1].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     std::string RoboName = pcRobotObject->getNameInDocument();
 
     Robot::TrajectoryObject *pcTrajectoryObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
-    std::string TrakName = pcTrajectoryObject->getNameInDocument();
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
+    //std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
     filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));
@@ -134,17 +134,17 @@ void CmdRobotExportKukaFull::activated(int iMsg)
 
     Robot::RobotObject *pcRobotObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[0].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[1].pObject);
-    std::string RoboName = pcRobotObject->getNameInDocument();
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
+    //std::string RoboName = pcRobotObject->getNameInDocument();
 
     Robot::TrajectoryObject *pcTrajectoryObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
-    std::string TrakName = pcTrajectoryObject->getNameInDocument();
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
+    //std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
     filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));

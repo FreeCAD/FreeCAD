@@ -186,7 +186,7 @@ void SketcherValidation::on_findButton_clicked()
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *segm = dynamic_cast<const Part::GeomLineSegment*>(g);
+            const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -198,7 +198,7 @@ void SketcherValidation::on_findButton_clicked()
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
+            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -210,7 +210,7 @@ void SketcherValidation::on_findButton_clicked()
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *segm = dynamic_cast<const Part::GeomArcOfEllipse*>(g);
+            const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -375,7 +375,7 @@ void SketcherValidation::on_findReversed_clicked()
         Part::Geometry* g = geom[i];
         //only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be nothing to repair from.
         if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
+            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
             if(segm->isReversedInXY()){
                 points.push_back(segm->getStartPoint(/*emulateCCW=*/true));
                 points.push_back(segm->getEndPoint(/*emulateCCW=*/true));
