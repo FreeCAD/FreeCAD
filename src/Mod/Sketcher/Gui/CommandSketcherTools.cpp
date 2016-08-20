@@ -61,7 +61,7 @@ bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection )
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
                 ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection)
                     return true;
@@ -80,7 +80,7 @@ void ActivateAcceleratorHandler(Gui::Document *doc,DrawSketchHandler *handler)
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
             
-            SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
             vp->purgeHandler();
             vp->activateHandler(handler);
         }
@@ -124,7 +124,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
         return;
     }
     
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     int GeoIdFirst=-1;
     int GeoIdLast=-1;
@@ -233,7 +233,7 @@ void CmdSketcherConnect::activated(int iMsg)
             QObject::tr("Select at least two edges from the sketch."));
         return;
     }
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // undo command open
     openCommand("add coincident constraint");
@@ -304,7 +304,6 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -315,6 +314,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
     
     std::string doc_name = Obj->getDocument()->getName();
@@ -366,7 +366,7 @@ void CmdSketcherSelectOrigin::activated(int iMsg)
 {
     Gui::Document * doc= getActiveGuiDocument();
     
-    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     
     Sketcher::SketchObject* Obj= vp->getSketchObject();
     
@@ -413,7 +413,7 @@ void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 {
     Gui::Document * doc= getActiveGuiDocument();
     
-    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     
     Sketcher::SketchObject* Obj= vp->getSketchObject();
     
@@ -456,7 +456,7 @@ void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 {
         Gui::Document * doc= getActiveGuiDocument();
     
-    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     
     Sketcher::SketchObject* Obj= vp->getSketchObject();
     
@@ -498,7 +498,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 {
     Gui::Document * doc= getActiveGuiDocument();
     
-    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     
     Sketcher::SketchObject* Obj= vp->getSketchObject();
         
@@ -506,7 +506,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
     std::string obj_name = Obj->getNameInDocument();
     
     // get the needed lists and objects
-    const std::vector< int > &solverredundant = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchObject()->getLastRedundant();
+    const std::vector< int > &solverredundant = vp->getSketchObject()->getLastRedundant();
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
        
     getSelection().clearSelection();
@@ -550,16 +550,15 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 {
     Gui::Document * doc= getActiveGuiDocument();
     
-    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     
     Sketcher::SketchObject* Obj= vp->getSketchObject();
         
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
-    std::stringstream ss;
-    
+
     // get the needed lists and objects
-    const std::vector< int > &solverconflicting = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchObject()->getLastConflicting();
+    const std::vector< int > &solverconflicting = vp->getSketchObject()->getLastConflicting();
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
     
     getSelection().clearSelection();
@@ -605,7 +604,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     
     Gui::Document * doc= getActiveGuiDocument();
     
-    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     
     Sketcher::SketchObject* Obj= vp->getSketchObject();
     
@@ -724,7 +723,6 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -735,6 +733,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -1003,7 +1002,6 @@ void CmdSketcherSymmetry::activated(int iMsg)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1014,10 +1012,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-
-    std::string doc_name = Obj->getDocument()->getName();
-    std::string obj_name = Obj->getNameInDocument();
-    std::stringstream ss;
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     getSelection().clearSelection();
 
@@ -1348,7 +1343,6 @@ void SketcherCopy::activate(bool clone)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
     
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1359,10 +1353,7 @@ void SketcherCopy::activate(bool clone)
     
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-
-    std::string doc_name = Obj->getDocument()->getName();
-    std::string obj_name = Obj->getNameInDocument();
-    std::stringstream ss;
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     
     getSelection().clearSelection();
 
@@ -1809,7 +1800,6 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
     
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1820,10 +1810,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-
-    std::string doc_name = Obj->getDocument()->getName();
-    std::string obj_name = Obj->getNameInDocument();
-    std::stringstream ss;
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     
     getSelection().clearSelection();
 

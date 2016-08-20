@@ -40,7 +40,8 @@ TYPESYSTEM_SOURCE(SketcherGui::PropertyConstraintListItem, Gui::PropertyEditor::
 
 PropertyConstraintListItem::PropertyConstraintListItem()
 {
-
+    blockEvent = false;
+    onlyUnnamed = false;
 }
 
 QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
