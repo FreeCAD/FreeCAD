@@ -88,7 +88,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
         Part::Boolean* objBool = dynamic_cast<Part::Boolean*>(getObject());
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(objBool->Base.getValue());
         Part::Feature* objTool = dynamic_cast<Part::Feature*>(objBool->Tool.getValue());
-        if (objBase && objTool) {
+        if (objBool && objBase && objTool) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& toolShape = objTool->Shape.getValue();
             const TopoDS_Shape& boolShape = objBool->Shape.getValue();
@@ -176,7 +176,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
-        Part::MultiFuse* objBool = dynamic_cast<Part::MultiFuse*>(getObject());
+        Part::MultiFuse* objBool = static_cast<Part::MultiFuse*>(getObject());
         std::vector<App::DocumentObject*> sources = objBool->Shapes.getValues();
         if (hist.size() != sources.size())
             return;
@@ -192,6 +192,8 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
             Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            if (!objBase)
+                continue;
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
  
             TopTools_IndexedMapOfShape baseMap;
@@ -293,7 +295,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
-        Part::MultiCommon* objBool = dynamic_cast<Part::MultiCommon*>(getObject());
+        Part::MultiCommon* objBool = static_cast<Part::MultiCommon*>(getObject());
         std::vector<App::DocumentObject*> sources = objBool->Shapes.getValues();
         if (hist.size() != sources.size())
             return;
@@ -309,6 +311,8 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
             Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            if (!objBase)
+                continue;
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
  
             TopTools_IndexedMapOfShape baseMap;

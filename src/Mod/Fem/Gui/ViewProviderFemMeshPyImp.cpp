@@ -224,7 +224,7 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
     ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>
+    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>
         (vp->getObject())->FemMesh).getValue().getSMesh())->GetMeshDS();
 
     std::set<long> res;

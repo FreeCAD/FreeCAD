@@ -302,8 +302,6 @@ Py::Object StdMeshers_AutomaticLengthPy::getLength(const Py::Tuple& args)
         const TopoDS_Shape& s = shape.extensionObject()->getTopoShapePtr()->getShape();
         return Py::Float(hypothesis<StdMeshers_AutomaticLength>()->GetLength(m->getSMesh(),s));
     }
-
-    throw Py::Exception();
 }
 
 // ----------------------------------------------------------------------------
