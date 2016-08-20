@@ -473,7 +473,7 @@ std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* E
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
     if(!HighlightedNodes.empty()){
-        SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
+        SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
         SbVec3f* verts = pcAnoCoords->point.startEditing();
@@ -685,7 +685,7 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vect
             pcFaces = static_cast<SoIndexedFaceSet*>(nodes[1]);
     }
 
-    if (pcPointsCoord && pcFaces){
+    if (pcPointsCoord && pcFaces && pcLines){
         std::vector<unsigned long> vFaceElementIdx;
         std::vector<unsigned long> vNodeElementIdx;
         bool onlyEdges;

@@ -102,7 +102,7 @@ App::DocumentObjectExecReturn *FeatureClip::execute(void)
     const std::vector<App::DocumentObject*> &Grp = Group.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
         if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
-            Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
+            Drawing::FeatureView *View = static_cast<Drawing::FeatureView *>(*It);
             svg << View->ViewResult.getValue() << endl;
         }
     }

@@ -1532,7 +1532,6 @@ private:
 #else
         throw Py::RuntimeError("FreeCAD compiled without FreeType support! This method is disabled...");
 #endif
-        return Py::None();
     }
     Py::Object exportUnits(const Py::Tuple& args)
     {
