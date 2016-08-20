@@ -108,7 +108,7 @@ void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
     if (doc) {
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
             (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-                SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+                SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
                 vp->purgeHandler();
                 vp->activateHandler(handler);
         }
@@ -1141,7 +1141,7 @@ protected:
         // Use updated startPoint/endPoint as autoconstraints can modify the position
         const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geom);
+            const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geom);
             dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
                        lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
                        0.f);
@@ -1153,7 +1153,7 @@ protected:
                 EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
         }
         else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *arcSeg = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+            const Part::GeomArcOfCircle *arcSeg = static_cast<const Part::GeomArcOfCircle *>(geom);
             if (PosId == Sketcher::start) {
                 EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint(/*emulateCCW=*/true).x,arcSeg->getStartPoint(/*emulateCCW=*/true).y);
                 dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint(/*emulateCCW=*/true)-arcSeg->getCenter());
@@ -4152,8 +4152,8 @@ public:
                     construction=geom1->Construction && geom2->Construction;
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                        const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geom1);
-                        const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geom2);
+                        const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
+                        const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geom2);
                         Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
                         Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
                         if (PosIdList[0] == Sketcher::end)
@@ -4225,9 +4225,9 @@ public:
                     Base::Vector2D secondPos = onSketchPos;
 
                     // guess fillet radius
-                    const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>
+                    const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
                                                             (sketchgui->getSketchObject()->getGeometry(firstCurve));
-                    const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>
+                    const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
                                                             (sketchgui->getSketchObject()->getGeometry(secondCurve));
                     Base::Vector3d refPnt1(firstPos.fX, firstPos.fY, 0.f);
                     Base::Vector3d refPnt2(secondPos.fX, secondPos.fY, 0.f);

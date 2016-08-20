@@ -62,7 +62,7 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
-: GCSsys(), ConstraintsCounter(0), isInitMove(false),
+: SolveTime(0), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
     defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
 {
 }
@@ -183,27 +183,27 @@ const char* nameByType(Sketch::GeoType type)
 int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
     if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
-        const GeomPoint *point = dynamic_cast<const GeomPoint*>(geo);
+        const GeomPoint *point = static_cast<const GeomPoint*>(geo);
         // create the definition struct for that geom
         return addPoint(*point, fixed);
     } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
-        const GeomLineSegment *lineSeg = dynamic_cast<const GeomLineSegment*>(geo);
+        const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
     } else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
-        const GeomCircle *circle = dynamic_cast<const GeomCircle*>(geo);
+        const GeomCircle *circle = static_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
     } else if (geo->getTypeId() == GeomEllipse::getClassTypeId()) { // add a ellipse
-        const GeomEllipse *ellipse = dynamic_cast<const GeomEllipse*>(geo);
+        const GeomEllipse *ellipse = static_cast<const GeomEllipse*>(geo);
         // create the definition struct for that geom
         return addEllipse(*ellipse, fixed);
     } else if (geo->getTypeId() == GeomArcOfCircle::getClassTypeId()) { // add an arc
-        const GeomArcOfCircle *aoc = dynamic_cast<const GeomArcOfCircle*>(geo);
+        const GeomArcOfCircle *aoc = static_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
         return addArc(*aoc, fixed);
     } else if (geo->getTypeId() == GeomArcOfEllipse::getClassTypeId()) { // add an arc
-        const GeomArcOfEllipse *aoe = dynamic_cast<const GeomArcOfEllipse*>(geo);
+        const GeomArcOfEllipse *aoe = static_cast<const GeomArcOfEllipse*>(geo);
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
     } else {
@@ -594,19 +594,19 @@ Py::Tuple Sketch::getPyGeometry(void) const
             Base::Vector3d temp(*(Points[it->startPointId].x),*(Points[it->startPointId].y),0);
             tuple[i] = Py::asObject(new VectorPy(temp));
         } else if (it->type == Line) {
-            GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo->clone());
+            GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo->clone());
             tuple[i] = Py::asObject(new LinePy(lineSeg));
         } else if (it->type == Arc) {
-            GeomArcOfCircle *aoc = dynamic_cast<GeomArcOfCircle*>(it->geo->clone());
+            GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfCirclePy(aoc));
         } else if (it->type == Circle) {
-            GeomCircle *circle = dynamic_cast<GeomCircle*>(it->geo->clone());
+            GeomCircle *circle = static_cast<GeomCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new CirclePy(circle));
         } else if (it->type == Ellipse) {
-            GeomEllipse *ellipse = dynamic_cast<GeomEllipse*>(it->geo->clone());
+            GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new EllipsePy(ellipse));
         } else if (it->type == ArcOfEllipse) {
-            GeomArcOfEllipse *ellipse = dynamic_cast<GeomArcOfEllipse*>(it->geo->clone());
+            GeomArcOfEllipse *ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
         } 
         else {
@@ -922,7 +922,7 @@ int Sketch::addConstraint(const Constraint *constraint)
                                          c.value, c.secondvalue);
         }
         break;
-    case None:
+    case Sketcher::None: // ambiguous enum value
     case NumConstraintTypes:
         break;
     }
@@ -1993,13 +1993,13 @@ bool Sketch::updateGeometry()
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
         try {
             if (it->type == Point) {
-                GeomPoint *point = dynamic_cast<GeomPoint*>(it->geo);
+                GeomPoint *point = static_cast<GeomPoint*>(it->geo);
                 point->setPoint(Vector3d(*Points[it->startPointId].x,
                                          *Points[it->startPointId].y,
                                          0.0)
                                );
             } else if (it->type == Line) {
-                GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo);
+                GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo);
                 lineSeg->setPoints(Vector3d(*Lines[it->index].p1.x,
                                             *Lines[it->index].p1.y,
                                             0.0),
@@ -2014,7 +2014,7 @@ bool Sketch::updateGeometry()
 //                *myArc.start.y = *myArc.center.y + *myArc.rad * sin(*myArc.startAngle);
 //                *myArc.end.x = *myArc.center.x + *myArc.rad * cos(*myArc.endAngle);
 //                *myArc.end.y = *myArc.center.y + *myArc.rad * sin(*myArc.endAngle);
-                GeomArcOfCircle *aoc = dynamic_cast<GeomArcOfCircle*>(it->geo);
+                GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo);
                 aoc->setCenter(Vector3d(*Points[it->midPointId].x,
                                         *Points[it->midPointId].y,
                                         0.0)
@@ -2024,7 +2024,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == ArcOfEllipse) {
                 GCS::ArcOfEllipse &myArc = ArcsOfEllipse[it->index];
 
-                GeomArcOfEllipse *aoe = dynamic_cast<GeomArcOfEllipse*>(it->geo);
+                GeomArcOfEllipse *aoe = static_cast<GeomArcOfEllipse*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
@@ -2044,7 +2044,7 @@ bool Sketch::updateGeometry()
                 aoe->setMajorAxisDir(fd);
                 aoe->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             } else if (it->type == Circle) {
-                GeomCircle *circ = dynamic_cast<GeomCircle*>(it->geo);
+                GeomCircle *circ = static_cast<GeomCircle*>(it->geo);
                 circ->setCenter(Vector3d(*Points[it->midPointId].x,
                                          *Points[it->midPointId].y,
                                          0.0)
@@ -2052,7 +2052,7 @@ bool Sketch::updateGeometry()
                 circ->setRadius(*Circles[it->index].rad);
             } else if (it->type == Ellipse) {
                 
-                GeomEllipse *ellipse = dynamic_cast<GeomEllipse*>(it->geo);
+                GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*Ellipses[it->index].focus1.x, *Ellipses[it->index].focus1.y, 0.0);

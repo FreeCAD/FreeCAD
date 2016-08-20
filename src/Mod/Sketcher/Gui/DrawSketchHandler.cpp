@@ -252,7 +252,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     for (std::vector<Part::Geometry *>::const_iterator it=geomlist.begin(); it != geomlist.end(); ++it, i++) {
 
         if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>((*it));
+            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>((*it));
 
             Base::Vector3d center = circle->getCenter();
 
@@ -274,7 +274,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
             
-            const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>((*it));
+            const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>((*it));
 
             Base::Vector3d center = ellipse->getCenter();
 
@@ -301,7 +301,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             }
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>((*it));
+            const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>((*it));
 
             Base::Vector3d center = arc->getCenter();
             double radius = arc->getRadius();
@@ -329,7 +329,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                 }
             }
         } else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *aoe = dynamic_cast<const Part::GeomArcOfEllipse *>((*it));
+            const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>((*it));
 
             Base::Vector3d center = aoe->getCenter();
 
@@ -433,7 +433,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 bool mid_external;
                 bool end_external;
                 
-                dynamic_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
+                static_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
                 
                 if( !(start_external && end_external) ) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
@@ -449,7 +449,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 bool mid_external;
                 bool end_external;
                 
-                dynamic_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
+                static_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
                 
                 if( !(start_external && end_external) ) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
@@ -460,7 +460,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 
                 } break;
             case Sketcher::Tangent: {
-                Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+                Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
                 
                 const Part::Geometry *geom1 = Obj->getGeometry(geoId1);
                 const Part::Geometry *geom2 = Obj->getGeometry(it->GeoId);
