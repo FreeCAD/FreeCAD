@@ -592,7 +592,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 	{
 		//show messagebox and cancel
 		QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
-			QObject::tr("Some of the selected features has dependencies in the source body"));
+			QObject::tr("Some of the selected features have dependencies in the source body"));
 		return;
 	}
 
