@@ -2313,11 +2313,11 @@ struct MeshVertex
     Standard_Integer i;
 
     MeshVertex(Standard_Real X, Standard_Real Y, Standard_Real Z)
-        : x(X),y(Y),z(Z)
+        : x(X),y(Y),z(Z),i(0)
     {
     }
     MeshVertex(const gp_Pnt& p)
-        : x(p.X()),y(p.Y()),z(p.Z())
+        : x(p.X()),y(p.Y()),z(p.Z()),i(0)
     {
     }
 

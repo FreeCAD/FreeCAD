@@ -51,8 +51,11 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName()).c_str()),
               QString::fromLatin1((DressUpView->featureName() + " parameters").c_str()),
               true,
-              parent),
-      DressUpView(DressUpView), allowFaces(selectFaces), allowEdges(selectEdges)
+              parent)
+    , proxy(0)
+    , DressUpView(DressUpView)
+    , allowFaces(selectFaces)
+    , allowEdges(selectEdges)
 {
     selectionMode = none;
 }
@@ -192,6 +195,7 @@ void TaskDressUpParameters::exitSelectionMode()
 
 TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView)
     : TaskDlgFeatureParameters(DressUpView)
+    , parameter(0)
 {
     assert(DressUpView);
 }

@@ -74,9 +74,9 @@ const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::Docum
 
     if (originalFeature->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
         PartDesign::FeatureAddSub* Feature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
-        if(Feature->getAddSubType() == FeatureAddSub::Additive)
-            original = Feature->AddSubShape.getShape().getShape();
-        else
+        //if(Feature->getAddSubType() == FeatureAddSub::Additive)
+        //    original = Feature->AddSubShape.getShape().getShape();
+        //else
             original = Feature->AddSubShape.getShape().getShape();
     }
 

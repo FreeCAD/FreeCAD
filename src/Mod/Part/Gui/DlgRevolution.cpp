@@ -65,6 +65,7 @@ public:
     EdgeSelection()
         : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
     {
+        canSelect = false;
     }
     bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
     {

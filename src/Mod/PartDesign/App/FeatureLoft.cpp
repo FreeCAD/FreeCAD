@@ -212,8 +212,6 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         }
         
         return App::DocumentObject::StdReturn;
-        
-        return ProfileBased::execute();   
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

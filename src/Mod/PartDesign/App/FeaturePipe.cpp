@@ -317,10 +317,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        
+
         return App::DocumentObject::StdReturn;
-        
-        return ProfileBased::execute();   
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

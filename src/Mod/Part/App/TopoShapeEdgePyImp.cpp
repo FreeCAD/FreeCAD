@@ -624,9 +624,6 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
-
-    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
-    return 0;
 }
 
 PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
