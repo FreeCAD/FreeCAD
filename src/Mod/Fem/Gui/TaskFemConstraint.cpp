@@ -64,7 +64,12 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraint */
 
 TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent,const char* pixmapname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent),ConstraintView(ConstraintView)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent)
+    , proxy(nullptr)
+    , ConstraintView(ConstraintView)
+    , buttonBox(nullptr)
+    , okButton(nullptr)
+    , cancelButton(nullptr)
 {
     selectionMode = selref;
 
