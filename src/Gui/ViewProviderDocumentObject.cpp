@@ -181,6 +181,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
         DisplayMode.setValue(defmode);
 }
 
+Gui::Document* ViewProviderDocumentObject::getDocument() const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    return Gui::Application::Instance->getDocument(pAppDoc);
+}
+
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     App::Document* pAppDoc = pcObject->getDocument();
