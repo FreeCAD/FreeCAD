@@ -66,7 +66,7 @@ SoGesturePinchEvent::SoGesturePinchEvent(QPinchGesture* qpinch, QWidget *widget)
 {
     int h = widget->height();
     QPointF widgetCorner = QPointF(widget->mapToGlobal(QPoint(0,0)));
-    qreal scaleToWidget = (widget->mapFromGlobal(QPoint(800,800))-widget->mapFromGlobal(QPoint(0,0))).x()/800;
+    qreal scaleToWidget = (widget->mapFromGlobal(QPoint(800,800))-widget->mapFromGlobal(QPoint(0,0))).x()/800.0;
     QPointF pnt;//temporary
     pnt = qpinch->startCenterPoint();
     pnt = (pnt-widgetCorner)*scaleToWidget;//translate screen coord. into widget coord.

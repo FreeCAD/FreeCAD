@@ -46,6 +46,7 @@ void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 
 SheetTableView::SheetTableView(QWidget *parent)
     : QTableView(parent)
+    , sheet(0)
 {
     QAction * insertRows = new QAction(tr("Insert rows"), this);
     QAction * removeRows = new QAction(tr("Remove rows"), this);
