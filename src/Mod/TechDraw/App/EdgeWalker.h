@@ -64,12 +64,12 @@ typedef std::vector<edgelist> facelist ;
 class edgeVisitor : public planar_face_traversal_visitor
 {
 public:
-  template <typename Edge>
-  void next_edge(Edge e);
-  void begin_face();
-  void end_face();
-  facelist getResult(void);
-  void setGraph(graph& g);
+    template <typename Edge>
+    void next_edge(Edge e);
+    void begin_face();
+    void end_face();
+    facelist getResult(void);
+    void setGraph(graph& g);
 
 private:
     TechDraw::edgelist faceEdges;
@@ -87,6 +87,9 @@ public:
     bool setSize(int size);
     bool perform();
     facelist getResult();
+    static bool orderEdges(WalkerEdge i, WalkerEdge j);
+    static bool isEqual(edgelist el1, edgelist el2);
+    static facelist removeDuplicateFaces(facelist in);
 
 private:
     edgeVisitor m_eV;
