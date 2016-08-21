@@ -44,6 +44,7 @@ namespace App
 namespace Gui {
 
 class MDIView;
+class Document;
 
 class GuiExport ViewProviderDocumentObject : public ViewProvider
 {
@@ -81,6 +82,8 @@ public:
     virtual void updateData(const App::Property*){}
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
+    /// Get the GUI document to this ViewProvider object
+    Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
 
