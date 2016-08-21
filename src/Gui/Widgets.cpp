@@ -380,49 +380,49 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     // If a modifier is pressed without any other key, return.
     // AltGr is not a modifier but doesn't have a QtSring representation.
     switch(key) {
-	case Qt::Key_Backspace:
-	    if (state == Qt::NoModifier){
-	        keyPressedCount = 0;
-                setText(tr("none"));
-	    }   
-	case Qt::Key_Control:
-        case Qt::Key_Shift:
-	case Qt::Key_Alt:
-	case Qt::Key_Meta:
-	case Qt::Key_AltGr:
-            return; 
-        
-
-	default:
-	     break;
+    case Qt::Key_Backspace:
+        if (state == Qt::NoModifier) {
+            keyPressedCount = 0;
+            setText(tr("none"));
+        }
+    case Qt::Key_Control:
+    case Qt::Key_Shift:
+    case Qt::Key_Alt:
+    case Qt::Key_Meta:
+    case Qt::Key_AltGr:
+        return;
+    default:
+        break;
     }
 
     // 4 keys are allowed for QShortcut
     switch(keyPressedCount) {
-	case 4:
-	    keyPressedCount = 0;
-	case 0:
-	    txtLine.clear();
-	    break;
-	default:
-            txtLine += QString::fromLatin1(",");
-	    break;
+    case 4:
+        keyPressedCount = 0;
+        txtLine.clear();
+        break;
+    case 0:
+        txtLine.clear();
+        break;
+    default:
+        txtLine += QString::fromLatin1(",");
+        break;
     }
-    
+
     // Handles modifiers applying a mask.
     if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
         QKeySequence ks(Qt::CTRL);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
-    if (( state & Qt::AltModifier) == Qt::AltModifier) {
+    if ((state & Qt::AltModifier) == Qt::AltModifier) {
         QKeySequence ks(Qt::ALT);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
-    if (( state & Qt::ShiftModifier) == Qt::ShiftModifier) {
+    if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
         QKeySequence ks(Qt::SHIFT);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
-    if (( state & Qt::MetaModifier) == Qt::MetaModifier) {
+    if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
         QKeySequence ks(Qt::META);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
@@ -430,9 +430,9 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     // Handles normal keys
     QKeySequence ks(key);
     txtLine += ks.toString(QKeySequence::NativeText);
- 
+
     setText(txtLine);
-    keyPressedCount ++ ;
+    keyPressedCount++;
 }
 
 // ------------------------------------------------------------------------------
