@@ -587,8 +587,17 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;
 
+	// Check if all features are valid to move
+	if (std::any_of(std::begin(features), std::end(features), [](App::DocumentObject* obj){return !PartDesignGui::isFeatureMovable(obj); }))
+	{
+		//show messagebox and cancel
+		QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
+			QObject::tr("Some of the selected features has dependencies in the source body"));
+		return;
+	}
+
 	// Collect dependenies of the selected features
-	std::vector<App::DocumentObject*> dependencies = PartDesignGui::collectDependencies(features);
+	std::vector<App::DocumentObject*> dependencies = PartDesignGui::collectMovableDependencies(features);
 	if (!dependencies.empty())
 		features.insert(std::end(features), std::begin(dependencies), std::end(dependencies));
 
@@ -665,6 +674,9 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
                         arg( QString::fromLatin1( sketch->Label.getValue () ) ) );
             }
         }
+
+		//relink origin for sketches and datums (coordinates)
+		PartDesignGui::relinkToOrigin(feat, target);
     }
 
     updateActive();
