@@ -683,10 +683,9 @@ Py::Object TopoShapeFacePy::getOuterWire(void) const
         TopoDS_Wire clWire = ShapeAnalysis::OuterWire(clFace);
         return Py::Object(new TopoShapeWirePy(new TopoShape(clWire)),true);
     }
-    else
+    else {
         throw Py::Exception("Internal error, TopoDS_Shape is not a face!");
-
-    return Py::Object();
+    }
 }
 
 Py::Object TopoShapeFacePy::getMass(void) const

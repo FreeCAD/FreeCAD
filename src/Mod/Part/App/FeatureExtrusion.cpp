@@ -346,7 +346,7 @@ bool Extrusion::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) con
         // because otherwise we have some intersections which is not allowed
         else
             return false;
-        xp.Next();
+        //xp.Next();
     }
 
     return false;

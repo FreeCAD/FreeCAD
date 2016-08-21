@@ -726,29 +726,28 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     
     //if a profie is selected we can make our life easy and fast
     auto selection = cmd->getSelection().getSelectionEx();
-    if(!selection.empty() && selection.front().hasSubNames()) {
-        
+    if (!selection.empty() && selection.front().hasSubNames()) {
         base_worker(selection.front().getObject(), selection.front().getSubNames().front());
         return;
     }
-    
+
     //no face profile was selected, do he extended sketch logic
-    
+
     bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
     // First check selections
     std::vector<App::DocumentObject*> sketches = cmd->getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    if (sketches.size() == 0) {//no sketches were selected. Let user pick an object from valid ones available in document
+    if (sketches.empty()) {//no sketches were selected. Let user pick an object from valid ones available in document
         sketches = cmd->getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
         bNoSketchWasSelected = true;
     }
     
-    if(sketches.empty()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sketch to work on"),
-                QObject::tr("No sketch is available in the document"));
-            return;
+    if (sketches.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sketch to work on"),
+            QObject::tr("No sketch is available in the document"));
+        return;
     }
-    
+
     std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
     std::vector<App::DocumentObject*>::iterator firstFreeSketch;
     int freeSketches = validateSketches(sketches, status, firstFreeSketch);
@@ -778,7 +777,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         
     // TODO Clean this up (2015-10-20, Fat-Zer)
     auto* pcActiveBody = PartDesignGui::getBody(false);
-    if(pcActiveBody && !bNoSketchWasSelected && ext) {
+    if (pcActiveBody && !bNoSketchWasSelected && ext) {
 
         auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
 
@@ -805,7 +804,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     
     // Show sketch choose dialog and let user pick sketch if no sketch was selected and no free one available or
     // multiple free ones are available
-    if ( bNoSketchWasSelected && (freeSketches != 1) ) {
+    if (bNoSketchWasSelected && (freeSketches != 1) ) {
 
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
@@ -827,21 +826,20 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
 
         Gui::Selection().clearSelection();
         pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker);
-        if(!bNoSketchWasSelected && ext)
+        if (!bNoSketchWasSelected && ext)
             pickDlg->showExternal(true);
 
         Gui::Control().showDialog(pickDlg);
     }
     else {
         std::vector<App::DocumentObject*> theSketch;
-        if(!bNoSketchWasSelected)
+        if (!bNoSketchWasSelected)
             theSketch.push_back(sketches[0]);
         else
             theSketch.push_back(*firstFreeSketch);
-        
+
         sketch_worker(theSketch);
     }
-
 }
 
 void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, const std::string& FeatName)

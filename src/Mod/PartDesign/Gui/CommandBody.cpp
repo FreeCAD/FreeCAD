@@ -666,7 +666,6 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 bool CmdPartDesignMoveFeature::isActive(void)
 {
     return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
-    return hasActiveDocument ();
 }
 
 DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree);

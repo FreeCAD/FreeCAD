@@ -733,9 +733,6 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
     default:
         throw Base::Exception("AttachEngine::getInertialPropsOfShape: unexpected shape type");
     }
-
-    assert(false);//exec shouldn't ever get here
-    return GProp_GProps();
 }
 
 /*!
