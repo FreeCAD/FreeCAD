@@ -825,7 +825,21 @@ namespace Gui {
 class SoBoxSelectionRenderActionP {
 public:
     SoBoxSelectionRenderActionP(SoBoxSelectionRenderAction * master) 
-      : master(master) { }
+      : master(master)
+      , searchaction(0)
+      , selectsearch(0)
+      , camerasearch(0)
+      , bboxaction(0)
+      , basecolor(0)
+      , postprocpath(0)
+      , highlightPath(0)
+      , localRoot(0)
+      , xform(0)
+      , cube(0)
+      , drawstyle(0)
+    {
+
+    }
 
     SoBoxSelectionRenderAction * master;
     SoSearchAction * searchaction;

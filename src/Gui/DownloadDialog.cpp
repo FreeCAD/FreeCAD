@@ -35,7 +35,7 @@ using namespace Gui::Dialog;
 
 
 DownloadDialog::DownloadDialog(const QUrl& url, QWidget *parent)
-  : QDialog(parent), url(url)
+  : QDialog(parent), url(url), file(0), httpGetId(0), httpRequestAborted(false)
 {
     statusLabel = new QLabel(url.toString());
     progressBar = new QProgressBar(this);

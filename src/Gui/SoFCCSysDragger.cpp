@@ -199,19 +199,19 @@ SoGroup* TDragger::buildGeometry()
 
 void TDragger::startCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = dynamic_cast<TDragger *>(d);
+    TDragger *sudoThis = static_cast<TDragger *>(d);
     sudoThis->dragStart();
 }
 
 void TDragger::motionCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = dynamic_cast<TDragger *>(d);
+    TDragger *sudoThis = static_cast<TDragger *>(d);
     sudoThis->drag();
 }
 
 void TDragger::finishCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = dynamic_cast<TDragger *>(d);
+    TDragger *sudoThis = static_cast<TDragger *>(d);
     sudoThis->dragFinish();
 }
 
@@ -471,19 +471,19 @@ SoGroup* RDragger::buildGeometry()
 
 void RDragger::startCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = dynamic_cast<RDragger *>(d);
+    RDragger *sudoThis = static_cast<RDragger *>(d);
     sudoThis->dragStart();
 }
 
 void RDragger::motionCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = dynamic_cast<RDragger *>(d);
+    RDragger *sudoThis = static_cast<RDragger *>(d);
     sudoThis->drag();
 }
 
 void RDragger::finishCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = dynamic_cast<RDragger *>(d);
+    RDragger *sudoThis = static_cast<RDragger *>(d);
     sudoThis->dragFinish();
 }
 

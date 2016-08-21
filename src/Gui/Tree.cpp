@@ -62,7 +62,7 @@ const int TreeWidget::ObjectType = 1001;
 
 /* TRANSLATOR Gui::TreeWidget */
 TreeWidget::TreeWidget(QWidget* parent)
-    : QTreeWidget(parent), fromOutside(false)
+    : QTreeWidget(parent), contextItem(0), fromOutside(false)
 {
     this->setDragEnabled(true);
     this->setAcceptDrops(true);

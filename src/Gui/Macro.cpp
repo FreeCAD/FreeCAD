@@ -52,6 +52,7 @@ MacroManager::MacroManager()
     recordGui(true),
     guiAsComment(true),
     scriptToPyConsole(true),
+    localEnv(true),
     pyConsole(0),
     pyDebugger(new PythonDebugger())
 {
@@ -203,7 +204,7 @@ namespace Gui {
     class PythonRedirector
     {
     public:
-        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj)
+        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj), old(0)
         {
             if (out) {
                 Base::PyGILStateLocker lock;

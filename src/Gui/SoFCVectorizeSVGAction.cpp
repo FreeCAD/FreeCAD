@@ -57,7 +57,9 @@ class SoVectorizePoint : public SoVectorizeItem {
 public:
     SoVectorizePoint(void) {
         this->type = POINT;
+        this->vidx = 0;
         this->size = 1.0f;
+        this->col = 0;
     }
     int vidx;       // index to BSPtree coordinate
     float size;     // Coin size (pixels)
@@ -90,6 +92,9 @@ class SoVectorizeText : public SoVectorizeItem {
 public:
     SoVectorizeText(void) {
         this->type = TEXT;
+        this->fontsize = 10;
+        this->col = 0;
+        this->justification = LEFT;
     }
 
     enum Justification {

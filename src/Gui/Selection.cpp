@@ -976,12 +976,17 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
  */
 SelectionSingleton::SelectionSingleton()
 {
+    hx = 0;
+    hy = 0;
+    hz = 0;
     ActiveGate = 0;
     App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
     CurrentPreselection.pDocName = 0;
     CurrentPreselection.pObjectName = 0;
     CurrentPreselection.pSubName = 0;
-
+    CurrentPreselection.x = 0.0;
+    CurrentPreselection.y = 0.0;
+    CurrentPreselection.z = 0.0;
 }
 
 /**

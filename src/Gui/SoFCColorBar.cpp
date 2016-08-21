@@ -108,6 +108,11 @@ SoFCColorBar::SoFCColorBar()
 {
     SO_NODE_CONSTRUCTOR(SoFCColorBar);
 
+    _fMaxX = 0;
+    _fMinX = 0;
+    _fMaxY = 0;
+    _fMinY = 0;
+
 //  SoEventCallback * cb = new SoEventCallback;
 //  cb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), eventCallback, this);
 //  insertChild(cb, 0);

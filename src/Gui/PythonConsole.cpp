@@ -100,7 +100,13 @@ struct PythonConsoleP
     PythonConsoleP()
     {
         type = Normal;
+        _stdoutPy = 0;
+        _stderrPy = 0;
+        _stdinPy = 0;
+        _stdin = 0;
         interpreter = 0;
+        callTipsList = 0;
+        interactive = false;
         colormap[QLatin1String("Text")] = Qt::black;
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
@@ -367,7 +373,6 @@ PythonConsole::PythonConsole(QWidget *parent)
   : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(NULL)
 {
     d = new PythonConsoleP();
-    d->interactive = false;
 
     // create an instance of InteractiveInterpreter
     try { 

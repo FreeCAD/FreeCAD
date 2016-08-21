@@ -39,7 +39,7 @@ using namespace Gui;
  *  Constructs a TextEdit which is a child of 'parent'.
  */
 TextEdit::TextEdit(QWidget* parent)
-    : QPlainTextEdit(parent), listBox(0)
+    : QPlainTextEdit(parent), cursorPosition(0), listBox(0)
 {
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time

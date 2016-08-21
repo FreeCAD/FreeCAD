@@ -217,7 +217,14 @@ private:
 };
 
 StdCmdFreezeViews::StdCmdFreezeViews()
-  : Command("Std_FreezeViews"), maxViews(50), savedViews(0)
+  : Command("Std_FreezeViews")
+  , maxViews(50)
+  , savedViews(0)
+  , offset(0)
+  , saveView(0)
+  , freezeView(0)
+  , clearView(0)
+  , separator(0)
 {
     sGroup        = QT_TR_NOOP("Standard-View");
     sMenuText     = QT_TR_NOOP("Freeze display");
@@ -812,7 +819,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
  
         for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
-            if (pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
+            if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
                                  , (*it)->getName(), (*ft)->getNameInDocument());
