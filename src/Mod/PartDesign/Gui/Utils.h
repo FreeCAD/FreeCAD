@@ -64,8 +64,12 @@ bool isAnyNonPartDesignLinksTo ( PartDesign::Feature *feature, bool respectGroup
 /// Relink all nonPartDesign features to the body instead of the given partDesign Feature
 void relinkToBody ( PartDesign::Feature *feature );
 
-/// Collect all needed dependencies of the features during the move from one body to another
-std::vector<App::DocumentObject*> collectDependencies(std::vector<App::DocumentObject*>& features);
+/// Check if feature is dependent on anything except movable sketches and datums
+bool isFeatureMovable(App::DocumentObject* feature);
+/// Collect dependencies of the features during the move. Dependecies should only be dependent on origin
+std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::DocumentObject*>& features);
+/// Relink sketches and datums to target body's origin
+void relinkToOrigin(App::DocumentObject* feature, PartDesign::Body* body);
 
 } /* PartDesignGui */
 
