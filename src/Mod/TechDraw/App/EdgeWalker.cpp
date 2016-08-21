@@ -26,7 +26,9 @@
 //**************************************************************************
 
 
-//#include "PreCompiled.h"
+#include "PreCompiled.h"
+
+#include <Base/Console.h>
 
 #include "EdgeWalker.h"
 
@@ -39,7 +41,6 @@ using namespace boost;
 template <typename Edge>
 void edgeVisitor::next_edge(Edge e)
 {
-    std::cout << e << " ";
     graph_traits<graph>::vertex_descriptor s = source(e,m_g);
     graph_traits<graph>::vertex_descriptor t = target(e,m_g);
     WalkerEdge we;
@@ -51,13 +52,11 @@ void edgeVisitor::next_edge(Edge e)
 
 void edgeVisitor::begin_face()
 {
-    std::cout << "begin_face()" << std::endl;
     faceEdges.clear();
 }
 
 void edgeVisitor::end_face()
 {
-    std::cout << "end_face()" << std::endl;
     graphFaces.push_back(faceEdges);
 }
 
@@ -68,7 +67,6 @@ TechDraw::facelist edgeVisitor::getResult(void)
 
 void edgeVisitor::setGraph(TechDraw::graph& g)
 {
-    std::cout << "setGraph()" << std::endl;
     m_g = g;
 }
 
@@ -86,28 +84,14 @@ EdgeWalker::~EdgeWalker()
 
 bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge> edges)
 {
-    std::cout << "loadEdges()" << std::endl;
     for (auto e: edges) {
         add_edge(e.v1,e.v2,m_g);
     }
-//    add_edge(0, 1, m_g);
-//    add_edge(2, 3, m_g);
-//    add_edge(4, 0, m_g);
-//    add_edge(5, 3, m_g);
-//    add_edge(6, 7, m_g);
-//    add_edge(6, 4, m_g);
-//    add_edge(7, 5, m_g);
-//    add_edge(8, 9, m_g);
-//    add_edge(4, 1, m_g);
-//    add_edge(1, 8, m_g);
-//    add_edge(5, 2, m_g);
-//    add_edge(2, 9, m_g);
     return true;
 }
 
 bool EdgeWalker::setSize(int size)
 {
-    std::cout << "setsize()" << std::endl;
     m_g.clear();
     for (int i = 0; i < size; i++) {
         boost::adjacency_list<>::vertex_descriptor vd = boost::add_vertex(m_g);
@@ -141,14 +125,50 @@ bool EdgeWalker::perform()
 facelist EdgeWalker::getResult()
 {
   TechDraw::facelist result = m_eV.getResult();
-  TechDraw::facelist::iterator iFace = result.begin();
-  for (;iFace != result.end(); iFace++) {
-      std::cout << "face begins:" <<  std::endl;
-      TechDraw::edgelist::iterator iEdge = (*iFace).begin();
-      for (;iEdge != (*iFace).end(); iEdge++) {
-          std::cout << (*iEdge).idx << ":(" << (*iEdge).v1 << ", " << (*iEdge).v2 << ") ";
-      }
-      std::cout << std::endl;
-   }
    return result;
+}
+
+//static methods
+bool EdgeWalker::orderEdges(WalkerEdge i, WalkerEdge j)
+{
+    return (i.idx < j.idx);
+}
+
+bool EdgeWalker::isEqual(edgelist el1, edgelist el2)
+{
+    bool result = true;
+    if (el1.size() != el2.size()) {
+        result = false;
+    } else {
+        std::sort(el1.begin(),el1.end(),orderEdges);
+        std::sort(el2.begin(),el2.end(),orderEdges);
+        for (unsigned int i = 0; i < el1.size(); i ++) {
+            if (el1.at(i).idx != el2.at(i).idx) {
+                result = false;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+//check faces that use the same set of edges, but maybe in a different order.
+facelist EdgeWalker::removeDuplicateFaces(facelist in)
+{
+    facelist result;
+    result.push_back(*(in.begin()));                //save the first edgelist
+    facelist::iterator iFace = (in.begin()) + 1;    //starting with second
+    for (; iFace != in.end(); iFace++) {
+        bool addToResult = true;
+        for (auto& e:result) {
+            if (isEqual((*iFace),e))  {             //already in result?
+                addToResult = false;
+                break;
+            }
+        }
+        if (addToResult) {
+            result.push_back((*iFace));
+        }
+    }
+    return result;
 }
