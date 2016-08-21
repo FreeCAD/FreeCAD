@@ -343,7 +343,7 @@ void CmdDrawingNewView::activated(int iMsg)
     float newRotation = 0.0;
     Base::Vector3d newDirection(0.0, 0.0, 1.0);
     if (!selectedProjections.empty()) {
-        const Drawing::FeatureView* const myView = dynamic_cast<Drawing::FeatureView*>(selectedProjections.front());
+        const Drawing::FeatureView* const myView = static_cast<Drawing::FeatureView*>(selectedProjections.front());
 
         newX = myView->X.getValue();
         newY = myView->Y.getValue();

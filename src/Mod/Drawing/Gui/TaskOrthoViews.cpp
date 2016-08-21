@@ -142,6 +142,8 @@ orthoview::orthoview(App::Document * parent, App::DocumentObject * part, App::Do
     parent_doc = parent;
     myname = parent_doc->getUniqueObjectName("Ortho");
 
+    x = 0;
+    y = 0;
     cx = partbox->GetCenter().x;
     cy = partbox->GetCenter().y;
     cz = partbox->GetCenter().z;
@@ -158,6 +160,10 @@ orthoview::orthoview(App::Document * parent, App::DocumentObject * part, App::Do
     rel_y = 0;
     ortho = true;
     auto_scale = true;
+
+    away = false;
+    tri = false;
+    axo = 0;
 }
 
 orthoview::~orthoview()
@@ -286,6 +292,13 @@ OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * p
     smooth = false;
     hidden = false;
     autodims = true;
+
+    width = height = depth = 0;
+    layout_width = layout_height = 0;
+    gap_x = gap_y = 0;
+    offset_x = offset_y = 0;
+    scale = 0;
+    num_gaps_x = num_gaps_y = 0;
 
     this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
         (&OrthoViews::slotDeletedObject, this, _1));
@@ -700,14 +713,7 @@ void OrthoViews::set_Axo_scale(int rel_x, int rel_y, float axo_scale)       // s
 
 void OrthoViews::set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool away, int axo, bool tri)   // set custom axonometric view
 {
-    int     num = index(rel_x, rel_y);
     double  rotations[2];
-    gp_Dir  dir;
-
-    views[num]->ortho = false;
-    views[num]->away = away;
-    views[num]->tri = tri;
-    views[num]->axo = axo;
 
     if (axo == 0)
     {
@@ -736,13 +742,22 @@ void OrthoViews::set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool awa
     gp_Ax2  cs = gp_Ax2(gp_Pnt(0,0,0), right);
     cs.SetYDirection(up);
     cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), up), rotations[0]);
+    gp_Dir  dir;
     dir = cs.XDirection();
     cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), dir), rotations[1]);
 
-    views[num]->up = up;
-    views[num]->right = right;
-    views[num]->set_projection(cs);
-    views[num]->setPos();
+    int num = index(rel_x, rel_y);
+    if (num != -1) {
+        views[num]->ortho = false;
+        views[num]->away = away;
+        views[num]->tri = tri;
+        views[num]->axo = axo;
+
+        views[num]->up = up;
+        views[num]->right = right;
+        views[num]->set_projection(cs);
+        views[num]->setPos();
+    }
 
     parent_doc->recompute();
 }
