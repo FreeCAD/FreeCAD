@@ -47,6 +47,10 @@ using namespace Gui;
 
 AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(0)
 {
+    m_iXold = 0;
+    m_iYold = 0;
+    m_iXnew = 0;
+    m_iYnew = 0;
     m_bInner = true;
 }
 
@@ -245,6 +249,7 @@ static const char* cursor_cut_scissors[]= {
 
 PolyPickerSelection::PolyPickerSelection()
 {
+    lastConfirmed = false;
 }
 
 void PolyPickerSelection::setColor(float r, float g, float b, float a)

@@ -28,14 +28,16 @@ using namespace Gui;
  */
 
 ExpressionCompleter::ExpressionCompleter(const App::Document * currentDoc, const App::DocumentObject * currentDocObj, QObject *parent)
-    : QCompleter(parent)
+    : QCompleter(parent), prefixStart(0)
 {
     QStandardItemModel* model = new QStandardItemModel(this);
 
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
     std::vector<App::Document*>::const_iterator di = docs.begin();
 
-    std::vector<DocumentObject*> deps = currentDocObj->getInList();
+    std::vector<DocumentObject*> deps;
+    if (currentDocObj)
+        deps = currentDocObj->getInList();
     std::set<const DocumentObject*> forbidden;
 
     for (std::vector<DocumentObject*>::const_iterator it = deps.begin(); it != deps.end(); ++it)

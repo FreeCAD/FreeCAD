@@ -69,6 +69,7 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char *sFilter,App::Property
 
     // property have to be set! 
     assert(prop);
+    StartObject = 0;
     if (prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId())) {
         LinkSub = dynamic_cast<App::PropertyLinkSub *>(prop);
     }

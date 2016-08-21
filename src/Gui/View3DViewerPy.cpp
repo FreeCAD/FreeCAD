@@ -248,10 +248,7 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
     catch (const Py::Exception&) {
         throw;
     }
-    
-    return Py::None();
 }
-
 
 Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
 {

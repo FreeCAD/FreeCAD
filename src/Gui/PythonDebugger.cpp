@@ -352,6 +352,9 @@ struct PythonDebuggerP {
     PythonDebuggerP(PythonDebugger* that) :
         init(false), trystop(false), running(false)
     {
+        out_o = 0;
+        err_o = 0;
+        exc_o = 0;
         Base::PyGILStateLocker lock;
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();

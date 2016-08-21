@@ -111,24 +111,24 @@ SoGestureSwipeEvent::SoGestureSwipeEvent(QSwipeGesture *qwsipe, QWidget *widget)
     switch (qwsipe->verticalDirection()){
     case QSwipeGesture::Up :
         vertDir = +1;
-    break;
+        break;
     case QSwipeGesture::Down :
         vertDir = -1;
-    break;
+        break;
     default:
         vertDir = 0;
-    break;
+        break;
     }
     switch (qwsipe->horizontalDirection()){
     case QSwipeGesture::Right :
-        vertDir = +1;
-    break;
+        horzDir = +1;
+        break;
     case QSwipeGesture::Left :
-        vertDir = -1;
-    break;
+        horzDir = -1;
+        break;
     default:
-        vertDir = 0;
-    break;
+        horzDir = 0;
+        break;
     }
 
     state = SbGestureState(qwsipe->state());
