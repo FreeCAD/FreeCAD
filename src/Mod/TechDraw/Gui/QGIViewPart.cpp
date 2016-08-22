@@ -46,9 +46,11 @@
 #include <App/DocumentObject.h>
 #include <App/Material.h>
 #include <Base/Console.h>
+#include <Base/Vector3D.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 
 #include "ZVALUE.h"
@@ -56,6 +58,9 @@
 #include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGICMark.h"
+#include "QGISectionLine.h"
+#include "QGCustomBorder.h"
+#include "QGCustomLabel.h"
 #include "QGIViewPart.h"
 
 using namespace TechDrawGui;
@@ -73,6 +78,8 @@ QGIViewPart::QGIViewPart()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+
+    showSection = false;
 }
 
 QGIViewPart::~QGIViewPart()
@@ -285,6 +292,7 @@ void QGIViewPart::drawViewPart()
 
     prepareGeometryChange();
     removePrimitives();                      //clean the slate
+    removeDecorations();
 
 #if MOD_TECHDRAW_HANDLE_FACES
     // Draw Faces
@@ -367,7 +375,12 @@ void QGIViewPart::drawViewPart()
             item->setRadius(lineWidth * vertexScaleFactor);
             item->setZValue(ZVALUE::VERTEX);
         }
-     }
+    }
+    //draw section line
+    if (viewPart->ShowSectionLine.getValue() &&
+        viewPart->getSectionRef() ) {
+        drawSectionLine(true);
+    }
 }
 
 QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
@@ -385,10 +398,12 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
                 edgePath = edgePath.toReversed();
             }
             wirePath.connectPath(edgePath);
-            wirePath.setFillRule(Qt::WindingFill);
         }
+        //dumpPath("wirePath:",wirePath);
         facePath.addPath(wirePath);
     }
+    facePath.setFillRule(Qt::OddEvenFill);
+
     QGIFace* gFace = new QGIFace(idx);
     addToGroup(gFace);
     gFace->setPos(0.0,0.0);
@@ -415,6 +430,81 @@ void QGIViewPart::removePrimitives()
          }
      }
 }
+
+//! Remove all existing QGIDecoration items(SectionLine,SectionMark,...)
+void QGIViewPart::removeDecorations()
+{
+    QList<QGraphicsItem*> children = childItems();
+    for (auto& c:children) {
+         QGIDecoration* decor = dynamic_cast<QGIDecoration*>(c);
+         if (decor) {
+            removeFromGroup(decor);
+            scene()->removeItem(decor);
+            delete decor;
+         }
+     }
+}
+
+void QGIViewPart::drawSectionLine(bool b)
+{
+    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
+    TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
+    if (!viewPart ||
+        !viewSection)  {
+        return;
+    }
+    if (b) {
+        QGISectionLine* sectionLine = new QGISectionLine();
+        addToGroup(sectionLine);
+        sectionLine->setSymbol(const_cast<char*>(viewPart->SymbolSection.getValue()));
+        Base::Vector3d sectionDir(0,1,0);
+        Base::Vector3d up(0,1,0);
+        Base::Vector3d down(0,-1,0);
+        Base::Vector3d right(1,0,0);
+        Base::Vector3d left(-1,0,0);
+        bool horiz = viewPart->HorizSectionLine.getValue();
+        bool normal = viewPart->ArrowUpSection.getValue();
+        if (horiz && normal) {
+            sectionDir = up;
+        } else if (horiz && !normal) {
+            sectionDir = down;
+        } else if (!horiz && normal) {
+            sectionDir = right;
+        } else if (!horiz && !normal) {
+            sectionDir = left;
+        }
+        sectionLine->setDirection(sectionDir.x,sectionDir.y);
+
+        Base::Vector3d org = viewSection->SectionOrigin.getValue();
+        double scale = viewPart->Scale.getValue();
+        Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
+        pOrg.y = -1 * pOrg.y;
+        //now project pOrg onto sectionDir
+        Base::Vector3d displace;
+        displace.ProjectToLine(pOrg, sectionDir);
+        Base::Vector3d offset = pOrg + displace;
+
+        sectionLine->setPos(offset.x,offset.y);
+        double sectionSpan;
+        double sectionFudge = 10.0;
+        double xVal, yVal;
+        if (horiz)  {
+            sectionSpan = m_border->rect().width() + sectionFudge;
+            xVal = sectionSpan / 2.0;
+            yVal = 0.0;
+        } else {
+            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
+            xVal = 0.0;
+            yVal = sectionSpan / 2.0;
+        }
+        sectionLine->setBounds(-xVal,-yVal,xVal,yVal);
+        sectionLine->setWidth(viewPart->LineWidth.getValue());          //TODO: add fudge to make sectionLine thinner than reg lines?
+        sectionLine->setFont(m_font,6.0);
+        sectionLine->setZValue(ZVALUE::SECTIONLINE);
+        sectionLine->draw();
+    }
+}
+
 
 // As called by arc of ellipse case:
 // pathArc(path, geom->major, geom->minor, geom->angle, geom->largeArc, geom->cw,
