@@ -63,6 +63,9 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+
     std::string FeatName;
     std::string CSName = getUniqueObjectName("CoordinateSystem");;
     if(iMsg == 0) {
@@ -248,6 +251,9 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
     //check if we already have a feature as subtractive ones work only if we have
     //something to subtract from.
