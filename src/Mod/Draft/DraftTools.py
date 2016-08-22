@@ -604,7 +604,7 @@ class Wire(Line):
                             ['Draft.makeWire(['+pts+'])']+rems)])
                     return
 
-            Line.Activated(self,name=translate("draft","DWire"))
+        Line.Activated(self,name=translate("draft","DWire"))
 
 
 class BSpline(Line):
@@ -4564,6 +4564,58 @@ class Mirror(Modifier):
             self.finish()
 
 
+class Draft_Slope():
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Slope',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Set slope"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of a selected line or wire")}
+
+    def Activated(self):
+        if not FreeCADGui.Selection.getSelection():
+            return
+        for obj in FreeCADGui.Selection.getSelection():
+            if Draft.getType(obj) != "Wire":
+                msg(translate("draft", "This tool only works with Wires and Lines\n"))
+                return
+        w = QtGui.QWidget()
+        w.setWindowTitle(translate("Draft","Slope"))
+        layout = QtGui.QHBoxLayout(w)
+        label = QtGui.QLabel(w)
+        label.setText(translate("Draft", "Slope")+":")
+        layout.addWidget(label)
+        self.spinbox = QtGui.QDoubleSpinBox(w)
+        self.spinbox.setMinimum(-9999.99)
+        self.spinbox.setMaximum(9999.99)
+        self.spinbox.setSingleStep(0.01)
+        self.spinbox.setToolTip(translate("Draft", "Slope to give toselected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down"))
+        layout.addWidget(self.spinbox)
+        taskwidget = QtGui.QWidget()
+        taskwidget.form = w
+        taskwidget.accept = self.accept
+        FreeCADGui.Control.showDialog(taskwidget)
+
+    def accept(self):
+        if hasattr(self,"spinbox"):
+            pc = self.spinbox.value()
+            FreeCAD.ActiveDocument.openTransaction("Change slope")
+            for obj in FreeCADGui.Selection.getSelection():
+                if Draft.getType(obj) == "Wire":
+                    if len(obj.Points) > 1:
+                        lp = None
+                        np = []
+                        for p in obj.Points:
+                            if not lp:
+                                lp = p
+                            else:
+                                z = pc*FreeCAD.Vector(p.x,p.y,lp.z).Length
+                                lp = FreeCAD.Vector(p.x,p.y,z)
+                            np.append(lp)
+                        obj.Points = np
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -4788,6 +4840,7 @@ FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_Heal',Heal())
 FreeCADGui.addCommand('Draft_VisGroup',VisGroup())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
+FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())
