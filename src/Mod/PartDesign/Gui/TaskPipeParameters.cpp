@@ -778,10 +778,11 @@ bool TaskDlgPipeParameters::accept()
         
         //we need to add the copied features to the body after the command action, as otherwise freecad crashs unexplainable
         for(auto obj : copies) {
-            if(pcActiveBody)
-                pcActiveBody->addFeature(obj);
-            else if (pcActivePart)
-                pcActivePart->addObject(obj);
+            //Dead code: pcActiveBody was previously used without checking for null, so it won't be null here either.
+            //if(pcActiveBody)
+            pcActiveBody->addFeature(obj);
+            //else if (pcActivePart)
+            //    pcActivePart->addObject(obj);
         }
     }
     catch (const Base::Exception& e) {

@@ -37,7 +37,7 @@ class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
 public:
     /// constructor
     ViewProviderTransformed()
-        : featureName("undefined") {}
+        : featureName("undefined"), pcRejectedRoot(nullptr) {}
     /// destructor
     virtual ~ViewProviderTransformed()
         {}

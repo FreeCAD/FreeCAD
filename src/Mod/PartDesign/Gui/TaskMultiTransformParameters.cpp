@@ -58,7 +58,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskMultiTransformParameters */
 
 TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-    : TaskTransformedParameters(TransformedView, parent), subTask(NULL)
+    : TaskTransformedParameters(TransformedView, parent), subTask(nullptr), subFeature(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
