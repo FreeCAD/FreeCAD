@@ -59,23 +59,22 @@ PartDesign::Body *getBody(bool messageIfNot)
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-    if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
-
-        if (activeView) {
+    if (activeView) {
+        if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-        }
 
-        if (!activeBody && messageIfNot) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
-                QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                            "Please make one active (double click) or create one. If you have a legacy document "
-                            "with PartDesign objects without Body, use the transfer function in "
-                            "PartDesign to put them into a Body."
-                            ));
+            if (!activeBody && messageIfNot) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+                    QObject::tr("In order to use PartDesign you need an active Body object in the document. "
+                                "Please make one active (double click) or create one. If you have a legacy document "
+                                "with PartDesign objects without Body, use the transfer function in "
+                                "PartDesign to put them into a Body."
+                                ));
+            }
         }
     }
-    return activeBody;
 
+    return activeBody;
 }
 
 PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)

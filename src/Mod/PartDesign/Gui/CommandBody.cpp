@@ -601,6 +601,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         items, 0, false, &ok);
     if (!ok) return;
     int index = items.indexOf(text);
+    if (index < 0) return;
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(bodies[index]);
 
