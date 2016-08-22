@@ -1201,15 +1201,15 @@ bool Document::canClose ()
         box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
                     .arg(QString::fromUtf8(getDocument()->Label.getValue())));
         box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
-        box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
-        box.setDefaultButton(QMessageBox::Save);
+        box.setStandardButtons(QMessageBox::Yes | QMessageBox::No| QMessageBox::Cancel);
+        box.setDefaultButton(QMessageBox::Yes);
 
         switch (box.exec())
         {
-        case QMessageBox::Save:
+        case QMessageBox::Yes:
             ok = save();
             break;
-        case QMessageBox::Discard:
+        case QMessageBox::No:
             ok = true;
             break;
         case QMessageBox::Cancel:
