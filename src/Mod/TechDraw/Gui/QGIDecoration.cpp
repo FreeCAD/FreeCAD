@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,32 +20,66 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <assert.h>
+//#include <QGraphicsScene>
+//#include <QGraphicsSceneHoverEvent>
+//#include <QMouseEvent>
+#include <QPainter>
+#include <QPainterPathStroker>
+#include <QStyleOptionGraphicsItem>
+#endif
 
-#include "QGIViewPart.h"
+#include <App/Application.h>
+#include <App/Material.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
 
-namespace TechDrawGui
+#include <qmath.h>
+#include "QGIDecoration.h"
+
+using namespace TechDrawGui;
+
+QGIDecoration::QGIDecoration() :
+    m_colCurrent(Qt::black),
+    m_styleCurrent(Qt::SolidLine),
+    m_brushCurrent(Qt::SolidPattern)
 {
+    setCacheMode(QGraphicsItem::NoCache);
+    setAcceptHoverEvents(false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
 
-class TechDrawGuiExport QGIViewSection : public QGIViewPart
+    setWidth(1.0);
+}
+
+void QGIDecoration::draw()
 {
-public:
+}
 
-    QGIViewSection() = default;
-    ~QGIViewSection() = default;
+void QGIDecoration::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
 
-    virtual void draw() override;
-    void updateView(bool update = false) override;
-    enum {Type = QGraphicsItem::UserType + 108};
-    int type() const override { return Type;}
-    void drawSectionLine(bool b) override;
+    QGraphicsItemGroup::paint (painter, &myOption, widget);
+}
 
+void QGIDecoration::setWidth(double w)
+{
+    m_width = w;
+    m_pen.setWidthF(m_width);
+}
 
-protected:
-    void drawSectionFace();
-};
+void QGIDecoration::setStyle(Qt::PenStyle s)
+{
+    m_styleCurrent = s;
+    m_pen.setStyle(m_styleCurrent);
+}
 
-} // end namespace TechDrawGui
-
-#endif // #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
+void QGIDecoration::setColor(QColor c)
+{
+    m_colCurrent = c;
+    m_pen.setColor(m_colCurrent);
+}

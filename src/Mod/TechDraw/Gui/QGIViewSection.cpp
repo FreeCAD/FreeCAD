@@ -101,3 +101,8 @@ void QGIViewSection::updateView(bool update)
         QGIViewPart::updateView();
     }
 }
+
+void QGIViewSection::drawSectionLine(bool b)
+{
+   //override QGIVP::drawSectionLine
+}

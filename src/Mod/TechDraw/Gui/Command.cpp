@@ -66,6 +66,7 @@
 
 #include "MDIViewPage.h"
 #include "TaskProjGroup.h"
+#include "TaskSectionView.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -362,27 +363,42 @@ CmdTechDrawNewViewSection::CmdTechDrawNewViewSection()
 
 void CmdTechDrawNewViewSection::activated(int iMsg)
 {
+    //TODO: should just use BaseView's page
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    //std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
     if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least 1 Part object."));
+            QObject::tr("Select at least 1 DrawingView object."));
         return;
     }
+    App::DocumentObject* dObj = *(shapes.begin());
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(dObj);
+    if (dvp->getSectionRef()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("This View already has a related Section. Choose another."));
+        return;
+    }
+
     std::string PageName = page->getNameInDocument();
 
     Gui::WaitCursor wc;
     openCommand("Create view");
-    for (std::vector<App::DocumentObject*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        std::string FeatName = getUniqueObjectName("Section");
-        doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
-        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    }
+
+    std::string FeatName = getUniqueObjectName("Section");
+    std::string SourceName = dvp->Source.getValue()->getNameInDocument();
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),(dObj)->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
+    TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
+    Gui::Control().showDialog(new TaskDlgSectionView(dvp,dsv));
+
     updateActive();
     commitCommand();
 }

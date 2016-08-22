@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,32 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
+#ifndef DRAWINGGUI_QGIDECORATION_H
+#define DRAWINGGUI_QGIDECORATION_H
 
-#include "QGIViewPart.h"
+#include <QGraphicsItemGroup>
+#include <QPen>
+#include <QBrush>
+
+QT_BEGIN_NAMESPACE
+class QPainter;
+class QStyleOptionGraphicsItem;
+QT_END_NAMESPACE
+
+#include <Base/Parameter.h>
+#include <Base/Console.h>
 
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIViewSection : public QGIViewPart
+class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
 {
 public:
+    explicit QGIDecoration(void);
+    ~QGIDecoration() {}
+    enum {Type = QGraphicsItem::UserType + 173};
+    int type() const { return Type;}
 
-    QGIViewSection() = default;
-    ~QGIViewSection() = default;
-
-    virtual void draw() override;
-    void updateView(bool update = false) override;
-    enum {Type = QGraphicsItem::UserType + 108};
-    int type() const override { return Type;}
-    void drawSectionLine(bool b) override;
-
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void draw();
+    void setWidth(double w);
+    void setStyle(Qt::PenStyle s);
+    void setColor(QColor c);
 
 protected:
-    void drawSectionFace();
+    QPen m_pen;
+    QBrush m_brush;
+    QColor m_colCurrent;
+    double m_width;
+    Qt::PenStyle m_styleCurrent;
+    Qt::BrushStyle m_brushCurrent;
+
+private:
 };
 
-} // end namespace TechDrawGui
-
-#endif // #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
+}
+#endif

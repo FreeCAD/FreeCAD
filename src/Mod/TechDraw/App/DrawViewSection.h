@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
  *   Copyright (c) Luke Parry             (l.parry@warwick.ac.uk) 2013     *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -54,6 +55,7 @@ public:
     DrawViewSection(void);
     virtual ~DrawViewSection();
 
+    App::PropertyLink   BaseView;
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
     App::PropertyBool   ShowCutSurface;
