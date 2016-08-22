@@ -635,10 +635,19 @@ class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerLineSet()
-      : Mode(STATUS_SEEK_First),SegmentMode(SEGMENT_MODE_Line),
-        TransitionMode(TRANSITION_MODE_Free),suppressTransition(false),EditCurve(2),
-        firstCurve(-1),previousCurve(-1),
-        firstPosId(Sketcher::none),previousPosId(Sketcher::none) {}
+      : Mode(STATUS_SEEK_First), SegmentMode(SEGMENT_MODE_Line)
+      , TransitionMode(TRANSITION_MODE_Free)
+      , suppressTransition(false)
+      , EditCurve(2)
+      , firstCurve(-1)
+      , previousCurve(-1)
+      , firstPosId(Sketcher::none)
+      , previousPosId(Sketcher::none)
+      , startAngle(0)
+      , endAngle(0)
+      , arcRadius(0)
+    {
+    }
     virtual ~DrawSketchHandlerLineSet() {}
     /// mode table
     enum SELECT_MODE {
@@ -1252,7 +1261,14 @@ class DrawSketchHandlerArc : public DrawSketchHandler
 {
 public:
     DrawSketchHandlerArc()
-      : Mode(STATUS_SEEK_First),EditCurve(2){}
+      : Mode(STATUS_SEEK_First)
+      , EditCurve(2)
+      , rx(0), ry(0)
+      , startAngle(0)
+      , endAngle(0)
+      , arcAngle(0)
+    {
+    }
     virtual ~DrawSketchHandlerArc(){}
     /// mode table
     enum SelectMode {
@@ -1520,7 +1536,13 @@ class DrawSketchHandler3PointArc : public DrawSketchHandler
 {
 public:
     DrawSketchHandler3PointArc()
-      : Mode(STATUS_SEEK_First),EditCurve(2){}
+      : Mode(STATUS_SEEK_First), EditCurve(2)
+      , radius(0), startAngle(0)
+      , endAngle(0), arcAngle(0)
+      , arcPos1(Sketcher::none)
+      , arcPos2(Sketcher::none)
+    {
+    }
     virtual ~DrawSketchHandler3PointArc(){}
     /// mode table
     enum SelectMode {
@@ -2168,9 +2190,13 @@ static const char *cursor_createellipse[]={
 class DrawSketchHandlerEllipse : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerEllipse(int constructionMethod) :
-        constrMethod(constructionMethod),
-        editCurve(33)
+    DrawSketchHandlerEllipse(int constructionMethod)
+      : mode(STATUS_Close)
+      , method(CENTER_PERIAPSIS_B)
+      , constrMethod(constructionMethod)
+      , a(0), b(0), e(0), ratio(0), ae(0)
+      , num(0), r(0), theta(0), phi(0)
+      , editCurve(33), fixedAxisLength(0)
     {
     }
     virtual ~DrawSketchHandlerEllipse(){}
@@ -2564,7 +2590,7 @@ private:
     {
         // We will approximate the ellipse as a sequence of connected chords
         // Number of points per quadrant of the ellipse
-        double n = (editCurve.size() - 1) / 4;
+        double n = static_cast<double>((editCurve.size() - 1) / 4);
 
         // We choose points in the perifocal frame then translate them to sketch cartesian.
         // This gives us a better approximation of an ellipse, i.e. more points where the
@@ -2621,9 +2647,9 @@ private:
      * @brief Prints the ellipse data to STDOUT as an GNU Octave script
      * @param onSketchPos position of the cursor on the sketch
      */
-    void ellipseToOctave(Base::Vector2D onSketchPos)
+    void ellipseToOctave(Base::Vector2D /*onSketchPos*/)
     {
-        double n = (editCurve.size() - 1) / 4;
+        double n = static_cast<double>((editCurve.size() - 1) / 4);
 
         // send a GNU Octave script to stdout to plot points for debugging
         std::ostringstream octave;
@@ -3002,7 +3028,12 @@ static const char *cursor_createarcofellipse[]={
 class DrawSketchHandlerArcOfEllipse : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerArcOfEllipse() : Mode(STATUS_SEEK_First),EditCurve(34){}
+    DrawSketchHandlerArcOfEllipse()
+        : Mode(STATUS_SEEK_First), EditCurve(34)
+        , rx(0), ry(0), startAngle(0), endAngle(0)
+        , arcAngle(0), arcAngle_t(0)
+    {
+    }
     virtual ~DrawSketchHandlerArcOfEllipse(){}
     /// mode table
     enum SelectMode {
@@ -3311,7 +3342,6 @@ protected:
     Base::Vector2D centerPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
-
 };
 
 DEF_STD_CMD_A(CmdSketcherCreateArcOfEllipse);
@@ -3505,7 +3535,7 @@ class DrawSketchHandler3PointCircle : public DrawSketchHandler
 {
 public:
     DrawSketchHandler3PointCircle()
-      : Mode(STATUS_SEEK_First),EditCurve(2),N(32.0){}
+      : Mode(STATUS_SEEK_First),EditCurve(2),radius(1),N(32.0){}
     virtual ~DrawSketchHandler3PointCircle(){}
     /// mode table
     enum SelectMode {
@@ -4103,7 +4133,7 @@ static const char *cursor_createfillet[]={
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerFillet() : Mode(STATUS_SEEK_First) {}
+    DrawSketchHandlerFillet() : Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
@@ -4749,7 +4779,12 @@ static const char *cursor_creatslot[]={
 class DrawSketchHandlerSlot: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerSlot():Mode(STATUS_SEEK_First),EditCurve(36){}
+    DrawSketchHandlerSlot()
+      : Mode(STATUS_SEEK_First)
+      , lx(0), ly(0), r(0), a(0)
+      , EditCurve(36)
+    {
+    }
     virtual ~DrawSketchHandlerSlot(){}
     /// mode table
     enum BoxMode {
