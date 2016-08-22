@@ -97,7 +97,8 @@ class Snapper:
                        'angle':'quad',
                        'center':'quad',
                        'ortho':'quad',
-                       'intersection':'quad'}
+                       'intersection':'quad',
+                       'special':'quad'}
         else:
             self.mk = {'passive':'circle',
                        'extension':'circle',
@@ -109,7 +110,8 @@ class Snapper:
                        'angle':'square',
                        'center':'dot',
                        'ortho':'dot',
-                       'intersection':'dot'}
+                       'intersection':'dot',
+                       'special':'dot'}
         self.cursors = {'passive':':/icons/Snap_Near.svg',
                         'extension':':/icons/Snap_Extension.svg',
                         'parallel':':/icons/Snap_Parallel.svg',
@@ -120,7 +122,8 @@ class Snapper:
                         'angle':':/icons/Snap_Angle.svg',
                         'center':':/icons/Snap_Center.svg',
                         'ortho':':/icons/Snap_Ortho.svg',
-                        'intersection':':/icons/Snap_Intersection.svg'}
+                        'intersection':':/icons/Snap_Intersection.svg',
+                        'special':':/icons/Snap_Special.svg'}
         
     def snap(self,screenpos,lastpoint=None,active=True,constrain=False,noTracker=False):
         """snap(screenpos,lastpoint=None,active=True,constrain=False,noTracker=False): returns a snapped
@@ -263,36 +266,9 @@ class Snapper:
                 # active snapping
                 comp = self.snapInfo['Component']
 
-                archSnap = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ArchSnapToBase",True)
-
-                if (Draft.getType(obj) == "Wall") and (not oldActive) and archSnap:
-                    # special snapping for wall: only to its base shape (except when CTRL is pressed)
-                    edges = []
-                    for o in [obj]+obj.Additions:
-                        if Draft.getType(o) == "Wall":
-                            if o.Base:
-                                edges.extend(o.Base.Shape.Edges)
-                    for edge in edges:
-                        snaps.extend(self.snapToEndpoints(edge))
-                        snaps.extend(self.snapToMidpoint(edge))
-                        snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                        snaps.extend(self.snapToIntersection(edge))
-                        snaps.extend(self.snapToElines(edge,eline))
-                        
-                elif (Draft.getType(obj) == "Structure") and (not oldActive) and archSnap:
-                    # special snapping for struct: only to its base point (except when CTRL is pressed)
-                    if obj.Base:
-                        for edge in obj.Base.Shape.Edges:
-                            snaps.extend(self.snapToEndpoints(edge))
-                            snaps.extend(self.snapToMidpoint(edge))
-                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                            snaps.extend(self.snapToIntersection(edge))
-                            snaps.extend(self.snapToElines(edge,eline))
-                    else:
-                        b = obj.Placement.Base
-                        snaps.append([b,'endpoint',self.toWP(b)])
-
-                elif obj.isDerivedFrom("Part::Feature"):
+                if obj.isDerivedFrom("Part::Feature"):
+                    
+                    snaps.extend(self.snapToSpecials(obj))
                     
                     if Draft.getType(obj) == "Polygon":
                         # special snapping for polygons: add the center
@@ -806,7 +782,36 @@ class Snapper:
             return [p,'passive',p]
         else:
             return []
-        
+            
+    def snapToSpecials(self,obj):
+        "returns special snap locations, if any"
+        snaps = []
+        if self.isEnabled("special"):
+            
+            if (Draft.getType(obj) == "Wall"):
+                # special snapping for wall: snap to its base shape if it is linear
+                if obj.Base:
+                    if not obj.Base.Shape.Solids:
+                        for v in obj.Base.Shape.Vertexes:
+                            snaps.append([v.Point,'special',self.toWP(v.Point)])
+                    
+            elif (Draft.getType(obj) == "Structure"):
+                # special snapping for struct: only to its base point
+                if obj.Base:
+                    if not obj.Base.Shape.Solids:
+                        for v in obj.Base.Shape.Vertexes:
+                            snaps.append([v.Point,'special',self.toWP(v.Point)])
+                else:
+                    b = obj.Placement.Base
+                    snaps.append([b,'special',self.toWP(b)])
+
+            elif hasattr(obj,"SnapPoints"):
+                for p in obj.SnapPoints:
+                    p2 = obj.Placement.multVec(p)
+                    snaps.append([p2,'spacial',p2])
+
+        return snaps
+
     def getScreenDist(self,dist,cursor):
         "returns a distance in 3D space from a screen pixels distance"
         view = Draft.get3DView()

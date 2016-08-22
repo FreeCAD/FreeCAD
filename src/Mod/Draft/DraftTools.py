@@ -4711,6 +4711,18 @@ class Draft_Snap_Ortho():
                     if b.objectName() == "SnapButtonortho":
                         b.toggle()
 
+class Draft_Snap_Special():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Special',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Special", "Special"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Special", "Snaps to special locations of objects")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
+                for b in FreeCADGui.Snapper.toolbarButtons:
+                    if b.objectName() == "SnapButtonspecial":
+                        b.toggle()
+
 class Draft_Snap_Dimensions():
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Dimensions',
@@ -4805,6 +4817,7 @@ FreeCADGui.addCommand('Draft_Snap_Center',Draft_Snap_Center())
 FreeCADGui.addCommand('Draft_Snap_Extension',Draft_Snap_Extension())
 FreeCADGui.addCommand('Draft_Snap_Near',Draft_Snap_Near())
 FreeCADGui.addCommand('Draft_Snap_Ortho',Draft_Snap_Ortho())
+FreeCADGui.addCommand('Draft_Snap_Special',Draft_Snap_Special())
 FreeCADGui.addCommand('Draft_Snap_Dimensions',Draft_Snap_Dimensions())
 FreeCADGui.addCommand('Draft_Snap_WorkingPlane',Draft_Snap_WorkingPlane())
 
