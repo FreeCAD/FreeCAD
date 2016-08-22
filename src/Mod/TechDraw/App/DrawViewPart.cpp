@@ -43,6 +43,8 @@
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <gp_XYZ.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_ShapeBounds.hxx>
@@ -66,6 +68,7 @@
 #include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
+#include "DrawViewSection.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "DrawViewPart.h"
@@ -91,6 +94,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 {
     static const char *group = "Projection";
     static const char *fgroup = "Format";
+    static const char *lgroup = "SectionLine";
 
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection normal direction");
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
@@ -100,11 +104,18 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(Tolerance,(0.05f),group,App::Prop_None,"Internal tolerance");
     Tolerance.setConstraints(&floatRange);
-    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Direction to use as X-axis in projection");
+    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Where to place projection XAxis in display");
+
     ADD_PROPERTY_TYPE(LineWidth,(0.7f),fgroup,App::Prop_None,"The thickness of visible lines");
     ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
     ADD_PROPERTY_TYPE(ShowCenters ,(true),fgroup,App::Prop_None,"Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
+
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,lgroup,App::Prop_None,"Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(HorizSectionLine ,(true)    ,lgroup,App::Prop_None,"Section line is horizontal");
+    ADD_PROPERTY_TYPE(ArrowUpSection ,(true)    ,lgroup,App::Prop_None,"Section line arrows point up");
+    ADD_PROPERTY_TYPE(SymbolSection,("A") ,lgroup,App::Prop_None,"Section identifier");
+
 
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
@@ -143,6 +154,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         gp_Pnt inputCenter = TechDrawGeometry::findCentroid(shape,
                                                             Direction.getValue(),
                                                             getValidXDir());
+        shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(shape,
                                                                  inputCenter,
                                                                  Scale.getValue());
@@ -188,6 +200,9 @@ short DrawViewPart::mustExecute() const
 void DrawViewPart::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
+        if (prop == &SymbolSection && getSectionRef()) {
+            getSectionRef()->touch();
+        }
         if (prop == &Direction ||
             prop == &XAxisDirection ||
             prop == &Source ||
@@ -199,7 +214,11 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &LineWidth       ||
             prop == &HiddenWidth     ||
             prop == &ShowCenters     ||
-            prop == &CenterScale ) {
+            prop == &CenterScale     ||
+            prop == &ShowSectionLine ||
+            prop == &HorizSectionLine  ||
+            prop == &ArrowUpSection  ||
+            prop == &SymbolSection  ) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -215,6 +234,11 @@ void DrawViewPart::onChanged(const App::Property* prop)
 
 void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
 {
+    Base::Vector3d baseProjDir = Direction.getValue();
+
+    saveParamSpace(baseProjDir,
+                   getValidXDir());
+
     geometryObject->projectShape(shape,
                             inputCenter,
                             Direction.getValue(),
@@ -589,7 +613,7 @@ Base::BoundBox3d DrawViewPart::getBoundingBox() const
 
 double DrawViewPart::getBoxX(void) const
 {
-    Base::BoundBox3d bbx = getBoundingBox();   //bbox is already scaled
+    Base::BoundBox3d bbx = getBoundingBox();   //bbox is already scaled & centered!
     return (bbx.MaxX - bbx.MinX);
 }
 
@@ -603,6 +627,22 @@ QRectF DrawViewPart::getRect() const
 {
     QRectF result(0.0,0.0,getBoxX(),getBoxY());  //this is from GO and is already scaled
     return result;
+}
+
+//used to project pt (ex SectionOrigin) onto paper plane
+Base::Vector3d DrawViewPart::projectPoint(Base::Vector3d pt) const
+{
+    Base::Vector3d centeredPoint = pt - shapeCentroid;
+    Base::Vector3d direction = Direction.getValue();
+    Base::Vector3d xAxis = getValidXDir();
+    gp_Ax2 viewAxis;
+    viewAxis = gp_Ax2(gp_Pnt(0.0,0.0,0.0),
+                      gp_Dir(direction.x, direction.y, direction.z),
+                      gp_Dir(xAxis.x, xAxis.y, xAxis.z));
+    HLRAlgo_Projector projector( viewAxis );
+    gp_Pnt2d prjPnt;
+    projector.Project(gp_Pnt(centeredPoint.x,centeredPoint.y,centeredPoint.z), prjPnt);
+    return Base::Vector3d(prjPnt.X(),prjPnt.Y(), 0.0);
 }
 
 
@@ -708,6 +748,33 @@ Base::Vector3d DrawViewPart::getValidXDir() const
     return xDir;
 }
 
+void DrawViewPart::saveParamSpace(Base::Vector3d direction,
+                                   Base::Vector3d xAxis)
+{
+    gp_Ax2 viewAxis;
+    viewAxis = gp_Ax2(gp_Pnt(0, 0, 0),
+                      gp_Dir(direction.x, -direction.y, direction.z),
+                      gp_Dir(xAxis.x, -xAxis.y, xAxis.z)); // Y invert warning! //
+
+    uDir = Base::Vector3d(xAxis.x, -xAxis.y, xAxis.z);
+    gp_Dir ydir = viewAxis.YDirection();
+    vDir = Base::Vector3d(ydir.X(),ydir.Y(),ydir.Z());
+    wDir = Base::Vector3d(direction.x, -direction.y, direction.z);
+}
+
+
+DrawViewSection* DrawViewPart::getSectionRef(void) const
+{
+    DrawViewSection* result = nullptr;
+    std::vector<App::DocumentObject*> inObjs = getInList();
+    for (auto& o:inObjs) {
+        if (o->getTypeId().isDerivedFrom(DrawViewSection::getClassTypeId())) {
+            result = static_cast<TechDraw::DrawViewSection*>(o);
+        }
+    }
+    return result;
+}
+
 void DrawViewPart::dumpVertexes(const char* text, const TopoDS_Shape& s)
 {
     Base::Console().Message("DUMP - %s\n",text);
@@ -718,6 +785,35 @@ void DrawViewPart::dumpVertexes(const char* text, const TopoDS_Shape& s)
         gp_Pnt pnt = BRep_Tool::Pnt(v);
         Base::Console().Message("v%d: (%.3f,%.3f,%.3f)\n",i,pnt.X(),pnt.Y(),pnt.Z());
     }
+}
+
+void DrawViewPart::countFaces(const char* text, const TopoDS_Shape& s)
+{
+    TopExp_Explorer expl(s, TopAbs_FACE);
+    int i;
+    for (i = 0 ; expl.More(); expl.Next(),i++) {
+    }
+    Base::Console().Message("COUNT - %s has %d Faces\n",text,i);
+}
+
+void DrawViewPart::countWires(const char* text, const TopoDS_Shape& s)
+{
+     TopExp_Explorer expl(s, TopAbs_WIRE);
+     int i = 0;
+     for (; expl.More(); expl.Next()) {
+         i++;
+     }
+     Base::Console().Message("COUNT - %s has %d wires\n",text,i);
+}
+
+void DrawViewPart::countEdges(const char* text, const TopoDS_Shape& s)
+{
+     TopExp_Explorer expl(s, TopAbs_EDGE);
+     int i = 0;
+     for (; expl.More(); expl.Next()) {
+         i++;
+     }
+     Base::Console().Message("COUNT - %s has %d edges\n",text,i);
 }
 
 void DrawViewPart::dump1Vertex(const char* text, const TopoDS_Vertex& v)

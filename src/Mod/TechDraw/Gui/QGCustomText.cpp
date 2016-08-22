@@ -130,6 +130,7 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     //                     scale values are same for same font size + different fonts.
     //double svgScale = 2.835;      //72dpi/(25.4mm/in)
     //double svgScale = 3.84;       //96dpi/(25mm/in)
+    //double svgScale = 3.6;        //90dpi/(25mm/in) more/less CSS standard?
     double svgScale = 2.88;         //72dpi/(25mm/in)   Qt logicalDpiY() is int
     double svgMagicX = 8.0;
     //double svgMagicY = 7.5;        //idk

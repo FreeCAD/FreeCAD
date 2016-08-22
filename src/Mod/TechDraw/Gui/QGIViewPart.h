@@ -57,6 +57,8 @@ public:
     virtual void updateView(bool update = false) override;
     void tidy();
     virtual QRectF boundingRect() const override;
+    virtual void drawSectionLine(bool b);
+    bool showSection;
 
     virtual void draw() override;
 
@@ -86,6 +88,7 @@ protected:
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
     void dumpPath(const char* text,QPainterPath path);
     void removePrimitives(void);
+    void removeDecorations(void);
 
 private:
     QList<QGraphicsItem*> deleteItems;

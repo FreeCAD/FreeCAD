@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *   Copyright (c) Luke Parry             (l.parry@warwick.ac.uk) 2013     *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -77,17 +78,19 @@ PROPERTY_SOURCE(TechDraw::DrawViewSection, TechDraw::DrawViewPart)
 
 DrawViewSection::DrawViewSection()
 {
-    static const char *group = "Section";
+    static const char *sgroup = "Section";
+    static const char *lgroup = "Line";
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
 
+    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0)    ,sgroup,App::Prop_None,"Section Plane normal direction");
+    ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
+    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_None,"Show the cut surface");
+    ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),sgroup,App::Prop_None,"The color to shade the cut surface");
 
-    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0)    ,group,App::Prop_None,"Section Plane normal direction");
-    ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,group,App::Prop_None,"Section Plane Origin");
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),group,App::Prop_None,"Show the cut surface");
-    ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),group,App::Prop_None,"The color to shade the cut surface");
+    ADD_PROPERTY_TYPE(BaseView ,(0),lgroup,App::Prop_None,"2D View with SectionLine");
 
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
@@ -110,16 +113,20 @@ short DrawViewSection::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
-    //## Get the Part Link ##/
     App::DocumentObject* link = Source.getValue();
-
-    if (!link)
-        return new App::DocumentObjectExecReturn("No object linked");
+    App::DocumentObject* base = BaseView.getValue();
+    if (!link || !base)  {
+        Base::Console().Log("INFO - DVS::execute - No Source or Link - creation?\n");
+        return DrawView::execute();
+    }
 
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
+        return new App::DocumentObjectExecReturn("Source object is not a Part object");
+    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
+        return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
     const Part::TopoShape &partTopo = static_cast<Part::Feature*>(link)->Shape.getShape();
+    const TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(base);
 
     if (partTopo.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
@@ -129,13 +136,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     gp_XYZ xAxis = pln.XAxis().Direction().XYZ();
     gp_XYZ yAxis = pln.YAxis().Direction().XYZ();
     gp_XYZ origin = pln.Location().XYZ();
+    gp_Dir plnNormal = pln.Axis().Direction().XYZ();
 
     Base::BoundBox3d bb = partTopo.getBoundBox();
 
     Base::Vector3d tmp1 = SectionOrigin.getValue();
     Base::Vector3d plnPnt(tmp1.x, tmp1.y, tmp1.z);
-    Base::Vector3d tmp2 = SectionNormal.getValue();
-    Base::Vector3d plnNorm(tmp2.x, tmp2.y, tmp2.z);
+    //Base::Vector3d tmp2 = SectionNormal.getValue();
+    Base::Vector3d plnNorm(plnNormal.X(), plnNormal.Y(), plnNormal.Z());
 
 //    if(!bb.IsCutPlane(plnPnt, plnNorm)) {      //this test doesn't work if plane is coincident with bb!
     if(!isReallyInBox(plnPnt, bb)) {
@@ -212,6 +220,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                                     inputCenter,
                                                     Scale.getValue());
         buildGeometryObject(mirroredShape,inputCenter);                         //this is original shape after cut by section prism
+
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
@@ -220,6 +229,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
                                                                      inputCenter,
                                                                      Scale.getValue());
+
         TopoDS_Compound newFaces;
         BRep_Builder builder;
         builder.MakeCompound(newFaces);
@@ -231,6 +241,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                             Direction.getValue(),
                                             getValidXDir());
              builder.Add(newFaces,pFace);
+
         }
         sectionFaces = newFaces;
     }
@@ -239,6 +250,13 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn(std::string("DVS building Section shape failed: ") +
                                                  std::string(e1->GetMessageString()));
     }
+
+    std::string symbol = dvp->SymbolSection.getValue();
+    std::string symbolText = "Section " + symbol + "-" + symbol;
+    if (symbolText.compare(Label.getValue())) {
+        Label.setValue(symbolText.c_str());
+    }
+
 
     touch();
     return DrawView::execute();
@@ -267,6 +285,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 
     TopExp_Explorer expFaces(shape, TopAbs_FACE);
     int i;
+    int dbAdded = 0;
     for (i = 1 ; expFaces.More(); expFaces.Next(), i++) {
         const TopoDS_Face& face = TopoDS::Face(expFaces.Current());
         BRepAdaptor_Surface adapt(face);
@@ -275,6 +294,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 
             if(plnSection.Contains(plnFace.Location(), Precision::Confusion()) &&
                plnFace.Axis().IsParallel(plnSection.Axis(), Precision::Angular())) {
+                dbAdded++;
                 builder.Add(result, face);
             }
         }
@@ -334,27 +354,46 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
 
     HLRBRep_HLRToShape hlrToShape(brep_hlr);
     TopoDS_Shape hardEdges = hlrToShape.VCompound();
-    TopoDS_Shape outEdges = hlrToShape.OutLineVCompound();
+//    TopoDS_Shape outEdges = hlrToShape.OutLineVCompound();
     std::vector<TopoDS_Edge> faceEdges;
     TopExp_Explorer expl(hardEdges, TopAbs_EDGE);
     int i;
     for (i = 1 ; expl.More(); expl.Next(),i++) {
-        TopoDS_Edge edge = TopoDS::Edge(expl.Current());
+        const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
         if (edge.IsNull()) {
             Base::Console().Log("INFO - GO::projectFace - hard edge: %d is NULL\n",i);
             continue;
         }
         faceEdges.push_back(edge);
     }
-    expl.Init(outEdges, TopAbs_EDGE);
-    for (i = 1 ; expl.More(); expl.Next(),i++) {
-        TopoDS_Edge edge = TopoDS::Edge(expl.Current());
-        if (edge.IsNull()) {
-            Base::Console().Log("INFO - GO::projectFace - outline edge: %d is NULL\n",i);
-            continue;
-        }
-        faceEdges.push_back(edge);
-    }
+    //if edge is both hard & outline, it will be duplicated? are hard edges enough?
+//    TopExp_Explorer expl2(outEdges, TopAbs_EDGE);
+//    for (i = 1 ; expl2.More(); expl2.Next(),i++) {
+//        const TopoDS_Edge& edge = TopoDS::Edge(expl2.Current());
+//        if (edge.IsNull()) {
+//            Base::Console().Log("INFO - GO::projectFace - outline edge: %d is NULL\n",i);
+//            continue;
+//        }
+//        bool addEdge = true;
+//        //is edge already in faceEdges?  maybe need to use explorer for this for IsSame to work?
+//        for (auto& e:faceEdges) {
+//            if (e.IsPartner(edge)) {
+//                addEdge = false;
+//                Base::Console().Message("TRACE - DVS::projectFace - skipping an edge 1\n");
+//            }
+//        }
+//        expl.ReInit();
+//        for (; expl.More(); expl.Next()){
+//            const TopoDS_Edge& eHard = TopoDS::Edge(expl.Current());
+//            if (eHard.IsPartner(edge)) {
+//                addEdge = false;
+//                Base::Console().Message("TRACE - DVS::projectFace - skipping an edge 2\n");
+//            }
+//        }
+//        if (addEdge) {
+//            faceEdges.push_back(edge);
+//        }
+//    }
 
     std::vector<TopoDS_Vertex> uniqueVert = makeUniqueVList(faceEdges);
     std::vector<WalkerEdge> walkerEdges = makeWalkerEdges(faceEdges,uniqueVert);
@@ -363,29 +402,31 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     ew.setSize(uniqueVert.size());
     ew.loadEdges(walkerEdges);
     ew.perform();
-    facelist result = ew.getResult();         //probably two Faces most of the time. Outerwire + real wires
+    facelist result = ew.getResult();
+    result = TechDraw::EdgeWalker::removeDuplicateFaces(result);
 
     facelist::iterator iFace = result.begin();
     std::vector<TopoDS_Wire> fw;
-    for (;iFace != result.end(); iFace++) {
+    int dbi = 0;
+    for (;iFace != result.end(); iFace++,dbi++) {
         edgelist::iterator iEdge = (*iFace).begin();
         std::vector<TopoDS_Edge> fe;
         for (;iEdge != (*iFace).end(); iEdge++) {
             fe.push_back(faceEdges.at((*iEdge).idx));
         }
-    TopoDS_Wire w = makeCleanWire(fe);                 //make 1 clean wire from its edges
-    fw.push_back(w);
+        TopoDS_Wire w = makeCleanWire(fe);
+        fw.push_back(w);
     }
+
     TopoDS_Face projectedFace;
     if (!fw.empty()) {
         std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw);
         if (sortedWires.empty()) {
             return projectedFace;
         }
-
-        //TODO: this really should have the same size checking logic as DVP
-        //remove the largest wire (OuterWire of graph)
-        sortedWires.erase(sortedWires.begin());
+        //TODO: should have the same size checking logic as DVP?
+        //remove the largest wire (OuterWire of graph)   ??? but duplicates have been removed? only do this if a mosaic?
+        //sortedWires.erase(sortedWires.begin());
 
         BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                   //true => only want planes?
         std::vector<TopoDS_Wire>::iterator itWire = ++sortedWires.begin();          //starting with second face

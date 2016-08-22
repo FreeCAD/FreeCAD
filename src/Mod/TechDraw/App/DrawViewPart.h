@@ -52,6 +52,7 @@ struct WalkerEdge;
 
 namespace TechDraw
 {
+class DrawViewSection;
 
 class TechDrawExport DrawViewPart : public DrawView
 {
@@ -74,6 +75,12 @@ public:
     App::PropertyFloat  CenterScale;
     App::PropertyFloatConstraint  Tolerance;
 
+    App::PropertyBool   ShowSectionLine;
+    App::PropertyBool   HorizSectionLine;     //true(horiz)/false(vert)
+    App::PropertyBool   ArrowUpSection;       //true(up/right)/false(down/left)
+    App::PropertyString SymbolSection;
+
+
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
 
     //TODO: are there use-cases for Python access to TechDrawGeometry???
@@ -90,6 +97,10 @@ public:
     double getBoxX(void) const;
     double getBoxY(void) const;
     virtual QRectF getRect() const;
+    virtual DrawViewSection* getSectionRef() const;                    //is there a ViewSection based on this ViewPart?
+    Base::Vector3d getUDir(void)  {return uDir;}                       //paperspace X
+    Base::Vector3d getVDir(void)  {return vDir;}                       //paperspace Y
+    Base::Vector3d getWDir(void)  {return wDir;}                       //paperspace Z
 
     short mustExecute() const;
 
@@ -109,13 +120,17 @@ public:
     void dumpVertexes(const char* text, const TopoDS_Shape& s);
     void dumpEdge(char* label, int i, TopoDS_Edge e);
     void dump1Vertex(const char* label, const TopoDS_Vertex& v);
+    void countFaces(const char* label, const TopoDS_Shape& s);
+    void countWires(const char* label, const TopoDS_Shape& s);
+    void countEdges(const char* label, const TopoDS_Shape& s);
+    Base::Vector3d getValidXDir() const;
+    Base::Vector3d projectPoint(Base::Vector3d pt) const;
 
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop);
-    Base::Vector3d getValidXDir() const;
     void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
     void extractFaces();
     std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
@@ -131,6 +146,13 @@ protected:
                                                std::vector<TopoDS_Vertex> verts);
     TopoDS_Wire makeCleanWire(std::vector<TopoDS_Edge> edges, double tol = 0.10);
 
+    //Projection parameter space
+    void saveParamSpace(Base::Vector3d direction,
+                        Base::Vector3d xAxis);
+    Base::Vector3d uDir;                       //paperspace X
+    Base::Vector3d vDir;                       //paperspace Y
+    Base::Vector3d wDir;                       //paperspace Z
+    Base::Vector3d shapeCentroid;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

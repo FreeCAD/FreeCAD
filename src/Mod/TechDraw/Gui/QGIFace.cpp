@@ -61,7 +61,8 @@ QGIFace::QGIFace(int index) :
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
     //setFiltersChildEvents(true);
 
-    m_styleCurrent = Qt::NoPen;    //don't draw face lines, just fill
+    //setStyle(Qt::NoPen);    //don't draw face lines, just fill
+    setStyle(Qt::DashLine);
 
     m_styleNormal = m_styleDef;
     m_colNormalFill = m_colDefFill;

@@ -6,10 +6,11 @@ namespace ZVALUE {
     const int SVGTEMPLATE = -500;
     const int FACE = 10;
     const int SECTIONFACE = 20;
-    const int HATCH = 25;
-    const int HIDEDGE = 27;
-    const int EDGE = 30;
-    const int VERTEX = 40;
-    const int DIMENSION = 50;
+    const int HATCH = 30;
+    const int HIDEDGE = 40;
+    const int EDGE = 50;
+    const int VERTEX = 60;
+    const int DIMENSION = 70;
+    const int SECTIONLINE = 80;
 }
 #endif
