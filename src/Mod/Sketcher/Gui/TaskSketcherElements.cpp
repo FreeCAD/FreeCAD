@@ -562,7 +562,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
 void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *item)
 {
     ElementItem *it = dynamic_cast<ElementItem*>(item);
-    if (!item) return;
+    if (!it) return;
     
     Gui::Selection().rmvPreselect();
     

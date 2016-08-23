@@ -362,10 +362,10 @@ bool SelectionFilter::parse(void)
     TopBlock = 0;
     SelectionParser::SelectionFilter_delete_buffer (my_string_buffer);
 
-    if(Errors == "")
+    if (Errors.empty()) {
         return true;
-    else{
+    }
+    else {
         return false;
-        delete Ast;
     }
 }

@@ -65,18 +65,18 @@ PropertyPostDataObject::~PropertyPostDataObject()
 void PropertyPostDataObject::setValue(const vtkSmartPointer<vtkDataObject>& ds)
 {
     aboutToSetValue();
-    
+
     if(ds) {
-        createDataObjectByExternalType(ds);        
+        createDataObjectByExternalType(ds);
         m_dataObject->DeepCopy(ds);
     }
-    else 
+    else
         m_dataObject = NULL;
-    
+
     hasSetValue();
 }
 
-const vtkSmartPointer<vtkDataObject>& PropertyPostDataObject::getValue(void)const 
+const vtkSmartPointer<vtkDataObject>& PropertyPostDataObject::getValue(void)const
 {
     return m_dataObject;
 }
@@ -92,10 +92,10 @@ bool PropertyPostDataObject::isDataSet() {
 }
 
 int PropertyPostDataObject::getDataType() {
-    
+
     if(!m_dataObject)
         return -1;
-    
+
     return m_dataObject->GetDataObjectType();
 }
 
@@ -115,8 +115,8 @@ App::Property *PropertyPostDataObject::Copy(void) const
 {
     PropertyPostDataObject *prop = new PropertyPostDataObject();
     if (m_dataObject) {
-       
-        prop->createDataObjectByExternalType(m_dataObject);        
+
+        prop->createDataObjectByExternalType(m_dataObject);
         prop->m_dataObject->DeepCopy(m_dataObject);
     }
 
@@ -126,7 +126,7 @@ App::Property *PropertyPostDataObject::Copy(void) const
 void PropertyPostDataObject::createDataObjectByExternalType(vtkSmartPointer< vtkDataObject > ex) {
 
     switch( ex->GetDataObjectType() ) {
-          
+
         case VTK_POLY_DATA:
             m_dataObject = vtkSmartPointer<vtkPolyData>::New();
             break;
@@ -188,9 +188,9 @@ void PropertyPostDataObject::Save (Base::Writer &writer) const
     std::string extension;
     if(!m_dataObject)
         return;
-    
+
     switch( m_dataObject->GetDataObjectType() ) {
-        
+
         case VTK_POLY_DATA:
             extension = "vtp";
             break;
@@ -219,10 +219,10 @@ void PropertyPostDataObject::Save (Base::Writer &writer) const
         default:
             break;
     };
-    
+
     if(!writer.isForceXML()) {
         std::string file = "Data." + extension;
-        writer.Stream() << writer.ind() << "<Data file=\"" 
+        writer.Stream() << writer.ind() << "<Data file=\""
                         << writer.addFile(file.c_str(), this)
                         << "\"/>" << std::endl;
     }
@@ -233,7 +233,7 @@ void PropertyPostDataObject::Restore(Base::XMLReader &reader)
     reader.readElement("Data");
     if(!reader.hasAttribute("file"))
         return;
-    
+
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
@@ -248,17 +248,17 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
     // can be checked when reading in the data.
     if (!m_dataObject)
         return;
-    
+
     // create a temporary file and copy the content to the zip stream
     // once the tmp. filename is known use always the same because otherwise
     // we may run into some problems on the Linux platform
     static Base::FileInfo fi(App::Application::getTempFileName());
- 
+
     vtkSmartPointer<vtkXMLDataSetWriter> xmlWriter = vtkSmartPointer<vtkXMLDataSetWriter>::New();
     xmlWriter->SetInputDataObject(m_dataObject);
     xmlWriter->SetFileName(fi.filePath().c_str());
     xmlWriter->SetDataModeToBinary();
-    
+
     if ( xmlWriter->Write() != 1 ) {
         // Note: Do NOT throw an exception here because if the tmp. file could
         // not be created we should not abort.
@@ -267,7 +267,7 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-            Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n", 
+            Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n",
                 obj->Label.getValue(),fi.filePath().c_str());
         }
         else {
@@ -281,7 +281,7 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
 
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
     if (file){
-        unsigned long ulSize = 0; 
+        unsigned long ulSize = 0;
         std::streambuf* buf = file.rdbuf();
         if (buf) {
             unsigned long ulCurr;
@@ -309,7 +309,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
 
     // read in the ASCII file and write back to the file stream
     Base::ofstream file(fi, std::ios::out | std::ios::binary);
-    unsigned long ulSize = 0; 
+    unsigned long ulSize = 0;
     if (reader) {
         std::streambuf* buf = file.rdbuf();
         reader >> buf;
@@ -321,7 +321,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
     // Read the data from the temp file
     if (ulSize > 0) {
         std::string extension = xml.extension();
-        
+
         //TODO: read in of composite data structures need to be coded, including replace of "GetOutputAsDataSet()"
         vtkSmartPointer<vtkXMLReader> xmlReader;
         if(extension == "vtp")
@@ -334,10 +334,10 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
             xmlReader = vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
         else if (extension == "vti")
             xmlReader = vtkSmartPointer<vtkXMLImageDataReader>::New();
-            
+
         xmlReader->SetFileName(fi.filePath().c_str());
         xmlReader->Update();
-  
+
         if (!xmlReader->GetOutputAsDataSet()) {
             // Note: Do NOT throw an exception here because if the tmp. created file could
             // not be read it's NOT an indication for an invalid input stream 'reader'.
@@ -346,7 +346,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
             App::PropertyContainer* father = this->getContainer();
             if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n", 
+                Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
                     fi.filePath().c_str(),obj->Label.getValue());
             }
             else {

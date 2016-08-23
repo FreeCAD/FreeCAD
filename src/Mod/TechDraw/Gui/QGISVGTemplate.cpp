@@ -49,7 +49,8 @@ using namespace TechDrawGui;
 
 QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene, QWidget* srWidget)
     : QGITemplate(scene),
-      qgview(srWidget)
+      qgview(srWidget),
+      firstTime(true)
 {
 
     m_svgItem = new QGraphicsSvgItem(this);
@@ -65,25 +66,15 @@ QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene, QWidget* srWidget)
 
 QGISVGTemplate::~QGISVGTemplate()
 {
-    clearContents();
     delete m_svgRender;
 }
 
 QVariant QGISVGTemplate::itemChange(GraphicsItemChange change,
-                                              const QVariant &value)
+                                    const QVariant &value)
 {
     return QGraphicsItemGroup::itemChange(change, value);
 }
 
-
-void QGISVGTemplate::clearContents()
-{
-    for (std::vector<TemplateTextField *>::iterator it = textFields.begin();
-            it != textFields.end(); ++it) {
-        delete *it;
-    }
-    textFields.clear();
-}
 
 void QGISVGTemplate::openFile(const QFile &file)
 {
@@ -92,8 +83,6 @@ void QGISVGTemplate::openFile(const QFile &file)
 
 void QGISVGTemplate::load(const QString &fileName)
 {
-    clearContents();
-
     if (fileName.isEmpty()){
         return;
     }
@@ -105,14 +94,52 @@ void QGISVGTemplate::load(const QString &fileName)
     m_svgRender->load(file.fileName());
 
     QSize size = m_svgRender->defaultSize();
-    //Base::Console().Log("size of svg document <%i,%i>", size.width(), size.height());
     m_svgItem->setSharedRenderer(m_svgRender);
 
+    if (firstTime) {
+        createClickHandles();
+        firstTime = false;
+    }
+
+    //This is probably first time only logic too.
     TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
+    double xaspect, yaspect;
+    xaspect = tmplte->getWidth() / (double) size.width();
+    yaspect = tmplte->getHeight() / (double) size.height();
 
+    QTransform qtrans;
+    qtrans.translate(0.f, -tmplte->getHeight());
+    qtrans.scale(xaspect , yaspect);
+    m_svgItem->setTransform(qtrans);
+}
 
-    //std::string temp = tmplte->Template.getValue();
-    std::string temp = tmplte->PageResult.getValue();                    //fixes non-drawing of restored template
+TechDraw::DrawSVGTemplate * QGISVGTemplate::getSVGTemplate()
+{
+    if(pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId()))
+        return static_cast<TechDraw::DrawSVGTemplate *>(pageTemplate);
+    else
+        return 0;
+}
+
+void QGISVGTemplate::draw()
+{
+    TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
+    if(!tmplte)
+        throw Base::Exception("Template Feature not set for QGISVGTemplate");
+
+    load(QString::fromUtf8(tmplte->PageResult.getValue()));
+}
+
+void QGISVGTemplate::updateView(bool update)
+{
+    draw();
+}
+
+void QGISVGTemplate::createClickHandles(void)
+{
+    TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
+    std::string temp = tmplte->PageResult.getValue();
+
     if (temp.empty())
         return;
 
@@ -122,13 +149,14 @@ void QGISVGTemplate::load(const QString &fileName)
     std::string tempendl = "--endOfLine--";
     std::string line;
 
+    //read all of PageResult into oStream (except the DrawingContent marker comment - why??)
     std::ifstream ifile (fi.filePath().c_str());
     while (!ifile.eof())
     {
         std::getline(ifile,line);
         // check if the marker in the template is found
         if(line.find("<!-- DrawingContent -->") == std::string::npos) {
-            // if not -  write through
+            // if not -  write line to oStream
             oStream << line << tempendl;
         }
     }
@@ -153,7 +181,6 @@ void QGISVGTemplate::load(const QString &fileName)
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
-    // and update the sketch
     while (boost::regex_search(begin, end, tagMatch, tagRegex)) {
         if ( boost::regex_search(tagMatch[1].first, tagMatch[1].second, nameMatch, editableNameRegex) &&
              boost::regex_search(tagMatch[1].first, tagMatch[1].second, xMatch, xRegex) &&
@@ -194,36 +221,6 @@ void QGISVGTemplate::load(const QString &fileName)
         begin = tagMatch[0].second;
     }
 
-    double xaspect, yaspect;
-    xaspect = tmplte->getWidth() / (double) size.width();
-    yaspect = tmplte->getHeight() / (double) size.height();
-
-    QTransform qtrans;
-    qtrans.translate(0.f, -tmplte->getHeight());
-    qtrans.scale(xaspect , yaspect);
-    m_svgItem->setTransform(qtrans);
-}
-
-TechDraw::DrawSVGTemplate * QGISVGTemplate::getSVGTemplate()
-{
-    if(pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId()))
-        return static_cast<TechDraw::DrawSVGTemplate *>(pageTemplate);
-    else
-        return 0;
-}
-
-void QGISVGTemplate::draw()
-{
-    TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
-    if(!tmplte)
-        throw Base::Exception("Template Feature not set for QGISVGTemplate");
-
-    load(QString::fromUtf8(tmplte->PageResult.getValue()));
-}
-
-void QGISVGTemplate::updateView(bool update)
-{
-    draw();
 }
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

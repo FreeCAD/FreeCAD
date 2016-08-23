@@ -79,67 +79,61 @@ DrawView::~DrawView()
 {
 }
 
-App::DocumentObjectExecReturn *DrawView::recompute(void)
-{
-    try {
-        return App::DocumentObject::recompute();
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e->GetMessageString());
-        if (ret->Why.empty()) ret->Why = "Unknown OCC exception";
-        return ret;
-    }
-}
-
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-    //right way to handle this?  can't do it at creation since don't have a parent.
-    if (ScaleType.isValue("Document")) {
-        TechDraw::DrawPage *page = findParentPage();
-        if(page) {
+    TechDraw::DrawPage *page = findParentPage();
+    if(page) {
+        if (ScaleType.isValue("Document")) {
             if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
-                Scale.touch();
+            }
+        } else if (ScaleType.isValue("Automatic")) {
+            //check fit. if too big, rescale
+            if (!checkFit(page)) {
+                double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
+                if(std::abs(newScale - Scale.getValue()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                    Scale.setValue(newScale);
+                }
             }
         }
     }
-
     return App::DocumentObject::execute();
 }
 
-/// get called by the container when a Property was changed
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &ScaleType ||
-            prop == &Scale) {
+        if (prop == &Scale) {
+            execute();
+        } else if (prop == &ScaleType) {
             if (ScaleType.isValue("Document")) {
-                TechDraw::DrawPage *page = findParentPage();
-                if(page) {
-                    if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
-                        Scale.setValue(page->Scale.getValue()); // Reset scale from page
-                        Scale.touch();
-                    }
-                }
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Custom") ) {
                 Scale.setStatus(App::Property::ReadOnly,false);
                 App::GetApplication().signalChangePropertyEditor(Scale);
+            } else if ( ScaleType.isValue("Automatic") ) {
+                Scale.setStatus(App::Property::ReadOnly,true);
+                App::GetApplication().signalChangePropertyEditor(Scale);
             }
-            //TODO else if (ScaleType.isValue("Automatic"))...
-            DrawView::execute();
+            execute();
         } else if (prop == &X ||
                    prop == &Y) {
             setAutoPos(false);
-            DrawView::execute();
+            execute();
         } else if (prop == &Rotation) {
-            DrawView::execute();
+            execute();
         }
     }
 
     App::DocumentObject::onChanged(prop);
+}
+
+////you must override this in derived class
+QRectF DrawView::getRect() const
+{
+    QRectF result(0,0,1,1);
+    return result;
 }
 
 void DrawView::onDocumentRestored()
@@ -180,6 +174,29 @@ bool DrawView::isInClip()
         }
     }
     return false;
+}
+
+double DrawView::autoScale(double w, double h) const
+{
+    double fudgeFactor = 0.90;
+    QRectF viewBox = getRect();
+    double xScale = w/viewBox.width();
+    double yScale = h/viewBox.height();
+    //find a standard scale that's close? 1:2, 1:10, 1:100...?
+    double newScale = fudgeFactor * std::min(xScale,yScale);
+    return newScale;
+}
+
+//!check if View fits on Page
+bool DrawView::checkFit(TechDraw::DrawPage* p) const
+{
+    bool result = true;
+    QRectF viewBox = getRect();
+    if ( (viewBox.width() > p->getPageWidth()) ||
+         (viewBox.height() > p->getPageHeight()) ) {
+        result = false;
+    }
+    return result;
 }
 
 PyObject *DrawView::getPyObject(void)

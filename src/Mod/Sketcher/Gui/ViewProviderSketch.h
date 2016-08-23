@@ -393,7 +393,6 @@ protected:
     bool relative;
 
     std::string oldWb;
-    int antiAliasing;
 
     Gui::Rubberband* rubberband;
     App::Part*          parentPart = nullptr;

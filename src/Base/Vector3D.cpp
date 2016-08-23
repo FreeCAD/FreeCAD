@@ -204,7 +204,13 @@ bool Vector3<_Precision>::operator == (const Vector3<_Precision>& rcVct) const
     return (fabs (x - rcVct.x) <= traits_type::epsilon()) &&
            (fabs (y - rcVct.y) <= traits_type::epsilon()) &&
            (fabs (z - rcVct.z) <= traits_type::epsilon());
-}  
+}
+
+template <class _Precision>
+bool Vector3<_Precision>::IsEqual(const Vector3<_Precision> &rclPnt, _Precision tol) const
+{
+    return Distance(*this, rclPnt) <= tol;
+}
 
 template <class _Precision>
 Vector3<_Precision>& Vector3<_Precision>::ProjectToPlane (const Vector3<_Precision> &rclBase, 

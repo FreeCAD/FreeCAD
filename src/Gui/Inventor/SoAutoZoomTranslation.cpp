@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/misc/SoState.h>
-# include <math.h>
+# include <cmath>
 # include <cfloat>
 #endif
 
@@ -37,14 +37,6 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoCamera.h>
-
-#include <Base/Console.h>
-
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 
 #include "SoAutoZoomTranslation.h"
@@ -96,7 +88,6 @@ SoAutoZoomTranslation::SoAutoZoomTranslation()
 
 void SoAutoZoomTranslation::GLRender(SoGLRenderAction * action)
 {
-    //Base::Console().Log("Draw\n");
     SoAutoZoomTranslation::doAction((SoAction *)action);
     inherited::GLRender(action);
 }
@@ -107,7 +98,6 @@ void SoAutoZoomTranslation::doAction(SoAction * action)
     float sf = this->getScaleFactor(action);
     SoModelMatrixElement::scaleBy(action->getState(), this,
                                 SbVec3f(sf,sf,sf));
-    //Base::Console().Log("Scale: %f\n",sf);
 }
 
 // set the auto scale factor.
@@ -123,7 +113,6 @@ void SoAutoZoomTranslation::doAction(SoAction * action)
 
 void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 {
-    //Base::Console().Log("Matrix\n");
     float sf = this->getScaleFactor(action);
 
     SbVec3f scalevec = SbVec3f(sf,sf,sf);
@@ -138,25 +127,21 @@ void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 
 void SoAutoZoomTranslation::callback(SoCallbackAction * action)
 {
-   // Base::Console().Log("callback\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
 void SoAutoZoomTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-    //Base::Console().Log("getBoundingBox\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
 void SoAutoZoomTranslation::pick(SoPickAction * action)
 {
-    //Base::Console().Log("pick\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }
 
 // Doc in superclass.
 void SoAutoZoomTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-    //Base::Console().Log("getPrimitiveCount\n");
     SoAutoZoomTranslation::doAction((SoAction*)action);
 }

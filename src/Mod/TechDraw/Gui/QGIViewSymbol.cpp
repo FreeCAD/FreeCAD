@@ -81,10 +81,10 @@ void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol *obj)
 
 void QGIViewSymbol::updateView(bool update)
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()))
+    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
+    if( viewSymbol == nullptr ) {
         return;
-
-    TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
+    }
 
     if (update ||
         viewSymbol->isTouched() ||
@@ -113,10 +113,11 @@ void QGIViewSymbol::draw()
 
 void QGIViewSymbol::drawSvg()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()))
+    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
+    if( viewSymbol == nullptr ) {
         return;
+    }
 
-    TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
 //note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
 //due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
 

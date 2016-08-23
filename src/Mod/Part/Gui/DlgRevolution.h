@@ -31,7 +31,7 @@
 namespace PartGui {
 
 class Ui_DlgRevolution;
-class DlgRevolution : public Gui::LocationDialog, public Gui::SelectionObserver
+class DlgRevolution : public QDialog, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -41,21 +41,34 @@ public:
     void accept();
 
     Base::Vector3d getDirection() const;
+    Base::Vector3d getPosition() const;
+    void getAxisLink(App::PropertyLinkSub &lnk) const;
+    double getAngle() const;
+
+    void setDirection(Base::Vector3d dir);
+    void setPosition(Base::Vector3d dir);
+    void setAxisLink(const App::PropertyLinkSub &lnk);
+    void setAxisLink(const char* objname, const char* subname);
+
+    bool validate();
 
 protected:
     void changeEvent(QEvent *e);
 
 private Q_SLOTS:
     void on_selectLine_clicked();
+    void on_btnX_clicked();
+    void on_btnY_clicked();
+    void on_btnZ_clicked();
+    void on_txtAxisLink_textChanged(QString);
 
 private:
     void findShapes();
-    void directionActivated(int);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
-    Ui_RevolutionComp* ui;
+    //typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
+    Ui_DlgRevolution* ui;
     class EdgeSelection;
     EdgeSelection* filter;
 };

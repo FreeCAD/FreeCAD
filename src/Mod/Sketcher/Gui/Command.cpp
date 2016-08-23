@@ -605,8 +605,10 @@ void CmdSketcherViewSketch::activated(int iMsg)
 {
     Gui::Document *doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.Placement.Rotation.Q)"
-                 ,vp->getObject()->getNameInDocument());
+    if (vp) {
+        doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.Placement.Rotation.Q)"
+                     ,vp->getObject()->getNameInDocument());
+    }
 }
 
 bool CmdSketcherViewSketch::isActive(void)

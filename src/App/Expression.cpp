@@ -773,7 +773,7 @@ private:
 
 class StdDevCollector : public Collector {
 public:
-    StdDevCollector() : Collector() { }
+    StdDevCollector() : Collector(), n(0) { }
 
     void collect(Quantity value) {
         Collector::collect(value);

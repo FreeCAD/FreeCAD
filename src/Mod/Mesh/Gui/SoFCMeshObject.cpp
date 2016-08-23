@@ -588,7 +588,10 @@ void SoFCMeshObjectShape::initClass()
     SO_NODE_INIT_CLASS(SoFCMeshObjectShape, SoShape, "Shape");
 }
 
-SoFCMeshObjectShape::SoFCMeshObjectShape() : renderTriangleLimit(100000), meshChanged(true)
+SoFCMeshObjectShape::SoFCMeshObjectShape()
+    : renderTriangleLimit(100000)
+    , meshChanged(true)
+    , selectBuf(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshObjectShape);
     setName(SoFCMeshObjectShape::getClassTypeId().getName());

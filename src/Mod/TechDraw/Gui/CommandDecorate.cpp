@@ -129,12 +129,14 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     }
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( objFeat == nullptr ) {
+        return;
+    }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawHatch *hatch = 0;
     std::string FeatName = getUniqueObjectName("Hatch");
     std::stringstream featLabel;
     featLabel << FeatName << "F" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
@@ -143,7 +145,7 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
 
-    hatch = dynamic_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str()));
+    auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
     hatch->Source.setValue(objFeat, subNames);
     //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy

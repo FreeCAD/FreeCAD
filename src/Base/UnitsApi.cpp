@@ -116,9 +116,9 @@ void UnitsApi::setSchema(UnitSystem s)
 
 // === static translation methodes ==========================================
 
-QString UnitsApi::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
-	return UserPrefSystem->schemaTranslate(quant,factor,unitString);
+    return UserPrefSystem->schemaTranslate(quant,factor,unitString);
 }
 
 

@@ -808,6 +808,18 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
     rclPt0.x = isectpt1[0]; rclPt0.y = isectpt1[1]; rclPt0.z = isectpt1[2];
     rclPt1.x = isectpt2[0]; rclPt1.y = isectpt2[1]; rclPt1.z = isectpt2[2];
 
+    // With extremely acute-angled triangles it may happen that the algorithm
+    // claims an intersection but the intersection points are far outside the
+    // model. So, a plausability check is to verify that the intersection points
+    // are inside the bounding boxes of both triangles.
+    Base::BoundBox3f box1 = this->GetBoundBox();
+    if (!box1.IsInBox(rclPt0) || !box1.IsInBox(rclPt1))
+        return 0;
+
+    Base::BoundBox3f box2 = rclFacet.GetBoundBox();
+    if (!box2.IsInBox(rclPt0) || !box2.IsInBox(rclPt1))
+        return 0;
+
     // Note: The algorithm delivers sometimes false-positives, i.e. it claims
     // that the two triangles intersect but they don't. It seems that this bad
     // behaviour occurs if the triangles are nearly co-planar

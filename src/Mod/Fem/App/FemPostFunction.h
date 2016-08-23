@@ -44,18 +44,18 @@ public:
     /// Constructor
     FemPostFunction(void);
     virtual ~FemPostFunction();
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostFunction";
     }
 
-    virtual App::DocumentObjectExecReturn* execute(void);    
-    
+    virtual App::DocumentObjectExecReturn* execute(void);
+
     //bound box handling
     void setBoundingBox(vtkBoundingBox b) {m_boundingBox = b;};
-    
+
     //get the algorithm or the data
-    vtkSmartPointer<vtkImplicitFunction> getImplicitFunction() {return m_implicit;}; 
+    vtkSmartPointer<vtkImplicitFunction> getImplicitFunction() {return m_implicit;};
 
 protected:
     vtkSmartPointer<vtkImplicitFunction>  m_implicit;
@@ -65,17 +65,17 @@ protected:
 class AppFemExport FemPostFunctionProvider : public App::DocumentObject {
 
     PROPERTY_HEADER(Fem::FemPostFunctionProvider);
-    
+
 public:
     FemPostFunctionProvider(void);
     virtual ~FemPostFunctionProvider();
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostFunctionProvider";
     }
-    
+
     App::PropertyLinkList Functions;
-    
+
 protected:
     virtual void onChanged(const App::Property* prop);
 };
@@ -83,49 +83,49 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class AppFemExport FemPostPlaneFunction : public FemPostFunction 
+class AppFemExport FemPostPlaneFunction : public FemPostFunction
 {
     PROPERTY_HEADER(Fem::FemPostPlaneFunction);
-    
+
 public:
-    
+
     FemPostPlaneFunction(void);
     virtual ~FemPostPlaneFunction();
-    
+
     App::PropertyVector           Normal;
     App::PropertyVectorDistance   Origin;
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostPlaneFunction";
     }
-    
+
 protected:
     virtual void onChanged(const App::Property* prop);
-    
+
     vtkSmartPointer<vtkPlane> m_plane;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class AppFemExport FemPostSphereFunction : public FemPostFunction 
+class AppFemExport FemPostSphereFunction : public FemPostFunction
 {
     PROPERTY_HEADER(Fem::FemPostSphereFunction);
-    
+
 public:
-    
+
     FemPostSphereFunction(void);
     virtual ~FemPostSphereFunction();
-    
+
     App::PropertyDistance         Radius;
     App::PropertyVectorDistance   Center;
-    
+
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderFemPostSphereFunction";
     }
-    
+
 protected:
     virtual void onChanged(const App::Property* prop);
-    
+
     vtkSmartPointer<vtkSphere> m_sphere;
 };
 

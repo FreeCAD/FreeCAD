@@ -36,9 +36,16 @@
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
 
+#include <BRep_Tool.hxx>
+#include <gp_Pnt.hxx>
 #include <Precision.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <algorithm>
 
 #include "ui_TaskSketcherValidation.h"
@@ -179,7 +186,7 @@ void SketcherValidation::on_findButton_clicked()
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *segm = dynamic_cast<const Part::GeomLineSegment*>(g);
+            const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -191,7 +198,7 @@ void SketcherValidation::on_findButton_clicked()
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
+            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -203,7 +210,7 @@ void SketcherValidation::on_findButton_clicked()
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *segm = dynamic_cast<const Part::GeomArcOfEllipse*>(g);
+            const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -318,6 +325,28 @@ void SketcherValidation::on_fixButton_clicked()
     doc->recompute();
 }
 
+void SketcherValidation::on_highlightButton_clicked()
+{
+    std::vector<Base::Vector3d> points;
+    TopoDS_Shape shape = sketch->Shape.getValue();
+
+    // build up map vertex->edge
+    TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
+    TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
+    for (int i=1; i<= vertex2Edge.Extent(); ++i) {
+        const TopTools_ListOfShape& los = vertex2Edge.FindFromIndex(i);
+        if (los.Extent() != 2) {
+            const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
+            gp_Pnt pnt = BRep_Tool::Pnt(vertex);
+            points.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+        }
+    }
+
+    hidePoints();
+    if (!points.empty())
+        showPoints(points);
+}
+
 void SketcherValidation::on_findConstraint_clicked()
 {
     if (sketch->evaluateConstraints()) {
@@ -346,7 +375,7 @@ void SketcherValidation::on_findReversed_clicked()
         Part::Geometry* g = geom[i];
         //only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be nothing to repair from.
         if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
+            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
             if(segm->isReversedInXY()){
                 points.push_back(segm->getStartPoint(/*emulateCCW=*/true));
                 points.push_back(segm->getEndPoint(/*emulateCCW=*/true));

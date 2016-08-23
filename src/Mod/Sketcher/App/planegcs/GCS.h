@@ -252,7 +252,7 @@ namespace GCS
         double getFinePrecision(){ return convergence;}
 
         int diagnose(Algorithm alg=DogLeg);
-        int dofsNumber() { return hasDiagnosis ? dofs : -1; }
+        int dofsNumber() const { return hasDiagnosis ? dofs : -1; }
         void getConflicting(VEC_I &conflictingOut) const
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const

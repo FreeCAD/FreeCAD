@@ -1232,8 +1232,10 @@ void PartGui::ArcEngine::defaultValues()
   SO_ENGINE_OUTPUT(pointCount, SoSFInt32, setValue(2));
 }
 
-PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent):
-  QWidget(parent)
+PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent)
+  : QWidget(parent)
+  , stepActive(0)
+  , stepDone(0)
 {
   if (buttonCountIn < 1)
     return;

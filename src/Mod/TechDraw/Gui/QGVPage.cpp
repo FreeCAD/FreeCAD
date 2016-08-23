@@ -442,7 +442,7 @@ void QGVPage::toggleMarkers(bool enable)
         }
         QGISVGTemplate* itemTemplate = dynamic_cast<QGISVGTemplate*> (*it);
         if (itemTemplate) {
-            std::vector<TemplateTextField *> textFields = itemTemplate->getTestFields();
+            std::vector<TemplateTextField *> textFields = itemTemplate->getTextFields();
             for (auto& t:textFields) {
                 if (enable) {
                     t->show();
@@ -464,8 +464,7 @@ void QGVPage::toggleHatch(bool enable)
             int faceItemType = QGraphicsItem::UserType + 104;
             for (auto& c:partChildren) {
                 if (c->type() == faceItemType) {
-                    QGIFace* f = dynamic_cast<QGIFace*>(c);
-                    f->toggleSvg(enable);
+                    static_cast<QGIFace*>(c)->toggleSvg(enable);
                 }
             }
         }

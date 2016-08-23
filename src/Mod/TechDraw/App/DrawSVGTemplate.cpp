@@ -212,7 +212,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     outfragment = boost::regex_replace(newfragment, e3, fmt);
 
     const QString qsOut = QString::fromStdString(outfragment);
-    QDomDocument doc(QString::fromAscii("mydocument"));
+    QDomDocument doc(QString::fromLatin1("mydocument"));
 
     //if (!doc.setContent(&resultFile)) {
     if (!doc.setContent(qsOut)) {
@@ -236,13 +236,13 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     Base::Quantity quantity;
 
     // Obtain the width
-    QString str = docElem.attribute(QString::fromAscii("width"));
+    QString str = docElem.attribute(QString::fromLatin1("width"));
     quantity = Base::Quantity::parse(str);
     quantity.setUnit(Base::Unit::Length);
 
     Width.setValue(quantity.getValue());
 
-    str = docElem.attribute(QString::fromAscii("height"));
+    str = docElem.attribute(QString::fromLatin1("height"));
     quantity = Base::Quantity::parse(str);
     quantity.setUnit(Base::Unit::Length);
 

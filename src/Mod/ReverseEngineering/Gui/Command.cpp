@@ -143,8 +143,8 @@ void CmdApproxPlane::activated(int iMsg)
                 dirU = -dirU;
             }
 
-            float width, length;
-            fit.Dimension(width, length);
+            float length, width;
+            fit.Dimension(length, width);
 
             // move to the corner point
             base = base - (0.5f * length * dirU + 0.5f * width * dirV);

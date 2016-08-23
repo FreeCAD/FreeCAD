@@ -80,14 +80,15 @@ class FemToolsZ88(FemTools.FemTools):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.FemInputWriterZ88(self.analysis, self.solver,
-                                              self.mesh, self.materials,
-                                              self.fixed_constraints,
-                                              self.force_constraints, self.pressure_constraints,
-                                              self.displacement_constraints,
-                                              self.beam_sections, self.shell_thicknesses,
-                                              self.analysis_type, None,
-                                              self.working_dir)
+            inp_writer = iw.FemInputWriterZ88(
+                self.analysis, self.solver,
+                self.mesh, self.materials,
+                self.fixed_constraints, self.displacement_constraints,
+                self.contact_constraints, self.planerotation_constraints,
+                self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
+                self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
+                self.beam_sections, self.shell_thicknesses,
+                self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_z88_input()
         except:
             print("Unexpected error when writing Z88 input files:", sys.exc_info()[0])
@@ -99,7 +100,7 @@ class FemToolsZ88(FemTools.FemTools):
     def setup_z88(self, z88_binary=None):
         from platform import system
         if not z88_binary:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
             z88_binary = self.fem_prefs.GetString("z88BinaryPath", "")
         if not z88_binary:
             if system() == "Linux":

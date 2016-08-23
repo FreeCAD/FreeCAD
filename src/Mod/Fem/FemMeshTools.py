@@ -578,6 +578,50 @@ def is_edge_femmesh(femmesh):
         return True
 
 
+def get_three_non_colinear_nodes(nodes_coords):
+    # Code to obtain three non-colinear nodes on the PlaneRotation support face
+    # nodes_coords --> [(nodenumber, x, y, z), (nodenumber, x, y, z), ...]
+    if not nodes_coords:
+        print(len(nodes_coords))
+        print('Error: No nodes in nodes_coords')
+        return []
+    dum_max = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+    for i in range(len(nodes_coords)):
+        for j in range(len(nodes_coords) - 1 - i):
+            x_1 = nodes_coords[j][1]
+            x_2 = nodes_coords[j + 1][1]
+            y_1 = nodes_coords[j][2]
+            y_2 = nodes_coords[j + 1][2]
+            z_1 = nodes_coords[j][3]
+            z_2 = nodes_coords[j + 1][3]
+            node_1 = nodes_coords[j][0]
+            node_2 = nodes_coords[j + 1][0]
+            distance = ((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2 + (z_1 - z_2) ** 2) ** 0.5
+            if distance > dum_max[8]:
+                dum_max = [node_1, x_1, y_1, z_1, node_2, x_2, y_2, z_2, distance]
+    node_dis = [1, 0]
+    for i in range(len(nodes_coords)):
+        x_1 = dum_max[1]
+        x_2 = dum_max[5]
+        x_3 = nodes_coords[i][1]
+        y_1 = dum_max[2]
+        y_2 = dum_max[6]
+        y_3 = nodes_coords[i][2]
+        z_1 = dum_max[3]
+        z_2 = dum_max[7]
+        z_3 = nodes_coords[i][3]
+        node_3 = int(nodes_coords[j][0])
+        distance_1 = ((x_1 - x_3) ** 2 + (y_1 - y_3) ** 2 + (z_1 - z_3) ** 2) ** 0.5
+        distance_2 = ((x_3 - x_2) ** 2 + (y_3 - y_2) ** 2 + (z_3 - z_2) ** 2) ** 0.5
+        tot = distance_1 + distance_2
+        if tot > node_dis[1]:
+            node_dis = [node_3, tot]
+    node_1 = int(dum_max[0])
+    node_2 = int(dum_max[4])
+    print([node_1, node_2, node_3])
+    return [node_1, node_2, node_3]
+
+
 def make_femmesh(mesh_data):
     ''' makes an FreeCAD FEM Mesh object from FEM Mesh data
     '''
@@ -585,11 +629,21 @@ def make_femmesh(mesh_data):
     mesh = Fem.FemMesh()
     m = mesh_data
     if ('Nodes' in m) and (len(m['Nodes']) > 0):
-        if (('Hexa8Elem' in m) or ('Penta6Elem' in m) or ('Tetra4Elem' in m) or ('Tetra10Elem' in m) or
-           ('Penta6Elem' in m) or ('Hexa20Elem' in m) or ('Tria3Elem' in m) or ('Tria6Elem' in m) or
-           ('Quad4Elem' in m) or ('Quad8Elem' in m) or ('Seg2Elem' in m)):
-            nds = m['Nodes']
+        print("Found: nodes")
+        if (('Seg2Elem' in m) or
+           ('Tria3Elem' in m) or
+           ('Tria6Elem' in m) or
+           ('Quad4Elem' in m) or
+           ('Quad8Elem' in m) or
+           ('Tetra4Elem' in m) or
+           ('Tetra10Elem' in m) or
+           ('Penta6Elem' in m) or
+           ('Penta15Elem' in m) or
+           ('Hexa8Elem' in m) or
+           ('Hexa20Elem' in m)):
 
+            nds = m['Nodes']
+            print("Found: elements")
             for i in nds:
                 n = nds[i]
                 mesh.addNode(n[0], n[1], n[2], i)
@@ -643,6 +697,8 @@ def make_femmesh(mesh_data):
                   len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)))
             print("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2".format(
                   len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2)))
+        else:
+            FreeCAD.Console.PrintError("No Elements found!\n")
     else:
         FreeCAD.Console.PrintError("No Nodes found!\n")
     return mesh

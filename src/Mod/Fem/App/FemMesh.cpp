@@ -91,7 +91,7 @@ FemMesh::FemMesh()
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
-{    
+{
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
 }
@@ -110,7 +110,7 @@ FemMesh::~FemMesh()
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     if (this != &mesh) {
-	myMesh = getGenerator()->CreateMesh(0,true);
+    myMesh = getGenerator()->CreateMesh(0,true);
         copyMeshData(mesh);
     }
     return *this;
@@ -121,7 +121,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     _Mtrx = mesh._Mtrx;
 
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
-    
+
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -332,7 +332,7 @@ void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr 
     hypoth.push_back(ptr);
 }
 
-void FemMesh::setStanardHypotheses()
+void FemMesh::setStandardHypotheses()
 {
     if (!hypoth.empty())
         return;
@@ -454,7 +454,7 @@ std::list<int> FemMesh::getFacesByFace(const TopoDS_Face &face) const
         // For curved faces it is possible that a volume contributes more than one face
         if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
             result.push_back(face->GetID());
-        }        
+        }
     }
 
     result.sort();
@@ -892,7 +892,7 @@ void FemMesh::read(const char *FileName)
     }
     else if (File.hasExtension("dat") ) {
         // read brep-file
-	// vejmarie disable
+    // vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
     else if (File.hasExtension("bdf") ) {

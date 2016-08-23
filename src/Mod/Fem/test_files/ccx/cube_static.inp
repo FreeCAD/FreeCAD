@@ -468,12 +468,10 @@ Eall
 ** Materials
 ** written by write_materials function
 ** Young's modulus unit is MPa = N/mm2
-**FreeCAD material name: Steel-Generic
+** FreeCAD material name: Steel-Generic
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC 
-200000 ,  0.300
-*DENSITY 
-7.900e-09, 
+200000, 0.300
 
 ***********************************************************
 ** Sections
@@ -481,14 +479,13 @@ Eall
 *SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
-** One step is needed to calculate the mechanical analysis of FreeCAD
-** loads are applied quasi-static, means without involving the time dimension
-** written by write_step_begin function
+** One step is needed to run the mechanical analysis of FreeCAD
+** written by write_step_begin_static_frequency function
 *STEP
 *STATIC
 
 ***********************************************************
-** Constraints
+** Fixed Constraints
 ** written by write_constraints_fixed function
 *BOUNDARY
 FemConstraintFixed,1
@@ -497,7 +494,7 @@ FemConstraintFixed,3
 
 
 ***********************************************************
-** Node loads
+** Node loads Constraints
 ** written by write_constraints_force function
 *CLOAD
 ** FemConstraintForce

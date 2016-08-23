@@ -49,23 +49,23 @@ public:
     enum {Type = QGraphicsItem::UserType + 153};
     int type() const { return Type; }
 
-    /// Currently just frees up textFields
-    void clearContents();
     void draw();
     virtual void updateView(bool update = false);
 
 protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);
+    void createClickHandles(void);
     QWidget* qgview;                                  //for parenting dlgTemplateField
 
 protected:
+    bool firstTime;
     TechDraw::DrawSVGTemplate * getSVGTemplate();
     QGraphicsSvgItem *m_svgItem;
     QSvgRenderer *m_svgRender;
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };  // class QGISVGTemplate
 
-} // namespace MDIViewPageGui
+}
 
 #endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H

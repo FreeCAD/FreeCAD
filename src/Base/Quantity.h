@@ -36,6 +36,35 @@
 
 namespace Base {
 
+struct QuantityFormat {
+    enum NumberOption {
+        None = 0x00,
+        OmitGroupSeparator = 0x01,
+        RejectGroupSeparator = 0x02
+    };
+    enum NumberFormat {
+        Default = 0,
+        Fixed = 1,
+        Scientific = 2
+    };
+
+    NumberOption option;
+    NumberFormat format;
+    int precision;
+
+    QuantityFormat();
+    inline char toFormat() const {
+        switch (format) {
+        case Fixed:
+            return 'f';
+        case Scientific:
+            return 'e';
+        default:
+            return 'g';
+        }
+    }
+};
+
 /**
  * The Quantity class.
  */
@@ -65,9 +94,15 @@ public:
     Quantity pow(const Quantity&)const;
     //@}
 
+    const QuantityFormat& getFormat() const {
+        return _Format;
+    }
+    void setFormat(const QuantityFormat& f) {
+        _Format = f;
+    }
     /// transfer to user prefered unit/potence
-    QString getUserString(double &factor,QString &unitString)const;
-    QString getUserString(void)const{ // to satisfy GCC
+    QString getUserString(double &factor, QString &unitString)const;
+    QString getUserString(void) const { // to satisfy GCC
         double  dummy1;
         QString dummy2;
         return getUserString(dummy1,dummy2);
@@ -76,11 +111,11 @@ public:
     static Quantity parse(const QString &string);
 
     /// returns the unit of the quantity
-	const Unit & getUnit(void) const{return _Unit;}
+    const Unit & getUnit(void) const{return _Unit;}
     /// set the unit of the quantity
     void setUnit(const Unit &un){_Unit = un;}
     /// get the Value of the quantity
-	double getValue(void) const{return _Value;}
+    double getValue(void) const{return _Value;}
     /// set the value of the quantity
     void setValue(double val){_Value = val;}
     /** get the Value in a special unit given as quantity.
@@ -101,92 +136,90 @@ public:
 
     /** Predefined Unit types. */
     //@{
-	static Quantity NanoMetre;
-	static Quantity MicroMetre;
-	static Quantity CentiMetre;
-	static Quantity DeciMetre;
-	static Quantity Metre;
-	static Quantity MilliMetre;
-	static Quantity KiloMetre;
+    static Quantity NanoMetre;
+    static Quantity MicroMetre;
+    static Quantity CentiMetre;
+    static Quantity DeciMetre;
+    static Quantity Metre;
+    static Quantity MilliMetre;
+    static Quantity KiloMetre;
 
-	static Quantity Liter;
+    static Quantity Liter;
 
-	static Quantity MicroGram; 
-	static Quantity MilliGram;  
-	static Quantity Gram; 
-	static Quantity KiloGram;
-	static Quantity Ton; 
+    static Quantity MicroGram;
+    static Quantity MilliGram;
+    static Quantity Gram;
+    static Quantity KiloGram;
+    static Quantity Ton;
 
-	static Quantity Second;     
-	static Quantity Minute;    
-	static Quantity Hour;   
+    static Quantity Second;
+    static Quantity Minute;
+    static Quantity Hour;
 
-	static Quantity Ampere;  
-	static Quantity MilliAmpere; 
-	static Quantity KiloAmpere; 
-	static Quantity MegaAmpere; 
+    static Quantity Ampere;
+    static Quantity MilliAmpere;
+    static Quantity KiloAmpere;
+    static Quantity MegaAmpere;
 
-	static Quantity Kelvin; 
-	static Quantity MilliKelvin; 
-	static Quantity MicroKelvin; 
+    static Quantity Kelvin;
+    static Quantity MilliKelvin;
+    static Quantity MicroKelvin;
 
-	static Quantity Mole; 
+    static Quantity Mole;
 
-	static Quantity Candela; 
+    static Quantity Candela;
 
-	static Quantity Inch; 
-	static Quantity Foot; 
-	static Quantity Thou; 
-	static Quantity Yard; 
+    static Quantity Inch;
+    static Quantity Foot;
+    static Quantity Thou;
+    static Quantity Yard;
 
-	static Quantity Pound; 
-	static Quantity Ounce; 
-	static Quantity Stone; 
-	static Quantity Hundredweights; 
-	static Quantity Mile; 
+    static Quantity Pound;
+    static Quantity Ounce;
+    static Quantity Stone;
+    static Quantity Hundredweights;
+    static Quantity Mile;
 
     static Quantity PoundForce;
 
-	static Quantity Newton; 
-	static Quantity KiloNewton; 
-	static Quantity MegaNewton; 
-	static Quantity MilliNewton; 
+    static Quantity Newton;
+    static Quantity KiloNewton;
+    static Quantity MegaNewton;
+    static Quantity MilliNewton;
 
-	static Quantity Pascal; 
-	static Quantity KiloPascal; 
-	static Quantity MegaPascal; 
-	static Quantity GigaPascal; 
+    static Quantity Pascal;
+    static Quantity KiloPascal;
+    static Quantity MegaPascal;
+    static Quantity GigaPascal;
 
-  	static Quantity Torr; 
-  	static Quantity mTorr; 
-  	static Quantity yTorr; 
+    static Quantity Torr;
+    static Quantity mTorr;
+    static Quantity yTorr;
 
-	static Quantity PSI; 
-	static Quantity KSI; 
+    static Quantity PSI;
+    static Quantity KSI;
 
-	static Quantity Watt; 
-	static Quantity VoltAmpere; 
+    static Quantity Watt;
+    static Quantity VoltAmpere;
 
-	static Quantity Joule; 
-	static Quantity NewtonMeter; 
-	static Quantity VoltAmpereSecond; 
-	static Quantity WattSecond; 
+    static Quantity Joule;
+    static Quantity NewtonMeter;
+    static Quantity VoltAmpereSecond;
+    static Quantity WattSecond;
 
-    static Quantity KMH; 
-	static Quantity MPH; 
+    static Quantity KMH;
+    static Quantity MPH;
 
-	static Quantity Degree; 
-	static Quantity Radian; 
-	static Quantity Gon; 
-
-
+    static Quantity Degree;
+    static Quantity Radian;
+    static Quantity Gon;
     //@}
 
 
 protected:
-    double _Value;
-    Unit   _Unit;
-
+    double         _Value;
+    Unit           _Unit;
+    QuantityFormat _Format;
 };
 
 } // namespace Base

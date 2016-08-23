@@ -88,13 +88,13 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 void PropertyPartShape::setValue(const TopoDS_Shape& sh)
 {
     aboutToSetValue();
-    _Shape._Shape = sh;
+    _Shape.setShape(sh);
     hasSetValue();
 }
 
 const TopoDS_Shape& PropertyPartShape::getValue(void)const 
 {
-    return _Shape._Shape;
+    return _Shape.getShape();
 }
 
 const TopoShape& PropertyPartShape::getShape() const
@@ -110,12 +110,12 @@ const Data::ComplexGeoData* PropertyPartShape::getComplexData() const
 Base::BoundBox3d PropertyPartShape::getBoundingBox() const
 {
     Base::BoundBox3d box;
-    if (_Shape._Shape.IsNull())
+    if (_Shape.getShape().IsNull())
         return box;
     try {
         // If the shape is empty an exception may be thrown
         Bnd_Box bounds;
-        BRepBndLib::Add(_Shape._Shape, bounds);
+        BRepBndLib::Add(_Shape.getShape(), bounds);
         bounds.SetGap(0.0);
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
@@ -143,7 +143,7 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 PyObject *PropertyPartShape::getPyObject(void)
 {
     Base::PyObjectBase* prop;
-    const TopoDS_Shape& sh = _Shape._Shape;
+    const TopoDS_Shape& sh = _Shape.getShape();
     if (sh.IsNull()) {
         prop = new TopoShapePy(new TopoShape(sh));
     }
@@ -203,9 +203,9 @@ App::Property *PropertyPartShape::Copy(void) const
 {
     PropertyPartShape *prop = new PropertyPartShape();
     prop->_Shape = this->_Shape;
-    if (!_Shape._Shape.IsNull()) {
-        BRepBuilderAPI_Copy copy(_Shape._Shape);
-        prop->_Shape._Shape = copy.Shape();
+    if (!_Shape.getShape().IsNull()) {
+        BRepBuilderAPI_Copy copy(_Shape.getShape());
+        prop->_Shape.setShape(copy.Shape());
     }
 
     return prop;
@@ -269,22 +269,22 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 {
     // If the shape is empty we simply store nothing. The file size will be 0 which
     // can be checked when reading in the data.
-    if (_Shape._Shape.IsNull())
+    if (_Shape.getShape().IsNull())
         return;
     // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
     // Before writing to the project we clean all triangulation data to save memory
-    BRepBuilderAPI_Copy copy(_Shape._Shape);
+    BRepBuilderAPI_Copy copy(_Shape.getShape());
     const TopoDS_Shape& myShape = copy.Shape();
     BRepTools::Clean(myShape); // remove triangulation
 
     if (writer.getMode("BinaryBrep")) {
         TopoShape shape;
-        shape._Shape = myShape;
+        shape.setShape(myShape);
         shape.exportBinary(writer.Stream());
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", false);
+            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
             // create a temporary file and copy the content to the zip stream
             // once the tmp. filename is known use always the same because otherwise
@@ -348,7 +348,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", false);
+            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
             BRep_Builder builder;
             // create a temporary file and copy the content from the zip stream

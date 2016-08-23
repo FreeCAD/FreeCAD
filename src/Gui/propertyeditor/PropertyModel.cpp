@@ -86,7 +86,7 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant & value, in
             // NOTE: Since 0.14 PropertyFloat uses double precision, so this is maybe unnecessary now?
             double d = data.toDouble();
             double v = value.toDouble();
-            if (fabs(d-v) > FLT_EPSILON)
+            if (fabs(d-v) > DBL_EPSILON)
                 return item->setData(value);
         }
         // Special case handling for quantities

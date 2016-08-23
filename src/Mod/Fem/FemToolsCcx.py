@@ -34,7 +34,7 @@ from PySide import QtCore
 
 class FemToolsCcx(FemTools.FemTools):
 
-    known_analysis_types = ["static", "frequency"]
+    known_analysis_types = ["static", "frequency", "thermomech"]
     finished = QtCore.Signal(int)
 
     ## The constructor
@@ -69,7 +69,6 @@ class FemToolsCcx(FemTools.FemTools):
             self.results_present = False
             if self.solver:
                 self.set_analysis_type()
-                self.set_eigenmode_parameters()
                 self.setup_working_dir()
             else:
                 raise Exception('FEM: No solver found!')
@@ -87,14 +86,15 @@ class FemToolsCcx(FemTools.FemTools):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.FemInputWriterCcx(self.analysis, self.solver,
-                                              self.mesh, self.materials,
-                                              self.fixed_constraints,
-                                              self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
-                                              self.displacement_constraints,
-                                              self.beam_sections, self.shell_thicknesses,
-                                              self.analysis_type, self.eigenmode_parameters,
-                                              self.working_dir)
+            inp_writer = iw.FemInputWriterCcx(
+                self.analysis, self.solver,
+                self.mesh, self.materials,
+                self.fixed_constraints, self.displacement_constraints,
+                self.contact_constraints, self.planerotation_constraints,
+                self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
+                self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
+                self.beam_sections, self.shell_thicknesses,
+                self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
@@ -107,8 +107,8 @@ class FemToolsCcx(FemTools.FemTools):
     def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
         from platform import system
         if not ccx_binary:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-            ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
+            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+            ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
         if not ccx_binary:
             if system() == "Linux":
                 ccx_binary = "ccx"
@@ -150,9 +150,14 @@ class FemToolsCcx(FemTools.FemTools):
         self.ccx_stderr = ""
         if self.inp_file_name != "" and self.ccx_binary_present:
             ont_backup = os.environ.get('OMP_NUM_THREADS')
+            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+            num_cpu_pref = self.ccx_prefs.GetInt("AnalysisNumCPUs", 1)  # If number of CPU's specified
             if not ont_backup:
-                ont_backup = ""
-            _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
+                ont_backup = str(num_cpu_pref)
+            if num_cpu_pref > 1:
+                _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref))  # if user picked a number use that instead
+            else:
+                _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
             # change cwd because ccx may crash if directory has no write permission
             # there is also a limit of the length of file names so jump to the document directory
             cwd = QtCore.QDir.currentPath()

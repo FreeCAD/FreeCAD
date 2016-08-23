@@ -40,7 +40,7 @@ namespace Base {
 class UnitsSchemaInternal: public UnitsSchema
 {
 public:
-	virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
+    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
 };
 
 

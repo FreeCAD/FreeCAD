@@ -56,17 +56,9 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Type, ((long)0));
 
-    // Set Hidden
-    //Direction.StatusBits.set(3);
+    //projection group controls these
     Direction.setStatus(App::Property::Hidden,true);
-
-    // Set Hidden
-    //XAxisDirection.StatusBits.set(3);
     XAxisDirection.setStatus(App::Property::Hidden,true);
-
-    // Scale and ScaleType are Readonly
-    //Scale.StatusBits.set(2);
-    //ScaleType.StatusBits.set(2);
     Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
 }
@@ -101,16 +93,6 @@ void DrawProjGroupItem::onDocumentRestored()
     execute();
 }
 
-/*
-//TODO: Perhaps we don't need this anymore?
-App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
-{
-    if(Type.isTouched()) {
-        Type.purgeTouched();
-    }
-
-    return TechDraw::DrawViewPart::execute();
-}*/
 
 PyObject *DrawProjGroupItem::getPyObject(void)
 {

@@ -1570,34 +1570,34 @@ bool MeshAlgorithm::ConnectPolygons(std::list<std::vector<Base::Vector3f> > &clP
                                     std::list<std::pair<Base::Vector3f, Base::Vector3f> > &rclLines) const
 {
 
-  for(std::list< std::vector<Base::Vector3f> >::iterator OutIter = clPolyList.begin(); OutIter != clPolyList.end(); ++OutIter)
-  {
-    std::pair<Base::Vector3f,Base::Vector3f> currentSort;
-    float fDist = Base::Distance(OutIter->front(),OutIter->back());
-    currentSort.first = OutIter->front();
-    currentSort.second = OutIter->back();
+    for (std::list< std::vector<Base::Vector3f> >::iterator OutIter = clPolyList.begin(); OutIter != clPolyList.end(); ++OutIter) {
+        if (OutIter->empty())
+            continue;
+        std::pair<Base::Vector3f,Base::Vector3f> currentSort;
+        float fDist = Base::Distance(OutIter->front(),OutIter->back());
+        currentSort.first = OutIter->front();
+        currentSort.second = OutIter->back();
 
-    for(std::list< std::vector<Base::Vector3f> >::iterator InnerIter = clPolyList.begin(); InnerIter != clPolyList.end(); ++InnerIter)
-    {
-      if(OutIter == InnerIter) continue;
+        for (std::list< std::vector<Base::Vector3f> >::iterator InnerIter = clPolyList.begin(); InnerIter != clPolyList.end(); ++InnerIter) {
+            if (OutIter == InnerIter)
+                continue;
 
-      if(Base::Distance(OutIter->front(),InnerIter->front()) < fDist)
-      {
-        currentSort.second = InnerIter->front();
-        fDist = Base::Distance(OutIter->front(),InnerIter->front());
-      }
-      if(Base::Distance(OutIter->front(),InnerIter->back()) < fDist)
-      {
-        currentSort.second = InnerIter->back();
-        fDist = Base::Distance(OutIter->front(),InnerIter->back());
-      }
+            if (Base::Distance(OutIter->front(), InnerIter->front()) < fDist) {
+                currentSort.second = InnerIter->front();
+                fDist = Base::Distance(OutIter->front(),InnerIter->front());
+            }
+
+            if (Base::Distance(OutIter->front(), InnerIter->back()) < fDist) {
+                currentSort.second = InnerIter->back();
+                fDist = Base::Distance(OutIter->front(),InnerIter->back());
+            }
+        }
+
+        rclLines.push_front(currentSort);
+
     }
 
-    rclLines.push_front(currentSort);
-
-  }
-
-  return true;
+    return true;
 }
 
 void MeshAlgorithm::GetFacetsFromPlane (const MeshFacetGrid &rclGrid, const Base::Vector3f& clNormal, float d, const Base::Vector3f &rclLeft,

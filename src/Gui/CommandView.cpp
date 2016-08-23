@@ -217,7 +217,14 @@ private:
 };
 
 StdCmdFreezeViews::StdCmdFreezeViews()
-  : Command("Std_FreezeViews"), maxViews(50), savedViews(0)
+  : Command("Std_FreezeViews")
+  , maxViews(50)
+  , savedViews(0)
+  , offset(0)
+  , saveView(0)
+  , freezeView(0)
+  , clearView(0)
+  , separator(0)
 {
     sGroup        = QT_TR_NOOP("Standard-View");
     sMenuText     = QT_TR_NOOP("Freeze display");
@@ -812,13 +819,13 @@ void StdCmdToggleSelectability::activated(int iMsg)
  
         for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
-            if(pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
-                    if (dynamic_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
-                        doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
-                                     , (*it)->getName(), (*ft)->getNameInDocument());
-                    else
-                        doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
-                                     , (*it)->getName(), (*ft)->getNameInDocument());
+            if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
+                if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
+                    doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
+                                 , (*it)->getName(), (*ft)->getNameInDocument());
+                else
+                    doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
+                                 , (*it)->getName(), (*ft)->getNameInDocument());
             }
         }
     }
@@ -924,7 +931,7 @@ void StdCmdToggleObjects::activated(int iMsg)
         (App::DocumentObject::getClassTypeId());
 
     for (std::vector<App::DocumentObject*>::const_iterator it=obj.begin();it!=obj.end();++it) {
-        if (doc && doc->isShow((*it)->getNameInDocument()))
+        if (doc->isShow((*it)->getNameInDocument()))
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
                          , app->getName(), (*it)->getNameInDocument());
         else

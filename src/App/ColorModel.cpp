@@ -52,10 +52,11 @@ ColorModel::~ColorModel ()
 ColorModel& ColorModel::operator = (const ColorModel &rclM)
 {
     // first check if both objects are identical
-    if (this->_pclColors && this->_pclColors == rclM._pclColors)
+    if (this == &rclM)
         return *this;
 
     delete [] _pclColors;
+    _pclColors = 0;
 
     _usColors = rclM._usColors;
     if (_usColors == 0)
@@ -75,19 +76,24 @@ ColorField::ColorField (void)
 }
 
 ColorField::ColorField (const ColorModel &rclModel, float fMin, float fMax, unsigned short usCt)
-: _clModel(ColorModelTria())
+  : _clModel(ColorModelTria())
 {
     set(rclModel, fMin, fMax, usCt);
 }
 
 ColorField::~ColorField ()
 {
-}    
+}
 
 ColorField::ColorField (const ColorField &rclCF)
-  : _clModel(ColorModelTria())
+  : _clModel(rclCF._clModel),
+    _fMin(rclCF._fMin),
+    _fMax(rclCF._fMax),
+    _fAscent(rclCF._fAscent),
+    _fConstant(rclCF._fConstant),
+    _usCtColors(rclCF._usCtColors),
+    _aclField(rclCF._aclField)
 {
-    *this = rclCF;
 }
 
 ColorField& ColorField::operator = (const ColorField &rclCF)
@@ -160,6 +166,7 @@ void ColorField::interpolate (Color clCol1, unsigned short usInd1, Color clCol2,
 
 ColorGradient::ColorGradient (void)
 :  _tColorModel(TRIA),
+   _tStyle(ZERO_BASED),
    _bOutsideGrayed(false),
    _clTotal(ColorModelTria()),
    _clTop(ColorModelTriaTop()),
@@ -171,6 +178,7 @@ ColorGradient::ColorGradient (void)
 
 ColorGradient::ColorGradient (float fMin, float fMax, unsigned short usCtColors, TStyle tS, bool bOG)
 :  _tColorModel(TRIA),
+   _tStyle(tS),
    _bOutsideGrayed(false),
    _clTotal(ColorModelTria()),
    _clTop(ColorModelTriaTop()),
@@ -181,12 +189,18 @@ ColorGradient::ColorGradient (float fMin, float fMax, unsigned short usCtColors,
 }
 
 ColorGradient::ColorGradient (const ColorGradient &rclCR)
-:  _tColorModel(TRIA),
-   _clTotal(ColorModelTria()),
-   _clTop(ColorModelTriaTop()),
-   _clBottom(ColorModelTriaBottom())
+:  _clColFld1(rclCR._clColFld1),
+   _clColFld2(rclCR._clColFld2),
+   _tColorModel(rclCR._tColorModel),
+   _tStyle(rclCR._tStyle),
+   _fMin(rclCR._fMin),
+   _fMax(rclCR._fMax),
+   _usCtColors(rclCR._usCtColors),
+   _bOutsideGrayed(rclCR._bOutsideGrayed),
+   _clTotal(rclCR._clTotal),
+   _clTop(rclCR._clTop),
+   _clBottom(rclCR._clBottom)
 {
-    *this = rclCR;
 }
 
 ColorGradient& ColorGradient::operator = (const ColorGradient &rclCR)
@@ -245,9 +259,9 @@ unsigned short ColorGradient::getMinColors (void) const
 {
     switch (_tStyle)
     {
-        case FLOW:   
+        case FLOW:
             return _clColFld1.getMinColors();
-        case ZERO_BASED: 
+        case ZERO_BASED:
         {
             if ((_fMin < 0.0f) && (_fMax > 0.0f))
                 return _clColFld1.getMinColors() + _clColFld2.getMinColors();
@@ -301,13 +315,13 @@ void ColorGradient::setColorModel (void)
 
     switch (_tStyle)
     {
-        case FLOW:   
+        case FLOW:
         {
             _clColFld1.setColorModel(_clTotal);
             _clColFld2.setColorModel(_clBottom);
             break;
         }
-        case ZERO_BASED: 
+        case ZERO_BASED:
         {
             _clColFld1.setColorModel(_clTop);
             _clColFld2.setColorModel(_clBottom);

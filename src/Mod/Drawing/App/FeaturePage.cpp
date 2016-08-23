@@ -168,24 +168,24 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
                 if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
-                    Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
+                    Drawing::FeatureView *View = static_cast<Drawing::FeatureView *>(*It);
                     if (View->Visible.getValue()) {
                         ofile << View->ViewResult.getValue();
                         ofile << tempendl << tempendl << tempendl;
                     }
                 } else if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId()) ) {
-                    Drawing::FeatureClip *Clip = dynamic_cast<Drawing::FeatureClip *>(*It);
+                    Drawing::FeatureClip *Clip = static_cast<Drawing::FeatureClip *>(*It);
                     if (Clip->Visible.getValue()) {
                         ofile << Clip->ViewResult.getValue();
                         ofile << tempendl << tempendl << tempendl;
                     }
                 } else if ( (*It)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) ) {
                     // getting children inside subgroups too
-                    App::DocumentObjectGroup *SubGroup = dynamic_cast<App::DocumentObjectGroup *>(*It);
+                    App::DocumentObjectGroup *SubGroup = static_cast<App::DocumentObjectGroup *>(*It);
                     const std::vector<App::DocumentObject*> &SubGrp = SubGroup->Group.getValues();
                     for (std::vector<App::DocumentObject*>::const_iterator Grit= SubGrp.begin();Grit!=SubGrp.end();++Grit) {
                         if ( (*Grit)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
-                            Drawing::FeatureView *SView = dynamic_cast<Drawing::FeatureView *>(*Grit);
+                            Drawing::FeatureView *SView = static_cast<Drawing::FeatureView *>(*Grit);
                             if (SView->Visible.getValue()) {
                                 ofile << SView->ViewResult.getValue();
                                 ofile << tempendl << tempendl << tempendl;

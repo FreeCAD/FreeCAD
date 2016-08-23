@@ -51,7 +51,7 @@ typesmap = { "Site":       ["IfcSite"],
 structuralifcobjects = (
                        "IfcStructuralCurveMember", "IfcStructuralSurfaceMember",
                        "IfcStructuralPointConnection", "IfcStructuralCurveConnection", "IfcStructuralSurfaceConnection",
-                       "IfcStructuralAction", "IfcStructuralPointAction", 
+                       "IfcStructuralAction", "IfcStructuralPointAction",
                        "IfcStructuralLinearAction", "IfcStructuralLinearActionVarying", "IfcStructuralPlanarAction"
                        )
 
@@ -126,11 +126,11 @@ def getPreferences():
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
     global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")   
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
         FreeCADGui.showPreferences("Import-Export",0)
-    DEBUG = p.GetBool("ifcDebug",False) 
+    DEBUG = p.GetBool("ifcDebug",False)
     PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
     SKIP = p.GetString("ifcSkip","").split(",")
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
@@ -155,7 +155,7 @@ def explore(filename=None):
     """explore([filename]): opens a dialog showing
     the contents of an IFC file. If no filename is given, a dialog will
     pop up to choose a file."""
-    
+
     getPreferences()
 
     try:
@@ -322,9 +322,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
     import only the derivates of a certain element type (default = ifcProduct)."""
-    
+
     getPreferences()
-    
+
     try:
         import ifcopenshell
     except:
@@ -339,7 +339,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     FreeCAD.ActiveDocument = doc
 
     if DEBUG: print "done."
-    
+
     global ROOT_ELEMENT
     if root:
         ROOT_ELEMENT = root
@@ -537,9 +537,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 # workaround to remove the bad placement: exporting/reimporting as step
                                 if not ex[0].Placement.isNull():
                                     import tempfile
-                                    tf = tempfile.mkstemp(suffix=".stp")[1]
+                                    fd, tf = tempfile.mkstemp(suffix=".stp")
                                     ex[0].exportStep(tf)
                                     f = Part.read(tf)
+                                    os.close(fd)
                                     os.remove(tf)
                                 else:
                                     f = ex[0]
@@ -734,7 +735,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
                 if host in objects.keys():
-                    cobs = [objects[child] for child in children if child in objects.keys()]
+                    cobs = []
+                    childs_to_delete = []
+                    for child in children:
+                        if child in objects.keys():
+                            cobs.append(objects[child])
+                            childs_to_delete.append(child)
+                    for c in childs_to_delete:
+                        children.remove(c)  # to not process the child again in remaining groups
                     if cobs:
                         if DEBUG: print "adding ",len(cobs), " object(s) to ", objects[host].Label
                         Arch.addComponents(cobs,objects[host])
@@ -748,18 +756,22 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if obj.isDerivedFrom("Part::Feature"):
                     if obj.Shape.isNull():
                         Arch.rebuildArchShape(obj)
-                        
+
     # processing remaining (normal) groups
     for host,children in groups.items():
         if ifcfile[host].is_a("IfcGroup"):
-            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",ifcfile[host].Name)
+            if ifcfile[host].Name:
+                grp_name = ifcfile[host].Name
+            else:
+                if DEBUG: print "no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!"
+                grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
+            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
             objects[host] = grp
             for child in children:
                 if child in objects.keys():
                     grp.addObject(objects[child])
                 else:
-                    if DEBUG: print "unable to add object to group: ",ifcfile[host]
-
+                    if DEBUG: print "unable to add object: #", child, "  to group: #", ifcfile[host].id(), ", ", grp_name
 
     if MERGE_MODE_ARCH == 3:
 
@@ -911,10 +923,11 @@ def export(exportList,filename):
     template = template.replace("$project",FreeCAD.ActiveDocument.Name)
     template = template.replace("$filename",filename)
     template = template.replace("$timestamp",str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
-    templatefile = tempfile.mkstemp(suffix=".ifc")[1]
+    templatefilehandle,templatefile = tempfile.mkstemp(suffix=".ifc")
     of = pyopen(templatefile,"wb")
     of.write(template.encode("utf8"))
     of.close()
+    os.close(templatefilehandle)
     global ifcfile, surfstyles, clones, sharedobjects
     ifcfile = ifcopenshell.open(templatefile)
     history = ifcfile.by_type("IfcOwnerHistory")[0]
@@ -935,10 +948,10 @@ def export(exportList,filename):
             b = Draft.getCloneBase(o,strict=True)
             if b:
                 clones.setdefault(b.Name,[]).append(o.Name)
-            
+
     #print "clones table: ",clones
     #print objectslist
-    
+
     # testing if more than one site selected (forbidden in IFC)
     if len(Draft.getObjectsOfType(objectslist,"Site")) > 1:
         FreeCAD.Console.PrintError("More than one site is selected, which is forbidden by IFC standards. Please export only one site by IFC file.\n")
@@ -1147,7 +1160,7 @@ def export(exportList,filename):
         f = products[floor.Name]
         if children:
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'StoreyLink','',children,f)
-        floors.append(floor.Name) 
+        floors.append(floor.Name)
     for building in Draft.getObjectsOfType(objectslist,"Building"):
         objs = Draft.getGroupContents(building,walls=True,addgroups=True)
         objs = Arch.pruneIncluded(objs)
@@ -1228,7 +1241,7 @@ def export(exportList,filename):
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
             ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
-                
+
     # groups
     sortedgroups = []
     while groups:
@@ -1257,17 +1270,19 @@ def export(exportList,filename):
                 grp = ifcfile.createIfcGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,name,'',None)
                 products[g[0]] = grp
                 ass = ifcfile.createIfcRelAssignsToGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupLink','',children,None,grp)
-        
+
 
     if DEBUG: print "writing ",filename,"..."
 
     filename = decode(filename)
 
     ifcfile.write(filename)
-    
+
     if STORE_UID:
         # some properties might have been changed
         FreeCAD.ActiveDocument.recompute()
+        
+    os.remove(templatefile)
 
 
 def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1):
@@ -1279,7 +1294,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     productdef = None
     shapetype = "no shape"
     tostore = False
-    
+
     # check for clones
     if not subtraction:
         for k,v in clones.items():
@@ -1401,7 +1416,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                                 pol = ifcfile.createIfcCompositeCurve(segments,False)
                             profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
-                            
+
         if profile and not(DraftVecUtils.isNull(extrusionv)):
             xvc =       ifcfile.createIfcDirection(tuple(r.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             zvc =       ifcfile.createIfcDirection(tuple(r.Rotation.multVec(FreeCAD.Vector(0,0,1))))
@@ -1439,12 +1454,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             else:
                 dataset = fcshape.Shells
                 if DEBUG: print "Warning! object contains no solids"
-                
+
             # if this is a clone, place back the shapes in null position
             if tostore:
                 for shape in dataset:
                     shape.Placement = FreeCAD.Placement()
-                
+
             # new ifcopenshell serializer
             from ifcopenshell import geom
             if hasattr(geom,"serialise") and obj.isDerivedFrom("Part::Feature") and SERIALIZE:
@@ -1497,7 +1512,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             if not fcsolid:
                                 if DEBUG: print "Error: Unable to triangulate shape"
                                 fcsolid = Part.Shape()
-                        
+
                     for fcface in fcsolid.Faces:
                         loops = []
                         verts = [v.Point for v in Part.Wire(Part.__sortEdges__(fcface.OuterWire.Edges)).Vertexes]
@@ -1524,7 +1539,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 loops.append(bound)
                         face =  ifcfile.createIfcFace(loops)
                         faces.append(face)
-    
+
                     if faces:
                         shell = ifcfile.createIfcClosedShell(faces)
                         shape = ifcfile.createIfcFacetedBrep(shell)
@@ -1626,8 +1641,8 @@ def setRepresentation(representation):
                             e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
                             result.append(e)
     return result
-    
-    
+
+
 def getRotation(entity):
     "returns a FreeCAD rotation from an IfcProduct with a IfcMappedItem representation"
     try:

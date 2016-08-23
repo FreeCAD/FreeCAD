@@ -155,3 +155,14 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
 
     return DrawView::execute();
 }
+
+
+QRectF DrawViewCollection::getRect() const
+{
+    QRectF result;
+    for (auto& v:Views.getValues()) {
+        TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(v);
+        result = result.united(view->getRect().translated(view->X.getValue(),view->Y.getValue()));
+    }
+    return QRectF(0,0,Scale.getValue() * result.width(),Scale.getValue() * result.height());
+}

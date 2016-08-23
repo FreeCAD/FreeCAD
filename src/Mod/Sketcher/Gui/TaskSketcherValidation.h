@@ -49,6 +49,7 @@ protected:
 private Q_SLOTS:
     void on_findButton_clicked();
     void on_fixButton_clicked();
+    void on_highlightButton_clicked();
     void on_findConstraint_clicked();
     void on_fixConstraint_clicked();
     void on_findReversed_clicked();

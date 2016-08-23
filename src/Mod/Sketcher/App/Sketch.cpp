@@ -62,7 +62,7 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
-: GCSsys(), ConstraintsCounter(0), isInitMove(false),
+: SolveTime(0), GCSsys(), ConstraintsCounter(0), isInitMove(false), isFine(true),
     defaultSolver(GCS::DogLeg),defaultSolverRedundant(GCS::DogLeg),debugMode(GCS::Minimal)
 {
 }
@@ -110,9 +110,8 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                         const std::vector<Constraint *> &ConstraintList,
                         int extGeoCount)
 {
-    
     Base::TimeInfo start_time;
-        
+
     clear();
 
     std::vector<Part::Geometry *> intGeoList, extGeoList;
@@ -129,7 +128,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         Geoms[i].external = true;
 
     // The Geoms list might be empty after an undo/redo
-    if (!Geoms.empty()) {                 
+    if (!Geoms.empty()) {
         addConstraints(ConstraintList);
     }
     GCSsys.clearByTag(-1);
@@ -137,13 +136,24 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
-        
-    if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
+
+    if (debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
         Base::TimeInfo end_time;
-                
+
         Base::Console().Log("Sketcher::setUpSketch()-T:%s\n",Base::TimeInfo::diffTime(start_time,end_time).c_str());
     }
-        
+
+    return GCSsys.dofsNumber();
+}
+
+int Sketch::resetSolver()
+{
+    GCSsys.clearByTag(-1);
+    GCSsys.declareUnknowns(Parameters);
+    GCSsys.initSolution(defaultSolverRedundant);
+    GCSsys.getConflicting(Conflicting);
+    GCSsys.getRedundant(Redundant);
+
     return GCSsys.dofsNumber();
 }
 
@@ -173,27 +183,27 @@ const char* nameByType(Sketch::GeoType type)
 int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
     if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
-        const GeomPoint *point = dynamic_cast<const GeomPoint*>(geo);
+        const GeomPoint *point = static_cast<const GeomPoint*>(geo);
         // create the definition struct for that geom
         return addPoint(*point, fixed);
     } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
-        const GeomLineSegment *lineSeg = dynamic_cast<const GeomLineSegment*>(geo);
+        const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
     } else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
-        const GeomCircle *circle = dynamic_cast<const GeomCircle*>(geo);
+        const GeomCircle *circle = static_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
     } else if (geo->getTypeId() == GeomEllipse::getClassTypeId()) { // add a ellipse
-        const GeomEllipse *ellipse = dynamic_cast<const GeomEllipse*>(geo);
+        const GeomEllipse *ellipse = static_cast<const GeomEllipse*>(geo);
         // create the definition struct for that geom
         return addEllipse(*ellipse, fixed);
     } else if (geo->getTypeId() == GeomArcOfCircle::getClassTypeId()) { // add an arc
-        const GeomArcOfCircle *aoc = dynamic_cast<const GeomArcOfCircle*>(geo);
+        const GeomArcOfCircle *aoc = static_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
         return addArc(*aoc, fixed);
     } else if (geo->getTypeId() == GeomArcOfEllipse::getClassTypeId()) { // add an arc
-        const GeomArcOfEllipse *aoe = dynamic_cast<const GeomArcOfEllipse*>(geo);
+        const GeomArcOfEllipse *aoe = static_cast<const GeomArcOfEllipse*>(geo);
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
     } else {
@@ -567,9 +577,10 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
 {
     std::vector<Part::Geometry *> temp;
     temp.reserve(Geoms.size());
-    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it)
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
         if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstructionElements))
             temp.push_back(it->geo->clone());
+    }
 
     return temp;
 }
@@ -583,19 +594,19 @@ Py::Tuple Sketch::getPyGeometry(void) const
             Base::Vector3d temp(*(Points[it->startPointId].x),*(Points[it->startPointId].y),0);
             tuple[i] = Py::asObject(new VectorPy(temp));
         } else if (it->type == Line) {
-            GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo->clone());
+            GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo->clone());
             tuple[i] = Py::asObject(new LinePy(lineSeg));
         } else if (it->type == Arc) {
-            GeomArcOfCircle *aoc = dynamic_cast<GeomArcOfCircle*>(it->geo->clone());
+            GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfCirclePy(aoc));
         } else if (it->type == Circle) {
-            GeomCircle *circle = dynamic_cast<GeomCircle*>(it->geo->clone());
+            GeomCircle *circle = static_cast<GeomCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new CirclePy(circle));
         } else if (it->type == Ellipse) {
-            GeomEllipse *ellipse = dynamic_cast<GeomEllipse*>(it->geo->clone());
+            GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new EllipsePy(ellipse));
         } else if (it->type == ArcOfEllipse) {
-            GeomArcOfEllipse *ellipse = dynamic_cast<GeomArcOfEllipse*>(it->geo->clone());
+            GeomArcOfEllipse *ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
         } 
         else {
@@ -911,7 +922,7 @@ int Sketch::addConstraint(const Constraint *constraint)
                                          c.value, c.secondvalue);
         }
         break;
-    case None:
+    case Sketcher::None: // ambiguous enum value
     case NumConstraintTypes:
         break;
     }
@@ -1982,13 +1993,13 @@ bool Sketch::updateGeometry()
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
         try {
             if (it->type == Point) {
-                GeomPoint *point = dynamic_cast<GeomPoint*>(it->geo);
+                GeomPoint *point = static_cast<GeomPoint*>(it->geo);
                 point->setPoint(Vector3d(*Points[it->startPointId].x,
                                          *Points[it->startPointId].y,
                                          0.0)
                                );
             } else if (it->type == Line) {
-                GeomLineSegment *lineSeg = dynamic_cast<GeomLineSegment*>(it->geo);
+                GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo);
                 lineSeg->setPoints(Vector3d(*Lines[it->index].p1.x,
                                             *Lines[it->index].p1.y,
                                             0.0),
@@ -2003,7 +2014,7 @@ bool Sketch::updateGeometry()
 //                *myArc.start.y = *myArc.center.y + *myArc.rad * sin(*myArc.startAngle);
 //                *myArc.end.x = *myArc.center.x + *myArc.rad * cos(*myArc.endAngle);
 //                *myArc.end.y = *myArc.center.y + *myArc.rad * sin(*myArc.endAngle);
-                GeomArcOfCircle *aoc = dynamic_cast<GeomArcOfCircle*>(it->geo);
+                GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo);
                 aoc->setCenter(Vector3d(*Points[it->midPointId].x,
                                         *Points[it->midPointId].y,
                                         0.0)
@@ -2013,7 +2024,7 @@ bool Sketch::updateGeometry()
             } else if (it->type == ArcOfEllipse) {
                 GCS::ArcOfEllipse &myArc = ArcsOfEllipse[it->index];
 
-                GeomArcOfEllipse *aoe = dynamic_cast<GeomArcOfEllipse*>(it->geo);
+                GeomArcOfEllipse *aoe = static_cast<GeomArcOfEllipse*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
@@ -2033,7 +2044,7 @@ bool Sketch::updateGeometry()
                 aoe->setMajorAxisDir(fd);
                 aoe->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             } else if (it->type == Circle) {
-                GeomCircle *circ = dynamic_cast<GeomCircle*>(it->geo);
+                GeomCircle *circ = static_cast<GeomCircle*>(it->geo);
                 circ->setCenter(Vector3d(*Points[it->midPointId].x,
                                          *Points[it->midPointId].y,
                                          0.0)
@@ -2041,7 +2052,7 @@ bool Sketch::updateGeometry()
                 circ->setRadius(*Circles[it->index].rad);
             } else if (it->type == Ellipse) {
                 
-                GeomEllipse *ellipse = dynamic_cast<GeomEllipse*>(it->geo);
+                GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*Ellipses[it->index].focus1.x, *Ellipses[it->index].focus1.y, 0.0);
@@ -2090,18 +2101,17 @@ bool Sketch::updateNonDrivingConstraints()
 
 int Sketch::solve(void)
 {
-
     Base::TimeInfo start_time;
     if (!isInitMove) { // make sure we are in single subsystem mode
         GCSsys.clearByTag(-1);
         isFine = true;
     }
-    
+
     int ret = -1;
     bool valid_solution;
     std::string solvername;
     int defaultsoltype = -1;
-    
+
     if(isInitMove){
         solvername = "DogLeg"; // DogLeg is used for dragging (same as before)
         ret = GCSsys.solve(isFine, GCS::DogLeg);        
@@ -2123,9 +2133,9 @@ int Sketch::solve(void)
                 ret = GCSsys.solve(isFine, GCS::DogLeg);
                 defaultsoltype=0;
                 break;
-        }    
+        }
     }
-    
+
     // if successfully solved try to write the parameters back
     if (ret == GCS::Success) {
         GCSsys.applySolution();
@@ -2134,11 +2144,12 @@ int Sketch::solve(void)
             GCSsys.undoSolution();
             updateGeometry();
             Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
-        }else
-        {
+        }
+        else {
             updateNonDrivingConstraints();
         }
-    } else {
+    }
+    else {
         valid_solution = false;
         if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
             
@@ -2148,11 +2159,11 @@ int Sketch::solve(void)
 
     if(!valid_solution && !isInitMove) { // Fall back to other solvers
         for (int soltype=0; soltype < 4; soltype++) {
-            
+
             if(soltype==defaultsoltype){
                     continue; // skip default solver
             }
-                
+
             switch (soltype) {
             case 0:
                 solvername = "DogLeg";
@@ -2197,7 +2208,7 @@ int Sketch::solve(void)
                 if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
                     
                     Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",solvername.c_str());
-                }                
+                }
             }
 
             if (soltype == 3) // cleanup temporary constraints of the augmented system
@@ -2222,12 +2233,12 @@ int Sketch::solve(void)
     }
 
     Base::TimeInfo end_time;
-    
+
     if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
         
         Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",solvername.c_str(),Base::TimeInfo::diffTime(start_time,end_time).c_str());
     }
-    
+
     SolveTime = Base::TimeInfo::diffTimeF(start_time,end_time);
     return ret;
 }
@@ -2316,7 +2327,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i, 0.01);
         }
     } else if (Geoms[geoId].type == Ellipse) {
-        
+
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
@@ -2328,7 +2339,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
         }
     } else if (Geoms[geoId].type == ArcOfEllipse) {
-        
+
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
@@ -2339,7 +2350,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == start || pos == end) {
-            
+
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
                 GCS::Point &p = (pos == start) ? Points[Geoms[geoId].startPointId]
@@ -2349,7 +2360,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,-1);
-            } 
+            }
+
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
@@ -2493,8 +2505,6 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos)
     return Base::Vector3d();
 }
 
-
-
 TopoShape Sketch::toShape(void) const
 {
     TopoShape result;
@@ -2508,9 +2518,9 @@ TopoShape Sketch::toShape(void) const
             TopoDS_Shape sh = it->geo->toShape();
             if (first) {
                 first = false;
-                result._Shape = sh;
+                result.setShape(sh);
             } else {
-                result._Shape = result.fuse(sh);
+                result.setShape(result.fuse(sh));
             }
         }
     }
@@ -2563,6 +2573,7 @@ TopoShape Sketch::toShape(void) const
         aFix.FixClosed();
         wires.push_back(aFix.Wire());
     }
+
     if (wires.size() == 1)
         result = *wires.begin();
     else if (wires.size() > 1) {
@@ -2580,7 +2591,7 @@ TopoShape Sketch::toShape(void) const
         builder.MakeCompound(comp);
         for (std::list<TopoDS_Wire>::iterator wt = wires.begin(); wt != wires.end(); ++wt)
             builder.Add(comp, *wt);
-        result._Shape = comp;
+        result.setShape(comp);
     }
     // FIXME: if free edges are left over its probably better to
     // create a compound with the closed structures and let the

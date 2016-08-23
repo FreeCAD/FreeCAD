@@ -707,6 +707,7 @@ MacroCommand::MacroCommand(const char* name, bool system)
 {
     sGroup = QT_TR_NOOP("Macros");
     eType  = 0;
+    sScriptName = 0;
 }
 
 MacroCommand::~MacroCommand()

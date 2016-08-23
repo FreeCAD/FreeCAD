@@ -25,7 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathGui
+#import PathGui
 from PySide import QtCore, QtGui
 import math
 import DraftVecUtils as D
@@ -66,35 +66,67 @@ class ObjectDressup:
     def __setstate__(self, state):
         return None
 
-    def getIncidentAngle(self, queue):
-        global currLocation
-        '''returns in the incident angle in radians between the current and previous moves'''
+    def shortcut(self, queue):
+        '''Determines whether its shorter to twist CW or CCW to align with the next move'''
         # get the vector of the last move
+
+        global arccommands
+
         if queue[1].Name in arccommands:
-            print queue
-            print currLocation
-            arcLoc = FreeCAD.Base.Vector(queue[2].X + queue[1].I, queue[2].Y + queue[1].J, currLocation['Z'])
-            radvector = queue[1].Placement.Base.sub(arcLoc)  # vector of chord from center to point
+            arcLoc = FreeCAD.Vector(queue[2].x + queue[1].I, queue[2].y + queue[1].J, currLocation['Z'])
+            radvector = arcLoc.sub(queue[1].Placement.Base) #.sub(arcLoc)  # vector of chord from center to point
             # vector of line perp to chord.
-            v1 = radvector.cross(FreeCAD.Base.Vector(0, 0, 1))
+            v1 = radvector.cross(FreeCAD.Vector(0, 0, 1))
         else:
             v1 = queue[1].Placement.Base.sub(queue[2].Placement.Base)
 
         # get the vector of the current move
         if queue[0].Name in arccommands:
-            arcLoc = FreeCAD.Base.Vector((queue[1].x + queue[0].I), (queue[1].y + queue[0].J), currLocation['Z'])
+            arcLoc = FreeCAD.Vector( (queue[1].x + queue[0].I), (queue[1].y + queue[0].J), currLocation['Z'])
             radvector = queue[1].Placement.Base.sub(arcLoc)  # calculate arcangle
-
-            v2 = radvector.cross(FreeCAD.Base.Vector(0, 0, 1))
-
-            # if switching between G2 and G3, reverse orientation
-            if queue[1].Name in arccommands:
-                if queue[0].Name != queue[1].Name:
-                    v2 = D.rotate2D(v2, math.radians(180))
+            v2 = radvector.cross(FreeCAD.Vector(0, 0, 1))
         else:
             v2 = queue[0].Placement.Base.sub(queue[1].Placement.Base)
 
-        incident_angle = D.angle(v1, v2, FreeCAD.Base.Vector(0, 0, -1))
+        if (v2.x * v1.y) - (v2.y * v1.x) >= 0:
+            return "CW"
+        else:
+            return "CCW"
+
+    def segmentAngleXY(self, prevCommand, currCommand, endpos=False, currentZ=0):
+        '''returns in the starting angle in radians for a Path command.
+        requires the previous command in order to calculate arcs correctly
+        if endpos = True, return the angle at the end of the segment.'''
+
+        global arccommands
+        if currCommand.Name in arccommands:
+            arcLoc = FreeCAD.Vector( (prevCommand.x + currCommand.I), (prevCommand.y + currCommand.J), currentZ)
+            if endpos is True:
+                radvector = arcLoc.sub(currCommand.Placement.Base) #Calculate vector at start of arc
+            else:
+                radvector = arcLoc.sub(prevCommand.Placement.Base) #Calculate vector at end of arc
+
+            v1 = radvector.cross(FreeCAD.Vector(0, 0, 1))
+            if currCommand.Name in ["G2", "G02"]:
+                v1 = D.rotate2D(v1, math.radians(180))
+        else:
+            v1 = currCommand.Placement.Base.sub(prevCommand.Placement.Base) #Straight segments are easy
+
+        myAngle = D.angle(v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1))
+        return myAngle
+
+    def getIncidentAngle(self, queue):
+        # '''returns in the incident angle in radians between the current and previous moves'''
+
+        angleatend = float(math.degrees(self.segmentAngleXY(queue[2], queue[1], True)))
+        if angleatend < 0:
+            angleatend = 360 + angleatend
+        angleatstart = float(math.degrees(self.segmentAngleXY(queue[1], queue[0])))
+        if angleatstart < 0:
+            angleatstart = 360 + angleatstart
+
+        incident_angle = angleatend-angleatstart
+
         return incident_angle
 
     def arcExtension(self, obj, queue):
@@ -184,8 +216,6 @@ class ObjectDressup:
 
         # calculate IJ offsets of twist arc from current position.
         offsetvector = C.sub(lastXY)
-        # I = offsetvector.x
-        # J = offsetvector.y
 
         # add G2/G3 move
         arcmove = Path.Command(
@@ -201,12 +231,8 @@ class ObjectDressup:
         # The old arc move won't work so calculate a replacement command
         offsetv = arccenter.sub(endpointvector)
 
-        # I = offsetv.x
-        # J = offsetv.y
-
         replace = Path.Command(
             queue[0].Name, {"X": queue[0].X, "Y": queue[0].Y, "I": offsetv.x, "J": offsetv.y})
-
         return (results, replace)
 
     def lineExtension(self, obj, queue):
@@ -353,10 +379,11 @@ class ObjectDressup:
                     if changedXYFlag and (len(queue) == 3):
 
                         # check if the inciden angle incident exceeds the filter
-                        incident_angle = math.degrees(self.getIncidentAngle(queue))
+                        incident_angle = self.getIncidentAngle(queue)
 
                         if abs(incident_angle) >= obj.filterangle:
-                            if incident_angle >= 0:
+                            if self.shortcut(queue) == "CW":
+                            #if incident_angle >= 0:
                                 twistCW = True
                             else:
                                 twistCW = False
@@ -433,6 +460,11 @@ class ViewProviderDressup:
 
     def __setstate__(self, state):
         return None
+
+    def onDelete(self, arg1=None, arg2=None):
+        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+        P.addToProject(arg1.Object.Base)
+        return True
 
 
 class CommandDragknifeDressup:

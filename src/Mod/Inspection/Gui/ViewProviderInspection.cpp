@@ -183,7 +183,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
 {
     // set to the expected size
     if (prop->getTypeId() == App::PropertyLink::getClassTypeId()) {
-        App::GeoFeature* object = static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
+        App::GeoFeature* object = dynamic_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
         if (object) {
             float accuracy=0;
             Base::Type meshId  = Base::Type::fromName("Mesh::Feature");
@@ -260,9 +260,10 @@ void ViewProviderInspection::updateData(const App::Property* prop)
         // force an update of the Inventor data nodes
         if (this->pcObject) {
             App::Property* link = this->pcObject->getPropertyByName("Actual");
-            if (link) updateData(link);
+            if (link)
+                updateData(link);
+            setDistances();
         }
-        setDistances();
     }
     else if (prop->getTypeId() == App::PropertyFloat::getClassTypeId()) {
         if (strcmp(prop->getName(), "SearchRadius") == 0) {
@@ -281,6 +282,9 @@ SoSeparator* ViewProviderInspection::getFrontRoot(void) const
 
 void ViewProviderInspection::setDistances()
 {
+    if (!pcObject)
+        return;
+
     App::Property* pDistances = pcObject->getPropertyByName("Distances");
     if (!pDistances) {
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");

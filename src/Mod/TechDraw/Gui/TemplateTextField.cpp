@@ -25,9 +25,10 @@
 #ifndef _PreComp_
 #include<QInputDialog>
 #include<QLineEdit>
+#include <QTextDocument>
 #endif // #ifndef _PreCmp_
 
-#include <QTextDocument>
+
 
 #include <Base/Console.h>
 
@@ -58,13 +59,13 @@ TemplateTextField::~TemplateTextField()
 void TemplateTextField::execDialog()
 {
     int uiCode = ui->exec();
-    std::string newContent = "";
+    QString newContent;
     if(uiCode == QDialog::Accepted) {
        if (tmplte) {
-           std::string newContent = ui->getFieldContent();
-           QString qsClean = Qt::escape(QString::fromStdString(newContent));        //Qt5 note: this becomes qsNewContent.toHtmlEscaped();
-           newContent = qsClean.toUtf8().constData();
-           tmplte->EditableTexts.setValue(fieldNameStr, newContent);
+           newContent = ui->getFieldContent();
+           QString qsClean = Qt::escape(newContent);                            //Qt5 note: this becomes qsNewContent.toHtmlEscaped();
+           std::string utf8Content = qsClean.toUtf8().constData();
+           tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
        }
     }
     ui = nullptr;               //ui memory will be release by ui's parent Widget

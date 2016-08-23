@@ -244,11 +244,17 @@ int DrawPage::addView(App::DocumentObject *docObj)
         view->Y.setValue(getPageHeight()/2.0);
     }
 
+    //add view to list
     const std::vector<App::DocumentObject *> currViews = Views.getValues();
     std::vector<App::DocumentObject *> newViews(currViews);
     newViews.push_back(docObj);
     Views.setValues(newViews);
-    Views.touch();
+
+    //check if View fits on Page
+    if ( !view->checkFit(this) ) {
+        Base::Console().Warning("%s is larger than page. Will be scaled.\n",view->getNameInDocument());
+        view->ScaleType.setValue("Automatic");
+    }
 
     return Views.getSize();
 }

@@ -40,7 +40,8 @@
 
 using namespace TechDrawGui;
 
-QGIPrimPath::QGIPrimPath()
+QGIPrimPath::QGIPrimPath():
+    m_width(0)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -50,12 +51,14 @@ QGIPrimPath::QGIPrimPath()
     setAcceptHoverEvents(true);
 
     isHighlighted = false;
-    setPrettyNormal();
 
     m_colCurrent = getNormalColor();
     m_styleCurrent = Qt::SolidLine;
     m_pen.setStyle(m_styleCurrent);
     m_pen.setCapStyle(Qt::RoundCap);
+    m_pen.setWidthF(m_width);
+
+    setPrettyNormal();
 }
 
 QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -82,6 +85,7 @@ void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
     assert(view != 0);
+    Q_UNUSED(view);
     if(!isSelected() && !isHighlighted) {
         setPrettyNormal();
     }
@@ -117,6 +121,7 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+    m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
     m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);
@@ -145,6 +150,17 @@ QColor QGIPrimPath::getSelectColor()
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
     return fcColor.asValue<QColor>();
+}
+
+void QGIPrimPath::setWidth(double w)
+{
+    m_width = w;
+    m_pen.setWidthF(m_width);
+}
+
+void QGIPrimPath::setStyle(Qt::PenStyle s)
+{
+    m_styleCurrent = s;
 }
 
 Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()

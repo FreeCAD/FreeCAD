@@ -29,6 +29,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
@@ -163,6 +164,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
     m_inseekmode = false;
     m_storedcamera = 0;
     m_viewingflag = false;
+    pickRadius = 5.0;
 
     m_seeksensor = new SoTimerSensor(SoQTQuarterAdaptor::seeksensorCB, (void*)this);
     getSoEventManager()->setNavigationState(SoEventManager::NO_NAVIGATION);
@@ -378,12 +380,24 @@ SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage(void) con
     return m_seekdistanceabs ? false : true;
 }
 
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setPickRadius(float pickRadius)
+{
+    this->pickRadius = pickRadius;
+    SoEventManager* evm = this->getSoEventManager();
+    if (evm){
+        SoHandleEventAction* a = evm->getHandleEventAction();
+        if (a){
+            a->setPickRadius(pickRadius);
+        }
+    }
+}
+
 SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s screenpos)
 {
 
     SoRayPickAction rpaction(getSoRenderManager()->getViewportRegion());
     rpaction.setPoint(screenpos);
-    rpaction.setRadius(2);
+    rpaction.setRadius(pickRadius);
     rpaction.apply(getSoRenderManager()->getSceneGraph());
 
     SoPickedPoint* picked = rpaction.getPickedPoint();

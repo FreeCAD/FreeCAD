@@ -71,6 +71,10 @@ void View3DInventorViewerPy::init_type()
     add_varargs_method("setFocalDistance",&View3DInventorViewerPy::setFocalDistance,"setFocalDistance(float) -> None\n");
     add_varargs_method("getFocalDistance",&View3DInventorViewerPy::getFocalDistance,"getFocalDistance() -> float\n");
     add_varargs_method("getPoint", &View3DInventorViewerPy::getPoint, "getPoint(x, y) -> Base::Vector(x,y,z)");
+    add_varargs_method("getPickRadius", &View3DInventorViewerPy::getPickRadius,
+        "getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection).");
+    add_varargs_method("setPickRadius", &View3DInventorViewerPy::setPickRadius,
+        "setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection).");
 }
 
 View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
@@ -244,10 +248,7 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
     catch (const Py::Exception&) {
         throw;
     }
-    
-    return Py::None();
 }
-
 
 Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
 {
@@ -314,5 +315,39 @@ Py::Object View3DInventorViewerPy::getPoint(const Py::Tuple& args)
     }
     catch (const Py::Exception&) {
         throw;
+    }
+}
+
+Py::Object View3DInventorViewerPy::getPickRadius(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    double d = _viewer->getPickRadius();
+    return Py::Float(d);
+}
+
+Py::Object View3DInventorViewerPy::setPickRadius(const Py::Tuple& args)
+{
+    float r = 0.0;
+    if (!PyArg_ParseTuple(args.ptr(), "f", &r)) {
+        throw Py::Exception();
+    }
+
+    if (r < 0.001){
+        throw Py::ValueError(std::string("Pick radius is zero or negative; positive number is required."));
+    }
+    try {
+        _viewer->setPickRadius(r);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
     }
 }

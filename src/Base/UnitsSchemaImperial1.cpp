@@ -58,7 +58,7 @@ using namespace Base;
 //    Quantity::Mile =  Quantity (1609344.0     ,Unit(1));
 //}
 
-QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
@@ -66,71 +66,77 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if(unit == Unit::Length){  // Length handling ============================
-        if(UnitValue < 0.00000254){// smaller then 0.001 thou -> inch and scientific notation
+    if (unit == Unit::Length) {  // Length handling ============================
+        if (UnitValue < 0.00000254) {// smaller then 0.001 thou -> inch and scientific notation
             unitString = QString::fromLatin1("in");
             factor = 25.4;
-        }else if(UnitValue < 2.54){ // smaller then 0.1 inch -> Thou (mil)
+        }
+        else if(UnitValue < 2.54) { // smaller then 0.1 inch -> Thou (mil)
             unitString = QString::fromLatin1("thou");
             factor = 0.0254;
-        }else if(UnitValue < 304.8){
+        }
+        else if(UnitValue < 304.8) {
             unitString = QString::fromLatin1("\"");
             factor = 25.4;
-        }else if(UnitValue < 914.4){
+        }
+        else if(UnitValue < 914.4) {
             unitString = QString::fromLatin1("\'");
             factor = 304.8;
         }else if(UnitValue < 1609344.0){
             unitString = QString::fromLatin1("yd");
             factor = 914.4;
-        }else if(UnitValue < 1609344000.0 ){
+        }
+        else if(UnitValue < 1609344000.0) {
             unitString = QString::fromLatin1("mi");
             factor = 1609344.0;
-        }else{ // bigger then 1000 mi -> scientific notation
+        }
+        else { // bigger then 1000 mi -> scientific notation
             unitString = QString::fromLatin1("in");
             factor = 25.4;
         }
-    }else if (unit == Unit::Area){
+    }
+    else if (unit == Unit::Area) {
         // TODO Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^2");
         factor = 645.16;
-    }else if (unit == Unit::Volume){
+    }
+    else if (unit == Unit::Volume) {
         // TODO Cascade for the Volume
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^3");
         factor = 16387.064;
-    }else if (unit == Unit::Mass){
+    }
+    else if (unit == Unit::Mass) {
         // TODO Cascade for the wights
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("lb");
         factor = 0.45359237;
-    }else if (unit == Unit::Pressure){
-        if(UnitValue < 145.038){// psi is the smallest
-            unitString = QString::fromLatin1("psi");
-            factor = 0.145038;
-        }else if(UnitValue < 145038){
-            unitString = QString::fromLatin1("ksi");
-            factor = 145.038;
-        }else{ // bigger then 1000 ksi -> psi + scientific notation
+    }
+    else if (unit == Unit::Pressure) {
+        if (UnitValue < 145.038) {// psi is the smallest
             unitString = QString::fromLatin1("psi");
             factor = 0.145038;
         }
-    }else{
+        else if (UnitValue < 145038) {
+            unitString = QString::fromLatin1("ksi");
+            factor = 145.038;
+        }
+        else { // bigger then 1000 ksi -> psi + scientific notation
+            unitString = QString::fromLatin1("psi");
+            factor = 0.145038;
+        }
+    }
+    else{
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-    //return QString::fromLatin1("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+
+    return toLocale(quant, factor, unitString);
 }
 
-
-
-
-QString UnitsSchemaImperialDecimal::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
@@ -138,63 +144,65 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(Base::Quantity quant,double 
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if(unit == Unit::Length){  // Length handling ============================
-        if(UnitValue < 0.00000254){// smaller then 0.001 thou -> inch and scientific notation
+    if (unit == Unit::Length) {  // Length handling ============================
+        if (UnitValue < 0.00000254) {// smaller then 0.001 thou -> inch and scientific notation
             unitString = QString::fromLatin1("in");
             factor = 25.4;
         //}else if(UnitValue < 2.54){ // smaller then 0.1 inch -> Thou (mil)
         //    unitString = QString::fromLatin1("thou");
         //    factor = 0.0254;
-        }else{ // bigger then 1000 mi -> scientific notation
+        }
+        else { // bigger then 1000 mi -> scientific notation
             unitString = QString::fromLatin1("in");
             factor = 25.4;
         }
-    }else if (unit == Unit::Area){
+    }
+    else if (unit == Unit::Area) {
         // TODO Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^2");
         factor = 645.16;
-    }else if (unit == Unit::Volume){
+    }
+    else if (unit == Unit::Volume) {
         // TODO Cascade for the Volume
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^3");
         factor = 16387.064;
-    }else if (unit == Unit::Mass){
+    }
+    else if (unit == Unit::Mass) {
         // TODO Cascade for the wights
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("lb");
         factor = 0.45359237;
-    }else if (unit == Unit::Pressure){
-        if(UnitValue < 145.038){// psi is the smallest
+    }
+    else if (unit == Unit::Pressure) {
+        if (UnitValue < 145.038) {// psi is the smallest
             unitString = QString::fromLatin1("psi");
             factor = 0.145038;
         //}else if(UnitValue < 145038){
         //    unitString = QString::fromLatin1("ksi");
         //    factor = 145.038;
-        }else{ // bigger then 1000 ksi -> psi + scientific notation
+        }
+        else { // bigger then 1000 ksi -> psi + scientific notation
             unitString = QString::fromLatin1("psi");
             factor = 0.145038;
         }
-    }else{
+    }
+    else {
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-    //return QString::fromLatin1("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+
+    return toLocale(quant, factor, unitString);
 }
 
-
-
-QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
 {
     // this schema expresses distances in feet + inches + fractions
     // ex: 3'- 4 1/4"
     Unit unit = quant.getUnit();
-    if(unit == Unit::Length){
+    if (unit == Unit::Length) {
         unitString = QString::fromLatin1("in");
         factor = 25.4;
         double inchValue = std::abs(quant.getValue())/25.4;
@@ -206,19 +214,23 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double
             inches++;
             fraction = 0.0;
         }
+
         // if the quantity is too small it is rounded to zero
         if (std::abs(quant.getValue()) <= 1.5875)
             return QString::fromLatin1("0");
+
         // build representation
         std::stringstream output;
         if (quant.getValue() < 0)
             output << "-";
+
         // feet
         if (feet > 0) {
             output << feet << "'";
             if ( (inches > 0) || (fraction > 0.0625) )
                 output << " ";
         }
+
         // inches
         if (inches > 0) {
             output << inches;
@@ -227,6 +239,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double
             else
                 output << "\"";
         }
+
         // fraction
         if (fraction <= 0.0625) {}
         else if (fraction > 0.8125)
@@ -244,18 +257,19 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(Base::Quantity quant,double
         else
             output << "1/8\"";
         return QString::fromLatin1(output.str().c_str());
-    }else if (unit == Unit::Area){
+    }
+    else if (unit == Unit::Area) {
         unitString = QString::fromLatin1("sqft");
         factor = 92903.04;
-    }else if (unit == Unit::Volume){
+    }
+    else if (unit == Unit::Volume) {
         unitString = QString::fromLatin1("cuft");
         factor = 28316846.592;
-    }else{
+    }
+    else {
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+
+    return toLocale(quant, factor, unitString);
 }

@@ -4,7 +4,7 @@ if(BUILD_FEM_VTK)
 endif(BUILD_FEM_VTK)
 
 include(${VTK_USE_FILE})
-    
+
 add_subdirectory(App)
 
 if(BUILD_GUI)
@@ -36,8 +36,6 @@ INSTALL(
         TaskPanelShowResult.ui
 
         FemAnalysis.py
-        _FemAnalysis.py
-        _ViewProviderFemAnalysis.py
         _CommandAnalysis.py
 
         FemBeamSection.py
@@ -62,6 +60,7 @@ INSTALL(
         TaskPanelMechanicalMaterial.ui
 
         # solver CalculiX ccx
+        importInpMesh.py
         ccxDatReader.py
         ccxFrdReader.py
         FemInputWriterCcx.py
@@ -106,6 +105,13 @@ INSTALL(
         test_files/ccx/cube_static.frd
         test_files/ccx/cube_static_expected_values
         test_files/ccx/cube.fcstd
+        test_files/ccx/spine_points.csv
+        test_files/ccx/spine_volumes.csv
+        test_files/ccx/spine_thermomech.inp
+        test_files/ccx/spine_thermomech.dat
+        test_files/ccx/spine_thermomech.frd
+        test_files/ccx/spine_thermomech_expected_values
+        test_files/ccx/spine_thermomech.fcstd
     DESTINATION
         Mod/Fem/test_files/ccx
 )

@@ -65,8 +65,9 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
               QString::fromLatin1((TransformedView->featureName + " parameters").c_str()),
               true,
               parent),
+      proxy(nullptr),
       TransformedView(TransformedView),
-      parentTask(NULL),
+      parentTask(nullptr),
       insideMultiTransform(false),
       blockUpdate(false)
 {
@@ -75,7 +76,8 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
     : TaskBox(QPixmap(), tr(""), true, parentTask),
-      TransformedView(NULL),
+      proxy(nullptr),
+      TransformedView(nullptr),
       parentTask(parentTask),
       insideMultiTransform(true),
       blockUpdate(false)
@@ -345,7 +347,7 @@ void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView_)
-    : TaskDlgFeatureParameters(TransformedView_)
+    : TaskDlgFeatureParameters(TransformedView_), parameter(0)
 {
     assert(vp);
     message = new TaskTransformedMessages(getTransformedView());

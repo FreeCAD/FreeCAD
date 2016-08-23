@@ -181,6 +181,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
         DisplayMode.setValue(defmode);
 }
 
+Gui::Document* ViewProviderDocumentObject::getDocument() const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    return Gui::Application::Instance->getDocument(pAppDoc);
+}
+
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     App::Document* pAppDoc = pcObject->getDocument();
@@ -206,6 +212,13 @@ Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
     }
 
     return mdi;
+}
+
+Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
+    return pGuiDoc->getViewOfNode(node);
 }
 
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const

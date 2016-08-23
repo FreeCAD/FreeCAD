@@ -31,6 +31,7 @@
 
 class SoMaterial;
 class SoDrawStyle;
+class SoNode;
 class SoType;
 
 namespace App
@@ -43,6 +44,7 @@ namespace App
 namespace Gui {
 
 class MDIView;
+class Document;
 
 class GuiExport ViewProviderDocumentObject : public ViewProvider
 {
@@ -80,6 +82,8 @@ public:
     virtual void updateData(const App::Property*){}
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
+    /// Get the GUI document to this ViewProvider object
+    Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
 
@@ -116,6 +120,9 @@ protected:
       If a value different to 0 is returned it is guaranteed to be a 3d view.
      */
     Gui::MDIView* getInventorView() const;
+    /*! Get the mdi view of the document that contains the given \a node.
+     */
+    Gui::MDIView* getViewOfNode(SoNode* node) const;
     /// get called before the value is changed
     virtual void onBeforeChange(const App::Property* prop);
     /// Gets called by the container whenever a property has been changed

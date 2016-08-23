@@ -42,14 +42,20 @@ test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
 
 static_base_name = 'cube_static'
 frequency_base_name = 'cube_frequency'
+thermomech_base_name = 'spine_thermomech'
 static_analysis_dir = temp_dir + '/FEM_static'
 frequency_analysis_dir = temp_dir + '/FEM_frequency'
+thermomech_analysis_dir = temp_dir + '/FEM_thermomech'
 static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
 static_expected_values = test_file_dir + "/cube_static_expected_values"
 frequency_analysis_inp_file = test_file_dir + '/' + frequency_base_name + '.inp'
 frequency_expected_values = test_file_dir + "/cube_frequency_expected_values"
+thermomech_analysis_inp_file = test_file_dir + '/' + thermomech_base_name + '.inp'
+thermomech_expected_values = test_file_dir + "/spine_thermomech_expected_values"
 mesh_points_file = test_file_dir + '/mesh_points.csv'
 mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
+spine_points_file = test_file_dir + '/spine_points.csv'
+spine_volumes_file = test_file_dir + '/spine_volumes.csv'
 
 
 def fcc_print(message):
@@ -75,6 +81,13 @@ class FemTest(unittest.TestCase):
 
     def create_new_solver(self):
         self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
+        self.solver_object.GeometricalNonlinearity = 'linear'
+        self.solver_object.SteadyState = True
+        self.solver_object.MatrixSolverType = 'default'
+        self.solver_object.IterationsControlParameterTimeUse = False
+        self.solver_object.EigenmodesCount = 10
+        self.solver_object.EigenmodeHighLimit = 1000000.0
+        self.solver_object.EigenmodeLowLimit = 0.0
         self.active_doc.recompute()
 
     def create_new_mesh(self):
@@ -259,11 +272,6 @@ class FemTest(unittest.TestCase):
         self.assertTrue(True if fea.working_dir == frequency_analysis_dir else False,
                         "Setting working directory {} failed".format(frequency_analysis_dir))
 
-        fcc_print('Setting eigenmode calculation parameters')
-        fea.set_eigenmode_parameters(number=10, limit_low=0.0, limit_high=1000000.0)
-        self.assertTrue(True if fea.eigenmode_parameters == (10, 0.0, 1000000.0) else False,
-                        "Setting eigenmode calculation parameters failed")
-
         fcc_print('Checking FEM inp file prerequisites for frequency analysis...')
         error = fea.check_prerequisites()
         self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
@@ -303,6 +311,215 @@ class FemTest(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("FemTest")
+        pass
+
+
+class TherMechFemTest(unittest.TestCase):
+
+    def setUp(self):
+        try:
+            FreeCAD.setActiveDocument("TherMechFemTest")
+        except:
+            FreeCAD.newDocument("TherMechFemTest")
+        finally:
+            FreeCAD.setActiveDocument("TherMechFemTest")
+        self.active_doc = FreeCAD.ActiveDocument
+        self.box = self.active_doc.addObject("Part::Box", "Box")
+        self.box.Height = 25.4
+        self.box.Width = 25.4
+        self.box.Length = 203.2
+        self.active_doc.recompute()
+
+    def create_new_analysis(self):
+        self.analysis = FemAnalysis.makeFemAnalysis('Analysis')
+        self.active_doc.recompute()
+
+    def create_new_solver(self):
+        self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
+        self.solver_object.GeometricalNonlinearity = 'linear'
+        self.solver_object.SteadyState = True
+        self.solver_object.MatrixSolverType = 'default'
+        self.solver_object.IterationsMaximum = 2000
+        self.solver_object.IterationsControlParameterTimeUse = True
+        self.active_doc.recompute()
+
+    def create_new_mesh(self):
+        self.mesh_object = self.active_doc.addObject('Fem::FemMeshObject', mesh_name)
+        self.mesh = Fem.FemMesh()
+        with open(spine_points_file, 'r') as points_file:
+            reader = csv.reader(points_file)
+            for p in reader:
+                self.mesh.addNode(float(p[1]), float(p[2]), float(p[3]), int(p[0]))
+
+        with open(spine_volumes_file, 'r') as volumes_file:
+            reader = csv.reader(volumes_file)
+            for v in reader:
+                self.mesh.addVolume([int(v[2]), int(v[1]), int(v[3]), int(v[4]), int(v[5]),
+                                    int(v[7]), int(v[6]), int(v[9]), int(v[8]), int(v[10])],
+                                    int(v[0]))
+
+        self.mesh_object.FemMesh = self.mesh
+        self.active_doc.recompute()
+
+    def create_new_material(self):
+        self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
+        mat = self.new_material_object.Material
+        mat['Name'] = "Steel-Generic"
+        mat['YoungsModulus'] = "200000 MPa"
+        mat['PoissonRatio'] = "0.30"
+        mat['Density'] = "7900 kg/m^3"
+        mat['ThermalConductivity'] = "43.27 W/m/K"  # SvdW: Change to Ansys model values
+        mat['ThermalExpansionCoefficient'] = "12 um/m/K"
+        mat['SpecificHeat'] = "500 J/kg/K"  # SvdW: Change to Ansys model values
+        self.new_material_object.Material = mat
+
+    def create_fixed_constraint(self):
+        self.fixed_constraint = self.active_doc.addObject("Fem::ConstraintFixed", "FemConstraintFixed")
+        self.fixed_constraint.References = [(self.box, "Face1")]
+
+    def create_initialtemperature_constraint(self):
+        self.initialtemperature_constraint = self.active_doc.addObject("Fem::ConstraintInitialTemperature", "FemConstraintInitialTemperature")
+        self.initialtemperature_constraint.initialTemperature = 300.0
+
+    def create_temperature_constraint(self):
+        self.temperature_constraint = self.active_doc.addObject("Fem::ConstraintTemperature", "FemConstraintTemperature")
+        self.temperature_constraint.References = [(self.box, "Face1")]
+        self.temperature_constraint.Temperature = 310.93
+
+    def create_heatflux_constraint(self):
+        self.heatflux_constraint = self.active_doc.addObject("Fem::ConstraintHeatflux", "FemConstraintHeatflux")
+        self.heatflux_constraint.References = [(self.box, "Face3"), (self.box, "Face4"), (self.box, "Face5"), (self.box, "Face6")]
+        self.heatflux_constraint.AmbientTemp = 255.3722
+        self.heatflux_constraint.FilmCoef = 5.678
+
+    def force_unix_line_ends(self, line_list):
+        new_line_list = []
+        for l in line_list:
+            if l.endswith("\r\n"):
+                l = l[:-2] + '\n'
+            new_line_list.append(l)
+        return new_line_list
+
+    def compare_inp_files(self, file_name1, file_name2):
+        file1 = open(file_name1, 'r')
+        f1 = file1.readlines()
+        file1.close()
+        lf1 = [l for l in f1 if not l.startswith('**   written ') if not l.startswith('**   file ')]
+        lf1 = self.force_unix_line_ends(lf1)
+        file2 = open(file_name2, 'r')
+        f2 = file2.readlines()
+        file2.close()
+        lf2 = [l for l in f2 if not l.startswith('**   written ') if not l.startswith('**   file ')]
+        lf2 = self.force_unix_line_ends(lf2)
+        import difflib
+        diff = difflib.unified_diff(lf1, lf2, n=0)
+        result = ''
+        for l in diff:
+            result += l
+        if result:
+            result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
+        return result
+
+    def compare_stats(self, fea, stat_file=None):
+        if stat_file:
+            sf = open(stat_file, 'r')
+            sf_content = sf.readlines()
+            sf.close()
+            sf_content = self.force_unix_line_ends(sf_content)
+        stat_types = ["U1", "U2", "U3", "Uabs", "Sabs"]
+        stats = []
+        for s in stat_types:
+            stats.append("{}: {}\n".format(s, fea.get_stats(s)))
+        if sf_content != stats:
+            fcc_print("Expected stats from {}".format(stat_file))
+            fcc_print(sf_content)
+            fcc_print("Stats read from {}.frd file".format(fea.base_name))
+            fcc_print(stats)
+            return True
+        return False
+
+    def test_new_analysis(self):
+        fcc_print('--------------- Start of FEM tests ---------------')
+        fcc_print('Checking FEM new analysis...')
+        self.create_new_analysis()
+        self.assertTrue(self.analysis, "FemTest of new analysis failed")
+
+        fcc_print('Checking FEM new solver...')
+        self.create_new_solver()
+        self.assertTrue(self.solver_object, "FemTest of new solver failed")
+        self.analysis.Member = self.analysis.Member + [self.solver_object]
+
+        fcc_print('Checking FEM new mesh...')
+        self.create_new_mesh()
+        self.assertTrue(self.mesh, "FemTest of new mesh failed")
+        self.analysis.Member = self.analysis.Member + [self.mesh_object]
+
+        fcc_print('Checking FEM new material...')
+        self.create_new_material()
+        self.assertTrue(self.new_material_object, "FemTest of new material failed")
+        self.analysis.Member = self.analysis.Member + [self.new_material_object]
+
+        fcc_print('Checking FEM new fixed constraint...')
+        self.create_fixed_constraint()
+        self.assertTrue(self.fixed_constraint, "FemTest of new fixed constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.fixed_constraint]
+
+        fcc_print('Checking FEM new initial temperature constraint...')
+        self.create_initialtemperature_constraint()
+        self.assertTrue(self.initialtemperature_constraint, "FemTest of new initial temperature constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.initialtemperature_constraint]
+
+        fcc_print('Checking FEM new temperature constraint...')
+        self.create_temperature_constraint()
+        self.assertTrue(self.temperature_constraint, "FemTest of new temperature constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.temperature_constraint]
+
+        fcc_print('Checking FEM new heatflux constraint...')
+        self.create_heatflux_constraint()
+        self.assertTrue(self.heatflux_constraint, "FemTest of new heatflux constraint failed")
+        self.analysis.Member = self.analysis.Member + [self.heatflux_constraint]
+
+        fea = FemToolsCcx.FemToolsCcx(self.analysis, test_mode=True)
+        fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
+        fea.setup_working_dir(thermomech_analysis_dir)
+        self.assertTrue(True if fea.working_dir == thermomech_analysis_dir else False,
+                        "Setting working directory {} failed".format(thermomech_analysis_dir))
+
+        fcc_print('Setting analysis type to \'thermomech\"')
+        fea.set_analysis_type("thermomech")
+        self.assertTrue(True if fea.analysis_type == 'thermomech' else False, "Setting anlysis type to \'thermomech\' failed")
+
+        fcc_print('Checking FEM inp file prerequisites for thermo-mechanical analysis...')
+        error = fea.check_prerequisites()
+        self.assertFalse(error, "FemToolsCcx check_prerequisites returned error message: {}".format(error))
+
+        fcc_print('Checking FEM inp file write...')
+
+        fcc_print('Writing {}/{}.inp for thermomech analysis'.format(thermomech_analysis_dir, mesh_name))
+        error = fea.write_inp_file()
+        self.assertFalse(error, "Writing failed")
+
+        fcc_print('Comparing {} to {}/{}.inp'.format(thermomech_analysis_inp_file, thermomech_analysis_dir, mesh_name))
+        ret = self.compare_inp_files(thermomech_analysis_inp_file, thermomech_analysis_dir + "/" + mesh_name + '.inp')
+        self.assertFalse(ret, "FemToolsCcx write_inp_file test failed.\n{}".format(ret))
+
+        fcc_print('Setting up working directory to {} in order to read simulated calculations'.format(test_file_dir))
+        fea.setup_working_dir(test_file_dir)
+        self.assertTrue(True if fea.working_dir == test_file_dir else False,
+                        "Setting working directory {} failed".format(test_file_dir))
+
+        fcc_print('Setting base name to read test {}.frd file...'.format('spine_thermomech'))
+        fea.set_base_name(thermomech_base_name)
+        self.assertTrue(True if fea.base_name == thermomech_base_name else False,
+                        "Setting base name to {} failed".format(thermomech_base_name))
+
+        fcc_print('Setting inp file name to read test {}.frd file...'.format('spine_thermomech'))
+        fea.set_inp_file_name()
+        self.assertTrue(True if fea.inp_file_name == thermomech_analysis_inp_file else False,
+                        "Setting inp file name to {} failed".format(thermomech_analysis_inp_file))
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TherMechFemTest")
         pass
 
 
@@ -350,7 +567,7 @@ def create_cube_test_results():
     # frequency
     fea.reset_all()
     fea.set_analysis_type('frequency')
-    fea.set_eigenmode_parameters(1)  # we should only have one result object
+    fea.solver.EigenmodesCount = 1  # we should only have one result object
     fea.run()
 
     fea.load_results()

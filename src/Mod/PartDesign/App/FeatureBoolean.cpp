@@ -80,7 +80,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 
     // Get the base shape to operate on
     Part::TopoShape baseTopShape = baseFeature->Shape.getShape();
-    if (baseTopShape._Shape.IsNull())
+    if (baseTopShape.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
       
     //get the body this boolean feature belongs to
@@ -100,7 +100,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     trf.SetTranslationPart(gp_Vec(place.getPosition().x,place.getPosition().y,place.getPosition().z));
     TopLoc_Location objLoc(trf);
 
-    TopoDS_Shape result = baseTopShape._Shape;
+    TopoDS_Shape result = baseTopShape.getShape();
     result.Move(objLoc);
 
     // Get the operation type

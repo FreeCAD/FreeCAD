@@ -369,9 +369,6 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
-    QAction* defaultAction = 0;
-    int defaultId = 0;
-
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
     QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.pov"));
@@ -385,11 +382,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
 
     _pcAction = pcAction;
     languageChange();
-    if (defaultAction) {
-        pcAction->setIcon(defaultAction->icon());
-        pcAction->setProperty("defaultAction", QVariant(defaultId));
-    }
-    else if (!pcAction->actions().isEmpty()) {
+    if (!pcAction->actions().isEmpty()) {
         pcAction->setIcon(pcAction->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
@@ -655,11 +648,12 @@ void CmdRaytracingRender::activated(int iMsg)
             h << height;
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
             doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].getFeatName());
-            doCommand(Doc,"import subprocess,tempfile");
-            doCommand(Doc,"TempFile = tempfile.mkstemp(suffix='.pov')[1]");
+            doCommand(Doc,"import os,subprocess,tempfile");
+            doCommand(Doc,"fd, TempFile = tempfile.mkstemp(suffix='.pov')");
             doCommand(Doc,"f = open(TempFile,'wb')");
             doCommand(Doc,"f.write(PageFile.read())");
             doCommand(Doc,"f.close()");
+            doCommand(Doc,"os.close(fd)");
 #ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
             doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" /EXIT /RENDER '+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
@@ -766,9 +760,6 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
-    QAction* defaultAction = 0;
-    int defaultId = 0;
-
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
     QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.lxs"));
@@ -782,11 +773,7 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
 
     _pcAction = pcAction;
     languageChange();
-    if (defaultAction) {
-        pcAction->setIcon(defaultAction->icon());
-        pcAction->setProperty("defaultAction", QVariant(defaultId));
-    }
-    else if (!pcAction->actions().isEmpty()) {
+    if (!pcAction->actions().isEmpty()) {
         pcAction->setIcon(pcAction->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }

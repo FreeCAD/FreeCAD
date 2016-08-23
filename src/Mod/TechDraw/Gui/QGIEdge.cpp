@@ -46,10 +46,10 @@ QGIEdge::QGIEdge(int index) :
     projIndex(index),
     isCosmetic(false),
     isHiddenEdge(false),
-    isSmoothEdge(false),
-    strokeWidth(1.0)
+    isSmoothEdge(false)
 {
-    m_pen.setCosmetic(isCosmetic);
+    m_width = 1.0;
+    setCosmetic(isCosmetic);
 }
 
 QRectF QGIEdge::boundingRect() const
@@ -70,14 +70,11 @@ QPainterPath QGIEdge::shape() const
 void QGIEdge::setCosmetic(bool state)
 {
     isCosmetic = state;
-    m_pen.setCosmetic(state);
-    update();
+    if (state) {
+        setWidth(0.0);
+    }
 }
 
-void QGIEdge::setStrokeWidth(float width) {
-    strokeWidth = width;
-    update();
-}
 
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
@@ -118,6 +115,5 @@ void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    m_pen.setWidthF(strokeWidth);
     QGIPrimPath::paint (painter, &myOption, widget);
 }

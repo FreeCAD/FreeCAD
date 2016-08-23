@@ -24,11 +24,17 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <gp_Ax1.hxx>
+# include <TopoDS.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Circ.hxx>
 #endif
 
 
 #include "FeatureRevolution.h"
 #include <Base/Tools.h>
+#include <Base/Exception.h>
+#include <App/Application.h>
 
 using namespace Part;
 
@@ -38,13 +44,14 @@ PROPERTY_SOURCE(Part::Revolution, Part::Feature)
 
 Revolution::Revolution()
 {
-    //*** why not ADD_PROPERTY_TYPE??
-    ADD_PROPERTY(Source,(0));
-    ADD_PROPERTY(Base,(Base::Vector3d(0.0,0.0,0.0)));
-    ADD_PROPERTY(Axis,(Base::Vector3d(0.0,0.0,1.0)));
-    ADD_PROPERTY(Angle,(360.0));
-    ADD_PROPERTY_TYPE(Solid,(false),"Base",App::Prop_None,"Make revolution a solid if possible");
+    ADD_PROPERTY_TYPE(Source,(0), "Revolve", App::Prop_None, "Shape to revolve");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)), "Revolve", App::Prop_None, "Base point of revolution axis");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,0.0,1.0)), "Revolve", App::Prop_None, "Direction of revolution axis");
+    ADD_PROPERTY_TYPE(AxisLink,(0),"Revolve",App::Prop_None,"Link to edge to use as revolution axis.");
+    ADD_PROPERTY_TYPE(Angle,(360.0), "Revolve", App::Prop_None, "Angle span of revolution. If angle is zero, and an arc is used for axis link, angle span of arc will be used.");
     Angle.setConstraints(&angleRangeU);
+    ADD_PROPERTY_TYPE(Symmetric,(false),"Revolve",App::Prop_None,"Extend revolution symmetrically from the profile.");
+    ADD_PROPERTY_TYPE(Solid,(false),"Revolve",App::Prop_None,"Make revolution a solid if possible");
 }
 
 short Revolution::mustExecute() const
@@ -53,9 +60,65 @@ short Revolution::mustExecute() const
         Axis.isTouched() ||
         Angle.isTouched() ||
         Source.isTouched() ||
-        Solid.isTouched())
+        Solid.isTouched() ||
+        AxisLink.isTouched() ||
+        Symmetric.isTouched())
         return 1;
     return 0;
+}
+
+void Revolution::onChanged(const App::Property* prop)
+{
+    if(! this->isRestoring()){
+        if(prop == &AxisLink){
+            Base.setReadOnly(AxisLink.getValue() != nullptr);
+            Axis.setReadOnly(AxisLink.getValue() != nullptr);
+        }
+    }
+    Part::Feature::onChanged(prop);
+}
+
+bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
+                               Base::Vector3d& center,
+                               Base::Vector3d& dir,
+                               double& angle)
+{
+    if (!axisLink.getValue())
+        return false;
+
+    if (!axisLink.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
+        throw Base::TypeError("AxisLink has no OCC shape");
+
+    Part::Feature* linked = static_cast<Part::Feature*>(axisLink.getValue());
+
+    TopoDS_Shape axEdge;
+    if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
+        axEdge = linked->Shape.getShape().getSubShape(axisLink.getSubValues()[0].c_str());
+    } else {
+        axEdge = linked->Shape.getValue();
+    }
+
+    if (axEdge.IsNull())
+        throw Base::ValueError("AxisLink shape is null");
+    if (axEdge.ShapeType() != TopAbs_EDGE)
+        throw Base::TypeError("AxisLink shape is not an edge");
+
+    BRepAdaptor_Curve crv(TopoDS::Edge(axEdge));
+    gp_Pnt base;
+    gp_Dir occdir;
+    if (crv.GetType() == GeomAbs_Line){
+        base = crv.Value(crv.FirstParameter());
+        occdir = crv.Line().Direction();
+    } else if (crv.GetType() == GeomAbs_Circle) {
+        base = crv.Circle().Axis().Location();
+        occdir = crv.Circle().Axis().Direction();
+        angle = crv.LastParameter() - crv.FirstParameter();
+    } else {
+        throw Base::TypeError("AxisLink edge is neither line nor arc of circle.");
+    }
+    center.Set(base.X(), base.Y(),base.Z());
+    dir.Set(occdir.X(), occdir.Y(), occdir.Z());
+    return true;
 }
 
 App::DocumentObjectExecReturn *Revolution::execute(void)
@@ -67,18 +130,40 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     Part::Feature *base = static_cast<Part::Feature*>(Source.getValue());
 
-    Base::Vector3d b = Base.getValue();
-    Base::Vector3d v = Axis.getValue();
-    gp_Pnt pnt(b.x,b.y,b.z);
-    gp_Dir dir(v.x,v.y,v.z);
-    Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
-
     try {
-        // Now, let's get the TopoDS_Shape
-        //TopoDS_Shape revolve = base->Shape.getShape().revolve(gp_Ax1(pnt, dir),
-        //    Angle.getValue()/180.0f*M_PI);
-        TopoDS_Shape revolve = base->Shape.getShape().revolve(gp_Ax1(pnt, dir),
-            Angle.getValue()/180.0f*M_PI,isSolid);
+        //read out axis link
+        double angle_edge = 0;
+        Base::Vector3d b = Base.getValue();
+        Base::Vector3d v = Axis.getValue();
+        bool linkFetched = this->fetchAxisLink(this->AxisLink, b, v, angle_edge);
+        if (linkFetched){
+            this->Base.setValue(b);
+            this->Axis.setValue(v);
+        }
+
+        gp_Pnt pnt(b.x,b.y,b.z);
+        gp_Dir dir(v.x,v.y,v.z);
+        gp_Ax1 revAx(pnt, dir);
+
+        //read out revolution angle
+        double angle = Angle.getValue()/180.0f*M_PI;
+        if (fabs(angle) < Precision::Angular())
+            angle = angle_edge;
+
+        //apply "midplane" symmetry
+        TopoShape sourceShape = base->Shape.getShape();
+        if (Symmetric.getValue()) {
+            //rotate source shape backwards by half angle, to make resulting revolution symmetric to the profile
+            gp_Trsf mov;
+            mov.SetRotation(revAx, angle * (-0.5));
+            TopLoc_Location loc(mov);
+            sourceShape.setShape(sourceShape.getShape().Moved(loc));
+        }
+
+        //do it!
+        Standard_Boolean makeSolid = Solid.getValue() ? Standard_True : Standard_False;
+        TopoDS_Shape revolve = sourceShape.revolve(revAx, angle, makeSolid);
+
         if (revolve.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(revolve);

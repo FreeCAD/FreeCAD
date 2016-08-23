@@ -600,6 +600,16 @@ void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCalle
 }
 /// @endcond
 
+SbBool View3DInventorViewer::searchNode(SoNode* node) const
+{
+    SoSearchAction searchAction;
+    searchAction.setNode(node);
+    searchAction.setInterest(SoSearchAction::FIRST);
+    searchAction.apply(this->getSceneGraph());
+    SoPath* selectionPath = searchAction.getPath();
+    return selectionPath ? true : false;
+}
+
 SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 {
     return _ViewProviderSet.find(pcProvider) != _ViewProviderSet.end();
@@ -831,7 +841,8 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
 
     NavigationStyle* ns = static_cast<NavigationStyle*>(base);
     ns->operator = (*this->navigation);
-    delete this->navigation;
+    if (this->navigation)
+        ns->operator = (*this->navigation);
     this->navigation = ns;
     this->navigation->setViewer(this);
 }

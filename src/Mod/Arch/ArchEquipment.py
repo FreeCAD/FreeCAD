@@ -240,6 +240,7 @@ class _Equipment(ArchComponent.Component):
         #obj.addProperty("Part::PropertyPartShape","SideView","Arch","an optional 2D shape representing a side view of this equipment")
         obj.addProperty("App::PropertyString","Model","Arch","The model description of this equipment")
         obj.addProperty("App::PropertyString","Url","Arch","The url of the product page of this equipment")
+        obj.addProperty("App::PropertyVectorList","SnapPoints","Arch","Additional snap points for this equipment")
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
@@ -280,7 +281,7 @@ class _Equipment(ArchComponent.Component):
                     base = base.removeSplitteR()
                 if base:
                     base = self.processSubShapes(obj,base,pl)
-                    self.applyShape(obj,base,pl)
+                    self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)
 
 
 class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):

@@ -51,6 +51,8 @@ public:
 
     /// solve the actual set up sketch
     int solve(void);
+    /// resets the solver
+    int resetSolver();
     /// get standard (aka fine) solver precision
     double getSolverPrecision(){ return GCSsys.getFinePrecision(); }
     /// delete all geometry and constraints, leave an empty sketch
@@ -346,7 +348,10 @@ protected:
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef {
-        ConstrDef() : driving(true) {}
+        ConstrDef() : constr(0)
+                    , driving(true)
+                    , value(0)
+                    , secondvalue(0) {}
         Constraint *    constr;             // pointer to the constraint
         bool            driving;
         double *        value;

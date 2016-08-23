@@ -181,7 +181,7 @@ private:
                                 if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                                     throw Py::TypeError("Linked object is not a Part object");
                                 }
-                                TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
+                                TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
                                 if (!shape.IsNull()) {
                                     Base::Vector3d dir = view->Direction.getValue();
                                     bool hidden = view->ShowHiddenLines.getValue();

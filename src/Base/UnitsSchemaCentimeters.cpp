@@ -36,29 +36,29 @@
 using namespace Base;
 
 
-QString UnitsSchemaCentimeters::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
     Unit unit = quant.getUnit();
-    if(unit == Unit::Length){
+    if (unit == Unit::Length) {
         // all length units in centimeters
         unitString = QString::fromLatin1("cm");
         factor = 10.0;
-    }else if (unit == Unit::Area){
+    }
+    else if (unit == Unit::Area) {
         // all area units in square meters
         unitString = QString::fromLatin1("m^2");
         factor = 1000000.0;
-    }else if (unit == Unit::Volume){
+    }
+    else if (unit == Unit::Volume) {
         // all area units in cubic meters
         unitString = QString::fromLatin1("m^3");
         factor = 1000000000.0;
-    }else{
+    }
+    else {
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-    //return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
-    QLocale Lc = QLocale::system();
-    Lc.setNumberOptions(Lc.OmitGroupSeparator | Lc.RejectGroupSeparator);
-    QString Ln = Lc.toString((quant.getValue() / factor), 'f', Base::UnitsApi::getDecimals());
-    return QString::fromUtf8("%1 %2").arg(Ln).arg(unitString);
+
+    return toLocale(quant, factor, unitString);
 }

@@ -34,6 +34,7 @@
 # include <TopExp_Explorer.hxx>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Standard_Version.hxx>
+# include <TopoDS_TCompound.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -350,9 +351,28 @@ CmdPartCommon::CmdPartCommon()
 void CmdPartCommon::activated(int iMsg)
 {
     std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
-    if (Sel.size() < 2) {
+
+    //test if selected object is a compound, and if it is, look how many children it has...
+    std::size_t numShapes = 0;
+    if (Sel.size() == 1){
+        numShapes = 1; //to be updated later in code, if
+        Gui::SelectionObject selobj = Sel[0];
+        if (selobj.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())){
+            TopoDS_Shape sh = static_cast<Part::Feature*>(selobj.getObject())->Shape.getValue();
+            if (sh.ShapeType() == TopAbs_COMPOUND) {
+                numShapes = 0;
+                TopoDS_Iterator it(sh);
+                for (; it.More(); it.Next()) {
+                    ++numShapes;
+                }
+            }
+        }
+    } else {
+        numShapes = Sel.size();
+    }
+    if (numShapes < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two shapes or more, please."));
+            QObject::tr("Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between."));
         return;
     }
 
@@ -409,7 +429,7 @@ void CmdPartCommon::activated(int iMsg)
 
 bool CmdPartCommon::isActive(void)
 {
-    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=2;
+    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=1;
 }
 
 //===========================================================================
@@ -432,9 +452,28 @@ CmdPartFuse::CmdPartFuse()
 void CmdPartFuse::activated(int iMsg)
 {
     std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
-    if (Sel.size() < 2) {
+
+    //test if selected object is a compound, and if it is, look how many children it has...
+    std::size_t numShapes = 0;
+    if (Sel.size() == 1){
+        numShapes = 1; //to be updated later in code
+        Gui::SelectionObject selobj = Sel[0];
+        if (selobj.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())){
+            TopoDS_Shape sh = static_cast<Part::Feature*>(selobj.getObject())->Shape.getValue();
+            if (sh.ShapeType() == TopAbs_COMPOUND) {
+                numShapes = 0;
+                TopoDS_Iterator it(sh);
+                for (; it.More(); it.Next()) {
+                    ++numShapes;
+                }
+            }
+        }
+    } else {
+        numShapes = Sel.size();
+    }
+    if (numShapes < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two shapes or more, please."));
+            QObject::tr("Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused."));
         return;
     }
 
@@ -491,7 +530,7 @@ void CmdPartFuse::activated(int iMsg)
 
 bool CmdPartFuse::isActive(void)
 {
-    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=2;
+    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=1;
 }
 
 //===========================================================================
@@ -1722,9 +1761,9 @@ void CmdPartRuledSurface::activated(int iMsg)
         const Part::Feature* part1 = static_cast<const Part::Feature*>(result[0].getObject());
         const Part::Feature* part2 = static_cast<const Part::Feature*>(result[1].getObject());
         const Part::TopoShape& shape1 = part1->Shape.getValue();
-        curve1 = shape1._Shape;
+        curve1 = shape1.getShape();
         const Part::TopoShape& shape2 = part2->Shape.getValue();
-        curve2 = shape2._Shape;
+        curve2 = shape2.getShape();
         obj1 = part1->getNameInDocument();
         obj2 = part2->getNameInDocument();
 

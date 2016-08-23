@@ -118,6 +118,7 @@ extern "C"
         Dl_info info;
         int ret = dladdr((void*)initFreeCAD, &info);
         if ((ret == 0) || (!info.dli_fname)) {
+            free(argv);
             PyErr_SetString(PyExc_ImportError, "Cannot get path of the FreeCAD module!");
             return;
         }

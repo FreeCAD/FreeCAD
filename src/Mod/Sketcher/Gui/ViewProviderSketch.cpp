@@ -277,8 +277,8 @@ ViewProviderSketch::ViewProviderSketch()
 
     zCross=0.001f;
     zLines=0.005f;
-    zConstr=0.006f; // constraint not construction
-    zHighLine=0.007f;
+    zConstr=0.007f; // constraint not construction
+    zHighLine=0.006f;
     zPoints=0.008f;
     zHighlight=0.009f;
     zText=0.011f;
@@ -1200,7 +1200,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
             p1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
             const Part::Geometry *geo = GeoById(geomlist, Constr->Second);
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
                 // calculate the projection of p1 onto line2
@@ -1213,11 +1213,11 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         } else if (Constr->First != Constraint::GeoUndef) {
             const Part::Geometry *geo = GeoById(geomlist, Constr->First);
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                 p1 = lineSeg->getStartPoint();
                 p2 = lineSeg->getEndPoint();
             } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
+                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
                 double radius = arc->getRadius();
                 p1 = arc->getCenter();
                 double angle = Constr->LabelPosition;
@@ -1233,7 +1233,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 p2 = p1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
             }
             else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
-                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo);
+                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
                 double radius = circle->getRadius();
                 p1 = circle->getCenter();
                 Base::Vector3d tmpDir =  Base::Vector3d(toPos.fX, toPos.fY, 0) - p1;
@@ -1279,8 +1279,8 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                     geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
                     return;
-                const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
-                const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geo1);
+                const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geo2);
 
                 bool flip1 = (Constr->FirstPos == end);
                 bool flip2 = (Constr->SecondPos == end);
@@ -1312,11 +1312,11 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         } else if (Constr->First != Constraint::GeoUndef) { // line/arc angle
             const Part::Geometry *geo = GeoById(geomlist, Constr->First);
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                 p0 = (lineSeg->getEndPoint()+lineSeg->getStartPoint())/2;
             }
             else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
+                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
                 p0 = arc->getCenter();
             }
             else {
@@ -1342,7 +1342,7 @@ Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &
                                                           const SoNode *constraint)
 {
     assert(edit);
-    Gui::MDIView *mdi = this->getEditingView();
+    Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
     if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
         return Base::Vector3d(0, 0, 0);
     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -1842,7 +1842,8 @@ void ViewProviderSketch::centerSelection()
     for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
         if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
             SoSeparator *sep = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
-            group->addChild(sep);
+            if (sep)
+                group->addChild(sep);
         }
     }
 
@@ -1902,7 +1903,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
         if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
             // ----- Check if single point lies inside box selection -----/
-            const Part::GeomPoint *point = dynamic_cast<const Part::GeomPoint *>(*it);
+            const Part::GeomPoint *point = static_cast<const Part::GeomPoint *>(*it);
             Plm.multVec(point->getPoint(), pnt0);
             pnt0 = proj(pnt0);
             VertexId += 1;
@@ -1915,7 +1916,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
         } else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             // ----- Check if line segment lies inside box selection -----/
-            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(*it);
+            const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(*it);
             Plm.multVec(lineSeg->getStartPoint(), pnt1);
             Plm.multVec(lineSeg->getEndPoint(), pnt2);
             pnt1 = proj(pnt1);
@@ -1944,7 +1945,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
         } else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
             // ----- Check if circle lies inside box selection -----/
-            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(*it);
+            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
             pnt0 = circle->getCenter();
             VertexId += 1;
 
@@ -1986,7 +1987,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             }
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { 
             // ----- Check if circle lies inside box selection -----/
-            const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>(*it);
+            const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(*it);
             pnt0 = ellipse->getCenter();
             VertexId += 1;
 
@@ -2030,7 +2031,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             // Check if arc lies inside box selection
-            const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle *>(*it);
+            const Part::GeomArcOfCircle *aoc = static_cast<const Part::GeomArcOfCircle *>(*it);
 
             pnt0 = aoc->getStartPoint(/*emulateCCW=*/true);
             pnt1 = aoc->getEndPoint(/*emulateCCW=*/true);
@@ -2101,7 +2102,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
             // Check if arc lies inside box selection
-            const Part::GeomArcOfEllipse *aoe = dynamic_cast<const Part::GeomArcOfEllipse *>(*it);
+            const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(*it);
 
             pnt0 = aoe->getStartPoint(/*emulateCCW=*/true);
             pnt1 = aoe->getEndPoint(/*emulateCCW=*/true);
@@ -2172,7 +2173,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             }
 
         } else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-            const Part::GeomBSplineCurve *spline = dynamic_cast<const Part::GeomBSplineCurve *>(*it);
+            const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(*it);
             std::vector<Base::Vector3d> poles = spline->getPoles();
             VertexId += poles.size();
             // TODO
@@ -2308,7 +2309,7 @@ void ViewProviderSketch::updateColor(void)
 
     // colors of the constraints
     for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
-        SoSeparator *s = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
+        SoSeparator *s = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
 
         // Check Constraint Type
         Sketcher::Constraint* constraint = getSketchObject()->Constraints.getValues()[i];
@@ -2326,12 +2327,12 @@ void ViewProviderSketch::updateColor(void)
         SoMaterial *m = 0;
         if (!hasDatumLabel && type != Sketcher::Coincident && type != Sketcher::InternalAlignment) {
             hasMaterial = true;
-            m = dynamic_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+            m = static_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
         }
         
         if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
             if (hasDatumLabel) {
-                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                 l->textColor = SelectColor;
             } else if (hasMaterial) {
                 m->diffuseColor = SelectColor;
@@ -2371,7 +2372,7 @@ void ViewProviderSketch::updateColor(void)
             }
         } else if (edit->PreselectConstraintSet.count(i)) {
             if (hasDatumLabel) {
-                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                 l->textColor = PreselectColor;
             } else if (hasMaterial) {
                 m->diffuseColor = PreselectColor;
@@ -2379,7 +2380,7 @@ void ViewProviderSketch::updateColor(void)
         }
         else {
             if (hasDatumLabel) {
-                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                 l->textColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
             } else if (hasMaterial) {
                 m->diffuseColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
@@ -2569,7 +2570,7 @@ void ViewProviderSketch::drawConstraintIcons()
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
 
-            Gui::MDIView *mdi = this->getEditingView();
+            Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
             if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
                 return;
             Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -2697,7 +2698,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 
     // Tracks all constraint IDs that are combined into this icon
     QString idString;
-    int lastVPad;
+    int lastVPad = 0;
 
     QStringList labels;
     std::vector<int> ids;
@@ -2939,10 +2940,13 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
 
 float ViewProviderSketch::getScaleFactor()
 {
-    Gui::MDIView *mdi = this->getEditingView();
+    assert(edit);
+    Gui::MDIView *mdi = this->getViewOfNode(edit->EditRoot);
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-        return viewer->getSoRenderManager()->getCamera()->getViewVolume(viewer->getSoRenderManager()->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
+        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+        float scale = camera->getViewVolume(camera->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
+        return scale;
     }
     else {
         return 1.f;
@@ -2983,11 +2987,11 @@ void ViewProviderSketch::draw(bool temp)
         if (GeoId >= intGeoCount)
             GeoId = -extGeoCount;
         if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) { // add a point
-            const Part::GeomPoint *point = dynamic_cast<const Part::GeomPoint *>(*it);
+            const Part::GeomPoint *point = static_cast<const Part::GeomPoint *>(*it);
             Points.push_back(point->getPoint());
         }
         else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // add a line
-            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(*it);
+            const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(*it);
             // create the definition struct for that geom
             Coords.push_back(lineSeg->getStartPoint());
             Coords.push_back(lineSeg->getEndPoint());
@@ -2997,7 +3001,7 @@ void ViewProviderSketch::draw(bool temp)
             edit->CurvIdToGeoId.push_back(GeoId);
         }
         else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { // add a circle
-            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(*it);
+            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
             Handle_Geom_Circle curve = Handle_Geom_Circle::DownCast(circle->handle());
 
             int countSegments = 50;
@@ -3016,7 +3020,7 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { // add an ellipse
-            const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>(*it);
+            const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(*it);
             Handle_Geom_Ellipse curve = Handle_Geom_Ellipse::DownCast(ellipse->handle());
 
             int countSegments = 50;
@@ -3035,7 +3039,7 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) { // add an arc
-            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(*it);
+            const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(*it);
             Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(arc->handle());
 
             double startangle, endangle;
@@ -3068,7 +3072,7 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) { // add an arc
-            const Part::GeomArcOfEllipse *arc = dynamic_cast<const Part::GeomArcOfEllipse *>(*it);
+            const Part::GeomArcOfEllipse *arc = static_cast<const Part::GeomArcOfEllipse *>(*it);
             Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(arc->handle());
 
             double startangle, endangle;
@@ -3101,7 +3105,7 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
-            const Part::GeomBSplineCurve *spline = dynamic_cast<const Part::GeomBSplineCurve *>(*it);
+            const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(*it);
             Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(spline->handle());
 
             double first = curve->FirstParameter();
@@ -3207,7 +3211,7 @@ Restart:
         }
         try{//because calculateNormalAtPoint, used in there, can throw
             // root separator for this constraint
-            SoSeparator *sep = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
+            SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
             const Constraint *Constr = *it;
 
             // distinquish different constraint types to build up
@@ -3220,7 +3224,7 @@ Restart:
                         const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
                         // Vertical can only be a GeomLineSegment
                         assert(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId());
-                        const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                        const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
 
                         // calculate the half distance between the start and endpoint
                         Base::Vector3d midpos = ((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
@@ -3231,10 +3235,10 @@ Restart:
 
                         Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
 
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
                         //Reference Position that is scaled according to zoom
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos.x, relpos.y, 0);
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos.x, relpos.y, 0);
 
                     }
                     break;
@@ -3280,12 +3284,12 @@ Restart:
                         } else if (Constr->FirstPos == Sketcher::none) {
 
                             if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
+                                const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geo1);
                                 midpos1 = ((lineSeg1->getEndPoint()+lineSeg1->getStartPoint())/2);
                                 dir1 = (lineSeg1->getEndPoint()-lineSeg1->getStartPoint()).Normalize();
                                 norm1 = Base::Vector3d(-dir1.y,dir1.x,0.);
                             } else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
+                                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo1);
                                 double startangle, endangle, midangle;
                                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                                 midangle = (startangle + endangle)/2;
@@ -3293,7 +3297,7 @@ Restart:
                                 dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
                                 midpos1 = arc->getCenter() + arc->getRadius() * norm1;
                             } else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-                                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
+                                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo1);
                                 norm1 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
                                 dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
                                 midpos1 = circle->getCenter() + circle->getRadius() * norm1;
@@ -3301,12 +3305,12 @@ Restart:
                                 break;
 
                             if (geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                                const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geo2);
                                 midpos2 = ((lineSeg2->getEndPoint()+lineSeg2->getStartPoint())/2);
                                 dir2 = (lineSeg2->getEndPoint()-lineSeg2->getStartPoint()).Normalize();
                                 norm2 = Base::Vector3d(-dir2.y,dir2.x,0.);
                             } else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo2);
                                 double startangle, endangle, midangle;
                                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                                 midangle = (startangle + endangle)/2;
@@ -3314,7 +3318,7 @@ Restart:
                                 dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
                                 midpos2 = arc->getCenter() + arc->getRadius() * norm2;
                             } else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-                                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
+                                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo2);
                                 norm2 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
                                 dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
                                 midpos2 = circle->getCenter() + circle->getRadius() * norm2;
@@ -3325,15 +3329,15 @@ Restart:
                         }
 
                         Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                         if (twoIcons) {
                             Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
                         }
 
                     }
@@ -3355,19 +3359,19 @@ Restart:
                                 double r1a=0,r1b=0,r2a=0,r2b=0;
                                 double angle1,angle1plus=0.,  angle2, angle2plus=0.;//angle1 = rotation of object as a whole; angle1plus = arc angle (t parameter for ellipses).
                                 if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-                                    const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
+                                    const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo1);
                                     r1a = circle->getRadius();
                                     angle1 = M_PI/4;
                                     midpos1 = circle->getCenter();
                                 } else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                                    const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
+                                    const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo1);
                                     r1a = arc->getRadius();
                                     double startangle, endangle;
                                     arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                                     angle1 = (startangle + endangle)/2;
                                     midpos1 = arc->getCenter();
                                 } else if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-                                    const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>(geo1);
+                                    const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo1);
                                     r1a = ellipse->getMajorRadius();
                                     r1b = ellipse->getMinorRadius();
                                     Base::Vector3d majdir = ellipse->getMajorAxisDir();
@@ -3375,7 +3379,7 @@ Restart:
                                     angle1plus = M_PI/4;
                                     midpos1 = ellipse->getCenter();
                                 } else if (geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-                                    const Part::GeomArcOfEllipse *aoe = dynamic_cast<const Part::GeomArcOfEllipse *>(geo1);
+                                    const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo1);
                                     r1a = aoe->getMajorRadius();
                                     r1b = aoe->getMinorRadius();
                                     double startangle, endangle;
@@ -3388,19 +3392,19 @@ Restart:
                                     break;
 
                                 if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-                                    const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
+                                    const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo2);
                                     r2a = circle->getRadius();
                                     angle2 = M_PI/4;
                                     midpos2 = circle->getCenter();
                                 } else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                                    const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                                    const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo2);
                                     r2a = arc->getRadius();
                                     double startangle, endangle;
                                     arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                                     angle2 = (startangle + endangle)/2;
                                     midpos2 = arc->getCenter();
                                 } else if (geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-                                    const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>(geo2);
+                                    const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo2);
                                     r2a = ellipse->getMajorRadius();
                                     r2b = ellipse->getMinorRadius();
                                     Base::Vector3d majdir = ellipse->getMajorAxisDir();
@@ -3408,7 +3412,7 @@ Restart:
                                     angle2plus = M_PI/4;
                                     midpos2 = ellipse->getCenter();
                                 } else if (geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-                                    const Part::GeomArcOfEllipse *aoe = dynamic_cast<const Part::GeomArcOfEllipse *>(geo2);
+                                    const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo2);
                                     r2a = aoe->getMajorRadius();
                                     r2b = aoe->getMinorRadius();
                                     double startangle, endangle;
@@ -3460,8 +3464,8 @@ Restart:
                             } else // Parallel can only apply to a GeomLineSegment
                                 break;
                         } else {
-                            const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
-                            const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                            const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geo1);
+                            const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geo2);
 
                             // calculate the half distance between the start and endpoint
                             midpos1 = ((lineSeg1->getEndPoint()+lineSeg1->getStartPoint())/2);
@@ -3476,16 +3480,16 @@ Restart:
                         Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
                         Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                         //Reference Position that is scaled according to zoom
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                         Base::Vector3d secondPos = midpos2 - midpos1;
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                         //Reference Position that is scaled according to zoom
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y -relpos1.y, 0);
+                        static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y -relpos1.y, 0);
 
                     }
                     break;
@@ -3512,7 +3516,7 @@ Restart:
                             }
                             const Part::Geometry *geo = GeoById(*geomlist, Constr->Second);
                             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
                                 // calculate the projection of p1 onto line2
@@ -3529,7 +3533,7 @@ Restart:
                         } else if (Constr->First != Constraint::GeoUndef) {
                             const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
                             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                 pnt1 = lineSeg->getStartPoint();
                                 pnt2 = lineSeg->getEndPoint();
                             } else
@@ -3537,7 +3541,7 @@ Restart:
                         } else
                             break;
 
-                        SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                        SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                         asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
 
                         if (Constr->Type == Distance)
@@ -3598,8 +3602,8 @@ Restart:
                             Base::Vector3d dir = norm; dir.RotateZ(-M_PI/2.0);
 
                             relPos = seekConstraintPosition(pos, norm, dir, 2.5, edit->constrGroup->getChild(i));
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
                         }
                         else if (Constr->Type == Tangent) {
                             // get the geometry
@@ -3608,8 +3612,8 @@ Restart:
 
                             if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                                 geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
-                                const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                                const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geo1);
+                                const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geo2);
                                 // tangency between two lines
                                 Base::Vector3d midpos1 = ((lineSeg1->getEndPoint()+lineSeg1->getStartPoint())/2);
                                 Base::Vector3d midpos2 = ((lineSeg2->getEndPoint()+lineSeg2->getStartPoint())/2);
@@ -3621,16 +3625,16 @@ Restart:
                                 Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
                                 Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
-                                dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
+                                static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                                 //Reference Position that is scaled according to zoom
-                                dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
+                                static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                                 Base::Vector3d secondPos = midpos2 - midpos1;
-                                dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
+                                static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                                 //Reference Position that is scaled according to zoom
-                                dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
+                                static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
 
                                 break;
                             }
@@ -3639,11 +3643,11 @@ Restart:
                             }
 
                             if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo1);
+                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo1);
                                 Base::Vector3d dir = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Normalize();
                                 Base::Vector3d norm(-dir.y, dir.x, 0);
                                 if (geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) {
-                                    const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
+                                    const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo2);
                                     // tangency between a line and a circle
                                     float length = (circle->getCenter() - lineSeg->getStartPoint())*dir;
 
@@ -3655,10 +3659,10 @@ Restart:
 
                                     Base::Vector3d center;
                                     if(geo2->getTypeId()== Part::GeomEllipse::getClassTypeId()){
-                                        const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>(geo2);
+                                        const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo2);
                                         center=ellipse->getCenter();
                                     } else {
-                                        const Part::GeomArcOfEllipse *aoc = dynamic_cast<const Part::GeomArcOfEllipse *>(geo2);
+                                        const Part::GeomArcOfEllipse *aoc = static_cast<const Part::GeomArcOfEllipse *>(geo2);
                                         center=aoc->getCenter();
                                     }
 
@@ -3669,7 +3673,7 @@ Restart:
                                     relPos = norm * 1;
                                 }
                                 else if (geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
-                                    const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                                    const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo2);
                                     // tangency between a line and an arc
                                     float length = (arc->getCenter() - lineSeg->getStartPoint())*dir;
 
@@ -3680,8 +3684,8 @@ Restart:
 
                             if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId() &&
                                 geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) {
-                                const Part::GeomCircle *circle1 = dynamic_cast<const Part::GeomCircle *>(geo1);
-                                const Part::GeomCircle *circle2 = dynamic_cast<const Part::GeomCircle *>(geo2);
+                                const Part::GeomCircle *circle1 = static_cast<const Part::GeomCircle *>(geo1);
+                                const Part::GeomCircle *circle2 = static_cast<const Part::GeomCircle *>(geo2);
                                 // tangency between two cicles
                                 Base::Vector3d dir = (circle2->getCenter() - circle1->getCenter()).Normalize();
                                 pos =  circle1->getCenter() + dir *  circle1->getRadius();
@@ -3693,8 +3697,8 @@ Restart:
 
                             if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId() &&
                                 geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
-                                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo1);
+                                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo2);
                                 // tangency between a circle and an arc
                                 Base::Vector3d dir = (arc->getCenter() - circle->getCenter()).Normalize();
                                 pos =  circle->getCenter() + dir *  circle->getRadius();
@@ -3702,15 +3706,15 @@ Restart:
                             }
                             else if (geo1->getTypeId()== Part::GeomArcOfCircle::getClassTypeId() &&
                                      geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomArcOfCircle *arc1 = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
-                                const Part::GeomArcOfCircle *arc2 = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
+                                const Part::GeomArcOfCircle *arc1 = static_cast<const Part::GeomArcOfCircle *>(geo1);
+                                const Part::GeomArcOfCircle *arc2 = static_cast<const Part::GeomArcOfCircle *>(geo2);
                                 // tangency between two arcs
                                 Base::Vector3d dir = (arc2->getCenter() - arc1->getCenter()).Normalize();
                                 pos =  arc1->getCenter() + dir *  arc1->getRadius();
                                 relPos = dir * 1;
                             }
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
+                            static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
                         }
                     }
                     break;
@@ -3728,7 +3732,7 @@ Restart:
                         dir.normalize();
                         SbVec3f norm (-dir[1],dir[0],0);
 
-                        SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                        SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                         asciiText->datumtype    = SoDatumLabel::SYMMETRIC;
 
                         asciiText->pnts.setNum(2);
@@ -3739,7 +3743,7 @@ Restart:
 
                         asciiText->pnts.finishEditing();
 
-                        dynamic_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = (p1 + p2)/2;
+                        static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = (p1 + p2)/2;
                     }
                     break;
                 case Angle:
@@ -3758,8 +3762,8 @@ Restart:
                                 if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                                     geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
                                     break;
-                                const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
-                                const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                                const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geo1);
+                                const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geo2);
 
                                 bool flip1 = (Constr->FirstPos == end);
                                 bool flip2 = (Constr->SecondPos == end);
@@ -3815,7 +3819,7 @@ Restart:
                         } else if (Constr->First != Constraint::GeoUndef) {
                             const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
                             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                 p0 = Base::convertTo<SbVec3f>((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
 
                                 Base::Vector3d dir = lineSeg->getEndPoint()-lineSeg->getStartPoint();
@@ -3824,7 +3828,7 @@ Restart:
                                 endangle = startangle + range;
                             }
                             else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
+                                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
                                 p0 = Base::convertTo<SbVec3f>(arc->getCenter());
 
                                 arc->getRange(startangle, endangle,/*emulateCCWXY=*/true);
@@ -3836,7 +3840,7 @@ Restart:
                         } else
                             break;
 
-                        SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                        SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                         asciiText->string    = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
                         asciiText->datumtype = SoDatumLabel::ANGLE;
                         asciiText->param1    = Constr->LabelDistance;
@@ -3861,7 +3865,7 @@ Restart:
                             const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
 
                             if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
+                                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
                                 double radius = arc->getRadius();
                                 double angle = (double) Constr->LabelPosition;
                                 if (angle == 10) {
@@ -3873,7 +3877,7 @@ Restart:
                                 pnt2 = pnt1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
                             }
                             else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-                                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo);
+                                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
                                 double radius = circle->getRadius();
                                 double angle = (double) Constr->LabelPosition;
                                 if (angle == 10) {
@@ -3890,7 +3894,7 @@ Restart:
                         SbVec3f p1(pnt1.x,pnt1.y,zConstr);
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
 
-                        SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
+                        SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                         asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;

@@ -73,8 +73,6 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     TextStyle.setEnums(TextStyleEnums);
     ADD_PROPERTY(TextStyle, ((long)0));
 
-    //Scale.StatusBits.set(3);         //hide scale.  n/a for Annotation
-    //ScaleType.StatusBits.set(3);
     Scale.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::Hidden,true);
 }
@@ -102,6 +100,23 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
         }
     }
     TechDraw::DrawView::onChanged(prop);
+}
+
+QRectF DrawViewAnnotation::getRect() const
+{
+    QRectF result;
+    double tSize = TextSize.getValue();
+    int lines = Text.getValues().size();
+    int chars = 1;
+    for (auto& l:Text.getValues()) {
+        if ((int)l.size() > chars) {
+            chars = (int)l.size();
+        }
+    }
+    int w = chars * std::max(1,(int)tSize);
+    int h = lines * std::max(1,(int)tSize);
+    result = QRectF(0,0,Scale.getValue() * w,Scale.getValue() * h);
+    return result;
 }
 
 App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)

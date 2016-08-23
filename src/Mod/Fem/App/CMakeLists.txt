@@ -34,7 +34,7 @@ set(Fem_LIBS
         SMDS
         SMESHDS
     )
-    
+
 if(BUILD_FEM_NETGEN)
     set(Fem_LIBS
         ${Fem_LIBS}
@@ -83,7 +83,6 @@ SET(FemScripts_SRCS
     _CommandShellThickness.py
     _CommandSolverCalculix.py
     _CommandSolverZ88.py
-    _FemAnalysis.py
     _FemBeamSection.py
     _FemConstraintSelfWeight.py
     _FemShellThickness.py
@@ -95,7 +94,6 @@ SET(FemScripts_SRCS
     _TaskPanelFemSolverCalculix.py
     _TaskPanelMechanicalMaterial.py
     _TaskPanelShowResult.py
-    _ViewProviderFemAnalysis.py
     _ViewProviderFemBeamSection.py
     _ViewProviderFemConstraintSelfWeight.py
     _ViewProviderFemShellThickness.py
@@ -105,6 +103,7 @@ SET(FemScripts_SRCS
     ccxDatReader.py
     ccxFrdReader.py
     convert2TetGen.py
+    importInpMesh.py
     importZ88Mesh.py
     Init.py
     InitGui.py
@@ -146,6 +145,13 @@ SET(FemTests_SRCS
     test_files/ccx/cube_static.frd
     test_files/ccx/cube_static_expected_values
     test_files/ccx/cube.fcstd
+    test_files/ccx/spine_points.csv
+    test_files/ccx/spine_volumes.csv
+    test_files/ccx/spine_thermomech.inp
+    test_files/ccx/spine_thermomech.dat
+    test_files/ccx/spine_thermomech.frd
+    test_files/ccx/spine_thermomech_expected_values
+    test_files/ccx/spine_thermomech.fcstd
 )
 
 SET(FemBase_SRCS
@@ -192,6 +198,8 @@ SET(FemConstraints_SRCS
     FemConstraintFixed.h
     FemConstraintForce.cpp
     FemConstraintForce.h
+    FemConstraintFluidBoundary.cpp
+    FemConstraintFluidBoundary.h
     FemConstraintPressure.cpp
     FemConstraintPressure.h
     FemConstraintGear.cpp
@@ -200,10 +208,20 @@ SET(FemConstraints_SRCS
     FemConstraintPulley.h
     FemConstraintDisplacement.h
     FemConstraintDisplacement.cpp
+    FemConstraintTemperature.h
+    FemConstraintTemperature.cpp
+    FemConstraintHeatflux.h
+    FemConstraintHeatflux.cpp
+    FemConstraintInitialTemperature.h
+    FemConstraintInitialTemperature.cpp
+    FemConstraintPlaneRotation.cpp
+    FemConstraintPlaneRotation.h
+    FemConstraintContact.cpp
+    FemConstraintContact.h
     )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
-if(BUILD_FEM_VTK) 
+if(BUILD_FEM_VTK)
     SET(FemPost_SRCS
         PropertyPostDataObject.h
         PropertyPostDataObject.cpp

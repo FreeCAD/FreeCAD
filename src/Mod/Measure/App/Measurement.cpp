@@ -64,7 +64,7 @@ TYPESYSTEM_SOURCE(Measure::Measurement, Base::BaseClass)
 
 Measurement::Measurement()
 {
-
+    measureType = Invalid;
 }
 
 Measurement::~Measurement()
@@ -208,7 +208,7 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
 
     // Check if selecting whol object
     if(strcmp(subName, "") == 0) {
-        return refShape._Shape;
+        return refShape.getShape();
     } else {
 
         TopoDS_Shape refSubShape;

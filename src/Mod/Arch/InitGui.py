@@ -62,11 +62,12 @@ class ArchWorkbench(Workbench):
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
                             "Draft_FinishLine","Draft_CloseLine"]
         self.draftutils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
-                           "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit"]
+                           "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
+                           "Draft_Slope"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
-                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho',
+                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho','Draft_Snap_Special',
                          'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
 
         def QT_TRANSLATE_NOOP(scope, text): return text

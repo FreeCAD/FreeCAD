@@ -45,7 +45,7 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryDressUp, RobotGui::ViewProviderT
 
 bool ViewProviderTrajectoryDressUp::setEdit(int ModNum)
 {
-    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryDressUp(dynamic_cast<Robot::TrajectoryDressUpObject *>(getObject()));
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryDressUp(static_cast<Robot::TrajectoryDressUpObject *>(getObject()));
     Gui::Control().showDialog(dlg);
     return true;
 }
