@@ -276,6 +276,17 @@ bool DockWindowManager::registerDockWindow(const char* name, QWidget* widget)
     return true;
 }
 
+QWidget* DockWindowManager::unregisterDockWindow(const char* name)
+{
+    QWidget* widget = 0;
+    QMap<QString, QPointer<QWidget> >::Iterator it = d->_dockWindows.find(QLatin1String(name));
+    if (it != d->_dockWindows.end()) {
+        widget = d->_dockWindows.take(QLatin1String(name));
+    }
+
+    return widget;
+}
+
 /** Sets up the dock windows of the activated workbench. */
 void DockWindowManager::setup(DockWindowItems* items)
 {
