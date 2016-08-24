@@ -378,7 +378,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             vp = DraftGeomUtils.getNormal(p)
             rot = FreeCAD.Rotation(vp,pair[2])
             p.rotate(p.CenterOfMass,rot.Axis,math.degrees(rot.Angle))
-            t2 = p.extrude((point.add(pair[2].negative())).multiply(2))
+            t2 = p.extrude(pair[2].negative().multiply(2))
             # create a cut plane
             cp = Part.makePolygon([point,point.add(pair[0]),point.add(normal),point])
             cp = Part.Face(cp)

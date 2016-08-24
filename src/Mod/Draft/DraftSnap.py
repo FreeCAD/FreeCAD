@@ -808,7 +808,7 @@ class Snapper:
             elif hasattr(obj,"SnapPoints"):
                 for p in obj.SnapPoints:
                     p2 = obj.Placement.multVec(p)
-                    snaps.append([p2,'spacial',p2])
+                    snaps.append([p2,'special',p2])
 
         return snaps
 
