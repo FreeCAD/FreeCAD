@@ -294,6 +294,25 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         import Arch_rc
         return ":/icons/Arch_Equipment_Tree.svg"
 
+    def attach(self, vobj):
+        from pivy import coin
+        sep = coin.SoSeparator()
+        self.coords = coin.SoCoordinate3()
+        sep.addChild(self.coords)
+        symbol = coin.SoMarkerSet()
+        symbol.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_5_5
+        sep.addChild(symbol)
+        rn = vobj.RootNode
+        rn.addChild(sep)
+        
+    def updateData(self, obj, prop):
+        if prop == "SnapPoints":
+            if obj.SnapPoints:
+                self.coords.point.setNum(len(obj.SnapPoints))
+                self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
+            else:
+                self.coords.point.deleteValues(0)
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Equipment',_CommandEquipment())
