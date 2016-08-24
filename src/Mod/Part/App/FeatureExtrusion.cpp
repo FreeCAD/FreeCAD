@@ -391,6 +391,9 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
 #endif
+#if OCC_VERSION_HEX >= 0x070000
+            mkOffset.Init(GeomAbs_Intersection);
+#endif
             mkOffset.AddWire(sourceWire);
             mkOffset.Perform(distanceRev);
 
@@ -422,6 +425,9 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
+#endif
+#if OCC_VERSION_HEX >= 0x070000
+            mkOffset.Init(GeomAbs_Intersection);
 #endif
             mkOffset.AddWire(sourceWire);
             mkOffset.Perform(distanceFwd);
