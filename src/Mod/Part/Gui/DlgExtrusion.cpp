@@ -32,6 +32,7 @@
 # include <TopoDS_Face.hxx>
 # include <TopExp_Explorer.hxx>
 # include <ShapeExtend_Explorer.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <QMessageBox>
 # include <Inventor/system/inttypes.h>
 #endif
