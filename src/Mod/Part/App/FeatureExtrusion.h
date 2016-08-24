@@ -32,7 +32,7 @@
 namespace Part
 {
 
-class Extrusion : public Part::Feature
+class PartExport Extrusion : public Part::Feature
 {
     PROPERTY_HEADER(Part::Extrusion);
 
