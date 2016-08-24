@@ -603,12 +603,32 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
     // Create a list of all bodies in this part
     std::vector<App::DocumentObject*> bodies = getDocument()->getObjectsOfType(Part::BodyBase::getClassTypeId());
+	
+	std::set<App::DocumentObject*> source_bodies;
+	for (auto feat : features) {
+		PartDesign::Body* source = PartDesign::Body::findBodyOf(feat);
+		source_bodies.insert(static_cast<App::DocumentObject*>(source));
+	}
 
-    // Ask user to select the target body
+	std::vector<App::DocumentObject*> target_bodies;
+	for (auto body : bodies) {
+		if (!source_bodies.count(body))
+			target_bodies.push_back(body);
+	}
+
+	if (target_bodies.empty())
+	{
+		QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
+			QObject::tr("There are no other bodies to move to"));
+		return;
+	}
+
+    // Ask user to select the target body (remove source bodies from list)
     bool ok;
     QStringList items;
-    for (std::vector<App::DocumentObject*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
-        items.push_back(QString::fromUtf8((*it)->Label.getValue()));
+	for (auto body : target_bodies) {
+		items.push_back(QString::fromUtf8(body->Label.getValue()));
+	}
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeature", "Select body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
@@ -617,7 +637,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     int index = items.indexOf(text);
     if (index < 0) return;
 
-    PartDesign::Body* target = static_cast<PartDesign::Body*>(bodies[index]);
+	PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
     openCommand("Move an object");
 

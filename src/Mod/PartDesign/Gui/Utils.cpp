@@ -394,11 +394,10 @@ bool isFeatureMovable(App::DocumentObject* const feat)
 
 	}
 
-	if (feat->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId()) ||
-		feat->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+	if (feat->getTypeId().isDerivedFrom(Part::AttachableObject::getClassTypeId())) {
 		auto attachable = static_cast<Part::AttachableObject*>(feat);
 		App::DocumentObject* support = attachable->Support.getValue();
-		if (!support || !support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()))
+		if (support && !support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()))
 			return false;
 	}
 
@@ -461,8 +460,7 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
 
 void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
 {
-	if (feat->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId()) ||
-		feat->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+	if (feat->getTypeId().isDerivedFrom(Part::AttachableObject::getClassTypeId())) {
 		auto attachable = static_cast<Part::AttachableObject*>(feat);
 		App::DocumentObject* support = attachable->Support.getValue();
 		if (support && support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())) {
@@ -470,6 +468,19 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
 			App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
 			if (targetOriginFeature) {
 				attachable->Support.setValue(static_cast<App::DocumentObject*>(targetOriginFeature), "");
+			}
+		}
+	}
+	else if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+		auto prim = static_cast<PartDesign::ProfileBased*>(feat);
+		if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
+			App::DocumentObject* axis = prop->getValue();
+			if (axis && axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+				auto originfeat = static_cast<App::OriginFeature*>(axis);
+				App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
+				if (targetOriginFeature) {
+					prop->setValue(static_cast<App::DocumentObject*>(targetOriginFeature), std::vector<std::string>(0));
+				}
 			}
 		}
 	}
