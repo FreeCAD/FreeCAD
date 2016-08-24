@@ -28,7 +28,7 @@
 # include <climits>
 # include <QCursor>
 # include <QTimer>
-#include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include "DemoMode.h"
