@@ -86,7 +86,8 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(Solid,(false), "Extrude", App::Prop_None, "If true, extruding a wire yeilds a solid. If false, a shell.");
     ADD_PROPERTY_TYPE(Reversed,(false), "Extrude", App::Prop_None, "Set to true to swap the direction of extrusion.");
     ADD_PROPERTY_TYPE(Symmetric,(false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
-    ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Extrude", App::Prop_None, "sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yeilds inward tapering.");
+    ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yeilds inward tapering.");
+    ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
 }
 
 short Extrusion::mustExecute() const
@@ -100,7 +101,8 @@ short Extrusion::mustExecute() const
         Solid.isTouched() ||
         Reversed.isTouched() ||
         Symmetric.isTouched() ||
-        TaperAngle.isTouched())
+        TaperAngle.isTouched() ||
+        TaperAngleRev.isTouched())
         return 1;
     return 0;
 }
@@ -188,8 +190,11 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 
     result.solid = this->Solid.getValue();
 
-    result.taperAngle = this->TaperAngle.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngle) > M_PI * 0.5 - Precision::Angular() )
+    result.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
+    if (fabs(result.taperAngleFwd) > M_PI * 0.5 - Precision::Angular() )
+        throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
+    result.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
+    if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular() )
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
 
     return result;
@@ -235,7 +240,8 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
     TopoDS_Shape result;
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd+params.lengthRev);//total vector of extrusion
 
-    if (std::fabs(params.taperAngle) >= Precision::Confusion()) {
+    if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
+        std::fabs(params.taperAngleRev) >= Precision::Angular() ) {
         //Tapered extrusion!
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
@@ -347,8 +353,8 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 
 void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape, std::list<TopoDS_Shape>& drafts)
 {
-    double distanceFwd = tan(params.taperAngle)*params.lengthFwd;
-    double distanceRev = tan(-params.taperAngle)*params.lengthRev;
+    double distanceFwd = tan(params.taperAngleFwd)*params.lengthFwd;
+    double distanceRev = tan(params.taperAngleRev)*params.lengthRev;
 
     gp_Vec vecFwd = gp_Vec(params.dir)*params.lengthFwd;
     gp_Vec vecRev = gp_Vec(params.dir.Reversed())*params.lengthRev;
@@ -387,6 +393,9 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 
         //first. add wire for reversed part of extrusion
         if (bRev){
+            gp_Vec translation = vecRev;
+            double offset = distanceRev;
+
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
@@ -394,20 +403,30 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 #if OCC_VERSION_HEX >= 0x070000
             mkOffset.Init(GeomAbs_Intersection);
 #endif
-            mkOffset.AddWire(sourceWire);
-            mkOffset.Perform(distanceRev);
-
             gp_Trsf mat;
-            mat.SetTranslation(vecRev);
-            BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
-            if (mkTransform.Shape().IsNull())
+            mat.SetTranslation(translation);
+            TopLoc_Location loc(mat);
+            TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
+
+            TopoDS_Shape offsetShape;
+            if (fabs(offset)>Precision::Confusion()){
+                mkOffset.AddWire(movedSourceWire);
+                mkOffset.Perform(offset);
+
+                offsetShape = mkOffset.Shape();
+            } else {
+                //stupid OCC doesn't understand, what to do when offset value is zero =/
+                offsetShape = movedSourceWire;
+            }
+
+            if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = mkTransform.Shape().ShapeType();
+            TopAbs_ShapeEnum type = offsetShape.ShapeType();
             if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(mkTransform.Shape()));
+                list_of_sections.push_back(TopoDS::Wire(offsetShape));
             }
             else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mkTransform.Shape()));
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
                 list_of_sections.push_back(mkWire.Wire());
             }
             else {
@@ -422,6 +441,9 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 
         //finally. Forward extrusion offset wire.
         if (bFwd){
+            gp_Vec translation = vecFwd;
+            double offset = distanceFwd;
+
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
@@ -429,26 +451,35 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 #if OCC_VERSION_HEX >= 0x070000
             mkOffset.Init(GeomAbs_Intersection);
 #endif
-            mkOffset.AddWire(sourceWire);
-            mkOffset.Perform(distanceFwd);
-
             gp_Trsf mat;
-            mat.SetTranslation(vecFwd);
-            BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
-            if (mkTransform.Shape().IsNull())
+            mat.SetTranslation(translation);
+            TopLoc_Location loc(mat);
+            TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
+
+            TopoDS_Shape offsetShape;
+            if (fabs(offset)>Precision::Confusion()){
+                mkOffset.AddWire(movedSourceWire);
+                mkOffset.Perform(offset);
+
+                offsetShape = mkOffset.Shape();
+            } else {
+                //stupid OCC doesn't understand, what to do when offset value is zero =/
+                offsetShape = movedSourceWire;
+            }
+
+            if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = mkTransform.Shape().ShapeType();
+            TopAbs_ShapeEnum type = offsetShape.ShapeType();
             if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(mkTransform.Shape()));
+                list_of_sections.push_back(TopoDS::Wire(offsetShape));
             }
             else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mkTransform.Shape()));
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
                 list_of_sections.push_back(mkWire.Wire());
             }
             else {
                 Standard_Failure::Raise("Tapered shape type is not supported");
             }
-
         }
 
         //make loft

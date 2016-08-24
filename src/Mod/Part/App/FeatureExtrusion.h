@@ -49,6 +49,8 @@ public:
     App::PropertyBool Reversed;
     App::PropertyBool Symmetric;
     App::PropertyAngle TaperAngle;
+    App::PropertyAngle TaperAngleRev;
+
 
     /**
      * @brief The ExtrusionParameters struct is supposed to be filled with final
@@ -60,8 +62,9 @@ public:
         double lengthFwd;
         double lengthRev;
         bool solid;
-        double taperAngle; //in radians
-        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngle(0) {}// constructor to keep garbage out
+        double taperAngleFwd; //in radians
+        double taperAngleRev;
+        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
     };
 
     /** @name methods override feature */
