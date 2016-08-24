@@ -666,7 +666,7 @@ void TreeWidget::onTestStatus(void)
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
     // object item selected
-    if ( item && item->type() == TreeWidget::ObjectType ) {
+    if (item && item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
         obj->displayStatusInfo();
     }
@@ -880,8 +880,6 @@ DocumentItem::~DocumentItem()
     connectHltObject.disconnect();
     connectExpObject.disconnect();
 }
-
-
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
@@ -1098,8 +1096,8 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
     default:
         break;
     }
+
     jt->second->setFont(0,f);
-        
 }
 
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
@@ -1299,7 +1297,7 @@ std::vector<DocumentObjectItem*> DocumentItem::getAllParents(DocumentObjectItem*
 
     for (std::vector<App::DocumentObject*>::iterator it = inlist.begin(); it != inlist.end(); ++it) {
         Gui::ViewProvider* vp = pDocument->getViewProvider(*it);
-        if(!vp) 
+        if (!vp) 
             continue;
         std::vector<App::DocumentObject*> child = vp->claimChildren();
         for (std::vector<App::DocumentObject*>::iterator jt = child.begin(); jt != child.end(); ++jt) {
