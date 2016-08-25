@@ -715,7 +715,7 @@ bool TaskDlgPipeParameters::accept()
     //the user has to decide which option we should take if external references are used
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getPipeView()->getObject());
     auto pcActiveBody = PartDesignGui::getBodyFor(pcPipe, false);
-    auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+  //auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;
 
     bool ext = false;
