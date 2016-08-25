@@ -50,6 +50,8 @@ public:
     void setAxisLink(const App::PropertyLinkSub &lnk);
     void setAxisLink(const char* objname, const char* subname);
 
+    std::vector<App::DocumentObject*> getShapesToRevolve() const;
+
     bool validate();
 
 protected:
@@ -65,6 +67,12 @@ private Q_SLOTS:
 private:
     void findShapes();
     void onSelectionChanged(const Gui::SelectionChanges& msg);
+
+    ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
+    App::DocumentObject& getShapeToRevolve() const;
+
+    ///automatically checks Solid checkbox depending on input shape
+    void autoSolid();
 
 private:
     //typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
