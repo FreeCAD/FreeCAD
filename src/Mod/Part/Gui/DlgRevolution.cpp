@@ -28,9 +28,12 @@
 # include <gp_Lin.hxx>
 # include <gp_Pnt.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRep_Tool.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <Inventor/system/inttypes.h>
 # include <Precision.hxx>
 #endif
@@ -127,6 +130,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
 
     connect(ui->txtAxisLink, SIGNAL(textChanged(QString)), this, SLOT(on_txtAxisLink_textChanged(QString)));
 
+    autoSolid();
 }
 
 /*  
@@ -222,6 +226,23 @@ void DlgRevolution::setAxisLink(const char* objname, const char* subname)
     } else {
         ui->txtAxisLink->clear();
     }
+}
+
+std::vector<App::DocumentObject*> DlgRevolution::getShapesToRevolve() const
+{
+    QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc)
+        throw Base::Exception("Document lost");
+
+    std::vector<App::DocumentObject*> objects;
+    for(size_t i = 0  ;  i < items.size()  ;  i++){
+        App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
+        if (!obj)
+            throw Base::Exception("Object not found");
+        objects.push_back(obj);
+    }
+    return objects;
 }
 
 bool DlgRevolution::validate()
@@ -479,6 +500,44 @@ void DlgRevolution::onSelectionChanged(const Gui::SelectionChanges& msg)
             this->setAxisLink(msg.pObjectName, msg.pSubName);
         }
     }
+}
+
+App::DocumentObject&DlgRevolution::getShapeToRevolve() const
+{
+    std::vector<App::DocumentObject*> objs = this->getShapesToRevolve();
+    if (objs.size() == 0)
+        throw Base::Exception("No shapes selected");
+    return *(objs[0]);
+}
+
+void DlgRevolution::autoSolid()
+{
+    try{
+        App::DocumentObject &dobj = this->getShapeToRevolve();
+        if (dobj.isDerivedFrom(Part::Feature::getClassTypeId())){
+            Part::Feature &feature = static_cast<Part::Feature&>(dobj);
+            TopoDS_Shape sh = feature.Shape.getValue();
+            if (sh.IsNull())
+                return;
+            ShapeExtend_Explorer xp;
+            Handle_TopTools_HSequenceOfShape leaves = xp.SeqFromCompound(sh, /*recursive= */Standard_True);
+            int cntClosedWires = 0;
+            for(int i = 0   ;   i < leaves->Length()   ;   i++){
+                const TopoDS_Shape &leaf = leaves->Value(i+1);
+                if (leaf.IsNull())
+                    return;
+                if (leaf.ShapeType() == TopAbs_WIRE || leaf.ShapeType() == TopAbs_EDGE){
+                    if (BRep_Tool::IsClosed(leaf)){
+                        cntClosedWires++;
+                    }
+                }
+            }
+            ui->checkSolid->setChecked( cntClosedWires == leaves->Length() );
+        }
+    } catch(...){
+
+    }
+
 }
 
 // ---------------------------------------
