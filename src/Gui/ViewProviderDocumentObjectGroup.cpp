@@ -63,65 +63,8 @@ ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 {
 }
 
-/**
- * Whenever a property of the group gets changed then the same property of all
- * associated view providers of the objects of the object group get changed as well.
- */
-void ViewProviderDocumentObjectGroup::onChanged(const App::Property* prop)
-{
-    ViewProviderDocumentObject::onChanged(prop);
-}
-
-void ViewProviderDocumentObjectGroup::attach(App::DocumentObject *pcObj)
-{
-    ViewProviderDocumentObject::attach(pcObj);
-}
-
-void ViewProviderDocumentObjectGroup::updateData(const App::Property* prop)
-{
-#if 0
-    if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
-        std::vector<App::DocumentObject*> obj =
-            static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        Gui::Document* doc = Gui::Application::Instance->getDocument
-            (&this->getObject()->getDocument());
-        MDIView* mdi = doc->getActiveView();
-        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-            View3DInventorViewer* view = static_cast<View3DInventor*>(mdi)->getViewer();
-            SoSeparator* scene_graph = static_cast<SoSeparator*>(view->getSceneGraph());
-            std::vector<ViewProvider*> current_nodes;
-            for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
-                current_nodes.push_back(doc->getViewProvider(*it));
-            std::sort(current_nodes.begin(), current_nodes.end());
-            std::sort(this->nodes.begin(), this->nodes.end());
-            // get the removed views
-            std::vector<ViewProvider*> diff_1, diff_2;
-            std::back_insert_iterator<std::vector<ViewProvider*> > biit(diff_2);
-            std::set_difference(this->nodes.begin(), this->nodes.end(), 
-                                current_nodes.begin(), current_nodes.end(), biit);
-            diff_1 = diff_2;
-            diff_2.clear();
-            // get the added views
-            std::set_difference(current_nodes.begin(), current_nodes.end(),
-                                this->nodes.begin(), this->nodes.end(), biit);
-            this->nodes = current_nodes;
-            // move from root node to switch
-            for (std::vector<ViewProvider*>::iterator it = diff_1.begin(); it != diff_1.end(); ++it) {
-                view->addViewProviderToGroup(*it, scene_graph);
-                view->removeViewProviderFromGroup(*it, this->pcModeSwitch);
-            }
-            // move from switch node to root node
-            for (std::vector<ViewProvider*>::iterator it = diff_2.begin(); it != diff_2.end(); ++it) {
-                view->addViewProviderToGroup(*it, this->pcModeSwitch);
-                view->removeViewProviderFromGroup(*it, scene_graph);
-            }
-        }
-    }
 #else
     Q_UNUSED(prop);
-#endif
-}
-
 std::vector<App::DocumentObject*> ViewProviderDocumentObjectGroup::claimChildren(void)const
 {
     return std::vector<App::DocumentObject*>(static_cast<App::DocumentObjectGroup*>(getObject())->Group.getValues());
