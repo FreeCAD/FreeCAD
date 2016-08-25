@@ -110,8 +110,7 @@ public:
       * scene graph. This affects the visibility and the 3D 
       * position of the object. 
       */
-    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const
-    { return std::vector<App::DocumentObject*>(); }
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
 
     /** @name Selection handling
       * This group of methods do the selection handling.
@@ -161,8 +160,7 @@ public:
       * be used for any kind of grouping needed for a special 
       * purpose.
       */
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const
-    { return std::vector<App::DocumentObject*>(); }
+    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     //@}
 
     /** @name Drag and drop
@@ -175,28 +173,22 @@ public:
      */
     //@{
     /** Check whether children can be removed from the view provider by drag and drop */
-    virtual bool canDragObjects() const
-    { return false; }
+    virtual bool canDragObjects() const;
     /** Check whether the object can be removed from the view provider by drag and drop */
-    virtual bool canDragObject(App::DocumentObject*) const
-    { return true; }
+    virtual bool canDragObject(App::DocumentObject*) const;
     /** Tell the tree view if this object should apear there */
     virtual bool showInTree() const
     {
       return true;
     }
     /** Remove a child from the view provider by drag and drop */
-    virtual void dragObject(App::DocumentObject*)
-    { }
+    virtual void dragObject(App::DocumentObject*);
     /** Check whether objects can be added to the view provider by drag and drop */
-    virtual bool canDropObjects() const
-    { return false; }
+    virtual bool canDropObjects() const;
     /** Check whether the object can be dropped to the view provider by drag and drop */
-    virtual bool canDropObject(App::DocumentObject*) const
-    { return true; }
+    virtual bool canDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
-    virtual void dropObject(App::DocumentObject*)
-    { }
+    virtual void dropObject(App::DocumentObject*);
     //@}
 
     /** @name Signals of the view provider */
