@@ -71,8 +71,9 @@ void TreeView::mouseDoubleClickEvent (QMouseEvent * event)
         if (!view) return;
         getMainWindow()->setActiveWindow(view);
     }
-    else if (item->getTypeId().isDerivedFrom(ViewProvider::getClassTypeId())) {
-        if (static_cast<ViewProvider*>(item)->doubleClicked() == false)
+    else {
+        auto* vp = dynamic_cast<ViewProvider*>(item);
+        if (vp && vp->doubleClicked() == false)
             QTreeView::mouseDoubleClickEvent(event);
     }
 }
