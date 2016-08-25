@@ -106,8 +106,9 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     BRepAdaptor_Curve crv(TopoDS::Edge(axEdge));
     gp_Pnt base;
     gp_Dir occdir;
+    bool reversed = axEdge.Orientation() == TopAbs_REVERSED;
     if (crv.GetType() == GeomAbs_Line){
-        base = crv.Value(crv.FirstParameter());
+        base = crv.Value(reversed ? crv.FirstParameter() : crv.LastParameter());
         occdir = crv.Line().Direction();
     } else if (crv.GetType() == GeomAbs_Circle) {
         base = crv.Circle().Axis().Location();
@@ -116,6 +117,8 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     } else {
         throw Base::TypeError("AxisLink edge is neither line nor arc of circle.");
     }
+    if (reversed)
+        occdir.Reverse();
     center.Set(base.X(), base.Y(),base.Z());
     dir.Set(occdir.X(), occdir.Y(), occdir.Z());
     return true;
