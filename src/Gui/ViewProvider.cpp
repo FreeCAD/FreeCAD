@@ -50,6 +50,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "SoFCDB.h"
+#include "ViewProviderExtension.h"
 
 using namespace std;
 using namespace Gui;
@@ -315,11 +316,21 @@ std::string ViewProvider::getActiveDisplayMode(void) const
 void ViewProvider::hide(void)
 {
     pcModeSwitch->whichChild = -1;
+
+    //tell extensions that we hide
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionHide();
 }
 
 void ViewProvider::show(void)
 {
     setModeSwitch();
+    
+    //tell extensions that we show
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionShow();
 }
 
 bool ViewProvider::isShow(void) const
@@ -499,4 +510,80 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     (void)cursorPos;
     (void)viewer;
     return false;
+    }
+
+bool ViewProvider::onDelete(const vector< string >& subNames) {
+    bool del = true;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        del = del || ext->extensionOnDelete(subNames);
+
+    return del;
+}
+
+bool ViewProvider::canDragObject(App::DocumentObject* obj) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDragObject(obj))
+            return true;
+
+    return false;
+}
+
+bool ViewProvider::canDragObjects() const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDragObjects())
+            return true;
+
+    return false;
+}
+
+void ViewProvider::dragObject(App::DocumentObject* obj) {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        if(ext->extensionCanDragObject(obj)) {
+            ext->extensionDragObject(obj);
+            return;
+        }
+    }
+
+    throw Base::Exception("ViewProvider::dragObject: no extension for draging given object available."); 
+}
+
+
+bool ViewProvider::canDropObject(App::DocumentObject* obj) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDropObject(obj))
+            return true;
+
+    return false;
+}
+
+bool ViewProvider::canDropObjects() const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDropObjects())
+            return true;
+
+    return false;
+}
+
+void ViewProvider::dropObject(App::DocumentObject* obj) {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        if(ext->extensionCanDropObject(obj)) {
+            ext->extensionDropObject(obj);
+            return;
+        }
+    }
+
+    throw Base::Exception("ViewProvider::dropObject: no extension for droping given object available."); 
 }
