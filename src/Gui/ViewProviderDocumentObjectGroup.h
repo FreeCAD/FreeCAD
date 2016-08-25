@@ -46,8 +46,6 @@ public:
     virtual bool canDropObjects() const;
     virtual void dropObject(App::DocumentObject*);
 
-    void attach(App::DocumentObject *pcObject);
-    void updateData(const App::Property*);
     void Restore(Base::XMLReader &reader);
     QIcon getIcon(void) const;
     /// returns a list of all possible modes
@@ -70,8 +68,6 @@ public:
                       const QPoint &pos);
 
 protected:
-    /// get called by the container whenever a property has been changed
-    void onChanged(const App::Property* prop);
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;
 
 private:
