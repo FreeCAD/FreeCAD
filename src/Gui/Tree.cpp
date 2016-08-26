@@ -976,57 +976,59 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
             std::vector<App::DocumentObject*> group = view.claimChildren();
                 int group_index = 0; // counter of children inserted to the tree
             for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
-                if ((*jt) && view.getObject()->getDocument()->isIn(*jt)){
-                    // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
-                    // were changed in a transaction and slotChangedObject() is triggered by one property being reset
-                    // before the invalid pointer has been removed from another. Currently this happens for PartDesign::Body
-                    // when cancelling a new feature in the dialog. First the new feature is deleted, then the Tip property is
-                    // reset, but claimChildren() accesses the Model property which still contains the pointer to the deleted feature
-                    const char* internalName = (*jt)->getNameInDocument();
-                    if (internalName) {
-                        std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
-                        if (kt != ObjectMap.end()) {
-                            DocumentObjectItem* child_of_group = kt->second;
-                            children.insert(child_of_group);
-                            QTreeWidgetItem* parent_of_child = child_of_group->parent();
-
-                            if (parent_of_child) {
-                                if (parent_of_child != parent_of_group) {
-                                    if (parent_of_group != child_of_group) {
-                                        // This child's parent must be adjusted
-                                        parent_of_child->removeChild(child_of_group);
-                                        // Insert the child at the correct position according to the order of the children returned
-                                        // by claimChildren
-                                        if (group_index <= parent_of_group->childCount())
-                                            parent_of_group->insertChild(group_index, child_of_group);
-                                        else
-                                            parent_of_group->addChild(child_of_group);
-                                        group_index++;
+                if (*jt) {
+                    if (view.getObject()->getDocument()->isIn(*jt)){
+                        // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
+                        // were changed in a transaction and slotChangedObject() is triggered by one property being reset
+                        // before the invalid pointer has been removed from another. Currently this happens for PartDesign::Body
+                        // when cancelling a new feature in the dialog. First the new feature is deleted, then the Tip property is
+                        // reset, but claimChildren() accesses the Model property which still contains the pointer to the deleted feature
+                        const char* internalName = (*jt)->getNameInDocument();
+                        if (internalName) {
+                            std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
+                            if (kt != ObjectMap.end()) {
+                                DocumentObjectItem* child_of_group = kt->second;
+                                children.insert(child_of_group);
+                                QTreeWidgetItem* parent_of_child = child_of_group->parent();
+    
+                                if (parent_of_child) {
+                                    if (parent_of_child != parent_of_group) {
+                                        if (parent_of_group != child_of_group) {
+                                            // This child's parent must be adjusted
+                                            parent_of_child->removeChild(child_of_group);
+                                            // Insert the child at the correct position according to the order of the children returned
+                                            // by claimChildren
+                                            if (group_index <= parent_of_group->childCount())
+                                                parent_of_group->insertChild(group_index, child_of_group);
+                                            else
+                                                parent_of_group->addChild(child_of_group);
+                                            group_index++;
+                                        } else {
+                                            Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                        }
                                     } else {
-                                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                        // The child already in the right group, but we may need to ajust it's index to follow the order of claimChildren
+                                        int index=parent_of_group->indexOfChild (child_of_group);
+                                        if (index>group_index) {
+                                             parent_of_group->takeChild (index);
+                                             parent_of_group->insertChild (group_index, child_of_group);
+                                        }
+                                        group_index++;
                                     }
                                 } else {
-                                    // The child already in the right group, but we may need to ajust it's index to follow the order of claimChildren
-                                    int index=parent_of_group->indexOfChild (child_of_group);
-                                    if (index>group_index) {
-                                         parent_of_group->takeChild (index);
-                                         parent_of_group->insertChild (group_index, child_of_group);
-                                    }
-                                    group_index++;
+                                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): "
+                                        "'%s' claimed a top level object '%s' to be it's child.\n", objectName.c_str(), internalName);
                                 }
-                            } else {
-                                Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): "
-                                    "'%s' claimed a top level object '%s' to be it's child.\n", objectName.c_str(), internalName);
                             }
+                        }
+                        else {
+                            Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot reparent unknown object.\n");
                         }
                     }
                     else {
-                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot reparent unknown object.\n");
+                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
                     }
-                }
-                else {
-                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
-                }
+                } // empty PropertyLink
             }
 
             // move all children which are not part of the group anymore to this item
