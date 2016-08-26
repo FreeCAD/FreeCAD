@@ -69,8 +69,7 @@ def makePipeConnector(pipes,radius=0,name="Connector"):
     _ArchPipeConnector(obj)
     obj.Pipes = pipes
     if not radius:
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        radius = p.GetFloat("PipeDiameter",50)
+        radius = pipes[0].Diameter
     obj.Radius = radius
     if FreeCAD.GuiUp:
         _ViewProviderPipe(obj.ViewObject)
@@ -275,6 +274,8 @@ class _ArchPipeConnector(ArchComponent.Component):
         obj.setEditorMode("ConnectorType",1)
 
     def execute(self,obj):
+        
+        tol = 1 # tolerance for alignment. This is only visual, we can keep it low...
 
         import math,Part,DraftGeomUtils,ArchCommands
         if len(obj.Pipes) < 2:
@@ -301,6 +302,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             point = wires[0].Vertexes[-1].Point
         else:
             FreeCAD.Console.PrintError(translate("Arch","Common vertex not found\n"))
+            return
         if order[0] == "start":
             v1 = wires[0].Vertexes[1].Point.sub(wires[0].Vertexes[0].Point).normalize()
         else:
@@ -314,7 +316,7 @@ class _ArchPipeConnector(ArchComponent.Component):
         if len(obj.Pipes) == 2:
             if obj.ConnectorType != "Corner":
                 obj.ConnectorType = "Corner"
-            if round(v1.getAngle(v2),4) in [0,3.1416]:
+            if round(v1.getAngle(v2),tol) in [0,round(math.pi,tol)]:
                 FreeCAD.Console.PrintError(translate("Arch","Pipes are already aligned\n"))
                 return
             normal = v2.cross(v1)
@@ -348,11 +350,11 @@ class _ArchPipeConnector(ArchComponent.Component):
                 v3 = wires[2].Vertexes[1].Point.sub(wires[2].Vertexes[0].Point).normalize()
             else:
                 v3 = wires[2].Vertexes[-2].Point.sub(wires[2].Vertexes[-1].Point).normalize()
-            if round(v1.getAngle(v2),4) in [0,3.1416]:
+            if round(v1.getAngle(v2),tol) in [0,round(math.pi,tol)]:
                 pair = [v1,v2,v3]
-            elif round(v1.getAngle(v3),4) in [0,3.1416]:
+            elif round(v1.getAngle(v3),tol) in [0,round(math.pi,tol)]:
                 pair = [v1,v3,v2]
-            elif round(v2.getAngle(v3),4) in [0,3.1416]:
+            elif round(v2.getAngle(v3),tol) in [0,round(math.pi,tol)]:
                 pair = [v2,v3,v1]
             else:
                 FreeCAD.Console.PrintError(translate("Arch","At least 2 pipes must aligned\n"))
