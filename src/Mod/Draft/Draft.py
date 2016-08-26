@@ -4522,8 +4522,11 @@ class _ViewProviderWire(_ViewProviderDraft):
                     self.coords.scaleFactor.setValue((s,s,s))
                     rn.addChild(self.pt)
                 else:
-                    self.pt.removeChild(self.symbol)
-                    rn.removeChild(self.pt)
+                    if self.symbol:
+                        if self.pt.findChild(self.symbol) != -1:
+                            self.pt.removeChild(self.symbol)
+                        if rn.findChild(self.pt) != -1:
+                            rn.removeChild(self.pt)
         _ViewProviderDraft.onChanged(self,vobj,prop)
         return
 
