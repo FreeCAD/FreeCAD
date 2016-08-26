@@ -44,6 +44,7 @@
 # include <BRepAlgo_Fuse.hxx>
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -66,6 +67,7 @@
 # include <BRepMesh_Edge.hxx>
 # include <BRepOffsetAPI_MakeThickSolid.hxx>
 # include <BRepOffsetAPI_MakeOffsetShape.hxx>
+# include <BRepOffsetAPI_MakeOffset.hxx>
 # include <BRepOffsetAPI_MakePipe.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepOffsetAPI_Sewing.hxx>
@@ -75,6 +77,7 @@
 # include <BRepTools.hxx>
 # include <BRepTools_ReShape.hxx>
 # include <BRepTools_ShapeSet.hxx>
+# include <BRepTools_WireExplorer.hxx>
 # include <BRepFill_CompatibleWires.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
@@ -2059,6 +2062,153 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
     }
 
     return outputShape;
+}
+
+TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill, bool isOpenResult) const
+{
+    if (_Shape.IsNull())
+        throw Base::ValueError("makeOffsetWire: input shape is null!");
+
+    switch (_Shape.ShapeType()) {
+    case TopAbs_COMPOUND:{
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+
+        TopoDS_Iterator it(_Shape);
+        for( ; it.More() ; it.Next()){
+            builder.Add(comp, TopoShape(it.Value()).makeOffsetWire(offset, joinType, fill, isOpenResult));
+        }
+        return comp;
+    }break;
+    case TopAbs_EDGE:
+    case TopAbs_WIRE:{
+        //make sure we have a wire...
+        TopoDS_Wire sourceWire;
+        if (_Shape.ShapeType() == TopAbs_WIRE){
+            sourceWire = TopoDS::Wire(_Shape);
+        } else { //edge
+            sourceWire = BRepBuilderAPI_MakeWire(TopoDS::Edge(_Shape)).Wire();
+        }
+
+        //do the offset..
+        TopoDS_Shape offsetWire;
+        if (fabs(offset) > Precision::Confusion()){
+            BRepOffsetAPI_MakeOffset mkOffset(sourceWire, GeomAbs_JoinType(joinType), isOpenResult);
+            try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+                Base::SignalException se;
+#endif
+                mkOffset.Perform(offset);
+            }
+            catch (Standard_Failure &){
+                throw;
+            }
+            catch (...) {
+                throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
+            }
+
+            offsetWire = mkOffset.Shape();
+        } else {
+            offsetWire = sourceWire;
+        }
+
+        if(offsetWire.IsNull())
+            throw Base::Exception("makeOffsetWire: result of offseting is null!");
+
+        if (!fill)
+            return offsetWire;
+
+        if (offset < Precision::Confusion())
+            throw Base::ValueError("makeOffsetWire: offset distance is zero. Can't fill offset.");
+
+        //Fill offset...
+        BRepBuilderAPI_FindPlane planefinder(sourceWire);
+        if (!planefinder.Found()){
+            // non-planar wire. Use Loft!
+            BRepOffsetAPI_ThruSections mkLoft;
+            mkLoft.AddWire(sourceWire);
+            if (offsetWire.ShapeType() == TopAbs_WIRE)
+                mkLoft.AddWire(TopoDS::Wire(offsetWire));
+            else if (offsetWire.ShapeType() == TopAbs_VERTEX){
+                mkLoft.AddVertex(TopoDS::Vertex(offsetWire));
+            }
+            try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+                Base::SignalException se;
+#endif
+                mkLoft.Build();
+            }
+            catch (Standard_Failure &){
+                throw;
+            }
+            catch (...) {
+                throw Base::Exception("BRepOffsetAPI_ThruSections has crashed! (Unknown exception caught)");
+            }
+
+            if (mkLoft.Shape().IsNull())
+                throw Base::ValueError("makeOffsetWire: filling offset: making Loft returned null shape.");
+            return mkLoft.Shape();
+        }
+        //Planar wire. Make planar face...
+        //first up, the offset wire can be a compound. Let's break it up
+        std::list<TopoDS_Wire> wires;
+        if (offsetWire.ShapeType() == TopAbs_COMPOUND){
+            TopoDS_Iterator it(offsetWire);
+            for(; it.More(); it.Next()){
+                wires.push_back(TopoDS::Wire(it.Value()));
+            }
+        } else if (offsetWire.ShapeType() == TopAbs_WIRE) {
+            wires.push_back(TopoDS::Wire(offsetWire));
+        }
+        if(wires.size() == 0)
+            throw Base::Exception("makeOffsetWire: offset result has no wires.");
+
+        //For the face, we also need the original wire. And we need to tell apart the outer wire for the face.
+        TopoDS_Wire* largestWire;
+        if (BRep_Tool::IsClosed(sourceWire) && offset < 0){
+            //in this case, the original wire is the outer wire of the face
+            wires.push_front(sourceWire);
+            largestWire = &wires.front();
+        } else { //positive offset, or source wire is not closed...
+            //find largest wire. It will be the outer wire of the face
+            double largestSizeSeenSoFar = -1.0;
+            for (TopoDS_Wire &w : wires){
+                Bnd_Box bb;
+                BRepBndLib::Add(w, bb);
+                if (bb.SquareExtent() > largestSizeSeenSoFar){
+                    largestWire = &w;
+                    largestSizeSeenSoFar = bb.SquareExtent();
+                }
+            }
+            //add source wire to the list.
+            if (BRep_Tool::IsClosed(sourceWire)){
+                wires.push_back(TopoDS::Wire(sourceWire));
+            }
+        }
+
+        //make the face
+        BRepBuilderAPI_MakeFace mkFace(*largestWire);
+        for(TopoDS_Wire &w : wires){
+            if (&w != largestWire)
+                mkFace.Add(TopoDS::Wire(w.Reversed()));
+        }
+        mkFace.Build();
+        if (mkFace.Shape().IsNull())
+            throw Base::Exception("makeOffsetWire: making face failed (null shape returned).");
+        return mkFace.Shape();
+
+    }break;
+    case TopAbs_FACE:{
+        //TopoDS_Face &sourceFace = TopoDS_Face(_Shape);
+        //BRepOffsetAPI_MakeOffset nkOffset()
+
+    }break;
+    default:
+        throw Base::TypeError("makeOffsetWire: input shape is not an edge or wire.");
+    break;
+    }
+
 }
 
 TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
