@@ -5341,11 +5341,14 @@ class _Clone(_DraftObject):
                 if hasattr(obj,"Scale") and not sh.isNull():
                     sx,sy,sz = obj.Scale
                     if not DraftVecUtils.equals(obj.Scale,Vector(1,1,1)):
+                        op = sh.Placement
+                        sh.Placement = FreeCAD.Placement()
                         m.scale(obj.Scale)
                         if sx == sy == sz:
                             sh.transformShape(m)
                         else:
                             sh = sh.transformGeometry(m)
+                        sh.Placement = op
                 if not sh.isNull():
                     shapes.append(sh)
         if shapes:
