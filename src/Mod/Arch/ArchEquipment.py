@@ -299,11 +299,14 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         sep = coin.SoSeparator()
         self.coords = coin.SoCoordinate3()
         sep.addChild(self.coords)
+        self.coords.point.deleteValues(0)
         symbol = coin.SoMarkerSet()
         symbol.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_5_5
         sep.addChild(symbol)
         rn = vobj.RootNode
         rn.addChild(sep)
+        ArchComponent.ViewProviderComponent.attach(self,vobj)
+        
         
     def updateData(self, obj, prop):
         if prop == "SnapPoints":

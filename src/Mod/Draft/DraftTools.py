@@ -4608,8 +4608,9 @@ class Draft_Slope():
                             if not lp:
                                 lp = p
                             else:
-                                z = pc*FreeCAD.Vector(p.x,p.y,lp.z).Length
-                                lp = FreeCAD.Vector(p.x,p.y,z)
+                                v = p.sub(lp)
+                                z = pc*FreeCAD.Vector(v.x,v.y,0).Length
+                                lp = FreeCAD.Vector(p.x,p.y,lp.z+z)
                             np.append(lp)
                         obj.Points = np
             FreeCAD.ActiveDocument.commitTransaction()
