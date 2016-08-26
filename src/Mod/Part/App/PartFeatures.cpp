@@ -36,7 +36,9 @@
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <ShapeAnalysis.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
+# include <ShapeExtend_Explorer.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
@@ -530,10 +532,17 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     short join = (short)Join.getValue();
     bool fill = Fill.getValue();
     const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
-    if (fabs(offset) > 2*tol)
-        this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
-    else
-        this->Shape.setValue(shape);
+    // test, what are we dealing with. Different methods for wires, and everything else...
+    ShapeExtend_Explorer xp;
+    Handle_TopTools_HSequenceOfShape seq = xp.SeqFromCompound(shape.getShape(), /*recursive=*/true);
+    if(seq->Value(1).ShapeType() == TopAbs_EDGE || seq->Value(1).ShapeType() == TopAbs_WIRE){
+        this->Shape.setValue(shape.makeOffsetWire(offset, join, fill, mode == 0));
+    } else {
+        if (fabs(offset) > 2*tol)
+            this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
+        else
+            this->Shape.setValue(shape);
+    }
     return App::DocumentObject::StdReturn;
 }
 
