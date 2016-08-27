@@ -26,6 +26,7 @@
 
 #include "App/Extension.h"
 #include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 
 namespace Gui {
     
@@ -37,14 +38,17 @@ class GuiExport ViewProviderExtension : public App::Extension
 {
 
     //The cass does not have properties itself, but it is important to provide the property access
-    //functions. see cpp file for details
-    PROPERTY_HEADER(Gui::ViewProviderExtension );
+    //functions.
+    PROPERTY_HEADER(Gui::ViewProviderExtension);
 
 public:
 
     ViewProviderExtension ();
     virtual ~ViewProviderExtension ();
 
+    Gui::ViewProviderDocumentObject*       getExtendedViewProvider();
+    const Gui::ViewProviderDocumentObject* getExtendedViewProvider() const;
+   
     virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void) const { 
         return std::vector<App::DocumentObject*>(); }
         
@@ -64,6 +68,11 @@ public:
     virtual void extensionHide(void) { };
     /// Shows the view provider
     virtual void extensionShow(void) { };
+    
+    virtual void extensionRestore(Base::XMLReader& reader) { };
+    
+private:
+    Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
 
 } //App

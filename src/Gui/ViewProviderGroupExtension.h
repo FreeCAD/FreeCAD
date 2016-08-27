@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
+ *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,40 +21,43 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef GUI_VIEWPROVIDERGROUPEXTENSION_H
+#define GUI_VIEWPROVIDERGROUPEXTENSION_H
 
-#ifndef _PreComp_
-# include <cassert>
-# include <algorithm>
-#endif
-
+#include <App/Extension.h>
 #include "ViewProviderExtension.h"
-//#include "ViewProviderExtensionPy.h"
 
-using namespace Gui;
-
-PROPERTY_SOURCE(Gui::ViewProviderExtension, App::Extension)
-
-ViewProviderExtension::ViewProviderExtension() 
-{
-    initExtension(Gui::ViewProviderExtension::getClassTypeId());
-}
-
-ViewProviderExtension::~ViewProviderExtension()
+namespace Gui
 {
 
-}
+class GuiExport ViewProviderGroupExtension : public ViewProviderExtension
+{
+    PROPERTY_HEADER(Gui::ViewProviderGroupExtension);
 
-const ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() const{
+public:
+    /// Constructor
+    ViewProviderGroupExtension(void);
+    virtual ~ViewProviderGroupExtension();
 
-    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())); 
-    return static_cast<const ViewProviderDocumentObject*>(getExtendedContainer());
-}
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
+    virtual bool extensionCanDragObjects() const override; 
+    virtual bool extensionCanDragObject(App::DocumentObject*) const override;
+    virtual void extensionDragObject(App::DocumentObject*) override;
+    virtual bool extensionCanDropObjects() const override;
+    virtual bool extensionCanDropObject(App::DocumentObject*) const override;
+    virtual void extensionDropObject(App::DocumentObject*) override;   
+ 
+    virtual void extensionHide(void) override;
+    virtual void extensionShow(void) override;
 
-ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() {
+    virtual bool extensionOnDelete(const std::vector<std::string> &) override;
+    virtual void extensionRestore(Base::XMLReader& reader);
 
-    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())); 
-    return static_cast<ViewProviderDocumentObject*>(getExtendedContainer());
-}
+private:
+    bool visible; // helper variable
+    std::vector<ViewProvider*> nodes;
+};
 
+} //namespace Gui
 
+#endif // GUI_VIEWPROVIDERGROUPEXTENSION_H
