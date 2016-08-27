@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,26 +21,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
-#define VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
 
-#include <boost/signals.hpp>
+#ifndef GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+#define GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
 
+#include <App/Extension.h>
 #include "ViewProviderGeoFeatureGroup.h"
-#include "ViewProviderOriginGroupExtension.h"
 
-namespace Gui {
-
-class GuiExport ViewProviderOriginGroup: public ViewProviderDocumentObject,
-                                         public ViewProviderOriginGroupExtension
+namespace Gui
 {
-    PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup);
+
+class GuiExport ViewProviderOriginGroupExtension : public ViewProviderGeoFeatureGroupExtension
+{
+    PROPERTY_HEADER(Gui::ViewProviderOriginGroupExtension);
+
 public:
-    ViewProviderOriginGroup ();
-    virtual ~ViewProviderOriginGroup ();
+    /// Constructor
+    ViewProviderOriginGroupExtension(void);
+    virtual ~ViewProviderOriginGroupExtension();
+
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void)const override;
+
+    virtual void extensionAttach(App::DocumentObject *pcObject) override;
+    virtual void extensionUpdateData(const App::Property* prop) override;
+
+    void updateOriginSize();
+
+protected:
+    void slotChangedObjectApp ( const App::DocumentObject& obj );
+    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
+
+private:
+    std::vector<App::DocumentObject*> constructChildren (
+            const std::vector<App::DocumentObject*> &children ) const;
+
+    boost::signals::connection connectChangedObjectApp;
+    boost::signals::connection connectChangedObjectGui;
 };
 
-} /* Gui  */
+} //namespace Gui
 
-
-#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H_JIXBOPA7 */
+#endif // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
