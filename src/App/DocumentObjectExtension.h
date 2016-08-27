@@ -45,6 +45,9 @@ public:
     DocumentObjectExtension ();
     virtual ~DocumentObjectExtension ();
 
+    App::DocumentObject*       getExtendedObject();
+    const App::DocumentObject* getExtendedObject() const;
+  
     //override if execution is nesseccary
     virtual short extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
@@ -58,6 +61,10 @@ public:
     virtual void onExtendedUnsetupObject();
   
     virtual PyObject* getExtensionPyObject(void);
+    
+    /// returns the type name of the ViewProviderExtension which is automatically attached 
+    /// to the viewprovider object when it is initiated
+    virtual const char* getViewProviderExtensionName(void) const {return "";};
 };
 
 } //App

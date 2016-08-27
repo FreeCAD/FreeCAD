@@ -31,6 +31,8 @@
 
 namespace App {
     
+class ExtensionContainer;
+    
 /**
  * @brief Base class for all extension that can be added to a DocumentObject
  * 
@@ -135,10 +137,10 @@ public:
   Extension();
   virtual ~Extension();
 
-  void initExtension(App::DocumentObject* obj);
+  void initExtension(App::ExtensionContainer* obj);
     
-  App::DocumentObject*       getExtendedObject() {return m_base;};
-  const App::DocumentObject* getExtendedObject() const {return m_base;};
+  App::ExtensionContainer*       getExtendedContainer() {return m_base;};
+  const App::ExtensionContainer* getExtendedContainer() const {return m_base;};
  
   //get extension name without namespace
   const char* name();
@@ -153,8 +155,8 @@ protected:
   Py::Object ExtensionPythonObject;
   
 private:
-  Base::Type           m_extensionType;
-  App::DocumentObject* m_base = nullptr;
+  Base::Type                    m_extensionType;
+  App::ExtensionContainer*      m_base = nullptr;
 };
 
 

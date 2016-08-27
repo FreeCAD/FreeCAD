@@ -822,6 +822,7 @@ SOURCE_GROUP("Quarter" FILES ${Quarter_SRCS})
 SET(Viewprovider_CPP_SRCS
     ViewProvider.cpp
     ViewProviderExtension.cpp
+    ViewProviderGroupExtension.cpp
     ViewProviderAnnotation.cpp
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
@@ -850,6 +851,7 @@ SET(Viewprovider_SRCS
     ${Viewprovider_CPP_SRCS}
     ViewProvider.h
     ViewProviderExtension.h
+    ViewProviderGroupExtension.h
     ViewProviderAnnotation.h
     ViewProviderDocumentObject.h
     ViewProviderDocumentObjectGroup.h

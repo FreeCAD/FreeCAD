@@ -47,7 +47,7 @@ ExtensionContainer::~ExtensionContainer() {
 
 void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext) {
 
-    if(ext->getExtendedObject() != this)
+    if(ext->getExtendedContainer() != this)
         throw Base::Exception("ExtensionContainer::registerExtension: Extension has not this as base object");
        
     //no duplicate extensions (including base classes)

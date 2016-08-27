@@ -118,6 +118,7 @@
 #include "TaskView/TaskDialogPython.h"
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
+#include "ViewProviderGroupExtension.h"
 #include "GuiInitScript.h"
 
 
@@ -1502,6 +1503,7 @@ void Application::initTypes(void)
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();
+    Gui::ViewProviderGroupExtension             ::init();
     Gui::ViewProviderExtern                     ::init();
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();
