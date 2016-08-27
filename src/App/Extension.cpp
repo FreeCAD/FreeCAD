@@ -66,7 +66,7 @@ void Extension::initExtension(Base::Type type) {
         throw Base::Exception("Extension: Extension type not set");
 }
 
-void Extension::initExtension(DocumentObject* obj) {
+void Extension::initExtension(ExtensionContainer* obj) {
 
     if(m_extensionType.isBad())
         throw Base::Exception("Extension: Extension type not set");

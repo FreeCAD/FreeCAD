@@ -587,3 +587,10 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
 
     throw Base::Exception("ViewProvider::dropObject: no extension for droping given object available."); 
 }
+
+void ViewProvider::Restore(Base::XMLReader& reader) {
+    
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionRestore(reader);
+}

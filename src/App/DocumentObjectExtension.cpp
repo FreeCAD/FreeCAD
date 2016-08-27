@@ -75,3 +75,15 @@ PyObject* DocumentObjectExtension::getExtensionPyObject(void) {
     }
     return Py::new_reference_to(ExtensionPythonObject);
 }
+
+const DocumentObject* DocumentObjectExtension::getExtendedObject() const {
+
+    assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId())); 
+    return static_cast<const DocumentObject*>(getExtendedContainer());
+}
+
+DocumentObject* DocumentObjectExtension::getExtendedObject() {
+
+    assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId())); 
+    return static_cast<DocumentObject*>(getExtendedContainer());
+}
