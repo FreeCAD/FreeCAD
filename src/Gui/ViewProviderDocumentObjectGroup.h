@@ -47,16 +47,6 @@ public:
     std::vector<std::string> getDisplayModes(void) const;
     bool isShow(void) const;
 
-    /// get called if the user hover over a object in the tree
-    virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,
-                           Qt::KeyboardModifiers keys,
-                           Qt::MouseButtons mouseBts,
-                           const QPoint &pos);
-    /// get called if the user drops some objects
-    virtual void drop(const std::vector<const App::DocumentObject*> &objList,
-                      Qt::KeyboardModifiers keys,
-                      Qt::MouseButtons mouseBts,
-                      const QPoint &pos);
 
 protected:
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;
