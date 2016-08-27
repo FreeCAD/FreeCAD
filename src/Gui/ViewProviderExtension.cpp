@@ -57,4 +57,7 @@ ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() {
     return static_cast<ViewProviderDocumentObject*>(getExtendedContainer());
 }
 
+void ViewProviderExtension::extensionUpdateData(const App::Property*) {
+
+}
 

@@ -1473,6 +1473,7 @@ void Application::initTypes(void)
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();
     Gui::ViewProviderGroupExtension             ::init();
+    Gui::ViewProviderGeoFeatureGroupExtension   ::init();
     Gui::ViewProviderExtern                     ::init();
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();
