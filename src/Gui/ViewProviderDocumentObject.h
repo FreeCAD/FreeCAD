@@ -62,10 +62,6 @@ public:
     App::PropertyBool Visibility;
 
     virtual void attach(App::DocumentObject *pcObject);
-    /// Get the default display mode
-    virtual const char* getDefaultDisplayMode() const;
-    /// Return a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view
@@ -78,8 +74,6 @@ public:
 
     /// Run a redraw
     void updateView();
-    /// Gets called if some of the property hade bin changed
-    virtual void updateData(const App::Property*){}
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
     /// Get the GUI document to this ViewProvider object

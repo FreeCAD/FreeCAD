@@ -120,10 +120,12 @@ public:
     virtual ~ExtensionContainer();
 
     void registerExtension(Base::Type extension, App::Extension* ext);
-    bool hasExtension(Base::Type) const;
+    bool hasExtension(Base::Type) const; //returns first of type (or derived from) and throws otherwise
     bool hasExtension(const char* name) const; //this version does not check derived classes
-    App::Extension* getExtension(Base::Type);
+    App::Extension* getExtension(Base::Type);  //returns first of type (or derived from) and throws otherwise
     App::Extension* getExtension(const char* name); //this version does not check derived classes
+    
+    //returns first of type (or derived from) and throws otherwise
     template<typename ExtensionT>
     ExtensionT* getExtensionByType() {
         return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getClassTypeId()));
