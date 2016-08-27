@@ -564,7 +564,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             // now add the object to the target object
             vp->dropObject(obj);
         }
-        targetItemObj->drop(dropObjects,event->keyboardModifiers(),event->mouseButtons(),event->pos());
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         // Open command
@@ -1442,15 +1441,6 @@ void DocumentObjectItem::testStatus()
     }
 
     this->setIcon(0, icon_mod);
-}
-
-bool DocumentObjectItem::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    return viewObject->allowDrop(objList,keys,mouseBts,pos);
-}
-void DocumentObjectItem::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    viewObject->drop(objList,keys,mouseBts,pos);
 }
 
 void DocumentObjectItem::displayStatusInfo()

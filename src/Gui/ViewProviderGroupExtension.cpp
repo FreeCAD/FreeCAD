@@ -76,23 +76,58 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
     
-    //we cannot drop anything into the group.  We need to find the correct App extension to ask 
-    //if this is a supported type, there should only be one
     auto vector = getExtendedViewProvider()->getObject()->getExtensionsDerivedFromType<App::GroupExtension>();
     assert(vector.size() == 1);
-    if(vector[0]->allowObject(obj)) 
+    App::GroupExtension* group = vector.front();
+    
+    //we cannot drop thing of this group into it again
+    if (group->hasObject(obj))
+        return false;  
+    
+    //group into group?
+    if (obj->hasExtension(App::GroupExtension::getClassTypeId()))
+            if (group->isChildOf(obj->getExtensionByType<App::GroupExtension>()))
+                return false;
+    
+    //We need to find the correct App extension to ask if this is a supported type, there should only be one
+    if(group->allowObject(obj)) 
         return true;
-
+    
     return false;
     
 }
 
 void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").addObject("
-        "App.getDocument(\"%s\").getObject(\"%s\"))",
-        getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(), 
-        obj->getDocument()->getName(), obj->getNameInDocument() );
+    // Open command
+    App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
+    App::Document* doc = grp->getDocument();
+    Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+    gui->openCommand("Move object");
+
+    const App::DocumentObject* par = App::GroupExtension::getGroupOfObject(obj);
+    if (par) {
+        // allow an object to be in one group only
+        QString cmd;
+        cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+                            "App.getDocument(\"%1\").getObject(\"%3\"))")
+                            .arg(QString::fromLatin1(doc->getName()))
+                            .arg(QString::fromLatin1(par->getNameInDocument()))
+                            .arg(QString::fromLatin1(obj->getNameInDocument()));
+        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+    }
+
+    // build Python command for execution
+    QString cmd;
+    cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+                        "App.getDocument(\"%1\").getObject(\"%3\"))")
+                        .arg(QString::fromLatin1(doc->getName()))
+                        .arg(QString::fromLatin1(grp->getNameInDocument()))
+                        .arg(QString::fromLatin1(obj->getNameInDocument()));
+    
+    Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+    
+    gui->commitCommand();
 }
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
