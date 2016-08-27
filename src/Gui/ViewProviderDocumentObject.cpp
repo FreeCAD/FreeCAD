@@ -42,6 +42,7 @@
 #include "MDIView.h"
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderExtension.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
 
@@ -160,7 +161,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
 {
     // save Object pointer
     pcObject = pcObj;
-
+    
     // Retrieve the supported display modes of the view provider
     aDisplayModesArray = this->getDisplayModes();
 
@@ -179,6 +180,11 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     const char* defmode = this->getDefaultDisplayMode();
     if (defmode)
         DisplayMode.setValue(defmode);
+    
+    //attach the extensions
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionAttach(pcObj);
 }
 
 Gui::Document* ViewProviderDocumentObject::getDocument() const
@@ -263,18 +269,6 @@ void ViewProviderDocumentObject::setActiveMode()
     }
     if (!Visibility.getValue())
         ViewProvider::hide();
-}
-
-const char* ViewProviderDocumentObject::getDefaultDisplayMode() const
-{
-    // We use the first item then
-    return 0;
-}
-
-std::vector<std::string> ViewProviderDocumentObject::getDisplayModes(void) const
-{
-    // empty
-    return std::vector<std::string>();
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()

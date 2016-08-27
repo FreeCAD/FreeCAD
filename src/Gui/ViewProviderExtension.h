@@ -71,6 +71,16 @@ public:
     
     virtual void extensionRestore(Base::XMLReader& reader) { };
     
+    virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
+    virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
+    virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
+    virtual void extensionAttach(App::DocumentObject* pcObject) { };
+    virtual void extensionSetDisplayMode(const char* ModeName) { };
+    virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();};
+
+    //update data of extended opject
+    virtual void extensionUpdateData(const App::Property*);
+    
 private:
     Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
