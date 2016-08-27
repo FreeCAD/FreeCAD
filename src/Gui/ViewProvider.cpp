@@ -306,7 +306,29 @@ std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 void ViewProvider::setDisplayMode(const char* ModeName)
 {
     _sCurrentMode = ModeName;
+    
+    //infom the exteensions
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionSetDisplayMode(ModeName);
 }
+
+const char* ViewProvider::getDefaultDisplayMode() const {
+
+    return 0;
+}
+
+vector<std::string> ViewProvider::getDisplayModes(void) const {
+
+    std::vector< std::string > modes;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto extModes = ext->extensionGetDisplayModes();
+        modes.insert( modes.end(), extModes.begin(), extModes.end() );
+    }
+    return modes;
+}
+
 
 std::string ViewProvider::getActiveDisplayMode(void) const
 {
@@ -593,4 +615,44 @@ void ViewProvider::Restore(Base::XMLReader& reader) {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         ext->extensionRestore(reader);
+}
+
+void ViewProvider::updateData(const App::Property* prop) {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionUpdateData(prop);
+}
+
+SoSeparator* ViewProvider::getBackRoot(void) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto* node = ext->extensionGetBackRoot();
+        if(node)
+            return node;
+    }
+    return nullptr;
+}
+
+SoGroup* ViewProvider::getChildRoot(void) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto* node = ext->extensionGetChildRoot();
+        if(node)
+            return node;
+    }
+    return nullptr;
+}
+
+SoSeparator* ViewProvider::getFrontRoot(void) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto* node = ext->extensionGetFrontRoot();
+        if(node)
+            return node;
+    }
+    return nullptr;
 }

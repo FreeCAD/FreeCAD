@@ -99,11 +99,11 @@ public:
     // returns the root for the Annotations. 
     SoSeparator* getAnnotation(void);
     // returns the root node of the Provider (3D)
-    virtual SoSeparator* getFrontRoot(void) const {return 0;}
+    virtual SoSeparator* getFrontRoot(void) const;
     // returns the root node where the children gets collected(3D)
-    virtual SoGroup* getChildRoot(void) const {return 0;}
+    virtual SoGroup* getChildRoot(void) const;
     // returns the root node of the Provider (3D)
-    virtual SoSeparator* getBackRoot(void) const {return 0;}
+    virtual SoSeparator* getBackRoot(void) const;
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to 
       * the 3DView which should be grouped under its 
@@ -208,7 +208,7 @@ public:
      * the data has manipulated.
      */
     void update(const App::Property*);
-    virtual void updateData(const App::Property*)=0;
+    virtual void updateData(const App::Property*);
     bool isUpdatesEnabled () const;
     void setUpdatesEnabled (bool enable);
 
@@ -227,9 +227,9 @@ public:
     /// set the display mode
     virtual void setDisplayMode(const char* ModeName);
     /// get the default display mode
-    virtual const char* getDefaultDisplayMode() const=0;
+    virtual const char* getDefaultDisplayMode() const;
     /// returns a list of all possible display modes
-    virtual std::vector<std::string> getDisplayModes(void) const=0;
+    virtual std::vector<std::string> getDisplayModes(void) const;
     /// Hides the view provider
     virtual void hide(void);
     /// Shows the view provider
@@ -313,7 +313,7 @@ public:
     //restoring the object from document: this may itnerest extensions, hence call them
     virtual void Restore(Base::XMLReader& reader);
 
-protected:
+
     /** @name Display mask modes
      * Mainly controls an SoSwitch node which selects the display mask modes.
      * The number of display mask modes doesn't necessarily match with the number
@@ -332,6 +332,8 @@ protected:
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
     //@}
+    
+protected:
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */

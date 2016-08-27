@@ -76,9 +76,7 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
     
-    auto vector = getExtendedViewProvider()->getObject()->getExtensionsDerivedFromType<App::GroupExtension>();
-    assert(vector.size() == 1);
-    App::GroupExtension* group = vector.front();
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     
     //we cannot drop thing of this group into it again
     if (group->hasObject(obj))
@@ -132,10 +130,9 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
     
-    auto ext = getExtendedViewProvider()->getObject()->getExtensionsDerivedFromType<App::GroupExtension>();
-    assert(ext.size() == 1);
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     
-    return std::vector<App::DocumentObject*>(ext.front()->Group.getValues());
+    return std::vector<App::DocumentObject*>(group->Group.getValues());
 }
 
 
@@ -144,10 +141,8 @@ void ViewProviderGroupExtension::extensionShow(void) {
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
     if (!getExtendedViewProvider()->Visibility.testStatus(App::Property::User1) && !this->visible) {
-        auto ext = getExtendedViewProvider()->getObject()->getExtensionsDerivedFromType<App::GroupExtension>();
-        assert(ext.size() == 1);
-    
-        App::GroupExtension* group = ext.front();
+        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+        
         const std::vector<App::DocumentObject*> & links = group->Group.getValues();
         Gui::Document* doc = Application::Instance->getDocument(group->getExtendedObject()->getDocument());
         for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
@@ -167,10 +162,8 @@ void ViewProviderGroupExtension::extensionHide(void) {
     // objects of this group because they have stored their visibility status, too
     if (!getExtendedViewProvider()->Visibility.testStatus(App::Property::User1) && this->visible) {
         
-        auto ext = getExtendedViewProvider()->getObject()->getExtensionsDerivedFromType<App::GroupExtension>();
-        assert(ext.size() == 1);
-    
-        App::GroupExtension* group = ext.front();
+        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+        
         const std::vector<App::DocumentObject*> & links = group->Group.getValues();
         Gui::Document* doc = Application::Instance->getDocument(getExtendedViewProvider()->getObject()->getDocument());
         for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
@@ -186,10 +179,7 @@ void ViewProviderGroupExtension::extensionHide(void) {
 
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& vec) {
     
-    auto ext = getExtendedViewProvider()->getObject()->getExtensionsDerivedFromType<App::GroupExtension>();
-    assert(ext.size() == 1);
-    
-    App::GroupExtension *group = ext.front();
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     // If the group is nonempty ask the user if he wants to delete it's content
     if ( group->Group.getSize () ) {
         QMessageBox::StandardButton choice = 
