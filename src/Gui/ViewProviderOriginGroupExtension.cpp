@@ -84,7 +84,7 @@ std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionCla
 }
 
 void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcObject) {
-    ViewProviderOriginGroupExtension::extensionAttach ( pcObject );
+    ViewProviderGeoFeatureGroupExtension::extensionAttach ( pcObject );
 
     App::Document *adoc  = pcObject->getDocument ();
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
@@ -106,7 +106,7 @@ void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property*
         updateOriginSize();
     }
 
-    ViewProviderOriginGroupExtension::extensionUpdateData ( prop );
+    ViewProviderGeoFeatureGroupExtension::extensionUpdateData ( prop );
 }
 
 void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::DocumentObject& obj) {
