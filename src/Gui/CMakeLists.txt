@@ -824,6 +824,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderExtension.cpp
     ViewProviderGroupExtension.cpp
     ViewProviderGeoFeatureGroupExtension.cpp
+    ViewProviderOriginGroupExtension.cpp
     ViewProviderAnnotation.cpp
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
@@ -854,6 +855,7 @@ SET(Viewprovider_SRCS
     ViewProviderExtension.h
     ViewProviderGroupExtension.h
     ViewProviderGeoFeatureGroupExtension.h
+    ViewProviderOriginGroupExtension.h
     ViewProviderAnnotation.h
     ViewProviderDocumentObject.h
     ViewProviderDocumentObjectGroup.h
