@@ -309,6 +309,9 @@ public:
 public:
     // this method is called by the viewer when the ViewProvider is in edit
     static void eventCallback(void * ud, SoEventCallback * node);
+    
+    //restoring the object from document: this may itnerest extensions, hence call them
+    virtual void Restore(Base::XMLReader& reader);
 
 protected:
     /** @name Display mask modes

@@ -41,22 +41,24 @@
 #include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include <Base/Console.h>
 
 
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderDocumentObjectGroup, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup, Gui::ViewProviderDocumentObject, (Gui::ViewProviderGroupExtension))
 
 
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup() : visible(false)
+ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
 {
 #if 0
     setDefaultMode(SO_SWITCH_ALL);
 #endif
+    ViewProviderGroupExtension::initExtension(this);
 }
 
 ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
@@ -65,68 +67,16 @@ ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 
 #else
     Q_UNUSED(prop);
-std::vector<App::DocumentObject*> ViewProviderDocumentObjectGroup::claimChildren(void)const
-{
-    return std::vector<App::DocumentObject*>(static_cast<App::DocumentObjectGroup*>(getObject())->Group.getValues());
-}
-
-bool ViewProviderDocumentObjectGroup::canDragObjects() const
-{
-    return true;
-}
-
-void ViewProviderDocumentObjectGroup::dragObject(App::DocumentObject* obj)
-{
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
-            "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
-            obj->getDocument()->getName(), obj->getNameInDocument() );
-}
-
-bool ViewProviderDocumentObjectGroup::canDropObjects() const
-{
-    return true;
-}
-
-void ViewProviderDocumentObjectGroup::dropObject(App::DocumentObject* obj)
-{
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").addObject("
-            "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
-            obj->getDocument()->getName(), obj->getNameInDocument() );
-}
-
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
 {
     // empty
     return std::vector<std::string>();
 }
 
-bool ViewProviderDocumentObjectGroup::onDelete(const std::vector<std::string> &)
-{
-    App::DocumentObjectGroup *group = static_cast<App::DocumentObjectGroup *> (getObject());
-    // If the group is nonempty ask the user if he wants to delete it's content
-    if ( group->Group.getSize () ) {
-        QMessageBox::StandardButton choice = 
-            QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
-                QObject::tr ( "The %1 is not empty, delete it's content as well?")
-                    .arg ( QString::fromUtf8 ( group->Label.getValue () ) ), 
-                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
-
-        if ( choice == QMessageBox::Yes ) {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                    "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                    ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
-        }
-    }
-    return true;
-}
-
 bool ViewProviderDocumentObjectGroup::allowDrop(const std::vector<const App::DocumentObject*> &objList,
                                                 Qt::KeyboardModifiers keys,
                                                 Qt::MouseButtons mouseBts,
                                                 const QPoint &pos)
-{
     Q_UNUSED(keys);
     Q_UNUSED(mouseBts);
     Q_UNUSED(pos);
@@ -139,7 +89,8 @@ bool ViewProviderDocumentObjectGroup::allowDrop(const std::vector<const App::Doc
             }
         }
 
-    return true;
+    return true;*/
+        Base::Console().Message("allow drop called");
 }
 
 void ViewProviderDocumentObjectGroup::drop(const std::vector<const App::DocumentObject*> &objList,
@@ -184,58 +135,9 @@ void ViewProviderDocumentObjectGroup::drop(const std::vector<const App::Document
     gui->commitCommand();
 }
 
-void ViewProviderDocumentObjectGroup::hide(void)
-{
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    if (!Visibility.testStatus(App::Property::User1) && this->visible) {
-        App::DocumentObject * group = getObject();
-        if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-            const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
-                (group)->Group.getValues();
-            Gui::Document* doc = Application::Instance->getDocument(group->getDocument());
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view) view->hide();
-            }
-        }
-    }
-
-    ViewProviderDocumentObject::hide();
-    this->visible = false;
-}
-
-void ViewProviderDocumentObjectGroup::show(void)
-{
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    if (!Visibility.testStatus(App::Property::User1) && !this->visible) {
-        App::DocumentObject * group = getObject();
-        if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-            const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
-                (group)->Group.getValues();
-            Gui::Document* doc = Application::Instance->getDocument(group->getDocument());
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view) view->show();
-            }
-        }
-    }
-
-    ViewProviderDocumentObject::show();
-    this->visible = true;
-}
-
 bool ViewProviderDocumentObjectGroup::isShow(void) const
 {
     return Visibility.getValue();
-}
-
-void ViewProviderDocumentObjectGroup::Restore(Base::XMLReader &reader)
-{
-    Visibility.setStatus(App::Property::User1, true); // tmp. set
-    ViewProviderDocumentObject::Restore(reader);
-    Visibility.setStatus(App::Property::User1, false); // unset
 }
 
 /**
