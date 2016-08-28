@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
  *   Copyright (c) Luke Parry             (l.parry@warwick.ac.uk) 2013     *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,7 +48,6 @@ class Face;
 
 namespace TechDraw {
 class DrawHatch;
-struct WalkerEdge;
 }
 
 namespace TechDraw
@@ -59,7 +59,6 @@ class TechDrawExport DrawViewPart : public DrawView
     PROPERTY_HEADER(TechDraw::DrawViewPart);
 
 public:
-    /// Constructor
     DrawViewPart(void);
     virtual ~DrawViewPart();
 
@@ -135,18 +134,10 @@ protected:
     void onChanged(const App::Property* prop);
     void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
     void extractFaces();
-    std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
-    class wireCompare;
 
     bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds = false);
     std::vector<TopoDS_Edge> splitEdge(std::vector<TopoDS_Vertex> splitPoints, TopoDS_Edge e);
     double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
-    bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
-    int findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
-    std::vector<TopoDS_Vertex> makeUniqueVList(std::vector<TopoDS_Edge> edges);
-    std::vector<WalkerEdge>    makeWalkerEdges(std::vector<TopoDS_Edge> edges,
-                                               std::vector<TopoDS_Vertex> verts);
-    TopoDS_Wire makeCleanWire(std::vector<TopoDS_Edge> edges, double tol = 0.10);
 
     //Projection parameter space
     void saveParamSpace(Base::Vector3d direction,

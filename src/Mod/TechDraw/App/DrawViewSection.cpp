@@ -85,7 +85,7 @@ DrawViewSection::DrawViewSection()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
 
-    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0)    ,sgroup,App::Prop_None,"Section Plane normal direction");
+    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0)    ,sgroup,App::Prop_None,"Section Plane normal direction");  //direction of extrusion of cutting prism
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
     ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_None,"Show the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),sgroup,App::Prop_None,"The color to shade the cut surface");
@@ -329,7 +329,7 @@ std::vector<TechDrawGeometry::Face*> DrawViewSection::getFaceGeometry()
     return result;
 }
 
-//! project a single face using HLR
+//! project a single face using HLR - used for section faces
 TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
                                      gp_Pnt faceCenter,
                                      const Base::Vector3d &direction,
@@ -361,7 +361,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     for (i = 1 ; expl.More(); expl.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
         if (edge.IsNull()) {
-            Base::Console().Log("INFO - GO::projectFace - hard edge: %d is NULL\n",i);
+            Base::Console().Log("INFO - DVS::projectFace - hard edge: %d is NULL\n",i);
             continue;
         }
         faceEdges.push_back(edge);
@@ -395,32 +395,41 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
 //        }
 //    }
 
-    std::vector<TopoDS_Vertex> uniqueVert = makeUniqueVList(faceEdges);
-    std::vector<WalkerEdge> walkerEdges = makeWalkerEdges(faceEdges,uniqueVert);
+//    std::vector<TopoDS_Vertex> uniqueVert = makeUniqueVList(faceEdges);
+//    std::vector<WalkerEdge> walkerEdges = makeWalkerEdges(faceEdges,uniqueVert);
 
+//recreate the wires for this single face
     EdgeWalker ew;
-    ew.setSize(uniqueVert.size());
-    ew.loadEdges(walkerEdges);
+    ew.loadEdges(faceEdges);
     ew.perform();
-    facelist result = ew.getResult();
-    result = TechDraw::EdgeWalker::removeDuplicateFaces(result);
+    std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
 
-    facelist::iterator iFace = result.begin();
-    std::vector<TopoDS_Wire> fw;
-    int dbi = 0;
-    for (;iFace != result.end(); iFace++,dbi++) {
-        edgelist::iterator iEdge = (*iFace).begin();
-        std::vector<TopoDS_Edge> fe;
-        for (;iEdge != (*iFace).end(); iEdge++) {
-            fe.push_back(faceEdges.at((*iEdge).idx));
-        }
-        TopoDS_Wire w = makeCleanWire(fe);
-        fw.push_back(w);
-    }
+//    EdgeWalker ew;
+//    ew.setSize(uniqueVert.size());
+//    ew.loadEdges(walkerEdges);
+//    ew.perform();
+//    facelist result = ew.getResult();
+
+//>>>>>>>>.    result = TechDraw::EdgeWalker::removeDuplicateFaces(result);
+
+//    facelist::iterator iFace = result.begin();
+
+//    std::vector<TopoDS_Wire> fw;
+//    int dbi = 0;
+//    for (;iFace != result.end(); iFace++,dbi++) {
+//        edgelist::iterator iEdge = (*iFace).begin();
+//        std::vector<TopoDS_Edge> fe;
+//        for (;iEdge != (*iFace).end(); iEdge++) {
+//            fe.push_back(faceEdges.at((*iEdge).idx));
+//        }
+//        TopoDS_Wire w = makeCleanWire(fe);
+//        fw.push_back(w);
+//    }
 
     TopoDS_Face projectedFace;
+
     if (!fw.empty()) {
-        std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw);
+        std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw, true);
         if (sortedWires.empty()) {
             return projectedFace;
         }
@@ -435,6 +444,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
         }
         projectedFace = mkFace.Face();
     }
+
     return projectedFace;
 }
 
