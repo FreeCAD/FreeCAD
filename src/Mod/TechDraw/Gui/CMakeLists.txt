@@ -143,6 +143,8 @@ SET(TechDrawGuiView_SRCS
     QGISectionLine.h
     QGIDecoration.cpp
     QGIDecoration.h
+    QGICenterLine.cpp
+    QGICenterLine.h
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h

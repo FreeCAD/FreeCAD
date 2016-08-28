@@ -59,6 +59,7 @@
 #include "QGIVertex.h"
 #include "QGICMark.h"
 #include "QGISectionLine.h"
+#include "QGICenterLine.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGIViewPart.h"
@@ -381,6 +382,8 @@ void QGIViewPart::drawViewPart()
         viewPart->getSectionRef() ) {
         drawSectionLine(true);
     }
+    //draw center lines
+    drawCenterLines(true);
 }
 
 QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
@@ -505,6 +508,50 @@ void QGIViewPart::drawSectionLine(bool b)
     }
 }
 
+void QGIViewPart::drawCenterLines(bool b)
+{
+    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
+    if (!viewPart)  {
+        return;
+
+    }
+    if (b) {
+        //Base::Vector3d vertDir(0,1,0);
+        //Base::Vector3d horizDir(1,0,0);
+        bool horiz = viewPart->HorizCenterLine.getValue();
+        bool vert = viewPart->VertCenterLine.getValue();
+
+        //centroid of part is at (0,0)
+        QGICenterLine* centerLine;
+        double sectionSpan;
+        double sectionFudge = 10.0;
+        double xVal, yVal;
+        if (horiz)  {
+            centerLine = new QGICenterLine();
+            addToGroup(centerLine);
+            centerLine->setPos(0.0,0.0);
+            sectionSpan = m_border->rect().width() + sectionFudge;
+            xVal = sectionSpan / 2.0;
+            yVal = 0.0;
+            centerLine->setBounds(-xVal,-yVal,xVal,yVal);
+            //centerLine->setWidth(viewPart->LineWidth.getValue());
+            centerLine->setZValue(ZVALUE::SECTIONLINE);
+            centerLine->draw();
+        }
+        if (vert) {
+            centerLine = new QGICenterLine();
+            addToGroup(centerLine);
+            centerLine->setPos(0.0,0.0);
+            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
+            xVal = 0.0;
+            yVal = sectionSpan / 2.0;
+            centerLine->setBounds(-xVal,-yVal,xVal,yVal);
+            //centerLine->setWidth(viewPart->LineWidth.getValue());
+            centerLine->setZValue(ZVALUE::SECTIONLINE);
+            centerLine->draw();
+        }
+    }
+}
 
 // As called by arc of ellipse case:
 // pathArc(path, geom->major, geom->minor, geom->angle, geom->largeArc, geom->cw,

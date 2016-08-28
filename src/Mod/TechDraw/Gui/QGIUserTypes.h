@@ -33,6 +33,7 @@ QGIPrimPath: 170
 QGICMark: 171
 QGISectionLine: 172
 QGIDecoration: 173
+QGICenterLine: 174
 */
 
 /*
