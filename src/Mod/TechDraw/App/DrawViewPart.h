@@ -74,6 +74,8 @@ public:
     App::PropertyBool   ShowCenters;
     App::PropertyFloat  CenterScale;
     App::PropertyFloatConstraint  Tolerance;
+    App::PropertyBool   HorizCenterLine;
+    App::PropertyBool   VertCenterLine;
 
     App::PropertyBool   ShowSectionLine;
     App::PropertyBool   HorizSectionLine;     //true(horiz)/false(vert)

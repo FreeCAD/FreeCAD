@@ -58,6 +58,7 @@ public:
     void tidy();
     virtual QRectF boundingRect() const override;
     virtual void drawSectionLine(bool b);
+    virtual void drawCenterLines(bool b);
     bool showSection;
 
     virtual void draw() override;

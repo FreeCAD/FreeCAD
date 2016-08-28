@@ -110,6 +110,8 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
     ADD_PROPERTY_TYPE(ShowCenters ,(true),fgroup,App::Prop_None,"Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
+    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),fgroup,App::Prop_None,"Show a horizontal centerline through view");
+    ADD_PROPERTY_TYPE(VertCenterLine ,(false),fgroup,App::Prop_None,"Show a vertical centerline through view");
 
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,lgroup,App::Prop_None,"Show/hide section line if applicable");
     ADD_PROPERTY_TYPE(HorizSectionLine ,(true)    ,lgroup,App::Prop_None,"Section line is horizontal");
@@ -218,7 +220,9 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &ShowSectionLine ||
             prop == &HorizSectionLine  ||
             prop == &ArrowUpSection  ||
-            prop == &SymbolSection  ) {
+            prop == &SymbolSection   ||
+            prop == &HorizCenterLine ||
+            prop == &VertCenterLine) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
