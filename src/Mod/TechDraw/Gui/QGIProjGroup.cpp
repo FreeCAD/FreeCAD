@@ -139,7 +139,7 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
             }
          }
     }
-    return QGIView::itemChange(change, value);
+    return QGIViewCollection::itemChange(change, value);
 }
 
 
@@ -183,7 +183,7 @@ void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f",
                                     getViewObject()->getNameInDocument(), x());
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f",
-                                    getViewObject()->getNameInDocument(), getY());// inverts Y 
+                                    getViewObject()->getNameInDocument(), getY());// inverts Y
             Gui::Command::commitCommand();
             //Gui::Command::updateActive();
         }
@@ -224,4 +224,3 @@ void QGIProjGroup::drawBorder()
 //QGIProjGroup does not have a border!
 //    Base::Console().Message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
-

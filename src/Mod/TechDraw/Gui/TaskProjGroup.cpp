@@ -102,18 +102,11 @@ void TaskProjGroup::viewToggled(bool toggle)
     QString viewName = sender()->objectName();
     int index = viewName.mid(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
-
-    //Gui::Command::openCommand("Toggle orthographic view");    //TODO: Is this for undo?
-
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
         multiView->addProjection( viewNameCStr );
     } else if ( !toggle && multiView->hasProjection( viewNameCStr ) ) {
         multiView->removeProjection( viewNameCStr );
     }
-
-    /// Called to notify the GUI that the scale has changed
-    Gui::Command::commitCommand();
-    Gui::Command::updateActive();
 }
 
 void TaskProjGroup::rotateButtonClicked(void)

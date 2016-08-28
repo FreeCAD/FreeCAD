@@ -58,25 +58,16 @@ QGIViewCollection::QGIViewCollection()
 QVariant QGIViewCollection::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 
-    return QGraphicsItemGroup::itemChange(change, value);
+    return QGIView::itemChange(change, value);
 }
 
 void QGIViewCollection::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    if(scene() && this == scene()->mouseGrabberItem()) {
-        Gui::Command::openCommand("Drag View Collection");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f",
-                                getViewObject()->getNameInDocument(), x());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f",
-                                getViewObject()->getNameInDocument(), getY());
-        Gui::Command::commitCommand();
-        //Gui::Command::updateActive();
-    }
-    QGraphicsItem::mouseReleaseEvent(event);
+    //TODO: should MouseMove logic go here instead of QGIView?
+    QGIView::mouseReleaseEvent(event);
 }
 
 void QGIViewCollection::updateView(bool update)
 {
     return QGIView::updateView(update);
 }
-

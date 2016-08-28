@@ -104,23 +104,20 @@ void DrawViewCollection::onDocumentRestored()
     execute();
 }
 
-/// get called by the container when a Property was changed
 void DrawViewCollection::onChanged(const App::Property* prop)
 {
-    TechDraw::DrawView::onChanged(prop);
-
-    if (prop == &Source ||
-        prop == &Views){
+    if (prop == &Views){
         if (!isRestoring()) {
             std::vector<App::DocumentObject*> parent = getInList();
             for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
                 if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
                     TechDraw::DrawPage *page = static_cast<TechDraw::DrawPage *>(*it);
-                    page->Views.touch();
+                    page->Views.touch();                                        //touches page only, not my_views!
                 }
             }
         }
     }
+    TechDraw::DrawView::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *DrawViewCollection::execute(void)

@@ -72,14 +72,14 @@ short DrawProjGroupItem::mustExecute() const
 
 void DrawProjGroupItem::onChanged(const App::Property *prop)
 {
-    TechDraw::DrawViewPart::onChanged(prop);
-
     //TODO: Should we allow changes to the Type here?  Seems that should be handled through DrawProjGroup
     if (prop == &Type && Type.isTouched()) {
         if (!isRestoring()) {
             execute();
         }
     }
+
+    TechDraw::DrawViewPart::onChanged(prop);
 
 }
 
@@ -89,7 +89,7 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 void DrawProjGroupItem::onDocumentRestored()
 {
-    // Rebuild the view
+    setAutoPos(false);                        //if restoring from file, use X,Y from file, not auto!
     execute();
 }
 

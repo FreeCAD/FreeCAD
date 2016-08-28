@@ -207,7 +207,11 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             execute();
         } else if (prop == &ScaleType ||
             prop == &viewOrientationMatrix ||
-            prop == &Scale ) {
+            prop == &Scale ||
+            prop == &Views) {
+            execute();
+        } else if (prop == &spacingX ||
+            prop == &spacingY) {
             execute();
         }
     }
@@ -229,7 +233,7 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 {
     for( auto it : Views.getValues() ) {
         auto projPtr( dynamic_cast<DrawProjGroupItem *>(it) );
-        if( projPtr && 
+        if( projPtr &&
             strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
             return it;
         }
@@ -473,16 +477,21 @@ bool DrawProjGroup::distributeProjections()
     makeViewBbs(viewPtrs, bboxes);
 
     // Now that things are setup, do the spacing
-    double xSpacing = spacingX.getValue();    //in mm
-    double ySpacing = spacingY.getValue();    //in mm
+    double scale = Scale.getValue();
+    double xSpacing = scale * spacingX.getValue();    //in mm
+    double ySpacing = scale * spacingY.getValue();    //in mm
 
-    if (viewPtrs[0] && viewPtrs[0]->allowAutoPos()) {
+    if (viewPtrs[0] &&
+        viewPtrs[0]->allowAutoPos() &&
+        bboxes[0].IsValid()) {
         double displace = std::max(bboxes[0].LengthX() + bboxes[4].LengthX(),
                                    bboxes[0].LengthY() + bboxes[4].LengthY());
         viewPtrs[0]->X.setValue(displace / -2.0 - xSpacing);
         viewPtrs[0]->Y.setValue(displace / 2.0 + ySpacing);
     }
-    if (viewPtrs[1] && viewPtrs[1]->allowAutoPos()) {
+    if (viewPtrs[1] &&
+        viewPtrs[1]->allowAutoPos() &&
+        bboxes[1].IsValid()) {
         viewPtrs[1]->Y.setValue((bboxes[1].LengthY() + bboxes[4].LengthY()) / 2.0 + ySpacing);
     }
     if (viewPtrs[2] && viewPtrs[2]->allowAutoPos()) {
@@ -491,30 +500,48 @@ bool DrawProjGroup::distributeProjections()
         viewPtrs[2]->X.setValue(displace / 2.0 + xSpacing);
         viewPtrs[2]->Y.setValue(displace / 2.0 + ySpacing);
     }
-    if (viewPtrs[3] && viewPtrs[3]->allowAutoPos()) {
+    if (viewPtrs[3] &&
+        viewPtrs[3]->allowAutoPos() &&
+        bboxes[3].IsValid() &&
+        bboxes[4].IsValid()) {
         viewPtrs[3]->X.setValue((bboxes[3].LengthX() + bboxes[4].LengthX()) / -2.0 - xSpacing);
     }
     if (viewPtrs[4]) {  // TODO: Move this check above, and figure out a sane bounding box based on other existing views
     }
-    if (viewPtrs[5] && viewPtrs[5]->allowAutoPos()) {
+    if (viewPtrs[5] &&
+        viewPtrs[5]->allowAutoPos() &&
+        bboxes[5].IsValid() &&
+        bboxes[4].IsValid()) {
         viewPtrs[5]->X.setValue((bboxes[5].LengthX() + bboxes[4].LengthX()) / 2.0 + xSpacing);
     }
-    if (viewPtrs[6] && viewPtrs[6]->allowAutoPos()) {    //"Rear"
-        if (viewPtrs[5])
+    if (viewPtrs[6] &&
+        viewPtrs[6]->allowAutoPos() &&
+        bboxes[6].IsValid()) {    //"Rear"
+        if (viewPtrs[5] &&
+            bboxes[5].IsValid()) {
             viewPtrs[6]->X.setValue(viewPtrs[5]->X.getValue() + bboxes[5].LengthX()/2.0 + xSpacing + bboxes[6].LengthX() / 2.0 );
-        else
+        }else if (viewPtrs[4] &&
+            bboxes[4].IsValid()) {
             viewPtrs[6]->X.setValue((bboxes[6].LengthX() + bboxes[4].LengthX()) / 2.0 + xSpacing);
+        }
     }
-    if (viewPtrs[7] && viewPtrs[7]->allowAutoPos()) {
+    if (viewPtrs[7] &&
+        viewPtrs[7]->allowAutoPos() &&
+        bboxes[7].IsValid()) {
         double displace = std::max(bboxes[7].LengthX() + bboxes[4].LengthX(),
                                    bboxes[7].LengthY() + bboxes[4].LengthY());
         viewPtrs[7]->X.setValue(displace / -2.0 - xSpacing);
         viewPtrs[7]->Y.setValue(displace / -2.0 - ySpacing);
     }
-    if (viewPtrs[8] && viewPtrs[8]->allowAutoPos()) {
+    if (viewPtrs[8] &&
+        viewPtrs[8]->allowAutoPos() &&
+        bboxes[8].IsValid() &&
+        bboxes[4].IsValid()) {
         viewPtrs[8]->Y.setValue((bboxes[8].LengthY() + bboxes[4].LengthY()) / -2.0 - ySpacing);
     }
-    if (viewPtrs[9] && viewPtrs[9]->allowAutoPos()) {
+    if (viewPtrs[9] &&
+        viewPtrs[9]->allowAutoPos() &&
+        bboxes[9].IsValid()) {
         double displace = std::max(bboxes[9].LengthX() + bboxes[4].LengthX(),
                                    bboxes[9].LengthY() + bboxes[4].LengthY());
         viewPtrs[9]->X.setValue(displace / 2.0 + xSpacing);

@@ -59,7 +59,8 @@ const char* DrawView::ScaleTypeEnums[]= {"Document",
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
 
 DrawView::DrawView(void)
-  : autoPos(true)
+  : autoPos(true),
+    mouseMove(false)
 {
     static const char *group = "Drawing view";
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
@@ -70,9 +71,6 @@ DrawView::DrawView(void)
     ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
 
-    if (isRestoring()) {
-        autoPos = false;
-    }
 }
 
 DrawView::~DrawView()
@@ -119,7 +117,9 @@ void DrawView::onChanged(const App::Property* prop)
             execute();
         } else if (prop == &X ||
                    prop == &Y) {
-            setAutoPos(false);
+            if (isMouseMove()) {
+                setAutoPos(false);         //should only be for manual changes? not programmatic changes?
+            }
             execute();
         } else if (prop == &Rotation) {
             execute();
