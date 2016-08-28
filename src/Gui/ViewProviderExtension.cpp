@@ -61,3 +61,9 @@ void ViewProviderExtension::extensionUpdateData(const App::Property*) {
 
 }
 
+namespace Gui {
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderExtensionPython, Gui::ViewProviderExtension)
+
+// explicit template instantiation
+template class GuiExport ViewProviderExtensionPythonT<ViewProviderExtension>;
+}
