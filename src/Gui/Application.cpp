@@ -1503,9 +1503,13 @@ void Application::initTypes(void)
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();
+    Gui::ViewProviderExtensionPython            ::init();
     Gui::ViewProviderGroupExtension             ::init();
+    Gui::ViewProviderGroupExtensionPython       ::init();
     Gui::ViewProviderGeoFeatureGroupExtension   ::init();
+    Gui::ViewProviderGeoFeatureGroupExtensionPython::init();    
     Gui::ViewProviderOriginGroupExtension       ::init();
+    Gui::ViewProviderOriginGroupExtensionPython ::init();
     Gui::ViewProviderExtern                     ::init();
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();
