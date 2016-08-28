@@ -71,7 +71,8 @@ class ObjectItem;
 
 enum ViewStatus {
     UpdateData = 0,
-    Detach = 1
+    Detach = 1,
+    isRestoring = 2
 };
 
 
@@ -312,6 +313,7 @@ public:
     
     //restoring the object from document: this may itnerest extensions, hence call them
     virtual void Restore(Base::XMLReader& reader);
+    bool isRestoring() {return testStatus(Gui::isRestoring);};
 
 
     /** @name Display mask modes
