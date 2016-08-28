@@ -100,9 +100,9 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    QPointF newPos(0.0,0.0);
     if(change == ItemPositionChange && scene()) {
-        QPointF newPos = value.toPointF();
-
+        newPos = value.toPointF();
         if(locked){
             newPos.setX(pos().x());
             newPos.setY(pos().y());
@@ -163,6 +163,7 @@ void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     if(!locked && isSelected()) {
+        getViewObject()->setMouseMove(true);
         if (!isInnerView()) {
             double tempX = x(),
                    tempY = getY();
@@ -172,6 +173,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             getViewObject()->X.setValue(x());
             getViewObject()->Y.setValue(getYInClip(y()));
         }
+        getViewObject()->setMouseMove(false);
     }
     QGraphicsItem::mouseReleaseEvent(event);
 }
