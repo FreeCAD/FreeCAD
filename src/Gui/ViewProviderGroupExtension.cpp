@@ -140,7 +140,7 @@ void ViewProviderGroupExtension::extensionShow(void) {
    
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!getExtendedViewProvider()->Visibility.testStatus(App::Property::User1) && !this->visible) {
+    if (!getExtendedViewProvider()->isRestoring() && !this->visible) {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
         
         const std::vector<App::DocumentObject*> & links = group->Group.getValues();
@@ -160,7 +160,7 @@ void ViewProviderGroupExtension::extensionHide(void) {
     
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!getExtendedViewProvider()->Visibility.testStatus(App::Property::User1) && this->visible) {
+    if (!getExtendedViewProvider()->isRestoring() && this->visible) {
         
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
         
@@ -195,13 +195,6 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
         }
     }
     return true;
-}
-
-void ViewProviderGroupExtension::extensionRestore(Base::XMLReader& reader) {
-    
-    getExtendedViewProvider()->Visibility.setStatus(App::Property::User1, true); // tmp. set
-    ViewProviderExtension::extensionRestore(reader);
-    getExtendedViewProvider()->Visibility.setStatus(App::Property::User1, false); // unset
 }
 
 
