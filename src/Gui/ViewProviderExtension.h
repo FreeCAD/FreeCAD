@@ -69,8 +69,6 @@ public:
     /// Shows the view provider
     virtual void extensionShow(void) { };
     
-    virtual void extensionRestore(Base::XMLReader& reader) { };
-    
     virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
     virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
     virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
