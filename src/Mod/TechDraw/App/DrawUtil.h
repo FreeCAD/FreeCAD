@@ -24,6 +24,7 @@
 #define _DrawUtil_h_
 
 #include <string>
+#include <TopoDS_Vertex.hxx>
 
 namespace TechDraw
 {
@@ -34,6 +35,7 @@ class TechDrawExport DrawUtil {
         static int getIndexFromName(std::string geomName);
         static std::string getGeomTypeFromName(std::string geomName);
         static std::string makeGeomName(std::string geomType, int index);
+        static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
 };
 
 } //end namespace TechDraw

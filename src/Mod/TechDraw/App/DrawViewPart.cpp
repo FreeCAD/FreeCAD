@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *   Copyright (c) Luke Parry             (l.parry@warwick.ac.uk) 2013     *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -68,6 +69,7 @@
 #include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
+#include "DrawUtil.h"
 #include "DrawViewSection.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
@@ -96,7 +98,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     static const char *fgroup = "Format";
     static const char *lgroup = "SectionLine";
 
-    ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection normal direction");
+    ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection direction. The direction you are looking.");
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
     ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Hidden lines on/off");
     ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Smooth lines on/off");
@@ -104,7 +106,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(Tolerance,(0.05f),group,App::Prop_None,"Internal tolerance");
     Tolerance.setConstraints(&floatRange);
-    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Where to place projection XAxis in display");
+    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Where to place projection's XAxis (rotation)");
 
     ADD_PROPERTY_TYPE(LineWidth,(0.7f),fgroup,App::Prop_None,"The thickness of visible lines");
     ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
@@ -333,77 +335,17 @@ void DrawViewPart::extractFaces()
         faceEdges.insert(std::end(faceEdges), std::begin(edgesToAdd),std::end(edgesToAdd));
     }
 
-    std::vector<TopoDS_Vertex> uniqueVert = makeUniqueVList(faceEdges);
-    std::vector<WalkerEdge> walkerEdges = makeWalkerEdges(faceEdges,uniqueVert);
-
+//find all the wires in the pile of faceEdges
     EdgeWalker ew;
-    ew.setSize(uniqueVert.size());
-    ew.loadEdges(walkerEdges);
+    ew.loadEdges(faceEdges);
     ew.perform();
-    facelist result = ew.getResult();
+    std::vector<TopoDS_Wire> fw = ew.getResultWires();
+    //TODO: we should remove duplicates here in case of islands?
+    //      but for non-mosaic's we should keep 1 copy of the outerWire
+    //      if we remove duplicates after sortstrip, then the outerWire won't be a duplicate
+    //      still ok as long as we draw biggest first?
 
-    facelist::iterator iFace = result.begin();
-    std::vector<TopoDS_Wire> fw;
-    for (;iFace != result.end(); iFace++) {
-        edgelist::iterator iEdge = (*iFace).begin();
-        std::vector<TopoDS_Edge> fe;
-        for (;iEdge != (*iFace).end(); iEdge++) {
-            fe.push_back(faceEdges.at((*iEdge).idx));
-        }
-    TopoDS_Wire w = makeCleanWire(fe);             //make 1 clean wire from its edges
-    fw.push_back(w);
-    }
-
-    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw,false);
-    if (!sortedWires.size()) {
-        Base::Console().Log("INFO - DVP::extractFaces - no sorted Wires!\n");
-        return;                                     // might happen in the middle of changes?
-    }
-
-    //remove the largest wire (OuterWire of graph)
-    Bnd_Box bigBox;
-    if (sortedWires.size() && !sortedWires.front().IsNull()) {
-        BRepBndLib::Add(sortedWires.front(), bigBox);
-        bigBox.SetGap(0.0);
-    }
-    std::vector<std::size_t> toBeChecked;
-    std::vector<TopoDS_Wire>::iterator it = sortedWires.begin() + 1;
-    for (; it != sortedWires.end(); it++) {
-        if (!(*it).IsNull()) {
-            Bnd_Box littleBox;
-            BRepBndLib::Add((*it), littleBox);
-            littleBox.SetGap(0.0);
-            if (bigBox.SquareExtent() > littleBox.SquareExtent()) {
-                break;
-            } else {
-                auto position = std::distance( sortedWires.begin(), it );    //get an index from iterator
-                toBeChecked.push_back(position);
-            }
-        }
-    }
-    //unfortuneately, faces can have same bbox, but not be same size.  need to weed out biggest
-    if (toBeChecked.size() == 0) {
-        //nobody had as big a bbox as first element of sortedWires
-        sortedWires.erase(sortedWires.begin());
-    } else if (toBeChecked.size() > 0) {
-        BRepBuilderAPI_MakeFace mkFace(sortedWires.front());
-        const TopoDS_Face& face = mkFace.Face();
-        GProp_GProps props;
-        BRepGProp::SurfaceProperties(face, props);
-        double bigArea = props.Mass();
-        unsigned int bigIndex = 0;
-        for (unsigned int idx = 1; idx < toBeChecked.size(); idx++) {
-            BRepBuilderAPI_MakeFace mkFace2(sortedWires.at(idx));
-            const TopoDS_Face& face2 = mkFace2.Face();
-            BRepGProp::SurfaceProperties(face2, props);
-            double area = props.Mass();
-            if (area > bigArea) {
-                bigArea = area;
-                bigIndex = idx;
-            }
-        }
-        sortedWires.erase(sortedWires.begin() + bigIndex);
-    }
+    std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,false);   //false==>do not include biggest wires
 
     std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
     for (; itWire != sortedWires.end(); itWire++) {
@@ -414,60 +356,6 @@ void DrawViewPart::extractFaces()
         f->wires.push_back(w);
         geometryObject->addFaceGeom(f);
     }
-}
-
-std::vector<TopoDS_Vertex> DrawViewPart:: makeUniqueVList(std::vector<TopoDS_Edge> edges)
-{
-    std::vector<TopoDS_Vertex> uniqueVert;
-    for(auto& e:edges) {
-        TopoDS_Vertex v1 = TopExp::FirstVertex(e);
-        TopoDS_Vertex v2 = TopExp::LastVertex(e);
-        bool addv1 = true;
-        bool addv2 = true;
-        for (auto v:uniqueVert) {
-            if (isSamePoint(v,v1))
-                addv1 = false;
-            if (isSamePoint(v,v2))
-                addv2 = false;
-        }
-        if (addv1)
-            uniqueVert.push_back(v1);
-        if (addv2)
-            uniqueVert.push_back(v2);
-    }
-    return uniqueVert;
-}
-
-//!make WalkerEdges (unique Vertex index pairs) from edge list
-std::vector<WalkerEdge> DrawViewPart::makeWalkerEdges(std::vector<TopoDS_Edge> edges,
-                                                      std::vector<TopoDS_Vertex> verts)
-{
-    std::vector<WalkerEdge> walkerEdges;
-    for (auto e:edges) {
-        TopoDS_Vertex ev1 = TopExp::FirstVertex(e);
-        TopoDS_Vertex ev2 = TopExp::LastVertex(e);
-        int v1dx = findUniqueVert(ev1, verts);
-        int v2dx = findUniqueVert(ev2, verts);
-        WalkerEdge we;
-        we.v1 = v1dx;
-        we.v2 = v2dx;
-        walkerEdges.push_back(we);
-    }
-    return walkerEdges;
-}
-
-int DrawViewPart::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert)
-{
-    int idx = 0;
-    int result = 0;
-    for(auto& v:uniqueVert) {                    //we're always going to find vx, right?
-        if (isSamePoint(v,vx)) {
-            result = idx;
-            break;
-        }
-        idx++;
-    }                                           //if idx >= uniqueVert.size() TARFU
-    return result;
 }
 
 double DrawViewPart::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
@@ -501,22 +389,11 @@ bool DrawViewPart::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds)
     if (result) {
         TopoDS_Vertex v1 = TopExp::FirstVertex(e);
         TopoDS_Vertex v2 = TopExp::LastVertex(e);
-        if (isSamePoint(v,v1) || isSamePoint(v,v2)) {
+        if (DrawUtil::isSamePoint(v,v1) || DrawUtil::isSamePoint(v,v2)) {
             if (!allowEnds) {
                 result = false;
             }
         }
-    }
-    return result;
-}
-
-bool DrawViewPart::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2)
-{
-    bool result = false;
-    gp_Pnt p1 = BRep_Tool::Pnt(v1);
-    gp_Pnt p2 = BRep_Tool::Pnt(v2);
-    if (p1.IsEqual(p2,Precision::Confusion())) {
-        result = true;
     }
     return result;
 }
@@ -647,73 +524,6 @@ Base::Vector3d DrawViewPart::projectPoint(Base::Vector3d pt) const
     gp_Pnt2d prjPnt;
     projector.Project(gp_Pnt(centeredPoint.x,centeredPoint.y,centeredPoint.z), prjPnt);
     return Base::Vector3d(prjPnt.X(),prjPnt.Y(), 0.0);
-}
-
-
-
-//! make a clean wire with sorted, oriented, connected, etc edges
-TopoDS_Wire DrawViewPart::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol)
-{
-    TopoDS_Wire result;
-    BRepBuilderAPI_MakeWire mkWire;
-    ShapeFix_ShapeTolerance sTol;
-    Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
-
-    for (auto e:edges) {
-        wireData->Add(e);
-    }
-
-    Handle(ShapeFix_Wire) fixer = new ShapeFix_Wire;
-    fixer->Load(wireData);
-    fixer->Perform();
-    fixer->FixReorder();
-    fixer->SetMaxTolerance(tol);
-    fixer->ClosedWireMode() = Standard_True;
-    fixer->FixConnected(Precision::Confusion());
-    fixer->FixClosed(Precision::Confusion());
-
-    for (int i = 1; i <= wireData->NbEdges(); i ++) {
-        TopoDS_Edge edge = fixer->WireData()->Edge(i);
-        sTol.SetTolerance(edge, tol, TopAbs_VERTEX);
-        mkWire.Add(edge);
-    }
-
-    result = mkWire.Wire();
-    return result;
-}
-
-//! return true if w1 bbox is bigger than w2 bbox
-//NOTE: this won't necessarily sort the OuterWire correctly (ex smaller wire, same bbox)
-class DrawViewPart::wireCompare: public std::binary_function<const TopoDS_Wire&,
-                                                            const TopoDS_Wire&, bool>
-{
-public:
-    bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
-    {
-        Bnd_Box box1, box2;
-        if (!w1.IsNull()) {
-            BRepBndLib::Add(w1, box1);
-            box1.SetGap(0.0);
-        }
-
-        if (!w2.IsNull()) {
-            BRepBndLib::Add(w2, box2);
-            box2.SetGap(0.0);
-        }
-
-        return box1.SquareExtent() > box2.SquareExtent();
-    }
-};
-
-//sort wires in order of bbox diagonal.
-std::vector<TopoDS_Wire> DrawViewPart::sortWiresBySize(std::vector<TopoDS_Wire>& w, bool ascend)
-{
-    std::vector<TopoDS_Wire> wires = w;
-    std::sort(wires.begin(), wires.end(), wireCompare());
-    if (ascend) {
-        std::reverse(wires.begin(),wires.end());
-    }
-    return wires;
 }
 
 bool DrawViewPart::hasGeometry(void) const

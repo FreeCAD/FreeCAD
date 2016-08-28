@@ -32,6 +32,11 @@
 # include <QString>
 # include <QStringList>
 # include <QRegExp>
+
+//#include <TopoDS_Vertex.hxx>
+#include <BRep_Tool.hxx>
+#include <gp_Pnt.hxx>
+#include <Precision.hxx>
 #endif
 
 #include <App/Application.h>
@@ -93,3 +98,14 @@ std::string DrawUtil::makeGeomName(std::string geomType, int index)
     return newName.str();
 }
 
+
+bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2)
+{
+    bool result = false;
+    gp_Pnt p1 = BRep_Tool::Pnt(v1);
+    gp_Pnt p2 = BRep_Tool::Pnt(v2);
+    if (p1.IsEqual(p2,Precision::Confusion())) {
+        result = true;
+    }
+    return result;
+}
