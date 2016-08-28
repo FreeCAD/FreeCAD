@@ -90,3 +90,11 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
         ViewProviderGroupExtension::extensionUpdateData ( prop );
     }
 }
+
+
+namespace Gui {
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeoFeatureGroupExtensionPython, Gui::ViewProviderGeoFeatureGroupExtension)
+
+// explicit template instantiation
+template class GuiExport ViewProviderExtensionPythonT<ViewProviderGeoFeatureGroupExtension>;
+}

@@ -204,3 +204,10 @@ void ViewProviderGroupExtension::extensionRestore(Base::XMLReader& reader) {
     getExtendedViewProvider()->Visibility.setStatus(App::Property::User1, false); // unset
 }
 
+
+namespace Gui {
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGroupExtensionPython, Gui::ViewProviderGroupExtension)
+
+// explicit template instantiation
+template class GuiExport ViewProviderExtensionPythonT<ViewProviderGroupExtension>;
+}
