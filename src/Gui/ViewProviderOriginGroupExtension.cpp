@@ -190,3 +190,11 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
 
     vpOrigin->Size.setValue ( size * 1.3 );
 }
+
+
+namespace Gui {
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginGroupExtensionPython, Gui::ViewProviderOriginGroupExtension)
+
+// explicit template instantiation
+template class GuiExport ViewProviderExtensionPythonT<ViewProviderOriginGroupExtension>;
+}
