@@ -612,9 +612,9 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
 
 void ViewProvider::Restore(Base::XMLReader& reader) {
     
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionRestore(reader);
+    setStatus(Gui::isRestoring, true);
+    TransactionalObject::Restore(reader);
+    setStatus(Gui::isRestoring, false);
 }
 
 void ViewProvider::updateData(const App::Property* prop) {

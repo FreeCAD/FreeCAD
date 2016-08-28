@@ -51,7 +51,6 @@ public:
     virtual void extensionShow(void) override;
 
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
-    virtual void extensionRestore(Base::XMLReader& reader);
 
 private:
     bool visible; // helper variable
