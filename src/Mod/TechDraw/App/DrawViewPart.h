@@ -94,14 +94,18 @@ public:
     TechDrawGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
     std::vector<TechDrawGeometry::BaseGeom*> getProjFaceByIndex(int idx) const;  //get edges for face idx in projection
+
     virtual Base::BoundBox3d getBoundingBox() const;
     double getBoxX(void) const;
     double getBoxY(void) const;
     virtual QRectF getRect() const;
     virtual DrawViewSection* getSectionRef() const;                    //is there a ViewSection based on this ViewPart?
-    Base::Vector3d getUDir(void)  {return uDir;}                       //paperspace X
-    Base::Vector3d getVDir(void)  {return vDir;}                       //paperspace Y
-    Base::Vector3d getWDir(void)  {return wDir;}                       //paperspace Z
+    const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
+    const Base::Vector3d& getVDir(void) const {return vDir;}                       //paperspace Y
+    const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
+    const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
+    Base::Vector3d getValidXDir() const;
+    Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
 
     short mustExecute() const;
 
@@ -118,15 +122,6 @@ public:
     //return PyObject as DrawViewPartPy
     virtual PyObject *getPyObject(void);
 
-    void dumpVertexes(const char* text, const TopoDS_Shape& s);
-    void dumpEdge(char* label, int i, TopoDS_Edge e);
-    void dump1Vertex(const char* label, const TopoDS_Vertex& v);
-    void countFaces(const char* label, const TopoDS_Shape& s);
-    void countWires(const char* label, const TopoDS_Shape& s);
-    void countEdges(const char* label, const TopoDS_Shape& s);
-    Base::Vector3d getValidXDir() const;
-    Base::Vector3d projectPoint(Base::Vector3d pt) const;
-
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
@@ -137,11 +132,11 @@ protected:
 
     bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds = false);
     std::vector<TopoDS_Edge> splitEdge(std::vector<TopoDS_Vertex> splitPoints, TopoDS_Edge e);
-    double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
+    double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2) const;   //probably sb static or DrawUtil
 
     //Projection parameter space
-    void saveParamSpace(Base::Vector3d direction,
-                        Base::Vector3d xAxis);
+    void saveParamSpace(const Base::Vector3d& direction,
+                        const Base::Vector3d& xAxis);
     Base::Vector3d uDir;                       //paperspace X
     Base::Vector3d vDir;                       //paperspace Y
     Base::Vector3d wDir;                       //paperspace Z

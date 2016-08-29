@@ -58,6 +58,7 @@
 #include <TopoDS_Face.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 #endif
 
@@ -358,7 +359,7 @@ void DrawViewPart::extractFaces()
     }
 }
 
-double DrawViewPart::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
+double DrawViewPart::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2) const
 {
     Standard_Real minDist = -1;
 
@@ -511,7 +512,7 @@ QRectF DrawViewPart::getRect() const
 }
 
 //used to project pt (ex SectionOrigin) onto paper plane
-Base::Vector3d DrawViewPart::projectPoint(Base::Vector3d pt) const
+Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
 {
     Base::Vector3d centeredPoint = pt - shapeCentroid;
     Base::Vector3d direction = Direction.getValue();
@@ -562,8 +563,8 @@ Base::Vector3d DrawViewPart::getValidXDir() const
     return xDir;
 }
 
-void DrawViewPart::saveParamSpace(Base::Vector3d direction,
-                                   Base::Vector3d xAxis)
+void DrawViewPart::saveParamSpace(const Base::Vector3d& direction,
+                                  const Base::Vector3d& xAxis)
 {
     gp_Ax2 viewAxis;
     viewAxis = gp_Ax2(gp_Pnt(0, 0, 0),
@@ -589,54 +590,6 @@ DrawViewSection* DrawViewPart::getSectionRef(void) const
     return result;
 }
 
-void DrawViewPart::dumpVertexes(const char* text, const TopoDS_Shape& s)
-{
-    Base::Console().Message("DUMP - %s\n",text);
-    TopExp_Explorer expl(s, TopAbs_VERTEX);
-    int i;
-    for (i = 1 ; expl.More(); expl.Next(),i++) {
-        const TopoDS_Vertex& v = TopoDS::Vertex(expl.Current());
-        gp_Pnt pnt = BRep_Tool::Pnt(v);
-        Base::Console().Message("v%d: (%.3f,%.3f,%.3f)\n",i,pnt.X(),pnt.Y(),pnt.Z());
-    }
-}
-
-void DrawViewPart::countFaces(const char* text, const TopoDS_Shape& s)
-{
-    TopExp_Explorer expl(s, TopAbs_FACE);
-    int i;
-    for (i = 0 ; expl.More(); expl.Next(),i++) {
-    }
-    Base::Console().Message("COUNT - %s has %d Faces\n",text,i);
-}
-
-void DrawViewPart::countWires(const char* text, const TopoDS_Shape& s)
-{
-     TopExp_Explorer expl(s, TopAbs_WIRE);
-     int i = 0;
-     for (; expl.More(); expl.Next()) {
-         i++;
-     }
-     Base::Console().Message("COUNT - %s has %d wires\n",text,i);
-}
-
-void DrawViewPart::countEdges(const char* text, const TopoDS_Shape& s)
-{
-     TopExp_Explorer expl(s, TopAbs_EDGE);
-     int i = 0;
-     for (; expl.More(); expl.Next()) {
-         i++;
-     }
-     Base::Console().Message("COUNT - %s has %d edges\n",text,i);
-}
-
-void DrawViewPart::dump1Vertex(const char* text, const TopoDS_Vertex& v)
-{
-    Base::Console().Message("DUMP - DVP::dump1Vertex - %s\n",text);
-    gp_Pnt pnt = BRep_Tool::Pnt(v);
-    Base::Console().Message("%s: (%.3f,%.3f,%.3f)\n",text,pnt.X(),pnt.Y(),pnt.Z());
-}
-
 PyObject *DrawViewPart::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
@@ -644,21 +597,6 @@ PyObject *DrawViewPart::getPyObject(void)
         PythonObject = Py::Object(new DrawViewPartPy(this),true);
     }
     return Py::new_reference_to(PythonObject);
-}
-
-void DrawViewPart::dumpEdge(char* label, int i, TopoDS_Edge e)
-{
-    BRepAdaptor_Curve adapt(e);
-    double start = BRepLProp_CurveTool::FirstParameter(adapt);
-    double end = BRepLProp_CurveTool::LastParameter(adapt);
-    BRepLProp_CLProps propStart(adapt,start,0,Precision::Confusion());
-    const gp_Pnt& vStart = propStart.Value();
-    BRepLProp_CLProps propEnd(adapt,end,0,Precision::Confusion());
-    const gp_Pnt& vEnd = propEnd.Value();
-    //Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
-    //                        vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
-    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f)\n",label,i,
-                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z());
 }
 
 

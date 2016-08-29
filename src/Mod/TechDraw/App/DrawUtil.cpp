@@ -33,10 +33,18 @@
 # include <QStringList>
 # include <QRegExp>
 
-//#include <TopoDS_Vertex.hxx>
+
 #include <BRep_Tool.hxx>
 #include <gp_Pnt.hxx>
 #include <Precision.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <TopExp_Explorer.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+
 #endif
 
 #include <App/Application.h>
@@ -109,3 +117,65 @@ bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2)
     }
     return result;
 }
+
+//============================
+// various debugging routines.
+void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)
+{
+    Base::Console().Message("DUMP - %s\n",text);
+    TopExp_Explorer expl(s, TopAbs_VERTEX);
+    int i;
+    for (i = 1 ; expl.More(); expl.Next(),i++) {
+        const TopoDS_Vertex& v = TopoDS::Vertex(expl.Current());
+        gp_Pnt pnt = BRep_Tool::Pnt(v);
+        Base::Console().Message("v%d: (%.3f,%.3f,%.3f)\n",i,pnt.X(),pnt.Y(),pnt.Z());
+    }
+}
+
+void DrawUtil::countFaces(const char* text, const TopoDS_Shape& s)
+{
+    TopTools_IndexedMapOfShape mapOfFaces;
+    TopExp::MapShapes(s, TopAbs_FACE, mapOfFaces);
+    int num = mapOfFaces.Extent();
+    Base::Console().Message("COUNT - %s has %d Faces\n",text,num);
+}
+
+//count # of unique Wires in shape.
+void DrawUtil::countWires(const char* text, const TopoDS_Shape& s)
+{
+    TopTools_IndexedMapOfShape mapOfWires;
+    TopExp::MapShapes(s, TopAbs_WIRE, mapOfWires);
+    int num = mapOfWires.Extent();
+    Base::Console().Message("COUNT - %s has %d wires\n",text,num);
+}
+
+void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
+{
+    TopTools_IndexedMapOfShape mapOfEdges;
+    TopExp::MapShapes(s, TopAbs_EDGE, mapOfEdges);
+    int num = mapOfEdges.Extent();
+    Base::Console().Message("COUNT - %s has %d edges\n",text,num);
+}
+
+void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
+{
+    Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
+    gp_Pnt pnt = BRep_Tool::Pnt(v);
+    Base::Console().Message("%s: (%.3f,%.3f,%.3f)\n",text,pnt.X(),pnt.Y(),pnt.Z());
+}
+
+void DrawUtil::dumpEdge(char* label, int i, TopoDS_Edge e)
+{
+    BRepAdaptor_Curve adapt(e);
+    double start = BRepLProp_CurveTool::FirstParameter(adapt);
+    double end = BRepLProp_CurveTool::LastParameter(adapt);
+    BRepLProp_CLProps propStart(adapt,start,0,Precision::Confusion());
+    const gp_Pnt& vStart = propStart.Value();
+    BRepLProp_CLProps propEnd(adapt,end,0,Precision::Confusion());
+    const gp_Pnt& vEnd = propEnd.Value();
+    //Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
+    //                        vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
+    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f)\n",label,i,
+                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z());
+}
+//==================================
