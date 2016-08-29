@@ -536,7 +536,7 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     ShapeExtend_Explorer xp;
     Handle_TopTools_HSequenceOfShape seq = xp.SeqFromCompound(shape.getShape(), /*recursive=*/true);
     if(seq->Value(1).ShapeType() == TopAbs_EDGE || seq->Value(1).ShapeType() == TopAbs_WIRE){
-        this->Shape.setValue(shape.makeOffsetWire(offset, join, fill, mode == 0));
+        this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0));
     } else {
         if (fabs(offset) > 2*tol)
             this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));

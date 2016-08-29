@@ -2064,10 +2064,10 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
     return outputShape;
 }
 
-TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill, bool allowOpenResult) const
+TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, bool allowOpenResult) const
 {
     if (_Shape.IsNull())
-        throw Base::ValueError("makeOffsetWire: input shape is null!");
+        throw Base::ValueError("makeOffset2D: input shape is null!");
 
     switch (_Shape.ShapeType()) {
     case TopAbs_COMPOUND:{
@@ -2077,7 +2077,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
 
         TopoDS_Iterator it(_Shape);
         for( ; it.More() ; it.Next()){
-            builder.Add(comp, TopoShape(it.Value()).makeOffsetWire(offset, joinType, fill, allowOpenResult));
+            builder.Add(comp, TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult));
         }
         return comp;
     }break;
@@ -2114,13 +2114,13 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
         }
 
         if(offsetWire.IsNull())
-            throw Base::Exception("makeOffsetWire: result of offseting is null!");
+            throw Base::Exception("makeOffset2D: result of offseting is null!");
 
         if (!fill)
             return offsetWire;
 
         if (fabs(offset) < Precision::Confusion())
-            throw Base::ValueError("makeOffsetWire: offset distance is zero. Can't fill offset.");
+            throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
 
         //Fill offset...
         BRepBuilderAPI_FindPlane planefinder(sourceWire);
@@ -2147,7 +2147,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
             }
 
             if (mkLoft.Shape().IsNull())
-                throw Base::ValueError("makeOffsetWire: filling offset: making Loft returned null shape.");
+                throw Base::ValueError("makeOffset2D: filling offset: making Loft returned null shape.");
             return mkLoft.Shape();
         }
         //Planar wire. Make planar face...
@@ -2162,7 +2162,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
             wires.push_back(TopoDS::Wire(offsetWire));
         }
         if(wires.size() == 0)
-            throw Base::Exception("makeOffsetWire: offset result has no wires.");
+            throw Base::Exception("makeOffset2D: offset result has no wires.");
 
         //For the face, we also need the original wire. And we need to tell apart the outer wire for the face.
         TopoDS_Wire* largestWire = nullptr;
@@ -2201,7 +2201,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
                 }
             }
             if(openOffsetWire.IsNull())
-                throw Base::Exception("makeOffsetWire: filling offset: expected to find an open wire in offset result, but there isn't one.");
+                throw Base::Exception("makeOffset2D: filling offset: expected to find an open wire in offset result, but there isn't one.");
 
             //join up the (open) source wire and open offset wire. This will be
             //the outer wire for the face. The remaining wires are holes.
@@ -2247,7 +2247,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
             } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
                 //orientation is as expected, nothing to do
             } else {
-                throw Base::Exception("makeOffsetWire: fill offset: failed to establish open vertex relationship.");
+                throw Base::Exception("makeOffset2D: fill offset: failed to establish open vertex relationship.");
             }
 
             //now directions of source wire and offset wire are aligned. Finally. make new wire!
@@ -2281,7 +2281,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
         }
         mkFace.Build();
         if (mkFace.Shape().IsNull())
-            throw Base::Exception("makeOffsetWire: making face failed (null shape returned).");
+            throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
         return mkFace.Shape();
 
     }break;
@@ -2309,7 +2309,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
 
     }break;
     default:
-        throw Base::TypeError("makeOffsetWire: input shape is not an edge, wire or face or compound of those.");
+        throw Base::TypeError("makeOffset2D: input shape is not an edge, wire or face or compound of those.");
     break;
     }
 
