@@ -24,7 +24,12 @@
 #define _DrawUtil_h_
 
 #include <string>
+#include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
 
 namespace TechDraw
 {
@@ -36,6 +41,14 @@ class TechDrawExport DrawUtil {
         static std::string getGeomTypeFromName(std::string geomName);
         static std::string makeGeomName(std::string geomType, int index);
         static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
+
+        //debugging routines
+        static void dumpVertexes(const char* text, const TopoDS_Shape& s);
+        static void dumpEdge(char* label, int i, TopoDS_Edge e);
+        static void dump1Vertex(const char* label, const TopoDS_Vertex& v);
+        static void countFaces(const char* label, const TopoDS_Shape& s);
+        static void countWires(const char* label, const TopoDS_Shape& s);
+        static void countEdges(const char* label, const TopoDS_Shape& s);
 };
 
 } //end namespace TechDraw
