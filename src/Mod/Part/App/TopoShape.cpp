@@ -2119,7 +2119,7 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
         if (!fill)
             return offsetWire;
 
-        if (offset < Precision::Confusion())
+        if (fabs(offset) < Precision::Confusion())
             throw Base::ValueError("makeOffsetWire: offset distance is zero. Can't fill offset.");
 
         //Fill offset...
@@ -2228,57 +2228,48 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
             //assemble new wire
 
             // hack. It seems that direction of offset wire and closed offset
-            // wires is always consistent for good facemaking, but doeas not
+            // wires is always consistent for good facemaking, but does not
             // care of the direction of original wire. So, we will reverse
             // original wire if necessary.
 
             //we want the connection order to be
             //v1 -> openOffsetWire -> v2 -> (new edge) -> v4 -> sourceWire(rev) -> v3 -> (new edge) -> v1
             //let's check if it's the case. If not, we reverse source wire and swap its endpoints.
-            /*  the following doesn't work - .Modified(v3) is an empty list =(
-            TopTools_ListOfShape fromv3 = mkOffset.Modified(v3);
-            bool ok = false;
-            for (TopTools_ListIteratorOfListOfShape it(fromv3)   ;   it.More()   ;   it.Next()){
-                if (it.Value().IsEqual(v2)){
-                    //order is already correct
-                    ok = true;
-                    break;
-                } else if (it.Value().IsEqual(v3)){
-                    //order is incorrect (directions of sourceWire and offsetWire are against each other)
-                    sourceWire.Reverse();
-                    std::swap(v3, v4);
-                    ok = true;
-                    break;
-                }
-            }*/
-            if (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v3)).Magnitude() - offset) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v3)){
+
+            // I tried to use mkOffset.Generated(v3) for the purpose, but
+            //returned was an empty list. So I find vertex correspondence by
+            //testing if the distance between them is equal to offset.  --DeepSOIC
+            if (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v3)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v3)){
                 sourceWire.Reverse();
                 std::swap(v3, v4);
-            } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - offset) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
-
+                v3.Reverse();
+                v4.Reverse();
+            } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
+                //orientation is as expected, nothing to do
             } else {
                 throw Base::Exception("makeOffsetWire: fill offset: failed to establish open vertex relationship.");
             }
 
             //now directions of source wire and offset wire are aligned. Finally. make new wire!
             BRepBuilderAPI_MakeWire mkWire;
-            mkWire.Add(openOffsetWire);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(v2,v4).Edge());
-            TopoDS_Iterator it(sourceWire, false);
-            //fancy way of adding reversed source wire - just reversing it and adding as whole doesn't work =((((((((((
-            TopTools_ListOfShape l;
-            for(; it.More(); it.Next()){
-                if(sourceWire.Orientation() == TopAbs_FORWARD)
-                    l.Prepend(it.Value());//should need to reverse, but it works only if not. =? --DeepSOIC
-                else
-                    l.Append(it.Value());
+            //add openOffsetWire
+            BRepTools_WireExplorer it;
+            for(it.Init(openOffsetWire); it.More(); it.Next()){
+                mkWire.Add(it.Current());
             }
-            mkWire.Add(l);
+            //add first joining edge
+            mkWire.Add(BRepBuilderAPI_MakeEdge(v2,v4).Edge());
+            //add original wire, in reverse order
+            sourceWire.Reverse();
+            for(it.Init(TopoDS::Wire(sourceWire)); it.More(); it.Next()){
+                mkWire.Add(it.Current());
+            }
+            //add final joining edge
             mkWire.Add(BRepBuilderAPI_MakeEdge(v3,v1).Edge());
 
             mkWire.Build();
 
-            wires.push_front(TopoDS::Wire(mkWire.Wire().Reversed()));
+            wires.push_front(TopoDS::Wire(mkWire.Wire().Reversed())); //not sure, why need reversing here. Found by trial-and-error
             largestWire = &wires.front();
         }
 
@@ -2295,12 +2286,30 @@ TopoDS_Shape TopoShape::makeOffsetWire(double offset, short joinType, bool fill,
 
     }break;
     case TopAbs_FACE:{
-        //TopoDS_Face &sourceFace = TopoDS_Face(_Shape);
-        //BRepOffsetAPI_MakeOffset nkOffset()
+        TopoDS_Face sourceFace = TopoDS::Face(_Shape);
+        BRepOffsetAPI_MakeOffset mkOffset(sourceFace, GeomAbs_JoinType(joinType), allowOpenResult);
+        try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+            Base::SignalException se;
+#endif
+            mkOffset.Perform(offset);
+        }
+        catch (Standard_Failure &){
+            throw;
+        }
+        catch (...) {
+            throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
+        }
+
+        //how am I supposed to fill this offset? make a new, larger (smaller if offset < 0) face, or make a boundary?
+        // -> do not support filling, for now.
+        if (fill)
+            throw Base::ValueError("Filling the offset is not supported for wire-offsetting of faces, yet.");
+        return mkOffset.Shape();
 
     }break;
     default:
-        throw Base::TypeError("makeOffsetWire: input shape is not an edge or wire.");
+        throw Base::TypeError("makeOffsetWire: input shape is not an edge, wire or face or compound of those.");
     break;
     }
 
