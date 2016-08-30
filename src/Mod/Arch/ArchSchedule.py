@@ -89,6 +89,9 @@ class _ArchSchedule:
         obj.Result.set("C1","Unit")
         obj.Result.setStyle('A1:C1', 'bold', 'add')
         for i in range(len(obj.Description)):
+            if not obj.Description[i]:
+                # blank line
+                continue
             # write description
             obj.Result.set("A"+str(i+2),obj.Description[i])
             if verbose:
