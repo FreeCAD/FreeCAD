@@ -30,7 +30,7 @@
 namespace Part
 {
 
-class Offset : public Part::Feature
+class PartExport Offset : public Part::Feature
 {
     PROPERTY_HEADER(Part::Offset);
 
@@ -61,7 +61,7 @@ private:
     static const char* JoinEnums[];
 };
 
-class Offset2D : public Offset
+class PartExport Offset2D : public Offset
 {
     PROPERTY_HEADER(Part::Offset2D);
 public:
