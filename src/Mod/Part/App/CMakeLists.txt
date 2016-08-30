@@ -124,6 +124,8 @@ SET(Features_SRCS
     FeatureMirroring.h
     FeatureRevolution.cpp
     FeatureRevolution.h
+    FeatureOffset.cpp
+    FeatureOffset.h
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
