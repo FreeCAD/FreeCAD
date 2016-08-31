@@ -56,6 +56,14 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.undo()
     self.Doc.undo()
 
+  def testAbortTransaction(self):
+    self.Doc.openTransaction("Add")
+    obj=self.Doc.addObject("App::FeatureTest","Label")
+    self.Doc.abortTransaction()
+    TempPath = tempfile.gettempdir()
+    SaveName = TempPath + os.sep + "SaveRestoreTests.FCStd"
+    self.Doc.saveAs(SaveName)
+
   def testRemoval(self):
     # Cannot write a real test case for that but when debugging the
     # C-code there shouldn't be a memory leak (see rev. 1814)
