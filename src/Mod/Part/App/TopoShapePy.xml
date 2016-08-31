@@ -330,9 +330,9 @@ Returns: result of offsetting.</UserDocu>
     </Methode>
     <Methode Name="makeOffset2D" Const="true"  Keyword="true">
       <Documentation>
-      <UserDocu>makeOffset2D(offset, join = 0, fill = False, openResult = false): makes an
-offset shape (2d offsetting). The function supports keyword arguments. Input
-shape (self) can be edge, wire, face, or a compound of those.
+      <UserDocu>makeOffset2D(offset, join = 0, fill = False, openResult = false, intersection =
+false): makes an offset shape (2d offsetting). The function supports keyword
+arguments. Input shape (self) can be edge, wire, face, or a compound of those.
 
 * offset: distance to expand the shape by. Negative value will shrink the
 shape.
@@ -347,7 +347,14 @@ false, the output is a wire.
 is made. If True, a closed wire is made from a double-sided offset, with rounds
 around open vertices.
 
-Returns: result of offsetting.</UserDocu>
+* intersection: affects the way compounds are processed. If False, all children
+are offset independently. If True, and children are edges/wires, the children
+are offset in a collective manner. If compounding is nested, collectiveness
+does not spread across compounds (only direct children of a compound are taken
+collectively).
+
+Returns: result of offsetting (wire or face or compound of those). Compounding
+structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="reverse">
