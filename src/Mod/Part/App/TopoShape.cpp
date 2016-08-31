@@ -2074,17 +2074,17 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
     switch (_Shape.ShapeType()) {
     case TopAbs_COMPOUND:{
         BRep_Builder builder;
-        TopoDS_Compound comp;
+        TopoDS_Compound comp;//to be returned
         builder.MakeCompound(comp);
 
         if (!intersection){
-            //simply ecursively process the children, independently
+            //simply recursively process the children, independently
             TopoDS_Iterator it(_Shape);
             for( ; it.More() ; it.Next()){
                 builder.Add(comp, TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
             }
         } else {
-            //collect all wires from this compound. Process other shapes independently.
+            //collect all wires from this compound for collective offset. Process other shapes independently.
             std::list<TopoDS_Wire> wiresToOffset;
             TopoDS_Iterator it(_Shape);
             for( ; it.More() ; it.Next()){
@@ -2315,6 +2315,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         }
 
         //make the face
+        //TODO: replace all this reverseness alchemy with a common direction-tolerant face-with-holes-making code
         BRepBuilderAPI_MakeFace mkFace(*largestWire);
         for(TopoDS_Wire &w : wires){
             if (&w != largestWire)
@@ -2328,6 +2329,14 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
     }break;
     case TopAbs_FACE:{
         throw Base::TypeError("2d offsetting is not yet suported on faces, yet.");
+
+        //the following code works, but returns a wire. I'd rather want a face,
+        //but that is complicated, and best addressed by writing a powerful
+        //face-with-holes-maker mentioned a few lines above. Exposing it like
+        //this will cause breaking changes later, so I decided to disable it
+        //altogether, until a proper implementation is done.
+        // --DeepSOIC
+
         TopoDS_Face sourceFace = TopoDS::Face(_Shape);
         BRepOffsetAPI_MakeOffset mkOffset(sourceFace, GeomAbs_JoinType(joinType), allowOpenResult);
         try {
@@ -2347,8 +2356,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             throw Base::Exception("makeOffset2D: result shape is null!");
 
         if (fill)
-            throw Base::ValueError("Filling the offset is not supported for wire-offsetting of faces, yet.");
-        //TODO: make face!
+            throw Base::ValueError("Filling the offset is not supported for 2d-offsetting of faces, yet.");
         return mkOffset.Shape();
 
     }break;
