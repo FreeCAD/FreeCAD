@@ -494,6 +494,10 @@ Offset::Offset()
     ADD_PROPERTY_TYPE(Fill,(false),"Offset",App::Prop_None,"Fill offset");
 }
 
+Offset::~Offset()
+{
+}
+
 short Offset::mustExecute() const
 {
     if (Source.isTouched())

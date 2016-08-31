@@ -121,6 +121,7 @@ class Offset : public Part::Feature
 
 public:
     Offset();
+    ~Offset();
 
     App::PropertyLink  Source;
     App::PropertyFloat Value;

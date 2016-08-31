@@ -2135,6 +2135,10 @@ void Document::_remObject(DocumentObject* pcObject)
             d->activeUndoTransaction->addObjectNew(pcObject);
         }
     }
+    else {
+        // for a rollback delete the object
+        signalTransactionRemove(*pcObject, 0);
+    }
 
     // remove from map
     d->objectMap.erase(pos);
@@ -2144,6 +2148,11 @@ void Document::_remObject(DocumentObject* pcObject)
             d->objectArray.erase(it);
             break;
         }
+    }
+
+    // for a rollback delete the object
+    if (d->rollback) {
+        delete pcObject;
     }
 }
 
