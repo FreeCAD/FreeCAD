@@ -86,27 +86,12 @@ void QGISectionLine::makeLine()
 void QGISectionLine::makeArrows()
 {
     double arrowRotation = 0.0;
-//    m_arrowDir.normalize();
-//    double angle = atan2f(m_arrowDir.y,m_arrowDir.x);
-//    if (angle < 0.0) {
-//        angle = 2 * M_PI + angle;
-//    }
-
-    Base::Vector3d up(0,1,0);
-    Base::Vector3d down(0,-1,0);
-    Base::Vector3d right(1,0,0);
-    Base::Vector3d left(-1,0,0);
-    if (m_arrowDir == up) {
-        arrowRotation = 270.0;
-    } else if (m_arrowDir == down) {
-        arrowRotation = 90.0;
-    } else if (m_arrowDir == right) {
-        arrowRotation = 0.0;
-    } else if (m_arrowDir == left) {
-        arrowRotation = 180.0;
-    } else {
-      Base::Console().Message("Please make feature request for oblique section lines\n");
+    m_arrowDir.Normalize();
+    double angle = atan2f(m_arrowDir.y,m_arrowDir.x);
+    if (angle < 0.0) {
+        angle = 2 * M_PI + angle;
     }
+    arrowRotation = 360.0 - angle * (180.0/M_PI);   //convert to Qt rotation (clockwise degrees)
 
     QPointF extLineStart,extLineEnd;
     QPointF offset(m_arrowDir.x,-m_arrowDir.y);              //remember Y dir is flipped
@@ -117,7 +102,7 @@ void QGISectionLine::makeArrows()
     m_arrow1->setPos(extLineStart);
     //m_arrow1->flip(true);
     m_arrow1->draw();
-    m_arrow1->setRotation(arrowRotation);
+    m_arrow1->setRotation(arrowRotation);                   //rotation = 0  ==>  ->  horizontal, pointing right
     m_arrow2->setPos(extLineEnd);
     m_arrow2->draw();
     m_arrow2->setRotation(arrowRotation);

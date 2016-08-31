@@ -92,6 +92,7 @@ void QGIViewSection::updateView(bool update)
     if( viewPart == nullptr ) {
         return;
     }
+    Base::Console().Message("TRACE - QGIVS::updateView(%d) - %s\n",update,getViewObject()->getNameInDocument());
 
     if(update ||
        viewPart->SectionNormal.isTouched() ||

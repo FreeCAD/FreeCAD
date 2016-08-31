@@ -243,6 +243,7 @@ void QGIViewPart::updateView(bool update)
     if( viewPart == nullptr ) {
         return;
     }
+    //Base::Console().Message("TRACE - QGIVP::updateView(%d) - %s\n",update,getViewObject()->getNameInDocument());
 
     QGIView::updateView(update);
 
@@ -283,6 +284,8 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
+    //Base::Console().Message("TRACE - QGIVP::drawViewPart\n");
+
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
         return;
@@ -450,6 +453,8 @@ void QGIViewPart::removeDecorations()
 
 void QGIViewPart::drawSectionLine(bool b)
 {
+    //Base::Console().Message("TRACE - QGIVP::drawSectionLine);
+
     TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
     TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
     if (!viewPart ||
@@ -516,12 +521,9 @@ void QGIViewPart::drawCenterLines(bool b)
 
     }
     if (b) {
-        //Base::Vector3d vertDir(0,1,0);
-        //Base::Vector3d horizDir(1,0,0);
         bool horiz = viewPart->HorizCenterLine.getValue();
         bool vert = viewPart->VertCenterLine.getValue();
 
-        //centroid of part is at (0,0)
         QGICenterLine* centerLine;
         double sectionSpan;
         double sectionFudge = 10.0;

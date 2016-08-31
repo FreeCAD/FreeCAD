@@ -58,6 +58,7 @@ public:
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onDocumentRestored();
+    virtual short mustExecute() const;
     //@}
 
     bool isInClip();

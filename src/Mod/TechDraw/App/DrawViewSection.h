@@ -61,7 +61,7 @@ public:
     App::PropertyBool   ShowCutSurface;
     App::PropertyColor  CutSurfaceColor;
 
-    short mustExecute() const;
+    virtual short mustExecute() const;
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
     /** @name methods overide Feature */
     //@{

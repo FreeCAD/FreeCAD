@@ -92,14 +92,14 @@
         <item row="1" column="2">
          <widget class="QCheckBox" name="cbReverse">
           <property name="text">
-           <string>Down/Left</string>
+           <string>Up/Right</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QCheckBox" name="cbNormal">
           <property name="text">
-           <string>Up/Right</string>
+           <string>Down/Left</string>
           </property>
          </widget>
         </item>

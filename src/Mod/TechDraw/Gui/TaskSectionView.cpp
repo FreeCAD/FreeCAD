@@ -85,7 +85,7 @@ void TaskSectionView::saveInitialValues()
 {
     saveSym              = m_base->SymbolSection.getValue();
     saveHorizSectionLine = m_base->HorizSectionLine.getValue();     //true(horiz)/false(vert)
-    saveArrowUpSection   = m_base->ArrowUpSection.getValue();      //true(up/right)/false(down/left)
+    saveArrowUpSection   = m_base->ArrowUpSection.getValue();       //true(up/right)/false(down/left)
     saveSectionOrigin    = m_section->SectionOrigin.getValue();
     saveSectionXDir      = m_section->XAxisDirection.getValue();
     saveSectionDirection = m_section->Direction.getValue();
@@ -93,6 +93,7 @@ void TaskSectionView::saveInitialValues()
     saveLabel            = m_section->Label.getValue();
 }
 
+//set the screen back to original values
 void TaskSectionView::resetValues()
 {
     ui->leSymbol->setText(QString::fromUtf8(saveSym.data(), saveSym.size()));
@@ -101,16 +102,16 @@ void TaskSectionView::resetValues()
     ui->cbVert->setChecked(false);
     ui->cbNormal->setChecked(false);
     ui->cbReverse->setChecked(false);
-    if (saveHorizSectionLine && saveArrowUpSection) {
+    if (saveHorizSectionLine && !saveArrowUpSection) {
         ui->cbHoriz->setChecked(true);
         ui->cbNormal->setChecked(true);
-    } else if (saveHorizSectionLine && !saveArrowUpSection) {
+    } else if (saveHorizSectionLine && saveArrowUpSection) {
         ui->cbHoriz->setChecked(true);
         ui->cbReverse->setChecked(true);
-    } else if (!saveHorizSectionLine && saveArrowUpSection) {
+    } else if (!saveHorizSectionLine && !saveArrowUpSection) {
         ui->cbVert->setChecked(true);
         ui->cbNormal->setChecked(true);
-    } else if (!saveHorizSectionLine && !saveArrowUpSection) {
+    } else if (!saveHorizSectionLine && saveArrowUpSection) {
         ui->cbVert->setChecked(true);
         ui->cbReverse->setChecked(true);
     } else {
@@ -133,57 +134,75 @@ void TaskSectionView::resetValues()
     m_section->Label.setValue(saveLabel.c_str());
 }
 
+//calculate good starting points from base view and push buttons
 void TaskSectionView::calcValues()
 {
-    if (ui->cbHoriz->isChecked()  &&
-        ui->cbNormal->isChecked()) {
-        sectionNormal = m_base->getVDir();
-    } else if (ui->cbHoriz->isChecked() &&
-               ui->cbReverse->isChecked()) {
-        sectionNormal = -1.0 * m_base->getVDir();
-    } else if (ui->cbVert->isChecked() &&
-               ui->cbNormal->isChecked()) {
-        sectionNormal = m_base->getUDir();
-    } else if (ui->cbVert->isChecked() &&
-               ui->cbReverse->isChecked() ) {
-        sectionNormal = -1.0 * m_base->getUDir();
-    } else {
-        Base::Console().Error("%s Symbol Line Direction is invalid\n", m_base->getNameInDocument());
-    }
+    arrowDir = Base::Vector3d(0,-1,0);
+    //section arrows should point to "remaining body" of part after sectioning.
+    //so the arrow direction is (-1) * sectionPlaneNormal/sectionViewDirection
+     if (ui->cbHoriz->isChecked()  &&
+         ui->cbNormal->isChecked()) {
+        arrowDir = -1.0 * m_base->getVDir();
+     } else if (ui->cbHoriz->isChecked() &&
+                ui->cbReverse->isChecked()) {
+        arrowDir = m_base->getVDir();
+     } else if (ui->cbVert->isChecked() &&
+                ui->cbNormal->isChecked()) {
+        arrowDir = -1.0 * m_base->getUDir();
+     } else if (ui->cbVert->isChecked() &&
+                ui->cbReverse->isChecked() ) {
+        arrowDir = m_base->getUDir();
+     } else {
+         Base::Console().Error("%s Symbol Line Direction is invalid\n", m_base->getNameInDocument());
+     }
+
+    sectionNormal = -1.0 * arrowDir;                  //point of observer (ViewDirection) is away from direction of arrows
+    ui->leNormal->setText(formatVector(sectionNormal));
 
     sectionProjDir = sectionNormal;                              //typical use-case is view perp to face
     ui->leProjDir->setText(formatVector(sectionProjDir));
-    ui->leNormal->setText(formatVector(sectionNormal));
 
-    Base::Vector3d xDirIn(ui->sbXX->value().getValue(),
-                            ui->sbXY->value().getValue(),
-                            ui->sbXZ->value().getValue());
-    Base::Vector3d xDirValid = m_section->getValidXDir();
-    if (xDirIn != xDirValid) {
-        ui->sbXX->setValue(xDirValid.x);
-        ui->sbXY->setValue(xDirValid.y);
-        ui->sbXZ->setValue(xDirValid.z);
-    }
-    //TODO: sectionOrigin check? already in DVS.
+    sectionOrigin = m_base->getCentroid();                       //middle of the object
+    ui->sbOrgX->setValue(sectionOrigin.x);
+    ui->sbOrgY->setValue(sectionOrigin.y);
+    ui->sbOrgZ->setValue(sectionOrigin.z);
+
+    sectionXDir = m_base->Direction.getValue();                 //rotate 90*
+    ui->sbXX->setValue(sectionXDir.x);
+    ui->sbXY->setValue(sectionXDir.y);
+    ui->sbXZ->setValue(sectionXDir.z);
 }
 
+//move values from screen to DocObjs
 void TaskSectionView::updateValues()
 {
     m_section->Direction.setValue(sectionProjDir);
     m_section->SectionNormal.setValue(sectionNormal);
+
     Base::Vector3d origin(ui->sbOrgX->value().getValue(),
                           ui->sbOrgY->value().getValue(),
                           ui->sbOrgZ->value().getValue());
     m_section->SectionOrigin.setValue(origin);
-    Base::Vector3d xDir(ui->sbXX->value().getValue(),
-                        ui->sbXY->value().getValue(),
-                        ui->sbXZ->value().getValue());
-    m_section->XAxisDirection.setValue(xDir);
+
+    Base::Vector3d xDirIn(ui->sbXX->value().getValue(),
+                          ui->sbXY->value().getValue(),
+                          ui->sbXZ->value().getValue());
+    //edit is: can't be zero, can't be same/recip as sectionProjDir.  anything else is ok.
+    if ((xDirIn.Length() < FLT_EPSILON) ||
+        (xDirIn == sectionProjDir)      ||
+        (xDirIn == -1.0 * sectionProjDir)) {
+        Base::Console().Message("XAxisDirection Invalid. Will be substituted.\n");
+    }
+    m_section->XAxisDirection.setValue(xDirIn);
+
     m_base->SymbolSection.setValue(ui->leSymbol->text().toUtf8().constData());
     m_base->HorizSectionLine.setValue(ui->cbHoriz->isChecked());
-    m_base->ArrowUpSection.setValue(ui->cbNormal->isChecked());
+    m_base->ArrowUpSection.setValue(!ui->cbNormal->isChecked());
 
-    //TODO: this doesn't support restoration of saved Label.
+    m_section->SymbolSection.setValue(ui->leSymbol->text().toUtf8().constData());
+    m_section->HorizSectionLine.setValue(ui->cbHoriz->isChecked());
+    m_section->ArrowUpSection.setValue(!ui->cbNormal->isChecked());
+
     std::string symbol = m_base->SymbolSection.getValue();
     std::string symbolText = "Section " + symbol + "-" + symbol;
     if (symbolText.compare(m_section->Label.getValue())) {
@@ -251,17 +270,15 @@ void TaskSectionView::onResetClicked(bool b)
 
 bool TaskSectionView::accept()
 {
-    calcValues();
+    //calcValues();
     updateValues();
     return true;
 }
 
 bool TaskSectionView::reject()
 {
-    resetValues();
-    updateValues();
-    m_section->Label.setValue(saveLabel.c_str());
-    return true;
+    //TODO: remove viewSection
+    return false;
 }
 
 void TaskSectionView::changeEvent(QEvent *e)

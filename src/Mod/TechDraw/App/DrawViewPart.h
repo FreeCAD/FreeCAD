@@ -107,7 +107,7 @@ public:
     Base::Vector3d getValidXDir() const;
     Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
 
-    short mustExecute() const;
+    virtual short mustExecute() const;
 
     /** @name methods overide Feature */
     //@{
