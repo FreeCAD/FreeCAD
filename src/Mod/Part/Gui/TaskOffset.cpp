@@ -112,6 +112,7 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     d->ui.selfIntersection->blockSignals(block);
     d->ui.modeType->blockSignals(block);
     d->ui.joinType->blockSignals(block);
+    d->ui.spinOffset->blockSignals(block);
 }
 
 OffsetWidget::~OffsetWidget()

@@ -2301,6 +2301,9 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
         }
 
+        if (mkOffset.Shape().IsNull())
+            throw Base::Exception("makeOffset2D: result shape is null!");
+
         //how am I supposed to fill this offset? make a new, larger (smaller if offset < 0) face, or make a boundary?
         // -> do not support filling, for now.
         if (fill)
