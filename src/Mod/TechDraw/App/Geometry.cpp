@@ -423,9 +423,13 @@ BSpline::BSpline(const TopoDS_Edge &e)
     BRepAdaptor_Curve c(e);
     occEdge = e;
     Handle_Geom_BSplineCurve spline = c.BSpline();
+    bool fail = false;
+    double f,l;
+    gp_Pnt s,m,ePt;
+    //if startpoint == endpoint conversion to BSpline will fail
 
     if (spline->Degree() > 3) {                                        //if spline is too complex, approximate it
-        Standard_Real tol3D = 0.001;
+        Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
         Standard_Integer maxDegree = 3, maxSegment = 10;
         Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
         // approximate the curve using a tolerance
@@ -434,7 +438,20 @@ BSpline::BSpline(const TopoDS_Edge &e)
         if (approx.IsDone() && approx.HasResult()) {
             spline = approx.Curve();
         } else {
-            throw Base::Exception("Geometry::BSpline - could not approximate curve");
+            if (approx.HasResult()) {                   //result, but not within tolerance
+                spline = approx.Curve();
+                Base::Console().Log("Geometry::BSpline - result not within tolerance\n");
+            } else {
+                fail = true;
+                f = c.FirstParameter();
+                l = c.LastParameter();
+                s = c.Value(f);
+                m = c.Value((l+f)/2.0);
+                ePt = c.Value(l);
+                Base::Console().Log("Error - Geometry::BSpline - from:(%.3f,%.3f) to:(%.3f,%.3f) poles: %d\n",
+                                     s.X(),s.Y(),ePt.X(),ePt.Y(),spline->NbPoles());
+                //throw Base::Exception("Geometry::BSpline - could not approximate curve");
+            }
         }
     }
 
@@ -442,21 +459,28 @@ BSpline::BSpline(const TopoDS_Edge &e)
 
     BezierSegment tempSegment;
     gp_Pnt controlPoint;
-
-    for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
-        Handle_Geom_BezierCurve bezier = crt.Arc(i);
-        if (bezier->Degree() > 3) {
-            throw Base::Exception("Geometry::BSpline - converted curve degree > 3");
-        }
-        tempSegment.poles = bezier->NbPoles();
-        // Note: We really only need to keep the pnts[0] for the first Bezier segment,
-        // assuming this only gets used as in QGIViewPart::drawPainterPath
-        // ...it also gets used in GeometryObject::calcBoundingBox(), similar note applies
-        for (int pole = 1; pole <= tempSegment.poles; ++pole) {
-            controlPoint = bezier->Pole(pole);
-            tempSegment.pnts[pole - 1] = Base::Vector2D(controlPoint.X(), controlPoint.Y());
-        }
+    if (fail) {
+        tempSegment.poles = 3;
+        tempSegment.pnts[0] = Base::Vector2D(s.X(),s.Y());
+        tempSegment.pnts[1] = Base::Vector2D(m.X(),m.Y());
+        tempSegment.pnts[2] = Base::Vector2D(ePt.X(),ePt.Y());
         segments.push_back(tempSegment);
+    } else {
+        for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
+            Handle_Geom_BezierCurve bezier = crt.Arc(i);
+            if (bezier->Degree() > 3) {
+                throw Base::Exception("Geometry::BSpline - converted curve degree > 3");
+            }
+            tempSegment.poles = bezier->NbPoles();
+            // Note: We really only need to keep the pnts[0] for the first Bezier segment,
+            // assuming this only gets used as in QGIViewPart::drawPainterPath
+            // ...it also gets used in GeometryObject::calcBoundingBox(), similar note applies
+            for (int pole = 1; pole <= tempSegment.poles; ++pole) {
+                controlPoint = bezier->Pole(pole);
+                tempSegment.pnts[pole - 1] = Base::Vector2D(controlPoint.X(), controlPoint.Y());
+            }
+            segments.push_back(tempSegment);
+        }
     }
 }
 
