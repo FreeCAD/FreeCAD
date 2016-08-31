@@ -131,6 +131,10 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     // Clear previous Geometry
     clear();
 
+    //next 2 lines might make HLR quicker, but not dramatically
+    BRepMesh_IncrementalMesh(input, Tolerance);
+    BRepLib::BuildCurves3d(input);
+
     Handle_HLRBRep_Algo brep_hlr = NULL;
     try {
         brep_hlr = new HLRBRep_Algo();                //leak? when does this get freed? handle/smart pointer?
@@ -164,16 +168,17 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         hidOutline = hlrToShape.OutLineHCompound();
         hidIso     = hlrToShape.IsoLineHCompound();
 
-        BRepLib::BuildCurves3d(visHard);
-        BRepLib::BuildCurves3d(visSmooth);
-        BRepLib::BuildCurves3d(visSeam);
-        BRepLib::BuildCurves3d(visOutline);
-        BRepLib::BuildCurves3d(visIso);
-        BRepLib::BuildCurves3d(hidHard);
-        BRepLib::BuildCurves3d(hidSmooth);
-        BRepLib::BuildCurves3d(hidSeam);
-        BRepLib::BuildCurves3d(hidOutline);
-        BRepLib::BuildCurves3d(hidIso);
+//just made 3d curves before starting HLR
+//        BRepLib::BuildCurves3d(visHard);
+//        BRepLib::BuildCurves3d(visSmooth);
+//        BRepLib::BuildCurves3d(visSeam);
+//        BRepLib::BuildCurves3d(visOutline);
+//        BRepLib::BuildCurves3d(visIso);
+//        BRepLib::BuildCurves3d(hidHard);
+//        BRepLib::BuildCurves3d(hidSmooth);
+//        BRepLib::BuildCurves3d(hidSeam);
+//        BRepLib::BuildCurves3d(hidOutline);
+//        BRepLib::BuildCurves3d(hidIso);
     }
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
@@ -227,7 +232,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }
 
     // build a mesh to explore the shape
-    BRepMesh_IncrementalMesh(edgeCompound, Tolerance);    //no idea why we need to mesh shape
+    //BRepMesh_IncrementalMesh(edgeCompound, Tolerance);    //TODO: is this needed? no idea why we need to mesh shape doesn't seem to change anything
 
     // Explore all edges of edgeCompound and calculate base geometry representation
     BaseGeom* base;
@@ -261,14 +266,14 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
             std::vector<Vertex *>::iterator itVertex = vertexGeom.begin();
             for (; itVertex != vertexGeom.end(); itVertex++) {
-                if ((*itVertex)->isEqual(v1,Tolerance)) {
+                if ((*itVertex)->isEqual(v1,Precision::Confusion())) {
                     v1Add = false;
                 }
-                if ((*itVertex)->isEqual(v2,Tolerance)) {
+                if ((*itVertex)->isEqual(v2,Precision::Confusion())) {
                     v2Add = false;
                 }
                 if (circle) {
-                    if ((*itVertex)->isEqual(c1,Tolerance)) {
+                    if ((*itVertex)->isEqual(c1,Precision::Confusion())) {
                         c1Add = true;
                     }
                 }

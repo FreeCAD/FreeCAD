@@ -99,16 +99,18 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     static const char *fgroup = "Format";
     static const char *lgroup = "SectionLine";
 
-    ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection direction. The direction you are looking.");
+    //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
-    ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Hidden lines on/off");
-    ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Smooth lines on/off");
-    ADD_PROPERTY_TYPE(ShowSeamLines ,(false),group,App::Prop_None,"Seam lines on/off");
-    //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
-    ADD_PROPERTY_TYPE(Tolerance,(0.05f),group,App::Prop_None,"Internal tolerance");
-    Tolerance.setConstraints(&floatRange);
+    ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection direction. The direction you are looking from.");
     ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Where to place projection's XAxis (rotation)");
+    ADD_PROPERTY_TYPE(Tolerance,(0.05f),group,App::Prop_None,"Internal tolerance for calculations");
+    Tolerance.setConstraints(&floatRange);
 
+    //properties that affect Appearance
+    ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),fgroup,App::Prop_None,"Hidden lines on/off");
+    ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),fgroup,App::Prop_None,"Smooth lines on/off");
+    ADD_PROPERTY_TYPE(ShowSeamLines ,(false),fgroup,App::Prop_None,"Seam lines on/off");
+    //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(LineWidth,(0.7f),fgroup,App::Prop_None,"The thickness of visible lines");
     ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
     ADD_PROPERTY_TYPE(ShowCenters ,(true),fgroup,App::Prop_None,"Center marks on/off");
@@ -116,11 +118,11 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false),fgroup,App::Prop_None,"Show a horizontal centerline through view");
     ADD_PROPERTY_TYPE(VertCenterLine ,(false),fgroup,App::Prop_None,"Show a vertical centerline through view");
 
+    //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,lgroup,App::Prop_None,"Show/hide section line if applicable");
     ADD_PROPERTY_TYPE(HorizSectionLine ,(true)    ,lgroup,App::Prop_None,"Section line is horizontal");
     ADD_PROPERTY_TYPE(ArrowUpSection ,(false)    ,lgroup,App::Prop_None,"Section line arrows point up");
     ADD_PROPERTY_TYPE(SymbolSection,("A") ,lgroup,App::Prop_None,"Section identifier");
-
 
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
@@ -133,7 +135,6 @@ DrawViewPart::~DrawViewPart()
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
-    //Base::Console().Message("TRACE - DVP::execute: %s\n",getNameInDocument());
     App::DocumentObject *link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("FVP - No Source object linked");
@@ -175,15 +176,16 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
+    //TODO: not sure about this
     // There is a guaranteed change so check any references linked to this and touch
     // We need to update all views pointing at this (ProjectionGroup, ClipGroup, Section, etc)
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
-            TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
-            view->touch();
-        }
-    }
+//    std::vector<App::DocumentObject*> parent = getInList();
+//    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
+//        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
+//            TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
+//            view->touch();
+//        }
+//    }
     return DrawView::execute();
 }
 
@@ -196,20 +198,22 @@ short DrawViewPart::mustExecute() const
                     Source.isTouched()  ||
                     Scale.isTouched()  ||
                     ScaleType.isTouched()  ||
-                    Tolerance.isTouched()       ||
-                    ShowHiddenLines.isTouched()  ||
-                    ShowSmoothLines.isTouched()  ||
-                    ShowSeamLines.isTouched()  ||
-                    LineWidth.isTouched()  ||
-                    HiddenWidth.isTouched()  ||
-                    ShowCenters.isTouched()  ||
-                    CenterScale.isTouched()  ||
-                    ShowSectionLine.isTouched()  ||
-                    HorizSectionLine.isTouched()  ||
-                    ArrowUpSection.isTouched()  ||
-                    SymbolSection.isTouched()  ||
-                    HorizCenterLine.isTouched()  ||
-                    VertCenterLine.isTouched());
+                    Tolerance.isTouched());
+
+// don't have to execute DVP, but should update Gui
+//                    ShowHiddenLines.isTouched()  ||
+//                    ShowSmoothLines.isTouched()  ||
+//                    ShowSeamLines.isTouched()  ||
+//                    LineWidth.isTouched()  ||
+//                    HiddenWidth.isTouched()  ||
+//                    ShowCenters.isTouched()  ||
+//                    CenterScale.isTouched()  ||
+//                    ShowSectionLine.isTouched()  ||
+//                    HorizSectionLine.isTouched()  ||
+//                    ArrowUpSection.isTouched()  ||
+//                    SymbolSection.isTouched()  ||
+//                    HorizCenterLine.isTouched()  ||
+//                    VertCenterLine.isTouched());
         }
 
     if (result) {
@@ -228,20 +232,21 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &XAxisDirection ||
             prop == &Source ||
             prop == &Scale ||
-            prop == &ScaleType ||
-            prop == &ShowHiddenLines ||
-            prop == &ShowSmoothLines ||
-            prop == &ShowSeamLines   ||
-            prop == &LineWidth       ||
-            prop == &HiddenWidth     ||
-            prop == &ShowCenters     ||
-            prop == &CenterScale     ||
-            prop == &ShowSectionLine ||
-            prop == &HorizSectionLine  ||
-            prop == &ArrowUpSection  ||
-            prop == &SymbolSection   ||
-            prop == &HorizCenterLine ||
-            prop == &VertCenterLine) {
+            prop == &ScaleType) {
+//don't need to execute, but need to update Gui
+//            prop == &ShowHiddenLines ||
+//            prop == &ShowSmoothLines ||
+//            prop == &ShowSeamLines   ||
+//            prop == &LineWidth       ||
+//            prop == &HiddenWidth     ||
+//            prop == &ShowCenters     ||
+//            prop == &CenterScale     ||
+//            prop == &ShowSectionLine ||
+//            prop == &HorizSectionLine  ||
+//            prop == &ArrowUpSection  ||
+//            prop == &SymbolSection   ||
+//            prop == &HorizCenterLine ||
+//            prop == &VertCenterLine) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -258,36 +263,38 @@ void DrawViewPart::onChanged(const App::Property* prop)
 void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
 {
     Base::Vector3d baseProjDir = Direction.getValue();
+    Base::Vector3d validXDir = getValidXDir();
 
     saveParamSpace(baseProjDir,
-                   getValidXDir());
+                   validXDir);
 
     geometryObject->projectShape(shape,
                             inputCenter,
                             Direction.getValue(),
-                            getValidXDir());
+                            validXDir);
+    //TODO: why not be all line type in 1 call to extract geometry
     geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
                                     true);
-    if (ShowSmoothLines.getValue()) {
+    //if (ShowSmoothLines.getValue()) {
         geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
                                         true);
-    }
-    if (ShowSeamLines.getValue()) {
+    //}
+    //if (ShowSeamLines.getValue()) {
         geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
                                         true);
-    }
+    //}
     //if (ShowIsoLines.getValue()) {
     //    geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
     //                                    true);
     //}
-    if (ShowHiddenLines.getValue()) {
+    //if (ShowHiddenLines.getValue()) {
         geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
                                         false);
         //geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,     //hidden outline,smooth,seam??
         //                                true);
-    }
+    //}
     bbox = geometryObject->calcBoundingBox();
 }
 
@@ -362,7 +369,7 @@ void DrawViewPart::extractFaces()
     //      if we remove duplicates after sortstrip, then the outerWire won't be a duplicate
     //      still ok as long as we draw biggest first?
 
-    std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,false);   //false==>do not include biggest wires
+    std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,false);   //false==>do not include OuterWire
 
     std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
     for (; itWire != sortedWires.end(); itWire++) {

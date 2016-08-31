@@ -79,7 +79,6 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-    Base::Console().Message("TRACE - DV::execute\n");
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
         if (ScaleType.isValue("Document")) {
