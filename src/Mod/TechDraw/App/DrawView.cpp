@@ -79,6 +79,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+    Base::Console().Message("TRACE - DV::execute\n");
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
         if (ScaleType.isValue("Document")) {
@@ -101,9 +102,7 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &Scale) {
-            execute();
-        } else if (prop == &ScaleType) {
+        if (prop == &ScaleType) {
             if (ScaleType.isValue("Document")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
@@ -114,19 +113,32 @@ void DrawView::onChanged(const App::Property* prop)
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             }
-            execute();
         } else if (prop == &X ||
                    prop == &Y) {
             if (isMouseMove()) {
                 setAutoPos(false);         //should only be for manual changes? not programmatic changes?
             }
-            execute();
-        } else if (prop == &Rotation) {
-            execute();
         }
     }
 
     App::DocumentObject::onChanged(prop);
+}
+
+short DrawView::mustExecute() const
+{
+    short result = 0;
+    if (!isRestoring()) {
+        result  =  (X.isTouched()  ||
+                    Y.isTouched()  ||
+                    Rotation.isTouched()  ||
+                    Scale.isTouched()  ||
+                    ScaleType.isTouched() );
+    }
+    if (result) {
+        return result;
+    } else {
+        return App::DocumentObject::mustExecute();
+    }
 }
 
 ////you must override this in derived class

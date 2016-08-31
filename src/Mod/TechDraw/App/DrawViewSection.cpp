@@ -52,6 +52,7 @@
 
 #endif
 
+#include <chrono>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -101,18 +102,29 @@ DrawViewSection::~DrawViewSection()
 
 short DrawViewSection::mustExecute() const
 {
-    // If Tolerance Property is touched
-    if(SectionNormal.isTouched() ||
-       SectionOrigin.isTouched() ||
-       ShowCutSurface.isTouched() ||
-       CutSurfaceColor.isTouched() )
-          return 1;
-
+    short result = 0;
+    if (!isRestoring()) {
+        result  = (Scale.isTouched() ||
+                   ScaleType.isTouched() ||
+                   BaseView.isTouched()  ||
+                   SectionNormal.isTouched() ||
+                   Direction.isTouched()     ||
+                   SectionOrigin.isTouched() ||
+                   XAxisDirection.isTouched() ||
+                   ShowCutSurface.isTouched() ||
+                   CutSurfaceColor.isTouched() );
+    }
+    if (result) {
+        return result;
+    }
     return TechDraw::DrawViewPart::mustExecute();
 }
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
+    //Base::Console().Message("TRACE - DVS::execute: %s\n",getNameInDocument());
+    //auto system_start = chrono::high_resolution_clock::now();
+
     App::DocumentObject* link = Source.getValue();
     App::DocumentObject* base = BaseView.getValue();
     if (!link || !base)  {
@@ -126,7 +138,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
     const Part::TopoShape &partTopo = static_cast<Part::Feature*>(link)->Shape.getShape();
-    const TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(base);
+    //const TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(base);
 
     if (partTopo.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
@@ -142,7 +154,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     Base::Vector3d tmp1 = SectionOrigin.getValue();
     Base::Vector3d plnPnt(tmp1.x, tmp1.y, tmp1.z);
-    //Base::Vector3d tmp2 = SectionNormal.getValue();
     Base::Vector3d plnNorm(plnNormal.X(), plnNormal.Y(), plnNormal.Z());
 
 //    if(!bb.IsCutPlane(plnPnt, plnNorm)) {      //this test doesn't work if plane is coincident with bb!
@@ -150,37 +161,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         Base::Console().Warning("DVS: Section Plane doesn't intersect part in %s\n",getNameInDocument());
         Base::Console().Warning("DVS: Using center of bounding box.\n");
         plnPnt = bb.GetCenter();
-        SectionOrigin.setValue(plnPnt);
+        //SectionOrigin.setValue(plnPnt);
     }
 
-    // Gather the corner points of bbox
-    std::vector<Base::Vector3d> pnts;
-    pnts.push_back(Base::Vector3d(bb.MinX,bb.MinY,bb.MinZ));
-    pnts.push_back(Base::Vector3d(bb.MaxX,bb.MinY,bb.MinZ));
-    pnts.push_back(Base::Vector3d(bb.MinX,bb.MaxY,bb.MinZ));
-    pnts.push_back(Base::Vector3d(bb.MaxX,bb.MaxY,bb.MinZ));
-    pnts.push_back(Base::Vector3d(bb.MinX,bb.MinY,bb.MaxZ));
-    pnts.push_back(Base::Vector3d(bb.MaxX,bb.MinY,bb.MaxZ));
-    pnts.push_back(Base::Vector3d(bb.MinX,bb.MaxY,bb.MaxZ));
-    pnts.push_back(Base::Vector3d(bb.MaxX,bb.MaxY,bb.MaxZ));
+    double dMax = bb.CalcDiagonalLength();
 
-    double uMax = 0, vMax = 0, wMax = 0., dMax = 0;
-    for(std::vector<Base::Vector3d>::const_iterator it = pnts.begin(); it != pnts.end(); ++it) {
-        // Project each bounding box point onto projection plane and find largest u,v,w values
-        Base::Vector3d pnt = (*it);
-        pnt.ProjectToPlane(plnPnt, plnNorm);
-        uMax = std::max(uMax, std::abs(plnPnt.x - pnt.x));       //one will be zero
-        vMax = std::max(vMax, std::abs(plnPnt.y - pnt.y));
-        wMax = std::max(wMax, std::abs(plnPnt.z - pnt.z));
-
-        //dMax is the bounding box point furthest away from plane. used for determining extrusion length
-        double dist = (*it).DistanceToPlane(plnPnt, plnNorm);
-        dMax = std::max(dMax, dist);
-    }
-
-    //use largest of u,v,w to make cutting face that covers whole shape
-    double maxParm = std::max(uMax,vMax);
-    maxParm = std::max(maxParm,wMax);
+    double maxParm = dMax;
     BRepBuilderAPI_MakePolygon mkPoly;
     gp_Pnt pn1(origin + xAxis *  maxParm  + yAxis *  maxParm);
     gp_Pnt pn2(origin + xAxis *  maxParm  + yAxis * -maxParm);
@@ -212,10 +198,11 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     geometryObject->setTolerance(Tolerance.getValue());
     geometryObject->setScale(Scale.getValue());
+    Base::Vector3d validXDir = getValidXDir();
     try {
         gp_Pnt inputCenter = TechDrawGeometry::findCentroid(rawShape,
                                                             Direction.getValue(),
-                                                            getValidXDir());
+                                                            validXDir);
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
                                                     Scale.getValue());
@@ -239,7 +226,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
             TopoDS_Face pFace = projectFace(face,
                                             inputCenter,
                                             Direction.getValue(),
-                                            getValidXDir());
+                                            validXDir);
              builder.Add(newFaces,pFace);
 
         }
@@ -251,14 +238,10 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                                  std::string(e1->GetMessageString()));
     }
 
-    std::string symbol = dvp->SymbolSection.getValue();
-    std::string symbolText = "Section " + symbol + "-" + symbol;
-    if (symbolText.compare(Label.getValue())) {
-        Label.setValue(symbolText.c_str());
-    }
+    //auto diff = chrono::system_clock::now() - system_start;
+    //auto dur = chrono::duration_cast<std::chrono::milliseconds>(diff);
+    //Base::Console().Message("TRACE - DVS::execute - took %.3f millisecs\n",dur.count());
 
-
-    touch();
     return DrawView::execute();
 }
 
@@ -366,6 +349,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
         }
         faceEdges.push_back(edge);
     }
+    //TODO: verify that outline edges aren't required
     //if edge is both hard & outline, it will be duplicated? are hard edges enough?
 //    TopExp_Explorer expl2(outEdges, TopAbs_EDGE);
 //    for (i = 1 ; expl2.More(); expl2.Next(),i++) {

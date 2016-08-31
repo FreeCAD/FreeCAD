@@ -72,7 +72,8 @@ private:
     Base::Vector3d sectionNormal;
     Base::Vector3d sectionProjDir;
     Base::Vector3d sectionOrigin;
-    Base::Vector3d sectionxDir;
+    Base::Vector3d sectionXDir;
+    Base::Vector3d arrowDir;
 
     std::string saveSym;
     std::string saveLabel;

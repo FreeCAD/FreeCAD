@@ -118,7 +118,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,lgroup,App::Prop_None,"Show/hide section line if applicable");
     ADD_PROPERTY_TYPE(HorizSectionLine ,(true)    ,lgroup,App::Prop_None,"Section line is horizontal");
-    ADD_PROPERTY_TYPE(ArrowUpSection ,(true)    ,lgroup,App::Prop_None,"Section line arrows point up");
+    ADD_PROPERTY_TYPE(ArrowUpSection ,(false)    ,lgroup,App::Prop_None,"Section line arrows point up");
     ADD_PROPERTY_TYPE(SymbolSection,("A") ,lgroup,App::Prop_None,"Section identifier");
 
 
@@ -133,6 +133,7 @@ DrawViewPart::~DrawViewPart()
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+    //Base::Console().Message("TRACE - DVP::execute: %s\n",getNameInDocument());
     App::DocumentObject *link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("FVP - No Source object linked");
@@ -175,7 +176,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 
     // There is a guaranteed change so check any references linked to this and touch
-    // We need to update all views pointing at this (ProjectionGroup, ClipGroup, etc)
+    // We need to update all views pointing at this (ProjectionGroup, ClipGroup, Section, etc)
     std::vector<App::DocumentObject*> parent = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
@@ -188,18 +189,33 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
 short DrawViewPart::mustExecute() const
 {
-    short result  = (Direction.isTouched() ||
-            XAxisDirection.isTouched() ||
-            Source.isTouched() ||
-            Scale.isTouched() ||
-            ScaleType.isTouched() ||
-            ShowHiddenLines.isTouched() ||
-            ShowSmoothLines.isTouched() ||
-            ShowSeamLines.isTouched()   ||
-            LineWidth.isTouched()       ||
-            Tolerance.isTouched()       ||
-            HiddenWidth.isTouched());
-    return result;
+    short result = 0;
+    if (!isRestoring()) {
+        result  =  (Direction.isTouched()  ||
+                    XAxisDirection.isTouched()  ||
+                    Source.isTouched()  ||
+                    Scale.isTouched()  ||
+                    ScaleType.isTouched()  ||
+                    Tolerance.isTouched()       ||
+                    ShowHiddenLines.isTouched()  ||
+                    ShowSmoothLines.isTouched()  ||
+                    ShowSeamLines.isTouched()  ||
+                    LineWidth.isTouched()  ||
+                    HiddenWidth.isTouched()  ||
+                    ShowCenters.isTouched()  ||
+                    CenterScale.isTouched()  ||
+                    ShowSectionLine.isTouched()  ||
+                    HorizSectionLine.isTouched()  ||
+                    ArrowUpSection.isTouched()  ||
+                    SymbolSection.isTouched()  ||
+                    HorizCenterLine.isTouched()  ||
+                    VertCenterLine.isTouched());
+        }
+
+    if (result) {
+        return result;
+    }
+    return TechDraw::DrawView::mustExecute();
 }
 
 void DrawViewPart::onChanged(const App::Property* prop)
@@ -545,22 +561,36 @@ Base::Vector3d DrawViewPart::getValidXDir() const
 {
     Base::Vector3d X(1.0,0.0,0.0);
     Base::Vector3d Y(0.0,1.0,0.0);
+    Base::Vector3d Z(0.0,0.0,1.0);
     Base::Vector3d xDir = XAxisDirection.getValue();
     if (xDir.Length() < Precision::Confusion()) {
         Base::Console().Warning("XAxisDirection has zero length - using (1,0,0)\n");
         xDir = X;
     }
+    double xLength = xDir.Length();
+    xDir.Normalize();
     Base::Vector3d viewDir = Direction.getValue();
-    if ((xDir - viewDir).Length() < Precision::Confusion()) {
-        if (xDir == X) {
-            xDir = Y;
-        }else{
-            xDir = X;
+    viewDir.Normalize();
+    Base::Vector3d randomDir(0.0,0.0,0.0);
+    if (xDir == viewDir) {
+        randomDir = Y;
+        if (randomDir == xDir) {
+            randomDir = X;
         }
-        Base::Console().Warning("XAxisDirection cannot equal Direction - using (%.3f,%.3f%.3f)\n",
-                                 xDir.x,xDir.y,xDir.z);
+        xDir = randomDir;
+        Base::Console().Warning("XAxisDirection cannot equal +/- Direction - using (%.3f,%.3f%.3f)\n",
+                                xDir.x,xDir.y,xDir.z);
+    } else if (xDir == (-1.0 * viewDir)) {
+        randomDir = Y;
+        if ((xDir == randomDir) ||
+            (xDir == (-1.0 * randomDir))) {
+                randomDir = X;
+        }
+        xDir = randomDir;
+        Base::Console().Warning("XAxisDirection cannot equal +/- Direction - using (%.3f,%.3f%.3f)\n",
+                                xDir.x,xDir.y,xDir.z);
     }
-    return xDir;
+    return xLength * xDir;
 }
 
 void DrawViewPart::saveParamSpace(const Base::Vector3d& direction,
