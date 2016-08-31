@@ -163,6 +163,16 @@ protected:
     virtual void unsetEdit(int ModNum);
 };
 
+class ViewProviderOffset2D : public ViewProviderOffset
+{
+    PROPERTY_HEADER(PartGui::ViewProviderOffset2D);
+
+public:
+    ViewProviderOffset2D(){
+        sPixmap = "Part_Offset2D";
+    }
+};
+
 class ViewProviderThickness : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderThickness);

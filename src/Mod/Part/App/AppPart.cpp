@@ -49,6 +49,7 @@
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
+#include "FeatureOffset.h"
 #include "PartFeatures.h"
 #include "BodyBase.h"
 #include "PrimitiveFeature.h"
@@ -300,6 +301,7 @@ PyMODINIT_FUNC initPart()
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
     Part::Offset                ::init();
+    Part::Offset2D              ::init();
     Part::Thickness             ::init();
 
     // Geometry types
