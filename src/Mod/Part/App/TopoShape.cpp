@@ -2188,30 +2188,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         //Fill offset...
         BRepBuilderAPI_FindPlane planefinder(sourceWire);
         if (!planefinder.Found()){
-            // non-planar wire. Use Loft!
-            BRepOffsetAPI_ThruSections mkLoft;
-            mkLoft.AddWire(sourceWire);
-            if (offsetWire.ShapeType() == TopAbs_WIRE)
-                mkLoft.AddWire(TopoDS::Wire(offsetWire));
-            else if (offsetWire.ShapeType() == TopAbs_VERTEX){
-                mkLoft.AddVertex(TopoDS::Vertex(offsetWire));
-            }
-            try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
-                Base::SignalException se;
-#endif
-                mkLoft.Build();
-            }
-            catch (Standard_Failure &){
-                throw;
-            }
-            catch (...) {
-                throw Base::Exception("BRepOffsetAPI_ThruSections has crashed! (Unknown exception caught)");
-            }
-
-            if (mkLoft.Shape().IsNull())
-                throw Base::ValueError("makeOffset2D: filling offset: making Loft returned null shape.");
-            return mkLoft.Shape();
+            // non-planar wire.
+            throw Base::Exception("Strange, but offset worked on a non-planar wire. Filling is not supported.");
         }
         //Planar wire. Make planar face...
         //first up, the offset wire can be a compound. Let's break it up
