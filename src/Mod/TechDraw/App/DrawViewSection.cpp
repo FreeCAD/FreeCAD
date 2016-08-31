@@ -80,18 +80,20 @@ PROPERTY_SOURCE(TechDraw::DrawViewSection, TechDraw::DrawViewPart)
 DrawViewSection::DrawViewSection()
 {
     static const char *sgroup = "Section";
-    static const char *lgroup = "Line";
+    static const char *fgroup = "Format";
+    //static const char *lgroup = "Line";
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
 
+    ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View with SectionLine");
     ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0)    ,sgroup,App::Prop_None,"Section Plane normal direction");  //direction of extrusion of cutting prism
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_None,"Show the cut surface");
-    ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),sgroup,App::Prop_None,"The color to shade the cut surface");
 
-    ADD_PROPERTY_TYPE(BaseView ,(0),lgroup,App::Prop_None,"2D View with SectionLine");
+    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Show the cut surface");
+    ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),fgroup,App::Prop_None,"The color to shade the cut surface");
+
 
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
@@ -106,13 +108,15 @@ short DrawViewSection::mustExecute() const
     if (!isRestoring()) {
         result  = (Scale.isTouched() ||
                    ScaleType.isTouched() ||
+                   Direction.isTouched()     ||
+                   XAxisDirection.isTouched() ||
                    BaseView.isTouched()  ||
                    SectionNormal.isTouched() ||
-                   Direction.isTouched()     ||
-                   SectionOrigin.isTouched() ||
-                   XAxisDirection.isTouched() ||
-                   ShowCutSurface.isTouched() ||
-                   CutSurfaceColor.isTouched() );
+                   SectionOrigin.isTouched() );
+
+//don't need to execute, but need to update Gui
+//                   ShowCutSurface.isTouched() ||
+//                   CutSurfaceColor.isTouched() );
     }
     if (result) {
         return result;
@@ -122,9 +126,6 @@ short DrawViewSection::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
-    //Base::Console().Message("TRACE - DVS::execute: %s\n",getNameInDocument());
-    //auto system_start = chrono::high_resolution_clock::now();
-
     App::DocumentObject* link = Source.getValue();
     App::DocumentObject* base = BaseView.getValue();
     if (!link || !base)  {
@@ -237,10 +238,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn(std::string("DVS building Section shape failed: ") +
                                                  std::string(e1->GetMessageString()));
     }
-
-    //auto diff = chrono::system_clock::now() - system_start;
-    //auto dur = chrono::duration_cast<std::chrono::milliseconds>(diff);
-    //Base::Console().Message("TRACE - DVS::execute - took %.3f millisecs\n",dur.count());
 
     return DrawView::execute();
 }
@@ -379,36 +376,11 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
 //        }
 //    }
 
-//    std::vector<TopoDS_Vertex> uniqueVert = makeUniqueVList(faceEdges);
-//    std::vector<WalkerEdge> walkerEdges = makeWalkerEdges(faceEdges,uniqueVert);
-
 //recreate the wires for this single face
     EdgeWalker ew;
     ew.loadEdges(faceEdges);
     ew.perform();
     std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
-
-//    EdgeWalker ew;
-//    ew.setSize(uniqueVert.size());
-//    ew.loadEdges(walkerEdges);
-//    ew.perform();
-//    facelist result = ew.getResult();
-
-//>>>>>>>>.    result = TechDraw::EdgeWalker::removeDuplicateFaces(result);
-
-//    facelist::iterator iFace = result.begin();
-
-//    std::vector<TopoDS_Wire> fw;
-//    int dbi = 0;
-//    for (;iFace != result.end(); iFace++,dbi++) {
-//        edgelist::iterator iEdge = (*iFace).begin();
-//        std::vector<TopoDS_Edge> fe;
-//        for (;iEdge != (*iFace).end(); iEdge++) {
-//            fe.push_back(faceEdges.at((*iEdge).idx));
-//        }
-//        TopoDS_Wire w = makeCleanWire(fe);
-//        fw.push_back(w);
-//    }
 
     TopoDS_Face projectedFace;
 
