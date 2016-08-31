@@ -2286,6 +2286,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
     }break;
     case TopAbs_FACE:{
+        throw Base::TypeError("2d offsetting is not yet suported on faces, yet.");
         TopoDS_Face sourceFace = TopoDS::Face(_Shape);
         BRepOffsetAPI_MakeOffset mkOffset(sourceFace, GeomAbs_JoinType(joinType), allowOpenResult);
         try {
@@ -2304,10 +2305,9 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         if (mkOffset.Shape().IsNull())
             throw Base::Exception("makeOffset2D: result shape is null!");
 
-        //how am I supposed to fill this offset? make a new, larger (smaller if offset < 0) face, or make a boundary?
-        // -> do not support filling, for now.
         if (fill)
             throw Base::ValueError("Filling the offset is not supported for wire-offsetting of faces, yet.");
+        //TODO: make face!
         return mkOffset.Shape();
 
     }break;
