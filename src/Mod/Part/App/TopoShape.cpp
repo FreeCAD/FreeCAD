@@ -2070,6 +2070,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         throw Base::ValueError("makeOffset2D: input shape is null!");
     if (fill && intersection)
         throw Base::ValueError("Filling offset when 'intersection' is true is not supported yet.");
+    if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
+        throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
 
     switch (_Shape.ShapeType()) {
     case TopAbs_COMPOUND:{
@@ -2103,7 +2105,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 builder.Add(comp, TopoShape(wiresToOffset.front()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
             } else {
                 //collective offset
-                BRepOffsetAPI_MakeOffset mkOffset(wiresToOffset.front(), GeomAbs_JoinType(joinType), allowOpenResult);
+                BRepOffsetAPI_MakeOffset mkOffset(wiresToOffset.front(), GeomAbs_JoinType(joinType)
+#if OCC_VERSION_HEX >= 0x060900
+                                                  , allowOpenResult
+#endif
+                                                  );
                 for(TopoDS_Wire &w : wiresToOffset){
                     if (&w == &wiresToOffset.front())
                         continue;
@@ -2156,7 +2162,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //do the offset..
         TopoDS_Shape offsetWire;
-        BRepOffsetAPI_MakeOffset mkOffset(sourceWire, GeomAbs_JoinType(joinType), allowOpenResult);
+        BRepOffsetAPI_MakeOffset mkOffset(sourceWire, GeomAbs_JoinType(joinType)
+#if OCC_VERSION_HEX >= 0x060900
+                                                , allowOpenResult
+#endif
+                                               );
         if (fabs(offset) > Precision::Confusion()){
             try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
@@ -2338,7 +2348,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         // --DeepSOIC
 
         TopoDS_Face sourceFace = TopoDS::Face(_Shape);
-        BRepOffsetAPI_MakeOffset mkOffset(sourceFace, GeomAbs_JoinType(joinType), allowOpenResult);
+        BRepOffsetAPI_MakeOffset mkOffset(sourceFace, GeomAbs_JoinType(joinType)
+#if OCC_VERSION_HEX >= 0x060900
+                                                , allowOpenResult
+#endif
+                                                );
         try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
             Base::SignalException se;
