@@ -208,7 +208,7 @@ public:
         bool intersection = false, bool selfInter = false,
         short offsetMode = 0, short join = 0, bool fill = false) const;
     TopoDS_Shape makeOffset2D(double offset, short joinType = 0,
-        bool fill = false, bool allowOpenResult = false) const;
+        bool fill = false, bool allowOpenResult = false, bool intersection = false) const;
     TopoDS_Shape makeThickSolid(const TopTools_ListOfShape& remFace,
         double offset, double tol,
         bool intersection = false, bool selfInter = false,

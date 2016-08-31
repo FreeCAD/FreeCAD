@@ -95,7 +95,6 @@
 # include <GeomLib.hxx>
 # include <Law_BSpFunc.hxx>
 # include <Law_BSpline.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
 # include <Law_BSpFunc.hxx>
 # include <Law_Constant.hxx>
 # include <Law_Linear.hxx>
@@ -143,6 +142,7 @@
 # include <gp_GTrsf.hxx>
 # include <ShapeAnalysis_Shell.hxx>
 # include <ShapeBuild_ReShape.hxx>
+# include <ShapeExtend_Explorer.hxx>
 # include <ShapeFix_Edge.hxx>
 # include <ShapeFix_Face.hxx>
 # include <ShapeFix_Shell.hxx>
@@ -2064,10 +2064,12 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
     return outputShape;
 }
 
-TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, bool allowOpenResult) const
+TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, bool allowOpenResult, bool intersection) const
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
+    if (fill && intersection)
+        throw Base::ValueError("Filling offset when 'intersection' is true is not supported yet.");
 
     switch (_Shape.ShapeType()) {
     case TopAbs_COMPOUND:{
@@ -2075,15 +2077,76 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
 
-        TopoDS_Iterator it(_Shape);
-        for( ; it.More() ; it.Next()){
-            builder.Add(comp, TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult));
+        if (!intersection){
+            //simply ecursively process the children, independently
+            TopoDS_Iterator it(_Shape);
+            for( ; it.More() ; it.Next()){
+                builder.Add(comp, TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
+            }
+        } else {
+            //collect all wires from this compound. Process other shapes independently.
+            std::list<TopoDS_Wire> wiresToOffset;
+            TopoDS_Iterator it(_Shape);
+            for( ; it.More() ; it.Next()){
+                if(it.Value().ShapeType() == TopAbs_WIRE){
+                    wiresToOffset.push_back(TopoDS::Wire(it.Value()));
+                } else if (it.Value().ShapeType() == TopAbs_EDGE){
+                    wiresToOffset.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(it.Value())).Wire());
+                } else {
+                    builder.Add(comp, TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
+                }
+            }
+            //check if we have more than two wires for a collective offset. Otherwise, fall back to recursive calling.
+            if (wiresToOffset.size() == 0){
+                //nothing to do
+            } else if (wiresToOffset.size() == 1) {
+                builder.Add(comp, TopoShape(wiresToOffset.front()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
+            } else {
+                //collective offset
+                BRepOffsetAPI_MakeOffset mkOffset(wiresToOffset.front(), GeomAbs_JoinType(joinType), allowOpenResult);
+                for(TopoDS_Wire &w : wiresToOffset){
+                    if (&w == &wiresToOffset.front())
+                        continue;
+                    mkOffset.AddWire(w);
+                }
+                if (fabs(offset) > Precision::Confusion()){
+                    try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+                        Base::SignalException se;
+#endif
+                        mkOffset.Perform(offset);
+                    }
+                    catch (Standard_Failure &){
+                        throw;
+                    }
+                    catch (...) {
+                        throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
+                    }
+
+                    TopoDS_Shape offsetWire = mkOffset.Shape();
+                    if (offsetWire.IsNull())
+                        throw Base::Exception("makeOffset2D: result of offset is null!");
+                    ShapeExtend_Explorer xp; //using this explorer allows to avoid checking output type
+                    Handle_TopTools_HSequenceOfShape seq = xp.SeqFromCompound(offsetWire, /*recursive*/ true);
+                    for(int i = 0   ;   i < seq->Length()   ;   ++i){
+                        builder.Add(comp, seq->Value(i+1));
+                    }
+                } else {
+                    //zero offset, dump all wires straight through...
+                    for(TopoDS_Wire &w : wiresToOffset){
+                        builder.Add(comp, w);
+                    }
+                }
+
+            }
+
         }
         return comp;
+
     }break;
     case TopAbs_EDGE:
     case TopAbs_WIRE:{
-        //make sure we have a wire...
+        //convert edge to a wire if necessary...
         TopoDS_Wire sourceWire;
         if (_Shape.ShapeType() == TopAbs_WIRE){
             sourceWire = TopoDS::Wire(_Shape);
