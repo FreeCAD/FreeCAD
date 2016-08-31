@@ -77,7 +77,6 @@ public Q_SLOTS:
 private Q_SLOTS:
     void save() const;
     void updateRow();
-    void replyFinished(QNetworkReply* reply);
 
 private:
     void addItem(DownloadItem *item);
