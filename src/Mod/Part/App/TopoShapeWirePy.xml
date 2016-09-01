@@ -16,7 +16,7 @@
     </Documentation>
 	  <Methode Name="makeOffset" Const="true">
 		  <Documentation>
-			  <UserDocu>Offset the shape by a given ammount</UserDocu>
+              <UserDocu>Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead.</UserDocu>
 		  </Documentation>
 	  </Methode>
 		<Methode Name="add">
