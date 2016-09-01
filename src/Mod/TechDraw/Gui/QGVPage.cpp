@@ -318,7 +318,7 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 
 QGIView * QGVPage::findView(App::DocumentObject *obj) const
 {
-  if(scene()) {
+  if(obj) {
     const std::vector<QGIView *> qviews = views;
     for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
           TechDraw::DrawView *fview = (*it)->getViewObject();
