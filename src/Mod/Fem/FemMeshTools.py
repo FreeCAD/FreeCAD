@@ -293,8 +293,8 @@ def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             ratio_refface_areas = sum_node_areas / ref_face.Area
             if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
                 FreeCAD.Console.PrintError('Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n')
-                print('  sum_node_lengths:', sum_node_areas)
-                print('  refedge_length:  ', ref_face.Area)
+                print('  sum_node_areas:', sum_node_areas)
+                print('  ref_face_area:  ', ref_face.Area)
             sum_ref_face_node_area += sum_node_areas
 
             elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
@@ -371,7 +371,7 @@ def get_ref_edgenodes_lengths(femnodes_mesh, edge_table):
 
     #  [ (nodeID, length), ... , (nodeID, length) ]  some nodes will have more than one entry
     if (not femnodes_mesh) or (not edge_table):
-        print('Error: empty femnodes_mesh or edge_table')
+        FreeCAD.Console.PrintError("Error in get_ref_edgenodes_lengths(): Empty femnodes_mesh or edge_table!\n")
         return []
     node_length_table = []
     mesh_edge_length = 0
@@ -446,7 +446,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
 
     #  [ (nodeID,Area), ... , (nodeID,Area) ]  some nodes will have more than one entry
     if (not femnodes_mesh) or (not face_table):
-        print('Error: empty femnodes_mesh or face_table')
+        FreeCAD.Console.PrintError("Error: Empty femnodes_mesh or face_table!\n")
         return []
     node_area_table = []
     mesh_face_area = 0
