@@ -583,6 +583,11 @@ bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
 
 // ---------------------------------------
 
+PROPERTY_SOURCE(PartGui::ViewProviderOffset2D, PartGui::ViewProviderOffset)
+
+
+// ---------------------------------------
+
 PROPERTY_SOURCE(PartGui::ViewProviderThickness, PartGui::ViewProviderPart)
 
 ViewProviderThickness::ViewProviderThickness()

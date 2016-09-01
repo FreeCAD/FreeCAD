@@ -93,3 +93,52 @@ App::DocumentObjectExecReturn *Offset::execute(void)
 }
 
 
+//-------------------------------------------------------------------------------------------------------
+
+
+PROPERTY_SOURCE(Part::Offset2D, Part::Offset)
+
+Offset2D::Offset2D()
+{
+    this->SelfIntersection.setStatus(App::Property::Status::Hidden, true);
+    this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
+}
+
+Offset2D::~Offset2D()
+{
+
+}
+
+short Offset2D::mustExecute() const
+{
+    if (Source.isTouched())
+        return 1;
+    if (Value.isTouched())
+        return 1;
+    if (Mode.isTouched())
+        return 1;
+    if (Join.isTouched())
+        return 1;
+    if (Fill.isTouched())
+        return 1;
+    if (Intersection.isTouched())
+        return 1;
+    return 0;
+}
+
+App::DocumentObjectExecReturn *Offset2D::execute(void)
+{
+    App::DocumentObject* source = Source.getValue();
+    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+        return new App::DocumentObjectExecReturn("No source shape linked.");
+    double offset = Value.getValue();
+    short mode = (short)Mode.getValue();
+    short join = (short)Join.getValue();
+    bool fill = Fill.getValue();
+    bool inter = Intersection.getValue();
+    if (mode == 2)
+        return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
+    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+    this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter));
+    return App::DocumentObject::StdReturn;
+}

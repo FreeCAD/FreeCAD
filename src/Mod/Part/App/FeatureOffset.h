@@ -61,5 +61,23 @@ private:
     static const char* JoinEnums[];
 };
 
+class PartExport Offset2D : public Offset
+{
+    PROPERTY_HEADER(Part::Offset2D);
+public:
+    Offset2D();
+    ~Offset2D();
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual short mustExecute() const override;
+    virtual const char* getViewProviderName(void) const override {
+        return "PartGui::ViewProviderOffset2D";
+    }
+    //@}
+};
+
 }
 #endif // PART_FEATUREOFFSET_H
