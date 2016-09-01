@@ -270,13 +270,13 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f3("^f\\s+([0-9]+)/?[0-9]*/?[0-9]*"
-                         "\\s+([0-9]+)/?[0-9]*/?[0-9]*"
-                         "\\s+([0-9]+)/?[0-9]*/?[0-9]*\\s*$");
-    boost::regex rx_f4("^f\\s+([0-9]+)/?[0-9]*/?[0-9]*"
-                         "\\s+([0-9]+)/?[0-9]*/?[0-9]*"
-                         "\\s+([0-9]+)/?[0-9]*/?[0-9]*"
-                         "\\s+([0-9]+)/?[0-9]*/?[0-9]*\\s*$");
+    boost::regex rx_f3("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
+    boost::regex rx_f4("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
     boost::cmatch what;
 
     unsigned long segment=0;
@@ -285,7 +285,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 
     std::string line;
     float fX, fY, fZ;
-    unsigned int  i1=1,i2=1,i3=1,i4=1;
+    int  i1=1,i2=1,i3=1,i4=1;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad() == true)
@@ -297,6 +297,8 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 
     MeshIO::Binding rgb_value = MeshIO::OVERALL;
     bool new_segment = true;
+    std::string groupName;
+
     while (std::getline(rstrIn, line)) {
         // when a group name comes don't make it lower case
         if (!line.empty() && line[0] != 'g') {
@@ -339,41 +341,56 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         }
         else if (boost::regex_match(line.c_str(), what, rx_g)) {
             new_segment = true;
-            _groupNames.push_back(Base::Tools::escapedUnicodeToUtf8(what[1].first));
+            groupName = Base::Tools::escapedUnicodeToUtf8(what[1].first);
         }
         else if (boost::regex_match(line.c_str(), what, rx_f3)) {
             // starts a new segment
             if (new_segment) {
+                if (!groupName.empty()) {
+                    _groupNames.push_back(groupName);
+                    groupName.clear();
+                }
                 new_segment = false;
                 segment++;
             }
 
             // 3-vertex face
             i1 = std::atoi(what[1].first);
+            i1 = i1 > 0 ? i1-1 : i1+static_cast<int>(meshPoints.size());
             i2 = std::atoi(what[2].first);
+            i2 = i2 > 0 ? i2-1 : i2+static_cast<int>(meshPoints.size());
             i3 = std::atoi(what[3].first);
-            item.SetVertices(i1-1,i2-1,i3-1);
+            i3 = i3 > 0 ? i3-1 : i3+static_cast<int>(meshPoints.size());
+            item.SetVertices(i1,i2,i3);
             item.SetProperty(segment);
             meshFacets.push_back(item);
         }
         else if (boost::regex_match(line.c_str(), what, rx_f4)) {
             // starts a new segment
             if (new_segment) {
+                if (!groupName.empty()) {
+                    _groupNames.push_back(groupName);
+                    groupName.clear();
+                }
                 new_segment = false;
                 segment++;
             }
 
             // 4-vertex face
             i1 = std::atoi(what[1].first);
+            i1 = i1 > 0 ? i1-1 : i1+static_cast<int>(meshPoints.size());
             i2 = std::atoi(what[2].first);
+            i2 = i2 > 0 ? i2-1 : i2+static_cast<int>(meshPoints.size());
             i3 = std::atoi(what[3].first);
+            i3 = i3 > 0 ? i3-1 : i3+static_cast<int>(meshPoints.size());
             i4 = std::atoi(what[4].first);
+            i4 = i4 > 0 ? i4-1 : i4+static_cast<int>(meshPoints.size());
 
-            item.SetVertices(i1-1,i2-1,i3-1);
+            item.SetVertices(i1,i2,i3);
             item.SetProperty(segment);
             meshFacets.push_back(item);
 
-            item.SetVertices(i3-1,i4-1,i1-1);
+            item.SetVertices(i3,i4,i1);
             item.SetProperty(segment);
             meshFacets.push_back(item);
         }
