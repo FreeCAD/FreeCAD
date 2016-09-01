@@ -341,11 +341,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
         return sortedWires;                                     // might happen in the middle of changes?
     }
 
-    if (includeBiggest) {
-        return sortedWires;                         // all the wires
-    }
-
-    //remove the largest wire (OuterWire of graph)   wf: still not convinced we should do this in all cases.
+    //find the largest wire (OuterWire of graph) using bbox
     Bnd_Box bigBox;
     if (sortedWires.size() && !sortedWires.front().IsNull()) {
         BRepBndLib::Add(sortedWires.front(), bigBox);
@@ -366,10 +362,13 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
             }
         }
     }
+
     //unfortuneately, faces can have same bbox, but not be same size.  need to weed out biggest
     if (toBeChecked.size() == 0) {
         //nobody had as big a bbox as first element of sortedWires
-        sortedWires.erase(sortedWires.begin());
+        if (!includeBiggest) {
+            sortedWires.erase(sortedWires.begin());
+        }
     } else if (toBeChecked.size() > 0) {
         BRepBuilderAPI_MakeFace mkFace(sortedWires.front());
         const TopoDS_Face& face = mkFace.Face();
@@ -377,17 +376,29 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
         BRepGProp::SurfaceProperties(face, props);
         double bigArea = props.Mass();
         unsigned int bigIndex = 0;
-        for (unsigned int idx = 1; idx < toBeChecked.size(); idx++) {
-            BRepBuilderAPI_MakeFace mkFace2(sortedWires.at(idx));
+        for (unsigned int idx = 0; idx < toBeChecked.size(); idx++) {
+            int iCheck = toBeChecked.at(idx);
+            BRepBuilderAPI_MakeFace mkFace2(sortedWires.at(iCheck));
             const TopoDS_Face& face2 = mkFace2.Face();
             BRepGProp::SurfaceProperties(face2, props);
             double area = props.Mass();
             if (area > bigArea) {
                 bigArea = area;
-                bigIndex = idx;
+                bigIndex = iCheck;
             }
         }
-        sortedWires.erase(sortedWires.begin() + bigIndex);
+        if (bigIndex == 0) {                    //first wire is the biggest
+            if (!includeBiggest) {
+                sortedWires.erase(sortedWires.begin());
+            }
+        } else {                                  //first wire is not the biggest
+            TopoDS_Wire bigWire = *(sortedWires.begin() + bigIndex);
+            sortedWires.erase(sortedWires.begin() + bigIndex);
+            if (includeBiggest) {
+                sortedWires.insert(sortedWires.begin(),bigWire);               //doesn't happen often
+            }
+        }
+
     }
     return sortedWires;
 }

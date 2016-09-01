@@ -145,7 +145,7 @@ private:
         EdgeWalker ew;
         ew.loadEdges(edgeList);
         ew.perform();
-        std::vector<TopoDS_Wire> rw = ew.getResultWires();
+        std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
         std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,biggie);   //false==>do not include biggest wires
         for (auto& w:sortedWires) {
             PyList_Append(result,new TopoShapeWirePy(new TopoShape(w)));
@@ -179,17 +179,12 @@ private:
             throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
         }
 
-        PyObject* result = PyList_New(0);
-
         EdgeWalker ew;
         ew.loadEdges(edgeList);
         ew.perform();
-        std::vector<TopoDS_Wire> rw = ew.getResultWires();
-       std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,true);
-        for (auto& w:sortedWires) {
-            PyList_Append(result,new TopoShapeWirePy(new TopoShape(w)));
-        }
-        PyObject* outerWire = PyList_GetItem(result, 0);
+        std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
+        std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,true);
+        PyObject* outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
         return Py::asObject(outerWire);
     }
  };
