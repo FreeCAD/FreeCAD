@@ -301,6 +301,7 @@ PyMODINIT_FUNC initPart()
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
     Part::Offset                ::init();
+    Part::Offset2D              ::init();
     Part::Thickness             ::init();
 
     // Geometry types
