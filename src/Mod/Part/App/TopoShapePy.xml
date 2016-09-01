@@ -305,7 +305,56 @@ the hollowed solid, their thickness defined at the time of construction.</UserDo
     </Methode>
     <Methode Name="makeOffsetShape" Const="true"  Keyword="true">
       <Documentation> 
-        <UserDocu>Offset a given shape</UserDocu>
+        <UserDocu>makeOffsetShape(offset, tolerance, inter = False, self_inter = False,
+offsetMode = 0, join = 0, fill = False): makes an offset shape (3d offsetting).
+The function supports keyword arguments.
+
+* offset: distance to expand the shape by. Negative value will shrink the
+shape.
+
+* tolerance: precision of approximation.
+
+* inter: (parameter to OCC routine; not implemented)
+
+* self_inter: (parameter to OCC routine; not implemented)
+
+* offsetMode: 0 = skin; 1 = pipe; 2 = recto-verso
+
+* join: method of offsetting non-tangent joints. 0 = arcs, 1 = tangent, 2 =
+intersection
+
+* fill: if true, offsetting a shell is to yeild a solid
+
+Returns: result of offsetting.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeOffset2D" Const="true"  Keyword="true">
+      <Documentation>
+      <UserDocu>makeOffset2D(offset, join = 0, fill = False, openResult = false, intersection =
+false): makes an offset shape (2d offsetting). The function supports keyword
+arguments. Input shape (self) can be edge, wire, face, or a compound of those.
+
+* offset: distance to expand the shape by. Negative value will shrink the
+shape.
+
+* join: method of offsetting non-tangent joints. 0 = arcs, 1 = tangent, 2 =
+intersection
+
+* fill: if true, the output is a face filling the space covered by offset. If
+false, the output is a wire.
+
+* openResult: affects the way open wires are processed. If False, an open wire
+is made. If True, a closed wire is made from a double-sided offset, with rounds
+around open vertices.
+
+* intersection: affects the way compounds are processed. If False, all children
+are offset independently. If True, and children are edges/wires, the children
+are offset in a collective manner. If compounding is nested, collectiveness
+does not spread across compounds (only direct children of a compound are taken
+collectively).
+
+Returns: result of offsetting (wire or face or compound of those). Compounding
+structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="reverse">
