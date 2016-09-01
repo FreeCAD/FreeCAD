@@ -45,6 +45,7 @@
 #include <Mod/Part/App/FeatureFillet.h>
 #include <Mod/Part/App/FeatureChamfer.h>
 #include <Mod/Part/App/FeatureRevolution.h>
+#include <Mod/Part/App/FeatureOffset.h>
 #include <Mod/Part/App/PartFeatures.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>

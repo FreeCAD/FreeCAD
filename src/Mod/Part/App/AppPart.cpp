@@ -49,6 +49,7 @@
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
+#include "FeatureOffset.h"
 #include "PartFeatures.h"
 #include "BodyBase.h"
 #include "PrimitiveFeature.h"
