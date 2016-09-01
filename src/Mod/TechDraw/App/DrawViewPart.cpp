@@ -363,13 +363,9 @@ void DrawViewPart::extractFaces()
     EdgeWalker ew;
     ew.loadEdges(faceEdges);
     ew.perform();
-    std::vector<TopoDS_Wire> fw = ew.getResultWires();
-    //TODO: we should remove duplicates here in case of islands?
-    //      but for non-mosaic's we should keep 1 copy of the outerWire
-    //      if we remove duplicates after sortstrip, then the outerWire won't be a duplicate
-    //      still ok as long as we draw biggest first?
+    std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
 
-    std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,false);   //false==>do not include OuterWire
+    std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,true);
 
     std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
     for (; itWire != sortedWires.end(); itWire++) {

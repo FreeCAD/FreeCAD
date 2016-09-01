@@ -389,9 +389,6 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
         if (sortedWires.empty()) {
             return projectedFace;
         }
-        //TODO: should have the same size checking logic as DVP?
-        //remove the largest wire (OuterWire of graph)   ??? but duplicates have been removed? only do this if a mosaic?
-        //sortedWires.erase(sortedWires.begin());
 
         BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                   //true => only want planes?
         std::vector<TopoDS_Wire>::iterator itWire = ++sortedWires.begin();          //starting with second face
