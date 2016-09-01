@@ -565,7 +565,7 @@ std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
         throw Base::Exception("Document lost");
 
     std::vector<App::DocumentObject*> objects;
-    for(size_t i = 0  ;  i < items.size()  ;  i++){
+    for (int i = 0; i < items.size(); i++) {
         App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
             throw Base::Exception("Object not found");

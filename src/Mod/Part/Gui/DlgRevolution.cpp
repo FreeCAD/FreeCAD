@@ -236,7 +236,7 @@ std::vector<App::DocumentObject*> DlgRevolution::getShapesToRevolve() const
         throw Base::Exception("Document lost");
 
     std::vector<App::DocumentObject*> objects;
-    for(size_t i = 0  ;  i < items.size()  ;  i++){
+    for (int i = 0; i < items.size(); i++) {
         App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
             throw Base::Exception("Object not found");
@@ -293,7 +293,7 @@ bool DlgRevolution::validate()
 
     //check angle
     if (!axisLinkHasAngle){
-        if (fabs(this->getAngle() / 180.0 * M_PI) < Precision::Angular()){
+        if (fabs(this->getAngle() / 180.0 * M_PI) < Precision::Angular()) {
             QMessageBox::critical(this, windowTitle(),
                 tr("Revolution angle span is zero. It must be non-zero."));
             ui->angle->setFocus();
@@ -522,7 +522,7 @@ void DlgRevolution::autoSolid()
             ShapeExtend_Explorer xp;
             Handle_TopTools_HSequenceOfShape leaves = xp.SeqFromCompound(sh, /*recursive= */Standard_True);
             int cntClosedWires = 0;
-            for(int i = 0   ;   i < leaves->Length()   ;   i++){
+            for (int i = 0; i < leaves->Length(); i++) {
                 const TopoDS_Shape &leaf = leaves->Value(i+1);
                 if (leaf.IsNull())
                     return;
