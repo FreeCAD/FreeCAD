@@ -443,6 +443,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
     # FIXME only gives exact results in case of a real triangle. If for S6 or C3D10 elements
     # the midnodes are not on the line between the end nodes the area will not be a triangle
     # see http://forum.freecadweb.org/viewtopic.php?f=18&t=10939&start=40#p91355  and ff
+    # same applies for the quads, results are exact only if mid nodes are on the line between corner nodes
 
     #  [ (nodeID,Area), ... , (nodeID,Area) ]  some nodes will have more than one entry
     if (not femnodes_mesh) or (not face_table):
@@ -471,7 +472,29 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
             node_area_table.append((face_table[mf][2], corner_node_area))
 
         elif femmesh_facetype == 4:  # 4 node femmesh face quad
-            FreeCAD.Console.PrintError('Face load on 4 node quad faces are not supported\n')
+            # corner_node_area = mesh_face_area / 4.0
+            #  P4_______P3
+            #    |     /|
+            #    | t2 / |
+            #    |   /  |
+            #    |  /   |
+            #    | / t1 |
+            #    |/_____|
+            #  P1       P2
+            P1 = femnodes_mesh[face_table[mf][0]]
+            P2 = femnodes_mesh[face_table[mf][1]]
+            P3 = femnodes_mesh[face_table[mf][2]]
+            P4 = femnodes_mesh[face_table[mf][3]]
+
+            mesh_face_t1_area = get_triangle_area(P1, P2, P3)
+            mesh_face_t2_area = get_triangle_area(P1, P3, P4)
+            mesh_face_area = mesh_face_t1_area + mesh_face_t1_area
+            corner_node_area = mesh_face_area / 4.0
+
+            node_area_table.append((face_table[mf][0], corner_node_area))
+            node_area_table.append((face_table[mf][1], corner_node_area))
+            node_area_table.append((face_table[mf][2], corner_node_area))
+            node_area_table.append((face_table[mf][3], corner_node_area))
 
         elif femmesh_facetype == 6:  # 6 node femmesh face triangle
             # corner_node_area = 0
@@ -507,7 +530,46 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
             node_area_table.append((face_table[mf][5], middle_node_area))
 
         elif femmesh_facetype == 8:  # 8 node femmesh face quad
-            FreeCAD.Console.PrintError('Face load on 8 node quad faces are not supported\n')
+            # corner_node_area = -mesh_face_area / 12.0  (negativ!)
+            # mid-side nodes = mesh_face_area / 3.0
+            #  P4_________P7________P3
+            #    |      / |  \      |
+            #    | t4 /   |    \ t3 |
+            #    |  /     |      \  |
+            #    |/       |        \|
+            #  P8|    t5  |   t6    |P6
+            #    |\       |       / |
+            #    |  \     |     /   |
+            #    | t1 \   |   /  t2 |
+            #    |______\_|_/_______|
+            #  P1         P5        P2
+            P1 = femnodes_mesh[face_table[mf][0]]
+            P2 = femnodes_mesh[face_table[mf][1]]
+            P3 = femnodes_mesh[face_table[mf][2]]
+            P4 = femnodes_mesh[face_table[mf][3]]
+            P5 = femnodes_mesh[face_table[mf][4]]
+            P6 = femnodes_mesh[face_table[mf][5]]
+            P7 = femnodes_mesh[face_table[mf][6]]
+            P8 = femnodes_mesh[face_table[mf][7]]
+
+            mesh_face_t1_area = get_triangle_area(P1, P5, P8)
+            mesh_face_t2_area = get_triangle_area(P5, P2, P6)
+            mesh_face_t3_area = get_triangle_area(P6, P3, P7)
+            mesh_face_t4_area = get_triangle_area(P7, P4, P8)
+            mesh_face_t5_area = get_triangle_area(P5, P7, P8)
+            mesh_face_t6_area = get_triangle_area(P5, P6, P7)
+            mesh_face_area = mesh_face_t1_area + mesh_face_t2_area + mesh_face_t3_area + mesh_face_t4_area + mesh_face_t5_area + mesh_face_t6_area
+            corner_node_area = -mesh_face_area / 12.0
+            middle_node_area = mesh_face_area / 3.0
+
+            node_area_table.append((face_table[mf][0], corner_node_area))
+            node_area_table.append((face_table[mf][1], corner_node_area))
+            node_area_table.append((face_table[mf][2], corner_node_area))
+            node_area_table.append((face_table[mf][3], corner_node_area))
+            node_area_table.append((face_table[mf][4], middle_node_area))
+            node_area_table.append((face_table[mf][5], middle_node_area))
+            node_area_table.append((face_table[mf][6], middle_node_area))
+            node_area_table.append((face_table[mf][7], middle_node_area))
     return node_area_table
 
 
