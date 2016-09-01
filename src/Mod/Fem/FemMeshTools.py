@@ -107,6 +107,50 @@ def get_femelements_by_femnodes(femelement_table, node_list):
     return e
 
 
+def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
+    '''assume femelement_table only has volume elements
+    for every femvolumeelement of femelement_table
+    for tetra4 and tetra10 the C++ methods could be used --> test again to be sure
+    if hexa8 volume element --> if exact 4 element nodes are in node_list --> add femelement
+    if hexa20 volume element --> if exact 8 element nodes are in node_list --> add femelement
+    if penta6 volume element --> if exact 3 or 6 element nodes are in node_list --> add femelement
+    if penta15 volume element --> if exact 6 or 8 element nodes are in node_list --> add femelement
+    e: elementlist
+    nodes: nodelist '''
+    e = []  # elementlist
+    for elementID in sorted(femelement_table):
+        nodecount = 0
+        el_nd_ct = len(femelement_table[elementID])
+        if el_nd_ct == 8:  # hexa8
+            for nodeID in femelement_table[elementID]:
+                if nodeID in node_list:
+                    nodecount = nodecount + 1
+            if nodecount == 4: 
+                e.append(elementID)
+        elif el_nd_ct == 20:  # hexa20
+            for nodeID in femelement_table[elementID]:
+                if nodeID in node_list:
+                    nodecount = nodecount + 1
+            if nodecount == 8:
+                e.append(elementID)
+        elif el_nd_ct == 6:  # penta6
+            for nodeID in femelement_table[elementID]:
+                if nodeID in node_list:
+                    nodecount = nodecount + 1
+            if nodecount == 3 or nodecount == 4:
+                e.append(elementID)
+        elif el_nd_ct == 15:  # penta15
+            for nodeID in femelement_table[elementID]:
+                if nodeID in node_list:
+                    nodecount = nodecount + 1
+            if nodecount == 6 or nodecount == 8:
+                e.append(elementID)
+        else:
+            FreeCAD.Console.PrintError('Error in get_femvolumeelements_by_femfacenodes(): not known volume element: ' + el_nd_ct + '\n')
+    # print sorted(e)
+    return e
+
+
 def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
@@ -415,16 +459,32 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
     face_table = {}  # { meshfaceID : ( nodeID, ... , nodeID ) }
     if is_solid_femmesh(femmesh):
         if has_no_face_data(femmesh):
-            # there is no face data, the volumeID is used as key { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
-            ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)  # list of tupels (mv, ccx_face_nr)
+            print('No face date in volume mesh. We try to use getccxVolumesByFace() to retrive the volume elments of the ref_face!')
+            # there is no face data
+            # the problem if we retrive the nodes ourself is they are not sorted we just have the nodes. We need to sourt them according 
+            # the shell mesh notaion of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
-            for ve in ref_face_volume_elements:
-                veID = ve[0]
-                ve_ref_face_nodes = []
-                for nodeID in femelement_table[veID]:
-                    if nodeID in ref_face_nodes:
-                        ve_ref_face_nodes.append(nodeID)
-                face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+            # try to use getccxVolumesByFace() to get the volume ids of element with elementfaces on the ref_face --> should work for tetra4 and tetra10
+            ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)  # list of tupels (mv, ccx_face_nr)
+            if ref_face_volume_elements: # mesh with tetras
+                print('Use of getccxVolumesByFace() has returned volume elements of the ref_face!')
+                for ve in ref_face_volume_elements:
+                    veID = ve[0]
+                    ve_ref_face_nodes = []
+                    for nodeID in femelement_table[veID]:
+                        if nodeID in ref_face_nodes:
+                            ve_ref_face_nodes.append(nodeID)
+                    face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+            else:  # mesh with hexa or penta
+                print('Use of getccxVolumesByFace() has NOT returned volume elements of the ref_face! We try to use get_femvolumeelements_by_femfacenodes()!')
+                ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(femelement_table, ref_face_nodes) # list of integer [mv]
+                for veID in ref_face_volume_elements:
+                    ve_ref_face_nodes = []
+                    for nodeID in femelement_table[veID]:
+                        if nodeID in ref_face_nodes:
+                            ve_ref_face_nodes.append(nodeID)
+                    face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
+                face_table = build_mesh_faces_of_volume_elements(face_table, femelement_table)  # we need to resort the nodes to make them build a element face
         else:  # the femmesh has face_data
             faces = femmesh.getFacesByFace(ref_face)   # (mv, mf)
             for mf in faces:
@@ -434,6 +494,114 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
         ref_face_elements = get_femelements_by_femnodes(femelement_table, ref_face_nodes)
         for mf in ref_face_elements:
             face_table[mf] = femelement_table[mf]
+    # print face_table
+    return face_table
+
+
+def build_mesh_faces_of_volume_elements(face_table, femelement_table):
+    # node index of facenodes in femelementtable volume element
+    # if we know the position of the node we can build the element face out of the unsorted face nodes
+    face_nodenumber_table = {}  # { volumeID : ( index, ... , index ) }
+    for veID in face_table:
+        face_nodenumber_table[veID] = []
+        for n in face_table[veID]:
+            index = femelement_table[veID].index(n)
+            # print(index)
+            face_nodenumber_table[veID].append(index + 1)  # lokale node number = index + 1
+        # print 'VolElement:', veID
+        # print '  --> ', femelement_table[veID]
+        # print '  --> ', face_table[veID]
+        # print '  --> ', face_nodenumber_table[veID]
+    for veID in face_nodenumber_table:
+        vol_node_ct = len(femelement_table[veID])
+        face_node_indexs = sorted(face_nodenumber_table[veID])
+        if vol_node_ct == 10:  # tetra10 --> tria6 face
+            if face_node_indexs == [1, 2, 3, 5, 6, 7]:  # node order of face  in tetra10 volume element
+                node_numbers = (1, 2, 3, 5, 6, 7)       # node order of a tria6 face of tetra10
+            elif face_node_indexs == [1, 2, 4, 5, 8, 9]:
+                node_numbers = (1, 4, 2, 8, 9, 5)
+            elif face_node_indexs == [1, 3, 4, 7, 8, 10]:
+                node_numbers = (1, 3, 4, 7, 10, 8)
+            elif face_node_indexs == [2, 3, 4, 6, 9, 10]:
+                node_numbers = (2, 4, 3, 9, 10, 6)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 4:  # tetra4 --> tria3 face
+            if face_node_indexs == [1, 2, 3]:  # node order of face  in tetra4 volume element
+                node_numbers = (1, 2, 3)       # node order of a tria3 face of tetra4
+            elif face_node_indexs == [1, 2, 4]:
+                node_numbers = (1, 4, 2, 8)
+            elif face_node_indexs == [1, 3, 4]:
+                node_numbers = (1, 3, 4)
+            elif face_node_indexs == [2, 3, 4]:
+                node_numbers = (2, 4, 3)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 20:  # hexa20 --> quad8 face
+            if face_node_indexs == [1, 2, 3, 4, 9, 10, 11, 12]:  # node order of face  in hexa20 volume element
+                node_numbers = (1, 2, 3, 4, 9, 10, 11, 12)       # node order of a quad8 face of hexa20
+            elif face_node_indexs == [5, 6, 7, 8, 13, 14, 15, 16]:
+                node_numbers = (5, 8, 7, 6, 16, 15, 14, 13)
+            elif face_node_indexs == [1, 2, 5, 6, 9, 13, 17, 18]:
+                node_numbers = (1, 5, 6, 2, 17, 13, 18, 9)
+            elif face_node_indexs == [3, 4, 7, 8, 11, 15, 19, 20]:
+                node_numbers = (3, 7, 8, 4, 19, 15, 20, 11)
+            elif face_node_indexs == [1, 4, 5, 8, 12, 16, 17, 20]:
+                node_numbers = (1, 4, 8, 5, 12, 20, 16, 17)
+            elif face_node_indexs == [2, 3, 6, 7, 10, 14, 18, 19]:
+                node_numbers = (2, 6, 7, 3, 18, 14, 19, 10)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 8:  # hexa8 --> quad4 face
+            face_node_indexs = sorted(face_nodenumber_table[veID])
+            if face_node_indexs == [1, 2, 3, 4]:  # node order of face  in hexa8 volume element
+                node_numbers = (1, 2, 3, 4)       # node order of a quad8 face of hexa8
+            elif face_node_indexs == [5, 6, 7, 8]:
+                node_numbers = (5, 8, 7, 6)
+            elif face_node_indexs == [1, 2, 5, 6]:
+                node_numbers = (1, 5, 6, 2)
+            elif face_node_indexs == [3, 4, 7, 8]:
+                node_numbers = (3, 7, 8, 4)
+            elif face_node_indexs == [1, 4, 5, 8]:
+                node_numbers = (1, 4, 8, 5)
+            elif face_node_indexs == [2, 3, 6, 7]:
+                node_numbers = (2, 6, 7, 3)
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): hexa20: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 15:  # penta15 --> tria6 and quad8 faces
+            if face_node_indexs == [1, 2, 3, 7, 8, 9]:  # node order of face  in penta15 volume element
+                node_numbers = (1, 2, 3, 7, 8, 9)       # node order of a tria6 face of penta15
+            elif face_node_indexs == [4, 5, 6, 10, 11, 12]:
+                node_numbers = (4, 6, 5, 12, 11, 10)  # tria6
+            elif face_node_indexs == [1, 2, 4, 5, 7, 10, 13, 14]:
+                node_numbers = (1, 4, 5, 2, 13, 10, 14, 7)  # quad8
+            elif face_node_indexs == [1, 3, 4, 6, 9, 12, 13, 15]:
+                node_numbers = (1, 3, 6, 4, 9, 15, 12, 13)  # quad8
+            elif face_node_indexs == [2, 3, 5, 6, 8, 11, 14, 15]:
+                node_numbers = (2, 5, 6, 3, 14, 11, 15, 8)  # quad8
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): penta15: face not found!" + str(face_node_indexs) + "\n")
+        elif vol_node_ct == 6:  # penta6 --> tria3 and quad4 faces
+            if face_node_indexs == [1, 2, 3]:  # node order of face  in penta6 volume element
+                node_numbers = (1, 2, 3)       # node order of a tria3 face of penta6
+            elif face_node_indexs == [4, 5, 6]:
+                node_numbers = (4, 6, 5)  # tria3
+            elif face_node_indexs == [1, 2, 4, 5]:
+                node_numbers = (1, 4, 5, 2)  # quad4
+            elif face_node_indexs == [1, 3, 4, 6]:
+                node_numbers = (1, 3, 6, 4)  # quad4
+            elif face_node_indexs == [2, 3, 5, 6]:
+                node_numbers = (2, 5, 6, 3)  # quad4
+            else:
+                FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): pent6: face not found!" + str(face_node_indexs) + "\n")
+        else:
+             FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
+        face_nodes = []
+        for i in node_numbers:
+            i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
+            face_nodes.append(femelement_table[veID][i])
+        face_table[veID] = face_nodes  # reset the entry in face_table
+        # print '  --> ', face_table[veID]
     return face_table
 
 
@@ -453,6 +621,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
     mesh_face_area = 0
     for mf in face_table:
         femmesh_facetype = len(face_table[mf])
+        # nodes in face_table need to be in the right node order for the following calcualtions
         if femmesh_facetype == 3:  # 3 node femmesh face triangle
             # corner_node_area = mesh_face_area / 3.0
             #      P3
@@ -607,6 +776,9 @@ def delete_duplicate_mesh_elements(refelement_table):
 
 
 def get_triangle_area(P1, P2, P3):
+    # import Part
+    # W = Part.Wire([Part.makeLine(P1,P2), Part.makeLine(P2,P3), Part.makeLine(P3,P1)])
+    # Part.show(Part.Face(W))
     vec1 = P2 - P1
     vec2 = P3 - P1
     vec3 = vec1.cross(vec2)
