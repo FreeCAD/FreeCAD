@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>426</width>
     <height>599</height>
    </rect>
   </property>
@@ -20,16 +20,7 @@
    <string>Revolve</string>
   </property>
   <layout class="QGridLayout">
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <property name="spacing">
@@ -71,16 +62,7 @@
      <property name="verticalSpacing">
       <number>6</number>
      </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
+     <property name="margin">
       <number>0</number>
      </property>
      <item row="0" column="0">
@@ -94,17 +76,23 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="angle" native="true">
+      <widget class="Gui::QuantitySpinBox" name="angle">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
        </property>
-       <property name="minimum" stdset="0">
+       <property name="minimum">
         <double>-360.000000000000000</double>
        </property>
-       <property name="maximum" stdset="0">
+       <property name="maximum">
         <double>360.000000000000000</double>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>360.000000000000000</double>
        </property>
       </widget>
@@ -124,7 +112,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QFormLayout" name="formLayout_2">
+       <layout class="QGridLayout" name="gridLayout_1">
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
@@ -133,9 +121,9 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::QuantitySpinBox" name="xPos" native="true">
+         <widget class="Gui::QuantitySpinBox" name="xPos">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -153,7 +141,13 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::QuantitySpinBox" name="yPos" native="true">
+         <widget class="Gui::QuantitySpinBox" name="yPos">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
@@ -167,7 +161,13 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::QuantitySpinBox" name="zPos" native="true">
+         <widget class="Gui::QuantitySpinBox" name="zPos">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
@@ -176,11 +176,11 @@
        </layout>
       </item>
       <item>
-       <layout class="QFormLayout" name="formLayout">
+       <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <widget class="QPushButton" name="btnX">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -205,24 +205,10 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="Gui::QuantitySpinBox" name="yDir" native="true">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::QuantitySpinBox" name="zDir" native="true">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
-         <widget class="Gui::QuantitySpinBox" name="xDir" native="true">
+         <widget class="Gui::QuantitySpinBox" name="xDir">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -235,7 +221,7 @@
         <item row="1" column="0">
          <widget class="QPushButton" name="btnY">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -260,10 +246,23 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="yDir">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0">
          <widget class="QPushButton" name="btnZ">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -285,6 +284,19 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="zDir">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -295,7 +307,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="txtAxisLink"/>
+       <widget class="QLineEdit" name="txtAxisLink">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
