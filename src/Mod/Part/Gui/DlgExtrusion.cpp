@@ -129,6 +129,11 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
  */
 DlgExtrusion::~DlgExtrusion()
 {
+    if (filter){
+        Gui::Selection().rmvSelectionGate();
+        filter = nullptr;
+    }
+
     // no need to delete child widgets, Qt does it all for us
     delete ui;
 }
@@ -463,6 +468,14 @@ void DlgExtrusion::apply()
     }
 }
 
+void DlgExtrusion::reject()
+{
+    if (filter) //if still selecting edge - stop.
+        this->on_btnSelectEdge_clicked();
+
+    QDialog::reject();
+}
+
 Base::Vector3d DlgExtrusion::getDir() const
 {
     return Base::Vector3d(
@@ -721,6 +734,7 @@ bool TaskExtrusion::accept()
 
 bool TaskExtrusion::reject()
 {
+    widget->reject();
     return true;
 }
 
