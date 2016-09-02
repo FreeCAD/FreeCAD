@@ -43,6 +43,7 @@ public:
     ~DlgExtrusion();
     void accept();
     void apply();
+    void reject();
 
     Base::Vector3d getDir() const;
     void setDir(Base::Vector3d newDir);
