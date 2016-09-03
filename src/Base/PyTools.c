@@ -40,8 +40,10 @@ PP_Run_Method(PyObject *pobject,  const char *method,
 
     Py_Initialize();                               /* init if first time */
     pmeth = PyObject_GetAttrString(pobject, method);  
-    if (pmeth == NULL)                             /* get callable object */
+    if (pmeth == NULL) {                           /* get callable object */
+        va_end(argslist);
         return -1;                                 /* bound method? has self */
+    }
 	/* handle zero args different */
 //	if(resfmt == 0 || strcmp(resfmt,"") == 0)
 //		pargs = Py_BuildValue("()");
