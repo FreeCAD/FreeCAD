@@ -97,6 +97,8 @@ public:
     Py::Object insert(const Py::Tuple&);
     Py::Object exportTo(const Py::Tuple&);
 
+    Py::Object getContents(const Py::Tuple&);
+
 private:
     Base::Reference<ParameterGrp> _cParamGrp;
 };
@@ -146,6 +148,8 @@ void ParameterGrpPy::init_type()
     add_varargs_method("Import",&ParameterGrpPy::importFrom,"Import()");
     add_varargs_method("Insert",&ParameterGrpPy::insert,"Insert()");
     add_varargs_method("Export",&ParameterGrpPy::exportTo,"Export()");
+
+    add_varargs_method("GetContents",&ParameterGrpPy::getContents,"GetContents()");
 }
 
 ParameterGrpPy::ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp)
@@ -428,6 +432,76 @@ Py::Object ParameterGrpPy::notifyAll(const Py::Tuple& args)
 
     _cParamGrp->NotifyAll();
     return Py::None();
+}
+
+Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_cParamGrp->IsEmpty())
+        return Py::None();
+
+    Py::List list;
+    // filling up Text nodes
+    std::vector<std::pair<std::string,std::string> > mcTextMap = _cParamGrp->GetASCIIMap();
+    for (std::vector<std::pair<std::string,std::string> >::iterator It2=mcTextMap.begin();It2!=mcTextMap.end();++It2) {
+        Py::Tuple t2(3);
+        t2.setItem(0,Py::String("String"));
+        t2.setItem(1,Py::String(It2->first.c_str()));
+        t2.setItem(2,Py::String(It2->second.c_str()));
+        list.append(t2);
+    }
+
+    // filling up Int nodes
+    std::vector<std::pair<std::string,long> > mcIntMap = _cParamGrp->GetIntMap();
+    for (std::vector<std::pair<std::string,long> >::iterator It3=mcIntMap.begin();It3!=mcIntMap.end();++It3) {
+        Py::Tuple t3(3);
+        t3.setItem(0,Py::String("Integer"));
+        t3.setItem(1,Py::String(It3->first.c_str()));
+#if PY_MAJOR_VERSION < 3
+        t3.setItem(2,Py::Int(It3->second));
+#else
+        t3.setItem(2,Py::Long(It3->second));
+#endif
+        list.append(t3);
+    }
+
+    // filling up Float nodes
+    std::vector<std::pair<std::string,double> > mcFloatMap = _cParamGrp->GetFloatMap();
+    for (std::vector<std::pair<std::string,double> >::iterator It4=mcFloatMap.begin();It4!=mcFloatMap.end();++It4) {
+        Py::Tuple t4(3);
+        t4.setItem(0,Py::String("Float"));
+        t4.setItem(1,Py::String(It4->first.c_str()));
+        t4.setItem(2,Py::Float(It4->second));
+        list.append(t4);
+    }
+
+    // filling up bool nodes
+    std::vector<std::pair<std::string,bool> > mcBoolMap = _cParamGrp->GetBoolMap();
+    for (std::vector<std::pair<std::string,bool> >::iterator It5=mcBoolMap.begin();It5!=mcBoolMap.end();++It5) {
+        Py::Tuple t5(3);
+        t5.setItem(0,Py::String("Boolean"));
+        t5.setItem(1,Py::String(It5->first.c_str()));
+        t5.setItem(2,Py::Boolean(It5->second));
+        list.append(t5);
+    }
+
+    // filling up UInt nodes
+    std::vector<std::pair<std::string,unsigned long> > mcUIntMap = _cParamGrp->GetUnsignedMap();
+    for (std::vector<std::pair<std::string,unsigned long> >::iterator It6=mcUIntMap.begin();It6!=mcUIntMap.end();++It6) {
+        Py::Tuple t6(3);
+        t6.setItem(0,Py::String("Unsigned Long"));
+        t6.setItem(1,Py::String(It6->first.c_str()));
+#if PY_MAJOR_VERSION < 3
+        t6.setItem(2,Py::asObject(Py_BuildValue("I",It6->second)));
+#else
+        t6.setItem(2,Py::Long(It6->second));
+#endif
+        list.append(t6);
+    }
+
+    return list;
 }
 
 /** python wrapper function
