@@ -187,7 +187,7 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         buf += "/fileXXXXXX";
     }
 
-    int id = mkstemp(static_cast<char*>(buf.c_str());
+    int id = mkstemp(const_cast<char*>(buf.c_str()));
     if (id > -1) {
         FILE* file = fdopen(id, "w");
         fclose(file);
