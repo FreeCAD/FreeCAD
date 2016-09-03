@@ -1,5 +1,5 @@
 <RCC>
-    <qresource>
+    <qresource> 
         <file>icons/Constraint_Concentric.svg</file>
         <file>icons/Constraint_Ellipse_Axis_Angle.svg</file>
         <file>icons/Constraint_Ellipse_Major_Radius.svg</file>
@@ -38,6 +38,7 @@
         <file>icons/Constraint_Vertical.svg</file>
         <file>icons/Constraint_VerticalDistance.svg</file>
         <file>icons/Constraint_VerticalDistance_Driven.svg</file>
+        <file>icons/SketcherWorkbench.svg</file>
         <file>icons/Sketcher_AlterConstruction.svg</file>
         <file>icons/Sketcher_AlterFillet.svg</file>
         <file>icons/Sketcher_Clone.svg</file>
@@ -110,6 +111,10 @@
         <file>icons/Sketcher_Element_Elliptical_Arc_Edge.svg</file>
         <file>icons/Sketcher_Element_Elliptical_Arc_End_Point.svg</file>
         <file>icons/Sketcher_Element_Elliptical_Arc_Start_Point.svg</file>
+        <file>icons/Sketcher_Element_Hyperbolic_Arc_Centre_Point.svg</file>
+        <file>icons/Sketcher_Element_Hyperbolic_Arc_Edge.svg</file>
+        <file>icons/Sketcher_Element_Hyperbolic_Arc_End_Point.svg</file>
+        <file>icons/Sketcher_Element_Hyperbolic_Arc_Start_Point.svg</file>
         <file>icons/Sketcher_Element_Line_Edge.svg</file>
         <file>icons/Sketcher_Element_Line_EndPoint.svg</file>
         <file>icons/Sketcher_Element_Line_StartingPoint.svg</file>
@@ -118,6 +123,8 @@
         <file>icons/Sketcher_Elliptical_Arc.svg</file>
         <file>icons/Sketcher_Elliptical_Arc_Constr.svg</file>
         <file>icons/Sketcher_External.svg</file>
+        <file>icons/Sketcher_Hyperbolic_Arc.svg</file>
+        <file>icons/Sketcher_Hyperbolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_LeaveSketch.svg</file>
         <file>icons/Sketcher_MapSketch.svg</file>
         <file>icons/Sketcher_MergeSketch.svg</file>
@@ -141,7 +148,6 @@
         <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
-        <file>icons/SketcherWorkbench.svg</file>
         <file>icons/small/Constraint_Concentric_sm.xpm</file>
         <file>icons/small/Constraint_EqualLength_sm.xpm</file>
         <file>icons/small/Constraint_ExternalAngle_sm.xpm</file>
@@ -169,6 +175,7 @@
         <file>translations/Sketcher_af.qm</file>
         <file>translations/Sketcher_cs.qm</file>
         <file>translations/Sketcher_de.qm</file>
+        <file>translations/Sketcher_el.qm</file>
         <file>translations/Sketcher_es-ES.qm</file>
         <file>translations/Sketcher_fi.qm</file>
         <file>translations/Sketcher_fr.qm</file>
@@ -184,13 +191,12 @@
         <file>translations/Sketcher_ro.qm</file>
         <file>translations/Sketcher_ru.qm</file>
         <file>translations/Sketcher_sk.qm</file>
+        <file>translations/Sketcher_sl.qm</file>
         <file>translations/Sketcher_sr.qm</file>
         <file>translations/Sketcher_sv-SE.qm</file>
         <file>translations/Sketcher_tr.qm</file>
         <file>translations/Sketcher_uk.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
-        <file>translations/Sketcher_el.qm</file>
-        <file>translations/Sketcher_sl.qm</file>
     </qresource>
-</RCC>
+</RCC> 
