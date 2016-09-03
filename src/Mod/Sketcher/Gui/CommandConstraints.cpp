@@ -504,8 +504,8 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchO
     Base::Vector3d direction=center2-focus;
     double tapprox=atan2(direction.y,direction.x)-phi;
     
-    Base::Vector3d PoH = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
-                                        center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
+    Base::Vector3d PoH = Base::Vector3d(center.x+majord*cosh(tapprox)*cos(phi)-minord*sinh(tapprox)*sin(phi),
+                                        center.y+majord*cosh(tapprox)*sin(phi)+minord*sinh(tapprox)*cos(phi), 0);
     
     try {
         // Add a point
@@ -1909,9 +1909,11 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             geo2 = Obj->getGeometry(GeoId2);
 
             if( geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
-                geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ) {
+                geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
 
                 Base::Vector3d center;
+                Base::Vector3d majdir;
                 double majord = 0;
                 double minord = 0;
                 double phi = 0;
@@ -1922,7 +1924,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     center=ellipse->getCenter();
                     majord=ellipse->getMajorRadius();
                     minord=ellipse->getMinorRadius();
-                    phi=atan2(ellipse->getMajorAxisDir().y, ellipse->getMajorAxisDir().x);
+                    majdir=ellipse->getMajorAxisDir();
+                    phi=atan2(majdir.y, majdir.x);
                 } else
                   if( geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ){
                     const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo1);
@@ -1930,25 +1933,47 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     center=aoe->getCenter();
                     majord=aoe->getMajorRadius();
                     minord=aoe->getMinorRadius();
-                    phi=atan2(aoe->getMajorAxisDir().y, aoe->getMajorAxisDir().x);
+                    majdir=aoe->getMajorAxisDir();
+                    phi=atan2(majdir.y, majdir.x);
                 }
+                else
+                    if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
+                        const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo1);
+                        
+                        center=aoh->getCenter();
+                        majord=aoh->getMajorRadius();
+                        minord=aoh->getMinorRadius();
+                        majdir=aoh->getMajorAxisDir();
+                        phi=atan2(majdir.y, majdir.x);
+                    }
 
                 const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geo2);
 
                 Base::Vector3d point1=line->getStartPoint();
+                Base::Vector3d PoO;
+                
 
-                Base::Vector3d direction=point1-center;
-                double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
+                if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ) {
+                    double df=sqrt(majord*majord+minord*minord);
+                    Base::Vector3d direction=point1-(center+majdir*df); // towards the focus
+                    double tapprox=atan2(direction.y,direction.x)-phi; 
+                    
+                    PoO = Base::Vector3d(center.x+majord*cosh(tapprox)*cos(phi)-minord*sinh(tapprox)*sin(phi),
+                                         center.y+majord*cosh(tapprox)*sin(phi)+minord*sinh(tapprox)*cos(phi), 0);
+                }
+                else {
+                    Base::Vector3d direction=point1-center;
+                    double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
 
-                Base::Vector3d PoE = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
-                                                    center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
-
+                    PoO = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
+                                                        center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
+                }
                 openCommand("add perpendicular constraint");
 
                 try {
                     // Add a point
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                        Obj->getNameInDocument(), PoE.x,PoE.y);
+                        Obj->getNameInDocument(), PoO.x,PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();
 
                     // Point on first object (ellipse, arc of ellipse)
