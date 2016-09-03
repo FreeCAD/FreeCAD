@@ -644,6 +644,10 @@ void TaskSketcherElements::slotElementsChanged(void)
     QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point") );
     QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point") );
     QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point") );
     QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
 
     assert(sketchView);
@@ -675,6 +679,10 @@ void TaskSketcherElements::slotElementsChanged(void)
         (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint :
         (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint :
         (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint :        
         none,
         type == Part::GeomPoint::getClassTypeId()           ? ( isNamingBoxChecked ?
                                                                 (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
@@ -693,7 +701,10 @@ void TaskSketcherElements::slotElementsChanged(void)
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Ellipse")))   :
         type == Part::GeomArcOfEllipse::getClassTypeId()    ? ( isNamingBoxChecked ? 
                                                                 (tr("Elliptical Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Elliptical Arc")))   :                                                                         
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Elliptical Arc")))   :
+        type == Part::GeomArcOfHyperbola::getClassTypeId()    ? ( isNamingBoxChecked ? 
+                                                                (tr("Hyperbolic Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Hyperbolic Arc")))   :
         ( isNamingBoxChecked ?
           (tr("Other") + QString::fromLatin1("(Edge%1)").arg(i)):
           (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
@@ -874,6 +885,10 @@ void TaskSketcherElements::updateIcons(int element)
     QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point") );
     QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point") );
     QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point") );    
     QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
     
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
@@ -896,6 +911,10 @@ void TaskSketcherElements::updateIcons(int element)
         (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint :
         (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint :
         (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint :        
         none);
     }
 }
