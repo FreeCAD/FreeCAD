@@ -152,7 +152,7 @@ class _ArchSchedule:
                 if val.upper() == "COUNT":
                     val = len(objs)
                     if verbose:
-                        print val
+                        print val, ",".join([o.Label for o in objs])
                     obj.Result.set("B"+str(i+2),str(val))
                 else:
                     vals = val.split(".")
