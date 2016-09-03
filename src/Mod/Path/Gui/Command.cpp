@@ -44,7 +44,7 @@
 // Path compound #####################################################################################################
 
 
-DEF_STD_CMD_A(CmdPathCompound);
+DEF_STD_CMD_A(CmdPathCompound)
 
 CmdPathCompound::CmdPathCompound()
     :Command("Path_Compound")
@@ -69,7 +69,7 @@ void CmdPathCompound::activated(int iMsg)
         Path::Feature *pcPathObject;
         for (std::vector<Gui::SelectionSingleton::SelObj>::const_iterator it=Sel.begin();it!=Sel.end();++it) {
             if ((*it).pObject->getTypeId().isDerivedFrom(Path::Feature::getClassTypeId())) {
-                pcPathObject = dynamic_cast<Path::Feature*>((*it).pObject);
+                pcPathObject = static_cast<Path::Feature*>((*it).pObject);
                 cmd << "FreeCAD.activeDocument()." << pcPathObject->getNameInDocument() << ",";
             } else {
                 Base::Console().Error("Only Path objects must be selected before running this command\n");
@@ -98,7 +98,7 @@ bool CmdPathCompound::isActive(void)
  // Path Shape #####################################################################################################
 
 
-DEF_STD_CMD_A(CmdPathShape);
+DEF_STD_CMD_A(CmdPathShape)
 
 CmdPathShape::CmdPathShape()
     :Command("Path_Shape")
@@ -118,7 +118,7 @@ void CmdPathShape::activated(int iMsg)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     if (Sel.size() == 1) {
         if (Sel[0].pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            Part::Feature *pcPartObject = dynamic_cast<Part::Feature*>(Sel[0].pObject);
+            Part::Feature *pcPartObject = static_cast<Part::Feature*>(Sel[0].pObject);
             std::string FeatName = getUniqueObjectName("PathShape");
             openCommand("Create Path Compound");
             doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureShape','%s')",FeatName.c_str());
