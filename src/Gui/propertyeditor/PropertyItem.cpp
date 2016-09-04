@@ -288,8 +288,8 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         QString propName = QString::fromLatin1(parent->getPropertyName(prop));
         return QString::fromLatin1("FreeCAD.getDocument(\"%1\").%2").arg(docName).arg(propName);
     }
-    if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(parent);
+    App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(parent);
+    if (obj) {
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromLatin1(obj->getNameInDocument());
@@ -3375,13 +3375,12 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     else {
         // no object assigned
         // the document name
-        if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(c);
+        App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(c);
+        if (obj)            
             list << QString::fromLatin1(obj->getDocument()->getName());
-        }
-        else {
+        else
             list << QString::fromLatin1("");
-        }
+  
         // the internal object name
         list << QString::fromLatin1("Null");
         // the object label
@@ -3389,13 +3388,11 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     }
 
     // the name of this object
-    if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = dynamic_cast<App::DocumentObject*>(c);
-        list << QString::fromLatin1(obj->getNameInDocument());
-    }
-    else {
+    App::DocumentObject* cobj = dynamic_cast<App::DocumentObject*>(c);
+    if (cobj)
+        list << QString::fromLatin1(cobj->getNameInDocument());
+    else 
         list << QString::fromLatin1("Null");
-    }
 
     return QVariant(list);
 }

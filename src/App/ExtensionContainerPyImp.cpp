@@ -149,7 +149,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }    
     
-    ext->initExtension(dynamic_cast<App::DocumentObject*>(getExtensionContainerPtr()));
+    ext->initExtension(getExtensionContainerPtr());
     
     //set the proxy to allow python overrides
     App::Property* pp = ext->getPropertyByName("Proxy");

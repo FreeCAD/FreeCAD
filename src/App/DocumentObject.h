@@ -259,5 +259,26 @@ protected: // attributes
 
 } //namespace App
 
+/**
+ * Overload of freecads base class cast for all cases without any virtual inheritance
+ */
+template<typename T> T * freecad_dynamic_cast(App::DocumentObject * t)
+{
+    if (t && t->isDerivedFrom(T::getClassTypeId()))
+        return static_cast<T*>(t);
+    else
+        return nullptr;
+}
+
+/**
+ * See explaination above
+ */
+template<typename T> const T * freecad_dynamic_cast(const App::DocumentObject * t)
+{
+    if (t && t->isDerivedFrom(T::getClassTypeId()))
+        return static_cast<const T*>(t);
+    else
+        return nullptr;
+}
 
 #endif // APP_DOCUMENTOBJECT_H

@@ -61,6 +61,9 @@ std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::constructChi
         const std::vector<App::DocumentObject*> &children ) const
 {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
+    if(!group)
+        return children;
+    
     App::DocumentObject *originObj = group->Origin.getValue();
 
     // Origin must be first
@@ -102,7 +105,7 @@ void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcOb
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {
     
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-    if ( prop == &group->Group ) {
+    if ( group && prop == &group->Group ) {
         updateOriginSize();
     }
 
@@ -111,7 +114,7 @@ void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property*
 
 void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::DocumentObject& obj) {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-    if ( group->hasObject (&obj, /*recusive=*/ true ) ) {
+    if ( group && group->hasObject (&obj, /*recusive=*/ true ) ) {
         updateOriginSize ();
     }
 }
@@ -132,6 +135,8 @@ void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewPro
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
+    if(!group)
+        return;
 
     // obtain an Origin and it's ViewProvider
     App::Origin* origin = 0;

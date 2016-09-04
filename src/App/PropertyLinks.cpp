@@ -131,6 +131,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
 
     if (name != "") {
         DocumentObject* parent = dynamic_cast<DocumentObject*>(getContainer());
+        if(!parent) throw Base::TypeError("Property container is not document object");
         App::Document* document = parent->getDocument();
         DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
         if (!object) {
@@ -289,6 +290,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         // document. Thus, we should silently ingore this.
         // Property not in an object!
         DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
+        if(!father) throw Base::TypeError("Property container is not document object");
         App::Document* document = father->getDocument();
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
@@ -479,7 +481,10 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
 
     DocumentObject *pcObject;
     if (!name.empty()) {
-        App::Document* document = dynamic_cast<DocumentObject*>(getContainer())->getDocument();
+        
+        auto* parent = dynamic_cast<DocumentObject*>(getContainer());
+        if(!parent) throw Base::TypeError("Property container is not document object");
+        App::Document* document = parent->getDocument();
         pcObject = document ? document->getObject(name.c_str()) : 0;
         if (!pcObject) {
             if (reader.isVerbose()) {
@@ -807,7 +812,6 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     reader.readElement("LinkSubList");
     // get the value of my attribute
     int count = reader.getAttributeAsInteger("count");
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
 
     std::vector<DocumentObject*> values;
     values.reserve(count);
@@ -821,6 +825,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         // document. Thus, we should silently ignore this.
         // Property not in an object!
         DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
+        if(!father) throw Base::TypeError("Property container is not document object");
         App::Document* document = father->getDocument();
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
