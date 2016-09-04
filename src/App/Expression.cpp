@@ -534,6 +534,10 @@ std::string OperatorExpression::toString() const
         else if (!isCommutative())
             needsParens = true;
     }
+    else if (right->priority() == priority()) {
+        if (!isRightAssociative())
+            needsParens = true;
+    }
 
     if (needsParens)
         s << "(" << right->toString() << ")";
