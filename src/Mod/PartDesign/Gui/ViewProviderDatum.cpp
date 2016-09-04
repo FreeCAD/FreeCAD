@@ -330,7 +330,9 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
         App::DocumentObject* group =  App::DocumentObjectGroup::getGroupOfObject ( this->getObject () );
 
         if(group) {
-            objs = dynamic_cast<App::GroupExtension*>(group->getExtension(App::GroupExtension::getClassTypeId()))->getObjects ();
+            auto* ext = group->getExtensionByType<App::GroupExtension>();
+            if(ext) 
+                objs = ext->getObjects ();
         } else {
             // Fallback to whole document
             objs = this->getObject ()->getDocument ()->getObjects ();
