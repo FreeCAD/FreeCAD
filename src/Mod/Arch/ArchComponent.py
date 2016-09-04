@@ -300,11 +300,17 @@ class Component:
         obj.addProperty("App::PropertyEnumeration","Role","Arch","The role of this object")
         obj.addProperty("App::PropertyBool","MoveWithHost","Arch","Specifies if this object must move together when its host is moved")
         obj.addProperty("App::PropertyLink","IfcProperties","Arch","Custom IFC properties and attributes")
+        obj.addProperty("App::PropertyArea","VerticalArea","Arch","The area of all vertical faces of this object")
+        obj.addProperty("App::PropertyArea","HorizontalArea","Arch","The area of the projection of this object onto the XY plane")
+        obj.addProperty("App::PropertyLength","PerimeterLength","Arch","The perimeter length of the horizontal area")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
         self.MoveWithHost = False
         obj.Role = Roles
+        obj.setEditorMode("VerticalArea",1)
+        obj.setEditorMode("HorizontalArea",1)
+        obj.setEditorMode("PerimeterLength",1)
 
     def execute(self,obj):
         if obj.Base:
@@ -676,6 +682,45 @@ class Component:
                         FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
             else:
                 FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has a null shape")+"\n")
+        self.computeAreas(obj)
+
+    def computeAreas(self,obj):
+        "computes the area properties"
+        if not obj.Shape:
+            return
+        if obj.Shape.isNull():
+            return
+        if not obj.Shape.isValid():
+            return
+        if not obj.Shape.Faces:
+            return
+        a = 0
+        fset = []
+        for f in obj.Shape.Faces:
+            ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+            if (ang > 1.57) and (ang < 1.571):
+                a += f.Area
+            if ang < 1.5707:
+                fset.append(f)
+        if a and hasattr(obj,"VerticalArea"):
+            if obj.VerticalArea.Value != a:
+                obj.VerticalArea = a
+        if fset and hasattr(obj,"HorizontalArea"):
+            import Drawing,Part
+            pset = []
+            for f in fset:
+                pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                pset.append(pf)
+            if pset:
+                self.flatarea = pset.pop()
+                for f in pset:
+                    self.flatarea = self.flatarea.fuse(f)
+                self.flatarea = self.flatarea.removeSplitter()
+                if obj.HorizontalArea.Value != self.flatarea.Area:
+                    obj.HorizontalArea = self.flatarea.Area
+                if hasattr(obj,"PerimeterLength") and (len(self.flatarea.Faces) == 1):
+                    if obj.PerimeterLength.Value != self.flatarea.Faces[0].OuterWire.Length:
+                        obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
 
 
 class ViewProviderComponent:
