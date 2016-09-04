@@ -53,7 +53,7 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(void) const {
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    return ext->getGeoSubObjects();
+    return ext ? ext->getGeoSubObjects() : std::vector<App::DocumentObject*>();
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* pcObject)
@@ -84,7 +84,7 @@ std::vector<std::string> ViewProviderGeoFeatureGroupExtension::extensionGetDispl
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)
 {
     auto obj = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    if (prop == &obj->Placement) {
+    if (obj && prop == &obj->Placement) {
         getExtendedViewProvider()->setTransformation ( obj->Placement.getValue().toMatrix() );
     } else {
         ViewProviderGroupExtension::extensionUpdateData ( prop );

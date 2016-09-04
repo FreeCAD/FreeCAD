@@ -70,13 +70,15 @@ App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObjec
     std::vector<DocumentObject*> grps = doc->getObjectsWithExtension ( OriginGroupExtension::getClassTypeId() );
     for (auto grpObj: grps) {
         OriginGroupExtension* grp = dynamic_cast <OriginGroupExtension* >(grpObj->getExtension(OriginGroupExtension::getClassTypeId()));
+        if(!grp) throw Base::TypeError("Wrong type in origin group extenion");
+            
         if ( indirect ) {
             if ( grp->geoHasObject (obj) ) {
-                return dynamic_cast<App::DocumentObject*>(grp);
+                return grp->getExtendedObject();
             }
         } else {
             if ( grp->hasObject (obj) ) {
-                return dynamic_cast<App::DocumentObject*>(grp);
+                return grp->getExtendedObject();
             }
         }
     }
