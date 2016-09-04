@@ -105,30 +105,24 @@ public:
 
 /**
  * Template that works just like dynamic_cast, but expects the argument to
- * inherit from Base::BaseClass.
+ * inherit from Base::BaseClass. Note thst for base class this is exactly the same as a dynamic_cast.
+ * The reason for that is that it is not possible to static_cast base to anything in the inheritance 
+ * chain after PropertyContainer. The reason for this is the used virtual inheritance.
+ * However, the function can be overload for different cast between objects in the inheritnce
+ * chain after PropertyContainer, for example from DocumentObject to all its derived types-
  *
  */
-
 template<typename T> T * freecad_dynamic_cast(Base::BaseClass * t)
 {
-    if (t && t->isDerivedFrom(T::getClassTypeId()))
-        return dynamic_cast<T*>(t);
-    else
-        return 0;
+    return dynamic_cast<T*>(t);
 }
 
 /**
- * Template that works just like dynamic_cast, but expects the argument to
- * inherit from a const Base::BaseClass.
- *
+ * See explaination above
  */
-
 template<typename T> const T * freecad_dynamic_cast(const Base::BaseClass * t)
 {
-    if (t && t->isDerivedFrom(T::getClassTypeId()))
-        return dynamic_cast<const T*>(t);
-    else
-        return 0;
+    return dynamic_cast<const T*>(t);
 }
 
 
