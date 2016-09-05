@@ -1197,6 +1197,8 @@ LabelEditor::LabelEditor (QWidget * parent)
 
     connect(lineEdit, SIGNAL(textChanged(const QString &)),
             this, SIGNAL(textChanged(const QString &)));
+    connect(lineEdit, SIGNAL(textChanged(const QString &)),
+            this, SLOT(validateText(const QString &)));
 
     button = new QPushButton(QLatin1String("..."), this);
     button->setFixedWidth(2*button->fontMetrics().width(QLatin1String(" ... ")));
@@ -1248,6 +1250,15 @@ void LabelEditor::changeText()
         QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
         lineEdit->setText(text);
     }
+}
+
+/**
+ * Validates if the input of the lineedit is a valid list.
+ */
+void LabelEditor::validateText(const QString& s)
+{
+    if ( s.startsWith(QString::fromUtf8("[")) && s.endsWith(QString::fromUtf8("]")) )
+        this->plainText = s.mid(1,s.size()-2).replace(QString::fromUtf8(","),QString::fromUtf8("\n"));
 }
 
 /**
