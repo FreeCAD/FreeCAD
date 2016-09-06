@@ -183,8 +183,10 @@ def readResult(frd_input):
                 nd14 = int(line[33:43])
                 nd15 = int(line[43:53])
                 input_continues = False
-                elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd11, nd12, nd10, nd8,
-                                          nd9, nd7, nd14, nd15, nd13)
+                #elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd11, nd12, nd10, nd8,
+                #                          nd9, nd7, nd14, nd15, nd13)  # as for inp - do not work
+                elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd14, nd15, nd13, nd8,
+                                          nd9, nd7, nd11, nd12, nd10)
             elif elemType == 6:
                 # C3D10 Calculix --> tetra10 FreeCAD
                 # N2, N1, N3, N4, N5, N7, N6, N9, N8, N10
