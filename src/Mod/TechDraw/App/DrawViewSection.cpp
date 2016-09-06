@@ -200,10 +200,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     geometryObject->setTolerance(Tolerance.getValue());
     geometryObject->setScale(Scale.getValue());
     Base::Vector3d validXDir = getValidXDir();
+
+    gp_Pnt inputCenter;
     try {
-        gp_Pnt inputCenter = TechDrawGeometry::findCentroid(rawShape,
-                                                            Direction.getValue(),
-                                                            validXDir);
+        inputCenter = TechDrawGeometry::findCentroid(rawShape,
+                                                     Direction.getValue(),
+                                                     validXDir);
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
                                                     Scale.getValue());
@@ -212,7 +214,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e1 = Standard_Failure::Caught();
+        Base::Console().Log("LOG - DVS::execute - base shape failed for %s - %s **\n",getNameInDocument(),e1->GetMessageString());
+        return new App::DocumentObjectExecReturn(e1->GetMessageString());
+    }
 
+    try {
         TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
         TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
                                                                      inputCenter,
@@ -234,9 +243,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         sectionFaces = newFaces;
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e1 = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(std::string("DVS building Section shape failed: ") +
-                                                 std::string(e1->GetMessageString()));
+        Handle_Standard_Failure e2 = Standard_Failure::Caught();
+        Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2->GetMessageString());
+        return new App::DocumentObjectExecReturn(e2->GetMessageString());
     }
 
     return DrawView::execute();

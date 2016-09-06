@@ -155,26 +155,53 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         Base::Console().Log("INFO - DVP::execute - Scale: %.3f\n",s);
         return DrawView::execute();
     }
+    geometryObject->setScale(s);
 
-    geometryObject->setScale(Scale.getValue());
+    //TODO: remove these try/catch block when code is stable
+    gp_Pnt inputCenter;
     try {
-        gp_Pnt inputCenter = TechDrawGeometry::findCentroid(shape,
-                                                            Direction.getValue(),
-                                                            getValidXDir());
+        inputCenter = TechDrawGeometry::findCentroid(shape,
+                                                     Direction.getValue(),
+                                                     getValidXDir());
         shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
-        TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(shape,
-                                                                 inputCenter,
-                                                                 Scale.getValue());
-        buildGeometryObject(mirroredShape,inputCenter);
-#if MOD_TECHDRAW_HANDLE_FACES
-        extractFaces();
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
-
     }
     catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
+        Handle_Standard_Failure e1 = Standard_Failure::Caught();
+        Base::Console().Log("LOG - DVP::execute - findCentroid failed for %s - %s **\n",getNameInDocument(),e1->GetMessageString());
+        return new App::DocumentObjectExecReturn(e1->GetMessageString());
     }
+
+    TopoDS_Shape mirroredShape;
+    try {
+        mirroredShape = TechDrawGeometry::mirrorShape(shape,
+                                                       inputCenter,
+                                                       Scale.getValue());
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e2 = Standard_Failure::Caught();
+        Base::Console().Log("LOG - DVP::execute - mirrorShape failed for %s - %s **\n",getNameInDocument(),e2->GetMessageString());
+        return new App::DocumentObjectExecReturn(e2->GetMessageString());
+    }
+
+    try {
+        buildGeometryObject(mirroredShape,inputCenter);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e3 = Standard_Failure::Caught();
+        Base::Console().Log("LOG - DVP::execute - buildGeometryObject failed for %s - %s **\n",getNameInDocument(),e3->GetMessageString());
+        return new App::DocumentObjectExecReturn(e3->GetMessageString());
+    }
+
+#if MOD_TECHDRAW_HANDLE_FACES
+    try {
+        extractFaces();
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e4 = Standard_Failure::Caught();
+        Base::Console().Log("LOG - DVP::execute - buildGeometryObject failed for %s - %s **\n",getNameInDocument(),e4->GetMessageString());
+        return new App::DocumentObjectExecReturn(e4->GetMessageString());
+    }
+#endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     //TODO: not sure about this
     // There is a guaranteed change so check any references linked to this and touch
