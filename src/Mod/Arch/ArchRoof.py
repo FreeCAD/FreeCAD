@@ -70,32 +70,32 @@ def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickn
                     obj.Base.ViewObject.hide()
                 edges = Part.__sortEdges__(w.Edges)
                 l = len(edges)
-    
+
                 la = len(angles)
                 alist = angles
                 for i in range(l-la):
                     alist.append(angles[0])
                 obj.Angles=alist
-    
+
                 lr = len(run)
                 rlist = run
                 for i in range(l-lr):
                     #rlist.append(w.Edges[i].Length/2.)
                     rlist.append(250.)
                 obj.Runs = rlist
-    
+
                 lidrel = len(idrel)
                 rellist = idrel
                 for i in range(l-lidrel):
                     rellist.append(0)
                 obj.IdRel = rellist
-    
+
                 lthick = len(thickness)
                 tlist = thickness
                 for i in range(l-lthick):
                     tlist.append(thickness[0])
                 obj.Thickness = tlist
-    
+
                 lover = len(overhang)
                 olist = overhang
                 for i in range(l-lover):
@@ -494,10 +494,10 @@ class _Roof(ArchComponent.Component):
         return profilShp
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
-        
+
         import Part, math, DraftGeomUtils
         pl = obj.Placement
         #self.baseface = None
@@ -593,11 +593,11 @@ class _Roof(ArchComponent.Component):
                         self.execute(obj)
                         return self.sub
         return None
-        
+
     def computeAreas(self,obj):
-        
+
         "computes border and ridge roof edges length"
-        
+
         if hasattr(obj,"RidgeLength") and hasattr(obj,"BorderLength"):
             rl = 0
             bl = 0
