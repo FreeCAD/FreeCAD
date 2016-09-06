@@ -41,7 +41,7 @@ class TechDrawExport DrawUtil {
         static std::string getGeomTypeFromName(std::string geomName);
         static std::string makeGeomName(std::string geomType, int index);
         static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
-
+        static bool isZeroEdge(TopoDS_Edge& e);
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
         static void dumpEdge(char* label, int i, TopoDS_Edge e);

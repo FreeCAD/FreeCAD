@@ -311,7 +311,16 @@ void DrawViewPart::extractFaces()
         }
     }
 
-    std::vector<TopoDS_Edge> faceEdges = origEdges;
+    std::vector<TopoDS_Edge> faceEdges;
+    std::vector<TopoDS_Edge> nonZero;
+    for (auto& e:origEdges) {                            //drop any zero edges
+        if (!DrawUtil::isZeroEdge(e)) {
+            nonZero.push_back(e);
+        }
+    }
+    faceEdges = nonZero;
+    origEdges = nonZero;
+
     std::vector<TopoDS_Edge>::iterator itOrig = origEdges.begin();
 
     //HLR algo does not provide all edge intersections for edge endpoints.
@@ -320,6 +329,9 @@ void DrawViewPart::extractFaces()
     for (; itOrig != origEdges.end(); itOrig++, idb++) {
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOrig));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOrig));
+        if (DrawUtil::isSamePoint(v1,v2)) {
+            continue;  //skip zero length edges. shouldn't happen ;)
+        }
         std::vector<TopoDS_Edge>::iterator itNew = faceEdges.begin();
         std::vector<size_t> deleteList;
         std::vector<TopoDS_Edge> edgesToAdd;
@@ -328,6 +340,10 @@ void DrawViewPart::extractFaces()
             if ( itOrig->IsSame(*itNew) ){
                 continue;
             }
+            if (DrawUtil::isZeroEdge((*itNew))) {
+                continue;  //skip zero length edges. shouldn't happen ;)
+            }
+
             bool removeThis = false;
             std::vector<TopoDS_Vertex> splitPoints;
             if (isOnEdge((*itNew),v1,false)) {
@@ -343,8 +359,10 @@ void DrawViewPart::extractFaces()
             }
 
             if (!splitPoints.empty()) {
-                std::vector<TopoDS_Edge> subEdges = splitEdge(splitPoints,(*itNew));
-                edgesToAdd.insert(std::end(edgesToAdd), std::begin(subEdges), std::end(subEdges));
+                if (!DrawUtil::isZeroEdge((*itNew))) {
+                    std::vector<TopoDS_Edge> subEdges = splitEdge(splitPoints,(*itNew));
+                    edgesToAdd.insert(std::end(edgesToAdd), std::begin(subEdges), std::end(subEdges));
+                }
             }
         }
         //delete the split edge(s) and add the subedges
@@ -431,12 +449,28 @@ std::vector<TopoDS_Edge> DrawViewPart::splitEdge(std::vector<TopoDS_Vertex> spli
     Handle_Geom_Curve c = adapt.Curve().Curve();
     //simple version for 1 splitPoint
     //TODO: handle case where e is split in multiple points (ie circular edge cuts line twice)
-    BRepBuilderAPI_MakeEdge mkBuilder1(c, vStart, splitPoints[0]);
-    TopoDS_Edge e1 = mkBuilder1.Edge();
-    BRepBuilderAPI_MakeEdge mkBuilder2(c, splitPoints[0], vEnd);
-    TopoDS_Edge e2 = mkBuilder2.Edge();
-    result.push_back(e1);
-    result.push_back(e2);
+// for some reason, BRepBuilderAPI_MakeEdge sometimes fails without reporting IsDone status or error, so we use try/catch
+    try {
+        BRepBuilderAPI_MakeEdge mkBuilder1(c, vStart ,splitPoints[0]);
+        if (mkBuilder1.IsDone()) {
+            TopoDS_Edge e1 = mkBuilder1.Edge();
+            result.push_back(e1);
+        }
+    }
+    catch (Standard_Failure) {
+        Base::Console().Message("LOG - DVP::splitEdge failed building 1st edge\n");
+    }
+
+    try{
+        BRepBuilderAPI_MakeEdge mkBuilder2(c, splitPoints[0], vEnd);
+        if (mkBuilder2.IsDone()) {
+            TopoDS_Edge e2 = mkBuilder2.Edge();
+            result.push_back(e2);
+        }
+    }
+    catch (Standard_Failure) {
+        Base::Console().Message("LOG - DVP::splitEdge failed building 2nd  edge\n");
+    }
     return result;
 }
 
