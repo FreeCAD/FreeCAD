@@ -476,13 +476,10 @@ void CmdMeshExport::activated(int iMsg)
             }
         }
 
-        //openCommand("Export Mesh");
-        doCommand(Doc,"FreeCAD.ActiveDocument.getObject(\"%s\").Mesh.write(\"%s\",\"%s\",\"%s\")",
-                 docObj->getNameInDocument(),
-                 (const char*)fn.toUtf8(),
-                 (const char*)extension,
-                 docObj->Label.getValue());
-        //commitCommand();
+        MeshGui::ViewProviderMesh* vp = dynamic_cast<MeshGui::ViewProviderMesh*>(Gui::Application::Instance->getViewProvider(docObj));
+        if (vp) {
+            vp->exportMesh((const char*)fn.toUtf8(), (const char*)extension);
+        }
     }
 }
 
