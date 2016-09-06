@@ -118,6 +118,13 @@ bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2)
     return result;
 }
 
+bool DrawUtil::isZeroEdge(TopoDS_Edge& e)
+{
+    TopoDS_Vertex vStart = TopExp::FirstVertex(e);
+    TopoDS_Vertex vEnd = TopExp::LastVertex(e);
+    return isSamePoint(vStart,vEnd);
+}
+
 //============================
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)

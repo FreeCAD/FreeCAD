@@ -168,17 +168,17 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         hidOutline = hlrToShape.OutLineHCompound();
         hidIso     = hlrToShape.IsoLineHCompound();
 
-//just made 3d curves before starting HLR
-//        BRepLib::BuildCurves3d(visHard);
-//        BRepLib::BuildCurves3d(visSmooth);
-//        BRepLib::BuildCurves3d(visSeam);
-//        BRepLib::BuildCurves3d(visOutline);
-//        BRepLib::BuildCurves3d(visIso);
-//        BRepLib::BuildCurves3d(hidHard);
-//        BRepLib::BuildCurves3d(hidSmooth);
-//        BRepLib::BuildCurves3d(hidSeam);
-//        BRepLib::BuildCurves3d(hidOutline);
-//        BRepLib::BuildCurves3d(hidIso);
+//need these 3d curves to prevent "zero edges" later
+        BRepLib::BuildCurves3d(visHard);
+        BRepLib::BuildCurves3d(visSmooth);
+        BRepLib::BuildCurves3d(visSeam);
+        BRepLib::BuildCurves3d(visOutline);
+        BRepLib::BuildCurves3d(visIso);
+        BRepLib::BuildCurves3d(hidHard);
+        BRepLib::BuildCurves3d(hidSmooth);
+        BRepLib::BuildCurves3d(hidSeam);
+        BRepLib::BuildCurves3d(hidOutline);
+        BRepLib::BuildCurves3d(hidIso);
     }
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
