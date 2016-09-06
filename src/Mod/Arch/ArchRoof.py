@@ -158,8 +158,12 @@ class _Roof(ArchComponent.Component):
         obj.addProperty("App::PropertyFloatList","Overhang","Arch",  "A list of overhangs for each roof pane")
         obj.addProperty("App::PropertyFloatList","Heights","Arch",   "A list of calculated heights for each roof pane")
         obj.addProperty("App::PropertyInteger","Face","Base",        "The face number of the base object used to build this roof")
+        obj.addProperty("App::PropertyLength","RidgeLength","Arch","The total length of ridges and hips of this roof")
+        obj.addProperty("App::PropertyLength","BorderLength","Arch","The total length of borders of this roof")
         self.Type = "Roof"
         obj.Proxy = self
+        obj.setEditorMode("RidgeLength",1)
+        obj.setEditorMode("BorderLength",1)
 
     def calcHeight(self, id):
         " Get the height from run and angle of the given roof profil "
@@ -569,10 +573,10 @@ class _Roof(ArchComponent.Component):
                 for s in self.shps :
                     base = base.fuse(s)
                 base = self.processSubShapes(obj,base)
-                self.applyShape(obj,base,pl)
+                self.applyShape(obj,base,pl,allownosolid=True)
         elif base :
             base = self.processSubShapes(obj,base)
-            self.applyShape(obj,base,pl)
+            self.applyShape(obj,base,pl,allownosolid=True)
         else:
             FreeCAD.Console.PrintMessage(translate("Arch","Unable to create a roof"))
 
@@ -589,6 +593,49 @@ class _Roof(ArchComponent.Component):
                         self.execute(obj)
                         return self.sub
         return None
+        
+    def computeAreas(self,obj):
+        
+        "computes border and ridge roof edges length"
+        
+        if hasattr(obj,"RidgeLength") and hasattr(obj,"BorderLength"):
+            rl = 0
+            bl = 0
+            rn = 0
+            bn = 0
+            import Part,math
+            if obj.Shape:
+                if obj.Shape.Faces:
+                    fset = []
+                    for f in obj.Shape.Faces:
+                        if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < math.pi/2:
+                            fset.append(f)
+                    if fset:
+                        shell = Part.Shell(fset)
+                        lut={}
+                        if shell.Faces:
+                            for f in shell.Faces:
+                                for e in f.Edges:
+                                    hc = e.hashCode()
+                                    if hc in lut:
+                                        lut[hc] = lut[hc] + 1
+                                    else:
+                                        lut[hc] = 1
+                            for e in shell.Edges:
+                                if lut[e.hashCode()] == 1:
+                                    bl += e.Length
+                                    bn += 1
+                                elif lut[e.hashCode()] == 2:
+                                    rl += e.Length
+                                    rn += 1
+                            if obj.RidgeLength.Value != rl:
+                                obj.RidgeLength = rl
+                                print str(rn)+" ridge edges in roof "+obj.Name
+                            if obj.BorderLength.Value != bl:
+                                obj.BorderLength = bl
+                                print str(bn)+" border edges in roof "+obj.Name
+        ArchComponent.Component.computeAreas(self,obj)
+
 
 class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
     "A View Provider for the Roof object"
