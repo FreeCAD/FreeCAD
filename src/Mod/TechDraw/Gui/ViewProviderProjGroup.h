@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.           *
+ *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *
@@ -10,7 +10,7 @@
  *                                                                         *
  *   This library  is distributed in the hope that it will be useful,      *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
@@ -26,16 +26,12 @@
 #include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include <QPointer>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "ViewProviderDrawingView.h"
 
-namespace TechDraw{
-    class DrawProjGroup;
-}
-
 namespace TechDrawGui {
-
 
 class TechDrawGuiExport ViewProviderProjGroup : public ViewProviderDrawingView
 {
@@ -61,6 +57,7 @@ public:
     virtual void updateData(const App::Property*);
 
     TechDraw::DrawProjGroup* getObject() const;
+    virtual TechDraw::DrawProjGroup* getViewObject() const;
     void unsetEdit(int ModNum);
 
 protected:

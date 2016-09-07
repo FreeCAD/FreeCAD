@@ -38,7 +38,6 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawViewDimension.h>
 #include "ViewProviderDimension.h"
 
 using namespace TechDrawGui;

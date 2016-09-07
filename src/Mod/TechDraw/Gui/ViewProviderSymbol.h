@@ -25,13 +25,10 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 #define DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 
-#include <Gui/ViewProviderFeature.h>
-
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include "ViewProviderDrawingView.h"
-
-namespace TechDraw{
-    class DrawViewSymbol;
-}
+#include "ViewProviderDrawingView.h"
 
 namespace TechDrawGui {
 
@@ -54,7 +51,7 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
 
-    TechDraw::DrawViewSymbol* getViewObject() const;
+    virtual TechDraw::DrawViewSymbol* getViewObject() const;
 };
 
 } // namespace TechDrawGui

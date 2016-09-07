@@ -25,10 +25,8 @@
 #define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
 #include "ViewProviderDrawingView.h"
-
-namespace TechDraw{
-    class DrawViewPart;
-}
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 namespace TechDrawGui {
 
@@ -51,6 +49,7 @@ public:
 public:
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
 
+    virtual TechDraw::DrawViewPart* getViewObject() const;
     TechDraw::DrawViewPart* getViewPart() const;
 };
 
