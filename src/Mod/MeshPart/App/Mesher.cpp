@@ -21,13 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <algorithm>
 #include "Mesher.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Mesh/App/Mesh.h>
 
 #include <TopoDS_Shape.hxx>
+#include <BRepTools.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <StlTransfer.hxx>
+#include <StlMesh_Mesh.hxx>
+#include <StlMesh_MeshExplorer.hxx>
+#include <Standard_Version.hxx>
 
 #ifdef HAVE_SMESH
 #include <SMESH_Gen.hxx>
@@ -88,6 +96,43 @@ int MeshingOutput::sync()
     return 0;
 }
 
+// ----------------------------------------------------------------------------
+
+struct Mesher::Vertex {
+    static const double deflection;
+    Standard_Real x,y,z;
+    Standard_Integer i;
+    mutable MeshCore::MeshPoint p;
+
+    Vertex(Standard_Real X, Standard_Real Y, Standard_Real Z)
+        : x(X),y(Y),z(Z),i(0)
+    {
+        p.x = static_cast<float>(x);
+        p.y = static_cast<float>(y);
+        p.z = static_cast<float>(z);
+    }
+
+    const MeshCore::MeshPoint& toPoint() const
+    {
+        return p;
+    }
+
+    bool operator < (const Vertex &v) const
+    {
+        if (fabs ( this->x - v.x) >= deflection)
+            return this->x < v.x;
+        if (fabs ( this->y - v.y) >= deflection)
+            return this->y < v.y;
+        if (fabs ( this->z - v.z) >= deflection)
+            return this->z < v.z;
+        return false; // points are considered to be equal
+    }
+};
+
+const double Mesher::Vertex::deflection = gp::Resolution();
+
+// ----------------------------------------------------------------------------
+
 Mesher::Mesher(const TopoDS_Shape& s)
   : shape(s)
   , method(None)
@@ -95,6 +140,7 @@ Mesher::Mesher(const TopoDS_Shape& s)
   , maxArea(0)
   , localLength(0)
   , deflection(0)
+  , angularDeflection(0.5)
   , minLen(0)
   , maxLen(0)
   , regular(false)
@@ -116,6 +162,110 @@ Mesher::~Mesher()
 
 Mesh::MeshObject* Mesher::createMesh() const
 {
+    // OCC standard mesher
+    if (method == Standard) {
+        Handle_StlMesh_Mesh aMesh = new StlMesh_Mesh();
+
+        if (!shape.IsNull()) {
+            BRepTools::Clean(shape);
+#if OCC_VERSION_HEX >= 0x060801
+            BRepMesh_IncrementalMesh bMesh(shape, deflection, Standard_False, angularDeflection);
+            StlTransfer::RetrieveMesh(shape,aMesh);
+#else
+            StlTransfer::BuildIncrementalMesh(shape, deflection,
+#if OCC_VERSION_HEX >= 0x060503
+                Standard_True,
+#endif
+                aMesh);
+#endif
+        }
+
+        MeshCore::MeshFacetArray faces;
+        faces.reserve(aMesh->NbTriangles());
+
+        std::set<Vertex> vertices;
+        Standard_Real x1, y1, z1;
+        Standard_Real x2, y2, z2;
+        Standard_Real x3, y3, z3;
+
+        std::list< std::vector<unsigned long> > meshSegments;
+        std::size_t numMeshFaces = 0;
+        StlMesh_MeshExplorer xp(aMesh);
+        for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
+            std::size_t numDomainFaces = 0;
+            for (xp.InitTriangle(nbd); xp.MoreTriangle(); xp.NextTriangle()) {
+                xp.TriangleVertices(x1,y1,z1,x2,y2,z2,x3,y3,z3);
+                std::set<Vertex>::iterator it;
+                MeshCore::MeshFacet face;
+
+                // 1st vertex
+                Vertex v1(x1,y1,z1);
+                it = vertices.find(v1);
+                if (it == vertices.end()) {
+                    v1.i = vertices.size();
+                    face._aulPoints[0] = v1.i;
+                    vertices.insert(v1);
+                }
+                else {
+                    face._aulPoints[0] = it->i;
+                }
+
+                // 2nd vertex
+                Vertex v2(x2,y2,z2);
+                it = vertices.find(v2);
+                if (it == vertices.end()) {
+                    v2.i = vertices.size();
+                    face._aulPoints[1] = v2.i;
+                    vertices.insert(v2);
+                }
+                else {
+                    face._aulPoints[1] = it->i;
+                }
+
+                // 3rd vertex
+                Vertex v3(x3,y3,z3);
+                it = vertices.find(v3);
+                if (it == vertices.end()) {
+                    v3.i = vertices.size();
+                    face._aulPoints[2] = v3.i;
+                    vertices.insert(v3);
+                }
+                else {
+                    face._aulPoints[2] = it->i;
+                }
+
+                // make sure that we don't insert invalid facets
+                if (face._aulPoints[0] != face._aulPoints[1] &&
+                    face._aulPoints[1] != face._aulPoints[2] &&
+                    face._aulPoints[2] != face._aulPoints[0]) {
+                    faces.push_back(face);
+                    numDomainFaces++;
+                }
+            }
+
+            // add a segment for the face
+            std::vector<unsigned long> segment(numDomainFaces);
+            std::generate(segment.begin(), segment.end(), Base::iotaGen<unsigned long>(numMeshFaces));
+            numMeshFaces += numDomainFaces;
+            meshSegments.push_back(segment);
+        }
+
+        MeshCore::MeshPointArray verts;
+        verts.resize(vertices.size());
+        for (auto it : vertices)
+            verts[it.i] = it.toPoint();
+
+        MeshCore::MeshKernel kernel;
+        kernel.Adopt(verts, faces, true);
+
+        Mesh::MeshObject* meshdata = new Mesh::MeshObject();
+        meshdata->swap(kernel);
+        for (auto it : meshSegments) {
+            meshdata->addSegment(it);
+        }
+        return meshdata;
+    }
+
 #ifndef HAVE_SMESH
     throw Base::Exception("SMESH is not available on this platform");
 #else

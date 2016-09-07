@@ -249,7 +249,7 @@ bool Tessellation::accept()
                 cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                    "__mesh__.Mesh=Mesh.Mesh(__doc__.getObject(\"%2\").Shape.tessellate(%3))\n"
+                    "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,LinearDeflection=%3)\n"
                     "__mesh__.Label=\"%4 (Meshed)\"\n"
                     "__mesh__.ViewObject.CreaseAngle=25.0\n"
                     "del __doc__, __mesh__\n")
