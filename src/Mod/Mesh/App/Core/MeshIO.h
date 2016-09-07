@@ -66,6 +66,7 @@ struct MeshExport Material
 {
     Material() : binding(MeshIO::OVERALL) {}
     MeshIO::Binding binding;
+    std::string library;
     std::vector<App::Color> diffuseColor;
 };
 
@@ -151,6 +152,8 @@ public:
      * automatically filled up with spaces.
      */
     static void SetSTLHeaderData(const std::string&);
+    /// Determine the mesh format by file extension
+    static MeshIO::Format GetFormat(const char* FileName);
     /// Saves the file, decided by extension if not explicitly given
     bool SaveAny(const char* FileName, MeshIO::Format f=MeshIO::Undefined) const;
     /// Saves to a stream and the given format
@@ -162,6 +165,8 @@ public:
     bool SaveBinarySTL (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OBJ file. */
     bool SaveOBJ (std::ostream &rstrOut) const;
+    /** Saves the materials of an OBJ file. */
+    bool SaveMTL(std::ostream &rstrOut) const;
     /** Saves the mesh object into an OFF file. */
     bool SaveOFF (std::ostream &rstrOut) const;
     /** Saves the mesh object into a binary PLY file. */

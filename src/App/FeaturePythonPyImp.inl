@@ -335,8 +335,11 @@ PyObject*  FeaturePythonPyT<FeaturePyT>::addProperty(PyObject *args)
         &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
         return NULL;                             // NULL triggers exception 
 
+    std::string sDocStr = std::string(sDoc);
+    PyMem_Free(sDoc);
+
     Property* prop=0;
-    prop = FeaturePyT::getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
+    prop = FeaturePyT::getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
         PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
     
     if (!prop) {
