@@ -40,6 +40,7 @@ public:
 #if defined (HAVE_NETGEN)
         Netgen = 2,
 #endif
+        Standard = 3
     };
 
     Mesher(const TopoDS_Shape&);
@@ -68,6 +69,10 @@ public:
     { deflection = s; }
     double getDeflection() const
     { return deflection; }
+    void setAngularDeflection(double s)
+    { angularDeflection = s; }
+    double getAngularDeflection() const
+    { return angularDeflection; }
     void setMinMaxLengths(double f, double l)
     { minLen = f; maxLen = l; }
     void getMinMaxLengths(double& f, double& l) const
@@ -121,6 +126,7 @@ private:
     double maxArea;
     double localLength;
     double deflection;
+    double angularDeflection;
     double minLen, maxLen;
     bool regular;
 #if defined (HAVE_NETGEN)
@@ -132,6 +138,7 @@ private:
     bool optimize;
     bool allowquad;
 #endif
+    struct Vertex;
 };
 
 class MeshingOutput : public std::streambuf

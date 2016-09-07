@@ -177,6 +177,20 @@ private:
     {
         PyObject *shape;
 
+        static char* kwds_lindeflection[] = {"Shape", "LinearDeflection", "AngularDeflection", NULL};
+        PyErr_Clear();
+        double lindeflection=0;
+        double angdeflection=0.5;
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|d", kwds_lindeflection,
+                                        &(Part::TopoShapePy::Type), &shape, &lindeflection, &angdeflection)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
+            mesher.setMethod(MeshPart::Mesher::Standard);
+            mesher.setDeflection(lindeflection);
+            mesher.setAngularDeflection(angdeflection);
+            mesher.setRegular(true);
+            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+        }
+
         static char* kwds_maxLength[] = {"Shape", "MaxLength",NULL};
         PyErr_Clear();
         double maxLength=0;
