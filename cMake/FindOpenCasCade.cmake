@@ -7,33 +7,62 @@
 # OCC_LIBRARIES      - Link this to use OCC
 # OCC_OCAF_LIBRARIES - Link this to use OCC OCAF framework
 
-# First try to find OpenCASCADE Community Edition
-if(NOT DEFINED OCE_DIR)
-  # Check for OSX needs to come first because UNIX evaluates to true on OSX
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    if(DEFINED MACPORTS_PREFIX)
-      find_package(OCE QUIET HINTS ${MACPORTS_PREFIX}/Library/Frameworks)
-    elseif(DEFINED HOMEBREW_PREFIX)
-      find_package(OCE QUIET HINTS ${HOMEBREW_PREFIX}/Cellar/oce/*)
-    endif()
-  elseif(UNIX)
-    set(OCE_DIR "/usr/local/share/cmake/")
-  elseif(WIN32)
-    set(OCE_DIR "c:/OCE-0.4.0/share/cmake")
-  endif()
-endif()
+if(DEFINED OCC_MANUAL_PATH)
+  set(OCC_FOUND TRUE)
+  set(OCC_INCLUDE_DIR ${OCC_MANUAL_PATH}/include/opencascade CACHE PATH "system has OCC - OpenCASCADE")
+  set(OCC_LIBRARY_DIR ${OCC_MANUAL_PATH}/lib CACHE PATH "where the OCC include directory can be found")
+  set(OCC_LIBRARIES ${OCC_MANUAL_PATH}/lib CACHE PATH "where the OCC library directory can be found")
+  set(OCC_OCAF_LIBRARIES ${OCC_MANUAL_PATH}/lib CACHE PATH "Link this to use OCC OCAF framework")
 
-find_package(OCE QUIET)
-if(OCE_FOUND)
-  message(STATUS "-- OpenCASCADE Community Edition has been found.")
-  # Disable this define. For more details see bug #0001872
-  #add_definitions (-DHAVE_CONFIG_H)
-  set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
-  #set(OCC_LIBRARY_DIR ${OCE_LIBRARY_DIR})
-else(OCE_FOUND) #look for OpenCASCADE
-  if(WIN32)
-    if(CYGWIN OR MINGW)
-    FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+else(DEFINED OCC_MANUAL_PATH)
+
+  # First try to find OpenCASCADE Community Edition
+  if(NOT DEFINED OCE_DIR)
+    # Check for OSX needs to come first because UNIX evaluates to true on OSX
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+      if(DEFINED MACPORTS_PREFIX)
+        find_package(OCE QUIET HINTS ${MACPORTS_PREFIX}/Library/Frameworks)
+      elseif(DEFINED HOMEBREW_PREFIX)
+        find_package(OCE QUIET HINTS ${HOMEBREW_PREFIX}/Cellar/oce/*)
+      endif()
+    elseif(UNIX)
+      set(OCE_DIR "/usr/local/share/cmake/")
+    elseif(WIN32)
+      set(OCE_DIR "c:/OCE-0.4.0/share/cmake")
+    endif()
+  endif()
+
+  find_package(OCE QUIET)
+  if(OCE_FOUND)
+    message(STATUS "-- OpenCASCADE Community Edition has been found.")
+    # Disable this define. For more details see bug #0001872
+    #add_definitions (-DHAVE_CONFIG_H)
+    set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
+    #set(OCC_LIBRARY_DIR ${OCE_LIBRARY_DIR})
+  else(OCE_FOUND) #look for OpenCASCADE
+    if(WIN32)
+      if(CYGWIN OR MINGW)
+      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+          /usr/include/opencascade
+          /usr/local/include/opencascade
+          /opt/opencascade/include
+          /opt/opencascade/inc
+        )
+        FIND_LIBRARY(OCC_LIBRARY TKernel
+          /usr/lib
+          /usr/local/lib
+          /opt/opencascade/lib
+        )
+      else(CYGWIN OR MINGW)
+      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+          "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/include"
+        )
+        FIND_LIBRARY(OCC_LIBRARY TKernel
+          "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/lib"
+        )
+      endif(CYGWIN OR MINGW)
+    else(WIN32)
+      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
         /usr/include/opencascade
         /usr/local/include/opencascade
         /opt/opencascade/include
@@ -44,37 +73,17 @@ else(OCE_FOUND) #look for OpenCASCADE
         /usr/local/lib
         /opt/opencascade/lib
       )
-    else(CYGWIN OR MINGW)
-    FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
-        "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/include"
-      )
-      FIND_LIBRARY(OCC_LIBRARY TKernel
-        "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\OCC\\2;Installation Path]/lib"
-      )
-    endif(CYGWIN OR MINGW)
-  else(WIN32)
-    FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
-      /usr/include/opencascade
-      /usr/local/include/opencascade
-      /opt/opencascade/include
-      /opt/opencascade/inc
-    )
-    FIND_LIBRARY(OCC_LIBRARY TKernel
-      /usr/lib
-      /usr/local/lib
-      /opt/opencascade/lib
-    )
-  endif(WIN32)
-  if(OCC_LIBRARY)
-    GET_FILENAME_COMPONENT(OCC_LIBRARY_DIR ${OCC_LIBRARY} PATH)
-    IF(NOT OCC_INCLUDE_DIR)
-      FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
-        ${OCC_LIBRARY_DIR}/../inc
-      )
-    ENDIF()
-  endif(OCC_LIBRARY)
-endif(OCE_FOUND)
-
+    endif(WIN32)
+    if(OCC_LIBRARY)
+      GET_FILENAME_COMPONENT(OCC_LIBRARY_DIR ${OCC_LIBRARY} PATH)
+      IF(NOT OCC_INCLUDE_DIR)
+        FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+          ${OCC_LIBRARY_DIR}/../inc
+        )
+      ENDIF()
+    endif(OCC_LIBRARY)
+  endif(OCE_FOUND)
+endif(OCC_MANUAL_PATH)
 if(OCC_INCLUDE_DIR)
   file(STRINGS ${OCC_INCLUDE_DIR}/Standard_Version.hxx OCC_MAJOR
     REGEX "#define OCC_VERSION_MAJOR.*"
