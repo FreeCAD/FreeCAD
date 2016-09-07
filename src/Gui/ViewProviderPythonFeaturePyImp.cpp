@@ -68,12 +68,15 @@ PyObject*  ViewProviderPythonFeaturePy::addProperty(PyObject *args)
     char *sType,*sName=0,*sGroup=0,*sDoc=0;
     short attr=0;
     PyObject *ro = Py_False, *hd = Py_False;
-    if (!PyArg_ParseTuple(args, "s|ssshO!O!", &sType,&sName,&sGroup,&sDoc,&attr,
+    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
         &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
         return NULL;                             // NULL triggers exception 
 
+    std::string sDocStr = std::string(sDoc);
+    PyMem_Free(sDoc);
+
     App::Property* prop=0;
-    prop = getViewProviderPythonFeaturePtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
+    prop = getViewProviderPythonFeaturePtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
         PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
     
     if (!prop) {
