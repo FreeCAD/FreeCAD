@@ -581,12 +581,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 s1 = clone.Shape
                             if hasattr(s1,"CenterOfMass") and hasattr(s2,"CenterOfMass"):
                                 v = s1.CenterOfMass.sub(s2.CenterOfMass)
-                                r = getRotation(product)
-                                if not r.isNull():
-                                    v = v.add(s2.CenterOfMass)
-                                    v = v.add(r.multVec(s2.CenterOfMass.negative()))
-                                obj.Placement.Rotation = r
-                                obj.Placement.move(v)
+                                if product.Representation:
+                                    r = getRotation(product.Representation.Representations[0].Items[0].MappingTarget)
+                                    if not r.isNull():
+                                        v = v.add(s2.CenterOfMass)
+                                        v = v.add(r.multVec(s2.CenterOfMass.negative()))
+                                    obj.Placement.Rotation = r
+                                    obj.Placement.move(v)
                             else:
                                 print "failed to compute placement ",
                     else:
@@ -692,11 +693,18 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # color
             if FreeCAD.GuiUp and (pid in colors) and hasattr(obj.ViewObject,"ShapeColor"):
-                if DEBUG: print "    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255)
+                #if DEBUG: print "    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255)
                 obj.ViewObject.ShapeColor = colors[pid]
 
             # if DEBUG is on, recompute after each shape
             if DEBUG: FreeCAD.ActiveDocument.recompute()
+            
+            # attached 2D elements
+            if product.Representation:
+                for r in product.Representation.Representations:
+                    if r.RepresentationIdentifier == "FootPrint":
+                        annotations.append(product)
+                        break
 
         count += 1
         progressbar.next()
@@ -838,23 +846,32 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     if DEBUG and annotations: print "Creating 2D geometry..."
 
+    scaling = getScaling(ifcfile)
+    #print "scaling factor =",scaling
     for annotation in annotations:
         aid = annotation.id()
         if aid in skip: continue # user given id skip list
-        if "IfcAnnotation" in SKIP: continue # preferences-set type skip list
+        if annotation.is_a() in SKIP: continue # preferences-set type skip list
         name = "Annotation"
         if annotation.Name:
             name = annotation.Name.encode("utf8")
+        if not "annotation" in name.lower():
+            name = "Annotation " + name
         if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
         shapes2d = []
-        for repres in annotation.Representation.Representations:
-            shapes2d.extend(setRepresentation(repres))
+        for rep in annotation.Representation.Representations:
+            if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
+                shapes2d.extend(setRepresentation(rep,scaling))
         if shapes2d:
             sh = Part.makeCompound(shapes2d)
             pc = str(int((float(count)/(len(products)+len(annotations))*100)))+"% "
             if DEBUG: print pc,"creating object ",aid," : Annotation with shape: ",sh
             o = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             o.Shape = sh
+            p = getPlacement(annotation.ObjectPlacement,scaling)
+            if p: # and annotation.is_a("IfcAnnotation"):
+                o.Placement = p
+            
         count += 1
 
     FreeCAD.ActiveDocument.recompute()
@@ -1598,60 +1615,170 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     return productdef,placement,shapetype
 
 
-def setRepresentation(representation):
+# Below are 2D helper functions needed while IfcOpenShell cannot do this itself...
+
+
+def setRepresentation(representation,scaling=1000):
     """Returns a shape from a 2D IfcShapeRepresentation"""
 
     def getPolyline(ent):
         pts = []
         for p in ent.Points:
             c = p.Coordinates
-            pts.append(FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0))
+            c = FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0)
+            c.multiply(scaling)
+            pts.append(c)
         return Part.makePolygon(pts)
 
     def getCircle(ent):
         c = ent.Position.Location.Coordinates
         c = FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0)
-        r = ent.Radius
+        c.multiply(scaling)
+        r = ent.Radius*scaling
         return Part.makeCircle(r,c)
+        
+    def getCurveSet(ent):
+        result = []
+        for el in ent.Elements:
+            if el.is_a("IfcPolyline"):
+                result.append(getPolyline(el))
+            elif el.is_a("IfcCircle"):
+                result.append(getCircle(el))
+            elif el.is_a("IfcTrimmedCurve"):
+                base = el.BasisCurve
+                t1 = el.Trim1[0].wrappedValue
+                t2 = el.Trim2[0].wrappedValue
+                if not el.SenseAgreement:
+                    t1,t2 = t2,t1
+                if base.is_a("IfcPolyline"):
+                    bc = getPolyline(base)
+                    result.append(bc)
+                elif base.is_a("IfcCircle"):
+                    bc = getCircle(base)
+                    e = Part.ArcOfCircle(bc.Curve,math.radians(t1),math.radians(t2)).toShape()
+                    d = base.Position.RefDirection.DirectionRatios
+                    v = FreeCAD.Vector(d[0],d[1],d[2] if len(d) > 2 else 0)
+                    a = -DraftVecUtils.angle(v)
+                    e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
+                    result.append(e)
+        return result
 
     result = []
     if representation.is_a("IfcShapeRepresentation"):
         for item in representation.Items:
-            if item.is_a("IfcGeometricCurveSet"):
-                for el in item.Elements:
-                    if el.is_a("IfcPolyline"):
-                        result.append(getPolyline(el))
-                    elif el.is_a("IfcCircle"):
-                        result.append(getCircle(el))
-                    elif el.is_a("IfcTrimmedCurve"):
-                        base = el.BasisCurve
-                        t1 = el.Trim1[0].wrappedValue
-                        t2 = el.Trim2[0].wrappedValue
-                        if not el.SenseAgreement:
-                            t1,t2 = t2,t1
-                        if base.is_a("IfcPolyline"):
-                            bc = getPolyline(base)
-                            result.append(bc)
-                        elif base.is_a("IfcCircle"):
-                            bc = getCircle(base)
-                            e = Part.ArcOfCircle(bc.Curve,math.radians(t1),math.radians(t2)).toShape()
-                            d = base.Position.RefDirection.DirectionRatios
-                            v = FreeCAD.Vector(d[0],d[1],d[2] if len(d) > 2 else 0)
-                            a = -DraftVecUtils.angle(v)
-                            e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
-                            result.append(e)
+            if item.is_a() in ["IfcGeometricCurveSet","IfcGeometricSet"]:
+                result = getCurveSet(item)
+            elif item.is_a("IfcMappedItem"):
+                preresult = setRepresentation(item.MappingSource.MappedRepresentation,scaling)
+                pla = getPlacement(item.MappingSource.MappingOrigin,scaling)
+                rot = getRotation(item.MappingTarget)
+                if pla:
+                    if rot.Angle:
+                        pla.Rotation = rot
+                    for r in preresult:
+                        #r.Placement = pla
+                        result.append(r)
+                else:
+                    result = preresult
     return result
-
 
 def getRotation(entity):
     "returns a FreeCAD rotation from an IfcProduct with a IfcMappedItem representation"
     try:
-        rmap = entity.Representation.Representations[0].Items[0].MappingTarget
-        u = FreeCAD.Vector(rmap.Axis1.DirectionRatios)
-        v = FreeCAD.Vector(rmap.Axis2.DirectionRatios)
-        w = FreeCAD.Vector(rmap.Axis3.DirectionRatios)
+        u = FreeCAD.Vector(entity.Axis1.DirectionRatios)
+        v = FreeCAD.Vector(entity.Axis2.DirectionRatios)
+        w = FreeCAD.Vector(entity.Axis3.DirectionRatios)
     except AttributeError:
         return FreeCAD.Rotation()
     import WorkingPlane
     p = WorkingPlane.plane(u=u,v=v,w=w)
     return p.getRotation().Rotation
+
+
+def getPlacement(entity,scaling=1000):
+    "returns a placement from the given entity"
+
+    if not entity:
+        return None
+    import DraftVecUtils
+    pl = None
+    if entity.is_a("IfcAxis2Placement3D"):
+        x = getVector(entity.RefDirection,scaling)
+        z = getVector(entity.Axis,scaling)
+        if x and z:
+            y = z.cross(x)
+            m = DraftVecUtils.getPlaneRotation(x,y,z)
+            pl = FreeCAD.Placement(m)
+        else:
+            pl = FreeCAD.Placement()
+        loc = getVector(entity.Location,scaling)
+        if loc:
+            pl.move(loc)
+    elif entity.is_a("IfcLocalPlacement"):
+        pl = getPlacement(entity.PlacementRelTo,1) # original placement
+        relpl = getPlacement(entity.RelativePlacement,1) # relative transf
+        if pl and relpl:
+            pl = pl.multiply(relpl)
+        elif relpl:
+            pl = relpl
+    elif entity.is_a("IfcCartesianPoint"):
+        loc = getVector(entity,scaling)
+        pl = FreeCAD.Placement()
+        pl.move(loc)
+    if pl:
+        pl.Base = FreeCAD.Vector(pl.Base).multiply(scaling)
+    return pl
+
+
+def getVector(entity,scaling=1000):
+    "returns a vector from the given entity"
+
+    if not entity:
+        return None
+    v = None
+    if entity.is_a("IfcDirection"):
+        if len(entity.DirectionRatios) == 3:
+            v= FreeCAD.Vector(tuple(entity.DirectionRatios))
+        else:
+            v = FreeCAD.Vector(tuple(entity.DirectionRatios+[0]))
+    elif entity.is_a("IfcCartesianPoint"):
+        if len(entity.Coordinates) == 3:
+            v = FreeCAD.Vector(tuple(entity.Coordinates))
+        else:
+            v = FreeCAD.Vector(tuple(entity.Coordinates+[0]))
+    #if v:
+    #    v.multiply(scaling)
+    return v
+
+
+def getScaling(ifcfile):
+    "returns a scaling factor from file units to mm"
+
+    def getUnit(unit):
+        if unit.Name == "METRE":
+            if unit.Prefix == "KILO":
+                return 1000000.0
+            elif unit.Prefix == "HECTO":
+                return 100000.0
+            elif unit.Prefix == "DECA":
+                return 10000.0
+            elif not unit.Prefix:
+                return 1000.0
+            elif unit.Prefix == "DECI":
+                return 100.0
+            elif unit.Prefix == "CENTI":
+                return 10.0
+        return 1.0
+
+    ua = ifcfile.by_type("IfcUnitAssignment")
+    if not ua:
+        return 1.0
+    ua = ua[0]
+    for u in ua.Units:
+        if u.UnitType == "LENGTHUNIT":
+            if u.is_a("IfcConversionBasedUnit"):
+                f =  getUnit(u.ConversionFactor.UnitComponent)
+                return f * u.ConversionFactor.ValueComponent.wrappedValue
+            elif u.is_a("IfcSIUnit") or u.is_a("IfcUnit"):
+                return getUnit(u)
+    return 1.0
