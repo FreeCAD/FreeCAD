@@ -144,6 +144,7 @@ Mesher::Mesher(const TopoDS_Shape& s)
   , minLen(0)
   , maxLen(0)
   , regular(false)
+  , segments(false)
 #if defined (HAVE_NETGEN)
   , fineness(5)
   , growthRate(0)
@@ -180,6 +181,13 @@ Mesh::MeshObject* Mesher::createMesh() const
 #endif
         }
 
+        std::map<uint32_t, std::vector<std::size_t> > colorMap;
+        for (std::size_t i=0; i<colors.size(); i++) {
+            colorMap[colors[i]].push_back(i);
+        }
+
+        bool createSegm = (colors.size() == aMesh->NbDomains());
+
         MeshCore::MeshFacetArray faces;
         faces.reserve(aMesh->NbTriangles());
 
@@ -188,7 +196,7 @@ Mesh::MeshObject* Mesher::createMesh() const
         Standard_Real x2, y2, z2;
         Standard_Real x3, y3, z3;
 
-        std::list< std::vector<unsigned long> > meshSegments;
+        std::vector< std::vector<unsigned long> > meshSegments;
         std::size_t numMeshFaces = 0;
         StlMesh_MeshExplorer xp(aMesh);
         for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
@@ -244,10 +252,12 @@ Mesh::MeshObject* Mesher::createMesh() const
             }
 
             // add a segment for the face
-            std::vector<unsigned long> segment(numDomainFaces);
-            std::generate(segment.begin(), segment.end(), Base::iotaGen<unsigned long>(numMeshFaces));
-            numMeshFaces += numDomainFaces;
-            meshSegments.push_back(segment);
+            if (createSegm || this->segments) {
+                std::vector<unsigned long> segment(numDomainFaces);
+                std::generate(segment.begin(), segment.end(), Base::iotaGen<unsigned long>(numMeshFaces));
+                numMeshFaces += numDomainFaces;
+                meshSegments.push_back(segment);
+            }
         }
 
         MeshCore::MeshPointArray verts;
@@ -260,8 +270,21 @@ Mesh::MeshObject* Mesher::createMesh() const
 
         Mesh::MeshObject* meshdata = new Mesh::MeshObject();
         meshdata->swap(kernel);
-        for (auto it : meshSegments) {
-            meshdata->addSegment(it);
+        if (createSegm) {
+            for (auto it : colorMap) {
+                Mesh::Segment segm(meshdata, false);
+                for (auto jt : it.second) {
+                    segm.addIndices(meshSegments[jt]);
+                }
+                segm.save(true);
+                segm.setName("Group");
+                meshdata->addSegment(segm);
+            }
+        }
+        else {
+            for (auto it : meshSegments) {
+                meshdata->addSegment(it);
+            }
         }
         return meshdata;
     }

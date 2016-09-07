@@ -246,16 +246,23 @@ bool Tessellation::accept()
             QString cmd;
             if (method == 0) { // Standard
                 double devFace = ui->spinSurfaceDeviation->value().getValue();
+                QString param = QString::fromLatin1("Shape=__doc__.getObject(\"%1\").Shape,LinearDeflection=%2")
+                    .arg(shape)
+                    .arg(devFace);
+                if (ui->meshShapeColors->isChecked())
+                    param += QString::fromLatin1(",Segments=True");
+                if (ui->groupsFaceColors->isChecked())
+                    param += QString::fromLatin1(",GroupColors=__doc__.getObject(\"%1\").ViewObject.DiffuseColor")
+                            .arg(shape);
                 cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                    "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,LinearDeflection=%3)\n"
-                    "__mesh__.Label=\"%4 (Meshed)\"\n"
+                    "__mesh__.Mesh=MeshPart.meshFromShape(%2)\n"
+                    "__mesh__.Label=\"%3 (Meshed)\"\n"
                     "__mesh__.ViewObject.CreaseAngle=25.0\n"
                     "del __doc__, __mesh__\n")
                     .arg(this->document)
-                    .arg(shape)
-                    .arg(devFace)
+                    .arg(param)
                     .arg(label);
             }
             else if (method == 1) { // Mefisto
