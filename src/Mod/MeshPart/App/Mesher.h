@@ -81,6 +81,12 @@ public:
     { regular = s; }
     bool isRegular() const
     { return regular; }
+    void setSegments(bool s)
+    { segments = s; }
+    bool isSegments() const
+    { return segments; }
+    void setColors(const std::vector<uint32_t>& c)
+    { colors = c; }
     //@}
 
 #if defined (HAVE_NETGEN)
@@ -129,6 +135,7 @@ private:
     double angularDeflection;
     double minLen, maxLen;
     bool regular;
+    bool segments;
 #if defined (HAVE_NETGEN)
     int fineness;
     double growthRate;
@@ -138,6 +145,7 @@ private:
     bool optimize;
     bool allowquad;
 #endif
+    std::vector<uint32_t> colors;
     struct Vertex;
 };
 

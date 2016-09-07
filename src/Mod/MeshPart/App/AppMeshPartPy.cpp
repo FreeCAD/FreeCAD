@@ -177,17 +177,38 @@ private:
     {
         PyObject *shape;
 
-        static char* kwds_lindeflection[] = {"Shape", "LinearDeflection", "AngularDeflection", NULL};
+        static char* kwds_lindeflection[] = {"Shape", "LinearDeflection", "AngularDeflection",
+                                             "Segments", "GroupColors", NULL};
         PyErr_Clear();
         double lindeflection=0;
         double angdeflection=0.5;
-        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|d", kwds_lindeflection,
-                                        &(Part::TopoShapePy::Type), &shape, &lindeflection, &angdeflection)) {
+        PyObject* segment = Py_False;
+        PyObject* groupColors = 0;
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|dO!O", kwds_lindeflection,
+                                        &(Part::TopoShapePy::Type), &shape, &lindeflection, &angdeflection,
+                                        &(PyBool_Type), &segment, &groupColors)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Standard);
             mesher.setDeflection(lindeflection);
             mesher.setAngularDeflection(angdeflection);
             mesher.setRegular(true);
+            mesher.setSegments(PyObject_IsTrue(segment) ? true : false);
+            if (groupColors) {
+                Py::Sequence list(groupColors);
+                std::vector<uint32_t> colors;
+                colors.reserve(list.size());
+                for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                    Py::Tuple t(*it);
+                    Py::Float r(t[0]);
+                    Py::Float g(t[1]);
+                    Py::Float b(t[2]);
+                    App::Color c(static_cast<double>(r),
+                                 static_cast<double>(g),
+                                 static_cast<double>(b));
+                    colors.push_back(c.getPackedValue());
+                }
+                mesher.setColors(colors);
+            }
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 
