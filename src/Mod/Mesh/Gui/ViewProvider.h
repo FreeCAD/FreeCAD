@@ -160,6 +160,7 @@ public:
     /*! The size of the array must be equal to the number of facets. */
     void setFacetTransparency(const std::vector<float>&);
     void resetFacetTransparency();
+    void highlightSegments(const std::vector<App::Color>&);
     //@}
 
 protected:

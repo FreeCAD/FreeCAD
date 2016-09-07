@@ -1913,6 +1913,37 @@ void ViewProviderMesh::highlightComponents()
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
+void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    unsigned long numSegm = rMesh.countSegments();
+    if (numSegm == colors.size()) {
+        // Colorize the components
+        pcMatBinding->value = SoMaterialBinding::PER_FACE;
+        int uCtFacets = (int)rMesh.countFacets();
+
+        pcShapeMaterial->diffuseColor.setNum(uCtFacets);
+        SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+        for (unsigned long i=0; i<numSegm; i++) {
+            std::vector<unsigned long> segm = rMesh.getSegment(i).getIndices();
+            float fRed = colors[i].r;
+            float fGrn = colors[i].g;
+            float fBlu = colors[i].b;
+            for (std::vector<unsigned long>::iterator it = segm.begin(); it != segm.end(); ++it) {
+                cols[*it].setValue(fRed,fGrn,fBlu);
+            }
+        }
+        pcShapeMaterial->diffuseColor.finishEditing();
+    }
+    else if (colors.size() == 1) {
+        pcMatBinding->value = SoMaterialBinding::OVERALL;
+        float fRed = colors[0].r;
+        float fGrn = colors[0].g;
+        float fBlu = colors[0].b;
+        pcShapeMaterial->diffuseColor.setValue(fRed,fGrn,fBlu);
+    }
+}
+
 // ------------------------------------------------------
 
 PROPERTY_SOURCE(MeshGui::ViewProviderIndexedFaceSet, MeshGui::ViewProviderMesh)
