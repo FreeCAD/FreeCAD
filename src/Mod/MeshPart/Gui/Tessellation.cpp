@@ -41,6 +41,8 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Mesh/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProvider.h>
 
 using namespace MeshPartGui;
 
@@ -327,6 +329,21 @@ bool Tessellation::accept()
                 }
             }
             Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
+
+            // if Standard mesher is used and face colors should be applied
+            if (method == 0) { // Standard
+                if (ui->meshShapeColors->isChecked()) {
+                    Gui::ViewProvider* vpm = Gui::Application::Instance->getViewProvider
+                            (activeDoc->getActiveObject());
+                    Gui::ViewProvider* vpp = Gui::Application::Instance->getViewProvider
+                            (activeDoc->getObject(shape.toLatin1()));
+                    MeshGui::ViewProviderMesh* vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
+                    PartGui::ViewProviderPart* vppart = dynamic_cast<PartGui::ViewProviderPart*>(vpp);
+                    if (vpmesh && vppart) {
+                        vpmesh->highlightSegments(vppart->DiffuseColor.getValues());
+                    }
+                }
+            }
         }
         activeDoc->commitTransaction();
     }
