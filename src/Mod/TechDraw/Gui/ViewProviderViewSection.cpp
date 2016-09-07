@@ -33,15 +33,10 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
 #include "ViewProviderViewSection.h"
 
 using namespace TechDrawGui;
@@ -91,7 +86,7 @@ std::vector<App::DocumentObject*> ViewProviderViewSection::claimChildren(void) c
     return ViewProviderViewPart::claimChildren();
 }
 
-TechDraw::DrawView* ViewProviderViewSection::getViewObject() const
+TechDraw::DrawViewSection* ViewProviderViewSection::getViewObject() const
 {
-    return dynamic_cast<TechDraw::DrawView*>(pcObject);
+    return dynamic_cast<TechDraw::DrawViewSection*>(pcObject);
 }

@@ -40,11 +40,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SoFCSelection.h>
 
-
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "ViewProviderProjGroupItem.h"
 
@@ -141,8 +137,12 @@ bool ViewProviderProjGroupItem::doubleClicked(void)
     return true;
 }
 
+TechDraw::DrawProjGroupItem* ViewProviderProjGroupItem::getViewObject() const
+{
+    return dynamic_cast<TechDraw::DrawProjGroupItem*>(pcObject);
+}
 
 TechDraw::DrawProjGroupItem* ViewProviderProjGroupItem::getObject() const
 {
-    return dynamic_cast<TechDraw::DrawProjGroupItem*>(pcObject);
+    return getViewObject();
 }

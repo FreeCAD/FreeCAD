@@ -28,9 +28,8 @@
 #include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
-namespace TechDraw{
-    class DrawView;
-}
+#include <Mod/TechDraw/App/DrawView.h>
+#include "QGIView.h"
 
 namespace TechDrawGui {
 class QGIView;
@@ -66,7 +65,7 @@ public:
     virtual void startRestoring();
     virtual void finishRestoring();
     //@}
-    TechDraw::DrawView* getViewObject() const;
+    virtual TechDraw::DrawView* getViewObject() const;
 
 private:
     bool m_docReady;                                                   //sb MDI + QGraphicsScene ready

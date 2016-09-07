@@ -38,7 +38,6 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include "ViewProviderSymbol.h"
 
 using namespace TechDrawGui;

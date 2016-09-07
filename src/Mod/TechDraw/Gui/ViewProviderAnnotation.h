@@ -29,9 +29,7 @@
 
 #include "ViewProviderDrawingView.h"
 
-namespace TechDraw{
-    class DrawViewAnnotation;
-}
+#include <Mod/TechDraw/App/DrawViewAnnotation.h>
 
 namespace TechDrawGui {
 
@@ -54,7 +52,7 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
 
-    TechDraw::DrawViewAnnotation* getViewObject() const;
+    virtual TechDraw::DrawViewAnnotation* getViewObject() const;
 };
 
 } // namespace TechDrawGui
