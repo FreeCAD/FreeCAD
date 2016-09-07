@@ -155,10 +155,13 @@ ewWireList EdgeWalker::getResult()
 
 std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
 {
+    std::vector<TopoDS_Wire> fw;
     ewWireList result = m_eV.getResult();
+    if (result.wires.empty()) {
+        return fw;
+    }
 
     std::vector<ewWire>::iterator iWire = result.wires.begin();     // a WE within [WE]
-    std::vector<TopoDS_Wire> fw;
     for (;iWire != result.wires.end(); iWire++) {
         std::vector<WalkerEdge>::iterator iEdge = (*iWire).wedges.begin();
         std::vector<TopoDS_Edge> topoEdges;
@@ -174,11 +177,14 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
 
 std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
 {
+    std::vector<TopoDS_Wire> fw;
     ewWireList result = m_eV.getResult();
+    if (result.wires.empty()) {
+        return fw;
+    }
     result = result.removeDuplicates();
 
     std::vector<ewWire>::iterator iWire = result.wires.begin();
-    std::vector<TopoDS_Wire> fw;
     for (;iWire != result.wires.end(); iWire++) {
         std::vector<WalkerEdge>::iterator iEdge = (*iWire).wedges.begin();
         std::vector<TopoDS_Edge> topoEdges;
@@ -310,6 +316,9 @@ void ewWire::push_back(WalkerEdge w)
 ewWireList ewWireList::removeDuplicates()
 {
     ewWireList result;
+    if (wires.empty()) {
+        return result;
+    }
     result.push_back(*(wires.begin()));                //save the first ewWire
     std::vector<ewWire>::iterator iWire = (wires.begin()) + 1;    //starting with second
     for (; iWire != wires.end(); iWire++) {
