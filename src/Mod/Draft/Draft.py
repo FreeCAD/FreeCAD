@@ -2222,10 +2222,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 (obj.Name,i))
         else:
             # closed circle or spline
-            if isinstance(obj.Shape.Edges[0].Curve,Part.Circle):
-                svg = getCircle(obj.Shape.Edges[0])
-            else:
-                svg = getPath(obj.Shape.Edges)
+            if obj.Shape.Edges:
+                if isinstance(obj.Shape.Edges[0].Curve,Part.Circle):
+                    svg = getCircle(obj.Shape.Edges[0])
+                else:
+                    svg = getPath(obj.Shape.Edges)
     return svg
 
 def getrgb(color,testbw=True):
