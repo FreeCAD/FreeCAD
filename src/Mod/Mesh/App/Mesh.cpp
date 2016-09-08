@@ -1619,6 +1619,7 @@ void MeshObject::addSegment(const Segment& s)
     addSegment(s.getIndices());
     this->_segments.back().setName(s.getName());
     this->_segments.back().save(s.isSaved());
+    this->_segments.back()._modifykernel = s._modifykernel;
 }
 
 void MeshObject::addSegment(const std::vector<unsigned long>& inds)
