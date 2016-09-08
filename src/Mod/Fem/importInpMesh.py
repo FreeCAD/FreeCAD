@@ -32,7 +32,7 @@ __date__ = "04/08/2016"
 
 
 if open.__module__ == '__builtin__':
-    pyopen = open  # because we'll redefine open below 
+    pyopen = open  # because we'll redefine open below
 
 
 def read_inp(file_name):
@@ -51,19 +51,10 @@ def read_inp(file_name):
         penta6 = {}
         penta15 = {}
         seg2 = {}
-        # seg3 = {}
+        seg3 = {}
     error_seg3 = False  # to print "not supported"
     nodes = {}
     model_definition = True
-
-    def read_elm_nodes(elm_category, number_of_nodes):
-
-        line_list = string.split(line, ',')
-        number = int(line_list[0])
-        elm_category[number] = []
-        for en in range(1, number_of_nodes + 1):
-            enode = int(line_list[en])
-            elm_category[number].append(enode)
 
     f = pyopen(file_name, "r")
     line = "\n"
@@ -87,21 +78,9 @@ def read_inp(file_name):
                 include = line[start:].strip().strip('"')
                 f_include = pyopen(include, "r")
                 continue
-
             read_node = False
-            read_tria3 = False
-            read_tria6 = False
-            read_quad4 = False
-            read_quad8 = False
-            read_tetra4 = False
-            read_tetra10 = False
-            read_hexa8 = False
-            read_hexa20_line1 = False
-            read_hexa20_line2 = False
-            read_penta6 = False
-            read_penta15 = False
-            read_seg2 = False
-            read_seg3 = False
+            elm_category = []
+            elm_2nd_line = False
 
         # reading nodes
         if (line[:5].upper() == "*NODE") and (model_definition is True):
@@ -122,73 +101,62 @@ def read_inp(file_name):
                     elm_type = line_part.split('=')[1].strip()
 
             if elm_type in ["S3", "CPS3", "CPE3", "CAX3"]:
-                read_tria3 = True
+                elm_category = elements.tria3
+                number_of_nodes = 3
             elif elm_type in ["S6", "CPS6", "CPE6", "CAX6"]:
-                read_tria6 = True
+                elm_category = elements.tria6
+                number_of_nodes = 6
             elif elm_type in ["S4", "S4R", "CPS4", "CPS4R", "CPE4", "CPE4R",
                               "CAX4", "CAX4R"]:
-                read_quad4 = True
+                elm_category = elements.quad4
+                number_of_nodes = 4
             elif elm_type in ["S8", "S8R", "CPS8", "CPS8R", "CPE8", "CPE8R",
                               "CAX8", "CAX8R"]:
-                read_quad8 = True
+                elm_category = elements.quad8
+                number_of_nodes = 8
             elif elm_type == "C3D4":
-                read_tetra4 = True
+                elm_category = elements.tetra4
+                number_of_nodes = 4
             elif elm_type == "C3D10":
-                read_tetra10 = True
+                elm_category = elements.tetra10
+                number_of_nodes = 10
             elif elm_type in ["C3D8", "C3D8R", "C3D8I"]:
-                read_hexa8 = True
+                elm_category = elements.hexa8
+                number_of_nodes = 8
             elif elm_type in ["C3D20", "C3D20R", "C3D20RI"]:
-                read_hexa20_line1 = True
+                elm_category = elements.hexa20
+                number_of_nodes = 20
             elif elm_type == "C3D6":
-                read_penta6 = True
+                elm_category = elements.penta6
+                number_of_nodes = 6
             elif elm_type == "C3D15":
-                read_penta15 = True
+                elm_category = elements.penta15
+                number_of_nodes = 15
             elif elm_type in ["B31", "B31R", "T3D2"]:
-                read_seg2 = True
+                elm_category = elements.seg2
+                number_of_nodes = 2
             elif elm_type in ["B32", "B32R", "T3D3"]:
-                read_seg3 = True
+                elm_category = elements.seg3
+                number_of_nodes = 3
+                error_seg3 = True  # to print "not supported"
 
-        elif read_tria3 is True:
-            read_elm_nodes(elements.tria3, 3)
-        elif read_tria6 is True:
-            read_elm_nodes(elements.tria6, 6)
-        elif read_quad4 is True:
-            read_elm_nodes(elements.quad4, 4)
-        elif read_quad8 is True:
-            read_elm_nodes(elements.quad8, 8)
-        elif read_tetra4 is True:
-            read_elm_nodes(elements.tetra4, 4)
-        elif read_tetra10 is True:
-            read_elm_nodes(elements.tetra10, 10)
-        elif read_hexa8 is True:
-            read_elm_nodes(elements.hexa8, 8)
-        elif read_hexa20_line2 is True:
+        elif elm_category != []:
             line_list = string.split(line, ',')
-            if line_list[-1].strip() == "":
-                del line_list[-1]
-            for en in range(0, len(line_list)):
-                enode = int(line_list[en])
-                elements.hexa20[number].append(enode)
-            read_hexa20_line2 = False
-        elif read_hexa20_line1 is True:
-            line_list = string.split(line, ',')
-            if line_list[-1].strip() == "":
-                del line_list[-1]
-            number = int(line_list[0])
-            elements.hexa20[number] = []
-            for en in range(1, len(line_list)):
-                enode = int(line_list[en])
-                elements.hexa20[number].append(enode)
-            read_hexa20_line2 = True
-        elif read_penta6 is True:
-            read_elm_nodes(elements.penta6, 6)
-        elif read_penta15 is True:
-            read_elm_nodes(elements.penta15, 15)
-        elif read_seg2 is True:
-            read_elm_nodes(elements.seg2, 2)
-        elif read_seg3 is True:
-            error_seg3 = True  # to print "not supported"
-            # read_elm_nodes(elements.seg3, 3)
+            if elm_2nd_line is False:
+                number = int(line_list[0])
+                elm_category[number] = []
+                pos = 1
+            else:
+                pos = 0
+                elm_2nd_line = False
+            for en in range(pos, pos + number_of_nodes - len(elm_category[number])):
+                try:
+                    enode = int(line_list[en])
+                    elm_category[number].append(enode)
+                except:
+                    elm_2nd_line = True
+                    break
+
         elif line[:5].upper() == "*STEP":
             model_definition = False
     if error_seg3 is True:  # to print "not supported"
@@ -220,9 +188,9 @@ def read_inp(file_name):
         elements.penta15[en] = [n[4], n[5], n[3], n[1], n[2], n[0],
                                 n[10], n[11], n[9], n[7], n[8], n[6], n[13],
                                 n[14], n[12]]
-    # for en in elements.seg3:
-        # n = elements.seg3[en]
-        # elements.seg3[en] = [n[0], n[1], n[2]]
+    for en in elements.seg3:
+        n = elements.seg3[en]
+        elements.seg3[en] = [n[0], n[2], n[1]]
 
     return {'Nodes': nodes,
             'Hexa8Elem': elements.hexa8, 'Penta6Elem': elements.penta6, 'Tetra4Elem': elements.tetra4,
@@ -236,7 +204,7 @@ def import_inp(filename):
 
     m = read_inp(filename)
     mesh = FemMeshTools.make_femmesh(m)
-    mesh_name = os.path.splitext(os.path.basename(filename))[0] 
+    mesh_name = os.path.splitext(os.path.basename(filename))[0]
     mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
     mesh_object.FemMesh = mesh
 

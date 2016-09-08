@@ -709,8 +709,18 @@ class Component:
             import Drawing,Part
             pset = []
             for f in fset:
-                pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
-                pset.append(pf)
+                try:
+                    pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                except Part.OCCError:
+                    # error in computing the areas. Better set them to zero than show a wrong value
+                    if obj.HorizontalArea.Value != 0:
+                        print "Error computing areas for ",obj.Label
+                        obj.HorizontalArea = 0
+                    if hasattr(obj,"PerimeterLength"):
+                        if obj.PerimeterLength.Value != 0:
+                            obj.PerimeterLength = 0
+                else:
+                    pset.append(pf)
             if pset:
                 self.flatarea = pset.pop()
                 for f in pset:

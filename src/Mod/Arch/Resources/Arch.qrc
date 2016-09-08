@@ -23,6 +23,7 @@
         <file>icons/Arch_Structure_Tree.svg</file>
         <file>icons/Arch_Structure_Clone.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>
+        <file>icons/Arch_Window_Clone.svg</file>
         <file>icons/Arch_Axis.svg</file>
         <file>icons/Arch_Axis_Tree.svg</file>
         <file>icons/Arch_Roof.svg</file>
@@ -45,6 +46,7 @@
         <file>icons/Arch_Panel_Tree.svg</file>
         <file>icons/Arch_Equipment.svg</file>
         <file>icons/Arch_Equipment_Tree.svg</file>
+        <file>icons/Arch_Equipment_Clone.svg</file>
         <file>icons/Arch_Survey.svg</file>
         <file>icons/Arch_3Views.svg</file>
         <file>icons/IFC.svg</file>

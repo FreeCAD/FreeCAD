@@ -665,6 +665,35 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
     return false;
 }
 
+void ViewProviderMesh::exportMesh(const char* filename, const char* fmt) const
+{
+    MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
+    if (fmt) {
+        std::string dummy = "meshfile.";
+        dummy += fmt;
+        format = MeshCore::MeshOutput::GetFormat(dummy.c_str());
+    }
+
+    MeshCore::Material mat;
+    int numColors = pcShapeMaterial->diffuseColor.getNum();
+    const SbColor* colors = pcShapeMaterial->diffuseColor.getValues(0);
+    mat.diffuseColor.reserve(numColors);
+    for (int i=0; i<numColors; i++) {
+        const SbColor& c = colors[i];
+        mat.diffuseColor.push_back(App::Color(c[0], c[1], c[2]));
+    }
+
+    const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(getObject())->Mesh.getValue();
+    if (mat.diffuseColor.size() == mesh.countPoints())
+        mat.binding = MeshCore::MeshIO::PER_VERTEX;
+    else if (mat.diffuseColor.size() == mesh.countFacets())
+        mat.binding = MeshCore::MeshIO::PER_FACE;
+    else
+        mat.binding = MeshCore::MeshIO::OVERALL;
+
+    mesh.save(filename, format, &mat, getObject()->Label.getValue());
+}
+
 void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
@@ -1882,6 +1911,37 @@ void ViewProviderMesh::highlightComponents()
         }
     }
     pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    unsigned long numSegm = rMesh.countSegments();
+    if (numSegm == colors.size()) {
+        // Colorize the components
+        pcMatBinding->value = SoMaterialBinding::PER_FACE;
+        int uCtFacets = (int)rMesh.countFacets();
+
+        pcShapeMaterial->diffuseColor.setNum(uCtFacets);
+        SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+        for (unsigned long i=0; i<numSegm; i++) {
+            std::vector<unsigned long> segm = rMesh.getSegment(i).getIndices();
+            float fRed = colors[i].r;
+            float fGrn = colors[i].g;
+            float fBlu = colors[i].b;
+            for (std::vector<unsigned long>::iterator it = segm.begin(); it != segm.end(); ++it) {
+                cols[*it].setValue(fRed,fGrn,fBlu);
+            }
+        }
+        pcShapeMaterial->diffuseColor.finishEditing();
+    }
+    else if (colors.size() == 1) {
+        pcMatBinding->value = SoMaterialBinding::OVERALL;
+        float fRed = colors[0].r;
+        float fGrn = colors[0].g;
+        float fBlu = colors[0].b;
+        pcShapeMaterial->diffuseColor.setValue(fRed,fGrn,fBlu);
+    }
 }
 
 // ------------------------------------------------------

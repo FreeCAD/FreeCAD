@@ -293,7 +293,7 @@ class _Panel(ArchComponent.Component):
             if not obj.Base:
                 return
             elif obj.Base.isDerivedFrom("Part::Feature"):
-                if not obj.Base.Solids:
+                if not obj.Base.Shape.Solids:
                     return
 
         # creating base shape
@@ -301,32 +301,31 @@ class _Panel(ArchComponent.Component):
         base = None
         normal = None
         if obj.Base:
-            p = FreeCAD.Placement(obj.Base.Placement)
-            normal = p.Rotation.multVec(Vector(0,0,1))
-            normal = normal.multiply(thickness)
             base = obj.Base.Shape.copy()
-            if base.Solids:
-                pass
-            elif base.Faces:
-                self.BaseProfile = base
-                self.ExtrusionVector = normal
-                base = base.extrude(normal)
-            elif base.Wires:
-                closed = True
-                for w in base.Wires:
-                    if not w.isClosed():
-                        closed = False
-                if closed:
-                    base = ArchCommands.makeFace(base.Wires)
+            if not base.Solids:
+                p = FreeCAD.Placement(obj.Base.Placement)
+                normal = p.Rotation.multVec(Vector(0,0,1))
+                normal = normal.multiply(thickness)
+                if base.Faces:
                     self.BaseProfile = base
                     self.ExtrusionVector = normal
                     base = base.extrude(normal)
-            elif obj.Base.isDerivedFrom("Mesh::Feature"):
-                if obj.Base.Mesh.isSolid():
-                    if obj.Base.Mesh.countComponents() == 1:
-                        sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
-                        if sh.isClosed() and sh.isValid() and sh.Solids:
-                            base = sh
+                elif base.Wires:
+                    closed = True
+                    for w in base.Wires:
+                        if not w.isClosed():
+                            closed = False
+                    if closed:
+                        base = ArchCommands.makeFace(base.Wires)
+                        self.BaseProfile = base
+                        self.ExtrusionVector = normal
+                        base = base.extrude(normal)
+                elif obj.Base.isDerivedFrom("Mesh::Feature"):
+                    if obj.Base.Mesh.isSolid():
+                        if obj.Base.Mesh.countComponents() == 1:
+                            sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
+                            if sh.isClosed() and sh.isValid() and sh.Solids:
+                                base = sh
         else:
             normal = Vector(0,0,1).multiply(thickness)
             self.ExtrusionVector = normal

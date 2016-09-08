@@ -244,6 +244,9 @@ class _Equipment(ArchComponent.Component):
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
+        obj.setEditorMode("VerticalArea",2)
+        obj.setEditorMode("HorizontalArea",2)
+        obj.setEditorMode("PerimeterLength",2)
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
@@ -283,6 +286,9 @@ class _Equipment(ArchComponent.Component):
                     base = self.processSubShapes(obj,base,pl)
                     self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)
 
+    def computeAreas(self,obj):
+        return
+
 
 class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
     "A View Provider for the Equipment object"
@@ -292,6 +298,10 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"CloneOf"):
+                if self.Object.CloneOf:
+                    return ":/icons/Arch_Equipment_Clone.svg"
         return ":/icons/Arch_Equipment_Tree.svg"
 
     def attach(self, vobj):
