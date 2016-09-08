@@ -28,6 +28,8 @@
 #ifndef _PreComp_
 # include <sstream>
 
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
@@ -196,6 +198,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn("Section cut has failed");
 
     TopoDS_Shape rawShape = mkCut.Shape();
+    Bnd_Box testBox;
+    BRepBndLib::Add(rawShape, testBox);
+    testBox.SetGap(0.0);
+    if (testBox.IsVoid()) {                        //prism & input don't intersect.  rawShape is garbage, don't bother.
+        return DrawView::execute();
+    }
 
     geometryObject->setTolerance(Tolerance.getValue());
     geometryObject->setScale(Scale.getValue());
