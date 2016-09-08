@@ -474,7 +474,10 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       try {
         OCC_CATCH_SIGNALS;
 
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+        std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh, [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(occgeom, mesh_ptr, netgen::mparam, startWith, endWith);
+#elif NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeom, ngMesh, netgen::mparam, startWith, endWith);
 #else
         char *optstr = 0;
