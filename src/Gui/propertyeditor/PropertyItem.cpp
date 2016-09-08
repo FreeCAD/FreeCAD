@@ -252,7 +252,10 @@ int PropertyItem::decimals() const
 
 QVariant PropertyItem::toolTip(const App::Property* prop) const
 {
-    return QVariant(QString::fromUtf8(prop->getDocumentation()));
+    QString str = QApplication::translate("App::Property",
+                                          prop->getDocumentation(),
+                                          0, QApplication::UnicodeUTF8);
+    return QVariant(str);
 }
 
 QVariant PropertyItem::decoration(const QVariant&) const
@@ -290,7 +293,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         QString objName = QString::fromLatin1(obj->getNameInDocument());
         QString propName = QString::fromLatin1(parent->getPropertyName(prop));
         return QString::fromLatin1("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%3")
-            .arg(docName).arg(objName).arg(propName);
+            .arg(docName).arg(objName).arg(propName);
     }
     if (parent->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
         App::DocumentObject* obj = static_cast<Gui::ViewProviderDocumentObject*>(parent)->getObject();
@@ -299,7 +302,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         QString objName = QString::fromLatin1(obj->getNameInDocument());
         QString propName = QString::fromLatin1(parent->getPropertyName(prop));
         return QString::fromLatin1("FreeCADGui.getDocument(\"%1\").getObject(\"%2\").%3")
-            .arg(docName).arg(objName).arg(propName);
+            .arg(docName).arg(objName).arg(propName);
     }
     return QString();
 }
