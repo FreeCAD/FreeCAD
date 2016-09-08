@@ -340,7 +340,17 @@ bool Tessellation::accept()
                     MeshGui::ViewProviderMesh* vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
                     PartGui::ViewProviderPart* vppart = dynamic_cast<PartGui::ViewProviderPart*>(vpp);
                     if (vpmesh && vppart) {
-                        vpmesh->highlightSegments(vppart->DiffuseColor.getValues());
+                        std::vector<App::Color> diff_col = vppart->DiffuseColor.getValues();
+                        if (ui->groupsFaceColors->isChecked()) {
+                            // unique colors
+                            std::set<uint32_t> col_set;
+                            for (auto it : diff_col)
+                                col_set.insert(it.getPackedValue());
+                            diff_col.clear();
+                            for (auto it : col_set)
+                                diff_col.push_back(App::Color(it));
+                        }
+                        vpmesh->highlightSegments(diff_col);
                     }
                 }
             }
