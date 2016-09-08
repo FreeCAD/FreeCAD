@@ -45,6 +45,31 @@ PyObject* DrawPagePy::addView(PyObject* args)
     return PyInt_FromLong((long) rc);
 }
 
+PyObject* DrawPagePy::removeView(PyObject* args)
+{
+    //this implements iRC = pyPage.removeView(pyView)  -or-
+    //doCommand(Doc,"App.activeDocument().%s.removeView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    PyObject *pcDocObj;
+
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
+        Base::Console().Error("Error: DrawPagePy::removeView - Bad Arg - not DocumentObject\n");
+        return NULL;
+        //TODO: sb PyErr??
+        //PyErr_SetString(PyExc_TypeError,"removeView expects a DrawView");
+        //return -1;
+    }
+
+    DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage
+    //how to validate that obj is DrawView before use??
+    DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
+    DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
+
+    int rc = page->removeView(view);
+
+    return PyInt_FromLong((long) rc);
+}
+
+
 //    double getPageWidth() const;
 PyObject* DrawPagePy::getPageWidth(PyObject *args)
 {
