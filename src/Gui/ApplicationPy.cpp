@@ -1005,13 +1005,14 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
 
 PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    char*       pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    char* pName;
+    int item = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &pName, &item))
+        return NULL;
 
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
-        cmd->invoke(0);
+        cmd->invoke(item);
         Py_INCREF(Py_None);
         return Py_None;
     }
