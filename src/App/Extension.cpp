@@ -32,6 +32,7 @@
 #include "DocumentObject.h"
 #include "Base/Exception.h"
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
  
 /* We do not use a standart property macro for type initiation. The reason is that we want to expose all property functions, 
  * to allow the derived classes to access the private property data, but we do not want to have our
@@ -56,7 +57,17 @@ Extension::Extension()
 
 Extension::~Extension()
 {
-
+    Base::Console().Message("Delete extension\n");
+    if (!ExtensionPythonObject.is(Py::_None())){
+        // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
+        // Python object or not. In the constructor we forced the wrapper to own the object so we need
+        // not to dec'ref the Python object any more.
+        // But we must still invalidate the Python object because it need not to be
+        // destructed right now because the interpreter can own several references to it.
+        Base::PyObjectBase* obj = (Base::PyObjectBase*)ExtensionPythonObject.ptr();
+        // Call before decrementing the reference counter, otherwise a heap error can occur
+        obj->setInvalid();
+    }
 }
 
 void Extension::initExtension(Base::Type type) {
