@@ -73,10 +73,9 @@
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
+#include <Gui/propertyeditor/PropertyItem.h>
 
 using namespace PartGui;
-
-Q_DECLARE_METATYPE(Base::Quantity)
 
 FilletRadiusDelegate::FilletRadiusDelegate(QObject *parent) : QItemDelegate(parent)
 {
@@ -282,9 +281,14 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     ui->treeView->setModel(model);
 
     QHeaderView* header = ui->treeView->header();
+#if QT_VERSION >= 0x050000
+    header->setSectionResizeMode(0, QHeaderView::Stretch);
+    header->setSectionsMovable(false);
+#else
     header->setResizeMode(0, QHeaderView::Stretch);
-    header->setDefaultAlignment(Qt::AlignLeft);
     header->setMovable(false);
+#endif
+    header->setDefaultAlignment(Qt::AlignLeft);
     on_filletType_activated(0);
     findShapes();
 }

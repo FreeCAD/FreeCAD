@@ -34,12 +34,13 @@
 # include <QFileInfo>
 # include <QLocale>
 # include <QMessageBox>
+#if QT_VERSION >= 0x050000
+# include <QMessageLogContext>
+#endif
 # include <QPointer>
 # include <QGLFormat>
 # include <QGLPixelBuffer>
-#if QT_VERSION >= 0x040200
 # include <QGLFramebufferObject>
-#endif
 # include <QSessionManager>
 # include <QStatusBar>
 # include <QTextStream>
@@ -1427,11 +1428,21 @@ bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
 //**************************************************************************
 // Init, Destruct and ingleton
 
+#if QT_VERSION >= 0x050000
+typedef void (*_qt_msg_handler_old)(QtMsgType, const QMessageLogContext &, const QString &);
+#else
 typedef void (*_qt_msg_handler_old)(QtMsgType type, const char *msg);
+#endif
 _qt_msg_handler_old old_qtmsg_handler = 0;
 
+#if QT_VERSION >= 0x050000
+void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &qmsg)
+{
+  const QChar *msg = qmsg.unicode();
+#else
 void messageHandler(QtMsgType type, const char *msg)
 {
+#endif
 #ifdef FC_DEBUG
     switch (type)
     {
@@ -1450,7 +1461,11 @@ void messageHandler(QtMsgType type, const char *msg)
     }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
+#if QT_VERSION >=0x050000
+        (*old_qtmsg_handler)(type, context, msg);
+#else
         (*old_qtmsg_handler)(type, msg);
+#endif
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
@@ -1478,7 +1493,11 @@ void messageHandlerCoin(const SoError * error, void * userdata)
         }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
+#if QT_VERSION >=0x050000
+        (*old_qtmsg_handler)(QtDebugMsg, QMessageLogContext(), msg);
+#else
         (*old_qtmsg_handler)(QtDebugMsg, msg);
+#endif
 #endif
     }
     else if (error) {
@@ -1509,7 +1528,11 @@ void Application::initApplication(void)
         initTypes();
         new Base::ScriptProducer( "FreeCADGuiInit", FreeCADGuiInit );
         init_resources();
+#if QT_VERSION >=0x050000
+        old_qtmsg_handler = qInstallMessageHandler(messageHandler);
+#else
         old_qtmsg_handler = qInstallMsgHandler(messageHandler);
+#endif
         init = true;
     }
     catch (...) {
@@ -1629,22 +1652,17 @@ void Application::runApplication(void)
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
         throw Base::Exception("This system does not support OpenGL");
     }
-#if QT_VERSION >= 0x040200
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         Base::Console().Log("This system does not support framebuffer objects\n");
     }
-#endif
     if (!QGLPixelBuffer::hasOpenGLPbuffers()) {
         Base::Console().Log("This system does not support pbuffers\n");
     }
 
     QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags ();
-#if QT_VERSION >= 0x040500
     if (version & QGLFormat::OpenGL_Version_3_0)
         Base::Console().Log("OpenGL version 3.0 or higher is present\n");
-    else
-#endif
-    if (version & QGLFormat::OpenGL_Version_2_1)
+    else if (version & QGLFormat::OpenGL_Version_2_1)
         Base::Console().Log("OpenGL version 2.1 or higher is present\n");
     else if (version & QGLFormat::OpenGL_Version_2_0)
         Base::Console().Log("OpenGL version 2.0 or higher is present\n");

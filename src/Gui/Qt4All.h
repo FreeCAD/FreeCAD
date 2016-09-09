@@ -31,6 +31,9 @@
 #include <qeventloop.h>
 #include <qfile.h>
 #include <QLibraryInfo>
+#if QT_VERSION >= 0x050000
+#include <QMessageLogContext>
+#endif
 #include <QMutex>
 #include <qnamespace.h>
 #include <QPointer>
@@ -40,6 +43,9 @@
 #include <qrunnable.h>
 #include <QSet>
 #include <QSignalMapper>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#endif
 #include <QTemporaryFile>
 #include <qtextcodec.h>
 #include <qtextstream.h>
@@ -48,6 +54,9 @@
 #include <qtimer.h>
 #include <qtranslator.h>
 #include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include <qvariant.h>
 #include <QWaitCondition>
 // QtGui
@@ -65,9 +74,7 @@
 #include <qcolordialog.h>
 #include <qcombobox.h>
 #include <qcursor.h>
-#if QT_VERSION >= 0x040200
 #include <QDesktopServices>
-#endif
 #include <QDesktopWidget>
 #include <QDialogButtonBox>
 #include <QDockWidget>
@@ -157,9 +164,7 @@
 #include <QTcpSocket>
 // QtOpenGL
 #include <qgl.h>
-#if QT_VERSION >= 0x040200
 #include <QGLFramebufferObject>
-#endif
 #include <QGLPixelBuffer>
 // QtSvg
 #include <QSvgRenderer>
@@ -169,12 +174,10 @@
 #include <QtDesigner/QFormBuilder>
 
 // QtWebKit
-#if QT_VERSION >= 0x040400
 // Only needed in Web module
 //#include <QWebFrame>
 //#include <QWebView>
 //#include <QWebSettings>
-#endif
 
 #include "qmath.h"
 #include <QGraphicsView>

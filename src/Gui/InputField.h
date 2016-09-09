@@ -35,10 +35,7 @@
 #include "FileDialog.h"
 #include "ExpressionBinding.h"
 #include "ExpressionCompleter.h"
-
-#ifdef Q_MOC_RUN
-Q_DECLARE_METATYPE(Base::Quantity)
-#endif
+#include "propertyeditor/PropertyItem.h"
 
 namespace App {
 class DocumentObject;

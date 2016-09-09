@@ -526,9 +526,7 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
         //navigation systems? - BFG 20090117
         this->setStateCursor("interact", Qt::ArrowCursor);
         this->setStateCursor("idle", Qt::OpenHandCursor);
-#if QT_VERSION >= 0x040200
         this->setStateCursor("rotate", Qt::ClosedHandCursor);
-#endif
         this->setStateCursor("pan", Qt::SizeAllCursor);
         this->setStateCursor("zoom", Qt::SizeVerCursor);
         this->setStateCursor("dolly", Qt::SizeVerCursor);

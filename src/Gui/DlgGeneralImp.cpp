@@ -224,14 +224,12 @@ void DlgGeneralImp::loadSettings()
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
-#if QT_VERSION >= 0x040800
         QString native = locale.nativeLanguageName();
         if (!native.isEmpty()) {
             if (native[0].isLetter())
                 native[0] = native[0].toUpper();
             langname = native;
         }
-#endif
         Languages->addItem(langname, lang);
         if (language == lang) {
             Languages->setCurrentIndex(index);

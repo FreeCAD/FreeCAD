@@ -670,15 +670,12 @@ void ColorButton::onChooseColor()
 {
     if (!d->allowChange)
         return;
-#if QT_VERSION >= 0x040500
     if (d->modal) {
-#endif
         QColor c = QColorDialog::getColor(d->col, this);
         if (c.isValid()) {
             setColor(c);
             changed();
         }
-#if QT_VERSION >= 0x040500
     }
     else {
         if (d->cd.isNull()) {
@@ -692,7 +689,6 @@ void ColorButton::onChooseColor()
         }
         d->cd->show();
     }
-#endif
 }
 
 void ColorButton::onColorChosen(const QColor& c)

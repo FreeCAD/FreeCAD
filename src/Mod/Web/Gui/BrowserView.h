@@ -27,10 +27,7 @@
 
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
-
-# if QT_VERSION >= 0x040400
 #include <QWebView>
-#endif
 
 class QWebView;
 class QUrl;

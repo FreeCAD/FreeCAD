@@ -36,7 +36,11 @@ class SheetViewHeader : public QHeaderView {
     Q_OBJECT
 public:
     SheetViewHeader(Qt::Orientation o) : QHeaderView(o) {
+#if QT_VERSION >= 0x050000
+        setSectionsClickable(true);
+#else
         setClickable(true);
+#endif
     }
 Q_SIGNALS:
     void resizeFinished();

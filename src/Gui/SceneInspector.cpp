@@ -132,8 +132,13 @@ void DlgInspector::setNode(SoNode* node)
     model->setNode(node);
     
     QHeaderView* header = ui->treeView->header();
+#if QT_VERSION >= 0x050000
+    header->setSectionResizeMode(0, QHeaderView::Stretch);
+    header->setSectionsMovable(false);
+#else
     header->setResizeMode(0, QHeaderView::Stretch);
     header->setMovable(false);
+#endif
 }
 
 void DlgInspector::changeEvent(QEvent *e)
