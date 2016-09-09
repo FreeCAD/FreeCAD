@@ -41,8 +41,10 @@
 #include <BRepGProp.hxx>
 
 #endif
+#include <sstream>
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include "DrawUtil.h"
 #include "EdgeWalker.h"
@@ -89,7 +91,8 @@ void edgeVisitor::setGraph(TechDraw::graph& g)
 //* EdgeWalker
 //*******************************************************
 
-EdgeWalker::EdgeWalker()
+EdgeWalker::EdgeWalker() :
+    duplicateInput(false)
 {
 }
 
@@ -97,6 +100,7 @@ EdgeWalker::~EdgeWalker()
 {
 }
 
+//loads a list of unique edges into the traversal mechanism
 bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge> edges)
 {
     for (auto e: edges) {
@@ -107,10 +111,14 @@ bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge> edges)
 
 bool EdgeWalker::loadEdges(std::vector<TopoDS_Edge> edges)
 {
+    if (edges.empty()) {
+        throw Base::Exception("EdgeWalker has no edges to load\n");
+    }
+
     std::vector<TopoDS_Vertex> verts = makeUniqueVList(edges);
     setSize(verts.size());
+
     std::vector<WalkerEdge>  we  = makeWalkerEdges(edges, verts);
-    saveInEdges = edges;
 
     return loadEdges(we);
 }
@@ -133,15 +141,45 @@ bool EdgeWalker::perform()
     for(boost::tie(ei, ei_end) = edges(m_g); ei != ei_end; ++ei)
       put(e_index, *ei, edge_count++);
 
-    // Test for planarity - we know it is planar, we just want to
-    // compute the planar embedding as a side-effect
+    // Test for planarity
     typedef std::vector< graph_traits<TechDraw::graph>::edge_descriptor > vec_t;
     std::vector<vec_t> embedding(num_vertices(m_g));
-    boyer_myrvold_planarity_test(boyer_myrvold_params::graph = m_g,
-                                 boyer_myrvold_params::embedding = &embedding[0]);
+    typedef std::vector< graph_traits<TechDraw::graph>::edge_descriptor > kura_edges_t;
+    kura_edges_t kEdges;
+    kura_edges_t::iterator ki, ki_end;
+    graph_traits<TechDraw::graph>::edge_descriptor e1;
+
+// Get the index associated with edge
+    graph_traits<TechDraw::graph>::edges_size_type
+        get(boost::edge_index_t,
+            const TechDraw::graph& m_g,
+            graph_traits<TechDraw::graph>::edge_descriptor edge);
+
+
+
+    bool isPlanar = boyer_myrvold_planarity_test(boyer_myrvold_params::graph = m_g,
+                                 boyer_myrvold_params::embedding = &embedding[0],
+                                 boyer_myrvold_params::kuratowski_subgraph =
+                                       std::back_inserter(kEdges));
+    if (!isPlanar) {
+        Base::Console().Log("LOG - EW::perform - input is NOT planar\n");
+        ki_end = kEdges.end();
+        std::stringstream ss;
+        ss << "EW::perform - obstructing edges: ";
+        for(ki = kEdges.begin(); ki != ki_end; ++ki)
+        {
+            e1 = *ki;
+            ss << boost::get(edge_index,m_g,e1) << ",";
+        }
+        ss << std::endl;
+        Base::Console().Log("LOG - %s\n",ss.str().c_str());
+        return false;
+    }
 
     m_eV.setGraph(m_g);
+    //Base::Console().Message("TRACE - EW::perform - setGraph complete\n");
     planar_face_traversal(m_g, &embedding[0], m_eV);
+    //Base::Console().Message("TRACE - EW::perform - traversal complete\n");
 
     return true;
 }
@@ -160,6 +198,16 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
     if (result.wires.empty()) {
         return fw;
     }
+
+     //convert from noduplicate index to duplicates index
+     for (auto& w:result.wires) {
+        for (auto& we:w.wedges) {
+            //we.idx is the edge index in the short list (no duplicates)
+            //saveIndex[we.idx] should be the index in the long list
+            we.idx = saveIndex[we.idx];
+        }
+    }
+
 
     std::vector<ewWire>::iterator iWire = result.wires.begin();     // a WE within [WE]
     for (;iWire != result.wires.end(); iWire++) {
@@ -182,15 +230,26 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
     if (result.wires.empty()) {
         return fw;
     }
+
+    //convert from noduplicate index to duplicates index
+    for (auto& w:result.wires) {
+        for (auto& we:w.wedges) {
+            //we.idx is the edge index in the short list (no duplicates)
+            //saveIndex[we.idx] should be the index in the long list
+            we.idx = saveIndex[we.idx];
+        }
+    }
     result = result.removeDuplicates();
 
     std::vector<ewWire>::iterator iWire = result.wires.begin();
+    int edgeCount = 1;
     for (;iWire != result.wires.end(); iWire++) {
         std::vector<WalkerEdge>::iterator iEdge = (*iWire).wedges.begin();
         std::vector<TopoDS_Edge> topoEdges;
         for (;iEdge != (*iWire).wedges.end(); iEdge++) {
             TopoDS_Edge e = saveInEdges.at((*iEdge).idx);
             topoEdges.push_back(e);
+            edgeCount++;
         }
     TopoDS_Wire w = makeCleanWire(topoEdges);             //make 1 clean wire from its edges
     fw.push_back(w);
@@ -253,21 +312,30 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
 }
 
 //!make WalkerEdges (unique Vertex index pairs) from edge list
+//remove duplicate edges from input
 std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                       std::vector<TopoDS_Vertex> verts)
 {
-    std::vector<WalkerEdge> walkerEdges;
+    saveInEdges = edges;
+    std::vector<WalkerEdge> rawList;
     for (auto e:edges) {
         TopoDS_Vertex ev1 = TopExp::FirstVertex(e);
         TopoDS_Vertex ev2 = TopExp::LastVertex(e);
         int v1dx = findUniqueVert(ev1, verts);
         int v2dx = findUniqueVert(ev2, verts);
-        WalkerEdge we;
-        we.v1 = v1dx;
-        we.v2 = v2dx;
-        walkerEdges.push_back(we);
+        WalkerEdge rl;
+        rl.v1 = v1dx;
+        rl.v2 = v2dx;
+        rawList.push_back(rl);
     }
-    return walkerEdges;
+
+    std::vector<WalkerEdge> we = removeDuplicateInput(rawList);
+    for (auto& w:we)
+    {
+        saveIndex.push_back(w.idx);
+    }
+
+    return we;
 }
 
 int EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert)
@@ -284,7 +352,50 @@ int EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uni
     return result;
 }
 
-/*static*/ bool WalkerEdge::weCompare(WalkerEdge i, WalkerEdge j)
+//removes duplicates from input and sets idx to position in original list
+std::vector<WalkerEdge> EdgeWalker::removeDuplicateInput(std::vector<WalkerEdge> input)
+{
+    std::vector<WalkerEdge> result;
+    //std::vector<int> ref;
+    if (input.empty()) {
+        return result;
+    }
+
+    result.push_back(*(input.begin()));                           //save the first WE
+    result[0].idx = 0;
+    //ref.push_back(0);
+    std::vector<WalkerEdge>::iterator iWE = (input.begin()) + 1;    //starting with second
+    int i = 1;
+    for (; iWE != input.end(); iWE++, i++) {
+        bool addToResult = true;
+        for (auto& w:result) {
+            if ((*iWE).isEqual(w))  {             //already in result?
+                addToResult = false;
+                Base::Console().Log("LOG - EW::removeDuplicateInput - input edge: %d is a duplicate\n",i);
+                break;
+            }
+        }
+        if (addToResult) {
+            (*iWE).idx = i;
+            result.push_back((*iWE));
+            //ref.push_back(i);
+        }
+    }
+    return result;
+}
+
+bool WalkerEdge::isEqual(WalkerEdge w)
+{
+    bool result = false;
+    if ((( v1 == w.v1) && (v2 == w.v2))  ||
+        (( v1 == w.v2) && (v2 == w.v1)) ) {
+        result = true;
+    }
+    return result;
+}
+
+
+/*static*/ bool WalkerEdge::weCompare(WalkerEdge i, WalkerEdge j)    //used for sorting
 {
     return (i.idx < j.idx);
 }
