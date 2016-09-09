@@ -655,6 +655,8 @@ App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 
 bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z)
 {
+    static char buf[513];
+
     // already in ?
     if (isSelected(pDocName, pObjectName, pSubName))
         return true;
@@ -715,9 +717,17 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         Notify(Chng);
         signalSelectionChanged(Chng);
 
+        snprintf(buf,512,"Selected: %s.%s.%s (%f,%f,%f)",pDocName
+                                                        ,pObjectName
+                                                        ,pSubName
+                                                        ,x,y,z);
+
 #ifdef FC_DEBUG
-        Base::Console().Log("Sel : Add Selection \"%s.%s.%s(%f,%f,%f)\"\n",pDocName,pObjectName,pSubName,x,y,z);
+        Base::Console().Log(buf);
 #endif
+
+        if (getMainWindow())
+            getMainWindow()->showMessage(QString::fromLatin1(buf));
 
         // allow selection
         return true;
