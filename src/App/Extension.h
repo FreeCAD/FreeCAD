@@ -175,12 +175,12 @@ public:
     ExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         
-        ADD_PROPERTY(Proxy,(Py::Object()));
+        ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
     virtual ~ExtensionPythonT() {
     }
 
-    PropertyPythonObject Proxy;
+    PropertyPythonObject ExtensionProxy;
 };
 
 typedef ExtensionPythonT<App::Extension> ExtensionPython;
@@ -190,7 +190,7 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
     Base::PyGILStateLocker lock;\
     Py::Object result;\
     try {\
-        Property* proxy = this->getPropertyByName("Proxy");\
+        Property* proxy = this->getPropertyByName("ExtensionProxy");\
         if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {\
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();\
             if (feature.hasAttr(std::string("function"))) {\
