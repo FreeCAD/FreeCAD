@@ -158,7 +158,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "Accessing the proxy property failed!" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
-    static_cast<PropertyPythonObject*>(pp)->setValue(Py::asObject(proxy));
+    static_cast<PropertyPythonObject*>(pp)->setPyObject(proxy);
     
     //make sure all functions of the extension are acessible through this object
     PyMethodDef* tmpptr = (PyMethodDef*)ext->getExtensionPyObject()->ob_type->tp_methods;
