@@ -68,6 +68,54 @@ int DrawViewCollection::addView(DrawView *view)
     return Views.getSize();
 }
 
+int DrawViewCollection::removeView(DrawView *view)
+{
+    // Remove the view from the the collection
+    const std::vector<App::DocumentObject*> currViews = Views.getValues();
+    std::vector<App::DocumentObject*> newViews;
+    std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
+    for (; it != currViews.end(); it++) {
+        std::string viewName = view->getNameInDocument();
+        if (viewName.compare((*it)->getNameInDocument()) != 0) {
+            newViews.push_back((*it));
+        }
+    }
+    Views.setValues(newViews);
+
+//TODO: also have to touch the parent page's views to get repaint??
+    DrawPage* page = findParentPage();
+    if (page) {
+        page->Views.touch();
+    }
+    return Views.getSize();
+}
+
+//make sure everything in View list represents a real DrawView docObj and occurs only once
+void DrawViewCollection::rebuildViewList()
+{
+    const std::vector<App::DocumentObject*> currViews = Views.getValues();
+    std::vector<App::DocumentObject*> newViews;
+    std::vector<App::DocumentObject*> children = getOutList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
+            //TechDraw::DrawView* view = static_cast<TechDraw::DrawView *>(*it);
+            bool found = false;
+            for (auto& v:currViews) {
+                if (v == (*it)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                newViews.push_back((*it));
+            }
+        }
+    } // newViews contains only valid items, but may have duplicates
+    sort( newViews.begin(), newViews.end() );
+    newViews.erase( unique( newViews.begin(), newViews.end() ), newViews.end() );
+    Views.setValues(newViews);
+}
+
 short DrawViewCollection::mustExecute() const
 {
     // If Tolerance Property is touched

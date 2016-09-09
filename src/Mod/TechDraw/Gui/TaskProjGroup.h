@@ -31,6 +31,7 @@
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
 #include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 
 class Ui_TaskProjGroup;
@@ -48,14 +49,18 @@ class TaskProjGroup : public QWidget
     Q_OBJECT
 
 public:
-    TaskProjGroup(TechDraw::DrawProjGroup* featView);
+    TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode);
     ~TaskProjGroup();
 
 public:
+    virtual bool accept();
+    virtual bool reject();
     void updateTask();
     void nearestFraction(double val, int &a, int &b) const;
     /// Sets the numerator and denominator widgets to match newScale
     void setFractionalScale(double newScale);
+    void setCreateMode(bool b) { m_createMode = b;}
+    bool getCreateMode() { return m_createMode; }
 
 protected Q_SLOTS:
     void viewToggled(bool toggle);
@@ -65,7 +70,7 @@ protected Q_SLOTS:
 
     void projectionTypeChanged(int index);
     void scaleTypeChanged(int index);
-    void scaleManuallyChanged(const QString & text);
+    void scaleManuallyChanged(int i);
 
 protected:
     void changeEvent(QEvent *e);
@@ -87,6 +92,7 @@ private:
 protected:
   ViewProviderProjGroup *viewProvider;
   TechDraw::DrawProjGroup* multiView;
+  bool m_createMode;
 };
 
 /// Simulation dialog for the TaskView
@@ -95,7 +101,7 @@ class TaskDlgProjGroup : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgProjGroup(TechDraw::DrawProjGroup* featView);
+    TaskDlgProjGroup(TechDraw::DrawProjGroup* featView,bool mode);
     ~TaskDlgProjGroup();
 
     const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }
@@ -113,6 +119,7 @@ public:
     virtual void helpRequested() { return;}
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
+    void setCreateMode(bool b);
 
     void update();
 
