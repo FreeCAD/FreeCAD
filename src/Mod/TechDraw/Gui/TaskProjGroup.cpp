@@ -32,6 +32,8 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -56,8 +58,10 @@ using namespace TechDrawGui;
 #endif
 
 
-TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView) : ui(new Ui_TaskProjGroup),
-                                                                                           multiView(featView)
+TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
+    ui(new Ui_TaskProjGroup),
+    multiView(featView),
+    m_createMode(mode)
 {
     ui->setupUi(this);
 
@@ -84,8 +88,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView) : ui(new Ui_Task
 
     // Slot for Scale Type
     connect(ui->cmbScaleType, SIGNAL(currentIndexChanged(int)), this, SLOT(scaleTypeChanged(int)));
-    connect(ui->scaleNum,     SIGNAL(textEdited(const QString &)), this, SLOT(scaleManuallyChanged(const QString &)));
-    connect(ui->scaleDenom,   SIGNAL(textEdited(const QString &)), this, SLOT(scaleManuallyChanged(const QString &)));
+    connect(ui->sbScaleNum,   SIGNAL(valueChanged(int)), this, SLOT(scaleManuallyChanged(int)));
+    connect(ui->sbScaleDen,   SIGNAL(valueChanged(int)), this, SLOT(scaleManuallyChanged(int)));
 
     // Slot for Projection Type (layout)
     connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionTypeChanged(int)));
@@ -148,7 +152,7 @@ void TaskProjGroup::projectionTypeChanged(int index)
     if(blockUpdate)
         return;
 
-    Gui::Command::openCommand("Update projection type");
+    //Gui::Command::openCommand("Update projection type");
     if(index == 0) {
         //layout per Page (Document)
         Gui::Command::doCommand(Gui::Command::Doc,
@@ -165,7 +169,7 @@ void TaskProjGroup::projectionTypeChanged(int index)
                                 "App.activeDocument().%s.ProjectionType = '%s'",
                                 multiView->getNameInDocument(), "Third Angle");
     } else {
-        Gui::Command::abortCommand();
+        //Gui::Command::abortCommand();
         Base::Console().Log("Error - TaskProjGroup::projectionTypeChanged - unknown projection layout: %d\n",
                             index);
         return;
@@ -174,8 +178,8 @@ void TaskProjGroup::projectionTypeChanged(int index)
     // Update checkboxes so checked state matches the drawing
     setupViewCheckboxes();
 
-    Gui::Command::commitCommand();
-    Gui::Command::updateActive();
+    //Gui::Command::commitCommand();
+    //Gui::Command::updateActive();
 }
 
 void TaskProjGroup::scaleTypeChanged(int index)
@@ -183,7 +187,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
     if(blockUpdate)
         return;
 
-    Gui::Command::openCommand("Update projection scale type");
+    //Gui::Command::openCommand("Update projection scale type");
     if(index == 0) {
         //Automatic Scale Type
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
@@ -197,12 +201,12 @@ void TaskProjGroup::scaleTypeChanged(int index)
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
                                                                                              , "Custom");
     } else {
-        Gui::Command::abortCommand();
+        //Gui::Command::abortCommand();
         Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n",index);
         return;
     }
-    Gui::Command::commitCommand();
-    Gui::Command::updateActive();
+    //Gui::Command::commitCommand();
+    //Gui::Command::updateActive();
 }
 
 // ** David Eppstein / UC Irvine / 8 Aug 1993
@@ -256,43 +260,40 @@ void TaskProjGroup::setFractionalScale(double newScale)
 
     nearestFraction(newScale, num, den);
 
-    ui->scaleNum->setText(QString::number(num));
-    ui->scaleDenom->setText(QString::number(den));
+    ui->sbScaleNum->setValue(num);
+    ui->sbScaleDen->setValue(den);
     blockUpdate = false;
 }
 
-void TaskProjGroup::scaleManuallyChanged(const QString & text)
+void TaskProjGroup::scaleManuallyChanged(int i)
 {
     //TODO: See what this is about - shouldn't be simplifying the scale ratio while it's being edited... IR
     if(blockUpdate)
         return;
 
-    bool ok1, ok2;
-
-    int a = ui->scaleNum->text().toInt(&ok1);
-    int b = ui->scaleDenom->text().toInt(&ok2);
+    int a = ui->sbScaleNum->value();
+    int b = ui->sbScaleDen->value();
 
     double scale = (double) a / (double) b;
-    if (ok1 && ok2) {
-        // If we were not in Custom, switch to Custom in two steps
-        bool switchToCustom = (strcmp(multiView->ScaleType.getValueAsString(), "Custom") != 0);
-        if(switchToCustom) {
-            // First, send out command to put us into custom scale
-            scaleTypeChanged(ui->cmbScaleType->findText(QString::fromLatin1("Custom")));
-            switchToCustom = true;
-        }
-
-        Gui::Command::openCommand("Update custom scale");
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
-                                                                                         , scale);
-        Gui::Command::commitCommand();
-        Gui::Command::updateActive();
-
-        if(switchToCustom) {
-            // Second, update the GUI
-            ui->cmbScaleType->setCurrentIndex(ui->cmbScaleType->findText(QString::fromLatin1("Custom")));
-        }
+    // If we were not in Custom, switch to Custom in two steps
+    bool switchToCustom = (strcmp(multiView->ScaleType.getValueAsString(), "Custom") != 0);
+    if(switchToCustom) {
+        // First, send out command to put us into custom scale
+        scaleTypeChanged(ui->cmbScaleType->findText(QString::fromLatin1("Custom")));
+        switchToCustom = true;
     }
+
+    //Gui::Command::openCommand("Update custom scale");
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
+                                                                                     , scale);
+    //Gui::Command::commitCommand();
+    //Gui::Command::updateActive();
+
+    if(switchToCustom) {
+        // Second, update the GUI
+        ui->cmbScaleType->setCurrentIndex(ui->cmbScaleType->findText(QString::fromLatin1("Custom")));
+    }
+
 }
 
 void TaskProjGroup::changeEvent(QEvent *e)
@@ -362,13 +363,49 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
     }
 }
 
+bool TaskProjGroup::accept()
+{
+    Gui::Command::commitCommand();
+    Gui::Command::updateActive();
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+
+    return true;
+}
+
+bool TaskProjGroup::reject()
+{
+    if (getCreateMode()) {
+        std::string multiViewName = multiView->getNameInDocument();
+        std::string PageName = multiView->findParentPage()->getNameInDocument();
+
+        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.purgeProjections()",
+                                multiViewName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                                PageName.c_str(),multiViewName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",multiViewName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    } else {
+        if (Gui::Command::hasPendingCommand()) {
+            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
+            Gui::Application::Instance->activeDocument()->undo(1);
+            multiView->rebuildViewList();
+        } else {
+            Base::Console().Log("TaskProjGroup: Edit mode - NO command is active\n");
+        }
+
+        Gui::Command::updateActive();
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    }
+    return false;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO: Do we really need to hang on to the TaskDlgProjGroup in this class? IR
-TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView) : TaskDialog(),
+TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode) : TaskDialog(),
                                                                                                  multiView(featView)
 {
-    viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
-    widget  = new TaskProjGroup(featView);
+    //viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
+    widget  = new TaskProjGroup(featView,mode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-projgroup"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
@@ -384,9 +421,17 @@ void TaskDlgProjGroup::update()
     widget->updateTask();
 }
 
+void TaskDlgProjGroup::setCreateMode(bool b)
+{
+    widget->setCreateMode(b);
+}
+
 //==== calls from the TaskView ===============================================================
 void TaskDlgProjGroup::open()
 {
+    if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
+        Gui::Command::openCommand("Edit Projection Group");
+    }
 }
 
 void TaskDlgProjGroup::clicked(int)
@@ -395,11 +440,13 @@ void TaskDlgProjGroup::clicked(int)
 
 bool TaskDlgProjGroup::accept()
 {
-    return true;//!widget->user_input();
+    widget->accept();
+    return true;
 }
 
 bool TaskDlgProjGroup::reject()
 {
+    widget->reject();
     return true;
 }
 

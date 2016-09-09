@@ -48,6 +48,8 @@ public:
     short mustExecute() const;
 
     int addView(DrawView *view);
+    int removeView(DrawView *view);
+    void rebuildViewList(void);
 
     int countChildren();
     /** @name methods overide Feature */

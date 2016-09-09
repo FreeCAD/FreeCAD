@@ -127,16 +127,19 @@ bool ViewProviderProjGroup::setEdit(int ModNum)
     Gui::Selection().clearSelection();
 
     // start the edit dialog
-    if (projDlg)
+    if (projDlg) {
+        projDlg->setCreateMode(false);
         Gui::Control().showDialog(projDlg);
-    else
-        Gui::Control().showDialog(new TaskDlgProjGroup(getObject()));
+    } else {
+        Gui::Control().showDialog(new TaskDlgProjGroup(getObject(),false));
+    }
 
     return true;
 }
 
 void ViewProviderProjGroup::unsetEdit(int ModNum)
 {
+    Base::Console().Message("TRACE - VPPG::unSetEdit(%d) \n",ModNum);
     Gui::Control().closeDialog();
 }
 

@@ -469,12 +469,14 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addProjection('%s')",multiViewName.c_str(),anchor.c_str());
     doCommand(Doc,"App.activeDocument().%s.Anchor = App.activeDocument().%s.getItemByLabel('%s')",
               multiViewName.c_str(),multiViewName.c_str(),anchor.c_str());
-
-    // create the rest of the desired views
-    Gui::Control().showDialog(new TaskDlgProjGroup(multiView));
-
     // add the multiView to the page
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
+
+    // create the rest of the desired views
+    Gui::Control().showDialog(new TaskDlgProjGroup(multiView,true));
+
+//    // add the multiView to the page
+//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
 
     updateActive();
     commitCommand();
