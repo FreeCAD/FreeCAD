@@ -722,12 +722,12 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
                                                         ,pSubName
                                                         ,x,y,z);
 
-#ifdef FC_DEBUG
-        Base::Console().Log(buf);
-#endif
-
         if (getMainWindow())
             getMainWindow()->showMessage(QString::fromLatin1(buf));
+
+#ifdef FC_DEBUG
+        Base::Console().Log("Sel : Add Selection \"%s.%s.%s(%f,%f,%f)\"\n",pDocName,pObjectName,pSubName,x,y,z);
+#endif
 
         // allow selection
         return true;
