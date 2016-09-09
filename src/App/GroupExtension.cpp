@@ -45,6 +45,7 @@ GroupExtension::GroupExtension()
 
 GroupExtension::~GroupExtension()
 {
+    Base::Console().Message("Delete group extension\n");
 }
 
 DocumentObject* GroupExtension::addObject(const char* sType, const char* pObjectName)

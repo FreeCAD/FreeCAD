@@ -43,6 +43,11 @@ ExtensionContainer::ExtensionContainer() {
 
 ExtensionContainer::~ExtensionContainer() {
 
+    //we need to delete all dynamically added extensions
+    for(auto entry : _extensions) {            
+        if(entry.second->isPythonExtension())
+            delete entry.second;
+    }
 };
 
 void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext) {
