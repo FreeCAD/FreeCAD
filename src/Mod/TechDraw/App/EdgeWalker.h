@@ -36,6 +36,7 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
+#include <boost/graph/is_kuratowski_subgraph.hpp>
 #include <boost/graph/planar_face_traversal.hpp>
 #include <boost/ref.hpp>
 
@@ -59,6 +60,7 @@ class WalkerEdge
 {
 public:
     static bool weCompare(WalkerEdge i, WalkerEdge j);
+    bool isEqual(WalkerEdge w);
 
     std::size_t v1;
     std::size_t v2;
@@ -119,6 +121,8 @@ public:
     std::vector<TopoDS_Vertex> makeUniqueVList(std::vector<TopoDS_Edge> edges);
     std::vector<WalkerEdge>    makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                std::vector<TopoDS_Vertex> verts);
+    std::vector<WalkerEdge> removeDuplicateInput(std::vector<WalkerEdge> input);
+
     int findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
     std::vector<TopoDS_Wire> sortStrip(std::vector<TopoDS_Wire> fw, bool includeBiggest);
     std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
@@ -128,10 +132,12 @@ public:
 protected:
     static bool wireCompare(const TopoDS_Wire& w1, const TopoDS_Wire& w2);
     std::vector<TopoDS_Edge> saveInEdges;
+    std::vector<int> saveIndex;
 
 private:
     edgeVisitor m_eV;
     TechDraw::graph m_g;
+    bool duplicateInput;
 };
 
 }  //end namespace TechDraw

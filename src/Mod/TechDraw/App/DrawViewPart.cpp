@@ -198,7 +198,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e4 = Standard_Failure::Caught();
-        Base::Console().Log("LOG - DVP::execute - buildGeometryObject failed for %s - %s **\n",getNameInDocument(),e4->GetMessageString());
+        Base::Console().Log("LOG - DVP::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4->GetMessageString());
         return new App::DocumentObjectExecReturn(e4->GetMessageString());
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
@@ -404,10 +404,21 @@ void DrawViewPart::extractFaces()
         faceEdges.insert(std::end(faceEdges), std::begin(edgesToAdd),std::end(edgesToAdd));
     }
 
+
+    if (faceEdges.empty()) {
+        Base::Console().Log("LOG - DVP::extractFaces - no faceEdges\n");
+        return;
+    }
+
+
 //find all the wires in the pile of faceEdges
     EdgeWalker ew;
     ew.loadEdges(faceEdges);
-    ew.perform();
+    bool success = ew.perform();
+    if (!success) {
+        Base::Console().Warning("DVP::extractFaces - input is not planar graph. No face detection\n");
+        return;
+    }
     std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
 
     std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,true);
