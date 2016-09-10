@@ -242,6 +242,15 @@ void Command::addTo(QWidget *pcWidget)
     _pcAction->addTo(pcWidget);
 }
 
+void Command::addToGroup(ActionGroup* group, bool checkable)
+{
+    if (!_pcAction)
+        _pcAction = createAction();
+
+    _pcAction->setCheckable(checkable);
+    group->addAction(_pcAction->findChild<QAction*>());
+}
+
 Application *Command::getGuiApplication(void)
 {
     return Application::Instance;

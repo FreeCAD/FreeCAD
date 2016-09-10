@@ -1302,7 +1302,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
 #if QT_VERSION >= 0x040200
     sPixmap       = "zoom-selection";
 #endif
-  eType         = Alter3DView;
+    eType         = Alter3DView;
 }
 
 void StdCmdViewFitSelection::activated(int iMsg)
@@ -1318,6 +1318,88 @@ bool StdCmdViewFitSelection::isActive(void)
 }
 
 //===========================================================================
+// Std_ViewDock
+//===========================================================================
+DEF_STD_CMD_A(StdViewDock);
+
+StdViewDock::StdViewDock()
+  : Command("Std_ViewDock")
+{
+    sGroup       = QT_TR_NOOP("Standard-View");
+    sMenuText    = QT_TR_NOOP("Docked");
+    sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    sWhatsThis   = "Std_ViewDockUndockFullscreen";
+    sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    sAccel       = "Shift+D";
+    eType        = Alter3DView;
+}
+
+void StdViewDock::activated(int iMsg)
+{
+}
+
+bool StdViewDock::isActive(void)
+{
+    MDIView* view = getMainWindow()->activeWindow();
+    return (qobject_cast<View3DInventor*>(view) ? true : false);
+}
+
+//===========================================================================
+// Std_ViewUndock
+//===========================================================================
+DEF_STD_CMD_A(StdViewUndock);
+
+StdViewUndock::StdViewUndock()
+  : Command("Std_ViewUndock")
+{
+    sGroup       = QT_TR_NOOP("Standard-View");
+    sMenuText    = QT_TR_NOOP("Undocked");
+    sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    sWhatsThis   = "Std_ViewDockUndockFullscreen";
+    sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    sAccel       = "Shift+U";
+    eType        = Alter3DView;
+}
+
+void StdViewUndock::activated(int iMsg)
+{
+}
+
+bool StdViewUndock::isActive(void)
+{
+    MDIView* view = getMainWindow()->activeWindow();
+    return (qobject_cast<View3DInventor*>(view) ? true : false);
+}
+
+//===========================================================================
+// Std_ViewFullscreen
+//===========================================================================
+DEF_STD_CMD_A(StdViewFullscreen);
+
+StdViewFullscreen::StdViewFullscreen()
+  : Command("Std_ViewFullscreen")
+{
+    sGroup       = QT_TR_NOOP("Standard-View");
+    sMenuText    = QT_TR_NOOP("Fullscreen");
+    sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    sWhatsThis   = "Std_ViewDockUndockFullscreen";
+    sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    sPixmap      = "view-fullscreen";
+    sAccel       = "F11";
+    eType        = Alter3DView;
+}
+
+void StdViewFullscreen::activated(int iMsg)
+{
+}
+
+bool StdViewFullscreen::isActive(void)
+{
+    MDIView* view = getMainWindow()->activeWindow();
+    return (qobject_cast<View3DInventor*>(view) ? true : false);
+}
+
+//===========================================================================
 // Std_ViewDockUndockFullscreen
 //===========================================================================
 DEF_STD_CMD_AC(StdViewDockUndockFullscreen);
@@ -1325,12 +1407,17 @@ DEF_STD_CMD_AC(StdViewDockUndockFullscreen);
 StdViewDockUndockFullscreen::StdViewDockUndockFullscreen()
   : Command("Std_ViewDockUndockFullscreen")
 {
-    sGroup      = QT_TR_NOOP("Standard-View");
-    sMenuText   = QT_TR_NOOP("Document window");
-    sToolTipText= QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
-    sWhatsThis  = "Std_ViewDockUndockFullscreen";
-    sStatusTip  = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
-    eType         = Alter3DView;
+    sGroup       = QT_TR_NOOP("Standard-View");
+    sMenuText    = QT_TR_NOOP("Document window");
+    sToolTipText = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    sWhatsThis   = "Std_ViewDockUndockFullscreen";
+    sStatusTip   = QT_TR_NOOP("Display the active view either in fullscreen, in undocked or docked mode");
+    eType        = Alter3DView;
+
+    CommandManager &rcCmdMgr = Application::Instance->commandManager();
+    rcCmdMgr.addCommand(new StdViewDock());
+    rcCmdMgr.addCommand(new StdViewUndock());
+    rcCmdMgr.addCommand(new StdViewFullscreen());
 }
 
 Action * StdViewDockUndockFullscreen::createAction(void)
@@ -1341,45 +1428,13 @@ Action * StdViewDockUndockFullscreen::createAction(void)
         this->className(), sMenuText, 0,
         QCoreApplication::CodecForTr));
 
-    QAction* docked = pcAction->addAction(QObject::tr(QT_TR_NOOP("Docked")));
-    docked->setToolTip(QCoreApplication::translate(
-        this->className(), sToolTipText, 0,
-        QCoreApplication::CodecForTr));
-    docked->setStatusTip(QCoreApplication::translate(
-        this->className(), sStatusTip, 0,
-        QCoreApplication::CodecForTr));
-    docked->setWhatsThis(QCoreApplication::translate(
-        this->className(), sWhatsThis, 0,
-        QCoreApplication::CodecForTr));
-    docked->setShortcut(Qt::Key_D);
-    docked->setCheckable(true);
-
-    QAction* undocked = pcAction->addAction(QObject::tr(QT_TR_NOOP("Undocked")));
-    undocked->setToolTip(QCoreApplication::translate(
-        this->className(), sToolTipText, 0,
-        QCoreApplication::CodecForTr));
-    undocked->setStatusTip(QCoreApplication::translate(
-        this->className(), sStatusTip, 0,
-        QCoreApplication::CodecForTr));
-    undocked->setWhatsThis(QCoreApplication::translate(
-        this->className(), sWhatsThis, 0,
-        QCoreApplication::CodecForTr));
-    undocked->setShortcut(Qt::Key_U);
-    undocked->setCheckable(true);
-
-    QAction* fullscr = pcAction->addAction(QObject::tr(QT_TR_NOOP("Fullscreen")));
-    fullscr->setToolTip(QCoreApplication::translate(
-        this->className(), sToolTipText, 0,
-        QCoreApplication::CodecForTr));
-    fullscr->setStatusTip(QCoreApplication::translate(
-        this->className(), sStatusTip, 0,
-        QCoreApplication::CodecForTr));
-    fullscr->setWhatsThis(QCoreApplication::translate(
-        this->className(), sWhatsThis, 0,
-        QCoreApplication::CodecForTr));
-    fullscr->setShortcut(Qt::Key_F11);
-    fullscr->setCheckable(true);
-    fullscr->setIcon(Gui::BitmapFactory().iconFromTheme("view-fullscreen"));
+    CommandManager &rcCmdMgr = Application::Instance->commandManager();
+    Command* cmdD = rcCmdMgr.getCommandByName("Std_ViewDock");
+    Command* cmdU = rcCmdMgr.getCommandByName("Std_ViewUndock");
+    Command* cmdF = rcCmdMgr.getCommandByName("Std_ViewFullscreen");
+    cmdD->addToGroup(pcAction, true);
+    cmdU->addToGroup(pcAction, true);
+    cmdF->addToGroup(pcAction, true);
 
     return pcAction;
 }
