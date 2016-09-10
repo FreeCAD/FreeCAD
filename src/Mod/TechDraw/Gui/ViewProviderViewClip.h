@@ -50,6 +50,7 @@ public:
 
     virtual TechDraw::DrawViewClip* getViewObject() const;
     TechDraw::DrawViewClip* getObject() const;
+    virtual void updateData(const App::Property* prop);
 
     /// Hide the object in the view
     virtual void hide(void);

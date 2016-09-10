@@ -225,22 +225,10 @@ short DrawViewPart::mustExecute() const
                     Source.isTouched()  ||
                     Scale.isTouched()  ||
                     ScaleType.isTouched()  ||
-                    Tolerance.isTouched());
-
-// don't have to execute DVP, but should update Gui
-//                    ShowHiddenLines.isTouched()  ||
-//                    ShowSmoothLines.isTouched()  ||
-//                    ShowSeamLines.isTouched()  ||
-//                    LineWidth.isTouched()  ||
-//                    HiddenWidth.isTouched()  ||
-//                    ShowCenters.isTouched()  ||
-//                    CenterScale.isTouched()  ||
-//                    ShowSectionLine.isTouched()  ||
-//                    HorizSectionLine.isTouched()  ||
-//                    ArrowUpSection.isTouched()  ||
-//                    SymbolSection.isTouched()  ||
-//                    HorizCenterLine.isTouched()  ||
-//                    VertCenterLine.isTouched());
+                    Tolerance.isTouched()  ||
+                    ShowHiddenLines.isTouched()  ||
+                    ShowSmoothLines.isTouched()  ||
+                    ShowSeamLines.isTouched() );
         }
 
     if (result) {
@@ -259,28 +247,16 @@ void DrawViewPart::onChanged(const App::Property* prop)
             prop == &XAxisDirection ||
             prop == &Source ||
             prop == &Scale ||
-            prop == &ScaleType) {
-//don't need to execute, but need to update Gui
-//            prop == &ShowHiddenLines ||
-//            prop == &ShowSmoothLines ||
-//            prop == &ShowSeamLines   ||
-//            prop == &LineWidth       ||
-//            prop == &HiddenWidth     ||
-//            prop == &ShowCenters     ||
-//            prop == &CenterScale     ||
-//            prop == &ShowSectionLine ||
-//            prop == &HorizSectionLine  ||
-//            prop == &ArrowUpSection  ||
-//            prop == &SymbolSection   ||
-//            prop == &HorizCenterLine ||
-//            prop == &VertCenterLine) {
+            prop == &ScaleType  ||
+            prop == &ShowHiddenLines ||
+            prop == &ShowSmoothLines ||
+            prop == &ShowSeamLines)
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
             }
             catch (...) {
             }
-        }
     }
     DrawView::onChanged(prop);
 

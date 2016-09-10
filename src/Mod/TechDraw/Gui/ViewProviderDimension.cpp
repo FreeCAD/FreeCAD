@@ -90,7 +90,7 @@ void ViewProviderDimension::updateData(const App::Property* p)
             sPixmap = "TechDraw_Dimension_Angle";
         }
     }
-    Gui::ViewProviderDocumentObject::updateData(p);
+    ViewProviderDrawingView::updateData(p);
 }
 
 TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const

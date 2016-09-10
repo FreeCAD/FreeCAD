@@ -243,7 +243,6 @@ void QGIViewPart::updateView(bool update)
     if( viewPart == nullptr ) {
         return;
     }
-    //Base::Console().Message("TRACE - QGIVP::updateView(%d) - %s\n",update,getViewObject()->getNameInDocument());
 
     QGIView::updateView(update);
 

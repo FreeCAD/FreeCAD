@@ -115,10 +115,6 @@ short DrawViewSection::mustExecute() const
                    BaseView.isTouched()  ||
                    SectionNormal.isTouched() ||
                    SectionOrigin.isTouched() );
-
-//don't need to execute, but need to update Gui
-//                   ShowCutSurface.isTouched() ||
-//                   CutSurfaceColor.isTouched() );
     }
     if (result) {
         return result;
