@@ -939,20 +939,28 @@ def getExtrusionData(shape):
     for i1, f1 in enumerate(faces):
         for i2, f2 in enumerate(faces):
             if f1[0].hashCode() != f2[0].hashCode():
-                if round(f1[1].getAngle(f2[1]),8) == 3.14159265:
+                if round(f1[1].getAngle(f2[1]),4) == 3.1416:
                     pairs.append([i1,i2])
     if not pairs:
         return None
-    for p in pairs:
-        hc = [faces[p[0]][0].hashCode(),faces[p[1]][0].hashCode()]
-        ok = True
+    valids = []
+    for pair in pairs:
+        hc = [faces[pair[0]][0].hashCode(),faces[pair[1]][0].hashCode()]
         # check if other normals are all at 90 degrees
+        ok = True
         for f in faces:
             if f[0].hashCode() not in hc:
-                if round(f[1].getAngle(faces[p[0]][1]),8) != 1.57079633:
+                if round(f[1].getAngle(faces[pair[0]][1]),4) != 1.5708:
                     ok = False
         if ok:
-            return [faces[p[0]][0],faces[p[1]][0].CenterOfMass.sub(faces[p[0]][0].CenterOfMass)]
+            valids.append([faces[pair[0]][0],faces[pair[1]][0].CenterOfMass.sub(faces[pair[0]][0].CenterOfMass)])
+    for v in valids:
+        # prefer vertical extrusions
+        if v[1].getAngle(FreeCAD.Vector(0,0,1)) < 0.0001:
+            return v
+    # otherwise return the first found
+    if valids:
+        return valids[0]
     return None
 
 def printMessage( message ):
