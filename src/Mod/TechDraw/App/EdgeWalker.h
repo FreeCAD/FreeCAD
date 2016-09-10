@@ -80,7 +80,7 @@ public:
 class ewWireList
 {
 public:
-    ewWireList removeDuplicates();
+    ewWireList removeDuplicateWires();
 
     std::vector<ewWire> wires;
     void push_back(ewWire e);
@@ -121,7 +121,6 @@ public:
     std::vector<TopoDS_Vertex> makeUniqueVList(std::vector<TopoDS_Edge> edges);
     std::vector<WalkerEdge>    makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                std::vector<TopoDS_Vertex> verts);
-    std::vector<WalkerEdge> removeDuplicateInput(std::vector<WalkerEdge> input);
 
     int findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
     std::vector<TopoDS_Wire> sortStrip(std::vector<TopoDS_Wire> fw, bool includeBiggest);
@@ -132,12 +131,10 @@ public:
 protected:
     static bool wireCompare(const TopoDS_Wire& w1, const TopoDS_Wire& w2);
     std::vector<TopoDS_Edge> saveInEdges;
-    std::vector<int> saveIndex;
 
 private:
     edgeVisitor m_eV;
     TechDraw::graph m_g;
-    bool duplicateInput;
 };
 
 }  //end namespace TechDraw
