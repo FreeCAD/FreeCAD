@@ -88,7 +88,6 @@ def addComponents(objectsList,host):
         c = host.Group
         for o in objectsList:
             if not o in c:
-                setAsSubcomponent(o)
                 c.append(o)
         host.Group = c
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
@@ -101,15 +100,12 @@ def addComponents(objectsList,host):
                 if DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
                     if o.Support == host:
                         o.Support = None
-                    setAsSubcomponent(o)
                     host.Tool = o
                 elif Draft.getType(o) == "Axis":
                     if not o in x:
-                        setAsSubcomponent(o)
                         x.append(o)
                 elif not o in a:
                     if hasattr(o,"Shape"):
-                        setAsSubcomponent(o)
                         a.append(o)
         host.Additions = a
         if hasattr(host,"Axes"):
@@ -118,14 +114,12 @@ def addComponents(objectsList,host):
         a = host.Objects
         for o in objectsList:
             if not o in a:
-                setAsSubcomponent(o)
                 a.append(o)
         host.Objects = a
     elif host.isDerivedFrom("App::DocumentObjectGroup"):
         c = host.Group
         for o in objectsList:
             if not o in c:
-                setAsSubcomponent(o)
                 c.append(o)
         host.Group = c
 
@@ -150,12 +144,11 @@ def removeComponents(objectsList,host=None):
             s = host.Subtractions
             for o in objectsList:
                 if not o in s:
-                    setAsSubcomponent(o)
                     s.append(o)
                     fixDAG(o)
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
-                            o.ViewObject.hide()
+                            setAsSubcomponent(o)
             host.Subtractions = s
     else:
         for o in objectsList:
@@ -218,9 +211,13 @@ def setAsSubcomponent(obj):
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("applyConstructionStyle",True):
         if FreeCAD.GuiUp:
             color = getDefaultColor("Construction")
-            obj.ViewObject.LineColor = color
-            obj.ViewObject.ShapeColor = color
-            obj.ViewObject.Transparency = int(color[3]*100)
+            if hasattr(obj.ViewObject,"LineColor"):
+                obj.ViewObject.LineColor = color
+            if hasattr(obj.ViewObject,"ShapeColor"):
+                obj.ViewObject.ShapeColor = color
+            if hasattr(obj.ViewObject,"Transparency"):
+                obj.ViewObject.Transparency = int(color[3]*100)
+            obj.ViewObject.hide()
 
 def fixDAG(obj):
     '''fixDAG(object): Fixes non-DAG problems in windows and rebars
