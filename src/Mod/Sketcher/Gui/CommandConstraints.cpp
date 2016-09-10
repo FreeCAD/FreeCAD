@@ -496,23 +496,29 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchO
     }
     else if( geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())
         center2= (static_cast<const Part::GeomArcOfEllipse *>(geom2))->getCenter();
+    else if( geom2->getTypeId() == Part::GeomEllipse::getClassTypeId())
+        center2= (static_cast<const Part::GeomEllipse *>(geom2))->getCenter();
     else if( geom2->getTypeId() == Part::GeomCircle::getClassTypeId())
-        center2= (static_cast<const Part::GeomCircle *>(geom2))->getCenter();               
+        center2= (static_cast<const Part::GeomCircle *>(geom2))->getCenter();
     else if( geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
         center2= (static_cast<const Part::GeomArcOfCircle *>(geom2))->getCenter();
-    
+    else if( geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        const Part::GeomLineSegment *l2 = static_cast<const Part::GeomLineSegment *>(geom2);
+        center2= (l2->getStartPoint() + l2->getEndPoint())/2;
+    }
+
     Base::Vector3d direction=center2-focus;
     double tapprox=atan2(direction.y,direction.x)-phi;
-    
+
     Base::Vector3d PoH = Base::Vector3d(center.x+majord*cosh(tapprox)*cos(phi)-minord*sinh(tapprox)*sin(phi),
                                         center.y+majord*cosh(tapprox)*sin(phi)+minord*sinh(tapprox)*cos(phi), 0);
-    
+
     try {
         // Add a point
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                                 Obj->getNameInDocument(), PoH.x,PoH.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
-        
+
         // Point on first object
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
                                 Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
@@ -527,21 +533,21 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchO
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
         Gui::Command::abortCommand();
-        
+
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-        
+
         if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
             Gui::Command::updateActive();
-        
+
         return;
     }
-    
+
     Gui::Command::commitCommand();
-    
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-    
+
     if(autoRecompute)
         Gui::Command::updateActive();
 }
@@ -2275,7 +2281,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 if( geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
                     geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                     geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
-                    geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ) {
+                    geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                    geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
 
                     Gui::Command::openCommand("add tangent constraint point");
                     makeTangentToArcOfHyperbolaviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
@@ -2284,7 +2291,6 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 }
 
             }
-            else
 
             openCommand("add tangent constraint");
             Gui::Command::doCommand(
