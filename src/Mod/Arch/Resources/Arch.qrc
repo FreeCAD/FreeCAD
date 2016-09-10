@@ -70,6 +70,7 @@
         <file>icons/Arch_Pipe.svg</file>
         <file>icons/Arch_Pipe_Tree.svg</file>
         <file>icons/Arch_PipeConnector.svg</file>
+        <file>icons/Arch_ToggleSubcomponentDisplay.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
