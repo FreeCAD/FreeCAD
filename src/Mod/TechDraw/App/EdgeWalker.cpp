@@ -162,12 +162,12 @@ bool EdgeWalker::perform()
                                  boyer_myrvold_params::kuratowski_subgraph =
                                        std::back_inserter(kEdges));
     if (!isPlanar) {
+        //TODO: remove kura subgraph to make planar??
         Base::Console().Log("LOG - EW::perform - input is NOT planar\n");
         ki_end = kEdges.end();
         std::stringstream ss;
         ss << "EW::perform - obstructing edges: ";
-        for(ki = kEdges.begin(); ki != ki_end; ++ki)
-        {
+        for(ki = kEdges.begin(); ki != ki_end; ++ki) {
             e1 = *ki;
             ss << boost::get(edge_index,m_g,e1) << ",";
         }
