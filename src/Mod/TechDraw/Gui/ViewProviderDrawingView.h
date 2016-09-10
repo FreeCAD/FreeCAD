@@ -50,7 +50,6 @@ public:
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
-    //virtual void updateData(const App::Property*);
     /// Hide the object in the view
     virtual void hide(void);
     /// Show the object in the view
@@ -58,6 +57,8 @@ public:
     virtual bool isShow(void) const;
 
     virtual void onChanged(const App::Property *prop);
+    virtual void updateData(const App::Property*);
+
     QGIView* getQView(void);
 
     /** @name Restoring view provider from document load */

@@ -116,7 +116,7 @@ private:
     QString m_currentPath;
     QPrinter::Orientation m_orientation;
     QPrinter::PaperSize m_paperSize;
-    ViewProviderPage *pageGui;
+    ViewProviderPage *m_vpPage;
 
     bool m_frameState;
 

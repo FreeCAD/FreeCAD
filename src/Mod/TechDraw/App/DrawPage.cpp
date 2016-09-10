@@ -107,7 +107,6 @@ void DrawPage::onChanged(const App::Property* prop)
     } else if (prop == &Views) {
         if (!isRestoring()) {
             //TODO: reload if Views prop changes (ie adds/deletes)
-            //touch();
         }
     } else if(prop == &Scale) {
         // touch all views in the Page as they may be dependent on this scale
@@ -136,6 +135,8 @@ void DrawPage::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawPage::execute(void)
 {
+    //Page is just a property storage area? no real logic involved?
+    //all this does is trigger onChanged in this and ViewProviderPage
     Template.touch();
     Views.touch();
     return App::DocumentObject::StdReturn;

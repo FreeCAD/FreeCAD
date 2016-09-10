@@ -28,7 +28,7 @@
 #include <Gui/ViewProviderFeature.h>
 
 #include "ViewProviderDrawingView.h"
-
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 
 namespace TechDrawGui {

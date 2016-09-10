@@ -76,8 +76,7 @@ void DrawViewClip::onChanged(const App::Property* prop)
 {
     if (prop == &Height ||
         prop == &Width  ||
-        prop == &ShowFrame ||
-        prop == &ShowLabels) {
+        prop == &Views) {
         if (!isRestoring()) {
             DrawViewClip::execute();
         }

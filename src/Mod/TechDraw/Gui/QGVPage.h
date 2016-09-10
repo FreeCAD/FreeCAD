@@ -112,7 +112,7 @@ private:
     bool drawBkg;
     QBrush* bkgBrush;
     QImage m_image;
-    ViewProviderPage *pageGui;
+    ViewProviderPage *m_vpPage;
 };
 
 } // namespace MDIViewPageGui

@@ -177,9 +177,18 @@ void ViewProviderDrawingView::finishRestoring()
     Gui::ViewProviderDocumentObject::finishRestoring();
 }
 
-//void ViewProviderDrawingView::updateData(const App::Property*)
-//{
-//}
+void ViewProviderDrawingView::updateData(const App::Property* prop)
+{
+    if (prop == &(getViewObject()->Rotation)  ) {
+        // redraw QGIVP
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+     }
+
+    Gui::ViewProviderDocumentObject::updateData(prop);
+}
 
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {

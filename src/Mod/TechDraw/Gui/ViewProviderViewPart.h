@@ -47,6 +47,9 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
 
 public:
+    virtual void onChanged(const App::Property *prop);
+    virtual void updateData(const App::Property*);
+
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
 
     virtual TechDraw::DrawViewPart* getViewObject() const;
