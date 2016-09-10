@@ -455,7 +455,7 @@ void QGIViewPart::drawSectionLine(bool b)
 {
     //Base::Console().Message("TRACE - QGIVP::drawSectionLine);
 
-    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
+    TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
     TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
     if (!viewPart ||
         !viewSection)  {

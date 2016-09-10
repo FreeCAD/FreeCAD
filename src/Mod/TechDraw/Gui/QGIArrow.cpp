@@ -39,7 +39,8 @@ using namespace TechDrawGui;
 
 QGIArrow::QGIArrow() :
     m_fill(Qt::SolidPattern),
-    m_size(5.0)
+    m_size(5.0),
+    m_style(0)
 {
     isFlipped = false;
     m_brush.setStyle(m_fill);

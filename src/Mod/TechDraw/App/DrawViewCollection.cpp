@@ -87,9 +87,9 @@ int DrawViewCollection::countChildren()
     const std::vector<App::DocumentObject *> &views = Views.getValues();
     for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
 
-        App::DocumentObject *docObj = dynamic_cast<App::DocumentObject *>(*it);
+        App::DocumentObject *docObj = static_cast<App::DocumentObject *>(*it);
         if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
-            TechDraw::DrawViewCollection *viewCollection = dynamic_cast<TechDraw::DrawViewCollection *>(*it);
+            TechDraw::DrawViewCollection *viewCollection = static_cast<TechDraw::DrawViewCollection *>(*it);
             numChildren += viewCollection->countChildren() + 1;
         } else {
             numChildren += 1;
@@ -127,7 +127,7 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
             App::DocumentObject *docObj = *it;
             if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
+                TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
 
                 // Set scale factor of each view
                 view->ScaleType.setValue("Document");
@@ -140,7 +140,7 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
             App::DocumentObject *docObj = *it;
             if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
+                TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
 
                 view->ScaleType.setValue("Custom");
                 // Set scale factor of each view
@@ -159,6 +159,10 @@ QRectF DrawViewCollection::getRect() const
     QRectF result;
     for (auto& v:Views.getValues()) {
         TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(v);
+        if (!view) {
+            throw Base::Exception("DrawViewCollection::getRect bad View\n");
+        }
+
         result = result.united(view->getRect().translated(view->X.getValue(),view->Y.getValue()));
     }
     return QRectF(0,0,Scale.getValue() * result.width(),Scale.getValue() * result.height());

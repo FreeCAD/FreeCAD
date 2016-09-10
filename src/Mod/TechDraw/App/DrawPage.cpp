@@ -238,7 +238,7 @@ int DrawPage::addView(App::DocumentObject *docObj)
         return -1;
 
     //position all new views in center of Page (exceptDVDimension)
-    DrawView* view = dynamic_cast<DrawView*>(docObj);
+    DrawView* view = static_cast<DrawView*>(docObj);
     if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
         view->X.setValue(getPageWidth()/2.0);
         view->Y.setValue(getPageHeight()/2.0);

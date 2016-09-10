@@ -274,7 +274,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 }
                 if (circle) {
                     if ((*itVertex)->isEqual(c1,Precision::Confusion())) {
-                        c1Add = true;
+                        c1Add = false;
                     }
                 }
 
