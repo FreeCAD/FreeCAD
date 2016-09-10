@@ -31,7 +31,7 @@ Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall',
          'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab','Space',
          'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window']
 
-import FreeCAD,Draft
+import FreeCAD,Draft,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -77,6 +77,7 @@ def addToComponent(compobject,addobject,mod=None):
                     l.append(addobject)
                     setattr(compobject,mod,l)
                     if mod != "Objects":
+                        ArchCommands.setAsSubcomponent(addobject)
                         addobject.ViewObject.hide()
         else:
             for a in attribs[:3]:
@@ -116,6 +117,7 @@ def removeFromComponent(compobject,subobject):
             l.append(subobject)
             compobject.Subtractions = l
             if (Draft.getType(subobject) != "Window") and (not Draft.isClone(subobject,"Window",True)):
+                ArchCommands.setAsSubcomponent(subobject)
                 subobject.ViewObject.hide()
 
 

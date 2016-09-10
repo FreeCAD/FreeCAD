@@ -66,6 +66,9 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
         c = p.GetUnsigned("PanelColor",3416289279)
+    elif objectType == "Construction":
+        c = Draft.getParam("constructioncolor",746455039)
+        transparency = 0.80
     else:
         c = p.GetUnsigned("WindowsColor",810781695)
     r = float((c>>24)&0xFF)/255.0
@@ -85,6 +88,7 @@ def addComponents(objectsList,host):
         c = host.Group
         for o in objectsList:
             if not o in c:
+                setAsSubcomponent(o)
                 c.append(o)
         host.Group = c
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
@@ -97,12 +101,15 @@ def addComponents(objectsList,host):
                 if DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
                     if o.Support == host:
                         o.Support = None
+                    setAsSubcomponent(o)
                     host.Tool = o
                 elif Draft.getType(o) == "Axis":
                     if not o in x:
+                        setAsSubcomponent(o)
                         x.append(o)
                 elif not o in a:
                     if hasattr(o,"Shape"):
+                        setAsSubcomponent(o)
                         a.append(o)
         host.Additions = a
         if hasattr(host,"Axes"):
@@ -111,12 +118,14 @@ def addComponents(objectsList,host):
         a = host.Objects
         for o in objectsList:
             if not o in a:
+                setAsSubcomponent(o)
                 a.append(o)
         host.Objects = a
     elif host.isDerivedFrom("App::DocumentObjectGroup"):
         c = host.Group
         for o in objectsList:
             if not o in c:
+                setAsSubcomponent(o)
                 c.append(o)
         host.Group = c
 
@@ -141,6 +150,7 @@ def removeComponents(objectsList,host=None):
             s = host.Subtractions
             for o in objectsList:
                 if not o in s:
+                    setAsSubcomponent(o)
                     s.append(o)
                     fixDAG(o)
                     if FreeCAD.GuiUp:
@@ -200,6 +210,17 @@ def makeComponent(baseobj=None,name="Component",delete=False):
         elif isinstance(baseobj,Part.Shape):
             obj.Shape = baseobj
     return obj
+
+def setAsSubcomponent(obj):
+    '''Sets the given object properly to become a subcomponent (addition, subtraction)
+    of an Arch component'''
+    Draft.ungroup(obj)
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("applyConstructionStyle",True):
+        if FreeCAD.GuiUp:
+            color = getDefaultColor("Construction")
+            obj.ViewObject.LineColor = color
+            obj.ViewObject.ShapeColor = color
+            obj.ViewObject.Transparency = int(color[3]*100)
 
 def fixDAG(obj):
     '''fixDAG(object): Fixes non-DAG problems in windows and rebars
@@ -1275,6 +1296,32 @@ class _CommandIfcSpreadsheet:
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
+class _ToggleSubcomponentDisplay:
+    "the Toggle SubcomponentDisplay command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_ToggleSubcomponentDisplay',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubcomponentDisplay","Toggle subcomponents"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubcomponentDisplay","Shows or hides the subcomponents of this object")}
+
+    def IsActive(self):
+        return bool(FreeCADGui.Selection.getSelection())
+
+    def Activated(self):
+        mode = None
+        for obj in FreeCADGui.Selection.getSelection():
+            if hasattr(obj, "Subtractions"):
+                for sub in obj.Subtractions:
+                    if not (Draft.getType(sub) in ["Window","Roof"]):
+                        if mode == None:
+                            # take the first sub as base
+                            mode = sub.ViewObject.isVisible()
+                        if mode == True:
+                            sub.ViewObject.hide()
+                        else:
+                            sub.ViewObject.show()
+
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
     FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
@@ -1289,3 +1336,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())
     FreeCADGui.addCommand('Arch_IfcSpreadsheet',_CommandIfcSpreadsheet())
+    FreeCADGui.addCommand('Arch_ToggleSubcomponentDisplay',_ToggleSubcomponentDisplay())

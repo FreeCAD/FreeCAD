@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>407</width>
-    <height>646</height>
+    <width>396</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,6 +78,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>archRemoveExternal</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_7">
+          <property name="toolTip">
+           <string>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</string>
+          </property>
+          <property name="text">
+           <string>Apply Draft construction style to subcomponents</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>applyconstructionStyle</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
