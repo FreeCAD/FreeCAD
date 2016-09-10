@@ -179,6 +179,7 @@ public:
     void invoke (int); 
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
+    void addToGroup(ActionGroup *, bool checkable);
     //@}
 
 
