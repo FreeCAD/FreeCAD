@@ -499,7 +499,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                                 );
 
                     if (getMainWindow()) {
-                        getMainWindow()->showMessage(msg,3000);
+                        getMainWindow()->showMessage(msg);
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                         mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
@@ -574,7 +574,7 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
                                                        ,x,y,z);
 
     if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+        getMainWindow()->showMessage(QString::fromLatin1(buf));
 }
 
 void SelectionSingleton::rmvPreselect()
@@ -679,7 +679,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
                     } else {
                         msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
                     }
-                    getMainWindow()->showMessage(msg,5000);
+                    getMainWindow()->showMessage(msg);
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                     mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }
