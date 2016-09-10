@@ -1535,7 +1535,7 @@ CmdSketcherCompCopy::CmdSketcherCompCopy()
     sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_CompCopy";
     sStatusTip      = sToolTipText;
-    sAccel          = "CTRL+C";    
+    sAccel          = "CTRL+C";
     eType           = ForEdit;
 }
 
@@ -1551,15 +1551,15 @@ void CmdSketcherCompCopy::activated(int iMsg)
     }
     else
         return;
-    
+
     // Since the default icon is reset when enabing/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
-    
+
     assert(iMsg < a.size());
     pcAction->setIcon(a[iMsg]->icon());
-    pcAction->setShortcut(QString::fromLatin1("CTRL+C"));
+    pcAction->setShortcut(QString::fromLatin1(this->sAccel));
 }
 
 Gui::Action * CmdSketcherCompCopy::createAction(void)
