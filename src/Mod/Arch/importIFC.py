@@ -927,7 +927,7 @@ def export(exportList,filename):
     email = ''
     if ("@" in owner) and ("<" in owner):
         s = owner.split("<")
-        owner = s[0]
+        owner = s[0].strip()
         email = s[1].strip(">")
     global template
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
