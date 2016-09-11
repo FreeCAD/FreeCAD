@@ -395,7 +395,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 properties[obj.id()].update(prop_by_category)
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
-            mattable[o.id()] = r.RelatingMaterial.id()
+            if r.RelatingMaterial.is_a("IfcMaterial"):
+                mattable[o.id()] = r.RelatingMaterial.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
+                mattable[o.id()] = r.RelatingMaterial.Material.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
+                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
+                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles:
             if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
@@ -879,7 +886,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # Materials
 
     if DEBUG and materials: print "Creating materials..."
-
+    print "mattable:",mattable
+    print "materials:",materials
     fcmats = {}
     for material in materials:
         name = "Material"
