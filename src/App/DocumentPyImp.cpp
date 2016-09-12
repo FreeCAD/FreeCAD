@@ -83,11 +83,14 @@ PyObject*  DocumentPy::save(PyObject * args)
 PyObject*  DocumentPy::saveAs(PyObject * args)
 {
     char* fn;
-    if (!PyArg_ParseTuple(args, "s", &fn))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &fn))
+        return NULL;
+
+    std::string utf8Name = fn;
+    PyMem_Free(fn);
 
     try {
-        if (!getDocumentPtr()->saveAs(fn)) {
+        if (!getDocumentPtr()->saveAs(utf8Name.c_str())) {
             PyErr_SetString(PyExc_ValueError, "Object attribute 'FileName' is not set");
             return NULL;
         }
@@ -101,9 +104,9 @@ PyObject*  DocumentPy::saveAs(PyObject * args)
         return 0;
     }
 
-    Base::FileInfo fi(fn);
+    Base::FileInfo fi(utf8Name);
     if (!fi.isReadable()) {
-        PyErr_Format(PyExc_IOError, "No such file or directory: '%s'", fn);
+        PyErr_Format(PyExc_IOError, "No such file or directory: '%s'", utf8Name.c_str());
         return NULL;
     }
 
