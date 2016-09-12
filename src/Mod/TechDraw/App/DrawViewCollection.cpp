@@ -135,8 +135,7 @@ int DrawViewCollection::countChildren()
     const std::vector<App::DocumentObject *> &views = Views.getValues();
     for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
 
-        App::DocumentObject *docObj = static_cast<App::DocumentObject *>(*it);
-        if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
+        if((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
             TechDraw::DrawViewCollection *viewCollection = static_cast<TechDraw::DrawViewCollection *>(*it);
             numChildren += viewCollection->countChildren() + 1;
         } else {
