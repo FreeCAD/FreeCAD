@@ -37,6 +37,8 @@
 # include <cmath>
 #endif
 
+#include <App/Application.h>
+#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Gui/FileDialog.h>
@@ -92,18 +94,26 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     setObjectName(QString::fromLocal8Bit(name));
 
     setScene(s);
+
+    setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
     //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
-    setTransformationAnchor(AnchorUnderMouse);
+    //setTransformationAnchor(AnchorUnderMouse);
+    //setTransformationAnchor(NoAnchor);
+    setTransformationAnchor(AnchorViewCenter);
+    setResizeAnchor(AnchorViewCenter);
+    setAlignment(Qt::AlignCenter);
 
     setDragMode(ScrollHandDrag);
     setCursor(QCursor(Qt::ArrowCursor));
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
-    bkgBrush = new QBrush(QColor::fromRgb(70,70,70));
+    bkgBrush = new QBrush(getBackgroundColor());
 
     resetCachedContent();
 }
+
 QGVPage::~QGVPage()
 {
     delete bkgBrush;
@@ -126,7 +136,7 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
 
 
     p->setBrush(*bkgBrush);
-    p->drawRect(viewport()->rect());
+    p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
 
     if(!m_vpPage) {
         return;
@@ -544,10 +554,26 @@ void QGVPage::paintEvent(QPaintEvent *event)
 
 void QGVPage::wheelEvent(QWheelEvent *event)
 {
-    qreal factor = std::pow(1.2, -event->delta() / 240.0);
+//Delta is the distance that the wheel is rotated, in eighths of a degree.
+//positive indicates rotation forwards away from the user; negative backwards toward the user.
+//Most mouse types work in steps of 15 degrees, in which case the delta value is a multiple of 120; i.e., 120 units * 1/8 = 15 degrees.
+//1 click = 15 degrees.  15 degrees = 120 deltas.  delta/240 -> 1 click = 0.5 ==> factor = 1.2^0.5 = 1.095
+//                                                              1 click = -0.5 ==> factor = 1.2^-0.5 = 0.91
+//so to change wheel direction, multiply (event->delta() / 240.0) by +/-1
+    double mouseBase = 1.2;        //magic numbers. change for different mice?
+    double mouseAdjust = 240.0;
+
+    QPointF center = mapToScene(viewport()->rect().center());
+    qreal factor = std::pow(mouseBase, event->delta() / mouseAdjust);
     scale(factor, factor);
+
+    QPointF newCenter = mapToScene(viewport()->rect().center());
+    QPointF change = newCenter - center;
+    translate(change.x(), change.y());
+
     event->accept();
 }
+
 void QGVPage::enterEvent(QEvent *event)
 {
     QGraphicsView::enterEvent(event);
@@ -571,5 +597,13 @@ TechDraw::DrawPage* QGVPage::getDrawPage()
     return m_vpPage->getDrawPage();
 }
 
+QColor QGVPage::getBackgroundColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Background", 0x70707000));
+    return fcColor.asValue<QColor>();
+}
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

@@ -145,7 +145,6 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
         this           , SLOT  (selectionChanged())
        );
 
-
      // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
      // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
      // we'll have to make this recursive. -WF
@@ -168,9 +167,13 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
     if( pageTemplate ) {
+        //make sceneRect 1 pagesize bigger in every direction
+        double width  =  pageTemplate->Width.getValue();
+        double height =  pageTemplate->Height.getValue();
+        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
         attachTemplate(pageTemplate);
+        viewAll();
     }
-
 }
 
 
@@ -250,11 +253,9 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
 
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
-    //why doesn't setting the template set the papersize???
     m_view->setPageTemplate(obj);
     double width  =  obj->Width.getValue();
     double height =  obj->Height.getValue();
-    m_view->scene()->setSceneRect(QRectF(-1.,-height,width+1.,height));         //the +/- 1 is because of the way the template is define???
     m_paperSize = getPaperSize(int(round(width)),int(round(height)));
     if (width > height) {
         m_orientation = QPrinter::Landscape;
@@ -263,6 +264,23 @@ void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
     }
 }
 
+QPointF MDIViewPage::getTemplateCenter(TechDraw::DrawTemplate *obj)
+{
+    double cx  =  obj->Width.getValue()/2.0;
+    double cy =  -obj->Height.getValue()/2.0;
+    QPointF result(cx,cy);
+    return result;
+}
+
+void MDIViewPage::centerOnPage(void)
+{
+    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    if( pageTemplate ) {
+        QPointF viewCenter = getTemplateCenter(pageTemplate);
+        m_view->centerOn(viewCenter);
+    }
+}
 
 bool MDIViewPage::attachView(App::DocumentObject *obj)
 {
@@ -795,7 +813,8 @@ void MDIViewPage::setRenderer(QAction *action)
 
 void MDIViewPage::viewAll()
 {
-    m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
+    //m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
+    m_view->fitInView(m_view->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
 
 

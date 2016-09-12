@@ -102,6 +102,7 @@ protected:
 
     static QColor SelectColor;
     static QColor PreselectColor;
+    QColor getBackgroundColor();
 
     QGITemplate *pageTemplate;
     std::vector<QGIView *> views;
