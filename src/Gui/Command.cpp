@@ -448,7 +448,8 @@ void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
     const QString cmd = s.vsprintf(sCmd, ap);
     va_end(ap);
 
-    QByteArray format = cmd.toLatin1();
+    // 'vsprintf' expects a utf-8 string for '%s'
+    QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdC: %s\n", format.constData());
