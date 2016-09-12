@@ -43,6 +43,7 @@
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -670,8 +671,9 @@ bool Document::saveAs(void)
         // save as new file name
         try {
             Gui::WaitCursor wc;
-            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(\"%s\")"
-                                           , DocName, (const char*)fn.toUtf8());
+            std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(fn.toUtf8());
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
+                                           , DocName, escapedstr.c_str());
             setModified(false);
             getMainWindow()->appendRecentFile(fi.filePath());
         }
