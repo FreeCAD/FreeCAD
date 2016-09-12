@@ -27,11 +27,8 @@ PyObject* DrawPagePy::addView(PyObject* args)
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
-        Base::Console().Error("Error: DrawPagePy::addView - Bad Arg - not DocumentObject\n");
-        return NULL;
-        //TODO: sb PyErr??
-        //PyErr_SetString(PyExc_TypeError,"addView expects a DrawView");
-        //return -1;
+        PyErr_SetString(PyExc_TypeError, "DrawPagePy::AddView - Bad Arg - not DocumentObject");
+        return nullptr;
     }
 
     DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage
@@ -52,11 +49,8 @@ PyObject* DrawPagePy::removeView(PyObject* args)
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
-        Base::Console().Error("Error: DrawPagePy::removeView - Bad Arg - not DocumentObject\n");
-        return NULL;
-        //TODO: sb PyErr??
-        //PyErr_SetString(PyExc_TypeError,"removeView expects a DrawView");
-        //return -1;
+        PyErr_SetString(PyExc_TypeError, "DrawPagePy::removeView - Bad Arg - not DocumentObject");
+        return nullptr;
     }
 
     DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage

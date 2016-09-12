@@ -19,8 +19,8 @@ PyObject* DrawViewCollectionPy::addView(PyObject* args)
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
-        Base::Console().Error("Error: DrawViewClipPy::addView - Bad Arg - not DocumentObject\n");
-        return NULL;
+        PyErr_SetString(PyExc_TypeError, "DrawViewCollectionPy::addView - Bad Arg - not DocumentObject");
+        return nullptr;
     }
 
     DrawViewCollection* collect = getDrawViewCollectionPtr();
@@ -37,8 +37,8 @@ PyObject* DrawViewCollectionPy::removeView(PyObject* args)
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
-        Base::Console().Error("Error: DrawViewClipPy::addView - Bad Arg - not DocumentObject\n");
-        return NULL;
+        PyErr_SetString(PyExc_TypeError, "DrawViewCollectionPy::removeView - Bad Arg - not DocumentObject");
+        return nullptr;
     }
 
     DrawViewCollection* collect = getDrawViewCollectionPtr();
