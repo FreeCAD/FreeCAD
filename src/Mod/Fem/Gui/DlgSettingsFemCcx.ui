@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>628</height>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,8 +39,40 @@
         </property>
         <item>
          <layout class="QGridLayout" name="gl_ccx">
-          <item row="0" column="2">
-           <widget class="Gui::PrefFileChooser" name="fc_ccx_binary" native="true">
+          <item row="5" column="2">
+           <widget class="Gui::PrefFileChooser" name="fc_ext_editor" native="true">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>ExternalEditorPath</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="l_ccx_binary_path">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>ccx binary path:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path" native="true">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -76,23 +108,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="l_ext_editor">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>External editor:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
+          <item row="3" column="2">
            <widget class="Gui::PrefCheckBox" name="cb_int_editor">
             <property name="text">
              <string>Use internal editor for .inp files</string>
@@ -108,28 +124,18 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="3" column="0">
            <widget class="QLabel" name="l_editor">
             <property name="text">
              <string>Editor</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="2">
-           <widget class="Gui::PrefFileChooser" name="fc_ext_editor" native="true">
+          <item row="5" column="0">
+           <widget class="QLabel" name="l_ext_editor">
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>ExternalEditorPath</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/Ccx</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_ccx_binary">
             <property name="minimumSize">
              <size>
               <width>100</width>
@@ -137,7 +143,30 @@
              </size>
             </property>
             <property name="text">
-             <string>ccx binary</string>
+             <string>External editor:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
+            <property name="text">
+             <string>Use standard ccx binary path</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>UseStandardCcxLocation</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/Ccx</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="l_ccx_binary_std">
+            <property name="text">
+             <string>CalculiX binary</string>
             </property>
            </widget>
           </item>
@@ -701,6 +730,70 @@
     <hint type="destinationlabel">
      <x>406</x>
      <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_ccx_binary_std</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>l_ccx_binary_path</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>406</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>148</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_ccx_binary_std</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fc_ccx_binary_path</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>406</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_ccx_binary_std</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>l_ccx_binary_path</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>406</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>148</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_ccx_binary_std</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fc_ccx_binary_path</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>406</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>68</y>
     </hint>
    </hints>
   </connection>
