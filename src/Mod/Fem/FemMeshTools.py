@@ -121,7 +121,19 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
     for elementID in sorted(femelement_table):
         nodecount = 0
         el_nd_ct = len(femelement_table[elementID])
-        if el_nd_ct == 8:  # hexa8
+        if el_nd_ct == 4:  # tetra4
+            for nodeID in femelement_table[elementID]:
+                if nodeID in node_list:
+                    nodecount = nodecount + 1
+            if nodecount == 3:
+                e.append(elementID)
+        elif el_nd_ct == 10:  # tetra10
+            for nodeID in femelement_table[elementID]:
+                if nodeID in node_list:
+                    nodecount = nodecount + 1
+            if nodecount == 4:
+                e.append(elementID)
+        elif el_nd_ct == 8:  # hexa8
             for nodeID in femelement_table[elementID]:
                 if nodeID in node_list:
                     nodecount = nodecount + 1
