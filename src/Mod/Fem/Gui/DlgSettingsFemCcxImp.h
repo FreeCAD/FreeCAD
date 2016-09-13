@@ -1,7 +1,8 @@
  /**************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: Przemo Firszt <przemo@firszt.eu>                              *
- *   Based on src/Mod/Raytracing/Gui/DlgSettingsRayImp.h                   *
+ *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemGeneralImp.h                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

@@ -1,7 +1,8 @@
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: Przemo Firszt <przemo@firszt.eu>                              *
- *   Based on src/Mod/Raytracing/Gui/DlgSettingsRayImp.cpp                 *
+ *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemGeneralImp.cpp                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -66,7 +67,8 @@ void DlgSettingsFemCcxImp::saveSettings()
 
     cb_int_editor->onSave();
     fc_ext_editor->onSave();
-    fc_ccx_binary->onSave();
+    cb_ccx_binary_std->onSave();
+    fc_ccx_binary_path->onSave();
 }
 
 void DlgSettingsFemCcxImp::loadSettings()
@@ -88,7 +90,8 @@ void DlgSettingsFemCcxImp::loadSettings()
 
     cb_int_editor->onRestore();
     fc_ext_editor->onRestore();
-    fc_ccx_binary->onRestore();
+    cb_ccx_binary_std->onRestore();
+    fc_ccx_binary_path->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
