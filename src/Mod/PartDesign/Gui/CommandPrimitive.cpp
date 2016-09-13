@@ -52,7 +52,7 @@ CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create an additive primitive");
     sToolTipText    = QT_TR_NOOP("Create an additive primitive");
-    sWhatsThis      = "Sketcher_CompPrimitiveAdditive";
+    sWhatsThis      = "PartDesign_CompPrimitiveAdditive";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
 }
