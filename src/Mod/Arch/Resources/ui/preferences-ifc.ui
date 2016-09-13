@@ -249,6 +249,26 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_17">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_11">
+          <property name="toolTip">
+           <string>Split walls made of multiple layers</string>
+          </property>
+          <property name="text">
+           <string>Split multilayer walls</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSplitLayers</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
