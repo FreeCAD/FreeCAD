@@ -106,17 +106,24 @@ class FemToolsCcx(FemTools.FemTools):
     #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
     def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
         from platform import system
-        if not ccx_binary:
-            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-            ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
-        if not ccx_binary:
-            if system() == "Linux":
-                ccx_binary = "ccx"
-            elif system() == "Windows":
-                ccx_binary = FreeCAD.getHomePath() + "bin/ccx.exe"
-            else:
-                ccx_binary = "ccx"
-        self.ccx_binary = ccx_binary
+        ccx_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").GetBool("UseStandardCcxLocation", True)
+        if ccx_std_location:
+            if system() == "Windows":
+                ccx_path = FreeCAD.getHomePath() + "bin/ccx.exe"
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
+                self.ccx_binary = ccx_path
+        else:
+            if not ccx_binary:
+                self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+                ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
+            if not ccx_binary:
+                if system() == "Linux":
+                    ccx_binary = "ccx"
+                elif system() == "Windows":
+                    ccx_binary = FreeCAD.getHomePath() + "bin/ccx.exe"
+                else:
+                    ccx_binary = "ccx"
+            self.ccx_binary = ccx_binary
 
         import subprocess
         startup_info = None
