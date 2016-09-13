@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
- *   Author: Przemo Firszt <przemo@firszt.eu>                              *
- *   Based on src/Mod/Raytracing/Gui/DlgSettingsRayImp.cpp                 *
+ *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcxImp.cpp                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,54 +26,38 @@
 #include "PreCompiled.h"
 
 #include "Gui/Application.h"
-#include "DlgSettingsFemGeneralImp.h"
+#include "DlgSettingsFemZ88Imp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
-DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp( QWidget* parent )
+DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
 }
 
-DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
+DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgSettingsFemGeneralImp::saveSettings()
+void DlgSettingsFemZ88Imp::saveSettings()
 {
-    fc_analysis_working_directory->onSave();
-
-    cb_use_built_in_materials->onSave();
-    cb_use_mat_from_config_dir->onSave();
-    cb_use_mat_from_custom_dir->onSave();
-    fc_custom_mat_dir->onSave();
-
-    cb_restore_result_dialog->onSave();
-    cb_keep_results_on_rerun->onSave();
-    cb_hide_constraint->onSave();
+    cb_z88_binary_std->onSave();
+    fc_z88_binary_path->onSave();
 }
 
-void DlgSettingsFemGeneralImp::loadSettings()
+void DlgSettingsFemZ88Imp::loadSettings()
 {
-    fc_analysis_working_directory->onRestore();
-
-    cb_use_built_in_materials->onRestore();
-    cb_use_mat_from_config_dir->onRestore();
-    cb_use_mat_from_custom_dir->onRestore();
-    fc_custom_mat_dir->onRestore();
-
-    cb_restore_result_dialog->onRestore();
-    cb_keep_results_on_rerun->onRestore();
-    cb_hide_constraint->onRestore();
+    cb_z88_binary_std->onRestore();
+    fc_z88_binary_path->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemGeneralImp::changeEvent(QEvent *e)
+void DlgSettingsFemZ88Imp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
     }
@@ -82,4 +66,4 @@ void DlgSettingsFemGeneralImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsFemGeneralImp.cpp"
+#include "moc_DlgSettingsFemZ88Imp.cpp"
