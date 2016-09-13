@@ -75,7 +75,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
                     break
 
             disp = result_set['disp']
-            l = len(disp)
+            no_of_values = len(disp)
             displacement = []
             for k, v in disp.iteritems():
                 displacement.append(v)
@@ -88,11 +88,23 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
 
             x_min, y_min, z_min = map(min, zip(*displacement))
             sum_list = map(sum, zip(*displacement))
-            x_avg, y_avg, z_avg = [i / l for i in sum_list]
+            x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
 
             s_max = max(results.StressValues)
             s_min = min(results.StressValues)
-            s_avg = sum(results.StressValues) / l
+            s_avg = sum(results.StressValues) / no_of_values
+            p1_min = min(results.PrincipalMax)
+            p1_avg = sum(results.PrincipalMax) / no_of_values
+            p1_max = max(results.PrincipalMax)
+            p2_min = min(results.PrincipalMed)
+            p2_avg = sum(results.PrincipalMed) / no_of_values
+            p2_max = max(results.PrincipalMed)
+            p3_min = min(results.PrincipalMin)
+            p3_avg = sum(results.PrincipalMin) / no_of_values
+            p3_max = max(results.PrincipalMin)
+            ms_min = min(results.MaxShear)
+            ms_avg = sum(results.MaxShear) / no_of_values
+            ms_max = max(results.MaxShear)
 
             disp_abs = []
             for d in displacement:
@@ -101,13 +113,17 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
 
             a_max = max(disp_abs)
             a_min = min(disp_abs)
-            a_avg = sum(disp_abs) / l
+            a_avg = sum(disp_abs) / no_of_values
 
             results.Stats = [x_min, x_avg, x_max,
                              y_min, y_avg, y_max,
                              z_min, z_avg, z_max,
                              a_min, a_avg, a_max,
-                             s_min, s_avg, s_max]
+                             s_min, s_avg, s_max,
+                             p1_min, p1_avg, p1_max,
+                             p2_min, p2_avg, p2_max,
+                             p3_min, p3_avg, p3_max,
+                             ms_min, ms_avg, ms_max]
             analysis_object.Member = analysis_object.Member + [results]
 
         if(FreeCAD.GuiUp):
