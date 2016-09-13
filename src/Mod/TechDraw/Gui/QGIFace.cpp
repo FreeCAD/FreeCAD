@@ -109,6 +109,14 @@ void QGIFace::setFill(QBrush b) {
     m_styleNormal = b.style();
 }
 
+void QGIFace::setDrawEdges(bool b) {
+    if (b) {
+        setStyle(Qt::DashLine);
+    } else {
+        setStyle(Qt::NoPen);    //don't draw face lines, just fill
+    }
+}
+
 void QGIFace::resetFill() {
     m_colNormalFill = m_colDefFill;
     m_styleNormal = m_styleDef;
