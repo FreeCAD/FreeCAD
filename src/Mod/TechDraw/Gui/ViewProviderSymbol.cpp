@@ -84,3 +84,18 @@ TechDraw::DrawViewSymbol* ViewProviderSymbol::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewSymbol*>(pcObject);
 }
+
+//**************************************************************************
+// Draft view
+
+PROPERTY_SOURCE(TechDrawGui::ViewProviderDraft, TechDrawGui::ViewProviderSymbol)
+
+
+ViewProviderDraft::ViewProviderDraft()
+{
+    sPixmap = "actions/techdraw-draft-view.svg";
+}
+
+ViewProviderDraft::~ViewProviderDraft()
+{
+}

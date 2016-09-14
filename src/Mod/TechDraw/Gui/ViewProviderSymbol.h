@@ -54,6 +54,17 @@ public:
     virtual TechDraw::DrawViewSymbol* getViewObject() const;
 };
 
+class TechDrawGuiExport ViewProviderDraft : public ViewProviderSymbol
+{
+    PROPERTY_HEADER(TechDrawGui::ViewProviderDraft);
+
+public:
+    /// constructor
+    ViewProviderDraft();
+    /// destructor
+    virtual ~ViewProviderDraft();
+};
+
 } // namespace TechDrawGui
 
 

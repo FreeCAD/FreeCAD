@@ -96,6 +96,7 @@ void TechDrawGuiExport initTechDrawGui()
     TechDrawGui::ViewProviderViewClip::init();
     TechDrawGui::ViewProviderAnnotation::init();
     TechDrawGui::ViewProviderSymbol::init();
+    TechDrawGui::ViewProviderDraft::init();
     TechDrawGui::ViewProviderHatch::init();
     TechDrawGui::ViewProviderSpreadsheet::init();
 
