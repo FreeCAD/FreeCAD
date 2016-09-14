@@ -790,16 +790,15 @@ void CmdTechDrawDraftView::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (shapes.empty()) {
+    std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least 1 Part object."));
+            QObject::tr("Select at least one object."));
         return;
     }
     std::string PageName = page->getNameInDocument();
-    std::string SourceName = shapes.front()->getNameInDocument();
 
-    for (std::vector<App::DocumentObject*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
         std::string FeatName = getUniqueObjectName("DraftView");
         std::string SourceName = (*it)->getNameInDocument();
         openCommand("Create DraftView");
