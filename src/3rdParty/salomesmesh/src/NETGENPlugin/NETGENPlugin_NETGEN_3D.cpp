@@ -75,7 +75,9 @@ namespace nglib {
 #include <nglib.h>
 }
 namespace netgen {
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
+#elif NETGEN_VERSION > 4
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
@@ -470,7 +472,10 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   {
     OCC_CATCH_SIGNALS;
 
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+    std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
+    err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, netgen::mparam, startWith, endWith);
+#elif NETGEN_VERSION > 4
     ngMesh->CalcLocalH(netgen::mparam.grading);
     err = netgen::OCCGenerateMesh(occgeo, ngMesh, netgen::mparam, startWith, endWith);
 #else

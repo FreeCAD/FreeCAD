@@ -2501,7 +2501,10 @@ bool NETGENPlugin_Mesher::Compute()
     try
     {
       OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+      std::shared_ptr<netgen::Mesh> mesh_ptr(_ngMesh,  [](netgen::Mesh*){});
+      err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
       err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
       err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2589,7 +2592,10 @@ bool NETGENPlugin_Mesher::Compute()
         //OCCSetLocalMeshSize(intOccgeo, *_ngMesh); it deletes _ngMesh->localH
 
         // let netgen create a temporary mesh
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION >=6
+        std::shared_ptr<netgen::Mesh> mesh_ptr(tmpNgMesh,  [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(intOccgeo, mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
         netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams, startWith, endWith);
 #else
         netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, startWith, endWith, optstr);
@@ -2602,7 +2608,9 @@ bool NETGENPlugin_Mesher::Compute()
 
         // compute mesh on internal edges
         startWith = endWith = netgen::MESHCONST_MESHEDGES;
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION >=6
+        err = netgen::OCCGenerateMesh(intOccgeo, mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, startWith, endWith, optstr);
@@ -2643,7 +2651,10 @@ bool NETGENPlugin_Mesher::Compute()
       try
       {
         OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+        std::shared_ptr<netgen::Mesh> mesh_ptr(_ngMesh,  [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2753,7 +2764,10 @@ bool NETGENPlugin_Mesher::Compute()
       try
       {
         OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+        std::shared_ptr<netgen::Mesh> mesh_ptr(_ngMesh,  [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(occgeo,mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2855,7 +2869,10 @@ bool NETGENPlugin_Mesher::Compute()
       try
       {
         OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+        std::shared_ptr<netgen::Mesh> mesh_ptr(_ngMesh,  [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -2887,7 +2904,10 @@ bool NETGENPlugin_Mesher::Compute()
         try
         {
           OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+        std::shared_ptr<netgen::Mesh> mesh_ptr(_ngMesh,  [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
           err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
 #else
           err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
@@ -3099,17 +3119,20 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
 
   // let netgen create _ngMesh and calculate element size on not meshed shapes
   NETGENPlugin_NetgenLibWrapper ngLib;
-#if NETGEN_VERSION > 5
-  shared_ptr<netgen::Mesh> ngMesh = NULL;
-#else
+// #if NETGEN_VERSION > 5
+//   shared_ptr<netgen::Mesh> ngMesh = NULL;
+// #else
   netgen::Mesh *ngMesh = NULL;
-#endif
+// #endif
 #if NETGEN_VERSION < 5
   char *optstr = 0;
 #endif
   int startWith = netgen::MESHCONST_ANALYSE;
   int endWith   = netgen::MESHCONST_MESHEDGES;
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION > 5
+        std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
+        int err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, mparams, startWith, endWith);
+#elif NETGEN_VERSION > 4
   int err = netgen::OCCGenerateMesh(occgeo, ngMesh, mparams, startWith, endWith);
 #else
   int err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
