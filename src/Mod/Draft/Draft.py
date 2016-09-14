@@ -2275,6 +2275,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg = getCircle(obj.Shape.Edges[0])
                 else:
                     svg = getPath(obj.Shape.Edges)
+        if FreeCAD.GuiUp:
+            if hasattr(obj.ViewObject,"EndArrow") and hasattr(obj.ViewObject,"ArrowType") and (len(obj.Shape.Vertexes) > 1):
+                if obj.ViewObject.EndArrow:
+                    p1 = getProj(obj.Shape.Vertexes[-2].Point)
+                    p2 = getProj(obj.Shape.Vertexes[-1].Point)
+                    angle = -DraftVecUtils.angle(p2.sub(p1))
+                    arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
+                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
     return svg
 
 def getrgb(color,testbw=True):
