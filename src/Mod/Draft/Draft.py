@@ -1765,8 +1765,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             l = p.GetString("svgDashdotLine","0.09,0.05,0.02,0.05")
         elif linestyle == "Dotted":
             l = p.GetString("svgDottedLine","0.02,0.02")
-        elif "," in linestyle:
-            l = linestyle
+        elif linestyle:
+            if "," in linestyle:
+                l = linestyle
         if l:
             l = l.split(",")
             try:
