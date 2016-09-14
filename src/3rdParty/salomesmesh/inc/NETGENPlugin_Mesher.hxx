@@ -39,10 +39,13 @@
 namespace nglib {
 #include <nglib.h>
 }
+#include <meshing.hpp>
+#include <occgeom.hpp>
 
 #include <map>
 #include <vector>
 #include <set>
+#include <memory>
 
 class SMESHDS_Mesh;
 class SMESH_Comment;
@@ -53,10 +56,10 @@ class TopoDS_Shape;
 class NETGENPlugin_Hypothesis;
 class NETGENPlugin_SimpleHypothesis_2D;
 class NETGENPlugin_Internals;
-namespace netgen {
-  class OCCGeometry;
-  class Mesh;
-}
+// namespace netgen {
+//   class OCCGeometry;
+//   class Mesh;
+// }
 //=============================================================================
 /*!
  * \brief Struct storing nb of entities in netgen mesh
@@ -82,7 +85,11 @@ struct NETGENPlugin_ngMeshInfo
 struct NETGENPLUGIN_EXPORT NETGENPlugin_NetgenLibWrapper
 {
   bool             _isComputeOk;
+#if NETGEN_VERSION < 6
   nglib::Ng_Mesh * _ngMesh;
+#else
+  std::shared_ptr<nglib::Ng_Mesh> _ngMesh;
+#endif
 
   NETGENPlugin_NetgenLibWrapper();
   ~NETGENPlugin_NetgenLibWrapper();
@@ -197,7 +204,11 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_Mesher
   bool                 _optimize;
   int                  _fineness;
   bool                 _isViscousLayers2D;
+#if NETGEN_VERSION < 6
   netgen::Mesh*        _ngMesh;
+#else
+  std::shared_ptr<netgen::Mesh> _ngMesh;
+#endif
   netgen::OCCGeometry* _occgeom;
 
   int                  _curShapeIndex;
