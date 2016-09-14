@@ -129,7 +129,6 @@ short DrawView::mustExecute() const
     if (!isRestoring()) {
         result  =  (X.isTouched()  ||
                     Y.isTouched()  ||
-                    Rotation.isTouched()  ||
                     Scale.isTouched()  ||
                     ScaleType.isTouched() );
     }

@@ -32,8 +32,6 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -49,14 +47,13 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "TaskProjGroup.h"
 #include "ViewProviderProjGroup.h"
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderProjGroup, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderProjGroup, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
 // Construction/Destruction
@@ -130,16 +127,19 @@ bool ViewProviderProjGroup::setEdit(int ModNum)
     Gui::Selection().clearSelection();
 
     // start the edit dialog
-    if (projDlg)
+    if (projDlg) {
+        projDlg->setCreateMode(false);
         Gui::Control().showDialog(projDlg);
-    else
-        Gui::Control().showDialog(new TaskDlgProjGroup(getObject()));
+    } else {
+        Gui::Control().showDialog(new TaskDlgProjGroup(getObject(),false));
+    }
 
     return true;
 }
 
 void ViewProviderProjGroup::unsetEdit(int ModNum)
 {
+    Base::Console().Message("TRACE - VPPG::unSetEdit(%d) \n",ModNum);
     Gui::Control().closeDialog();
 }
 
@@ -165,8 +165,12 @@ std::vector<App::DocumentObject*> ViewProviderProjGroup::claimChildren(void) con
     }
 }
 
+TechDraw::DrawProjGroup* ViewProviderProjGroup::getViewObject() const
+{
+    return dynamic_cast<TechDraw::DrawProjGroup*>(pcObject);
+}
 
 TechDraw::DrawProjGroup* ViewProviderProjGroup::getObject() const
 {
-    return dynamic_cast<TechDraw::DrawProjGroup*>(pcObject);
+    return getViewObject();
 }

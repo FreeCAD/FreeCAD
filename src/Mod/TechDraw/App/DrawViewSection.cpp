@@ -28,6 +28,8 @@
 #ifndef _PreComp_
 # include <sstream>
 
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
@@ -113,10 +115,6 @@ short DrawViewSection::mustExecute() const
                    BaseView.isTouched()  ||
                    SectionNormal.isTouched() ||
                    SectionOrigin.isTouched() );
-
-//don't need to execute, but need to update Gui
-//                   ShowCutSurface.isTouched() ||
-//                   CutSurfaceColor.isTouched() );
     }
     if (result) {
         return result;
@@ -196,6 +194,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn("Section cut has failed");
 
     TopoDS_Shape rawShape = mkCut.Shape();
+    Bnd_Box testBox;
+    BRepBndLib::Add(rawShape, testBox);
+    testBox.SetGap(0.0);
+    if (testBox.IsVoid()) {                        //prism & input don't intersect.  rawShape is garbage, don't bother.
+        return DrawView::execute();
+    }
 
     geometryObject->setTolerance(Tolerance.getValue());
     geometryObject->setScale(Scale.getValue());
@@ -237,7 +241,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                             inputCenter,
                                             Direction.getValue(),
                                             validXDir);
-             builder.Add(newFaces,pFace);
+             if (!pFace.IsNull()) {
+                 builder.Add(newFaces,pFace);
+             }
 
         }
         sectionFaces = newFaces;
@@ -385,28 +391,37 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
 //        }
 //    }
 
+    TopoDS_Face projectedFace;
+
+    if (faceEdges.empty()) {
+        Base::Console().Log("LOG - DVS::projectFace - no faceEdges\n");
+        return projectedFace;
+    }
+
+
 //recreate the wires for this single face
     EdgeWalker ew;
     ew.loadEdges(faceEdges);
-    ew.perform();
-    std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
+    bool success = ew.perform();
+    if (success) {
+        std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
 
-    TopoDS_Face projectedFace;
+        if (!fw.empty()) {
+            std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw, true);
+            if (sortedWires.empty()) {
+                return projectedFace;
+            }
 
-    if (!fw.empty()) {
-        std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw, true);
-        if (sortedWires.empty()) {
-            return projectedFace;
+            BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                   //true => only want planes?
+            std::vector<TopoDS_Wire>::iterator itWire = ++sortedWires.begin();          //starting with second face
+            for (; itWire != sortedWires.end(); itWire++) {
+                mkFace.Add(*itWire);
+            }
+            projectedFace = mkFace.Face();
         }
-
-        BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                   //true => only want planes?
-        std::vector<TopoDS_Wire>::iterator itWire = ++sortedWires.begin();          //starting with second face
-        for (; itWire != sortedWires.end(); itWire++) {
-            mkFace.Add(*itWire);
-        }
-        projectedFace = mkFace.Face();
+    } else {
+        Base::Console().Warning("DVS::projectFace - input is not planar graph. No face detection\n");
     }
-
     return projectedFace;
 }
 

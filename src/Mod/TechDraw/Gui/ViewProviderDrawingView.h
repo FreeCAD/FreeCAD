@@ -28,9 +28,8 @@
 #include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 
-namespace TechDraw{
-    class DrawView;
-}
+#include <Mod/TechDraw/App/DrawView.h>
+#include "QGIView.h"
 
 namespace TechDrawGui {
 class QGIView;
@@ -51,7 +50,6 @@ public:
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
-    //virtual void updateData(const App::Property*);
     /// Hide the object in the view
     virtual void hide(void);
     /// Show the object in the view
@@ -59,6 +57,8 @@ public:
     virtual bool isShow(void) const;
 
     virtual void onChanged(const App::Property *prop);
+    virtual void updateData(const App::Property*);
+
     QGIView* getQView(void);
 
     /** @name Restoring view provider from document load */
@@ -66,7 +66,7 @@ public:
     virtual void startRestoring();
     virtual void finishRestoring();
     //@}
-    TechDraw::DrawView* getViewObject() const;
+    virtual TechDraw::DrawView* getViewObject() const;
 
 private:
     bool m_docReady;                                                   //sb MDI + QGraphicsScene ready

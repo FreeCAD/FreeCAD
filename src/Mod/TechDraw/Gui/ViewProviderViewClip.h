@@ -25,12 +25,9 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
 #define DRAWINGGUI_VIEWPROVIDERCLIP_H
 
-#include <Gui/ViewProviderDocumentObjectGroup.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewClip.h>
 #include "ViewProviderDrawingView.h"
-
-namespace TechDraw{
-    class DrawViewClip;
-}
 
 namespace TechDrawGui {
 
@@ -50,7 +47,10 @@ public:
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
+
+    virtual TechDraw::DrawViewClip* getViewObject() const;
     TechDraw::DrawViewClip* getObject() const;
+    virtual void updateData(const App::Property* prop);
 
     /// Hide the object in the view
     virtual void hide(void);

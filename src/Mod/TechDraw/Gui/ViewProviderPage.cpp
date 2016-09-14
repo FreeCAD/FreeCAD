@@ -71,7 +71,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 // Construction/Destruction
 
 ViewProviderPage::ViewProviderPage()
-  : view(0),
+  : m_mdiView(0),
     m_docReady(true)
 {
     sPixmap = "TechDraw_Tree_Page";
@@ -116,23 +116,23 @@ void ViewProviderPage::show(void)
 
 void ViewProviderPage::hide(void)
 {
-    // hiding the drawing page should not affect its children but closes the MDI view
+    // hiding the drawing page should not affect its children but closes the MDI m_mdiView
     // therefore do not call the method of its direct base class
     ViewProviderDocumentObject::hide();
-    if (view) {
-        view->parentWidget()->deleteLater();
+    if (m_mdiView) {
+        m_mdiView->parentWidget()->deleteLater();
     }
 }
 
 void ViewProviderPage::updateData(const App::Property* prop)
 {
-    if (prop == &(getPageObject()->Views)) {
-        if(view) {
-            view->updateDrawing();
+    if (prop == &(getDrawPage()->Views)) {
+        if(m_mdiView) {
+            m_mdiView->updateDrawing();
         }
-    } else if (prop == &(getPageObject()->Template)) {
-       if(view) {
-            view->updateTemplate();
+    } else if (prop == &(getDrawPage()->Template)) {
+       if(m_mdiView) {
+            m_mdiView->updateTemplate();
         }
     }
 
@@ -141,10 +141,10 @@ void ViewProviderPage::updateData(const App::Property* prop)
 
 bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
-    if (!view.isNull()) {
-        Gui::getMainWindow()->removeWindow(view);
+    if (!m_mdiView.isNull()) {
+        Gui::getMainWindow()->removeWindow(m_mdiView);
         Gui::getMainWindow()->activatePreviousWindow();
-        view->deleteLater(); // Delete the drawing view;
+        m_mdiView->deleteLater(); // Delete the drawing m_mdiView;
     } else {
         // MDIViewPage is not displayed yet so don't try to delete it!
         Base::Console().Log("INFO - ViewProviderPage::onDelete - Page object deleted when viewer not displayed\n");
@@ -165,7 +165,7 @@ bool ViewProviderPage::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         showMDIViewPage();   // show the drawing
-        Gui::getMainWindow()->setActiveWindow(view);
+        Gui::getMainWindow()->setActiveWindow(m_mdiView);
         return false;
     } else {
         Gui::ViewProviderDocumentObject::setEdit(ModNum);
@@ -176,7 +176,7 @@ bool ViewProviderPage::setEdit(int ModNum)
 bool ViewProviderPage::doubleClicked(void)
 {
     showMDIViewPage();
-    Gui::getMainWindow()->setActiveWindow(view);
+    Gui::getMainWindow()->setActiveWindow(m_mdiView);
     return true;
 }
 
@@ -186,19 +186,19 @@ bool ViewProviderPage::showMDIViewPage()
         return true;
     }
 
-    if (view.isNull()){
+    if (m_mdiView.isNull()){
         Gui::Document* doc = Gui::Application::Instance->getDocument
             (pcObject->getDocument());
-        view = new MDIViewPage(this, doc, Gui::getMainWindow());
-        view->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromLatin1("[*]"));
-        view->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
-        view->updateDrawing(true);
-     //   view->updateTemplate(true);   //TODO: I don't think this is necessary?  Ends up triggering a reload of SVG template, but the MDIViewPage constructor does too.
-        Gui::getMainWindow()->addWindow(view);
-        view->viewAll();
+        m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
+        m_mdiView->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromLatin1("[*]"));
+        m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
+        m_mdiView->updateDrawing(true);
+     //   m_mdiView->updateTemplate(true);   //TODO: I don't think this is necessary?  Ends up triggering a reload of SVG template, but the MDIViewPage constructor does too.
+        Gui::getMainWindow()->addWindow(m_mdiView);
+        m_mdiView->viewAll();
     } else {
-        view->updateDrawing(true);
-        view->updateTemplate(true);
+        m_mdiView->updateDrawing(true);
+        m_mdiView->updateTemplate(true);
     }
     return true;
 }
@@ -209,7 +209,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
 
     // Attach the template if it exists
     App::DocumentObject *templateFeat = 0;
-    templateFeat = getPageObject()->Template.getValue();
+    templateFeat = getDrawPage()->Template.getValue();
 
     if(templateFeat) {
         temp.push_back(templateFeat);
@@ -221,7 +221,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     //                                               any FeatuerView in a DrawViewClip
     //                                               DrawHatch
 
-    const std::vector<App::DocumentObject *> &views = getPageObject()->Views.getValues();
+    const std::vector<App::DocumentObject *> &views = getDrawPage()->Views.getValues();
 
     try {
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
@@ -252,24 +252,24 @@ void ViewProviderPage::unsetEdit(int ModNum)
 
 MDIViewPage* ViewProviderPage::getMDIViewPage()
 {
-    if (view.isNull()) {
-        Base::Console().Log("INFO - ViewProviderPage::getMDIViewPage has no view!\n");
+    if (m_mdiView.isNull()) {
+        Base::Console().Log("INFO - ViewProviderPage::getMDIViewPage has no m_mdiView!\n");
         return 0;
     } else {
-        return view;
+        return m_mdiView;
     }
 }
 
 void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if(!view.isNull()) {
+    if(!m_mdiView.isNull()) {
         if(msg.Type == Gui::SelectionChanges::SetSelection) {
-            view->clearSelection();
+            m_mdiView->clearSelection();
             std::vector<Gui::SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(msg.pDocName);
 
             for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
                 Gui::SelectionSingleton::SelObj selObj = *it;
-                if(selObj.pObject == getPageObject())
+                if(selObj.pObject == getDrawPage())
                     continue;
 
                 std::string str = msg.pSubName;
@@ -281,7 +281,7 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
                         // TODO implement me   wf: don't think this is ever executed
                     }
                 } else {
-                        view->selectFeature(selObj.pObject, true);
+                        m_mdiView->selectFeature(selObj.pObject, true);
                 }
             }
         } else {
@@ -297,7 +297,7 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
                         TechDraw::DrawUtil::getGeomTypeFromName(str) == "Vertex") {
                         // TODO implement me
                     } else {
-                        view->selectFeature(obj, selectState);
+                        m_mdiView->selectFeature(obj, selectState);
                     }
                 }
             }
@@ -307,13 +307,13 @@ void ViewProviderPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
-  if (prop == &(getPageObject()->Views)) {
-        if(view) {
-            view->updateDrawing();
+    if (prop == &(getDrawPage()->Views)) {
+        if(m_mdiView) {
+            m_mdiView->updateDrawing();
         }
-    } else if (prop == &(getPageObject()->Template)) {
-       if(view) {
-            view->updateTemplate();
+    } else if (prop == &(getDrawPage()->Template)) {
+       if(m_mdiView) {
+            m_mdiView->updateTemplate();
         }
     }
 
@@ -334,11 +334,11 @@ void ViewProviderPage::finishRestoring()
 }
 
 
-TechDraw::DrawPage* ViewProviderPage::getPageObject() const
+TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
 {
     //during redo, pcObject can become invalid, but non-zero??
     if (!pcObject) {
-        Base::Console().Message("TROUBLE - VPP::getPageObject - no Page Object!\n");
+        Base::Console().Message("TROUBLE - VPPage::getDrawPage - no Page Object!\n");
         return nullptr;
     }
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);

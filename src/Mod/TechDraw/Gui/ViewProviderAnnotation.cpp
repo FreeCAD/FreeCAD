@@ -38,12 +38,11 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include "ViewProviderAnnotation.h"
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderAnnotation, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
 // Construction/Destruction
@@ -60,25 +59,40 @@ ViewProviderAnnotation::~ViewProviderAnnotation()
 void ViewProviderAnnotation::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
+    ViewProviderDrawingView::attach(pcFeat);
 }
 
 void ViewProviderAnnotation::setDisplayMode(const char* ModeName)
 {
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderAnnotation::getDisplayModes(void) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
+    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
 }
 
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderDocumentObject::updateData(prop);
+    Base::Console().Log("ViewProviderViewSection::updateData - Update View: %s\n",prop->getName());
+    if (prop == &(getViewObject()->Text)   ||
+        prop == &(getViewObject()->Font)   ||
+        prop == &(getViewObject()->TextColor)   ||
+        prop == &(getViewObject()->TextSize)   ||
+        prop == &(getViewObject()->LineSpace)   ||
+        prop == &(getViewObject()->TextStyle)   ||
+        prop == &(getViewObject()->MaxWidth) ) {
+        // redraw QGIVP
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+     }
+
+    ViewProviderDrawingView::updateData(prop);
 }
 
 TechDraw::DrawViewAnnotation* ViewProviderAnnotation::getViewObject() const

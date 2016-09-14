@@ -46,8 +46,8 @@ public:
     ~TaskSectionView();
 
 public:
-    bool accept();
-    bool reject();
+    virtual bool accept();
+    virtual bool reject();
 
 protected Q_SLOTS:
     void onHorizontalClicked(bool b);
