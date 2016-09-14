@@ -271,13 +271,16 @@ Mesh::MeshObject* Mesher::createMesh() const
         Mesh::MeshObject* meshdata = new Mesh::MeshObject();
         meshdata->swap(kernel);
         if (createSegm) {
+            int index = 0;
             for (auto it : colorMap) {
                 Mesh::Segment segm(meshdata, false);
                 for (auto jt : it.second) {
                     segm.addIndices(meshSegments[jt]);
                 }
                 segm.save(true);
-                segm.setName("Group");
+                std::stringstream str;
+                str << "patch" << index++;
+                segm.setName(str.str());
                 meshdata->addSegment(segm);
             }
         }
