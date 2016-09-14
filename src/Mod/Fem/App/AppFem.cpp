@@ -161,6 +161,7 @@ PyMODINIT_FUNC initFem()
     Fem::ConstraintFluidBoundary              ::init();
     
     Fem::FemResultObject            ::init();
+    Fem::FemResultObjectPython      ::init();
     Fem::FemSolverObject            ::init();
     Fem::FemSolverObjectPython      ::init();
 
