@@ -110,7 +110,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,1,0,1">
           <item>
            <widget class="QLabel" name="label_2">
             <property name="text">
@@ -132,12 +132,9 @@
            </spacer>
           </item>
           <item>
-           <widget class="QLineEdit" name="scaleNum">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QSpinBox" name="sbScaleNum">
+            <property name="value">
+             <number>1</number>
             </property>
            </widget>
           </item>
@@ -149,7 +146,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="scaleDenom"/>
+           <widget class="QSpinBox" name="sbScaleDen">
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

@@ -272,12 +272,20 @@ bool TaskSectionView::accept()
 {
     //calcValues();
     updateValues();
+    std::string BaseName = m_base->getNameInDocument();
+    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.ShowSectionLine=True",BaseName.c_str());
     return true;
 }
 
 bool TaskSectionView::reject()
 {
-    //TODO: remove viewSection
+    std::string BaseName = m_base->getNameInDocument();
+    std::string PageName = m_base->findParentPage()->getNameInDocument();
+    std::string SectionName = m_section->getNameInDocument();
+    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.ShowSectionLine=False",BaseName.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                            PageName.c_str(),SectionName.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",SectionName.c_str());
     return false;
 }
 

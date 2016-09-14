@@ -85,11 +85,11 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     , pageTemplate(0)
     , m_renderer(Native)
     , drawBkg(true)
-    , pageGui(0)
+    , m_vpPage(0)
 {
     assert(vp);
-    pageGui = vp;
-    const char* name = vp->getPageObject()->getNameInDocument();
+    m_vpPage = vp;
+    const char* name = vp->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
 
     setScene(s);
@@ -117,7 +117,7 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     if(!drawBkg)
         return;
 
-    if (!pageGui->getPageObject()) {
+    if (!m_vpPage->getDrawPage()) {
         //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
         return;
     }
@@ -129,7 +129,7 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     p->setBrush(*bkgBrush);
     p->drawRect(viewport()->rect());
 
-    if(!pageGui) {
+    if(!m_vpPage) {
         return;
     }
 
@@ -138,9 +138,9 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     float pageWidth = 420,
           pageHeight = 297;
 
-    if ( pageGui->getPageObject()->hasValidTemplate() ) {
-        pageWidth = pageGui->getPageObject()->getPageWidth();
-        pageHeight = pageGui->getPageObject()->getPageHeight();
+    if ( m_vpPage->getDrawPage()->hasValidTemplate() ) {
+        pageWidth = m_vpPage->getDrawPage()->getPageWidth();
+        pageHeight = m_vpPage->getDrawPage()->getPageHeight();
     }
 
     // Draw the white page
@@ -473,8 +473,8 @@ void QGVPage::toggleHatch(bool enable)
 
 void QGVPage::saveSvg(QString filename)
 {
-    // TODO: We only have pageGui because constructor gets passed a view provider...
-    TechDraw::DrawPage *page( pageGui->getPageObject() );
+    // TODO: We only have m_vpPage because constructor gets passed a view provider...
+    TechDraw::DrawPage *page( m_vpPage->getDrawPage() );
 
     const QString docName( QString::fromUtf8(page->getDocument()->getName()) );
     const QString pageName( QString::fromUtf8(page->getNameInDocument()) );
@@ -569,7 +569,7 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 
 TechDraw::DrawPage* QGVPage::getDrawPage()
 {
-    return pageGui->getPageObject();
+    return m_vpPage->getDrawPage();
 }
 
 

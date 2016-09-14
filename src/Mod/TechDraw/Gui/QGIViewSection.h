@@ -36,7 +36,7 @@ public:
     ~QGIViewSection() = default;
 
     virtual void draw() override;
-    void updateView(bool update = false) override;
+    virtual void updateView(bool update = false) override;
     enum {Type = QGraphicsItem::UserType + 108};
     int type() const override { return Type;}
     void drawSectionLine(bool b) override;

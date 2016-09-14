@@ -50,7 +50,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 121};
     int type() const override { return Type;}
 
-    void updateView(bool update = false) override;
+    virtual void updateView(bool update = false) override;
     void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
 
     virtual void draw() override;

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.           *
+ *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *
@@ -10,7 +10,7 @@
  *                                                                         *
  *   This library  is distributed in the hope that it will be useful,      *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
@@ -24,10 +24,9 @@
 #define DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H
 
 #include "ViewProviderViewPart.h"
-
-namespace TechDraw{
-    class DrawProjGroupItem;
-}
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 namespace TechDrawGui {
 
@@ -52,6 +51,7 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
     virtual void updateData(const App::Property*);
 
+    virtual TechDraw::DrawProjGroupItem* getViewObject() const;
     TechDraw::DrawProjGroupItem* getObject() const;
     void unsetEdit(int ModNum);
 

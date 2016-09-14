@@ -38,7 +38,6 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawViewDimension.h>
 #include "ViewProviderDimension.h"
 
 using namespace TechDrawGui;
@@ -91,7 +90,7 @@ void ViewProviderDimension::updateData(const App::Property* p)
             sPixmap = "TechDraw_Dimension_Angle";
         }
     }
-    Gui::ViewProviderDocumentObject::updateData(p);
+    ViewProviderDrawingView::updateData(p);
 }
 
 TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const

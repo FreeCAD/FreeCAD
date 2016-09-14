@@ -36,6 +36,7 @@
 #include <App/FeaturePython.h>
 #include <App/PropertyGeo.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -103,14 +104,14 @@ TechDraw::DrawPage* _findPage(Gui::Command* cmd)
                                      QObject::tr("Can not determine correct page."));
                 return page;
             } else {                                                       //use only page in document
-                page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+                page = static_cast<TechDraw::DrawPage*>(selPages.front());
             }
         } else if (selPages.size() > 1) {                                  //multiple pages in selection
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
                                  QObject::tr("Select exactly 1 page."));
             return page;
         } else {                                                           //use only page in selection
-            page = dynamic_cast<TechDraw::DrawPage *>(selPages.front());
+            page = static_cast<TechDraw::DrawPage *>(selPages.front());
         }
 
         return page;
@@ -172,6 +173,10 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
 
         commitCommand();
         TechDraw::DrawPage* fp = dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
+        if (!fp) {
+            throw Base::Exception("CmdTechDrawNewPageDef fp not found\n");
+        }
+
         Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
         TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
         if (dvp) {
@@ -247,6 +252,9 @@ void CmdTechDrawNewPage::activated(int iMsg)
 
         commitCommand();
         TechDraw::DrawPage* fp = dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
+        if (!fp) {
+            throw Base::Exception("CmdTechDrawNewPagePick fp not found\n");
+        }
         Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
         TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
         if (dvp) {
@@ -377,7 +385,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
         return;
     }
     App::DocumentObject* dObj = *(shapes.begin());
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(dObj);
+    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(dObj);
     if (dvp->getSectionRef()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("This View already has a related Section. Choose another."));
@@ -397,6 +405,9 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
+    if (!dsv) {
+        throw Base::Exception("CmdTechDrawNewViewSection DSV not found\n");
+    }
     Gui::Control().showDialog(new TaskDlgSectionView(dvp,dsv));
 
     updateActive();
@@ -458,12 +469,14 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.addProjection('%s')",multiViewName.c_str(),anchor.c_str());
     doCommand(Doc,"App.activeDocument().%s.Anchor = App.activeDocument().%s.getItemByLabel('%s')",
               multiViewName.c_str(),multiViewName.c_str(),anchor.c_str());
-
-    // create the rest of the desired views
-    Gui::Control().showDialog(new TaskDlgProjGroup(multiView));
-
     // add the multiView to the page
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
+
+    // create the rest of the desired views
+    Gui::Control().showDialog(new TaskDlgProjGroup(multiView,true));
+
+//    // add the multiView to the page
+//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
 
     updateActive();
     commitCommand();
@@ -592,9 +605,9 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
-            clip = dynamic_cast<TechDraw::DrawViewClip*>((*itSel).getObject());
+            clip = static_cast<TechDraw::DrawViewClip*>((*itSel).getObject());
         } else if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-            view = dynamic_cast<TechDraw::DrawView*>((*itSel).getObject());
+            view = static_cast<TechDraw::DrawView*>((*itSel).getObject());
         }
     }
     if (!view) {

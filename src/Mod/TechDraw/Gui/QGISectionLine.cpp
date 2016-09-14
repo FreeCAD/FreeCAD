@@ -41,6 +41,7 @@ using namespace TechDrawGui;
 QGISectionLine::QGISectionLine()
 {
     m_extLen = 8.0;
+    m_arrowSize = 0.0;
 
     m_line = new QGraphicsPathItem();
     addToGroup(m_line);

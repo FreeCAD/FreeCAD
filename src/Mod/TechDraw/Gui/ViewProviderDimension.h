@@ -25,12 +25,9 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
-#include <Gui/ViewProviderFeature.h>
 #include "ViewProviderDrawingView.h"
+#include <Mod/TechDraw/App/DrawViewDimension.h>
 
-namespace TechDraw{
-    class DrawViewDimension;
-}
 
 namespace TechDrawGui {
 
@@ -53,7 +50,7 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
 
-    TechDraw::DrawViewDimension* getViewObject() const;
+    virtual TechDraw::DrawViewDimension* getViewObject() const;
 };
 
 } // namespace TechDrawGui

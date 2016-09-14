@@ -134,6 +134,11 @@ private:
             throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
         }
 
+        if (edgeList.empty()) {
+            Base::Console().Log("LOG - edgeWalker: input is empty\n");
+            return Py::None();
+        }
+
         bool biggie;
         if (inclBig == Py_True) {
             biggie = true;
@@ -142,15 +147,23 @@ private:
         }
         PyObject* result = PyList_New(0);
 
-        EdgeWalker ew;
-        ew.loadEdges(edgeList);
-        ew.perform();
-        std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
-        std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,biggie);   //false==>do not include biggest wires
-        for (auto& w:sortedWires) {
-            PyList_Append(result,new TopoShapeWirePy(new TopoShape(w)));
+        try {
+            EdgeWalker ew;
+            ew.loadEdges(edgeList);
+            bool success = ew.perform();
+            if (success) {
+                std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
+                std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,biggie);   //false==>do not include biggest wires
+                for (auto& w:sortedWires) {
+                    PyList_Append(result,new TopoShapeWirePy(new TopoShape(w)));
+                }
+            } else {
+                Base::Console().Warning("edgeWalker: input is not planar graph. Wire detection not done\n");
+            }
         }
-
+        catch (Base::Exception &e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
         return Py::asObject(result);
     }
 
@@ -179,12 +192,31 @@ private:
             throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
         }
 
-        EdgeWalker ew;
-        ew.loadEdges(edgeList);
-        ew.perform();
-        std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
-        std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,true);
-        PyObject* outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
+        if (edgeList.empty()) {
+            Base::Console().Log("LOG - findOuterWire: input is empty\n");
+            return Py::None();
+        }
+
+        PyObject* outerWire = nullptr;
+        bool success = false;
+        try {
+            EdgeWalker ew;
+            ew.loadEdges(edgeList);
+            success = ew.perform();
+            if (success) {
+                std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
+                std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,true);
+                outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
+            } else {
+                Base::Console().Warning("findOuterWire: input is not planar graph. Wire detection not done\n");
+            }
+        }
+        catch (Base::Exception &e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
+        if (!success) {
+            return Py::None();
+        }
         return Py::asObject(outerWire);
     }
  };
