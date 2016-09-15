@@ -42,9 +42,9 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint);
 
-// also defined in TaskFemConstraintFluidBoundary.cpp and foamcasebuilder/basicbuilder.py, 
-// please update simultaneously
-// the second (index 1) is the default enum, as index 0 causes compiling error
+// also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, 
+// update simultaneously
+// the second (index 1) item is the default enum, as index 0 causes compiling error
 static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", NULL};
 static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "moving", NULL};
 static const char* InletSubtypes[] = {"unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate", NULL};
@@ -53,14 +53,16 @@ static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cycli
 static const char* FreestreamSubtypes[] = {"unspecific", "freestream",NULL};
 
 // see Ansys fluet manual: Turbulence Specification method
-static const char* TurbulenceSpecifications[] = {"Intensity&LengthScale","Intensity&HydraulicDiameter",NULL};
-// activate the heat transfer and radiation model in Solver object explorer
+static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio","intensity&HydraulicDiameter",NULL};
 /* only used in TaskPanel
-static const char* TurbulenceSpecificationHelpTexts[] = {"see Ansys fluet manual: Turbulence Specification method", 
-            "or fully devloped internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
+static const char* TurbulenceSpecificationHelpTexts[] = {
+ * "see Ansys fluet manual: Turbulence Specification method", 
+ * "not specified, solver will guess a value based e.g. 0.05 for inlet", 
+ * "or fully devloped internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
 */
 
-// HTC value type, not sure it is supported in OpenFOAM
+// activate the heat transfer and radiation model in Solver object explorer
+// also defined in FoamCaseBuilder/HeatTransferBuilder.py, update simultaneously
 static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed",  "HTC","coupled", NULL};
 /* only used in TaskPanel
 static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [W/m2]", 
