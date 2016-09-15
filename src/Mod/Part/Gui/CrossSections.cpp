@@ -51,6 +51,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -232,29 +233,28 @@ void CrossSections::apply()
         section->purgeTouched();
     }
 #else
-    Gui::Application* app = Gui::Application::Instance;
     Base::SequencerLauncher seq("Cross-sections...", obj.size() * (d.size() +1));
-    app->runPythonCode("import Part\n");
-    app->runPythonCode("from FreeCAD import Base\n");
+    Gui::Command::runCommand(Gui::Command::App, "import Part\n");
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
         App::Document* doc = (*it)->getDocument();
         std::string s = (*it)->getNameInDocument();
         s += "_cs";
-        app->runPythonCode(QString::fromLatin1(
+        Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
             "wires=list()\n"
             "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
             .arg(QLatin1String(doc->getName()))
             .arg(QLatin1String((*it)->getNameInDocument())).toLatin1());
 
         for (std::vector<double>::iterator jt = d.begin(); jt != d.end(); ++jt) {
-            app->runPythonCode(QString::fromLatin1(
+            Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
                 "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
                 "    wires.append(i)\n"
                 ).arg(a).arg(b).arg(c).arg(*jt).toLatin1());
             seq.next();
         }
 
-        app->runPythonCode(QString::fromLatin1(
+        Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
             "comp=Part.Compound(wires)\n"
             "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
             "slice.Shape=comp\n"

@@ -405,7 +405,7 @@ void DlgRevolution::accept()
                 .arg(strAxisLink) //%12
                 .arg(symmetric) //13
                 ;
-            Gui::Application::Instance->runPythonCode((const char*)code.toLatin1());
+            Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
             QByteArray to = name.toLatin1();
             QByteArray from = shape.toLatin1();
             Gui::Command::copyVisual(to, "ShapeColor", from);

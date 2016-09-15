@@ -33,6 +33,8 @@
 #include <Base/Type.h>
 
 class QWidget;
+class QByteArray;
+
 typedef struct _object PyObject;
 
 namespace App

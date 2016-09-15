@@ -208,7 +208,7 @@ void ViewProviderDocumentObjectGroup::drop(const std::vector<const App::Document
                                   .arg(QString::fromLatin1(doc->getName()))
                                   .arg(QString::fromLatin1(par->getNameInDocument()))
                                   .arg(QString::fromLatin1(obj->getNameInDocument()));
-                Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+                Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
             }
 
             // build Python command for execution
@@ -219,7 +219,7 @@ void ViewProviderDocumentObjectGroup::drop(const std::vector<const App::Document
                               .arg(QString::fromLatin1(grp->getNameInDocument()))
                               .arg(QString::fromLatin1(obj->getNameInDocument()));
             
-            Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+            Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         }
         gui->commitCommand();
 
