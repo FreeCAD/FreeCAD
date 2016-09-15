@@ -537,7 +537,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         tex = coin.SoTexture2()
         tex.image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
         texcoords = coin.SoTextureCoordinatePlane()
-        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("PatternScale",0.01)
+        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("patternScale",0.01)
         texcoords.directionS.setValue(s,0,0)
         texcoords.directionT.setValue(0,s,0)
         self.fcoords = coin.SoCoordinate3()
