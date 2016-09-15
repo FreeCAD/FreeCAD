@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QApplication>
+# include <QByteArray>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>

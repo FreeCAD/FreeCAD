@@ -178,8 +178,6 @@ public:
     Gui::MacroManager *macroManager(void);
     /// Reference to the command manager
     Gui::CommandManager &commandManager(void);
-    /// Run a Python command
-    bool runPythonCode(const char* cmd, bool gui=false, bool pyexc=true);
     /// helper which create the commands
     void createStandardOperations();
     //@}

@@ -46,6 +46,7 @@
 #include <App/DocumentObjectGroup.h>
 
 #include "Tree.h"
+#include "Command.h"
 #include "Document.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
@@ -226,7 +227,7 @@ void TreeWidget::onCreateGroup()
                               .arg(QString::fromLatin1(doc->getName())).arg(name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
-        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         gui->commitCommand();
     }
     else if (this->contextItem->type() == ObjectType) {
@@ -241,7 +242,7 @@ void TreeWidget::onCreateGroup()
                               .arg(name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
-        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         gui->commitCommand();
     }
 }

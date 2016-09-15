@@ -622,16 +622,15 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             std::string code = str.str();
             // the original file name is required
-            if (runPythonCode(code.c_str(), false)) {
-                // search for a module that is able to open the exported file because otherwise
-                // it doesn't need to be added to the recent files list (#0002047)
-                std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
-                if (!importMap.empty())
-                    getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
-            }
+            Gui::Command::runCommand(Gui::Command::App, code.c_str());
+            // search for a module that is able to open the exported file because otherwise
+            // it doesn't need to be added to the recent files list (#0002047)
+            std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
+            if (!importMap.empty())
+                getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
 
             // allow exporters to pass _objs__ to submodules before deleting it
-            runPythonCode("del __objs__", false);
+            Gui::Command::runCommand(Gui::Command::App, "del __objs__");
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -1361,49 +1360,6 @@ MacroManager *Application::macroManager(void)
 CommandManager &Application::commandManager(void)
 {
     return d->commandManager;
-}
-
-bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
-{
-    if (gui)
-        d->macroMngr->addLine(MacroManager::Gui,cmd);
-    else
-        d->macroMngr->addLine(MacroManager::App,cmd);
-
-    try {
-        Base::Interpreter().runString(cmd);
-        return true;
-    }
-    catch (Base::PyException &e) {
-        if (pyexc) {
-            e.ReportException();
-            Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
-        }
-        else {
-            throw; // re-throw to handle in calling instance
-        }
-    }
-    catch (Base::AbortException&) {
-    }
-    catch (Base::Exception &e) {
-        e.ReportException();
-    }
-    catch (std::exception &e) {
-        std::string str;
-        str += "C++ exception thrown (";
-        str += e.what();
-        str += ")";
-        Base::Console().Error(str.c_str());
-    }
-    catch (const char* e) {
-        Base::Console().Error("%s\n", e);
-    }
-#ifndef FC_DEBUG
-    catch (...) {
-        Base::Console().Error("Unknown C++ exception in command thrown\n");
-    }
-#endif
-    return false;
 }
 
 //**************************************************************************

@@ -43,6 +43,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -127,8 +128,8 @@ public:
 SweepWidget::SweepWidget(QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->ui.setupUi(this);
     d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
@@ -321,7 +322,7 @@ bool SweepWidget::accept()
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) throw Base::Exception("Document doesn't exist anymore");
         doc->openCommand("Sweep");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {

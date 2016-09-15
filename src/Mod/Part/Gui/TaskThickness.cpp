@@ -45,6 +45,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Command.h>
 #include <Mod/Part/App/PartFeatures.h>
 
 
@@ -90,8 +91,8 @@ public:
 ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->thickness = thickness;
     d->ui.setupUi(this);
