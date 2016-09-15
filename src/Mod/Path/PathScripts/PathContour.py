@@ -24,7 +24,6 @@
 
 import FreeCAD
 import Path
-import numpy
 from FreeCAD import Vector
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
@@ -366,8 +365,8 @@ class CommandPathContour:
     def GetResources(self):
         return {'Pixmap': 'Path-Contour',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathContour", "Contour"),
-                'Accel': "P, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathContour", "Creates a Path Contour object from selected faces")}
+                'Accel': "P, C",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathContour", "Creates a Contour Path for the Base Object ")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:

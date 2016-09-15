@@ -577,6 +577,7 @@ class CommandToolLibraryEdit():
     def GetResources(self):
         return {'Pixmap'  : 'Path-ToolTable',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolTable","Edit the Tool Library"),
+                'Accel': "P, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolTable","Edit the Tool Library")}
 
     def IsActive(self):

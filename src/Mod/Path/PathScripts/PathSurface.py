@@ -371,7 +371,7 @@ class CommandPathSurfacing:
     def GetResources(self):
         return {'Pixmap': 'Path-3DSurface',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Surface", "Surfacing"),
-                'Accel': "P, D",
+                'Accel': "P, S",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Surface", "Creates a Path Surfacing object")}
 
     def IsActive(self):

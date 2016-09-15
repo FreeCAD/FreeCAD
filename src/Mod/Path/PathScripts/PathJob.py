@@ -189,7 +189,7 @@ class CommandJob:
     def GetResources(self):
         return {'Pixmap': 'Path-Job',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
-                'Accel': "P, P",
+                'Accel': "P, J",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
 
     def IsActive(self):
