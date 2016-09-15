@@ -327,7 +327,7 @@ bool TaskDlgBooleanParameters::accept()
         for (std::vector<std::string>::const_iterator it = bodies.begin(); it != bodies.end(); ++it)
             str << "App.ActiveDocument." << *it << ",";
         str << "]";
-        Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
+        Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Boolean: Accept: Input error"), QString::fromLatin1(e.what()));

@@ -171,7 +171,7 @@ void CmdApproxPlane::activated(int iMsg)
                 << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;
 
             openCommand("Fit plane");
-            doCommand(Gui::Command::Doc, str.str().c_str());
+            runCommand(Gui::Command::Doc, str.str().c_str());
             commitCommand();
             updateActive();
         }
@@ -251,7 +251,7 @@ void CmdViewTriangulation::activated(int iMsg)
             .arg(document)
             .arg(object)
             ;
-            doCommand(Doc, command.toLatin1());
+            runCommand(Doc, command.toLatin1());
         }
 
         commitCommand();

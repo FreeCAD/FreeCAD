@@ -57,13 +57,13 @@ void CmdPartCylinder::activated(int iMsg)
     cmd = qApp->translate("CmdPartCylinder","Cylinder");
     openCommand((const char*)cmd.toUtf8());
 
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cylinder\",\"Cylinder\")");
+    runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cylinder\",\"Cylinder\")");
     cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCylinder","Cylinder"));
-    doCommand(Doc,(const char*)cmd.toUtf8());
+    runCommand(Doc,cmd.toUtf8());
     commitCommand();
     updateActive();
-    doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
 bool CmdPartCylinder::isActive(void)
@@ -97,13 +97,13 @@ void CmdPartBox::activated(int iMsg)
     cmd = qApp->translate("CmdPartBox","Cube");
     openCommand((const char*)cmd.toUtf8());
 
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Box\",\"Box\")");
+    runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Box\",\"Box\")");
     cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartBox","Cube"));
-    doCommand(Doc,(const char*)cmd.toUtf8());
+    runCommand(Doc,cmd.toUtf8());
     commitCommand();
     updateActive();
-    doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
 bool CmdPartBox::isActive(void)
@@ -137,13 +137,13 @@ void CmdPartSphere::activated(int iMsg)
     cmd = qApp->translate("CmdPartSphere","Sphere");
     openCommand((const char*)cmd.toUtf8());
 
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Sphere\",\"Sphere\")");
+    runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Sphere\",\"Sphere\")");
     cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartSphere","Sphere"));
-    doCommand(Doc,(const char*)cmd.toUtf8());
+    runCommand(Doc,cmd.toUtf8());
     commitCommand();
     updateActive();
-    doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
 bool CmdPartSphere::isActive(void)
@@ -177,13 +177,13 @@ void CmdPartCone::activated(int iMsg)
     cmd = qApp->translate("CmdPartCone","Cone");
     openCommand((const char*)cmd.toUtf8());
 
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cone\",\"Cone\")");
+    runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cone\",\"Cone\")");
     cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCone","Cone"));
-    doCommand(Doc,(const char*)cmd.toUtf8());
+    runCommand(Doc,cmd.toUtf8());
     commitCommand();
     updateActive();
-    doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
 bool CmdPartCone::isActive(void)
@@ -217,13 +217,13 @@ void CmdPartTorus::activated(int iMsg)
     cmd = qApp->translate("CmdPartTorus","Torus");
     openCommand((const char*)cmd.toUtf8());
 
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Torus\",\"Torus\")");
+    runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Torus\",\"Torus\")");
     cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartTorus","Torus"));
-    doCommand(Doc,(const char*)cmd.toUtf8());
+    runCommand(Doc,cmd.toUtf8());
     commitCommand();
     updateActive();
-    doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
 }
 
 bool CmdPartTorus::isActive(void)

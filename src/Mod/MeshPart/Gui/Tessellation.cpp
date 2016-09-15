@@ -328,7 +328,7 @@ bool Tessellation::accept()
                         .arg(label);
                 }
             }
-            Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
+            Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
             // if Standard mesher is used and face colors should be applied
             if (method == 0) { // Standard

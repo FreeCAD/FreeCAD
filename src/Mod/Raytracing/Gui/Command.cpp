@@ -150,7 +150,7 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
             << "(" << upvec.getValue()[0]  <<"," << upvec.getValue()[1]  <<"," << upvec.getValue()[2]  <<") )" ;
 
         doCommand(Doc,"import Raytracing");
-        doCommand(Gui,out.str().c_str());
+        doCommand(Gui,"%s", out.str().c_str());
 
         // Bring ref-count of root-node back to zero to cause the
         // destruction of the camera.
@@ -201,7 +201,7 @@ void CmdRaytracingWritePart::activated(int iMsg)
         << Name << "\",App.ActiveDocument." << obj.front()->getNameInDocument() << ".Shape)";
 
     doCommand(Doc,"import Raytracing");
-    doCommand(Doc,out.str().c_str());
+    doCommand(Doc,"%s",out.str().c_str());
 }
 
 bool CmdRaytracingWritePart::isActive(void)

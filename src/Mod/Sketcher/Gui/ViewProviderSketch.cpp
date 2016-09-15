@@ -4255,7 +4255,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         );
             cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();
-            Gui::Command::doCommand(Gui::Command::Gui, cmdstr_bytearray.data());
+            Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         } catch (Base::PyException &e){
             Base::Console().Error("ViewProviderSketch::setEdit: visibility automation failed with an error: \n");
             e.ReportException();
@@ -4620,7 +4620,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
                         );
             cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();
-            Gui::Command::doCommand(Gui::Command::Gui, cmdstr_bytearray.data());
+            Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         } catch (Base::PyException &e){
             Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
             e.ReportException();
@@ -4667,7 +4667,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                         );
             cmdstr.replace(QString::fromLatin1("{sketch_name}"),QString::fromLatin1(this->getSketchObject()->getNameInDocument()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();
-            Gui::Command::doCommand(Gui::Command::Gui, cmdstr_bytearray.data());
+            Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         } catch (Base::PyException &e){
             Base::Console().Error("ViewProviderSketch::setEdit: visibility automation failed with an error: \n");
             e.ReportException();
