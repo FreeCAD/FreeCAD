@@ -43,6 +43,7 @@
 # include <Geom_TrimmedCurve.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <Geom_BSplineCurve.hxx>
+# include <Geom_OffsetCurve.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Hypr.hxx>
@@ -54,6 +55,7 @@
 # include <TopoDS_Vertex.hxx>
 # include <ShapeAnalysis_Edge.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <BRepGProp.hxx>
@@ -72,21 +74,22 @@
 #include "Tools.h"
 #include "OCCError.h"
 #include "TopoShape.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeVertexPy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeEdgePy.cpp"
+#include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeVertexPy.h>
+#include <Mod/Part/App/TopoShapeWirePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.cpp>
 
 #include "Geometry.h"
-#include "GeometryPy.h"
-#include "LinePy.h"
-#include "CirclePy.h"
-#include "EllipsePy.h"
-#include "HyperbolaPy.h"
-#include "ParabolaPy.h"
-#include "BezierCurvePy.h"
-#include "BSplineCurvePy.h"
+#include <Mod/Part/App/GeometryPy.h>
+#include <Mod/Part/App/LinePy.h>
+#include <Mod/Part/App/CirclePy.h>
+#include <Mod/Part/App/EllipsePy.h>
+#include <Mod/Part/App/HyperbolaPy.h>
+#include <Mod/Part/App/ParabolaPy.h>
+#include <Mod/Part/App/BezierCurvePy.h>
+#include <Mod/Part/App/BSplineCurvePy.h>
+#include <Mod/Part/App/OffsetCurvePy.h>
 
 using namespace Part;
 
@@ -741,6 +744,21 @@ Py::Object TopoShapeEdgePy::getCurve() const
             GeomBSplineCurve* curve = new GeomBSplineCurve(adapt.BSpline());
             return Py::Object(new BSplineCurvePy(curve),true);
         }
+#if OCC_VERSION_HEX >= 0x070000
+    case GeomAbs_OffsetCurve:
+        {
+            Standard_Real first, last;
+            Handle_Geom_Curve c = BRep_Tool::Curve(e, first, last);
+            Handle_Geom_OffsetCurve off = Handle_Geom_OffsetCurve::DownCast(c);
+            if (!off.IsNull()) {
+                GeomOffsetCurve* curve = new GeomOffsetCurve(off);
+                return Py::Object(new OffsetCurvePy(curve),true);
+            }
+            else {
+                throw Py::RuntimeError("Failed to convert to offset curve");
+            }
+        }
+#endif
     case GeomAbs_OtherCurve:
         break;
     }
