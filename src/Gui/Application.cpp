@@ -1363,24 +1363,6 @@ CommandManager &Application::commandManager(void)
     return d->commandManager;
 }
 
-void Application::runCommand(bool bForce, const char* sCmd,...)
-{
-    va_list ap;
-    va_start(ap, sCmd);
-    QString s;
-    const QString cmd = s.vsprintf(sCmd, ap);
-    va_end(ap);
-
-    QByteArray format = cmd.toLatin1();
-
-    if (bForce)
-        d->macroMngr->addLine(MacroManager::App, format.constData());
-    else
-        d->macroMngr->addLine(MacroManager::Gui, format.constData());
-
-    Base::Interpreter().runString(format.constData());
-}
-
 bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
 {
     if (gui)

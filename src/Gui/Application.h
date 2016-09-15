@@ -179,7 +179,6 @@ public:
     /// Reference to the command manager
     Gui::CommandManager &commandManager(void);
     /// Run a Python command
-    void runCommand(bool bForce, const char* sCmd,...);
     bool runPythonCode(const char* cmd, bool gui=false, bool pyexc=true);
     /// helper which create the commands
     void createStandardOperations();
