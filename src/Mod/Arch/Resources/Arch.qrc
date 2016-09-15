@@ -83,6 +83,7 @@
         <file>ui/ParametersPanel.svg</file>
         <file>ui/ParametersSlab.svg</file>
         <file>ui/ParametersIbeam.svg</file>
+        <file>ui/ParametersStairs.svg</file>
         <file>ui/BimServerTaskPanel.ui</file>
         <file>ui/GitTaskPanel.ui</file>
         <file>ui/DialogBimServerLogin.ui</file>
