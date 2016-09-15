@@ -45,7 +45,7 @@ class _Precast(ArchComponent.Component):
         obj.addProperty("App::PropertyLinkList","Armatures","Arch","Armatures contained in this element")
         obj.addProperty("App::PropertyVectorList","Nodes","Arch","The structural nodes of this element")
         self.Type = "Precast"
-        obj.Role = ["Beam","Column","Panel","Slab"]
+        obj.Role = ["Beam","Column","Panel","Slab","Stairs"]
         
     def getProfile(self,obj,noplacement=True):
         return []
@@ -525,6 +525,87 @@ class _PrecastSlab(_Precast):
         self.applyShape(obj,shape,pl)
 
 
+class _PrecastStairs(_Precast):
+    
+    "The Precast Stairs"
+    
+    def __init__(self,obj):
+        
+        _Precast.__init__(self,obj)
+        obj.addProperty("App::PropertyDistance","DownLength","Arch","The length of the down floor of this element")
+        obj.addProperty("App::PropertyInteger","RiserNumber","Arch","The number of risers in this element")
+        obj.addProperty("App::PropertyDistance","Riser","Arch","The riser height of this element")
+        obj.addProperty("App::PropertyDistance","Tread","Arch","The tread depth of this element")
+        obj.Role = ["Stairs"]
+
+    def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+
+        pl = obj.Placement
+        length = obj.Length.Value
+        width = obj.Width.Value
+        height = obj.Height.Value
+        downlength = obj.DownLength.Value
+        steps = obj.RiserNumber
+        riser = obj.Riser.Value
+        tread = obj.Tread.Value
+
+        if not width:
+            return
+        if not steps:
+            return
+        if not riser:
+            return
+        if not tread:
+            return
+        if not height:
+            return
+        if length < tread:
+            length = tread # minimum
+            
+        import math,Part
+
+        p = [Vector(0,0,0)] # relative moves
+        if downlength:
+            p.append(Vector(0,downlength,0))
+        for i in range(steps-1):
+            p.append(Vector(0,0,riser))
+            p.append(Vector(0,tread,0))
+        p.append(Vector(0,0,riser))
+        p.append(Vector(0,length,0))
+        ang1 = math.atan(riser/tread)
+        ang2 = ang1/2
+        rdist = math.tan(ang2)*height
+        if length > (tread+rdist):
+            p.append(Vector(0,0,-height))
+            p.append(Vector(0,-(length-(tread+rdist))))
+        else:
+            rest = length-(tread+rdist)
+            addh = math.tan(ang1)*rest
+            p.append(Vector(0,0,-(height+addh)))
+        # absolutize
+        r = [p[0]]
+        for m in p[1:]:
+            r.append(r[-1].add(m))
+        p = r
+        if downlength:
+            bdist = math.tan(ang1)*height
+            p.append(Vector(0,downlength+bdist,-height))
+            p.append(Vector(0,0,-height))
+        else:
+            hdist = height*(math.tan(ang1))
+            p.append(Vector(0,hdist,0))
+        p.append(p[0])
+        p = Part.makePolygon(p)
+        f = Part.Face(p)
+        shape = f.extrude(Vector(width,0,0))
+
+        shape = self.processSubShapes(obj,shape,pl)
+        self.applyShape(obj,shape,pl)
+
+
 class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
     "The View Provider of the Precast object"
 
@@ -573,7 +654,7 @@ class _PrecastTaskPanel:
         from PySide import QtCore,QtGui,QtSvg
         self.form = QtGui.QWidget()
         self.grid = QtGui.QGridLayout(self.form)
-        self.PrecastTypes = ["Beam","I-Beam","Pillar","Panel","Slab"]
+        self.PrecastTypes = ["Beam","I-Beam","Pillar","Panel","Slab","Stairs"]
         self.SlabTypes = ["Champagne","Hat"]
         
         # image display
@@ -654,7 +735,27 @@ class _PrecastTaskPanel:
         self.valueGrooveSpacing = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelGrooveSpacing,14,0,1,1)
         self.grid.addWidget(self.valueGrooveSpacing,14,1,1,1)
+
+        self.labelRiserNumber = QtGui.QLabel()
+        self.valueRiserNumber = QtGui.QSpinBox()
+        self.grid.addWidget(self.labelRiserNumber,15,0,1,1)
+        self.grid.addWidget(self.valueRiserNumber,15,1,1,1)
         
+        self.labelDownLength = QtGui.QLabel()
+        self.valueDownLength = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.grid.addWidget(self.labelDownLength,16,0,1,1)
+        self.grid.addWidget(self.valueDownLength,16,1,1,1)
+        
+        self.labelRiser = QtGui.QLabel()
+        self.valueRiser = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.grid.addWidget(self.labelRiser,17,0,1,1)
+        self.grid.addWidget(self.valueRiser,17,1,1,1)
+        
+        self.labelTread = QtGui.QLabel()
+        self.valueTread = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.grid.addWidget(self.labelTread,18,0,1,1)
+        self.grid.addWidget(self.valueTread,18,1,1,1)
+
         # signals/slots
         QtCore.QObject.connect(self.valueChamfer,QtCore.SIGNAL("valueChanged(double)"),self.setChamfer)
         QtCore.QObject.connect(self.valueDentLength,QtCore.SIGNAL("valueChanged(double)"),self.setDentLength)
@@ -667,6 +768,9 @@ class _PrecastTaskPanel:
         QtCore.QObject.connect(self.valueGrooveDepth,QtCore.SIGNAL("valueChanged(double)"),self.setGrooveDepth)
         QtCore.QObject.connect(self.valueGrooveHeight,QtCore.SIGNAL("valueChanged(double)"),self.setGrooveHeight)
         QtCore.QObject.connect(self.valueGrooveSpacing,QtCore.SIGNAL("valueChanged(double)"),self.setGrooveSpacing)
+        QtCore.QObject.connect(self.valueDownLength,QtCore.SIGNAL("valueChanged(double)"),self.setDownLength)
+        QtCore.QObject.connect(self.valueRiser,QtCore.SIGNAL("valueChanged(double)"),self.setRiser)
+        QtCore.QObject.connect(self.valueTread,QtCore.SIGNAL("valueChanged(double)"),self.setTread)
         self.retranslateUi(self.form)
         self.form.hide()
         
@@ -686,6 +790,10 @@ class _PrecastTaskPanel:
         d["GrooveDepth"] = self.GrooveDepth
         d["GrooveHeight"] = self.GrooveHeight
         d["GrooveSpacing"] = self.GrooveSpacing
+        d["RiserNumber"] = self.valueRiserNumber.value()
+        d["DownLength"] = self.DownLength
+        d["Riser"] = self.Riser
+        d["Tread"] = self.Tread
         if hasattr(self,"Dents"):
             d["Dents"] = self.Dents.getValues()
         return d
@@ -722,6 +830,15 @@ class _PrecastTaskPanel:
         
     def setGrooveSpacing(self,value):
         self.GrooveSpacing = value
+
+    def setDownLength(self,value):
+        self.DownLength = value
+        
+    def setRiser(self,value):
+        self.Riser = value
+        
+    def setTread(self,value):
+        self.Tread = value
         
     def retranslateUi(self, dialog):
         from PySide import QtGui
@@ -740,6 +857,10 @@ class _PrecastTaskPanel:
         self.labelGrooveDepth.setText(QtGui.QApplication.translate("Arch", "Depth of grooves", None, QtGui.QApplication.UnicodeUTF8))
         self.labelGrooveHeight.setText(QtGui.QApplication.translate("Arch", "Height of grooves", None, QtGui.QApplication.UnicodeUTF8))
         self.labelGrooveSpacing.setText(QtGui.QApplication.translate("Arch", "Spacing between grooves", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelRiserNumber.setText(QtGui.QApplication.translate("Arch", "Number of risers", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelDownLength.setText(QtGui.QApplication.translate("Arch", "Length of down floor", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelRiser.setText(QtGui.QApplication.translate("Arch", "Height of risers", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelTread.setText(QtGui.QApplication.translate("Arch", "Depth of treads", None, QtGui.QApplication.UnicodeUTF8))
 
     def setPreset(self,preset):
         self.preview.hide()
@@ -773,6 +894,15 @@ class _PrecastTaskPanel:
             self.valueGrooveHeight.hide()
             self.labelGrooveSpacing.hide()
             self.valueGrooveSpacing.hide()
+            self.valueHoleSpacing.hide()
+            self.labelRiserNumber.hide()
+            self.valueRiserNumber.hide()
+            self.labelDownLength.hide()
+            self.valueDownLength.hide()
+            self.labelRiser.hide()
+            self.valueRiser.hide()
+            self.labelTread.hide()
+            self.valueTread.hide()
         elif preset == "Pillar":
             self.preview.load(":/ui/ParametersPillar.svg")
             self.labelSlabType.hide()
@@ -803,6 +933,14 @@ class _PrecastTaskPanel:
             self.valueGrooveHeight.show()
             self.labelGrooveSpacing.show()
             self.valueGrooveSpacing.show()
+            self.labelRiserNumber.hide()
+            self.valueRiserNumber.hide()
+            self.labelDownLength.hide()
+            self.valueDownLength.hide()
+            self.labelRiser.hide()
+            self.valueRiser.hide()
+            self.labelTread.hide()
+            self.valueTread.hide()
         elif preset == "Panel":
             self.preview.load(":/ui/ParametersPanel.svg")
             self.labelSlabType.hide()
@@ -833,6 +971,14 @@ class _PrecastTaskPanel:
             self.valueGrooveHeight.hide()
             self.labelGrooveSpacing.hide()
             self.valueGrooveSpacing.hide()
+            self.labelRiserNumber.hide()
+            self.valueRiserNumber.hide()
+            self.labelDownLength.hide()
+            self.valueDownLength.hide()
+            self.labelRiser.hide()
+            self.valueRiser.hide()
+            self.labelTread.hide()
+            self.valueTread.hide()
         elif preset == "Slab":
             self.preview.load(":/ui/ParametersSlab.svg")
             self.labelSlabType.show()
@@ -863,6 +1009,14 @@ class _PrecastTaskPanel:
             self.valueGrooveHeight.hide()
             self.labelGrooveSpacing.hide()
             self.valueGrooveSpacing.hide()
+            self.labelRiserNumber.hide()
+            self.valueRiserNumber.hide()
+            self.labelDownLength.hide()
+            self.valueDownLength.hide()
+            self.labelRiser.hide()
+            self.valueRiser.hide()
+            self.labelTread.hide()
+            self.valueTread.hide()
         elif preset == "I-Beam":
             self.preview.load(":/ui/ParametersIbeam.svg")
             self.labelSlabType.hide()
@@ -893,6 +1047,52 @@ class _PrecastTaskPanel:
             self.valueGrooveHeight.hide()
             self.labelGrooveSpacing.hide()
             self.valueGrooveSpacing.hide()
+            self.labelRiserNumber.hide()
+            self.valueRiserNumber.hide()
+            self.labelDownLength.hide()
+            self.valueDownLength.hide()
+            self.labelRiser.hide()
+            self.valueRiser.hide()
+            self.labelTread.hide()
+            self.valueTread.hide()
+        elif preset == "Stairs":
+            self.preview.load(":/ui/ParametersStairs.svg")
+            self.labelSlabType.hide()
+            self.valueSlabType.hide()
+            self.labelChamfer.hide()
+            self.valueChamfer.hide()
+            self.labelDentLength.hide()
+            self.valueDentLength.hide()
+            self.labelDentWidth.hide()
+            self.valueDentWidth.hide()
+            self.labelDentHeight.hide()
+            self.valueDentHeight.hide()
+            self.labelBase.hide()
+            self.valueBase.hide()
+            self.labelHoleNumber.hide()
+            self.valueHoleNumber.hide()
+            self.labelHoleMajor.hide()
+            self.valueHoleMajor.hide()
+            self.labelHoleMinor.hide()
+            self.valueHoleMinor.hide()
+            self.labelHoleSpacing.hide()
+            self.valueHoleSpacing.hide()
+            self.labelGrooveNumber.hide()
+            self.valueGrooveNumber.hide()
+            self.labelGrooveDepth.hide()
+            self.valueGrooveDepth.hide()
+            self.labelGrooveHeight.hide()
+            self.valueGrooveHeight.hide()
+            self.labelGrooveSpacing.hide()
+            self.valueGrooveSpacing.hide()
+            self.labelRiserNumber.show()
+            self.valueRiserNumber.show()
+            self.labelDownLength.show()
+            self.valueDownLength.show()
+            self.labelRiser.show()
+            self.valueRiser.show()
+            self.labelTread.show()
+            self.valueTread.show()
         self.preview.show()
 
 
@@ -1065,7 +1265,7 @@ class _DentsTaskPanel:
         return l
         
 
-def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0,dentlength=0,dentwidth=0,dentheight=0,dents=[],base=0,holenumber=0,holemajor=0,holeminor=0,holespacing=0,groovenumber=0,groovedepth=0,grooveheight=0,groovespacing=0):
+def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0,dentlength=0,dentwidth=0,dentheight=0,dents=[],base=0,holenumber=0,holemajor=0,holeminor=0,holespacing=0,groovenumber=0,groovedepth=0,grooveheight=0,groovespacing=0,risernumber=0,downlength=0,riser=0,tread=0):
     
     "creates one of the precast objects in the current document"
     
@@ -1120,6 +1320,16 @@ def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0
         obj.Height = height
         obj.Chamfer = chamfer
         obj.BeamBase = base
+    elif precasttype == "Stairs":
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+        _PrecastStairs(obj)
+        obj.Length = length
+        obj.Width = width
+        obj.Height = height
+        obj.RiserNumber = risernumber
+        obj.DownLength = downlength
+        obj.Riser = riser
+        obj.Tread = tread
     else:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Precast")
         _Precast(obj)
