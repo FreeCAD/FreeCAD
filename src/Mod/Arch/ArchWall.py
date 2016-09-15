@@ -505,6 +505,15 @@ class _Wall(ArchComponent.Component):
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
+        
+    def getFootprint(self,obj):
+        faces = []
+        if obj.Shape:
+            for f in obj.Shape.Faces:
+                if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,-1)) < 0.01:
+                    if abs(abs(f.CenterOfMass.z) - abs(obj.Shape.BoundBox.ZMin)) < 0.001:
+                        faces.append(f)
+        return faces
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
@@ -524,7 +533,55 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def attach(self,vobj):
         self.Object = vobj.Object
+        from pivy import coin
+        tex = coin.SoTexture2()
+        tex.image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        texcoords = coin.SoTextureCoordinatePlane()
+        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("PatternScale",0.01)
+        texcoords.directionS.setValue(s,0,0)
+        texcoords.directionT.setValue(0,s,0)
+        self.fcoords = coin.SoCoordinate3()
+        self.fset = coin.SoIndexedFaceSet()
+        sep = coin.SoSeparator()
+        sep.addChild(tex)
+        sep.addChild(texcoords)
+        sep.addChild(self.fcoords)
+        sep.addChild(self.fset)
+        vobj.RootNode.addChild(sep)
         return
+
+    def updateData(self,obj,prop):
+        if prop in ["Placement","Shape"]:
+            if obj.ViewObject.DisplayMode == "Footprint":
+                obj.ViewObject.Proxy.setDisplayMode("Footprint")
+
+    def getDisplayModes(self,vobj):
+        modes=["Footprint"]
+        return modes
+
+    def setDisplayMode(self,mode):
+        if mode == "Footprint":
+            if hasattr(self,"Object"):
+                faces = self.Object.Proxy.getFootprint(self.Object)
+                if faces:
+                    verts = []
+                    fdata = []
+                    idx = 0
+                    for face in faces:
+                        tri = face.tessellate(1)
+                        for v in tri[0]:
+                            verts.append([v.x,v.y,v.z])
+                        for f in tri[1]:
+                            fdata.extend([f[0]+idx,f[1]+idx,f[2]+idx,-1])
+                        idx += len(tri[0])
+                    self.fcoords.point.setValues(verts)
+                    self.fset.coordIndex.setValues(0,len(fdata),fdata)
+            return "Wireframe"
+        else:
+            self.fset.coordIndex.deleteValues(0)
+            self.fcoords.point.deleteValues(0)
+            return mode
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Wall',_CommandWall())
