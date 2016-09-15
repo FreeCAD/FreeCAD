@@ -404,7 +404,7 @@ void StdCmdNew::activated(int iMsg)
     QString cmd;
     cmd = QString::fromLatin1("App.newDocument(\"%1\")")
         .arg(qApp->translate("StdCmdNew","Unnamed"));
-    doCommand(Command::Doc,(const char*)cmd.toUtf8());
+    runCommand(Command::Doc,cmd.toUtf8());
 }
 
 //===========================================================================
