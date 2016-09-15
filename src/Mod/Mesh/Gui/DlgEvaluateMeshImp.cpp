@@ -481,8 +481,8 @@ void DlgEvaluateMeshImp::on_repairOrientationButton_clicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand("Harmonize normals");
         try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").harmonizeNormals()"
+            Gui::Command::doCommand(Gui::Command::App
+                    , "App.getDocument(\"%s\").getObject(\"%s\").harmonizeNormals()"
                     , docName, objName);
         }
         catch (const Base::Exception& e) {
@@ -584,13 +584,13 @@ void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand("Remove non-manifolds");
         try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifolds()"
+            Gui::Command::doCommand(Gui::Command::App
+                    , "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifolds()"
                     , docName, objName);
 
             if (d->checkNonManfoldPoints) {
-                Gui::Application::Instance->runCommand(
-                    true, "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifoldPoints()"
+                Gui::Command::doCommand(Gui::Command::App
+                        , "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifoldPoints()"
                         , docName, objName);
             }
         } 
@@ -683,8 +683,8 @@ void DlgEvaluateMeshImp::on_repairIndicesButton_clicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand("Fix indices");
         try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").fixIndices()"
+            Gui::Command::doCommand(Gui::Command::App
+                    , "App.getDocument(\"%s\").getObject(\"%s\").fixIndices()"
                     , docName, objName);
         }
         catch (const Base::Exception& e) {
@@ -749,8 +749,8 @@ void DlgEvaluateMeshImp::on_repairDegeneratedButton_clicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand("Remove degenerated faces");
         try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").fixDegenerations(%f)"
+            Gui::Command::doCommand(Gui::Command::App
+                    , "App.getDocument(\"%s\").getObject(\"%s\").fixDegenerations(%f)"
                     , docName, objName, d->epsilonDegenerated);
         }
         catch (const Base::Exception& e) {
@@ -816,8 +816,8 @@ void DlgEvaluateMeshImp::on_repairDuplicatedFacesButton_clicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand("Remove duplicated faces");
         try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedFacets()"
+            Gui::Command::doCommand(Gui::Command::App
+                    , "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedFacets()"
                     , docName, objName);
         }
         catch (const Base::Exception& e) {
@@ -881,8 +881,8 @@ void DlgEvaluateMeshImp::on_repairDuplicatedPointsButton_clicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand("Remove duplicated points");
         try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedPoints()"
+            Gui::Command::doCommand(Gui::Command::App
+                    , "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedPoints()"
                     , docName, objName);
         }
         catch (const Base::Exception& e) {
@@ -1052,8 +1052,8 @@ void DlgEvaluateMeshImp::on_repairFoldsButton_clicked()
         qApp->setOverrideCursor(Qt::WaitCursor);
         doc->openCommand("Remove folds");
         try {
-            Gui::Application::Instance->runCommand(
-                true, "App.getDocument(\"%s\").getObject(\"%s\").removeFoldsOnSurface()"
+            Gui::Command::doCommand(Gui::Command::App
+                    , "App.getDocument(\"%s\").getObject(\"%s\").removeFoldsOnSurface()"
                     , docName, objName);
         }
         catch (const Base::Exception& e) {
@@ -1102,7 +1102,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                 {
                     MeshEvalSelfIntersection eval(rMesh);
                     if (self && !eval.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").fixSelfIntersections()",
                             docName, objName);
                         run = true;
@@ -1117,7 +1117,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                     MeshEvalFoldsOnBoundary b_eval(rMesh);
                     MeshEvalFoldOversOnSurface f_eval(rMesh);
                     if (!s_eval.Evaluate() || !b_eval.Evaluate() || !f_eval.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").removeFoldsOnSurface()",
                             docName, objName);
                         run = true;
@@ -1127,7 +1127,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                 {
                     MeshEvalOrientation eval(rMesh);
                     if (!eval.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").harmonizeNormals()",
                             docName, objName);
                         run = true;
@@ -1137,7 +1137,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                 {
                     MeshEvalTopology eval(rMesh);
                     if (!eval.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifolds()",
                             docName, objName);
                         run = true;
@@ -1150,7 +1150,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                     MeshEvalCorruptedFacets cf(rMesh);
                     MeshEvalNeighbourhood nb(rMesh);
                     if (!rf.Evaluate() || !rp.Evaluate() || !cf.Evaluate() || !nb.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").fixIndices()",
                             docName, objName);
                         run = true;
@@ -1159,7 +1159,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                 {
                     MeshEvalDegeneratedFacets eval(rMesh, d->epsilonDegenerated);
                     if (!eval.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").fixDegenerations(%f)",
                             docName, objName, d->epsilonDegenerated);
                         run = true;
@@ -1169,7 +1169,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                 {
                     MeshEvalDuplicateFacets eval(rMesh);
                     if (!eval.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedFacets()",
                             docName, objName);
                         run = true;
@@ -1179,7 +1179,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
                 {
                     MeshEvalDuplicatePoints eval(rMesh);
                     if (!eval.Evaluate()) {
-                        Gui::Application::Instance->runCommand(true,
+                        Gui::Command::doCommand(Gui::Command::App,
                             "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedPoints()",
                             docName, objName);
                         run = true;
