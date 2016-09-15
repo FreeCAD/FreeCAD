@@ -456,7 +456,7 @@ class CommandPathProfile:
     def GetResources(self):
         return {'Pixmap': 'Path-Profile',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile"),
-                'Accel': "P, P",
+                'Accel': "P, R",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Creates a Path Profile object from selected faces")}
 
     def IsActive(self):

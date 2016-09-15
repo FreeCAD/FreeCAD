@@ -472,7 +472,6 @@ class CommandDragknifeDressup:
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("DragKnife_Dressup", "DragKnife Dress-up"),
-                'Accel': "P, S",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("DragKnife_Dressup", "Modifies a path to add dragknife corner actions")}
 
     def IsActive(self):

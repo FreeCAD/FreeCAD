@@ -70,16 +70,15 @@ class PathWorkbench (Workbench):
         from PathScripts import PathContour
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post","Separator", "Path_Inspect", "Path_Sanity"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity"]
         toolcmdlist = ["Path_ToolLibraryEdit", "Path_LoadTool"]
-        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment",
-                       "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
-        opcmdlist = ["Path_Contour", "Path_Profile", "Path_Pocket",
-                     "Path_Drilling", "Path_Engrave", "Path_Surfacing"]
-        modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array",
-                      "Path_SimpleCopy" ]
-        modcmdmore = ["Path_Dressup", "Path_Hop", "DragKnife_Dressup"]
-        remotecmdlist = ["Path_Remote"]
+        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment", "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
+        twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Pocket", "Path_Drilling", "Path_Engrave"]
+        threedopcmdlist = ["Path_Surfacing"]
+        modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
+        dressupcmdlist = ["DragKnife_Dressup"]
+        #modcmdmore = ["Path_Hop",]
+        #remotecmdlist = ["Path_Remote"]
 
         # Add commands to menu and toolbar
         def QT_TRANSLATE_NOOP(scope, text):
@@ -90,23 +89,24 @@ class PathWorkbench (Workbench):
         self.appendToolbar(translate("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(translate("Path", "Tool Commands"), toolcmdlist)
         #self.appendToolbar(translate("Path", "Partial Commands"), prepcmdlist)
-        self.appendToolbar(translate("Path", "New Operations"), opcmdlist)
+        self.appendToolbar(translate("Path", "New Operations"), twodopcmdlist+threedopcmdlist)
         self.appendToolbar(translate("Path", "Path Modification"), modcmdlist)
 
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Project Tools")], projcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Tools")], toolcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
+        self.appendMenu([translate("Path", "&Path")], projcmdlist +["Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
+        #self.appendMenu([translate("Path", "Path"), translate(
+        #    "Path", "Tools")], toolcmdlist)
+        self.appendMenu([translate("Path", "&Path"), translate(
+            "Path", "Path Dressup")], dressupcmdlist)
+        self.appendMenu([translate("Path", "&Path"), translate(
             "Path", "Partial Commands")], prepcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "New Operations")], opcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
+        #self.appendMenu([translate("Path", "Path"), translate(
+        #    "Path", "New Operations")], opcmdlist)
+        self.appendMenu([translate("Path", "&Path"), translate(
             "Path", "Path Modification")], modcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Path Modification")], modcmdmore)
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Remote Operations")], remotecmdlist)
+        #self.appendMenu([translate("Path", "Path"), translate(
+        #    "Path", "Path Modification")], modcmdmore)
+        # self.appendMenu([translate("Path", "Path"), translate(
+        #     "Path", "Remote Operations")], remotecmdlist)
 
         # Add preferences pages
         import os

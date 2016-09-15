@@ -145,7 +145,6 @@ class CommandPathLoadTool:
     def GetResources(self):
         return {'Pixmap': 'Path-LoadTool',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller to the Job"),
-                'Accel': "P, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_LoadTool", "Add Tool Controller")}
 
     def IsActive(self):
