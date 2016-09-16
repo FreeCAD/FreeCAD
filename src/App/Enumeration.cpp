@@ -158,7 +158,7 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
 void Enumeration::setValue(const char *value)
 {
     // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
+    //assert(_EnumArray);
 
     if (!_EnumArray) {
         _index = 0;
@@ -200,7 +200,7 @@ void Enumeration::setValue(long value, bool checkRange)
 bool Enumeration::isValue(const char *value) const
 {
     // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
+    //assert(_EnumArray);
 
     int i = getInt();
 
@@ -214,7 +214,7 @@ bool Enumeration::isValue(const char *value) const
 bool Enumeration::contains(const char *value) const
 {
     // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
+    //assert(_EnumArray);
 
     if (!isValid()) {
         return false;
@@ -236,7 +236,7 @@ bool Enumeration::contains(const char *value) const
 const char * Enumeration::getCStr(void) const
 {
     // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
+    //assert(_EnumArray);
 
     if (!isValid() || _index < 0 || _index > _maxVal) {
         return NULL;
