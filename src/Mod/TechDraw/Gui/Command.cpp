@@ -516,10 +516,6 @@ void CmdTechDrawClip::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Clip");
     openCommand("Create Clip");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewClip','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.ShowFrame = True",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Height = 30.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Width = 30.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.ShowLabels = False",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     updateActive();
     commitCommand();

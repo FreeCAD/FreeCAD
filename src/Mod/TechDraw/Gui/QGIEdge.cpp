@@ -36,8 +36,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <qmath.h>
-#include "QGIView.h"
 #include "QGIEdge.h"
 
 using namespace TechDrawGui;

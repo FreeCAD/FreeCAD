@@ -47,7 +47,6 @@
 
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
-#include "QGIView.h"
 #include "QGIFace.h"
 
 using namespace TechDrawGui;
