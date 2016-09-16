@@ -4,6 +4,7 @@ namespace ZVALUE {
     const int BACKGROUND = -999999;
     const int TEMPLATE = -1000;
     const int SVGTEMPLATE = -500;
+    //border/label const int border = 0;
     const int FACE = 10;
     const int HATCH = 30;
     const int HIDEDGE = 40;

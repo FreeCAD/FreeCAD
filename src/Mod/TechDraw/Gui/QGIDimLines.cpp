@@ -32,7 +32,6 @@
 #include <QPainter>
 #endif
 
-#include "QGIView.h"
 #include "QGIDimLines.h"
 
 using namespace TechDrawGui;
