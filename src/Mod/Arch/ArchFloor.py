@@ -109,6 +109,11 @@ class _Floor:
     def __setstate__(self,state):
         if state:
             self.Type = state
+            
+    def onChanged(self,obj,prop):
+        if not hasattr(self,"Object"):
+            # on restore, self.Object is not there anymore
+            self.Object = obj
 
     def execute(self,obj):
         # move children with this floor
