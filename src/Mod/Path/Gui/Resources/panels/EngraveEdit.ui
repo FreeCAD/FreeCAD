@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>517</height>
+    <width>321</width>
+    <height>504</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>304</width>
-        <height>349</height>
+        <width>303</width>
+        <height>366</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>304</width>
-        <height>349</height>
+        <width>303</width>
+        <height>366</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -123,16 +123,28 @@
        <string>Depths</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_2">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
        <item row="0" column="0">
+        <widget class="Gui::InputField" name="startDepth">
          <property name="unit" stdset="0">
           <string notr="true">mm</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Start Depth</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="Gui::InputField" name="finalDepth">
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Final Depth</string>
@@ -146,8 +158,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>304</width>
-        <height>349</height>
+        <width>303</width>
+        <height>366</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -193,8 +205,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>231</width>
-        <height>38</height>
+        <width>303</width>
+        <height>366</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -235,7 +247,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../Path.qrc"/>
   <include location="../Path.qrc"/>
  </resources>
  <connections/>
