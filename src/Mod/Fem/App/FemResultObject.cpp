@@ -93,7 +93,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemResultObjectPython, Fem::FemResultObject)
 template<> const char* Fem::FemResultObjectPython::getViewProviderName(void) const {
-    return "FemGui::ViewProviderFemResultPython";
+    return "FemGui::ViewProviderResultPython";
 }
 /// @endcond
 
