@@ -2129,7 +2129,10 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                         throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
                     }
 
-                    TopoDS_Shape offsetWire = mkOffset.Shape();
+                    //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
+                    // http://www.freecadweb.org/tracker/view.php?id=2699
+                    TopoDS_Shape offsetWire = BRepBuilderAPI_Copy(mkOffset.Shape()).Shape();
+
                     if (offsetWire.IsNull())
                         throw Base::Exception("makeOffset2D: result of offset is null!");
                     ShapeExtend_Explorer xp; //using this explorer allows to avoid checking output type
@@ -2181,7 +2184,9 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
             }
 
-            offsetWire = mkOffset.Shape();
+            //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
+            // http://www.freecadweb.org/tracker/view.php?id=2699
+            offsetWire = BRepBuilderAPI_Copy(mkOffset.Shape()).Shape();
         } else {
             offsetWire = sourceWire;
         }
@@ -2320,13 +2325,13 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
             mkWire.Build();
 
-            wires.push_front(TopoDS::Wire(mkWire.Wire().Reversed())); //not sure, why need reversing here. Found by trial-and-error
+            wires.push_front(mkWire.Wire());
             largestWire = &wires.front();
         }
 
         //make the face
         //TODO: replace all this reverseness alchemy with a common direction-tolerant face-with-holes-making code
-        BRepBuilderAPI_MakeFace mkFace(*largestWire);
+        BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(offset < 0 ? (*largestWire) : (*largestWire).Reversed()));
         for(TopoDS_Wire &w : wires){
             if (&w != largestWire)
                 mkFace.Add(TopoDS::Wire(w.Reversed()));
