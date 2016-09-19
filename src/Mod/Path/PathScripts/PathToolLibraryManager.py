@@ -248,6 +248,7 @@ class ToolLibraryManager():
 
     def addnew(self, listname, tool, position = None):
         "adds a new tool at the end of the table"
+        print listname, tool, position
         tt = self._findList(listname)
         if position is None:
             tt.addTools(tool)
@@ -326,7 +327,6 @@ class ToolLibraryManager():
         pass
 
 class EditorPanel():
-
     def __init__(self):
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolLibraryEditor.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolLibraryEditor.ui")
@@ -441,14 +441,17 @@ class EditorPanel():
 
     def delete(self):
         '''deletes a tool'''
-        item = self.form.ToolsList.selectedIndexes()[1].data()
-        if item:
-            number = int(item)
-            listname  =  self.form.listView.selectedIndexes()[0].data()
-            if self.TLM.delete(number, listname) is True:
-                self.loadTable(self.form.listView.selectedIndexes()[0])
+        listname  =  self.form.listView.selectedIndexes()[0].data()
+        model = self.form.ToolsList.model()
+        for i in range(model.rowCount()):
+            item = model.item(i, 0)
+            if item.checkState():
+                t = model.index(i, 1)
+                self.TLM.delete(int(t.data()) ,listname)
+        self.loadTable(self.form.listView.selectedIndexes()[0])
 
     def editTool(self, currItem):
+
         row = currItem.row()
         value = currItem.sibling(row, 1).data()
         listname = self.form.listView.selectedIndexes()[0].data()
