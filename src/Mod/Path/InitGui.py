@@ -68,15 +68,18 @@ class PathWorkbench (Workbench):
         from PathScripts import PathSanity
         from PathScripts import DragknifeDressup
         from PathScripts import PathContour
+        from PathScripts import PathProfileEdges
+        import PathCommands
 
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity"]
         toolcmdlist = ["Path_ToolLibraryEdit", "Path_LoadTool"]
         prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment", "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
-        twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Pocket", "Path_Drilling", "Path_Engrave"]
+        twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Profile_Edges", "Path_Pocket", "Path_Drilling", "Path_Engrave"]
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["DragKnife_Dressup"]
+        extracmdlist = ["Path_SelectLoop"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
@@ -91,6 +94,7 @@ class PathWorkbench (Workbench):
         #self.appendToolbar(translate("Path", "Partial Commands"), prepcmdlist)
         self.appendToolbar(translate("Path", "New Operations"), twodopcmdlist+threedopcmdlist)
         self.appendToolbar(translate("Path", "Path Modification"), modcmdlist)
+        self.appendToolbar(translate("Path", "Helpful Tools"), extracmdlist)
 
         self.appendMenu([translate("Path", "&Path")], projcmdlist +["Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
         #self.appendMenu([translate("Path", "Path"), translate(
@@ -107,6 +111,7 @@ class PathWorkbench (Workbench):
         #    "Path", "Path Modification")], modcmdmore)
         # self.appendMenu([translate("Path", "Path"), translate(
         #     "Path", "Remote Operations")], remotecmdlist)
+        self.appendMenu([translate("Path", "&Path")], extracmdlist)
 
         # Add preferences pages
         import os
