@@ -245,6 +245,7 @@ PyMODINIT_FUNC initPart()
     Part::FaceMaker             ::init();
     Part::FaceMakerPublic       ::init();
     Part::FaceMakerSimple       ::init();
+    Part::FaceMakerExtrusion    ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();

@@ -62,6 +62,8 @@
 #include <Base/Exception.h>
 #include "Part2DObject.h"
 
+#include <QtGlobal>
+
 
 using namespace Part;
 
@@ -303,35 +305,10 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
 
         //make faces from wires
         if (params.solid && myShape.ShapeType() != TopAbs_FACE) {
-            std::vector<TopoDS_Wire> wires;
-            TopTools_IndexedMapOfShape mapOfWires;
-            TopExp::MapShapes(myShape, TopAbs_WIRE, mapOfWires);
-
-            // if there are no wires then check also for edges
-            if (mapOfWires.IsEmpty()) {
-                TopTools_IndexedMapOfShape mapOfEdges;
-                TopExp::MapShapes(myShape, TopAbs_EDGE, mapOfEdges);
-                for (int i=1; i<=mapOfEdges.Extent(); i++) {
-                    BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mapOfEdges.FindKey(i)));
-                    wires.push_back(mkWire.Wire());
-                }
-            }
-            else {
-                wires.reserve(mapOfWires.Extent());
-                for (int i=1; i<=mapOfWires.Extent(); i++) {
-                    wires.push_back(TopoDS::Wire(mapOfWires.FindKey(i)));
-                }
-            }
-
-            if (!wires.empty()) {
-                try {
-                    TopoDS_Shape res = makeFace(wires);
-                    if (!res.IsNull())
-                        myShape = res;
-                }
-                catch (...) {
-                }
-            }
+            FaceMakerExtrusion mkFace;
+            mkFace.addShape(myShape);
+            mkFace.Build();
+            myShape = mkFace.Shape();
         }
 
         //extrude!
@@ -711,4 +688,74 @@ TopoDS_Shape Extrusion::makeFace(const std::vector<TopoDS_Wire>& w)
     else {
         return TopoDS_Shape(); // error
     }
+}
+
+//----------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::FaceMakerExtrusion, Part::FaceMakerPublic);
+
+std::string FaceMakerExtrusion::getUserFriendlyName() const
+{
+    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Part Extrude facemaker"));
+}
+
+std::string FaceMakerExtrusion::getBriefExplanation() const
+{
+    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making faces with holes, does not support nesting."));
+}
+
+void FaceMakerExtrusion::Build()
+{
+    this->NotDone();
+    this->myGenerated.Clear();
+    this->myShapesToReturn.clear();
+    this->myShape = TopoDS_Shape();
+    TopoDS_Shape inputShape;
+    if (mySourceShapes.size() == 0)
+        throw Base::Exception("No input shapes!");
+    if (mySourceShapes.size() == 1){
+        inputShape = mySourceShapes[0];
+    } else {
+        TopoDS_Builder builder;
+        TopoDS_Compound cmp;
+        builder.MakeCompound(cmp);
+        for (const TopoDS_Shape& sh: mySourceShapes){
+            builder.Add(cmp, sh);
+        }
+        inputShape = cmp;
+    }
+
+    std::vector<TopoDS_Wire> wires;
+    TopTools_IndexedMapOfShape mapOfWires;
+    TopExp::MapShapes(inputShape, TopAbs_WIRE, mapOfWires);
+
+    // if there are no wires then check also for edges
+    if (mapOfWires.IsEmpty()) {
+        TopTools_IndexedMapOfShape mapOfEdges;
+        TopExp::MapShapes(inputShape, TopAbs_EDGE, mapOfEdges);
+        for (int i=1; i<=mapOfEdges.Extent(); i++) {
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mapOfEdges.FindKey(i)));
+            wires.push_back(mkWire.Wire());
+        }
+    }
+    else {
+        wires.reserve(mapOfWires.Extent());
+        for (int i=1; i<=mapOfWires.Extent(); i++) {
+            wires.push_back(TopoDS::Wire(mapOfWires.FindKey(i)));
+        }
+    }
+
+    if (!wires.empty()) {
+        //try {
+            TopoDS_Shape res = Extrusion::makeFace(wires);
+            if (!res.IsNull())
+                this->myShape = res;
+        //}
+        //catch (...) {
+
+        //}
+    }
+
+    this->Done();
+
 }
