@@ -226,8 +226,8 @@ tl.ToolNumber = 1
 
 class TaskPanel:
     def __init__(self):
-        #self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
         path = FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
         posts = glob.glob(path + '/*_post.py')
         allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
@@ -259,6 +259,7 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
+        '''sets properties in the object to match the form'''
         if self.obj:
             if hasattr(self.obj, "PostProcessor"):
                 self.obj.PostProcessor = str(self.form.cboPostProcessor.currentText())
@@ -283,26 +284,31 @@ class TaskPanel:
                 selObj = Draft.clone(selObj)
             self.obj.Base = selObj
 
-
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
+        '''sets fields in the form to match the object'''
 
         self.form.leLabel.setText(self.obj.Label)
         self.form.leOutputFile.setText(self.obj.OutputFile)
 
-        index = self.form.cboPostProcessor.findText(
+        postindex = self.form.cboPostProcessor.findText(
                 self.obj.PostProcessor, QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            self.form.cboPostProcessor.setCurrentIndex(index)
+        if postindex >= 0:
+            self.form.cboPostProcessor.blockSignals(True)
+            self.form.cboPostProcessor.setCurrentIndex(postindex)
+            self.form.cboPostProcessor.blockSignals(False)
 
         for child in self.obj.Group:
             self.form.PathsList.addItem(child.Name)
 
         if self.obj.Base is not None:
-            index = self.form.cboBaseObject.findText(self.obj.Base.Name, QtCore.Qt.MatchFixedString)
-            if index >= 0:
-                self.form.cboBaseObject.setCurrentIndex(index)
+            baseindex = self.form.cboBaseObject.findText(self.obj.Base.Name, QtCore.Qt.MatchFixedString)
+            print baseindex
+            if baseindex >= 0:
+                self.form.cboBaseObject.blockSignals(True)
+                self.form.cboBaseObject.setCurrentIndex(baseindex)
+                self.form.cboBaseObject.blockSignals(False)
 
 
     def open(self):
