@@ -117,7 +117,7 @@ def insert(filename,docname):
 def processcsg(filename):
     global doc
     
-    if printverbose: print 'ImportCSG Version 0.5d'
+    if printverbose: print 'ImportCSG Version 0.6a'
     # Build the lexer
     if printverbose: print 'Start Lex'
     lex.lex(module=tokrules)
@@ -233,6 +233,7 @@ def p_part(p):
          | cube_action
          | circle_action
          | square_action
+         | text_action
          | polygon_action_nopath
          | polygon_action_plus_path
          | polyhedron_action
@@ -424,6 +425,7 @@ def p_keywordargument(p):
     | ID EQ size_vector
     | ID EQ vector
     | ID EQ 2d_point
+    | text EQ stripped_string
     | ID EQ stripped_string
      '''
     p[0] = (p[1],p[3])
@@ -699,6 +701,18 @@ def process_mesh_file(fname,ext):
         import Part
         obj=doc.addObject('Part::Feature',"FailedMeshImport")
         obj.Shape=Part.Compound([])
+    return(obj)
+
+
+def processTextCmd(t):
+    import os
+    from OpenSCADUtils import callopenscadstring
+    tmpfilename = callopenscadstring(t,'dxf')
+    obj=processDXF(os.path.splitext(tmpfilename)[0],"")
+    try:
+        os.unlink(tmpfilename)
+    except OSError:
+        pass
     return(obj)
 
 def processDXF(fname,layer):
@@ -1008,6 +1022,31 @@ def p_square_action(p) :
     if p[3]['center']=='true' :
        center(mysquare,x,y,0)
     p[0] = [mysquare]
+
+def addString(t,s,p):
+    return(t + ', ' +s+' = "'+p[3][s]+'"')
+
+def addValue(t,v,p):
+    return(t + ', ' +v+' = '+p[3][v])
+
+def p_text_action(p) :
+    'text_action : text LPAREN keywordargument_list RPAREN SEMICOL'
+    t = 'text ( text="'+p[3]['text']+'"'
+    t = addValue(t,'size',p)
+    t = addString(t,'spacing',p)
+    t = addString(t,'font',p)
+    t = addString(t,'direction',p)
+    t = addString(t,'language',p)
+    t = addString(t,'script',p)
+    t = addString(t,'halign',p)
+    t = addString(t,'valign',p)
+    t = addValue(t,'$fn',p)
+    t = addValue(t,'$fa',p)
+    t = addValue(t,'$fs',p)
+    t = t+');'
+
+    FreeCAD.Console.PrintMessage("textmsg : "+t+"\n")
+    p[0] = [processTextCmd(t)]
 
 def convert_points_list_to_vector(l):
     v = []
