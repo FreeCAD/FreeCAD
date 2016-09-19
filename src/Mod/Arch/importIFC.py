@@ -505,11 +505,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         else:
                             sharedobjects[bid] = None
                             store = bid
-
-        if structobj:
-            settings.set(settings.INCLUDE_CURVES,True)
-        else:
-            settings.set(settings.INCLUDE_CURVES,False)
+        if hasattr(settings,"INCLUDE_CURVES"):
+            if structobj:
+                settings.set(settings.INCLUDE_CURVES,True)
+            else:
+                settings.set(settings.INCLUDE_CURVES,False)
         try:
             cr = ifcopenshell.geom.create_shape(settings,product)
             brep = cr.geometry.brep_data
@@ -944,7 +944,11 @@ def export(exportList,filename):
         email = s[1].strip(">")
     global template
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
-    template = template.replace("$ifcschema",ifcopenshell.schema_identifier)
+    if hasattr(ifcopenshell,"schema_identifier"):
+        schemaifcopenshell.schema_identifier
+    else:
+        schema = "IFC2X3"
+    template = template.replace("$ifcschema",schema)
     template = template.replace("$owner",owner)
     template = template.replace("$company",FreeCAD.ActiveDocument.Company)
     template = template.replace("$email",email)
