@@ -41,6 +41,7 @@ reserved = (
     'false',
     'circle',
     'square',
+    'text',
     'polygon',
     'paths',
     'points',
