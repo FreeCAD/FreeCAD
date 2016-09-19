@@ -414,6 +414,8 @@ class _CommandWindow:
                     if obj.Support:
                         if isinstance(obj.Support,tuple):
                             host = obj.Support[0]
+                        elif isinstance(obj.Support,list):
+                            host = obj.Support[0][0]
                         else:
                             host = obj.Support
                         obj.Support = None # remove
