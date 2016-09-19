@@ -287,38 +287,48 @@ class ObjectSurface:
         output += "(" + obj.Label + ")"
         output += "(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"
 
-        if obj.Base:
-            for b in obj.Base:
+        # if obj.Base:
+        #     for b in obj.Base:
 
-                if obj.Algorithm in ['OCL Dropcutter', 'OCL Waterline']:
-                    try:
-                        import ocl
-                    except:
-                        FreeCAD.Console.PrintError(translate(
-                            "PathSurface", "This operation requires OpenCamLib to be installed.\n"))
-                        return
+        parentJob = PathUtils.findParentJob(obj)
+        if parentJob is None:
+            return
+        mesh = parentJob.Base
+        if mesh is None:
+            return
+        print "base object: " + mesh.Name
 
-                mesh = b[0]
-                if mesh.TypeId.startswith('Mesh'):
-                    mesh = mesh.Mesh
-                    bb = mesh.BoundBox
-                else:
-                    bb = mesh.Shape.BoundBox
-                    mesh = MeshPart.meshFromShape(mesh.Shape, MaxLength=2)
 
-                s = ocl.STLSurf()
-                for f in mesh.Facets:
-                    p = f.Points[0]
-                    q = f.Points[1]
-                    r = f.Points[2]
-                    t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]), ocl.Point(
-                        q[0], q[1], q[2]), ocl.Point(r[0], r[1], r[2]))
-                    s.addTriangle(t)
 
-                if obj.Algorithm == 'OCL Dropcutter':
-                    output = self._dropcutter(obj, s, bb)
-                elif obj.Algorithm == 'OCL Waterline':
-                    output = self._waterline(obj, s, bb)
+        if obj.Algorithm in ['OCL Dropcutter', 'OCL Waterline']:
+            try:
+                import ocl
+            except:
+                FreeCAD.Console.PrintError(translate(
+                    "PathSurface", "This operation requires OpenCamLib to be installed.\n"))
+                return
+
+        #mesh = b[0]
+        if mesh.TypeId.startswith('Mesh'):
+            mesh = mesh.Mesh
+            bb = mesh.BoundBox
+        else:
+            bb = mesh.Shape.BoundBox
+            mesh = MeshPart.meshFromShape(mesh.Shape, MaxLength=2)
+
+        s = ocl.STLSurf()
+        for f in mesh.Facets:
+            p = f.Points[0]
+            q = f.Points[1]
+            r = f.Points[2]
+            t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]), ocl.Point(
+                q[0], q[1], q[2]), ocl.Point(r[0], r[1], r[2]))
+            s.addTriangle(t)
+
+        if obj.Algorithm == 'OCL Dropcutter':
+            output = self._dropcutter(obj, s, bb)
+        elif obj.Algorithm == 'OCL Waterline':
+            output = self._waterline(obj, s, bb)
 
         if obj.Active:
             path = Path.Path(output)
