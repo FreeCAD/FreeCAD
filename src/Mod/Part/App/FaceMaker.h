@@ -30,6 +30,8 @@
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 
+#include <memory>
+
 namespace Part
 {
 
@@ -50,10 +52,7 @@ public:
     FaceMaker(const TopoDS_Wire &w);
 
     /**
-     * @brief FaceMaker: take compound as list of shapes to make fae from. Note
-     * that this is slightly different from using addShape(comp). If using
-     * addShape, return will always be a compound. If using this constructor,
-     * result may be a single face.
+     * @brief FaceMaker: take compound as list of shapes to make face from (like useCompound).
      * @param comp
      */
     FaceMaker(const TopoDS_Compound &comp);
@@ -62,15 +61,31 @@ public:
     virtual ~FaceMaker() {};
 
     virtual void addWire(const TopoDS_Wire& w);
+    /**
+     * @brief addShape: add another wire, edge, or compound. If compound is
+     * added, its internals will be treated as isolated from the rest, and the
+     * compounding structure of result will follow.
+     * @param sh
+     */
     virtual void addShape(const TopoDS_Shape& sh);
+    /**
+     * @brief useCompound: add children of compound to the FaceMaker. Note that
+     * this is different from addShape(comp) - structure is lost. The compound
+     * is NOT expanded recursively.
+     * @param comp
+     */
+    virtual void useCompound(const TopoDS_Compound &comp);
 
     /**
      * @brief Face: returns the face (result). If result is not a single face, throws Base::TypeError.
      * @return
      */
-    //virtual const TopoDS_Face& Face();
+    virtual const TopoDS_Face& Face();
 
     virtual void Build();
+
+    static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
+    static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
 
 protected:
     std::vector<TopoDS_Shape> mySourceShapes; //wire or compound

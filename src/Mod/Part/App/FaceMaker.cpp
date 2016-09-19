@@ -42,10 +42,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMakerPublic, Part::FaceMaker);
 
 Part::FaceMaker::FaceMaker(const TopoDS_Compound& comp)
 {
-    TopoDS_Iterator it(comp);
-    for(; it.More(); it.Next()){
-        this->addShape(it.Value());
-    }
+    this->useCompound(comp);
     this->Build();
 }
 
@@ -75,6 +72,14 @@ void Part::FaceMaker::addShape(const TopoDS_Shape& sh)
     this->mySourceShapes.push_back(sh);
 }
 
+void Part::FaceMaker::useCompound(const TopoDS_Compound& comp)
+{
+    TopoDS_Iterator it(comp);
+    for(; it.More(); it.Next()){
+        this->addShape(it.Value());
+    }
+}
+
 const TopoDS_Face& Part::FaceMaker::Face()
 {
     const TopoDS_Shape &sh = this->Shape();
@@ -87,37 +92,36 @@ const TopoDS_Face& Part::FaceMaker::Face()
 
 void Part::FaceMaker::Build()
 {
-    this->myShapesToReturn.clear();
     this->NotDone();
+    this->myShapesToReturn.clear();
     this->myGenerated.Clear();
 
     this->Build_Essence();//adds stuff to myShapesToReturn
 
     for(const TopoDS_Compound& cmp : this->myCompounds){
-        std::unique_ptr<FaceMaker> facemaker_instance ( static_cast<FaceMaker*>(this->getTypeId().createInstance()) ); //using unique_ptr allows to avoid exception handling to delete the new facemaker
-        FaceMaker* facemaker = &(*facemaker_instance);
+        std::unique_ptr<FaceMaker> facemaker_instance = Part::FaceMaker::ConstructFromType(this->getTypeId());
+        FaceMaker* facemaker = &(*facemaker_instance); //handy to have plain pointer for intellisense to work =)
 
-        TopoDS_Iterator it(cmp);
-        for(; it.More(); it.Next()){
-            facemaker->addShape(it.Value());
-        }
-        this->Build();
-        const TopoDS_Shape &result = facemaker->Shape();
-        if (result.IsNull())
+        facemaker->useCompound(cmp);
+
+        facemaker->Build();
+        const TopoDS_Shape &subfaces = facemaker->Shape();
+        if (subfaces.IsNull())
             continue;
-        if (result.ShapeType() == TopAbs_COMPOUND){
-            this->myShapesToReturn.push_back(result);
+        if (subfaces.ShapeType() == TopAbs_COMPOUND){
+            this->myShapesToReturn.push_back(subfaces);
         } else {
+            //result is not a compound (probably, a face)... but we want to follow compounding structure of input, so wrap it into compound.
             TopoDS_Builder builder;
             TopoDS_Compound cmp_res;
             builder.MakeCompound(cmp_res);
-            builder.Add(cmp_res,result);
+            builder.Add(cmp_res,subfaces);
             this->myShapesToReturn.push_back(cmp_res);
         }
     }
 
     if(this->myShapesToReturn.size() == 0){
-
+        //nothing to do, null shape will be returned.
     } else if (this->myShapesToReturn.size() == 1){
         this->myShape = this->myShapesToReturn[0];
     } else {
@@ -130,6 +134,27 @@ void Part::FaceMaker::Build()
         this->myShape = cmp_res;
     }
     this->Done();
+}
+
+std::unique_ptr<Part::FaceMaker> Part::FaceMaker::ConstructFromType(const char* className)
+{
+    Base::Type fmType = Base::Type::fromName(className);
+    if (fmType.isBad()){
+        std::stringstream ss;
+        ss << "Class '"<< className <<"' not found.";
+        throw Base::Exception(ss.str().c_str());
+    }
+    return Part::FaceMaker::ConstructFromType(fmType);
+}
+
+std::unique_ptr<Part::FaceMaker> Part::FaceMaker::ConstructFromType(Base::Type type)
+{
+    if (!type.isDerivedFrom(Part::FaceMaker::getClassTypeId())){
+        std::stringstream ss;
+        ss << "Class '" << type.getName() << "' is not derived from Part::FaceMaker.";
+        throw Base::TypeError(ss.str().c_str());
+    }
+    return std::unique_ptr<FaceMaker>(static_cast<Part::FaceMaker*>(type.createInstance()));
 }
 
 
