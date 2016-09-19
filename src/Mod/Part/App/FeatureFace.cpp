@@ -44,6 +44,7 @@
 #include <Base/Placement.h>
 
 #include "FeatureFace.h"
+#include "FaceMaker.h"
 #include <Mod/Part/App/Part2DObject.h>
 
 
@@ -55,6 +56,7 @@ PROPERTY_SOURCE(Part::Face, Part::Feature)
 Face::Face()
 {
     ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY(FaceMakerClass,("Part::FaceMakerExtrusion"));
     Sources.setSize(0);
 }
 
@@ -71,10 +73,12 @@ App::DocumentObjectExecReturn *Face::execute(void)
     if (links.empty())
         return new App::DocumentObjectExecReturn("No shapes linked");
 
-    std::vector<TopoDS_Wire> wires;
+    std::unique_ptr<FaceMaker> fm_instance = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
+    FaceMaker* facemaker = &(*(fm_instance));
+
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        if (!(*it && (*it)->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
-            return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
+        if (!(*it && (*it)->isDerivedFrom(Part::Feature::getClassTypeId())))
+            return new App::DocumentObjectExecReturn("Linked object is not a Part object (has no Shape).");
         TopoDS_Shape shape = static_cast<Part::Part2DObject*>(*it)->Shape.getShape().getShape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
@@ -82,23 +86,19 @@ App::DocumentObjectExecReturn *Face::execute(void)
         // this is a workaround for an obscure OCC bug which leads to empty tessellations
         // for some faces. Making an explicit copy of the linked shape seems to fix it.
         // The error only happens when re-computing the shape.
-        if (!this->Shape.getValue().IsNull()) {
+        /*if (!this->Shape.getValue().IsNull()) {
             BRepBuilderAPI_Copy copy(shape);
             shape = copy.Shape();
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape object is empty");
-        }
+        }*/
 
-        TopExp_Explorer ex;
-        for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-            wires.push_back(TopoDS::Wire(ex.Current()));
-        }
+        facemaker->addShape(shape);
     }
 
-    if (wires.empty()) // there can be several wires
-        return new App::DocumentObjectExecReturn("Linked shape object is not a wire");
+    facemaker->Build();
 
-    TopoDS_Shape aFace = makeFace(wires);
+    TopoDS_Shape aFace = facemaker->Shape();
     if (aFace.IsNull())
         return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
     this->Shape.setValue(aFace);
@@ -106,6 +106,7 @@ App::DocumentObjectExecReturn *Face::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
+/*
 // sort bounding boxes according to diagonal length
 class Face::Wire_Compare {
 public:
@@ -218,3 +219,4 @@ TopoDS_Shape Face::makeFace(const std::vector<TopoDS_Wire>& w) const
     }
 }
 
+*/
