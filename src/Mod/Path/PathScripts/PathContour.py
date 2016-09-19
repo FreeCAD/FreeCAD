@@ -248,7 +248,10 @@ class ObjectContour:
 
         edgelist = contourwire.Edges
         edgelist = Part.__sortEdges__(edgelist)
-        output += self._buildPathLibarea(obj, edgelist)
+        try:
+            output += self._buildPathLibarea(obj, edgelist)
+        except:
+            FreeCAD.Console.PrintError("Something unexpected happened. Unable to generate a contour path. Check project and tool config.")
         if obj.Active:
             path = Path.Path(output)
             obj.Path = path
@@ -408,22 +411,24 @@ class CommandPathContour:
 
 class TaskPanel:
     def __init__(self):
-        #self.form = FreeCADGui.PySideUic.loadUi(":/panels/ContourEdit.ui")
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ContourEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ContourEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ContourEdit.ui")
         self.updating = False
 
     def accept(self):
+        print "removed"
         self.getFields()
 
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
+        print "removed1" 
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         if self.obj:

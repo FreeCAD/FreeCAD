@@ -14,6 +14,7 @@ INSTALL(
 )
 
 SET(PathScripts_SRCS
+    PathCommands.py
     PathScripts/__init__.py
     PathScripts/PostUtils.py
     PathScripts/example_pre.py
@@ -27,6 +28,7 @@ SET(PathScripts_SRCS
     PathScripts/rml_post.py
     PathScripts/TooltableEditor.py
     PathScripts/PathProfile.py
+    PathScripts/PathProfileEdges.py
     PathScripts/PathContour.py
     PathScripts/PathPocket.py
     PathScripts/PathDrilling.py
