@@ -1302,12 +1302,12 @@ class _CommandIfcSpreadsheet:
         FreeCAD.ActiveDocument.recompute()
 
 
-class _ToggleSubcomponentDisplay:
-    "the Toggle SubcomponentDisplay command definition"
+class _ToggleSubs:
+    "the ToggleSubs command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_ToggleSubcomponentDisplay',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubcomponentDisplay","Toggle subcomponents"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubcomponentDisplay","Shows or hides the subcomponents of this object")}
+        return {'Pixmap'  : 'Arch_ToggleSubs',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubs","Toggle subcomponents"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
@@ -1341,4 +1341,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())
     FreeCADGui.addCommand('Arch_IfcSpreadsheet',_CommandIfcSpreadsheet())
-    FreeCADGui.addCommand('Arch_ToggleSubcomponentDisplay',_ToggleSubcomponentDisplay())
+    FreeCADGui.addCommand('Arch_ToggleSubs',_ToggleSubs())
