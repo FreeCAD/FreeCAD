@@ -33,6 +33,7 @@
 #include <QGraphicsView>
 
 # include <App/DocumentObject.h>
+# include <Base/Exception.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
 # include <Gui/BitmapFactory.h>
@@ -94,14 +95,14 @@ TechDraw::DrawPage* _findPageCCD(Gui::Command* cmd)
                                      QObject::tr("Can not determine correct page."));
                 return page;
             } else {                                                       //use only page in document
-                page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+                page = static_cast<TechDraw::DrawPage*>(selPages.front());
             }
         } else if (selPages.size() > 1) {                                  //multiple pages in selection
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
                                  QObject::tr("Select exactly 1 page."));
             return page;
         } else {                                                           //use only page in selection
-            page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
+            page = static_cast<TechDraw::DrawPage*>(selPages.front());
         }
     }
     return page;
@@ -161,7 +162,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
     }
@@ -242,6 +243,9 @@ void CmdTechDrawNewDimension::activated(int iMsg)
                                                           ,contentStr.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::Exception("CmdTechDrawNewDimension - dim not found\n");
+    }
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
@@ -293,7 +297,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
     }
@@ -325,6 +329,9 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = 'R%%value%%'", FeatName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::Exception("CmdTechDrawNewRadiusDimension - dim not found\n");
+    }
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
@@ -377,7 +384,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
     }
@@ -411,6 +418,9 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\xe2\x8c\x80%%value%%'", FeatName.c_str()); // utf-8 encoded diameter symbol
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::Exception("CmdTechDrawNewDiameterDimension - dim not found\n");
+    }
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
@@ -463,7 +473,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
     }
@@ -513,6 +523,9 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        , "Distance");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::Exception("CmdTechDrawNewLengthDimension - dim not found\n");
+    }
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
@@ -567,7 +580,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
     }
@@ -615,6 +628,9 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
                                                        ,"DistanceX");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::Exception("CmdTechDrawNewDistanceXDimension - dim not found\n");
+    }
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
@@ -669,7 +685,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
     }
@@ -716,6 +732,9 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"DistanceY");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::Exception("CmdTechDrawNewDistanceYDimension - dim not found\n");
+    }
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%%value%%'", FeatName.c_str());
@@ -770,7 +789,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = dynamic_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
     }
@@ -801,6 +820,9 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
                                                        ,"Angle");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::Exception("CmdTechDrawNewAngleDimension - dim not found\n");
+    }
     dim->References2D.setValues(objs, subs);
 
     doCommand(Doc,"App.activeDocument().%s.MeasureType = 'Projected'",FeatName.c_str());
@@ -858,7 +880,7 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
-            obj3D = dynamic_cast<Part::Feature*> ((*itSel).getObject());
+            obj3D = static_cast<Part::Feature*> ((*itSel).getObject());
             subs = (*itSel).getSubNames();
         }
     }
@@ -1072,8 +1094,8 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
 bool _isValidVertexToEdge(Gui::Command* cmd) {
     bool result = false;
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* objFeat0 = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    //TechDraw::DrawViewPart* objFeat1 = dynamic_cast<TechDraw::DrawViewPart *>(selection[1].getObject());
+    TechDraw::DrawViewPart* objFeat0 = static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    //TechDraw::DrawViewPart* objFeat1 = static_castt<TechDraw::DrawViewPart *>(selection[1].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         int eId,vId;

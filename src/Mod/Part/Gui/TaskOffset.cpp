@@ -68,8 +68,8 @@ public:
 OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->offset = offset;
     d->ui.setupUi(this);

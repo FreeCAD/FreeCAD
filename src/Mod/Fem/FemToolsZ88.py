@@ -99,17 +99,25 @@ class FemToolsZ88(FemTools.FemTools):
     #  @z88_binary path to z88r binary, default is guessed: "bin/z88r" windows, "z88r" for other systems
     def setup_z88(self, z88_binary=None):
         from platform import system
-        if not z88_binary:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
-            z88_binary = self.fem_prefs.GetString("z88BinaryPath", "")
-        if not z88_binary:
-            if system() == "Linux":
-                z88_binary = "z88r"
-            elif system() == "Windows":
-                z88_binary = FreeCAD.getHomePath() + "bin/z88r.exe"
-            else:
-                z88_binary = "z88r"
-        self.z88_binary = z88_binary
+        z88_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88").GetBool("UseStandardZ88Location")
+        print z88_std_location
+        if z88_std_location:
+            if system() == "Windows":
+                z88_path = FreeCAD.getHomePath() + "bin/z88r.exe"
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88").SetString("z88BinaryPath", z88_path)
+                self.z88_binary = z88_path
+        else:
+            if not z88_binary:
+                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
+                z88_binary = self.fem_prefs.GetString("z88BinaryPath", "")
+            if not z88_binary:
+                if system() == "Linux":
+                    z88_binary = "z88r"
+                elif system() == "Windows":
+                    z88_binary = FreeCAD.getHomePath() + "bin/z88r.exe"
+                else:
+                    z88_binary = "z88r"
+            self.z88_binary = z88_binary
 
     def run(self):
         # TODO: reimplement the process handling for z88 binary

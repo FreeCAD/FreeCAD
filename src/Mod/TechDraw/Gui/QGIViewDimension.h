@@ -95,7 +95,7 @@ public:
     int type() const { return Type;}
 
     virtual void drawBorder();
-    virtual void updateView(bool update = false);
+    virtual void updateView(bool update = false) override;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
 public Q_SLOTS:

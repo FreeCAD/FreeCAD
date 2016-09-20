@@ -33,6 +33,8 @@
 #include <Base/Type.h>
 
 class QWidget;
+class QByteArray;
+
 typedef struct _object PyObject;
 
 namespace App
@@ -243,6 +245,7 @@ public:
     /// Run a App level Action 
     static void doCommand(DoCmd_Type eType,const char* sCmd,...);
     static void runCommand(DoCmd_Type eType,const char* sCmd);
+    static void runCommand(DoCmd_Type eType,const QByteArray& sCmd);
     /// import an external (or own) module only once 
     static void addModule(DoCmd_Type eType,const char* sModuleName);
     /// assures the switch to a certain workbench, if already in the workbench, does nothing.
@@ -254,7 +257,9 @@ public:
     static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
     const std::string strToPython(const char* Str);
-    const std::string strToPython(const std::string &Str){return strToPython(Str.c_str());};
+    const std::string strToPython(const std::string &Str){
+        return strToPython(Str.c_str());
+    }
     //@}
 
     /** @name Helper methods to generate help pages */

@@ -401,8 +401,7 @@ Generic::Generic(const TopoDS_Edge &e)
             points.push_back(Base::Vector2D(nodes(i).X(), nodes(i).Y()));
         }
     } else {
-        //no polygon representation? approximate with line?
-        Base::Console().Log("INFO - Generic::Generic(edge) - polygon is NULL\n");
+        //no polygon representation? approximate with line
         gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
         points.push_back(Base::Vector2D(p.X(), p.Y()));
         p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));

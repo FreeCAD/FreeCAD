@@ -126,6 +126,7 @@ def getPreferences():
     global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
     global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
     global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
+    global SPLIT_LAYERS, EXPORT_2D
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
@@ -149,6 +150,8 @@ def getPreferences():
     IMPORT_PROPERTIES = p.GetBool("ifcImportProperties",False)
     STORE_UID = p.GetBool("ifcStoreUid",True)
     SERIALIZE = p.GetBool("ifcSerialize",False)
+    SPLIT_LAYERS = p.GetBool("ifcSplitLayers",False)
+    EXPORT_2D = p.GetBool("ifcExport2D",True)
 
 
 def explore(filename=None):
@@ -354,6 +357,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     settings.set(settings.USE_WORLD_COORDS,True)
     if SEPARATE_OPENINGS:
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
+    if SPLIT_LAYERS and hasattr(settings,"APPLY_LAYERSETS"):
+        settings.set(settings.APPLY_LAYERSETS,True)
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
@@ -500,11 +505,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         else:
                             sharedobjects[bid] = None
                             store = bid
-
-        if structobj:
-            settings.set(settings.INCLUDE_CURVES,True)
-        else:
-            settings.set(settings.INCLUDE_CURVES,False)
+        if hasattr(settings,"INCLUDE_CURVES"):
+            if structobj:
+                settings.set(settings.INCLUDE_CURVES,True)
+            else:
+                settings.set(settings.INCLUDE_CURVES,False)
         try:
             cr = ifcopenshell.geom.create_shape(settings,product)
             brep = cr.geometry.brep_data
@@ -939,7 +944,11 @@ def export(exportList,filename):
         email = s[1].strip(">")
     global template
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
-    template = template.replace("$ifcschema",ifcopenshell.schema_identifier)
+    if hasattr(ifcopenshell,"schema_identifier"):
+        schemaifcopenshell.schema_identifier
+    else:
+        schema = "IFC2X3"
+    template = template.replace("$ifcschema",schema)
     template = template.replace("$owner",owner)
     template = template.replace("$company",FreeCAD.ActiveDocument.Company)
     template = template.replace("$email",email)
@@ -959,6 +968,16 @@ def export(exportList,filename):
     context = ifcfile.by_type("IfcGeometricRepresentationContext")[0]
     project = ifcfile.by_type("IfcProject")[0]
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    annotations = []
+    for obj in objectslist:
+        if obj.isDerivedFrom("Part::Part2DObject"):
+            annotations.append(obj)
+        elif obj.isDerivedFrom("App::Annotation"):
+            annotations.append(obj)
+        elif obj.isDerivedFrom("Part::Feature"):
+            if obj.Shape:
+                if not obj.Shape.Faces:
+                    annotations.append(obj)
     objectslist = Arch.pruneIncluded(objectslist)
     products = {} # { Name: IfcEntity, ... }
     surfstyles = {} # { (r,g,b): IfcEntity, ... }
@@ -1296,7 +1315,37 @@ def export(exportList,filename):
                 products[g[0]] = grp
                 ass = ifcfile.createIfcRelAssignsToGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupLink','',children,None,grp)
 
-
+    # 2D objects
+    
+    if EXPORT_2D:
+        if annotations and DEBUG: print "exporting 2D objects..."
+        for anno in annotations:
+            xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
+            zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
+            ovc = ifcfile.createIfcCartesianPoint((0.0,0.0,0.0))
+            gpl = ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            if anno.isDerivedFrom("Part::Feature"):
+                reps = []
+                sh = anno.Shape.copy()
+                sh.scale(0.001) # to meters
+                ehc = []
+                for w in sh.Wires:
+                    reps.append(createCurve(ifcfile,w))
+                    for e in w.Edges:
+                        ehc.append(e.hashCode())
+                for e in sh.Edges:
+                    if not e.hashCode in ehc:
+                        reps.append(createCurve(ifcfile,e))
+            elif anno.isDerivedFrom("App::Annotation"):
+                l = anno.Position
+                pos = ifcfile.createIfcCartesianPoint((l.x,l.y,l.z))
+                tpl = ifcfile.createIfcAxis2Placement3D(pos,None,None)
+                txt = ifcfile.createIfcTextLiteral(";".join(anno.LabelText).encode("utf8"),tpl,"LEFT")
+                reps = [txt]
+            shp = ifcfile.createIfcShapeRepresentation(context,'Annotation','Annotation2D',reps)
+            rep = ifcfile.createIfcProductDefinitionShape(None,None,[shp])
+            ann = ifcfile.createIfcAnnotation(ifcopenshell.guid.compress(uuid.uuid1().hex),history,anno.Label.encode('utf8'),'',None,gpl,rep)
+        
     if DEBUG: print "writing ",filename,"..."
 
     filename = decode(filename)
@@ -1310,6 +1359,60 @@ def export(exportList,filename):
     os.remove(templatefile)
 
 
+def createCurve(ifcfile,wire):
+    "creates an IfcCompositeCurve from a shape"
+    
+    segments = []
+    pol = None
+    last = None
+    if wire.ShapeType == "edge":
+        edges = [edge]
+    else:
+        edges = Part.__sortEdges__(wire.Edges)
+    for e in edges:
+        if isinstance(e.Curve,Part.Circle):
+            follow = True
+            if last:
+                if not DraftVecUtils.equals(last,e.Vertexes[0].Point):
+                    follow = False
+                    last = e.Vertexes[0].Point
+                else:
+                    last = e.Vertexes[-1].Point
+            else:
+                last = e.Vertexes[-1].Point
+            p1 = math.degrees(-DraftVecUtils.angle(e.Vertexes[0].Point.sub(e.Curve.Center)))
+            p2 = math.degrees(-DraftVecUtils.angle(e.Vertexes[-1].Point.sub(e.Curve.Center)))
+            da = DraftVecUtils.angle(e.valueAt(e.FirstParameter+0.1).sub(e.Curve.Center),e.Vertexes[0].Point.sub(e.Curve.Center))
+            if p1 < 0:
+                p1 = 360 + p1
+            if p2 < 0:
+                p2 = 360 + p2
+            if da > 0:
+                follow = not(follow)
+            xvc =       ifcfile.createIfcDirection((1.0,0.0))
+            ovc =       ifcfile.createIfcCartesianPoint(tuple(e.Curve.Center)[:2])
+            plc =       ifcfile.createIfcAxis2Placement2D(ovc,xvc)
+            cir =       ifcfile.createIfcCircle(plc,e.Curve.Radius)
+            curve =     ifcfile.createIfcTrimmedCurve(cir,[ifcfile.createIfcParameterValue(p1)],[ifcfile.createIfcParameterValue(p2)],follow,"PARAMETER")
+        else:
+            verts = [vertex.Point for vertex in e.Vertexes]
+            if last:
+                if not DraftVecUtils.equals(last,verts[0]):
+                    verts.reverse()
+                    last = e.Vertexes[0].Point
+                else:
+                    last = e.Vertexes[-1].Point
+            else:
+                last = e.Vertexes[-1].Point
+            pts =     [ifcfile.createIfcCartesianPoint(tuple(v)[:2]) for v in verts]
+            curve =   ifcfile.createIfcPolyline(pts)
+        segment = ifcfile.createIfcCompositeCurveSegment("CONTINUOUS",True,curve)
+        segments.append(segment)
+    if segments:
+        pol = ifcfile.createIfcCompositeCurve(segments,False)
+    return pol
+
+
 def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1):
     """returns an IfcShapeRepresentation object or None"""
 
@@ -1321,7 +1424,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     tostore = False
 
     # check for clones
-    if not subtraction:
+    if (not subtraction) and (not forcebrep):
         for k,v in clones.items():
             if (obj.Name == k ) or (obj.Name in v):
                 if k in sharedobjects:
@@ -1395,51 +1498,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                             # extruded composite curve
                             else:
-                                segments = []
-                                last = None
-                                edges = Part.__sortEdges__(p.Edges)
-                                for e in edges:
-                                    if isinstance(e.Curve,Part.Circle):
-                                        follow = True
-                                        if last:
-                                            if not DraftVecUtils.equals(last,e.Vertexes[0].Point):
-                                                follow = False
-                                                last = e.Vertexes[0].Point
-                                            else:
-                                                last = e.Vertexes[-1].Point
-                                        else:
-                                            last = e.Vertexes[-1].Point
-                                        p1 = math.degrees(-DraftVecUtils.angle(e.Vertexes[0].Point.sub(e.Curve.Center)))
-                                        p2 = math.degrees(-DraftVecUtils.angle(e.Vertexes[-1].Point.sub(e.Curve.Center)))
-                                        da = DraftVecUtils.angle(e.valueAt(e.FirstParameter+0.1).sub(e.Curve.Center),e.Vertexes[0].Point.sub(e.Curve.Center))
-                                        if p1 < 0:
-                                            p1 = 360 + p1
-                                        if p2 < 0:
-                                            p2 = 360 + p2
-                                        if da > 0:
-                                            follow = not(follow)
-                                        xvc =       ifcfile.createIfcDirection((1.0,0.0))
-                                        ovc =       ifcfile.createIfcCartesianPoint(tuple(e.Curve.Center)[:2])
-                                        plc =       ifcfile.createIfcAxis2Placement2D(ovc,xvc)
-                                        cir =       ifcfile.createIfcCircle(plc,e.Curve.Radius)
-                                        curve =     ifcfile.createIfcTrimmedCurve(cir,[ifcfile.createIfcParameterValue(p1)],[ifcfile.createIfcParameterValue(p2)],follow,"PARAMETER")
-
-                                    else:
-                                        verts = [vertex.Point for vertex in e.Vertexes]
-                                        if last:
-                                            if not DraftVecUtils.equals(last,verts[0]):
-                                                verts.reverse()
-                                                last = e.Vertexes[0].Point
-                                            else:
-                                                last = e.Vertexes[-1].Point
-                                        else:
-                                            last = e.Vertexes[-1].Point
-                                        pts =     [ifcfile.createIfcCartesianPoint(tuple(v)[:2]) for v in verts]
-                                        curve =   ifcfile.createIfcPolyline(pts)
-                                    segment = ifcfile.createIfcCompositeCurveSegment("CONTINUOUS",True,curve)
-                                    segments.append(segment)
-
-                                pol = ifcfile.createIfcCompositeCurve(segments,False)
+                                po = createCurve(ifcfile,p)
                             profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
 
         if profile and not(DraftVecUtils.isNull(extrusionv)):

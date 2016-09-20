@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>637</height>
+    <height>666</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -249,6 +249,26 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_17">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_11">
+          <property name="toolTip">
+           <string>Split walls made of multiple layers</string>
+          </property>
+          <property name="text">
+           <string>Split multilayer walls</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSplitLayers</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
@@ -442,6 +462,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcSerialize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_18">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_12">
+          <property name="text">
+           <string>Export 2D objects as IfcAnnotations</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcExport2D</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

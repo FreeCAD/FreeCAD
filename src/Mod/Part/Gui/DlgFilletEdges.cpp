@@ -936,7 +936,7 @@ bool DlgFilletEdges::accept()
         "del __fillets__\n"
         "FreeCADGui.ActiveDocument.%2.Visibility = False\n")
         .arg(name).arg(shape);
-    Gui::Application::Instance->runPythonCode((const char*)code.toLatin1());
+    Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
     activeDoc->commitTransaction();
     activeDoc->recompute();
     if (d->fillet) {

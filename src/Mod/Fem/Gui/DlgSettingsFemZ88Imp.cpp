@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2015 FreeCAD Developers                                 *
+ *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcxImp.cpp                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,40 +23,47 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERANNOTATION_H
-#define DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+#include "PreCompiled.h"
 
-#include <Gui/ViewProviderFeature.h>
+#include "Gui/Application.h"
+#include "DlgSettingsFemZ88Imp.h"
+#include <Gui/PrefWidgets.h>
 
-#include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+using namespace FemGui;
 
-namespace TechDrawGui {
-
-
-class TechDrawGuiExport ViewProviderAnnotation : public ViewProviderDrawingView
+DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp( QWidget* parent )
+  : PreferencePage( parent )
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderAnnotation);
+    this->setupUi(this);
+}
 
-public:
-    /// constructor
-    ViewProviderAnnotation();
-    /// destructor
-    virtual ~ViewProviderAnnotation();
+DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
 
+void DlgSettingsFemZ88Imp::saveSettings()
+{
+    cb_z88_binary_std->onSave();
+    fc_z88_binary_path->onSave();
+}
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
+void DlgSettingsFemZ88Imp::loadSettings()
+{
+    cb_z88_binary_std->onRestore();
+    fc_z88_binary_path->onRestore();
+}
 
-    virtual TechDraw::DrawViewAnnotation* getViewObject() const;
-};
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgSettingsFemZ88Imp::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
 
-} // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+#include "moc_DlgSettingsFemZ88Imp.cpp"

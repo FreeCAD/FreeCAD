@@ -27,6 +27,7 @@
 #endif
 
 #include "FemResultObject.h"
+#include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
 
 using namespace Fem;
@@ -92,9 +93,17 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemResultObjectPython, Fem::FemResultObject)
 template<> const char* Fem::FemResultObjectPython::getViewProviderName(void) const {
-    return "FemGui::ViewProviderFemResultPython";
+    return "FemGui::ViewProviderResultPython";
 }
 /// @endcond
+
+template<> PyObject* Fem::FemResultObjectPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 
 // explicit template instantiation
 template class AppFemExport FeaturePythonT<Fem::FemResultObject>;

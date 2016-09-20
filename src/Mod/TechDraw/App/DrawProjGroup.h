@@ -83,6 +83,7 @@ public:
      */
     int removeProjection(const char *viewProjType);
 
+    int purgeProjections();
     /// Automatically position child views
     bool distributeProjections(void);
     void resetPositions(void);

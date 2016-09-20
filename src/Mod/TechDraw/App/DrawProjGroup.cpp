@@ -242,17 +242,6 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
     return 0;
 }
 
-bool DrawProjGroup::hasProjection(const char *viewProjType) const
-{
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-        if( view && strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
-            return true;
-        }
-    }
-    return false;
-}
-
 bool DrawProjGroup::checkViewProjType(const char *in)
 {
     if ( strcmp(in, "Front") == 0 ||
@@ -270,13 +259,27 @@ bool DrawProjGroup::checkViewProjType(const char *in)
     return false;
 }
 
+//********************************
+// ProjectionItem A/D/I
+//********************************
+bool DrawProjGroup::hasProjection(const char *viewProjType) const
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+        if( view && strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
+            return true;
+        }
+    }
+    return false;
+}
+
 App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 {
     DrawProjGroupItem *view( nullptr );
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
-        auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",
+        auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
 
         view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
@@ -287,11 +290,48 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Label.setValue( viewProjType );
         setViewOrientation( view, viewProjType );
 
-        addView(view);         //from DrawViewCollection
+        addView(view);         //from DrawViewCollection - add to ProjGroup Views
         moveToCentre();
     }
 
     return view;
+}
+
+int DrawProjGroup::removeProjection(const char *viewProjType)
+{
+    if ( checkViewProjType(viewProjType) ) {
+        if( !hasProjection(viewProjType) ) {
+            throw Base::Exception("The projection doesn't exist in the group");
+        }
+
+        // Iterate through the child views and find the projection type
+        for( auto it : Views.getValues() ) {
+            auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+            if( projPtr ) {
+                if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
+                    removeView(projPtr);                                        // Remove from collection
+                    getDocument()->remObject( it->getNameInDocument() );        // Remove from the document
+                    moveToCentre();
+                    return Views.getValues().size();
+                }
+            }
+        }
+    }
+
+    return -1;
+}
+
+int DrawProjGroup::purgeProjections()
+{
+    while (!Views.getValues().empty())   {
+        std::vector<DocumentObject*> views = Views.getValues();
+        DrawProjGroupItem* dpgi;
+        DocumentObject* dObj =  views.back();
+        dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
+        std::string itemName = dpgi->Type.getValueAsString();
+        removeProjection(itemName.c_str());
+    }
+    return Views.getValues().size();
 }
 
 void DrawProjGroup::setViewOrientation(DrawProjGroupItem *v, const char *projType) const
@@ -349,30 +389,6 @@ void DrawProjGroup::setViewOrientation(DrawProjGroupItem *v, const char *projTyp
 
     v->Direction.setValue(dir);
     v->XAxisDirection.setValue(xDir);
-}
-
-int DrawProjGroup::removeProjection(const char *viewProjType)
-{
-    if ( checkViewProjType(viewProjType) ) {
-        if( !hasProjection(viewProjType) ) {
-            throw Base::Exception("The projection doesn't exist in the group");
-        }
-
-        // Iterate through the child views and find the projection type
-        for( auto it : Views.getValues() ) {
-            auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-            if( projPtr ) {
-                if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
-                    // Remove from the document
-                    getDocument()->remObject( it->getNameInDocument() );
-                    moveToCentre();
-                    return Views.getValues().size();
-                }
-            }
-        }
-    }
-
-    return -1;
 }
 
 void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const

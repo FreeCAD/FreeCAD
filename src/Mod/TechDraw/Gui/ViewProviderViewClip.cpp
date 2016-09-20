@@ -33,14 +33,10 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Selection.h>
-
-#include <Mod/TechDraw/App/DrawViewClip.h>
 
 #include "ViewProviderViewClip.h"
 
@@ -59,6 +55,22 @@ ViewProviderViewClip::ViewProviderViewClip()
 
 ViewProviderViewClip::~ViewProviderViewClip()
 {
+}
+
+void ViewProviderViewClip::updateData(const App::Property* prop)
+{
+    Base::Console().Log("ViewProviderViewClip::updateData - Update View: %s\n",prop->getName());
+    if (prop == &(getViewObject()->Height)      ||
+        prop == &(getViewObject()->Width)       ||
+        prop == &(getViewObject()->ShowFrame)   ||
+        prop == &(getViewObject()->ShowLabels) ) {
+        // redraw QGIVP
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+     }
+     ViewProviderDrawingView::updateData(prop);
 }
 
 void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
@@ -121,7 +133,12 @@ bool ViewProviderViewClip::isShow(void) const
     return Visibility.getValue();
 }
 
-TechDraw::DrawViewClip* ViewProviderViewClip::getObject() const
+TechDraw::DrawViewClip* ViewProviderViewClip::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewClip*>(pcObject);
+}
+
+TechDraw::DrawViewClip* ViewProviderViewClip::getObject() const
+{
+    return getViewObject();
 }

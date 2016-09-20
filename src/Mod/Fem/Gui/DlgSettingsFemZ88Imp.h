@@ -1,6 +1,7 @@
-/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
+ /**************************************************************************
+ *   Copyright (c) 2016 FreeCAD Developers                                 *
+ *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcx.h                          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,40 +23,28 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERANNOTATION_H
-#define DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+#ifndef FEMGUI_DLGSETTINGSFEMZ88IMP_H
+#define FEMGUI_DLGSETTINGSFEMZ88IMP_H
 
-#include <Gui/ViewProviderFeature.h>
+#include "ui_DlgSettingsFemZ88.h"
+#include <Gui/PropertyPage.h>
 
-#include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+namespace FemGui {
 
-namespace TechDrawGui {
-
-
-class TechDrawGuiExport ViewProviderAnnotation : public ViewProviderDrawingView
+class DlgSettingsFemZ88Imp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemZ88Imp
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderAnnotation);
+    Q_OBJECT
 
 public:
-    /// constructor
-    ViewProviderAnnotation();
-    /// destructor
-    virtual ~ViewProviderAnnotation();
+    DlgSettingsFemZ88Imp( QWidget* parent = 0 );
+    ~DlgSettingsFemZ88Imp();
 
-
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-
-    virtual TechDraw::DrawViewAnnotation* getViewObject() const;
+protected:
+    void saveSettings();
+    void loadSettings();
+    void changeEvent(QEvent *e);
 };
 
-} // namespace TechDrawGui
+} // namespace FemGui
 
-
-#endif // DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+#endif // FEMGUI_DLGSETTINGSFEMZ88IMP_H

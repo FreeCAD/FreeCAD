@@ -1016,7 +1016,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 {
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Part::Feature::getClassTypeId());
-    doCommand(Doc, "import Part");
+    runCommand(Doc, "import Part");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
@@ -1057,7 +1057,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
             try {
                 if (!str.isEmpty())
-                    doCommand(Doc, (const char*)str.toLatin1());
+                    runCommand(Doc, str.toLatin1());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Cannot convert %s because %s.\n",
@@ -1094,7 +1094,7 @@ void CmdPartReverseShape::activated(int iMsg)
 {
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Part::Feature::getClassTypeId());
-    doCommand(Doc, "import Part");
+    runCommand(Doc, "import Part");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
@@ -1111,7 +1111,7 @@ void CmdPartReverseShape::activated(int iMsg)
 
             try {
                 if (!str.isEmpty())
-                    doCommand(Doc, (const char*)str.toLatin1());
+                    runCommand(Doc, str.toLatin1());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Cannot convert %s because %s.\n",
@@ -1217,7 +1217,7 @@ void CmdPartMakeFace::activated(int iMsg)
 
         str << ")";
 
-        doCommand(Doc,str.str().c_str());
+        runCommand(Doc,str.str().c_str());
         commitCommand();
         updateActive();
     }
