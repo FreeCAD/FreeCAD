@@ -284,6 +284,8 @@ SET(Part_SRCS
     FT2FC.h
     FaceMaker.cpp
     FaceMaker.h
+    FaceMaker_Cheese.cpp
+    FaceMaker_Cheese.h
 )
 
 SET(Part_Scripts

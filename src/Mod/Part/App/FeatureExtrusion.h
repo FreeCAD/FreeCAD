@@ -27,7 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
-#include "FaceMaker.h"
+#include "FaceMaker_Cheese.h"
 #include <TopoDS_Face.hxx>
 
 namespace Part
@@ -119,24 +119,16 @@ public: //mode enumerations
     static const char* eDirModeStrings[];
 
 protected:
-    static bool isInside(const TopoDS_Wire&, const TopoDS_Wire&);
-    static TopoDS_Face validateFace(const TopoDS_Face&);
-    static TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&);
-    static TopoDS_Shape makeFace(std::list<TopoDS_Wire>&); // for internal use only
     static void makeDraft(ExtrusionParameters params, const TopoDS_Shape&, std::list<TopoDS_Shape>&);
 
-    friend class FaceMakerExtrusion;
-
-private:
-    class Wire_Compare;
 };
 
 /**
- * @brief The FaceMakerExtrusion class is a legacy face maker that powers Part Extrude.
+ * @brief FaceMakerExtrusion provides legacy compounding-structure-ignorant behavior of facemaker of Part Extrude.
  * Strengths: makes faces with holes
  * Weaknesses: can't make islands in holes. Ignores compounding nesting. All faces must be on same plane.
  */
-class FaceMakerExtrusion: public FaceMakerPublic
+class FaceMakerExtrusion: public FaceMakerCheese
 {
     TYPESYSTEM_HEADER();
 public:

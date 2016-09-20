@@ -98,6 +98,7 @@
 #include "Attacher.h"
 #include "AttachableObject.h"
 #include "FaceMaker.h"
+#include "FaceMaker_Cheese.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -245,6 +246,7 @@ PyMODINIT_FUNC initPart()
     Part::FaceMaker             ::init();
     Part::FaceMakerPublic       ::init();
     Part::FaceMakerSimple       ::init();
+    Part::FaceMakerCheese       ::init();
     Part::FaceMakerExtrusion    ::init();
 
     Attacher::AttachEngine        ::init();
