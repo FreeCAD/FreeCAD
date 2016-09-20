@@ -62,6 +62,8 @@ Face::Face()
 
 short Face::mustExecute() const
 {
+    if (FaceMakerClass.isTouched())
+        return 1;
     if (Sources.isTouched())
         return 1;
     return Part::Feature::mustExecute();
