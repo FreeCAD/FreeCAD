@@ -70,24 +70,36 @@ using namespace Fem;
 
 //also defined in FemConstrainFluidBoundary and foamcasebuilder/basicbuilder.py, please update simultaneously
 //the second (index 1) is the default enum, as index 0 causes compiling error
-//static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", NULL};
-static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "moving", NULL};
+//static const char* BoundaryTypes[] = {"inlet","wall","outlet","freestream", "interface", NULL};
+static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "partialSlip", "moving", "rough", NULL};
 static const char* InletSubtypes[] = {"unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate",NULL};
 static const char* OutletSubtypes[] = {"unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", NULL};
-static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cyclic","empty", NULL};
+static const char* InterfaceSubtypes[] = {"unspecific","symmetryPlane","wedge","cyclic","empty", "coupled", NULL};
 static const char* FreestreamSubtypes[] = {"unspecific", "freestream",NULL};
 
+static const char* InterfaceSubtypeHelpTexts[] = {
+    "invalid,select other valid interface subtype",
+    "symmetry plane but not axis-sym axis line",
+    "axis symmetric front and back surfaces",
+    "periodic boundary in pair, treated as physical connected",
+    "front and back for single layer 2D mesh, also axis-sym axis line",
+    "exchange boundary vale with external program, need extra manual setup like file name", NULL};
+
+// defined in file FemConstraintFluidBoundary: 
 // see Ansys fluet manual: Turbulence Specification method
-//static const char* TurbulenceSpecifications[] = {"Intensity&LengthScale","Intensity&HydraulicDiameter",NULL};
+//static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio", "intensity&HydraulicDiameter",NULL};
 //activate the heat transfer and radiation model in Solver object explorer
-static const char* TurbulenceSpecificationHelpTexts[] = {"see Ansys fluet manual: Turbulence Specification method", 
-            "or fully devloped internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
+static const char* TurbulenceSpecificationHelpTexts[] = {
+            "explicitly specific intensity k [SI unit] and dissipation rate epsilon [] / omega []", 
+            "intensity (0.05 ~ 0.15) and characteristic length scale of max eddy [m]",
+            "intensity (0.05 ~ 0.15) and turbulent viscosity ratio",
+            "for fully devloped internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL};
 
-//static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed",  "HTC","coupled", NULL};
+//static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", NULL};
 //const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "coupled",NULL};
-static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [W/m2]", 
-            "mixed fixedGradient and fixedValue", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL};
-
+static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer on boundary()", "fixed value gradient [W/m]", 
+            "mixed fixedGradient and fixedValue", "fixed heat flux [W/m2]", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL};
+// enable & disable quantityUI once valueType is selected
 
 // internal function not declared in header file
 void initComboBox(QComboBox* combo, const std::vector<std::string>& textItems, const char* sItem)
@@ -307,6 +319,7 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
     std::string subtype = Base::Tools::toStdString(ui->comboSubtype->currentText()); 
     
     if (boundaryType == "inlet" || boundaryType == "outlet") {
+        ui->tabBasicBoundary->setEnabled(true);
         if (subtype == "totalPressure" || subtype == "staticPressure"){
             ui->labelBoundaryValue->setText(QString::fromUtf8("pressure [Pa]"));
             ui->buttonDirection->setEnabled(false);
@@ -329,8 +342,7 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
         }
         else {
             ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
-            ui->buttonDirection->setEnabled(false);
-            ui->lineDirection->setEnabled(false);
+            ui->tabBasicBoundary->setEnabled(false);
         }
     }
     if (boundaryType == "wall") {
@@ -341,7 +353,11 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
             ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "slip") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("slip speed (m/s)"));
+            ui->labelBoundaryValue->setText(QString::fromUtf8("not needed"));
+            ui->tabBasicBoundary->setEnabled(false);
+        }
+        else if (subtype == "partialSlip") {
+            ui->labelBoundaryValue->setText(QString::fromUtf8("slip ratio(0~1)"));
             ui->tabBasicBoundary->setEnabled(true);
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
@@ -350,6 +366,12 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
             ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
             ui->tabBasicBoundary->setEnabled(false);
         }
+    }
+    if (boundaryType == "interface") {
+        ui->tabBasicBoundary->setEnabled(false);
+        //show help text
+        int iInterface = ui->comboSubtype->currentIndex();
+        ui->labelHelpText->setText(tr(InterfaceSubtypeHelpTexts[iInterface]));
     }
     
 }
@@ -364,7 +386,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
 {
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
     std::string thermalBoundaryType = pcConstraint->ThermalBoundaryType.getValueAsString();
-    //to hide/disable UI
+    //to hide/disable UI according to subtype
     ui->labelHelpText->setText(tr(ThermalBoundaryHelpTexts[ui->comboThermalBoundaryType->currentIndex()]));
 }
 
