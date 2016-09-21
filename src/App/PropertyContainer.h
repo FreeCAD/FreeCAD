@@ -37,6 +37,7 @@ namespace App
 class Property;
 class PropertyContainer;
 class DocumentObject;
+class Extension;
 
 enum PropertyType 
 {
@@ -56,27 +57,46 @@ struct AppExport PropertyData
     const char * Docu;
     short Offset,Type;
   };
+  
+  //purpose of this struct is to be constructible from all accepptable container types and to 
+  //be able to return the offset to a property from the accepted containers. This allows to use 
+  //one function implementation for multiple container types without loosing all type safety by 
+  //accepting void*
+  struct OffsetBase
+  {
+      OffsetBase(const App::PropertyContainer* container) : m_container(container) {};
+      OffsetBase(const App::Extension* container) : m_container(container) {};
+      
+      short int getOffsetTo(const App::Property* prop) const {
+            return (short) ((char*)prop - (char*)m_container);
+      };
+      char* getOffset() const {return (char*) m_container;};
+      
+  private:
+      const void* m_container;
+  };
+  
   // vector of all properties
   std::vector<PropertySpec>        propertyData;
   std::vector<const PropertyData*> parentPropertyData;
 
-  void addProperty(const void* container,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
+  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
   void addParentPropertyData(const PropertyData* data);
   
-  const PropertySpec *findProperty(const void* container,const char* PropName) const;
-  const PropertySpec *findProperty(const void* container,const Property* prop) const;
+  const PropertySpec *findProperty(OffsetBase offsetBase,const char* PropName) const;
+  const PropertySpec *findProperty(OffsetBase offsetBase,const Property* prop) const;
   
-  const char* getName         (const void* container,const Property* prop) const;
-  short       getType         (const void* container,const Property* prop) const;
-  short       getType         (const void* container,const char* name)     const;
-  const char* getGroup        (const void* container,const char* name)     const;
-  const char* getGroup        (const void* container,const Property* prop) const;
-  const char* getDocumentation(const void* container,const char* name)     const;
-  const char* getDocumentation(const void* container,const Property* prop) const;
+  const char* getName         (OffsetBase offsetBase,const Property* prop) const;
+  short       getType         (OffsetBase offsetBase,const Property* prop) const;
+  short       getType         (OffsetBase offsetBase,const char* name)     const;
+  const char* getGroup        (OffsetBase offsetBase,const char* name)     const;
+  const char* getGroup        (OffsetBase offsetBase,const Property* prop) const;
+  const char* getDocumentation(OffsetBase offsetBase,const char* name)     const;
+  const char* getDocumentation(OffsetBase offsetBase,const Property* prop) const;
 
-  Property *getPropertyByName(const void* container,const char* name) const;
-  void getPropertyMap(const void* container,std::map<std::string,Property*> &Map) const;
-  void getPropertyList(const void* container,std::vector<Property*> &List) const;
+  Property *getPropertyByName(OffsetBase offsetBase,const char* name) const;
+  void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
+  void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
 };
 
 
