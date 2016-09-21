@@ -192,7 +192,7 @@ const App::PropertyData & _class_::getPropertyData(void) const{return propertyDa
 App::PropertyData _class_::propertyData; \
 void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  _class_::propertyData.addParentPropertyData(_parentclass_::getPropertyDataPtr());\
+  _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr();\
 }
 
 } //App

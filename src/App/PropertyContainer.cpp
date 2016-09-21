@@ -278,24 +278,14 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
   }
 }
 
-void PropertyData::addParentPropertyData(const PropertyData* data) {
-
-    if(data)
-        parentPropertyData.push_back(data);
-}
-
-
 const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBase,const char* PropName) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(strcmp(It->Name,PropName)==0)
       return &(*It);
 
-  for(auto data : parentPropertyData) {
-    auto res = data->findProperty(offsetBase,PropName);
-    if(res)
-        return res;
-  }
+  if(parentPropertyData)
+      return parentPropertyData->findProperty(offsetBase,PropName);
  
   return 0;
 }
@@ -308,11 +298,8 @@ const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBa
     if(diff == It->Offset)
         return &(*It);
   
-  for(auto data : parentPropertyData) {
-    auto res = data->findProperty(offsetBase,prop);
-    if(res)
-        return res;
-  }
+  if(parentPropertyData)
+      return parentPropertyData->findProperty(offsetBase,prop);
   
   return 0;
 }
@@ -462,8 +449,8 @@ void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Pro
   }
   */
 
-  for(auto data : parentPropertyData) 
-    data->getPropertyMap(offsetBase,Map);
+  if(parentPropertyData)
+      parentPropertyData->getPropertyMap(offsetBase,Map);
   
 }
 
@@ -478,8 +465,8 @@ void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> 
   {
     List.push_back((Property *) (pos->second.Offset + (char *)container) );
   }*/
-  for(auto data : parentPropertyData) 
-    data->getPropertyList(offsetBase,List);
+  if(parentPropertyData)
+      parentPropertyData->getPropertyList(offsetBase,List);
 
 }
 
