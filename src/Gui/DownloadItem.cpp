@@ -453,6 +453,7 @@ void DownloadItem::error(QNetworkReply::NetworkError)
 
 void DownloadItem::metaDataChanged()
 {
+    // https://tools.ietf.org/html/rfc6266
     if (m_reply->hasRawHeader(QByteArray("Content-Disposition"))) {
         QByteArray header = m_reply->rawHeader(QByteArray("Content-Disposition"));
         int index = header.indexOf("filename=");
@@ -460,8 +461,10 @@ void DownloadItem::metaDataChanged()
             header = header.mid(index+9);
             if (header.startsWith("\"") || header.startsWith("'"))
                 header = header.mid(1);
-            if (header.endsWith("\"") || header.endsWith("'"))
-                header.chop(1);
+            if ((index = header.lastIndexOf("\"")) > 0)
+                header = header.left(index);
+            else if ((index = header.lastIndexOf("'")) > 0)
+                header = header.left(index);
             m_fileName = QUrl::fromPercentEncoding(header);
         }
         // Sometimes "filename=" and "filename*=UTF-8''" is set.
@@ -471,8 +474,10 @@ void DownloadItem::metaDataChanged()
             header = header.mid(index+17);
             if (header.startsWith("\"") || header.startsWith("'"))
                 header = header.mid(1);
-            if (header.endsWith("\"") || header.endsWith("'"))
-                header.chop(1);
+            if ((index = header.lastIndexOf("\"")) > 0)
+                header = header.left(index);
+            else if ((index = header.lastIndexOf("'")) > 0)
+                header = header.left(index);
             m_fileName = QUrl::fromPercentEncoding(header);
         }
     }
