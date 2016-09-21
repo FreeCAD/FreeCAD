@@ -34,7 +34,8 @@ class Origin;
  */
 class AppExport OriginGroupExtension : public App::GeoFeatureGroupExtension
 {
-    PROPERTY_HEADER(App::OriginGroupExtension);
+    EXTENSION_PROPERTY_HEADER(App::OriginGroupExtension);
+    
 public:
     OriginGroupExtension ();
     virtual ~OriginGroupExtension ();

@@ -40,7 +40,7 @@
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
+EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
 ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false)
 {
@@ -199,7 +199,7 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
 
 
 namespace Gui {
-PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGroupExtensionPython, Gui::ViewProviderGroupExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGroupExtensionPython, Gui::ViewProviderGroupExtension)
 
 // explicit template instantiation
 template class GuiExport ViewProviderExtensionPythonT<ViewProviderGroupExtension>;

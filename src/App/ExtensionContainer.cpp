@@ -133,18 +133,14 @@ std::vector< Extension* > ExtensionContainer::getExtensionsDerivedFrom(Base::Typ
 
 void ExtensionContainer::getPropertyList(std::vector< Property* >& List) const {
     App::PropertyContainer::getPropertyList(List);
-    for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension())
-            entry.second->getPropertyList(List);
-    }
+    for(auto entry : _extensions)         
+        entry.second->extensionGetPropertyList(List);
 }
 
 void ExtensionContainer::getPropertyMap(std::map< std::string, Property* >& Map) const {
     App::PropertyContainer::getPropertyMap(Map);
-    for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension())
-            entry.second->getPropertyMap(Map);
-    }
+    for(auto entry : _extensions)     
+        entry.second->extensionGetPropertyMap(Map);
 }
 
 Property* ExtensionContainer::getPropertyByName(const char* name) const {
@@ -153,11 +149,9 @@ Property* ExtensionContainer::getPropertyByName(const char* name) const {
         return prop;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()){
-            auto prop = entry.second->getPropertyByName(name);
-            if(prop)
-                return prop;
-        }
+        auto prop = entry.second->extensionGetPropertyByName(name);
+        if(prop)
+            return prop;
     }
     
     return nullptr;
@@ -170,11 +164,9 @@ short int ExtensionContainer::getPropertyType(const Property* prop) const {
         return res;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()) {
-            res = entry.second->getPropertyType(prop);
-            if(res != 0)
-                return res;     
-        }
+        res = entry.second->extensionGetPropertyType(prop);
+        if(res != 0)
+            return res;     
     }
     
     return 0;
@@ -187,11 +179,9 @@ short int ExtensionContainer::getPropertyType(const char* name) const {
         return res;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()) {
-            res = entry.second->getPropertyType(name);
-            if(res != 0)
-                return res;     
-        }
+        res = entry.second->extensionGetPropertyType(name);
+        if(res != 0)
+            return res;     
     }
     
     return 0;
@@ -205,11 +195,9 @@ const char* ExtensionContainer::getPropertyName(const Property* prop) const {
         return res;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()) {
-            res = entry.second->getPropertyName(prop);
-            if(res != 0)
-                return res;     
-        }
+        res = entry.second->extensionGetPropertyName(prop);
+        if(res != 0)
+            return res;     
     }
     
     return 0;
@@ -222,11 +210,9 @@ const char* ExtensionContainer::getPropertyGroup(const Property* prop) const {
         return res;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()) {
-            res = entry.second->getPropertyGroup(prop);
-            if(res != 0)
-                return res;     
-        }
+        res = entry.second->extensionGetPropertyGroup(prop);
+        if(res != 0)
+            return res;     
     }
     
     return 0;
@@ -239,11 +225,9 @@ const char* ExtensionContainer::getPropertyGroup(const char* name) const {
         return res;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()) {
-            res = entry.second->getPropertyGroup(name);
-            if(res != 0)
-                return res;     
-        }
+        res = entry.second->extensionGetPropertyGroup(name);
+        if(res != 0)
+            return res;     
     }
     
     return 0;
@@ -257,11 +241,9 @@ const char* ExtensionContainer::getPropertyDocumentation(const Property* prop) c
         return res;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()) {
-            res = entry.second->getPropertyDocumentation(prop);
-            if(res != 0)
-                return res;     
-        }
+        res = entry.second->extensionGetPropertyDocumentation(prop);
+        if(res != 0)
+            return res;     
     }
     
     return 0;
@@ -274,11 +256,9 @@ const char* ExtensionContainer::getPropertyDocumentation(const char* name) const
         return res;
     
     for(auto entry : _extensions) {            
-        if(entry.second->isPythonExtension()) {
-            res = entry.second->getPropertyDocumentation(name);
-            if(res != 0)
-                return res;     
-        }
+        res = entry.second->extensionGetPropertyDocumentation(name);
+        if(res != 0)
+            return res;     
     }
     
     return 0;
@@ -294,7 +274,7 @@ void ExtensionContainer::onChanged(const Property* prop) {
     //if a extension gets registered from python. This is only for synchronisation.
     if(strcmp(prop->getName(), "Proxy")) {
         for(auto entry : _extensions)
-            entry.second->getExtensionPyObject().setValue(static_cast<const PropertyPythonObject*>(prop)->getValue());
+            entry.second->extensionGetExtensionPyObject().setValue(static_cast<const PropertyPythonObject*>(prop)->getValue());
     }*/
         
     App::PropertyContainer::onChanged(prop);

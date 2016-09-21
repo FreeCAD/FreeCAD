@@ -33,6 +33,35 @@ namespace App {
     
 class ExtensionContainer;
     
+// init property stuff
+#define EXTENSION_PROPERTY_HEADER(_class_) \
+  TYPESYSTEM_HEADER(); \
+protected: \
+  static const App::PropertyData * extensionGetPropertyDataPtr(void); \
+  virtual const App::PropertyData &extensionGetPropertyData(void) const; \
+private: \
+  static App::PropertyData propertyData
+
+#define EXTENSION_PROPERTY_SOURCE(_class_, _parentclass_) \
+TYPESYSTEM_SOURCE_P(_class_);\
+const App::PropertyData * _class_::extensionGetPropertyDataPtr(void){return &propertyData;} \
+const App::PropertyData & _class_::extensionGetPropertyData(void) const{return propertyData;} \
+App::PropertyData _class_::propertyData; \
+void _class_::init(void){\
+  initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
+  _class_::propertyData.addParentPropertyData(_parentclass_::extensionGetPropertyDataPtr());\
+}
+
+#define EXTENSION_PROPERTY_SOURCE_TEMPLATE(_class_, _parentclass_) \
+TYPESYSTEM_SOURCE_TEMPLATE(_class_);\
+template<> App::PropertyData _class_::propertyData = App::PropertyData(); \
+template<> const App::PropertyData * _class_::extensionGetPropertyDataPtr(void){return &propertyData;} \
+template<> const App::PropertyData & _class_::extensionGetPropertyData(void) const{return propertyData;} \
+template<> void _class_::init(void){\
+  initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
+  _class_::propertyData.addParentPropertyData(_parentclass_::extensionGetPropertyDataPtr());\
+}
+  
 /**
  * @brief Base class for all extension that can be added to a DocumentObject
  * 
@@ -41,15 +70,22 @@ class ExtensionContainer;
  * 
  * Extensions are like every other FreeCAD object and based on properties. All information storage 
  * and persistance should be achieved by use of those. Additional any number of methods can be 
- * added to provide funtionality around the proerties. The only difference to normal objects is that
- * extensions must derive from the Extension class and that the tye needs to be initialised. This 
- * works as simple as 
+ * added to provide funtionality around the properties. There are 3 samll difference to normal objects:
+ * 1. They must be derived from Extension class
+ * 2. Properties must be handled with special extension macros
+ * 3. Extensions must be initialised
+ * This works as simple as 
  * @code
  * class MyExtension : public Extension {
+ *   EXTENSION_PROPERTY_HEADER(MyExtension);
+ *   PropertyInt MyProp;
  *   virtual bool overridableMethod(DocumentObject* obj) {};
  * };
  * 
+ * EXTENSION_PROPERTY_SOURCE(App::MyExtension, App::Extension)
  * MyExtension::MyExtension() {
+ * 
+ *     EXTENSION_ADD_PROPERTY(MyProp, (0)) * 
  *     initExtension(MyExtension::getClassTypeId());
  * }
  * typedef ExtensionPythonT<MyExtension> MyExtensionPython;
@@ -125,40 +161,79 @@ class ExtensionContainer;
  * exension creators responsibility to ensure full implementation.
  * 
  */
-class AppExport Extension : public virtual App::PropertyContainer
+class AppExport Extension : public virtual Base::Persistence
 {
 
-  //The cass does not have properties itself, but it is important to provide the property access
-  //functions. see cpp file for details
-  PROPERTY_HEADER(App::Extension);
+    //The cass does not have properties itself, but it is important to provide the property access
+    //functions. see cpp file for details
+    EXTENSION_PROPERTY_HEADER(App::Extension);
 
 public:
 
-  Extension();
-  virtual ~Extension();
+    Extension();
+    virtual ~Extension();
 
-  void initExtension(App::ExtensionContainer* obj);
+    void initExtension(App::ExtensionContainer* obj);
     
-  App::ExtensionContainer*       getExtendedContainer() {return m_base;};
-  const App::ExtensionContainer* getExtendedContainer() const {return m_base;};
+    App::ExtensionContainer*       getExtendedContainer() {return m_base;};
+    const App::ExtensionContainer* getExtendedContainer() const {return m_base;};
  
-  //get extension name without namespace
-  const char* name();
-
-  bool isPythonExtension() {return m_isPythonExtension;};
+    //get extension name without namespace
+    const char* name();
+ 
+    bool isPythonExtension() {return m_isPythonExtension;};
   
-  virtual PyObject* getExtensionPyObject(void);
+    virtual PyObject* getExtensionPyObject(void);
+  
+  
+    /** @name Access properties */
+    //@{
+    /// find a property by its name
+    virtual Property *extensionGetPropertyByName(const char* name) const;
+    /// get the name of a property
+    virtual const char* extensionGetPropertyName(const Property* prop) const;
+    /// get all properties of the class (including properties of the parent)
+    virtual void extensionGetPropertyMap(std::map<std::string,Property*> &Map) const;
+    /// get all properties of the class (including properties of the parent)
+    virtual void extensionGetPropertyList(std::vector<Property*> &List) const;
+
+    /// get the Type of a Property
+    virtual short extensionGetPropertyType(const Property* prop) const;
+    /// get the Type of a named Property
+    virtual short extensionGetPropertyType(const char *name) const;
+    /// get the Group of a Property
+    virtual const char* extensionGetPropertyGroup(const Property* prop) const;
+    /// get the Group of a named Property
+    virtual const char* extensionGetPropertyGroup(const char *name) const;
+    /// get the Group of a Property
+    virtual const char* extensionGetPropertyDocumentation(const Property* prop) const;
+    /// get the Group of a named Property
+    virtual const char* extensionGetPropertyDocumentation(const char *name) const;
+    //@}
 
 protected:     
-  void initExtension(Base::Type type);
-  bool m_isPythonExtension = false;
-  Py::Object ExtensionPythonObject;
+    void initExtension(Base::Type type);
+    bool m_isPythonExtension = false;
+    Py::Object ExtensionPythonObject;
   
 private:
-  Base::Type                    m_extensionType;
-  App::ExtensionContainer*      m_base = nullptr;
+    Base::Type                    m_extensionType;
+    App::ExtensionContainer*      m_base = nullptr;
 };
 
+// Property define 
+#define EXTENSION_ADD_PROPERTY(_prop_, _defaultval_) \
+  do { \
+    this->_prop_.setValue _defaultval_;\
+    propertyData.addProperty(static_cast<App::Extension*>(this), #_prop_, &this->_prop_); \
+  } while (0)
+
+#define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
+  do { \
+    this->_prop_.setValue _defaultval_;\
+    propertyData.addProperty(static_cast<App::Extension*>(this), #_prop_, &this->_prop_, (_group_),(_type_),(_Docu_)); \
+  } while (0)
+  
 
 /**
  * Generic Python extension class which allows to behave every extension
@@ -167,7 +242,7 @@ private:
 template <class ExtensionT>
 class ExtensionPythonT : public ExtensionT
 {
-    PROPERTY_HEADER(App::ExtensionPythonT<ExtensionT>);
+    EXTENSION_PROPERTY_HEADER(App::ExtensionPythonT<ExtensionT>);
 
 public:
     typedef ExtensionT Inherited;
@@ -175,7 +250,7 @@ public:
     ExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         
-        ADD_PROPERTY(ExtensionProxy,(Py::Object()));
+        EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
     virtual ~ExtensionPythonT() {
     }
@@ -185,12 +260,12 @@ public:
 
 typedef ExtensionPythonT<App::Extension> ExtensionPython;
 
-//helper macros to define python extensions
+// Helper macros to define python extensions
 #define EXTENSION_PROXY_FIRST(function) \
     Base::PyGILStateLocker lock;\
     Py::Object result;\
     try {\
-        Property* proxy = this->getPropertyByName("ExtensionProxy");\
+        Property* proxy = this->extensionGetPropertyByName("ExtensionProxy");\
         if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {\
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();\
             if (feature.hasAttr(std::string("function"))) {\

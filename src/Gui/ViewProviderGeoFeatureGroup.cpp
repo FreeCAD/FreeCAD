@@ -36,7 +36,7 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderDocumentObject, (Gui::ViewProviderGeoFeatureGroupExtension))
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderDocumentObject)
 
 ViewProviderGeoFeatureGroup::ViewProviderGeoFeatureGroup()
 {
