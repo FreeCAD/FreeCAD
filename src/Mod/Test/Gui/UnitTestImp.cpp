@@ -117,6 +117,8 @@ void UnitTestDialog::setProgressColor(const QColor& col)
  */
 void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item, int column)
 {
+    Q_UNUSED(column);
+
     QString text = item->data(0, Qt::UserRole).toString();
 
     QMessageBox msgBox(this);
