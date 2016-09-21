@@ -30,6 +30,7 @@
 #include "Property.h"
 #include "PropertyContainer.h"
 #include "Application.h"
+#include "ExtensionContainer.h"
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
@@ -69,6 +70,10 @@ Property *DynamicProperty::getPropertyByName(const char* name) const
     std::map<std::string,PropData>::const_iterator it = props.find(name);
     if (it != props.end())
         return it->second.property;
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyByName(name);
+        
     return this->pc->PropertyContainer::getPropertyByName(name);
 }
 
@@ -113,6 +118,10 @@ const char* DynamicProperty::getPropertyName(const Property* prop) const
         if (it->second.property == prop)
             return it->first.c_str();
     }
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyName(prop);
+        
     return this->pc->PropertyContainer::getPropertyName(prop);
 }
 
@@ -139,6 +148,10 @@ short DynamicProperty::getPropertyType(const Property* prop) const
             return attr;
         }
     }
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyType(prop);
+        
     return this->pc->PropertyContainer::getPropertyType(prop);
 }
 
@@ -153,6 +166,10 @@ short DynamicProperty::getPropertyType(const char *name) const
             attr |= Prop_ReadOnly;
         return attr;
     }
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyType(name);
+        
     return this->pc->PropertyContainer::getPropertyType(name);
 }
 
@@ -162,6 +179,10 @@ const char* DynamicProperty::getPropertyGroup(const Property* prop) const
         if (it->second.property == prop)
             return it->second.group.c_str();
     }
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyGroup(prop);
+        
     return this->pc->PropertyContainer::getPropertyGroup(prop);
 }
 
@@ -170,6 +191,10 @@ const char* DynamicProperty::getPropertyGroup(const char *name) const
     std::map<std::string,PropData>::const_iterator it = props.find(name);
     if (it != props.end())
         return it->second.group.c_str();
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyGroup(name);
+        
     return this->pc->PropertyContainer::getPropertyGroup(name);
 }
 
@@ -179,6 +204,10 @@ const char* DynamicProperty::getPropertyDocumentation(const Property* prop) cons
         if (it->second.property == prop)
             return it->second.doc.c_str();
     }
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyDocumentation(prop);
+        
     return this->pc->PropertyContainer::getPropertyDocumentation(prop);
 }
 
@@ -187,6 +216,10 @@ const char* DynamicProperty::getPropertyDocumentation(const char *name) const
     std::map<std::string,PropData>::const_iterator it = props.find(name);
     if (it != props.end())
         return it->second.doc.c_str();
+    
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyDocumentation(name);
+        
     return this->pc->PropertyContainer::getPropertyDocumentation(name);
 }
 

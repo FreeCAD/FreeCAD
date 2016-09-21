@@ -37,7 +37,7 @@ class GroupExtensionPy;
 
 class AppExport GroupExtension : public DocumentObjectExtension
 {
-    PROPERTY_HEADER(App::GroupExtension);
+    EXTENSION_PROPERTY_HEADER(App::GroupExtension);
 
 public:
     /// Constructor

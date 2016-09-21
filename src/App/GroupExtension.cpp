@@ -34,13 +34,13 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
+EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
 GroupExtension::GroupExtension()
 {
     initExtension(GroupExtension::getClassTypeId());
     
-    ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
+    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
 }
 
 GroupExtension::~GroupExtension()
@@ -202,7 +202,7 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
 
 
 namespace App {
-PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
 
 // explicit template instantiation
 template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;

@@ -33,7 +33,7 @@ namespace Gui
 
 class GuiExport ViewProviderOriginGroupExtension : public ViewProviderGeoFeatureGroupExtension
 {
-    PROPERTY_HEADER(Gui::ViewProviderOriginGroupExtension);
+    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderOriginGroupExtension);
 
 public:
     /// Constructor

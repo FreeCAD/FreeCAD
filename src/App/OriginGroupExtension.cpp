@@ -35,13 +35,13 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtension);
+EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtension);
 
 OriginGroupExtension::OriginGroupExtension () {
     
     initExtension(OriginGroupExtension::getClassTypeId());
     
-    ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
+    EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
 }
 
 OriginGroupExtension::~OriginGroupExtension ()
@@ -131,7 +131,7 @@ void OriginGroupExtension::onExtendedUnsetupObject () {
 // Python feature ---------------------------------------------------------
 
 namespace App {
-PROPERTY_SOURCE_TEMPLATE(App::OriginGroupExtensionPython, App::OriginGroupExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::OriginGroupExtensionPython, App::OriginGroupExtension)
 
 // explicit template instantiation
 template class AppExport ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>>;

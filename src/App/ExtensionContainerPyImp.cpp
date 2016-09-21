@@ -152,7 +152,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     ext->initExtension(getExtensionContainerPtr());
     
     //set the proxy to allow python overrides
-    App::Property* pp = ext->getPropertyByName("ExtensionProxy");
+    App::Property* pp = ext->extensionGetPropertyByName("ExtensionProxy");
     if(!pp) {
         std::stringstream str;
         str << "Accessing the proxy property failed!" << std::ends;

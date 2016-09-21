@@ -30,8 +30,6 @@
 #include "DynamicProperty.h"
 #include <CXX/Objects.hxx>
 
-#include <boost/preprocessor/seq/for_each.hpp>
-
 namespace App {
     
 /**
@@ -73,14 +71,18 @@ namespace App {
  * access the universal extension API. As DocumentObject itself derives from ExtensionContainer this 
  * should be the case automatically in most circumstances. 
  * 
- * Note that a small boilerplate change is needed next to the multiple inheritance when adding 
- * extensions from c++. It must be ensured that the type registration is aware of the extensions.
+ * Note that two small boilerplate changes are needed next to the multiple inheritance when adding 
+ * extensions from c++.
+ * 1. It must be ensured that the property and type registration is aware of the extensions by using 
+ *    special macros.
+ * 2. The extensions need to be initialised in the constructor
+ * 
  * Here a working example:
  * @code 
  * class AppExport Part : public App::DocumentObject, public App::FirstExtension, public App::SecondExtension {
  *   PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
  * };
- * PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::DocumentObject, (App::FirstExtension)(App::SecondExtension))
+ * PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::DocumentObject)
  * Part::Part(void) {
  *   FirstExtension::initExtension(this);
  *   SecondExtension::initExtension(this);
@@ -107,7 +109,7 @@ namespace App {
  * 
  * For information on howto create extension see the documentation of Extension
  */
-class AppExport ExtensionContainer : public virtual App::PropertyContainer
+class AppExport ExtensionContainer : public App::PropertyContainer
 {
 
     TYPESYSTEM_HEADER();
@@ -179,24 +181,18 @@ private:
     std::map<Base::Type, App::Extension*> _extensions;
 };
 
-
 #define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
   PROPERTY_HEADER(_class)
 
-//helper macro to add parent to property data
-#define ADD_PARENT(r, data, elem)\
-    data::propertyData.parentPropertyData.push_back(elem::getPropertyDataPtr());
-
-/// 
-#define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_, _extensions_) \
+/// We make sur that the PropertyData of the container is not connected to the one of the extension
+#define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \
 TYPESYSTEM_SOURCE_P(_class_);\
 const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
 const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
 App::PropertyData _class_::propertyData; \
 void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  ADD_PARENT(0, _class_, _parentclass_)\
-  BOOST_PP_SEQ_FOR_EACH(ADD_PARENT, _class_, _extensions_)\
+  _class_::propertyData.addParentPropertyData(_parentclass_::getPropertyDataPtr());\
 }
 
 } //App

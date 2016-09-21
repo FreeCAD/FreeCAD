@@ -33,7 +33,7 @@
 
 using namespace App;
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(App::DocumentObjectGroup, App::DocumentObject, (App::GroupExtension))
+PROPERTY_SOURCE_WITH_EXTENSIONS(App::DocumentObjectGroup, App::DocumentObject)
 
 DocumentObjectGroup::DocumentObjectGroup(void): DocumentObject(), GroupExtension() {
 

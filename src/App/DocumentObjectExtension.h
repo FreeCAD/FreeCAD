@@ -38,7 +38,7 @@ class AppExport DocumentObjectExtension : public App::Extension
 
     //The cass does not have properties itself, but it is important to provide the property access
     //functions. see cpp file for details
-    PROPERTY_HEADER(App::DocumentObjectExtension );
+    EXTENSION_PROPERTY_HEADER(App::DocumentObjectExtension );
 
 public:
 

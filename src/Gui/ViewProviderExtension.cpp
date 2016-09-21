@@ -33,7 +33,7 @@
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderExtension, App::Extension)
+EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderExtension, App::Extension)
 
 ViewProviderExtension::ViewProviderExtension() 
 {
@@ -62,7 +62,7 @@ void ViewProviderExtension::extensionUpdateData(const App::Property*) {
 }
 
 namespace Gui {
-PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderExtensionPython, Gui::ViewProviderExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderExtensionPython, Gui::ViewProviderExtension)
 
 // explicit template instantiation
 template class GuiExport ViewProviderExtensionPythonT<ViewProviderExtension>;

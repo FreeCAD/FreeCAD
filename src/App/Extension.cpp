@@ -34,19 +34,15 @@
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
  
-/* We do not use a standart property macro for type initiation. The reason is that we want to expose all property functions, 
- * to allow the derived classes to access the private property data, but we do not want to have our
- * property data a reference to the parent data. That is because the extension is used in  a multi 
- * inheritance way, and hence our propertydata partent data would point to the same property data
- * as any other parent of the inherited class. It makes more sense to create a total unrelated line
- * of property datas which are added as additional parent to the extended class.
+/* We do not use a standart property macro for type initiation. The reason is that we have the first
+ * PropertyData in the extension chain, there is no parent property data. 
  */
 TYPESYSTEM_SOURCE_P(App::Extension);
-const App::PropertyData * App::Extension::getPropertyDataPtr(void){return &propertyData;}
-const App::PropertyData & App::Extension::getPropertyData(void) const{return propertyData;}
+const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(void){return &propertyData;}
+const App::PropertyData & App::Extension::extensionGetPropertyData(void) const{return propertyData;}
 App::PropertyData App::Extension::propertyData;
 void App::Extension::init(void){
-  initSubclass(App::Extension::classTypeId, "App::Extension" , "App::PropertyContainer", &(App::Extension::create) );
+  initSubclass(App::Extension::classTypeId, "App::Extension" , "Base::Persistence", &(App::Extension::create) );
 }
 
 using namespace App;
@@ -57,7 +53,6 @@ Extension::Extension()
 
 Extension::~Extension()
 {
-    Base::Console().Message("Delete extension\n");
     if (!ExtensionPythonObject.is(Py::_None())){
         // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
         // Python object or not. In the constructor we forced the wrapper to own the object so we need
@@ -82,6 +77,13 @@ void Extension::initExtension(ExtensionContainer* obj) {
     if(m_extensionType.isBad())
         throw Base::Exception("Extension: Extension type not set");
  
+    //all properties are initialised without PropertyContainer father. Now that we know it we can
+    //finaly finsih the property initialisation
+    std::vector<Property*> list;
+    extensionGetPropertyData().getPropertyList(this, list);
+    for(Property* prop : list)
+        prop->setContainer(obj);
+    
     m_base = obj;
     m_base->registerExtension( m_extensionType, this );
 }
@@ -106,8 +108,62 @@ const char* Extension::name() {
         return std::string().c_str();
 }
 
+
+
+Property* Extension::extensionGetPropertyByName(const char* name) const {
+    
+    return extensionGetPropertyData().getPropertyByName(this, name);
+}
+
+short int Extension::extensionGetPropertyType(const Property* prop) const {
+    
+    return extensionGetPropertyData().getType(this, prop);
+}
+
+short int Extension::extensionGetPropertyType(const char* name) const {
+    
+    return extensionGetPropertyData().getType(this, name);
+}
+
+const char* Extension::extensionGetPropertyName(const Property* prop) const {
+    
+    return extensionGetPropertyData().getName(this,prop);
+}
+
+const char* Extension::extensionGetPropertyGroup(const Property* prop) const {
+    
+    return extensionGetPropertyData().getGroup(this,prop);
+}
+
+const char* Extension::extensionGetPropertyGroup(const char* name) const {
+        
+    return extensionGetPropertyData().getGroup(this,name);
+}
+
+
+const char* Extension::extensionGetPropertyDocumentation(const Property* prop) const {
+    
+    return extensionGetPropertyData().getDocumentation(this, prop);
+}
+
+const char* Extension::extensionGetPropertyDocumentation(const char* name) const {
+    
+    return extensionGetPropertyData().getDocumentation(this, name);
+}
+
+void Extension::extensionGetPropertyList(std::vector< Property* >& List) const {
+    
+    extensionGetPropertyData().getPropertyList(this, List);
+}
+
+void Extension::extensionGetPropertyMap(std::map< std::string, Property* >& Map) const {
+
+    extensionGetPropertyData().getPropertyMap(this, Map);
+}
+
+
 namespace App {
-PROPERTY_SOURCE_TEMPLATE(App::ExtensionPython, App::ExtensionPython::Inherited)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::ExtensionPython, App::ExtensionPython::Inherited)
 
 // explicit template instantiation
 template class AppExport ExtensionPythonT<Extension>;

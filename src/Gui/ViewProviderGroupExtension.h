@@ -32,7 +32,7 @@ namespace Gui
 
 class GuiExport ViewProviderGroupExtension : public ViewProviderExtension
 {
-    PROPERTY_HEADER(Gui::ViewProviderGroupExtension);
+    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderGroupExtension);
 
 public:
     /// Constructor

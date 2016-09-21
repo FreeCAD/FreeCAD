@@ -33,7 +33,7 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::DocumentObjectExtension, App::Extension)
+EXTENSION_PROPERTY_SOURCE(App::DocumentObjectExtension, App::Extension)
 
 DocumentObjectExtension::DocumentObjectExtension() 
 {
