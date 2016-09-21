@@ -112,7 +112,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
                             .arg(QString::fromLatin1(doc->getName()))
                             .arg(QString::fromLatin1(par->getNameInDocument()))
                             .arg(QString::fromLatin1(obj->getNameInDocument()));
-        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
     }
 
     // build Python command for execution
@@ -123,7 +123,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
                         .arg(QString::fromLatin1(grp->getNameInDocument()))
                         .arg(QString::fromLatin1(obj->getNameInDocument()));
     
-    Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+    Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
     
     gui->commitCommand();
 }
