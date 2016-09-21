@@ -243,11 +243,11 @@ TransactionObject::~TransactionObject()
         delete It->second;
 }
 
-void TransactionObject::applyDel(Document &Doc, TransactionalObject *pcObj)
+void TransactionObject::applyDel(Document & /*Doc*/, TransactionalObject * /*pcObj*/)
 {
 }
 
-void TransactionObject::applyNew(Document &Doc, TransactionalObject *pcObj)
+void TransactionObject::applyNew(Document & /*Doc*/, TransactionalObject * /*pcObj*/)
 {
 }
 

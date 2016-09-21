@@ -136,15 +136,24 @@ public:
         const char* type, const char* name=0,
         const char* group=0, const char* doc=0,
         short attr=0, bool ro=false, bool hidden=false){
+        (void)type;
+        (void)name;
+        (void)group;
+        (void)doc;
+        (void)attr;
+        (void)ro;
+        (void)hidden;
         return 0;
   }
   virtual bool removeDynamicProperty(const char* name) {
+      (void)name;
       return false;
   }
   virtual std::vector<std::string> getDynamicPropertyNames() const {
       return std::vector<std::string>();
   }
   virtual App::Property *getDynamicPropertyByName(const char* name) const {
+      (void)name;
       return 0;
   }
   virtual void addDynamicProperties(const PropertyContainer*) {
