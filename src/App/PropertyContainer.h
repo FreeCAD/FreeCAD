@@ -60,29 +60,29 @@ struct AppExport PropertyData
   std::vector<PropertySpec>        propertyData;
   std::vector<const PropertyData*> parentPropertyData;
 
-  void addProperty(const PropertyContainer *container,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
+  void addProperty(const void* container,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
   void addParentPropertyData(const PropertyData* data);
   
-  const PropertySpec *findProperty(const PropertyContainer *container,const char* PropName) const;
-  const PropertySpec *findProperty(const PropertyContainer *container,const Property* prop) const;
+  const PropertySpec *findProperty(const void* container,const char* PropName) const;
+  const PropertySpec *findProperty(const void* container,const Property* prop) const;
   
-  const char* getName         (const PropertyContainer *container,const Property* prop) const;
-  short       getType         (const PropertyContainer *container,const Property* prop) const;
-  short       getType         (const PropertyContainer *container,const char* name)     const;
-  const char* getGroup        (const PropertyContainer *container,const char* name)     const;
-  const char* getGroup        (const PropertyContainer *container,const Property* prop) const;
-  const char* getDocumentation(const PropertyContainer *container,const char* name)     const;
-  const char* getDocumentation(const PropertyContainer *container,const Property* prop) const;
+  const char* getName         (const void* container,const Property* prop) const;
+  short       getType         (const void* container,const Property* prop) const;
+  short       getType         (const void* container,const char* name)     const;
+  const char* getGroup        (const void* container,const char* name)     const;
+  const char* getGroup        (const void* container,const Property* prop) const;
+  const char* getDocumentation(const void* container,const char* name)     const;
+  const char* getDocumentation(const void* container,const Property* prop) const;
 
-  Property *getPropertyByName(const PropertyContainer *container,const char* name) const;
-  void getPropertyMap(const PropertyContainer *container,std::map<std::string,Property*> &Map) const;
-  void getPropertyList(const PropertyContainer *container,std::vector<Property*> &List) const;
+  Property *getPropertyByName(const void* container,const char* name) const;
+  void getPropertyMap(const void* container,std::map<std::string,Property*> &Map) const;
+  void getPropertyList(const void* container,std::vector<Property*> &List) const;
 };
 
 
 /** Base class of all classes with properties
  */
-class AppExport PropertyContainer: public Base::Persistence
+class AppExport PropertyContainer: public virtual Base::Persistence
 {
 
   TYPESYSTEM_HEADER();
@@ -191,14 +191,14 @@ private:
   do { \
     this->_prop_.setValue _defaultval_;\
     this->_prop_.setContainer(this); \
-    propertyData.addProperty(this, #_prop_, &this->_prop_); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), #_prop_, &this->_prop_); \
   } while (0)
 
 #define ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
   do { \
     this->_prop_.setValue _defaultval_;\
     this->_prop_.setContainer(this); \
-    propertyData.addProperty(this, #_prop_, &this->_prop_, (_group_),(_type_),(_Docu_)); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), #_prop_, &this->_prop_, (_group_),(_type_),(_Docu_)); \
   } while (0)
 
 

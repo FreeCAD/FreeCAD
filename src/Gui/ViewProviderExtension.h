@@ -39,7 +39,7 @@ class GuiExport ViewProviderExtension : public App::Extension
 
     //The cass does not have properties itself, but it is important to provide the property access
     //functions.
-    PROPERTY_HEADER(Gui::ViewProviderExtension);
+    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtension);
 
 public:
 
@@ -90,7 +90,7 @@ private:
 template <class ExtensionT>
 class ViewProviderExtensionPythonT : public ExtensionT
 {
-    PROPERTY_HEADER(Gui::ViewProviderExtensionPythonT<ExtensionT>);
+    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtensionPythonT<ExtensionT>);
 
 public:
     typedef ExtensionT Inherited;
@@ -98,7 +98,7 @@ public:
     ViewProviderExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         
-        ADD_PROPERTY(Proxy,(Py::Object()));
+        EXTENSION_ADD_PROPERTY(Proxy,(Py::Object()));
     }
     virtual ~ViewProviderExtensionPythonT() {
     }

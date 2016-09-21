@@ -44,7 +44,7 @@
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderOriginGroupExtension, Gui::ViewProviderGeoFeatureGroupExtension)
+EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderOriginGroupExtension, Gui::ViewProviderGeoFeatureGroupExtension)
 
 ViewProviderOriginGroupExtension::ViewProviderOriginGroupExtension()
 {
@@ -198,7 +198,7 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
 
 
 namespace Gui {
-PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginGroupExtensionPython, Gui::ViewProviderOriginGroupExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginGroupExtensionPython, Gui::ViewProviderOriginGroupExtension)
 
 // explicit template instantiation
 template class GuiExport ViewProviderExtensionPythonT<ViewProviderOriginGroupExtension>;

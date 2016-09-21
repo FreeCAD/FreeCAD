@@ -38,7 +38,7 @@ namespace App
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
-    PROPERTY_HEADER(App::GeoFeatureGroupExtension);
+    EXTENSION_PROPERTY_HEADER(App::GeoFeatureGroupExtension);
 
 public:
     PropertyPlacement Placement;
