@@ -125,6 +125,7 @@ void PropertyPointKernel::Restore(Base::XMLReader &reader)
 void PropertyPointKernel::SaveDocFile (Base::Writer &writer) const
 {
     // does nothing
+    (void)writer;
 }
 
 void PropertyPointKernel::RestoreDocFile(Base::Reader &reader)

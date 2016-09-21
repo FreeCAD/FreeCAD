@@ -629,7 +629,7 @@ unsigned long PointsGrid::GetElements (unsigned long ulX, unsigned long ulY, uns
   return 0;
 }
 
-void PointsGrid::AddPoint (const Base::Vector3d &rclPt, unsigned long ulPtIndex, float fEpsilon)
+void PointsGrid::AddPoint (const Base::Vector3d &rclPt, unsigned long ulPtIndex, float /*fEpsilon*/)
 {
   unsigned long ulX, ulY, ulZ;
   Pos(Base::Vector3d(rclPt.x, rclPt.y, rclPt.z), ulX, ulY, ulZ);
