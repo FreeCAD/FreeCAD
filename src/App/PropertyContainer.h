@@ -77,11 +77,10 @@ struct AppExport PropertyData
   };
   
   // vector of all properties
-  std::vector<PropertySpec>        propertyData;
-  std::vector<const PropertyData*> parentPropertyData;
+  std::vector<PropertySpec>  propertyData;
+  const PropertyData*        parentPropertyData;
 
   void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
-  void addParentPropertyData(const PropertyData* data);
   
   const PropertySpec *findProperty(OffsetBase offsetBase,const char* PropName) const;
   const PropertySpec *findProperty(OffsetBase offsetBase,const Property* prop) const;
@@ -239,7 +238,7 @@ const App::PropertyData & _class_::getPropertyData(void) const{return propertyDa
 App::PropertyData _class_::propertyData; \
 void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  _class_::propertyData.addParentPropertyData(_parentclass_::getPropertyDataPtr());\
+  _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr(); \
 }
 
 #define PROPERTY_SOURCE_ABSTRACT(_class_, _parentclass_) \
@@ -249,7 +248,7 @@ const App::PropertyData & _class_::getPropertyData(void) const{return propertyDa
 App::PropertyData _class_::propertyData; \
 void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  _class_::propertyData.addParentPropertyData(_parentclass_::getPropertyDataPtr());\
+  _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr(); \
 }
 
 #define TYPESYSTEM_SOURCE_TEMPLATE(_class_) \
@@ -267,7 +266,7 @@ template<> const App::PropertyData * _class_::getPropertyDataPtr(void){return &p
 template<> const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
 template<> void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  _class_::propertyData.addParentPropertyData(_parentclass_::getPropertyDataPtr());\
+  _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr(); \
 }
 
 } // namespace App

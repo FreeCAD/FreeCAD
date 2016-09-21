@@ -687,7 +687,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
             /* Yes -- then this must be a property, so we get the document object's name from the owner */
             bool byIdentifier;
 
-            results.resolvedDocumentObjectName = String(dynamic_cast<const DocumentObject*>(owner)->getNameInDocument(), false, true);
+            results.resolvedDocumentObjectName = String(static_cast<const DocumentObject*>(owner)->getNameInDocument(), false, true);
             results.resolvedDocumentObject = getDocumentObject(results.resolvedDocument, results.resolvedDocumentObjectName, byIdentifier);
             results.propertyName = components[0].name.getString();
             if (results.resolvedDocumentObject)
@@ -717,12 +717,12 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                 if (documentName.getString().size() > 0) {
                     /* Yes; then document object must follow */
                     results.resolvedDocumentObjectName = String(components[0].name, false, false);
-                    results.resolvedDocumentObject = results.resolvedDocument->getObject(dynamic_cast<const DocumentObject*>(owner)->getNameInDocument());
+                    results.resolvedDocumentObject = results.resolvedDocument->getObject(static_cast<const DocumentObject*>(owner)->getNameInDocument());
                     results.propertyIndex = 1;
                 }
                 else {
                     /* No, assume component is a property, and get document object's name from owner */
-                    const DocumentObject * docObj = dynamic_cast<const DocumentObject*>(owner);
+                    const DocumentObject * docObj = static_cast<const DocumentObject*>(owner);
                     results.resolvedDocument = docObj->getDocument();
                     results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
                     results.resolvedDocumentObjectName = String(docObj->getNameInDocument(), false, true);
