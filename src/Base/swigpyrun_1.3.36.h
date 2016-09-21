@@ -1677,6 +1677,9 @@ _PySwigObject_type(void) {
 #if PY_VERSION_HEX >= 0x02030000
 	0,                                  /* tp_del */
 #endif
+#if PY_VERSION_HEX >= 0x02060000
+    0,                                      /* tp_version_tag */
+#endif
 #ifdef COUNT_ALLOCS
 	0,0,0,0                             /* tp_alloc -> tp_next */
 #endif
@@ -1839,6 +1842,9 @@ _PySwigPacked_type(void) {
 #endif
 #if PY_VERSION_HEX >= 0x02030000
 	0,                                  /* tp_del */
+#endif
+#if PY_VERSION_HEX >= 0x02060000
+    0,                                      /* tp_version_tag */
 #endif
 #ifdef COUNT_ALLOCS
 	0,0,0,0                             /* tp_alloc -> tp_next */

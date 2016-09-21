@@ -67,11 +67,11 @@ UnitSystem    UnitsApi::actSystem = SI1;
 //QString  UnitsApi::UserPrefUnit   [50];
 int      UnitsApi::UserPrefDecimals = 2;
 
-UnitsApi::UnitsApi(const char* filter)
+UnitsApi::UnitsApi(const char* /*filter*/)
 {
 }
 
-UnitsApi::UnitsApi(const std::string& filter)
+UnitsApi::UnitsApi(const std::string& /*filter*/)
 {
 }
 
