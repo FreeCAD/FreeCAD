@@ -20,54 +20,72 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_CHEESE_H
-#define PART_FACEMAKER_CHEESE_H
+#ifndef PART_FACEMAKER_BULLSEYE_H
+#define PART_FACEMAKER_BULLSEYE_H
 
 #include "FaceMaker.h"
 #include <list>
-#include <functional>
+
+#include <Geom_Surface.hxx>
+#include <gp_Pln.hxx>
 
 namespace Part
 {
 
 
 /**
- * @brief The FaceMakerCheese class is a legacy face maker that was extracted
- * from Part Extrude. It is used by almost all PartDesign.
+ * @brief The FaceMakerBullseye class is a tool to make planar faces with holes,
+ * where there can be additional faces inside holes and they can have holes too
+ * and so on.
  *
- * Strengths: makes faces with holes
+ * Strengths: makes faces with holes with islands
  *
- * Weaknesses: can't make islands in holes. All faces must be on same plane.
+ * Weaknesses: faces of one compound must be on same plane. TBD
  */
-class PartExport FaceMakerCheese: public FaceMakerPublic
+class PartExport FaceMakerBullseye: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER();
 public:
     virtual std::string getUserFriendlyName() const override;
     virtual std::string getBriefExplanation() const override;
 
-public: //in Extrusion, they used to be private. but they are also used by PartDesign, so made public.
-    /**
-     * @brief The Wire_Compare class is for sorting wires by bounding box diagonal length
-     */
-    class Wire_Compare : public std::binary_function<const TopoDS_Wire&,
-            const TopoDS_Wire&, bool>
-    {
-    public:
-        bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2);
-    };
-
-    static TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&);
-    static TopoDS_Face validateFace(const TopoDS_Face&);
-    static bool isInside(const TopoDS_Wire&, const TopoDS_Wire&);
-
-private:
-    static TopoDS_Shape makeFace(std::list<TopoDS_Wire>&); // for internal use only
-
 protected:
     virtual void Build_Essence() override;
+
+    /**
+     * @brief The FaceDriller class is similar to BRepBuilderAPI_MakeFace,
+     * except that it is tolerant to wire orientation (wires are oriented as
+     * needed automatically).
+     */
+    class FaceDriller
+    {
+    public:
+        FaceDriller(gp_Pln plane, TopoDS_Wire outerWire);
+
+        /**
+         * @brief hitTest: returns True if point is on the face
+         * @param point
+         */
+        bool hitTest(gp_Pnt point) const;
+
+        void addHole(TopoDS_Wire w);
+
+        TopoDS_Face Face() {return myFace;}
+    public:
+        /**
+         * @brief wireDirection: determines direction of wire with respect to
+         * myPlane.
+         * @param w
+         * @return  1 = CCW (suits as outer wire), -1 = CW (suits as hole)
+         */
+        static int getWireDirection(const gp_Pln &plane, const TopoDS_Wire &w);
+    private:
+        gp_Pln myPlane;
+        TopoDS_Face myFace;
+        Handle_Geom_Surface myHPlane;
+    };
 };
 
 
 }//namespace Part
-#endif // PART_FACEMAKER_CHEESE_H
+#endif // PART_FACEMAKER_BULLSEYE_H

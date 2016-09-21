@@ -97,26 +97,21 @@ TopoDS_Face FaceMakerCheese::validateFace(const TopoDS_Face& face)
     return face;
 }
 
-// sort bounding boxes according to diagonal length
-class FaceMakerCheese::Wire_Compare : public std::binary_function<const TopoDS_Wire&,
-                                                            const TopoDS_Wire&, bool> {
-public:
-    bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
-    {
-        Bnd_Box box1, box2;
-        if (!w1.IsNull()) {
-            BRepBndLib::Add(w1, box1);
-            box1.SetGap(0.0);
-        }
-
-        if (!w2.IsNull()) {
-            BRepBndLib::Add(w2, box2);
-            box2.SetGap(0.0);
-        }
-
-        return box1.SquareExtent() < box2.SquareExtent();
+bool FaceMakerCheese::Wire_Compare::operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
+{
+    Bnd_Box box1, box2;
+    if (!w1.IsNull()) {
+        BRepBndLib::Add(w1, box1);
+        box1.SetGap(0.0);
     }
-};
+
+    if (!w2.IsNull()) {
+        BRepBndLib::Add(w2, box2);
+        box2.SetGap(0.0);
+    }
+
+    return box1.SquareExtent() < box2.SquareExtent();
+}
 
 bool FaceMakerCheese::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2)
 {
