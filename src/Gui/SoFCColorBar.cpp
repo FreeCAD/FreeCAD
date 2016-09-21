@@ -206,7 +206,7 @@ App::Color SoFCColorBar::getColor( float fVal ) const
     return this->getActiveBar()->getColor( fVal );
 }
 
-void SoFCColorBar::eventCallback(void * userdata, SoEventCallback * node)
+void SoFCColorBar::eventCallback(void * /*userdata*/, SoEventCallback * node)
 {
     const SoEvent * event = node->getEvent();
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {

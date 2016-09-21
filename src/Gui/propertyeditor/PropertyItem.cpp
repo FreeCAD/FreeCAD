@@ -574,6 +574,9 @@ TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertySeparatorItem, Gui::PropertyEdito
 
 QWidget* PropertySeparatorItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
+    Q_UNUSED(parent); 
+    Q_UNUSED(receiver); 
+    Q_UNUSED(method); 
     return 0;
 }
 

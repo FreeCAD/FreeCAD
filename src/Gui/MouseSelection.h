@@ -80,13 +80,13 @@ public:
     //@}
 
 protected:
-    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos) {
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const, const QPoint&) {
         return 0;
     };
-    virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos) {
+    virtual int locationEvent(const SoLocation2Event*    const, const QPoint&) {
         return 0;
     };
-    virtual int keyboardEvent(const SoKeyboardEvent*     const e)                   {
+    virtual int keyboardEvent(const SoKeyboardEvent*     const)                   {
         return 0;
     };
 

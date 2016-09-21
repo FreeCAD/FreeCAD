@@ -114,6 +114,8 @@ void DlgRunExternal::advanced (void)
 
 void DlgRunExternal::finished (int exitCode, QProcess::ExitStatus exitStatus)
 {
+    Q_UNUSED(exitCode); 
+    Q_UNUSED(exitStatus); 
     ui->buttonAccept->setEnabled(true);
     ui->buttonDiscard->setEnabled(true);
     ui->buttonAbort->setEnabled(false);

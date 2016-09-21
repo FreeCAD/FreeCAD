@@ -111,6 +111,7 @@ SpaceNavigatorDevice::~SpaceNavigatorDevice()
 const SoEvent *
 SpaceNavigatorDevice::translateEvent(QEvent * event)
 {
+  Q_UNUSED(event); 
   SoEvent * ret = NULL;
 
 #ifdef HAVE_SPACENAV_LIB

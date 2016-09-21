@@ -332,6 +332,8 @@ void Workbench::setupCustomShortcuts() const
 
 void Workbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
 }
 
 void Workbench::createMainWindowPopupMenu(MenuItem*) const
@@ -688,6 +690,8 @@ void BlankWorkbench::deactivated()
 
 void BlankWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
 }
 
 MenuItem* BlankWorkbench::setupMenuBar() const
@@ -725,6 +729,8 @@ NoneWorkbench::~NoneWorkbench()
 
 void NoneWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
 }
 
 MenuItem* NoneWorkbench::setupMenuBar() const
@@ -881,6 +887,7 @@ DockWindowItems* PythonBaseWorkbench::setupDockWindows() const
 
 void PythonBaseWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
+    Q_UNUSED(recipient);
     QList<MenuItem*> items = _contextMenu->getItems();
     for (QList<MenuItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
         item->appendItem((*it)->copy());

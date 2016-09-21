@@ -440,6 +440,7 @@ PythonConsole::~PythonConsole()
 /** Set new font and colors according to the paramerts. */  
 void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sReason )
 {
+    Q_UNUSED(rCaller); 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
 
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
@@ -1312,6 +1313,8 @@ void PythonConsoleHighlighter::highlightBlock(const QString& text)
 
 void PythonConsoleHighlighter::colorChanged(const QString& type, const QColor& col)
 {
+    Q_UNUSED(type); 
+    Q_UNUSED(col); 
 }
 
 // ---------------------------------------------------------------------

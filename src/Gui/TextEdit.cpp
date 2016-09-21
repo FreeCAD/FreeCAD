@@ -289,6 +289,10 @@ void TextEditor::highlightCurrentLine()
 
 void TextEditor::drawMarker(int line, int x, int y, QPainter* p)
 {
+    Q_UNUSED(line); 
+    Q_UNUSED(x); 
+    Q_UNUSED(y); 
+    Q_UNUSED(p); 
 }
 
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -414,6 +418,7 @@ void TextEditor::keyPressEvent (QKeyEvent * e)
 /** Sets the font, font size and tab size of the editor. */  
 void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReason)
 {
+    Q_UNUSED(rCaller); 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
 #ifdef FC_OS_LINUX

@@ -223,6 +223,7 @@ bool StdCmdAbout::isActive()
  */
 void StdCmdAbout::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     const Gui::Dialog::AboutDialogFactory* f = Gui::Dialog::AboutDialogFactory::defaultFactory();
     boost::scoped_ptr<QDialog> dlg(f->create(getMainWindow()));
     dlg->exec();
@@ -263,7 +264,8 @@ StdCmdAboutQt::StdCmdAboutQt()
 
 void StdCmdAboutQt::activated(int iMsg)
 {
-  qApp->aboutQt();
+    Q_UNUSED(iMsg); 
+    qApp->aboutQt();
 }
 
 //===========================================================================
@@ -286,6 +288,7 @@ StdCmdWhatsThis::StdCmdWhatsThis()
 
 void StdCmdWhatsThis::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QWhatsThis::enterWhatsThisMode();
 }
 
@@ -308,9 +311,10 @@ StdCmdDlgParameter::StdCmdDlgParameter()
 
 void StdCmdDlgParameter::activated(int iMsg)
 {
-  Gui::Dialog::DlgParameterImp cDlg(getMainWindow());
-  cDlg.resize(QSize(800, 600));
-  cDlg.exec();
+    Q_UNUSED(iMsg); 
+    Gui::Dialog::DlgParameterImp cDlg(getMainWindow());
+    cDlg.resize(QSize(800, 600));
+    cDlg.exec();
 }
 
 //===========================================================================
@@ -339,6 +343,7 @@ Action * StdCmdDlgPreferences::createAction(void)
 
 void StdCmdDlgPreferences::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -362,6 +367,7 @@ StdCmdDlgCustomize::StdCmdDlgCustomize()
 
 void StdCmdDlgCustomize::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     static QPointer<QDialog> dlg = 0;
     if (!dlg)
         dlg = new Gui::Dialog::DlgCustomizeImp(getMainWindow());
@@ -388,6 +394,7 @@ StdCmdCommandLine::StdCmdCommandLine()
 
 void StdCmdCommandLine::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     bool show = getMainWindow()->isMaximized ();
 
     // pop up the Gui command window
@@ -436,6 +443,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 
 void StdCmdOnlineHelp::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::getMainWindow()->showDocumentation(QString::fromLatin1("Online_Help_Startpage"));
 }
 
@@ -458,6 +466,7 @@ StdCmdOnlineHelpWebsite::StdCmdOnlineHelpWebsite()
 
 void StdCmdOnlineHelpWebsite::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("OnlineHelp", defaulturl.c_str());
@@ -485,6 +494,7 @@ StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
 
 void StdCmdFreeCADWebsite::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("WebPage", defaulturl.c_str());
@@ -512,6 +522,7 @@ StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
 
 void StdCmdFreeCADUserHub::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/index.php?title=User_hub").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("Documentation", defaulturl.c_str());
@@ -539,6 +550,7 @@ StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
 
 void StdCmdFreeCADPowerUserHub::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/index.php?title=Power_users_hub").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("PowerUsers", defaulturl.c_str());
@@ -566,6 +578,7 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
 
 void StdCmdFreeCADForum::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://forum.freecadweb.org").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("UserForum", defaulturl.c_str());
@@ -593,6 +606,7 @@ StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
 
 void StdCmdFreeCADFAQ::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/index.php?title=FAQ").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("FAQ", defaulturl.c_str());
@@ -620,6 +634,7 @@ StdCmdPythonWebsite::StdCmdPythonWebsite()
 
 void StdCmdPythonWebsite::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     OpenURLInBrowser("http://python.org");
 }
 
@@ -643,6 +658,7 @@ StdCmdMeasurementSimple::StdCmdMeasurementSimple()
 
 void StdCmdMeasurementSimple::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     unsigned int n = getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId());
  
     if (n == 1) {
@@ -697,6 +713,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
 
 void StdCmdUnitsCalculator::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgUnitsCalculator *dlg = new Gui::Dialog::DlgUnitsCalculator( getMainWindow() );
     dlg->show();
 }

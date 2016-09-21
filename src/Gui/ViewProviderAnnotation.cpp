@@ -388,13 +388,13 @@ void ViewProviderAnnotationLabel::setupContextMenu(QMenu* menu, QObject* receive
     menu->addAction(QObject::tr("Move annotation"), receiver, member);
 }
 
-void ViewProviderAnnotationLabel::dragStartCallback(void *data, SoDragger *)
+void ViewProviderAnnotationLabel::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand("Transform");
 }
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void *data, SoDragger *)
+void ViewProviderAnnotationLabel::dragFinishCallback(void *, SoDragger *)
 {
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
@@ -412,6 +412,7 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void *data, SoDragger *drag
 
 bool ViewProviderAnnotationLabel::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(false);
@@ -432,6 +433,7 @@ bool ViewProviderAnnotationLabel::setEdit(int ModNum)
 
 void ViewProviderAnnotationLabel::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
     SoSearchAction sa;
     sa.setType(TranslateManip::getClassTypeId());
     sa.setInterest(SoSearchAction::FIRST);

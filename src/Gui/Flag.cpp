@@ -159,6 +159,8 @@ void Flag::paintGL()
 
 void Flag::resizeGL(int width, int height)
 {
+    Q_UNUSED(width); 
+    Q_UNUSED(height); 
     return;
     //int side = qMin(width, height);
     //glViewport((width - side) / 2, (height - side) / 2, side, side);
@@ -224,7 +226,7 @@ void Flag::setText(const QString& t)
     this->text = t;
 }
 
-void Flag::resizeEvent(QResizeEvent * e)
+void Flag::resizeEvent(QResizeEvent * )
 {
 #if 0
     image = QImage(this->size(), QImage::Format_ARGB32);

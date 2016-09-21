@@ -748,6 +748,8 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 void
 SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 {
+    Q_UNUSED(action); 
+    Q_UNUSED(doHighlight); 
     //Base::Console().Log("SoFCSelection::redrawHighlighted() (%p) doHigh=%d \n",this,doHighlight?1:0);
 
 #ifdef NO_FRONTBUFFER

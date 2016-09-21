@@ -136,6 +136,7 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 
 bool ExpressionBinding::apply(const std::string & propName)
 {
+    Q_UNUSED(propName); 
     if (hasExpression()) {
         DocumentObject * docObj = path.getDocumentObject();
 

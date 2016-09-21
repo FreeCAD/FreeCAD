@@ -82,9 +82,13 @@ namespace Gui {
         int childCount() const
         { return childItems.count(); }
         virtual QVariant data(int role) const
-        { return QVariant(); }
+        {
+            Q_UNUSED(role); 
+            return QVariant();
+        }
         virtual bool setData (const QVariant & value, int role)
         {
+            Q_UNUSED(value); 
             if (role == Qt::EditRole) {
                 return true;
             }
@@ -404,6 +408,7 @@ void DocumentModel::slotDeleteDocument(const Gui::Document& Doc)
 
 void DocumentModel::slotRenameDocument(const Gui::Document& Doc)
 {
+    Q_UNUSED(Doc); 
     // do nothing here
 }
 
@@ -428,10 +433,12 @@ void DocumentModel::slotActiveDocument(const Gui::Document& /*Doc*/)
 
 void DocumentModel::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
+    Q_UNUSED(v); 
 }
 
 void DocumentModel::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 {
+    Q_UNUSED(v); 
 }
 
 void DocumentModel::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
@@ -540,11 +547,13 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
 
 void DocumentModel::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
+    Q_UNUSED(obj); 
     // renaming of objects not supported at the moment
 }
 
 void DocumentModel::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 {
+    Q_UNUSED(obj); 
     // do nothing here because this is automatically done by calling
     // ViewProviderIndex::data()
 }
@@ -652,6 +661,7 @@ int DocumentModel::rowCount (const QModelIndex & parent) const
 
 QVariant DocumentModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
+    Q_UNUSED(section); 
     if (orientation == Qt::Horizontal) {
         if (role != Qt::DisplayRole)
             return QVariant();

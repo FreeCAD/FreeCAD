@@ -93,7 +93,7 @@
 
 using namespace Gui;
 
-void GLOverlayWidget::paintEvent(QPaintEvent* ev)
+void GLOverlayWidget::paintEvent(QPaintEvent*)
 {
     QPainter paint(this);
     paint.drawImage(0,0,image);
@@ -1034,7 +1034,7 @@ void View3DInventor::keyReleaseEvent (QKeyEvent* e)
     QMainWindow::keyReleaseEvent(e);
 }
 
-void View3DInventor::focusInEvent (QFocusEvent * e)
+void View3DInventor::focusInEvent (QFocusEvent *)
 {
     _viewer->getGLWidget()->setFocus();
 }

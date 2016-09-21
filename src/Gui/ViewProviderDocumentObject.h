@@ -96,9 +96,15 @@ public:
     /** @name drag & drop handling */
     //@{
     /// get called if the user hover over a object in the tree 
-    virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
+    virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,
+                           Qt::KeyboardModifiers keys,
+                           Qt::MouseButtons mouseBts,
+                           const QPoint &pos);
     /// get called if the user drops some objects
-    virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
+    virtual void drop(const std::vector<const App::DocumentObject*> &objList,
+                      Qt::KeyboardModifiers keys,
+                      Qt::MouseButtons mouseBts,
+                      const QPoint &pos);
     //@}
 
 protected:

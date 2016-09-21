@@ -455,6 +455,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToC
 
 void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
 {
+    Q_UNUSED(sensor); 
     NavigationStyle* that = reinterpret_cast<NavigationStyle*>(data);
     if (PRIVATE(that)->animationsteps > 0) {
         // here the camera rotates from the current rotation to a given
@@ -1494,6 +1495,7 @@ SbBool NavigationStyle::isPopupMenuEnabled(void) const
 
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
+    Q_UNUSED(position); 
     // ask workbenches and view provider, ...
     MenuItem* view = new MenuItem;
     Gui::Application::Instance->setupContextMenu("View", view);

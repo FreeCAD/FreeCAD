@@ -70,8 +70,9 @@ CommandIconView::~CommandIconView ()
 /**
  * Stores the name of the selected commands for drag and drop. 
  */
-void CommandIconView::startDrag ( Qt::DropActions supportedActions )
+void CommandIconView::startDrag (Qt::DropActions supportedActions)
 {
+    Q_UNUSED(supportedActions);
     QList<QListWidgetItem*> items = selectedItems();
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
@@ -284,6 +285,7 @@ void ActionSelector::onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)
 
 void ActionSelector::onItemDoubleClicked(QTreeWidgetItem * item, int column)
 {
+    Q_UNUSED(column);
     QTreeWidget* treeWidget = item->treeWidget();
     if (treeWidget == availableWidget) {
         int index = availableWidget->indexOfTopLevelItem(item);

@@ -502,6 +502,7 @@ bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
     Base::Console().Log("Unknown spaceball event\n");
     return true;
 #else
+    Q_UNUSED(event); 
     return false;
 #endif // SPNAV_FOUND
 }

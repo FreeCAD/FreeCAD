@@ -383,7 +383,7 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     return Continue;
 }
 
-int PolyPickerSelection::locationEvent(const SoLocation2Event* const e, const QPoint& pos)
+int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoint& pos)
 {
     // do all the drawing stuff for us
     QPoint clPoint = pos;
@@ -425,7 +425,7 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const e, const QP
     return Continue;
 }
 
-int PolyPickerSelection::keyboardEvent(const SoKeyboardEvent* const e)
+int PolyPickerSelection::keyboardEvent(const SoKeyboardEvent* const)
 {
     return Continue;
 }
@@ -703,7 +703,7 @@ int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     return ret;
 }
 
-int RubberbandSelection::locationEvent(const SoLocation2Event* const e, const QPoint& pos)
+int RubberbandSelection::locationEvent(const SoLocation2Event* const, const QPoint& pos)
 {
     m_iXnew = pos.x();
     m_iYnew = pos.y();
@@ -712,7 +712,7 @@ int RubberbandSelection::locationEvent(const SoLocation2Event* const e, const QP
     return Continue;
 }
 
-int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const e)
+int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const)
 {
     return Continue;
 }

@@ -285,10 +285,25 @@ PyObject* ViewProviderDocumentObject::getPyObject()
     return pyViewObject;
 }
 
-bool ViewProviderDocumentObject::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+bool ViewProviderDocumentObject::allowDrop(const std::vector<const App::DocumentObject*> &objList,
+                                           Qt::KeyboardModifiers keys,
+                                           Qt::MouseButtons mouseBts,
+                                           const QPoint &pos)
 {
+    Q_UNUSED(objList);
+    Q_UNUSED(keys);
+    Q_UNUSED(mouseBts);
+    Q_UNUSED(pos);
     return false;
 }
-void ViewProviderDocumentObject::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+
+void ViewProviderDocumentObject::drop(const std::vector<const App::DocumentObject*> &objList,
+                                      Qt::KeyboardModifiers keys,
+                                      Qt::MouseButtons mouseBts,
+                                      const QPoint &pos)
 {
+    Q_UNUSED(objList);
+    Q_UNUSED(keys);
+    Q_UNUSED(mouseBts);
+    Q_UNUSED(pos);
 }

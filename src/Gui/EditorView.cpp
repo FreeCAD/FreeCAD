@@ -135,6 +135,7 @@ QPlainTextEdit* EditorView::getEditor() const
 
 void EditorView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
 {
+    Q_UNUSED(rCaller); 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
     if (strcmp(rcReason, "EnableLineNumber") == 0) {
         //bool show = hPrefGrp->GetBool( "EnableLineNumber", true );
@@ -167,7 +168,7 @@ void EditorView::checkTimestamp()
 /**
  * Runs the action specified by \a pMsg.
  */
-bool EditorView::onMsg(const char* pMsg,const char** ppReturn)
+bool EditorView::onMsg(const char* pMsg,const char** /*ppReturn*/)
 {
     if (strcmp(pMsg,"Save")==0){
         saveFile();
@@ -473,6 +474,7 @@ void EditorView::redoAvailable(bool redo)
 
 void EditorView::contentsChange(int position, int charsRemoved, int charsAdded)
 {
+    Q_UNUSED(position); 
     if (d->lock)
         return;
     if (charsRemoved > 0 && charsAdded > 0)
@@ -502,7 +504,7 @@ QStringList EditorView::redoActions() const
     return d->redos;;
 }
 
-void EditorView::focusInEvent (QFocusEvent * e)
+void EditorView::focusInEvent (QFocusEvent *)
 {
     d->textEdit->setFocus();
 }

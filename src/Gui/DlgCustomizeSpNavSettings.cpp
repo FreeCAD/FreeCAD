@@ -304,16 +304,19 @@ void DlgCustomizeSpNavSettings::on_SliderSpin_sliderReleased()
 void DlgCustomizeSpNavSettings::onAddMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
+    Q_UNUSED(macroName); 
 }
 
 void DlgCustomizeSpNavSettings::onRemoveMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
+    Q_UNUSED(macroName); 
 }
 
 void DlgCustomizeSpNavSettings::onModifyMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
+    Q_UNUSED(macroName); 
 }
 
 #include "moc_DlgCustomizeSpNavSettings.cpp"

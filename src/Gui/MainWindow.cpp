@@ -782,6 +782,7 @@ void MainWindow::removeWindow(Gui::MDIView* view)
 
 void MainWindow::tabChanged(MDIView* view)
 {
+    Q_UNUSED(view);
 }
 
 void MainWindow::tabCloseRequested(int index)

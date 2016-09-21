@@ -323,7 +323,7 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "getSoDBVersion() -> String\n\n"
      "Return a text string containing the name\n"
      "of the Coin library and version information"},
-    {NULL, NULL}  /* sentinel */
+    {NULL, NULL, 0, NULL}  /* sentinel */
 };
 
 
@@ -1397,7 +1397,7 @@ void messageHandler(QtMsgType type, const char *msg)
 }
 
 #ifdef FC_DEBUG // redirect Coin messages to FreeCAD
-void messageHandlerCoin(const SoError * error, void * userdata)
+void messageHandlerCoin(const SoError * error, void * /*userdata*/)
 {
     if (error && error->getTypeId() == SoDebugError::getClassTypeId()) {
         const SoDebugError* dbg = static_cast<const SoDebugError*>(error);
