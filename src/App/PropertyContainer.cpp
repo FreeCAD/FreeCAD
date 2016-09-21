@@ -259,7 +259,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
     reader.readEndElement("Properties");
 }
 
-void PropertyData::addProperty(const PropertyContainer *container,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
+void PropertyData::addProperty(const void* container,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
 {
   bool IsIn = false;
   for (vector<PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
@@ -285,7 +285,7 @@ void PropertyData::addParentPropertyData(const PropertyData* data) {
 }
 
 
-const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyContainer *container,const char* PropName) const
+const PropertyData::PropertySpec *PropertyData::findProperty(const void* container,const char* PropName) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(strcmp(It->Name,PropName)==0)
@@ -300,13 +300,13 @@ const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyConta
   return 0;
 }
 
-const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyContainer *container,const Property* prop) const
+const PropertyData::PropertySpec *PropertyData::findProperty(const void* container,const Property* prop) const
 {
   const int diff = (int) ((char*)prop - (char*)container);
 
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(diff == It->Offset)
-      return &(*It);
+        return &(*It);
   
   for(auto data : parentPropertyData) {
     auto res = data->findProperty(container,prop);
@@ -317,7 +317,7 @@ const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyConta
   return 0;
 }
 
-const char* PropertyData::getName(const PropertyContainer *container,const Property* prop) const
+const char* PropertyData::getName(const void* container,const Property* prop) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,prop);
 
@@ -338,7 +338,7 @@ const char* PropertyData::getName(const PropertyContainer *container,const Prope
   */
 }
 
-short PropertyData::getType(const PropertyContainer *container,const Property* prop) const
+short PropertyData::getType(const void* container,const Property* prop) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,prop);
 
@@ -361,7 +361,7 @@ short PropertyData::getType(const PropertyContainer *container,const Property* p
   */
 }
 
-short PropertyData::getType(const PropertyContainer *container,const char* name) const
+short PropertyData::getType(const void* container,const char* name) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,name);
 
@@ -371,7 +371,7 @@ short PropertyData::getType(const PropertyContainer *container,const char* name)
     return 0;
 }
 
-const char* PropertyData::getGroup(const PropertyContainer *container,const Property* prop) const
+const char* PropertyData::getGroup(const void* container,const Property* prop) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,prop);
 
@@ -394,7 +394,7 @@ const char* PropertyData::getGroup(const PropertyContainer *container,const Prop
   */
 }
 
-const char* PropertyData::getGroup(const PropertyContainer *container,const char* name) const
+const char* PropertyData::getGroup(const void* container,const char* name) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,name);
 
@@ -404,7 +404,7 @@ const char* PropertyData::getGroup(const PropertyContainer *container,const char
     return 0;
 }
 
-const char* PropertyData::getDocumentation(const PropertyContainer *container,const Property* prop) const
+const char* PropertyData::getDocumentation(const void* container,const Property* prop) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,prop);
 
@@ -414,7 +414,7 @@ const char* PropertyData::getDocumentation(const PropertyContainer *container,co
     return 0;
 }
 
-const char* PropertyData::getDocumentation(const PropertyContainer *container,const char* name) const
+const char* PropertyData::getDocumentation(const void* container,const char* name) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,name);
 
@@ -426,7 +426,7 @@ const char* PropertyData::getDocumentation(const PropertyContainer *container,co
 
 
 
-Property *PropertyData::getPropertyByName(const PropertyContainer *container,const char* name) const 
+Property *PropertyData::getPropertyByName(const void* container,const char* name) const 
 {
   const PropertyData::PropertySpec* Spec = findProperty(container,name);
 
@@ -449,7 +449,7 @@ Property *PropertyData::getPropertyByName(const PropertyContainer *container,con
   }*/
 }
 
-void PropertyData::getPropertyMap(const PropertyContainer *container,std::map<std::string,Property*> &Map) const
+void PropertyData::getPropertyMap(const void* container,std::map<std::string,Property*> &Map) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     Map[It->Name] = (Property *) (It->Offset + (char *)container);
@@ -467,7 +467,7 @@ void PropertyData::getPropertyMap(const PropertyContainer *container,std::map<st
   
 }
 
-void PropertyData::getPropertyList(const PropertyContainer *container,std::vector<Property*> &List) const
+void PropertyData::getPropertyList(const void* container,std::vector<Property*> &List) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     List.push_back((Property *) (It->Offset + (char *)container) );

@@ -36,7 +36,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
+EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 
 
 //===========================================================================
@@ -47,7 +47,7 @@ GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
     initExtension(GeoFeatureGroupExtension::getClassTypeId());
     
-    ADD_PROPERTY(Placement,(Base::Placement()));
+    EXTENSION_ADD_PROPERTY(Placement,(Base::Placement()));
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
@@ -148,7 +148,7 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
 // Python feature ---------------------------------------------------------
 
 namespace App {
-PROPERTY_SOURCE_TEMPLATE(App::GeoFeatureGroupExtensionPython, App::GeoFeatureGroupExtension)
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GeoFeatureGroupExtensionPython, App::GeoFeatureGroupExtension)
 
 // explicit template instantiation
 template class AppExport ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>>;

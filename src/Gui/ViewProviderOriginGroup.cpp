@@ -45,7 +45,7 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup, Gui::ViewProviderDocumentObject, (Gui::ViewProviderOriginGroupExtension))
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup, Gui::ViewProviderDocumentObject)
 
 ViewProviderOriginGroup::ViewProviderOriginGroup ()
 { 

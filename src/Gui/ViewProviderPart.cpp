@@ -43,7 +43,7 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDocumentObject, (Gui::ViewProviderOriginGroupExtension))
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDocumentObject)
 
 
 /**
