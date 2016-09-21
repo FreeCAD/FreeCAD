@@ -52,7 +52,6 @@ class CallableComboBox:
             cbox = diag.findChild(QtGui.QComboBox)
             self.test.assertIsNotNone(cbox, "ComboBox widget could not be found")
             if (cbox != None):
-                cbox.setCurrentIndex(1)
                 QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
 
 App = FreeCAD
@@ -65,7 +64,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Doc = FreeCAD.newDocument("SketchGuiTest")
 
     def testRefuseToMoveSingleFeature(self):
-        FreeCAD.Console.PrintMessage('Testing moving one feature from one body to another\n')
+        FreeCAD.Console.PrintMessage('Testing refuse to move the feature with dependecies from one body to another\n')
         self.BodySource = self.Doc.addObject('PartDesign::Body','Body')
         Gui.activeView().setActiveObject('pdbody', self.BodySource)
 
@@ -177,6 +176,8 @@ class PartDesignGuiTestCases(unittest.TestCase):
         QtCore.QTimer.singleShot(500, cobj)
         Gui.runCommand('PartDesign_MoveFeature')
         #assert depenedencies of the Sketch
+        self.Doc.recompute()      
+        
         self.assertFalse(self.Sketch.Support[0][0] in self.BodySource.Origin.OriginFeatures)
         self.assertTrue(self.Sketch.Support[0][0] in self.BodyTarget.Origin.OriginFeatures)
         self.assertEqual(len(self.BodySource.Model), 0, "Source body feature count is wrong")
