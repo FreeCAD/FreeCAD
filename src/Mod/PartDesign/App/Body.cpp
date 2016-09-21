@@ -229,7 +229,8 @@ bool Body::isSolidFeature(const App::DocumentObject* f)
     if (f == NULL)
         return false;
 
-    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
+        !PartDesign::Feature::isDatum(f)) {
         // Transformed Features inside a MultiTransform are not solid features
         return !isMemberOfMultiTransform(f);
     }
