@@ -560,7 +560,7 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
 
 // ----------------------------------------------------
 
-PyObject *UiLoaderPy::PyMake(struct _typeobject */*type*/, PyObject * args, PyObject * /*kwds*/)
+PyObject *UiLoaderPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
