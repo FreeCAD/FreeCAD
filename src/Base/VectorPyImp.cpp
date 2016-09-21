@@ -566,119 +566,119 @@ int VectorPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-PyObject * VectorPy::number_divide_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_remainder_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_divmod_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_power_handler (PyObject *self, PyObject *other, PyObject *arg)
+PyObject * VectorPy::number_power_handler (PyObject* /*self*/, PyObject* /*other*/, PyObject* /*arg*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_negative_handler (PyObject *self)
+PyObject * VectorPy::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_positive_handler (PyObject *self)
+PyObject * VectorPy::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_absolute_handler (PyObject *self)
+PyObject * VectorPy::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int VectorPy::number_nonzero_handler (PyObject *self)
+int VectorPy::number_nonzero_handler (PyObject* /*self*/)
 {
     return 1;
 }
 
-PyObject * VectorPy::number_invert_handler (PyObject *self)
+PyObject * VectorPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_lshift_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_rshift_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_and_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_xor_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_or_handler (PyObject *self, PyObject *other)
+PyObject * VectorPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int VectorPy::number_coerce_handler (PyObject **self, PyObject **other)
+int VectorPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
 {
     return 1;
 }
 
-PyObject * VectorPy::number_int_handler (PyObject *self)
+PyObject * VectorPy::number_int_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_long_handler (PyObject *self)
+PyObject * VectorPy::number_long_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_float_handler (PyObject *self)
+PyObject * VectorPy::number_float_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_oct_handler (PyObject *self)
+PyObject * VectorPy::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * VectorPy::number_hex_handler (PyObject *self)
+PyObject * VectorPy::number_hex_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;

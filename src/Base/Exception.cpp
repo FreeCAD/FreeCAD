@@ -400,7 +400,7 @@ SignalException::~SignalException()
 
 void SignalException::throw_signal(int signum)
 {
-    std::cerr << "SIGSEGV signal raised" << std::endl;
+    std::cerr << "SIGSEGV signal raised: " << signum << std::endl;
     throw std::runtime_error ("throw_signal");
 }
 #endif
