@@ -71,7 +71,8 @@ class PathWorkbench (Workbench):
 
         # build commands list
         projcmdlist = ["Path_Project", "Path_Post", "Path_Inspect", "Path_Sanity"]
-        toolcmdlist = ["Path_ToolTableEdit", "Path_ToolLibraryEdit", "Path_LoadTool"]
+        #toolcmdlist = ["Path_ToolTableEdit", "Path_ToolLibraryEdit", "Path_LoadTool"]
+        toolcmdlist = ["Path_ToolTableEdit", "Path_LoadTool"]
         prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment",
                        "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
         opcmdlist = ["Path_Profile", "Path_Pocket",
