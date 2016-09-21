@@ -49,7 +49,7 @@ const App::PropertyData & _class_::extensionGetPropertyData(void) const{return p
 App::PropertyData _class_::propertyData; \
 void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  _class_::propertyData.addParentPropertyData(_parentclass_::extensionGetPropertyDataPtr());\
+  _class_::propertyData.parentPropertyData = _parentclass_::extensionGetPropertyDataPtr();\
 }
 
 #define EXTENSION_PROPERTY_SOURCE_TEMPLATE(_class_, _parentclass_) \
@@ -59,7 +59,7 @@ template<> const App::PropertyData * _class_::extensionGetPropertyDataPtr(void){
 template<> const App::PropertyData & _class_::extensionGetPropertyData(void) const{return propertyData;} \
 template<> void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  _class_::propertyData.addParentPropertyData(_parentclass_::extensionGetPropertyDataPtr());\
+  _class_::propertyData.parentPropertyData = _parentclass_::extensionGetPropertyDataPtr();\
 }
   
 /**

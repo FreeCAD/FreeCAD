@@ -130,7 +130,8 @@ void PropertyLink::Restore(Base::XMLReader &reader)
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
 
     if (name != "") {
-        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+
         App::Document* document = parent->getDocument();
         DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
         if (!object) {
@@ -479,9 +480,7 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
 
     DocumentObject *pcObject;
     if (!name.empty()) {
-        
-        auto* parent = static_cast<DocumentObject*>(getContainer());
-        App::Document* document = parent->getDocument();
+        App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
         pcObject = document ? document->getObject(name.c_str()) : 0;
         if (!pcObject) {
             if (reader.isVerbose()) {

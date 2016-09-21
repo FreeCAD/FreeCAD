@@ -298,7 +298,6 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
         PyObject* proxy = 0;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)node, 1);
         return Py::new_reference_to(Py::Object(proxy, true));
-
     }
     catch (const Base::Exception& e) {
         if (node) node->unref();
