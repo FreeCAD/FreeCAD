@@ -231,7 +231,9 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             if(!selObj)
                 return;
             // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+            if ( selectionMode == reference || 
+                selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ||
+                selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ) {
                 pcPolarPattern->Axis.setValue(selObj, axes);
 
                 recomputeFeature();
