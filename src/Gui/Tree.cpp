@@ -626,6 +626,7 @@ void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
 void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 {
     // do nothing here
+    Q_UNUSED(Doc); 
 }
 
 void TreeWidget::slotRelabelDocument(const Gui::Document& Doc)
@@ -1054,6 +1055,7 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
     // Do nothing here because the Label is set in slotChangeObject
+    Q_UNUSED(obj); 
 }
 
 void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
@@ -1184,6 +1186,7 @@ void DocumentItem::setData (int column, int role, const QVariant & value)
 
 void DocumentItem::setObjectHighlighted(const char* name, bool select)
 {
+    Q_UNUSED(select); 
     std::map<std::string,DocumentObjectItem*>::iterator pos;
     pos = ObjectMap.find(name);
     if (pos != ObjectMap.end()) {

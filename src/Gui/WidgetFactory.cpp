@@ -560,7 +560,7 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
 
 // ----------------------------------------------------
 
-PyObject *UiLoaderPy::PyMake(struct _typeobject *type, PyObject * args, PyObject * kwds)
+PyObject *UiLoaderPy::PyMake(struct _typeobject */*type*/, PyObject * args, PyObject * /*kwds*/)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
@@ -1167,7 +1167,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 /**
  * If any resouce has been loaded this methods shows it as a modal dialog.
  */
-Py::Object PyResource::show(const Py::Tuple& args)
+Py::Object PyResource::show(const Py::Tuple&)
 {
     if (myDlg) {
         // small trick to get focus

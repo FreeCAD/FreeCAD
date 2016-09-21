@@ -118,19 +118,23 @@ void DlgWorkbenchesImp::changeEvent(QEvent *e)
 
 void DlgWorkbenchesImp::hideEvent(QHideEvent * event)
 {
+    Q_UNUSED(event); 
     save_workbenches();
 }
 
 void DlgWorkbenchesImp::onAddMacroAction(const QByteArray& macro)
 {
+    Q_UNUSED(macro); 
 }
 
 void DlgWorkbenchesImp::onRemoveMacroAction(const QByteArray& macro)
 {
+    Q_UNUSED(macro); 
 }
 
 void DlgWorkbenchesImp::onModifyMacroAction(const QByteArray& macro)
 {
+    Q_UNUSED(macro); 
 }
 
 void DlgWorkbenchesImp::move_workbench(QListWidgetCustom *lwc_dest,

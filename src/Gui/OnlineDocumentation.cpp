@@ -424,6 +424,7 @@ StdCmdPythonHelp::~StdCmdPythonHelp()
 
 void StdCmdPythonHelp::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     // try to open a connection over this port
     qint16 port = 7465;
     if (!this->server)

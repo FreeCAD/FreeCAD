@@ -356,6 +356,8 @@ void NetworkRetriever::abort()
 
 void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
 {
+    Q_UNUSED(exitCode); 
+    Q_UNUSED(status); 
     wget->setReadChannel(QProcess::StandardError);
     if (wget->canReadLine()) {
         QByteArray data = wget->readAll();
@@ -455,6 +457,7 @@ void StdCmdDownloadOnlineHelp::languageChange()
 
 void StdCmdDownloadOnlineHelp::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     if (!wget->isDownloading()) {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hGrp = hGrp->GetGroup("Preferences")->GetGroup("OnlineHelp");

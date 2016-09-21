@@ -67,7 +67,7 @@ SelectionFilterGate::~SelectionFilterGate()
     delete Filter;
 }
 
-bool SelectionFilterGate::allow(App::Document*pDoc,App::DocumentObject*pObj, const char*sSubName)
+bool SelectionFilterGate::allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
 {
     return Filter->test(pObj,sSubName);
 }
@@ -276,6 +276,8 @@ Py::Object SelectionFilterPy::repr()
 
 Py::Object SelectionFilterPy::match(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Boolean(filter.match());
 }
 

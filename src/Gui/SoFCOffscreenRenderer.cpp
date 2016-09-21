@@ -532,7 +532,7 @@ SoQtOffscreenRenderer::getPbufferEnable(void) const
 // *************************************************************************
 
 void
-SoQtOffscreenRenderer::pre_render_cb(void * userdata, SoGLRenderAction * action)
+SoQtOffscreenRenderer::pre_render_cb(void * /*userdata*/, SoGLRenderAction * action)
 {
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
     action->setRenderingIsRemote(false);

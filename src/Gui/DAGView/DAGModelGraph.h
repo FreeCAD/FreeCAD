@@ -220,6 +220,7 @@ namespace Gui
       template<typename TVertex, typename TGraph>
       void discover_vertex(TVertex vertex, TGraph &graph)
       {
+        Q_UNUSED(graph); 
         vertices.push_back(vertex);
       }
     private:

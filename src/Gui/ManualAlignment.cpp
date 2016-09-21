@@ -488,6 +488,8 @@ public:
     void copyCameraSettings(SoCamera* cam1, SbRotation& rot_cam1, SbVec3f& pos_cam1,
                             SoCamera* cam2, SbRotation& rot_cam2, SbVec3f& pos_cam2)
     {
+        Q_UNUSED(pos_cam2);
+ 
         // recompute the diff we have applied to the camera's orientation
         SbRotation rot = cam1->orientation.getValue();
         SbRotation dif = rot * rot_cam1.inverse();
@@ -1167,6 +1169,8 @@ void ManualAlignment::onCancel()
 
 void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
 {
+    Q_UNUSED(ud); 
+
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
     const SoEvent* ev = n->getEvent();
     if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {

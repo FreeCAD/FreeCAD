@@ -61,7 +61,7 @@ FileDialog::~FileDialog()
 {
 }
 
-void FileDialog::onSelectedFilter(const QString& filter)
+void FileDialog::onSelectedFilter(const QString& /*filter*/)
 {
     QRegExp rx(QLatin1String("\\(\\*.(\\w+)"));
     QString suf = selectedNameFilter();

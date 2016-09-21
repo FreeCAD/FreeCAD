@@ -319,7 +319,7 @@ Py::Object DocumentPy::getActiveObject(void) const
     }
 }
 
-void  DocumentPy::setActiveObject(Py::Object arg)
+void  DocumentPy::setActiveObject(Py::Object /*arg*/)
 {
     throw Py::AttributeError("'Document' object attribute 'ActiveObject' is read-only");
 }
@@ -335,7 +335,7 @@ Py::Object DocumentPy::getActiveView(void) const
     }
 }
 
-void  DocumentPy::setActiveView(Py::Object arg)
+void  DocumentPy::setActiveView(Py::Object /*arg*/)
 {
     throw Py::AttributeError("'Document' object attribute 'ActiveView' is read-only");
 }

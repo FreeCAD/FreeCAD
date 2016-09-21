@@ -468,6 +468,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
 
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
+    Q_UNUSED(doc); 
     if (!ActiveDialog)
         updateWatcher();
 }
@@ -494,6 +495,7 @@ void TaskView::slotRedoDocument(const App::Document&)
 void TaskView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                         Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     std::string temp;
 
     if (Reason.Type == SelectionChanges::AddSelection ||

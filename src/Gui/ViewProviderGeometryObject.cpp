@@ -196,6 +196,8 @@ void ViewProviderGeometryObject::setupContextMenu(QMenu* menu, QObject* receiver
 
 bool ViewProviderGeometryObject::setEdit(int ModNum)
 {
+  Q_UNUSED(ModNum);
+
   App::DocumentObject *genericObject = this->getObject();
   if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
   {
@@ -230,6 +232,8 @@ bool ViewProviderGeometryObject::setEdit(int ModNum)
 
 void ViewProviderGeometryObject::unsetEdit(int ModNum)
 {
+  Q_UNUSED(ModNum);
+
   if(csysDragger)
   {
     pcTransform->translation.disconnect(&csysDragger->translation);
@@ -243,6 +247,8 @@ void ViewProviderGeometryObject::unsetEdit(int ModNum)
 
 void ViewProviderGeometryObject::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
+    Q_UNUSED(ModNum);
+
     if (csysDragger && viewer)
     {
       SoPickStyle *rootPickStyle = new SoPickStyle();
@@ -259,7 +265,7 @@ void ViewProviderGeometryObject::unsetEditViewer(Gui::View3DInventorViewer* view
     static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
 }
 
-void ViewProviderGeometryObject::dragStartCallback(void *data, SoDragger *)
+void ViewProviderGeometryObject::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand("Transform");

@@ -55,6 +55,7 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
 
 void StdCmdDlgMacroRecord::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -83,6 +84,7 @@ StdCmdMacroStopRecord::StdCmdMacroStopRecord()
 
 void StdCmdMacroStopRecord::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getGuiApplication()->macroManager()->commit();
 }
 
@@ -110,6 +112,7 @@ StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
 
 void StdCmdDlgMacroExecute::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgMacroExecuteImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -139,6 +142,7 @@ StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
 
 void StdCmdDlgMacroExecuteDirect::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Run\")");
 }
 
@@ -164,6 +168,7 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
 
 void StdCmdMacroStartDebug::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
     if (!dbg->isRunning())
         doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"StartDebug\")");
@@ -193,6 +198,7 @@ StdCmdMacroStopDebug::StdCmdMacroStopDebug()
 
 void StdCmdMacroStopDebug::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Application::Instance->macroManager()->debugger()->tryStop();
 }
 
@@ -219,6 +225,7 @@ StdCmdMacroStepOver::StdCmdMacroStepOver()
 
 void StdCmdMacroStepOver::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Application::Instance->macroManager()->debugger()->stepOver();
 }
 
@@ -245,6 +252,7 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
 
 void StdCmdMacroStepInto::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Application::Instance->macroManager()->debugger()->stepInto();
 }
 
@@ -271,6 +279,7 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 
 void StdCmdToggleBreakpoint::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ToggleBreakpoint\")");
 }
 

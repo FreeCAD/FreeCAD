@@ -79,6 +79,7 @@ void Thumbnail::Save (Base::Writer &writer) const
 
 void Thumbnail::Restore(Base::XMLReader &reader)
 {
+    Q_UNUSED(reader); 
     //reader.addFile("Thumbnail.png",this);
 }
 
@@ -124,6 +125,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
 
 void Thumbnail::RestoreDocFile(Base::Reader &reader)
 {
+    Q_UNUSED(reader); 
 }
 
 void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const

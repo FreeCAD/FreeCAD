@@ -739,8 +739,9 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+
     QDir d;
-    
     if(!systemMacro) {
 	std::string cMacroPath;
 	

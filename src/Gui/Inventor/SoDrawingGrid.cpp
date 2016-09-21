@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 
 #include "SoDrawingGrid.h"
+#include <QObject>
 
 using namespace Gui::Inventor;
 
@@ -174,10 +175,14 @@ SoDrawingGrid::GLRenderOffPath(SoGLRenderAction *)
 void
 SoDrawingGrid::generatePrimitives(SoAction* action)
 {
+    Q_UNUSED(action); 
 }
 
 void
 SoDrawingGrid::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
 {
+    Q_UNUSED(action); 
+    Q_UNUSED(box); 
+    Q_UNUSED(center); 
     //SoState*  state = action->getState();
 }

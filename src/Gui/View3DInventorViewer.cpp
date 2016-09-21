@@ -590,6 +590,7 @@ void View3DInventorViewer::initialize()
 void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                                     Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
@@ -715,7 +716,7 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
     overrideMode = mode;
 }
 
-void View3DInventorViewer::setViewportCB(void* userdata, SoAction* action)
+void View3DInventorViewer::setViewportCB(void*, SoAction* action)
 {
     // Make sure to override the value set inside SoOffscreenRenderer::render()
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
@@ -726,7 +727,7 @@ void View3DInventorViewer::setViewportCB(void* userdata, SoAction* action)
     }
 }
 
-void View3DInventorViewer::clearBufferCB(void* userdata, SoAction* action)
+void View3DInventorViewer::clearBufferCB(void*, SoAction* action)
 {
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         // do stuff specific for GL rendering here.
@@ -1188,7 +1189,7 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
 /**
  * Sets the SoFCInteractiveElement to \a true.
  */
-void View3DInventorViewer::interactionStartCB(void* data, SoQTQuarterAdaptor* viewer)
+void View3DInventorViewer::interactionStartCB(void*, SoQTQuarterAdaptor* viewer)
 {
     SoGLRenderAction* glra = viewer->getSoRenderManager()->getGLRenderAction();
     SoFCInteractiveElement::set(glra->getState(), viewer->getSceneGraph(), true);
@@ -1197,7 +1198,7 @@ void View3DInventorViewer::interactionStartCB(void* data, SoQTQuarterAdaptor* vi
 /**
  * Sets the SoFCInteractiveElement to \a false and forces a redraw.
  */
-void View3DInventorViewer::interactionFinishCB(void* data, SoQTQuarterAdaptor* viewer)
+void View3DInventorViewer::interactionFinishCB(void*, SoQTQuarterAdaptor* viewer)
 {
     SoGLRenderAction* glra = viewer->getSoRenderManager()->getGLRenderAction();
     SoFCInteractiveElement::set(glra->getState(), viewer->getSceneGraph(), false);
@@ -1207,7 +1208,7 @@ void View3DInventorViewer::interactionFinishCB(void* data, SoQTQuarterAdaptor* v
 /**
  * Logs the type of the action that traverses the Inventor tree.
  */
-void View3DInventorViewer::interactionLoggerCB(void* ud, SoAction* action)
+void View3DInventorViewer::interactionLoggerCB(void*, SoAction* action)
 {
     Base::Console().Log("%s\n", action->getTypeId().getName().getString());
 }
@@ -2268,7 +2269,7 @@ View3DInventorViewer::getFeedbackSize(void) const
   Decide whether or not the mouse pointer cursor should be visible in
   the rendering canvas.
 */
-void View3DInventorViewer::setCursorEnabled(SbBool enable)
+void View3DInventorViewer::setCursorEnabled(SbBool /*enable*/)
 {
     this->setCursorRepresentation(navigation->getViewingMode());
 }

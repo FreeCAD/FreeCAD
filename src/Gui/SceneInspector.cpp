@@ -48,6 +48,7 @@ SceneModel::~SceneModel()
 
 int SceneModel::columnCount (const QModelIndex & parent) const
 {
+    Q_UNUSED(parent); 
     return 2;
 }
 

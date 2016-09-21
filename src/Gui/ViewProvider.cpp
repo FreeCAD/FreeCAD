@@ -123,15 +123,18 @@ void ViewProvider::finishEditing()
 
 bool ViewProvider::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
     return true;
 }
 
 void ViewProvider::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
 }
 
 void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 {
+    Q_UNUSED(ModNum); 
 }
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
@@ -150,8 +153,7 @@ void ViewProvider::setUpdatesEnabled (bool enable)
 
 void highlight(const HighlightMode& high)
 {
-
-
+    Q_UNUSED(high); 
 }
 
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)

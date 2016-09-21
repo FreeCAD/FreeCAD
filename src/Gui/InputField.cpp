@@ -621,6 +621,7 @@ void InputField::fixup(QString& input) const
 
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
+    Q_UNUSED(pos);
     try {
         Quantity res;
         QString text = input;

@@ -58,7 +58,7 @@ void SoFCBackgroundGradient::initClass(void)
     SO_NODE_INIT_CLASS(SoFCBackgroundGradient,SoNode,"Node");
 }
 
-void SoFCBackgroundGradient::GLRender (SoGLRenderAction *action)
+void SoFCBackgroundGradient::GLRender (SoGLRenderAction * /*action*/)
 {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

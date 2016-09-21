@@ -187,6 +187,7 @@ void ActionGroup::processShow()
 
 void ActionGroup::paintEvent ( QPaintEvent * event )
 {
+  Q_UNUSED(event); 
   QPainter p(this);
 
   if (myDummy->isVisible()) {

@@ -129,16 +129,20 @@ public:
     virtual SoDetail* getDetail(const char*) const { return 0; }
     virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const;
     /// return the higlight lines for a given element or the whole shape
-    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const
-    { return std::vector<Base::Vector3d>(); }
+    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
+        (void)Element;
+        return std::vector<Base::Vector3d>();
+    }
     /**
      * Get called if the object is about to get deleted.
      * Here you can delete other objects, switch their visibility or prevent the deletion of the object.
      * @param subNames  list of selected subelements
      * @return          true if the deletion is approoved by the view provider.
      */
-    virtual bool onDelete(const std::vector<std::string> &subNames)
-    { return true;}
+    virtual bool onDelete(const std::vector<std::string> &subNames) {
+        (void)subNames;
+        return true;
+    }
     //@}
 
 
@@ -286,17 +290,29 @@ public:
     //@}
 
     /// is called when the provider is in edit and a key event occurs. Only ESC ends edit.
-    virtual bool keyPressed(bool pressed, int key) { return false; }
+    virtual bool keyPressed(bool pressed, int key) {
+        (void)pressed;
+        (void)key;
+        return false;
+    }
     /// is called by the tree if the user double click on the object
     virtual bool doubleClicked(void) { return false; }
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos,
-                           View3DInventorViewer* viewer)
-    { return false; }
+                           View3DInventorViewer* viewer) {
+        (void)cursorPos;
+        (void)viewer;
+        return false;
+    }
     /// is called when the Provider is in edit and the mouse is clicked 
     virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
-                                    const View3DInventorViewer* viewer)
-    { return false; }
+                                    const View3DInventorViewer* viewer) {
+        (void)button;
+        (void)pressed;
+        (void)cursorPos;
+        (void)viewer;
+        return false;
+    }
     /// set up the context-menu with the supported edit modes
     virtual void setupContextMenu(QMenu*, QObject*, const char*) {}
 

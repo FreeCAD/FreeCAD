@@ -57,6 +57,7 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
 
 void StdCmdFeatRecompute::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
 }
 
 //===========================================================================
@@ -77,6 +78,8 @@ StdCmdRandomColor::StdCmdRandomColor()
 
 void StdCmdRandomColor::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
     for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {

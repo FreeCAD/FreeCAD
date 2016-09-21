@@ -174,7 +174,7 @@ PyMethodDef Application::Methods[] = {
     "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
     "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
 
-  {NULL, NULL}		/* Sentinel */
+  {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
 PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
@@ -803,8 +803,11 @@ PyObject* Application::sGetWorkbenchHandler(PyObject * /*self*/, PyObject *args,
     return pcWorkbench;
 }
 
-PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                       // NULL triggers exception
+
     Py_INCREF(Instance->_pcWorkbenchDictionary);
     return Instance->_pcWorkbenchDictionary;
 }
