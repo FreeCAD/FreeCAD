@@ -945,7 +945,7 @@ def export(exportList,filename):
     global template
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
     if hasattr(ifcopenshell,"schema_identifier"):
-        schemaifcopenshell.schema_identifier
+        schema = ifcopenshell.schema_identifier
     else:
         schema = "IFC2X3"
     template = template.replace("$ifcschema",schema)
