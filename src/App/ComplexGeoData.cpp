@@ -92,3 +92,59 @@ Base::Placement ComplexGeoData::getPlacement() const
                                           mat[2][3]),
                            Base::Rotation(mat));
 }
+
+void ComplexGeoData::getLinesFromSubelement(const Segment*,
+                                            std::vector<Base::Vector3d> &Points,
+                                            std::vector<Line> &lines) const
+{
+    (void)Points;
+    (void)lines;
+}
+
+void ComplexGeoData::getFacesFromSubelement(const Segment*,
+                                            std::vector<Base::Vector3d> &Points,
+                                            std::vector<Base::Vector3d> &PointNormals,
+                                            std::vector<Facet> &faces) const
+{
+    (void)Points;
+    (void)PointNormals;
+    (void)faces;
+}
+
+Base::Vector3d ComplexGeoData::getPointFromLineIntersection(const Base::Vector3f& base,
+                                                            const Base::Vector3f& dir) const
+{
+    (void)base;
+    (void)dir;
+    return Base::Vector3d();
+}
+
+void ComplexGeoData::getPoints(std::vector<Base::Vector3d> &Points,
+                               std::vector<Base::Vector3d> &Normals,
+                               float Accuracy, uint16_t flags) const
+{
+    (void)Points;
+    (void)Normals;
+    (void)Accuracy;
+    (void)flags;
+}
+
+void ComplexGeoData::getLines(std::vector<Base::Vector3d> &Points,
+                              std::vector<Line> &lines,
+                              float Accuracy, uint16_t flags) const
+{
+    (void)Points;
+    (void)lines;
+    (void)Accuracy;
+    (void)flags;
+}
+
+void ComplexGeoData::getFaces(std::vector<Base::Vector3d> &Points,
+                              std::vector<Facet> &faces,
+                              float Accuracy, uint16_t flags) const
+{
+    (void)Points;
+    (void)faces;
+    (void)Accuracy;
+    (void)flags;
+}

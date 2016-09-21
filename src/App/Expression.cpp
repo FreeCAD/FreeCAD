@@ -1619,7 +1619,7 @@ int ConstantExpression::priority() const
 TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
 
 BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
-    : NumberExpression(owner, _value ? 1.0 : 0.0)
+    : NumberExpression(_owner, _value ? 1.0 : 0.0)
 {
 }
 
@@ -1699,6 +1699,7 @@ namespace ExpressionParser {
 
 void ExpressionParser_yyerror(const char *errorinfo)
 {
+    (void)errorinfo;
 }
 
 /* helper function for tuning number strings with groups in a locale agnostic way... */

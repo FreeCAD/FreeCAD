@@ -92,7 +92,7 @@ public:
 
     virtual int priority() const { return 0; }
 
-    virtual void getDeps(std::set<ObjectIdentifier> &props) const { }
+    virtual void getDeps(std::set<ObjectIdentifier> &/*props*/) const { }
 
     virtual Expression * simplify() const = 0;
 
