@@ -1449,7 +1449,7 @@ MeshObject* MeshObject::createMeshFromList(Py::List& list)
     }
 
     Base::EmptySequencer seq;
-    std::auto_ptr<MeshObject> mesh(new MeshObject);
+    std::unique_ptr<MeshObject> mesh(new MeshObject);
     //mesh->addFacets(facets);
     mesh->getKernel() = facets;
     return mesh.release();

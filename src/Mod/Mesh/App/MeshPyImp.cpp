@@ -245,7 +245,7 @@ PyObject*  MeshPy::write(PyObject *args)
             format = ext[Ext];
         }
 
-        std::auto_ptr<MeshCore::Material> mat;
+        std::unique_ptr<MeshCore::Material> mat;
         if (List) {
             mat.reset(new MeshCore::Material);
             Py::List list(List);
@@ -1095,13 +1095,13 @@ PyObject*  MeshPy::fillupHoles(PyObject *args)
     if (!PyArg_ParseTuple(args, "k|if", &len,&level,&max_area))
         return NULL;
     try {
-        std::auto_ptr<MeshCore::AbstractPolygonTriangulator> tria;
+        std::unique_ptr<MeshCore::AbstractPolygonTriangulator> tria;
         if (max_area > 0.0f) {
-            tria = std::auto_ptr<MeshCore::AbstractPolygonTriangulator>
+            tria = std::unique_ptr<MeshCore::AbstractPolygonTriangulator>
                 (new MeshCore::ConstraintDelaunayTriangulator(max_area));
         }
         else {
-            tria = std::auto_ptr<MeshCore::AbstractPolygonTriangulator>
+            tria = std::unique_ptr<MeshCore::AbstractPolygonTriangulator>
                 (new MeshCore::FlatTriangulator());
         }
 

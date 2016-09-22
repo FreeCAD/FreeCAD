@@ -801,7 +801,7 @@ void CmdSpreadsheetSetAlias::activated(int iMsg)
                 range.push_back(Range(selection[0].row(), selection[0].column(),
                                       selection[0].row(), selection[0].column()));
 
-                std::auto_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, range, sheetView));
+                std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, range, sheetView));
 
                 dialog->selectAlias();
 

@@ -156,7 +156,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         mesh->load(EncodedName.c_str());
         return Py::asObject(new MeshPy(mesh.release()));
     }
@@ -183,7 +183,7 @@ private:
                     if (groupName.empty())
                         groupName = file.fileNamePure();
 
-                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
+                    std::unique_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
                     Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
                         (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
                     pcFeature->Label.setValue(groupName.c_str());
@@ -248,7 +248,7 @@ private:
                     if (groupName.empty())
                         groupName = file.fileNamePure();
 
-                    std::auto_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
+                    std::unique_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
                     Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
                         (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
                     pcFeature->Label.setValue(groupName.c_str());
@@ -448,7 +448,7 @@ private:
         TriaList.push_back(MeshCore::MeshGeomFacet(Base::Vector3f(-hx, -hy, 0.0),Base::Vector3f(hx, hy, 0.0),Base::Vector3f(-hx, hy, 0.0)));
         TriaList.push_back(MeshCore::MeshGeomFacet(Base::Vector3f(-hx, -hy, 0.0),Base::Vector3f(hx, -hy, 0.0),Base::Vector3f(hx, hy, 0.0)));
 
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         mesh->addFacets(TriaList);
         return Py::asObject(new MeshPy(mesh.release()));
     }

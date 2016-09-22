@@ -216,7 +216,7 @@ bool
 SceneEventFilter::eventFilter(QObject * obj, QEvent * qevent)
 {
     // Convert the scene event back to a standard event
-    std::auto_ptr<QEvent> sceneev;
+    std::unique_ptr<QEvent> sceneev;
     switch (qevent->type()) {
     //GraphicsSceneContextMenu = 159,
     //GraphicsSceneHoverEnter = 160,

@@ -276,7 +276,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
     try {
         Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
         if (base && base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
-            std::auto_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
+            std::unique_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
             std::map<std::string, App::Property*> Map;
             obj->getPropertyMap(Map);
             vp->attach(obj);
@@ -697,7 +697,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         setActiveDocument(0);
 
     // For exception-safety use a smart pointer
-    auto_ptr<Document> delDoc (doc->second);
+    unique_ptr<Document> delDoc (doc->second);
     d->documents.erase(doc);
 }
 

@@ -397,7 +397,7 @@ private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
 
 private:
-    std::auto_ptr<SequencerLauncher> _seq;
+    std::unique_ptr<SequencerLauncher> _seq;
 };
 
 } // namespace Base

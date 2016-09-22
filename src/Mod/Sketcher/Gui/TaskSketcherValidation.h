@@ -63,7 +63,7 @@ private:
     void hidePoints();
 
 private:
-    std::auto_ptr<Ui_TaskSketcherValidation> ui;
+    std::unique_ptr<Ui_TaskSketcherValidation> ui;
     Sketcher::SketchObject* sketch;
     SoGroup* coincidenceRoot;
 

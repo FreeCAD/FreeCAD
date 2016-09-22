@@ -82,7 +82,7 @@ App::DocumentObjectExecReturn *HarmonizeNormals::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->harmonizeNormals();
         this->Mesh.setValuePtr(mesh.release());
@@ -110,7 +110,7 @@ App::DocumentObjectExecReturn *FlipNormals::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->flipNormals();
         this->Mesh.setValuePtr(mesh.release());
@@ -138,7 +138,7 @@ App::DocumentObjectExecReturn *FixNonManifolds::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->removeNonManifolds();
         this->Mesh.setValuePtr(mesh.release());
@@ -166,7 +166,7 @@ App::DocumentObjectExecReturn *FixDuplicatedFaces::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->removeDuplicatedFacets();
         this->Mesh.setValuePtr(mesh.release());
@@ -194,7 +194,7 @@ App::DocumentObjectExecReturn *FixDuplicatedPoints::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->removeDuplicatedPoints();
         this->Mesh.setValuePtr(mesh.release());
@@ -222,7 +222,7 @@ App::DocumentObjectExecReturn *FixDegenerations::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->validateDegenerations(static_cast<float>(Epsilon.getValue()));
         this->Mesh.setValuePtr(mesh.release());
@@ -251,7 +251,7 @@ App::DocumentObjectExecReturn *FixDeformations::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->validateDeformations(static_cast<float>(MaxAngle.getValue()),
                                    static_cast<float>(Epsilon.getValue()));
@@ -280,7 +280,7 @@ App::DocumentObjectExecReturn *FixIndices::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->validateIndices();
         this->Mesh.setValuePtr(mesh.release());
@@ -310,7 +310,7 @@ App::DocumentObjectExecReturn *FillHoles::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         MeshCore::ConstraintDelaunayTriangulator cTria((float)MaxArea.getValue());
         //MeshCore::Triangulator cTria(mesh->getKernel());
@@ -341,7 +341,7 @@ App::DocumentObjectExecReturn *RemoveComponents::execute(void)
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
-        std::auto_ptr<MeshObject> mesh(new MeshObject);
+        std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
         mesh->removeComponents(RemoveCompOfSize.getValue());
         this->Mesh.setValuePtr(mesh.release());

@@ -110,7 +110,7 @@ Twist Path_Composite::Acc(double s,double sd,double sdd) const {
 }
 
 Path* Path_Composite::Clone()  {
-	std::auto_ptr<Path_Composite> comp( new Path_Composite() );
+	std::unique_ptr<Path_Composite> comp( new Path_Composite() );
 	for (unsigned int i = 0; i < dv.size(); ++i) {
 		comp->Add(gv[i].first->Clone(), gv[i].second);
 	}

@@ -1825,19 +1825,19 @@ PyObject* TopoShapePy::getElement(PyObject *args)
 
     try {
         if (name.size() > 4 && name.substr(0,4) == "Face" && name[4]>=48 && name[4]<=57) {
-            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(input)));
             TopoDS_Shape Shape = s->Shape;
             return new TopoShapeFacePy(new TopoShape(Shape));
         }
         else if (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) {
-            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(input)));
             TopoDS_Shape Shape = s->Shape;
             return new TopoShapeEdgePy(new TopoShape(Shape));
         }
         else if (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57) {
-            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(input)));
             TopoDS_Shape Shape = s->Shape;
             return new TopoShapeVertexPy(new TopoShape(Shape));
@@ -2388,19 +2388,19 @@ PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
     std::string name(attr);
     try {
         if (name.size() > 4 && name.substr(0,4) == "Face" && name[4]>=48 && name[4]<=57) {
-            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(attr)));
             TopoDS_Shape Shape = s->Shape;
             return new TopoShapeFacePy(new TopoShape(Shape));
         }
         else if (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) {
-            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(attr)));
             TopoDS_Shape Shape = s->Shape;
             return new TopoShapeEdgePy(new TopoShape(Shape));
         }
         else if (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57) {
-            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(attr)));
             TopoDS_Shape Shape = s->Shape;
             return new TopoShapeVertexPy(new TopoShape(Shape));

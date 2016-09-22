@@ -40,7 +40,7 @@ public:
     virtual Standard_Boolean UserBreak();
 
 private:
-    std::auto_ptr<Base::SequencerLauncher> myProgress;
+    std::unique_ptr<Base::SequencerLauncher> myProgress;
 };
 
 }

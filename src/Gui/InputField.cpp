@@ -241,7 +241,7 @@ void InputField::newInput(const QString & text)
 
             setExpression(e);
 
-            std::auto_ptr<Expression> evalRes(getExpression()->eval());
+            std::unique_ptr<Expression> evalRes(getExpression()->eval());
 
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
             if (value) {

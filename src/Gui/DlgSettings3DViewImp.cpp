@@ -135,7 +135,7 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
 
     QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
-    std::auto_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
+    std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
     ui.groupBox->setTitle(ui.groupBox->title()+QString::fromLatin1(" ")+comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));

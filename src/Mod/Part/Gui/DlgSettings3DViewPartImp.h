@@ -51,7 +51,7 @@ private Q_SLOTS:
     void on_maxDeviation_valueChanged(double);
 
 private:
-    std::auto_ptr<Ui_DlgSettings3DViewPart> ui;
+    std::unique_ptr<Ui_DlgSettings3DViewPart> ui;
     bool checkValue;
 };
 

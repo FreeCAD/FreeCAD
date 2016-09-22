@@ -292,7 +292,7 @@ void Gui::QuantitySpinBox::onChange() {
     Q_ASSERT(isBound());
     
     if (getExpression()) {
-        std::auto_ptr<Expression> result(getExpression()->eval());
+        std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
         if (value) {
@@ -345,7 +345,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
     try {
         if (isBound() && getExpression()) {
-            std::auto_ptr<Expression> result(getExpression()->eval());
+            std::unique_ptr<Expression> result(getExpression()->eval());
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
             if (value) {

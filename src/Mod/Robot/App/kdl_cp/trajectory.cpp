@@ -55,15 +55,15 @@ namespace KDL {
 using namespace std;
 
 Trajectory* Trajectory::Read(std::istream& is) {
-	// auto_ptr because exception can be thrown !
+	// unique_ptr because exception can be thrown !
 	IOTrace("Trajectory::Read");
 	char storage[64];
 	EatWord(is,"[",storage,sizeof(storage));
 	Eat(is,'[');
 	if (strcmp(storage,"SEGMENT")==0) {
 		IOTrace("SEGMENT");
-		auto_ptr<Path>      geom(    Path::Read(is)       );
-		auto_ptr<VelocityProfile> motprof( VelocityProfile::Read(is)  );
+		unique_ptr<Path>      geom(    Path::Read(is)       );
+		unique_ptr<VelocityProfile> motprof( VelocityProfile::Read(is)  );
 		EatEnd(is,']');
 		IOTracePop();
 		IOTracePop();

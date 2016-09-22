@@ -63,7 +63,7 @@ protected Q_SLOTS:
 private:
     Base::Quantity actValue;
     Base::Quantity actUnit;
-    std::auto_ptr<Ui_DlgUnitCalculator> ui;
+    std::unique_ptr<Ui_DlgUnitCalculator> ui;
     QList<Base::Unit> units;
 };
 
