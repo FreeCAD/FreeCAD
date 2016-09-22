@@ -134,6 +134,8 @@ void TaskLinkDim::updateDims()
 
 void TaskLinkDim::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous)
 {
+    Q_UNUSED(current);
+    Q_UNUSED(previous);
     //if (previous) {
         //picked item on "selected" side
     //}
@@ -188,6 +190,7 @@ void TaskDlgLinkDim::open()
 
 void TaskDlgLinkDim::clicked(int i)
 {
+    Q_UNUSED(i);
 }
 
 bool TaskDlgLinkDim::accept()

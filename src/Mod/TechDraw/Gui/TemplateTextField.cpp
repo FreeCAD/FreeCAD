@@ -73,6 +73,7 @@ void TemplateTextField::execDialog()
 
 void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
     if (!ui) {
         ui = new DlgTemplateField(dlgOwner);
         ui->setFieldName(fieldNameStr);

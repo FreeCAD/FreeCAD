@@ -540,7 +540,7 @@ TechDrawGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
 
 //! returns existing geometry of 2D Face(idx)
 //version 1 Face has 1 wire
-std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int idx) const
+std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int /*idx*/) const
 {
     std::vector<TechDrawGeometry::BaseGeom*> result;
     const std::vector<TechDrawGeometry::Face *>& faces = getFaceGeometry();

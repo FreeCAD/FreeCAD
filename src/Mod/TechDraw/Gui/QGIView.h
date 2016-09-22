@@ -72,7 +72,7 @@ public:
     /** @} */
 
     void alignTo(QGraphicsItem*, const QString &alignment);
-    void setLocked(bool state = true) { locked = true; }
+    void setLocked(bool /*state*/ = true) { locked = true; }
 
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);

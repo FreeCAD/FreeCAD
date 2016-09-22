@@ -36,7 +36,6 @@
   # include <QPaintDevice>
   # include <QSvgGenerator>
 
-  # include <strstream>
   # include <math.h>
 #endif
 
@@ -213,6 +212,7 @@ void QGIViewDimension::hover(bool state)
 
 void QGIViewDimension::updateView(bool update)
 {
+    Q_UNUSED(update);
     auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
     if( dim == nullptr )
         return;

@@ -212,9 +212,9 @@ void TaskSectionView::updateValues()
     m_base->getDocument()->recompute();
 }
 
-
 void TaskSectionView::onHorizontalClicked(bool b)
 {
+    Q_UNUSED(b);
     ui->cbHoriz->blockSignals(true);
     ui->cbVert->blockSignals(true);
     ui->cbHoriz->setChecked(true);
@@ -225,6 +225,7 @@ void TaskSectionView::onHorizontalClicked(bool b)
 
 void TaskSectionView::onVerticalClicked(bool b)
 {
+    Q_UNUSED(b);
     ui->cbHoriz->blockSignals(true);
     ui->cbVert->blockSignals(true);
     ui->cbVert->setChecked(true);
@@ -235,6 +236,7 @@ void TaskSectionView::onVerticalClicked(bool b)
 
 void TaskSectionView::onNormalClicked(bool b)
 {
+    Q_UNUSED(b);
     ui->cbNormal->blockSignals(true);
     ui->cbReverse->blockSignals(true);
     ui->cbNormal->setChecked(true);
@@ -245,6 +247,7 @@ void TaskSectionView::onNormalClicked(bool b)
 
 void TaskSectionView::onReverseClicked(bool b)
 {
+    Q_UNUSED(b);
     ui->cbReverse->blockSignals(true);
     ui->cbNormal->blockSignals(true);
     ui->cbReverse->setChecked(true);
@@ -256,12 +259,14 @@ void TaskSectionView::onReverseClicked(bool b)
 
 void TaskSectionView::onCalcClicked(bool b)
 {
+    Q_UNUSED(b);
     calcValues();
     updateValues();
 }
 
 void TaskSectionView::onResetClicked(bool b)
 {
+    Q_UNUSED(b);
     resetValues();
     updateValues();
     m_section->Label.setValue(saveLabel.c_str());
@@ -332,6 +337,7 @@ void TaskDlgSectionView::open()
 
 void TaskDlgSectionView::clicked(int i)
 {
+    Q_UNUSED(i);
 }
 
 bool TaskDlgSectionView::accept()

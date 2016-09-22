@@ -462,7 +462,7 @@ bool MDIViewPage::orphanExists(const char *viewName, const std::vector<App::Docu
 }
 
 
-bool MDIViewPage::onMsg(const char *pMsg, const char **ppReturn)
+bool MDIViewPage::onMsg(const char *pMsg, const char **)
 {
     Gui::Document *doc(getGuiDocument());
 

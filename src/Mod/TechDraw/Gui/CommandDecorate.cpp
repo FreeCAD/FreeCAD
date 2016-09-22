@@ -124,6 +124,7 @@ CmdTechDrawNewHatch::CmdTechDrawNewHatch()
 
 void CmdTechDrawNewHatch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     if (!_checkSelectionHatch(this)) {
         return;
     }
@@ -184,6 +185,7 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
 
 void CmdTechDrawToggleFrame::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPageCD(this);
     if (!page) {
         return;

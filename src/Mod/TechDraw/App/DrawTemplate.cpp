@@ -126,7 +126,7 @@ App::DocumentObjectExecReturn *DrawTemplate::execute(void)
     return App::DocumentObject::execute();
 }
 
-void DrawTemplate::getBlockDimensions(double &x, double &y, double &width, double &height) const
+void DrawTemplate::getBlockDimensions(double & /*x*/, double & /*y*/, double & /*width*/, double & /*height*/) const
 {
     throw Base::Exception("implement in virtual function");
 }

@@ -109,12 +109,16 @@ void ViewProviderProjGroup::updateData(const App::Property* prop)
 
 void ViewProviderProjGroup::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    Q_UNUSED(menu);
+    Q_UNUSED(receiver);
+    Q_UNUSED(member);
     //QAction* act;
     //act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
 }
 
 bool ViewProviderProjGroup::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel

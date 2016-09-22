@@ -91,12 +91,12 @@ PyObject* DrawViewClipPy::getChildViewNames(PyObject* args)
     return result;
 }
 
-PyObject *DrawViewClipPy::getCustomAttributes(const char* attr) const
+PyObject *DrawViewClipPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int DrawViewClipPy::setCustomAttributes(const char* attr, PyObject *obj)
+int DrawViewClipPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0;
 }

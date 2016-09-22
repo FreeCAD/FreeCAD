@@ -50,7 +50,7 @@ PyObject* DrawProjGroupPy::removeProjection(PyObject* args)
     return PyInt_FromLong((long) i);;
 }
 
-PyObject* DrawProjGroupPy::purgeProjections(PyObject* args)
+PyObject* DrawProjGroupPy::purgeProjections(PyObject* /*args*/)
 {
     DrawProjGroup* projGroup = getDrawProjGroupPtr();
     int i = projGroup->purgeProjections();
