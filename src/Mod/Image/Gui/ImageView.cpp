@@ -457,7 +457,7 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
    }
 }
 
-void ImageView::showEvent (QShowEvent * e)
+void ImageView::showEvent (QShowEvent *)
 {
     _pGLImageBox->setFocus();
 }
@@ -607,6 +607,8 @@ void ImageView::select(int currX, int currY)
 {
     // base class implementation does nothing
     // override this method and implement selection capability if required
+    Q_UNUSED(currX);
+    Q_UNUSED(currY);
 }
 
 // Add selection at the given position
@@ -614,6 +616,8 @@ void ImageView::addSelect(int currX, int currY)
 {
     // base class implementation does nothing
     // override this method and implement selection capability if required
+    Q_UNUSED(currX);
+    Q_UNUSED(currY);
 }
 
 // Draw any 2D graphics necessary

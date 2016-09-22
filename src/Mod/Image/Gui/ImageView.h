@@ -41,8 +41,8 @@ public:
     const char *getName(void) const {return "ImageView";}
     void onUpdate(void){};
 
-    bool onMsg(const char* pMsg,const char** ppReturn){ return true; }
-    bool onHasMsg(const char* pMsg) const { return false; }
+    bool onMsg(const char* ,const char** ){ return true; }
+    bool onHasMsg(const char* ) const { return false; }
 
     virtual void clearImage();
     virtual int createImageCopy(void* pSrcPixelData, unsigned long width, unsigned long height, int format, unsigned short numSigBitsPerSample, int displayMode = IV_DISPLAY_RESET);

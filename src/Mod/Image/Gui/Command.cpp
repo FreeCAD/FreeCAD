@@ -60,6 +60,8 @@ CmdImageOpen::CmdImageOpen()
 
 void CmdImageOpen::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     // add all supported QImage formats
     QString formats;
     QTextStream str(&formats);
@@ -102,6 +104,8 @@ CmdCreateImagePlane::CmdCreateImagePlane()
 
 void CmdCreateImagePlane::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     QString formats;
     QTextStream str(&formats);
     str << QObject::tr("Images") << " (";
