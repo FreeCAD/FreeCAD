@@ -48,6 +48,7 @@ public:
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderFace";
     }
+    void setupObject() override;
     //@}
 };
 

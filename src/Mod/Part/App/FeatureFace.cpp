@@ -56,7 +56,7 @@ PROPERTY_SOURCE(Part::Face, Part::Feature)
 Face::Face()
 {
     ADD_PROPERTY(Sources,(0));
-    ADD_PROPERTY(FaceMakerClass,("Part::FaceMakerBullseye"));
+    ADD_PROPERTY(FaceMakerClass,("Part::FaceMakerCheese"));//default value here is for legacy documents. Default for new objects is set in setupObject.
     Sources.setSize(0);
 }
 
@@ -67,6 +67,12 @@ short Face::mustExecute() const
     if (Sources.isTouched())
         return 1;
     return Part::Feature::mustExecute();
+}
+
+void Face::setupObject()
+{
+    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
+    Feature::setupObject();
 }
 
 App::DocumentObjectExecReturn *Face::execute(void)
