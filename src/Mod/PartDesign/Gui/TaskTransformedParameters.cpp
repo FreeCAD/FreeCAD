@@ -102,7 +102,7 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
-const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
+bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && (
                 (selectionMode == addFeature) || (selectionMode == removeFeature))) {

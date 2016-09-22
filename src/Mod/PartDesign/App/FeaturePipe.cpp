@@ -369,7 +369,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape
 }
 
 
-void Pipe::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
+void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::string >& /*SubNames*/) {
 
     /*
     TopTools_IndexedMapOfShape mapOfEdges;

@@ -131,6 +131,8 @@ void ViewProviderBody::setOverrideMode(const std::string& mode) {
 
 void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    Q_UNUSED(receiver);
+    Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Toggle active body"));
     func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));

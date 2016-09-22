@@ -67,7 +67,7 @@ using namespace Gui;
 // Task Parameter
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, QWidget *parent)
+TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool /*newObj*/, QWidget *parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe",tr("Pipe parameters"))
 {
     // we need a separate container widget to add all controls to
@@ -286,7 +286,7 @@ void TaskPipeParameters::exitSelectionMode() {
 // Tassk Orientation
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool newObj, QWidget* parent)
+TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section orientation")) {
 
     // we need a separate container widget to add all controls to
@@ -393,26 +393,27 @@ void TaskPipeOrientation::onButtonRefRemove(bool checked) {
     }
 }
 
-void TaskPipeOrientation::onBaseButton(bool checked) {
-
+void TaskPipeOrientation::onBaseButton(bool checked)
+{
     if (checked) {
         Gui::Selection().clearSelection();        
         selectionMode = refObjAdd;
     }
 }
 
-void TaskPipeOrientation::onTangentChanged(bool checked) {
-
+void TaskPipeOrientation::onTangentChanged(bool checked)
+{
+    Q_UNUSED(checked);
 }
 
-void TaskPipeOrientation::onCurvelinearChanged(bool checked) {
-
+void TaskPipeOrientation::onCurvelinearChanged(bool checked)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->AuxilleryCurvelinear.setValue(checked);
     recomputeFeature();
 }
 
-void TaskPipeOrientation::onBinormalChanged(double) {
-
+void TaskPipeOrientation::onBinormalChanged(double)
+{
     Base::Vector3d vec(ui->doubleSpinBoxX->value(),
                        ui->doubleSpinBoxY->value(),
                        ui->doubleSpinBoxZ->value());
@@ -525,7 +526,7 @@ void TaskPipeOrientation::updateUI(int idx) {
 //**************************************************************************
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool newObj, QWidget* parent)
+TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section transformation")) {
 
             // we need a separate container widget to add all controls to

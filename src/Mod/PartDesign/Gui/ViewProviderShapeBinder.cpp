@@ -122,8 +122,8 @@ void ViewProviderShapeBinder::unsetEdit(int ModNum) {
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
-void ViewProviderShapeBinder::highlightReferences(const bool on, bool auxillery) {
-    
+void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxillery*/)
+{
     Part::Feature* obj;
     std::vector<std::string> subs;
 

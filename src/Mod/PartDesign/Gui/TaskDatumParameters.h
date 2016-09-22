@@ -63,7 +63,7 @@ public:
      */
     Attacher::eMapMode getActiveMapMode();
 
-    const bool isCompleted() const { return completed; }
+    bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
     void onSuperplacementChanged(double, int idx);

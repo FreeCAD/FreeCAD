@@ -218,7 +218,7 @@ void TaskDraftParameters::onAngleChanged(double angle)
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 
-const double TaskDraftParameters::getAngle(void) const
+double TaskDraftParameters::getAngle(void) const
 {
     return ui->draftAngle->value().getValue();
 }
@@ -230,7 +230,7 @@ void TaskDraftParameters::onReversedChanged(const bool on) {
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 
-const bool TaskDraftParameters::getReversed(void) const
+bool TaskDraftParameters::getReversed(void) const
 {
     return ui->checkReverse->isChecked();
 }

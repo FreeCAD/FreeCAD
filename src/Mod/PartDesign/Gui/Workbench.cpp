@@ -64,7 +64,7 @@ Workbench::~Workbench() {
     WorkflowManager::destruct();
 }
 
-void Workbench::_switchToDocument(const App::Document* doc)
+void Workbench::_switchToDocument(const App::Document* /*doc*/)
 {
 // TODO Commented out for thurther remove or rewrite  (2015-09-04, Fat-Zer)
 //    if (doc == NULL) return;
@@ -119,17 +119,17 @@ void Workbench::_switchToDocument(const App::Document* doc)
 //    }*/
 }
 
-void Workbench::slotActiveDocument(const Gui::Document& Doc)
+void Workbench::slotActiveDocument(const Gui::Document& /*Doc*/)
 {
 //     _switchToDocument(Doc.getDocument());
 }
 
-void Workbench::slotNewDocument(const App::Document& Doc)
+void Workbench::slotNewDocument(const App::Document& /*Doc*/)
 {
 //     _switchToDocument(&Doc);
 }
 
-void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
+void Workbench::slotFinishRestoreDocument(const App::Document& /*Doc*/)
 {
 //     _switchToDocument(&Doc);
 }

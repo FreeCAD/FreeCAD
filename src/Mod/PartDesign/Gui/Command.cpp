@@ -156,6 +156,7 @@ CmdPartDesignPlane::CmdPartDesignPlane()
 
 void CmdPartDesignPlane::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Plane"),"DatumPlane");
 }
 
@@ -183,6 +184,7 @@ CmdPartDesignLine::CmdPartDesignLine()
 
 void CmdPartDesignLine::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Line"),"DatumLine");
 }
 
@@ -210,6 +212,7 @@ CmdPartDesignPoint::CmdPartDesignPoint()
 
 void CmdPartDesignPoint::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Point"),"DatumPoint");
 }
 
@@ -241,6 +244,7 @@ CmdPartDesignShapeBinder::CmdPartDesignShapeBinder()
 
 void CmdPartDesignShapeBinder::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     App::PropertyLinkSubList support;
     getSelection().getAsPropertyLinkSubList(support);
 
@@ -309,6 +313,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 
 void CmdPartDesignNewSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     App::Document *doc = getDocument ();
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
             /*messageIfNot = */ PartDesignGui::assureModernWorkflow ( doc ) );
@@ -611,9 +616,9 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
 // Take a list of Part2DObjects and classify them for creating a
 // ProfileBased feature. FirstFreeSketch is the first free sketch in the same body 
 // or sketches.end() if non available. The returned number is the amount of free sketches
-const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
-                                 std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
-                                 std::vector<App::DocumentObject*>::iterator& firstFreeSketch)
+unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
+                          std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
+                          std::vector<App::DocumentObject*>::iterator& firstFreeSketch)
 {
     // TODO Review the function for non-part bodies (2015-09-04, Fat-Zer)
     PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false);
@@ -868,6 +873,7 @@ CmdPartDesignPad::CmdPartDesignPad()
 
 void CmdPartDesignPad::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
         /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
@@ -925,6 +931,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
 
 void CmdPartDesignPocket::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
         /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
@@ -970,6 +977,7 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 
 void CmdPartDesignRevolution::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
         /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
@@ -1021,6 +1029,7 @@ CmdPartDesignGroove::CmdPartDesignGroove()
 
 void CmdPartDesignGroove::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(
         /*messageIfNot = */ PartDesignGui::assureModernWorkflow(doc));
@@ -1071,6 +1080,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 
 void CmdPartDesignAdditivePipe::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
 
     // No PartDesign feature without Body past FreeCAD 0.13
@@ -1117,6 +1127,7 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
 
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
 
     // No PartDesign feature without Body past FreeCAD 0.13
@@ -1163,6 +1174,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
 
     // No PartDesign feature without Body past FreeCAD 0.13
@@ -1209,6 +1221,7 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */ true);
 
     // No PartDesign feature without Body past FreeCAD 0.13
@@ -1344,6 +1357,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
 
 void CmdPartDesignFillet::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     makeChamferOrFillet(this, "Fillet");
 }
 
@@ -1371,6 +1385,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
 
 void CmdPartDesignChamfer::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     makeChamferOrFillet(this, "Chamfer");
     doCommand(Gui,"Gui.Selection.clearSelection()");
 }
@@ -1399,6 +1414,7 @@ CmdPartDesignDraft::CmdPartDesignDraft()
 
 void CmdPartDesignDraft::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::SelectionObject selected;
     if (!dressupGetSelected ( this, "Draft", selected))
         return;
@@ -1455,6 +1471,7 @@ CmdPartDesignThickness::CmdPartDesignThickness()
 
 void CmdPartDesignThickness::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::SelectionObject selected;
     if (!dressupGetSelected ( this, "Thickness", selected))
         return;
@@ -1585,6 +1602,7 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 
 void CmdPartDesignMirrored::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1638,6 +1656,7 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 
 void CmdPartDesignLinearPattern::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1693,6 +1712,7 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 
 void CmdPartDesignPolarPattern::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1749,6 +1769,7 @@ CmdPartDesignScaled::CmdPartDesignScaled()
 
 void CmdPartDesignScaled::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
@@ -1788,6 +1809,7 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     //if (!pcActiveBody) return;
 
@@ -1893,6 +1915,7 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
 
 void CmdPartDesignBoolean::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 

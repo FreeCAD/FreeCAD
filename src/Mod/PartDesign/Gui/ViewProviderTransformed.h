@@ -56,7 +56,7 @@ protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
-    const bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
+    bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 
     // node for the representation of rejected repetitions
     SoGroup           * pcRejectedRoot;

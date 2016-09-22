@@ -168,7 +168,7 @@ protected:
      */
     PartDesign::Transformed *getObject () const;
 
-    const bool originalSelected(const Gui::SelectionChanges& msg);
+    bool originalSelected(const Gui::SelectionChanges& msg);
 
     /// Recompute either this feature or the parent feature (MultiTransform mode)
     void recomputeFeature();

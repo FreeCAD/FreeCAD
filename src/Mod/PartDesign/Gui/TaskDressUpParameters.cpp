@@ -66,7 +66,7 @@ TaskDressUpParameters::~TaskDressUpParameters()
     Gui::Selection().rmvSelectionGate();
 }
 
-const bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
+bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
 {
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
                 (selectionMode == refAdd) || (selectionMode == refRemove))) {

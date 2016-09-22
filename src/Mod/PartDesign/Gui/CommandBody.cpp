@@ -89,6 +89,7 @@ CmdPartDesignPart::CmdPartDesignPart()
 
 void CmdPartDesignPart::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
         return;
 
@@ -131,6 +132,7 @@ CmdPartDesignBody::CmdPartDesignBody()
 
 void CmdPartDesignBody::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     if ( !PartDesignGui::assureModernWorkflow( getDocument() ) )
         return;
     App::Part *actPart = PartDesignGui::getActivePart ();
@@ -237,6 +239,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
 
 void CmdPartDesignMigrate::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
 
     std::set<PartDesign::Feature*> migrateFeatures;
@@ -451,6 +454,7 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
 
 void CmdPartDesignMoveTip::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(
             Part::Feature::getClassTypeId() );
     App::DocumentObject* selFeature;
@@ -527,7 +531,9 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
     sStatusTip      = sToolTipText;
 }
 
-void CmdPartDesignDuplicateSelection::activated(int iMsg) {
+void CmdPartDesignDuplicateSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
@@ -584,6 +590,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;
 
@@ -723,6 +730,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
 
 void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;
 

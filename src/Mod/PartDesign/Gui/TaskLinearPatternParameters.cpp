@@ -279,7 +279,8 @@ void TaskLinearPatternParameters::onOccurrences(const uint n) {
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onDirectionChanged(int num) {
+void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
+{
     if (blockUpdate)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
@@ -338,17 +339,17 @@ void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::v
     sub = lnk.getSubValues();
 }
 
-const bool TaskLinearPatternParameters::getReverse(void) const
+bool TaskLinearPatternParameters::getReverse(void) const
 {
     return ui->checkReverse->isChecked();
 }
 
-const double TaskLinearPatternParameters::getLength(void) const
+double TaskLinearPatternParameters::getLength(void) const
 {
     return ui->spinLength->value().getValue();
 }
 
-const unsigned TaskLinearPatternParameters::getOccurrences(void) const
+unsigned TaskLinearPatternParameters::getOccurrences(void) const
 {
     return ui->spinOccurrences->value();
 }

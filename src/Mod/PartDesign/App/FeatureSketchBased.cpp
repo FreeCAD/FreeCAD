@@ -730,8 +730,8 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
 
 }
 
-const bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
-                                            const gp_Dir& dir) {
+bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
+                                       const gp_Dir& dir) {
     // Project wire onto the face (face, not surface! So limits of face apply)
     // FIXME: The results of BRepProj_Projection do not seem to be very stable. Sometimes they return no result
     // even in the simplest projection case.
@@ -741,7 +741,7 @@ const bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const Topo
     return (proj.More() && proj.Current().Closed());
 }
 
-const bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &face)
+bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &face)
 {
 #if 1
     BRepBuilderAPI_MakeEdge mkEdge(line);
@@ -1086,7 +1086,7 @@ bool ProfileBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s
 }
 
 
-const double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vector3d &v)
+double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vector3d &v)
 {
     try {
         Part::Feature* obj = getVerifiedObject();

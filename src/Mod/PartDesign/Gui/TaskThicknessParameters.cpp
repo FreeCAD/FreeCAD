@@ -163,7 +163,7 @@ void TaskThicknessParameters::onModeChanged(int mode) {
 }
 
 
-const double TaskThicknessParameters::getValue(void) const
+double TaskThicknessParameters::getValue(void) const
 {
     return ui->Value->value().getValue();
 }
@@ -175,17 +175,17 @@ void TaskThicknessParameters::onReversedChanged(const bool on) {
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
 
-const bool TaskThicknessParameters::getReversed(void) const
+bool TaskThicknessParameters::getReversed(void) const
 {
     return ui->checkReverse->isChecked();
 }
 
-const int TaskThicknessParameters::getJoinType(void) const {
+int TaskThicknessParameters::getJoinType(void) const {
     
     return ui->joinComboBox->currentIndex();
 }
 
-const int TaskThicknessParameters::getMode(void) const {
+int TaskThicknessParameters::getMode(void) const {
 
     return ui->modeComboBox->currentIndex();
 }

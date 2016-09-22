@@ -423,7 +423,7 @@ void TaskPadParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj)
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newObj*/)
     : TaskDlgSketchBasedParameters(PadView)
 {
     assert(vp);

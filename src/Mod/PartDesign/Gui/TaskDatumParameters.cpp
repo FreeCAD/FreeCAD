@@ -430,7 +430,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskDatumParameters::onSuperplacementChanged(double val, int idx)
+void TaskDatumParameters::onSuperplacementChanged(double /*val*/, int idx)
 {
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     Base::Placement pl = pcDatum->superPlacement.getValue();

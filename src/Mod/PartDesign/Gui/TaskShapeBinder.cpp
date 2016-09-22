@@ -56,7 +56,7 @@ using namespace Gui;
 
 // TODO Review and cleanup the file (2015-09-11, Fat-Zer)
 
-TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj, QWidget *parent)
+TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/, QWidget *parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
                              tr("Datum shape parameters"), true, parent)
 {
@@ -161,7 +161,7 @@ TaskShapeBinder::~TaskShapeBinder()
     delete ui;
 }
 
-void TaskShapeBinder::changeEvent(QEvent *e)
+void TaskShapeBinder::changeEvent(QEvent *)
 {
 }
 
