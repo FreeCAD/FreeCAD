@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-#include <strstream>
+#include <sstream>
 
 #include <App/Application.h>
 #include <App/Document.h>

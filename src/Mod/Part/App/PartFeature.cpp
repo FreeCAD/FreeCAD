@@ -43,7 +43,7 @@
 #endif
 
 
-#include <strstream>
+#include <sstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>

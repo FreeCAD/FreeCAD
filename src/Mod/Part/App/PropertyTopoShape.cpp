@@ -44,7 +44,6 @@
 #endif
 
 
-#include <strstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -312,20 +311,21 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             }
 
             Base::ifstream file(fi, std::ios::in | std::ios::binary);
-            if (file){
-                unsigned long ulSize = 0; 
+            if (file) {
+                //unsigned long ulSize = 0; 
                 std::streambuf* buf = file.rdbuf();
-                if (buf) {
-                    unsigned long ulCurr;
-                    ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
-                    ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
-                    buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
-                }
+                //if (buf) {
+                //    unsigned long ulCurr;
+                //    ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
+                //    ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
+                //    buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
+                //}
 
                 // read in the ASCII file and write back to the stream
-                std::strstreambuf sbuf(ulSize);
-                file >> &sbuf;
-                writer.Stream() << &sbuf;
+                //std::strstreambuf sbuf(ulSize);
+                //file >> &sbuf;
+                //writer.Stream() << &sbuf;
+                writer.Stream() << buf;
             }
 
             file.close();
