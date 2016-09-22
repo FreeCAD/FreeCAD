@@ -34,7 +34,6 @@
 #include "../App/Sheet.h"
 #include <Gui/Command.h>
 #include <Base/Tools.h>
-#include <strstream>
 #include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
@@ -58,11 +57,13 @@ SheetModel::~SheetModel()
 
 int SheetModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 16384;
 }
 
 int SheetModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 26 * 26 + 26;
 }
 
