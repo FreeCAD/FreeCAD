@@ -873,7 +873,7 @@ short Sheet::mustExecute(void) const
   *
   */
 
-void Sheet::clear(CellAddress address, bool all)
+void Sheet::clear(CellAddress address, bool /*all*/)
 {
     Cell * cell = getCell(address);
     std::string addr = address.toString();
@@ -1286,7 +1286,7 @@ void Sheet::onRelabledDocument(const Document &document)
  * @param document
  */
 
-void Sheet::onRenamedDocument(const Document &document)
+void Sheet::onRenamedDocument(const Document & /*document*/)
 {
 }
 

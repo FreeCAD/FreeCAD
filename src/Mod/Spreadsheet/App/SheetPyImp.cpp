@@ -154,6 +154,9 @@ PyObject* SheetPy::clear(PyObject *args)
 
 PyObject* SheetPy::clearAll(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     this->getSheetPtr()->clearAll();
     Py_Return;
 }
@@ -912,7 +915,7 @@ PyObject *SheetPy::getCustomAttributes(const char* attr) const
     return prop->getPyObject();
 }
 
-int SheetPy::setCustomAttributes(const char* attr, PyObject* obj)
+int SheetPy::setCustomAttributes(const char* , PyObject* )
 {
     return 0;
 }
