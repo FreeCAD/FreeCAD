@@ -277,12 +277,12 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setTransitionMode(PyObject *args)
     Py_Return;
 }
 
-PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* attr) const
+PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int BRepOffsetAPI_MakePipeShellPy::setCustomAttributes(const char* attr, PyObject *obj)
+int BRepOffsetAPI_MakePipeShellPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

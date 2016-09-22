@@ -431,23 +431,23 @@ PyObject *PropertyShapeHistory::getPyObject(void)
     return Py::new_reference_to(Py::None());
 }
 
-void PropertyShapeHistory::setPyObject(PyObject *value)
+void PropertyShapeHistory::setPyObject(PyObject *)
 {
 }
 
-void PropertyShapeHistory::Save (Base::Writer &writer) const
+void PropertyShapeHistory::Save (Base::Writer &) const
 {
 }
 
-void PropertyShapeHistory::Restore(Base::XMLReader &reader)
+void PropertyShapeHistory::Restore(Base::XMLReader &)
 {
 }
 
-void PropertyShapeHistory::SaveDocFile (Base::Writer &writer) const
+void PropertyShapeHistory::SaveDocFile (Base::Writer &) const
 {
 }
 
-void PropertyShapeHistory::RestoreDocFile(Base::Reader &reader)
+void PropertyShapeHistory::RestoreDocFile(Base::Reader &)
 {
 }
 

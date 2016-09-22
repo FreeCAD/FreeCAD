@@ -86,7 +86,7 @@ PyObject *ArcOfHyperbolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 }
 
 // constructor method
-int ArcOfHyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
+int ArcOfHyperbolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* o;
     double u1, u2;
@@ -222,12 +222,12 @@ Py::Object ArcOfHyperbolaPy::getHyperbola(void) const
     return Py::Object(new HyperbolaPy(new GeomHyperbola(hyperbola)), true);
 }
 
-PyObject *ArcOfHyperbolaPy::getCustomAttributes(const char* attr) const
+PyObject *ArcOfHyperbolaPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int ArcOfHyperbolaPy::setCustomAttributes(const char* attr, PyObject *obj)
+int ArcOfHyperbolaPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

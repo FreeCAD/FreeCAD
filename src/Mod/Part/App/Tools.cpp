@@ -114,6 +114,7 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
                          const Standard_Integer theNbIter,
                          const Standard_Integer theMaxDeg)
 {
+    (void)theTol;
     //constants for algorithm
     const Standard_Integer aNbIter = theNbIter; //number of algorithm iterations
     const Standard_Integer aNbPnts = theNbPnts; //sample points per each constraint

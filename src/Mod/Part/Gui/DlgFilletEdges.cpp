@@ -184,7 +184,7 @@ namespace PartGui {
         {
             allowEdge = false;
         }
-        bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj != this->object)
                 return false;

@@ -683,6 +683,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
 
 Location::Location(QWidget* parent)
 {
+    Q_UNUSED(parent);
     mode = 0;
     ui.setupUi(this);
 }

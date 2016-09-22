@@ -141,8 +141,8 @@ std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
   * If there is any error in the boolean operations, the check always returns false
   */
 PartExport
-const bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
-                             const bool quick, const bool touch_is_intersection);
+bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
+                       const bool quick, const bool touch_is_intersection);
 
 } //namespace Part
 

@@ -77,7 +77,7 @@ namespace PartGui {
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {
         }
-        bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj != this->object)
                 return false;
@@ -161,7 +161,7 @@ public:
 
         return false;
     }
-    void addFacesToSelection(Gui::View3DInventorViewer* viewer,
+    void addFacesToSelection(Gui::View3DInventorViewer* /*viewer*/,
                              const Gui::ViewVolumeProjection& proj,
                              const Base::Polygon2D& polygon,
                              const TopoDS_Shape& shape)
@@ -257,6 +257,7 @@ public:
 FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
   : d(new Private(vp))
 {
+    Q_UNUSED(parent);
     d->ui->setupUi(this);
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->colorButton->setDisabled(true);

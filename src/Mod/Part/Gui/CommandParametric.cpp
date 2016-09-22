@@ -53,6 +53,7 @@ CmdPartCylinder::CmdPartCylinder()
 
 void CmdPartCylinder::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString cmd;
     cmd = qApp->translate("CmdPartCylinder","Cylinder");
     openCommand((const char*)cmd.toUtf8());
@@ -93,6 +94,7 @@ CmdPartBox::CmdPartBox()
 
 void CmdPartBox::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString cmd;
     cmd = qApp->translate("CmdPartBox","Cube");
     openCommand((const char*)cmd.toUtf8());
@@ -133,6 +135,7 @@ CmdPartSphere::CmdPartSphere()
 
 void CmdPartSphere::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString cmd;
     cmd = qApp->translate("CmdPartSphere","Sphere");
     openCommand((const char*)cmd.toUtf8());
@@ -173,6 +176,7 @@ CmdPartCone::CmdPartCone()
 
 void CmdPartCone::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString cmd;
     cmd = qApp->translate("CmdPartCone","Cone");
     openCommand((const char*)cmd.toUtf8());
@@ -213,6 +217,7 @@ CmdPartTorus::CmdPartTorus()
 
 void CmdPartTorus::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString cmd;
     cmd = qApp->translate("CmdPartTorus","Torus");
     openCommand((const char*)cmd.toUtf8());

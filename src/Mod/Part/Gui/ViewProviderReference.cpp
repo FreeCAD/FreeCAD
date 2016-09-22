@@ -176,7 +176,7 @@ ViewProviderPartReference::~ViewProviderPartReference()
     //pShapeHints->unref();
 }
 
-void ViewProviderPartReference::onChanged(const App::Property* prop)
+void ViewProviderPartReference::onChanged(const App::Property* /*prop*/)
 {
     //if (prop == &LineWidth) {
     //    pcLineStyle->lineWidth = LineWidth.getValue();
@@ -292,6 +292,6 @@ std::vector<std::string> ViewProviderPartReference::getDisplayModes(void) const
 }
 
 
-void ViewProviderPartReference::updateData(const App::Property* prop)
+void ViewProviderPartReference::updateData(const App::Property* )
 {
 }

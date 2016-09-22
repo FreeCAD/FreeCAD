@@ -81,7 +81,7 @@ public:
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
         {
         }
-        bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 if (!sSubName) {
@@ -128,6 +128,7 @@ public:
 SweepWidget::SweepWidget(QWidget* parent)
   : d(new Private())
 {
+    Q_UNUSED(parent);
     Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
     Gui::Command::runCommand(Gui::Command::App, "import Part");
 

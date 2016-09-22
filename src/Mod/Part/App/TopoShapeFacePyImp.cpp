@@ -764,12 +764,12 @@ Py::Dict TopoShapeFacePy::getPrincipalProperties(void) const
     return dict;
 }
 
-PyObject *TopoShapeFacePy::getCustomAttributes(const char* attr) const
+PyObject *TopoShapeFacePy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int TopoShapeFacePy::setCustomAttributes(const char* attr, PyObject *obj)
+int TopoShapeFacePy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

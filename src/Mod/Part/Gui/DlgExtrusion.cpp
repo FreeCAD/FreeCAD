@@ -67,7 +67,7 @@ public:
     {
         canSelect = false;
     }
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
     {
         this->canSelect = false;
         if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
