@@ -31,7 +31,6 @@
 #endif
 
 
-#include <strstream>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Exception.h>

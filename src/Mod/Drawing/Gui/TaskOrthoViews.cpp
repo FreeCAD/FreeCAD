@@ -867,6 +867,7 @@ void OrthoViews::get_configs(float configs[5])              // get scale & posit
 TaskOrthoViews::TaskOrthoViews(QWidget *parent)
   : ui(new Ui_TaskOrthoViews)
 {
+    Q_UNUSED(parent);
     ui->setupUi(this);
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
     const char * part = obj.front()->getNameInDocument();
@@ -1074,7 +1075,7 @@ void TaskOrthoViews::projectionChanged(int index)
     set_configs();
 }
 
-void TaskOrthoViews::setPrimary(int dir)
+void TaskOrthoViews::setPrimary(int /*dir*/)
 {
     int p_sel = ui->view_from->currentIndex();      // index for entry selected for 'view from'
     int r_sel = ui->axis_right->currentIndex();     // index for entry selected for 'rightwards axis'
@@ -1229,7 +1230,7 @@ void TaskOrthoViews::setup_axo_tab()
     ui->axoScale->setText(QString::number(axo_scale));
 }
 
-void TaskOrthoViews::change_axo(int p)
+void TaskOrthoViews::change_axo(int /*p*/)
 {
     int u_sel = ui->axoUp->currentIndex();        // index for entry selected for 'view from'
     int r_sel = ui->axoRight->currentIndex();         // index for entry selected for 'rightwards axis'

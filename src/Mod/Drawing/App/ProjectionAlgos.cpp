@@ -262,7 +262,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
 
 /* dxf output section - Dan Falck 2011/09/25  */
 
-std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double tolerance)
+std::string ProjectionAlgos::getDXF(ExtractionType type, double /*scale*/, double tolerance)
 {
     std::stringstream result;
     DXFOutput output;
