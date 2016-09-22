@@ -65,8 +65,6 @@ ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 {
 }
 
-#else
-    Q_UNUSED(prop);
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
 {
     // empty

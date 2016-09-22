@@ -139,10 +139,7 @@ public:
      * @param subNames  list of selected subelements
      * @return          true if the deletion is approoved by the view provider.
      */
-    virtual bool onDelete(const std::vector<std::string> &subNames) {
-        (void)subNames;
-        return true;
-    }
+    virtual bool onDelete(const std::vector<std::string> &subNames);
     //@}
 
 
