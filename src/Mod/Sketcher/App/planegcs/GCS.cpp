@@ -412,7 +412,7 @@ int System::addConstraintP2PAngle(Point &p1, Point &p2, double *angle,
     return addConstraint(constr);
 }
 
-int System::addConstraintP2PAngle(Point &p1, Point &p2, double *angle, int tagId)
+int System::addConstraintP2PAngle(Point &p1, Point &p2, double *angle, int /*tagId*/)
 {
     return addConstraintP2PAngle(p1, p2, angle, 0.);
 }
@@ -1137,7 +1137,7 @@ int System::solve(SubSystem *subsys, bool isFine, Algorithm alg, bool isRedundan
         return Failed;
 }
 
-int System::solve_BFGS(SubSystem *subsys, bool isFine, bool isRedundantsolving)
+int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolving)
 {
     #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -3169,7 +3169,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
 
 // The following solver variant solves a system compound of two subsystems
 // treating the first of them as of higher priority than the second
-int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine, bool isRedundantsolving)
+int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool isRedundantsolving)
 {
     int xsizeA = subsysA->pSize();
     int xsizeB = subsysB->pSize();

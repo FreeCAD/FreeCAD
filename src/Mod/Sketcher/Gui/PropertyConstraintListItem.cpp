@@ -247,10 +247,13 @@ bool PropertyConstraintListItem::event (QEvent* ev)
 void PropertyConstraintListItem::setValue(const QVariant& value)
 {
     // see PropertyConstraintListItem::event
+    Q_UNUSED(value);
 }
 
 QWidget* PropertyConstraintListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
+    Q_UNUSED(receiver);
+    Q_UNUSED(method);
     QLineEdit *le = new QLineEdit(parent);
     le->setFrame(false);
     le->setReadOnly(true);

@@ -561,6 +561,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
 
 void CmdSketcherConstrainHorizontal::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -658,6 +659,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
 
 void CmdSketcherConstrainVertical::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -754,6 +756,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
 
 void CmdSketcherConstrainLock::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -856,6 +859,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
 
 void CmdSketcherConstrainCoincident::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -948,6 +952,7 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
 
 void CmdSketcherConstrainDistance::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1129,6 +1134,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
 
 void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1215,6 +1221,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
 
 void CmdSketcherConstrainDistanceX::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1373,6 +1380,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
 
 void CmdSketcherConstrainDistanceY::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1530,6 +1538,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
 
 void CmdSketcherConstrainParallel::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1629,6 +1638,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
 
 void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString strBasicHelp =
             QObject::tr(
              "There is a number of ways this constraint can be applied.\n\n"
@@ -1941,6 +1951,7 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
 
 void CmdSketcherConstrainTangent::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString strBasicHelp =
             QObject::tr(
              "There is a number of ways this constraint can be applied.\n\n"
@@ -2205,6 +2216,7 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
 
 void CmdSketcherConstrainRadius::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -2528,6 +2540,7 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
 
 void CmdSketcherConstrainAngle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     //TODO: comprehensive messages, like in CmdSketcherConstrainTangent
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -2801,6 +2814,7 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
 
 void CmdSketcherConstrainEqual::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -2920,6 +2934,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -3090,6 +3105,7 @@ CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
 
 void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString strHelp = QObject::tr("Select two endpoints of lines to act as rays, and"
                                   " an edge representing a boundary. The first"
                                   " selected point corresponds to index n1, second"
@@ -3238,6 +3254,7 @@ CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
 
 void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -3671,6 +3688,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
 
 void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool modeChange=true;
 
     std::vector<Gui::SelectionObject> selection;

@@ -87,7 +87,7 @@ DeriVector2 DeriVector2::divD(double val, double dval) const
                        );
 }
 
-DeriVector2 Line::CalculateNormal(Point &p, double* derivparam)
+DeriVector2 Line::CalculateNormal(Point & /*p*/, double* derivparam)
 {
     DeriVector2 p1v(p1, derivparam);
     DeriVector2 p2v(p2, derivparam);

@@ -106,6 +106,7 @@ CmdSketcherCloseShape::CmdSketcherCloseShape()
 
 void CmdSketcherCloseShape::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -216,6 +217,7 @@ CmdSketcherConnect::CmdSketcherConnect()
 
 void CmdSketcherConnect::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -302,6 +304,7 @@ CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
 
 void CmdSketcherSelectConstraints::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -364,6 +367,7 @@ CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
 
 void CmdSketcherSelectOrigin::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
     
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -411,6 +415,7 @@ CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
 
 void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
     
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -454,7 +459,8 @@ CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
 
 void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 {
-        Gui::Document * doc= getActiveGuiDocument();
+    Q_UNUSED(iMsg);
+    Gui::Document * doc= getActiveGuiDocument();
     
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     
@@ -496,6 +502,7 @@ CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
 
 void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
     
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -548,6 +555,7 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
 
 void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
     
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -598,21 +606,20 @@ CmdSketcherSelectElementsAssociatedWithConstraints::CmdSketcherSelectElementsAss
 
 void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    
-    
-    
+
     Gui::Document * doc= getActiveGuiDocument();
-    
+
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    
+
     Sketcher::SketchObject* Obj= vp->getSketchObject();
-    
+
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-    
+
     getSelection().clearSelection();
-        
+
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
     std::stringstream ss;
@@ -721,6 +728,7 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
 
 void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1000,6 +1008,7 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
 
 void CmdSketcherSymmetry::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1274,6 +1283,7 @@ static const char *cursor_createcopy[]={
         
         virtual bool releaseButton(Base::Vector2D onSketchPos)
         {
+            Q_UNUSED(onSketchPos);
             if (Mode==STATUS_End){
                 
                 Base::Vector2D vector = EditCurve[1]-EditCurve[0];
@@ -1479,6 +1489,7 @@ CmdSketcherCopy::CmdSketcherCopy()
 
 void CmdSketcherCopy::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     activate(false);
 }
 
@@ -1515,6 +1526,7 @@ CmdSketcherClone::CmdSketcherClone()
 
 void CmdSketcherClone::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     activate(true);
 }
 
@@ -1716,6 +1728,7 @@ static const char *cursor_createrectangulararray[]={
         
         virtual bool releaseButton(Base::Vector2D onSketchPos)
         {
+            Q_UNUSED(onSketchPos);
             if (Mode==STATUS_End){
                 
                 Base::Vector2D vector = EditCurve[1]-EditCurve[0];
@@ -1798,6 +1811,7 @@ CmdSketcherRectangularArray::CmdSketcherRectangularArray()
 
 void CmdSketcherRectangularArray::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     
