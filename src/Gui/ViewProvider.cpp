@@ -656,3 +656,27 @@ SoSeparator* ViewProvider::getFrontRoot(void) const {
     }
     return nullptr;
 }
+
+std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const {
+
+    std::vector< App::DocumentObject* > vec;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
+        if(!nvec.empty())
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+    }
+    return vec;
+}
+
+std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const {
+
+    std::vector< App::DocumentObject* > vec;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren3D();
+        if(!nvec.empty())
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+    }
+    return vec;
+}
