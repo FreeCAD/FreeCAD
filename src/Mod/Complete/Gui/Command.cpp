@@ -50,9 +50,9 @@ CmdCompleteConstraintAxle::CmdCompleteConstraintAxle()
 
 void CmdCompleteConstraintAxle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // load the file with the module
     //Command::doCommand(Command::Gui, "import Complete, CompleteGui");
-      
 }
 
 

@@ -238,7 +238,7 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "an event loop or showing up any GUI\n"},
     {"embedToWindow",FreeCADGui_embedToWindow,METH_VARARGS,
      "embedToWindow() -- Embeds the main window into another window\n"},
-    {NULL, NULL}  /* sentinel */
+    {NULL, NULL, 0, NULL}  /* sentinel */
 };
 
 static
