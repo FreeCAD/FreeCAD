@@ -192,13 +192,13 @@ bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
     return true;
 }
 
-void ViewProviderMirror::dragStartCallback(void *data, SoDragger *)
+void ViewProviderMirror::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand("Edit Mirror");
 }
 
-void ViewProviderMirror::dragFinishCallback(void *data, SoDragger *)
+void ViewProviderMirror::dragFinishCallback(void *, SoDragger *)
 {
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();

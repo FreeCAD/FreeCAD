@@ -67,6 +67,7 @@ public:
 LoftWidget::LoftWidget(QWidget* parent)
   : d(new Private())
 {
+    Q_UNUSED(parent);
     Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
     Gui::Command::runCommand(Gui::Command::App, "import Part");
 

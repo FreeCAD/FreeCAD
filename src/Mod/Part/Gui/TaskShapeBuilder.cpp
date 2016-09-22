@@ -108,6 +108,7 @@ public:
 ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
   : d(new Private())
 {
+    Q_UNUSED(parent);
     d->ui.setupUi(this);
     d->ui.label->setText(QString());
     d->bg.addButton(d->ui.radioButtonEdgeFromVertex, 0);

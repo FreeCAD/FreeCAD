@@ -80,10 +80,10 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
 
 // ----------------------------------------------------------------------------
 
-void ViewProviderShapeBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
+void ViewProviderShapeBuilder::buildNodes(const App::Property* , std::vector<SoNode*>& ) const
 {
 }
 
-void ViewProviderShapeBuilder::createShape(const App::Property* prop, SoSeparator* coords) const
+void ViewProviderShapeBuilder::createShape(const App::Property* , SoSeparator* ) const
 {
 }

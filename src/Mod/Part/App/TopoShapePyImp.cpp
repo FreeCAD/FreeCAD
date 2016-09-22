@@ -1916,6 +1916,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
     //return Py_BuildValue("OO", overlappss1, overlappss2); //subshapes
     return Py_BuildValue("OO", overlappssindex1, overlappssindex2); //face indexes
 #else
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "proximity requires OCCT >= 6.8.1");
     return 0;
 #endif
@@ -2413,7 +2414,7 @@ PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
     return 0;
 }
 
-int TopoShapePy::setCustomAttributes(const char* attr, PyObject *obj)
+int TopoShapePy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

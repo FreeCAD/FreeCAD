@@ -923,19 +923,19 @@ Base::BoundBox3d TopoShape::getBoundBox(void) const
     return box;
 }
 
-void TopoShape::Save (Base::Writer & writer) const
+void TopoShape::Save (Base::Writer & ) const
 {
 }
 
-void TopoShape::Restore(Base::XMLReader &reader)
+void TopoShape::Restore(Base::XMLReader &)
 {
 }
 
-void TopoShape::SaveDocFile (Base::Writer &writer) const
+void TopoShape::SaveDocFile (Base::Writer &) const
 {
 }
 
-void TopoShape::RestoreDocFile(Base::Reader &reader)
+void TopoShape::RestoreDocFile(Base::Reader &)
 {
 }
 
@@ -1396,11 +1396,15 @@ TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<d
     return comp;
 }
 
-TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, Standard_Real tolerance, std::vector<TopTools_ListOfShape>* mapInOut) const
+TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, Standard_Real tolerance,
+                                    std::vector<TopTools_ListOfShape>* mapInOut) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
 #if OCC_VERSION_HEX < 0x060900
+    (void)sOthers;
+    (void)tolerance;
+    (void)mapInOut;
     throw Base::AttributeError("GFA is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_BuilderAlgo mkGFA;
@@ -1520,6 +1524,7 @@ TopoDS_Shape TopoShape::makeTube() const
 #else 
 static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, const Standard_Real theLast, const Standard_Real theRadius)
 {
+    (void)theRadius;
     //Handle_Law_BSpline aBs;
     //Handle_Law_BSpFunc aFunc = new Law_BSpFunc (aBs, theFirst, theLast);
     Handle_Law_Constant aFunc = new Law_Constant();
@@ -2675,7 +2680,7 @@ const double MeshVertex::MESH_MIN_PT_DIST = gp::Resolution();
 
 void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
                          std::vector<Facet> &aTopo,
-                         float accuracy, uint16_t flags) const
+                         float accuracy, uint16_t /*flags*/) const
 {
     if (this->_Shape.IsNull())
         return;
@@ -2809,7 +2814,7 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
 
 void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
                           std::vector<Base::Vector3d> &Normals,
-                          float Accuracy, uint16_t flags) const
+                          float Accuracy, uint16_t /*flags*/) const
 {
     if (_Shape.IsNull())
         return;
@@ -2919,6 +2924,9 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
                                        std::vector<Base::Vector3d> &Points,
                                        std::vector<Line> &lines) const
 {
+    (void)element;
+    (void)Points;
+    (void)lines;
 }
 
 void TopoShape::getFacesFromSubelement(const Data::Segment* element,

@@ -148,7 +148,7 @@ void SoFCControlPoints::drawControlPoints(const SbVec3f * points,int32_t len) co
     glEnd();
 }
 
-void SoFCControlPoints::generatePrimitives(SoAction* action)
+void SoFCControlPoints::generatePrimitives(SoAction* /*action*/)
 {
 }
 

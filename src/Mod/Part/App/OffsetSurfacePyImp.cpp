@@ -78,13 +78,13 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-PyObject* OffsetSurfacePy::uIso(PyObject *args)
+PyObject* OffsetSurfacePy::uIso(PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
 
-PyObject* OffsetSurfacePy::vIso(PyObject *args)
+PyObject* OffsetSurfacePy::vIso(PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;

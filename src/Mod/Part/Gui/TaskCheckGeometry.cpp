@@ -307,6 +307,7 @@ int ResultModel::rowCount(const QModelIndex &parent) const
 
 int ResultModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 3;
 }
 
