@@ -34,7 +34,7 @@
 namespace App
 {
     
-class DocumentObjectGroup : public DocumentObject, public GroupExtension {
+class AppExport DocumentObjectGroup : public DocumentObject, public GroupExtension {
     
     PROPERTY_HEADER_WITH_EXTENSIONS(App::DocumentObjectGroup);
     

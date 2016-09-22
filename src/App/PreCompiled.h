@@ -33,6 +33,7 @@
 #pragma warning( disable : 4275 )
 #pragma warning( disable : 4503 )
 #pragma warning( disable : 4786 )  // specifier longer then 255 chars
+#pragma warning( disable : 4250 )  // virtual inheritance warning
 #endif
 
 
