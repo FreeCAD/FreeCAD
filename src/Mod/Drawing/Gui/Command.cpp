@@ -64,9 +64,9 @@ CmdDrawingOpen::CmdDrawingOpen()
     sPixmap         = "actions/document-new";
 }
 
-
 void CmdDrawingOpen::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // Reading an image
     QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null,
         QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
@@ -281,6 +281,7 @@ CmdDrawingNewA3Landscape::CmdDrawingNewA3Landscape()
 
 void CmdDrawingNewA3Landscape::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Page");
 
     openCommand("Create page");
@@ -319,6 +320,7 @@ CmdDrawingNewView::CmdDrawingNewView()
 
 void CmdDrawingNewView::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -397,6 +399,7 @@ CmdDrawingOrthoViews::CmdDrawingOrthoViews()
 
 void CmdDrawingOrthoViews::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     const std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (shapes.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -446,6 +449,7 @@ CmdDrawingOpenBrowserView::CmdDrawingOpenBrowserView()
 
 void CmdDrawingOpenBrowserView::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     unsigned int n = getSelection().countObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     if (n != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -483,7 +487,7 @@ CmdDrawingAnnotation::CmdDrawingAnnotation()
 
 void CmdDrawingAnnotation::activated(int iMsg)
 {
-
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     if (pages.empty()) {
         pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
@@ -531,7 +535,7 @@ CmdDrawingClip::CmdDrawingClip()
 
 void CmdDrawingClip::activated(int iMsg)
 {
-
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     if (pages.empty()) {
         pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
@@ -576,7 +580,7 @@ CmdDrawingSymbol::CmdDrawingSymbol()
 
 void CmdDrawingSymbol::activated(int iMsg)
 {
-
+    Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     if (pages.empty()) {
         pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
@@ -632,6 +636,7 @@ CmdDrawingExportPage::CmdDrawingExportPage()
 
 void CmdDrawingExportPage::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     unsigned int n = getSelection().countObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     if (n != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -682,6 +687,7 @@ CmdDrawingProjectShape::CmdDrawingProjectShape()
 
 void CmdDrawingProjectShape::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (!dlg) {
         dlg = new DrawingGui::TaskProjection();
@@ -718,6 +724,7 @@ CmdDrawingDraftView::CmdDrawingDraftView()
 
 void CmdDrawingDraftView::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     addModule(Gui,"Draft");
     doCommand(Gui,"Gui.runCommand(\"Draft_Drawing\")");
 }
@@ -748,6 +755,7 @@ CmdDrawingSpreadsheetView::CmdDrawingSpreadsheetView()
 
 void CmdDrawingSpreadsheetView::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     const std::vector<App::DocumentObject*> spreads = getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
     if (spreads.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
