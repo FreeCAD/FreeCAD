@@ -62,6 +62,7 @@ CmdPathCompound::CmdPathCompound()
 
 void CmdPathCompound::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     if (Sel.size() > 0) {
         std::ostringstream cmd;
@@ -115,6 +116,7 @@ CmdPathShape::CmdPathShape()
 
 void CmdPathShape::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     if (Sel.size() == 1) {
         if (Sel[0].pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {

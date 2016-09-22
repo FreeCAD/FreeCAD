@@ -127,6 +127,7 @@ void TaskDlgPathCompound::open()
 
 void TaskDlgPathCompound::clicked(int button)
 {
+    Q_UNUSED(button);
 }
 
 bool TaskDlgPathCompound::accept()
