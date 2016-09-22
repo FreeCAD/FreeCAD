@@ -97,7 +97,8 @@ void ImportOCAF::loadShapes()
     loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
 }
 
-void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, const std::string& defaultname, const std::string& assembly, bool isRef)
+void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
+                            const std::string& defaultname, const std::string& /*assembly*/, bool isRef)
 {
     int hash = 0;
     TopoDS_Shape aShape;
