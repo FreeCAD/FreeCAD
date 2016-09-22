@@ -382,7 +382,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
     return copy;
 }
 
-void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
+void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
 {
     ui->listWidget->clearSelection();
     for(Gui::SelectionSingleton::SelObj obj :  Gui::Selection().getSelection()) {

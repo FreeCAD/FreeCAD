@@ -111,7 +111,9 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
     }
 }
 
-void ViewProviderPrimitive::unsetEdit(int ModNum) {
+void ViewProviderPrimitive::unsetEdit(int ModNum)
+{
+    Q_UNUSED(ModNum);
     setPreviewDisplayMode(false);
 }
 

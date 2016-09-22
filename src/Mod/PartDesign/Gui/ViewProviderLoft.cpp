@@ -96,7 +96,7 @@ void ViewProviderLoft::unsetEdit(int ModNum) {
 }
 
 
-bool ViewProviderLoft::onDelete(const std::vector<std::string> &s)
+bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
 {/*
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
 
@@ -113,9 +113,7 @@ bool ViewProviderLoft::onDelete(const std::vector<std::string> &s)
     return true;
 }
 
-
-
-void ViewProviderLoft::highlightReferences(const bool on, bool auxillery)
+void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxillery*/)
 {/*
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
     Part::Feature* base;

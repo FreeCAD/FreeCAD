@@ -230,7 +230,9 @@ void TaskMultiTransformParameters::onTransformEdit()
             subTask, SLOT(onUpdateView(bool)));
 }
 
-void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index) {
+void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index)
+{
+    Q_UNUSED(index);
     onTransformEdit();
 }
 

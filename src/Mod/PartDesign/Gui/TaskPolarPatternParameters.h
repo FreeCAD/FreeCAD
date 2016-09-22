@@ -74,9 +74,9 @@ protected:
     void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const std::string getStdAxis(void) const;
     const std::string getAxis(void) const;
-    const bool getReverse(void) const;
-    const double getAngle(void) const;
-    const unsigned getOccurrences(void) const;
+    bool getReverse(void) const;
+    double getAngle(void) const;
+    unsigned getOccurrences(void) const;
 
 private:
     void setupUI();

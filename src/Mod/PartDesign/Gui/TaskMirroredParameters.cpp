@@ -206,7 +206,8 @@ void TaskMirroredParameters::clearButtons()
     ui->buttonRemoveFeature->setChecked(false);
 }
 
-void TaskMirroredParameters::onPlaneChanged(int num) {
+void TaskMirroredParameters::onPlaneChanged(int /*num*/)
+{
     if (blockUpdate)
         return;
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
