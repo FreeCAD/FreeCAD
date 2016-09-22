@@ -123,6 +123,7 @@ void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
 
 void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)
 {
+    Q_UNUSED(checked);
     Gui::Command::updateActive();
 }
 

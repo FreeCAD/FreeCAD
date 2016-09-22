@@ -63,6 +63,8 @@ int SketchPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* SketchPy::solve(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
     getSketchPtr()->resetSolver();
     return Py::new_reference_to(Py::Int(getSketchPtr()->solve()));
 }

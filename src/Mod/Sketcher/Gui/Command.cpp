@@ -147,6 +147,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
 
 void CmdSketcherNewSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Attacher::eMapMode mapmode = Attacher::mmDeactivated;
     bool bAttach = false;
     if (Gui::Selection().hasSelection()){
@@ -287,6 +288,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
 
 void CmdSketcherEditSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
 
     if (SketchFilter.match()) {
@@ -318,6 +320,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
 
 void CmdSketcherLeaveSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document *doc = getActiveGuiDocument();
     
     if (doc) {
@@ -361,6 +364,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
 
 void CmdSketcherReorientSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Sketcher::SketchObject* sketch = Gui::Selection().getObjectsOfType<Sketcher::SketchObject>().front();
     if (sketch->Support.getValue()) {
         int ret = QMessageBox::question(Gui::getMainWindow(),
@@ -444,6 +448,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
 
 void CmdSketcherMapSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString msg_str;
     try{
         Attacher::eMapMode suggMapMode;
@@ -603,6 +608,7 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
 
 void CmdSketcherViewSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document *doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     if (vp) {
@@ -639,6 +645,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
 
 void CmdSketcherValidateSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -673,6 +680,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
 
 void CmdSketcherMirrorSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 1) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -782,6 +790,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 
 void CmdSketcherMergeSketches::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(),

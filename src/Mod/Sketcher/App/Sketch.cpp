@@ -252,9 +252,8 @@ int Sketch::addPoint(const Part::GeomPoint &point, bool fixed)
     return Geoms.size()-1;
 }
 
-int Sketch::addLine(const Part::GeomLineSegment &line, bool fixed)
+int Sketch::addLine(const Part::GeomLineSegment & /*line*/, bool /*fixed*/)
 {
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -2472,7 +2471,7 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
     return solve();
 }
 
-int Sketch::setDatum(int constrId, double value)
+int Sketch::setDatum(int /*constrId*/, double /*value*/)
 {
     return -1;
 }
@@ -2611,12 +2610,12 @@ unsigned int Sketch::getMemSize(void) const
     return 0;
 }
 
-void Sketch::Save(Writer &writer) const
+void Sketch::Save(Writer &) const
 {
 
 }
 
-void Sketch::Restore(XMLReader &reader)
+void Sketch::Restore(XMLReader &)
 {
 
 }

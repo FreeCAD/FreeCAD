@@ -509,11 +509,13 @@ void TaskSketcherSolverAdvanced::on_comboBoxDebugMode_currentIndexChanged(int in
 
 void TaskSketcherSolverAdvanced::on_pushButtonSolve_clicked(bool checked/* = false*/)
 {
+    Q_UNUSED(checked);
     sketchView->getSketchObject()->solve();
 }
 
 void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = false*/)
 {
+    Q_UNUSED(checked);
     // Algorithm params for default solvers
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");         
     hGrp->SetASCII("LM_eps",QString::number(LM_EPS).toUtf8());

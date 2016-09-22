@@ -314,7 +314,7 @@ ViewProviderSketch::~ViewProviderSketch()
     delete rubberband;
 }
     
-void ViewProviderSketch::slotUndoDocument(const Gui::Document& doc)
+void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 {
     if(getSketchObject()->noRecomputes) 
         getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
@@ -322,7 +322,7 @@ void ViewProviderSketch::slotUndoDocument(const Gui::Document& doc)
         getSketchObject()->getDocument()->recompute(); // or fully recomputed if applicable
 }
 
-void ViewProviderSketch::slotRedoDocument(const Gui::Document& doc) 
+void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/) 
 {
     if(getSketchObject()->noRecomputes) 
         getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
@@ -4173,6 +4173,7 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     //find the Part and body object the feature belongs to for placement calculations
     //TODO: this needs to be replaced with GRAPH methods to get the real stacked placement
     parentBody = Part::BodyBase::findBodyOf(getSketchObject());
@@ -4598,6 +4599,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
@@ -4657,6 +4659,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
+    Q_UNUSED(ModNum);
     //visibility automation: save camera
     if (! this->TempoVis.getValue().isNone()){
         try{

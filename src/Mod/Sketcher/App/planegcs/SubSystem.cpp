@@ -329,7 +329,7 @@ void SubSystem::applySolution()
         *(it->first) = *(it->second);
 }
 
-void SubSystem::analyse(Eigen::MatrixXd &J, Eigen::MatrixXd &ker, Eigen::MatrixXd &img)
+void SubSystem::analyse(Eigen::MatrixXd & /*J*/, Eigen::MatrixXd & /*ker*/, Eigen::MatrixXd & /*img*/)
 {
 }
 
