@@ -49,7 +49,7 @@ using namespace TechDrawGui;
 //
 /* module functions */
 static PyObject *
-tdGuiPlaceholder(PyObject *self, PyObject *args)
+tdGuiPlaceholder(PyObject * /*self*/, PyObject *args)
 {
     char* Name;
     if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
@@ -65,6 +65,6 @@ tdGuiPlaceholder(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef TechDrawGui_Import_methods[] = {
-    {"tdGuiPlaceholder"     ,tdGuiPlaceholder ,     METH_VARARGS}, /* method name, C func ptr, always-tuple */
-    {NULL, NULL}                    /* end of table marker */
+    {"tdGuiPlaceholder"     ,tdGuiPlaceholder ,     METH_VARARGS, ""}, /* method name, C func ptr, always-tuple */
+    {NULL, NULL, 0, NULL}                    /* end of table marker */
 };

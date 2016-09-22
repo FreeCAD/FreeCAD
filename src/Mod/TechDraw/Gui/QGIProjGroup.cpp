@@ -31,7 +31,6 @@
 # include <QMessageBox>
 # include <QMouseEvent>
 # include <QPainter>
-# include <strstream>
 #endif
 
 #include <App/Document.h>

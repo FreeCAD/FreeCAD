@@ -71,6 +71,7 @@ void QGITemplate::clearContents()
 
 void QGITemplate::updateView(bool update)
 {
+    Q_UNUSED(update);
     draw();
 }
 

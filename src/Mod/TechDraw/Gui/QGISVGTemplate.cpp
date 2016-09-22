@@ -28,7 +28,6 @@
 #include <QPen>
 #include <QSvgRenderer>
 #include <QGraphicsSvgItem>
-#include <strstream>
 #include <boost/regex.hpp>
 #endif // #ifndef _PreComp_
 
@@ -78,7 +77,7 @@ QVariant QGISVGTemplate::itemChange(GraphicsItemChange change,
 
 void QGISVGTemplate::openFile(const QFile &file)
 {
-
+    Q_UNUSED(file);
 }
 
 void QGISVGTemplate::load(const QString &fileName)
@@ -132,6 +131,7 @@ void QGISVGTemplate::draw()
 
 void QGISVGTemplate::updateView(bool update)
 {
+    Q_UNUSED(update);
     draw();
 }
 

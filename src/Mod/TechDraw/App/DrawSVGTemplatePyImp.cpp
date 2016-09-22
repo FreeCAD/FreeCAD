@@ -15,7 +15,7 @@ std::string DrawSVGTemplatePy::representation(void) const
     return std::string("<DrawSVGTemplate object>");
 }
 
-PyObject *DrawSVGTemplatePy::getCustomAttributes(const char* attr) const
+PyObject *DrawSVGTemplatePy::getCustomAttributes(const char* ) const
 {
     return 0;
 }

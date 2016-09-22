@@ -245,6 +245,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
 
 void ViewProviderPage::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     static_cast<void>(showMDIViewPage());
     return;
 }

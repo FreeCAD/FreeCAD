@@ -148,6 +148,7 @@ CmdTechDrawNewPageDef::CmdTechDrawNewPageDef()
 
 void CmdTechDrawNewPageDef::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
@@ -217,6 +218,7 @@ CmdTechDrawNewPage::CmdTechDrawNewPage()
 
 void CmdTechDrawNewPage::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
@@ -296,6 +298,7 @@ CmdTechDrawNewView::CmdTechDrawNewView()
 
 void CmdTechDrawNewView::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;
@@ -371,6 +374,7 @@ CmdTechDrawNewViewSection::CmdTechDrawNewViewSection()
 
 void CmdTechDrawNewViewSection::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     //TODO: should just use BaseView's page
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
@@ -440,6 +444,7 @@ CmdTechDrawProjGroup::CmdTechDrawProjGroup()
 
 void CmdTechDrawProjGroup::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;
@@ -510,6 +515,7 @@ CmdTechDrawAnnotation::CmdTechDrawAnnotation()
 
 void CmdTechDrawAnnotation::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;
@@ -550,6 +556,7 @@ CmdTechDrawClip::CmdTechDrawClip()
 
 void CmdTechDrawClip::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;
@@ -593,12 +600,13 @@ CmdTechDrawClipPlus::CmdTechDrawClipPlus()
 
 void CmdTechDrawClipPlus::activated(int iMsg)
 {
-   std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-   if (selection.size() != 2) {
-       QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select 1 DrawViewClip and 1 DrawView."));
-       return;
-   }
+    Q_UNUSED(iMsg);
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    if (selection.size() != 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select 1 DrawViewClip and 1 DrawView."));
+        return;
+    }
 
     TechDraw::DrawViewClip* clip = 0;
     TechDraw::DrawView* view = 0;
@@ -671,6 +679,7 @@ CmdTechDrawClipMinus::CmdTechDrawClipMinus()
 
 void CmdTechDrawClipMinus::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     auto dObj( getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()) );
     if (dObj.empty()) {
         QMessageBox::warning( Gui::getMainWindow(),
@@ -736,6 +745,7 @@ CmdTechDrawSymbol::CmdTechDrawSymbol()
 
 void CmdTechDrawSymbol::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;
@@ -785,6 +795,7 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
 
 void CmdTechDrawDraftView::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;
@@ -835,6 +846,7 @@ CmdTechDrawSpreadsheet::CmdTechDrawSpreadsheet()
 
 void CmdTechDrawSpreadsheet::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     const std::vector<App::DocumentObject*> spreads = getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
     if (spreads.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -883,6 +895,7 @@ CmdTechDrawExportPage::CmdTechDrawExportPage()
 
 void CmdTechDrawExportPage::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPage(this);
     if (!page) {
         return;

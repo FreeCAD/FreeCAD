@@ -33,7 +33,6 @@
 #include <QPainterPathStroker>
 #include <QPainter>
 #include <QTextOption>
-#include <strstream>
 #endif
 
 #include <qmath.h>
@@ -104,5 +103,6 @@ void QGIViewSection::updateView(bool update)
 
 void QGIViewSection::drawSectionLine(bool b)
 {
+    Q_UNUSED(b);
    //override QGIVP::drawSectionLine
 }

@@ -117,18 +117,23 @@ void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 
 void ViewProviderProjGroupItem::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    Q_UNUSED(menu);
+    Q_UNUSED(receiver);
+    Q_UNUSED(member);
     //QAction* act;
     //act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
 }
 
 bool ViewProviderProjGroupItem::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     doubleClicked();
     return true;
 }
 
 void ViewProviderProjGroupItem::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     Gui::Control().closeDialog();
 }
 

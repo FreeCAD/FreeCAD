@@ -148,6 +148,7 @@ CmdTechDrawNewDimension::CmdTechDrawNewDimension()
 
 void CmdTechDrawNewDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
     if (!result)
         return;
@@ -283,6 +284,7 @@ CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
 
 void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool result = _checkSelection(this,1);
     if (!result)
         return;
@@ -370,6 +372,7 @@ CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
 
 void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool result = _checkSelection(this,1);
     if (!result)
         return;
@@ -459,6 +462,7 @@ CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
 
 void CmdTechDrawNewLengthDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
     if (!result)
         return;
@@ -566,6 +570,7 @@ CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
 
 void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
     if (!result)
         return;
@@ -671,6 +676,7 @@ CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
 
 void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
     if (!result)
         return;
@@ -775,6 +781,7 @@ CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
 
 void CmdTechDrawNewAngleDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
     if (!result)
         return;
@@ -863,6 +870,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
 
 void CmdTechDrawLinkDimension::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = _findPageCCD(this);
     if (!page) {
         return;

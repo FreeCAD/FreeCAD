@@ -29,7 +29,6 @@
 #endif
 
 
-#include <strstream>
 #include <App/Application.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>

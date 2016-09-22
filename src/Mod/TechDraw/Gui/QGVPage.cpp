@@ -34,7 +34,6 @@
 # include <QPaintEvent>
 # include <QSvgGenerator>
 # include <QWheelEvent>
-# include <strstream>
 # include <cmath>
 #endif
 

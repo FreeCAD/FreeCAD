@@ -267,6 +267,7 @@ void TaskProjGroup::setFractionalScale(double newScale)
 
 void TaskProjGroup::scaleManuallyChanged(int i)
 {
+    Q_UNUSED(i);
     //TODO: See what this is about - shouldn't be simplifying the scale ratio while it's being edited... IR
     if(blockUpdate)
         return;
