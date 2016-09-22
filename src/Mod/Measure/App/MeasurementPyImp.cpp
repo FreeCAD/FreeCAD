@@ -52,7 +52,7 @@ PyObject *MeasurementPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  /
 }
 
 // constructor method
-int MeasurementPy::PyInit(PyObject* args, PyObject* /*kwd*/)
+int MeasurementPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
    return 0;
 }
@@ -97,47 +97,64 @@ PyObject* MeasurementPy::has3DReferences(PyObject *args)
     return result;
 }
 
-PyObject* MeasurementPy::clear(PyObject *)
+PyObject* MeasurementPy::clear(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     this->getMeasurementPtr()->clear();
 
     Py_Return;
 }
 
-PyObject* MeasurementPy::delta(PyObject *)
+PyObject* MeasurementPy::delta(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     Py::Vector delta(this->getMeasurementPtr()->delta());
 
     return Py::new_reference_to(delta);
 }
 
-
-PyObject* MeasurementPy::length(PyObject *)
+PyObject* MeasurementPy::length(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     Py::Float length;
     length = this->getMeasurementPtr()->length();
 
     return Py::new_reference_to(length);
 }
 
-PyObject* MeasurementPy::radius(PyObject *)
+PyObject* MeasurementPy::radius(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     Py::Float radius;
     radius = this->getMeasurementPtr()->radius();
 
     return Py::new_reference_to(radius);
 }
 
-PyObject* MeasurementPy::angle(PyObject *)
+PyObject* MeasurementPy::angle(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     Py::Float angle;
     angle = this->getMeasurementPtr()->angle();
 
     return Py::new_reference_to(angle);
 }
 
-PyObject* MeasurementPy::com(PyObject *)
+PyObject* MeasurementPy::com(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     Py::Vector com(this->getMeasurementPtr()->massCenter());
 
     return Py::new_reference_to(com);

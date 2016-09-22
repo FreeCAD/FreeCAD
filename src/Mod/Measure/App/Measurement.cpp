@@ -291,7 +291,7 @@ double Measurement::length() const
   return result;
 }
 
-double Measurement::angle(const Base::Vector3d &param) const
+double Measurement::angle(const Base::Vector3d & /*param*/) const
 {
     int numRefs = References3D.getSize();
     if(!numRefs)
