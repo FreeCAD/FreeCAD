@@ -59,7 +59,7 @@ using namespace std;
 
 
 Path* Path::Read(istream& is) {
-	// auto_ptr because exception can be thrown !
+	// unique_ptr because exception can be thrown !
 	IOTrace("Path::Read");
 	char storage[64];
 	EatWord(is,"[",storage,sizeof(storage));
@@ -78,7 +78,7 @@ Path* Path::Read(istream& is) {
 		Frame endpos;
 		is >> startpos;
 		is >> endpos;
-		auto_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
+		unique_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
 		double eqradius;
 		is >> eqradius;
 		EatEnd(is,']');
@@ -99,7 +99,7 @@ Path* Path::Read(istream& is) {
 		is >> R_base_end;
 		is >> alpha;
 		alpha *= deg2rad;
-		auto_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
+		unique_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
 		is >> eqradius;
 		EatEnd(is,']');
 		IOTracePop();
@@ -119,8 +119,8 @@ Path* Path::Read(istream& is) {
 		is >> radius;
 		double eqradius;
 		is >> eqradius;
-		auto_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
-		auto_ptr<Path_RoundedComposite> tr(
+		unique_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
+		unique_ptr<Path_RoundedComposite> tr(
 			new Path_RoundedComposite(radius,eqradius,orient.release())
 		);
 		int size;
@@ -139,7 +139,7 @@ Path* Path::Read(istream& is) {
 	} else if (strcmp(storage,"COMPOSITE")==0) {
 		IOTrace("COMPOSITE");
 		int size;
-		auto_ptr<Path_Composite> tr( new Path_Composite() );
+		unique_ptr<Path_Composite> tr( new Path_Composite() );
 		is >> size;
 		int i;
 		for (i=0;i<size;i++) {
@@ -152,7 +152,7 @@ Path* Path::Read(istream& is) {
 	} else if (strcmp(storage,"CYCLIC_CLOSED")==0) {
 		IOTrace("CYCLIC_CLOSED");
 		int times;
-		auto_ptr<Path> tr( Path::Read(is) );
+		unique_ptr<Path> tr( Path::Read(is) );
 		is >> times;
 		EatEnd(is,']');
 		IOTracePop();

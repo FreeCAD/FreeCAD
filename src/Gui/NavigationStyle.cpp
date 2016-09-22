@@ -1568,7 +1568,7 @@ std::map<Base::Type, std::string> UserNavigationStyle::getUserFriendlyNames()
 
     for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
         if (*it != UserNavigationStyle::getClassTypeId()) {
-            std::auto_ptr<UserNavigationStyle> inst(static_cast<UserNavigationStyle*>(it->createInstance()));
+            std::unique_ptr<UserNavigationStyle> inst(static_cast<UserNavigationStyle*>(it->createInstance()));
             if (inst.get()) {
                 names[*it] = inst->userFriendlyName();
             }

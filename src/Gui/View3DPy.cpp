@@ -759,17 +759,17 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|is",&filename,&ps,&name))
         throw Py::Exception();
 
-    std::auto_ptr<SoVectorizeAction> vo;
+    std::unique_ptr<SoVectorizeAction> vo;
     Base::FileInfo fi(filename);
     if (fi.hasExtension("ps") || fi.hasExtension("eps")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoVectorizePSAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoVectorizePSAction());
         //vo->setGouraudThreshold(0.0f);
     }
     else if (fi.hasExtension("svg")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
     }
     else if (fi.hasExtension("idtf")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
     }
     else {
         throw Py::Exception("Not supported vector graphic");

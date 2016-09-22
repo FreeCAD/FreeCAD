@@ -1156,13 +1156,13 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
     if (fi.hasExtension("idtf") || fi.hasExtension("svg")) {
         int ps=4;
         QColor c = Qt::white;
-        std::auto_ptr<SoVectorizeAction> vo;
+        std::unique_ptr<SoVectorizeAction> vo;
 
         if (fi.hasExtension("svg")) {
-            vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
+            vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
         }
         else if (fi.hasExtension("idtf")) {
-            vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
+            vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
         }
         else {
             throw Base::Exception("Not supported vector graphic");

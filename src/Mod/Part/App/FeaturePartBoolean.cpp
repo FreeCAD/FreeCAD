@@ -79,7 +79,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         if (ToolShape.IsNull())
             throw Base::Exception("Tool shape is null");
 
-        std::auto_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
+        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
         if (!mkBool->IsDone()) {
             return new App::DocumentObjectExecReturn("Boolean operation failed");
         }

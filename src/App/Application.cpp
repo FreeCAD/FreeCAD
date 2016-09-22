@@ -297,7 +297,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     }
 
     // create the FreeCAD document
-    auto_ptr<Document> newDoc(new Document() );
+    std::unique_ptr<Document> newDoc(new Document() );
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
@@ -341,7 +341,7 @@ bool Application::closeDocument(const char* name)
     // For exception-safety use a smart pointer
     if (_pActiveDoc == pos->second)
         setActiveDocument((Document*)0);
-    auto_ptr<Document> delDoc (pos->second);
+    std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
 
     // Trigger observers after removing the document from the internal map.

@@ -178,7 +178,7 @@ PyObject* PointsPy::fromSegment(PyObject * args)
     try {
         const PointKernel* points = getPointKernelPtr();
         Py::Sequence list(obj);
-        std::auto_ptr<PointKernel> pts(new PointKernel());
+        std::unique_ptr<PointKernel> pts(new PointKernel());
         pts->reserve(list.size());
         int numPoints = static_cast<int>(points->size());
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -202,7 +202,7 @@ PyObject* PointsPy::fromValid(PyObject * args)
 
     try {
         const PointKernel* points = getPointKernelPtr();
-        std::auto_ptr<PointKernel> pts(new PointKernel());
+        std::unique_ptr<PointKernel> pts(new PointKernel());
         pts->reserve(points->size());
         for (PointKernel::const_iterator it = points->begin(); it != points->end(); ++it) {
             if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))

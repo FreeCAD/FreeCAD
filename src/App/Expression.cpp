@@ -340,9 +340,9 @@ static bool definitelyLessThan(double a, double b, double epsilon)
 
 Expression * OperatorExpression::eval() const
 {
-    std::auto_ptr<Expression> e1(left->eval());
+    std::unique_ptr<Expression> e1(left->eval());
     NumberExpression * v1;
-    std::auto_ptr<Expression> e2(right->eval());
+    std::unique_ptr<Expression> e2(right->eval());
     NumberExpression * v2;
     Expression * output;
     const double epsilon = std::numeric_limits<double>::epsilon();
@@ -892,7 +892,7 @@ Expression * FunctionExpression::evalAggregate() const
             } while (range.next());
         }
         else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
-            std::auto_ptr<Expression> e(args[i]->eval());
+            std::unique_ptr<Expression> e(args[i]->eval());
             NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
 
             if (n)
@@ -919,8 +919,8 @@ Expression * FunctionExpression::eval() const
     if (f > AGGREGATES)
         return evalAggregate();
 
-    std::auto_ptr<Expression> e1(args[0]->eval());
-    std::auto_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
+    std::unique_ptr<Expression> e1(args[0]->eval());
+    std::unique_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
     NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
     double output;
@@ -1537,7 +1537,7 @@ bool ConditionalExpression::isTouched() const
 
 Expression *ConditionalExpression::eval() const
 {
-    std::auto_ptr<Expression> e(condition->eval());
+    std::unique_ptr<Expression> e(condition->eval());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
@@ -1551,7 +1551,7 @@ Expression *ConditionalExpression::eval() const
 
 Expression *ConditionalExpression::simplify() const
 {
-    std::auto_ptr<Expression> e(condition->simplify());
+    std::unique_ptr<Expression> e(condition->simplify());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)

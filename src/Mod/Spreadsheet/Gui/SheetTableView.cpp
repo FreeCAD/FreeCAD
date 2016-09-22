@@ -80,7 +80,7 @@ SheetTableView::SheetTableView(QWidget *parent)
 
 void SheetTableView::cellProperties()
 {
-    std::auto_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
+    std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
 
     if (dialog->exec() == QDialog::Accepted) {
         dialog->apply();

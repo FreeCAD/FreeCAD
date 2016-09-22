@@ -88,7 +88,7 @@ private:
             if (file.extension().empty())
                 throw Py::RuntimeError("No file extension");
 
-            std::auto_ptr<Reader> reader;
+            std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
             }
@@ -192,7 +192,7 @@ private:
             if (file.extension().empty())
                 throw Py::RuntimeError("No file extension");
 
-            std::auto_ptr<Reader> reader;
+            std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
             }
@@ -309,7 +309,7 @@ private:
 
                     Points::Feature* fea = static_cast<Points::Feature*>(obj);
                     const PointKernel& kernel = fea->Points.getValue();
-                    std::auto_ptr<Writer> writer;
+                    std::unique_ptr<Writer> writer;
                     if (file.hasExtension("asc")) {
                         writer.reset(new AscWriter(kernel));
                     }

@@ -128,7 +128,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             if (error.size() > 0)
                 throw Base::Exception(error.c_str());
 
-            std::auto_ptr<Expression> result(expr->eval());
+            std::unique_ptr<Expression> result(expr->eval());
 
             expression = expr;
             ui->okBtn->setEnabled(true);

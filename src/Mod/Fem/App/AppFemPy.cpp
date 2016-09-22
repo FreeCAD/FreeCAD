@@ -132,7 +132,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        std::auto_ptr<FemMesh> mesh(new FemMesh);
+        std::unique_ptr<FemMesh> mesh(new FemMesh);
         mesh->read(EncodedName.c_str());
         Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
@@ -168,7 +168,7 @@ private:
         Base::FileInfo file(EncodedName.c_str());
 
         try {
-            std::auto_ptr<FemMesh> mesh(new FemMesh);
+            std::unique_ptr<FemMesh> mesh(new FemMesh);
             mesh->read(EncodedName.c_str());
 
             FemMeshObject *pcFeature = static_cast<FemMeshObject *>
@@ -232,7 +232,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        std::auto_ptr<FemMesh> mesh(new FemMesh);
+        std::unique_ptr<FemMesh> mesh(new FemMesh);
         mesh->read(EncodedName.c_str());
         return Py::asObject(new FemMeshPy(mesh.release()));
     }
