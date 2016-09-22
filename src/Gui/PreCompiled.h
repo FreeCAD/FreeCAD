@@ -35,6 +35,7 @@
 #pragma warning( disable : 4275 )
 #pragma warning( disable : 4503 )
 #pragma warning( disable : 4786 )  // specifier longer then 255 chars
+#pragma warning( disable : 4250 )  // virtual inheritance warning
 #endif
 
 // standard
@@ -81,7 +82,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
-
+
+
 #include "InventorAll.h"
 #include "Qt4All.h"
 
