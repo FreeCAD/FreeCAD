@@ -51,6 +51,7 @@ public:
     App::PropertyBool Symmetric;
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
+    App::PropertyString FaceMakerClass;
 
 
     /**
@@ -65,6 +66,7 @@ public:
         bool solid;
         double taperAngleFwd; //in radians
         double taperAngleRev;
+        std::string faceMakerClass;
         ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
     };
 
@@ -121,6 +123,9 @@ public: //mode enumerations
 protected:
     static void makeDraft(ExtrusionParameters params, const TopoDS_Shape&, std::list<TopoDS_Shape>&);
 
+
+protected:
+    virtual void setupObject() override;
 };
 
 /**

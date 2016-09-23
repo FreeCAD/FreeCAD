@@ -77,6 +77,7 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(Symmetric,(false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
     ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yeilds inward tapering.");
     ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
+    ADD_PROPERTY_TYPE(FaceMakerClass,("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
 }
 
 short Extrusion::mustExecute() const
@@ -91,7 +92,8 @@ short Extrusion::mustExecute() const
         Reversed.isTouched() ||
         Symmetric.isTouched() ||
         TaperAngle.isTouched() ||
-        TaperAngleRev.isTouched())
+        TaperAngleRev.isTouched() ||
+        FaceMakerClass.isTouched())
         return 1;
     return 0;
 }
@@ -187,6 +189,8 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
     result.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
     if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular() )
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
+
+    result.faceMakerClass = this->FaceMakerClass.getValue();
 
     return result;
 }
@@ -291,11 +295,21 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
         }
 
         //make faces from wires
-        if (params.solid && myShape.ShapeType() != TopAbs_FACE) {
-            FaceMakerExtrusion mkFace;
-            mkFace.addShape(myShape);
-            mkFace.Build();
-            myShape = mkFace.Shape();
+        if (params.solid) {
+            if (myShape.ShapeType() == TopAbs_FACE && params.faceMakerClass == "Part::FaceMakerExtrusion"){
+                //legacy exclusion: ignore "solid" if extruding a face.
+            } else {
+                //new strict behavior. If solid==True => make faces from wires, and if myShape not wires - fail!
+                std::unique_ptr<FaceMaker> fm_instance = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
+                FaceMaker* mkFace = &(*(fm_instance));
+
+                if(myShape.ShapeType() == TopAbs_COMPOUND)
+                    mkFace->useCompound(TopoDS::Compound(myShape));
+                else
+                    mkFace->addShape(myShape);
+                mkFace->Build();
+                myShape = mkFace->Shape();
+            }
         }
 
         //extrude!
@@ -552,4 +566,11 @@ void FaceMakerExtrusion::Build()
 
     this->Done();
 
+}
+
+
+void Part::Extrusion::setupObject()
+{
+    Part::Feature::setupObject();
+    this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
 }
