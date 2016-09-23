@@ -807,6 +807,7 @@ bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const
 
 void ViewProviderMesh::showOpenEdges(bool show)
 {
+    (void)show;
 }
 
 void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)

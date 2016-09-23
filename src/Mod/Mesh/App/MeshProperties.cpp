@@ -404,7 +404,7 @@ PyObject* PropertyCurvatureList::getPyObject(void)
     return Py::new_reference_to(list);
 }
 
-void PropertyCurvatureList::setPyObject(PyObject *value)
+void PropertyCurvatureList::setPyObject(PyObject* /*value*/)
 {
     throw Base::AttributeError(std::string("This attribute is read-only"));
 }

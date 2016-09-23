@@ -63,6 +63,7 @@ template <class Real>
 Real DistVector3Plane3<Real>::Get (Real fT, const Vector3<Real>& rkVelocity0,
     const Vector3<Real>& rkVelocity1)
 {
+    (void)rkVelocity1;
     Vector3<Real> kMVector = m_rkVector + fT*rkVelocity0;
     Real fMConstant = m_rkPlane.Constant +
         fT*m_rkPlane.Normal.Dot(rkVelocity0);
@@ -74,6 +75,7 @@ template <class Real>
 Real DistVector3Plane3<Real>::GetSquared (Real fT,
     const Vector3<Real>& rkVelocity0, const Vector3<Real>& rkVelocity1)
 {
+    (void)rkVelocity1;
     Vector3<Real> kMVector = m_rkVector + fT*rkVelocity0;
     Real fMConstant = m_rkPlane.Constant +
         fT*m_rkPlane.Normal.Dot(rkVelocity0);

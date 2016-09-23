@@ -925,6 +925,7 @@ void MeshKernel::Transform (const Base::Matrix4D &rclMat)
 
 void MeshKernel::Smooth(int iterations, float stepsize)
 {
+    (void)stepsize;
     LaplaceSmoothing(*this).Smooth(iterations);
 }
 

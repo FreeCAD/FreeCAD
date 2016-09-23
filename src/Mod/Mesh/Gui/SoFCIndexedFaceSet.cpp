@@ -117,10 +117,10 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
                                     const SbVec3f *normals,
                                     const int32_t *normalindices,
                                     SoMaterialBundle *materials,
-                                    const int32_t *matindices,
+                                    const int32_t * /*matindices*/,
                                     const int32_t binding,
-                                    const SoTextureCoordinateBundle * const texcoords,
-                                    const int32_t *texindices)
+                                    const SoTextureCoordinateBundle * const /*texcoords*/,
+                                    const int32_t * /*texindices*/)
 {
     const SbVec3f * coords3d = 0;
     coords3d = vertexlist->getArrayPtr3();
@@ -343,7 +343,7 @@ void SoFCIndexedFaceSet::startVisibility(SoAction * action)
     glLoadMatrixf((float*)view);
 }
 
-void SoFCIndexedFaceSet::stopVisibility(SoAction * action)
+void SoFCIndexedFaceSet::stopVisibility(SoAction * /*action*/)
 {
     // restoring the original projection matrix
     glPopMatrix();

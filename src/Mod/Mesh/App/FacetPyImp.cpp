@@ -61,8 +61,10 @@ PyObject *FacetPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyth
 }
 
 // constructor method
-int FacetPy::PyInit(PyObject* args, PyObject*k)
+int FacetPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return -1;
     return 0;
 }
 
@@ -199,12 +201,12 @@ Py::Float FacetPy::getArea(void) const
     return Py::Float(tria.Area());
 }
 
-PyObject *FacetPy::getCustomAttributes(const char* attr) const
+PyObject *FacetPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int FacetPy::setCustomAttributes(const char* attr, PyObject *obj)
+int FacetPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
 {
     return 0; 
 }

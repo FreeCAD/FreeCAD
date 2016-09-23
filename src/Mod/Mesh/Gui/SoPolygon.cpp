@@ -134,7 +134,7 @@ SoPolygon::rayPick(SoRayPickAction * action)
     inherited::rayPick(action);
 }
 
-void SoPolygon::generatePrimitives(SoAction* action)
+void SoPolygon::generatePrimitives(SoAction* /*action*/)
 {
 }
 

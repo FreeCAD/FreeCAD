@@ -278,6 +278,7 @@ template <class Real>
 void TriangulateEC<Real>::InitializeVertices (int iVQuantity,
     const int* aiIndex, std::vector<int>& rkTriangle)
 {
+    (void)rkTriangle;
     m_kVertex.clear();
     m_kVertex.resize(iVQuantity);
     m_iCFirst = -1;
