@@ -58,8 +58,11 @@ using namespace Part;
 
 TYPESYSTEM_SOURCE(Part::FaceMakerBullseye, Part::FaceMakerPublic);
 
-
-
+void FaceMakerBullseye::setPlane(const gp_Pln &plane)
+{
+    this->myPlane = gp_Pln(plane);
+    this->planeSupplied = true;
+}
 
 std::string FaceMakerBullseye::getUserFriendlyName() const
 {
@@ -82,24 +85,30 @@ void FaceMakerBullseye::Build_Essence()
             throw Base::ValueError("Wire is not closed.");
     }
 
+
     //find plane (at the same time, test that all wires are on the same plane)
-    TopoDS_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    for(TopoDS_Wire &w : myWires){
-        builder.Add(comp, w);
+    gp_Pln plane;
+    if(this->planeSupplied){
+        plane = this->myPlane;
+    } else {
+        TopoDS_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+        for(TopoDS_Wire &w : myWires){
+            builder.Add(comp, w);
+        }
+        BRepLib_FindSurface planeFinder(comp,-1, /*OnlyPlane=*/Standard_True);
+        if (!planeFinder.Found())
+            throw Base::ValueError("Wires are not coplanar.");
+        plane = GeomAdaptor_Surface(planeFinder.Surface()).Plane();
     }
-    BRepLib_FindSurface planeFinder(comp,-1, /*OnlyPlane=*/Standard_True);
-    if (!planeFinder.Found())
-        throw Base::ValueError("Wires are not coplanar.");
-    gp_Pln plane = GeomAdaptor_Surface(planeFinder.Surface()).Plane();
 
     //sort wires by length of diagonal of bounding box.
     std::vector<TopoDS_Wire> wires = this->myWires;
     std::sort(wires.begin(), wires.end(), FaceMakerCheese::Wire_Compare());
 
     //add wires one by one to current set of faces.
-    //We go from last to first, to mase it so that outer wires come before inner wires.
+    //We go from last to first, to make it so that outer wires come before inner wires.
     std::vector< std::unique_ptr<FaceDriller> > faces;
     for( int i = wires.size()-1   ;   i >= 0   ;   --i){
         TopoDS_Wire &w = wires[i];

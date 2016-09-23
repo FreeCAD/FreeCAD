@@ -46,11 +46,25 @@ class PartExport FaceMakerBullseye: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER();
 public:
+    FaceMakerBullseye()
+        :planeSupplied(false){}
+    /**
+     * @brief setPlane: sets the plane to use when making faces. This is
+     * optional. If the plane was set, it is not tested that the wires are
+     * planar or on the supplied plane, potentially speeding things up.
+     * @param plane FIXME: the plane is not propagated if processing compounds.
+     */
+    void setPlane(const gp_Pln& plane);
+
     virtual std::string getUserFriendlyName() const override;
     virtual std::string getBriefExplanation() const override;
 
 protected:
     virtual void Build_Essence() override;
+
+protected:
+    gp_Pln myPlane; //externally supplied plane (if any)
+    bool planeSupplied;
 
     /**
      * @brief The FaceDriller class is similar to BRepBuilderAPI_MakeFace,
