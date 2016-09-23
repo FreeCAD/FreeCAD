@@ -65,6 +65,7 @@ public:
 FitBSplineSurfaceWidget::FitBSplineSurfaceWidget(const App::DocumentObjectT& obj, QWidget* parent)
   : d(new Private())
 {
+    Q_UNUSED(parent);
     d->ui.setupUi(this);
     d->obj = obj;
     restoreSettings();

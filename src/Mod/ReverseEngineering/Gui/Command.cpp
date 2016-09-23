@@ -63,7 +63,7 @@ CmdApproxSurface::CmdApproxSurface()
     sPixmap         = "actions/FitSurface";
 }
 
-void CmdApproxSurface::activated(int iMsg)
+void CmdApproxSurface::activated(int)
 {
     App::DocumentObjectT objT;
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
@@ -97,7 +97,7 @@ CmdApproxPlane::CmdApproxPlane()
     sStatusTip      = sToolTipText;
 }
 
-void CmdApproxPlane::activated(int iMsg)
+void CmdApproxPlane::activated(int)
 {
     std::vector<App::GeoFeature*> obj = Gui::Selection().getObjectsOfType<App::GeoFeature>();
     for (std::vector<App::GeoFeature*>::iterator it = obj.begin(); it != obj.end(); ++it) {
@@ -198,7 +198,7 @@ CmdPoissonReconstruction::CmdPoissonReconstruction()
     sStatusTip      = sToolTipText;
 }
 
-void CmdPoissonReconstruction::activated(int iMsg)
+void CmdPoissonReconstruction::activated(int)
 {
     App::DocumentObjectT objT;
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
@@ -232,7 +232,7 @@ CmdViewTriangulation::CmdViewTriangulation()
     sWhatsThis      = "Reen_ViewTriangulation";
 }
 
-void CmdViewTriangulation::activated(int iMsg)
+void CmdViewTriangulation::activated(int)
 {
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Structured::getClassTypeId());
     addModule(App,"ReverseEngineering");
