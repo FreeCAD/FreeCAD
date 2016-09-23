@@ -2281,6 +2281,12 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
         cb->setHandled();
+
+        const SoEvent* ev = cb->getEvent();
+        if (ev && !ev->wasCtrlDown()) {
+            Gui::Selection().clearSelection(doc->getName());
+        }
+
         std::vector<App::GeoFeature*> geom = doc->getObjectsOfType<App::GeoFeature>();
         for (std::vector<App::GeoFeature*>::iterator it = geom.begin(); it != geom.end(); ++it) {
             Gui::ViewProvider* vp = Application::Instance->getViewProvider(*it);
