@@ -46,7 +46,7 @@ using namespace MeshCore;
 //using namespace JtReader;
 
 /* module functions */
-static PyObject * read(PyObject *self, PyObject *args)
+static PyObject * read(PyObject * /*self*/, PyObject *args)
 {
   char* Name;
   if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
@@ -85,7 +85,7 @@ static PyObject * read(PyObject *self, PyObject *args)
 }
 
 static PyObject *
-open(PyObject *self, PyObject *args)
+open(PyObject * /*self*/, PyObject *args)
 {
   char* Name;
   if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
@@ -153,13 +153,13 @@ open(PyObject *self, PyObject *args)
 
   } PY_CATCH;
 
-	Py_Return;    
+  Py_Return;    
 }
 
 
 /* module functions */
 static PyObject *
-insert(PyObject *self, PyObject *args)
+insert(PyObject * /*self*/, PyObject *args)
 {
   char* Name;
   const char* DocName;
@@ -231,7 +231,7 @@ insert(PyObject *self, PyObject *args)
 
   } PY_CATCH;
 
-	Py_Return;    
+  Py_Return;    
 }
 
 
@@ -240,7 +240,7 @@ struct PyMethodDef JtReader_methods[] = {
     {"open"       ,open ,       Py_NEWARGS, "open a jt file in a new Document"},				
     {"insert"     ,insert,      Py_NEWARGS, "isert a jt file in a existing document"},
     {"read"       ,read,        Py_NEWARGS, "Read a Mesh from a jt file and returns a Mesh object."},
-    {NULL, NULL}                   
+    {NULL, NULL, 0, NULL}                   
 };
 
 
