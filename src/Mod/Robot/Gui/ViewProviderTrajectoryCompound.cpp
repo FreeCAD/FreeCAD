@@ -44,7 +44,7 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryCompound, RobotGui::ViewProvider
 //}
 
 
-bool ViewProviderTrajectoryCompound::setEdit(int ModNum)
+bool ViewProviderTrajectoryCompound::setEdit(int)
 {
     Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryCompound(dynamic_cast<Robot::TrajectoryCompound *>(getObject()));
     Gui::Control().showDialog(dlg);
@@ -52,7 +52,7 @@ bool ViewProviderTrajectoryCompound::setEdit(int ModNum)
 
 }
 
-void ViewProviderTrajectoryCompound::unsetEdit(int ModNum)
+void ViewProviderTrajectoryCompound::unsetEdit(int)
 {
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();

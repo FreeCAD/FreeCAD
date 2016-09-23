@@ -43,15 +43,14 @@ bool ViewProviderEdge2TracObject::doubleClicked(void)
 }
 
 
-bool ViewProviderEdge2TracObject::setEdit(int ModNum)
+bool ViewProviderEdge2TracObject::setEdit(int)
 {
     Gui::TaskView::TaskDialog* dlg = new TaskDlgEdge2Trac(static_cast<Robot::Edge2TracObject *>(getObject()));
     Gui::Control().showDialog(dlg);
     return true;
 }
 
-void ViewProviderEdge2TracObject::unsetEdit(int ModNum)
+void ViewProviderEdge2TracObject::unsetEdit(int)
 {
-
 
 }
