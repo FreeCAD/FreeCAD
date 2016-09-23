@@ -87,7 +87,7 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
     sPixmap       = "Raytrace_Camera";
 }
 
-void CmdRaytracingWriteCamera::activated(int iMsg)
+void CmdRaytracingWriteCamera::activated(int)
 {
     const char* ppReturn=0;
     getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
@@ -180,7 +180,7 @@ CmdRaytracingWritePart::CmdRaytracingWritePart()
     sPixmap       = "Raytrace_Part";
 }
 
-void CmdRaytracingWritePart::activated(int iMsg)
+void CmdRaytracingWritePart::activated(int)
 {
     QStringList filter;
     filter << QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
@@ -226,7 +226,7 @@ CmdRaytracingWriteView::CmdRaytracingWriteView()
     sPixmap       = "Raytrace_Export";
 }
 
-void CmdRaytracingWriteView::activated(int iMsg)
+void CmdRaytracingWriteView::activated(int)
 {
     const char* ppReturn=0;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
@@ -417,7 +417,7 @@ CmdRaytracingNewPartSegment::CmdRaytracingNewPartSegment()
     sPixmap         = "Raytrace_NewPartSegment";
 }
 
-void CmdRaytracingNewPartSegment::activated(int iMsg)
+void CmdRaytracingNewPartSegment::activated(int)
 {
     std::vector<Part::Feature*> parts = Gui::Selection().getObjectsOfType<Part::Feature>();
     if (parts.empty()) {
@@ -501,7 +501,7 @@ CmdRaytracingExportProject::CmdRaytracingExportProject()
     sPixmap       = "Raytrace_ExportProject";
 }
 
-void CmdRaytracingExportProject::activated(int iMsg)
+void CmdRaytracingExportProject::activated(int)
 {
     QString filterLabel;
     unsigned int n = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
@@ -563,7 +563,7 @@ CmdRaytracingRender::CmdRaytracingRender()
     sPixmap       = "Raytrace_Render";
 }
 
-void CmdRaytracingRender::activated(int iMsg)
+void CmdRaytracingRender::activated(int)
 {
     // determining render type
     Base::Type renderType;
@@ -808,7 +808,7 @@ CmdRaytracingResetCamera::CmdRaytracingResetCamera()
     sPixmap       = "Raytrace_ResetCamera";
 }
 
-void CmdRaytracingResetCamera::activated(int iMsg)
+void CmdRaytracingResetCamera::activated(int)
 {
     std::vector<App::DocumentObject*> sel = getSelection().getObjectsOfType(Raytracing::RayProject::getClassTypeId());
     if (sel.size() != 1) {
