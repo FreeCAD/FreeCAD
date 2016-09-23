@@ -363,7 +363,7 @@ std::vector<std::string> ViewProviderInspection::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderInspection::OnChange(Base::Subject<int> &rCaller,int rcReason)
+void ViewProviderInspection::OnChange(Base::Subject<int> &/*rCaller*/, int /*rcReason*/)
 {
     setActiveMode();
 }
@@ -452,7 +452,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
                 view->setRedirectToSceneGraphEnabled(false);
-                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback);
+                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback, ud);
             }
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {

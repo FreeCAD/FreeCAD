@@ -255,7 +255,7 @@ MeshPoint MeshObject::getPoint(unsigned long index) const
 
 void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
                            std::vector<Base::Vector3d> &Normals,
-                           float Accuracy, uint16_t flags) const
+                           float /*Accuracy*/, uint16_t /*flags*/) const
 {
     Base::Matrix4D mat = _Mtrx;
 

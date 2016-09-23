@@ -152,12 +152,12 @@ namespace Inspection {
         }
 
     protected:
-        void CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxGrids)
+        void CalculateGridLength (unsigned long /*ulCtGrid*/, unsigned long /*ulMaxGrids*/)
         {
             // do nothing
         }
 
-        void CalculateGridLength (int iCtGridPerAxis)
+        void CalculateGridLength (int /*iCtGridPerAxis*/)
         {
             // do nothing
         }
@@ -384,7 +384,8 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point)
 
 // ----------------------------------------------------------------
 
-InspectNominalPoints::InspectNominalPoints(const Points::PointKernel& Kernel, float offset) : _rKernel(Kernel)
+InspectNominalPoints::InspectNominalPoints(const Points::PointKernel& Kernel, float /*offset*/)
+  : _rKernel(Kernel)
 {
     int uGridPerAxis = 50; // totally 125.000 grid elements 
     this->_pGrid = new Points::PointsGrid (Kernel, uGridPerAxis);
@@ -418,7 +419,7 @@ float InspectNominalPoints::getDistance(const Base::Vector3f& point)
 
 // ----------------------------------------------------------------
 
-InspectNominalShape::InspectNominalShape(const TopoDS_Shape& shape, float radius) : _rShape(shape)
+InspectNominalShape::InspectNominalShape(const TopoDS_Shape& shape, float /*radius*/) : _rShape(shape)
 {
     distss = new BRepExtrema_DistShapeShape();
     distss->LoadS1(_rShape);
