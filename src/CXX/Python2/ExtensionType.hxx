@@ -188,7 +188,7 @@ namespace Py
     : public PythonExtensionBase
     {
     protected:
-        explicit PythonClass( PythonClassInstance *self, Tuple &args, Dict &kwds )
+        explicit PythonClass( PythonClassInstance *self, Tuple &/*args*/, Dict &/*kwds*/ )
         : PythonExtensionBase()
         , m_class_instance( self )
         {
@@ -235,7 +235,7 @@ namespace Py
             return *p;
         }
 
-        static PyObject *extension_object_new( PyTypeObject *subtype, PyObject *args, PyObject *kwds )
+        static PyObject *extension_object_new( PyTypeObject *subtype, PyObject * /*args*/, PyObject * /*kwds*/ )
         {
 #ifdef PYCXX_DEBUG
             std::cout << "extension_object_new()" << std::endl;

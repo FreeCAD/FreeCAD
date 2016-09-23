@@ -186,7 +186,7 @@ Mesh::MeshObject* Mesher::createMesh() const
             colorMap[colors[i]].push_back(i);
         }
 
-        bool createSegm = (colors.size() == aMesh->NbDomains());
+        bool createSegm = (static_cast<int>(colors.size()) == aMesh->NbDomains());
 
         MeshCore::MeshFacetArray faces;
         faces.reserve(aMesh->NbTriangles());
