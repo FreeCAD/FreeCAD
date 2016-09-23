@@ -56,7 +56,7 @@ Firewall::~Firewall()
 {
 }
 
-bool Firewall::filter(const QByteArray& cmd) const
+bool Firewall::filter(const QByteArray&) const
 {
     return true;
 }
