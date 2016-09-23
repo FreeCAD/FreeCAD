@@ -77,9 +77,8 @@ void Simulation::step(double tick)
 	Pos += tick;
 }
 
-void Simulation::setToWaypoint(unsigned int n)
+void Simulation::setToWaypoint(unsigned int)
 {
-
 
 }
 

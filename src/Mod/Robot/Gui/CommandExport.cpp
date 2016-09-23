@@ -56,7 +56,7 @@ CmdRobotExportKukaCompact::CmdRobotExportKukaCompact()
 }
 
 
-void CmdRobotExportKukaCompact::activated(int iMsg)
+void CmdRobotExportKukaCompact::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
@@ -118,7 +118,7 @@ CmdRobotExportKukaFull::CmdRobotExportKukaFull()
 }
 
 
-void CmdRobotExportKukaFull::activated(int iMsg)
+void CmdRobotExportKukaFull::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());

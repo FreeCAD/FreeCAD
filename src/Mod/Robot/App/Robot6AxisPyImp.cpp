@@ -169,7 +169,7 @@ Py::Object Robot6AxisPy::getBase(void) const
     return Py::Object();
 }
 
-void Robot6AxisPy::setBase(Py::Object arg)
+void Robot6AxisPy::setBase(Py::Object /*arg*/)
 {
 
 }
