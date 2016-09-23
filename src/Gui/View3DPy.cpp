@@ -83,6 +83,7 @@ void View3DInventorPy::init_type()
 
     add_varargs_method("message",&View3DInventorPy::message,"message()");
     add_varargs_method("fitAll",&View3DInventorPy::fitAll,"fitAll()");
+    add_keyword_method("boxZoom",&View3DInventorPy::boxZoom,"boxZoom()");
 
     add_varargs_method("viewBottom",&View3DInventorPy::viewBottom,"viewBottom()");
     add_varargs_method("viewFront",&View3DInventorPy::viewFront,"viewFront()");
@@ -229,22 +230,25 @@ Py::Object View3DInventorPy::getattr(const char * attr)
         s_out << "Cannot access attribute '" << attr << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
-	else {
-		// see if a active object has the same name
-		App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
-		if (docObj){
-			return Py::Object(docObj->getPyObject(),true);
-		}else{
-			// else looking for a methode with the name and call it
-			Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
-			if (PyCFunction_Check(obj.ptr())) {
-				PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
-				if (!pycxx_handler)
-					pycxx_handler = op->m_ml->ml_meth;
-				op->m_ml->ml_meth = method_varargs_ext_handler;
-			}
-			return obj;
-		}
+    else {
+        // see if an active object has the same name
+        App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
+        if (docObj) {
+            return Py::Object(docObj->getPyObject(),true);
+        }
+        else {
+            // else looking for a method with the name and call it
+            Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
+            if (PyCFunction_Check(obj.ptr())) {
+                PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+                if (op->m_ml->ml_flags == METH_VARARGS) {
+                    if (!pycxx_handler)
+                        pycxx_handler = op->m_ml->ml_meth;
+                    op->m_ml->ml_meth = method_varargs_ext_handler;
+                }
+            }
+            return obj;
+        }
     }
 }
 
@@ -301,6 +305,19 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
     catch(...) {
         throw Py::Exception("Unknown C++ exception");
     }
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::boxZoom(const Py::Tuple& args, const Py::Dict& kwds)
+{
+    static char* kwds_box[] = {"XMin", "YMin", "XMax", "YMax", NULL};
+    short xmin, ymin, xmax, ymax;
+    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "hhhh", kwds_box,
+                                     &xmin, &ymin, &xmax, &ymax))
+        throw Py::Exception();
+
+    SbBox2s box(xmin, ymin, xmax, ymax);
+    _view->getViewer()->boxZoom(box);
     return Py::None();
 }
 
