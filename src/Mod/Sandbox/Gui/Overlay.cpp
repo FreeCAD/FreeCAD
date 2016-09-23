@@ -201,7 +201,7 @@ void initializeGL()
     glDepthFunc(GL_LESS);
 }
 
-void resizeGL(int width, int height)
+void resizeGL(int /*width*/, int /*height*/)
 {
 #if 0
     fbObject->bind();
@@ -588,7 +588,7 @@ int DrawingPlane::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPo
     return Continue;
 }
 
-int DrawingPlane::locationEvent(const SoLocation2Event * const e, const QPoint& pos)
+int DrawingPlane::locationEvent(const SoLocation2Event * const, const QPoint& pos)
 {
     if (scribbling) {
         drawLineTo(pos);
@@ -610,7 +610,7 @@ int DrawingPlane::locationEvent(const SoLocation2Event * const e, const QPoint& 
     return Continue;
 }
 
-int DrawingPlane::keyboardEvent( const SoKeyboardEvent * const e )
+int DrawingPlane::keyboardEvent(const SoKeyboardEvent * const)
 {
     return Continue;
 }

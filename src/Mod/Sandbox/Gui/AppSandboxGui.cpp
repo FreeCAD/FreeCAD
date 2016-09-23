@@ -204,7 +204,7 @@ public:
     virtual ~Module() {}
 
 private:
-    Py::Object interactiveFilletArc(const Py::Tuple& args)
+    Py::Object interactiveFilletArc(const Py::Tuple& /*args*/)
     {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
