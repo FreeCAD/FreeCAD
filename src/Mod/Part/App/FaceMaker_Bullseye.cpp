@@ -105,7 +105,7 @@ void FaceMakerBullseye::Build_Essence()
 
     //sort wires by length of diagonal of bounding box.
     std::vector<TopoDS_Wire> wires = this->myWires;
-    std::sort(wires.begin(), wires.end(), FaceMakerCheese::Wire_Compare());
+    std::stable_sort(wires.begin(), wires.end(), FaceMakerCheese::Wire_Compare());
 
     //add wires one by one to current set of faces.
     //We go from last to first, to make it so that outer wires come before inner wires.
