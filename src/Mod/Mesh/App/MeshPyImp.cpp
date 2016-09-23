@@ -488,6 +488,8 @@ PyObject*  MeshPy::outer(PyObject *args)
 
 PyObject*  MeshPy::coarsen(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
@@ -1649,7 +1651,7 @@ PyObject*  MeshPy::getPlanarSegments(PyObject *args)
 
     Mesh::MeshObject* mesh = getMeshObjectPtr();
     std::vector<Mesh::Segment> segments = mesh->getSegmentsFromType
-        (Mesh::MeshObject::PLANE, Mesh::Segment(mesh,false), dev, minFacets);
+        (Mesh::MeshObject::PLANE, dev, minFacets);
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
@@ -1730,12 +1732,12 @@ Py::Float MeshPy::getVolume(void) const
     return Py::Float(getMeshObjectPtr()->getVolume());
 }
 
-PyObject *MeshPy::getCustomAttributes(const char* attr) const
+PyObject *MeshPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int MeshPy::setCustomAttributes(const char* attr, PyObject *obj)
+int MeshPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }

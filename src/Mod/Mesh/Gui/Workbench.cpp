@@ -103,7 +103,7 @@ public:
     {
         return true;
     }
-    void onSelectionChanged(const Gui::SelectionChanges& msg)
+    void onSelectionChanged(const Gui::SelectionChanges&)
     {
         Base::BoundBox3d bbox;
         unsigned long countPoints=0, countFacets=0;

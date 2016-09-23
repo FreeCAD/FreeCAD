@@ -59,6 +59,11 @@ public:
                              unsigned long ulFInd, unsigned long ulLevel,
                              unsigned short neighbourIndex)
     {
+        (void)rclFacet;
+        (void)rclFrom;
+        (void)ulFInd;
+        (void)ulLevel;
+        (void)neighbourIndex;
         return true;
     }
 };
@@ -88,6 +93,7 @@ protected:
 inline bool MeshSearchNeighbourFacetsVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
                                                      unsigned long ulFInd, unsigned long ulLevel)
 {
+    (void)rclFrom;
     if (ulLevel > _ulCurrentLevel) {
         if (_bFacetsFoundInCurrentLevel == false)
             return false;
@@ -118,6 +124,8 @@ public:
     virtual bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
                         unsigned long ulFInd, unsigned long)
     {
+        (void)rclFacet;
+        (void)rclFrom;
         _raulNeighbours.push_back(ulFInd);
         return true;
     }

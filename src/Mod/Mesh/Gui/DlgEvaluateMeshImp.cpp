@@ -1293,7 +1293,7 @@ DockEvaluateMeshImp::~DockEvaluateMeshImp()
 /**
  * Destroys the dock window this object is embedded into without destroying itself.
  */
-void DockEvaluateMeshImp::closeEvent(QCloseEvent* e)
+void DockEvaluateMeshImp::closeEvent(QCloseEvent*)
 {
     // closes the dock window
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();

@@ -293,7 +293,7 @@ public:
     const Segment& getSegment(unsigned long) const;
     Segment& getSegment(unsigned long);
     MeshObject* meshFromSegment(const std::vector<unsigned long>&) const;
-    std::vector<Segment> getSegmentsFromType(GeometryType, const Segment& aSegment, float dev, unsigned long minFacets) const;
+    std::vector<Segment> getSegmentsFromType(GeometryType, float dev, unsigned long minFacets) const;
     //@}
 
     /** @name Primitives */

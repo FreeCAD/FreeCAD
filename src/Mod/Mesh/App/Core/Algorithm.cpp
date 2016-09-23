@@ -173,7 +173,7 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
 }
 
 bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<unsigned long> &raulFacets,
-                                     Base::Vector3f &rclRes, unsigned long &rulFacet, float fMaxAngle) const
+                                     Base::Vector3f &rclRes, unsigned long &rulFacet, float /*fMaxAngle*/) const
 {
     Base::Vector3f  clProj, clRes;
     bool bSol = false;

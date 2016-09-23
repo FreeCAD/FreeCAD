@@ -2583,7 +2583,7 @@ bool MeshOutput::SaveNastran (std::ostream &rstrOut) const
 }
 
 /** Writes a Cadmould FE file. */
-bool MeshOutput::SaveCadmouldFE (std::ostream &rstrOut) const
+bool MeshOutput::SaveCadmouldFE (std::ostream & /*rstrOut*/) const
 {
     return false;
 }
