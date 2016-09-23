@@ -160,7 +160,7 @@ boost::python::list SplitArea(const CArea& a)
 	return alist;
 }
 
-void dxfArea(CArea& area, const char* str)
+void dxfArea(CArea& area, const char* /*str*/)
 {
 	area = CArea();
 }
