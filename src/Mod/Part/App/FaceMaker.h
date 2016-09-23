@@ -25,7 +25,6 @@
 
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <Base/BaseClass.h>
-#include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
@@ -34,6 +33,10 @@
 
 namespace Part
 {
+
+// see forum thread "Warning C4275 non-dll class used as base for dll class"
+// http://forum.freecadweb.org/viewtopic.php?f=10&t=17542
+#pragma warning(disable: 4275)
 
 /**
  * @brief FaceMaker class is the base class for implementing various "smart"
@@ -48,15 +51,6 @@ class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseCl
     TYPESYSTEM_HEADER();
 
 public:
-    FaceMaker(const TopoDS_Edge &e);
-    FaceMaker(const TopoDS_Wire &w);
-
-    /**
-     * @brief FaceMaker: take compound as list of shapes to make face from (like useCompound).
-     * @param comp
-     */
-    FaceMaker(const TopoDS_Compound &comp);
-
     FaceMaker() {};
     virtual ~FaceMaker() {};
 
@@ -77,12 +71,18 @@ public:
     virtual void useCompound(const TopoDS_Compound &comp);
 
     /**
-     * @brief Face: returns the face (result). If result is not a single face, throws Base::TypeError.
+     * @brief Face: returns the face (result). If result is not a single face,
+     * throws Base::TypeError. (hint: use .Shape() instead)
      * @return
      */
     virtual const TopoDS_Face& Face();
 
     virtual void Build();
+
+    //fails to compile, huh!
+    //virtual const TopTools_ListOfShape& Generated(const TopoDS_Shape &S) override {throwNotImplemented();}
+    //virtual const TopTools_ListOfShape& Modified(const TopoDS_Shape &S) override {throwNotImplemented();}
+    //virtual Standard_Boolean IsDeleted(const TopoDS_Shape &S) override {throwNotImplemented();}
 
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
@@ -97,10 +97,14 @@ protected:
      * @brief Build_Essence: build routine that can assume there is no nesting.
      *
      * Implementing instructions:
-     * Add new faces (or whatever) to myShapesToReturn. The rest is done by base class.
-     * Please ignore contents of myCompounds in implementation. If special handling of nesting is required, override whole Build().
+     * Add new faces (or whatever) to myShapesToReturn. The rest is done by
+     * base class's Build(). Please ignore contents of myCompounds in
+     * implementation. If special handling of nesting is required, override
+     * whole Build().
      */
     virtual void Build_Essence() = 0;
+
+    static void throwNotImplemented();
 };
 
 /**
@@ -117,9 +121,18 @@ public:
 
 
 /**
- * @brief The FaceMakerSimple class: make faces from all closed wires supplied, ignoring self-intersections.
- * Strengths: can work with non-coplanar sets of wires.
- * Limitations: can't make faces with holes (will generate overlapping faces instead). Can't make faces from nonplanar wires.
+ * @brief The FaceMakerSimple class: make plane faces from all closed wires
+ * supplied, ignoring overlaps.
+ *
+ * Strengths: can work with non-coplanar sets of wires. Will not make broken
+ * faces if wires overlap*.
+ *
+ * Limitations: can't make faces with holes (will generate overlapping faces
+ * instead). Can't make faces from nonplanar wires.
+ *
+ * * Compound of valid but overlapping faces is created. The compound is invalid
+ * for BOPs, but the faces themselves are valid, provided that the source wires
+ * are valid.
  */
 class PartExport FaceMakerSimple : public FaceMakerPublic
 {

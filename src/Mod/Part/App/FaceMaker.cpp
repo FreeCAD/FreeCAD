@@ -40,12 +40,6 @@
 TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass);
 TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMakerPublic, Part::FaceMaker);
 
-Part::FaceMaker::FaceMaker(const TopoDS_Compound& comp)
-{
-    this->useCompound(comp);
-    this->Build();
-}
-
 void Part::FaceMaker::addWire(const TopoDS_Wire& w)
 {
     this->addShape(w);
@@ -155,6 +149,11 @@ std::unique_ptr<Part::FaceMaker> Part::FaceMaker::ConstructFromType(Base::Type t
         throw Base::TypeError(ss.str().c_str());
     }
     return std::unique_ptr<FaceMaker>(static_cast<Part::FaceMaker*>(type.createInstance()));
+}
+
+void Part::FaceMaker::throwNotImplemented()
+{
+    throw Base::NotImplementedError("Not implemente yet...");
 }
 
 
