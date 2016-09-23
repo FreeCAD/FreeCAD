@@ -102,18 +102,24 @@ public:
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Message(const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Error  (const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Log (const char * s)

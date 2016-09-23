@@ -1071,12 +1071,12 @@ void  @self.export.Name@::set@i.Name@(Py::@i.Parameter.Type@ arg)
 -
 + if(self.export.CustomAttributes != None):
 
-PyObject *@self.export.Name@::getCustomAttributes(const char* attr) const
+PyObject *@self.export.Name@::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int @self.export.Name@::setCustomAttributes(const char* attr, PyObject *obj)
+int @self.export.Name@::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }

@@ -1392,6 +1392,7 @@ void messageHandler(QtMsgType type, const char *msg)
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
+    Q_UNUSED(type);
     Base::Console().Log("%s\n", msg);
 #endif
 }
