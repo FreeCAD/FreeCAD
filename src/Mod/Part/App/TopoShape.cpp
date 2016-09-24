@@ -2075,115 +2075,114 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
-    if (fill && intersection)
-        throw Base::ValueError("Filling offset when 'intersection' is true is not supported yet.");
     if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
         throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
 
-    switch (_Shape.ShapeType()) {
-    case TopAbs_COMPOUND:{
-        BRep_Builder builder;
-        TopoDS_Compound comp;//to be returned
-        builder.MakeCompound(comp);
+    std::vector<TopoDS_Shape> shapesToProcess;
+    std::vector<TopoDS_Shape> shapesToReturn;
+    bool forceOutputCompound = false;
 
+    if (this->_Shape.ShapeType() == TopAbs_COMPOUND){
         if (!intersection){
             //simply recursively process the children, independently
             TopoDS_Iterator it(_Shape);
             for( ; it.More() ; it.Next()){
-                builder.Add(comp, TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
+                shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
+                forceOutputCompound = true;
             }
         } else {
-            //collect all wires from this compound for collective offset. Process other shapes independently.
-            std::list<TopoDS_Wire> wiresToOffset;
+            //collect non-compounds from this compound for collective offset. Process other shapes independently.
             TopoDS_Iterator it(_Shape);
             for( ; it.More() ; it.Next()){
-                if(it.Value().ShapeType() == TopAbs_WIRE){
-                    wiresToOffset.push_back(TopoDS::Wire(it.Value()));
-                } else if (it.Value().ShapeType() == TopAbs_EDGE){
-                    wiresToOffset.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(it.Value())).Wire());
+                if(it.Value().ShapeType() == TopAbs_COMPOUND){
+                    //recursively process subcompounds
+                    shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
+                    forceOutputCompound = true;
                 } else {
-                    builder.Add(comp, TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
+                    shapesToProcess.push_back(it.Value());
                 }
             }
-            //check if we have more than two wires for a collective offset. Otherwise, fall back to recursive calling.
-            if (wiresToOffset.size() == 0){
-                //nothing to do
-            } else if (wiresToOffset.size() == 1) {
-                builder.Add(comp, TopoShape(wiresToOffset.front()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection));
+        }
+    } else {
+        shapesToProcess.push_back(this->_Shape);
+    }
+
+    if(shapesToProcess.size() > 0){
+
+        //although 2d offset supports offsetting a face directly, it seems there is
+        //no way to do a collective offset of multiple faces. So, we are doing it
+        //by getting all wires from the faces, and applying offsets to them, and
+        //reassembling the faces later.
+        std::vector<TopoDS_Wire> sourceWires;
+        bool haveWires = false;
+        bool haveFaces = false;
+        for(TopoDS_Shape &sh : shapesToProcess){
+            switch (sh.ShapeType()) {
+                case TopAbs_EDGE:
+                case TopAbs_WIRE:{
+                    //convert edge to a wire if necessary...
+                    TopoDS_Wire sourceWire;
+                    if (sh.ShapeType() == TopAbs_WIRE){
+                        sourceWire = TopoDS::Wire(sh);
+                    } else { //edge
+                        sourceWire = BRepBuilderAPI_MakeWire(TopoDS::Edge(sh)).Wire();
+                    }
+                    sourceWires.push_back(sourceWire);
+                    haveWires = true;
+                }break;
+                case TopAbs_FACE:{
+                    //get all wires of the face
+                    TopoDS_Iterator it(sh);
+                    for(; it.More(); it.Next()){
+                        sourceWires.push_back(TopoDS::Wire(it.Value()));
+                    }
+                    haveFaces = true;
+                }break;
+                default:
+                    throw Base::TypeError("makeOffset2D: input shape is not an edge, wire or face or compound of those.");
+                break;
+            }
+        }
+        if (haveWires && haveFaces)
+            throw Base::TypeError("makeOffset2D: collective offset of a mix of wires and faces is not supported");
+        if (haveFaces)
+            allowOpenResult = false;
+
+        //find plane.
+        gp_Pln workingPlane;
+        TopoDS_Compound compoundSourceWires;
+        {
+            BRep_Builder builder;
+            builder.MakeCompound(compoundSourceWires);
+            for(TopoDS_Wire &w : sourceWires)
+                builder.Add(compoundSourceWires, w);
+            BRepLib_FindSurface planefinder(compoundSourceWires, -1, Standard_True);
+            if (!planefinder.Found())
+                throw Base::Exception("makeOffset2D: wires are nonplanar or noncoplanar");
+            if (haveFaces){
+                //extract plane from first face (useful for preserving the plane of face precisely if dealing with only one face)
+                workingPlane = BRepAdaptor_Surface(TopoDS::Face(shapesToProcess[0])).Plane();
             } else {
-                //collective offset
-                BRepOffsetAPI_MakeOffset mkOffset(wiresToOffset.front(), GeomAbs_JoinType(joinType)
-#if OCC_VERSION_HEX >= 0x060900
-                                                  , allowOpenResult
-#endif
-                                                  );
-                for(TopoDS_Wire &w : wiresToOffset){
-                    if (&w == &wiresToOffset.front())
-                        continue;
-                    mkOffset.AddWire(w);
-                }
-                if (fabs(offset) > Precision::Confusion()){
-                    try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
-                        Base::SignalException se;
-#endif
-                        mkOffset.Perform(offset);
-                    }
-                    catch (Standard_Failure &){
-                        throw;
-                    }
-                    catch (...) {
-                        throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
-                    }
-
-                    //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-                    // http://www.freecadweb.org/tracker/view.php?id=2699
-                    TopoDS_Shape offsetWire = BRepBuilderAPI_Copy(mkOffset.Shape()).Shape();
-
-                    if (offsetWire.IsNull())
-                        throw Base::Exception("makeOffset2D: result of offset is null!");
-                    ShapeExtend_Explorer xp; //using this explorer allows to avoid checking output type
-                    Handle_TopTools_HSequenceOfShape seq = xp.SeqFromCompound(offsetWire, /*recursive*/ true);
-                    for(int i = 0   ;   i < seq->Length()   ;   ++i){
-                        builder.Add(comp, seq->Value(i+1));
-                    }
-                } else {
-                    //zero offset, dump all wires straight through...
-                    for(TopoDS_Wire &w : wiresToOffset){
-                        builder.Add(comp, w);
-                    }
-                }
-
+                workingPlane = GeomAdaptor_Surface(planefinder.Surface()).Plane();
             }
-
         }
-        return comp;
-
-    }break;
-    case TopAbs_EDGE:
-    case TopAbs_WIRE:{
-        //convert edge to a wire if necessary...
-        TopoDS_Wire sourceWire;
-        if (_Shape.ShapeType() == TopAbs_WIRE){
-            sourceWire = TopoDS::Wire(_Shape);
-        } else { //edge
-            sourceWire = BRepBuilderAPI_MakeWire(TopoDS::Edge(_Shape)).Wire();
-        }
-
-        BRepLib_FindSurface planefinder(sourceWire, -1, Standard_True);
 
         //do the offset..
-        TopoDS_Shape offsetWire;
-        BRepOffsetAPI_MakeOffset mkOffset(sourceWire, GeomAbs_JoinType(joinType)
+        TopoDS_Shape offsetShape;
+        BRepOffsetAPI_MakeOffset mkOffset(sourceWires[0], GeomAbs_JoinType(joinType)
 #if OCC_VERSION_HEX >= 0x060900
                                                 , allowOpenResult
 #endif
                                                );
+        for(TopoDS_Wire &w : sourceWires)
+            if (&w != &(sourceWires[0])) //filter out first wire - it's already added
+                mkOffset.AddWire(w);
+
         if (fabs(offset) > Precision::Confusion()){
             try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
+    #if defined(__GNUC__) && defined (FC_OS_LINUX)
                 Base::SignalException se;
-#endif
+    #endif
                 mkOffset.Perform(offset);
             }
             catch (Standard_Failure &){
@@ -2192,211 +2191,175 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             catch (...) {
                 throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
             }
+            offsetShape = mkOffset.Shape();
 
-            if(offsetWire.IsNull())
+            if(offsetShape.IsNull())
                 throw Base::Exception("makeOffset2D: result of offseting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
-            offsetWire = BRepBuilderAPI_Copy(mkOffset.Shape()).Shape();
+            offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         } else {
-            offsetWire = sourceWire;
+            offsetShape = sourceWires.size()>1 ? TopoDS_Shape(compoundSourceWires) : sourceWires[0];
         }
 
-
-        if (!fill)
-            return offsetWire;
-
-        if (fabs(offset) < Precision::Confusion())
-            throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
-
-        //Fill offset...
-        if (!planefinder.Found()){
-            // non-planar wire.
-            throw Base::Exception("Strange, but offset worked on a non-planar wire. Filling is not supported.");
+        std::list<TopoDS_Wire> offsetWires;
+        //interestingly, if wires are removed, empty compounds are returned by MakeOffset (as of OCC 7.0.0)
+        //so, we just extract all nesting
+        Handle_TopTools_HSequenceOfShape seq = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
+        TopoDS_Iterator it(offsetShape);
+        for(int i = 0   ;   i < seq->Length()   ;   ++i){
+            offsetWires.push_back(TopoDS::Wire(seq->Value(i+1)));
         }
-        //Planar wire. Make planar face...
-        //first up, the offset wire can be a compound. Let's break it up
-        std::list<TopoDS_Wire> wires;
-        if (offsetWire.ShapeType() == TopAbs_COMPOUND){
-            TopoDS_Iterator it(offsetWire);
-            for(; it.More(); it.Next()){
-                wires.push_back(TopoDS::Wire(it.Value()));
-            }
-        } else if (offsetWire.ShapeType() == TopAbs_WIRE) {
-            wires.push_back(TopoDS::Wire(offsetWire));
-        }
-        if(wires.size() == 0)
+
+        if(offsetWires.size() == 0)
             throw Base::Exception("makeOffset2D: offset result has no wires.");
 
-        //filling offset. There are three major cases to consider:
-        // 1. source wire and result wire are closed (simplest) -> make face
-        // from source wire + offset wire
-        //
-        // 2. source wire is open, but offset wire is closed (if not
-        // allowOpenResult). -> throw away source wire and make face right from
-        // offset result.
-        //
-        // 3. source and offset wire are both open (note that there may be
-        // closed islands in offset result) -> need connecting offset result to
-        // source wire with new edges
-
-        bool sourceWireIsClosed = BRep_Tool::IsClosed(sourceWire);
-        bool offsetWireIsClosed = allowOpenResult ? sourceWireIsClosed : true;
-        if (sourceWireIsClosed){
-            wires.push_front(sourceWire);
-        }
-        if (!offsetWireIsClosed){
-            //source wire, and one of the offset wires are open.
-            //We need to connect them to form a closed wire.
-
-            //find the open offset wire, and withdraw it from the list of wires
-            //to make face from.
-            TopoDS_Wire openOffsetWire;
-            for( std::list<TopoDS_Wire>::iterator it = wires.begin()   ;   it != wires.end()   ;   ++it){
-                if (!BRep_Tool::IsClosed(*it)){
-                    openOffsetWire = *it;
-                    wires.erase(it);
-                    break;
-                }
-            }
-            if(openOffsetWire.IsNull())
-                throw Base::Exception("makeOffset2D: filling offset: expected to find an open wire in offset result, but there isn't one.");
-
-            //join up the (open) source wire and open offset wire. This will be
-            //the outer wire for the face. The remaining wires are holes.
-
-            //find open vertices of source wire
-            BRepTools_WireExplorer xp;
-            xp.Init(openOffsetWire);
-            TopoDS_Vertex v1 = xp.CurrentVertex();
-            for(;xp.More();xp.Next()){};
-            TopoDS_Vertex v2 = xp.CurrentVertex();
-
-            //find open vertices of offset wire
-            xp.Init(sourceWire);
-            TopoDS_Vertex v3 = xp.CurrentVertex();
-            for(;xp.More();xp.Next()){};
-            TopoDS_Vertex v4 = xp.CurrentVertex();
-
-            //check
-            if (v1.IsNull())  throw Base::Exception("v1 is null");
-            if (v2.IsNull())  throw Base::Exception("v2 is null");
-            if (v3.IsNull())  throw Base::Exception("v3 is null");
-            if (v4.IsNull())  throw Base::Exception("v4 is null");
-
-            //assemble new wire
-
-            // hack. It seems that direction of offset wire and closed offset
-            // wires is always consistent for good facemaking, but does not
-            // care of the direction of original wire. So, we will reverse
-            // original wire if necessary.
-
-            //we want the connection order to be
-            //v1 -> openOffsetWire -> v2 -> (new edge) -> v4 -> sourceWire(rev) -> v3 -> (new edge) -> v1
-            //let's check if it's the case. If not, we reverse source wire and swap its endpoints.
-
-            // I tried to use mkOffset.Generated(v3) for the purpose, but
-            //returned was an empty list. So I find vertex correspondence by
-            //testing if the distance between them is equal to offset.  --DeepSOIC
-            if (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v3)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v3)){
-                sourceWire.Reverse();
-                std::swap(v3, v4);
-                v3.Reverse();
-                v4.Reverse();
-            } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
-                //orientation is as expected, nothing to do
+        std::list<TopoDS_Wire> wiresForMakingFaces;
+        if (!fill){
+            if (haveFaces){
+                wiresForMakingFaces = offsetWires;
             } else {
-                throw Base::Exception("makeOffset2D: fill offset: failed to establish open vertex relationship.");
+                for(TopoDS_Wire &w : offsetWires)
+                    shapesToReturn.push_back(w);
             }
+        } else {
+            //fill offset
+            if (fabs(offset) < Precision::Confusion())
+                throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
 
-            //now directions of source wire and offset wire are aligned. Finally. make new wire!
-            BRepBuilderAPI_MakeWire mkWire;
-            //add openOffsetWire
-            BRepTools_WireExplorer it;
-            for(it.Init(openOffsetWire); it.More(); it.Next()){
-                mkWire.Add(it.Current());
+            //filling offset. There are three major cases to consider:
+            // 1. source wires and result wires are closed (simplest) -> make face
+            // from source wire + offset wire
+            //
+            // 2. source wire is open, but offset wire is closed (if not
+            // allowOpenResult). -> throw away source wire and make face right from
+            // offset result.
+            //
+            // 3. source and offset wire are both open (note that there may be
+            // closed islands in offset result) -> need connecting offset result to
+            // source wire with new edges
+
+            //first, lets split apart closed and open wires.
+            std::list<TopoDS_Wire> closedWires;
+            std::list<TopoDS_Wire> openWires;
+            for(TopoDS_Wire &w : sourceWires)
+                if (BRep_Tool::IsClosed(w))
+                    closedWires.push_back(w);
+                else
+                    openWires.push_back(w);
+            for(TopoDS_Wire &w : offsetWires)
+                if (BRep_Tool::IsClosed(w))
+                    closedWires.push_back(w);
+                else
+                    openWires.push_back(w);
+
+            wiresForMakingFaces = closedWires;
+            if (!allowOpenResult || openWires.size() == 0){
+                //just ignore all open wires
+            } else {
+                //We need to connect open wires to form closed wires.
+
+                //for now, only support offsetting one open wire -> there should be exactly two open wires for connecting
+                if (openWires.size() != 2)
+                    throw Base::Exception("makeOffset2D: collective offset with filling of multiple wires is not supported yet.");
+
+                TopoDS_Wire openWire1 = openWires.front();
+                TopoDS_Wire openWire2 = openWires.back();
+
+                //find open vertices
+                BRepTools_WireExplorer xp;
+                xp.Init(openWire1);
+                TopoDS_Vertex v1 = xp.CurrentVertex();
+                for(;xp.More();xp.Next()){};
+                TopoDS_Vertex v2 = xp.CurrentVertex();
+
+                //find open vertices
+                xp.Init(openWire2);
+                TopoDS_Vertex v3 = xp.CurrentVertex();
+                for(;xp.More();xp.Next()){};
+                TopoDS_Vertex v4 = xp.CurrentVertex();
+
+                //check
+                if (v1.IsNull())  throw Base::Exception("v1 is null");
+                if (v2.IsNull())  throw Base::Exception("v2 is null");
+                if (v3.IsNull())  throw Base::Exception("v3 is null");
+                if (v4.IsNull())  throw Base::Exception("v4 is null");
+
+                //assemble new wire
+
+                //we want the connection order to be
+                //v1 -> openWire1 -> v2 -> (new edge) -> v4 -> openWire2(rev) -> v3 -> (new edge) -> v1
+                //let's check if it's the case. If not, we reverse one wire and swap its endpoints.
+
+                if (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v3)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v3)){
+                    openWire2.Reverse();
+                    std::swap(v3, v4);
+                    v3.Reverse();
+                    v4.Reverse();
+                } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
+                    //orientation is as expected, nothing to do
+                } else {
+                    throw Base::Exception("makeOffset2D: fill offset: failed to establish open vertex relationship.");
+                }
+
+                //now directions of open wires are aligned. Finally. make new wire!
+                BRepBuilderAPI_MakeWire mkWire;
+                //add openWire1
+                BRepTools_WireExplorer it;
+                for(it.Init(openWire1); it.More(); it.Next()){
+                    mkWire.Add(it.Current());
+                }
+                //add first joining edge
+                mkWire.Add(BRepBuilderAPI_MakeEdge(v2,v4).Edge());
+                //add openWire2, in reverse order
+                openWire2.Reverse();
+                for(it.Init(TopoDS::Wire(openWire2)); it.More(); it.Next()){
+                    mkWire.Add(it.Current());
+                }
+                //add final joining edge
+                mkWire.Add(BRepBuilderAPI_MakeEdge(v3,v1).Edge());
+
+                mkWire.Build();
+
+                wiresForMakingFaces.push_front(mkWire.Wire());
             }
-            //add first joining edge
-            mkWire.Add(BRepBuilderAPI_MakeEdge(v2,v4).Edge());
-            //add original wire, in reverse order
-            sourceWire.Reverse();
-            for(it.Init(TopoDS::Wire(sourceWire)); it.More(); it.Next()){
-                mkWire.Add(it.Current());
+        }
+
+        //make faces
+        if (wiresForMakingFaces.size()>0){
+            FaceMakerBullseye mkFace;
+            mkFace.setPlane(workingPlane);
+            for(TopoDS_Wire &w : wiresForMakingFaces){
+                mkFace.addWire(w);
             }
-            //add final joining edge
-            mkWire.Add(BRepBuilderAPI_MakeEdge(v3,v1).Edge());
+            mkFace.Build();
+            if (mkFace.Shape().IsNull())
+                throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
+            TopoDS_Shape result = mkFace.Shape();
+            if (haveFaces && shapesToProcess.size() == 1)
+                result.Orientation(shapesToProcess[0].Orientation());
 
-            mkWire.Build();
-
-            wires.push_front(mkWire.Wire());
+            ShapeExtend_Explorer xp;
+            Handle_TopTools_HSequenceOfShape result_leaves = xp.SeqFromCompound(result, Standard_True);
+            for(int i = 0   ;   i < result_leaves->Length()   ;   ++i)
+                shapesToReturn.push_back(result_leaves->Value(i+1));
         }
-
-        //make the face
-        FaceMakerBullseye mkFace;
-        mkFace.setPlane(GeomAdaptor_Surface(planefinder.Surface()).Plane());
-        for(TopoDS_Wire &w : wires){
-            mkFace.addShape(TopoDS::Wire(w));
-        }
-        mkFace.Build();
-        if (mkFace.Shape().IsNull())
-            throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
-        return mkFace.Shape();
-    }break;
-    case TopAbs_FACE:{
-        TopoDS_Face sourceFace = TopoDS::Face(_Shape);
-
-        BRepAdaptor_Surface surf(sourceFace);
-        if (surf.GetType() != GeomAbs_Plane)
-            throw Base::ValueError("makeOffset2D: non-planar face! (only planar faces are supported)");
-        BRepOffsetAPI_MakeOffset mkOffset(sourceFace, GeomAbs_JoinType(joinType)
-#if OCC_VERSION_HEX >= 0x060900
-                                                , allowOpenResult
-#endif
-                                                );
-        try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
-            Base::SignalException se;
-#endif
-            mkOffset.Perform(offset);
-        }
-        catch (Standard_Failure &){
-            throw;
-        }
-        catch (...) {
-            throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
-        }
-
-        if (mkOffset.Shape().IsNull())
-            throw Base::Exception("makeOffset2D: result shape is null!");
-
-        FaceMakerBullseye mkFace;
-        Handle_TopTools_HSequenceOfShape offsetWires = ShapeExtend_Explorer().SeqFromCompound(mkOffset.Shape(), Standard_True);
-        for(int i = 0   ;   i < offsetWires->Length()   ;   ++i){
-            mkFace.addShape(offsetWires->Value(i+1));
-        }
-        if (fill){
-            TopoDS_Iterator it(sourceFace);
-            for( ; it.More(); it.Next()){
-                mkFace.addShape(it.Value());
-            }
-        }
-        mkFace.setPlane(surf.Plane());
-        mkFace.Build();
-
-        if (mkFace.Shape().IsNull())
-            throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
-
-        TopoDS_Shape result = mkFace.Shape();
-        result.Orientation(sourceFace.Orientation());
-        return result;
-
-    }break;
-    default:
-        throw Base::TypeError("makeOffset2D: input shape is not an edge, wire or face or compound of those.");
-    break;
     }
 
+    //assemble output compound
+    if (shapesToReturn.size() == 0)
+        return TopoDS_Shape(); //failure
+    if (shapesToReturn.size() > 1 || forceOutputCompound){
+        TopoDS_Compound result;
+        BRep_Builder builder;
+        builder.MakeCompound(result);
+        for(TopoDS_Shape &sh : shapesToReturn)
+            builder.Add(result, sh);
+        return result;
+    } else {
+        return shapesToReturn[0];
+    }
 }
 
 TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
