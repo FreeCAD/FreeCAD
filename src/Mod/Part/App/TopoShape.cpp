@@ -45,6 +45,7 @@
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
+# include <BRepLib_FindSurface.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -2169,7 +2170,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             sourceWire = BRepBuilderAPI_MakeWire(TopoDS::Edge(_Shape)).Wire();
         }
 
-        BRepBuilderAPI_FindPlane planefinder(sourceWire);
+        BRepLib_FindSurface planefinder(sourceWire, -1, Standard_True);
 
         //do the offset..
         TopoDS_Shape offsetWire;
@@ -2332,7 +2333,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //make the face
         FaceMakerBullseye mkFace;
-        mkFace.setPlane(planefinder.Plane()->Pln());
+        mkFace.setPlane(GeomAdaptor_Surface(planefinder.Surface()).Plane());
         for(TopoDS_Wire &w : wires){
             mkFace.addShape(TopoDS::Wire(w));
         }
