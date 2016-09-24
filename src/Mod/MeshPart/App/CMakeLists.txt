@@ -36,13 +36,18 @@ if(BUILD_FEM_NETGEN)
         SMESH
         SMDS
     )
-else(BUILD_FEM_NETGEN)
+elseif(BUILD_SMESH)
     set(MeshPart_LIBS
         Part
         Mesh
         StdMeshers
         SMESH
         SMDS
+    )
+else(BUILD_FEM_NETGEN)
+    set(MeshPart_LIBS
+        Part
+        Mesh
     )
 endif(BUILD_FEM_NETGEN)
 
