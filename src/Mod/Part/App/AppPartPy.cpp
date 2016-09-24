@@ -124,6 +124,7 @@
 #include "ImportIges.h"
 #include "ImportStep.h"
 #include "edgecluster.h"
+#include "FaceMaker.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -251,6 +252,10 @@ public:
         );
         add_varargs_method("makeShell",&Module::makeShell,
             "makeShell(list) -- Create a shell out of a list of faces."
+        );
+        add_varargs_method("makeFace",&Module::makeFace,
+            "makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.\n"
+            "maker_class_name is a string like 'Part::FaceMakerSimple'."
         );
         add_varargs_method("makeFilledFace",&Module::makeFilledFace,
             "makeFilledFace(list) -- Create a face out of a list of edges."
@@ -625,6 +630,61 @@ private:
         }
 
         return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
+    }
+    Py::Object makeFace(const Py::Tuple& args)
+    {
+        try{
+
+            char* className = 0;
+            PyObject* pcPyListOfShapes = nullptr;
+            if (PyArg_ParseTuple(args.ptr(), "O!s", &(PyList_Type), &pcPyListOfShapes, &className)) {
+                std::unique_ptr<FaceMaker> fm_instance = Part::FaceMaker::ConstructFromType(className);
+                FaceMaker* fm = &(*fm_instance);
+
+                //dump all supplied shapes to facemaker, no matter what type (let facemaker decide).
+                std::vector<TopoDS_Wire> wires;
+                Py::List list(pcPyListOfShapes);
+                for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                    PyObject* item = (*it).ptr();
+                    if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                        const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
+                        fm->addShape(sh);
+                    } else {
+                        throw Base::TypeError("Object is not a shape.");
+                    }
+                }
+
+                fm->Build();
+
+                return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
+            } ;
+
+            PyObject* pcPyShape = nullptr;
+            if (PyArg_ParseTuple(args.ptr(), "O!s", &(Part::TopoShapePy::Type), &pcPyShape, &className)){
+                std::unique_ptr<FaceMaker> fm_instance = Part::FaceMaker::ConstructFromType(className);
+                FaceMaker* fm = &(*fm_instance);
+
+                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcPyShape)->getTopoShapePtr()->getShape();
+                if (sh.IsNull())
+                    throw Base::Exception("Shape is null!");
+                if (sh.ShapeType() == TopAbs_COMPOUND)
+                    fm->useCompound(TopoDS::Compound(sh));
+                else
+                    fm->addShape(sh);
+
+                fm->Build();
+
+                return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
+            }
+
+            throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
+
+        } catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        } catch (Base::Exception &e){
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
     }
     Py::Object makeFilledFace(const Py::Tuple& args)
     {

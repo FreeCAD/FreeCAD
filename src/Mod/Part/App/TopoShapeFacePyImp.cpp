@@ -75,6 +75,7 @@
 #include "TopoShapeWirePy.h"
 #include "TopoShapeFacePy.h"
 #include "TopoShapeFacePy.cpp"
+#include "TopoShapeCompoundPy.h"
 
 #include "BezierSurfacePy.h"
 #include "BSplineSurfacePy.h"
@@ -88,6 +89,7 @@
 #include "ToroidPy.h"
 #include "OCCError.h"
 #include "Tools.h"
+#include "FaceMaker.h"
 
 using namespace Part;
 
@@ -243,6 +245,54 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
+    }
+
+    char* className = 0;
+    PyObject* pcPyListOfShapes = nullptr;
+    if (PyArg_ParseTuple(args, "O!s", &(PyList_Type), &pcPyListOfShapes, &className)) {
+        try{
+            std::unique_ptr<FaceMaker> fm_instance = Part::FaceMaker::ConstructFromType(className);
+            FaceMaker* fm = &(*fm_instance);
+
+            //dump all supplied shapes to facemaker, no matter what type (let facemaker decide).
+            std::vector<TopoDS_Wire> wires;
+            Py::List list(pcPyListOfShapes);
+            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
+                    fm->addShape(sh);
+                } else {
+                    throw Base::TypeError("Object is not a shape.");
+                }
+            }
+
+            fm->Build();
+
+            getTopoShapePtr()->setShape(fm->Face());
+            return 0;
+        } PY_CATCH_OCC;
+    } ;
+
+    PyObject* pcPyShape = nullptr;
+    if (PyArg_ParseTuple(args, "O!s", &(Part::TopoShapePy::Type), &pcPyShape, &className)){
+        try{
+            std::unique_ptr<FaceMaker> fm_instance = Part::FaceMaker::ConstructFromType(className);
+            FaceMaker* fm = &(*fm_instance);
+
+            const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcPyShape)->getTopoShapePtr()->getShape();
+            if (sh.IsNull())
+                throw Base::Exception("Shape is null!");
+            if (sh.ShapeType() == TopAbs_COMPOUND)
+                fm->useCompound(TopoDS::Compound(sh));
+            else
+                fm->addShape(sh);
+
+            fm->Build();
+
+            getTopoShapePtr()->setShape(fm->Face());
+            return 0;
+        } PY_CATCH_OCC;
     }
 
     PyErr_SetString(PartExceptionOCCError, "wire or list of wires expected");
