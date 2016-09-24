@@ -281,7 +281,8 @@ const std::string TaskFemConstraintPlaneRotation::getReferences() const
 }
 
 
-void TaskFemConstraintPlaneRotation::changeEvent(QEvent *e){
+void TaskFemConstraintPlaneRotation::changeEvent(QEvent *)
+{
 }
 
 //**************************************************************************

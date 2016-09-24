@@ -44,8 +44,6 @@
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLImageDataReader.h>
 
-#include <strstream>
-
 #ifndef _PreComp_
 
 #endif

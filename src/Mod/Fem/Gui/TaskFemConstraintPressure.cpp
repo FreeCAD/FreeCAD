@@ -271,7 +271,8 @@ bool TaskFemConstraintPressure::get_Reverse() const
 }
 /* */
 
-void TaskFemConstraintPressure::changeEvent(QEvent *e){
+void TaskFemConstraintPressure::changeEvent(QEvent *)
+{
 }
 
 //**************************************************************************

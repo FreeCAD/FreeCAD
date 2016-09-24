@@ -260,7 +260,8 @@ const std::string TaskFemConstraintFixed::getReferences() const
 }
 
 
-void TaskFemConstraintFixed::changeEvent(QEvent *e){
+void TaskFemConstraintFixed::changeEvent(QEvent *)
+{
 }
 
 //**************************************************************************

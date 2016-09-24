@@ -255,7 +255,7 @@ double TaskFemConstraintTemperature::get_temperature() const{
     return temperature_in_kelvin;
 }
 
-void TaskFemConstraintTemperature::changeEvent(QEvent *e)
+void TaskFemConstraintTemperature::changeEvent(QEvent *)
 {
 //    TaskBox::changeEvent(e);
 //    if (e->type() == QEvent::LanguageChange) {

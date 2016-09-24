@@ -465,7 +465,7 @@ SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
     return detail;
 }
 
-std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* Element) const
+std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* /*Element*/) const
 {
     return std::vector<Base::Vector3d>();
 }
