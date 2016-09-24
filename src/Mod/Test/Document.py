@@ -132,7 +132,7 @@ class DocumentBasicCases(unittest.TestCase):
     except:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
-      self.fail("no exeption thrown")
+      self.fail("no exception thrown")
 
     #self.failUnless(L1.IntegerList  == [4711]   )
     #f = L1.FloatList
@@ -145,6 +145,13 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.recompute()
     self.failUnless(L1.Label== "Label_2","Invalid object name")
     self.Doc.removeObject("Label_1")
+
+  def testEnum(self):
+    enumeration_choices = ["one", "two"]
+    obj = self.Doc.addObject("App::FeaturePython","Label_2")
+    obj.addProperty("App::PropertyEnumeration", "myEnumeration", "Enum", "mytest")
+    with self.assertRaises(FreeCAD.Base.FreeCADError):
+      obj.myEnumeration = enumeration_choices[0]
 
   def testMem(self):
     self.Doc.MemSize
