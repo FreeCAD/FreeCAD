@@ -2193,6 +2193,9 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
             }
 
+            if(offsetWire.IsNull())
+                throw Base::Exception("makeOffset2D: result of offseting is null!");
+
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
             offsetWire = BRepBuilderAPI_Copy(mkOffset.Shape()).Shape();
@@ -2200,8 +2203,6 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             offsetWire = sourceWire;
         }
 
-        if(offsetWire.IsNull())
-            throw Base::Exception("makeOffset2D: result of offseting is null!");
 
         if (!fill)
             return offsetWire;
