@@ -28,6 +28,7 @@
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRep_Tool.hxx>
+# include <gp_Pln.hxx>
 #endif
 
 #include "FaceMaker.h"
