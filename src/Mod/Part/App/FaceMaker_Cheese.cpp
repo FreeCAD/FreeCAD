@@ -31,6 +31,7 @@
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <Geom_Plane.hxx>
+# include <gp_Pln.hxx>
 # include <IntTools_FClass2d.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis.hxx>
