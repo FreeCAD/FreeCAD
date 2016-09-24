@@ -1310,7 +1310,7 @@ CmdFemPostApllyChanges::CmdFemPostApllyChanges()
     eType           = eType|ForEdit;
 }
 
-void CmdFemPostApllyChanges::activated(int)
+void CmdFemPostApllyChanges::activated(int iMsg)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
 
