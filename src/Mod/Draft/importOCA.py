@@ -221,8 +221,8 @@ def decodeName(name):
 def open(filename):
     docname=os.path.split(filename)[1]
     doc=FreeCAD.newDocument(docname)
-    if (docname[-4:] == "gcad"): doc.Label = decodeName(docname[:-5])
-    else: doc.Label = decodeName(docname[:-4])
+    if (docname[-4:] == "gcad"): doc.Label = docname[:-5]
+    else: doc.Label = docname[:-4]
     parse(filename,doc)
     doc.recompute()
 

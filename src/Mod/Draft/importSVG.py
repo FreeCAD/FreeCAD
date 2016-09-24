@@ -1176,7 +1176,7 @@ def getContents(filename,tag,stringmode=False):
 def open(filename):
         docname=os.path.split(filename)[1]
         doc=FreeCAD.newDocument(docname)
-        doc.Label = decodeName(docname[:-4])
+        doc.Label = docname[:-4]
         parser = xml.sax.make_parser()
         parser.setFeature(xml.sax.handler.feature_external_ges, False)
         parser.setContentHandler(svgHandler())
