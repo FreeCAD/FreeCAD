@@ -85,13 +85,15 @@ TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature()
     delete ui;
 }
 
-double TaskFemConstraintInitialTemperature::get_temperature() const{
+double TaskFemConstraintInitialTemperature::get_temperature() const
+{
     Base::Quantity temperature =  ui->if_temperature->getQuantity();
     double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
     return temperature_in_kelvin;
 }
 
-void TaskFemConstraintInitialTemperature::changeEvent(QEvent *e){
+void TaskFemConstraintInitialTemperature::changeEvent(QEvent *)
+{
 }
 
 //**************************************************************************

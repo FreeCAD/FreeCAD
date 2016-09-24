@@ -152,7 +152,7 @@ void Constraint::onDocumentRestored()
     App::DocumentObject::onDocumentRestored();
 }
 
-const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base::Vector3d> &normals, int * scale) const
+bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base::Vector3d> &normals, int * scale) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -292,7 +292,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vecto
     return true;
 }
 
-const bool Constraint::getCylinder(double &radius, double &height, Base::Vector3d& base, Base::Vector3d& axis) const
+bool Constraint::getCylinder(double &radius, double &height, Base::Vector3d& base, Base::Vector3d& axis) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();

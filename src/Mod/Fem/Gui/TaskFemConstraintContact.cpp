@@ -428,7 +428,8 @@ double TaskFemConstraintContact::get_Friction() const{return ui->spFriction->val
 
 
 
-void TaskFemConstraintContact::changeEvent(QEvent *e){
+void TaskFemConstraintContact::changeEvent(QEvent *)
+{
 }
 
 //**************************************************************************

@@ -62,7 +62,7 @@ TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
 }
 
 
-void TaskAnalysisInfo::SwitchMethod(int Value)
+void TaskAnalysisInfo::SwitchMethod(int /*Value*/)
 {
  /*   if(Value == 1){
         ui->groupBox_AngleSearch->setEnabled(true);

@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 # include <cstdlib>
 # include <memory>
-# include <strstream>
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
@@ -380,7 +379,7 @@ void FemMesh::compute()
     getGenerator()->Compute(*myMesh, myMesh->GetShapeToMesh());
 }
 
-std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) const
+std::set<long> FemMesh::getSurfaceNodes(long /*ElemId*/, short /*FaceId*/, float /*Angle*/) const
 {
     std::set<long> result;
     //const SMESHDS_Mesh* data = myMesh->GetMeshDS();
@@ -1353,12 +1352,12 @@ std::vector<const char*> FemMesh::getElementTypes(void) const
     return temp;
 }
 
-unsigned long FemMesh::countSubElements(const char* Type) const
+unsigned long FemMesh::countSubElements(const char* /*Type*/) const
 {
     return 0;
 }
 
-Data::Segment* FemMesh::getSubElement(const char* Type, unsigned long n) const
+Data::Segment* FemMesh::getSubElement(const char* /*Type*/, unsigned long /*n*/) const
 {
     // FIXME implement subelement interface
     //std::stringstream str;
