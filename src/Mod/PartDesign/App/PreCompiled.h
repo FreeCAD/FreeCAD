@@ -37,6 +37,13 @@
 # define MeshExport   
 #endif
 
+#ifdef _MSC_VER
+// disable warning triggered by use of Part::FaceMaker
+// see forum thread "Warning C4275 non-dll class used as base for dll class"
+// http://forum.freecadweb.org/viewtopic.php?f=10&t=17542
+#   pragma warning( disable : 4275)
+#endif
+
 #ifdef _PreComp_
 
 // standard

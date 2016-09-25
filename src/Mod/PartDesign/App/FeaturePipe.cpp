@@ -63,6 +63,7 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <App/Document.h>
+#include <Mod/Part/App/FaceMakerCheese.h>
 
 //#include "Body.h"
 #include "FeaturePipe.h"
@@ -256,8 +257,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         }
         
         //build the top and bottom face, sew the shell and build the final solid
-        TopoDS_Shape front = makeFace(frontwires);
-        TopoDS_Shape back  = makeFace(backwires);
+        TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+        TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
         
         BRepBuilderAPI_Sewing sewer;
         sewer.SetTolerance(Precision::Confusion());
