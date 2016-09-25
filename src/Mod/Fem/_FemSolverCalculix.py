@@ -72,9 +72,9 @@ class _FemSolverCalculix():
         ehl = ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
-        obj.addProperty("App::PropertyIntegerConstraint", "IterationsMaximum", "Fem", "Number of iterations allowed before stopping jobs")
+        obj.addProperty("App::PropertyIntegerConstraint", "IterationsThermoMechMaximum", "Fem", "Maximum Number of thermo mechanical iterations in each time step before stopping jobs")
         niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
-        obj.IterationsMaximum = niter
+        obj.IterationsThermoMechMaximum = niter
 
         obj.addProperty("App::PropertyFloatConstraint", "TimeInitialStep", "Fem", "Initial time steps")
         ini = ccx_prefs.GetFloat("AnalysisTimeInitialStep", 1.0)

@@ -414,7 +414,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         thermomech_step = '*STEP'
         if self.solver_obj.GeometricalNonlinearity == "nonlinear":
             thermomech_step += ', NLGEOM'
-        thermomech_step += ', INC=' + str(self.solver_obj.IterationsMaximum)
+        if self.solver_obj.IterationsThermoMechMaximum:
+            thermomech_step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
         f.write(thermomech_step + '\n')
         if self.solver_obj.IterationsControlParameterTimeUse:
             f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
