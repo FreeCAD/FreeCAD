@@ -237,6 +237,12 @@
             </Documentation>
             <Parameter Name="GroupCount" Type="Int"/>
         </Attribute>
+        <Attribute Name="Groups" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of Group IDs.</UserDocu>
+            </Documentation>
+            <Parameter Name="Groups" Type="Tuple"/>
+        </Attribute>
         <Attribute Name="Volume" ReadOnly="true">
             <Documentation>
                 <UserDocu>Volume of the mesh.</UserDocu>
