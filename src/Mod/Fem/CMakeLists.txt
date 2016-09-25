@@ -59,6 +59,11 @@ INSTALL(
         _TaskPanelMechanicalMaterial.py
         TaskPanelMechanicalMaterial.ui
 
+        FemMaterialMechanicalNonlinear.py
+        _FemMaterialMechanicalNonlinear.py
+        _ViewProviderFemMaterialMechanicalNonlinear.py
+        _CommandMaterialMechanicalNonlinear.py
+
         # solver CalculiX ccx
         importInpMesh.py
         ccxDatReader.py
