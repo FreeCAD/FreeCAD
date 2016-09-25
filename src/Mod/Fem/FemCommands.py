@@ -56,6 +56,8 @@ class FemCommands(object):
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.results_present()
             elif self.is_active == 'with_part_feature':
                 active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
+            elif self.is_active == 'with_material':
+                active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_selected()
             elif self.is_active == 'with_solver':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.solver_selected()
             elif self.is_active == 'with_analysis_without_solver':
@@ -73,6 +75,13 @@ class FemCommands(object):
         def part_feature_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Part::Feature"):
+                return True
+            else:
+                return False
+
+        def material_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython"):
                 return True
             else:
                 return False

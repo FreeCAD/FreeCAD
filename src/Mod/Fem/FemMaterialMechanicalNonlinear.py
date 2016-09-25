@@ -30,10 +30,11 @@ import FemGui
 import _FemMaterialMechanicalNonlinear
 
 
-def makeFemMaterialMechanicalNonlinear(name="MechanicalMaterialNonlinear"):
-    '''makeFemMaterialMechanicalNonlinear([name]): creates an nonlinear material object'''
+def makeFemMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNonlinear"):
+    '''makeFemMaterialMechanicalNonlinear(base_material, [name]): creates an nonlinear material object'''
     obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
     _FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear(obj)
+    obj.LinearBaseMaterial = base_material
     if FreeCAD.GuiUp:
         import _ViewProviderFemMaterialMechanicalNonlinear
         _ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(obj.ViewObject)
