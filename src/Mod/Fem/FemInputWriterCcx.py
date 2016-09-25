@@ -325,18 +325,18 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             # write material properties
             f.write('** FreeCAD material name: ' + mat_info_name + '\n')
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
-            f.write('*ELASTIC \n')
+            f.write('*ELASTIC\n')
             f.write('{0:.0f}, {1:.3f}\n'.format(YM_in_MPa, PR))
             if self.analysis_type == "frequency" or self.selfweight_objects or (self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState):
-                f.write('*DENSITY \n')
-                f.write('{0:.3e}, \n'.format(density_in_tonne_per_mm3))
+                f.write('*DENSITY\n')
+                f.write('{0:.3e}\n'.format(density_in_tonne_per_mm3))
             if self.analysis_type == "thermomech":
-                f.write('*CONDUCTIVITY \n')
-                f.write('{0:.3f}, \n'.format(TC_in_WmK))
-                f.write('*EXPANSION \n')
-                f.write('{0:.3e}, \n'.format(TEC_in_mmK))
-                f.write('*SPECIFIC HEAT \n')
-                f.write('{0:.3e}, \n'.format(SH_in_JkgK))
+                f.write('*CONDUCTIVITY\n')
+                f.write('{0:.3f}\n'.format(TC_in_WmK))
+                f.write('*EXPANSION\n')
+                f.write('{0:.3e}\n'.format(TEC_in_mmK))
+                f.write('*SPECIFIC HEAT\n')
+                f.write('{0:.3e}\n'.format(SH_in_JkgK))
 
     def write_constraints_initialtemperature(self, f):
         f.write('\n***********************************************************\n')
