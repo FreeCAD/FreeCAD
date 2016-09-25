@@ -97,6 +97,9 @@
 #include "DatumFeature.h"
 #include "Attacher.h"
 #include "AttachableObject.h"
+#include "FaceMaker.h"
+#include "FaceMakerCheese.h"
+#include "FaceMakerBullseye.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -240,6 +243,13 @@ PyMODINIT_FUNC initPart()
     Part::PropertyGeometryList  ::init();
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
+
+    Part::FaceMaker             ::init();
+    Part::FaceMakerPublic       ::init();
+    Part::FaceMakerSimple       ::init();
+    Part::FaceMakerCheese       ::init();
+    Part::FaceMakerExtrusion    ::init();
+    Part::FaceMakerBullseye     ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();
