@@ -137,7 +137,7 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
             for nodeID in femelement_table[elementID]:
                 if nodeID in node_list:
                     nodecount = nodecount + 1
-            if nodecount == 4: 
+            if nodecount == 4:
                 e.append(elementID)
         elif el_nd_ct == 20:  # hexa20
             for nodeID in femelement_table[elementID]:
@@ -473,12 +473,12 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
         if has_no_face_data(femmesh):
             print('No face date in volume mesh. We try to use getccxVolumesByFace() to retrive the volume elments of the ref_face!')
             # there is no face data
-            # the problem if we retrive the nodes ourself is they are not sorted we just have the nodes. We need to sourt them according 
+            # the problem if we retrive the nodes ourself is they are not sorted we just have the nodes. We need to sourt them according
             # the shell mesh notaion of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
             # try to use getccxVolumesByFace() to get the volume ids of element with elementfaces on the ref_face --> should work for tetra4 and tetra10
             ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)  # list of tupels (mv, ccx_face_nr)
-            if ref_face_volume_elements: # mesh with tetras
+            if ref_face_volume_elements:  # mesh with tetras
                 print('Use of getccxVolumesByFace() has returned volume elements of the ref_face!')
                 for ve in ref_face_volume_elements:
                     veID = ve[0]
@@ -489,7 +489,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                     face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
             else:  # mesh with hexa or penta
                 print('Use of getccxVolumesByFace() has NOT returned volume elements of the ref_face! We try to use get_femvolumeelements_by_femfacenodes()!')
-                ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(femelement_table, ref_face_nodes) # list of integer [mv]
+                ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(femelement_table, ref_face_nodes)  # list of integer [mv]
                 for veID in ref_face_volume_elements:
                     ve_ref_face_nodes = []
                     for nodeID in femelement_table[veID]:
@@ -607,7 +607,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             else:
                 FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): pent6: face not found!" + str(face_node_indexs) + "\n")
         else:
-             FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
+            FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
         face_nodes = []
         for i in node_numbers:
             i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
