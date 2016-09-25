@@ -346,7 +346,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                             f.write('*PLASTIC\n')
                             f.write(nl_mat_obj.YieldPoint1 + '\n')
                             f.write(nl_mat_obj.YieldPoint2 + '\n')
-            f.write('\n')
+                    f.write('\n')
 
     def write_constraints_initialtemperature(self, f):
         f.write('\n***********************************************************\n')
