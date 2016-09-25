@@ -337,15 +337,16 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 f.write('{0:.3e}\n'.format(TEC_in_mmK))
                 f.write('*SPECIFIC HEAT\n')
                 f.write('{0:.3e}\n'.format(SH_in_JkgK))
-           if self.solver_obj.MaterialNonlinearity == 'nonlinear':
-                if len(self.material_nonlinear_objects) == 1:  # workaround since multiple is on TODO
-                    nl_mat_obj = self.material_nonlinear_objects[0]['Object']
-                    if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
-                        f.write('*PLASTIC\n')
-                        f.write(nl_mat_obj.YieldPoint1 + '\n')
-                        f.write(nl_mat_obj.YieldPoint2 + '\n')
-                else:
-                    print('Only one nonlinear material supported!!')
+            # nonlinear material properties
+            if self.solver_obj.MaterialNonlinearity == 'nonlinear':
+                for femobj in self.material_nonlinear_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+                    nl_mat_obj = femobj['Object']
+                    if nl_mat_obj.LinearBaseMaterial == mat_obj:
+                        if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
+                            f.write('*PLASTIC\n')
+                            f.write(nl_mat_obj.YieldPoint1 + '\n')
+                            f.write(nl_mat_obj.YieldPoint2 + '\n')
+            f.write('\n')
 
     def write_constraints_initialtemperature(self, f):
         f.write('\n***********************************************************\n')
