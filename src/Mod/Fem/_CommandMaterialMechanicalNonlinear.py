@@ -41,13 +41,19 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
                           'Accel': "C, W",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}
-        self.is_active = 'with_analysis'
+        self.is_active = 'with_material'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
-        FreeCADGui.addModule("FemMaterialMechanicalNonlinear")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemMaterialMechanicalNonlinear.makeFemMaterialMechanicalNonlinear()]")
-
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython"):
+            lin_mat_obj = sel[0]
+            # TODO --> check print
+            print "check if an nonlinear material exists which referes to the selected material already, becaue for each linear material only one nonlinear material is allowed !!!\n"
+            string_lin_mat_obj = "App.ActiveDocument.getObject('" + lin_mat_obj.Name + "')"
+            command_to_run = "FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemMaterialMechanicalNonlinear.makeFemMaterialMechanicalNonlinear(" + string_lin_mat_obj + ")]"
+            FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
+            FreeCADGui.addModule("FemMaterialMechanicalNonlinear")
+            FreeCADGui.doCommand(command_to_run)
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())
