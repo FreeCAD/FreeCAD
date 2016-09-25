@@ -75,6 +75,7 @@
 #include "TopoShapeWirePy.h"
 #include "TopoShapeFacePy.h"
 #include "TopoShapeFacePy.cpp"
+#include "TopoShapeCompoundPy.h"
 
 #include "BezierSurfacePy.h"
 #include "BSplineSurfacePy.h"
@@ -88,6 +89,7 @@
 #include "ToroidPy.h"
 #include "OCCError.h"
 #include "Tools.h"
+#include "FaceMaker.h"
 
 using namespace Part;
 
@@ -245,7 +247,63 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
 
-    PyErr_SetString(PartExceptionOCCError, "wire or list of wires expected");
+    char* className = 0;
+    PyObject* pcPyShapeOrList = nullptr;
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "Os", &pcPyShapeOrList, &className)) {
+        try{
+            std::unique_ptr<FaceMaker> fm_instance = Part::FaceMaker::ConstructFromType(className);
+            FaceMaker* fm = &(*fm_instance);
+
+            //dump all supplied shapes to facemaker, no matter what type (let facemaker decide).
+            if (PySequence_Check(pcPyShapeOrList)){
+                Py::Sequence list(pcPyShapeOrList);
+                for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                    PyObject* item = (*it).ptr();
+                    if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                        const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
+                        fm->addShape(sh);
+                    } else {
+                        PyErr_SetString(PyExc_TypeError, "Object is not a shape.");
+                        return -1;
+                    }
+                }
+            } else if (PyObject_TypeCheck(pcPyShapeOrList, &(Part::TopoShapePy::Type))) {
+                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcPyShapeOrList)->getTopoShapePtr()->getShape();
+                if (sh.IsNull())
+                    throw Base::Exception("Shape is null!");
+                if (sh.ShapeType() == TopAbs_COMPOUND)
+                    fm->useCompound(TopoDS::Compound(sh));
+                else
+                    fm->addShape(sh);
+            } else {
+                PyErr_SetString(PyExc_TypeError, "First argument is neither a shape nor list of shapes.");
+                return -1;
+            }
+
+            fm->Build();
+
+            getTopoShapePtr()->setShape(fm->Face());
+            return 0;
+        } catch (Base::Exception &e){
+            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            return -1;
+        } catch (Standard_Failure){
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return -1;
+        }
+    } ;
+
+    PyErr_SetString(PartExceptionOCCError,
+      "Argument list signature is incorrect.\n\nSupported signatures:\n"
+      "(face)\n"
+      "(wire)\n"
+      "(list_of_wires)\n"
+      "(wire, facemaker_class_name)\n"
+      "(list_of_wires, facemaker_class_name)\n"
+      "(surface, list_of_wires)\n"
+                    );
     return -1;
 }
 
