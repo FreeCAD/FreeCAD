@@ -40,7 +40,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                  analysis_obj, solver_obj,
                  mesh_obj, mat_obj,
                  fixed_obj, displacement_obj,
-                 contact_obj, planerotation_obj,
+                 contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
                  temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
@@ -52,7 +52,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             analysis_obj, solver_obj,
             mesh_obj, mat_obj,
             fixed_obj, displacement_obj,
-            contact_obj, planerotation_obj,
+            contact_obj, planerotation_obj, transform_obj,
             selfweight_obj, force_obj, pressure_obj,
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, shellthickness_obj,
@@ -78,6 +78,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_node_sets_constraints_planerotation(inpfile)
         if self.contact_objects:
             self.write_surfaces_contraints_contact(inpfile)
+        if self.transform_objects:
+            self.write_node_sets_constraints_transform(inpfile)
         if self.analysis_type == "thermomech" and self.temperature_objects:
             self.write_node_sets_constraints_temperature(inpfile)
 
@@ -92,6 +94,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_constraints_planerotation(inpfile)
         if self.contact_objects:
             self.write_constraints_contact(inpfile)
+        if self.transform_objects:
+            self.write_constraints_transform(inpfile)
 
         # step begin
         if self.analysis_type == "frequency":
@@ -261,6 +265,22 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                         v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
                         for i in v:
                             f.write("{},S{}\n".format(i[0], i[1]))
+
+    def write_node_sets_constraints_transform(self, f):
+        # get nodes
+        self.get_constraints_transform_nodes()
+        # write nodes to file
+        f.write('\n***********************************************************\n')
+        f.write('** Node sets for transform constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for femobj in self.transform_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            trans_obj = femobj['Object']
+            if trans_obj.TransformType == "Rectangular":
+                f.write('*NSET,NSET=Rect' + trans_obj.Name + '\n')
+            elif trans_obj.TransformType == "Cylindrical":
+                f.write('*NSET,NSET=Cylin' + trans_obj.Name + '\n')
+            for n in femobj['Nodes']:
+                f.write(str(n) + ',\n')
 
     def write_node_sets_constraints_temperature(self, f):
         # get nodes
@@ -511,6 +531,21 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             fric_obj_name = femobj['Object'].Name
             f.write('*MPC\n')
             f.write('PLANE,' + fric_obj_name + '\n')
+
+    def write_constraints_transform(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Transform Constaints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for trans_object in self.transform_objects:
+            trans_obj = trans_object['Object']
+            if trans_obj.TransformType == "Rectangular":
+                f.write('*TRANSFORM, NSET=Rect' + trans_obj.Name + ', TYPE=R\n')
+                coords = FemMeshTools.get_rectangular_coords(trans_obj)
+                f.write(coords + '\n')
+            elif trans_obj.TransformType == "Cylindrical":
+                f.write('*TRANSFORM, NSET=Cylin' + trans_obj.Name + ', TYPE=C\n')
+                coords = FemMeshTools.get_cylindrical_coords(trans_obj)
+                f.write(coords + '\n')
 
     def write_constraints_selfweight(self, f):
         f.write('\n***********************************************************\n')
