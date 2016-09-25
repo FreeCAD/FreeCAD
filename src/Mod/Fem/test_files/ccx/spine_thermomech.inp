@@ -102,14 +102,14 @@ Eall
 ** Specific Heat unit is kJ/t/K = mm^2/s^2/K
 ** FreeCAD material name: Steel-Generic
 *MATERIAL, NAME=MechanicalMaterial
-*ELASTIC 
+*ELASTIC
 200000, 0.300
-*CONDUCTIVITY 
-43.270, 
-*EXPANSION 
-1.200e-05, 
-*SPECIFIC HEAT 
-5.000e+08, 
+*CONDUCTIVITY
+43.270
+*EXPANSION
+1.200e-05
+*SPECIFIC HEAT
+5.000e+08
 
 ***********************************************************
 ** Initial temperature constraint
