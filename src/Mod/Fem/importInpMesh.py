@@ -59,6 +59,7 @@ def read_inp(file_name):
     f = pyopen(file_name, "r")
     line = "\n"
     include = ""
+    f_include = None
     while line != "":
         if include:
             line = f_include.readline()
