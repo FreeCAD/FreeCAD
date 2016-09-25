@@ -69,6 +69,8 @@ public:
     App::PropertyFloat EigenmodeFrequency;
     /// Increment time
     App::PropertyFloat Time;
+    /// User defined results
+    App::PropertyFloatList UserDefined;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
