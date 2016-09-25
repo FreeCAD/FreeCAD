@@ -438,7 +438,10 @@ void TaskFemConstraintTransform::onReferenceDeleted() {
 
 std::string TaskFemConstraintTransform::getDisplcementReferences(std::string showConstr="")
 {
-    return "members=FreeCAD.ActiveDocument.Analysis.Member\n\
+    return "for obj in FreeCAD.ActiveDocument.Objects:\n\
+        if obj.isDerivedFrom(\"Fem::FemAnalysisPython\"):\n\
+                if FreeCAD.ActiveDocument."+showConstr+" in obj.Member:\n\
+                        members = obj.Member\n\
 A = []\n\
 i = 0\n\
 ss = []\n\
