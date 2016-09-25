@@ -38,7 +38,7 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
     "The Fem_MaterialMechanicalNonlinear command definition"
     def __init__(self):
         super(_CommandMaterialMechanicalNonlinear, self).__init__()
-        self.resources = {'Pixmap': 'fem-material',
+        self.resources = {'Pixmap': 'fem-material-nonlinear',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
                           'Accel': "C, W",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}

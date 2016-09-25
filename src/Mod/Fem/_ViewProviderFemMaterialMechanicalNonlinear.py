@@ -34,7 +34,7 @@ class _ViewProviderFemMaterialMechanicalNonlinear:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-material.svg"
+        return ":/icons/fem-material-nonlinear.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
