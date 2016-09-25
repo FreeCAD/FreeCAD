@@ -471,10 +471,10 @@ Eall
 ** Density's unit is t/mm^3
 ** FreeCAD material name: Steel-Generic
 *MATERIAL, NAME=MechanicalMaterial
-*ELASTIC 
+*ELASTIC
 200000, 0.300
-*DENSITY 
-7.900e-09, 
+*DENSITY
+7.900e-09
 
 ***********************************************************
 ** Sections
