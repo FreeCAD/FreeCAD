@@ -328,6 +328,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
                 elif not hasattr(self.solver, "EigenmodesCount"):
                     message += "Frequency analysis: Solver has no EigenmodesCount.\n"
+            if hasattr(self.solver, "MaterialNonlinearity") and self.solver.MaterialNonlinearity == "nonlinear" and not self.materials_nonlinear:
+                message += "Solver is set to nonlinear materials, but there is no nonlinear material in the analysis. \n"
         # mesh
         if not self.mesh:
             message += "No mesh object defined in the analysis\n"
