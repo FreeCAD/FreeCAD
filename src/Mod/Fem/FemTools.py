@@ -340,7 +340,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
                 message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
-        # materials_linear
+        # materials linear and nonlinear
         if not self.materials_linear:
             message += "No material object defined in the analysis\n"
         has_no_references = False
@@ -365,6 +365,14 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"
                 if 'SpecificHeat' not in mat_map:
                     message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"
+        for m in self.materials_linear:
+            has_nonlinear_material = False
+            for nlm in self.materials_nonlinear:
+                if nlm['Object'].LinearBaseMaterial == m['Object']:
+                    if has_nonlinear_material is False:
+                        has_nonlinear_material = True
+                    else:
+                        message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed. \n"
         # constraints
         if self.analysis_type == "static":
             if not (self.fixed_constraints or self.displacement_constraints):

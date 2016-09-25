@@ -47,13 +47,19 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython"):
             lin_mat_obj = sel[0]
-            # TODO --> check print
-            print "check if an nonlinear material exists which referes to the selected material already, becaue for each linear material only one nonlinear material is allowed !!!\n"
-            string_lin_mat_obj = "App.ActiveDocument.getObject('" + lin_mat_obj.Name + "')"
-            command_to_run = "FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemMaterialMechanicalNonlinear.makeFemMaterialMechanicalNonlinear(" + string_lin_mat_obj + ")]"
-            FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
-            FreeCADGui.addModule("FemMaterialMechanicalNonlinear")
-            FreeCADGui.doCommand(command_to_run)
+            # check if an nonlinear material exists which is based on the selected material already
+            allow_nonlinear_material = True
+            for o in FreeCAD.ActiveDocument.Objects:
+                if hasattr(o, "Proxy") and o.Proxy is not None and o.Proxy.Type == "FemMaterialMechanicalNonlinear" and o.LinearBaseMaterial == lin_mat_obj:
+                    FreeCAD.Console.PrintError(o.Name + ' is based on the selected material: ' + lin_mat_obj.Name + '. Only one nonlinear object for each material allowed.\n')
+                    allow_nonlinear_material = False
+                    break
+            if allow_nonlinear_material:
+                string_lin_mat_obj = "App.ActiveDocument.getObject('" + lin_mat_obj.Name + "')"
+                command_to_run = "FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemMaterialMechanicalNonlinear.makeFemMaterialMechanicalNonlinear(" + string_lin_mat_obj + ")]"
+                FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
+                FreeCADGui.addModule("FemMaterialMechanicalNonlinear")
+                FreeCADGui.doCommand(command_to_run)
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())
