@@ -19,6 +19,7 @@
         <file>icons/fem-constraint-gear.svg</file>
         <file>icons/fem-constraint-pulley.svg</file>
         <file>icons/fem-constraint-contact.svg</file>
+        <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-add-fem-mesh.svg</file>
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
