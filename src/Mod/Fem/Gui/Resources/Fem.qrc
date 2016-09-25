@@ -25,6 +25,7 @@
         <file>icons/fem-add-part.svg</file>
         <file>icons/fem-inp-editor.svg</file>
         <file>icons/fem-material.svg</file>
+        <file>icons/fem-material-nonlinear.svg</file>
         <file>icons/fem-control-solver.svg</file>
         <file>icons/fem-purge-results.svg</file>
         <file>icons/fem-run-solver.svg</file>
