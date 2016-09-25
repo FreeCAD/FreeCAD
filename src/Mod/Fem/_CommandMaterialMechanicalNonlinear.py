@@ -30,6 +30,7 @@ from FemCommands import FemCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
+    import FemGui
     from PySide import QtCore
 
 
@@ -60,6 +61,18 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
                 FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
                 FreeCADGui.addModule("FemMaterialMechanicalNonlinear")
                 FreeCADGui.doCommand(command_to_run)
+            # set the material nonlinear property of the solver to nonlinear if only one solver is available and if this solver is a CalculiX solver
+            solver_object = None
+            for m in FemGui.getActiveAnalysis().Member:
+                if m.isDerivedFrom('Fem::FemSolverObjectPython'):
+                    if not solver_object:
+                        solver_object = m
+                    else:
+                        # we do not change the material nonlinear attribut if we have more than one solver
+                        solver_object = None
+                        break
+            if solver_object and solver_object.SolverType == 'FemSolverCalculix':
+                solver_object.MaterialNonlinearity = "nonlinear"
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Fem_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())
