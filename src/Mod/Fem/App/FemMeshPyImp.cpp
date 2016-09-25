@@ -1048,6 +1048,19 @@ Py::Int FemMeshPy::getGroupCount(void) const
     return Py::Int(getFemMeshPtr()->getSMesh()->NbGroup());
 }
 
+Py::Tuple FemMeshPy::getGroups(void) const
+{
+    std::list<int> groupIDs = getFemMeshPtr()->getSMesh()->GetGroupIds();
+
+    Py::Tuple tuple(groupIDs.size());
+    int index = 0;
+    for (std::list<int>::iterator it = groupIDs.begin(); it != groupIDs.end(); ++it) {
+        tuple.setItem(index++, Py::Int(*it));
+    }
+
+    return tuple;
+}
+
 Py::Object FemMeshPy::getVolume(void) const
 {
     return Py::Object(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
