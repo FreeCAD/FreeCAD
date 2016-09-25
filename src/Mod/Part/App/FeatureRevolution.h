@@ -45,6 +45,7 @@ public:
     App::PropertyFloatConstraint Angle;
     App::PropertyBool Symmetric; //like "Midplane" in PartDesign
     App::PropertyBool Solid;
+    App::PropertyString FaceMakerClass;
 
     /** @name methods override feature */
     //@{
@@ -79,6 +80,9 @@ public:
 
 private:
     static App::PropertyFloatConstraint::Constraints angleRangeU;
+
+protected:
+    virtual void setupObject();
 };
 
 } //namespace Part
