@@ -600,7 +600,7 @@ def getMovableChildren(objectslist,recursive=True):
                 added.extend(getMovableChildren(children))
     return added
 
-def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None, support=None):
+def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
     '''makeCircle(radius,[placement,face,startangle,endangle])
     or makeCircle(edge,[face]):
     Creates a circle object with given radius. If placement is given, it is
@@ -616,7 +616,8 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
         n = "Circle"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",n)
     _Circle(obj)
-    #obj.MakeFace = face
+    if face != None:
+        obj.MakeFace = face
     if isinstance(radius,Part.Edge):
         edge = radius
         if DraftGeomUtils.geomType(edge) == "Circle":
@@ -647,7 +648,7 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeRectangle(length, height, placement=None, face=True, support=None):
+def makeRectangle(length, height, placement=None, face=None, support=None):
     '''makeRectangle(length,width,[placement],[face]): Creates a Rectangle
     object with length in X direction and height in Y direction.
     If a placement is given, it is used. If face is False, the
@@ -659,7 +660,8 @@ def makeRectangle(length, height, placement=None, face=True, support=None):
     obj.Length = length
     obj.Height = height
     obj.Support = support
-    #obj.MakeFace = face
+    if face != None:
+        obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderRectangle(obj.ViewObject)
@@ -805,7 +807,7 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=True,support=None):
+def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=None):
     '''makePolgon(nfaces,[radius],[inscribed],[placement],[face]): Creates a
     polygon object with the given number of faces and the radius.
     if inscribed is False, the polygon is circumscribed around a circle
@@ -817,7 +819,8 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=True,support=
     _Polygon(obj)
     obj.FacesNumber = nfaces
     obj.Radius = radius
-    #obj.MakeFace = face
+    if face != None:
+        obj.MakeFace = face
     if inscribed:
         obj.DrawMode = "inscribed"
     else:
@@ -836,7 +839,7 @@ def makeLine(p1,p2):
     obj = makeWire([p1,p2])
     return obj
 
-def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
+def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     '''makeBSpline(pointslist,[closed],[placement]): Creates a B-Spline object
     from the given list of vectors. If closed is True or first
     and last points are identical, the wire is closed. If face is
@@ -868,7 +871,8 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Closed = closed
     obj.Points = pointslist
     obj.Support = support
-    #obj.MakeFace = face
+    if face != None:
+        obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
@@ -877,7 +881,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeBezCurve(pointslist,closed=False,placement=None,face=True,support=None,Degree=None):
+def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,Degree=None):
     '''makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire.'''
     if not isinstance(pointslist,list):
@@ -899,7 +903,8 @@ def makeBezCurve(pointslist,closed=False,placement=None,face=True,support=None,D
             Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
-    #obj.MakeFace = face
+    if face != None:
+        obj.MakeFace = face
     obj.Proxy.resetcontinuity(obj)
     if placement: obj.Placement = placement
     if gui:
