@@ -432,6 +432,19 @@ void FemPostPipeline::load(FemResultObject* res) {
     }
 
     if(!res->StressValues.getValues().empty()) {
+        const std::vector<double>& vec = res->UserDefined.getValues();
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfValues(vec.size());
+        data->SetName("User Defined Results");
+
+        for(size_t i=0; i<vec.size(); ++i)
+            data->SetValue(i, vec[i]);
+
+        grid->GetPointData()->AddArray(data);
+    }
+
+
+    if(!res->StressValues.getValues().empty()) {
         const std::vector<Base::Vector3d>& vec = res->DisplacementVectors.getValues();
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfComponents(3);
