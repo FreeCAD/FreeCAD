@@ -52,6 +52,7 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(Eigenmode,(0), "Fem",Prop_None,"Number of the eigenmode");
     ADD_PROPERTY_TYPE(EigenmodeFrequency,(0), "Fem",Prop_None,"Frequency of the eigenmode");
     ADD_PROPERTY_TYPE(Time,(0), "Fem",Prop_None,"Time of analysis incement");
+    ADD_PROPERTY_TYPE(UserDefined,(0), "Fem",Prop_None,"User Defined Results");
 
     // make read-only for property editor
     NodeNumbers.setStatus(App::Property::ReadOnly, true);
@@ -67,6 +68,7 @@ FemResultObject::FemResultObject()
     Eigenmode.setStatus(App::Property::ReadOnly, true);
     EigenmodeFrequency.setStatus(App::Property::ReadOnly, true);
     Time.setStatus(App::Property::ReadOnly, true);
+    UserDefined.setStatus(App::Property::ReadOnly, false);
 }
 
 FemResultObject::~FemResultObject()
