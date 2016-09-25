@@ -149,11 +149,13 @@ def readResult(frd_input):
                 nd19 = int(line[83:93])
                 nd20 = int(line[93:103])
                 input_continues = False
-                # print((nd1, nd2, nd3, nd4, nd5, nd6, nd7, nd8, nd9, nd10,
-                #        nd11, nd12, nd13, nd14, nd15, nd16, nd17, nd18, nd19, nd20))  # get the element node order of frd file
+                # CalculiX uses a different node order in input file *.inp and result file *.frd for hexa20 (C3D20)
+                # according to Guido (the developer of ccx)
+                # ccx (and thus the *.inp) follows the ABAQUS convention (documented in the ccx-documentation)
+                # cgx (and thus the *.frd) follows the FAM2 convention (documented in the cgx-documentation)
+                # FAM32 is from the company FEGS limited, maybe this company does not exist any more)
                 # elements_hexa20[elem] = (nd6, nd7, nd8, nd5, nd2, nd3, nd4, nd1, nd14, nd15,
                 #                          nd16, nd13, nd10, nd11, nd12, nd9, nd18, nd19, nd20, nd17)
-                # node order exported by ccx into frd is different than node order in inp file
                 # elements_hexa20[elem] = (nd6, nd7, nd8, nd5, nd2, nd3, nd4, nd1, nd14, nd15,
                 #                          nd16, nd13, nd18, nd19, nd20, nd17, nd10, nd11, nd12, nd9)
                 # hexa20 import works with the following frd file node assignment
@@ -183,8 +185,9 @@ def readResult(frd_input):
                 nd14 = int(line[33:43])
                 nd15 = int(line[43:53])
                 input_continues = False
-                #elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd11, nd12, nd10, nd8,
-                #                          nd9, nd7, nd14, nd15, nd13)  # as for inp - do not work
+                # CalculiX uses a different node order in input file *.inp and result file *.frd for penta15 (C3D15)
+                # elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd11, nd12, nd10, nd8,
+                #                           nd9, nd7, nd14, nd15, nd13)  # order of the *.inp file
                 elements_penta15[elem] = (nd5, nd6, nd4, nd2, nd3, nd1, nd14, nd15, nd13, nd8,
                                           nd9, nd7, nd11, nd12, nd10)
             elif elemType == 6:
