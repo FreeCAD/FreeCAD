@@ -84,9 +84,9 @@ class _FemSolverCalculix():
         eni = ccx_prefs.GetFloat("AnalysisTime", 1.0)
         obj.TimeEnd = eni
 
-        obj.addProperty("App::PropertyBool", "SteadyState", "Fem", "Run steady state or transient analysis")
+        obj.addProperty("App::PropertyBool", "ThermoMechSteadyState", "Fem", "Choose between steady state thermo mech or transient thermo mech analysis")
         sted = ccx_prefs.GetBool("StaticAnalysis", True)
-        obj.SteadyState = sted
+        obj.ThermoMechSteadyState = sted
 
         obj.addProperty("App::PropertyBool", "IterationsControlParameterTimeUse", "Fem", "Use the user defined time incrementation control parameter")
         use_non_ccx_iterations_param = ccx_prefs.GetInt("UseNonCcxIterationParam", False)
