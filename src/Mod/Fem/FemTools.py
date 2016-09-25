@@ -213,6 +213,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         #  set of contact constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintContact" type
         self.contact_constraints = []
+        ## @var transform_constraints
+        #  set of transform constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintTransform" type
+        self.transform_constraints = []
 
         found_solver_for_use = False
         for m in self.analysis.Member:
@@ -279,6 +283,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 contact_constraint_dict = {}
                 contact_constraint_dict['Object'] = m
                 self.contact_constraints.append(contact_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintTransform"):
+                transform_constraint_dict = {}
+                transform_constraint_dict['Object'] = m
+                self.transform_constraints.append(transform_constraint_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m

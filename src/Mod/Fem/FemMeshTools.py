@@ -868,6 +868,70 @@ def get_three_non_colinear_nodes(nodes_coords):
     return [node_1, node_2, node_3]
 
 
+def get_rectangular_coords(obj):
+    from math import cos, sin, radians
+    A = [1, 0, 0]
+    B = [0, 1, 0]
+    a_x = A[0]
+    a_y = A[1]
+    a_z = A[2]
+    b_x = A[0]
+    b_y = A[1]
+    b_z = A[2]
+    x_rot = radians(obj.X_rot)
+    y_rot = radians(obj.Y_rot)
+    z_rot = radians(obj.Z_rot)
+    if obj.X_rot != 0:
+        a_x = A[0]
+        a_y = A[1] * cos(x_rot) + A[2] * sin(x_rot)
+        a_z = A[2] * cos(x_rot) - A[1] * sin(x_rot)
+        b_x = B[0]
+        b_y = B[1] * cos(x_rot) + B[2] * sin(x_rot)
+        b_z = B[2] * cos(x_rot) - B[1] * sin(x_rot)
+        A = [a_x, a_y, a_z]
+        B = [b_x, b_y, b_z]
+    if obj.Y_rot != 0:
+        a_x = A[0] * cos(y_rot) - A[2] * sin(y_rot)
+        a_y = A[1]
+        a_z = A[2] * cos(y_rot) + A[0] * sin(y_rot)
+        b_x = B[0] * cos(y_rot) - B[2] * sin(y_rot)
+        b_y = B[1]
+        b_z = B[2] * cos(y_rot) + B[0] * sin(z_rot)
+        A = [a_x, a_y, a_z]
+        B = [b_x, b_y, b_z]
+    if obj.Z_rot != 0:
+        a_x = A[0] * cos(z_rot) + A[1] * sin(z_rot)
+        a_y = A[1] * cos(z_rot) - A[0] * sin(z_rot)
+        a_z = A[2]
+        b_x = B[0] * cos(z_rot) + B[1] * sin(z_rot)
+        b_y = B[1] * cos(z_rot) - B[0] * sin(z_rot)
+        b_z = B[2]
+        A = [a_x, a_y, a_z]
+        B = [b_x, b_y, b_z]
+
+    A_coords = str(round(A[0], 4)) + ',' + str(round(A[1], 4)) + ',' + str(round(A[2], 4))
+    B_coords = str(round(B[0], 4)) + ',' + str(round(B[1], 4)) + ',' + str(round(B[2], 4))
+    coords = A_coords + ',' + B_coords
+    return coords
+
+
+def get_cylindrical_coords(obj):
+    vec = obj.Axis
+    base = obj.BasePoint
+    Ax = base[0] + 10 * vec[0]
+    Ay = base[1] + 10 * vec[1]
+    Az = base[2] + 10 * vec[2]
+    Bx = base[0] - 10 * vec[0]
+    By = base[1] - 10 * vec[1]
+    Bz = base[2] - 10 * vec[2]
+    A = [Ax, Ay, Az]
+    B = [Bx, By, Bz]
+    A_coords = str(A[0]) + ',' + str(A[1]) + ',' + str(A[2])
+    B_coords = str(B[0]) + ',' + str(B[1]) + ',' + str(B[2])
+    coords = A_coords + ',' + B_coords
+    return coords
+
+
 def make_femmesh(mesh_data):
     ''' makes an FreeCAD FEM Mesh object from FEM Mesh data
     '''
