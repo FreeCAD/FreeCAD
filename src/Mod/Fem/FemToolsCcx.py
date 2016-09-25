@@ -88,7 +88,7 @@ class FemToolsCcx(FemTools.FemTools):
         try:
             inp_writer = iw.FemInputWriterCcx(
                 self.analysis, self.solver,
-                self.mesh, self.materials,
+                self.mesh, self.materials_linear, self.materials_nonlinear,
                 self.fixed_constraints, self.displacement_constraints,
                 self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
                 self.selfweight_constraints, self.force_constraints, self.pressure_constraints,

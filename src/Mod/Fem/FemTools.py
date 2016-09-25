@@ -147,7 +147,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.mesh.ViewObject.applyDisplacement(displacement_factor)
 
     def update_objects(self):
-        # [{'Object':materials}, {}, ...]
+        # [{'Object':materials_linear}, {}, ...]
+        # [{'Object':materials_nonlinear}, {}, ...]
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
         # [{'Object':force_constraints, 'NodeLoad':value}, {}, ...
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
@@ -161,10 +162,14 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
-        ## @var materials
-        # set of materials from the analysis. Updated with update_objects
+        ## @var materials_linear
+        # set of linear materials from the analysis. Updated with update_objects
         #  Individual materials are "App::MaterialObjectPython" type
-        self.materials = []
+        self.materials_linear = []
+        ## @var materials_nonlinear
+        # set of nonlinear materials from the analysis. Updated with update_objects
+        #  Individual materials are Proxy.Type "FemMaterialMechanicalNonlinear"
+        self.materials_nonlinear = []
         ## @var fixed_constraints
         #  set of fixed constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintFixed" type
@@ -240,9 +245,13 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 else:
                     raise Exception('FEM: Multiple mesh in analysis not yet supported!')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
-                material_dict = {}
-                material_dict['Object'] = m
-                self.materials.append(material_dict)
+                material_linear_dict = {}
+                material_linear_dict['Object'] = m
+                self.materials_linear.append(material_linear_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+                material_nonlinear_dict = {}
+                material_nonlinear_dict['Object'] = m
+                self.materials_nonlinear.append(material_nonlinear_dict)
             elif m.isDerivedFrom("Fem::ConstraintFixed"):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
@@ -329,16 +338,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
             if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
                 message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
-        # materials
-        if not self.materials:
+        # materials_linear
+        if not self.materials_linear:
             message += "No material object defined in the analysis\n"
         has_no_references = False
-        for m in self.materials:
+        for m in self.materials_linear:
             if len(m['Object'].References) == 0:
                 if has_no_references is True:
                     message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
-        for m in self.materials:
+        for m in self.materials_linear:
             mat_map = m['Object'].Material
             if 'YoungsModulus' not in mat_map:
                 message += "No YoungsModulus defined for at least one material.\n"

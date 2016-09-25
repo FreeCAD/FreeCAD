@@ -43,7 +43,7 @@ import os
 class FemInputWriter():
     def __init__(self,
                  analysis_obj, solver_obj,
-                 mesh_obj, mat_obj,
+                 mesh_obj, matlin_obj, matnonlin_obj,
                  fixed_obj, displacement_obj,
                  contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
@@ -54,7 +54,8 @@ class FemInputWriter():
         self.analysis = analysis_obj
         self.solver_obj = solver_obj
         self.mesh_object = mesh_obj
-        self.material_objects = mat_obj
+        self.material_objects = matlin_obj
+        self.material_nonlinear_objects = matnonlin_obj
         self.fixed_objects = fixed_obj
         self.displacement_objects = displacement_obj
         self.contact_objects = contact_obj
