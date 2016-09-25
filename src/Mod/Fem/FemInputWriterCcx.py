@@ -38,7 +38,7 @@ import FemInputWriter
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self,
                  analysis_obj, solver_obj,
-                 mesh_obj, mat_obj,
+                 mesh_obj, matlin_obj, matnonlin_obj,
                  fixed_obj, displacement_obj,
                  contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
@@ -50,7 +50,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         FemInputWriter.FemInputWriter.__init__(
             self,
             analysis_obj, solver_obj,
-            mesh_obj, mat_obj,
+            mesh_obj, matlin_obj, matnonlin_obj,
             fixed_obj, displacement_obj,
             contact_obj, planerotation_obj, transform_obj,
             selfweight_obj, force_obj, pressure_obj,
@@ -337,6 +337,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 f.write('{0:.3e}\n'.format(TEC_in_mmK))
                 f.write('*SPECIFIC HEAT\n')
                 f.write('{0:.3e}\n'.format(SH_in_JkgK))
+           if self.solver_obj.MaterialNonlinearity == 'nonlinear':
+                if len(self.material_nonlinear_objects) == 1:  # workaround since multiple is on TODO
+                    nl_mat_obj = self.material_nonlinear_objects[0]['Object']
+                    if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
+                        f.write('*PLASTIC\n')
+                        f.write(nl_mat_obj.YieldPoint1 + '\n')
+                        f.write(nl_mat_obj.YieldPoint2 + '\n')
+                else:
+                    print('Only one nonlinear material supported!!')
 
     def write_constraints_initialtemperature(self, f):
         f.write('\n***********************************************************\n')
@@ -405,7 +414,11 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             analysis_static += ', SOLVER=ITERATIVE SCALING'
         elif self.solver_obj.MatrixSolverType == "iterativecholesky":
             analysis_static += ', SOLVER=ITERATIVE CHOLESKY'
+        if self.solver_obj.IterationsUserDefinedIncrementations:
+            analysis_static += ', DIRECT'
         f.write(analysis_static + '\n')
+        if self.solver_obj.IterationsUserDefinedIncrementations:
+            f.write(self.solver_obj.IterationsUserDefinedTimeStepLength + '\n')
 
     def write_step_begin_thermomech(self, f):
         f.write('\n***********************************************************\n')

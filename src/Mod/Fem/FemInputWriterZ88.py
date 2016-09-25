@@ -35,7 +35,7 @@ import FemInputWriter
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):
     def __init__(self,
                  analysis_obj, solver_obj,
-                 mesh_obj, mat_obj,
+                 mesh_obj, matlin_obj, matnonlin_obj,
                  fixed_obj, displacement_obj,
                  contact_obj, planerotation_obj, transform_obj,
                  selfweight_obj, force_obj, pressure_obj,
@@ -47,7 +47,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         FemInputWriter.FemInputWriter.__init__(
             self,
             analysis_obj, solver_obj,
-            mesh_obj, mat_obj,
+            mesh_obj, matlin_obj, matnonlin_obj,
             fixed_obj, displacement_obj,
             contact_obj, planerotation_obj, transform_obj,
             selfweight_obj, force_obj, pressure_obj,
