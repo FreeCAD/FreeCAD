@@ -459,7 +459,7 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
 
 void ImageView::showEvent (QShowEvent *)
 {
-    _pGLImageBox->setFocus();
+    //_pGLImageBox->setFocus();
 }
 
 // Update the status bar with the image parameters for the current mouse position
