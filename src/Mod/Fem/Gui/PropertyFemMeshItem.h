@@ -40,6 +40,7 @@ class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
     Q_PROPERTY(int Polygons READ countPolygons)
     Q_PROPERTY(int Volumes READ countVolumes)
     Q_PROPERTY(int Polyhedrons READ countPolyhedrons)
+    Q_PROPERTY(int Groups READ countGroups)
     TYPESYSTEM_HEADER();
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
@@ -52,6 +53,7 @@ class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
     int countPolygons() const;
     int countVolumes() const;
     int countPolyhedrons() const;
+    int countGroups() const;
 
 protected:
     virtual QVariant toolTip(const App::Property*) const;
@@ -69,6 +71,7 @@ private:
     Gui::PropertyEditor::PropertyIntegerItem* m_p;
     Gui::PropertyEditor::PropertyIntegerItem* m_v;
     Gui::PropertyEditor::PropertyIntegerItem* m_h;
+    Gui::PropertyEditor::PropertyIntegerItem* m_g;
 };
 
 } // namespace FemGui
