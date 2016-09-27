@@ -33,6 +33,7 @@
 #include <Base/Quantity.h>
 #include <set>
 #include <deque>
+#include <App/Range.h>
 
 namespace App  {
 
@@ -44,6 +45,25 @@ class AppExport ExpressionVisitor {
 public:
     virtual ~ExpressionVisitor() {}
     virtual void visit(Expression * e) = 0;
+};
+
+template<class P> class ExpressionModifier : public ExpressionVisitor {
+public:
+    ExpressionModifier(P & _prop)
+        : prop(_prop) { }
+
+    virtual ~ExpressionModifier() { }
+
+    void setExpressionChanged() {
+        if (!signaller)
+            signaller = boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange>(AtomicPropertyChangeInterface<P>::getAtomicPropertyChange(prop));
+    }
+
+    bool getChanged() const { return signaller != 0; }
+
+protected:
+    P & prop;
+    boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange> signaller;
 };
 
 /**
@@ -72,7 +92,7 @@ public:
 
     virtual int priority() const { return 0; }
 
-    virtual void getDeps(std::set<ObjectIdentifier> &props) const { }
+    virtual void getDeps(std::set<ObjectIdentifier> &/*props*/) const { }
 
     virtual Expression * simplify() const = 0;
 
@@ -109,7 +129,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     void setUnit(const Base::Quantity &_quantity);
 
@@ -145,7 +165,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     void negate();
 
@@ -163,12 +183,21 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     std::string getName() const { return name; }
 
 protected:
     std::string name; /**< Constant's name */
+};
+
+class AppExport BooleanExpression : public NumberExpression {
+    TYPESYSTEM_HEADER();
+public:
+    BooleanExpression(const App::DocumentObject *_owner = 0, bool _value = false);
+
+    virtual Expression * copy() const;
+
 };
 
 
@@ -217,7 +246,20 @@ public:
 
     virtual void visit(ExpressionVisitor & v);
 
+    Operator getOperator() const { return op; }
+
+    Expression * getLeft() const { return left; }
+
+    Expression * getRight() const { return right; }
+
 protected:
+
+    virtual bool isCommutative() const;
+
+    virtual bool isLeftAssociative() const;
+
+    virtual bool isRightAssociative() const;
+
     Operator op;        /**< Operator working on left and right */
     Expression * left;  /**< Left operand */
     Expression * right; /**< Right operand */
@@ -286,6 +328,18 @@ public:
         TRUNC,
         CEIL,
         FLOOR,
+
+        // Aggregates
+        AGGREGATES,
+
+        SUM,
+        AVERAGE,
+        STDDEV,
+        COUNT,
+        MIN,
+        MAX,
+
+        // Last one
         LAST,
     };
 
@@ -303,13 +357,15 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
     virtual void visit(ExpressionVisitor & v);
 
 protected:
+    Expression *evalAggregate() const;
+
     Function f;        /**< Function to execute */
     std::vector<Expression *> args; /** Arguments to function*/
 };
@@ -339,7 +395,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
@@ -349,7 +405,11 @@ public:
 
     void setPath(const ObjectIdentifier & path);
 
+    bool validDocumentObjectRename(const std::string & oldName, const std::string & newName);
+
     bool renameDocumentObject(const std::string & oldName, const std::string & newName);
+
+    bool validDocumentRename(const std::string &oldName, const std::string &newName);
 
     bool renameDocument(const std::string &oldName, const std::string &newName);
 
@@ -378,13 +438,42 @@ public:
 
     virtual std::string getText() const { return text; }
 
-    virtual int priority() const { return 20; }
+    virtual int priority() const;
 
     virtual Expression * copy() const;
 
 protected:
 
     std::string text; /**< Text string */
+};
+
+class AppExport RangeExpression : public App::Expression {
+    TYPESYSTEM_HEADER();
+public:
+    RangeExpression(const App::DocumentObject * _owner = 0, const std::string & begin = std::string(), const std::string & end = std::string());
+
+    virtual ~RangeExpression() { }
+
+    virtual bool isTouched() const;
+
+    virtual Expression * eval() const;
+
+    virtual std::string toString() const;
+
+    virtual Expression * copy() const;
+
+    virtual int priority() const;
+
+    virtual void getDeps(std::set<App::ObjectIdentifier> &props) const;
+
+    virtual App::Expression * simplify() const;
+
+    Range getRange() const { return range; }
+
+    void setRange(const Range & r);
+
+protected:
+    Range range;
 };
 
 namespace ExpressionParser {
@@ -407,17 +496,18 @@ public:
   Expression * expr;
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
-  int ivalue;
+  long long int ivalue;
   double fvalue;
   struct {
     std::string name;
     double fvalue;
   } constant;
   std::vector<Expression*> arguments;
+  std::vector<Expression*> list;
   std::string string;
   FunctionExpression::Function func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() {}
+  semantic_type() : expr(0), ivalue(0), fvalue(0), func(FunctionExpression::NONE) {}
 };
 
 #define YYSTYPE semantic_type

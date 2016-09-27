@@ -75,9 +75,11 @@ void ConstraintFixed::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        if (getPoints(points, normals)) {
+        int scale = 1; //OvG: Enforce use of scale
+        if (getPoints(points, normals, &scale)) {
             Points.setValues(points);
             Normals.setValues(normals);
+            Scale.setValue(scale); //OvG: Scale
             Points.touch(); // This triggers ViewProvider::updateData()
         }
     }

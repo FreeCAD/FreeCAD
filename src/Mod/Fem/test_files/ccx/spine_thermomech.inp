@@ -1,0 +1,212 @@
+*Node, NSET=Nall
+1, 203.2, 25.4, 0
+2, 203.2, 25.4, 25.4
+3, 203.2, 0, 0
+4, 203.2, 0, 25.4
+5, 0, 25.4, 0
+6, 0, 25.4, 25.4
+7, 0, 0, 0
+8, 0, 0, 25.4
+9, 98.3488, 25.4, 25.4
+10, 102.616, 0, 25.4
+11, 98.3488, 25.4, 0
+12, 102.616, 0, 0
+13, 0, 12.7, 25.4
+14, 49.1744, 25.4, 25.4
+15, 150.774, 25.4, 25.4
+16, 203.2, 12.7, 25.4
+17, 51.308, 0, 25.4
+18, 152.908, 0, 25.4
+19, 0, 12.7, 0
+20, 49.1744, 25.4, 0
+21, 150.774, 25.4, 0
+22, 203.2, 12.7, 0
+23, 51.308, 0, 0
+24, 152.908, 0, 0
+25, 203.2, 25.4, 12.7
+26, 0, 25.4, 12.7
+27, 203.2, 0, 12.7
+28, 0, 0, 12.7
+29, 0, 12.7, 12.7
+30, 51.308, 12.7, 25.4
+31, 100.482, 12.7, 25.4
+32, 152.908, 12.7, 25.4
+33, 51.308, 12.7, 0
+34, 100.482, 12.7, 0
+35, 152.908, 12.7, 0
+36, 203.2, 12.7, 12.7
+37, 49.1744, 25.4, 12.7
+38, 150.774, 25.4, 12.7
+39, 98.3488, 25.4, 12.7
+40, 51.308, 0, 12.7
+41, 152.908, 0, 12.7
+42, 102.616, 0, 12.7
+43, 51.308, 12.7, 12.7
+44, 100.482, 12.7, 12.7
+45, 152.908, 12.7, 12.7
+*Element, TYPE=C3D10, ELSET=Eall
+37, 5, 6, 12, 11, 26, 43, 33, 20, 37, 34
+38, 9, 12, 11, 2, 44, 34, 39, 15, 45, 38
+39, 3, 4, 1, 12, 27, 36, 22, 24, 41, 35
+40, 2, 12, 11, 1, 45, 34, 38, 25, 35, 21
+41, 2, 12, 1, 4, 45, 35, 25, 16, 41, 36
+42, 9, 12, 2, 10, 44, 45, 15, 31, 42, 32
+43, 2, 12, 4, 10, 45, 41, 16, 32, 42, 18
+44, 9, 12, 10, 6, 44, 42, 31, 14, 43, 30
+45, 9, 12, 6, 11, 44, 43, 14, 39, 34, 37
+46, 6, 7, 5, 12, 29, 19, 26, 43, 23, 33
+47, 8, 7, 6, 12, 28, 29, 13, 40, 23, 43
+48, 12, 10, 6, 8, 42, 30, 43, 40, 17, 13
+
+
+
+***********************************************************
+** Element sets for materials and FEM element type (solid, shell, beam)
+** written by write_element_sets_material_and_femelement_type function
+*ELSET,ELSET=MechanicalMaterialSolid
+Eall
+
+***********************************************************
+** Node set for fixed constraint
+** written by write_node_sets_constraints_fixed function
+*NSET,NSET=FemConstraintFixed
+5,
+6,
+7,
+8,
+13,
+19,
+26,
+28,
+29,
+
+***********************************************************
+** Node sets for temperature constraints
+** written by write_node_sets_constraints_temperature function
+*NSET,NSET=FemConstraintTemperature
+5,
+6,
+7,
+8,
+13,
+19,
+26,
+28,
+29,
+
+***********************************************************
+** Materials
+** written by write_materials function
+** Young's modulus unit is MPa = N/mm2
+** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3
+** Specific Heat unit is kJ/t/K = mm^2/s^2/K
+** FreeCAD material name: Steel-Generic
+*MATERIAL, NAME=MechanicalMaterial
+*ELASTIC 
+200000, 0.300
+*CONDUCTIVITY 
+43.270, 
+*EXPANSION 
+1.200e-05, 
+*SPECIFIC HEAT 
+5.000e+08, 
+
+***********************************************************
+** Initial temperature constraint
+** written by write_constraints_initialtemperature function
+*INITIAL CONDITIONS,TYPE=TEMPERATURE
+Nall,300.0
+
+***********************************************************
+** Sections
+** written by write_femelementsets function
+*SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
+
+***********************************************************
+** One step is needed to run the thermomechanical analysis of FreeCAD
+** written by write_step_begin_thermomech function
+*STEP, INC=2000
+*CONTROLS, PARAMETERS=TIME INCREMENTATION
+4,8,9,200,10,400,,200,,
+0.25,0.5,0.75,0.85,,,1.5,
+
+***********************************************************
+** Coupled temperature displacement analysis
+** written by write_analysis_thermomech function
+*COUPLED TEMPERATURE-DISPLACEMENT, STEADY STATE
+1.0,1.0
+
+***********************************************************
+** Fixed Constraints
+** written by write_constraints_fixed function
+*BOUNDARY
+FemConstraintFixed,1
+FemConstraintFixed,2
+FemConstraintFixed,3
+
+
+***********************************************************
+** Fixed temperature constraint applied
+** written by write_constraints_temperature function
+*BOUNDARY
+FemConstraintTemperature,11,11,310.93
+
+
+***********************************************************
+** Heatflux constraints
+** written by write_constraints_heatflux function
+*FILM
+** Heat flux on face Face3
+39,F2,255.3722,0.005678
+43,F3,255.3722,0.005678
+47,F2,255.3722,0.005678
+48,F2,255.3722,0.005678
+** Heat flux on face Face4
+37,F2,255.3722,0.005678
+38,F4,255.3722,0.005678
+40,F4,255.3722,0.005678
+45,F4,255.3722,0.005678
+** Heat flux on face Face5
+37,F4,255.3722,0.005678
+39,F4,255.3722,0.005678
+40,F3,255.3722,0.005678
+46,F3,255.3722,0.005678
+** Heat flux on face Face6
+42,F4,255.3722,0.005678
+43,F4,255.3722,0.005678
+44,F4,255.3722,0.005678
+48,F3,255.3722,0.005678
+
+***********************************************************
+** Outputs --> frd file
+** written by write_outputs_types function
+*NODE FILE
+U, NT
+*EL FILE
+S, E
+** outputs --> dat file
+*NODE PRINT , NSET=Nall 
+U 
+*EL PRINT , ELSET=Eall 
+S 
+
+***********************************************************
+** written by write_step_end function
+*END STEP 
+
+***********************************************************
+** CalculiX Input file
+** written by write_footer function
+**   written by    --> FreeCAD 0.17.8088 (Git)
+**   written on    --> Thu Jul 28 10:14:28 2016
+**   file name     --> FEM_spine.fcstd
+**   analysis name --> Analysis
+**
+**
+**
+**   Units
+**
+**   Geometry (mesh data)        --> mm
+**   Materials (Young's modulus) --> N/mm2 = MPa
+**   Loads (nodal loads)         --> N
+**

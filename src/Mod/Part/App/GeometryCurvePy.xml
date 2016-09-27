@@ -63,6 +63,12 @@ Part.show(s)
 length([uMin,uMax,Tol]) -> Float</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="parameterAtDistance">
+			<Documentation>
+				<UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter. 
+parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="value">
 			<Documentation>
 				<UserDocu>Computes the point of parameter u on this curve</UserDocu>
@@ -89,6 +95,27 @@ length([uMin,uMax,Tol]) -> Float</UserDocu>
 of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 		</Methode>
+                <Methode Name="intersect" Const="true">
+                        <Documentation>
+                                <UserDocu>
+                                        Returns all intersection points and curve segments between the curve and the curve/surface.
+                                </UserDocu>
+                        </Documentation>
+                </Methode>
+                <Methode Name="intersectCS" Const="true">
+                        <Documentation>
+                                <UserDocu>
+                                        Returns all intersection points and curve segments between the curve and the surface.
+                                </UserDocu>
+                        </Documentation>
+                </Methode>
+                <Methode Name="intersectCC" Const="true">
+                        <Documentation>
+                                <UserDocu>
+                                        Returns all intersection points between this curve and the given curve.
+                                </UserDocu>
+                        </Documentation>
+                </Methode>
 		<Methode Name="toBSpline">
 			<Documentation>
 				<UserDocu>

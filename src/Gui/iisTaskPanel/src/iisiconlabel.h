@@ -9,6 +9,7 @@
 #define IISICONLABEL_H
 
 #include <QtGui>
+#include <QWidget>
 
 #include "iistaskpanel_global.h"
 

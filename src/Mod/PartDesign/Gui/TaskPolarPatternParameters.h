@@ -65,15 +65,18 @@ private Q_SLOTS:
     void onAngle(const double a);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
+    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void clearButtons();
+    void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const std::string getStdAxis(void) const;
     const std::string getAxis(void) const;
-    const bool getReverse(void) const;
-    const double getAngle(void) const;
-    const unsigned getOccurrences(void) const;
+    bool getReverse(void) const;
+    double getAngle(void) const;
+    unsigned getOccurrences(void) const;
 
 private:
     void setupUI();
@@ -83,6 +86,8 @@ private:
 private:
     Ui_TaskPolarPatternParameters* ui;
     QTimer* updateViewTimer;
+
+    ComboLinks axesLinks;
 };
 
 
@@ -94,10 +99,6 @@ class TaskDlgPolarPatternParameters : public TaskDlgTransformedParameters
 public:
     TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
     virtual ~TaskDlgPolarPatternParameters() {}
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
 };
 
 } //namespace PartDesignGui

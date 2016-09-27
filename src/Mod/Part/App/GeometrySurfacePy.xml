@@ -105,5 +105,22 @@ The required arguments are:
 				</UserDocu>
 			</Documentation>
 		</Methode>
+                <Methode Name="intersect" Const="true">
+                        <Documentation>
+                                <UserDocu>
+                                        Returns all intersection points/curves between the surface and the curve/surface.
+                                </UserDocu>
+                        </Documentation>
+                </Methode>
+                <Methode Name="intersectSS">
+                        <Documentation>
+                                <UserDocu>
+                                        Returns all intersection curves of this surface and the given surface.
+The required arguments are:
+* Second surface
+* precision code (optional, default=0)
+                                </UserDocu>
+                        </Documentation>
+                </Methode>
 	</PythonExport>
 </GenerateModel>

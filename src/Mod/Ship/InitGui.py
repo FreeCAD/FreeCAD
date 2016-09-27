@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -24,13 +24,13 @@
 
 class ShipWorkbench(Workbench):
     """Ships design workbench."""
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Ship/resources/icons/ShipWorkbench.svg"
+        self.__class__.MenuText = "Ship"
+        self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
+
     from shipUtils import Paths
     import ShipGui
-
-    Icon = "Ship_Module.svg"
-    MenuText = "Ship"
-    ToolTip = ("Ship module provides some of the commonly used tool to design"
-               " ship forms")
 
     def Initialize(self):
         from PySide import QtCore, QtGui
@@ -52,12 +52,10 @@ class ShipWorkbench(Workbench):
                     "Ship_Hydrostatics"]
         weightslist = ["Ship_Weight",
                        "Ship_Tank",
-                       "Ship_Capacity"]
-        """
-        weightslist = ["Ship_Weights",
-                       "Ship_CreateTank",
+                       "Ship_Capacity",
+                       "Ship_LoadCondition",
                        "Ship_GZ"]
-        """
+
         self.appendToolbar(
             str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship design")),
             shiplist)

@@ -17,8 +17,6 @@ set(Spreadsheet_LIBS
 )
 
 set(Spreadsheet_SRCS
-    SpreadsheetExpression.cpp
-    SpreadsheetExpression.h
     Cell.cpp
     Cell.h
     DisplayUnit.h
@@ -44,8 +42,6 @@ set(Spreadsheet_SRCS
     SheetObserver.h
     Utils.cpp
     Utils.h
-    Range.h
-    Range.cpp
     AppSpreadsheet.cpp
 )
 
@@ -61,7 +57,7 @@ target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
 fc_target_copy_resource(Spreadsheet 
     ${CMAKE_SOURCE_DIR}/src/Mod/Spreadsheet
     ${CMAKE_BINARY_DIR}/Mod/Spreadsheet
-    Init.py)
+    Init.py TestSpreadsheet.py importXLSX.py)
 
 SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(Spreadsheet)

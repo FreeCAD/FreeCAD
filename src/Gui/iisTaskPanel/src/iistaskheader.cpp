@@ -5,6 +5,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QSizePolicy>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPainter>
+#include <QTimer>
+
 #include "iistaskheader.h"
 #include "iistaskpanelscheme.h"
 #include "iisiconlabel.h"
@@ -91,6 +97,7 @@ void iisTaskHeader::setScheme(iisTaskPanelScheme *scheme)
 
 void iisTaskHeader::paintEvent ( QPaintEvent * event ) 
 {
+	Q_UNUSED(event); 
 	QPainter p(this);
 
 #if QT_VERSION >= 0x040203

@@ -76,17 +76,30 @@ unsigned char MeshSelection::cross_mask_bitmap[] = {
 };
 
 MeshSelection::MeshSelection()
-  : onlyPointToUserTriangles(false), onlyVisibleTriangles(false), _activeCB(0)
+  : onlyPointToUserTriangles(false)
+  , onlyVisibleTriangles(false)
+  , addToSelection(false)
+  , addComponent(false)
+  , removeComponent(false)
+  , activeCB(0)
+  , selectionCB(0)
+  , ivViewer(0)
 {
+    setCallback(selectGLCallback);
 }
 
 MeshSelection::~MeshSelection()
 {
-    if (_activeCB) {
+    if (this->activeCB) {
         Gui::View3DInventorViewer* viewer = this->getViewer();
         if (viewer)
             stopInteractiveCallback(viewer);
     }
+}
+
+void MeshSelection::setCallback(SoEventCallbackCB *cb)
+{
+    selectionCB = cb;
 }
 
 void MeshSelection::setObjects(const std::vector<Gui::SelectionObject>& obj)
@@ -130,8 +143,17 @@ std::list<ViewProviderMesh*> MeshSelection::getViewProviders() const
     return vps;
 }
 
+void MeshSelection::setViewer(Gui::View3DInventorViewer* v)
+{
+    ivViewer = v;
+}
+
 Gui::View3DInventorViewer* MeshSelection::getViewer() const
 {
+    // if a special viewer was set from outside then use this
+    if (ivViewer)
+        return ivViewer;
+
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (!doc) return 0;
     Gui::MDIView* view = doc->getActiveView();
@@ -145,37 +167,39 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
 
 void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer,SoEventCallbackCB *cb)
 {
-    if (this->_activeCB)
+    if (this->activeCB)
         return;
     viewer->setEditing(true);
     viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), cb, this);
-    this->_activeCB = cb;
+    this->activeCB = cb;
 }
 
 void MeshSelection::stopInteractiveCallback(Gui::View3DInventorViewer* viewer)
 {
-    if (!this->_activeCB)
+    if (!this->activeCB)
         return;
-    if (viewer->isEditing()) {
-        viewer->setEditing(false);
-        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), this->_activeCB, this);
-        this->_activeCB = 0;
-    }
+    viewer->setEditing(false);
+    viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), this->activeCB, this);
+    this->activeCB = 0;
 }
 
-void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
+void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
 {
     // a rubberband to select a rectangle area of the meshes
     Gui::View3DInventorViewer* viewer = this->getViewer();
     if (viewer) {
+        // Note: It is possible that the mouse selection mode can be stopped
+        // but then the callback function is still active.
         stopInteractiveCallback(viewer);
         startInteractiveCallback(viewer, cb);
+        viewer->navigationStyle()->stopSelection();
+
         // set cross cursor
-        Gui::BrushSelection* brush = new Gui::BrushSelection();
-        brush->setClosed(true);
-        brush->setColor(1.0f,0.0f,0.0f);
-        brush->setLineWidth(3.0f);
-        viewer->navigationStyle()->startSelection(brush);
+        Gui::FreehandSelection* freehand = new Gui::FreehandSelection();
+        freehand->setClosed(true);
+        freehand->setColor(1.0f, 0.0f, 0.0f);
+        freehand->setLineWidth(3.0f);
+        viewer->navigationStyle()->startSelection(freehand);
         
         QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
         QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
@@ -187,12 +211,12 @@ void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
 
 void MeshSelection::startSelection()
 {
-    prepareBrushSelection(true, selectGLCallback);
+    prepareFreehandSelection(true, selectionCB);
 }
 
 void MeshSelection::startDeselection()
 {
-    prepareBrushSelection(false, selectGLCallback);
+    prepareFreehandSelection(false, selectionCB);
 }
 
 void MeshSelection::stopSelection()

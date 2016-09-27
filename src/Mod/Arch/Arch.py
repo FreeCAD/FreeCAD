@@ -30,10 +30,9 @@ __url__ = "http://www.freecadweb.org"
 #
 #  Architecture and BIM module
 #
-#  This module provides tools specialized in architectural and Building
-#  Information Modeling (BIM).
+#  This module provides tools specialized in Building Information Modeling (BIM).
 
-'''The Arch module provides tools specialized in architectural BIM modeling.'''
+'''The Arch module provides tools specialized in BIM modeling.'''
 
 import FreeCAD
 if FreeCAD.GuiUp:
@@ -61,3 +60,5 @@ from ArchCutPlane import *
 from ArchServer import *
 from ArchMaterial import *
 from ArchSchedule import *
+from ArchPrecast import *
+from ArchPipe import *

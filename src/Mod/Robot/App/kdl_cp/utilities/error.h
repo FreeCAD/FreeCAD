@@ -70,7 +70,7 @@ class Error_IO : public Error {
 	std::string msg;
 	int typenr;
 public:
-	Error_IO(const std::string& _msg="Unspecified I/O Error",int typenr=0):msg(_msg) {}
+	Error_IO(const std::string& _msg="Unspecified I/O Error",int /*typenr*/=0):msg(_msg) {}
     virtual const char* Description() const {return msg.c_str();}
     virtual int GetType() const {return typenr;}
 };

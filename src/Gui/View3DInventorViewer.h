@@ -138,6 +138,7 @@ public:
     void setBacklight(SbBool on);
     SbBool isBacklight(void) const;
     void setSceneGraph (SoNode *root);
+    SbBool searchNode(SoNode*) const;
 
     void setAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled(void) const;
@@ -156,6 +157,7 @@ public:
     int getFeedbackSize(void) const;
 
     void setRenderType(const RenderType type);
+    RenderType getRenderType() const;
     void renderToFramebuffer(QGLFramebufferObject*);
 
     virtual void setViewing(SbBool enable);
@@ -224,13 +226,12 @@ public:
     void setEditing(SbBool edit);
     SbBool isEditing() const { return this->editing; }
     void setEditingCursor (const QCursor& cursor);
+    void setComponentCursor(const QCursor& cursor);
     void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
     SbBool isRedirectedToSceneGraph() const { return this->redirected; }
     void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
     SbBool isRedirectToSceneGraphEnabled(void) const { return this->allowredir; }
     //@}
-    
-    void setComponentCursor(QCursor cursor);
 
     /** @name Pick actions */
     //@{
@@ -342,7 +343,8 @@ public:
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);
-    
+    Gui::Document* getDocument();
+
     virtual PyObject *getPyObject(void);
 
 protected:
@@ -354,6 +356,10 @@ protected:
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
     virtual bool processSoEvent(const SoEvent * ev);
+    void dropEvent (QDropEvent * e);
+    void dragEnterEvent (QDragEnterEvent * e);
+    void dragMoveEvent(QDragMoveEvent *e);
+    void dragLeaveEvent(QDragLeaveEvent *e);
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
@@ -421,6 +427,7 @@ private:
     SbBool allowredir;
 
     std::string overrideMode;
+    Gui::Document* guiDocument = nullptr;
     
     ViewerEventFilter* viewerEventFilter;
     

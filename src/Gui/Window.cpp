@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <qglobal.h>
 #include "Window.h"
 
 #include <Base/Console.h>
@@ -72,6 +73,8 @@ bool WindowParameter::setGroupName(const char* name)
 
 void WindowParameter::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
+  Q_UNUSED(rCaller);
+  Q_UNUSED(sReason);
   Base::Console().Log("Parameter has changed and window (%s) has not overridden this function!",_handle->GetGroupName());
 }
 

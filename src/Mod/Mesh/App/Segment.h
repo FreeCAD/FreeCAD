@@ -25,6 +25,7 @@
 #define MESH_SEGMENT_H
 
 #include <vector>
+#include <string>
 #include "Facet.h"
 #include "Core/Iterator.h"
 
@@ -41,10 +42,16 @@ public:
     void addIndices(const std::vector<unsigned long>& inds);
     void removeIndices(const std::vector<unsigned long>& inds);
     const std::vector<unsigned long>& getIndices() const;
-    bool isEmpty() const { return _indices.empty(); };
+    bool isEmpty() const { return _indices.empty(); }
 
     const Segment& operator = (const Segment&);
     bool operator == (const Segment&) const;
+
+    void setName(const std::string& n) { _name = n; }
+    const std::string& getName() const { return _name; }
+
+    void save(bool on) { _save = on; }
+    bool isSaved() const { return _save; }
 
     // friends
     friend class MeshObject;
@@ -52,6 +59,8 @@ public:
 private:
     MeshObject* _mesh;
     std::vector<unsigned long> _indices;
+    std::string _name;
+    bool _save;
     bool _modifykernel;
 
 public:

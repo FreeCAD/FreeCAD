@@ -61,8 +61,7 @@ private:
 
 
 /* Python entry */
-extern "C" {
-void ReenGuiExport initReverseEngineeringGui()
+PyMODINIT_FUNC initReverseEngineeringGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -79,5 +78,3 @@ void ReenGuiExport initReverseEngineeringGui()
      // add resources and reloads the translators
     loadReverseEngineeringResource();
 }
-
-} // extern "C" {

@@ -244,7 +244,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     ADD_PROPERTY(LineColor,(0,0,0));
 
     // Create the selection node
-    pcHighlight = createFromSettings();
+    pcHighlight = Gui::ViewProviderBuilder::createSelection();
     pcHighlight->ref();
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
@@ -323,40 +323,6 @@ ViewProviderMesh::~ViewProviderMesh()
     pShapeHints->unref();
     pcMatBinding->unref();
     pLineColor->unref();
-}
-
-Gui::SoFCSelection* ViewProviderMesh::createFromSettings() const
-{
-    Gui::SoFCSelection* sel = new Gui::SoFCSelection();
-
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    bool enablePre = hGrp->GetBool("EnablePreselection", true);
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    if (!enablePre) {
-        sel->highlightMode = Gui::SoFCSelection::OFF;
-    }
-    else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = sel->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        sel->colorHighlight.setValue(highlightColor);
-    }
-    if (!enableSel || !Selectable.getValue()) {
-        sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    }
-    else {
-        // Do the same with the selection color
-        SbColor selectionColor = sel->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        sel->colorSelection.setValue(selectionColor);
-    }
-
-    return sel;
 }
 
 void ViewProviderMesh::onChanged(const App::Property* prop)
@@ -474,7 +440,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
     // faces+wires
-    Gui::SoFCSelection* selGroup = createFromSettings();
+    Gui::SoFCSelection* selGroup = Gui::ViewProviderBuilder::createSelection();
     selGroup->objectName = getObject()->getNameInDocument();
     selGroup->documentName = getObject()->getDocument()->getName();
     selGroup->subElementName = "Main";
@@ -699,6 +665,35 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
     return false;
 }
 
+void ViewProviderMesh::exportMesh(const char* filename, const char* fmt) const
+{
+    MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
+    if (fmt) {
+        std::string dummy = "meshfile.";
+        dummy += fmt;
+        format = MeshCore::MeshOutput::GetFormat(dummy.c_str());
+    }
+
+    MeshCore::Material mat;
+    int numColors = pcShapeMaterial->diffuseColor.getNum();
+    const SbColor* colors = pcShapeMaterial->diffuseColor.getValues(0);
+    mat.diffuseColor.reserve(numColors);
+    for (int i=0; i<numColors; i++) {
+        const SbColor& c = colors[i];
+        mat.diffuseColor.push_back(App::Color(c[0], c[1], c[2]));
+    }
+
+    const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(getObject())->Mesh.getValue();
+    if (mat.diffuseColor.size() == mesh.countPoints())
+        mat.binding = MeshCore::MeshIO::PER_VERTEX;
+    else if (mat.diffuseColor.size() == mesh.countFacets())
+        mat.binding = MeshCore::MeshIO::PER_FACE;
+    else
+        mat.binding = MeshCore::MeshIO::OVERALL;
+
+    mesh.save(filename, format, &mat, getObject()->Label.getValue());
+}
+
 void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
@@ -812,6 +807,7 @@ bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const
 
 void ViewProviderMesh::showOpenEdges(bool show)
 {
+    (void)show;
 }
 
 void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
@@ -1062,7 +1058,7 @@ void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
                                             std::vector<unsigned long>& indices) const
 {
 #if 1
-    bool ok = true;
+    const bool ok = true;
     Base::Polygon2D polygon;
     for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
         polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
@@ -1616,6 +1612,32 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
+void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
+{
+    App::Color c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
+    SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+    for (std::size_t index = 0; index < facetTransparency.size(); ++index)
+        cols[index].setValue(c.r, c.g, c.b);
+    pcShapeMaterial->diffuseColor.finishEditing();
+
+    pcShapeMaterial->transparency.setNum(facetTransparency.size());
+    float* tran = pcShapeMaterial->transparency.startEditing();
+    for (std::size_t index = 0; index < facetTransparency.size(); ++index)
+        tran[index] = facetTransparency[index];
+
+    pcShapeMaterial->transparency.finishEditing();
+    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+}
+
+void ViewProviderMesh::resetFacetTransparency()
+{
+    pcMatBinding->value = SoMaterialBinding::OVERALL;
+    App::Color c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    pcShapeMaterial->transparency.setValue(0);
+}
+
 void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
 {
     // Get the attached mesh property
@@ -1697,6 +1719,13 @@ void ViewProviderMesh::deselectFacet(unsigned long facet)
     }
 }
 
+bool ViewProviderMesh::isFacetSelected(unsigned long facet)
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
+    return faces[facet].IsFlag(MeshCore::MeshFacet::SELECTED);
+}
+
 void ViewProviderMesh::selectComponent(unsigned long uFacet)
 {
     std::vector<unsigned long> selection;
@@ -1764,6 +1793,24 @@ void ViewProviderMesh::removeSelection(const std::vector<unsigned long>& indices
         highlightSelection();
     else
         unhighlightSelection();
+}
+
+void ViewProviderMesh::invertSelection()
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
+    unsigned long num_notsel = std::count_if(faces.begin(), faces.end(),
+        std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
+        MeshCore::MeshFacet::SELECTED));
+    std::vector<unsigned long> notselect;
+    notselect.reserve(num_notsel);
+    MeshCore::MeshFacetArray::_TConstIterator beg = faces.begin();
+    MeshCore::MeshFacetArray::_TConstIterator end = faces.end();
+    for (MeshCore::MeshFacetArray::_TConstIterator jt = beg; jt != end; ++jt) {
+        if (!jt->IsFlag(MeshCore::MeshFacet::SELECTED))
+            notselect.push_back(jt-beg);
+    }
+    setSelection(notselect);
 }
 
 void ViewProviderMesh::clearSelection()
@@ -1867,12 +1914,45 @@ void ViewProviderMesh::highlightComponents()
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
+void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    unsigned long numSegm = rMesh.countSegments();
+    if (numSegm == colors.size()) {
+        // Colorize the components
+        pcMatBinding->value = SoMaterialBinding::PER_FACE;
+        int uCtFacets = (int)rMesh.countFacets();
+
+        pcShapeMaterial->diffuseColor.setNum(uCtFacets);
+        SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+        for (unsigned long i=0; i<numSegm; i++) {
+            std::vector<unsigned long> segm = rMesh.getSegment(i).getIndices();
+            float fRed = colors[i].r;
+            float fGrn = colors[i].g;
+            float fBlu = colors[i].b;
+            for (std::vector<unsigned long>::iterator it = segm.begin(); it != segm.end(); ++it) {
+                cols[*it].setValue(fRed,fGrn,fBlu);
+            }
+        }
+        pcShapeMaterial->diffuseColor.finishEditing();
+    }
+    else if (colors.size() == 1) {
+        pcMatBinding->value = SoMaterialBinding::OVERALL;
+        float fRed = colors[0].r;
+        float fGrn = colors[0].g;
+        float fBlu = colors[0].b;
+        pcShapeMaterial->diffuseColor.setValue(fRed,fGrn,fBlu);
+    }
+}
+
 // ------------------------------------------------------
 
 PROPERTY_SOURCE(MeshGui::ViewProviderIndexedFaceSet, MeshGui::ViewProviderMesh)
 
 ViewProviderIndexedFaceSet::ViewProviderIndexedFaceSet()
 {
+    pcMeshCoord = 0;
+    pcMeshFaces = 0;
 }
 
 ViewProviderIndexedFaceSet::~ViewProviderIndexedFaceSet()
@@ -1962,6 +2042,8 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshObject, MeshGui::ViewProviderMesh)
 
 ViewProviderMeshObject::ViewProviderMeshObject()
 {
+    pcMeshNode = 0;
+    pcMeshShape = 0;
 }
 
 ViewProviderMeshObject::~ViewProviderMeshObject()

@@ -153,6 +153,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"              )] = "tr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
     d->activatedLanguage = "English";
 
     d->paths = directories();

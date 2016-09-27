@@ -225,7 +225,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
         else {
             // We can use any axis perpendicular to u (and v)
             Vector3d t = u % Vector3d(1.0, 0.0, 0.0);
-            if(t.Length() < FLT_EPSILON) 
+            if(t.Length() < Base::Vector3d::epsilon())
                 t = u % Vector3d(0.0, 1.0, 0.0);
             this->setValue(t.x, t.y, t.z, 0.0);
         }
@@ -294,15 +294,27 @@ Rotation Rotation::operator*(const Rotation & q) const
 
 bool Rotation::operator==(const Rotation & q) const
 {
-    bool equal = true;
-    for (int i=0; i<4;i++)
-        equal &= (fabs(this->quat[i] - q.quat[i]) < 0.005 );
-    return equal;
+    if (this->quat[0] == q.quat[0] &&
+        this->quat[1] == q.quat[1] &&
+        this->quat[2] == q.quat[2] &&
+        this->quat[3] == q.quat[3])
+        return true;
+    return false;
 }
 
 bool Rotation::operator!=(const Rotation & q) const
 {
     return !(*this == q);
+}
+
+bool Rotation::isSame(const Rotation& q) const
+{
+    if ((this->quat[0] == q.quat[0] || this->quat[0] == -q.quat[0]) &&
+        (this->quat[1] == q.quat[1] || this->quat[1] == -q.quat[1]) &&
+        (this->quat[2] == q.quat[2] || this->quat[2] == -q.quat[2]) &&
+        (this->quat[3] == q.quat[3] || this->quat[3] == -q.quat[3]))
+        return true;
+    return false;
 }
 
 void Rotation::multVec(const Vector3d & src, Vector3d & dst) const
@@ -349,11 +361,11 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
         neg = true;
     }
 
-    if ((1.0 - dot) > FLT_EPSILON) {
+    if ((1.0 - dot) > Base::Vector3d::epsilon()) {
         double angle = (double)acos(dot);
         double sinangle = (double)sin(angle);
         // If possible calculate spherical interpolation, otherwise use linear interpolation
-        if (sinangle > FLT_EPSILON) {
+        if (sinangle > Base::Vector3d::epsilon()) {
             scale0 = double(sin((1.0 - t) * angle)) / sinangle;
             scale1 = double(sin(t * angle)) / sinangle;
         }

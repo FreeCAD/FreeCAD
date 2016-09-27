@@ -368,7 +368,7 @@ void SoFCMeshPickNode::notify(SoNotList *list)
 }
 
 // Doc from superclass.
-void SoFCMeshPickNode::rayPick(SoRayPickAction * action)
+void SoFCMeshPickNode::rayPick(SoRayPickAction * /*action*/)
 {
 }
 
@@ -426,7 +426,7 @@ void SoFCMeshGridNode::initClass(void)
     SO_NODE_INIT_CLASS(SoFCMeshGridNode, SoNode, "Node");
 }
 
-void SoFCMeshGridNode::GLRender(SoGLRenderAction * action)
+void SoFCMeshGridNode::GLRender(SoGLRenderAction * /*action*/)
 {
     const SbVec3f& min = minGrid.getValue();
     const SbVec3f& max = maxGrid.getValue();
@@ -588,7 +588,10 @@ void SoFCMeshObjectShape::initClass()
     SO_NODE_INIT_CLASS(SoFCMeshObjectShape, SoShape, "Shape");
 }
 
-SoFCMeshObjectShape::SoFCMeshObjectShape() : renderTriangleLimit(100000), meshChanged(true)
+SoFCMeshObjectShape::SoFCMeshObjectShape()
+    : renderTriangleLimit(100000)
+    , meshChanged(true)
+    , selectBuf(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshObjectShape);
     setName(SoFCMeshObjectShape::getClassTypeId().getName());

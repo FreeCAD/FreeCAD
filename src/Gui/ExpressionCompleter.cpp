@@ -28,14 +28,16 @@ using namespace Gui;
  */
 
 ExpressionCompleter::ExpressionCompleter(const App::Document * currentDoc, const App::DocumentObject * currentDocObj, QObject *parent)
-    : QCompleter(parent)
+    : QCompleter(parent), prefixStart(0)
 {
     QStandardItemModel* model = new QStandardItemModel(this);
 
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
     std::vector<App::Document*>::const_iterator di = docs.begin();
 
-    std::vector<DocumentObject*> deps = currentDocObj->getInList();
+    std::vector<DocumentObject*> deps;
+    if (currentDocObj)
+        deps = currentDocObj->getInList();
     std::set<const DocumentObject*> forbidden;
 
     for (std::vector<DocumentObject*>::const_iterator it = deps.begin(); it != deps.end(); ++it)
@@ -236,7 +238,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & path ) const
 void ExpressionCompleter::slotUpdate(const QString & prefix)
 {
     using namespace boost::tuples;
-    int j = (prefix.size() > 0 && prefix.at(0) == QChar::fromAscii('=')) ? 1 : 0;
+    int j = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
     std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(Base::Tools::toStdString(prefix.mid(j)));
     std::string completionPrefix;
 

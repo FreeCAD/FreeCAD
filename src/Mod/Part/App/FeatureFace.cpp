@@ -31,7 +31,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <Geom_Plane.hxx>
-# include <Handle_Geom_Surface.hxx>
+# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Face.hxx>
@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn *Face::execute(void)
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
         if (!(*it && (*it)->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
             return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-        TopoDS_Shape shape = static_cast<Part::Part2DObject*>(*it)->Shape.getShape()._Shape;
+        TopoDS_Shape shape = static_cast<Part::Part2DObject*>(*it)->Shape.getShape().getShape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
 

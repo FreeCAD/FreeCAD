@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Mesh, os, numpy, MeshPart
+import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -145,7 +145,9 @@ def export(exportList,filename,tessellation=1):
     colmesh.materials.append(mat)
     objind = 0
     scenenodes = []
-    for obj in exportList:
+    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Arch.pruneIncluded(objectslist)
+    for obj in objectslist:
         vindex = []
         nindex = []
         findex = []

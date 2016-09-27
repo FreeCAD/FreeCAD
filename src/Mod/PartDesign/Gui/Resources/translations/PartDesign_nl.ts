@@ -12,7 +12,7 @@
         <translation type="obsolete">Afschuining ...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+654"/>
+        <location filename="../../Command.cpp" line="+655"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-305"/>
+        <location line="-307"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -84,19 +84,23 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+573"/>
+        <location line="+575"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>LinearPattern</source>
-        <translation>LinearPattern</translation>
+        <translation>LineairPatroon</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a linear pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a linear pattern feature</source>
-        <translation>Creëer een lineair patroon</translation>
+        <translation type="obsolete">Creëer een lineair patroon</translation>
     </message>
 </context>
 <context>
@@ -113,8 +117,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>Een gespiegeld stuk maken</translation>
+        <translation type="obsolete">Een gespiegeld stuk maken</translation>
     </message>
 </context>
 <context>
@@ -131,14 +139,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a multitransform feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a multitransform feature</source>
-        <translation>Een multivervormstuk maken</translation>
+        <translation type="obsolete">Een multivervormstuk maken</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1059"/>
+        <location line="-1061"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -167,32 +179,40 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a pocket with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a pocket with the selected sketch</source>
-        <translation>Een uitsparing maken met de geselecteerde schets</translation>
+        <translation type="obsolete">Een uitsparing maken met de geselecteerde schets</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+814"/>
+        <location line="+816"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>PolarPattern</source>
-        <translation>PolarPattern</translation>
+        <translation type="unfinished">PolarPattern</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a polar pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a polar pattern feature</source>
-        <translation>create a polar pattern feature</translation>
+        <translation type="obsolete">create a polar pattern feature</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-746"/>
+        <location line="-748"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -210,7 +230,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+825"/>
+        <location line="+827"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -221,8 +241,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a scaled feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a scaled feature</source>
-        <translation>Een geschaald stuk maken</translation>
+        <translation type="obsolete">Een geschaald stuk maken</translation>
     </message>
 </context>
 <context>
@@ -253,12 +277,12 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Aantal tanden:</translation>
+        <translation>Aantal tanden:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation>Modules:</translation>
     </message>
     <message>
         <location line="+85"/>
@@ -269,13 +293,13 @@
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">True</translation>
+        <translation>Waar</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">False</translation>
+        <translation>Onwaar</translation>
     </message>
     <message>
         <location line="-19"/>
@@ -285,7 +309,7 @@
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Drukhoek:</translation>
+        <translation>Drukhoek:</translation>
     </message>
 </context>
 <context>
@@ -409,7 +433,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Afschuining bewerken</translation>
+        <translation>Afschuining bewerken</translation>
     </message>
 </context>
 <context>
@@ -425,7 +449,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Afronding bewerken</translation>
+        <translation>Afronding bewerken</translation>
     </message>
 </context>
 <context>
@@ -465,7 +489,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Uitsparing bewerken</translation>
+        <translation>Uitsparing bewerken</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -636,7 +660,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+5"/>
         <source>Up to first</source>
-        <translation>Up to first</translation>
+        <translation type="unfinished">Up to first</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -646,7 +670,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
         <source>TaskHoleParameters</source>
-        <translation>TaskHoleParameters</translation>
+        <translation type="unfinished">TaskHoleParameters</translation>
     </message>
 </context>
 <context>
@@ -669,19 +693,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizontale schetsas</translation>
+        <translation>Horizontale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Verticale schetsas</translation>
+        <translation>Verticale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecteer referentie...</translation>
+        <translation>Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -716,7 +740,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">niet gedefinieerd</translation>
+        <translation>niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -751,19 +775,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizontale schetsas</translation>
+        <translation>Horizontale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Verticale schetsas</translation>
+        <translation>Verticale schetsas</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecteer referentie...</translation>
+        <translation>Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -782,12 +806,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Selecteer een vlak</translation>
+        <translation>Selecteer een vlak</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">niet gedefinieerd</translation>
+        <translation>niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -830,12 +854,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+4"/>
         <source>Add linear pattern</source>
-        <translation>Een lineair patroon toevoegen</translation>
+        <translation>Lineair patroon toevoegen</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add polar pattern</source>
-        <translation>Een polair patroon toevoegen</translation>
+        <translation>Polair patroon toevoegen</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1045,7 +1069,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Omgekeerd</translation>
+        <translation>Omgekeerd</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1132,7 +1156,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">As</translation>
+        <translation>As</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1144,7 +1168,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Selecteer referentie...</translation>
+        <translation>Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1235,7 +1259,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">niet gedefinieerd</translation>
+        <translation>niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -1276,19 +1300,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>Transformed feature messages</translation>
+        <translation type="unfinished">Transformed feature messages</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-650"/>
+        <location filename="../../Command.cpp" line="-652"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1307,7 +1331,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">De vorm van het geselecteerde object is geen draad.</translation>
     </message>
     <message>
-        <location line="-661"/>
+        <location line="-663"/>
         <location line="+84"/>
         <location line="+74"/>
         <location line="+84"/>
@@ -1315,94 +1339,143 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Geen geldige schetsen in dit document</translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Maak eerst een schets of 2D-voorwerp</translation>
+        <translation type="obsolete">Maak eerst een schets of 2D-voorwerp</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Maak eerst een schets of 2D-object. Het moet een steunvlak hebben op een voorwerp</translation>
+        <translation type="obsolete">Maak eerst een schets of 2D-object. Het moet een steunvlak hebben op een voorwerp</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+151"/>
+        <location line="+75"/>
+        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>Selecteer een rand, vlak of lichaam. Slechts één lichaam is toegestaan.</translation>
     </message>
     <message>
-        <location line="-146"/>
-        <location line="+151"/>
+        <location line="-147"/>
         <location line="+152"/>
+        <location line="+153"/>
         <source>Wrong object type</source>
         <translation>Verkeerde objecttype</translation>
     </message>
     <message>
-        <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>Afrondingen werken alleen op onderdelen</translation>
+        <translation type="obsolete">Afrondingen werken alleen op onderdelen</translation>
     </message>
     <message>
-        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>Vorm van geselecteerde onderdeel is leeg</translation>
+        <translation type="obsolete">Vorm van geselecteerde Onderdeel is leeg</translation>
     </message>
     <message>
-        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Geen afronding mogelijk op de geselecteerde vlakken/randen</translation>
+        <translation type="obsolete">Geen afronding mogelijk op de geselecteerde vlakken/randen</translation>
     </message>
     <message>
-        <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>Afschuining werkt alleen op delen</translation>
+        <translation type="obsolete">Afschuining werkt alleen op delen</translation>
     </message>
     <message>
-        <location line="-142"/>
-        <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>Vorm van geselecteerde deel is leeg</translation>
+        <translation type="obsolete">Vorm van geselecteerd onderdeel is leeg</translation>
     </message>
     <message>
-        <location line="-481"/>
+        <location line="-626"/>
+        <location line="+158"/>
+        <source>Please create a sketch or 2D object first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-156"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No valid sketches selected</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
+        <location line="+81"/>
         <location line="+158"/>
-        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+393"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>Geen afschuining mogelijk op de geselecteerde vlakken/randen</translation>
+        <location line="-81"/>
+        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+161"/>
+        <source>Fillet works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+153"/>
+        <source>Shape of selected part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-82"/>
+        <source>No fillet possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Chamfer works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>No chamfer possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Draft works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Shape of selected Part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>No draft possible on selected faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
+        <location line="+72"/>
+        <source>Please create a subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No chamfer possible on selected faces/edges</source>
+        <translation type="obsolete">Geen afschuining mogelijk op de geselecteerde vlakken/randen</translation>
+    </message>
+    <message>
+        <location line="-443"/>
         <source>Select one or more faces.</source>
         <translation>Selecteer één of meerdere vlakken.</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Klad werkt alleen op onderdelen</translation>
+        <translation type="obsolete">Klad werkt alleen op onderdelen</translation>
     </message>
     <message>
-        <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Geen klad mogelijk op geselecteerde vlakken</translation>
+        <translation type="obsolete">Geen klad mogelijk op geselecteerde vlakken</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+128"/>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1411,17 +1484,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Geen geldige functies in dit document</translation>
     </message>
     <message>
-        <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
+        <translation type="obsolete">Please create a subtractive or additive feature first</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Maak eerst een Subtractieve of additieve functie </translation>
+        <translation type="obsolete">Maak eerst een Subtractieve of additieve functie </translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1498,7 +1566,7 @@ Creëer de schets op een vlak.</translation>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Missing neutral plane</translation>
+        <translation type="unfinished">Missing neutral plane</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -30,6 +30,7 @@
 #include "ui_Placement.h"
 #include <Gui/DockWindowManager.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
@@ -230,7 +231,7 @@ void Placement::applyPlacement(const QString& data, bool incremental)
                         .arg(data);
                 }
 
-                Application::Instance->runPythonCode((const char*)cmd.toLatin1());
+                Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
             }
         }
 

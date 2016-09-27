@@ -33,16 +33,15 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
-#include "SpreadsheetExpression.h"
 #include "Sheet.h"
 #include "SheetObserver.h"
 #include "Utils.h"
-#include "Range.h"
 #include "SheetPy.h"
 #include <ostream>
 #include <fstream>
@@ -144,7 +143,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
     std::ifstream file;
     int row = 0;
 
-    PropertySheet::Signaller signaller(cells);
+    PropertySheet::AtomicPropertyChange signaller(cells);
 
     clearAll();
 
@@ -874,7 +873,7 @@ short Sheet::mustExecute(void) const
   *
   */
 
-void Sheet::clear(CellAddress address, bool all)
+void Sheet::clear(CellAddress address, bool /*all*/)
 {
     Cell * cell = getCell(address);
     std::string addr = address.toString();
@@ -1123,14 +1122,70 @@ void Sheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
 }
 
 /**
- * @brief Set alias for cell at address \a address to \a alias.
+ * @brief Set alias for cell at address \a address to \a alias. If the alias
+ * is an empty string, the existing alias is removed.
  * @param address Address of cell
  * @param alias New alias.
  */
 
 void Sheet::setAlias(CellAddress address, const std::string &alias)
 {
-    cells.setAlias(address, alias);
+    std::string existingAlias = getAddressFromAlias(alias);
+
+    if (existingAlias.size() > 0) {
+        if (existingAlias == address.toString()) // Same as old?
+            return;
+        else
+            throw Base::Exception("Alias already defined");
+    }
+    else if (alias.size() == 0) // Empty?
+        cells.setAlias(address, "");
+    else if (isValidAlias(alias)) // Valid?
+        cells.setAlias(address, alias);
+    else
+        throw Base::Exception("Invalid alias");
+}
+
+/**
+ * @brief Get cell given an alias string
+ * @param alias Alias for cell
+ *
+ * @returns Name of cell, or empty string if not defined
+ */
+
+std::string Sheet::getAddressFromAlias(const std::string &alias) const
+{
+    const Cell * cell = cells.getValueFromAlias(alias);
+
+    if (cell)
+        return cell->getAddress().toString();
+    else
+        return std::string();
+}
+
+/**
+ * @brief Determine whether a given alias candiate is valid or not.
+ *
+ * A candidate is valid is the string is syntactically correct,
+ * and the alias does not conflict with an existing property.
+ *
+ */
+
+bool Sheet::isValidAlias(const std::string & candidate)
+{
+    // Valid syntactically?
+    if (!cells.isValidAlias(candidate))
+        return false;
+
+    // Existing alias? Then it's ok
+    if (getAddressFromAlias(candidate).size() > 0 )
+        return true;
+
+    // Check to see that is does not crash with any other property in the Sheet object.
+    if (getPropertyByName(candidate.c_str()))
+        return false;
+    else
+        return true;
 }
 
 /**
@@ -1231,7 +1286,7 @@ void Sheet::onRelabledDocument(const Document &document)
  * @param document
  */
 
-void Sheet::onRenamedDocument(const Document &document)
+void Sheet::onRenamedDocument(const Document & /*document*/)
 {
 }
 
@@ -1256,6 +1311,13 @@ void Sheet::observeDocument(Document * document)
     }
 }
 
+void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
+{
+    DocumentObject::renameObjectIdentifiers(paths);
+
+    cells.renameObjectIdentifiers(paths);
+}
+
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity);
 
 Property *PropertySpreadsheetQuantity::Copy() const
@@ -1274,4 +1336,25 @@ void PropertySpreadsheetQuantity::Paste(const Property &from)
     _dValue = static_cast<const PropertySpreadsheetQuantity*>(&from)->_dValue;
     _Unit = static_cast<const PropertySpreadsheetQuantity*>(&from)->_Unit;
     hasSetValue();
+}
+
+// Python sheet feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
+template<> const char* Spreadsheet::SheetPython::getViewProviderName(void) const {
+    return "SpreadsheetGui::ViewProviderSheet";
+}
+template<> PyObject* Spreadsheet::SheetPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<Spreadsheet::SheetPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+/// @endcond
+
+// explicit template instantiation
+template class SpreadsheetExport FeaturePythonT<Spreadsheet::Sheet>;
 }

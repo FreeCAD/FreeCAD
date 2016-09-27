@@ -151,7 +151,7 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
     for ( std::vector<unsigned long>::iterator it = faces.begin(); it != faces.end(); ++it )
         aFaces.push_back( rMeshKernel.GetFacet(*it) );
 
-    std::auto_ptr<MeshObject> pcKernel(new MeshObject);
+    std::unique_ptr<MeshObject> pcKernel(new MeshObject);
     pcKernel->addFacets(aFaces);
     Mesh.setValuePtr(pcKernel.release());
 

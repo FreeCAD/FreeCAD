@@ -61,7 +61,6 @@
 #include <Gui/View3DInventorViewer.h>
 
 using namespace MeshGui;
-using namespace Quarter;
 
 PROPERTY_SOURCE(MeshGui::ViewProviderFace, Gui::ViewProviderDocumentObject)
 
@@ -410,7 +409,12 @@ namespace MeshGui {
 /* TRANSLATOR MeshGui::MeshFillHole */
 
 MeshFillHole::MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent)
-  : QObject(parent), myMesh(0), myNumPoints(0), myHoleFiller(hf)
+  : QObject(parent)
+  , myMesh(0)
+  , myNumPoints(0)
+  , myVertex1(0)
+  , myVertex2(0)
+  , myHoleFiller(hf)
 {
     myBoundariesRoot = new SoSeparator;
     myBoundariesRoot->ref();

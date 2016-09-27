@@ -64,6 +64,7 @@ CmdPartSimpleCylinder::CmdPartSimpleCylinder()
 
 void CmdPartSimpleCylinder::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartGui::DlgPartCylinderImp dlg(Gui::getMainWindow());
     if (dlg.exec()== QDialog::Accepted) {
         Base::Vector3d dir = dlg.getDirection();
@@ -74,11 +75,11 @@ void CmdPartSimpleCylinder::activated(int iMsg)
                       ".Shape=Part.makeCylinder(%f,%f,"
                       "Base.Vector(%f,%f,%f),"
                       "Base.Vector(%f,%f,%f))"
-                     ,dlg.radius->value()
-                     ,dlg.length->value()
-                     ,dlg.xPos->value()
-                     ,dlg.yPos->value()
-                     ,dlg.zPos->value()
+                     ,dlg.radius->value().getValue()
+                     ,dlg.length->value().getValue()
+                     ,dlg.xPos->value().getValue()
+                     ,dlg.yPos->value().getValue()
+                     ,dlg.zPos->value().getValue()
                      ,dir.x,dir.y,dir.z);
         commitCommand();
         updateActive();
@@ -114,6 +115,7 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
 
 void CmdPartShapeFromMesh::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
         QObject::tr("Enter tolerance for sewing shape:"), 0.1, 0.01,10.0,2,&ok);
@@ -176,6 +178,7 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
 
 void CmdPartSimpleCopy::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
     openCommand("Create Copy");
@@ -221,6 +224,7 @@ CmdPartRefineShape::CmdPartRefineShape()
 
 void CmdPartRefineShape::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);

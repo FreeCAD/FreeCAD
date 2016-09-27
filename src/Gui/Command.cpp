@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QApplication>
+# include <QByteArray>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
@@ -242,6 +243,15 @@ void Command::addTo(QWidget *pcWidget)
     _pcAction->addTo(pcWidget);
 }
 
+void Command::addToGroup(ActionGroup* group, bool checkable)
+{
+    if (!_pcAction)
+        _pcAction = createAction();
+
+    _pcAction->setCheckable(checkable);
+    group->addAction(_pcAction->findChild<QAction*>());
+}
+
 Application *Command::getGuiApplication(void)
 {
     return Application::Instance;
@@ -431,44 +441,47 @@ void Command::blockCommand(bool block)
 }
 
 /// Run a App level Action
-void Command::doCommand(DoCmd_Type eType,const char* sCmd,...)
+void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
 {
-    // temp buffer
-    size_t format_len = std::strlen(sCmd)+4024;
-    char* format = (char*) malloc(format_len);
-    va_list namelessVars;
-    va_start(namelessVars, sCmd);  // Get the "..." vars
-    vsnprintf(format, format_len, sCmd, namelessVars);
-    va_end(namelessVars);
+    va_list ap;
+    va_start(ap, sCmd);
+    QString s;
+    const QString cmd = s.vsprintf(sCmd, ap);
+    va_end(ap);
 
-    if (eType == Gui)
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,format);
-    else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,format);
-
-    try {
-        Base::Interpreter().runString(format);
-    }
-    catch (...) {
-        // free memory to avoid a leak if an exception occurred
-        free (format);
-        throw;
-    }
+    // 'vsprintf' expects a utf-8 string for '%s'
+    QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n",format);
+    Base::Console().Log("CmdC: %s\n", format.constData());
 #endif
-    free (format);
+
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, format.constData());
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, format.constData());
+
+    Base::Interpreter().runString(format.constData());
 }
 
 /// Run a App level Action
-void Command::runCommand(DoCmd_Type eType,const char* sCmd)
+void Command::runCommand(DoCmd_Type eType, const char* sCmd)
 {
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
     else
         Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
     Base::Interpreter().runString(sCmd);
+}
+
+/// Run a App level Action
+void Command::runCommand(DoCmd_Type eType, const QByteArray& sCmd)
+{
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.constData());
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd.constData());
+    Base::Interpreter().runString(sCmd.constData());
 }
 
 void Command::addModule(DoCmd_Type eType,const char* sModuleName)
@@ -620,15 +633,20 @@ void Command::applyCommandData(const char* context, Action* action)
 
 const char* Command::keySequenceToAccel(int sk) const
 {
+    /* Local class to ensure free()'ing the strings allocated below */
+    typedef std::map<int, std::string> StringMap;
+    static StringMap strings;
+    StringMap::iterator i = strings.find(sk);
+
+    if (i != strings.end())
+        return i->second.c_str();
+
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
     QByteArray data = qs.toLatin1();
-#if defined (_MSC_VER)
-    return _strdup((const char*)data);
-#else
-    return strdup((const char*)data);
-#endif
+
+    return (strings[sk] = static_cast<const char*>(data)).c_str();
 }
 
 void Command::adjustCameraPosition()
@@ -710,6 +728,7 @@ MacroCommand::MacroCommand(const char* name, bool system)
 {
     sGroup = QT_TR_NOOP("Macros");
     eType  = 0;
+    sScriptName = 0;
 }
 
 MacroCommand::~MacroCommand()
@@ -720,8 +739,9 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+
     QDir d;
-    
     if(!systemMacro) {
 	std::string cMacroPath;
 	
@@ -923,7 +943,7 @@ void PythonCommand::activated(int iMsg)
         }
     }
     else {
-        doCommand(Doc,Activation.c_str());
+        runCommand(Doc,Activation.c_str());
     }
 }
 

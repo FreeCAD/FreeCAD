@@ -205,11 +205,14 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args,PyObject
 {
     char *docName = 0;
     char *usrName = 0;
-    if (!PyArg_ParseTuple(args, "|ss", &docName, &usrName))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "|etet", "utf-8", &docName, "utf-8", &usrName))
+        return NULL;
 
     PY_TRY {
-        return GetApplication().newDocument(docName, usrName)->getPyObject();
+        App::Document* doc = GetApplication().newDocument(docName, usrName);
+        PyMem_Free(docName);
+        PyMem_Free(usrName);
+        return doc->getPyObject();
     }PY_CATCH;
 }
 

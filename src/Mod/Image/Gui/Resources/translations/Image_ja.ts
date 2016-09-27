@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+325"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>表示中の画像の色空間は未定義です</translation>
     </message>
@@ -59,37 +59,37 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">方向を選択</translation>
+        <translation>方向を選択</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">イメージプレーン</translation>
+        <translation>イメージプレーン</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">xy平面</translation>
+        <translation>xy平面</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ 平面</translation>
+        <translation>XZ 平面</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ 平面</translation>
+        <translation>YZ 平面</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">逆方向</translation>
+        <translation>逆方向</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">オフセット：</translation>
+        <translation>オフセット：</translation>
     </message>
 </context>
 <context>

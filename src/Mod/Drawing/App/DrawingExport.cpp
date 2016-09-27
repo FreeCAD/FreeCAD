@@ -64,12 +64,11 @@
 #include <BRep_Tool.hxx>
 
 #include <BRepAdaptor_CompCurve.hxx>
-#include <Handle_BRepAdaptor_HCompCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_HCurve.hxx>
-#include <Handle_BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_HCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
-#include <Handle_Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
@@ -570,7 +569,7 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     }
 }
 
-void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostream& out)
 {
     gp_Elips ellp = c.Ellipse();
     const gp_Pnt& p= ellp.Location();
@@ -714,7 +713,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
 }
 
-void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int /*id*/, std::ostream& out)
 {
     double uStart = c.FirstParameter();
     gp_Pnt PS;

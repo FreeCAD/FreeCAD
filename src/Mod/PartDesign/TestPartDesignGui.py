@@ -1,4 +1,4 @@
-#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
+﻿#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
@@ -19,25 +19,183 @@
 #   USA                                                                   *
 #**************************************************************************
 
-import FreeCAD, FreeCADGui, os, sys, unittest, PartDesign, PartDesignGui
+import FreeCAD
+import FreeCADGui
+import os
+import sys
+import unittest
+import Sketcher
+import Part
+import PartDesign
+import PartDesignGui
 
+from PySide import QtGui, QtCore
+from PySide.QtGui import QApplication
 
+#timer runs this class in order to access modal dialog
+class CallableCheckWarning:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        diag = QApplication.activeModalWidget()
+        self.test.assertIsNotNone(diag, "Input dialog box could not be found")
+        if (diag != None):
+            QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
+
+class CallableComboBox:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        diag = QApplication.activeModalWidget()
+        self.test.assertIsNotNone(diag, "Warning dialog box could not be found")
+        if (diag != None):
+            cbox = diag.findChild(QtGui.QComboBox)
+            self.test.assertIsNotNone(cbox, "ComboBox widget could not be found")
+            if (cbox != None):
+                cbox.setCurrentIndex(1)
+                QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
+
+App = FreeCAD
+Gui = FreeCADGui
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD PartDesign module
 #---------------------------------------------------------------------------
+class PartDesignGuiTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("SketchGuiTest")
 
+    def testRefuseToMoveSingleFeature(self):
+        FreeCAD.Console.PrintMessage('Testing moving one feature from one body to another\n')
+        self.BodySource = self.Doc.addObject('PartDesign::Body','Body')
+        Gui.activeView().setActiveObject('pdbody', self.BodySource)
+
+        self.BoxObj = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.BoxObj.Length=10.0
+        self.BoxObj.Width=10.0
+        self.BoxObj.Height=10.0
+        self.BodySource.addFeature(self.BoxObj)
+
+        self.BoxCoords = self.Doc.addObject('PartDesign::CoordinateSystem','CoordinateSystem')
+        self.BodySource.addFeature(self.BoxCoords)
+        self.BoxObj.CoordinateSystem=(self.BoxCoords)
+        App.ActiveDocument.recompute()
+        Gui.activeDocument().hide('CoordinateSystem')
+
+        self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
+        self.Sketch.Support = (self.BoxObj, ('Face3',))
+        self.Sketch.MapMode = 'FlatFace'
+        self.BodySource.addFeature(self.Sketch)
+
+        geoList = []
+        geoList.append(Part.Line(App.Vector(2.0,8.0,0),App.Vector(8.0,8.0,0)))
+        geoList.append(Part.Line(App.Vector(8.0,8.0,0),App.Vector(8.0,2.0,0)))
+        geoList.append(Part.Line(App.Vector(8.0,2.0,0),App.Vector(2.0,2.0,0)))
+        geoList.append(Part.Line(App.Vector(2.0,2.0,0),App.Vector(2.0,8.0,0)))
+        self.Sketch.addGeometry(geoList,False)
+        conList = []
+        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
+        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
+        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
+        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
+        conList.append(Sketcher.Constraint('Horizontal',0))
+        conList.append(Sketcher.Constraint('Horizontal',2))
+        conList.append(Sketcher.Constraint('Vertical',1))
+        conList.append(Sketcher.Constraint('Vertical',3))
+        self.Sketch.addConstraint(conList)
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
+        self.Pad.Profile = self.Sketch
+        self.Pad.Length = 10.000000
+        self.Pad.Length2 = 100.000000
+        self.Pad.Type = 0
+        self.Pad.UpToFace = None
+        self.Pad.Reversed = 0
+        self.Pad.Midplane = 0
+        self.Pad.Offset = 0.000000
+
+        self.BodySource.addFeature(self.Pad)
+
+        self.Doc.recompute()
+        Gui.SendMsgToActiveView("ViewFit")
+
+        self.BodyTarget = self.Doc.addObject('PartDesign::Body','Body')
+
+        Gui.Selection.addSelection(App.ActiveDocument.Pad)
+        cobj = CallableCheckWarning(self)
+        QtCore.QTimer.singleShot(500, cobj)
+        Gui.runCommand('PartDesign_MoveFeature')
+        #assert depenedencies of the Sketch
+        self.assertEqual(len(self.BodySource.Model), 4, "Source body feature count is wrong")
+        self.assertEqual(len(self.BodyTarget.Model), 0, "Target body feature count is wrong")
+
+    def testMoveSingleFeature(self):
+        FreeCAD.Console.PrintMessage('Testing moving one feature from one body to another\n')
+        self.BodySource = self.Doc.addObject('PartDesign::Body','Body')
+        Gui.activeView().setActiveObject('pdbody', self.BodySource)
+
+        self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
+        self.Sketch.Support = (self.Doc.XY_Plane, [''])
+        self.Sketch.MapMode = 'FlatFace'
+        self.BodySource.addFeature(self.Sketch)
+
+        geoList = []
+        geoList.append(Part.Line(App.Vector(-10.000000,10.000000,0),App.Vector(10.000000,10.000000,0)))
+        geoList.append(Part.Line(App.Vector(10.000000,10.000000,0),App.Vector(10.000000,-10.000000,0)))
+        geoList.append(Part.Line(App.Vector(10.000000,-10.000000,0),App.Vector(-10.000000,-10.000000,0)))
+        geoList.append(Part.Line(App.Vector(-10.000000,-10.000000,0),App.Vector(-10.000000,10.000000,0)))
+        self.Sketch.addGeometry(geoList,False)
+        conList = []
+        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
+        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
+        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
+        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
+        conList.append(Sketcher.Constraint('Horizontal',0))
+        conList.append(Sketcher.Constraint('Horizontal',2))
+        conList.append(Sketcher.Constraint('Vertical',1))
+        conList.append(Sketcher.Constraint('Vertical',3))
+        self.Sketch.addConstraint(conList)
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
+        self.Pad.Profile = self.Sketch
+        self.Pad.Length = 10.000000
+        self.Pad.Length2 = 100.000000
+        self.Pad.Type = 0
+        self.Pad.UpToFace = None
+        self.Pad.Reversed = 0
+        self.Pad.Midplane = 0
+        self.Pad.Offset = 0.000000
+
+        self.BodySource.addFeature(self.Pad)
+
+        self.Doc.recompute()
+        Gui.SendMsgToActiveView("ViewFit")
+
+        self.BodyTarget = self.Doc.addObject('PartDesign::Body','Body')
+
+        Gui.Selection.addSelection(App.ActiveDocument.Pad)
+        cobj = CallableComboBox(self)
+        QtCore.QTimer.singleShot(500, cobj)
+        Gui.runCommand('PartDesign_MoveFeature')
+        #assert depenedencies of the Sketch
+        self.assertFalse(self.Sketch.Support[0][0] in self.BodySource.Origin.OriginFeatures)
+        self.assertTrue(self.Sketch.Support[0][0] in self.BodyTarget.Origin.OriginFeatures)
+        self.assertEqual(len(self.BodySource.Model), 0, "Source body feature count is wrong")
+        self.assertEqual(len(self.BodyTarget.Model), 2, "Target body feature count is wrong")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("SketchGuiTest")
 
 #class PartDesignGuiTestCases(unittest.TestCase):
-#	def setUp(self):
-#		self.Doc = FreeCAD.newDocument("SketchGuiTest")
+#   def setUp(self):
+#       self.Doc = FreeCAD.newDocument("SketchGuiTest")
 #
-#	def testBoxCase(self):
-#		self.Box = self.Doc.addObject('PartDesign::SketchObject','SketchBox')
-#		self.Box.addGeometry(Part.Line(App.Vector(-99.230339,36.960674,0),App.Vector(69.432587,36.960674,0)))
-#		self.Box.addGeometry(Part.Line(App.Vector(69.432587,36.960674,0),App.Vector(69.432587,-53.196629,0)))
-#		self.Box.addGeometry(Part.Line(App.Vector(69.432587,-53.196629,0),App.Vector(-99.230339,-53.196629,0)))
-#		self.Box.addGeometry(Part.Line(App.Vector(-99.230339,-53.196629,0),App.Vector(-99.230339,36.960674,0)))
-#		
-#	def tearDown(self):
-#		#closing doc
-#		FreeCAD.closeDocument("SketchGuiTest")
+#   def testBoxCase(self):
+#       self.Box = self.Doc.addObject('PartDesign::SketchObject','SketchBox')
+#       self.Box.addGeometry(Part.Line(App.Vector(-99.230339,36.960674,0),App.Vector(69.432587,36.960674,0)))
+#       self.Box.addGeometry(Part.Line(App.Vector(69.432587,36.960674,0),App.Vector(69.432587,-53.196629,0)))
+#       self.Box.addGeometry(Part.Line(App.Vector(69.432587,-53.196629,0),App.Vector(-99.230339,-53.196629,0)))
+#       self.Box.addGeometry(Part.Line(App.Vector(-99.230339,-53.196629,0),App.Vector(-99.230339,36.960674,0)))
+#       
+#   def tearDown(self):
+#       #closing doc
+#       FreeCAD.closeDocument("SketchGuiTest")

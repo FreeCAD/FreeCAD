@@ -38,9 +38,9 @@ except AttributeError:
 
 class Plane:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyEnumeration", "SelectionPlane","Plane", translate( "Selection Plane",  "Orientation plane of CNC path"))
+        obj.addProperty("App::PropertyEnumeration", "SelectionPlane","Plane","Orientation plane of CNC path")
         obj.SelectionPlane=['XY', 'XZ', 'YZ']
-        obj.addProperty("App::PropertyBool","Active","Sequence Parameters",translate("Active","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyBool","Active","Sequence Parameters","Make False, to prevent operation from generating code")
         obj.Proxy = self
 
     def execute(self,obj):
@@ -111,15 +111,15 @@ class _ViewProviderPlane:
 class CommandPathPlane:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Plane',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPlane","Selection Plane"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Plane","Selection Plane"),
                 'Accel': "P, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPlane","Create a Selection Plane object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Plane","Create a Selection Plane object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathPlane","Create a Selection Plane object"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Plane","Create a Selection Plane object"))
         FreeCADGui.addModule("PathScripts.PathPlane")
         snippet = '''
 import Path

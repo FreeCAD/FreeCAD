@@ -70,6 +70,7 @@ SET(Raytracing_Templates
     Templates/LuxOutdoor.lxs
     Templates/ProjectStd.pov
     Templates/RadiosityNormal.pov
+    Templates/RadiosityOutdoorHQ.pov
 )
 
 add_library(Raytracing SHARED ${Raytracing_SRCS})

@@ -30,6 +30,7 @@
 # include <iostream>
 # include <sstream>
 # include <exception>
+# include <ios>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <unistd.h>
 # include <pwd.h>
@@ -47,7 +48,10 @@
 # include <Shlobj.h>
 #endif
 
-
+#if defined(FC_OS_BSD)
+#include <sys/param.h>
+#include <sys/sysctl.h>
+#endif
 
 #include "Application.h"
 #include "Document.h"
@@ -94,9 +98,15 @@
 #include "Annotation.h"
 #include "MeasureDistance.h"
 #include "Placement.h"
-#include "Plane.h"
+#include "GeoFeatureGroup.h"
+#include "OriginGroup.h"
+#include "Part.h"
+#include "OriginFeature.h"
+#include "Origin.h"
 #include "MaterialObject.h"
 #include "Expression.h"
+#include "Transactions.h"
+#include <App/MaterialPy.h>
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -119,8 +129,9 @@ using namespace boost::program_options;
 
 
 // scriptings (scripts are build in but can be overridden by command line option)
-#include "InitScript.h"
-#include "TestScript.h"
+#include <App/InitScript.h>
+#include <App/TestScript.h>
+#include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
@@ -165,13 +176,8 @@ PyDoc_STRVAR(Console_doc,
      "FreeCAD Console\n"
     );
 
-Application::Application(ParameterManager * /*pcSysParamMngr*/,
-                         ParameterManager * /*pcUserParamMngr*/,
-                         std::map<std::string,std::string> &mConfig)
-    ://_pcSysParamMngr(pcSysParamMngr),
-    //_pcUserParamMngr(pcUserParamMngr),
-    _mConfig(mConfig),
-    _pActiveDoc(0)
+Application::Application(std::map<std::string,std::string> &mConfig)
+  : _mConfig(mConfig), _pActiveDoc(0)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -190,29 +196,12 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
-    if (PyType_Ready(&Base::VectorPy::Type) < 0) return;
-    union PyType_Object pyVecType = {&Base::VectorPy::Type};
-    PyModule_AddObject(pAppModule, "Vector", pyVecType.o);
-
-    if (PyType_Ready(&Base::MatrixPy::Type) < 0) return;
-    union PyType_Object pyMtxType = {&Base::MatrixPy::Type};
-    PyModule_AddObject(pAppModule, "Matrix", pyMtxType.o);
-
-    if (PyType_Ready(&Base::BoundBoxPy::Type) < 0) return;
-    union PyType_Object pyBoundBoxType = {&Base::BoundBoxPy::Type};
-    PyModule_AddObject(pAppModule, "BoundBox", pyBoundBoxType.o);
-
-    if (PyType_Ready(&Base::PlacementPy::Type) < 0) return;
-    union PyType_Object pyPlacementPyType = {&Base::PlacementPy::Type};
-    PyModule_AddObject(pAppModule, "Placement", pyPlacementPyType.o);
-
-    if (PyType_Ready(&Base::RotationPy::Type) < 0) return;
-    union PyType_Object pyRotationPyType = {&Base::RotationPy::Type};
-    PyModule_AddObject(pAppModule, "Rotation", pyRotationPyType.o);
-
-    if (PyType_Ready(&Base::AxisPy::Type) < 0) return;
-    union PyType_Object pyAxisPyType = {&Base::AxisPy::Type};
-    PyModule_AddObject(pAppModule, "Axis", pyAxisPyType.o);
+    Base::Interpreter().addType(&Base::VectorPy::Type, pAppModule, "Vector");
+    Base::Interpreter().addType(&Base::MatrixPy::Type, pAppModule, "Matrix");
+    Base::Interpreter().addType(&Base::BoundBoxPy::Type, pAppModule, "BoundBox");
+    Base::Interpreter().addType(&Base::PlacementPy::Type, pAppModule, "Placement");
+    Base::Interpreter().addType(&Base::RotationPy::Type, pAppModule, "Rotation");
+    Base::Interpreter().addType(&Base::AxisPy::Type, pAppModule, "Axis");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -220,17 +209,21 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL,
         "The Base module contains the classes for the geometric basics\n"
         "like vector, matrix, bounding box, placement, rotation, axis, ...");
-    Base::BaseExceptionFreeCADError = PyErr_NewException(
-            "Base.FreeCADError", PyExc_RuntimeError, NULL);
+
+    // Python exceptions
+    Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, NULL);
     Py_INCREF(Base::BaseExceptionFreeCADError);
-    PyModule_AddObject(pBaseModule, "FreeCADError",
-            Base::BaseExceptionFreeCADError);
+    PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
+
+    // Python types
     Base::Interpreter().addType(&Base::VectorPy     ::Type,pBaseModule,"Vector");
     Base::Interpreter().addType(&Base::MatrixPy     ::Type,pBaseModule,"Matrix");
     Base::Interpreter().addType(&Base::BoundBoxPy   ::Type,pBaseModule,"BoundBox");
     Base::Interpreter().addType(&Base::PlacementPy  ::Type,pBaseModule,"Placement");
     Base::Interpreter().addType(&Base::RotationPy   ::Type,pBaseModule,"Rotation");
     Base::Interpreter().addType(&Base::AxisPy       ::Type,pBaseModule,"Axis");
+
+    Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
@@ -304,7 +297,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     }
 
     // create the FreeCAD document
-    auto_ptr<Document> newDoc(new Document() );
+    std::unique_ptr<Document> newDoc(new Document() );
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
@@ -348,7 +341,7 @@ bool Application::closeDocument(const char* name)
     // For exception-safety use a smart pointer
     if (_pActiveDoc == pos->second)
         setActiveDocument((Document*)0);
-    auto_ptr<Document> delDoc (pos->second);
+    std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
 
     // Trigger observers after removing the document from the internal map.
@@ -446,10 +439,26 @@ Document* Application::openDocument(const char * FileName)
 
     newDoc->FileName.setValue(File.filePath());
 
-    // read the document
-    newDoc->restore();
-
-    return newDoc;
+    try {
+        // read the document
+        newDoc->restore();
+        return newDoc;
+    }
+    // if the project file itself is corrupt then
+    // close the document
+    catch (const Base::FileException&) {
+        closeDocument(newDoc->getName());
+        throw;
+    }
+    catch (const std::ios_base::failure&) {
+        closeDocument(newDoc->getName());
+        throw;
+    }
+    // but for any other exceptions leave it open to give the
+    // user a chance to fix it
+    catch (...) {
+        throw;
+    }
 }
 
 Document* Application::getActiveDocument(void) const
@@ -898,15 +907,31 @@ void Application::destruct(void)
 {
     // saving system parameter
     Console().Log("Saving system parameter...\n");
-    _pcSysParamMngr->SaveDocument(mConfig["SystemParameter"].c_str());
+    _pcSysParamMngr->SaveDocument();
     // saving the User parameter
     Console().Log("Saving system parameter...done\n");
     Console().Log("Saving user parameter...\n");
-    _pcUserParamMngr->SaveDocument(mConfig["UserParameter"].c_str());
+    _pcUserParamMngr->SaveDocument();
     Console().Log("Saving user parameter...done\n");
-    // clean up
-    delete _pcSysParamMngr;
-    delete _pcUserParamMngr;
+
+    // now save all other parameter files
+    std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
+    for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
+        if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
+            if (it->second->HasSerializer()) {
+                Console().Log("Saving %s...\n", it->first.c_str());
+                it->second->SaveDocument();
+                Console().Log("Saving %s...done\n", it->first.c_str());
+            }
+        }
+
+        // clean up
+        delete it->second;
+    }
+
+    paramMgr.clear();
+    _pcSysParamMngr = 0;
+    _pcUserParamMngr = 0;
 
     // not initialized or doubel destruct!
     assert(_pcSingleton);
@@ -920,6 +945,7 @@ void Application::destruct(void)
     ScriptFactorySingleton::Destruct();
     InterpreterSingleton::Destruct();
     Base::Type::destruct();
+    ParameterManager::Terminate();
 }
 
 void Application::destructObserver(void)
@@ -986,9 +1012,9 @@ void unexpection_error_handler()
     // try to throw an exception and give the user chance to save their work
 #if !defined(_DEBUG)
     throw Base::Exception("Unexpected error occurred! Please save your work under a new file name and restart the application!");
-#endif
-
+#else
     terminate();
+#endif
 }
 
 #ifdef _MSC_VER // Microsoft compiler
@@ -1070,6 +1096,7 @@ void Application::initTypes(void)
     App ::PropertyAngle             ::init();
     App ::PropertyDistance          ::init();
     App ::PropertyLength            ::init();
+    App ::PropertyArea              ::init();
     App ::PropertySpeed             ::init();
     App ::PropertyAcceleration      ::init();
     App ::PropertyForce             ::init();
@@ -1100,6 +1127,7 @@ void Application::initTypes(void)
     App ::PropertyColor             ::init();
     App ::PropertyColorList         ::init();
     App ::PropertyMaterial          ::init();
+    App ::PropertyMaterialList      ::init();
     App ::PropertyPath              ::init();
     App ::PropertyFile              ::init();
     App ::PropertyFileIncluded      ::init();
@@ -1107,6 +1135,7 @@ void Application::initTypes(void)
     App ::PropertyExpressionEngine  ::init();
 
     // Document classes
+    App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
     App ::GeoFeature                ::init();
     App ::FeatureTest               ::init();
@@ -1125,7 +1154,14 @@ void Application::initTypes(void)
     App ::MaterialObject            ::init();
     App ::MaterialObjectPython      ::init();
     App ::Placement                 ::init();
+    App ::OriginFeature             ::init();
     App ::Plane                     ::init();
+    App ::Line                      ::init();
+    App ::GeoFeatureGroup           ::init();
+    App ::GeoFeatureGroupPython     ::init();
+    App ::OriginGroup               ::init();
+    App ::Part                      ::init();
+    App ::Origin                    ::init();
 
     // Expression classes
     App ::Expression                ::init();
@@ -1137,7 +1173,12 @@ void Application::initTypes(void)
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
+    App ::BooleanExpression         ::init();
+    App ::RangeExpression           ::init();
 
+    // register transaction type
+    new App::TransactionProducer<TransactionDocumentObject>
+            (DocumentObject::getClassTypeId());
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1270,12 +1311,13 @@ void Application::initApplication(void)
 {
     // interpreter and Init script ==========================================================
     // register scripts
+    new ScriptProducer( "CMakeVariables", CMakeVariables );
     new ScriptProducer( "FreeCADInit",    FreeCADInit    );
     new ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
     // creating the application
     if (!(mConfig["Verbose"] == "Strict")) Console().Log("Create Application\n");
-    Application::_pcSingleton = new Application(0,0,mConfig);
+    Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
@@ -1288,6 +1330,7 @@ void Application::initApplication(void)
 
     // starting the init script
     Console().Log("Run App init script\n");
+    Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
 }
 
@@ -1329,7 +1372,7 @@ void Application::processFiles(const std::list<std::string>& files)
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
             }
             else if (file.hasExtension("py")) {
-                try {
+                try{
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
                 }
                 catch(const PyException&) {
@@ -1439,10 +1482,6 @@ void Application::logStatus()
 
 void Application::LoadParameters(void)
 {
-    // create standard parameter sets
-    _pcSysParamMngr = new ParameterManager();
-    _pcUserParamMngr = new ParameterManager();
-
     // Init parameter sets ===========================================================
     //
     if (mConfig.find("UserParameter") == mConfig.end())
@@ -1450,9 +1489,15 @@ void Application::LoadParameters(void)
     if (mConfig.find("SystemParameter") == mConfig.end())
         mConfig["SystemParameter"] = mConfig["UserAppData"] + "system.cfg";
 
+    // create standard parameter sets
+    _pcSysParamMngr = new ParameterManager();
+    _pcSysParamMngr->SetSerializer(new ParameterSerializer(mConfig["SystemParameter"]));
+
+    _pcUserParamMngr = new ParameterManager();
+    _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
-        if (_pcSysParamMngr->LoadOrCreateDocument(mConfig["SystemParameter"].c_str()) && !(mConfig["Verbose"] == "Strict")) {
+        if (_pcSysParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Console().Warning("   Parameter does not exist, writing initial one\n");
@@ -1471,7 +1516,7 @@ void Application::LoadParameters(void)
     }
 
     try {
-        if (_pcUserParamMngr->LoadOrCreateDocument(mConfig["UserParameter"].c_str()) && !(mConfig["Verbose"] == "Strict")) {
+        if (_pcUserParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
             std::map<std::string, std::string>::iterator it = mConfig.find("UserParameterTemplate");
@@ -1870,7 +1915,17 @@ void Application::ExtractUserPath()
     if (pwd == NULL)
         throw Base::Exception("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
-    std::string appData = pwd->pw_dir;
+
+    char *path = pwd->pw_dir;
+    char *fc_user_data;
+    if ((fc_user_data = getenv("FREECAD_USER_DATA"))) {
+        QString env = QString::fromUtf8(fc_user_data);
+        QDir dir(env);
+        if (!env.isEmpty() && dir.exists())
+            path = fc_user_data;
+    }
+
+    std::string appData(path);
     Base::FileInfo fi(appData.c_str());
     if (!fi.exists()) {
         // This should never ever happen
@@ -2035,6 +2090,19 @@ void Application::ExtractUserPath()
         // the application due to branding reasons.
         appData += PATHSEP;
         mConfig["UserAppData"] = appData;
+
+        // Create the default macro directory
+        fi.setFile(getUserMacroDir());
+        if (!fi.exists() && !Py_IsInitialized()) {
+            if (!fi.createDirectory()) {
+                // If the creation fails only write an error but do not raise an
+                // exception because it doesn't prevent FreeCAD from working
+                std::string error = "Cannot create directory ";
+                error += fi.fileName();
+                // Want more details on console
+                std::cerr << error << std::endl;
+            }
+        }
     }
 #else
 # error "Implement ExtractUserPath() for your platform."
@@ -2070,7 +2138,18 @@ std::string Application::FindHomePath(const char* sCall)
         // path. In the worst case we simply get q wrong path and FreeCAD is not
         // able to load its modules.
         char resolved[PATH_MAX];
+#if defined(FC_OS_BSD) 
+        int mib[4];
+        mib[0] = CTL_KERN;
+        mib[1] = KERN_PROC;
+        mib[2] = KERN_PROC_PATHNAME;
+        mib[3] = -1;
+        size_t cb = sizeof(resolved);
+        sysctl(mib, 4, resolved, &cb, NULL, 0);
+        int nchars = strlen(resolved);
+#else
         int nchars = readlink("/proc/self/exe", resolved, PATH_MAX);
+#endif
         if (nchars < 0 || nchars >= PATH_MAX)
             throw Base::Exception("Cannot determine the absolute path of the executable");
         resolved[nchars] = '\0'; // enfore null termination

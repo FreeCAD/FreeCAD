@@ -6,17 +6,17 @@
     <message>
         <location filename="../../Command.cpp" line="75"/>
         <source>Web</source>
-        <translation type="unfinished">Webb</translation>
+        <translation>Webb</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="76"/>
         <source>Previous page</source>
-        <translation type="unfinished">Föregående sida</translation>
+        <translation>Föregående sida</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="77"/>
         <source>Go back to the previous page</source>
-        <translation type="unfinished">Go back to the previous page</translation>
+        <translation>Gå tillbaka till föregående sida</translation>
     </message>
 </context>
 <context>
@@ -24,17 +24,17 @@
     <message>
         <location filename="../../Command.cpp" line="103"/>
         <source>Web</source>
-        <translation type="unfinished">Webb</translation>
+        <translation>Webb</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="104"/>
         <source>Next page</source>
-        <translation type="unfinished">Nästa sida</translation>
+        <translation>Nästa sida</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="105"/>
         <source>Go to the next page</source>
-        <translation type="unfinished">Gå till nästa sida</translation>
+        <translation>Gå till nästa sida</translation>
     </message>
 </context>
 <context>
@@ -42,13 +42,13 @@
     <message>
         <location filename="../../Command.cpp" line="131"/>
         <source>Web</source>
-        <translation type="unfinished">Webb</translation>
+        <translation>Webb</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="132"/>
         <location filename="../../Command.cpp" line="133"/>
         <source>Refresh web page</source>
-        <translation type="unfinished">Uppdatera websidan</translation>
+        <translation>Uppdatera websida</translation>
     </message>
 </context>
 <context>
@@ -56,17 +56,17 @@
     <message>
         <location filename="../../Command.cpp" line="158"/>
         <source>Web</source>
-        <translation type="unfinished">Webb</translation>
+        <translation>Webb</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="159"/>
         <source>Stop loading</source>
-        <translation type="unfinished">Stop loading</translation>
+        <translation>Avbryt hämtning</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="160"/>
         <source>Stop the current loading</source>
-        <translation type="unfinished">Stop the current loading</translation>
+        <translation>Avbryt pågående hämtning</translation>
     </message>
 </context>
 <context>
@@ -74,17 +74,17 @@
     <message>
         <location filename="../../Command.cpp" line="187"/>
         <source>Web</source>
-        <translation type="unfinished">Webb</translation>
+        <translation>Webb</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="188"/>
         <source>Zoom in</source>
-        <translation type="unfinished">Zooma in</translation>
+        <translation>Zooma in</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="189"/>
         <source>Zoom into the page</source>
-        <translation type="unfinished">Zoom into the page</translation>
+        <translation>Zooma in sidan</translation>
     </message>
 </context>
 <context>
@@ -92,17 +92,17 @@
     <message>
         <location filename="../../Command.cpp" line="215"/>
         <source>Web</source>
-        <translation type="unfinished">Webb</translation>
+        <translation>Webb</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="216"/>
         <source>Zoom out</source>
-        <translation type="unfinished">Zooma ut</translation>
+        <translation>Zooma ut</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="217"/>
         <source>Zoom out of the page</source>
-        <translation type="unfinished">Zoom out of the page</translation>
+        <translation>Zooma ut ur sidan</translation>
     </message>
 </context>
 <context>
@@ -110,31 +110,31 @@
     <message>
         <location filename="../../Command.cpp" line="50"/>
         <source>Web</source>
-        <translation type="unfinished">Webb</translation>
+        <translation>Webb</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="51"/>
         <source>Open website...</source>
-        <translation type="unfinished">Open website...</translation>
+        <translation>Öppna hemsida...</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="52"/>
         <source>Opens a website in FreeCAD</source>
-        <translation type="unfinished">Opens a website in FreeCAD</translation>
+        <translation>Öppnar en webbsida i FreeCAD</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGuiPy.cpp" line="49"/>
+        <location filename="../../AppWebGui.cpp" line="78"/>
         <location filename="../../BrowserView.cpp" line="348"/>
         <source>Browser</source>
-        <translation type="unfinished">Browser</translation>
+        <translation>Webbläsare</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="244"/>
         <source>File does not exist!</source>
-        <translation type="unfinished">File does not exist!</translation>
+        <translation>Filen existerar inte!</translation>
     </message>
 </context>
 <context>
@@ -142,12 +142,12 @@
     <message>
         <location filename="../../BrowserView.cpp" line="239"/>
         <source>Error</source>
-        <translation type="unfinished">Fel</translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="319"/>
         <source>Loading %1...</source>
-        <translation type="unfinished">Loading %1...</translation>
+        <translation>Laddar %1...</translation>
     </message>
 </context>
 <context>
@@ -155,12 +155,12 @@
     <message>
         <location filename="../../BrowserView.cpp" line="121"/>
         <source>Open in External Browser</source>
-        <translation type="unfinished">Open in External Browser</translation>
+        <translation>Öppna i extern webbläsare</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="125"/>
         <source>Open in new window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open in new window</translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="46"/>
         <source>Navigation</source>
-        <translation type="unfinished">Navigation</translation>
+        <translation>Navigering</translation>
     </message>
 </context>
 </TS>

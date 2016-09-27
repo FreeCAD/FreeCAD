@@ -86,25 +86,24 @@ TaskWatcherCommands::TaskWatcherCommands(const char* Filter,const char* commands
                                          const char* name, const char* pixmap)
     : TaskWatcher(Filter)
 {
-    CommandManager &mgr = Gui::Application::Instance->commandManager();
-    Gui::TaskView::TaskBox *tb = new Gui::TaskView::TaskBox
-        (BitmapFactory().pixmap(pixmap), trUtf8(name), true, 0);
+    if (commands) {
+        CommandManager &mgr = Gui::Application::Instance->commandManager();
+        Gui::TaskView::TaskBox *tb = new Gui::TaskView::TaskBox
+            (BitmapFactory().pixmap(pixmap), trUtf8(name), true, 0);
 
-    for (const char** i=commands;*i;i++) {
-        if(!i) break;
-        Command *c = mgr.getCommandByName(*i);
-        if (c) {
-            // handled in TaskBox::actionEvent()
-            c->addTo(tb);
+        for (const char** i=commands;*i;i++) {
+            if(!i) break;
+            Command *c = mgr.getCommandByName(*i);
+            if (c) {
+                // handled in TaskBox::actionEvent()
+                c->addTo(tb);
+            }
         }
+
+        Content.push_back(tb);
     }
-
-    Content.push_back(tb);
 }
 
-TaskWatcherCommands::~TaskWatcherCommands()
-{
-}
 
 //==== implementer ===========================================================================
 
@@ -128,9 +127,7 @@ TaskWatcherCommandsEmptyDoc::TaskWatcherCommandsEmptyDoc(const char* commands[],
 {
 }
 
-TaskWatcherCommandsEmptyDoc::~TaskWatcherCommandsEmptyDoc()
-{
-}
+
 
 //==== implementer ===========================================================================
 
@@ -168,5 +165,6 @@ bool TaskWatcherCommandsEmptySelection::shouldShow()
 {
     return (App::GetApplication().getActiveDocument() && Gui::Selection().size() == 0);
 }
+
 
 #include "moc_TaskWatcher.cpp"

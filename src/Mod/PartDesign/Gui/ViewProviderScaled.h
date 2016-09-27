@@ -30,14 +30,15 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderScaled);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderScaled);
 public:
     ViewProviderScaled()
         { featureName = std::string("Scaled");
 	   sPixmap = "PartDesign_Scaled.svg"; }
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
 
 };
 

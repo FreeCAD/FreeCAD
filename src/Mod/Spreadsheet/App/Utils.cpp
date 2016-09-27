@@ -32,9 +32,6 @@
 #include <Base/Exception.h>
 #include "Sheet.h"
 
-const int Spreadsheet::CellAddress::MAX_ROWS = 16384;
-const int Spreadsheet::CellAddress::MAX_COLUMNS = 26 * 26 + 26;
-
 /**
   * Encode \a col as a string.
   *
@@ -74,89 +71,6 @@ std::string Spreadsheet::rowName(int row)
     return s.str();
 }
 
-/**
-  * Decode a row specification into a 0-based integer.
-  *
-  * @param rowstr Row specified as a string, with "1" being the first row.
-  *
-  * @returns The row.
-  */
-
-int Spreadsheet::decodeRow(const std::string &rowstr)
-{
-    char * end;
-    int i = strtol(rowstr.c_str(), &end, 10);
-
-    if (i <0 || i >= CellAddress::MAX_ROWS || *end)
-        throw Base::Exception("Invalid row specification.");
-
-    return i - 1;
-}
-
-/**
-  * Decode a column specification into a 0-based integer.
-  *
-  * @param colstr Column specified as a string, with "A" begin the first column.
-  *
-  * @returns The column.
-  *
-  */
-
-int Spreadsheet::decodeColumn(const std::string &colstr)
-{
-    int col = 0;
-
-    if (colstr.length() == 1) {
-        if ((colstr[0] >= 'A' && colstr[0] <= 'Z'))
-            col = colstr[0] - 'A';
-        else
-            throw Base::Exception("Invalid column specification");
-    }
-    else {
-        col = 0;
-        for (std::string::const_reverse_iterator i = colstr.rbegin(); i != colstr.rend(); ++i) {
-            int v;
-
-            if ((*i >= 'A' && *i <= 'Z'))
-                v = *i - 'A';
-            else
-                throw Base::Exception("Invalid column specification");
-
-            col = col * 26 + v;
-        }
-        col += 26;
-    }
-    return col;
-}
-
-/**
-  * Convert a string address into integer \a row and \a column.
-  * row and col are 0-based.
-  *
-  * This function will throw an exception if the specified \a address is invalid.
-  *
-  * @param address Address to parse.
-  * @param row     Reference to integer where row position is stored.
-  * @param col     Reference to integer where col position is stored.
-  *
-  */
-
-Spreadsheet::CellAddress Spreadsheet::stringToAddress(const char * strAddress)
-{
-    static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
-    boost::cmatch cm;
-
-    Q_ASSERT(strAddress != 0);
-
-    if (boost::regex_match(strAddress, cm, e)) {
-        const boost::sub_match<const char *> colstr = cm[1];
-        const boost::sub_match<const char *> rowstr = cm[2];
-
-        return CellAddress(Spreadsheet::decodeRow(rowstr.str()), Spreadsheet::decodeColumn(colstr.str()));
-    }
-    else
-        throw Base::Exception("Invalid cell specifier.");
-}
 
 void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles)
 {
@@ -311,29 +225,4 @@ std::string Spreadsheet::unquote(const std::string & input)
     }
 
     return output;
-}
-
-
-/**
-  * Convert given \a cell address into its string representation.
-  *
-  * @returns Address given as a string.
-  */
-
-std::string Spreadsheet::CellAddress::toString() const
-{
-    std::stringstream s;
-
-    if (col() < 26)
-        s << (char)('A' + col());
-    else {
-        int colnum = col() - 26;
-
-        s << (char)('A' + (colnum / 26));
-        s << (char)('A' + (colnum % 26));
-    }
-
-    s << (row() + 1);
-
-    return s.str();
 }

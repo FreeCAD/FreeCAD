@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Approximate B-Spline surface...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aproximace B-Spline plochy...</translation>
     </message>
     <message>
         <source>Approximate surface...</source>
@@ -44,19 +44,19 @@
 <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-        <location line="+129"/>
+        <location line="+134"/>
         <source>Reverse Engineering</source>
-        <translation type="unfinished">Reverzní Inženýrství</translation>
+        <translation>Reverzní Inženýrství</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson...</source>
-        <translation type="unfinished"></translation>
+        <translation>Poisson...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Poisson surface reconstruction</source>
-        <translation type="unfinished"></translation>
+        <translation>Poissonova rekonstrukce plochy</translation>
     </message>
 </context>
 <context>
@@ -64,14 +64,22 @@
     <message>
         <location line="+32"/>
         <source>Reverse Engineering</source>
-        <translation type="unfinished">Reverzní Inženýrství</translation>
+        <translation>Reverzní Inženýrství</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Structured point clouds</source>
+        <translation>Strukturovaná množina bodů</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
-        <location line="+1"/>
+        <source>Triangulation of structured point clouds</source>
+        <translation>Triangulace strukturovaných množin bodů</translation>
+    </message>
+    <message>
         <source>View triangulation</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Zobrazit triangulaci</translation>
     </message>
 </context>
 <context>
@@ -79,74 +87,74 @@
     <message>
         <location filename="../../FitBSplineSurface.ui" line="+14"/>
         <source>Fit B-Spline surface</source>
-        <translation type="unfinished"></translation>
+        <translation>Přizpůsobit B-spline plochu</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>u-Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>směr u</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+67"/>
         <source>Degree</source>
-        <translation type="unfinished"></translation>
+        <translation>Stupeň</translation>
     </message>
     <message>
         <location line="-38"/>
         <location line="+67"/>
         <source>Control points</source>
-        <translation type="unfinished"></translation>
+        <translation>Řídící body</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>v-Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>směr v</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Iterations</source>
-        <translation type="unfinished"></translation>
+        <translation>Iterace</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Size factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Koeficient velikosti</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Smoothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyhlazování</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Total Weight</source>
-        <translation type="unfinished"></translation>
+        <translation>Celková váha</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Length of gradient</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost gradientu</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Bending energy</source>
-        <translation type="unfinished"></translation>
+        <translation>Ohybová energie</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Curvature variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Variace křivosti</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>User-defined u/v directions</source>
-        <translation type="unfinished"></translation>
+        <translation>Uživatelsky definované směry u/v</translation>
     </message>
 </context>
 <context>
@@ -154,17 +162,17 @@
     <message>
         <location filename="../../FitBSplineSurface.cpp" line="+145"/>
         <source>Wrong selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný výběr</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a single placement object to get local orientation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte prosím jedno umístění objektu pro lokální orientaci.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>Chyba zadání</translation>
     </message>
 </context>
 <context>
@@ -172,47 +180,47 @@
     <message>
         <location filename="../../Poisson.ui" line="+14"/>
         <source>Poisson</source>
-        <translation type="unfinished"></translation>
+        <translation>Poisson</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Parametry</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Octree depth</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Octree depth</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solver divide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solver divide</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Samples per node</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzorků na uzel</translation>
     </message>
     <message>
         <location filename="../../Poisson.cpp" line="+108"/>
         <source>Input error</source>
-        <translation type="unfinished"></translation>
+        <translation>Chyba zadání</translation>
     </message>
 </context>
 <context>
     <name>Reen_ApproxSurface</name>
     <message>
-        <location filename="../../Command.cpp" line="-154"/>
-        <location line="+130"/>
+        <location filename="../../Command.cpp" line="-159"/>
+        <location line="+135"/>
         <source>Wrong selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný výběr</translation>
     </message>
     <message>
-        <location line="-129"/>
-        <location line="+130"/>
+        <location line="-134"/>
+        <location line="+135"/>
         <source>Please select a single point cloud.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte prosím jednu množinu bodů.</translation>
     </message>
 </context>
 <context>
@@ -220,7 +228,7 @@
     <message>
         <location line="+55"/>
         <source>View triangulation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazení triangulace selhalo</translation>
     </message>
 </context>
 <context>

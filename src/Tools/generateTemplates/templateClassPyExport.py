@@ -309,7 +309,8 @@ PyTypeObject @self.export.Name@::Type = {
     0,                                                /*tp_cache */
     0,                                                /*tp_subclasses */
     0,                                                /*tp_weaklist */
-    0                                                 /*tp_del */
+    0,                                                /*tp_del */
+    0                                                 /*tp_version_tag */
 };
 
 /// Methods structure of @self.export.Name@
@@ -353,6 +354,21 @@ PyNumberMethods @self.export.Name@::Number[] = { {
     number_float_handler,
     number_oct_handler,
     number_hex_handler,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL
 } };
 -
@@ -811,137 +827,137 @@ PyObject* @self.export.Name@::@i.Name@(PyObject *args)
 -
 
 + if (self.export.NumberProtocol):
-PyObject* @self.export.Name@::number_add_handler(PyObject *self, PyObject *other)
+PyObject* @self.export.Name@::number_add_handler(PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject* @self.export.Name@::number_subtract_handler(PyObject *self, PyObject *other)
+PyObject* @self.export.Name@::number_subtract_handler(PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject* @self.export.Name@::number_multiply_handler(PyObject *self, PyObject *other)
+PyObject* @self.export.Name@::number_multiply_handler(PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_divide_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_remainder_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_divmod_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_power_handler (PyObject *self, PyObject *other, PyObject *modulo)
+PyObject * @self.export.Name@::number_power_handler (PyObject* /*self*/, PyObject* /*other*/, PyObject* /*modulo*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_negative_handler (PyObject *self)
+PyObject * @self.export.Name@::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_positive_handler (PyObject *self)
+PyObject * @self.export.Name@::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_absolute_handler (PyObject *self)
+PyObject * @self.export.Name@::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int @self.export.Name@::number_nonzero_handler (PyObject *self)
+int @self.export.Name@::number_nonzero_handler (PyObject* /*self*/)
 {
     return 1;
 }
 
-PyObject * @self.export.Name@::number_invert_handler (PyObject *self)
+PyObject * @self.export.Name@::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_lshift_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_rshift_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_and_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_xor_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_or_handler (PyObject *self, PyObject *other)
+PyObject * @self.export.Name@::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int @self.export.Name@::number_coerce_handler (PyObject **self, PyObject **other)
+int @self.export.Name@::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
 {
     return 1;
 }
 
-PyObject * @self.export.Name@::number_int_handler (PyObject *self)
+PyObject * @self.export.Name@::number_int_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_long_handler (PyObject *self)
+PyObject * @self.export.Name@::number_long_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_float_handler (PyObject *self)
+PyObject * @self.export.Name@::number_float_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_oct_handler (PyObject *self)
+PyObject * @self.export.Name@::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * @self.export.Name@::number_hex_handler (PyObject *self)
+PyObject * @self.export.Name@::number_hex_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
@@ -1055,12 +1071,12 @@ void  @self.export.Name@::set@i.Name@(Py::@i.Parameter.Type@ arg)
 -
 + if(self.export.CustomAttributes != None):
 
-PyObject *@self.export.Name@::getCustomAttributes(const char* attr) const
+PyObject *@self.export.Name@::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int @self.export.Name@::setCustomAttributes(const char* attr, PyObject *obj)
+int @self.export.Name@::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }

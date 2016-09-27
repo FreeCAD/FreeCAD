@@ -267,6 +267,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (num_selected > 0)
         renderSelection(action);
 //#endif
+    
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 //****************************************************************************
@@ -383,6 +386,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // Disable caching for this node
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
+        
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
     if (this->highlightIndex.getValue() >= 0)
@@ -740,6 +746,9 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
             &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
+    
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
@@ -821,6 +830,9 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
             &(pindices[id]), 1, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
+    
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,

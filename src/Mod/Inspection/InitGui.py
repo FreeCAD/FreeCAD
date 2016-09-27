@@ -32,13 +32,16 @@
 
 
 class InspectionWorkbench ( Workbench ):
-	"Inspection workbench object"
-	MenuText = "Inspection"
-	ToolTip = "Inspection workbench"
-	def Initialize(self):
-		# load the module
-		import InspectionGui
-	def GetClassName(self):
-		return "InspectionGui::Workbench"
+    "Inspection workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Inspection/Resources/icons/InspectionWorkbench.svg"
+        self.__class__.MenuText = "Inspection"
+        self.__class__.ToolTip = "Inspection workbench"
+
+    def Initialize(self):
+        # load the module
+        import InspectionGui
+    def GetClassName(self):
+        return "InspectionGui::Workbench"
 
 Gui.addWorkbench(InspectionWorkbench())

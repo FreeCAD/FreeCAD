@@ -28,7 +28,6 @@
 #endif
 
 
-#include <strstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>

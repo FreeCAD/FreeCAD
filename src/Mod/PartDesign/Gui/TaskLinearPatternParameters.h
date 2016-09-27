@@ -66,14 +66,16 @@ private Q_SLOTS:
     void onLength(const double l);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
+    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    const std::string getDirection(void) const;
-    const bool getReverse(void) const;
-    const double getLength(void) const;
-    const unsigned getOccurrences(void) const;
+    virtual void clearButtons();
+    void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    bool getReverse(void) const;
+    double getLength(void) const;
+    unsigned getOccurrences(void) const;
 
 private:
     void setupUI();
@@ -83,6 +85,8 @@ private:
 private:
     Ui_TaskLinearPatternParameters* ui;
     QTimer* updateViewTimer;
+
+    ComboLinks dirLinks;
 };
 
 
@@ -94,10 +98,6 @@ class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
 public:
     TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
     virtual ~TaskDlgLinearPatternParameters() {}
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
 };
 
 } //namespace PartDesignGui

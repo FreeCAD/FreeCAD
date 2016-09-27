@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-#include <strstream>
+#include <sstream>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -41,6 +41,13 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::SelectionObject, Base::BaseClass)
 
 SelectionObject::SelectionObject()
 {
+}
+
+SelectionObject::SelectionObject(App::DocumentObject* obj)
+{
+    FeatName = obj->getNameInDocument();
+    DocName = obj->getDocument()->getName();
+    TypeName = obj->getTypeId().getName();
 }
 
 SelectionObject::~SelectionObject()

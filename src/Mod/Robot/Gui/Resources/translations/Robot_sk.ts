@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Add a tool shape to the robot</source>
-        <translation>Add a tool shape to the robot</translation>
+        <translation type="unfinished">Add a tool shape to the robot</translation>
     </message>
 </context>
 <context>
@@ -29,12 +29,12 @@
     <message>
         <location line="+1"/>
         <source>Place robot...</source>
-        <translation>Place robot...</translation>
+        <translation type="unfinished">Place robot...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Place a robot (experimental!)</source>
-        <translation>Place a robot (experimental!)</translation>
+        <translation type="unfinished">Place a robot (experimental!)</translation>
     </message>
 </context>
 <context>
@@ -47,7 +47,7 @@
     <message>
         <location line="+1"/>
         <source>Create trajectory</source>
-        <translation>Create trajectory</translation>
+        <translation type="unfinished">Create trajectory</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -65,12 +65,12 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>Edge to Trajectory...</translation>
+        <translation type="unfinished">Edge to Trajectory...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Generate a Trajectory from a set of edges</source>
-        <translation>Generate a Trajectory from a set of edges</translation>
+        <translation type="unfinished">Generate a Trajectory from a set of edges</translation>
     </message>
 </context>
 <context>
@@ -196,7 +196,7 @@
     <message>
         <location line="+1"/>
         <source>Insert robot Tool location into trajectory</source>
-        <translation>Insert robot Tool location into trajectory</translation>
+        <translation type="unfinished">Insert robot Tool location into trajectory</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation>Insert preselection position into trajectory (W)</translation>
+        <translation type="unfinished">Insert preselection position into trajectory (W)</translation>
     </message>
 </context>
 <context>
@@ -241,12 +241,12 @@
     <message>
         <location line="+1"/>
         <source>Set default orientation</source>
-        <translation>Set default orientation</translation>
+        <translation type="unfinished">Set default orientation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set the default orientation for subsequent commands for waypoint creation</source>
-        <translation>set the default orientation for subsequent commands for waypoint creation</translation>
+        <translation type="unfinished">set the default orientation for subsequent commands for waypoint creation</translation>
     </message>
 </context>
 <context>
@@ -259,12 +259,12 @@
     <message>
         <location line="+1"/>
         <source>Set default values</source>
-        <translation>Set default values</translation>
+        <translation type="unfinished">Set default values</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-        <translation>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+        <translation type="unfinished">set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
     </message>
 </context>
 <context>
@@ -278,7 +278,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Set the home position</source>
-        <translation>Set the home position</translation>
+        <translation type="unfinished">Set the home position</translation>
     </message>
 </context>
 <context>
@@ -291,12 +291,12 @@
     <message>
         <location line="+1"/>
         <source>Simulate a trajectory</source>
-        <translation>Simulate a trajectory</translation>
+        <translation type="unfinished">Simulate a trajectory</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Run a simulation on a trajectory</source>
-        <translation>Run a simulation on a trajectory</translation>
+        <translation type="unfinished">Run a simulation on a trajectory</translation>
     </message>
 </context>
 <context>
@@ -309,12 +309,12 @@
     <message>
         <location line="+1"/>
         <source>Trajectory compound...</source>
-        <translation>Trajectory compound...</translation>
+        <translation type="unfinished">Trajectory compound...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Group and connect some trajectories to one</source>
-        <translation>Group and connect some trajectories to one</translation>
+        <translation type="unfinished">Group and connect some trajectories to one</translation>
     </message>
 </context>
 <context>
@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dress-up trajectory...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -385,17 +385,17 @@
         <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
-        <translation>Select one Robot and one Trajectory object.</translation>
+        <translation type="unfinished">Select one Robot and one Trajectory object.</translation>
     </message>
     <message>
         <location line="-24"/>
         <source>Trajectory not valid</source>
-        <translation>Trajectory not valid</translation>
+        <translation type="unfinished">Trajectory not valid</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need at least two way points in a trajectory to simulate.</source>
-        <translation>You need at least two way points in a trajectory to simulate.</translation>
+        <translation type="unfinished">You need at least two way points in a trajectory to simulate.</translation>
     </message>
     <message>
         <source>KRL file(*.src)</source>
@@ -409,13 +409,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">KRL file</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="-61"/>
@@ -436,43 +436,43 @@
     <message>
         <location line="+1"/>
         <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-        <translation>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
+        <translation type="unfinished">You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Select one Robot to set home postion</translation>
+        <translation type="unfinished">Select one Robot to set home postion</translation>
     </message>
     <message>
         <location line="+49"/>
         <source>Select one Robot</source>
-        <translation>Select one Robot</translation>
+        <translation type="unfinished">Select one Robot</translation>
     </message>
     <message>
         <location filename="../../CommandTrajectory.cpp" line="-24"/>
         <location line="+17"/>
         <source>Select one Trajectory object.</source>
-        <translation>Select one Trajectory object.</translation>
+        <translation type="unfinished">Select one Trajectory object.</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>set default speed</source>
-        <translation>set default speed</translation>
+        <translation type="unfinished">set default speed</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
-        <translation>speed: (e.g. 1 m/s or 3 cm/s)</translation>
+        <translation type="unfinished">speed: (e.g. 1 m/s or 3 cm/s)</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>set default continuity</source>
-        <translation>set default continuity</translation>
+        <translation type="unfinished">set default continuity</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>continuous ?</source>
-        <translation>continuous ?</translation>
+        <translation type="unfinished">continuous ?</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -482,22 +482,22 @@
     <message>
         <location line="+1"/>
         <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-        <translation>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
+        <translation type="unfinished">acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
     </message>
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Select the Trajectory which you want to dress up.</translation>
+        <translation type="unfinished">Select the Trajectory which you want to dress up.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>
         <source>No robot files installed</source>
-        <translation>No robot files installed</translation>
+        <translation type="unfinished">No robot files installed</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please visit %1 and copy the files to %2</source>
-        <translation>Please visit %1 and copy the files to %2</translation>
+        <translation type="unfinished">Please visit %1 and copy the files to %2</translation>
     </message>
 </context>
 <context>
@@ -573,7 +573,7 @@
     <message>
         <location filename="../../TaskEdge2TracParameter.cpp" line="+47"/>
         <source>TaskEdge2TracParameter</source>
-        <translation>TaskEdge2TracParameter</translation>
+        <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
 </context>
 <context>
@@ -631,7 +631,7 @@
     <message>
         <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
         <source>TaskRobot6Axis</source>
-        <translation>TaskRobot6Axis</translation>
+        <translation type="unfinished">TaskRobot6Axis</translation>
     </message>
 </context>
 <context>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../../TaskRobotControl.cpp" line="+46"/>
         <source>TaskRobotControl</source>
-        <translation>TaskRobotControl</translation>
+        <translation type="unfinished">TaskRobotControl</translation>
     </message>
 </context>
 <context>
@@ -647,7 +647,7 @@
     <message>
         <location filename="../../TaskRobotMessages.cpp" line="+46"/>
         <source>TaskRobotMessages</source>
-        <translation>TaskRobotMessages</translation>
+        <translation type="unfinished">TaskRobotMessages</translation>
     </message>
 </context>
 <context>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../../TaskTrajectory.cpp" line="+44"/>
         <source>Trajectory</source>
-        <translation>Trajectory</translation>
+        <translation type="unfinished">Trajectory</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="+48"/>
         <source>Dress Up Parameter</source>
-        <translation>Dress Up Parameter</translation>
+        <translation type="unfinished">Dress Up Parameter</translation>
     </message>
 </context>
 <context>
@@ -982,7 +982,7 @@
     <message>
         <location line="+36"/>
         <source>Don&apos;t change Cont</source>
-        <translation>Don&apos;t change Cont</translation>
+        <translation type="unfinished">Don&apos;t change Cont</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -992,7 +992,7 @@
     <message>
         <location line="+5"/>
         <source>Discontinues</source>
-        <translation>Discontinues</translation>
+        <translation type="unfinished">Discontinues</translation>
     </message>
     <message>
         <location line="+15"/>

@@ -115,36 +115,6 @@ private:
     static const char* TransitionEnums[];
 };
 
-class Offset : public Part::Feature
-{
-    PROPERTY_HEADER(Part::Offset);
-
-public:
-    Offset();
-
-    App::PropertyLink  Source;
-    App::PropertyFloat Value;
-    App::PropertyEnumeration Mode;
-    App::PropertyEnumeration Join;
-    App::PropertyBool Intersection;
-    App::PropertyBool SelfIntersection;
-    App::PropertyBool Fill;
-
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    const char* getViewProviderName(void) const {
-        return "PartGui::ViewProviderOffset";
-    }
-    //@}
-
-private:
-    static const char* ModeEnums[];
-    static const char* JoinEnums[];
-};
-
 class Thickness : public Part::Feature
 {
     PROPERTY_HEADER(Part::Thickness);

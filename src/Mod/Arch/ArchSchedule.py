@@ -28,17 +28,22 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
 
-__title__ = "Arch Schedule Managment"
+__title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
+verbose = True # change this for silent recomputes
+
+
 class _CommandArchSchedule:
+
     "the Arch Schedule command definition"
+
     def GetResources(self):
         return {'Pixmap': 'Arch_Schedule',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Create schedule..."),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Creates a materials or areas schedule.")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
 
     def Activated(self):
         taskd = _ArchScheduleTaskPanel()
@@ -51,197 +56,291 @@ class _CommandArchSchedule:
             return False
 
 
-class _ArchScheduleTaskPanel:
-    '''The editmode TaskPanel for MechanicalMaterial objects'''
-    def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchSchedule.ui")
-        QtCore.QObject.connect(self.form.ComboType, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeType)
+class _ArchSchedule:
 
-    def changeType(self,idx):
-        "changes the type of schedule"
-        if idx == 0:
-            # quantities
-            self.form.GroupQuantities.maximumHeight = 1677215
-        elif idx == 1:
-            # spaces
-            self.form.GroupQuantities.maximumHeight = 17
-        elif idx == 2:
-            # windows
-            self.form.GroupQuantities.maximumHeight = 17
+    "the Arch Schedule object"
+
+    def __init__(self,obj):
+        obj.addProperty("App::PropertyStringList","Description","Arch","The description column")
+        obj.addProperty("App::PropertyStringList","Value",      "Arch","The values column")
+        obj.addProperty("App::PropertyStringList","Unit",       "Arch","The units column")
+        obj.addProperty("App::PropertyStringList","Objects",    "Arch","The objects column")
+        obj.addProperty("App::PropertyStringList","Filter",     "Arch","The filter column")
+        obj.addProperty("App::PropertyLink",      "Result",     "Arch","The spreadsheet to print the results to")
+        obj.Proxy = self
+        self.Type = "Schedule"
+
+    def execute(self,obj):
+        # fills columns A, B and C of the spreadsheet
+        if not obj.Description:
+            return
+        for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
+            if len(obj.Description) != len(p):
+                return
+        if not hasattr(obj,"Result"):
+            # silently fail on old schedule objects
+            return
+        if not obj.Result:
+            FreeCAD.Console.PrintError(translate("Arch","No spreadsheet attached to this schedule\n"))
+            return
+        obj.Result.clearAll()
+        obj.Result.set("A1","Description")
+        obj.Result.set("B1","Value")
+        obj.Result.set("C1","Unit")
+        obj.Result.setStyle('A1:C1', 'bold', 'add')
+        for i in range(len(obj.Description)):
+            if not obj.Description[i]:
+                # blank line
+                continue
+            # write description
+            obj.Result.set("A"+str(i+2),obj.Description[i])
+            if verbose:
+                l= "OPERATION: "+obj.Description[i]
+                print l
+                print len(l)*"="
+            # get list of objects
+            objs = obj.Objects[i]
+            val = obj.Value[i]
+            if val:
+                import Draft,Arch
+                if objs:
+                    objs = objs.split(";")
+                    objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
+                else:
+                    objs = FreeCAD.ActiveDocument.Objects
+                objs = Draft.getGroupContents(objs,walls=True,addgroups=True)
+                objs = Arch.pruneIncluded(objs)
+                if obj.Filter[i]:
+                    # apply filters
+                    nobjs = []
+                    for o in objs:
+                        ok = True
+                        for f in obj.Filter[i].split(";"):
+                            args = [a.strip() for a in f.strip().split(":")]
+                            if args[0].upper() == "NAME":
+                                if not(args[1].upper() in o.Name.upper()):
+                                    ok = False
+                            elif args[0].upper() == "!NAME":
+                                if (args[1].upper() in o.Name.upper()):
+                                    ok = False
+                            elif args[0].upper() == "LABEL":
+                                if not(args[1].upper() in o.Label.upper()):
+                                    ok = False
+                            elif args[0].upper() == "!LABEL":
+                                if args[1].upper() in o.Label.upper():
+                                    ok = False
+                            elif args[0].upper() == "TYPE":
+                                if Draft.getType(o).upper() != args[1].upper():
+                                    ok = False
+                            elif args[0].upper() == "!TYPE":
+                                if Draft.getType(o).upper() == args[1].upper():
+                                    ok = False
+                            elif args[0].upper() == "ROLE":
+                                if hasattr(o,"Role"):
+                                    if o.Role.upper() != args[1].upper():
+                                        ok = False
+                                else:
+                                    ok = False
+                            elif args[0].upper() == "!ROLE":
+                                if hasattr(o,"Role"):
+                                    if o.Role.upper() == args[1].upper():
+                                        ok = False
+                        if ok:
+                            nobjs.append(o)
+                    objs = nobjs
+                # perform operation
+                if val.upper() == "COUNT":
+                    val = len(objs)
+                    if verbose:
+                        print val, ",".join([o.Label for o in objs])
+                    obj.Result.set("B"+str(i+2),str(val))
+                else:
+                    vals = val.split(".")
+                    sumval = None
+                    for o in objs:
+                        if verbose:
+                            l = o.Name+" ("+o.Label+"):"
+                            print l+(40-len(l))*" ",
+                        try:
+                            d = o
+                            for v in vals[1:]:
+                                d = getattr(d,v)
+                            if verbose:
+                                print d
+                        except:
+                            FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
+                        else:
+                            if not sumval:
+                                sumval = d
+                            else:
+                                sumval += d
+                    val = sumval
+                    # get unit
+                    if obj.Unit[i]:
+                        if "2" in obj.Unit[i]:
+                            tp = FreeCAD.Units.Area
+                        elif "3" in obj.Unit[i]:
+                            tp = FreeCAD.Units.Volume
+                        elif "deg" in obj.Unit[i]:
+                            tp = FreeCAD.Units.Angle
+                        else:
+                            tp = FreeCAD.Units.Length
+                        q = FreeCAD.Units.Quantity(val,tp)
+                        obj.Result.set("B"+str(i+2),str(q.getValueAs(obj.Unit[i]).Value))
+                        obj.Result.set("C"+str(i+2),obj.Unit[i])
+                    else:
+                        obj.Result.set("B"+str(i+2),str(val))
+                    if verbose:
+                        print "TOTAL:"+34*" "+str(val)
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+
+
+class _ViewProviderArchSchedule:
+
+    "A View Provider for Schedules"
+
+    def __init__(self,vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        import Arch_rc
+        return ":/icons/Arch_Schedule.svg"
+
+    def attach(self, vobj):
+        self.Object = vobj.Object
+
+    def setEdit(self,vobj,mode):
+        taskd = _ArchScheduleTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def doubleClicked(self,vobj):
+        taskd = _ArchScheduleTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self,vobj,mode):
+        FreeCADGui.Control.closeDialog()
+        return
+
+    def claimChildren(self):
+        if hasattr(self,"Object"):
+            return [self.Object.Result]
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+    def getDisplayModes(self,vobj):
+        return ["Default"]
+
+    def getDefaultDisplayMode(self):
+        return "Default"
+
+    def setDisplayMode(self,mode):
+        return mode
+
+
+class _ArchScheduleTaskPanel:
+
+    '''The editmode TaskPanel for Schedules'''
+
+    def __init__(self,obj=None):
+        self.obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchSchedule.ui")
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Arch_Schedule.svg"))
+        QtCore.QObject.connect(self.form.buttonAdd, QtCore.SIGNAL("clicked()"), self.add)
+        QtCore.QObject.connect(self.form.buttonDel, QtCore.SIGNAL("clicked()"), self.remove)
+        QtCore.QObject.connect(self.form.buttonClear, QtCore.SIGNAL("clicked()"), self.clear)
+        QtCore.QObject.connect(self.form.buttonImport, QtCore.SIGNAL("clicked()"), self.importCSV)
+        QtCore.QObject.connect(self.form.buttonSelect, QtCore.SIGNAL("clicked()"), self.select)
+        self.form.list.clearContents()
+
+        if self.obj:
+            if not obj.Description:
+                return
+            for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
+                if len(obj.Description) != len(p):
+                    return
+            self.form.list.setRowCount(len(obj.Description))
+            for i in range(5):
+                for j in range(len(obj.Description)):
+                    item = QtGui.QTableWidgetItem([obj.Description,obj.Value,obj.Unit,obj.Objects,obj.Filter][i][j])
+                    self.form.list.setItem(j,i,item)
+
+    def add(self):
+        self.form.list.insertRow(self.form.list.currentRow()+1)
+
+    def remove(self):
+        if self.form.list.currentRow() >= 0:
+            self.form.list.removeRow(self.form.list.currentRow())
+
+    def clear(self):
+        self.form.list.clearContents()
+        self.form.list.setRowCount(0)
+
+    def importCSV(self):
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
+        if filename:
+            self.form.list.clearContents()
+            import csv
+            with open(filename[0], 'rb') as csvfile:
+                r = 0
+                for row in csv.reader(csvfile):
+                    self.form.list.insertRow(r)
+                    for i in range(5):
+                        if len(row) > i:
+                            t = row[i]
+                            t = t.replace("²","^2")
+                            t = t.replace("³","^3")
+                            self.form.list.setItem(r,i,QtGui.QTableWidgetItem(t))
+                    r += 1
+
+    def select(self):
+        if self.form.list.currentRow() >= 0:
+            sel = ""
+            for o in FreeCADGui.Selection.getSelection():
+                if o != self.obj:
+                    if sel:
+                        sel += ";"
+                    sel += o.Name
+            if sel:
+                self.form.list.setItem(self.form.list.currentRow(),3,QtGui.QTableWidgetItem(sel))
 
     def accept(self):
-        sp = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet','Schedule')
-        if self.form.ComboType.currentIndex() == 0:
-            self.fillMaterialsSchedule(sp)
-        elif self.form.ComboType.currentIndex() == 1:
-            self.fillSpacesSchedule(sp)
-        FreeCADGui.Control.closeDialog()
-        
-    def getRoles(self,roles):
-        "gets all objects of the given roles in the document"
-        objs = []
-        for obj in FreeCAD.ActiveDocument.Objects:
-            if obj.ViewObject.isVisible():
-                if hasattr(obj,"Role"):
-                    for r in roles:
-                        if obj.Role == r:
-                            objs.append(obj)
-                            break
-        return objs
-        
-    def getMaterials(self,objs):
-        "classify the given objects by material"
-        res = {}
-        for obj in objs:
-            if hasattr(obj,"BaseMaterial"):
-                if obj.BaseMaterial:
-                    res.setdefault(obj.BaseMaterial.Name,[]).append(obj)
-        return res
-        
-    def getEntry(self,mat,entry):
-        "returns the given entry from a given material name"
-        res = ""
-        m = FreeCAD.ActiveDocument.getObject(mat)
-        if m:
-            if m.Material:
-                if entry in m.Material.keys():
-                    res = m.Material[entry].encode('utf8')
-        return res
-                
-    def fillMaterialsSchedule(self,sp):
-        "creates a materials schedule in the given spreadsheet"
-        
-        # table title
-        
-        col = self.form.FieldStartCell.text()[0]
-        row = int(self.form.FieldStartCell.text()[1:])
-        global volunit,curunit
-        volunit = self.form.FieldVolumeUnit.text().encode("utf8")
-        curunit = self.form.FieldCurrencyUnit.text().encode("utf8")
-        
-        sec = 1
-        sp.set(col+str(row), translate("Arch","Quantities schedule"))
-        row += 1
-        sp.set(col+str(row), translate("Arch","Project") + ": " + FreeCAD.ActiveDocument.Label)
-        row += 1
-        sp.set(col+str(row), translate("Arch","Date") + ": " + time.asctime())
-        row += 2
-        
-        # column headers
-        
-        end = 1
-        sp.set(chr(ord(col)+end)+str(row), translate("Arch","Material"))
-        end += 1
-        if self.form.CheckDescription.isChecked():
-            sp.set(chr(ord(col)+end)+str(row),translate("Arch","Description"))
-            end += 1
-        if self.form.CheckColor.isChecked():
-            sp.set(chr(ord(col)+end)+str(row),translate("Arch","Color"))
-            end += 1
-        if self.form.CheckFinish.isChecked():
-            sp.set(chr(ord(col)+end)+str(row),translate("Arch","Finish"))
-            end += 1
-        if self.form.CheckUrl.isChecked():
-            sp.set(chr(ord(col)+end)+str(row),translate("Arch","URL"))
-            end += 1
-        sp.set(chr(ord(col)+end)+str(row),translate("Arch","Item"))
-        end += 1
-        sp.set(chr(ord(col)+end)+str(row),translate("Arch","Volume")+" ("+volunit+")")
-        end += 1
-        if self.form.CheckPrice.isChecked():
-            sp.set(chr(ord(col)+end)+str(row),translate("Arch","Unit price")+" ("+curunit+"/"+volunit+")")
-            end += 1
-            sp.set(chr(ord(col)+end)+str(row),translate("Arch","Total price")+" ("+curunit+")")
-        row += 2
-        
-        # volume-based row data
-        
-        if self.form.CheckStructures.isChecked():
-            row,col,sec = self.printVolume(sp,"Column",translate("Arch","Columns"),row,col,sec)
-            row,col,sec = self.printVolume(sp,"Beam",translate("Arch","Beams"),row,col,sec)
-            row,col,sec = self.printVolume(sp,"Slab",translate("Arch","Slabs"),row,col,sec)
-            row,col,sec = self.printVolume(sp,"Foundation",translate("Arch","Foundations"),row,col,sec)
-            row,col,sec = self.printVolume(sp,"Pile",None,row,col,sec)
-        if self.form.CheckStairs.isChecked():
-            row,col,sec = self.printVolume(sp,"Stair",translate("Arch","Stairs"),row,col,sec)
-            row,col,sec = self.printVolume(sp,"Stair Flight",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Ramp",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Ramp Flight",None,row,col,sec)
-        if self.form.CheckWalls.isChecked():
-            row,col,sec = self.printVolume(sp,"Wall",translate("Arch","Walls"),row,col,sec)
-            row,col,sec = self.printVolume(sp,"Wall Layer",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Curtain Wall",None,row,col,sec)
-        if self.form.CheckOthers.isChecked():
-            sp.set(col+str(row), str(sec) + ". " + translate("Arch","Miscellaneous"))
-            sec += 1
-            row += 2
-            row,col,sec = self.printVolume(sp,"Chimney",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Covering",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Shading Device",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Member",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Railing",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Tendon",None,row,col,sec)
-            row,col,sec = self.printVolume(sp,"Undefined",None,row,col,sec)
-            
-        # TODO area: Covering Door Plate Rebar Roof Window      
-        # TODO count: Furniture Hydro Equipment Electric Equipment      
-            
-    def printVolume(self,sp,role,title,row,col,sec):
-        "print object type quantities to the spreadsheet"
-            
-        objs = self.getRoles([role])
-        totprice = 0
-        if objs:
-            if title:
-                sp.set(col+str(row), str(sec) + ". " + title)
-                sec += 1
-                row += 2
-            mats = self.getMaterials(objs)
-            for mat,mobjs in mats.items():
-                end = 1
-                sp.set(chr(ord(col)+end)+str(row),self.getEntry(mat,"Name"))
-                end += 1
-                if self.form.CheckDescription.isChecked():
-                    sp.set(chr(ord(col)+end)+str(row),self.getEntry(mat,"Description"))
-                    end += 1
-                if self.form.CheckColor.isChecked():
-                    if self.getEntry(mat,"DiffuseColor"):
-                        sp.setBackground(chr(ord(col)+end)+str(row),tuple([float(f) for f in self.getEntry(mat,"DiffuseColor").strip("()").split(",")]))
-                    end += 1
-                if self.form.CheckFinish.isChecked():
-                    sp.set(chr(ord(col)+end)+str(row),self.getEntry(mat,"Finish"))
-                    end += 1
-                if self.form.CheckUrl.isChecked():
-                    sp.set(chr(ord(col)+end)+str(row),self.getEntry(mat,"ProductURL"))
-                    end += 1
-                total = 0
-                for mobj in mobjs:
-                    if not self.form.CheckOnlyShowTotals.isChecked():
-                        v = FreeCAD.Units.Quantity(mobj.Shape.Volume,FreeCAD.Units.Volume).getValueAs(volunit.replace("³","^3")).Value
-                        sp.set(chr(ord(col)+end)+str(row),mobj.Label)
-                        sp.set(chr(ord(col)+end+1)+str(row),str(v))
-                        total += v
-                        if self.form.CheckPrice.isChecked():
-                            sp.set(chr(ord(col)+end+2)+str(row),self.getEntry(mat,"SpecificPrice"))
-                            sp.set(chr(ord(col)+end+3)+str(row),"="+chr(ord(col)+end+1)+str(row)+"*"+chr(ord(col)+end+2)+str(row))
-                        row += 1
-                sp.set(chr(ord(col)+end)+str(row),translate("Arch","Total"))
-                sp.set(chr(ord(col)+end+1)+str(row),str(total))
-                if self.form.CheckPrice.isChecked():
-                    sp.set(chr(ord(col)+end+2)+str(row),self.getEntry(mat,"SpecificPrice"))
-                    sp.set(chr(ord(col)+end+3)+str(row),"="+chr(ord(col)+end+1)+str(row)+"*"+chr(ord(col)+end+2)+str(row))
-                    try:
-                        totprice += total * float(self.getEntry(mat,"SpecificPrice"))
-                    except:
-                        print "Arch.Schedule: Unable to add price"
-                row += 2
-            if self.form.CheckPrice.isChecked():
-                if totprice:
-                    sp.set(chr(ord(col)+end)+str(row),translate("Arch","Total")+" "+title)
-                    sp.set(chr(ord(col)+end+3)+str(row),str(totprice))
-                    row += 2
-        return row,col,sec
-        
+        if not self.obj:
+            import Spreadsheet
+            self.obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Schedule")
+            self.obj.Label = translate("Arch","Schedule")
+            _ArchSchedule(self.obj)
+            sp = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","Result")
+            self.obj.Result = sp
+            if FreeCAD.GuiUp:
+                _ViewProviderArchSchedule(self.obj.ViewObject)
+        lists = [ [], [], [], [], [] ]
+        for i in range(self.form.list.rowCount()):
+            for j in range(5):
+                cell = self.form.list.item(i,j)
+                if cell:
+                    lists[j].append(cell.text())
+                else:
+                    lists[j].append("")
+        self.obj.Description = lists[0]
+        self.obj.Value = lists[1]
+        self.obj.Unit = lists[2]
+        self.obj.Objects = lists[3]
+        self.obj.Filter = lists[4]
+        FreeCAD.ActiveDocument.recompute()
+        return True
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Schedule',_CommandArchSchedule())

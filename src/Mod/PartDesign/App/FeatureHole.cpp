@@ -33,7 +33,7 @@
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <Geom_Plane.hxx>
-# include <Handle_Geom_Surface.hxx>
+# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
@@ -52,10 +52,12 @@ const char* Hole::TypeEnums[]    = {"Dimension","UpToLast","UpToFirst",NULL};
 const char* Hole::HoleTypeEnums[]= {"Simple","Counterbore","Countersunk",NULL};
 const char* Hole::ThreadEnums[]  = {"None","Metric","MetricFine",NULL};
 
-PROPERTY_SOURCE(PartDesign::Hole, PartDesign::Subtractive)
+PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 Hole::Hole()
 {
+    addSubType = FeatureAddSub::Subtractive;
+    
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(HoleType,((long)0));
@@ -81,7 +83,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //    return new App::DocumentObjectExecReturn("No sketch linked");
     //if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
     //    return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-    //TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape()._Shape;
+    //TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape().getShape();
     //if (shape.IsNull())
     //    return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
@@ -134,7 +136,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //    // if the sketch has a support fuse them to get one result object (PAD!)
     //    if (SupportObject) {
     //        // Set the subtractive shape property for later usage in e.g. pattern
-    //        this->SubShape.setValue(PrismMaker.Shape());
+    //        this->SubShape.setValue(getSolid(PrismMaker.Shape()));
     //        const TopoDS_Shape& support = SupportObject->Shape.getValue();
     //        if (support.IsNull())
     //            return new App::DocumentObjectExecReturn("Support shape is invalid");
@@ -146,7 +148,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //        // Let's check if the fusion has been successful
     //        if (!mkCut.IsDone()) 
     //            return new App::DocumentObjectExecReturn("Cut with support failed");
-    //        this->Shape.setValue(mkCut.Shape());
+    //        this->Shape.setValue(getSolid(mkCut.Shape()));
     //    }
     //    else{
     //        return new App::DocumentObjectExecReturn("Cannot create a tool out of sketch with no support");

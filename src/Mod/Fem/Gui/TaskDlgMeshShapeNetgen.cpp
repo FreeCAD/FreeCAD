@@ -55,9 +55,10 @@ TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeN
     : TaskDialog(),ViewProviderFemMeshShapeNetgen(obj)
 {
     FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject *>(obj->getObject());
-    param   = new TaskTetParameter(FemMeshShapeNetgenObject);
-
-    Content.push_back(param);
+    if (FemMeshShapeNetgenObject) {
+        param   = new TaskTetParameter(FemMeshShapeNetgenObject);
+        Content.push_back(param);
+    }
 }
 
 TaskDlgMeshShapeNetgen::~TaskDlgMeshShapeNetgen()
@@ -132,7 +133,7 @@ bool TaskDlgMeshShapeNetgen::reject()
 {
     //FemSetNodesObject->execute();
     //    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //    //if(doc) 
+    //    //if(doc)
     //    //    doc->resetEdit();
     //param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();

@@ -30,11 +30,15 @@
 #ifdef FC_OS_WIN32
 # define MeshExport        __declspec(dllimport)
 # define PartExport        __declspec(dllimport)
+# define MeshGuiExport     __declspec(dllimport)
+# define PartGuiExport     __declspec(dllimport)
 # define MeshPartAppExport __declspec(dllimport)
 # define MeshPartGuiExport __declspec(dllexport)
 #else // for Linux
 # define MeshExport
 # define PartExport
+# define MeshGuiExport
+# define PartGuiExport
 # define MeshPartAppExport
 # define MeshPartGuiExport
 #endif

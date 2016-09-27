@@ -179,7 +179,7 @@ Gui::Document* AlignmentGroup::getDocument() const
     return 0;
 }
 
-void AlignmentGroup::addPoint(const Base::Vector3d& pnt)
+void AlignmentGroup::addPoint(const PickedPoint& pnt)
 {
     this->_pickedPoints.push_back(pnt);
 }
@@ -194,7 +194,7 @@ int AlignmentGroup::countPoints() const
     return this->_pickedPoints.size();
 }
 
-const std::vector<Base::Vector3d>& AlignmentGroup::getPoints() const
+const std::vector<PickedPoint>& AlignmentGroup::getPoints() const
 {
     return this->_pickedPoints;
 }
@@ -206,14 +206,19 @@ void AlignmentGroup::clearPoints()
 
 void AlignmentGroup::setAlignable(bool align)
 {
-    //std::vector<Gui::ViewProviderDocumentObject*>::iterator it;
-    //for (it = this->_views.begin(); it != this->_views.end(); ++it) {
-    //    if (!align){
-    //        App::PropertyColor* pColor = (App::PropertyColor*)(*it)->getPropertyByName("ShapeColor");
-    //        if (pColor)
-    //            pColor->touch(); // resets to color defined by property
-    //    }
-    //}
+    std::vector<Gui::ViewProviderDocumentObject*>::iterator it;
+    for (it = this->_views.begin(); it != this->_views.end(); ++it) {
+        App::PropertyBool* pAlignMode = dynamic_cast<App::PropertyBool*>((*it)->getPropertyByName("AlignMode"));
+        if (pAlignMode) {
+            pAlignMode->setValue(align);
+        }
+        // leaving alignment mode
+        else if (!align){
+            App::PropertyColor* pColor = dynamic_cast<App::PropertyColor*>((*it)->getPropertyByName("ShapeColor"));
+            if (pColor)
+                pColor->touch(); // resets to color defined by property
+        }
+    }
 }
 
 void AlignmentGroup::moveTo(AlignmentGroup& that)
@@ -483,6 +488,8 @@ public:
     void copyCameraSettings(SoCamera* cam1, SbRotation& rot_cam1, SbVec3f& pos_cam1,
                             SoCamera* cam2, SbRotation& rot_cam2, SbVec3f& pos_cam2)
     {
+        Q_UNUSED(pos_cam2);
+ 
         // recompute the diff we have applied to the camera's orientation
         SbRotation rot = cam1->orientation.getValue();
         SbRotation dif = rot * rot_cam1.inverse();
@@ -682,26 +689,54 @@ void ManualAlignment::setViewingDirections(const Base::Vector3d& view1, const Ba
         return;
 
     {
-        SbRotation rot;
-        rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), SbVec3f(-view1.x,-view1.y,-view1.z));
+        SbVec3f vz(-view1.x, -view1.y, -view1.z);
+        vz.normalize();
+        SbVec3f vy(up1.x, up1.y, up1.z);
+        vy.normalize();
+        SbVec3f vx = vy.cross(vz);
+        vy = vz.cross(vx);
 
-        SbRotation rot2;
-        SbVec3f up(0.0f, 1.0f, 0.0f);
-        rot.multVec(up, up);
-        rot2.setValue(up, SbVec3f(up1.x, up1.y, up1.z));
-        myViewer->getViewer(0)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
+        SbMatrix rot = SbMatrix::identity();
+        rot[0][0] = vx[0];
+        rot[0][1] = vx[1];
+        rot[0][2] = vx[2];
+
+        rot[1][0] = vy[0];
+        rot[1][1] = vy[1];
+        rot[1][2] = vy[2];
+
+        rot[2][0] = vz[0];
+        rot[2][1] = vz[1];
+        rot[2][2] = vz[2];
+
+        SbRotation total(rot);
+        myViewer->getViewer(0)->getSoRenderManager()->getCamera()->orientation.setValue(total);
         myViewer->getViewer(0)->viewAll();
     }
 
     {
-        SbRotation rot;
-        rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), SbVec3f(-view2.x,-view2.y,-view2.z));
+        SbVec3f vz(-view2.x, -view2.y, -view2.z);
+        vz.normalize();
+        SbVec3f vy(up2.x, up2.y, up2.z);
+        vy.normalize();
+        SbVec3f vx = vy.cross(vz);
+        vy = vz.cross(vx);
 
-        SbRotation rot2;
-        SbVec3f up(0.0f, 1.0f, 0.0f);
-        rot.multVec(up, up);
-        rot2.setValue(up, SbVec3f(up2.x, up2.y, up2.z));
-        myViewer->getViewer(1)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
+        SbMatrix rot = SbMatrix::identity();
+        rot[0][0] = vx[0];
+        rot[0][1] = vx[1];
+        rot[0][2] = vx[2];
+
+        rot[1][0] = vy[0];
+        rot[1][1] = vy[1];
+        rot[1][2] = vy[2];
+
+        rot[2][0] = vz[0];
+        rot[2][1] = vz[1];
+        rot[2][2] = vz[2];
+
+        SbRotation total(rot);
+        myViewer->getViewer(1)->getSoRenderManager()->getCamera()->orientation.setValue(total);
         myViewer->getViewer(1)->viewAll();
     }
 }
@@ -857,7 +892,7 @@ void ManualAlignment::finish()
 }
 
 /**
- * Cancels the process and clöses the windows without performing an alignment.
+ * Cancels the process and closes the windows without performing an alignment.
  */
 void ManualAlignment::cancel()
 {
@@ -973,8 +1008,8 @@ bool ManualAlignment::canAlign() const
  * This method computes the alignment. For the calculation of the alignment the picked points of both views
  * are taken. If the alignment fails false is returned, true otherwise.
  */
-bool ManualAlignment::computeAlignment(const std::vector<Base::Vector3d>& movPts,
-                                       const std::vector<Base::Vector3d>& fixPts)
+bool ManualAlignment::computeAlignment(const std::vector<PickedPoint>& movPts,
+                                       const std::vector<PickedPoint>& fixPts)
 {
     assert((int)movPts.size() >= myPickPoints);
     assert((int)fixPts.size() >= myPickPoints);
@@ -983,33 +1018,33 @@ bool ManualAlignment::computeAlignment(const std::vector<Base::Vector3d>& movPts
 
     if (movPts.size() == 1) {
         // 1 point partial solution: Simple translation only
-        myTransform.setPosition(fixPts[0] - movPts[0]);
+        myTransform.setPosition(fixPts[0].point - movPts[0].point);
     }
     else if (movPts.size() == 2) {
-        const Base::Vector3d& p1 = movPts[0];
-        const Base::Vector3d& p2 = movPts[1];
+        const Base::Vector3d& p1 = movPts[0].point;
+        const Base::Vector3d& p2 = movPts[1].point;
         Base::Vector3d d1 = p2-p1;
         d1.Normalize();
 
-        const Base::Vector3d& q1 = fixPts[0];
-        const Base::Vector3d& q2 = fixPts[1];
+        const Base::Vector3d& q1 = fixPts[0].point;
+        const Base::Vector3d& q2 = fixPts[1].point;
         Base::Vector3d d2 = q2-q1;
         d2.Normalize();
 
         myTransform = Private::transformation2x2(p1, d1, q1, d2);
     }
     else if (movPts.size() >= 3) {
-        const Base::Vector3d& p1 = movPts[0];
-        const Base::Vector3d& p2 = movPts[1];
-        const Base::Vector3d& p3 = movPts[2];
+        const Base::Vector3d& p1 = movPts[0].point;
+        const Base::Vector3d& p2 = movPts[1].point;
+        const Base::Vector3d& p3 = movPts[2].point;
         Base::Vector3d d1 = p2-p1;
         d1.Normalize();
         Base::Vector3d n1 = (p2-p1) % (p3-p1);
         n1.Normalize();
 
-        const Base::Vector3d& q1 = fixPts[0];
-        const Base::Vector3d& q2 = fixPts[1];
-        const Base::Vector3d& q3 = fixPts[2];
+        const Base::Vector3d& q1 = fixPts[0].point;
+        const Base::Vector3d& q2 = fixPts[1].point;
+        const Base::Vector3d& q3 = fixPts[2].point;
         Base::Vector3d d2 = q2-q1;
         d2.Normalize();
         Base::Vector3d n2 = (q2-q1) % (q3-q1);
@@ -1134,6 +1169,8 @@ void ManualAlignment::onCancel()
 
 void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
 {
+    Q_UNUSED(ud); 
+
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
     const SoEvent* ev = n->getEvent();
     if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
@@ -1248,7 +1285,9 @@ bool ManualAlignment::applyPickedProbe(Gui::ViewProviderDocumentObject* prov, co
         std::vector<Base::Vector3d> pts = prov->getModelPoints(pnt);
         if (pts.empty())
             return false;
-        myAlignModel.activeGroup().addPoint(pts.front());
+        PickedPoint pp;
+        pp.point = pts.front();
+        myAlignModel.activeGroup().addPoint(pp);
         // Adds a point marker for the picked point.
         d->picksepLeft->addChild(pickedPointsSubGraph(vec, nor, myAlignModel.activeGroup().countPoints()));
         return true;
@@ -1257,7 +1296,9 @@ bool ManualAlignment::applyPickedProbe(Gui::ViewProviderDocumentObject* prov, co
         std::vector<Base::Vector3d> pts = prov->getModelPoints(pnt);
         if (pts.empty())
             return false;
-        myFixedGroup.addPoint(pts.front());
+        PickedPoint pp;
+        pp.point = pts.front();
+        myFixedGroup.addPoint(pp);
         // Adds a point marker for the picked point.
         d->picksepRight->addChild(pickedPointsSubGraph(vec, nor, myFixedGroup.countPoints()));
         return true;

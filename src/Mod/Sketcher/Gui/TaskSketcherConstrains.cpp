@@ -82,7 +82,7 @@ public:
           sketch(s),
           ConstraintNbr(ConstNbr)
     {
-        this->setFlags(this->flags() | Qt::ItemIsEditable);       
+        this->setFlags(this->flags() | Qt::ItemIsEditable);
     }
     ~ConstraintItem()
     {
@@ -123,22 +123,14 @@ public:
             case Sketcher::Symmetric:
                 break;
             case Sketcher::Distance:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::DistanceX:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs(constraint->getPresentationValue()),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::DistanceY:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs(constraint->getPresentationValue()),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::Radius:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(constraint->getPresentationValue(),Base::Unit::Length).getUserString());
-                break;
             case Sketcher::Angle:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(std::abs(constraint->getPresentationValue())),Base::Unit::Angle).getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
                 break;
             case Sketcher::SnellsLaw: {
-                double v = constraint->getPresentationValue();
+                double v = constraint->getPresentationValue().getValue();
                 double n1 = 1.0;
                 double n2 = 1.0;
                 if (fabs(v) >= 1) {
@@ -328,6 +320,9 @@ protected:
         options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
 
         ConstraintItem * item = dynamic_cast<ConstraintItem*>(view->item(index.row()));
+        if (!item)
+            return;
+
         App::ObjectIdentifier path = item->sketch->Constraints.createPath(item->ConstraintNbr);
         App::PropertyExpressionEngine::ExpressionInfo expr_info = item->sketch->getExpression(path);
 
@@ -365,35 +360,38 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
-    
-    CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
-    
-    menu.addSeparator();
-       
-    if(item) // Non-driving-constraints/measurements
-    {
-        ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
-        
-        QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, SLOT(updateDrivingStatus()));
+
+    bool isQuantity = false;
+    bool isToggleDriving = false;
+
+    // Non-driving-constraints/measurements
+    ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
+    if (it) {
         // if its the right constraint
         if ((it->constraintType() == Sketcher::Distance ||
              it->constraintType() == Sketcher::DistanceX ||
              it->constraintType() == Sketcher::DistanceY ||
              it->constraintType() == Sketcher::Radius ||
              it->constraintType() == Sketcher::Angle ||
-             it->constraintType() == Sketcher::SnellsLaw) && it->isEnforceable()) {
-            driven->setEnabled(true);    
-        }
-        else{
-            driven->setEnabled(false);   
-        }
-         
+             it->constraintType() == Sketcher::SnellsLaw)) {
 
-        QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
-        QVariant v = item ? item->data(Qt::UserRole) : QVariant();
-        change->setEnabled(v.isValid() && it->isDriving());
-
+            isQuantity = true;
+            if (it->isEnforceable())
+                isToggleDriving = true;
+        }
     }
+
+    // This does the same as a double-click and thus it should be the first action and with bold text
+    QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
+    change->setEnabled(isQuantity);
+    menu.setDefaultAction(change);
+
+    QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, SLOT(updateDrivingStatus()));
+    driven->setEnabled(isToggleDriving);
+
+    menu.addSeparator();
+    CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
+
     QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
 #ifndef Q_WS_MAC // on Mac F2 doesn't seem to trigger an edit signal
         ,QKeySequence(Qt::Key_F2)
@@ -420,11 +418,10 @@ void ConstraintView::updateDrivingStatus()
 {
     QListWidgetItem* item = currentItem();
     
-    if (item){
-        ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
-        
+    ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
+    if (it) {
         onUpdateDrivingStatus(item, !it->isDriving());
-    }    
+    }
 }
 
 void ConstraintView::modifyCurrentItem()
@@ -472,8 +469,19 @@ void ConstraintView::swapNamedOfSelectedItems()
     std::string escapedstr1 = Base::Tools::escapedUnicodeFromUtf8(item1->sketch->Constraints[item1->ConstraintNbr]->Name.c_str());
     ConstraintItem * item2 = static_cast<ConstraintItem*>(items[1]);
     std::string escapedstr2 = Base::Tools::escapedUnicodeFromUtf8(item2->sketch->Constraints[item2->ConstraintNbr]->Name.c_str());
-    std::stringstream ss;
 
+    // In commit 67800ec8c (21 Jul 2015) the implementation of on_listWidgetConstraints_itemChanged()
+    // has changed ensuring that a name of a constraint cannot be reset any more.
+    // This leads to some inconsistencies when trying to swap "empty" names.
+    //
+    // If names are empty then nothing should be done
+    if (escapedstr1.empty() || escapedstr2.empty()) {
+        QMessageBox::warning(Gui::MainWindow::getInstance(), tr("Unnamed constraint"),
+                             tr("Only the names of named constraints can be swapped."));
+        return;
+    }
+
+    std::stringstream ss;
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
@@ -616,15 +624,15 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemSelectionChanged(void)
 void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetItem *item)
 {
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
-    if (!item) return;
+    if (!it) return;
 
     // if its the right constraint
     if (it->constraintType() == Sketcher::Distance ||
-            it->constraintType() == Sketcher::DistanceX ||
-            it->constraintType() == Sketcher::DistanceY ||
-            it->constraintType() == Sketcher::Radius ||
-            it->constraintType() == Sketcher::Angle ||
-            it->constraintType() == Sketcher::SnellsLaw) {
+        it->constraintType() == Sketcher::DistanceX ||
+        it->constraintType() == Sketcher::DistanceY ||
+        it->constraintType() == Sketcher::Radius ||
+        it->constraintType() == Sketcher::Angle ||
+        it->constraintType() == Sketcher::SnellsLaw) {
 
         EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);
@@ -634,6 +642,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
 
 void TaskSketcherConstrains::on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status)
 {
+    Q_UNUSED(status);
     ConstraintItem *citem = dynamic_cast<ConstraintItem*>(item);
     if (!citem) return;
 
@@ -643,12 +652,12 @@ void TaskSketcherConstrains::on_listWidgetConstraints_updateDrivingStatus(QListW
 
 void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetItem *item)
 {
-    if (!item || inEditMode)
+    const ConstraintItem *it = dynamic_cast<const ConstraintItem*>(item);
+    if (!it || inEditMode)
         return;
 
     inEditMode = true;
 
-    const ConstraintItem *it = dynamic_cast<const ConstraintItem*>(item);
     const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
     const std::vector< Sketcher::Constraint * > &vals = sketch->Constraints.getValues();
     const Sketcher::Constraint* v = vals[it->ConstraintNbr];
@@ -669,7 +678,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
         catch (const Base::Exception & e) {
             Gui::Command::abortCommand();
 
-            QMessageBox::critical(Gui::MainWindow::getInstance(), QString::fromLatin1("Error"),
+            QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
                                   QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
         }
     }

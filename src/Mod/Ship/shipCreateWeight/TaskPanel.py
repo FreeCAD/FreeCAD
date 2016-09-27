@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
+import Tools
 import WeightInstance as Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
@@ -42,35 +43,10 @@ class TaskPanel:
         form.ship = self.widget(QtGui.QComboBox, "Ship")
         form.weight = self.widget(QtGui.QLineEdit, "Weight")
 
-        # Create the object
         ship = self.ships[form.ship.currentIndex()]
-        obj = App.ActiveDocument.addObject("Part::FeaturePython", "Weight")
-        weight = Instance.Weight(obj, self.shapes, ship)
-        Instance.ViewProviderWeight(obj.ViewObject)
+        density = Units.parseQuantity(Locale.fromString(form.weight.text()))
 
-        # Set the mass/density
-        m_unit = USys.getMassUnits()
-        l_unit = USys.getLengthUnits()
-        qty = Units.parseQuantity(Locale.fromString(form.weight.text()))
-        if self.elem_type == 1:
-            w_unit = m_unit
-            obj.Mass = qty.getValueAs(w_unit).Value
-        elif self.elem_type == 2:
-            w_unit = m_unit + '/' + l_unit
-            obj.LineDens = qty.getValueAs(w_unit).Value
-        elif self.elem_type == 3:
-            w_unit = m_unit + '/' + l_unit + '^2'
-            obj.AreaDens = qty.getValueAs(w_unit).Value
-        elif self.elem_type == 4:
-            w_unit = m_unit + '/' + l_unit + '^3'
-            obj.Dens = qty.getValueAs(w_unit).Value
-
-        # Set it as a child of the ship
-        weights = ship.Weights[:]
-        weights.append(obj.Name)
-        ship.Weights = weights
-
-        App.ActiveDocument.recompute()
+        Tools.createWeight(self.shapes, ship, density)
         return True
 
     def reject(self):

@@ -69,7 +69,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
-        Part::Compound* objComp = dynamic_cast<Part::Compound*>(getObject());
+        Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
         if (hist.size() != sources.size())
             return;
@@ -85,6 +85,9 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
             Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            if (!objBase)
+                continue;
+
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
 
             TopTools_IndexedMapOfShape baseMap;

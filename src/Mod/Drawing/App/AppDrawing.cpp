@@ -27,15 +27,13 @@
 #include "FeatureClip.h"
 #include "PageGroup.h"
 
-extern struct PyMethodDef Drawing_methods[];
 
-PyDoc_STRVAR(module_drawing_doc,
-"This module is the drawing module.");
-
+namespace Drawing {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void DrawingExport initDrawing()
+PyMODINIT_FUNC initDrawing()
 {
     // load dependent module
     try {
@@ -46,7 +44,7 @@ void DrawingExport initDrawing()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    Py_InitModule3("Drawing", Drawing_methods, module_drawing_doc);   /* mod name, table ptr */
+    (void)Drawing::initModule();
     Base::Console().Log("Loading Drawing module... done\n");
 
 
@@ -66,5 +64,3 @@ void DrawingExport initDrawing()
     Drawing::FeatureClip            ::init();
     Drawing::FeatureViewSpreadsheet ::init();
 }
-
-} // extern "C"

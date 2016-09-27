@@ -135,7 +135,7 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
 
     QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
-    std::auto_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
+    std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
     ui.groupBox->setTitle(ui.groupBox->title()+QString::fromLatin1(" ")+comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
@@ -177,20 +177,15 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
 
 void DlgSettings3DViewImp::retranslate()
 {
-    std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
     comboNavigationStyle->clear();
 
-    QRegExp rx(QString::fromLatin1("^\\w+::(\\w+)Navigation\\w+$"));
-    for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
-        if (*it != UserNavigationStyle::getClassTypeId()) {
-            QString data = QString::fromLatin1(it->getName());
-            QString name = data.mid(data.indexOf(QLatin1String("::"))+2);
-            if (rx.indexIn(data) > -1) {
-                name = tr("%1 navigation").arg(rx.cap(1));
-            }
-            comboNavigationStyle->addItem(name, data);
-        }
+    // add submenu at the end to select navigation style
+    std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
+    for (std::map<Base::Type, std::string>::iterator it = styles.begin(); it != styles.end(); ++it) {
+        QByteArray data(it->first.getName());
+        QString name = QApplication::translate(it->first.getName(), it->second.c_str());
+
+        comboNavigationStyle->addItem(name, data);
     }
 }
 

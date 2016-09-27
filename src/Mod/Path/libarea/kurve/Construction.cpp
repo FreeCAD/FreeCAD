@@ -1,34 +1,10 @@
 // ***************************************************************************************************************************************
 //                    Point, CLine & Circle classes part of geometry.lib
+//                    g.j.hawkesford August 2006 for Camtek Gmbh
+//
+// This program is released under the BSD license. See the file COPYING for details.
+//
 // ***************************************************************************************************************************************
-
-/*==============================
-Copyright (c) 2006 g.j.hawkesford 
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
-
-
 
 #include "geometry.h"
 using namespace geoff_geometry;
@@ -42,7 +18,6 @@ namespace geoff_geometry {
 	double RESOLUTION = 1.0e-06;
 
 	// dummy functions
-	const wchar_t* getMessage(const wchar_t* original, int messageGroup, int stringID){return original;}
 	const wchar_t* getMessage(const wchar_t* original){return original;}
 	void FAILURE(const wchar_t* str){throw(str);}
 	void FAILURE(const std::wstring& str){throw(str);}
@@ -382,7 +357,7 @@ namespace geoff_geometry {
 	// circle methods
 	// ***************************************************************************************************************************************
 
-	Circle::Circle(const Point& p, double rad, bool okay){
+	Circle::Circle(const Point& p, double rad){
 		// Circle
 		pc = p;
 		radius = rad;
@@ -410,7 +385,7 @@ namespace geoff_geometry {
 	Circle Circle::Transform(Matrix& m) { // transform
 		Point p0 = this->pc;
 		double scale;
-		if(m.GetScale(scale) == false) FAILURE(getMessage(L"Differential Scale not allowed for this method", GEOMETRY_ERROR_MESSAGES, MES_DIFFSCALE));
+		if(m.GetScale(scale) == false) FAILURE(getMessage(L"Differential Scale not allowed for this method"));
 		return Circle(p0.Transform(m), radius * scale);
 	}
 
@@ -485,7 +460,7 @@ namespace geoff_geometry {
 	Point On(const Circle& c, const Point& p) {
 		// returns point that is nearest to c from p
 		double r = p.Dist(c.pc);
-		if(r < TOLERANCE) FAILURE(getMessage(L",Point on Circle centre - On(Circle& c, Point& p)", GEOMETRY_ERROR_MESSAGES, MES_POINTONCENTRE));
+		if(r < TOLERANCE) FAILURE(getMessage(L",Point on Circle centre - On(Circle& c, Point& p)"));
 		return(Mid(p, c.pc, (r - c.radius) / r));
 	}
 
@@ -665,7 +640,7 @@ namespace geoff_geometry {
 		if(!s2.ok) return Thro(p0, p2);		// p1 & p2 coincident
 
 		Point p = Intof(Normal(s0, Mid(p0, p1)),  Normal(s1, Mid(p0, p2)));
-		return (p.ok)? Circle(p, p0.Dist(p), true) : INVALID_CIRCLE;
+		return (p.ok)? Circle(p, p0.Dist(p)) : INVALID_CIRCLE;
 	}
 	Circle	Tanto(int NF, int AT0, const CLine& s0, int AT1, const Circle &c1, double rad) {
 		// circle tanto cline & circle with radius
@@ -810,7 +785,8 @@ namespace geoff_geometry {
 	Plane::Plane(double dist, const Vector3d& n) {
 		normal = n;
 		double mag = normal.normalise();
-		if((ok = (normal != NULL_VECTOR))) d = dist / mag;
+		ok = (normal != NULL_VECTOR);
+		if(ok) d = dist / mag;
 	}
 
 	double Plane::Dist(const Point3d& p)const{

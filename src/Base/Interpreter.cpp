@@ -92,13 +92,49 @@ void PyException::ReportException (void) const
 
 SystemExitException::SystemExitException()
 {
-    _sErrMsg = "System exit";
+    // Set exception message and code based upon the pthon sys.exit() code and/or message 
+    // based upon the the following sys.exit() call semantics.
+    //
+    // Invocation       |  _exitCode  |  _sErrMsg
+    // ---------------- +  ---------  +  --------
+    // sys.exit(int#)   |   int#      |   "System Exit"
+    // sys.exit(string) |   1         |   string
+    // sys.exit()       |   1         |   "System Exit"
+
+    long int errCode = 1;
+    std::string errMsg  = "System exit";
+    PyObject  *type, *value, *traceback, *code;
+
+    PyGILStateLocker locker;
+    PyErr_Fetch(&type, &value, &traceback);
+    PyErr_NormalizeException(&type, &value, &traceback);
+
+    if (value) {
+        code = PyObject_GetAttrString(value, "code");
+        if (code != NULL && value != Py_None) {
+           Py_DECREF(value);
+           value = code;
+        }
+
+        if (PyInt_Check(value)) {
+            errCode = PyInt_AsLong(value);
+        }
+        else {
+            const char *str = PyString_AsString(value);
+            if (str)
+                errMsg = errMsg + ": " + str;
+        }
+    }
+
+    _sErrMsg  = errMsg;
+    _exitCode = errCode;
 }
 
 SystemExitException::SystemExitException(const SystemExitException &inst)
-        : Exception(inst)
+  : Exception(inst), _exitCode(inst._exitCode)
 {
 }
+
 
 // ---------------------------------------------------------
 
@@ -135,7 +171,7 @@ public:
 
 InterpreterSingleton::InterpreterSingleton()
 {
-    //Py_Initialize();
+    this->_global = 0;
 }
 
 InterpreterSingleton::~InterpreterSingleton()
@@ -176,6 +212,30 @@ std::string InterpreterSingleton::runString(const char *sCmd)
         PyErr_Clear();
         return std::string();
     }
+}
+
+Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
+{
+    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");         /* get module, init python */
+    if (module == NULL)
+        throw PyException();                         /* not incref'd */
+    dict = PyModule_GetDict(module);            /* get dict namespace */
+    if (dict == NULL)
+        throw PyException();                           /* not incref'd */
+
+
+    presult = PyRun_String(sCmd, Py_eval_input, dict, dict); /* eval direct */
+    if (!presult) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
+    }
+
+    return Py::asObject(presult);
 }
 
 void InterpreterSingleton::systemExit(void)

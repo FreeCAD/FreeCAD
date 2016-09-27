@@ -50,6 +50,7 @@ void iisTaskGroup::addIconLabel(iisIconLabel *label, bool addToLayout)
 
 void iisTaskGroup::paintEvent ( QPaintEvent * event ) 
 {
+	Q_UNUSED(event); 
 	QPainter p(this);
 
 	//p.setOpacity(/*m_opacity+*/0.7);

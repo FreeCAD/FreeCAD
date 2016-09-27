@@ -44,25 +44,14 @@
 #include "FeatureMeshDefects.h"
 #include "FeatureMeshSolid.h"
 
-/* registration table  */
-extern struct PyMethodDef Mesh_Import_methods[];
-
-
-PyDoc_STRVAR(module_doc,
-"The functions in this module allow working with mesh objects.\n"
-"A set of functions are provided that allow to read in registered mesh file formats\n"
-"to either an newly created or already exising document.\n"
-"\n"
-"open(string) -- Create a new document and a Mesh::Import feature to load the file into the document.\n"
-"insert(string, string) -- Create a Mesh::Import feature to load the file into the given document.\n"
-"mesh() -- Create an empty mesh object.\n"
-"\n");
+namespace Mesh {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void MeshExport initMesh() 
+PyMODINIT_FUNC initMesh() 
 {
-    PyObject* meshModule = Py_InitModule3("Mesh", Mesh_Import_methods, module_doc);   /* mod name, table ptr */
+    PyObject* meshModule = Mesh::initModule();
     Base::Console().Log("Loading Mesh module... done\n");
 
     // NOTE: To finish the initialization of our own type objects we must
@@ -111,6 +100,3 @@ void MeshExport initMesh()
     Mesh::Torus                 ::init();
     Mesh::Cube                  ::init();
 }
-
-
-} // extern "C" 

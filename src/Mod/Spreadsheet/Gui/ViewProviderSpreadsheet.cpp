@@ -36,7 +36,7 @@
 #include "SpreadsheetView.h"
 
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include <Mod/Spreadsheet/App/Range.h>
+#include <App/Range.h>
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
@@ -49,6 +49,7 @@
 
 using namespace Base;
 using namespace Gui;
+using namespace App;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 

@@ -29,14 +29,20 @@
 #ifdef FC_OS_WIN32
 # define PartExport    __declspec(dllimport)
 # define PathExport    __declspec(dllimport)
+# define PartGuiExport __declspec(dllexport)
 # define PathGuiExport __declspec(dllexport)
 #else // for Linux
 # define PartExport
 # define PathExport
+# define PartGuiExport
 # define PathGuiExport
 #endif
 
 #include <Standard_math.hxx>
+
+#ifdef _MSC_VER
+# pragma warning( disable : 4273 )
+#endif
 
 #ifdef _PreComp_
 

@@ -22,6 +22,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(PathGui_LIBS
     Path
+    PartGui
     FreeCADGui
 )
 
@@ -86,8 +87,7 @@ SET(PathGui_SRCS
 add_library(PathGui SHARED ${PathGui_SRCS})
 target_link_libraries(PathGui ${PathGui_LIBS})
 
-
-fc_target_copy_resource(PathGui 
+fc_target_copy_resource(PathGui
     ${CMAKE_SOURCE_DIR}/src/Mod/Path
     ${CMAKE_BINARY_DIR}/Mod/Path
     InitGui.py)
@@ -96,3 +96,11 @@ SET_BIN_DIR(PathGui PathGui /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(PathGui)
 
 INSTALL(TARGETS PathGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PathGuiIcon_SVG
+    Resources/icons/PathWorkbench.svg
+)
+
+fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Path" ${PathGuiIcon_SVG})
+
+INSTALL(FILES ${PathGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Path/Resources/icons")

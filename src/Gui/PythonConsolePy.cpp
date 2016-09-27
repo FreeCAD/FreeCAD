@@ -342,7 +342,7 @@ Py::Object PythonStdin::repr()
     return Py::String(s_out.str());
 }
 
-Py::Object PythonStdin::readline(const Py::Tuple& args)
+Py::Object PythonStdin::readline(const Py::Tuple& /*args*/)
 {
     return Py::String( (const char *)pyConsole->readline().toLatin1() );
 }

@@ -159,7 +159,7 @@ SoAxisCrossKit::affectsState() const
    return false;
 }
 
-void SoAxisCrossKit::addWriteReference(SoOutput * out, SbBool isfromfield)
+void SoAxisCrossKit::addWriteReference(SoOutput * /*out*/, SbBool /*isfromfield*/)
 {
     // this node should not be written out to a file
 }
@@ -321,7 +321,7 @@ void SoRegPoint::GLRender(SoGLRenderAction *action)
     }
 }
 
-void SoRegPoint::generatePrimitives(SoAction* action)
+void SoRegPoint::generatePrimitives(SoAction* /*action*/)
 {
 }
 

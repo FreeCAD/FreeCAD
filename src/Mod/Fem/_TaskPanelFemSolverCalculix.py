@@ -1,30 +1,30 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 __title__ = "CalculiX Job Control Task Panel"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-from FemTools import FemTools
+import FemToolsCcx
 import FreeCAD
 import os
 import time
@@ -40,8 +40,8 @@ if FreeCAD.GuiUp:
 class _TaskPanelFemSolverCalculix:
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemSolverCalculix.ui")
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
+        self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:
             self.CalculixBinary = ccx_binary
             print ("Using CalculiX binary path from FEM preferences: {}".format(ccx_binary))
@@ -53,7 +53,6 @@ class _TaskPanelFemSolverCalculix:
                 self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
             else:
                 self.CalculixBinary = 'ccx'
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         self.solver_object = solver_object
 
@@ -63,13 +62,14 @@ class _TaskPanelFemSolverCalculix:
 
         self.fem_console_message = ''
 
-        #Connect Signals and Slots
+        # Connect Signals and Slots
         QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
         QtCore.QObject.connect(self.form.pb_write_inp, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
         QtCore.QObject.connect(self.form.pb_edit_inp, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
         QtCore.QObject.connect(self.form.pb_run_ccx, QtCore.SIGNAL("clicked()"), self.runCalculix)
         QtCore.QObject.connect(self.form.rb_static_analysis, QtCore.SIGNAL("clicked()"), self.select_static_analysis)
         QtCore.QObject.connect(self.form.rb_frequency_analysis, QtCore.SIGNAL("clicked()"), self.select_frequency_analysis)
+        QtCore.QObject.connect(self.form.rb_thermomech_analysis, QtCore.SIGNAL("clicked()"), self.select_thermomech_analysis)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
@@ -141,8 +141,8 @@ class _TaskPanelFemSolverCalculix:
         self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        fea = FemTools()
-        fea.reset_all()
+        fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
+        fea.reset_mesh_purge_results_checked()
         fea.inp_file_name = self.inp_file_name
         QApplication.setOverrideCursor(Qt.WaitCursor)
         fea.load_results()
@@ -159,6 +159,8 @@ class _TaskPanelFemSolverCalculix:
             self.form.rb_static_analysis.setChecked(True)
         elif self.solver_object.AnalysisType == 'frequency':
             self.form.rb_frequency_analysis.setChecked(True)
+        elif self.solver_object.AnalysisType == 'thermomech':
+            self.form.rb_thermomech_analysis.setChecked(True)
         return
 
     def accept(self):
@@ -178,11 +180,13 @@ class _TaskPanelFemSolverCalculix:
         self.form.le_working_dir.setText(self.solver_object.WorkingDir)
 
     def write_input_file_handler(self):
+        self.Start = time.time()
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         QApplication.restoreOverrideCursor()
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.inp_file_name = ""
-            fea = FemTools()
+            fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
             fea.set_analysis_type(self.solver_object.AnalysisType)
             fea.update_objects()
             fea.write_inp_file()
@@ -194,13 +198,14 @@ class _TaskPanelFemSolverCalculix:
             else:
                 self.femConsoleMessage("Write .inp file failed!", "#FF0000")
             QApplication.restoreOverrideCursor()
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def check_prerequisites_helper(self):
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
-        fea = FemTools()
+        fea = FemToolsCcx.FemToolsCcx(None, self.solver_object)
         fea.update_objects()
         message = fea.check_prerequisites()
         if message != "":
@@ -216,10 +221,10 @@ class _TaskPanelFemSolverCalculix:
 
     def editCalculixInputFile(self):
         print ('editCalculixInputFile {}'.format(self.inp_file_name))
-        if self.fem_prefs.GetBool("UseInternalEditor", True):
+        if self.ccx_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.inp_file_name)
         else:
-            ext_editor_path = self.fem_prefs.GetString("ExternalEditorPath", "")
+            ext_editor_path = self.ccx_prefs.GetString("ExternalEditorPath", "")
             if ext_editor_path:
                 self.start_ext_editor(ext_editor_path, self.inp_file_name)
             else:
@@ -255,6 +260,9 @@ class _TaskPanelFemSolverCalculix:
 
     def select_frequency_analysis(self):
         self.select_analysis_type('frequency')
+
+    def select_thermomech_analysis(self):
+        self.select_analysis_type('thermomech')
 
     # That function overlaps with FemTools setup_working_dir and needs to be removed when we migrate fully to FemTools
     def setup_working_dir(self):

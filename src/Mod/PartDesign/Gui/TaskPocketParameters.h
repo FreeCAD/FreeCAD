@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
- 
+
 
 #ifndef GUI_TASKVIEW_TaskPocketParameters_H
 #define GUI_TASKVIEW_TaskPocketParameters_H
@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderPocket.h"
 
 class Ui_TaskPocketParameters;
@@ -40,81 +41,59 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
-
-class TaskPocketParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskPocketParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent = 0);
+    TaskPocketParameters(ViewProviderPocket *PocketView, QWidget *parent = 0, bool newObj=false);
     ~TaskPocketParameters();
 
-    QByteArray getFaceName(void) const;
-    const bool updateView() const;
-    void apply();
+    virtual void saveHistory() override;
+    virtual void apply() override;
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onOffsetChanged(double);
     void onMidplaneChanged(bool);
     void onReversedChanged(bool);
-    void onModeChanged(int);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
-    void onUpdateView(bool);
+    void onModeChanged(int);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     double getLength(void) const;
-    bool getMidplane(void) const;
-    int getMode(void) const;
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    double getOffset(void) const;
+    int    getMode(void) const;
+    bool   getMidplane(void) const;
+    bool   getReversed(void) const;
+    QString getFaceName(void) const;
+
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI(int index);
 
 private:
     QWidget* proxy;
     Ui_TaskPocketParameters* ui;
-    ViewProviderPocket *PocketView;
     double oldLength;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPocketParameters : public Gui::TaskView::TaskDialog
+class TaskDlgPocketParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
     TaskDlgPocketParameters(ViewProviderPocket *PocketView);
-    ~TaskDlgPocketParameters();
 
     ViewProviderPocket* getPocketView() const
-    { return PocketView; }
-
-
-public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-protected:
-    ViewProviderPocket   *PocketView;
-
-    TaskPocketParameters  *parameter;
+    { return static_cast<ViewProviderPocket*>(vp); }
 };
 
 } //namespace PartDesignGui

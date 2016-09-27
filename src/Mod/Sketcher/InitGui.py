@@ -32,50 +32,22 @@
 
 
 class SketcherWorkbench ( Workbench ):
-	"Sketcher workbench object"
-        Icon = """
-                /* XPM */
-                static char * sketcher_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #0D0F0C",
-                "+	c #4D1007",
-                "@	c #FF1A00",
-                "#	c #4D4C4D",
-                "$	c #6C6B69",
-                "%	c #6F7A78",
-                "&	c #8B8D8A",
-                "*	c #C8C5C3",
-                "        @@@@@   ",
-                "      @@@  @@@  ",
-                "     @@ %#   @@ ",
-                "     @@ *$    @@",
-                "     @        @@",
-                "@@@@@@@@@@@    @",
-                "@@@@@@@@@@@@   @",
-                "@    @    @@  @@",
-                "@ $  @@   @@ @@ ",
-                "@+*&  @@@ @@@@  ",
-                "@ ..    @@@@@   ",
-                "@ *%      @@    ",
-                "@ #       @@    ",
-                "@         @@    ",
-                "@@@@@@@@@@@@    ",
-                "@@@@@@@@@@@     "};
-                """
-	MenuText = "Sketcher"
-	ToolTip = "Sketcher workbench"
+    "Sketcher workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Sketcher/Resources/icons/SketcherWorkbench.svg"
+        self.__class__.MenuText = "Sketcher"
+        self.__class__.ToolTip = "Sketcher workbench"
 
-	def Initialize(self):
-		# load the module
-		import SketcherGui
-		import Sketcher
-		try:
-			import Profiles
-		except ImportError:
-			print "Error in Profiles module"
-			
-	def GetClassName(self):
-		return "SketcherGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import SketcherGui
+        import Sketcher
+        try:
+            import Profiles
+        except ImportError:
+            print "Error in Profiles module"
+            
+    def GetClassName(self):
+        return "SketcherGui::Workbench"
 
 Gui.addWorkbench(SketcherWorkbench())

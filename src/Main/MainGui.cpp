@@ -236,11 +236,11 @@ int main( int argc, char ** argv )
         else
             App::Application::runApplication();
     }
-    catch (const Base::SystemExitException&) {
-        exit(0);
+    catch (const Base::SystemExitException& e) {
+        exit(e.getExitCode());
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
     catch (...) {
         Base::Console().Error("Application unexpectedly terminated\n");

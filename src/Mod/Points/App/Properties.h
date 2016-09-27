@@ -71,13 +71,19 @@ public:
     void setValue(float);
     
     /// index operator
-    float operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
-    
-    void set1Value (const int idx, float value){_lValueList.operator[] (idx) = value;}
+    float operator[] (const int idx) const {
+        return _lValueList[idx];
+    }
+
+    void set1Value (const int idx, float value) {
+        _lValueList[idx] = value;
+    }
     void setValues (const std::vector<float>& values);
     
-    const std::vector<float> &getValues(void) const{return _lValueList;}
-    
+    const std::vector<float> &getValues(void) const {
+        return _lValueList;
+    }
+
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
     
@@ -115,11 +121,11 @@ public:
     void setValue(float x, float y, float z);
 
     const Base::Vector3f& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
+        return _lValueList[idx];
     }
 
     void set1Value (const int idx, const Base::Vector3f& value) {
-        _lValueList.operator[] (idx) = value;
+        _lValueList[idx] = value;
     }
 
     void setValues (const std::vector<Base::Vector3f>& values);
@@ -144,7 +150,7 @@ public:
 
     /** @name Modify */
     //@{
-    void transform(const Base::Matrix4D &rclMat);
+    void transformGeometry(const Base::Matrix4D &rclMat);
     void removeIndices( const std::vector<unsigned long>& );
     //@}
 
@@ -178,16 +184,26 @@ public:
     PropertyCurvatureList();
     ~PropertyCurvatureList();
 
-    void setSize(int newSize){_lValueList.resize(newSize);}   
-    int getSize(void) const {return _lValueList.size();}   
+    void setSize(int newSize) {
+        _lValueList.resize(newSize);
+    }
+    int getSize(void) const {
+        return _lValueList.size();
+    }
     void setValue(const CurvatureInfo&);
     void setValues(const std::vector<CurvatureInfo>&);
     std::vector<float> getCurvature( int tMode) const;
 
     /// index operator
-    const CurvatureInfo& operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
-    void  set1Value (const int idx, const CurvatureInfo& value){_lValueList.operator[] (idx) = value;}
-    const std::vector<CurvatureInfo> &getValues(void) const{return _lValueList;}
+    const CurvatureInfo& operator[] (const int idx) const {
+        return _lValueList[idx];
+    }
+    void  set1Value (const int idx, const CurvatureInfo& value) {
+        _lValueList[idx] = value;
+    }
+    const std::vector<CurvatureInfo> &getValues(void) const {
+        return _lValueList;
+    }
 
     /** @name Save/restore */
     //@{
@@ -209,7 +225,7 @@ public:
 
     /** @name Modify */
     //@{
-    void transform(const Base::Matrix4D &rclMat);
+    void transformGeometry(const Base::Matrix4D &rclMat);
     void removeIndices( const std::vector<unsigned long>& );
     //@}
 

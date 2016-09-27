@@ -26,46 +26,10 @@ __url__ = ["http://www.freecadweb.org"]
 
 class DraftWorkbench (Workbench):
     "the Draft Workbench"
-    Icon = """
-        /* XPM */
-        static char * draft_xpm[] = {
-        "16 16 17 1",
-        " 	c None",
-        ".	c #5F4A1C",
-        "+	c #5A4E36",
-        "@	c #8A4D00",
-        "#	c #835A04",
-        "$	c #7E711F",
-        "%	c #847954",
-        "&	c #C27400",
-        "*	c #817D74",
-        "=	c #E79300",
-        "-	c #BFAB0C",
-        ";	c #ADA791",
-        ">	c #B3AE87",
-        ",	c #B0B2AE",
-        "'	c #ECD200",
-        ")	c #D6D8D5",
-        "!	c #FCFEFA",
-        "   ,!!)!!!!!!!!!",
-        "   ,!!>;!!!!!!!!",
-        "   ,!!>-,!!!!!!!",
-        "   ,!!>'$)!!!!!!",
-        "   ,!!>-'%!!!!!!",
-        "   ,!!>-$-;!!!!!",
-        "   ,!!>-*-$)!!!!",
-        " @&+!!>-*;-%!!!!",
-        "@&=+)!;'-''-*!!!",
-        ".@@.;;%%....+;;!",
-        ".&&===========$,",
-        ".&&=====&&####.,",
-        ".&&.++***,,)))!!",
-        "#==+)!!!!!!!!!!!",
-        " ##+)!!!!!!!!!!!",
-        "   *,,,,,,,,,,,,"};"""
-
-    MenuText = "Draft"
-    ToolTip = "The Draft module is used for basic 2D CAD Drafting"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Draft/Resources/icons/DraftWorkbench.svg"
+        self.__class__.MenuText = "Draft"
+        self.__class__.ToolTip = "The Draft module is used for basic 2D CAD Drafting"
 
     def Initialize(self):
         def QT_TRANSLATE_NOOP(scope, text):
@@ -118,11 +82,12 @@ class DraftWorkbench (Workbench):
                             "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
         self.utils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
-                      "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit"]
+                      "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
+                      "Draft_Slope"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
-                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho',
+                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho','Draft_Snap_Special',
                          'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
@@ -136,10 +101,6 @@ class DraftWorkbench (Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui","Import-Export")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
 
@@ -177,13 +138,9 @@ class DraftWorkbench (Workbench):
 
 FreeCADGui.addWorkbench(DraftWorkbench)
 
-# add Import/Export types
-App.addImportType("Autodesk DXF (*.dxf)","importDXF") 
-App.addImportType("SVG as geometry (*.svg)","importSVG")
-App.addImportType("Open CAD Format (*.oca *.gcad)","importOCA")
-App.addImportType("Common airfoil data (*.dat)","importAirfoilDAT")
-App.addExportType("Autodesk DXF (*.dxf)","importDXF")
-App.addExportType("Flattened SVG (*.svg)","importSVG")
-App.addExportType("Open CAD Format (*.oca)","importOCA")
-App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
-App.addExportType("Autodesk DWG (*.dwg)","importDWG")
+# File format pref pages are independent and can be loaded at startup
+import Draft_rc
+FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui","Import-Export")
+FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui","Import-Export")
+FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui","Import-Export")
+FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui","Import-Export")

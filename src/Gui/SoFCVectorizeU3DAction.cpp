@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <qglobal.h>
 # include <iomanip>
 # include <ios>
 #endif
@@ -58,7 +59,9 @@ class SoVectorizePoint : public SoVectorizeItem {
 public:
     SoVectorizePoint(void) {
         this->type = POINT;
+        this->vidx = 0;
         this->size = 1.0f;
+        this->col = 0;
     }
     int vidx;       // index to BSPtree coordinate
     float size;     // Coin size (pixels)
@@ -91,6 +94,9 @@ class SoVectorizeText : public SoVectorizeItem {
 public:
     SoVectorizeText(void) {
         this->type = TEXT;
+        this->fontsize = 10;
+        this->col = 0;
+        this->justification = LEFT;
     }
 
     enum Justification {
@@ -190,6 +196,7 @@ void SoFCVectorizeU3DActionP::printText(const SoVectorizeText * item) const
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();
     // todo
+    Q_UNUSED(item); 
 }
 
 void SoFCVectorizeU3DActionP::printTriangle(const SoVectorizeTriangle * item) const
@@ -219,16 +226,23 @@ void SoFCVectorizeU3DActionP::printTriangle(const SbVec3f * v, const SbColor * c
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();
     // todo
+    Q_UNUSED(c); 
 }
 
 void SoFCVectorizeU3DActionP::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
     // todo
+    Q_UNUSED(v); 
+    Q_UNUSED(c); 
+    Q_UNUSED(radius); 
 }
 
 void SoFCVectorizeU3DActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
 {
     // todo
+    Q_UNUSED(v); 
+    Q_UNUSED(c); 
+    Q_UNUSED(size); 
 }
 
 void SoFCVectorizeU3DActionP::printLine(const SoVectorizeLine * item) const
@@ -252,16 +266,19 @@ void SoFCVectorizeU3DActionP::printLine(const SoVectorizeLine * item) const
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();
     // todo
+    Q_UNUSED(item); 
 }
 
 void SoFCVectorizeU3DActionP::printPoint(const SoVectorizePoint * item) const
 {
     // todo
+    Q_UNUSED(item); 
 }
 
 void SoFCVectorizeU3DActionP::printImage(const SoVectorizeImage * item) const
 {
     // todo
+    Q_UNUSED(item); 
 }
 
 // -------------------------------------------------------
@@ -295,6 +312,8 @@ SoFCVectorizeU3DAction::getU3DOutput(void) const
 void
 SoFCVectorizeU3DAction::actionMethod(SoAction * a, SoNode * n)
 {
+    Q_UNUSED(a); 
+    Q_UNUSED(n); 
 }
 
 void SoFCVectorizeU3DAction::beginTraversal(SoNode * node)

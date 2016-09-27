@@ -28,7 +28,7 @@
     <message>
         <location line="+206"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Metode trasiranja putem zrake</translation>
+        <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -114,7 +114,7 @@
     <message>
         <location line="+203"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Metode trasiranja putem zrake</translation>
+        <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -132,7 +132,7 @@
     <message>
         <location line="+249"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Metode trasiranja putem zrake</translation>
+        <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -318,7 +318,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-308"/>
         <source>Luxrender</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Luxrender</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -358,7 +358,7 @@ Do you want to continue?</translation>
         <location line="+62"/>
         <location line="+279"/>
         <source>POV-Ray</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray</translation>
     </message>
     <message>
         <location line="-391"/>
@@ -367,7 +367,7 @@ Do you want to continue?</translation>
         <location line="+283"/>
         <location line="+109"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All Files</translation>
     </message>
     <message>
         <location line="-29"/>
@@ -464,7 +464,12 @@ Do you want to continue?</translation>
         <translation>Kamera, ime datoteke:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation type="unfinished">Render</translation>
     </message>
@@ -531,12 +536,11 @@ Do you want to continue?</translation>
         <translation>Izvoz postavki mreže</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>max devijacija mreže:</translation>
+        <translation type="obsolete">max devijacija mreže:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Ne izračunati vrh normale </translation>
     </message>

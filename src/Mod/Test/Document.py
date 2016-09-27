@@ -56,6 +56,14 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.undo()
     self.Doc.undo()
 
+  def testAbortTransaction(self):
+    self.Doc.openTransaction("Add")
+    obj=self.Doc.addObject("App::FeatureTest","Label")
+    self.Doc.abortTransaction()
+    TempPath = tempfile.gettempdir()
+    SaveName = TempPath + os.sep + "SaveRestoreTests.FCStd"
+    self.Doc.saveAs(SaveName)
+
   def testRemoval(self):
     # Cannot write a real test case for that but when debugging the
     # C-code there shouldn't be a memory leak (see rev. 1814)
@@ -124,7 +132,7 @@ class DocumentBasicCases(unittest.TestCase):
     except:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
-      self.fail("no exeption thrown")
+      self.fail("no exception thrown")
 
     #self.failUnless(L1.IntegerList  == [4711]   )
     #f = L1.FloatList
@@ -137,6 +145,13 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.recompute()
     self.failUnless(L1.Label== "Label_2","Invalid object name")
     self.Doc.removeObject("Label_1")
+
+  def testEnum(self):
+    enumeration_choices = ["one", "two"]
+    obj = self.Doc.addObject("App::FeaturePython","Label_2")
+    obj.addProperty("App::PropertyEnumeration", "myEnumeration", "Enum", "mytest")
+    with self.assertRaises(FreeCAD.Base.FreeCADError):
+      obj.myEnumeration = enumeration_choices[0]
 
   def testMem(self):
     self.Doc.MemSize

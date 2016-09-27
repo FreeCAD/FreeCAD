@@ -65,7 +65,7 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
 {
     char* keywords_n[] = {NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        const Handle_Geom_ConicalSurface& s = static_cast<const Handle_Geom_ConicalSurface&>
+        Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
             (getGeometryPtr()->handle());
         s->SetRadius(1.0);
         return 0;

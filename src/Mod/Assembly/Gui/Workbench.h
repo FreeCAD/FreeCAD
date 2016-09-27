@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,10 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef IMAGE_WORKBENCH_H
-#define IMAGE_WORKBENCH_H
+#ifndef ASSEMBLY_WORKBENCH_H
+#define ASSEMBLY_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Gui/Application.h>
 
 namespace AssemblyGui {
 
@@ -36,15 +37,27 @@ class AssemblyGuiExport Workbench : public Gui::StdWorkbench
     TYPESYSTEM_HEADER();
 
 public:
-  Workbench();
-  virtual ~Workbench();
+    Workbench();
+    virtual ~Workbench();
+
+    /** Run some actions when the workbench gets activated. */
+    virtual void activated();
+    /** Run some actions when the workbench gets deactivated. */
+    virtual void deactivated();
 
 protected:
   Gui::ToolBarItem* setupToolBars() const;
   Gui::ToolBarItem* setupCommandBars() const;
+  Gui::MenuItem*    setupMenuBar() const;
+
+private:
+   void slotActiveDocument(const Gui::Document&);
+   void slotFinishRestoreDocument(const App::Document&);
+   void slotNewDocument(const App::Document&);
+   void slotDeleteDocument(const App::Document&);
 };
 
 } // namespace AssemblyGui
 
 
-#endif // IMAGE_WORKBENCH_H 
+#endif // ASSEMBLY_WORKBENCH_H 

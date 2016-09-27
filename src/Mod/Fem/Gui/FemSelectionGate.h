@@ -30,15 +30,15 @@ namespace FemGui {
 class FemSelectionGate : public Gui::SelectionFilterGate
 {
  public:
-     enum ElemType { 
+     enum ElemType {
         Nothing ,
         Node    ,
         Element ,
-        NodeElement 
+        NodeElement
     };
 
     FemSelectionGate(ElemType type)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),Type(type)         
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),Type(type)
     {
     };
 

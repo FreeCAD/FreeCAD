@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -55,11 +55,11 @@ class Preview(object):
         point = Base.Vector(x, y, 0.0)
         plane = Part.makePlane(L, B, point, Base.Vector(0, 0, 1))
         plane.rotate(Base.Vector(0, 0, 0), Base.Vector(0, 1, 0), trim)
-        plane.translate(Base.Vector(0, 0, draft * Units.Metre.Value))
+        plane.translate(Base.Vector(0, 0, draft))
         Part.show(plane)
         objs = FreeCAD.ActiveDocument.Objects
         self.obj = objs[len(objs) - 1]
-        self.obj.Label = 'FreeSurface'
+        self.obj.Label = 'FreeSurfaceHelper'
         guiObj = FreeCADGui.ActiveDocument.getObject(self.obj.Name)
         guiObj.ShapeColor = (0.4, 0.8, 0.85)
         guiObj.Transparency = 50

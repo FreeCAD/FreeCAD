@@ -27,7 +27,9 @@
 # include <OpenGL/gl.h>
 # else
 # ifdef FC_OS_WIN32
+#  ifndef NOMINMAX
 #  define NOMINMAX
+#  endif
 #  include <windows.h>
 # endif
 # include <GL/gl.h>
@@ -60,6 +62,9 @@ public:
     static void initClass(void);
     static void finish(void);
     SoFCSelection(void);
+
+    /// Load highlight settings from the configuration
+    void applySettings ();
 
     enum HighlightModes {
         AUTO, ON, OFF

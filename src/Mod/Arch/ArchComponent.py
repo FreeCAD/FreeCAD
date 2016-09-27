@@ -31,7 +31,7 @@ Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall',
          'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab','Space',
          'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window']
 
-import FreeCAD,Draft
+import FreeCAD,Draft,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -116,7 +116,7 @@ def removeFromComponent(compobject,subobject):
             l.append(subobject)
             compobject.Subtractions = l
             if (Draft.getType(subobject) != "Window") and (not Draft.isClone(subobject,"Window",True)):
-                subobject.ViewObject.hide()
+                ArchCommands.setAsSubcomponent(subobject)
 
 
 class SelectionTaskPanel:
@@ -289,21 +289,28 @@ class ComponentTaskPanel:
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch",translate("Arch","The base object this component is built upon"))
-        obj.addProperty("App::PropertyLink","CloneOf","Arch",translate("Arch","The object this component is cloning"))
-        obj.addProperty("App::PropertyLinkList","Additions","Arch",translate("Arch","Other shapes that are appended to this object"))
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",translate("Arch","Other shapes that are subtracted from this object"))
-        obj.addProperty("App::PropertyString","Description","Arch",translate("Arch","An optional description for this component"))
-        obj.addProperty("App::PropertyString","Tag","Arch",translate("Arch","An optional tag for this component"))
-        obj.addProperty("App::PropertyMap","IfcAttributes","Arch",translate("Arch","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyLink","BaseMaterial","Material",translate("Arch","A material for this object"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this object"))
-        obj.addProperty("App::PropertyBool","MoveWithHost","Arch",translate("Arch","Specifies if this object must move together when its host is moved"))
+        obj.addProperty("App::PropertyLink","Base","Arch","The base object this component is built upon")
+        obj.addProperty("App::PropertyLink","CloneOf","Arch","The object this component is cloning")
+        obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
+        obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
+        obj.addProperty("App::PropertyString","Description","Arch","An optional description for this component")
+        obj.addProperty("App::PropertyString","Tag","Arch","An optional tag for this component")
+        obj.addProperty("App::PropertyMap","IfcAttributes","Arch","Custom IFC properties and attributes")
+        obj.addProperty("App::PropertyLink","BaseMaterial","Material","A material for this object")
+        obj.addProperty("App::PropertyEnumeration","Role","Arch","The role of this object")
+        obj.addProperty("App::PropertyBool","MoveWithHost","Arch","Specifies if this object must move together when its host is moved")
+        obj.addProperty("App::PropertyLink","IfcProperties","Arch","Custom IFC properties and attributes")
+        obj.addProperty("App::PropertyArea","VerticalArea","Arch","The area of all vertical faces of this object")
+        obj.addProperty("App::PropertyArea","HorizontalArea","Arch","The area of the projection of this object onto the XY plane")
+        obj.addProperty("App::PropertyLength","PerimeterLength","Arch","The perimeter length of the horizontal area")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
         self.MoveWithHost = False
         obj.Role = Roles
+        obj.setEditorMode("VerticalArea",1)
+        obj.setEditorMode("HorizontalArea",1)
+        obj.setEditorMode("PerimeterLength",1)
 
     def execute(self,obj):
         if obj.Base:
@@ -351,6 +358,8 @@ class Component:
 
     def getAxis(self,obj):
         "Returns an open wire which is the axis of this component, if applicable"
+        if Draft.getType(obj) == "Precast":
+            return None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
@@ -377,13 +386,15 @@ class Component:
     def getProfiles(self,obj,noplacement=False):
         "Returns the base profile(s) of this component, if applicable"
         wires = []
+        if Draft.getType(obj) == "Precast":
+            return wires
         n,l,w,h = self.getDefaultValues(obj)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
                     base = obj.Base.Base.Shape.copy()
-                    if noplacement:
-                        base.Placement = FreeCAD.Placement()
+                    #if noplacement:
+                    #    base.Placement = FreeCAD.Placement()
                     return [base]
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
@@ -476,9 +487,11 @@ class Component:
     def getExtrusionVector(self,obj,noplacement=False):
         "Returns an extrusion vector of this component, if applicable"
         n,l,w,h = self.getDefaultValues(obj)
+        if Draft.getType(obj) == "Precast":
+            return FreeCAD.Vector()
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
-                return obj.Base.Dir
+                return FreeCAD.Vector(obj.Base.Dir)
         if Draft.getType(obj) == "Structure":
             if l > h:
                 v = n.multiply(l)
@@ -577,12 +590,13 @@ class Component:
                         base = base.fuse(add)
 
                     elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window",True)):
-                        f = o.Proxy.getSubVolume(o)
-                        if f:
-                            if base.Solids and f.Solids:
-                                if placement:
-                                    f.Placement = f.Placement.multiply(placement)
-                                base = base.cut(f)
+                        if hasattr(o.Proxy,"getSubVolume"):
+                            f = o.Proxy.getSubVolume(o)
+                            if f:
+                                if base.Solids and f.Solids:
+                                    if placement:
+                                        f.Placement = f.Placement.multiply(placement)
+                                    base = base.cut(f)
 
                     elif o.isDerivedFrom("Part::Feature"):
                         if o.Shape:
@@ -637,7 +651,7 @@ class Component:
                                         print "Arch: unable to cut object ",o.Name, " from ", obj.Name
         return base
 
-    def applyShape(self,obj,shape,placement):
+    def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
         "checks and cleans the given shape, and apply it to the object"
         if shape:
             if not shape.isNull():
@@ -653,11 +667,70 @@ class Component:
                         if not placement.isNull():
                             obj.Placement = placement
                     else:
-                        FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
+                        if allownosolid:
+                            obj.Shape = shape
+                            if not placement.isNull():
+                                obj.Placement = placement
+                        else:
+                            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
                 else:
-                    FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
+                    if allowinvalid:
+                        obj.Shape = shape
+                        if not placement.isNull():
+                            obj.Placement = placement
+                    else:
+                        FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
             else:
                 FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has a null shape")+"\n")
+        self.computeAreas(obj)
+
+    def computeAreas(self,obj):
+        "computes the area properties"
+        if not obj.Shape:
+            return
+        if obj.Shape.isNull():
+            return
+        if not obj.Shape.isValid():
+            return
+        if not obj.Shape.Faces:
+            return
+        a = 0
+        fset = []
+        for f in obj.Shape.Faces:
+            ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+            if (ang > 1.57) and (ang < 1.571):
+                a += f.Area
+            if ang < 1.5707:
+                fset.append(f)
+        if a and hasattr(obj,"VerticalArea"):
+            if obj.VerticalArea.Value != a:
+                obj.VerticalArea = a
+        if fset and hasattr(obj,"HorizontalArea"):
+            import Drawing,Part
+            pset = []
+            for f in fset:
+                try:
+                    pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                except Part.OCCError:
+                    # error in computing the areas. Better set them to zero than show a wrong value
+                    if obj.HorizontalArea.Value != 0:
+                        print "Error computing areas for ",obj.Label
+                        obj.HorizontalArea = 0
+                    if hasattr(obj,"PerimeterLength"):
+                        if obj.PerimeterLength.Value != 0:
+                            obj.PerimeterLength = 0
+                else:
+                    pset.append(pf)
+            if pset:
+                self.flatarea = pset.pop()
+                for f in pset:
+                    self.flatarea = self.flatarea.fuse(f)
+                self.flatarea = self.flatarea.removeSplitter()
+                if obj.HorizontalArea.Value != self.flatarea.Area:
+                    obj.HorizontalArea = self.flatarea.Area
+                if hasattr(obj,"PerimeterLength") and (len(self.flatarea.Faces) == 1):
+                    if obj.PerimeterLength.Value != self.flatarea.Faces[0].OuterWire.Length:
+                        obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
 
 
 class ViewProviderComponent:
@@ -735,6 +808,10 @@ class ViewProviderComponent:
 
     def claimChildren(self):
         if hasattr(self,"Object"):
+            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            swalA = prefs.GetBool("swallowAdditions",True)
+            swalS = prefs.GetBool("swallowSubtractions",True)
+            swalW = prefs.GetBool("swallowWindows",True)
             c = []
             if hasattr(self.Object,"Base"):
                 if Draft.getType(self.Object) != "Wall":
@@ -743,12 +820,15 @@ class ViewProviderComponent:
                     c = []
                 else:
                     c = [self.Object.Base]
-            if hasattr(self.Object,"Additions"):
+            if hasattr(self.Object,"Additions") and swalA:
                 c.extend(self.Object.Additions)
-            if hasattr(self.Object,"Subtractions"):
+            if hasattr(self.Object,"Subtractions") and swalS:
                 for s in self.Object.Subtractions:
                     if Draft.getType(self.Object) == "Wall":
                         if Draft.getType(s) == "Roof":
+                            continue
+                    if (Draft.getType(s) == "Window") or Draft.isClone(s,"Window"):
+                        if not swalW:
                             continue
                     c.append(s)
             if hasattr(self.Object,"Armatures"):
@@ -765,11 +845,13 @@ class ViewProviderComponent:
         return []
 
     def setEdit(self,vobj,mode):
-        taskd = ComponentTaskPanel()
-        taskd.obj = self.Object
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
-        return True
+        if mode == 0:
+            taskd = ComponentTaskPanel()
+            taskd.obj = self.Object
+            taskd.update()
+            FreeCADGui.Control.showDialog(taskd)
+            return True
+        return False
 
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()

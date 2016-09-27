@@ -32,37 +32,16 @@
 
 
 class PointsWorkbench ( Workbench ):
-	"Points workbench object"
-	Icon = """
-			/* XPM */
-			static const char *test_icon[]={
-			"16 16 2 1",
-			"a c #000000",
-			". c None",
-			"......##......##",
-			"............##..",
-			"..##....##......",
-			"......##.....##.",
-			"....##....##....",
-			"##..............",
-			"....##....##....",
-			".......##.......",
-			"...##......##...",
-			".....##.........",
-			".........##.....",
-			"...##........##.",
-			".....##.........",
-			".........##.....",
-			"...##......##...",
-			"................"};
-			"""
-	MenuText = "Points"
-	ToolTip = "Points workbench"
+    "Points workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Points/Resources/icons/PointsWorkbench.svg"
+        self.__class__.MenuText = "Points"
+        self.__class__.ToolTip = "Points workbench"
 
-	def Initialize(self):
-		# load the module
-		import PointsGui
-	def GetClassName(self):
-		return "PointsGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import PointsGui
+    def GetClassName(self):
+        return "PointsGui::Workbench"
 
 Gui.addWorkbench(PointsWorkbench())

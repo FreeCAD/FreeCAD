@@ -12,7 +12,7 @@
         <translation type="obsolete">Sražení...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+654"/>
+        <location filename="../../Command.cpp" line="+655"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
@@ -30,14 +30,14 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Zkosení</translation>
+        <translation>Ponor</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-305"/>
+        <location line="-307"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+573"/>
+        <location line="+575"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
@@ -95,8 +95,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a linear pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a linear pattern feature</source>
-        <translation>vytvořit prvek násobného lineární pole prvků</translation>
+        <translation type="obsolete">vytvořit prvek násobného lineární pole prvků</translation>
     </message>
 </context>
 <context>
@@ -113,8 +117,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>vytvoření zrcadleného prvku</translation>
+        <translation type="obsolete">vytvoření zrcadleného prvku</translation>
     </message>
 </context>
 <context>
@@ -131,14 +139,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a multitransform feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a multitransform feature</source>
-        <translation>vytvořit vícenásobně transformovaný prvek</translation>
+        <translation type="obsolete">vytvořit vícenásobně transformovaný prvek</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1059"/>
+        <location line="-1061"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
@@ -167,14 +179,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a pocket with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a pocket with the selected sketch</source>
-        <translation>vytvořit  kapsu s předvybraným náčrtem</translation>
+        <translation type="obsolete">vytvořit  kapsu s předvybraným náčrtem</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+814"/>
+        <location line="+816"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
@@ -185,14 +201,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a polar pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a polar pattern feature</source>
-        <translation>Vytvořit kruhové pole</translation>
+        <translation type="obsolete">Vytvořit kruhové pole</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-746"/>
+        <location line="-748"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
@@ -210,7 +230,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+825"/>
+        <location line="+827"/>
         <source>PartDesign</source>
         <translation>Tvorba dílu</translation>
     </message>
@@ -221,8 +241,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a scaled feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a scaled feature</source>
-        <translation>Vytváření prvku změny měřítka</translation>
+        <translation type="obsolete">Vytváření prvku změny měřítka</translation>
     </message>
 </context>
 <context>
@@ -248,44 +272,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Parametr evolventy</translation>
+        <translation>Parametr evolventy</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">počet zubů:</translation>
+        <translation>počet zubů:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modul:</translation>
+        <translation>Modul:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Vysoká přesnost:</translation>
+        <translation>Vysoká přesnost:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Ano</translation>
+        <translation>Pravda</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Ne</translation>
+        <translation>Nepravda</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Vnější ozubení:</translation>
+        <translation>Vnější ozubení:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Úhel záběru:</translation>
+        <translation>Úhel záběru:</translation>
     </message>
 </context>
 <context>
@@ -407,7 +431,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Upravit zkosení</translation>
+        <translation>Upravit zkosení</translation>
     </message>
 </context>
 <context>
@@ -423,7 +447,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Upravit zaoblení</translation>
+        <translation>Upravit zaoblení</translation>
     </message>
 </context>
 <context>
@@ -463,7 +487,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Upravit kapsu</translation>
+        <translation>Upravit kapsu</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -667,24 +691,24 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vodorovná skicovací osa</translation>
+        <translation>Vodorovná skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Svislá skicovací osa</translation>
+        <translation>Svislá skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Vyber referenci...</translation>
+        <translation>Vyber referenci...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -714,7 +738,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Nedefinovaná</translation>
+        <translation>Nedefinovaná</translation>
     </message>
 </context>
 <context>
@@ -749,19 +773,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Vodorovná skicovací osa</translation>
+        <translation>Vodorovná skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Svislá skicovací osa</translation>
+        <translation>Svislá skicovací osa</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Vyber referenci...</translation>
+        <translation>Vyber referenci...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -780,12 +804,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Vybrat plochu</translation>
+        <translation>Vybrat plochu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Nedefinovaná</translation>
+        <translation>Nedefinovaná</translation>
     </message>
 </context>
 <context>
@@ -1043,7 +1067,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Překlopit</translation>
+        <translation>Překlopit</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1130,24 +1154,24 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Osa</translation>
+        <translation>Osa</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normálová osa roviny náčrtu</translation>
+        <translation>Normálová osa roviny náčrtu</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Vyber referenci...</translation>
+        <translation>Vyber referenci...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Reverse direction</source>
-        <translation>Reverse direction</translation>
+        <translation type="unfinished">Reverse direction</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1233,7 +1257,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Nedefinovaná</translation>
+        <translation>Nedefinovaná</translation>
     </message>
 </context>
 <context>
@@ -1280,13 +1304,13 @@ Please check one or more edge entities first.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-650"/>
+        <location filename="../../Command.cpp" line="-652"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1305,7 +1329,7 @@ Please check one or more edge entities first.</source>
         <translation type="obsolete">Vybraný objekt není drát.</translation>
     </message>
     <message>
-        <location line="-661"/>
+        <location line="-663"/>
         <location line="+84"/>
         <location line="+74"/>
         <location line="+84"/>
@@ -1313,94 +1337,143 @@ Please check one or more edge entities first.</source>
         <translation>Žádné platné náčrty v tomto dokumentu</translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Prosím, nejprve vytvořte náčrt nebo 2D objekt</translation>
+        <translation type="obsolete">Prosím, nejprve vytvořte náčrt nebo 2D objekt</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Vytvořte prosím nejprve náčrt nebo 2D objekt. Musí ležet na ploše tělesa</translation>
+        <translation type="obsolete">Vytvořte prosím nejprve náčrt nebo 2D objekt. Musí ležet na ploše tělesa</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+151"/>
+        <location line="+75"/>
+        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>Vyber hranu, plochu nebo těleso. Je dovolemo puze jedno těleso.</translation>
     </message>
     <message>
-        <location line="-146"/>
-        <location line="+151"/>
+        <location line="-147"/>
         <location line="+152"/>
+        <location line="+153"/>
         <source>Wrong object type</source>
         <translation>Špatný typ objektu</translation>
     </message>
     <message>
-        <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>Zaoblení lze použít pouze na dílech</translation>
+        <translation type="obsolete">Zaoblení lze použít pouze na dílech</translation>
     </message>
     <message>
-        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>Tvar vybrané části je prázdný</translation>
+        <translation type="obsolete">Tvar vybrané části je prázdný</translation>
     </message>
     <message>
-        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Zaoblení na vybrané stěně/hraně není možné</translation>
+        <translation type="obsolete">Zaoblení na vybrané stěně/hraně není možné</translation>
     </message>
     <message>
-        <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>Sražení je možno pouze na díle</translation>
+        <translation type="obsolete">Sražení je možno pouze na díle</translation>
     </message>
     <message>
-        <location line="-142"/>
-        <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>Tvar vybrané části je prázdný</translation>
+        <translation type="obsolete">Tvar vybrané části je prázdný</translation>
     </message>
     <message>
-        <location line="-481"/>
+        <location line="-626"/>
+        <location line="+158"/>
+        <source>Please create a sketch or 2D object first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-156"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejsou vybrané platné náčrty</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádný z vybraných náčrtů / 2D objektů není platný pro vysunutí desky. Vyberte prosím platný náčrt nebo 2D objekt, který není použitý žádným jiným prvkem.</translation>
     </message>
     <message>
+        <location line="+81"/>
         <location line="+158"/>
-        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+393"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>Zkosení na vybrané stěně/hraně není možné</translation>
+        <location line="-81"/>
+        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <translation>Žádný z vybraných náčrtů / 2D objektů není platný pro rotaci. Vyberte prosím platný náčrt nebo 2D objekt, který není použitý žádným jiným prvkem.</translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+161"/>
+        <source>Fillet works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+153"/>
+        <source>Shape of selected part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-82"/>
+        <source>No fillet possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Chamfer works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>No chamfer possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Draft works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Shape of selected Part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>No draft possible on selected faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
+        <location line="+72"/>
+        <source>Please create a subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No chamfer possible on selected faces/edges</source>
+        <translation type="obsolete">Zkosení na vybrané stěně/hraně není možné</translation>
+    </message>
+    <message>
+        <location line="-443"/>
         <source>Select one or more faces.</source>
         <translation>Vyberte jednu nebo více ploch.</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Úkos pracuje pouze na dílech</translation>
+        <translation type="obsolete">Úkos pracuje pouze na dílech</translation>
     </message>
     <message>
-        <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Úkos není možný na vybrané plochy</translation>
+        <translation type="obsolete">Úkos není možný na vybrané plochy</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+128"/>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1409,17 +1482,12 @@ Please check one or more edge entities first.</source>
         <translation>Neplatný prvek v tomto dokumentu</translation>
     </message>
     <message>
-        <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Vytvořte prosím nejprve odčítací nebo přídavný prvek</translation>
+        <translation type="obsolete">Vytvořte prosím nejprve odčítací nebo přídavný prvek</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Vytvořte prosím nejprve odčítací nebo přídavný prvek</translation>
+        <translation type="obsolete">Vytvořte prosím nejprve odčítací nebo přídavný prvek</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1484,13 +1552,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Ztratila se návaznost na základní náčrt</translation>
+        <translation>Ztratila se návaznost na základní náčrt</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">Objekt nemůže být editován, protože vazba na základní náčrt je ztracená.</translation>
+        <translation>Objekt nemůže být editován, protože vazba na základní náčrt je ztracená.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1531,12 +1599,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Upravit vybrání</translation>
+        <translation>Upravit vybrání</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Upravit rotaci</translation>
+        <translation>Upravit rotaci</translation>
     </message>
 </context>
 <context>

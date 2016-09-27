@@ -34,6 +34,8 @@
 # include <Inventor/C/basic.h>
 #endif
 
+#include <LibraryVersions.h>
+
 #include "Splashscreen.h"
 #include "ui_AboutApplication.h"
 #include <Base/Console.h>
@@ -52,7 +54,7 @@ namespace Gui {
 class SplashObserver : public Base::ConsoleObserver
 {
 public:
-    SplashObserver(QSplashScreen* splasher=0, const char* name=0)
+    SplashObserver(QSplashScreen* splasher=0)
       : splash(splasher), alignment(Qt::AlignBottom|Qt::AlignLeft), textColor(Qt::black)
     {
         Base::Console().AttachObserver(this);
@@ -100,18 +102,24 @@ public:
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Message(const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Error  (const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Log (const char * s)
@@ -134,7 +142,7 @@ public:
 
         splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
         QMutex mutex;
-        mutex.lock();
+        QMutexLocker ml(&mutex);
         QWaitCondition().wait(&mutex, 50);
     }
 
@@ -217,11 +225,29 @@ void AboutDialogFactory::setDefaultFactory(AboutDialogFactory *f)
 AboutDialog::AboutDialog(bool showLic, QWidget* parent)
   : QDialog(parent, Qt::FramelessWindowHint), ui(new Ui_AboutApplication)
 {
+    Q_UNUSED(showLic);
+
     setModal(true);
     ui->setupUi(this);
     ui->labelSplashPicture->setPixmap(getMainWindow()->splashImage());
-    if (!showLic)
-        ui->licenseButton->hide();
+//    if (showLic) { // currently disabled. Additional license blocks are always shown.
+        QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
+        // any additional piece of text to be added after the main license text goes below.
+        // Please set title in <h2> tags, license text in <p> tags 
+        // and add an <hr/> tag at the end to nicely separate license blocks
+#ifdef _USE_3DCONNEXION_SDK
+        info += QString::fromLatin1(
+            "<h2>3D Mouse Support</h2>"
+            "<p>Development tools and related technology provided under license from 3Dconnexion."
+            "(c) 1992 - 2012 3Dconnexion. All rights reserved</p>"
+            "<hr/>"
+            );
+#endif
+        QString lictext = ui->textBrowserLicense->toHtml();
+        lictext.replace(QString::fromLatin1("SUCH DAMAGES."),info);
+        ui->textBrowserLicense->setHtml(lictext);
+//    }
+    ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
 }
 
@@ -439,7 +465,7 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
         QString branch = ui->labelBuildBranch->text();
-        branch.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()));
+        branch.replace(QString::fromLatin1("Unknown"), QString::fromUtf8(it->second.c_str()));
         ui->labelBuildBranch->setText(branch);
     }
     else {
@@ -458,56 +484,6 @@ void AboutDialog::setupLabels()
         ui->labelHash->hide();
         ui->labelBuildHash->hide();
     }
-}
-
-namespace Gui {
-namespace Dialog {
-
-class GuiExport LicenseDialog : public QDialog
-{
-public:
-    LicenseDialog(QWidget *parent = 0) : QDialog(parent, Qt::FramelessWindowHint)
-    {
-        QString info;
-#ifdef _USE_3DCONNEXION_SDK
-        info = QString::fromLatin1(
-            "3D Mouse Support:\n"
-            "Development tools and related technology provided under license from 3Dconnexion.\n"
-            "(c) 1992 - 2012 3Dconnexion. All rights reserved");
-#endif
-        statusLabel = new QLabel(info);
-        buttonBox = new QDialogButtonBox;
-        buttonBox->setStandardButtons(QDialogButtonBox::Ok);
-        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-
-        QHBoxLayout *topLayout = new QHBoxLayout;
-        topLayout->addWidget(statusLabel);
-
-        QVBoxLayout *mainLayout = new QVBoxLayout;
-        mainLayout->addLayout(topLayout);
-        mainLayout->addWidget(buttonBox);
-        setLayout(mainLayout);
-
-        setWindowTitle(tr("Copyright"));
-    }
-    ~LicenseDialog()
-    {
-    }
-
-private:
-    QLabel *statusLabel;
-    QDialogButtonBox *buttonBox;
-};
-
-} // namespace Dialog
-} // namespace Gui
-
-void AboutDialog::on_licenseButton_clicked()
-{
-#ifdef _USE_3DCONNEXION_SDK
-    LicenseDialog dlg(this);
-    dlg.exec();
-#endif
 }
 
 void AboutDialog::on_copyButton_clicked()
@@ -539,7 +515,7 @@ void AboutDialog::on_copyButton_clicked()
 #endif
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
-        str << "Branch: " << it->second.c_str() << endl;
+        str << "Branch: " << QString::fromUtf8(it->second.c_str()) << endl;
     it = config.find("BuildRevisionHash");
     if (it != config.end())
         str << "Hash: " << it->second.c_str() << endl;
@@ -547,9 +523,16 @@ void AboutDialog::on_copyButton_clicked()
     str << "Python version: " << PY_VERSION << endl;
     str << "Qt version: " << QT_VERSION_STR << endl;
     str << "Coin version: " << COIN_VERSION << endl;
-    it = config.find("OCC_VERSION");
-    if (it != config.end())
-        str << "OCC version: " << it->second.c_str() << endl;
+#if defined(HAVE_OCC_VERSION)
+    str << "OCC version: "
+        << OCC_VERSION_MAJOR << "."
+        << OCC_VERSION_MINOR << "."
+        << OCC_VERSION_MAINTENANCE
+#ifdef OCC_VERSION_DEVELOPMENT
+        << "." OCC_VERSION_DEVELOPMENT
+#endif
+        << endl;
+#endif
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

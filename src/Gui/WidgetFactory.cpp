@@ -206,6 +206,7 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     }
     throw Py::RuntimeError("Failed to wrap widget");
 #else
+    Q_UNUSED(className);
     Py::Module sipmod(PyImport_AddModule((char*)"sip"));
     Py::Callable func = sipmod.getDict().getItem("wrapinstance");
     Py::Tuple arguments(2);
@@ -260,6 +261,9 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
         }
         createChildrenNameAttributes(root, child);
     }
+#else
+    Q_UNUSED(root);
+    Q_UNUSED(object);
 #endif
 }
 
@@ -270,6 +274,9 @@ void PythonWrapper::setParent(PyObject* pyWdg, QObject* parent)
         Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtGuiTypes[SBK_QWIDGET_IDX], parent));
         Shiboken::Object::setParent(pyParent, pyWdg);
     }
+#else
+    Q_UNUSED(pyWdg);
+    Q_UNUSED(parent);
 #endif
 }
 
@@ -390,8 +397,11 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     w->setParent(parent);
 
     try {
-        dynamic_cast<PrefWidget*>(w)->setEntryName(sPref);
-        dynamic_cast<PrefWidget*>(w)->restorePreferences();
+        PrefWidget* pw = dynamic_cast<PrefWidget*>(w);
+        if (pw) {
+            pw->setEntryName(sPref);
+            pw->restorePreferences();
+        }
     }
     catch (...) {
 #ifdef FC_DEBUG
@@ -557,7 +567,7 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
 
 // ----------------------------------------------------
 
-PyObject *UiLoaderPy::PyMake(struct _typeobject *type, PyObject * args, PyObject * kwds)
+PyObject *UiLoaderPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
@@ -568,7 +578,7 @@ void UiLoaderPy::init_type()
 {
     behaviors().name("UiLoader");
     behaviors().doc("UiLoader to create widgets");
-    behaviors().type_object()->tp_new = &PyMake;
+    behaviors().set_tp_new(PyMake);
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
     behaviors().supportGetattr();
@@ -879,59 +889,24 @@ ContainerDialog::~ContainerDialog()
 
 // ----------------------------------------------------
 
-//--------------------------------------------------------------------------
-// Type structure
-//--------------------------------------------------------------------------
+void PyResource::init_type()
+{
+    behaviors().name("PyResource");
+    behaviors().doc("PyResource");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    add_varargs_method("value",&PyResource::value);
+    add_varargs_method("setValue",&PyResource::setValue);
+    add_varargs_method("show",&PyResource::show);
+    add_varargs_method("connect",&PyResource::connect);
+}
 
-PyTypeObject PyResource::Type = {
-                                    PyObject_HEAD_INIT(&PyType_Type)
-                                    0,                    /*ob_size*/
-                                    "PyResource",         /*tp_name*/
-                                    sizeof(PyResource),   /*tp_basicsize*/
-                                    0,                    /*tp_itemsize*/
-                                    /* methods */
-                                    PyDestructor,         /*tp_dealloc*/
-                                    0,                    /*tp_print*/
-                                    __getattr,            /*tp_getattr*/
-                                    __setattr,            /*tp_setattr*/
-                                    0,                    /*tp_compare*/
-                                    __repr,               /*tp_repr*/
-                                    0,                    /*tp_as_number*/
-                                    0,                    /*tp_as_sequence*/
-                                    0,                    /*tp_as_mapping*/
-                                    0,                    /*tp_hash*/
-                                    0,                    /*tp_call */
-                                  };
-
-//--------------------------------------------------------------------------
-// Methods structure
-//--------------------------------------------------------------------------
-PyMethodDef PyResource::Methods[] = {
-                                        {"GetValue",       (PyCFunction) svalue,    Py_NEWARGS},
-                                        {"SetValue",       (PyCFunction) ssetValue, Py_NEWARGS},
-                                        {"Show",           (PyCFunction) sshow,     Py_NEWARGS},
-                                        {"Connect",        (PyCFunction) sconnect,  Py_NEWARGS},
-
-                                        {NULL, NULL}      /* Sentinel */
-                                      };
-
-//--------------------------------------------------------------------------
-// constructor
-//--------------------------------------------------------------------------
-PyResource::PyResource(PyTypeObject *T)
-    : PyObjectBase(0, T), myDlg(0L)
+PyResource::PyResource() : myDlg(0)
 {
 }
 
-PyObject *PyResource::PyMake(PyObject *ignored, PyObject *args) // Python wrapper
-{
-    //return new FCPyResource();      // Make new Python-able object
-    return 0;
-}
-
-//--------------------------------------------------------------------------
-//  FCPyResource destructor
-//--------------------------------------------------------------------------
 PyResource::~PyResource()
 {
     delete myDlg;
@@ -941,27 +916,12 @@ PyResource::~PyResource()
     }
 }
 
-//--------------------------------------------------------------------------
-// FCPyParametrGrp Attributes
-//--------------------------------------------------------------------------
-PyObject *PyResource::_getattr(char *attr)        // __getattr__ function: note only need to handle new state
-{
-    _getattr_up(PyObjectBase);            // send to parent
-    return 0;
-}
-
-int PyResource::_setattr(char *attr, PyObject *value)   // __setattr__ function: note only need to handle new state
-{
-    return PyObjectBase::_setattr(attr, value); // send up to parent
-    return 0;
-}
-
 /**
  * Loads an .ui file with the name \a name. If the .ui file cannot be found or the QWidgetFactory
  * cannot create an instance an exception is thrown. If the created resource does not inherit from
  * QDialog an instance of ContainerDialog is created to embed it.
  */
-void PyResource::load( const char* name )
+void PyResource::load(const char* name)
 {
     QString fn = QString::fromUtf8(name);
     QFileInfo fi(fn);
@@ -1029,8 +989,8 @@ void PyResource::load( const char* name )
 /**
  * Makes a connection between the sender widget \a sender and its signal \a signal
  * of the created resource and Python callback function \a cb.
- * If the sender widget does not exist or no resource has been loaded this method returns false, 
- * otherwise it returns true.
+ * If the sender widget does not exist or no resource has been loaded this method returns FALSE, 
+ * otherwise it returns TRUE.
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
 {
@@ -1063,64 +1023,12 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     return false;
 }
 
-/**
- * Searches for the sender, the signal and the callback function to connect with
- * in the argument object \a args. In the case it fails 0 is returned.
- */
-PyObject *PyResource::connect(PyObject *args)
+Py::Object PyResource::repr()
 {
-    char *psSender;
-    char *psSignal;
-
-    PyObject *result = NULL;
-    PyObject *temp;
-
-    if (PyArg_ParseTuple(args, "ssOset_callback", &psSender, &psSignal, &temp)) {
-        if (!PyCallable_Check(temp)) {
-            PyErr_SetString(PyExc_TypeError, "parameter must be callable");
-            return NULL;
-        }
-
-        Py_XINCREF(temp);         /* Add a reference to new callback */
-        std::string sSender = psSender;
-        std::string sSignal = psSignal;
-
-        if (!connect(psSender, psSignal, temp)) {
-            // no signal object found => dispose the callback object
-            Py_XDECREF(temp);  /* Dispose of callback */
-        }
-
-        /* Boilerplate to return "None" */
-        Py_INCREF(Py_None);
-        result = Py_None;
-    }
-
-    return result;
-}
-
-/**
- * If any resouce has been loaded this methods shows it as a modal dialog.
- */
-PyObject *PyResource::show(PyObject *args)
-{
-    if (myDlg) {
-        // small trick to get focus
-        myDlg->showMinimized();
-
-#ifdef Q_WS_X11
-        // On X11 this may not work. For further information see QWidget::showMaximized
-        //
-        // workaround for X11
-        myDlg->hide();
-        myDlg->show();
-#endif
-
-        myDlg->showNormal();
-        myDlg->exec();
-    }
-
-    Py_INCREF(Py_None);
-    return Py_None;
+    std::string s;
+    std::ostringstream s_out;
+    s_out << "Resource object";
+    return Py::String(s_out.str());
 }
 
 /**
@@ -1128,12 +1036,12 @@ PyObject *PyResource::show(PyObject *args)
  * to returns its value as Python object.
  * In the case it fails 0 is returned.
  */
-PyObject *PyResource::value(PyObject *args)
+Py::Object PyResource::value(const Py::Tuple& args)
 {
     char *psName;
     char *psProperty;
-    if (!PyArg_ParseTuple(args, "ss", &psName, &psProperty))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args.ptr(), "ss", &psName, &psProperty))
+        throw Py::Exception();
 
     QVariant v;
     if (myDlg) {
@@ -1156,42 +1064,42 @@ PyObject *PyResource::value(PyObject *args)
             qWarning( "'%s' not found.\n", psName );
     }
 
-    PyObject *pItem=0;
+    Py::Object item = Py::None();
     switch (v.type())
     {
     case QVariant::StringList:
         {
             QStringList str = v.toStringList();
             int nSize = str.count();
-            PyObject* slist = PyList_New(nSize);
+            Py::List slist(nSize);
             for (int i=0; i<nSize;++i) {
-                PyObject* item = PyString_FromString(str[i].toLatin1());
-                PyList_SetItem(slist, i, item);
+                slist.setItem(i, Py::String(str[i].toLatin1()));
             }
+            item = slist;
         }   break;
     case QVariant::ByteArray:
         break;
     case QVariant::String:
-        pItem = PyString_FromString(v.toString().toLatin1());
+        item = Py::String(v.toString().toLatin1());
         break;
     case QVariant::Double:
-        pItem = PyFloat_FromDouble(v.toDouble());
+        item = Py::Float(v.toDouble());
         break;
     case QVariant::Bool:
-        pItem = PyInt_FromLong(v.toBool() ? 1 : 0);
+        item = Py::Boolean(v.toBool() ? 1 : 0);
         break;
     case QVariant::UInt:
-        pItem = PyLong_FromLong(v.toUInt());
+        item = Py::Long(static_cast<unsigned long>(v.toUInt()));
         break;
     case QVariant::Int:
-        pItem = PyInt_FromLong(v.toInt());
+        item = Py::Int(v.toInt());
         break;
     default:
-        pItem = PyString_FromString("");
+        item = Py::String("");
         break;
     }
 
-    return pItem;
+    return item;
 }
 
 /**
@@ -1199,13 +1107,13 @@ PyObject *PyResource::value(PyObject *args)
  * to set even this new value.
  * In the case it fails 0 is returned.
  */
-PyObject *PyResource::setValue(PyObject *args)
+Py::Object PyResource::setValue(const Py::Tuple& args)
 {
     char *psName;
     char *psProperty;
     PyObject *psValue;
-    if (!PyArg_ParseTuple(args, "ssO", &psName, &psProperty, &psValue))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args.ptr(), "ssO", &psName, &psProperty, &psValue))
+        throw Py::Exception();
 
     QVariant v;
     if (PyString_Check(psValue)) {
@@ -1237,8 +1145,7 @@ PyObject *PyResource::setValue(PyObject *args)
         v = str;
     }
     else {
-        PyErr_SetString(PyExc_AssertionError, "Unsupported type");
-        return NULL;
+        throw Py::TypeError("Unsupported type");
     }
 
     if (myDlg) {
@@ -1257,23 +1164,80 @@ PyObject *PyResource::setValue(PyObject *args)
             }
         }
 
-        if ( !fnd )
+        if (!fnd)
             qWarning( "'%s' not found.\n", psName );
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    return Py::None();
+}
+
+/**
+ * If any resouce has been loaded this methods shows it as a modal dialog.
+ */
+Py::Object PyResource::show(const Py::Tuple&)
+{
+    if (myDlg) {
+        // small trick to get focus
+        myDlg->showMinimized();
+
+#ifdef Q_WS_X11
+        // On X11 this may not work. For further information see QWidget::showMaximized
+        //
+        // workaround for X11
+        myDlg->hide();
+        myDlg->show();
+#endif
+
+        myDlg->showNormal();
+        myDlg->exec();
+    }
+
+    return Py::None();
+}
+
+/**
+ * Searches for the sender, the signal and the callback function to connect with
+ * in the argument object \a args. In the case it fails 0 is returned.
+ */
+Py::Object PyResource::connect(const Py::Tuple& args)
+{
+    char *psSender;
+    char *psSignal;
+
+    PyObject *temp;
+
+    if (PyArg_ParseTuple(args.ptr(), "ssO", &psSender, &psSignal, &temp)) {
+        if (!PyCallable_Check(temp)) {
+            PyErr_SetString(PyExc_TypeError, "parameter must be callable");
+            throw Py::Exception();
+        }
+
+        Py_XINCREF(temp);         /* Add a reference to new callback */
+        std::string sSender = psSender;
+        std::string sSignal = psSignal;
+
+        if (!connect(psSender, psSignal, temp)) {
+            // no signal object found => dispose the callback object
+            Py_XDECREF(temp);  /* Dispose of callback */
+        }
+
+        return Py::None();
+    }
+
+    // error set by PyArg_ParseTuple
+    throw Py::Exception();
 }
 
 // ----------------------------------------------------
 
-SignalConnect::SignalConnect(Base::PyObjectBase* res, PyObject* cb)
+SignalConnect::SignalConnect(PyObject* res, PyObject* cb)
   : myResource(res), myCallback(cb)
 {
 }
 
 SignalConnect::~SignalConnect()
 {
+    Base::PyGILStateLocker lock;
     Py_XDECREF(myCallback);  /* Dispose of callback */
 }
 
@@ -1288,7 +1252,7 @@ void SignalConnect::onExecute()
     /* Time to call the callback */
     arglist = Py_BuildValue("(O)", myResource);
     result = PyEval_CallObject(myCallback, arglist);
-    (void)result;
+    Py_XDECREF(result);
     Py_DECREF(arglist);
 }
 

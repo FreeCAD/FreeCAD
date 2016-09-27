@@ -48,12 +48,14 @@
 #include "PythonEditor.h"
 #include "SoFCDB.h"
 #include "View3DInventor.h"
+#include "SplitView3DInventor.h"
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "Language/Translator.h"
 #include "DownloadManager.h"
+#include "DlgPreferencesImp.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -120,6 +122,9 @@ PyMethodDef Application::Methods[] = {
   {"runCommand",              (PyCFunction) Application::sRunCommand,       1,
    "runCommand(string) -> None\n\n"
    "Run command with name"},
+  {"listCommands",               (PyCFunction) Application::sListCommands,1,
+   "listCommands() -> list of strings\n\n"
+   "Returns a list of all commands known to FreeCAD."},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView,   1,
    "deprecated -- use class View"},
   {"hide",                    (PyCFunction) Application::sHide,             1,
@@ -138,13 +143,16 @@ PyMethodDef Application::Methods[] = {
    "Open a macro, Inventor or VRML file"},
   {"export",                  (PyCFunction) Application::sExport,           1,
    "save scene to Inventor or VRML file"},
-  {"activeDocument",          (PyCFunction) Application::sActiveDocument,   1,
+   { "activeDocument", (PyCFunction)Application::sActiveDocument, 1,
    "activeDocument() -> object or None\n\n"
-   "Return the active document or None if no one exists"},
+   "Return the active document or None if no one exists" },
   {"setActiveDocument",       (PyCFunction) Application::sSetActiveDocument,1,
    "setActiveDocument(string or App.Document) -> None\n\n"
    "Activate the specified document"},
-  {"getDocument",             (PyCFunction) Application::sGetDocument,      1,
+   { "activeView", (PyCFunction)Application::sActiveView, 1,
+   "activeView() -> object or None\n\n"
+   "Return the active view of the active document or None if no one exists" },
+   { "getDocument", (PyCFunction)Application::sGetDocument, 1,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
   {"doCommand",               (PyCFunction) Application::sDoCommand,        1,
@@ -159,21 +167,44 @@ PyMethodDef Application::Methods[] = {
   {"showDownloads",               (PyCFunction) Application::sShowDownloads,1,
    "showDownloads() -> None\n\n"
    "Shows the downloads manager window"},
+  {"showPreferences",               (PyCFunction) Application::sShowPreferences,1,
+   "showPreferences([string,int]) -> None\n\n"
+   "Shows the preferences window. If string and int are provided, the given page index in the given group is shown."},
+   {"createViewer",               (PyCFunction) Application::sCreateViewer,1,
+    "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
+    "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
 
-  {NULL, NULL}		/* Sentinel */
+  {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
-PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                       // NULL triggers exception 
+	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+		return NULL;                       // NULL triggers exception 
 
-    Document *pcDoc = Instance->activeDocument();
-    if (pcDoc) {
-        return pcDoc->getPyObject();
-    } else {
-        Py_Return;
-    }
+	Document *pcDoc = Instance->activeDocument();
+	if (pcDoc) {
+		return pcDoc->getPyObject();
+	}
+	else {
+		Py_Return;
+	}
+}
+
+PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+		return NULL;                       // NULL triggers exception 
+
+	Document *pcDoc = Instance->activeDocument();
+	if (pcDoc) {
+		Gui::MDIView *pcView = pcDoc->getActiveView();
+		if (pcView)
+			// already incremented in getPyObject().
+			return pcView->getPyObject();
+	}
+
+    Py_Return;
 }
 
 PyObject* Gui::Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
@@ -772,8 +803,11 @@ PyObject* Application::sGetWorkbenchHandler(PyObject * /*self*/, PyObject *args,
     return pcWorkbench;
 }
 
-PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                       // NULL triggers exception
+
     Py_INCREF(Instance->_pcWorkbenchDictionary);
     return Instance->_pcWorkbenchDictionary;
 }
@@ -974,13 +1008,14 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
 
 PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    char*       pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    char* pName;
+    int item = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &pName, &item))
+        return NULL;
 
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
-        cmd->invoke(0);
+        cmd->invoke(item);
         Py_INCREF(Py_None);
         return Py_None;
     }
@@ -988,6 +1023,21 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject 
         PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
         return 0;
     }
+}
+
+PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                       // NULL triggers exception 
+
+    std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
+    PyObject* pyList = PyList_New(cmds.size());
+    int i=0;
+    for ( std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it ) {
+        PyObject* str = PyString_FromString((*it)->getName());
+        PyList_SetItem(pyList, i++, str);
+    }
+    return pyList;
 }
 
 PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
@@ -1050,5 +1100,49 @@ PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args,PyObje
     Gui::Dialog::DownloadManager::getInstance();
 
     Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    int idx=0;
+    if (!PyArg_ParseTuple(args, "|si", &pstr, &idx))             // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+    Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
+    if (pstr) 
+        cDlg.activateGroupPage(QString::fromUtf8(pstr),idx);
+    cDlg.exec();
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    int num_of_views = 1;
+    char* title = nullptr;
+    // if one argument (int) is given
+    if (PyArg_ParseTuple(args, "|is", &num_of_views, &title))
+    {
+        if (num_of_views < 0)
+            return NULL;
+        else if (num_of_views==1)
+        {
+            View3DInventor* viewer = new View3DInventor(0, 0);
+            if (title)
+                viewer->setWindowTitle(QString::fromUtf8(title));
+            Gui::getMainWindow()->addWindow(viewer);
+            return viewer->getPyObject();
+        }
+        else
+        {
+            SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, 0, 0);
+            if (title)
+                viewer->setWindowTitle(QString::fromUtf8(title));
+            Gui::getMainWindow()->addWindow(viewer);
+            return viewer->getPyObject();
+        }
+    }
     return Py_None;
 }

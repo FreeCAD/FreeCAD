@@ -53,10 +53,22 @@ public:
     App::PropertyFloatList DisplacementLengths;
     /// Von Mises Stress values of analysis
     App::PropertyFloatList StressValues;
-    /// Eigenmode number
+    /// First principal Stress values of analysis
+    App::PropertyFloatList PrincipalMax;
+    /// Second principal Stress values of analysis
+    App::PropertyFloatList PrincipalMed;
+    /// Third principal Stress values of analysis
+    App::PropertyFloatList PrincipalMin;
+    /// Shear Stress values of analysis
+    App::PropertyFloatList MaxShear;
+    /// Temperature
+    App::PropertyFloatList Temperature;
+    /// Eigenmode
     App::PropertyInteger Eigenmode;
     /// Eigenmode frequency
     App::PropertyFloat EigenmodeFrequency;
+    /// Increment time
+    App::PropertyFloat Time;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {

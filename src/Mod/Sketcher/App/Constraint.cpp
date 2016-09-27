@@ -28,6 +28,7 @@
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <QDateTime>
 
 #include "Constraint.h"
@@ -132,24 +133,35 @@ double Constraint::getValue() const
     return Value;
 }
 
-double Constraint::getPresentationValue() const
+Quantity Constraint::getPresentationValue() const
 {
+    Quantity quantity;
     switch (Type) {
     case Distance:
     case Radius:
-        return std::abs(Value);
     case DistanceX:
     case DistanceY:
-        if (FirstPos == Sketcher::none || Second != Sketcher::Constraint::GeoUndef)
-            return std::abs(Value);
-        else
-            return Value;
+        quantity.setValue(Value);
+        quantity.setUnit(Unit::Length);
+        break;
     case Angle:
+        quantity.setValue(toDegrees<double>(Value));
+        quantity.setUnit(Unit::Angle);
+        break;
     case SnellsLaw:
-        return Value;
+        quantity.setValue(Value);
+        break;
     default:
-        return Value;
+        quantity.setValue(Value);
+        break;
     }
+
+    QuantityFormat format = quantity.getFormat();
+    format.option = QuantityFormat::None;
+    format.format = QuantityFormat::Default;
+    format.precision = 6; // QString's default
+    quantity.setFormat(format);
+    return quantity;
 }
 
 unsigned int Constraint::getMemSize (void) const

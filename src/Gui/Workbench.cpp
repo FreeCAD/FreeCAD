@@ -332,6 +332,8 @@ void Workbench::setupCustomShortcuts() const
 
 void Workbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
 }
 
 void Workbench::createMainWindowPopupMenu(MenuItem*) const
@@ -417,6 +419,16 @@ void Workbench::removeTaskWatcher(void)
     qApp->translate("Workbench", "Macro");
     qApp->translate("Workbench", "View");
     qApp->translate("Workbench", "Special Ops");
+#endif
+
+#if 0 // needed for the application menu on OSX
+    qApp->translate("MAC_APPLICATION_MENU", "Services");
+    qApp->translate("MAC_APPLICATION_MENU", "Hide %1");
+    qApp->translate("MAC_APPLICATION_MENU", "Hide Others");
+    qApp->translate("MAC_APPLICATION_MENU", "Show All");
+    qApp->translate("MAC_APPLICATION_MENU", "Preferences...");
+    qApp->translate("MAC_APPLICATION_MENU", "Quit %1");
+    qApp->translate("MAC_APPLICATION_MENU", "About %1");
 #endif
 
 TYPESYSTEM_SOURCE(Gui::StdWorkbench, Gui::Workbench)
@@ -639,6 +651,14 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     root->addDockWidget("Std_CombiView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);
     root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, true, true);
+    
+    //Dagview through parameter.
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+    bool enabled = group->GetBool("Enabled", false);
+    if (enabled)
+      root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
+    
     return root;
 }
 
@@ -670,6 +690,8 @@ void BlankWorkbench::deactivated()
 
 void BlankWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
 }
 
 MenuItem* BlankWorkbench::setupMenuBar() const
@@ -707,6 +729,8 @@ NoneWorkbench::~NoneWorkbench()
 
 void NoneWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
 }
 
 MenuItem* NoneWorkbench::setupMenuBar() const
@@ -863,6 +887,7 @@ DockWindowItems* PythonBaseWorkbench::setupDockWindows() const
 
 void PythonBaseWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
+    Q_UNUSED(recipient);
     QList<MenuItem*> items = _contextMenu->getItems();
     for (QList<MenuItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
         item->appendItem((*it)->copy());

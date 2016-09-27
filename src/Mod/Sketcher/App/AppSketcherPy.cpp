@@ -26,7 +26,6 @@
 # include <BRepPrimAPI_MakeBox.hxx>
 # include <TopoDS_Face.hxx>
 # include <Geom_Plane.hxx>
-# include <Handle_Geom_Plane.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -78,7 +77,7 @@ private:
             throw Py::RuntimeError("No file extension");
 
         throw Py::RuntimeError("Unknown file extension");
-        return Py::None();
+      //return Py::None();
     }
 
     Py::Object insert(const Py::Tuple& args)

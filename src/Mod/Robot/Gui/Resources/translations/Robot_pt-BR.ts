@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>Add tool</source>
-        <translation>Adicionar a ferramenta</translation>
+        <translation>Adicionar ferramenta</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Trajetória de vestimento...</translation>
+        <translation>Trajetória de vestimento...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Cria um objeto de vestimento que substitui alguns aspectos de uma trajetória</translation>
+        <translation>Cria um objeto de vestimento que substitui alguns aspectos de uma trajetória</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -409,13 +409,13 @@
         <location filename="../../CommandExport.cpp" line="-40"/>
         <location line="+62"/>
         <source>KRL file</source>
-        <translation type="unfinished"></translation>
+        <translation>Arquivo KRL</translation>
     </message>
     <message>
         <location line="-61"/>
         <location line="+62"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os Arquivos</translation>
     </message>
     <message>
         <location line="-61"/>

@@ -65,11 +65,11 @@ public:
     void setValue(float x, float y, float z);
 
     const Base::Vector3f& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
+        return _lValueList[idx];
     }
 
     void set1Value (const int idx, const Base::Vector3f& value) {
-        _lValueList.operator[] (idx) = value;
+        _lValueList[idx] = value;
     }
 
     void setValues (const std::vector<Base::Vector3f>& values);
@@ -92,7 +92,7 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-    void transform(const Base::Matrix4D &rclMat);
+    void transformGeometry(const Base::Matrix4D &rclMat);
 
 private:
     std::vector<Base::Vector3f> _lValueList;
@@ -132,10 +132,16 @@ public:
     void setValues(const std::vector<CurvatureInfo>&);
 
     /// index operator
-    const CurvatureInfo& operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
-    void  set1Value (const int idx, const CurvatureInfo& value){_lValueList.operator[] (idx) = value;}
-    const std::vector<CurvatureInfo> &getValues(void) const{return _lValueList;}
-    void transform(const Base::Matrix4D &rclMat);
+    const CurvatureInfo& operator[] (const int idx) const {
+        return _lValueList[idx];
+    }
+    void  set1Value (const int idx, const CurvatureInfo& value) {
+        _lValueList[idx] = value;
+    }
+    const std::vector<CurvatureInfo> &getValues(void) const {
+        return _lValueList;
+    }
+    void transformGeometry(const Base::Matrix4D &rclMat);
 
     void Save (Base::Writer &writer) const;
     void Restore(Base::XMLReader &reader);
@@ -201,10 +207,6 @@ public:
     const Data::ComplexGeoData* getComplexData() const;
     /** Returns the bounding box around the underlying mesh kernel */
     Base::BoundBox3d getBoundingBox() const;
-    /** Get faces from object with given accuracy */
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const;
     //@}
 
     /** @name Modification */
@@ -231,7 +233,9 @@ public:
     void setPyObject(PyObject *value);
     //@}
 
-    const char* getEditorName(void) const { return "MeshGui::PropertyMeshKernelItem"; }
+    const char* getEditorName(void) const {
+        return "MeshGui::PropertyMeshKernelItem";
+    }
 
     /** @name Save/restore */
     //@{

@@ -1,0 +1,511 @@
+<?xml version="1.0" ?>
+<PLMXML xmlns="http://www.plmxml.org/Schemas/PLMXMLSchema"
+ schemaVersion="4" date="2005-02-14" time="21:15:28" author="Vis Mockup 5.1.0">
+<ProductDef id="id1">
+<UserData id="id12" type="__TCC-VIS_MONIKER_INFO">
+<UserValue value="C:\Program Files\UGS\JT2Go\Examples\2_Cylinder_Engine_Example\2_Cylinder_Engine.jt" title="Path"></UserValue>
+<UserValue value="file" title="FA_Protocol"></UserValue>
+<UserValue value="C:/Program Files/UGS/JT2Go/Examples/2_Cylinder_Engine_Example/2_Cylinder_Engine.jt" title="object_id"></UserValue>
+<UserValue value="C:\Program Files\UGS\JT2Go\Examples\2_Cylinder_Engine_Example\2_Cylinder_Engine.jt" title="LocalCopy"></UserValue>
+<UserValue value="2.0" title="Version"></UserValue>
+<UserValue value="local" title="FA_Service"></UserValue>
+<UserValue value="No" title="MkIsFolder"></UserValue>
+<UserValue value="2_Cylinder_Engine.jt" title="Title"></UserValue>
+<UserValue value="DirectModel.Document" title="FileTypeID"></UserValue></UserData>
+<InstanceGraph id="id2" rootRefs="inst1798736">
+<Instance id="inst1798736" name="2_Cylinder_Engine" partRef="#id14">
+<ApplicationRef application="TCC-VIS" label="2_Cylinder_Engine.asm;0;0:"></ApplicationRef>
+<UserData id="id20" type="Hidden_Metadata">
+<UserValue value="156001" title="TOOLKIT_CUSTOMER"></UserValue></UserData>
+<UserData id="id31">
+<UserValue value="2_Cylinder_Engine" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="**Changes not in Library**" title="Revision"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Jan-30-1998  16:58:30.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="2 Cylinder Engine" title="I-DEAS Name"></UserValue>
+<UserValue value="123-001" title="I-DEAS Part Number"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="Jan-10-2005  13:23:55.05" title="Version Mod. Date + Time"></UserValue></UserData>
+<Transform id="id15">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform></Instance>
+<Instance id="inst1779056" name="Head Stud:123-006;0,Parts" partRef="#id46">
+<ApplicationRef application="TCC-VIS" label="Head Stud:123-006;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id47">1.421973649939901e-012 0.002356703858822584 -0.9999971985816956 0 -6.033720745257654e-010 -0.9999971985816956 -0.002356703858822584 0 -1 6.033737398603023e-010 -3.700562300775484e-019 0 -0.2949999868869782 0.1321395188570023 -0.003983345814049244 1</Transform></Instance>
+<Instance id="inst1913768" name="Lifter:123-923;0,Parts" partRef="#id52">
+<ApplicationRef application="TCC-VIS" label="Lifter:123-923;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id53">2.757793993168889e-013 4.575816179956671e-013 1 0 4.575816179956671e-013 -1 4.575816179956671e-013 0 1 4.575816179956671e-013 -2.757793993168889e-013 0 0.1000000014901161 -0.1338488310575485 0.05437212437391281 1</Transform></Instance>
+<Instance id="inst1910440" name="rod:123-699;0,Parts" partRef="#id58">
+<ApplicationRef application="TCC-VIS" label="rod:123-699;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id59">0.9861037135124207 -0.1661308258771896 -1.166810754732375e-015 0 0.1661308258771896 0.9861037135124207 -1.062013085640994e-015 0 1.327029577804367e-015 8.534118465009541e-016 1 0 0.07101806253194809 0.02219301462173462 0.02199999988079071 1</Transform></Instance>
+<Instance id="inst1937376" name="Piston Sub:;0,Parts" partRef="#id64">
+<ApplicationRef application="TCC-VIS" label="Piston Sub:;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id65">-1 1.10096191110321e-032 -7.293991291219912e-017 0 1.10096191110321e-032 -1 -3.018818806569426e-016 0 -7.293991291219912e-017 -3.018818806569426e-016 1 0 -0.1368601024150848 0.06445372104644775 0.003820367390289903 1</Transform></Instance>
+<Instance id="inst1912768" name="Piston:123-844;0,Parts" partRef="#id74">
+<ApplicationRef application="TCC-VIS" label="Piston:123-844;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id75">-1 -1.334063881586189e-008 7.982825511732017e-010 0 1.10096191110321e-032 -1 -3.018818806569426e-016 0 -7.293991291219912e-017 -3.018818806569426e-016 1 0 -0.294677197933197 0.07397986948490143 0.01617963239550591 1</Transform></Instance>
+<Instance id="inst1865720" name="Piston pin:123-845;0,Parts" partRef="#id83">
+<ApplicationRef application="TCC-VIS" label="Piston pin:123-845;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id84">0.9995650053024292 0.02949320152401924 -7.979323313200837e-010 0 -0.0294931884855032 0.9995650053024292 2.354164085893729e-011 0 -3.085015966644567e-015 2.168479519145078e-015 1 0 -0.0453154630959034 -0.02461725845932961 -0.02632036805152893 1</Transform></Instance>
+<Instance id="inst1895856" name="Piston Sub:;0,Parts" partRef="#id89">
+<ApplicationRef application="TCC-VIS" label="Piston Sub:;0,Parts.asm;0;1:"></ApplicationRef>
+<Transform id="id90">1 0 0 0 0 1 0 0 0 0 1 0 0.1368601024150848 -0.06445372104644775 -0.03617963194847107 1</Transform></Instance>
+<Instance id="inst1671584" name="Piston:123-844;0,Parts" partRef="#id74">
+<ApplicationRef application="TCC-VIS" label="Piston:123-844;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id102">-1 -1.334063881586189e-008 7.041613514502387e-009 0 -1.003604666278664e-019 -1 1.355268465125744e-016 0 -1.736007260287489e-016 1.355268465125744e-016 1 0 -0.294677197933197 0.07397986948490143 0.0161796361207962 1</Transform></Instance>
+<Instance id="inst2012776" name="Piston pin:123-845;0,Parts" partRef="#id83">
+<ApplicationRef application="TCC-VIS" label="Piston pin:123-845;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id105">0.9995650053024292 0.02949320152401924 -7.038550631222051e-009 0 -0.0294931884855032 0.9995650053024292 2.076799010541919e-010 0 1.57434811062825e-016 -2.681045890006053e-016 1 0 -0.0453154630959034 -0.02461725845932961 -0.02632036432623863 1</Transform></Instance>
+<Instance id="inst2026000" name="CamShaft Sub:123-990;0,Parts" partRef="#id108">
+<ApplicationRef application="TCC-VIS" label="CamShaft Sub:123-990;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id109">0.7071067690849304 -0.7071067690849304 4.055928498874345e-013 0 0.7071067690849304 0.7071067690849304 6.101357784178425e-016 0 -2.872288724139332e-013 2.863660101149607e-013 1 0 0.04717867448925972 -0.0528213270008564 -0.08894477039575577 1</Transform></Instance>
+<Instance id="inst2054176" name="Cam_shaft:123-457;0,Parts" partRef="#id123">
+<ApplicationRef application="TCC-VIS" label="Cam_shaft:123-457;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id124">1.214013511940948e-008 -7.440697502580917e-010 1 0 -0.9059386253356934 0.4234090149402618 3.675416633368289e-013 0 -0.4234090149402618 -0.9059386253356934 1.728632428171784e-013 0 -0.03029589354991913 -0.05256131291389465 0.02505522221326828 1</Transform></Instance>
+<Instance id="inst1938944" name="cam_gear:123-456;0,Parts" partRef="#id129">
+<ApplicationRef application="TCC-VIS" label="cam_gear:123-456;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id130">-0.4234090149402618 -0.9059386253356934 1.726649286873036e-013 0 -0.9059386253356934 0.4234090149402618 3.675724817835818e-013 0 -1.214013511940948e-008 7.440699723026967e-010 -1 0 -0.09059386700391769 -0.02437981590628624 -0.04005522653460503 1</Transform></Instance>
+<Instance id="inst1848008" name="Crank_Sub:123-555;0,Parts" partRef="#id135">
+<ApplicationRef application="TCC-VIS" label="Crank_Sub:123-555;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id136">-0.5 -0.8660253882408142 -2.979083167524747e-016 0 0.8660253882408142 -0.5 -7.816530680941419e-016 0 5.279772353637604e-016 -6.488226847947026e-016 1 0 0.01809818297624588 -0.06969784200191498 -0.1055598109960556 1</Transform></Instance>
+<Instance id="inst1838360" name="crank:123-782;0,Parts" partRef="#id150">
+<ApplicationRef application="TCC-VIS" label="crank:123-782;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id151">-0.9390942454338074 0.3436597287654877 1.284025318025572e-016 0 -0.3436597883701325 -0.9390941858291626 -6.660528172495127e-016 0 2.47777798279003e-008 -2.063888393522007e-009 1 0 -0.05131101608276367 -0.05052240565419197 0.1075598075985909 1</Transform></Instance>
+<Instance id="inst1857888" name="crank_gear:123-783;0,Parts" partRef="#id156">
+<ApplicationRef application="TCC-VIS" label="crank_gear:123-783;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id157">-0.9390942454338074 0.3436597287654877 3.809448359261655e-016 0 -0.3436597883701325 -0.9390941858291626 -2.583991531420675e-015 0 2.47777798279003e-008 -2.063890391923451e-009 1 0 -0.05131101980805397 -0.05052240565419197 -0.01844018884003162 1</Transform></Instance>
+<Instance id="inst2010456" name="Body Sub:123-002;0,Parts" partRef="#id162">
+<ApplicationRef application="TCC-VIS" label="Body Sub:123-002;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id163">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform></Instance>
+<Instance id="inst2026392" name="Case_r:123-200;0,Parts" partRef="#id179">
+<ApplicationRef application="TCC-VIS" label="Case_r:123-200;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id180">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform></Instance>
+<Instance id="inst2026184" name="Cylinder_1:123-100;0,Parts" partRef="#id187">
+<ApplicationRef application="TCC-VIS" label="Cylinder_1:123-100;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id188">1 -5.031413063960599e-009 -1.553538520049358e-009 0 1.553538409027055e-009 -1.993428355717697e-008 1 0 -5.031413063960599e-009 -1 -1.993428355717697e-008 0 0.1269356608390808 -5.273894387869405e-008 -0.0365588441491127 1</Transform></Instance>
+<Instance id="inst1996904" name="Cylinder_2:123-101;0,Parts" partRef="#id196">
+<ApplicationRef application="TCC-VIS" label="Cylinder_2:123-101;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id197">-1 -1.490642098644912e-008 -1.665472915135524e-008 0 1.665472915135524e-008 -1.764261092773722e-008 -1 0 1.490642098644912e-008 -1 1.764261092773722e-008 0 -0.1269356608390808 3.299700068737366e-009 0.0365588404238224 1</Transform></Instance>
+<Instance id="inst1858736" name="cylinder bolt pattern:;0,Parts" partRef="#id203">
+<ApplicationRef application="TCC-VIS" label="cylinder bolt pattern:;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id204">2.459232373297482e-009 0.7071067690849304 -0.7071067690849304 0 -4.656259378066352e-009 -0.7071067690849304 -0.7071067690849304 0 -1 5.031412619871389e-009 1.55353274688963e-009 0 0.06499999761581421 0.1287170201539993 -0.003270523622632027 1</Transform></Instance>
+<Instance id="inst1726008" name="Head_1:123-150;0,Parts" partRef="#id209">
+<ApplicationRef application="TCC-VIS" label="Head_1:123-150;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id210">-1.553133399667672e-009 5.031413063960599e-009 -1 0 5.031413063960599e-009 1 5.031413063960599e-009 0 1 -5.031413063960599e-009 -1.553133399667672e-009 0 0.2239999920129776 0.03048792481422424 0.02500873245298863 1</Transform></Instance>
+<Instance id="inst1729056" name="Head2 Sub:;0,Parts" partRef="#id218">
+<ApplicationRef application="TCC-VIS" label="Head2 Sub:;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id219">1.665474158585312e-008 1.004267005555448e-006 -1 0 -1 -1.666503557373744e-008 -1.665475757306467e-008 0 -1.6665051560949e-008 1 1.004267005555448e-006 0 -0.04826182126998901 -0.05911042168736458 0.03459598124027252 1</Transform></Instance>
+<Instance id="inst1727816" name="Head_2:123-151;0,Parts" partRef="#id232">
+<ApplicationRef application="TCC-VIS" label="Head_2:123-151;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id233">1 9.947598300641403e-014 -1.004267005555448e-006 0 1.011203266898519e-006 3.500436918102423e-008 0.9999999403953552 0 2.75101122437782e-014 -1 2.288952989822068e-013 0 0.04958733543753624 0.1757381856441498 0.08959835022687912 1</Transform></Instance>
+<Instance id="inst2027256" name="Spark Plug:;0,Parts" partRef="#id239">
+<ApplicationRef application="TCC-VIS" label="Spark Plug:;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id240">1 9.977915303889529e-014 -9.877358024823479e-007 0 -9.946720638254192e-007 -3.500436562831055e-008 -0.9999999403953552 0 -2.75101122437782e-014 1 -2.288952989822068e-013 0 0.02452629990875721 0.2137382179498673 0.2830735743045807 1</Transform></Instance>
+<Instance id="inst1842808" name="Head Nut:123-005;0,Parts" partRef="#id245">
+<ApplicationRef application="TCC-VIS" label="Head Nut:123-005;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id246">0.9999898672103882 1.657488901685156e-008 -0.004498782102018595 0 -0.004498789552599192 -1.781053349247941e-008 -0.9999898076057434 0 -1.665473980949628e-008 1 1.726835030524399e-008 0 -0.02312494441866875 0.2477381676435471 0.2203545719385147 1</Transform></Instance>
+<Instance id="inst1906944" name="Rocker_Sub:;0,Parts" partRef="#id251">
+<ApplicationRef application="TCC-VIS" label="Rocker_Sub:;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id252">0.9999974370002747 -7.939097296238984e-011 -0.002271066652610898 0 9.118318147522016e-016 1 3.807415215490448e-015 0 0.002271073637530208 3.500404588407946e-008 0.9999973773956299 0 -0.0001340909366263077 -0.01299998629838228 0.0001236627285834402 1</Transform></Instance>
+<Instance id="inst2033120" name="Rocker Arm Shaft:123-601;0,Parts" partRef="#id264">
+<ApplicationRef application="TCC-VIS" label="Rocker Arm Shaft:123-601;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id265">-0.9999850392341614 -0.004973083734512329 -0.002270016819238663 0 0.004973071627318859 -0.9999875426292419 1.127185623772675e-005 0 -0.002270089229568839 -4.575558421038295e-008 0.9999972581863403 0 0.0487947128713131 0.7686771750450134 -0.02040251158177853 1</Transform></Instance>
+<Instance id="inst1789832" name="Rocker_Mount_Sub:;0,Parts" partRef="#id270">
+<ApplicationRef application="TCC-VIS" label="Rocker_Mount_Sub:;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id271">1 -7.424300063618716e-011 1.35305974757749e-010 0 1.276140897124513e-015 0.9999998807907105 4.341043060584901e-016 0 -4.433523059788058e-008 -2.848764957263938e-008 0.9999998211860657 0 -1.748614808505522e-009 -9.381160293031599e-010 -7.228971310446752e-010 1</Transform></Instance>
+<Instance id="inst1796000" name="Rocker Mount:123-604;0,Parts" partRef="#id278">
+<ApplicationRef application="TCC-VIS" label="Rocker Mount:123-604;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id279">0.9999973773956299 1.651584646822357e-008 0.002270044526085258 0 -1.669391558323241e-008 0.9999998807907105 1.723048725921217e-008 0 -0.002270088996738195 -4.57557440824985e-008 0.9999972581863403 0 0.04950515553355217 0.3443533480167389 0.07959935814142227 1</Transform></Instance>
+<Instance id="inst2030512" name="Rocker Mount Cap:123-608;0,Parts" partRef="#id284">
+<ApplicationRef application="TCC-VIS" label="Rocker Mount Cap:123-608;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id285">0.9999973773956299 1.651585179729409e-008 0.002270044526085258 0 1.669392091230293e-008 -0.9999998807907105 -1.723048725921217e-008 0 0.002270088996738195 4.57557440824985e-008 -0.9999972581863403 0 0.04947110638022423 0.2571229636669159 0.09459931403398514 1</Transform></Instance>
+<Instance id="inst1725832" name="Rocker Bolt:123-603;0,Parts" partRef="#id290">
+<ApplicationRef application="TCC-VIS" label="Rocker Bolt:123-603;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id291">0.9984452724456787 1.914222380605679e-008 -0.05574143305420876 0 -0.05574139580130577 4.472066095217997e-008 -0.9984451532363892 0 -1.669391203051873e-008 1 1.723049436463953e-008 0 0.01820174790918827 0.326738178730011 0.2976770401000977 1</Transform></Instance>
+<Instance id="inst2029080" name="Rocker Bolt:123-603;0,Parts" partRef="#id290">
+<ApplicationRef application="TCC-VIS" label="Rocker Bolt:123-603;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id296">0.9984543323516846 1.913488922866691e-008 -0.05557771772146225 0 -0.05557768046855927 4.472379444564467e-008 -0.998454213142395 0 -1.669391025416189e-008 0.9999998807907105 1.723049436463953e-008 0 0.06816709786653519 0.326738178730011 0.2977887094020844 1</Transform></Instance>
+<Instance id="inst2033672" name="Rocker_Mount_Sub:;0,Parts" partRef="#id299">
+<ApplicationRef application="TCC-VIS" label="Rocker_Mount_Sub:;0,Parts.asm;0;1:"></ApplicationRef>
+<Transform id="id300">1 -7.424300063618716e-011 1.35305974757749e-010 0 1.276140897124513e-015 0.9999998807907105 4.341043060584901e-016 0 -4.433523059788058e-008 -2.848764957263938e-008 0.9999998211860657 0 -4.064914627122107e-009 -1.459414988858043e-008 -0.09999953210353851 1</Transform></Instance>
+<Instance id="inst1996808" name="Rocker Mount:123-604;0,Parts" partRef="#id278">
+<ApplicationRef application="TCC-VIS" label="Rocker Mount:123-604;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id312">0.9999974370002747 1.662746029751361e-008 0.002270044526085258 0 -1.669391735958925e-008 1.00000011920929 1.723049081192585e-008 0 -0.002270061522722244 -2.438619972622291e-008 0.9999974966049194 0 0.04973216727375984 0.3443534076213837 0.07959914952516556 1</Transform></Instance>
+<Instance id="inst1867136" name="Rocker Mount Cap:123-608;0,Parts" partRef="#id284">
+<ApplicationRef application="TCC-VIS" label="Rocker Mount Cap:123-608;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id315">0.9999974370002747 1.662746562658413e-008 0.002270044526085258 0 1.669392268865977e-008 -1.00000011920929 -1.723049081192585e-008 0 0.002270061522722244 2.438619972622291e-008 -0.9999974966049194 0 0.0496981143951416 0.2571230232715607 0.09459911286830902 1</Transform></Instance>
+<Instance id="inst1948848" name="Rocker Bolt:123-603;0,Parts" partRef="#id290">
+<ApplicationRef application="TCC-VIS" label="Rocker Bolt:123-603;0,Parts.part;0;2:"></ApplicationRef>
+<Transform id="id318">0.9986630082130432 1.791910797521723e-008 -0.05169311910867691 0 -0.05169309675693512 2.345346850063379e-008 -0.998663067817688 0 -1.669391025416189e-008 1.00000011920929 1.72305067991374e-008 0 0.01757495850324631 0.3267382085323334 0.2976291477680206 1</Transform></Instance>
+<Instance id="inst1997256" name="Rocker Bolt:123-603;0,Parts" partRef="#id290">
+<ApplicationRef application="TCC-VIS" label="Rocker Bolt:123-603;0,Parts.part;0;3:"></ApplicationRef>
+<Transform id="id321">0.9986716508865356 1.791518755567267e-008 -0.05152621492743492 0 -0.05152619630098343 2.345645455648082e-008 -0.9986717104911804 0 -1.669391025416189e-008 1.00000011920929 1.723049791735321e-008 0 0.06753963232040405 0.3267382085323334 0.2977406084537506 1</Transform></Instance>
+<Instance id="inst1949072" name="Rocker Arm Shaft:123-601;0,Parts" partRef="#id264">
+<ApplicationRef application="TCC-VIS" label="Rocker Arm Shaft:123-601;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id324">-0.9999873042106628 -0.004487393889576197 -0.00227002170868218 0 0.004487383179366589 -0.9999898076057434 1.016931855701841e-005 0 -0.002270088996738195 -4.575493051106605e-008 0.9999972581863403 0 -0.02998023852705956 0.7686992287635803 -0.02058133110404015 1</Transform></Instance>
+<Instance id="inst2052896" name="Valve Spring:123-702;0,Parts" partRef="#id327">
+<ApplicationRef application="TCC-VIS" label="Valve Spring:123-702;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id328">-0.821344792842865 -0.3829995691776276 0.4227339625358582 0 -0.3831273019313812 -0.1786547750234604 -0.9062537550926209 0 0.4226182997226715 -0.9063078165054321 -4.468796817036491e-007 0 -0.2707940638065338 0.1454340070486069 0.1220441088080406 1</Transform></Instance>
+<Instance id="inst1725624" name="Valve_Sub:;0,Parts" partRef="#id333">
+<ApplicationRef application="TCC-VIS" label="Valve_Sub:;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id334">0.4546822905540466 0.654166042804718 0.6044259667396545 0 -0.8696395754814148 0.4726209938526154 0.1426760256290436 0 -0.1923305839300156 -0.5905050039291382 0.7837809920310974 0 0.09187051653862 0.08063256740570068 0.1662608832120895 1</Transform></Instance>
+<Instance id="inst1914472" name="Valve:123-700;0,Parts" partRef="#id341">
+<ApplicationRef application="TCC-VIS" label="Valve:123-700;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id342">0.7850326299667358 0.06081443279981613 -0.6164620518684387 0 -0.1356190741062164 0.9878997206687927 -0.07524674385786057 0 0.6044265031814575 0.1426751911640167 0.7837809920310974 0 -0.001248535001650453 -0.2500619888305664 -0.09022713452577591 1</Transform></Instance>
+<Instance id="inst1734000" name="Valve Spring Cap:123-704;0,Parts" partRef="#id347">
+<ApplicationRef application="TCC-VIS" label="Valve Spring Cap:123-704;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id348">0.7850326299667358 0.06081448495388031 -0.6164620518684387 0 -0.3924773633480072 -0.7211050391197205 -0.5709372162818909 0 -0.4792551398277283 0.6901518106460571 -0.5422225594520569 0 0.0455969013273716 0.2435131669044495 0.06938881427049637 1</Transform></Instance>
+<Instance id="inst1730152" name="Spring:;0,Parts" partRef="#id353">
+<ApplicationRef application="TCC-VIS" label="Spring:;0,Parts.asm;0;0:"></ApplicationRef>
+<Transform id="id354">1 -3.002940829333056e-008 3.437022044749938e-008 0 -4.150651022882812e-008 1.000000238418579 4.017514854126603e-008 0 3.73510147255729e-008 2.773385787691041e-008 1 0 -1.489124112907803e-008 -4.276215381793236e-009 1.08718030134014e-008 1</Transform></Instance>
+<Instance id="inst1910040" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id362">-0.6893028616905212 -0.1355008780956268 0.7116888165473938 0 -0.6755837202072144 0.4749762713909149 -0.5639010667800903 0 -0.2616261541843414 -0.8695042133331299 -0.4189447462558746 0 0.1410751193761826 0.09142301231622696 -0.3314632773399353 1</Transform></Instance>
+<Instance id="inst1910640" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id367">0.8620703816413879 -0.01532000117003918 -0.506557047367096 0 -0.4340352714061737 0.4936883747577667 -0.7535817623138428 0 0.261626124382019 0.8695042133331299 0.4189446866512299 0 -0.05227819457650185 0.07644443958997726 -0.1796288043260574 1</Transform></Instance>
+<Instance id="inst1911040" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;2:"></ApplicationRef>
+<Transform id="id370">-0.6893028616905212 -0.1355008780956268 0.7116888165473938 0 -0.6755837202072144 0.4749762713909149 -0.5639010667800903 0 -0.2616261541843414 -0.8695042133331299 -0.4189447462558746 0 0.1347948610782623 0.09093648940324783 -0.3265315294265747 1</Transform></Instance>
+<Instance id="inst1911768" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;3:"></ApplicationRef>
+<Transform id="id373">0.8620703816413879 -0.01532000117003918 -0.506557047367096 0 -0.4340352714061737 0.4936883747577667 -0.7535817623138428 0 0.261626124382019 0.8695042133331299 0.4189446866512299 0 -0.05855846777558327 0.07595790922641754 -0.1746970862150192 1</Transform></Instance>
+<Instance id="inst1912168" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;4:"></ApplicationRef>
+<Transform id="id376">-0.6893028616905212 -0.1355008780956268 0.7116888165473938 0 -0.6755837202072144 0.4749762713909149 -0.5639010667800903 0 -0.2616261541843414 -0.8695042133331299 -0.4189447462558746 0 0.1285146176815033 0.0904499888420105 -0.3215998709201813 1</Transform></Instance>
+<Instance id="inst1912968" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;5:"></ApplicationRef>
+<Transform id="id379">0.8620703816413879 -0.01532000117003918 -0.506557047367096 0 -0.4340352714061737 0.4936883747577667 -0.7535817623138428 0 0.261626124382019 0.8695042133331299 0.4189446866512299 0 -0.0648387148976326 0.07547140121459961 -0.1697653979063034 1</Transform></Instance>
+<Instance id="inst1920696" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;6:"></ApplicationRef>
+<Transform id="id382">-0.6893028616905212 -0.1355008780956268 0.7116888165473938 0 -0.6755837202072144 0.4749762713909149 -0.5639010667800903 0 -0.2616261541843414 -0.8695042133331299 -0.4189447462558746 0 0.1222343519330025 0.08996346592903137 -0.3166681826114655 1</Transform></Instance>
+<Instance id="inst1827264" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;7:"></ApplicationRef>
+<Transform id="id385">0.8620703816413879 -0.01532000117003918 -0.506557047367096 0 -0.4340352714061737 0.4936883747577667 -0.7535817623138428 0 0.261626124382019 0.8695042133331299 0.4189446866512299 0 -0.07111898809671402 0.07498487830162048 -0.1648336797952652 1</Transform></Instance>
+<Instance id="inst1920976" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;8:"></ApplicationRef>
+<Transform id="id388">-0.6893028616905212 -0.1355008780956268 0.7116888165473938 0 -0.6755837202072144 0.4749762713909149 -0.5639010667800903 0 -0.2616261541843414 -0.8695042133331299 -0.4189447462558746 0 0.1159540787339211 0.08947695046663284 -0.3117364346981049 1</Transform></Instance>
+<Instance id="inst1994408" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;9:"></ApplicationRef>
+<Transform id="id391">0.8620703816413879 -0.01532000117003918 -0.506557047367096 0 -0.4340352714061737 0.4936883747577667 -0.7535817623138428 0 0.261626124382019 0.8695042133331299 0.4189446866512299 0 -0.07739924639463425 0.07449836283922195 -0.1599020063877106 1</Transform></Instance>
+<Instance id="inst1994616" name="Valve_Sub:;0,Parts" partRef="#id394">
+<ApplicationRef application="TCC-VIS" label="Valve_Sub:;0,Parts.asm;0;1:"></ApplicationRef>
+<Transform id="id395">-0.4546823501586914 0.6541661024093628 -0.6044260263442993 0 0.8696396350860596 0.4726210236549377 -0.1426760405302048 0 0.192330613732338 -0.5905051231384277 -0.7837811708450317 0 0.01489819493144751 0.08582951128482819 -0.04803464561700821 1</Transform></Instance>
+<Instance id="inst1995632" name="Spring:;0,Parts" partRef="#id408">
+<ApplicationRef application="TCC-VIS" label="Spring:;0,Parts.asm;0;1:"></ApplicationRef>
+<Transform id="id409">1 2.298901691233368e-008 -2.432995493961698e-008 0 -3.89851670945518e-008 0.9999998807907105 -1.280528216796029e-008 0 -3.000558379540053e-008 -2.485903749516183e-008 0.9999998807907105 0 -1.494453005790319e-009 -7.655864275868396e-010 -5.496130661697407e-009 1</Transform></Instance>
+<Instance id="inst1722840" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;10:"></ApplicationRef>
+<Transform id="id421">-0.7145452499389648 -0.1154179275035858 0.6900026798248291 0 -0.652251660823822 0.4665488302707672 -0.5974109768867493 0 -0.252968043088913 -0.8769325613975525 -0.4086517691612244 0 0.1413719058036804 0.08810769766569138 -0.3271084725856781 1</Transform></Instance>
+<Instance id="inst1723976" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;11:"></ApplicationRef>
+<Transform id="id424">0.8450331687927246 0.005398655775934458 -0.5346865653991699 0 -0.4710902869701386 0.4805829524993897 -0.7396714687347412 0 0.252968043088913 0.8769325613975525 0.4086517691612244 0 -0.05524870008230209 0.07287602126598358 -0.1727083474397659 1</Transform></Instance>
+<Instance id="inst1725736" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;12:"></ApplicationRef>
+<Transform id="id427">-0.7145452499389648 -0.1154179275035858 0.6900026798248291 0 -0.652251660823822 0.4665488302707672 -0.5974109768867493 0 -0.252968043088913 -0.8769325613975525 -0.4086517691612244 0 0.1366616934537888 0.08774281293153763 -0.3234097063541412 1</Transform></Instance>
+<Instance id="inst1995424" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;13:"></ApplicationRef>
+<Transform id="id430">0.8450331687927246 0.005398655775934458 -0.5346865653991699 0 -0.4710902869701386 0.4805829524993897 -0.7396714687347412 0 0.252968043088913 0.8769325613975525 0.4086517691612244 0 -0.05995889753103256 0.07251112163066864 -0.1690095812082291 1</Transform></Instance>
+<Instance id="inst1726232" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;14:"></ApplicationRef>
+<Transform id="id433">-0.7145452499389648 -0.1154179275035858 0.6900026798248291 0 -0.652251660823822 0.4665488302707672 -0.5974109768867493 0 -0.252968043088913 -0.8769325613975525 -0.4086517691612244 0 0.1319515109062195 0.08737793564796448 -0.3197109401226044 1</Transform></Instance>
+<Instance id="inst1727160" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;15:"></ApplicationRef>
+<Transform id="id436">0.8450331687927246 0.005398655775934458 -0.5346865653991699 0 -0.4710902869701386 0.4805829524993897 -0.7396714687347412 0 0.252968043088913 0.8769325613975525 0.4086517691612244 0 -0.06466909497976303 0.07214623689651489 -0.165310800075531 1</Transform></Instance>
+<Instance id="inst1722360" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;16:"></ApplicationRef>
+<Transform id="id439">-0.7145452499389648 -0.1154179275035858 0.6900026798248291 0 -0.652251660823822 0.4665488302707672 -0.5974109768867493 0 -0.252968043088913 -0.8769325613975525 -0.4086517691612244 0 0.127241313457489 0.08701304346323013 -0.3160121440887451 1</Transform></Instance>
+<Instance id="inst1995528" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;17:"></ApplicationRef>
+<Transform id="id442">0.8450331687927246 0.005398655775934458 -0.5346865653991699 0 -0.4710902869701386 0.4805829524993897 -0.7396714687347412 0 0.252968043088913 0.8769325613975525 0.4086517691612244 0 -0.0693792924284935 0.07178134471178055 -0.1616120338439941 1</Transform></Instance>
+<Instance id="inst1995008" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;18:"></ApplicationRef>
+<Transform id="id445">-0.7145452499389648 -0.1154179275035858 0.6900026798248291 0 -0.652251660823822 0.4665488302707672 -0.5974109768867493 0 -0.252968043088913 -0.8769325613975525 -0.4086517691612244 0 0.1225311160087585 0.08664815127849579 -0.3123133778572083 1</Transform></Instance>
+<Instance id="inst2053416" name="Spring Link:;0,Parts" partRef="#id361">
+<ApplicationRef application="TCC-VIS" label="Spring Link:;0,Parts.part;0;19:"></ApplicationRef>
+<Transform id="id448">0.8450331687927246 0.005398655775934458 -0.5346865653991699 0 -0.4710902869701386 0.4805829524993897 -0.7396714687347412 0 0.252968043088913 0.8769325613975525 0.4086517691612244 0 -0.07408948242664337 0.0714164674282074 -0.1579132527112961 1</Transform></Instance>
+<Instance id="inst2053208" name="Valve:123-700;0,Parts" partRef="#id341">
+<ApplicationRef application="TCC-VIS" label="Valve:123-700;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id451">0.7850325107574463 0.06081444025039673 -0.6164620518684387 0 -0.135619044303894 0.9878994226455689 -0.07524680346250534 0 0.6044264435768127 0.1426751613616943 0.7837807536125183 0 -0.005746716633439064 -0.250409871339798 -0.08668788522481918 1</Transform></Instance>
+<Instance id="inst1862560" name="Valve Spring Cap:123-704;0,Parts" partRef="#id347">
+<ApplicationRef application="TCC-VIS" label="Valve Spring Cap:123-704;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id454">0.7850325703620911 0.06081447005271912 -0.6164620518684387 0 -0.3681581914424896 -0.7545340657234192 -0.543265700340271 0 -0.498180091381073 0.6534368991851807 -0.5699445009231567 0 0.03418708592653275 0.2526659965515137 0.06506367027759552 1</Transform></Instance>
+<Instance id="inst1719832" name="Rocker Arm:123-600;0,Parts" partRef="#id457">
+<ApplicationRef application="TCC-VIS" label="Rocker Arm:123-600;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id458">0.9026297330856323 0.4304179251194 -9.149687798526429e-007 0 -0.4304179251194 0.9026297330856323 4.554329109396349e-007 0 1.028840756589489e-006 1.773579327846164e-008 0.9999999403953552 0 0.2777610719203949 0.5800805687904358 -0.005389846861362457 1</Transform></Instance>
+<Instance id="inst1729824" name="Rocker Arm_copy:123-602;0,Parts" partRef="#id463">
+<ApplicationRef application="TCC-VIS" label="Rocker Arm_copy:123-602;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id464">0.9026297926902771 -0.4304177463054657 -9.298340728491894e-007 0 0.4304177463054657 0.9026297926902771 -4.242589284331189e-007 0 1.028840756589489e-006 1.773579505481848e-008 0.9999999403953552 0 0.3539793193340302 0.3309040069580078 -0.005389927886426449 1</Transform></Instance>
+<Instance id="inst1726936" name="Valve Cover_copy:;0,Main" partRef="#id469">
+<ApplicationRef application="TCC-VIS" label="Valve Cover_copy:;0,Main.part;0;0:"></ApplicationRef>
+<Transform id="id470">1 -6.184104131534696e-005 -1.004268028736988e-006 0 1.011203266898519e-006 1.773524793691195e-008 0.9999999403953552 0 -6.184104131534696e-005 -1 -1.720678532990405e-008 0 0.05108792707324028 0.3257383704185486 0.09109834581613541 1</Transform></Instance>
+<Instance id="inst1722616" name="Head Nut:123-005;0,Parts" partRef="#id245">
+<ApplicationRef application="TCC-VIS" label="Head Nut:123-005;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id475">0.9999933242797852 1.67195413069976e-008 0.003653878346085548 0 0.003653871593996882 -1.767486601522705e-008 -0.9999932646751404 0 -1.665473980949628e-008 1 1.726829879089564e-008 0 0.08119496703147888 0.2477381825447083 0.2201460599899292 1</Transform></Instance>
+<Instance id="inst1760240" name="Valve Spring:123-702;0,Parts" partRef="#id327">
+<ApplicationRef application="TCC-VIS" label="Valve Spring:123-702;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id478">-0.8213930130004883 0.3830220103263855 0.4226199984550476 0 -0.3830239772796631 0.1786065548658371 -0.9063069224357605 0 -0.4226182103157044 -0.9063078165054321 4.008188341231289e-007 0 -0.141640841960907 0.3886727094650269 0.1220077648758888 1</Transform></Instance>
+<Instance id="inst1724160" name="Valve Cover:123-701;0,Parts" partRef="#id481">
+<ApplicationRef application="TCC-VIS" label="Valve Cover:123-701;0,Parts.part;0;0:"></ApplicationRef>
+<Transform id="id482">-1.552728390308289e-009 5.031413063960599e-009 -1 0 5.031413063960599e-009 1 5.031413063960599e-009 0 1 -5.031413063960599e-009 -1.552728390308289e-009 0 0.2239999771118164 0.03198792412877083 0.02350873127579689 1</Transform></Instance>
+<Instance id="inst1723752" name="Head Stud:123-006;0,Parts" partRef="#id46">
+<ApplicationRef application="TCC-VIS" label="Head Stud:123-006;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id489">1.421973649939901e-012 0.002356703858822584 -0.9999971985816956 0 -6.033720745257654e-010 -0.9999971985816956 -0.002356703858822584 0 -1 6.033737398603023e-010 -3.700562300775484e-019 0 -0.2949999570846558 0.02160527557134628 -0.1053286641836166 1</Transform></Instance>
+<Instance id="inst1725216" name="Head Stud:123-006;0,Parts" partRef="#id46">
+<ApplicationRef application="TCC-VIS" label="Head Stud:123-006;0,Parts.part;0;2:"></ApplicationRef>
+<Transform id="id492">-5.582201367815287e-013 -0.0009254564647562802 -0.9999995827674866 0 -6.028238463962055e-010 -0.9999995827674866 0.0009254564647562802 0 -1 6.028241239519616e-010 3.326781192647572e-016 0 -0.2949999570846558 0.02149887569248676 0.0004925570683553815 1</Transform></Instance>
+<Instance id="inst1758176" name="Head Stud:123-006;0,Parts" partRef="#id46">
+<ApplicationRef application="TCC-VIS" label="Head Stud:123-006;0,Parts.part;0;3:"></ApplicationRef>
+<Transform id="id495">1.421973649939901e-012 0.002356703858822584 -0.9999971985816956 0 -6.033720745257654e-010 -0.9999971985816956 -0.002356703858822584 0 -1 6.033737398603023e-010 -3.700562300775484e-019 0 -0.2949999570846558 0.123807780444622 -0.1001014932990074 1</Transform></Instance>
+<Instance id="inst1919952" name="Lifter:123-923;0,Parts" partRef="#id52">
+<ApplicationRef application="TCC-VIS" label="Lifter:123-923;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id498">2.757793993168889e-013 4.575816179956671e-013 1 0 4.575816179956671e-013 -1 4.575816179956671e-013 0 1 4.575816179956671e-013 -2.757793993168889e-013 0 0.09999999403953552 -0.1338488161563873 0.03437212482094765 1</Transform></Instance>
+<Instance id="inst2053728" name="Lifter:123-923;0,Parts" partRef="#id52">
+<ApplicationRef application="TCC-VIS" label="Lifter:123-923;0,Parts.part;0;2:"></ApplicationRef>
+<Transform id="id501">4.052314039881821e-013 1.110223024625157e-015 1 0 1.110223024625157e-015 1 -1.110223024625157e-015 0 -1 1.110223024625157e-015 4.052314039881821e-013 0 -0.09999999403953552 -0.06615116447210312 0.01437209732830524 1</Transform></Instance>
+<Instance id="inst2050288" name="Lifter:123-923;0,Parts" partRef="#id52">
+<ApplicationRef application="TCC-VIS" label="Lifter:123-923;0,Parts.part;0;3:"></ApplicationRef>
+<Transform id="id504">4.052314039881821e-013 1.110223024625157e-015 1 0 1.110223024625157e-015 1 -1.110223024625157e-015 0 -1 1.110223024625157e-015 4.052314039881821e-013 0 -0.09999999403953552 -0.06615117192268372 -0.005627896171063185 1</Transform></Instance>
+<Instance id="inst1998064" name="rod:123-699;0,Parts" partRef="#id58">
+<ApplicationRef application="TCC-VIS" label="rod:123-699;0,Parts.part;0;1:"></ApplicationRef>
+<Transform id="id507">-0.9861037135124207 0.1661308258771896 1.702963710921711e-016 0 -0.1661308258771896 -0.9861037135124207 -3.509013978502231e-016 0 1.096343463342109e-016 -3.743166442952229e-016 1 0 -0.07101806253194809 -0.02219301089644432 -0.01999999769032002 1</Transform></Instance>
+<Part id="id14" name="2_Cylinder_Engine" instanceRefs="inst1779056 inst1913768 inst1910440 inst1937376 inst1895856 inst2026000 inst1848008 inst2010456 inst1758176 inst1919952 inst2053728 inst2050288 inst1998064" type="assembly">
+<UserData id="id33" type="Hidden_Metadata">
+<UserValue value="156001" title="TOOLKIT_CUSTOMER"></UserValue></UserData>
+<UserData id="id44">
+<UserValue value="2_Cylinder_Engine" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="**Changes not in Library**" title="Revision"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Jan-30-1998  16:58:30.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="2 Cylinder Engine" title="I-DEAS Name"></UserValue>
+<UserValue value="123-001" title="I-DEAS Part Number"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="Jan-10-2005  13:23:55.05" title="Version Mod. Date + Time"></UserValue></UserData>
+<Occurrence id="id16" instanceRefs="#inst1798736">
+<Transform id="id17">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform></Occurrence></Part>
+<Part id="id46" name="Head Stud:123-006;0,Parts" type="solid">
+<Bound id="id49" values="-0.03247146308422089 0.07456196844577789 -0.1150000020861626 0.006500001531094313 0.006495191715657711 0.1150000020861626"></Bound>
+<Representation id="id50" format="JT" location="./2_Cylinder_Engine/Head_Stud_123_006_0_Parts.jt"></Representation></Part>
+<Part id="id52" name="Lifter:123-923;0,Parts" type="solid">
+<Bound id="id55" values="-0.02437210455536842 -0.03384878858923912 -0.04250000044703484 0.00774999987334013 0.007749963086098433 0.04250000044703484"></Bound>
+<Representation id="id56" format="JT" location="./2_Cylinder_Engine/Lifter_123_923_0_Parts.jt"></Representation></Part>
+<Part id="id58" name="rod:123-699;0,Parts" type="solid">
+<Bound id="id61" values="0.02005359902977943 -0.006323420908302069 0 0.09100000560283661 0.03700000047683716 0.009999999776482582"></Bound>
+<Representation id="id62" format="JT" location="./2_Cylinder_Engine/rod_123_699_0_Parts.jt"></Representation></Part>
+<Part id="id64" name="Piston Sub:;0,Parts" instanceRefs="inst1912768 inst1865720" type="assembly">
+<UserData id="id72">
+<UserValue value="Piston Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="Piston Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue></UserData>
+<Occurrence id="id66" instanceRefs="#inst1798736 #inst1937376">
+<Transform id="id67">-1 -1.334063881586189e-008 -7.982826621955041e-010 0 1.10096191110321e-032 -1 -3.018818806569426e-016 0 -7.293991291219912e-017 -3.018818806569426e-016 1 0 -0.1368601024150848 0.06445372104644775 0.003820367390289903 1</Transform></Occurrence></Part>
+<Part id="id74" name="Piston:123-844;0,Parts" type="solid">
+<Bound id="id80" values="0.0101108755916357 0.009526152163743973 0 0.05324159190058708 0.04650000110268593 0.04649999737739563"></Bound>
+<Occurrence id="id76" materialRef="id77" instanceRefs="#inst1798736 #inst1937376 #inst1912768">
+<Transform id="id78">-1 -3.025554562441357e-008 -3.172106577409295e-009 0 1.10096191110321e-032 -1.00000011920929 -3.018819071267222e-016 0 -7.293991291219912e-017 -3.018819071267222e-016 1.00000011920929 0 -0.2946771681308746 0.07397986948490143 0.01617963425815105 1</Transform></Occurrence>
+<Representation id="id81" format="JT" location="./2_Cylinder_Engine/Piston_123_844_0_Parts.jt"></Representation></Part>
+<Part id="id83" name="Piston pin:123-845;0,Parts" type="solid">
+<Bound id="id86" values="-0.2534925639629364 0.09658930450677872 0.04250000044703484 0.01099999435245991 0.01099186204373837 0.04250000044703484"></Bound>
+<Representation id="id87" format="JT" location="./2_Cylinder_Engine/Piston_pin_123_845_0_Parts.jt"></Representation></Part>
+<Part id="id89" name="Piston Sub:;0,Parts" instanceRefs="inst1671584 inst2012776" type="assembly">
+<UserData id="id100">
+<UserValue value="Piston Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="Jan-30-1998  16:58:24.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Piston Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="May-03-1999  15:12:04.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id108" name="CamShaft Sub:123-990;0,Parts" instanceRefs="inst2054176 inst1938944" type="assembly">
+<UserData id="id121">
+<UserValue value="CamShaft Sub:123-990;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="**Changes not in Library**" title="Revision"></UserValue>
+<UserValue value="Jan-30-1998  16:58:25.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="CamShaft Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="123-990" title="I-DEAS Part Number"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="Aug-14-2001  14:11:35.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id123" name="Cam_shaft:123-457;0,Parts" type="solid">
+<Bound id="id126" values="0.05063954740762711 -0.03493684902787209 -4.356868157628924e-005 0.1267500072717667 0.02063110843300819 0.01902950927615166"></Bound>
+<Representation id="id127" format="JT" location="./2_Cylinder_Engine/Cam_shaft_123_457_0_Parts.jt"></Representation></Part>
+<Part id="id129" name="cam_gear:123-456;0,Parts" type="solid">
+<Bound id="id132" values="0 -0.1000000014901161 -0.002500000409781933 0.06898061186075211 0.06888007372617722 0.01250000018626452"></Bound>
+<Representation id="id133" format="JT" location="./2_Cylinder_Engine/cam_gear_123_456_0_Parts.jt"></Representation></Part>
+<Part id="id135" name="Crank_Sub:123-555;0,Parts" instanceRefs="inst1838360 inst1857888" type="assembly">
+<UserData id="id148">
+<UserValue value="Crank_Sub:123-555;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="**Changes not in Library**" title="Revision"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Aug-14-2001  14:13:01.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="Crank_Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="123-555" title="I-DEAS Part Number"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="Aug-14-2001  14:13:01.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id150" name="crank:123-782;0,Parts" type="solid">
+<Bound id="id153" values="4.847693617193727e-006 0 -0.01325000263750553 0.06299515068531036 0.03500000014901161 0.1267500072717667"></Bound>
+<Representation id="id154" format="JT" location="./2_Cylinder_Engine/crank_123_782_0_Parts.jt"></Representation></Part>
+<Part id="id156" name="crank_gear:123-783;0,Parts" type="solid">
+<Bound id="id159" values="0 -0.0001077877532225102 -0.002500000409781933 0.03597993031144142 0.03586557507514954 0.01250000018626452"></Bound>
+<Representation id="id160" format="JT" location="./2_Cylinder_Engine/crank_gear_123_783_0_Parts.jt"></Representation></Part>
+<Part id="id162" name="Body Sub:123-002;0,Parts" instanceRefs="inst2026392 inst2026184 inst1996904 inst1858736 inst1726008 inst1729056 inst1724160 inst1723752 inst1725216" type="assembly">
+<UserData id="id177">
+<UserValue value="Body Sub:123-002;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="**Changes not in Library**" title="Revision"></UserValue>
+<UserValue value="Jan-30-1998  16:58:29.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Body Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="123-002" title="I-DEAS Part Number"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="Aug-14-2001  14:10:00.00" title="Version Mod. Date + Time"></UserValue></UserData>
+<Occurrence id="id164" instanceRefs="#inst1798736 #inst2010456">
+<Transform id="id165">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform></Occurrence></Part>
+<Part id="id179" name="Case_r:123-200;0,Parts" type="solid">
+<Bound id="id184" values="0 -0.04548577964305878 -0.003500004298985004 0.0949999988079071 0.1354857832193375 0.1164999976754189"></Bound>
+<Occurrence id="id181" materialRef="id182" instanceRefs="#inst1798736 #inst2010456 #inst2026392"></Occurrence>
+<Representation id="id185" format="JT" location="./2_Cylinder_Engine/Case_r_123_200_0_Parts.jt"></Representation></Part>
+<Part id="id187" name="Cylinder_1:123-100;0,Parts" type="solid">
+<Bound id="id193" values="0.01856433786451817 0.05655883997678757 2.846240931830835e-007 0.08050000667572022 0.0950000062584877 0.08000028133392334"></Bound>
+<Occurrence id="id189" materialRef="id190" instanceRefs="#inst1798736 #inst2010456 #inst2026184">
+<Transform id="id191">1 -5.030475147549396e-009 -8.559119635265233e-008 0 1.553537853915543e-009 -1.993428355717697e-008 1 0 -5.03141173169297e-009 -1 -1.993428355717697e-008 0 0.4018276929855347 0.004671174101531506 -0.01877834275364876 1</Transform></Occurrence>
+<Representation id="id194" format="JT" location="./2_Cylinder_Engine/Cylinder_1_123_100_0_Parts.jt"></Representation></Part>
+<Part id="id196" name="Cylinder_2:123-101;0,Parts" type="solid">
+<Bound id="id200" values="0.01856433786451817 0.05655883997678757 2.846240931830835e-007 0.08050000667572022 0.0950000062584877 0.08000028133392334"></Bound>
+<Occurrence id="id198" materialRef="id190" instanceRefs="#inst1798736 #inst2010456 #inst1996904"></Occurrence>
+<Representation id="id201" format="JT" location="./2_Cylinder_Engine/Cylinder_2_123_101_0_Parts.jt"></Representation></Part>
+<Part id="id203" name="cylinder bolt pattern:;0,Parts" type="solid">
+<Bound id="id206" values="-0.1074714586138725 0.0745619609951973 -0.1150000020861626 0.08149999380111694 0.08149999380111694 0.1150000020861626"></Bound>
+<Representation id="id207" format="JT" location="./2_Cylinder_Engine/cylinder_bolt_pattern__0_Parts.jt"></Representation></Part>
+<Part id="id209" name="Head_1:123-150;0,Parts" type="solid">
+<Bound id="id215" values="0.005008736159652472 -0.03048798069357872 0.04119380190968514 0.1079999953508377 0.09020166844129562 0.0411965511739254"></Bound>
+<Occurrence id="id211" materialRef="id212" instanceRefs="#inst1798736 #inst2010456 #inst1726008">
+<Transform id="id213">-1.553142503496474e-009 5.031413952139019e-009 -1 0 5.031442373848449e-009 1 5.031413063960599e-009 0 1 -7.856474439904559e-007 -1.082494804904854e-007 0 0.5421041250228882 0.03720489889383316 0.04404613375663757 1</Transform></Occurrence>
+<Representation id="id216" format="JT" location="./2_Cylinder_Engine/Head_1_123_150_0_Parts.jt"></Representation></Part>
+<Part id="id218" name="Head2 Sub:;0,Parts" instanceRefs="inst1727816 inst2027256 inst1842808 inst1906944 inst2052896 inst1725624 inst1994616 inst1719832 inst1729824 inst1726936 inst1722616 inst1760240" type="assembly">
+<UserData id="id230">
+<UserValue value="Head2 Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="**Changes not in Library**" title="Revision"></UserValue>
+<UserValue value="Jan-30-1998  16:58:27.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Head2 Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="May-03-1999  15:12:04.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id232" name="Head_2:123-151;0,Parts" type="solid">
+<Bound id="id236" values="0.005008736159652472 -0.03048798069357872 -0.04119383916258812 0.1079999953508377 0.09020166844129562 0.04119651019573212"></Bound>
+<Occurrence id="id234" materialRef="id212" instanceRefs="#inst1798736 #inst2010456 #inst1729056 #inst1727816"></Occurrence>
+<Representation id="id237" format="JT" location="./2_Cylinder_Engine/Head_2_123_151_0_Parts.jt"></Representation></Part>
+<Part id="id239" name="Spark Plug:;0,Parts" type="solid">
+<Bound id="id242" values="0.03006996028125286 0.2239631712436676 0.02060705050826073 0.01078151073306799 0.009165501222014427 0.0493929535150528"></Bound>
+<Representation id="id243" format="JT" location="./2_Cylinder_Engine/Spark_Plug__0_Parts.jt"></Representation></Part>
+<Part id="id245" name="Head Nut:123-005;0,Parts" type="solid">
+<Bound id="id248" values="0.02565165981650353 0.2141639441251755 -0.008499999530613422 0.01200000010430813 0.01199112832546234 0.008499999530613422"></Bound>
+<Representation id="id249" format="JT" location="./2_Cylinder_Engine/Head_Nut_123_005_0_Parts.jt"></Representation></Part>
+<Part id="id251" name="Rocker_Sub:;0,Parts" instanceRefs="inst2033120 inst1789832 inst2033672 inst1949072" type="assembly">
+<UserData id="id262">
+<UserValue value="Rocker_Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="Jan-30-1998  16:58:27.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Rocker_Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="May-03-1999  15:12:04.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id264" name="Rocker Arm Shaft:123-601;0,Parts" type="solid">
+<Bound id="id267" values="-0.04317900538444519 0.4631594121456146 0.05750000104308128 0.006500000134110451 0.006495170295238495 0.05750000104308128"></Bound>
+<Representation id="id268" format="JT" location="./2_Cylinder_Engine/Rocker_Arm_Shaft_123_601_0_Parts.jt"></Representation></Part>
+<Part id="id270" name="Rocker_Mount_Sub:;0,Parts" instanceRefs="inst1796000 inst2030512 inst1725832 inst2029080" type="assembly">
+<UserData id="id276">
+<UserValue value="Rocker_Mount_Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="Rocker_Mount_Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue></UserData></Part>
+<Part id="id278" name="Rocker Mount:123-604;0,Parts" type="solid">
+<Bound id="id281" values="0.005044352263212204 -0.05961518362164497 0.007500000298023224 0.0494999997317791 0.02099999971687794 0.007500000298023224"></Bound>
+<Representation id="id282" format="JT" location="./2_Cylinder_Engine/Rocker_Mount_123_604_0_Parts.jt"></Representation></Part>
+<Part id="id284" name="Rocker Mount Cap:123-608;0,Parts" type="solid">
+<Bound id="id287" values="0.005044352263212204 -0.05511518567800522 0.007500000298023224 0.0494999997317791 0.006499998271465302 0.007500000298023224"></Bound>
+<Representation id="id288" format="JT" location="./2_Cylinder_Engine/Rocker_Mount_Cap_123_608_0_Parts.jt"></Representation></Part>
+<Part id="id290" name="Rocker Bolt:123-603;0,Parts" type="solid">
+<Bound id="id293" values="0.02305358275771141 0.2096639275550842 -0.04050000011920929 0.007499999366700649 0.007494449149817228 0.04050000011920929"></Bound>
+<Representation id="id294" format="JT" location="./2_Cylinder_Engine/Rocker_Bolt_123_603_0_Parts.jt"></Representation></Part>
+<Part id="id299" name="Rocker_Mount_Sub:;0,Parts" instanceRefs="inst1996808 inst1867136 inst1948848 inst1997256" type="assembly">
+<UserData id="id310">
+<UserValue value="Rocker_Mount_Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="Jan-30-1998  16:58:27.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Rocker_Mount_Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="May-03-1999  15:12:04.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id327" name="Valve Spring:123-702;0,Parts" type="solid">
+<Bound id="id330" values="-0.2873985767364502 -0.0646171048283577 0.0324999988079071 0.008999995887279511 0.008993340656161308 0.0324999988079071"></Bound>
+<Representation id="id331" format="JT" location="./2_Cylinder_Engine/Valve_Spring_123_702_0_Parts.jt"></Representation></Part>
+<Part id="id333" name="Valve_Sub:;0,Parts" instanceRefs="inst1914472 inst1734000 inst1730152" type="assembly">
+<UserData id="id339">
+<UserValue value="Valve_Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="Valve_Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue></UserData></Part>
+<Part id="id341" name="Valve:123-700;0,Parts" type="solid">
+<Bound id="id344" values="0.1265590041875839 0.2941140830516815 0 0.05499999970197678 0.01800000295042992 0.01798668131232262"></Bound>
+<Representation id="id345" format="JT" location="./2_Cylinder_Engine/Valve_123_700_0_Parts.jt"></Representation></Part>
+<Part id="id347" name="Valve Spring Cap:123-704;0,Parts" type="solid">
+<Bound id="id350" values="0.2066644430160523 0.2842055261135101 0 0.004499997943639755 0.01600000448524952 0.01598815992474556"></Bound>
+<Representation id="id351" format="JT" location="./2_Cylinder_Engine/Valve_Spring_Cap_123_704_0_Parts.jt"></Representation></Part>
+<Part id="id353" name="Spring:;0,Parts" instanceRefs="inst1910040 inst1910640 inst1911040 inst1911768 inst1912168 inst1912968 inst1920696 inst1827264 inst1920976 inst1994408" type="assembly">
+<UserData id="id359">
+<UserValue value="Spring" title="I-DEAS Name"></UserValue>
+<UserValue value="Spring:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue></UserData></Part>
+<Part id="id361" name="Spring Link:;0,Parts" type="solid">
+<Bound id="id364" values="0.1303011178970337 -0.04939981177449226 0.007499259896576405 0.001999998930841684 0.01499851979315281 0.007499259896576405"></Bound>
+<Representation id="id365" format="JT" location="./2_Cylinder_Engine/Spring_Link__0_Parts.jt"></Representation></Part>
+<Part id="id394" name="Valve_Sub:;0,Parts" instanceRefs="inst1995632 inst2053208 inst1862560" type="assembly">
+<UserData id="id406">
+<UserValue value="Valve_Sub:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="**Changes not in Library**" title="Revision"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Jan-30-1998  16:58:26.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="Valve_Sub" title="I-DEAS Name"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="May-03-1999  15:12:04.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id408" name="Spring:;0,Parts" instanceRefs="inst1722840 inst1723976 inst1725736 inst1995424 inst1726232 inst1727160 inst1722360 inst1995528 inst1995008 inst2053416" type="assembly">
+<UserData id="id419">
+<UserValue value="Spring:;0,Parts" title="Name"></UserValue>
+<UserValue type="int" value="0" title="Version"></UserValue>
+<UserValue value="sgerus" title="Creator"></UserValue>
+<UserValue value="Jan-30-1998  16:58:25.00" title="Version Create Date + Time"></UserValue>
+<UserValue value="INITIAL" title="State"></UserValue>
+<UserValue value="Spring" title="I-DEAS Name"></UserValue>
+<UserValue value="sgerus" title="Last Modifier"></UserValue>
+<UserValue value="May-03-1999  15:12:04.00" title="Version Mod. Date + Time"></UserValue></UserData></Part>
+<Part id="id457" name="Rocker Arm:123-600;0,Parts" type="solid">
+<Bound id="id460" values="-0.2874188423156738 -0.1816282123327255 0.04250000044703484 0.03894562274217606 0.01755017042160034 0.04250000044703484"></Bound>
+<Representation id="id461" format="JT" location="./2_Cylinder_Engine/Rocker_Arm_123_600_0_Parts.jt"></Representation></Part>
+<Part id="id463" name="Rocker Arm_copy:123-602;0,Parts" type="solid">
+<Bound id="id466" values="-0.2914990782737732 -0.1816282123327255 0.04250000044703484 0.03894564881920815 0.01755017600953579 0.04250000044703484"></Bound>
+<Representation id="id467" format="JT" location="./2_Cylinder_Engine/Rocker_Arm_copy_123_602_0_Parts.jt"></Representation></Part>
+<Part id="id469" name="Valve Cover_copy:;0,Main" type="solid">
+<Bound id="id472" values="0.003508739871904254 -0.03198798000812531 0.0386538989841938 0.101500004529953 0.09204161167144775 0.03634610027074814"></Bound>
+<Representation id="id473" format="JT" location="./2_Cylinder_Engine/Valve_Cover_copy__0_Main.jt"></Representation></Part>
+<Part id="id481" name="Valve Cover:123-701;0,Parts" type="solid">
+<Bound id="id486" values="0.003508739871904254 -0.03198803216218948 0.1113460958003998 0.101500004529953 0.09204155951738358 0.03634609654545784"></Bound>
+<Occurrence id="id483" instanceRefs="#inst1798736 #inst2010456 #inst1724160">
+<Transform id="id484">-1.552729944620523e-009 5.031413063960599e-009 -1 0 5.0314401534024e-009 1 5.031413063960599e-009 0 1 -3.418919334308157e-007 -1.096145751944277e-007 0 0.6029092669487 0.04294551536440849 0.04271972924470902 1</Transform></Occurrence>
+<Representation id="id487" format="JT" location="./2_Cylinder_Engine/Valve_Cover_123_701_0_Parts.jt"></Representation></Part></InstanceGraph>
+<Material id="id77" diffuse="1 0 1" specular="1 0 1" emissive="0 0 0" ambient="0 0 0" shininess="96" alpha="0.1000000238418579"></Material>
+<Material id="id182" diffuse="0.847058892250061 0.847058892250061 0.847058892250061" specular="0.8000000715255737 0.8000000715255737 0.8000000715255737" emissive="0 0 0" ambient="0.1490196138620377 0.1490196138620377 0.1490196138620377" shininess="96" alpha="0.5"></Material>
+<Material id="id190" diffuse="0.6509804129600525 0.7921569347381592 0.9411765336990356" specular="0.6509804129600525 0.7921569347381592 0.9411765336990356" emissive="0 0 0" ambient="0.1490196138620377 0.1490196138620377 0.1490196138620377" shininess="96" alpha="0.5"></Material>
+<Material id="id212" diffuse="1 0 0" specular="1 0 0" emissive="0 0 0" ambient="0.1490196138620377 0.1490196138620377 0.1490196138620377" shininess="96" alpha="0.5"></Material></ProductDef></PLMXML>

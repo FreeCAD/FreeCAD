@@ -22,7 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Path,PathGui
+import FreeCAD,FreeCADGui,Path,PathGui, PathUtils
 from PySide import QtCore,QtGui
 
 """Path Compound Extended object and FreeCAD command"""
@@ -41,11 +41,11 @@ class ObjectCompoundExtended:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyString","Description",  "Path",translate("PathCompoundExtended","An optional description of this compounded operation"))
-#        obj.addProperty("App::PropertySpeed", "FeedRate",     "Path",translate("PathCompoundExtended","The feed rate of the paths in these compounded operations"))
-#        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path",translate("PathCompoundExtended","The spindle speed, in revolutions per minute, of the tool used in these compounded operations"))
-        obj.addProperty("App::PropertyLength","SafeHeight",   "Path",translate("PathCompoundExtended","The safe height for this operation"))
-        obj.addProperty("App::PropertyLength","RetractHeight","Path",translate("PathCompoundExtended","The retract height, above top surface of part, between compounded operations inside clamping area"))
+        obj.addProperty("App::PropertyString","Description",  "Path","An optional description of this compounded operation")
+#        obj.addProperty("App::PropertySpeed", "FeedRate",     "Path","The feed rate of the paths in these compounded operations")
+#        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path","The spindle speed, in revolutions per minute, of the tool used in these compounded operations")
+        obj.addProperty("App::PropertyLength","SafeHeight",   "Path","The safe height for this operation")
+        obj.addProperty("App::PropertyLength","RetractHeight","Path","The retract height, above top surface of part, between compounded operations inside clamping area")
         obj.Proxy = self
 
     def __getstate__(self):
@@ -54,11 +54,22 @@ class ObjectCompoundExtended:
     def __setstate__(self,state):
         return None
 
+    def onChanged(self,obj,prop):
+        if prop == "Group":
+            print 'check order'
+        for child in obj.Group:
+            if child.isDerivedFrom("Path::Feature"):
+                child.touch()    
+
     def execute(self,obj):
         cmds = []
         for child in obj.Group:
             if child.isDerivedFrom("Path::Feature"):
-                cmds.extend(child.Path.Commands)
+                if obj.UsePlacements:
+                    for c in child.Path.Commands:
+                        cmds.append(c.transform(child.Placement))
+                else:
+                    cmds.extend(child.Path.Commands)
         if cmds:
             path = Path.Path(cmds)
             obj.Path = path
@@ -88,16 +99,16 @@ class CommandCompoundExtended:
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-Compound',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathCompoundExtended","Compound"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_CompoundExtended","Compound"),
                 'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathCompoundExtended","Creates a Path Compound object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_CompoundExtended","Creates a Path Compound object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
 
-        FreeCAD.ActiveDocument.openTransaction(translate("PathCompoundExtended","Create Compound"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_CompoundExtended","Create Compound"))
         FreeCADGui.addModule("PathScripts.PathCompoundExtended")
         snippet = '''
 import Path

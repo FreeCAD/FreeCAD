@@ -47,6 +47,8 @@ def InitApplications():
 	BinDir = os.path.realpath(BinDir)
 	LibDir = FreeCAD.getHomePath()+'lib'
 	LibDir = os.path.realpath(LibDir)
+	Lib64Dir = FreeCAD.getHomePath()+'lib64'
+	Lib64Dir = os.path.realpath(Lib64Dir)
 	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
 	HomeMod = FreeCAD.ConfigGet("UserAppData")+"Mod"
 	HomeMod = os.path.realpath(HomeMod)
@@ -109,6 +111,7 @@ def InitApplications():
 			else:
 				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
 	sys.path.insert(0,LibDir)
+	sys.path.insert(0,Lib64Dir)
 	sys.path.insert(0,ModDir)
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
@@ -146,6 +149,9 @@ Msg = FreeCAD.Console.PrintMessage
 Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
 test_ascii = lambda s: all(ord(c) < 128 for c in s)
+
+#store the cmake variales
+App.__cmake__ = cmake;
 
 Log ('Init: starting App::FreeCADInit.py\n')
 

@@ -26,11 +26,12 @@
 
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
+#include "AttachableObject.h"
 
 namespace Part
 {
 
-class PartExport Primitive : public Part::Feature
+class PartExport Primitive : public Part::AttachableObject
 {
     PROPERTY_HEADER(Part::Primitive);
 

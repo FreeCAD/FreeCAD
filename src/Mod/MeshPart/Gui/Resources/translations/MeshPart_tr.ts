@@ -39,7 +39,7 @@
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standart</translation>
+        <translation>Standart</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -59,7 +59,7 @@
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation>İnceliği:</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -69,17 +69,17 @@
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation>Kaba</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation>Normal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation>İyi</translation>
     </message>
     <message>
         <location line="+5"/>

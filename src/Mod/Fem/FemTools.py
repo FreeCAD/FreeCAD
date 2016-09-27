@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>                 *
+# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,24 +22,22 @@
 # ***************************************************************************
 
 
+__title__ = "Fem Tools super class"
+__author__ = "Przemo Firszt, Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+
 import FreeCAD
 from PySide import QtCore
 
 
 class FemTools(QtCore.QRunnable, QtCore.QObject):
-
-    finished = QtCore.Signal(int)
-
-    known_analysis_types = ["static", "frequency"]
-
     ## The constructor
     #  @param analysis - analysis object to be used as the core object.
-    #  @param test_mode - True indicates that no real calculations will take place, so ccx bianry is not required. Used by test module.
     #  "__init__" tries to use current active analysis in analysis is left empty.
     #  Rises exception if analysis is not set and there is no active analysis
-    def __init__(self, analysis=None, test_mode=False):
-        QtCore.QRunnable.__init__(self)
-        QtCore.QObject.__init__(self)
+    #  The constructur of FemTools is for use of analysis without solver object
+    def __init__(self, analysis=None, solver=None):
 
         if analysis:
             ## @var analysis
@@ -48,25 +47,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         else:
             import FemGui
             self.analysis = FemGui.getActiveAnalysis()
+        if solver:
+            ## @var solver
+            #  solver of the analysis. Used to store the active solver and analysis parameters
+            self.solver = solver
+        else:
+            self.solver = None
         if self.analysis:
             self.update_objects()
-            ## @var base_name
-            #  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
-            self.base_name = ""
-            ## @var results_present
-            #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
-            if self.solver:
-                self.set_analysis_type()
-                self.set_eigenmode_parameters()
-                self.setup_working_dir()
-            else:
-                raise Exception('FEM: No solver found!')
-            if test_mode:
-                self.ccx_binary_present = True
-            else:
-                self.ccx_binary_present = False
-                self.setup_ccx()
             self.result_object = None
         else:
             raise Exception('FEM: No active analysis found!')
@@ -93,6 +82,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.mesh.ViewObject.ElementColor = {}
             self.mesh.ViewObject.setNodeColorByScalars()
 
+    ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
+    #  @param self The python object self
+    def reset_mesh_purge_results_checked(self):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
+        if not keep_results_on_rerun:
+            self.purge_results()
+        self.reset_mesh_color()
+        self.reset_mesh_deformation()
+
     ## Resets mesh color, deformation and removes all result objects
     #  @param self The python object self
     def reset_all(self):
@@ -106,13 +105,16 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
-    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
+    #  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hot spots.
     def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":
             self.reset_mesh_color()
             return
         if self.result_object:
+            if FreeCAD.GuiUp:
+                if self.result_object.Mesh.ViewObject.Visibility is False:
+                    self.result_object.Mesh.ViewObject.Visibility = True
             if result_type == "Sabs":
                 values = self.result_object.StressValues
             elif result_type == "Uabs":
@@ -149,23 +151,28 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
         # [{'Object':force_constraints, 'NodeLoad':value}, {}, ...
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':temerature_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':heatflux_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':initialtemperature_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
 
-        ## @var solver
-        #  solver of the analysis. Used to store solver and analysis parameters
-        self.solver = None
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
         ## @var materials
         # set of materials from the analysis. Updated with update_objects
-        # Induvidual materials are "App::MaterialObjectPython" type
+        #  Individual materials are "App::MaterialObjectPython" type
         self.materials = []
         ## @var fixed_constraints
         #  set of fixed constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintFixed" type
         self.fixed_constraints = []
+        ## @var selfweight_constraints
+        #  set of selfweight constraints from the analysis. Updated with update_objects
+        #  Individual constraints are Proxy.Type "FemConstraintSelfWeight"
+        self.selfweight_constraints = []
         ## @var force_constraints
         #  set of force constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintForce" type
@@ -175,20 +182,54 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         #  Individual constraints are "Fem::ConstraintPressure" type
         self.pressure_constraints = []
         ## @var beam_sections
-        # set of beam sections from the analyis. Updated with update_objects
+        # set of beam sections from the analysis. Updated with update_objects
         # Individual beam sections are Proxy.Type "FemBeamSection"
         self.beam_sections = []
         ## @var shell_thicknesses
-        # set of shell thicknesses from the analyis. Updated with update_objects
+        # set of shell thicknesses from the analysis. Updated with update_objects
         # Individual shell thicknesses are Proxy.Type "FemShellThickness"
         self.shell_thicknesses = []
+        ## @var displacement_constraints
+        # set of displacements for the analysis. Updated with update_objects
+        # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
+        self.displacement_constraints = []
+        ## @var temperature_constraints
+        # set of temperatures for the analysis. Updated with update_objects
+        # Individual temperature_constraints are Proxy.Type "FemConstraintTemperature"
+        self.temperature_constraints = []
+        ## @var heatflux_constraints
+        # set of heatflux constraints for the analysis. Updated with update_objects
+        # Individual heatflux_constraints are Proxy.Type "FemConstraintHeatflux"
+        self.heatflux_constraints = []
+        ## @var initialtemperature_constraints
+        # set of initial temperatures for the analysis. Updated with update_objects
+        # Individual initialTemperature_constraints are Proxy.Type "FemConstraintInitialTemperature"
+        self.initialtemperature_constraints = []
+        ## @var planerotation_constraints
+        #  set of plane rotation constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintPlaneRotation" type
+        self.planerotation_constraints = []
+        ## @var contact_constraints
+        #  set of contact constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintContact" type
+        self.contact_constraints = []
 
+        found_solver_for_use = False
         for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
-                if not self.solver:
+                # for some methods no solver is needed (purge_results) --> solver could be none
+                # analysis has one solver and no solver was set --> use the one solver
+                # analysis has more than one solver and no solver was set --> use solver none
+                # analysis has no solver --> use solver none
+                if not found_solver_for_use and not self.solver:
+                    # no solver was found before and no solver was set by constructor
                     self.solver = m
-                else:
-                    raise Exception('FEM: Multiple solver in analysis not yet supported!')
+                    found_solver_for_use = True
+                elif found_solver_for_use:
+                    self.solver = None
+                    # another solver was found --> We have more than one solver
+                    # we do not know which one to use, so we use none !
+                    # print('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!')
             elif m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m
@@ -202,6 +243,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
                 self.fixed_constraints.append(fixed_constraint_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemConstraintSelfWeight":
+                selfweight_dict = {}
+                selfweight_dict['Object'] = m
+                self.selfweight_constraints.append(selfweight_dict)
             elif m.isDerivedFrom("Fem::ConstraintForce"):
                 force_constraint_dict = {}
                 force_constraint_dict['Object'] = m
@@ -210,6 +255,30 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
+            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):
+                displacement_constraint_dict = {}
+                displacement_constraint_dict['Object'] = m
+                self.displacement_constraints.append(displacement_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintTemperature"):
+                temperature_constraint_dict = {}
+                temperature_constraint_dict['Object'] = m
+                self.temperature_constraints.append(temperature_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintHeatflux"):
+                heatflux_constraint_dict = {}
+                heatflux_constraint_dict['Object'] = m
+                self.heatflux_constraints.append(heatflux_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintInitialTemperature"):
+                initialtemperature_constraint_dict = {}
+                initialtemperature_constraint_dict['Object'] = m
+                self.initialtemperature_constraints.append(initialtemperature_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
+                planerotation_constraint_dict = {}
+                planerotation_constraint_dict['Object'] = m
+                self.planerotation_constraints.append(planerotation_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintContact"):
+                contact_constraint_dict = {}
+                contact_constraint_dict['Object'] = m
+                self.contact_constraints.append(contact_constraint_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
@@ -221,6 +290,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     def check_prerequisites(self):
         message = ""
+        # analysis
         if not self.analysis:
             message += "No active Analysis\n"
         if self.analysis_type not in self.known_analysis_types:
@@ -230,114 +300,93 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import os
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
+        # solver
+        if not self.solver:
+            message += "No solver object defined in the analysis\n"
+        else:
+            if self.analysis_type == "frequency":
+                if not hasattr(self.solver, "EigenmodeHighLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
+                elif not hasattr(self.solver, "EigenmodeLowLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
+                elif not hasattr(self.solver, "EigenmodesCount"):
+                    message += "Frequency analysis: Solver has no EigenmodesCount.\n"
+        # mesh
         if not self.mesh:
-            message += "No mesh object in the Analysis\n"
+            message += "No mesh object defined in the analysis\n"
+        if self.mesh:
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount > 0 and not self.shell_thicknesses:
+                message += "FEM mesh has no volume elements, either define a shell thicknesses or provide a FEM mesh with volume elements.\n"
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount > 0 and not self.beam_sections:
+                message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
+                message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
+        # materials
         if not self.materials:
-            message += "No material object in the Analysis\n"
+            message += "No material object defined in the analysis\n"
         has_no_references = False
         for m in self.materials:
             if len(m['Object'].References) == 0:
                 if has_no_references is True:
-                    message += "More than one Material has empty References list (Only one empty References list is allowed!).\n"
+                    message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
-        if not self.fixed_constraints:
-            message += "No fixed-constraint nodes defined in the Analysis\n"
+        for m in self.materials:
+            mat_map = m['Object'].Material
+            if 'YoungsModulus' not in mat_map:
+                message += "No YoungsModulus defined for at least one material.\n"
+            if 'PoissonRatio' not in mat_map:
+                message += "No PoissonRatio defined for at least one material.\n"
+            if self.analysis_type == "frequency" or self.selfweight_constraints:
+                if 'Density' not in mat_map:
+                    message += "No Density defined for at least one material.\n"
+            if self.analysis_type == "thermomech":
+                if 'ThermalConductivity' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalConductivity defined for at least one material.\n"
+                if 'ThermalExpansionCoefficient' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"
+                if 'SpecificHeat' not in mat_map:
+                    message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"
+        # constraints
         if self.analysis_type == "static":
-            if not (self.force_constraints or self.pressure_constraints):
-                message += "No force-constraint or pressure-constraint defined in the Analysis\n"
+            if not (self.fixed_constraints or self.displacement_constraints):
+                message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
+        if self.analysis_type == "static":
+            if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
+                message += "Static analysis: Neither constraint force nor constraint pressure or a constraint selfweight defined.\n"
+        if self.analysis_type == "thermomech":
+            if not self.initialtemperature_constraints:
+                message += "Thermomechanical analysis: No initial temperature defined.\n"
+            if len(self.initialtemperature_constraints) > 1:
+                message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
+        # beam sections and shell thicknesses
         if self.beam_sections:
+            if self.shell_thicknesses:
+                # this needs to be checked only once either here or in shell_thicknesses
+                message += "Beam Sections and shell thicknesses in one analysis is not supported at the moment.\n"
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
                     if has_no_references is True:
-                        message += "More than one BeamSection has empty References list (Only one empty References list is allowed!).\n"
+                        message += "More than one beam section has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.FaceCount > 0 or self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Beam sections defined but FEM mesh has volume or shell elements.\n"
+                if self.mesh.FemMesh.EdgeCount == 0:
+                    message += "Beam sections defined but FEM mesh has no edge elements.\n"
         if self.shell_thicknesses:
             has_no_references = False
             for s in self.shell_thicknesses:
                 if len(s['Object'].References) == 0:
                     if has_no_references is True:
-                        message += "More than one ShellThickness has empty References list (Only one empty References list is allowed!).\n"
+                        message += "More than one shell thickness has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Shell thicknesses defined but FEM mesh has volume elements.\n"
+                if self.mesh.FemMesh.FaceCount == 0:
+                    message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
         return message
-
-    def write_inp_file(self):
-        import ccxInpWriter as iw
-        import sys
-        self.inp_file_name = ""
-        try:
-            inp_writer = iw.inp_writer(self.analysis, self.mesh, self.materials,
-                                       self.fixed_constraints,
-                                       self.force_constraints, self.pressure_constraints,
-                                       self.beam_sections, self.shell_thicknesses,
-                                       self.analysis_type, self.eigenmode_parameters,
-                                       self.working_dir)
-            self.inp_file_name = inp_writer.write_calculix_input_file()
-        except:
-            print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
-            raise
-
-    def start_ccx(self):
-        import multiprocessing
-        import os
-        import subprocess
-        self.ccx_stdout = ""
-        self.ccx_stderr = ""
-        if self.inp_file_name != "" and self.ccx_binary_present:
-            ont_backup = os.environ.get('OMP_NUM_THREADS')
-            if not ont_backup:
-                ont_backup = ""
-            _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
-            # change cwd because ccx may crash if directory has no write permission
-            # there is also a limit of the length of file names so jump to the document directory
-            cwd = QtCore.QDir.currentPath()
-            f = QtCore.QFileInfo(self.inp_file_name)
-            QtCore.QDir.setCurrent(f.path())
-            p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                 shell=False, env=_env)
-            self.ccx_stdout, self.ccx_stderr = p.communicate()
-            os.putenv('OMP_NUM_THREADS', ont_backup)
-            QtCore.QDir.setCurrent(cwd)
-            return p.returncode
-        return -1
-
-    ## Sets eigenmode parameters for CalculiX frequency analysis
-    #  @param self The python object self
-    #  @param number number of eigenmodes that wll be calculated, default read for FEM prefs or 10 if not set in the FEM prefs
-    #  @param limit_low lower value of requested eigenfrequency range, default read for FEM prefs or 0.0 if not set in the FEM prefs
-    #  @param limit_high higher value of requested eigenfrequency range, default read for FEM prefs or 1000000.o if not set in the FEM prefs
-    def set_eigenmode_parameters(self, number=None, limit_low=None, limit_high=None):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        if number is not None:
-            _number = number
-        else:
-            try:
-                _number = self.solver.NumberOfEigenmodes
-            except:
-                #Not yet in prefs, so it will always default to 10
-                _number = self.fem_prefs.GetInteger("NumberOfEigenmodes", 10)
-        if _number < 1:
-            _number = 1
-
-        if limit_low is not None:
-            _limit_low = limit_low
-        else:
-            try:
-                _limit_low = self.solver.EigenmodeLowLimit
-            except:
-                #Not yet in prefs, so it will always default to 0.0
-                _limit_low = self.fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
-
-        if limit_high is not None:
-            _limit_high = limit_high
-        else:
-            try:
-                _limit_high = self.solver.EigenmodeHighLimit
-            except:
-                #Not yet in prefs, so it will always default to 1000000.0
-                _limit_high = self.fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
-        self.eigenmode_parameters = (_number, _limit_low, _limit_high)
 
     ## Sets base_name
     #  @param self The python object self
@@ -363,9 +412,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## Sets analysis type.
     #  @param self The python object self
-    #  @param analysis_type type of the analysis. Allowed values are:
-    #  - static
-    #  - frequency
+    #  @param analysis_type type of the analysis.
     def set_analysis_type(self, analysis_type=None):
         if analysis_type is not None:
             self.analysis_type = analysis_type
@@ -373,7 +420,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             try:
                 self.analysis_type = self.solver.AnalysisType
             except:
-                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
                 self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
 
     ## Sets working dir for solver execution. Called with no working_dir uses WorkingDir from FEM preferences
@@ -384,11 +431,20 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if working_dir is not None:
             self.working_dir = working_dir
         else:
-            try:
-                self.working_dir = self.solver.WorkingDir
-            except:
-                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
-                self.working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
+            self.working_dir = ''
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+            if self.fem_prefs.GetString("WorkingDir"):
+                try:
+                    self.working_dir = self.fem_prefs.GetString("WorkingDir")
+                except:
+                    print('Could not set working directory to FEM Preferences working directory.')
+            else:
+                print('FEM preferences working dir is not set, the solver working directory is used.')
+                if self.solver.WorkingDir:
+                    try:
+                        self.working_dir = self.solver.WorkingDir
+                    except:
+                        print('Could not set working directory to solver working directory.')
 
         if not (os.path.isdir(self.working_dir)):
             try:
@@ -398,107 +454,35 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 import tempfile
                 self.working_dir = tempfile.gettempdir()
                 print("Dir \'{}\' will be used instead.".format(self.working_dir))
+        print('FemTools.setup_working_dir()  -->  self.working_dir = ' + self.working_dir)
         # Update inp file name
         self.set_inp_file_name()
 
-    ## Sets CalculiX ccx binary path and velidates if the binary can be executed
+    ## Set the analysis result object
+    #  if no result object is provided, check if the analysis has result objects
+    #  if the analysis has exact one result object use this result object
     #  @param self The python object self
-    #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
-    #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
-    def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
-        from platform import system
-        if not ccx_binary:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-            ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
-        if not ccx_binary:
-            if system() == "Linux":
-                ccx_binary = "ccx"
-            elif system() == "Windows":
-                ccx_binary = FreeCAD.getHomePath() + "bin/ccx.exe"
-            else:
-                ccx_binary = "ccx"
-        self.ccx_binary = ccx_binary
-
-        import subprocess
-        startup_info = None
-        if system() == "Windows":
-            # Windows workaround to avoid blinking terminal window
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags = subprocess.STARTF_USESHOWWINDOW
-        ccx_stdout = None
-        ccx_stderr = None
-        try:
-            p = subprocess.Popen([self.ccx_binary], stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE, shell=False,
-                                 startupinfo=startup_info)
-            ccx_stdout, ccx_stderr = p.communicate()
-            if ccx_binary_sig in ccx_stdout:
-                self.ccx_binary_present = True
-        except OSError as e:
-            FreeCAD.Console.PrintError(e.message)
-            if e.errno == 2:
-                raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.".format(ccx_binary))
-        except Exception as e:
-            FreeCAD.Console.PrintError(e.message)
-            raise Exception("FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer".
-                            format(ccx_binary, ccx_stdout, ccx_binary_sig))
-
-    ## Load results of ccx calculations from .frd file.
-    #  @param self The python object self
-    def load_results(self):
-        import ccxFrdReader
-        import os
-        self.results_present = False
-        frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
-        if os.path.isfile(frd_result_file):
-            ccxFrdReader.importFrd(frd_result_file, self.analysis)
+    #  @param result object name
+    def use_results(self, results_name=None):
+        self.result_object = None
+        if results_name is not None:
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
+                    self.result_object = m
+                    break
+            if not self.result_object:
+                raise Exception("{} doesn't exist".format(results_name))
+        else:
+            has_results = False
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.result_object = m
-            if self.result_object:
-                self.results_present = True
-        else:
-            raise Exception('FEM: No results found at {}!'.format(frd_result_file))
-
-        import ccxDatReader
-        dat_result_file = os.path.splitext(self.inp_file_name)[0] + '.dat'
-        if os.path.isfile(dat_result_file):
-            mode_frequencies = ccxDatReader.import_dat(dat_result_file, self.analysis)
-        else:
-            raise Exception('FEM: No .dat results found at {}!'.format(dat_result_file))
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
-                    m.EigenmodeFrequency = mode_frequencies[m.Eigenmode - 1]['frequency']
-
-    def use_results(self, results_name=None):
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
-                self.result_object = m
-                break
-        if not self.result_object:
-            raise Exception("{} doesn't exist".format(results_name))
-
-    def run(self):
-        ret_code = 0
-        message = self.check_prerequisites()
-        if not message:
-            self.write_inp_file()
-            from FreeCAD import Base
-            progress_bar = Base.ProgressIndicator()
-            progress_bar.start("Running CalculiX ccx...", 0)
-            ret_code = self.start_ccx()
-            self.finished.emit(ret_code)
-            progress_bar.stop()
-        else:
-            print("Running analysis failed! {}".format(message))
-        if ret_code or self.ccx_stderr:
-            print("Analysis failed with exit code {}".format(ret_code))
-            print("--------start of stderr-------")
-            print(self.ccx_stderr)
-            print("--------end of stderr---------")
-            print("--------start of stdout-------")
-            print(self.ccx_stdout)
-            print("--------end of stdout---------")
+                    if has_results is True:
+                        self.result_object = None
+                        raise Exception("No result name was provided, but more than one result objects in the analysis.")
+                    has_results = True
+            if not self.result_object:
+                raise Exception("No result object found in the analysis")
 
     ## Returns minimum, average and maximum value for provided result type
     #  @param self The python object self
@@ -506,6 +490,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
+    #    Prin1 Principal stress 1
+    #    Prin2 Principal stress 2
+    #    Prin3 Principal stress 3
+    #    MaxSear maximum shear stress
     #  - None - always return (0.0, 0.0, 0.0)
     def get_stats(self, result_type):
         stats = (0.0, 0.0, 0.0)
@@ -516,6 +504,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                          "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
                          "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
                          "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
+                         "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
+                         "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
+                         "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
+                         "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
                          "None": (0.0, 0.0, 0.0)}
                 stats = match[result_type]
         return stats

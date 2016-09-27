@@ -29,6 +29,7 @@
 
 #include "PropertyContainer.h"
 #include "Property.h"
+#include "Application.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
@@ -110,8 +111,12 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             return 0;
         }
 
+        unsigned long status = prop->getStatus();
         prop->setStatus(Property::ReadOnly,(type & 1) > 0);
         prop->setStatus(Property::Hidden,(type & 2) > 0);
+
+        if (status != prop->getStatus())
+            GetApplication().signalChangePropertyEditor(*prop);
 
         Py_Return;
     }
@@ -128,6 +133,7 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             }
 
             // reset all bits first
+            unsigned long status = prop->getStatus();
             prop->setStatus(Property::ReadOnly, false);
             prop->setStatus(Property::Hidden, false);
 
@@ -138,6 +144,9 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
                 else if (str == "Hidden")
                     prop->setStatus(Property::Hidden, true);
             }
+
+            if (status != prop->getStatus())
+                GetApplication().signalChangePropertyEditor(*prop);
 
             Py_Return;
         }

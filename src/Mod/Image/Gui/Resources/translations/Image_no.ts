@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Create a planar image in the 3D space</source>
-        <translation>Create a planar image in the 3D space</translation>
+        <translation type="unfinished">Create a planar image in the 3D space</translation>
     </message>
     <message>
         <source>create a planar image in the 3D space</source>
@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+325"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Udefinert type fargerom for bildevisning</translation>
     </message>
@@ -189,7 +189,7 @@
         <location line="-48"/>
         <location line="+41"/>
         <source>Images</source>
-        <translation>Images</translation>
+        <translation type="unfinished">Images</translation>
     </message>
     <message>
         <location line="-36"/>

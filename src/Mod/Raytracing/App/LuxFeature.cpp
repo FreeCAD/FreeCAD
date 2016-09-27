@@ -34,6 +34,8 @@
 #include "LuxFeature.h"
 #include "LuxTools.h"
 
+#include <ShapeAnalysis_ShapeContents.hxx>
+
 
 using namespace Raytracing;
 
@@ -60,11 +62,16 @@ App::DocumentObjectExecReturn *LuxFeature::execute(void)
         return new App::DocumentObjectExecReturn("No object linked");
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
+    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
     std::string Name(std::string("Lux_")+static_cast<Part::Feature*>(link)->getNameInDocument());
     if (shape.IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
-        
+    ShapeAnalysis_ShapeContents test;
+    test.Clear();
+    test.Perform(shape);
+    if (test.NbFaces() < 1)
+        return new App::DocumentObjectExecReturn("Shape contains no face to render");
+
     // write a material entry
     // This must not be done in LuxTools::writeShape!
     const App::Color& c = Color.getValue();

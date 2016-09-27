@@ -20,7 +20,9 @@
 #endif
 
 #include <time.h>
+#if defined(FC_OS_WIN32)
 #include <sys/timeb.h>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -58,6 +60,8 @@ CmdImageOpen::CmdImageOpen()
 
 void CmdImageOpen::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     // add all supported QImage formats
     QString formats;
     QTextStream str(&formats);
@@ -100,6 +104,8 @@ CmdCreateImagePlane::CmdCreateImagePlane()
 
 void CmdCreateImagePlane::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     QString formats;
     QTextStream str(&formats);
     str << QObject::tr("Images") << " (";

@@ -29,6 +29,7 @@
 #endif
 
 #include "DlgUnitsCalculatorImp.h"
+#include "ui_DlgUnitsCalculator.h"
 #include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
@@ -43,26 +44,39 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
-  : QDialog( parent, fl )
+  : QDialog(parent, fl), ui(new Ui_DlgUnitCalculator)
 {
     // create widgets
-    setupUi(this);
+    ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(this->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
-    connect(this->ValueInput, SIGNAL(returnPressed () ), this, SLOT(returnPressed()));
-    connect(this->UnitInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(unitValueChanged(Base::Quantity)));
-    connect(this->UnitInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
+    connect(ui->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
+    connect(ui->ValueInput, SIGNAL(returnPressed () ), this, SLOT(returnPressed()));
+    connect(ui->UnitInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(unitValueChanged(Base::Quantity)));
+    connect(ui->UnitInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
 
-    connect(this->pushButton_Help, SIGNAL(clicked()), this, SLOT(help()));
-    connect(this->pushButton_Close, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(this->pushButton_Copy, SIGNAL(clicked()), this, SLOT(copy()));
+    connect(ui->pushButton_Help, SIGNAL(clicked()), this, SLOT(help()));
+    connect(ui->pushButton_Close, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(ui->pushButton_Copy, SIGNAL(clicked()), this, SLOT(copy()));
 
-    connect(this->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
-    connect(this->UnitInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
+    connect(ui->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
+    connect(ui->UnitInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
 
-    this->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
+    ui->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     actUnit.setInvalid();
+
+    units << Base::Unit::Length << Base::Unit::Mass << Base::Unit::Angle << Base::Unit::Density
+          << Base::Unit::Area << Base::Unit::Volume << Base::Unit::TimeSpan << Base::Unit::Velocity
+          << Base::Unit::Acceleration << Base::Unit::Temperature << Base::Unit::ElectricCurrent
+          << Base::Unit::AmountOfSubstance << Base::Unit::LuminoseIntensity << Base::Unit::Stress
+          << Base::Unit::Pressure << Base::Unit::Force << Base::Unit::Work << Base::Unit::Power
+          << Base::Unit::ThermalConductivity << Base::Unit::ThermalExpansionCoefficient
+          << Base::Unit::SpecificHeat << Base::Unit::ThermalTransferCoefficient;
+    for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
+        ui->unitsBox->addItem(it->getTypeString());
+    }
+
+    ui->quantitySpinBox->setUnit(units.front());
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -90,19 +104,19 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
 {
     if (actUnit.isValid()) {
         if (actUnit.getUnit() != quant.getUnit()) {
-            this->ValueOutput->setText(tr("Unit mismatch"));
-            this->pushButton_Copy->setEnabled(false);
+            ui->ValueOutput->setText(tr("Unit mismatch"));
+            ui->pushButton_Copy->setEnabled(false);
         } else {
             double value = quant.getValue()/actUnit.getValue();
             QString val = QLocale::system().toString(value, 'f', Base::UnitsApi::getDecimals());
-            QString out = QString::fromLatin1("%1 %2").arg(val).arg(this->UnitInput->text());
-            this->ValueOutput->setText(out);
-            this->pushButton_Copy->setEnabled(true);
+            QString out = QString::fromLatin1("%1 %2").arg(val).arg(ui->UnitInput->text());
+            ui->ValueOutput->setText(out);
+            ui->pushButton_Copy->setEnabled(true);
         }
     } else {
-        //this->ValueOutput->setValue(quant);
-        this->ValueOutput->setText(quant.getUserString());
-        this->pushButton_Copy->setEnabled(true);
+        //ui->ValueOutput->setValue(quant);
+        ui->ValueOutput->setText(quant.getUserString());
+        ui->pushButton_Copy->setEnabled(true);
     }
 
     actValue = quant;
@@ -110,14 +124,14 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
 
 void DlgUnitsCalculator::parseError(const QString& errorText)
 {
-    this->pushButton_Copy->setEnabled(false);
-    this->ValueOutput->setText(errorText);
+    ui->pushButton_Copy->setEnabled(false);
+    ui->ValueOutput->setText(errorText);
 }
 
 void DlgUnitsCalculator::copy(void)
 {
     QClipboard *cb = QApplication::clipboard();
-    cb->setText(ValueOutput->text());
+    cb->setText(ui->ValueOutput->text());
 }
 
 void DlgUnitsCalculator::help(void)
@@ -127,12 +141,15 @@ void DlgUnitsCalculator::help(void)
 
 void DlgUnitsCalculator::returnPressed(void)
 {
-    if (this->pushButton_Copy->isEnabled()) {
-        this->textEdit->append(this->ValueInput->text() + QString::fromLatin1(" = ") + this->ValueOutput->text());
-        this->ValueInput->pushToHistory();
+    if (ui->pushButton_Copy->isEnabled()) {
+        ui->textEdit->append(ui->ValueInput->text() + QString::fromLatin1(" = ") + ui->ValueOutput->text());
+        ui->ValueInput->pushToHistory();
     }
 }
 
-
+void DlgUnitsCalculator::on_unitsBox_activated(int index)
+{
+    ui->quantitySpinBox->setUnit(units[index]);
+}
 
 #include "moc_DlgUnitsCalculatorImp.cpp"

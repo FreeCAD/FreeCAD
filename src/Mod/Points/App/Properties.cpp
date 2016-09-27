@@ -190,22 +190,21 @@ unsigned int PropertyGreyValueList::getMemSize (void) const
 
 void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIndices )
 {
-#if 0
     // We need a sorted array
     std::vector<unsigned long> uSortedInds = uIndices;
     std::sort(uSortedInds.begin(), uSortedInds.end());
 
-    const std::vector<double>& rValueList = getValues();
+    const std::vector<float>& rValueList = getValues();
 
     assert( uSortedInds.size() <= rValueList.size() );
     if ( uSortedInds.size() > rValueList.size() )
         return;
 
-    std::vector<double> remainValue;
+    std::vector<float> remainValue;
     remainValue.reserve(rValueList.size() - uSortedInds.size());
 
     std::vector<unsigned long>::iterator pos = uSortedInds.begin();
-    for ( std::vector<double>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
+    for ( std::vector<float>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
         unsigned long index = it - rValueList.begin();
         if (pos == uSortedInds.end())
             remainValue.push_back( *it );
@@ -216,7 +215,6 @@ void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIn
     }
 
     setValues(remainValue);
-#endif
 }
 
 PropertyNormalList::PropertyNormalList()
@@ -364,7 +362,7 @@ unsigned int PropertyNormalList::getMemSize (void) const
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
 
-void PropertyNormalList::transform(const Base::Matrix4D &mat)
+void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
 {
     // A normal vector is only a direction with unit length, so we only need to rotate it
     // (no translations or scaling)
@@ -386,10 +384,14 @@ void PropertyNormalList::transform(const Base::Matrix4D &mat)
         }
     }
 
+    aboutToSetValue();
+
     // Rotate the normal vectors
     for (int ii=0; ii<getSize(); ii++) {
         set1Value(ii, rot * operator[](ii));
     }
+
+    hasSetValue();
 }
 
 void PropertyNormalList::removeIndices( const std::vector<unsigned long>& uIndices )
@@ -489,7 +491,7 @@ std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
     return fValues;
 }
 
-void PropertyCurvatureList::transform(const Base::Matrix4D &mat)
+void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
 {
     // The principal direction is only a vector with unit length, so we only need to rotate it
     // (no translations or scaling)
@@ -511,6 +513,8 @@ void PropertyCurvatureList::transform(const Base::Matrix4D &mat)
         }
     }
 
+    aboutToSetValue();
+
     // Rotate the principal directions
     for (int ii=0; ii<getSize(); ii++) {
         CurvatureInfo ci = operator[](ii);
@@ -518,6 +522,8 @@ void PropertyCurvatureList::transform(const Base::Matrix4D &mat)
         ci.cMinCurvDir = rot * ci.cMinCurvDir;
         set1Value(ii, ci);
     }
+
+    hasSetValue();
 }
 
 void PropertyCurvatureList::removeIndices( const std::vector<unsigned long>& uIndices )

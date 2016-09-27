@@ -96,6 +96,7 @@ SelectionView::~SelectionView()
 void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                              Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -225,6 +226,18 @@ void SelectionView::treeSelect(void)
     Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")"); 
 }
 
+void SelectionView::touch(void)
+{
+    QListWidgetItem *item = selectionView->currentItem();
+    if (!item)
+        return;
+    QStringList elements = item->text().split(QString::fromLatin1("."));
+    // remove possible space from object name followed by label
+    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
+    QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").touch()").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Doc,cmd.toLatin1());
+}
+
 void SelectionView::toPython(void)
 {
     QListWidgetItem *item = selectionView->currentItem();
@@ -264,6 +277,9 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
     QAction *gotoAction = menu.addAction(tr("Go to selection"),this,SLOT(treeSelect()));
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
+    QAction *touchAction = menu.addAction(tr("Mark to recompute"),this,SLOT(touch()));
+    touchAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-refresh")));
+    touchAction->setToolTip(tr("Mark this object to be recomputed"));
     QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
     toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
     toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
@@ -274,7 +290,7 @@ void SelectionView::onUpdate(void)
 {
 }
 
-bool SelectionView::onMsg(const char* pMsg,const char** ppReturn)
+bool SelectionView::onMsg(const char* /*pMsg*/,const char** /*ppReturn*/)
 {
     return false;
 }

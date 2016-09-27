@@ -1,4 +1,6 @@
-PYSIDE_WRAP_RC(OpenSCAD_QRC_SRCS Resources/OpenSCAD.qrc)
+IF (BUILD_GUI)
+    PYSIDE_WRAP_RC(OpenSCAD_QRC_SRCS Resources/OpenSCAD.qrc)
+ENDIF (BUILD_GUI)
 
 SET(OpenSCAD_SRCS
         Init.py
@@ -32,10 +34,12 @@ ADD_CUSTOM_TARGET(OpenSCAD ALL
 
 fc_copy_sources(OpenSCAD "${CMAKE_BINARY_DIR}/Mod/OpenSCAD" ${all_files})
 
-fc_target_copy_resource(OpenSCAD
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/OpenSCAD
-    OpenSCAD_rc.py)
+IF (BUILD_GUI)
+    fc_target_copy_resource(OpenSCAD
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/OpenSCAD
+        OpenSCAD_rc.py)
+ENDIF (BUILD_GUI)
 
 INSTALL(
     FILES
@@ -50,3 +54,11 @@ INSTALL(
     DESTINATION
         Mod/OpenSCAD
 )
+
+SET(OpenSCADGuiIcon_SVG
+    Resources/icons/OpenSCADWorkbench.svg
+)
+
+fc_copy_sources(OpenSCAD "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/OpenSCAD" ${OpenSCADGuiIcon_SVG})
+
+INSTALL(FILES ${OpenSCADGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/OpenSCAD/Resources/icons")

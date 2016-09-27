@@ -207,6 +207,11 @@ Expression *UnitExpression::copy() const
     return new UnitExpression(owner, quantity, unitStr);
 }
 
+int UnitExpression::priority() const
+{
+    return 20;
+}
+
 //
 // NumberExpression class
 //
@@ -244,6 +249,11 @@ Expression *NumberExpression::simplify() const
 Expression *NumberExpression::copy() const
 {
     return new NumberExpression(owner, quantity);
+}
+
+int NumberExpression::priority() const
+{
+    return 20;
 }
 
 /**
@@ -297,18 +307,45 @@ bool OperatorExpression::isTouched() const
     return left->isTouched() || right->isTouched();
 }
 
+/* The following definitions are from The art of computer programming by Knuth
+ * (copied from http://stackoverflow.com/questions/17333/most-effective-way-for-float-and-double-comparison)
+ */
+
+/*
+static bool approximatelyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+*/
+
+static bool essentiallyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+static bool definitelyGreaterThan(double a, double b, double epsilon)
+{
+    return (a - b) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+static bool definitelyLessThan(double a, double b, double epsilon)
+{
+    return (b - a) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
 /**
-  * Evalutate the expression. Returns a new NumberExpression with the result, or throws
+  * Evalutate the expression. Returns a new Expression with the result, or throws
   * an exception if something is wrong, i.e the expression cannot be evaluated.
   */
 
 Expression * OperatorExpression::eval() const
 {
-    std::auto_ptr<Expression> e1(left->eval());
+    std::unique_ptr<Expression> e1(left->eval());
     NumberExpression * v1;
-    std::auto_ptr<Expression> e2(right->eval());
+    std::unique_ptr<Expression> e2(right->eval());
     NumberExpression * v2;
-    NumberExpression * output;
+    Expression * output;
+    const double epsilon = std::numeric_limits<double>::epsilon();
 
     v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
@@ -339,33 +376,35 @@ Expression * OperatorExpression::eval() const
         break;
     case EQ:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) < 1e-7));
+            throw ExpressionError("Incompatible units for the = operator");
+        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case NEQ:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(fabs(v1->getValue() - v2->getValue()) > 1e-7));
+            throw ExpressionError("Incompatible units for the != operator");
+        output = new BooleanExpression(owner, !essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LT:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() < v2->getValue()));
+            throw ExpressionError("Incompatible units for the < operator");
+        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case GT:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() > v2->getValue()));
+            throw ExpressionError("Incompatible units for the > operator");
+        output = new BooleanExpression(owner, definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LTE:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v1->getValue() - v2->getValue() < 1e-7));
+            throw ExpressionError("Incompatible units for the <= operator");
+        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) ||
+                                       essentiallyEqual(v1->getValue(), v2->getValue(), epsilon));
         break;
     case GTE:
         if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, Quantity(v2->getValue() - v1->getValue()) < 1e-7);
+            throw ExpressionError("Incompatible units for the >= operator");
+        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) ||
+                                       definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon));
         break;
     case NEG:
         output = new NumberExpression(owner, -v1->getQuantity() );
@@ -413,19 +452,33 @@ Expression *OperatorExpression::simplify() const
 std::string OperatorExpression::toString() const
 {
     std::stringstream s;
+    bool needsParens;
+    Operator leftOperator(NONE), rightOperator(NONE);
 
     switch (op) {
     case NEG:
-        s << "-";
-        break;
+        s << "-" << left->toString();
+        return s.str();
     case POS:
-        s << "+";
-        break;
+        s << "+" << left->toString();
+        return s.str();
     default:
         break;
     }
 
-    if (left->priority() < priority())
+    needsParens = false;
+    if (freecad_dynamic_cast<OperatorExpression>(left))
+        leftOperator = static_cast<OperatorExpression*>(left)->op;
+    if (left->priority() < priority()) // Check on operator priority first
+        needsParens = true;
+    else if (leftOperator == op) { // Equal priority?
+        if (!isLeftAssociative())
+            needsParens = true;
+        //else if (!isCommutative())
+        //    needsParens = true;
+    }
+
+    if (needsParens)
         s << "(" << left->toString() << ")";
     else
         s << left->toString();
@@ -466,14 +519,23 @@ std::string OperatorExpression::toString() const
         break;
     case UNIT:
         break;
-    case POS:
-    case NEG:
-        return s.str();
     default:
         assert(0);
     }
 
-    if (right->priority() < priority())
+    needsParens = false;
+    if (freecad_dynamic_cast<OperatorExpression>(right))
+        rightOperator = static_cast<OperatorExpression*>(right)->op;
+    if (right->priority() < priority()) // Check on operator priority first
+        needsParens = true;
+    else if (rightOperator == op) { // Equal priority?
+        if (!isRightAssociative())
+            needsParens = true;
+        else if (!isCommutative())
+            needsParens = true;
+    }
+
+    if (needsParens)
         s << "(" << right->toString() << ")";
     else
         s << right->toString();
@@ -500,21 +562,27 @@ Expression *OperatorExpression::copy() const
 int OperatorExpression::priority() const
 {
     switch (op) {
+    case EQ:
+    case NEQ:
+    case LT:
+    case GT:
+    case LTE:
+    case GTE:
+        return 1;
     case ADD:
-        return 5;
     case SUB:
-        return 5;
+        return 3;
     case MUL:
-    case UNIT:
-        return 10;
     case DIV:
-        return 10;
+        return 4;
     case POW:
-        return 10;
+        return 5;
+    case UNIT:
     case NEG:
     case POS:
-        return 15;
+        return 6;
     default:
+        assert(false);
         return 0;
     }
 }
@@ -540,6 +608,35 @@ void OperatorExpression::visit(ExpressionVisitor &v)
     v.visit(this);
 }
 
+bool OperatorExpression::isCommutative() const
+{
+    switch (op) {
+    case EQ:
+    case NEQ:
+    case ADD:
+    case MUL:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool OperatorExpression::isLeftAssociative() const
+{
+    return true;
+}
+
+bool OperatorExpression::isRightAssociative() const
+{
+    switch (op) {
+    case ADD:
+    case MUL:
+        return true;
+    default:
+        return false;
+    }
+}
+
 //
 // FunctionExpression class. This class handles functions with one or two parameters.
 //
@@ -552,18 +649,50 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     , args(_args)
 {
     switch (f) {
-    case NONE:
-        throw ExpressionError("Unknown function");
+    case ACOS:
+    case ASIN:
+    case ATAN:
+    case ABS:
+    case EXP:
+    case LOG:
+    case LOG10:
+    case SIN:
+    case SINH:
+    case TAN:
+    case TANH:
+    case SQRT:
+    case COS:
+    case COSH:
+    case ROUND:
+    case TRUNC:
+    case CEIL:
+    case FLOOR:
+        if (args.size() != 1)
+            throw ExpressionError("Invalid number of arguments: exactly one required.");
+        break;
     case MOD:
     case ATAN2:
     case POW:
         if (args.size() != 2)
-            throw ExpressionError("Invalid number of arguments.");
+            throw ExpressionError("Invalid number of arguments: eaxctly two required.");
         break;
+    case STDDEV:
+        if (args.size() < 2)
+            throw ExpressionError("Invalid number of arguments: at least two required.");
+        break;
+    case SUM:
+    case AVERAGE:
+    case COUNT:
+    case MIN:
+    case MAX:
+        if (args.size() == 0)
+            throw ExpressionError("Invalid number of arguments: at least one required.");
+        break;
+    case NONE:
+    case AGGREGATES:
+    case LAST:
     default:
-        if (args.size() != 1)
-            throw ExpressionError("Invalid number of arguments.");
-        break;
+        throw ExpressionError("Unknown function");
     }
 }
 
@@ -596,6 +725,187 @@ bool FunctionExpression::isTouched() const
     return false;
 }
 
+/* Various collectors for aggregate functions */
+
+class Collector {
+public:
+    Collector() : first(true) { }
+    virtual void collect(Quantity value) {
+        if (first)
+            value.setUnit(value.getUnit());
+    }
+    virtual Quantity getQuantity() const {
+        return q;
+    }
+protected:
+    bool first;
+    Quantity q;
+};
+
+class SumCollector : public Collector {
+public:
+    SumCollector() : Collector() { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        q += value;
+        first = false;
+    }
+
+};
+
+class AverageCollector : public Collector {
+public:
+    AverageCollector() : Collector(), n(0) { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        q += value;
+        ++n;
+        first = false;
+    }
+
+    virtual Quantity getQuantity() const { return q/(double)n; }
+
+private:
+    unsigned int n;
+};
+
+class StdDevCollector : public Collector {
+public:
+    StdDevCollector() : Collector(), n(0) { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        if (first) {
+            M2 = Quantity(0, value.getUnit());
+            mean = Quantity(0, value.getUnit());
+            n = 0;
+        }
+
+        const Quantity delta = value - mean;
+        ++n;
+        mean = mean + delta / n;
+        M2 = M2 + delta * (value - mean);
+        first = false;
+    }
+
+    virtual Quantity getQuantity() const {
+        if (n < 2)
+            return Quantity();
+        else
+            return (M2 / (n - 1.0)).pow(Quantity(0.5));
+    }
+
+private:
+    unsigned int n;
+    Quantity mean;
+    Quantity M2;
+};
+
+class CountCollector : public Collector {
+public:
+    CountCollector() : Collector(), n(0) { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        ++n;
+        first = false;
+    }
+
+    virtual Quantity getQuantity() const { return n; }
+
+private:
+    unsigned int n;
+};
+
+class MinCollector : public Collector {
+public:
+    MinCollector() : Collector() { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        if (first || value < q)
+            q = value;
+        first = false;
+    }
+};
+
+class MaxCollector : public Collector {
+public:
+    MaxCollector() : Collector() { }
+
+    void collect(Quantity value) {
+        Collector::collect(value);
+        if (first || value > q)
+            q = value;
+        first = false;
+    }
+};
+
+Expression * FunctionExpression::evalAggregate() const
+{
+    boost::shared_ptr<Collector> c;
+
+    switch (f) {
+    case SUM:
+        c = boost::shared_ptr<Collector>(new SumCollector());
+        break;
+    case AVERAGE:
+        c = boost::shared_ptr<Collector>(new AverageCollector());
+        break;
+    case STDDEV:
+        c = boost::shared_ptr<Collector>(new StdDevCollector());
+        break;
+    case COUNT:
+        c = boost::shared_ptr<Collector>(new CountCollector());
+        break;
+    case MIN:
+        c = boost::shared_ptr<Collector>(new MinCollector());
+        break;
+    case MAX:
+        c = boost::shared_ptr<Collector>(new MaxCollector());
+        break;
+    default:
+        assert(false);
+    }
+
+    for (size_t i = 0; i< args.size(); ++i) {
+        if (args[i]->isDerivedFrom(RangeExpression::getClassTypeId())) {
+            RangeExpression * v = static_cast<RangeExpression*>(args[i]);
+            Range range(v->getRange());
+
+            do {
+                Property * p = owner->getPropertyByName(range.address().c_str());
+                PropertyQuantity * qp;
+                PropertyFloat * fp;
+
+                if (!p)
+                    continue;
+
+                if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != 0)
+                    c->collect(qp->getQuantityValue());
+                else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
+                    c->collect(fp->getValue());
+                else
+                    throw Exception("Invalid property type for aggregate");
+            } while (range.next());
+        }
+        else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+            std::unique_ptr<Expression> e(args[i]->eval());
+            NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
+
+            if (n)
+                c->collect(n->getQuantity());
+        }
+        else if (args[i]->isDerivedFrom(App::NumberExpression::getClassTypeId())) {
+            c->collect(static_cast<NumberExpression*>(args[i])->getQuantity());
+        }
+    }
+
+    return new NumberExpression(owner, c->getQuantity());
+}
+
 /**
   * Evaluate function. Returns a NumberExpression if evaluation is successfuly.
   * Throws an ExpressionError exception if something fails.
@@ -605,8 +915,12 @@ bool FunctionExpression::isTouched() const
 
 Expression * FunctionExpression::eval() const
 {
-    std::auto_ptr<Expression> e1(args[0]->eval());
-    std::auto_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
+    // Handle aggregate functions
+    if (f > AGGREGATES)
+        return evalAggregate();
+
+    std::unique_ptr<Expression> e1(args[0]->eval());
+    std::unique_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
     NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
     double output;
@@ -844,49 +1158,69 @@ Expression *FunctionExpression::simplify() const
 
 std::string FunctionExpression::toString() const
 {
+    std::stringstream ss;
+
+    for (size_t i = 0; i < args.size(); ++i) {
+        ss << args[i]->toString();
+        if (i != args.size() - 1)
+            ss << "; ";
+    }
+
     switch (f) {
     case ACOS:
-        return "acos(" + args[0]->toString() + ")";
+        return "acos(" + ss.str() + ")";
     case ASIN:
-        return "asin(" + args[0]->toString() + ")";
+        return "asin(" + ss.str() + ")";
     case ATAN:
-        return "atan(" + args[0]->toString() + ")";
+        return "atan(" + ss.str() + ")";
     case ABS:
-        return "abs(" + args[0]->toString() + ")";
+        return "abs(" + ss.str() + ")";
     case EXP:
-        return "exp(" + args[0]->toString() + ")";
+        return "exp(" + ss.str() + ")";
     case LOG:
-        return "log(" + args[0]->toString() + ")";
+        return "log(" + ss.str() + ")";
     case LOG10:
-        return "log10(" + args[0]->toString() + ")";
+        return "log10(" + ss.str() + ")";
     case SIN:
-        return "sin(" + args[0]->toString() + ")";
+        return "sin(" + ss.str() + ")";
     case SINH:
-        return "sinh(" + args[0]->toString() + ")";
+        return "sinh(" + ss.str() + ")";
     case TAN:
-        return "tan(" + args[0]->toString() + ")";
+        return "tan(" + ss.str() + ")";
     case TANH:
-        return "tanh(" + args[0]->toString() + ")";
+        return "tanh(" + ss.str() + ")";
     case SQRT:
-        return "sqrt(" + args[0]->toString() + ")";
+        return "sqrt(" + ss.str() + ")";
     case COS:
-        return "cos(" + args[0]->toString() + ")";
+        return "cos(" + ss.str() + ")";
     case COSH:
-        return "cosh(" + args[0]->toString() + ")";
+        return "cosh(" + ss.str() + ")";
     case MOD:
-        return "mod(" + args[0]->toString() + ", " + args[1]->toString() + ")";
+        return "mod(" + ss.str() + ")";
     case ATAN2:
-        return "atan2(" + args[0]->toString() + ", " + args[1]->toString() +  ")";
+        return "atan2(" + ss.str() + ")";
     case POW:
-        return "pow(" + args[0]->toString() + ", " + args[1]->toString() +  ")";
+        return "pow(" + ss.str() + ")";
     case ROUND:
-        return "round(" + args[0]->toString() + ")";
+        return "round(" + ss.str() + ")";
     case TRUNC:
-        return "trunc(" + args[0]->toString() + ")";
+        return "trunc(" + ss.str() + ")";
     case CEIL:
-        return "ceil(" + args[0]->toString() + ")";
+        return "ceil(" + ss.str() + ")";
     case FLOOR:
-        return "floor(" + args[0]->toString() + ")";
+        return "floor(" + ss.str() + ")";
+    case SUM:
+        return "sum(" + ss.str() + ")";
+    case COUNT:
+        return "count(" + ss.str() + ")";
+    case AVERAGE:
+        return "average(" + ss.str() + ")";
+    case STDDEV:
+        return "stddev(" + ss.str() + ")";
+    case MIN:
+        return "min(" + ss.str() + ")";
+    case MAX:
+        return "max(" + ss.str() + ")";
     default:
         assert(0);
         return std::string();
@@ -909,6 +1243,11 @@ Expression *FunctionExpression::copy() const
         ++i;
     }
     return new FunctionExpression(owner, f, a);
+}
+
+int FunctionExpression::priority() const
+{
+    return 20;
 }
 
 /**
@@ -989,7 +1328,7 @@ const Property * VariableExpression::getProperty() const
     if (prop)
         return prop;
     else
-        throw ExpressionError(std::string("Property '") + var.getPropertyName() + std::string("' not found."));
+        throw Expression::Exception(var.resolveErrorString().c_str());
 }
 
 /**
@@ -1031,6 +1370,16 @@ Expression * VariableExpression::eval() const
 
         return new NumberExpression(owner, ivalue);
     }
+    else if (value.type() == typeid(long)) {
+        long lvalue = boost::any_cast<long>(value);
+
+        return new NumberExpression(owner, lvalue);
+    }
+    else if (value.type() == typeid(bool)) {
+        double bvalue = boost::any_cast<bool>(value) ? 1.0 : 0.0;
+
+        return new NumberExpression(owner, bvalue);
+    }
     else if (value.type() == typeid(std::string)) {
         std::string svalue = boost::any_cast<std::string>(value);
 
@@ -1071,6 +1420,11 @@ Expression *VariableExpression::copy() const
     return new VariableExpression(owner, var);
 }
 
+int VariableExpression::priority() const
+{
+    return 20;
+}
+
 /**
   * Compute the dependecy of the expression. In this case \a props
   * is a set of strings, i.e the names of the Property objects, and
@@ -1090,9 +1444,19 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
      var = path;
 }
 
+bool VariableExpression::validDocumentObjectRename(const std::string &oldName, const std::string &newName)
+{
+    return var.validDocumentObjectRename(oldName, newName);
+}
+
 bool VariableExpression::renameDocumentObject(const std::string &oldName, const std::string &newName)
 {
     return var.renameDocumentObject(oldName, newName);
+}
+
+bool VariableExpression::validDocumentRename(const std::string &oldName, const std::string &newName)
+{
+    return var.validDocumentRename(oldName, newName);
 }
 
 bool VariableExpression::renameDocument(const std::string &oldName, const std::string &newName)
@@ -1135,6 +1499,11 @@ std::string StringExpression::toString() const
     return quote(text);
 }
 
+int StringExpression::priority() const
+{
+    return 20;
+}
+
 /**
   * Return a copy of the expression.
   */
@@ -1168,7 +1537,7 @@ bool ConditionalExpression::isTouched() const
 
 Expression *ConditionalExpression::eval() const
 {
-    std::auto_ptr<Expression> e(condition->eval());
+    std::unique_ptr<Expression> e(condition->eval());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
@@ -1182,7 +1551,7 @@ Expression *ConditionalExpression::eval() const
 
 Expression *ConditionalExpression::simplify() const
 {
-    std::auto_ptr<Expression> e(condition->simplify());
+    std::unique_ptr<Expression> e(condition->simplify());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
@@ -1242,6 +1611,84 @@ Expression *ConstantExpression::copy() const
     return new ConstantExpression(owner, name.c_str(), quantity);
 }
 
+int ConstantExpression::priority() const
+{
+    return 20;
+}
+
+TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
+
+BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
+    : NumberExpression(_owner, _value ? 1.0 : 0.0)
+{
+}
+
+Expression *BooleanExpression::copy() const
+{
+    return new BooleanExpression(owner, getValue() > 0.5 ? true : false);
+}
+
+TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression);
+
+RangeExpression::RangeExpression(const DocumentObject *_owner, const std::string &begin, const std::string &end)
+    : Expression(_owner)
+    , range((begin + ":" + end).c_str())
+{
+}
+
+bool RangeExpression::isTouched() const
+{
+    Range i(range);
+
+    do {
+        Property * prop = owner->getPropertyByName(i.address().c_str());
+
+        if (prop && prop->isTouched())
+            return true;
+    } while (i.next());
+
+    return false;
+}
+
+Expression *RangeExpression::eval() const
+{
+    throw Exception("Range expression cannot be evaluated");
+}
+
+std::string RangeExpression::toString() const
+{
+    return range.rangeString();
+}
+
+Expression *RangeExpression::copy() const
+{
+    return new RangeExpression(owner, range.fromCellString(), range.toCellString());
+}
+
+int RangeExpression::priority() const
+{
+    return 20;
+}
+
+void RangeExpression::getDeps(std::set<ObjectIdentifier> &props) const
+{
+    Range i(range);
+
+    do {
+        props.insert(ObjectIdentifier(owner, i.address()));
+    } while (i.next());
+}
+
+Expression *RangeExpression::simplify() const
+{
+    return copy();
+}
+
+void RangeExpression::setRange(const Range &r)
+{
+    range = r;
+}
+
 namespace App {
 
 namespace ExpressionParser {
@@ -1250,8 +1697,9 @@ namespace ExpressionParser {
  * Error function for parser. Throws a generic Base::Exception with the parser error.
  */
 
-void ExpressionParser_yyerror(char *errorinfo)
+void ExpressionParser_yyerror(const char *errorinfo)
 {
+    (void)errorinfo;
 }
 
 /* helper function for tuning number strings with groups in a locale agnostic way... */
@@ -1273,7 +1721,13 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     }
     temp[i] = '\0';
 
-    ret_val = atof( temp );
+    errno = 0;
+    ret_val = strtod( temp, NULL );
+    if (ret_val == 0 && errno == ERANGE)
+        throw Base::Exception("Number underflow.");
+    if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
+        throw Base::Exception("Number overflow.");
+
     return ret_val;
 }
 
@@ -1337,6 +1791,14 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["ceil"] = FunctionExpression::CEIL;
         registered_functions["floor"] = FunctionExpression::FLOOR;
 
+        // Aggregates
+        registered_functions["sum"] = FunctionExpression::SUM;
+        registered_functions["count"] = FunctionExpression::COUNT;
+        registered_functions["average"] = FunctionExpression::AVERAGE;
+        registered_functions["stddev"] = FunctionExpression::STDDEV;
+        registered_functions["min"] = FunctionExpression::MIN;
+        registered_functions["max"] = FunctionExpression::MAX;
+
         has_registered_functions = true;
     }
 }
@@ -1348,8 +1810,13 @@ std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &st
     int token;
 
     column = 0;
-    while ( (token  = ExpressionParserlex()) != 0)
-        result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+    try {
+        while ( (token  = ExpressionParserlex()) != 0)
+            result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+    }
+    catch (...) {
+        // Ignore all exceptions
+    }
 
     ExpressionParser_delete_buffer(buf);
     return result;
@@ -1376,8 +1843,6 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
 
     initParser(owner);
-
-    yydebug = 0;
 
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
@@ -1421,6 +1886,20 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
 
     // Simplify expression
     Expression * simplified = ScanResult->simplify();
+
+    if (!unitExpression) {
+        OperatorExpression * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
+
+        if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
+            NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+            UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+            const double epsilon = std::numeric_limits<double>::epsilon();
+
+            // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
+            if (denom && nom && essentiallyEqual(nom->getValue(), 1.0, epsilon))
+                unitExpression = true;
+        }
+    }
     delete ScanResult;
 
     if (unitExpression) {

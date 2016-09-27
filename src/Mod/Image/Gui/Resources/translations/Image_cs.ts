@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+325"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Nedefinovaný typ barvy prostoru pro zobrazení obrázku</translation>
     </message>
@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Rovina obrázku</translation>
+        <translation>Rovina obrázku</translation>
     </message>
     <message>
         <location line="+6"/>

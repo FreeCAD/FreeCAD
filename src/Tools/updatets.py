@@ -66,7 +66,17 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/Plot",
                'pylupdate `find ./ -name "*.py"` -ts resources/translations/Plot.ts'],
               ["src/Mod/Path",
-               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Path.ts'],
+               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Pathpy.ts'],
+              ["src/Mod/Path",
+               'lconvert -i Gui/Resources/translations/Pathpy.ts Gui/Resources/translations/Path.ts -o Gui/Resources/translations/Path.ts'],
+              ["src/Mod/Path",
+               'rm Gui/Resources/translations/Pathpy.ts'],
+              ["src/Mod/Fem",
+               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Fempy.ts'],
+              ["src/Mod/Fem",
+               'lconvert -i Gui/Resources/translations/Fempy.ts Gui/Resources/translations/Fem.ts -o Gui/Resources/translations/Fem.ts'],
+              ["src/Mod/Fem",
+               'rm Gui/Resources/translations/Fempy.ts'],
                ]
 
 # add python folders to exclude list

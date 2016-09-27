@@ -39,10 +39,11 @@
 # include <gp_Pln.hxx> // for Precision::Confusion()
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 #endif
 
 
-#include <strstream>
+#include <sstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -232,15 +233,6 @@ ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& 
     return join;
 }
 
-const TopoDS_Shape Feature::findOriginOf(const TopoDS_Shape& reference) {
-/*    Base::Console().Error("Looking for origin of face in %s\n", this->getName());
-    if (reference.ShapeType() == TopAbs_FACE) {
-        // Find index of reference in the history
-    }
-*/
-    return TopoDS_Shape();
-}
-
     /// returns the type name of the ViewProvider
 const char* Feature::getViewProviderName(void) const {
     return "PartGui::ViewProviderPart";
@@ -338,8 +330,8 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
     return result;
 }
 
-const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
-                                   const bool quick, const bool touch_is_intersection) {
+bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
+                             const bool quick, const bool touch_is_intersection) {
     Bnd_Box first_bb, second_bb;
     BRepBndLib::Add(first, first_bb);
     first_bb.SetGap(0);
@@ -353,6 +345,31 @@ const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape
         return true; // assumed intersection
 
     // Try harder
+    
+    //extrema method
+    BRepExtrema_DistShapeShape extrema(first, second);
+    if (!extrema.IsDone())
+      return true;
+    if (extrema.Value() > Precision::Confusion())
+      return false;
+    if (extrema.InnerSolution())
+      return true;
+    //here we should have touching shapes.
+    if (touch_is_intersection)
+    {
+      //non manifold condition. 1 has to be a face
+      for (int index = 1; index < extrema.NbSolution() + 1; ++index)
+      {
+	if (extrema.SupportTypeShape1(index) == BRepExtrema_IsInFace || extrema.SupportTypeShape2(index) == BRepExtrema_IsInFace)
+	  return true;
+      }
+      return false;
+    }
+    else
+      return false;
+    
+    //boolean method.
+    /*
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect
         BRepAlgoAPI_Fuse mkFuse(first, second);
@@ -384,4 +401,5 @@ const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape
         xp.Init(mkCommon.Shape(),TopAbs_SOLID);
         return (xp.More() == Standard_True);
     }
+    */
 }

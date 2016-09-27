@@ -102,6 +102,7 @@ QByteArray PrefWidget::paramGrpPath() const
  */
 void PrefWidget::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
+    Q_UNUSED(rCaller);
     if (std::strcmp(sReason,m_sPrefName) == 0)
         restorePreferences();
 }
@@ -534,6 +535,16 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     delete menu;
 }
 
+void PrefQuantitySpinBox::onSave()
+{
+    pushToHistory();
+}
+
+void PrefQuantitySpinBox::onRestore()
+{
+    setToLastUsedValue();
+}
+
 void PrefQuantitySpinBox::pushToHistory(const QString &valueq)
 {
     Q_D(PrefQuantitySpinBox);
@@ -594,7 +605,11 @@ void PrefQuantitySpinBox::setToLastUsedValue()
 void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& path)
 {
     Q_D(PrefQuantitySpinBox);
-    d->handle = App::GetApplication().GetParameterGroupByPath(path);
+    QByteArray groupPath = path;
+    if (!groupPath.startsWith("User parameter:")) {
+        groupPath.prepend("User parameter:BaseApp/Preferences/");
+    }
+    d->handle = App::GetApplication().GetParameterGroupByPath(groupPath);
     if (d->handle.isValid())
         d->prefGrp = path;
 }

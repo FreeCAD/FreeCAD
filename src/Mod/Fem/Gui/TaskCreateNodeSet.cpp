@@ -61,9 +61,10 @@ using namespace Gui;
 TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
       tr("Nodes set"),
-      true, 
+      true,
       parent),
-      pcObject(pcObject)
+      pcObject(pcObject),
+      selectionMode(none)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -77,7 +78,7 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *p
     QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
     QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
 
-    // check if the Link to the FemMesh is defined 
+    // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
     MeshViewProvider = dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider( pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
     assert(MeshViewProvider);
@@ -172,7 +173,7 @@ void TaskCreateNodeSet::DefineNodes(const Base::Polygon2D &polygon,const Gui::Vi
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3f vec(aNode->X(),aNode->Y(),aNode->Z());
         pt2d = proj(vec);
-        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == inner) 
+        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == inner)
             tempSet.insert(aNode->GetID());
     }
 

@@ -28,6 +28,8 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(MeshPartGui_LIBS
     MeshPart
+    PartGui
+    MeshGui
     FreeCADGui
 )
 
@@ -48,7 +50,6 @@ SET(MeshPartGui_SRCS
     ${MeshPartGui_QRC_SRCS}
     ${MeshPartGui_UIC_HDRS}
     AppMeshPartGui.cpp
-    AppMeshPartGuiPy.cpp
     Command.cpp
     Resources/MeshPart.qrc
     PreCompiled.cpp

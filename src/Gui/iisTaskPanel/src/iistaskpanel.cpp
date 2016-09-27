@@ -52,6 +52,7 @@ void iisTaskPanel::setScheme(iisTaskPanelScheme *scheme)
 
 void iisTaskPanel::paintEvent ( QPaintEvent * event ) 
 {
+	Q_UNUSED(event); 
 	QPainter p(this);
 
 	//p.setOpacity(0.5);
@@ -72,6 +73,7 @@ void iisTaskPanel::removeWidget(QWidget *w)
 
 void iisTaskPanel::addStretch(int s)
 {
+	Q_UNUSED(s); 
 	if (!mySpacer) {
 		mySpacer = new QSpacerItem(0,0,QSizePolicy::Minimum, QSizePolicy::Expanding);
 		layout()->addItem(mySpacer);

@@ -53,10 +53,38 @@
 #include <App/Application.h>
 
 #include "BitmapFactory.h"
-#include "Icons/images.cpp"
-#include "Icons/BmpFactoryIcons.cpp"
 
 using namespace Gui;
+
+/* XPM */
+static const char *px[]={
+"24 24 2 1",
+"# c #000000",
+". c #ffffff",
+"........................",
+"........................",
+"...##..............##...",
+"..####............####..",
+"..#####..........#####..",
+"..######........#####...",
+"...######......######...",
+"....######....######....",
+".....######..######.....",
+"......############......",
+".......##########.......",
+"........########........",
+".........######.........",
+"........########........",
+".......##########.......",
+"......############......",
+".....######..######.....",
+"....######....######....",
+"..#######......######...",
+".#######........######..",
+".######..........#####..",
+"..####.............##...",
+"........................",
+"........................"};
 
 namespace Gui {
 class BitmapFactoryInstP
@@ -88,8 +116,6 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
         _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));
-
-        RegisterIcons();
     }
 
     return *_pcSingleton;
@@ -589,7 +615,7 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     size[0] = p.width();
     size[1] = p.height();
 
-    int buffersize = p.numBytes();
+    int buffersize = p.byteCount();
     int numcomponents = 0;
     QVector<QRgb> table = p.colorTable();
     if (!table.isEmpty()) {

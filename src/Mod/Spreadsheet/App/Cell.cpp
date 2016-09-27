@@ -30,7 +30,7 @@
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include "SpreadsheetExpression.h"
+#include <App/Expression.h>
 #include "Sheet.h"
 #include <iomanip>
 
@@ -38,6 +38,7 @@
 #define __func__ __FUNCTION__
 #endif
 
+using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
@@ -87,6 +88,7 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     , foregroundColor(0, 0, 0, 1)
     , backgroundColor(1, 1, 1, 0)
     , displayUnit()
+    , alias()
     , computedUnit()
     , rowSpan(1)
     , colSpan(1)
@@ -95,14 +97,9 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     assert(address.isValid());
 }
 
-/**
-  * Destroy a CellContent object.
-  *
-  */
-
-Cell::Cell(const Cell &other)
+Cell::Cell(PropertySheet *_owner, const Cell &other)
     : address(other.address)
-    , owner(other.owner)
+    , owner(_owner)
     , used(other.used)
     , expression(other.expression ? other.expression->copy() : 0)
     , alignment(other.alignment)
@@ -110,31 +107,39 @@ Cell::Cell(const Cell &other)
     , foregroundColor(other.foregroundColor)
     , backgroundColor(other.backgroundColor)
     , displayUnit(other.displayUnit)
+    , alias(other.alias)
     , computedUnit(other.computedUnit)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
 {
+    setUsed(MARK_SET, false);
 }
 
 Cell &Cell::operator =(const Cell &rhs)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
-    used = 0;
     address = rhs.address;
-    owner = rhs.owner;
 
     setExpression(rhs.expression ? rhs.expression->copy() : 0);
-    setStyle(rhs.style);
     setAlignment(rhs.alignment);
-    setForeground(rhs.foregroundColor);
+    setStyle(rhs.style);
     setBackground(rhs.backgroundColor);
+    setForeground(rhs.foregroundColor);
     setDisplayUnit(rhs.displayUnit.stringRep);
     setComputedUnit(rhs.computedUnit);
+    setAlias(rhs.alias);
     setSpans(rhs.rowSpan, rhs.colSpan);
+
+    setUsed(MARK_SET, false);
 
     return *this;
 }
+
+/**
+  * Destroy a CellContent object.
+  *
+  */
 
 Cell::~Cell()
 {
@@ -149,7 +154,7 @@ Cell::~Cell()
 
 void Cell::setExpression(App::Expression *expr)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
     /* Remove dependencies */
     owner->removeDependencies(address);
@@ -209,19 +214,18 @@ bool Cell::getStringContent(std::string & s) const
 
 void Cell::setContent(const char * value)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
     App::Expression * expr = 0;
 
     setUsed(PARSE_EXCEPTION_SET, false);
     if (value != 0) {
         if (*value == '=') {
             try {
-                expr = Spreadsheet::ExpressionParser::parse(owner->sheet(), value + 1);
+                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
             }
             catch (Base::Exception & e) {
-                QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
                 expr = new App::StringExpression(owner->sheet(), value);
-                setUsed(PARSE_EXCEPTION_SET);
+                setParseException(e.what());
             }
         }
         else if (*value == '\'')
@@ -258,7 +262,7 @@ void Cell::setContent(const char * value)
 void Cell::setAlignment(int _alignment)
 {
     if (_alignment != alignment) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         alignment = _alignment;
         setUsed(ALIGNMENT_SET, alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER));
@@ -284,7 +288,7 @@ bool Cell::getAlignment(int & _alignment) const
 void Cell::setStyle(const std::set<std::string> & _style)
 {
     if (_style != style) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         style = _style;
         setUsed(STYLE_SET, style.size() > 0);
@@ -310,7 +314,7 @@ bool Cell::getStyle(std::set<std::string> & _style) const
 void Cell::setForeground(const App::Color &color)
 {
     if (color != foregroundColor) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         foregroundColor = color;
         setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
@@ -336,7 +340,7 @@ bool Cell::getForeground(App::Color &color) const
 void Cell::setBackground(const App::Color &color)
 {
     if (color != backgroundColor) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         backgroundColor = color;
         setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
@@ -365,13 +369,15 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        std::auto_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
+        boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
+        if (!e)
+            throw Base::Exception("Invalid unit");
         newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
     }
 
     if (newDisplayUnit != displayUnit) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         displayUnit = newDisplayUnit;
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
@@ -394,7 +400,7 @@ bool Cell::getDisplayUnit(DisplayUnit &unit) const
 void Cell::setAlias(const std::string &n)
 {
     if (alias != n) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         owner->revAliasProp.erase(alias);
 
@@ -426,7 +432,7 @@ bool Cell::getAlias(std::string &n) const
 
 void Cell::setComputedUnit(const Base::Unit &unit)
 {
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
     computedUnit = unit;
     setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
@@ -454,7 +460,7 @@ bool Cell::getComputedUnit(Base::Unit & unit) const
 void Cell::setSpans(int rows, int columns)
 {
     if (rows != rowSpan || columns != colSpan) {
-        PropertySheet::Signaller signaller(*owner);
+        PropertySheet::AtomicPropertyChange signaller(*owner);
 
         rowSpan = rows;
         colSpan = columns;
@@ -538,7 +544,7 @@ void Cell::restore(Base::XMLReader &reader)
     const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
-    PropertySheet::Signaller signaller(*owner);
+    PropertySheet::AtomicPropertyChange signaller(*owner);
 
     if (content) {
         setContent(content);

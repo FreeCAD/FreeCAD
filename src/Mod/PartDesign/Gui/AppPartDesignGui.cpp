@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -33,10 +36,13 @@
 
 #include "Workbench.h"
 #include "ViewProviderPocket.h"
+#include "ViewProviderBody.h"
+#include "ViewProviderSketchBased.h"
 #include "ViewProviderPad.h"
 #include "ViewProviderChamfer.h"
 #include "ViewProviderFillet.h"
 #include "ViewProviderDraft.h"
+#include "ViewProviderDressUp.h"
 #include "ViewProviderRevolution.h"
 #include "ViewProviderGroove.h"
 #include "ViewProviderMirrored.h"
@@ -44,9 +50,22 @@
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
+#include "ViewProviderTransformed.h"
+#include "ViewProviderDatumPoint.h"
+#include "ViewProviderDatumLine.h"
+#include "ViewProviderDatumPlane.h"
+#include "ViewProviderBoolean.h"
+#include "ViewProviderPrimitive.h"
+#include "ViewProviderDatumCS.h"
+#include "ViewProviderThickness.h"
+#include "ViewProviderPipe.h"
+#include "ViewProviderLoft.h"
+#include "ViewProviderShapeBinder.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
+void CreatePartDesignBodyCommands(void);
+void CreatePartDesignPrimitiveCommands(void);
 
 void loadPartDesignResource()
 {
@@ -55,13 +74,30 @@ void loadPartDesignResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef PartDesignGui_Import_methods[];
+namespace PartDesignGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("PartDesignGui")
+    {
+        initialize("This module is the PartDesignGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace PartDesignGui
 
 
 /* Python entry */
-extern "C" {
-void PartDesignGuiExport initPartDesignGui()
+PyMODINIT_FUNC initPartDesignGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -77,29 +113,45 @@ void PartDesignGuiExport initPartDesignGui()
         return;
     }
 
-    (void) Py_InitModule("PartDesignGui", PartDesignGui_Import_methods);   /* mod name, table ptr */
+    (void)PartDesignGui::initModule();
     Base::Console().Log("Loading GUI of PartDesign module... done\n");
 
     // instantiating the commands
     CreatePartDesignCommands();
+    CreatePartDesignBodyCommands();
+    CreatePartDesignPrimitiveCommands();
 
     PartDesignGui::Workbench                 ::init();
     PartDesignGui::ViewProvider              ::init();
+    PartDesignGui::ViewProviderBody          ::init();
+    PartDesignGui::ViewProviderSketchBased   ::init();
     PartDesignGui::ViewProviderPocket        ::init();
     PartDesignGui::ViewProviderPad           ::init();
     PartDesignGui::ViewProviderRevolution    ::init();
+    PartDesignGui::ViewProviderDressUp       ::init();
     PartDesignGui::ViewProviderGroove        ::init();
     PartDesignGui::ViewProviderChamfer       ::init();
     PartDesignGui::ViewProviderFillet        ::init();
     PartDesignGui::ViewProviderDraft         ::init();
+    PartDesignGui::ViewProviderThickness     ::init();
+    PartDesignGui::ViewProviderTransformed   ::init();
     PartDesignGui::ViewProviderMirrored      ::init();
     PartDesignGui::ViewProviderLinearPattern ::init();
     PartDesignGui::ViewProviderPolarPattern  ::init();
     PartDesignGui::ViewProviderScaled        ::init();
     PartDesignGui::ViewProviderMultiTransform::init();
+    PartDesignGui::ViewProviderDatum         ::init();
+    PartDesignGui::ViewProviderDatumPoint    ::init();
+    PartDesignGui::ViewProviderDatumLine     ::init();
+    PartDesignGui::ViewProviderDatumPlane    ::init();
+    PartDesignGui::ViewProviderDatumCoordinateSystem::init();
+    PartDesignGui::ViewProviderShapeBinder   ::init();
+    PartDesignGui::ViewProviderBoolean       ::init();
+    PartDesignGui::ViewProviderAddSub        ::init();
+    PartDesignGui::ViewProviderPrimitive     ::init();
+    PartDesignGui::ViewProviderPipe          ::init();
+    PartDesignGui::ViewProviderLoft          ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();
 }
-
-} // extern "C" {

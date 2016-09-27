@@ -296,8 +296,8 @@ void CurveProjectorSimple::GetSampledCurves( const TopoDS_Edge& aEdge, std::vect
 //projectToNeighbours(Handle(Geom_Curve) hCurve,float pos
 
 void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
-                                         const std::vector<Base::Vector3f> &rclPoints,
-                                         std::vector<FaceSplitEdge> &vSplitEdges)
+                                         const std::vector<Base::Vector3f> &/*rclPoints*/,
+                                         std::vector<FaceSplitEdge> &/*vSplitEdges*/)
 {
   Base::Vector3f /*cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal,*/TempResultPoint;
   bool bFirst = true;

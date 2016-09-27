@@ -35,5 +35,7 @@
         <file>FreeCAD_hu.qm</file>
         <file>FreeCAD_pt-PT.qm</file>
         <file>FreeCAD_sr.qm</file>
+        <file>FreeCAD_el.qm</file>
+        <file>FreeCAD_sl.qm</file>
     </qresource>
 </RCC> 

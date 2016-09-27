@@ -94,7 +94,10 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="radCyl">
+       <widget class="Gui::QuantitySpinBox" name="radCyl">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
@@ -174,7 +177,10 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="radSph">
+       <widget class="Gui::QuantitySpinBox" name="radSph">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
         <property name="singleStep">
          <double>0.100000000000000</double>
         </property>
@@ -222,6 +228,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

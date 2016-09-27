@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
+# include <QAbstractItemView>
 # include <QActionEvent>
 # include <QApplication>
 # include <QDesktopWidget>
@@ -508,6 +509,7 @@ void WorkbenchGroup::addTo(QWidget *w)
     if (w->inherits("QToolBar")) {
         QToolBar* bar = qobject_cast<QToolBar*>(w);
         QComboBox* box = new WorkbenchComboBox(this, w);
+        box->setIconSize(QSize(16, 16));
         box->setToolTip(_action->toolTip());
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
@@ -668,7 +670,7 @@ void RecentFilesAction::setFiles(const QStringList& files)
     int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
-        recentFiles[index]->setText(QString::fromLatin1("&%1 %2").arg(index+1).arg(fi.fileName()));
+        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.fileName()));
         recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));

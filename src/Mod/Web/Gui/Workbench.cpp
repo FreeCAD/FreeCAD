@@ -59,6 +59,8 @@ Workbench::~Workbench()
 
 void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) const
 {
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
     //if (strcmp(recipient,"View") == 0)
     //{
     //    Gui::MenuItem* StdViews = new Gui::MenuItem();

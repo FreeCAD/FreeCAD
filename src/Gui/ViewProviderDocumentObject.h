@@ -31,6 +31,7 @@
 
 class SoMaterial;
 class SoDrawStyle;
+class SoNode;
 class SoType;
 
 namespace App
@@ -43,6 +44,7 @@ namespace App
 namespace Gui {
 
 class MDIView;
+class Document;
 
 class GuiExport ViewProviderDocumentObject : public ViewProvider
 {
@@ -80,6 +82,8 @@ public:
     virtual void updateData(const App::Property*){}
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
+    /// Get the GUI document to this ViewProvider object
+    Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
 
@@ -87,6 +91,20 @@ public:
     //@{
     virtual void startRestoring();
     virtual void finishRestoring();
+    //@}
+
+    /** @name drag & drop handling */
+    //@{
+    /// get called if the user hover over a object in the tree 
+    virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,
+                           Qt::KeyboardModifiers keys,
+                           Qt::MouseButtons mouseBts,
+                           const QPoint &pos);
+    /// get called if the user drops some objects
+    virtual void drop(const std::vector<const App::DocumentObject*> &objList,
+                      Qt::KeyboardModifiers keys,
+                      Qt::MouseButtons mouseBts,
+                      const QPoint &pos);
     //@}
 
 protected:
@@ -108,6 +126,11 @@ protected:
       If a value different to 0 is returned it is guaranteed to be a 3d view.
      */
     Gui::MDIView* getInventorView() const;
+    /*! Get the mdi view of the document that contains the given \a node.
+     */
+    Gui::MDIView* getViewOfNode(SoNode* node) const;
+    /// get called before the value is changed
+    virtual void onBeforeChange(const App::Property* prop);
     /// Gets called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
     /** Searches in all view providers that are attached to an object that
@@ -118,6 +141,13 @@ protected:
      * matches. If no front root node matches, 0 is returned.
      */
     SoNode* findFrontRootOfType(const SoType& type) const;
+
+    /** @name Transaction handling
+     */
+    //@{
+    virtual bool isAttachedToDocument() const;
+    virtual const char* detachFromDocument();
+    //@}
 
 protected:
     App::DocumentObject *pcObject;

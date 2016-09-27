@@ -141,6 +141,7 @@ EventFilter::unregisterInputDevice(InputDevice * device)
 bool
 EventFilter::eventFilter(QObject * obj, QEvent * qevent)
 {
+  Q_UNUSED(obj); 
   // make sure every device has updated screen size and mouse position
   // before translating events
   switch (qevent->type()) {

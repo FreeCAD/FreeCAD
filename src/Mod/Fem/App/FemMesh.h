@@ -60,9 +60,9 @@ public:
     FemMesh &operator=(const FemMesh&);
     const SMESH_Mesh* getSMesh() const;
     SMESH_Mesh* getSMesh();
-    SMESH_Gen * getGenerator();
+    static SMESH_Gen * getGenerator();
     void addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp);
-    void setStanardHypotheses();
+    void setStandardHypotheses();
     void compute();
 
     // from base class
@@ -98,6 +98,8 @@ public:
     std::set<int> getNodesByVertex(const TopoDS_Vertex &vertex) const;
     /// retrieving node IDs by element ID
     std::list<int> getElementNodes(int id) const;
+    /// retrieving face IDs number by face
+    std::list<int> getFacesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and face IDs number by face
     std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face
@@ -106,9 +108,9 @@ public:
 
     /** @name Placement control */
     //@{
-    /// set the transformation 
+    /// set the transformation
     void setTransform(const Base::Matrix4D& rclTrf);
-    /// get the transformation 
+    /// get the transformation
     Base::Matrix4D getTransform(void) const;
     /// Bound box from the shape
     Base::BoundBox3d getBoundBox(void)const;
@@ -123,7 +125,7 @@ public:
     //@}
 
     struct FemMeshInfo {
-        int numFaces; 
+        int numFaces;
         int numNode;
         int numTria;
         int numQuad;
@@ -151,7 +153,6 @@ private:
 private:
     /// positioning matrix
     Base::Matrix4D _Mtrx;
-    SMESH_Gen  *myGen;
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;

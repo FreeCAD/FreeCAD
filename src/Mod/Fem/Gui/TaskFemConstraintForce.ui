@@ -34,13 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="spinForce">
-       <property name="minimum">
-        <double>-99999.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>99999.000000000000000</double>
-       </property>
+      <widget class="Gui::QuantitySpinBox" name="spinForce">
        <property name="value">
         <double>500.000000000000000</double>
        </property>
@@ -84,6 +78,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

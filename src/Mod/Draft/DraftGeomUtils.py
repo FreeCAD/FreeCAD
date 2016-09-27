@@ -474,80 +474,71 @@ def pocket2d(shape,offset):
     if not o.Wires:
         return []
     offsetWires = o.Wires
-    print("base offset wires:",offsetWires)
+    #print("base offset wires:",offsetWires)
     if not innerWires:
         return offsetWires
     for innerWire in innerWires:
         i = innerWire.makeOffset(offset)
+        if len(innerWire.Edges) == 1:
+            e = innerWire.Edges[0]
+            if isinstance(e.Curve,Part.Circle):
+                e = Part.makeCircle(e.Curve.Radius+offset,e.Curve.Center,e.Curve.Axis)
+                i = Part.Wire(e)
         if i.Wires:
-            print("offsetting island ",innerWire," : ",i.Wires)
+            #print("offsetting island ",innerWire," : ",i.Wires)
             for w in i.Wires:
                 added = False
-                print("checking wire ",w)
+                #print("checking wire ",w)
                 k = list(range(len(offsetWires)))
                 for j in k:
-                    print("checking against existing wire ",j)
+                    #print("checking against existing wire ",j)
                     ow = offsetWires[j]
                     if ow:
                         if wiresIntersect(w,ow):
-                            print("intersect")
+                            #print("intersect")
                             f1 = Part.Face(ow)
                             f2 = Part.Face(w)
                             f3  = f1.cut(f2)
-                            print("made new wires: ",f3.Wires)
+                            #print("made new wires: ",f3.Wires)
                             offsetWires[j] = f3.Wires[0]
                             if len(f3.Wires) > 1:
-                                print("adding more")
+                                #print("adding more")
                                 offsetWires.extend(f3.Wires[1:])
                             added = True
                         else:
                             a = w.BoundBox
                             b = ow.BoundBox
                             if (a.XMin <= b.XMin) and (a.YMin <= b.YMin) and (a.ZMin <= b.ZMin) and (a.XMax >= b.XMax) and (a.YMax >= b.YMax) and (a.ZMax >= b.ZMax):
-                                print("this wire is bigger than the outer wire")
+                                #print("this wire is bigger than the outer wire")
                                 offsetWires[j] = None
                                 added = True
-                            else:
-                                print("doesn't intersect")
+                            #else:
+                                #print("doesn't intersect")
                 if not added:
-                    print("doesn't intersect with any other")
+                    #print("doesn't intersect with any other")
                     offsetWires.append(w)
     offsetWires = [o for o in offsetWires if o != None]
     return offsetWires
-    
 
-def geom(edge,plac=FreeCAD.Placement()):
-    "returns a Line, ArcOfCircle or Circle geom from the given edge, according to the given placement"
-    if geomType(edge) == "Line":
-            return edge.Curve
-    elif geomType(edge) == "Circle":
-        if len(edge.Vertexes) == 1:
-            return Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
-        else:
-            # reorienting the arc along the correct normal
-            normal = plac.Rotation.multVec(FreeCAD.Vector(0,0,1))
-            v1 = edge.Vertexes[0].Point
-            v2 = edge.Vertexes[-1].Point
-            c = edge.Curve.Center
-            cu = Part.Circle(edge.Curve.Center,normal,edge.Curve.Radius)
-            ref = plac.Rotation.multVec(Vector(1,0,0))
-            a1 = DraftVecUtils.angle(v1.sub(c),ref,normal.negative())
-            a2 = DraftVecUtils.angle(v2.sub(c),ref,normal.negative())
+def orientEdge(edge, normal=None):
+    """Re-orients 'edge' such that it is in the x-y plane. If 'normal' is passed, this
+    is used as the basis for the rotation, otherwise the Placement property of 'edge'
+    is used"""
+    import DraftVecUtils
+    # This 'normalizes' the placement to the xy plane
+    edge = edge.copy()
+    xyDir = FreeCAD.Vector(0, 0, 1)
+    base = FreeCAD.Vector(0,0,0)
 
-            # direction check
-            if edge.Curve.Axis.getAngle(normal) > 1:
-                a1,a2 = a2,a1
-            #print("creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)")
-            
-            p= Part.ArcOfCircle(cu,a1,a2)
-            return p
-    elif geomType(edge) == "Ellipse":
-        if len(edge.Vertexes) == 1:
-            return edge.Curve
-        else:
-            return Part.ArcOfEllipse(edge.Curve,edge.FirstParameter,edge.LastParameter)
+    if normal:
+        angle = DraftVecUtils.angle(normal, xyDir)*FreeCAD.Units.Radian
+        axis  = normal.cross(xyDir)
     else:
-        return edge.Curve
+        axis = edge.Placement.Rotation.Axis
+        angle = -1*edge.Placement.Rotation.Angle*FreeCAD.Units.Radian
+
+    edge.rotate(base, axis, angle)
+    return edge.Curve
 
 def mirror (point, edge):
     "finds mirror point relative to an edge"
@@ -2057,8 +2048,25 @@ def tessellateProjection(shape,seglen):
         except:
             print("Debug: error cleaning edge ",e)
     return Part.makeCompound(newedges)
+    
+    
+def rebaseWire(wire,vidx):
+    
+    """rebaseWire(wire,vidx): returns a new wire which is a copy of the
+    current wire, but where the first vertex is the vertex indicated by the given
+    index vidx, starting from 1. 0 will return an exact copy of the wire."""
+
+    if vidx < 1:
+        return wire
+    if vidx > len(wire.Vertexes):
+        #print("Vertex index above maximum\n")
+        return wire
+    #This can be done in one step
+    return Part.Wire(wire.Edges[vidx-1:] + wire.Edges[:vidx-1])
+
 
 # circle functions *********************************************************
+
 
 def getBoundaryAngles(angle,alist):
         '''returns the 2 closest angles from the list that

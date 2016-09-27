@@ -79,6 +79,7 @@ public:
 
     void multVec(const Vector3d & src, Vector3d & dst) const;
     void scaleAngle(const double scaleFactor);
+    bool isSame(const Rotation&) const;
     //@}
 
     static Rotation slerp(const Rotation & rot0, const Rotation & rot1, double t);

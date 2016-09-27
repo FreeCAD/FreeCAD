@@ -37,7 +37,10 @@ class _TaskPanelFemBeamSection:
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
-        self.references = self.obj.References
+        self.references = []
+        if self.obj.References:
+            self.tuplereferences = self.obj.References
+            self.get_references()
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemBeamSection.ui")
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
@@ -59,6 +62,11 @@ class _TaskPanelFemBeamSection:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def get_references(self):
+        for ref in self.tuplereferences:
+            for elem in ref[1]:
+                self.references.append((ref[0], elem))
 
     def references_list_right_clicked(self, QPos):
         self.form.contextMenu = QtGui.QMenu()
@@ -87,8 +95,8 @@ class _TaskPanelFemBeamSection:
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
         print_message = "Select Edges by single click on them to add them to the list"
-        import SelectionObserverFem
-        self.sel_server = SelectionObserverFem.SelectionObserverFem(self.selectionParser, print_message)
+        import FemSelectionObserver
+        self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
@@ -105,8 +113,8 @@ class _TaskPanelFemBeamSection:
     def rebuild_list_References(self):
         self.form.list_References.clear()
         items = []
-        for i in self.references:
-            item_name = i[0].Name + ':' + i[1]
+        for ref in self.references:
+            item_name = ref[0].Name + ':' + ref[1]
             items.append(item_name)
         for listItemName in sorted(items):
             self.form.list_References.addItem(listItemName)

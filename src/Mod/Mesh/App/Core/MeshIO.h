@@ -66,11 +66,18 @@ struct MeshExport Material
 {
     Material() : binding(MeshIO::OVERALL) {}
     MeshIO::Binding binding;
+    std::string library;
     std::vector<App::Color> diffuseColor;
 };
 
+struct MeshExport Group
+{
+    std::vector<unsigned long> indices;
+    std::string name;
+};
+
 /**
- * The MeshInput class is able to read a mesh object from a input stream
+ * The MeshInput class is able to read a mesh object from an input stream
  * in various formats.
  */
 class MeshExport MeshInput
@@ -81,9 +88,14 @@ public:
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
     virtual ~MeshInput (void) { }
+    const std::vector<std::string>& GetGroupNames() const {
+        return _groupNames;
+    }
 
     /// Loads the file, decided by extension
     bool LoadAny(const char* FileName);
+    /// Loads from a stream and the given format
+    bool LoadFormat(std::istream &str, MeshIO::Format fmt);
     /** Loads an STL file either in binary or ASCII format. 
      * Therefore the file header gets checked to decide if the file is binary or not.
      */
@@ -112,6 +124,7 @@ public:
 protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */
     Material* _material;
+    std::vector<std::string> _groupNames;
 };
 
 /**
@@ -128,6 +141,10 @@ public:
     virtual ~MeshOutput (void) { }
     void SetObjectName(const std::string& n)
     { objectName = n; }
+    void SetGroups(const std::vector<Group>& g) {
+        _groups = g;
+    }
+
     void Transform(const Base::Matrix4D&);
     /** Set custom data to the header of a binary STL.
      * If the data exceeds 80 characters then the characters too much
@@ -135,8 +152,12 @@ public:
      * automatically filled up with spaces.
      */
     static void SetSTLHeaderData(const std::string&);
+    /// Determine the mesh format by file extension
+    static MeshIO::Format GetFormat(const char* FileName);
     /// Saves the file, decided by extension if not explicitly given
     bool SaveAny(const char* FileName, MeshIO::Format f=MeshIO::Undefined) const;
+    /// Saves to a stream and the given format
+    bool SaveFormat(std::ostream &str, MeshIO::Format fmt) const;
 
     /** Saves the mesh object into an ASCII STL file. */
     bool SaveAsciiSTL (std::ostream &rstrOut) const;
@@ -144,6 +165,8 @@ public:
     bool SaveBinarySTL (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OBJ file. */
     bool SaveOBJ (std::ostream &rstrOut) const;
+    /** Saves the materials of an OBJ file. */
+    bool SaveMTL(std::ostream &rstrOut) const;
     /** Saves the mesh object into an OFF file. */
     bool SaveOFF (std::ostream &rstrOut) const;
     /** Saves the mesh object into a binary PLY file. */
@@ -173,6 +196,7 @@ protected:
     Base::Matrix4D _transform;
     bool apply_transform;
     std::string objectName;
+    std::vector<Group> _groups;
     static std::string stl_header;
 };
 
@@ -192,6 +216,14 @@ public:
     ~MeshCleanup();
 
     /*!
+      \brief Set the material array.
+      In case the material array sets the colors per vertex and
+      \ref RemoveInvalids() removes points from the array the
+      material array will be adjusted.
+     */
+    void SetMaterial(Material* mat);
+
+    /*!
       \brief Remove unreferenced and invalid facets.
      */
     void RemoveInvalids();
@@ -209,6 +241,7 @@ private:
 private:
     MeshPointArray& pointArray;
     MeshFacetArray& facetArray;
+    Material* materialArray;
 };
 
 /*!

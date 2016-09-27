@@ -562,7 +562,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
 void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *item)
 {
     ElementItem *it = dynamic_cast<ElementItem*>(item);
-    if (!item) return;
+    if (!it) return;
     
     Gui::Selection().rmvPreselect();
     
@@ -619,8 +619,9 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
     }
 }
 
-void TaskSketcherElements::leaveEvent ( QEvent * event )
+void TaskSketcherElements::leaveEvent (QEvent * event)
 {
+    Q_UNUSED(event);
     Gui::Selection().rmvPreselect();
     ui->listWidgetElements->clearFocus();
 }

@@ -29,13 +29,14 @@
 #include <Gui/Command.h>
 #include <boost/bind.hpp>
 #include "../App/Utils.h"
-#include "../App/Range.h"
+#include <App/Range.h>
 #include "SheetTableView.h"
 #include "LineEdit.h"
 #include "PropertiesDialog.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
+using namespace App;
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -45,6 +46,7 @@ void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 
 SheetTableView::SheetTableView(QWidget *parent)
     : QTableView(parent)
+    , sheet(0)
 {
     QAction * insertRows = new QAction(tr("Insert rows"), this);
     QAction * removeRows = new QAction(tr("Remove rows"), this);
@@ -78,7 +80,7 @@ SheetTableView::SheetTableView(QWidget *parent)
 
 void SheetTableView::cellProperties()
 {
-    std::auto_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
+    std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
 
     if (dialog->exec() == QDialog::Accepted) {
         dialog->apply();
@@ -236,7 +238,7 @@ SheetTableView::~SheetTableView()
 
 }
 
-void SheetTableView::updateCellSpan(Spreadsheet::CellAddress address)
+void SheetTableView::updateCellSpan(CellAddress address)
 {
     int rows, cols;
 

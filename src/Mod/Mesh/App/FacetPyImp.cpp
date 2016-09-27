@@ -25,8 +25,8 @@
 
 #include "Mesh.h"
 #include "Facet.h"
-#include "FacetPy.h"
-#include "FacetPy.cpp"
+#include <Mod/Mesh/App/FacetPy.h>
+#include <Mod/Mesh/App/FacetPy.cpp>
 
 #include <Base/VectorPy.h>
 
@@ -61,8 +61,10 @@ PyObject *FacetPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyth
 }
 
 // constructor method
-int FacetPy::PyInit(PyObject* args, PyObject*k)
+int FacetPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return -1;
     return 0;
 }
 
@@ -128,6 +130,22 @@ PyObject*  FacetPy::intersect(PyObject *args)
     }
 }
 
+PyObject*  FacetPy::isDegenerated(PyObject *args)
+{
+    float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
+    if (!PyArg_ParseTuple(args, "|f", &fEpsilon))
+        return NULL;
+
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        throw Py::RuntimeError("Unbound facet");
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::new_reference_to(Py::Boolean(tria.IsDegenerated(fEpsilon)));
+}
+
 Py::List FacetPy::getPoints(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();
@@ -160,8 +178,9 @@ Py::Tuple FacetPy::getPointIndices(void) const
 Py::Tuple FacetPy::getNeighbourIndices(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();
-    if (!face->isBound())
-      { return Py::Tuple(); }
+    if (!face->isBound()) {
+        return Py::Tuple();
+    }
 
     Py::Tuple idxTuple(3);
     for (int i=0; i<3; i++) {
@@ -170,12 +189,24 @@ Py::Tuple FacetPy::getNeighbourIndices(void) const
     return idxTuple;
 }
 
-PyObject *FacetPy::getCustomAttributes(const char* attr) const
+Py::Float FacetPy::getArea(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::Float(0.0);
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::Float(tria.Area());
+}
+
+PyObject *FacetPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int FacetPy::setCustomAttributes(const char* attr, PyObject *obj)
+int FacetPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
 {
     return 0; 
 }

@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
             // get cell size
             std::stringstream srow;
             srow << (*row);
-            Spreadsheet::CellAddress address((*col) + srow.str());
+            App::CellAddress address((*col) + srow.str());
             cellwidth = sheet->getColumnWidth(address.col());
             cellheight = sheet->getRowHeight(address.row());
             celltext = "";
@@ -180,7 +180,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
                 celltext = field.str();
             }
             // get colors, style, alignment and span
-            int alignment;
+            int alignment = 0;
             std::string bcolor = "none";
             std::string fcolor = "#" + hr.str() + hg.str() + hb.str();
             std::string textstyle = "";
@@ -216,7 +216,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
                 if (cell->getSpans(rowspan,colspan)) {
                     for (int i=0; i<colspan; ++i) {
                         for (int j=0; j<rowspan; ++j) {
-                            Spreadsheet::CellAddress nextcell(address.row()+j,address.col()+i);
+                            App::CellAddress nextcell(address.row()+j,address.col()+i);
                             if (i > 0)
                                 cellwidth = cellwidth + sheet->getColumnWidth(nextcell.col());
                             if (j > 0)

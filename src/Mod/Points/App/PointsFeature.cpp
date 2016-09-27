@@ -54,6 +54,11 @@ Feature::~Feature()
 {
 }
 
+short Feature::mustExecute() const
+{
+    return 0;
+}
+
 App::DocumentObjectExecReturn *Feature::execute(void)
 {
     this->Points.touch();

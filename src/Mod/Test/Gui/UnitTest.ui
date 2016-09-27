@@ -184,7 +184,7 @@
       <item row="1" column="7" >
        <widget class="QLabel" name="textLabelRemCt" >
         <property name="text" >
-         <string>&lt;font color="#0000ff">0&lt;/font></string>
+         <string notr="true">&lt;font color="#0000ff">0&lt;/font></string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignVCenter</set>
@@ -201,7 +201,7 @@
       <item row="1" column="5" >
        <widget class="QLabel" name="textLabelErrCt" >
         <property name="text" >
-         <string>&lt;font color="#0000ff">0&lt;/font></string>
+         <string notr="true">&lt;font color="#0000ff">0&lt;/font></string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignVCenter</set>
@@ -218,7 +218,7 @@
       <item row="1" column="3" >
        <widget class="QLabel" name="textLabelFailCt" >
         <property name="text" >
-         <string>&lt;font color="#0000ff">0&lt;/font></string>
+         <string notr="true">&lt;font color="#0000ff">0&lt;/font></string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignVCenter</set>
@@ -235,7 +235,7 @@
       <item row="1" column="1" >
        <widget class="QLabel" name="textLabelRunCt" >
         <property name="text" >
-         <string>&lt;font color="#0000ff">0&lt;/font></string>
+         <string notr="true">&lt;font color="#0000ff">0&lt;/font></string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignVCenter</set>

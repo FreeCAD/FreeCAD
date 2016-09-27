@@ -3,7 +3,9 @@
         <file>icons/PartFeature.svg</file>
         <file>icons/PartFeature.xpm</file>
         <file>icons/PartFeatureImport.xpm</file>
+        <file>icons/Part_Attachment.svg</file>
         <file>icons/Part_Booleans.svg</file>
+        <file>icons/Part_BooleanFragments.svg</file>
         <file>icons/Part_Box.svg</file>
         <file>icons/Part_Chamfer.svg</file>
         <file>icons/Part_Common.svg</file>
@@ -21,16 +23,19 @@
         <file>icons/Part_Mirror.svg</file>
         <file>icons/Part_MirrorPNG.png</file>
         <file>icons/Part_Offset.svg</file>
+        <file>icons/Part_Offset2D.svg</file>
         <file>icons/Part_Revolve.svg</file>
         <file>icons/Part_RuledSurface.svg</file>
         <file>icons/Part_Section.svg</file>
         <file>icons/Part_CrossSections.svg</file>
         <file>icons/Part_Shapebuilder.png</file>
         <file>icons/Part_ShapeInfo.svg</file>
+        <file>icons/Part_Slice.svg</file>
         <file>icons/Part_Sphere.svg</file>
         <file>icons/Part_Sweep.svg</file>
         <file>icons/Part_Thickness.svg</file>
         <file>icons/Part_Torus.svg</file>
+        <file>icons/Part_XOR.svg</file>
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
         <file>icons/Part_CheckGeometry.svg</file>
@@ -63,6 +68,7 @@
         <file>icons/Part_JoinConnect.svg</file>
         <file>icons/Part_JoinCutout.svg</file>
         <file>icons/Part_JoinEmbed.svg</file>
+        <file>icons/PartWorkbench.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_fi.qm</file>
@@ -87,5 +93,7 @@
         <file>translations/Part_hu.qm</file>
         <file>translations/Part_pt-PT.qm</file>
         <file>translations/Part_sr.qm</file>
+        <file>translations/Part_el.qm</file>
+        <file>translations/Part_sl.qm</file>
     </qresource>
 </RCC> 

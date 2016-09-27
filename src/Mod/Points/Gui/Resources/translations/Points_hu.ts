@@ -2,9 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="hu" sourcelanguage="en">
 <context>
+    <name>CmdPointsConvert</name>
+    <message>
+        <location filename="../../Command.cpp" line="+184"/>
+        <source>Points</source>
+        <translation>Pontok</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Convert to points...</source>
+        <translation>Pontokká konvertálja...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Convert to points</source>
+        <translation>Pontokká konvertálja</translation>
+    </message>
+</context>
+<context>
     <name>CmdPointsExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+108"/>
+        <location line="-78"/>
         <source>Points</source>
         <translation>Pontok</translation>
     </message>
@@ -38,13 +58,13 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Imports a point cloud</source>
-        <translation>Pontfelhő importálása</translation>
+        <translation>Egy pontfelhő importálása</translation>
     </message>
 </context>
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location line="+117"/>
+        <location line="+203"/>
         <source>Points</source>
         <translation>Pontok</translation>
     </message>
@@ -58,13 +78,13 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Cuts a point cloud with a picked polygon</source>
-        <translation>Pontfelhő kivágása egy kiválaszott polygonnal</translation>
+        <translation>Pontfelhő kivágása egy kiválasztott polygonnal</translation>
     </message>
 </context>
 <context>
     <name>CmdPointsTransform</name>
     <message>
-        <location line="-39"/>
+        <location line="-125"/>
         <source>Points</source>
         <translation>Pontok</translation>
     </message>
@@ -236,13 +256,23 @@
         <location filename="../../Command.cpp" line="-78"/>
         <location line="+49"/>
         <source>Ascii Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Ascii pontok</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+49"/>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Minden Fájl</translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <source>Distance</source>
+        <translation>Távolság</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter maximum distance:</source>
+        <translation>Maximális távolság beírása:</translation>
     </message>
 </context>
 <context>

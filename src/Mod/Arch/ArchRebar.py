@@ -56,11 +56,17 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         obj.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
-        import Arch
-        host = getattr(Arch,"make"+Draft.getType(baseobj))(baseobj)
-        a = host.Armatures
-        a.append(obj)
-        host.Armatures = a
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        if p.GetBool("archRemoveExternal",False):
+            a = baseobj.Armatures
+            a.append(obj)
+            baseobj.Armatures = a
+        else:
+            import Arch
+            host = getattr(Arch,"make"+Draft.getType(baseobj))(baseobj)
+            a = host.Armatures
+            a.append(obj)
+            host.Armatures = a
     if diameter:
         obj.Diameter = diameter
     else:
@@ -72,7 +78,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
-    #ArchCommands.fixDAG(obj)
+    ArchCommands.fixDAG(obj)
     return obj
 
 
@@ -114,10 +120,11 @@ class _CommandRebar:
                 # we have only the sketch: extract the base object from it
                 if hasattr(obj,"Support"):
                     if obj.Support:
-                        if isinstance(obj.Support,tuple):
-                            sup = obj.Support[0]
+                        if len(obj.Support) != 0:
+                            sup = obj.Support[0][0]
                         else:
-                            sup = obj.Support
+                            print "Arch: error: couldn't extract a base object"
+                            return
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                         FreeCADGui.addModule("Arch")
                         FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")

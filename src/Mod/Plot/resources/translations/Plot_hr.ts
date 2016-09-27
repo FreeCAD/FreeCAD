@@ -11,7 +11,7 @@
     <message>
       <location filename="InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation type="unfinished">Ispis</translation>
+      <translation>Ispis</translation>
     </message>
   </context>
   <context>
@@ -84,7 +84,7 @@
     <message>
       <location filename="PlotGui.py" line="45"/>
       <source>Save plot</source>
-      <translation type="unfinished">Spremi ispis</translation>
+      <translation>Spremi ispis</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="48"/>
@@ -115,42 +115,42 @@
     <message>
       <location filename="TaskPanel.py" line="180"/>
       <source>Active axes</source>
-      <translation type="unfinished">Aktivne osi</translation>
+      <translation>Aktivne osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="220"/>
       <source>Apply to all axes</source>
-      <translation type="unfinished">Primjeni na sve osi</translation>
+      <translation>Primjeni na sve osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="225"/>
       <source>Dimensions</source>
-      <translation type="unfinished">Dimenzije</translation>
+      <translation>Dimenzije</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="230"/>
       <source>X axis position</source>
-      <translation type="unfinished">Pozicija X osi</translation>
+      <translation>Pozicija X osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="235"/>
       <source>Y axis position</source>
-      <translation type="unfinished">Pozicija Y osi</translation>
+      <translation>Pozicija Y osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="205"/>
       <source>Scales</source>
-      <translation type="unfinished">Mjerilo</translation>
+      <translation>Mjerilo</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="210"/>
       <source>X auto</source>
-      <translation type="unfinished">X automatski</translation>
+      <translation>X automatski</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="215"/>
       <source>Y auto</source>
-      <translation type="unfinished">Y automatski</translation>
+      <translation>Y automatski</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -216,7 +216,7 @@
   <context>
     <name>plot_console</name>
     <message>
-      <location filename="Plot.py" line="38"/>
+      <location filename="Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
       <translation type="unfinished">matplotlib not found, so Plot module can not be loaded</translation>
     </message>
@@ -256,22 +256,22 @@
     <message>
       <location filename="TaskPanel.py" line="138"/>
       <source>Active axes</source>
-      <translation type="unfinished">Aktivne osi</translation>
+      <translation>Aktivne osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="143"/>
       <source>Title</source>
-      <translation type="unfinished">Naslov</translation>
+      <translation>Naslov</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="148"/>
       <source>X label</source>
-      <translation type="unfinished">X oznaka</translation>
+      <translation>X oznaka</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="153"/>
       <source>Y label</source>
-      <translation type="unfinished">Y oznaka</translation>
+      <translation>Y oznaka</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="158"/>
@@ -286,22 +286,22 @@
     <message>
       <location filename="TaskPanel.py" line="169"/>
       <source>Title font size</source>
-      <translation type="unfinished">Veličina fonta naslova</translation>
+      <translation>Veličina fonta naslova</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="175"/>
       <source>X axis title</source>
-      <translation type="unfinished">Naslov X osi</translation>
+      <translation>Naslov X osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="181"/>
       <source>X axis title font size</source>
-      <translation type="unfinished">Veličina fonta naslova X osi</translation>
+      <translation>Veličina fonta naslova X osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="187"/>
       <source>Y axis title</source>
-      <translation type="unfinished">Naslov Y osi</translation>
+      <translation>Naslov Y osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="193"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="TaskPanel.py" line="126"/>
       <source>Position</source>
-      <translation type="unfinished">Položaj</translation>
+      <translation>Položaj</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="132"/>
@@ -425,7 +425,7 @@
     <message>
       <location filename="TaskPanel.py" line="184"/>
       <source>Line title</source>
-      <translation type="unfinished">Naslov linije</translation>
+      <translation>Naslov linije</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="202"/>
@@ -435,7 +435,7 @@
     <message>
       <location filename="TaskPanel.py" line="208"/>
       <source>Line width</source>
-      <translation type="unfinished">Širina linije</translation>
+      <translation>Širina linije</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="214"/>

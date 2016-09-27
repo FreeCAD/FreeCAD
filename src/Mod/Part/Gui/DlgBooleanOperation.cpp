@@ -304,6 +304,8 @@ bool DlgBooleanOperation::indexOfCurrentItem(QTreeWidgetItem* item, int& top_ind
 
 void DlgBooleanOperation::currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem * previous)
 {
+    Q_UNUSED(current);
+    Q_UNUSED(previous);
 //    if (current && current->flags() & Qt::ItemIsUserCheckable)
 //        current->setCheckState(0, Qt::Checked);
     //if (previous && previous->flags() & Qt::ItemIsUserCheckable)

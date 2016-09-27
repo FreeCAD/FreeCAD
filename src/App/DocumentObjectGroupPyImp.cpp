@@ -48,7 +48,7 @@ PyObject*  DocumentObjectGroupPy::newObject(PyObject *args)
     DocumentObject *object = getDocumentObjectGroupPtr()->addObject(sType, sName);
     if ( object ) {
         return object->getPyObject();
-    } 
+    }
     else {
         PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot create object of type '%s'", sType);
         return NULL;
@@ -58,8 +58,8 @@ PyObject*  DocumentObjectGroupPy::newObject(PyObject *args)
 PyObject*  DocumentObjectGroupPy::addObject(PyObject *args)
 {
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
@@ -109,8 +109,8 @@ PyObject*  DocumentObjectGroupPy::addObject(PyObject *args)
 PyObject*  DocumentObjectGroupPy::removeObject(PyObject *args)
 {
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
@@ -148,8 +148,8 @@ PyObject*  DocumentObjectGroupPy::removeObject(PyObject *args)
 
 PyObject*  DocumentObjectGroupPy::removeObjectsFromDocument(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
 
     getDocumentObjectGroupPtr()->removeObjectsFromDocument();
     Py_Return;
@@ -158,8 +158,8 @@ PyObject*  DocumentObjectGroupPy::removeObjectsFromDocument(PyObject *args)
 PyObject*  DocumentObjectGroupPy::getObject(PyObject *args)
 {
     char* pcName;
-    if (!PyArg_ParseTuple(args, "s", &pcName))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "s", &pcName))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
 
     DocumentObject* obj = getDocumentObjectGroupPtr()->getObject(pcName);
     if ( obj ) {
@@ -172,8 +172,10 @@ PyObject*  DocumentObjectGroupPy::getObject(PyObject *args)
 PyObject*  DocumentObjectGroupPy::hasObject(PyObject *args)
 {
     PyObject *object;
-    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception 
+    PyObject *recursivePy = 0;
+    int recursive = 0;
+    if (!PyArg_ParseTuple(args, "O!|O", &(DocumentObjectPy::Type), &object, &recursivePy))
+        return NULL;                             // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
@@ -184,8 +186,16 @@ PyObject*  DocumentObjectGroupPy::hasObject(PyObject *args)
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check an object from another document with this group");
         return NULL;
     }
+    if (recursivePy) {
+        recursive = PyObject_IsTrue(recursivePy);
+        if ( recursive == -1) {
+            // Note: shouldn't happen
+            PyErr_SetString(PyExc_ValueError, "The recursive parameter should be of boolean type");
+            return 0;
+        }
+    }
 
-    bool v = getDocumentObjectGroupPtr()->hasObject(docObj->getDocumentObjectPtr());
+    bool v = getDocumentObjectGroupPtr()->hasObject(docObj->getDocumentObjectPtr(), recursive);
     return PyBool_FromLong(v ? 1 : 0);
 }
 
@@ -196,6 +206,6 @@ PyObject *DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const
 
 int DocumentObjectGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 

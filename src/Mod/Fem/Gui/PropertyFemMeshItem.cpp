@@ -107,19 +107,26 @@ QVariant PropertyFemMeshItem::toolTip(const App::Property* prop) const
 
 void PropertyFemMeshItem::setValue(const QVariant& value)
 {
+    Q_UNUSED(value);
 }
 
 QWidget* PropertyFemMeshItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
+    Q_UNUSED(parent);
+    Q_UNUSED(receiver);
+    Q_UNUSED(method);
     return 0;
 }
 
 void PropertyFemMeshItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
+    Q_UNUSED(editor);
+    Q_UNUSED(data);
 }
 
 QVariant PropertyFemMeshItem::editorData(QWidget *editor) const
 {
+    Q_UNUSED(editor);
     return QVariant();
 }
 

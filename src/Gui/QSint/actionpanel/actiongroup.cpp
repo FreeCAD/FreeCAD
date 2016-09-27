@@ -187,6 +187,7 @@ void ActionGroup::processShow()
 
 void ActionGroup::paintEvent ( QPaintEvent * event )
 {
+  Q_UNUSED(event); 
   QPainter p(this);
 
   if (myDummy->isVisible()) {
@@ -252,7 +253,7 @@ void ActionGroup::setHeaderText(const QString & headerText)
 
 QSize ActionGroup::minimumSizeHint() const
 {
-    return QSize(200,100);
+    return QSize(200,65);
 }
 
 

@@ -195,7 +195,7 @@ MeshPlaneVisitor::~MeshPlaneVisitor ()
 }
 
 bool MeshPlaneVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&, 
-                                   unsigned long, unsigned long, unsigned short neighbourIndex)
+                                   unsigned long, unsigned long, unsigned short)
 {
     if (!fitter->Done())
         fitter->Fit();

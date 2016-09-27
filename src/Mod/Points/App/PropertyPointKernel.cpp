@@ -76,13 +76,6 @@ Base::BoundBox3d PropertyPointKernel::getBoundingBox() const
     return box;
 }
 
-void PropertyPointKernel::getFaces(std::vector<Base::Vector3d> &Points,
-                                   std::vector<Data::ComplexGeoData::Facet> &Topo,
-                                   float Accuracy, uint16_t flags) const
-{
-    _cPoints->getFaces(Points, Topo, Accuracy, flags);
-}
-
 PyObject *PropertyPointKernel::getPyObject(void)
 {
     PointsPy* points = new PointsPy(&*_cPoints);
@@ -132,6 +125,7 @@ void PropertyPointKernel::Restore(Base::XMLReader &reader)
 void PropertyPointKernel::SaveDocFile (Base::Writer &writer) const
 {
     // does nothing
+    (void)writer;
 }
 
 void PropertyPointKernel::RestoreDocFile(Base::Reader &reader)

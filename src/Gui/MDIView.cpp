@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/signals.hpp>
+# include <boost/bind.hpp>
 # include <qapplication.h>
 # include <qregexp.h>
 # include <QEvent>
@@ -38,6 +40,7 @@
 #include "Document.h"
 #include "Application.h"
 #include "MainWindow.h"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 
@@ -48,6 +51,13 @@ MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wfla
   : QMainWindow(parent, wflags), BaseView(pcDocument),currentMode(Child), wstate(Qt::WindowNoState)
 {
     setAttribute(Qt::WA_DeleteOnClose);
+    
+    if (pcDocument)
+    {
+      connectDelObject = pcDocument->signalDeletedObject.connect
+        (boost::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, _1));
+      assert(connectDelObject.connected());
+    }
 }
 
 MDIView::~MDIView()
@@ -70,6 +80,8 @@ MDIView::~MDIView()
             }
         }
     }
+    if (connectDelObject.connected())
+      connectDelObject.disconnect();
 }
 
 void MDIView::deleteSelf()
@@ -84,11 +96,16 @@ void MDIView::deleteSelf()
         parent->deleteLater();
     else
         this->deleteLater();
+
+    // detach from document
+    if (_pcDocument)
+        onClose();
     _pcDocument = 0;
 }
 
 void MDIView::setOverrideCursor(const QCursor& c)
 {
+    Q_UNUSED(c);
 }
 
 void  MDIView::restoreOverrideCursor()
@@ -128,11 +145,14 @@ void MDIView::viewAll()
 /// receive a message
 bool MDIView::onMsg(const char* pMsg,const char** ppReturn)
 {
+    Q_UNUSED(pMsg);
+    Q_UNUSED(ppReturn);
     return false;
 }
 
 bool MDIView::onHasMsg(const char* pMsg) const
 {
+    Q_UNUSED(pMsg);
     return false;
 }
 
@@ -177,6 +197,7 @@ void MDIView::windowStateChanged( MDIView* )
 
 void MDIView::print(QPrinter* printer)
 {
+    Q_UNUSED(printer);
     std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
 }
 

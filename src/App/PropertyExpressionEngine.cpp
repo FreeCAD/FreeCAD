@@ -28,6 +28,7 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include "Expression.h"
+#include "ExpressionVisitors.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyStandard.h"
 #include "PropertyUnits.h"
@@ -40,59 +41,6 @@
 using namespace App;
 using namespace Base;
 using namespace boost;
-
-typedef boost::function<void ()> aboutToSetValueFunc;
-typedef boost::function<void ()> hasSetValueFunc;
-
-/**
- * @brief The RelabelDocumentObjectExpressionVisitor class is a functor class used to rename variables in an expression.
- */
-
-class RelabelDocumentObjectExpressionVisitor : public ExpressionVisitor {
-public:
-
-    RelabelDocumentObjectExpressionVisitor(aboutToSetValueFunc _aboutToSetValue, hasSetValueFunc _hasSetValue, const std::string & _oldName, const std::string & _newName)
-        : aboutToSetValue(_aboutToSetValue)
-        , hasSetValue(_hasSetValue)
-        , oldName(_oldName)
-        , newName(_newName)
-        , changed(0)
-    {
-    }
-
-    ~RelabelDocumentObjectExpressionVisitor() {
-        if (changed > 0)
-            hasSetValue();
-    }
-
-
-    /**
-     * @brief Visit each node in the expression, and if it is a VariableExpression object, incoke renameDocumentObject in it.
-     * @param node Node to visit
-     */
-
-    void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr) {
-            if (expr->renameDocumentObject(oldName, newName)) {
-                if (!changed) {
-                    aboutToSetValue();
-                    ++changed;
-                }
-            }
-        }
-    }
-
-    int getChanged() const { return changed; }
-
-private:
-    aboutToSetValueFunc aboutToSetValue;
-    hasSetValueFunc hasSetValue;
-    std::string oldName; /**< Document object name to replace  */
-    std::string newName; /**< New document object name */
-    int changed;
-};
 
 class ObjectDeletedExpressionVisitor : public ExpressionVisitor {
 public:
@@ -162,7 +110,7 @@ Property *PropertyExpressionEngine::Copy() const
     PropertyExpressionEngine * engine = new PropertyExpressionEngine();
 
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it)
-        engine->expressions[it->first] = ExpressionInfo(it->second);
+        engine->expressions[it->first] = ExpressionInfo(boost::shared_ptr<Expression>(it->second.expression->copy()), it->second.comment.c_str());
 
     engine->validator = validator;
 
@@ -177,7 +125,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
     expressions.clear();
 
     for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it) {
-        expressions[it->first] = ExpressionInfo(it->second);
+        expressions[it->first] = ExpressionInfo(boost::shared_ptr<Expression>(it->second.expression->copy()), it->second.comment.c_str());
         expressionChanged(it->first);
     }
 
@@ -329,12 +277,10 @@ void PropertyExpressionEngine::slotObjectRenamed(const DocumentObject &obj)
     if (!docObj || docObj->getNameInDocument() == 0)
         return;
 
-    RelabelDocumentObjectExpressionVisitor v(boost::bind( &PropertyExpressionEngine::aboutToSetValue, this),
-                                             boost::bind( &PropertyExpressionEngine::hasSetValue, this),
-                                             obj.getOldLabel(), obj.Label.getStrValue());
+    RelabelDocumentObjectExpressionVisitor<PropertyExpressionEngine> v(*this, obj.getOldLabel(), obj.Label.getStrValue());
 
     for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
-        int changed = v.getChanged();
+        bool changed = v.getChanged();
 
         it->second.expression->visit(v);
 
@@ -563,7 +509,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
             throw Base::Exception("Invalid property owner.");
 
         // Evaluate expression
-        std::auto_ptr<Expression> e(expressions[*it].expression->eval());
+        std::unique_ptr<Expression> e(expressions[*it].expression->eval());
 
 #ifdef FC_PROPERTYEXPRESSIONENGINE_LOG
         {
@@ -710,11 +656,15 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
         // Get dependencies for the document object pointed to be *j
         std::vector<DocumentObject*> targets;
         targets.push_back(docObj);
-        std::vector<DocumentObject*> deps = (*j).getDocument()->getDependencyList(targets);
 
-        for (std::vector<DocumentObject*>::const_iterator i = deps.begin(); i != deps.end(); ++i) {
-            if (*i == pathDocObj)
-                return (*j).toString() + " reference creates a cyclic dependency.";
+        // Does the dependency resolve to a document? If not, ignore it
+        if ((*j).getDocument()) {
+            std::vector<DocumentObject*> deps = (*j).getDocument()->getDependencyList(targets);
+
+            for (std::vector<DocumentObject*>::const_iterator i = deps.begin(); i != deps.end(); ++i) {
+                if (*i == pathDocObj)
+                    return (*j).toString() + " reference creates a cyclic dependency.";
+            }
         }
     }
 
@@ -774,51 +724,14 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
 }
 
 /**
- * @brief The RenameObjectIdentifierExpressionVisitor class is a functor used to visit each node of an expression, and
- * possibly rename VariableExpression nodes.
- */
-
-class RenameObjectIdentifierExpressionVisitor : public ExpressionVisitor {
-public:
-
-    RenameObjectIdentifierExpressionVisitor(const std::map<ObjectIdentifier, ObjectIdentifier> &_paths, const ObjectIdentifier & _owner)
-        : paths(_paths)
-        , owner(_owner)
-    {
-    }
-
-    /**
-     * @brief If node is a VariableExpression object, look it up in the paths map, and possibly rename it.
-     * @param node Node to visit.
-     */
-
-    void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr) {
-            const App::ObjectIdentifier & oldPath = expr->getPath().canonicalPath();
-            const std::map<ObjectIdentifier, ObjectIdentifier>::const_iterator it = paths.find(oldPath);
-
-            if (it != paths.end())
-                expr->setPath(it->second.relativeTo(owner));
-        }
-    }
-
-private:
-   const std::map<ObjectIdentifier, ObjectIdentifier> &paths; /**< Map with current and new object identifiers */
-   const ObjectIdentifier & owner;                            /**< Owner og expression */
-};
-
-/**
  * @brief Rename object identifiers in the registered expressions.
  * @param paths Map with current and new object identifiers.
  */
 
 void PropertyExpressionEngine::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
 {
-
     for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
-        RenameObjectIdentifierExpressionVisitor v(paths, it->first);
+        RenameObjectIdentifierExpressionVisitor<PropertyExpressionEngine> v(*this, paths, it->first);
         it->second.expression->visit(v);
     }
 }

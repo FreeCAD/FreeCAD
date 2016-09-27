@@ -1,0 +1,182 @@
+/***************************************************************************
+ *   Copyright (c) Stefan Tr�ger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+
+#include "PreCompiled.h"
+
+#ifndef _PreComp_
+#include <string>
+#endif
+
+#include <Base/Exception.h>
+#include <Base/Placement.h>
+
+#include <App/Document.h>
+#include "OriginFeature.h"
+
+#include "Origin.h"
+
+#ifndef M_PI
+#define M_PI       3.14159265358979323846
+#endif
+
+using namespace App;
+
+
+PROPERTY_SOURCE(App::Origin, App::DocumentObject)
+
+const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
+const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
+
+Origin::Origin(void) {
+    ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
+            "Axis and baseplanes controlled by the origin" );
+}
+
+
+Origin::~Origin(void)
+{ }
+
+App::OriginFeature *Origin::getOriginFeature( const char *role) const {
+    const auto & features = OriginFeatures.getValues ();
+    auto featIt = std::find_if (features.begin(), features.end(),
+            [role] (App::DocumentObject *obj) {
+                return obj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) &&
+                    strcmp (static_cast<App::OriginFeature *>(obj)->Role.getValue(), role) == 0;
+            } );
+    if (featIt != features.end()) {
+        return static_cast<App::OriginFeature *>(*featIt);
+    } else {
+
+        std::stringstream err;
+        err << "Origin \"" << getNameInDocument () << "\" doesn't contain feature with role \""
+            << role << '"';
+        throw Base::Exception ( err.str().c_str () );
+    }
+}
+
+App::Line *Origin::getAxis( const char *role ) const {
+    App::OriginFeature *feat = getOriginFeature (role);
+    if ( feat->isDerivedFrom(App::Line::getClassTypeId () ) ) {
+        return static_cast<App::Line *> (feat);
+    } else {
+        std::stringstream err;
+        err << "Origin \"" << getNameInDocument () << "\" contains bad Axis object for role \""
+            << role << '"';
+        throw Base::Exception ( err.str().c_str () );
+    }
+}
+
+App::Plane *Origin::getPlane( const char *role ) const {
+    App::OriginFeature *feat = getOriginFeature (role);
+    if ( feat->isDerivedFrom(App::Plane::getClassTypeId () ) ) {
+        return static_cast<App::Plane *> (feat);
+    } else {
+        std::stringstream err;
+        err << "Origin \"" << getNameInDocument () << "\" comtains bad Plane object for role \""
+            << role << '"';
+        throw Base::Exception ( err.str().c_str () );
+    }
+}
+
+bool Origin::hasObject (DocumentObject *obj) const {
+    const auto & features = OriginFeatures.getValues ();
+    return std::find (features.begin(), features.end(), obj) != features.end ();
+}
+
+short Origin::mustExecute(void) const {
+    if (OriginFeatures.isTouched ()) {
+        return 1;
+    } else {
+        return DocumentObject::mustExecute();
+    }
+}
+
+App::DocumentObjectExecReturn *Origin::execute(void) {
+    try { // try to find all base axis and planes in the origin
+        for (const char* role: AxisRoles) {
+            App::Line *axis = getAxis (role);
+            assert(axis);
+            (void)axis;
+        }
+        for (const char* role: PlaneRoles) {
+            App::Plane *plane = getPlane (role);
+            assert(plane);
+            (void)plane;
+        }
+    } catch (const Base::Exception &ex) {
+        setError ();
+        return new App::DocumentObjectExecReturn ( ex.what () );
+    }
+
+    return DocumentObject::execute ();
+}
+
+void Origin::setupObject () {
+    const static struct {
+        const Base::Type type;
+        const char *role;
+        Base::Rotation rot;
+    } setupData [] = {
+        {App::Line::getClassTypeId(), "X_Axis", Base::Rotation () },
+        {App::Line::getClassTypeId(), "Y_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
+        {App::Line::getClassTypeId(), "Z_Axis", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*4/3 ) },
+        {App::Plane::getClassTypeId (), "XY_Plane", Base::Rotation () },
+        {App::Plane::getClassTypeId (), "XZ_Plane", Base::Rotation ( 1.0, 0.0, 0.0, 1.0 ), },
+        {App::Plane::getClassTypeId (), "YZ_Plane", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
+    };
+
+    App::Document *doc = getDocument ();
+
+    std::vector<App::DocumentObject *> links;
+    for (auto data: setupData) {
+        std::string objName = doc->getUniqueObjectName ( data.role );
+        App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );
+
+        assert ( featureObj && featureObj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
+
+        App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObj );
+        feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), data.rot ) );
+        feature->Role.setValue ( data.role );
+
+        links.push_back (feature);
+    }
+
+    OriginFeatures.setValues (links);
+}
+
+void Origin::unsetupObject () {
+    const auto &objsLnk = OriginFeatures.getValues ();
+    // Copy to set to assert we won't call methode more then one time for each object
+    std::set<App::DocumentObject *> objs (objsLnk.begin(), objsLnk.end());
+    // Remove all controlled objects
+    for (auto obj: objs ) {
+        // Check that previous deletes wasn't inderectly removed one of our objects
+        const auto &objsLnk = OriginFeatures.getValues ();
+        if ( std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
+            if ( ! obj->isDeleting () ) {
+                obj->getDocument ()->remObject (obj->getNameInDocument());
+            }
+        }
+    }
+}

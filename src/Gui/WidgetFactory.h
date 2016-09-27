@@ -351,7 +351,7 @@ private:
  * The PyResource class provides an interface to create widgets or to load .ui files from Python.
  * With
  * \code
- * d = Gui.CreateDialog("test.ui")
+ * d = Gui.createDialog("test.ui")
  * \endcode
  *
  * you can create a PyResource object containing the widget. If a relative file name 
@@ -374,12 +374,12 @@ private:
  * # define a callback function with one argument
  * def TestCall(obj):
  *      # sets the value from lineedit if "Button_Name" was pressed
- *      obj.SetValue("lineedit", "text", "Show this text here!")
+ *      obj.setValue("lineedit", "text", "Show this text here!")
  *      print "Button clicked"
  *
- * d = Gui.CreateDialog("test.ui")
- * d.Connect("Button_Name", "clicked()", TestCall)
- * d.Show()
+ * d = Gui.createDialog("test.ui")
+ * d.connect("Button_Name", "clicked()", TestCall)
+ * d.show()
  * \endcode
  *
  * If the button with the name "Button_Name" is clicked the message "Button clicked" is
@@ -387,47 +387,36 @@ private:
  * For example if you have a QLineEdit inside your widget you can set the text with
  * \code
  * # sets "Show this text here!" to the text property
- * d.SetValue("lineedit", "text", "Show this text here!")
- * d.Show()
+ * d.setValue("lineedit", "text", "Show this text here!")
+ * d.show()
  * \endcode
  *
  * or retrieve the entered text with
  * \code
- * f = d.GetValue("lineedit", "text")
+ * f = d.getValue("lineedit", "text")
  * print f
  * \endcode
  *
  * \author Werner Mayer
  */
-class PyResource : public Base::PyObjectBase
+
+class PyResource : public Py::PythonExtension<PyResource>
 {
-    // always start with Py_Header
-    Py_Header;
-
-protected:
-    ~PyResource();
-
 public:
-    PyResource(PyTypeObject *T = &Type);
+    static void init_type(void);    // announce properties and methods
+
+    PyResource();
+    ~PyResource();
 
     void load(const char* name);
     bool connect(const char* sender, const char* signal, PyObject* cb);
 
-    /// for construction in Python
-    static PyObject *PyMake(PyObject *, PyObject *);
+    Py::Object repr();
 
-    //---------------------------------------------------------------------
-    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
-    //---------------------------------------------------------------------
-    PyObject *_getattr(char *attr);             // __getattr__ function
-    // getter setter
-    int _setattr(char *attr, PyObject *value);  // __setattr__ function
-
-    // methods
-    PYFUNCDEF_D(PyResource, value);
-    PYFUNCDEF_D(PyResource, setValue);
-    PYFUNCDEF_D(PyResource, show);
-    PYFUNCDEF_D(PyResource, connect);
+    Py::Object value(const Py::Tuple&);
+    Py::Object setValue(const Py::Tuple&);
+    Py::Object show(const Py::Tuple&);
+    Py::Object connect(const Py::Tuple&);
 
 private:
     std::vector<class SignalConnect*> mySingals;
@@ -445,7 +434,7 @@ class SignalConnect : public QObject
     Q_OBJECT
 
 public:
-    SignalConnect(Base::PyObjectBase* res, PyObject* cb);
+    SignalConnect(PyObject* res, PyObject* cb);
     ~SignalConnect();
 
 public Q_SLOTS:

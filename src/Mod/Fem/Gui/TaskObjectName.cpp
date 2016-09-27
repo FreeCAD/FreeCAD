@@ -46,7 +46,7 @@ using namespace Gui;
 TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
       tr("TaskObjectName"),
-      true, 
+      true,
       parent),
       pcObject(pcObject)
 {

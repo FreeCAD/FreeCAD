@@ -74,7 +74,6 @@ protected:
   MeshKernel         &_resultMesh;           /** Result mesh */
   OperationType       _operationType;        /** Set Operation Type */
   float               _minDistanceToPoint;   /** Minimal distance to facet corner points */
-  float               _saveMinMeshDistance;
 
 private:
   // Helper class cutting edge to his two attached facets

@@ -72,6 +72,7 @@ void ActionPanel::removeWidget(QWidget *w)
 
 void ActionPanel::addStretch(int s)
 {
+  Q_UNUSED(s); 
   //((QVBoxLayout*)layout())->addStretch(s);
   if (!mySpacer) {
     mySpacer = new QSpacerItem(0,0,QSizePolicy::Minimum, QSizePolicy::Expanding);

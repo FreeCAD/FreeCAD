@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+46"/>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -39,17 +39,17 @@
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standard</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -59,37 +59,37 @@
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Finețe:</translation>
+        <translation>Finețe:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Foarte aspru</translation>
+        <translation>Foarte aspru</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Brut</translation>
+        <translation>Brut</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderat</translation>
+        <translation>Moderat</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fin</translation>
+        <translation>Fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Foarte fin</translation>
+        <translation>Foarte fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Definit de utilizator</translation>
+        <translation>Definit de utilizator</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -99,7 +99,7 @@
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elemente pe margine:</translation>
+        <translation>Elemente pe margine:</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -109,12 +109,12 @@
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimizează suprafața</translation>
+        <translation>Optimizează suprafața</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Elemente de ordinul al doilea</translation>
+        <translation>Elemente de ordinul al doilea</translation>
     </message>
     <message>
         <location line="+7"/>

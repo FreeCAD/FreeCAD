@@ -142,7 +142,7 @@ void SoDatumLabel::drawImage()
     Gui::BitmapFactory().convert(image, this->image);
 }
 
-void SoDatumLabel::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
+void SoDatumLabel::computeBBox(SoAction * /*action*/, SbBox3f &box, SbVec3f &center)
 {
     if (!this->bbox.isEmpty()) {
         // Set the bounding box using stored parameters

@@ -32,39 +32,17 @@
 
 
 class ReverseEngineeringWorkbench ( Workbench ):
-	"ReverseEngineering workbench object"
-	Icon = """
-			/* XPM */
-			static const char *ReverseEngineering_Box[]={
-			"16 16 3 1",
-			". c None",
-			"# c #000000",
-			"a c #c6c642",
-			"................",
-			".......#######..",
-			"......#aaaaa##..",
-			".....#aaaaa###..",
-			"....#aaaaa##a#..",
-			"...#aaaaa##aa#..",
-			"..#aaaaa##aaa#..",
-			".########aaaa#..",
-			".#aaaaa#aaaaa#..",
-			".#aaaaa#aaaa##..",
-			".#aaaaa#aaa##...",
-			".#aaaaa#aa##....",
-			".#aaaaa#a##... .",
-			".#aaaaa###......",
-			".########.......",
-			"................"};
-			"""
-	MenuText = "Reverse Engineering"
-	ToolTip = "Reverse Engineering workbench"
+    "ReverseEngineering workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/ReverseEngineering/Resources/icons/ReverseEngineeringWorkbench.svg"
+        self.__class__.MenuText = "Reverse Engineering"
+        self.__class__.ToolTip = "Reverse Engineering workbench"
 
-	def Initialize(self):
-		# load the module
-		import ReverseEngineeringGui
-		import ReverseEngineering
-	def GetClassName(self):
-		return "ReverseEngineeringGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import ReverseEngineeringGui
+        import ReverseEngineering
+    def GetClassName(self):
+        return "ReverseEngineeringGui::Workbench"
 
 Gui.addWorkbench(ReverseEngineeringWorkbench())

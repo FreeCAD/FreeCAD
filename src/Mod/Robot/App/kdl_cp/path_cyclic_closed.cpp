@@ -48,7 +48,7 @@ namespace KDL {
 Path_Cyclic_Closed::Path_Cyclic_Closed(Path* _geom,int _times, bool _aggregate):
 times(_times),geom(_geom), aggregate(_aggregate) {}
 
-double Path_Cyclic_Closed::LengthToS(double length) {
+double Path_Cyclic_Closed::LengthToS(double /*length*/) {
 	throw Error_MotionPlanning_Not_Applicable();
 	return 0;
 }

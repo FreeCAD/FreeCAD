@@ -119,6 +119,7 @@ DlgCustomKeyboardImp::~DlgCustomKeyboardImp()
 
 void DlgCustomKeyboardImp::showEvent(QShowEvent* e)
 {
+    Q_UNUSED(e); 
     // If we did this already in the constructor we wouldn't get the vertical scrollbar if needed.
     // The problem was noticed with Qt 4.1.4 but may arise with any later version.
     if (firstShow) {
@@ -260,6 +261,43 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
     }
 }
 
+/** Clears the accelerator of the selected command. */
+void DlgCustomKeyboardImp::on_buttonClear_clicked()
+{
+    QTreeWidgetItem* item = commandTreeWidget->currentItem();
+    if (!item)
+        return;
+
+    QVariant data = item->data(1, Qt::UserRole);
+    QByteArray name = data.toByteArray(); // command name
+
+    CommandManager & cCmdMgr = Application::Instance->commandManager();
+    Command* cmd = cCmdMgr.getCommandByName(name.constData());
+    if (cmd && cmd->getAction()) {
+        Action* action = cmd->getAction();
+        action->setShortcut(QString());
+        accelLineEditShortcut->clear();
+        editShortcut->clear();
+
+        // update the tool tip
+        QString toolTip = QCoreApplication::translate(cmd->className(),
+            cmd->getToolTipText(), 0, QCoreApplication::UnicodeUTF8);
+        action->setToolTip(toolTip);
+
+        // update the status tip
+        QString statusTip = QCoreApplication::translate(cmd->className(),
+            cmd->getStatusTip(), 0, QCoreApplication::UnicodeUTF8);
+        if (statusTip.isEmpty())
+            statusTip = toolTip;
+        action->setStatusTip(statusTip);
+
+        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+        hGrp->SetASCII(name.constData(), accelLineEditShortcut->text().toUtf8());
+        buttonAssign->setEnabled(false);
+        buttonReset->setEnabled(true);
+    }
+}
+
 /** Resets the accelerator of the selected command to the default. */
 void DlgCustomKeyboardImp::on_buttonReset_clicked()
 {
@@ -273,7 +311,7 @@ void DlgCustomKeyboardImp::on_buttonReset_clicked()
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && cmd->getAction()) {
-      cmd->getAction()->setShortcut(QString::fromLatin1(cmd->getAccel()));
+        cmd->getAction()->setShortcut(QString::fromLatin1(cmd->getAccel()));
         QString txt = cmd->getAction()->shortcut().toString(QKeySequence::NativeText);
         accelLineEditShortcut->setText((txt.isEmpty() ? tr("none") : txt));
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");

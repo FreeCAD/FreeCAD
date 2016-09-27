@@ -12,7 +12,7 @@
         <translation type="obsolete">Chanfrein...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+654"/>
+        <location filename="../../Command.cpp" line="+655"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+150"/>
+        <location line="+151"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-305"/>
+        <location line="-307"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+573"/>
+        <location line="+575"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -95,8 +95,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a linear pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a linear pattern feature</source>
-        <translation>Créer une fonction de répétition linéaire</translation>
+        <translation type="obsolete">Créer une fonction de répétition linéaire</translation>
     </message>
 </context>
 <context>
@@ -113,8 +117,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a mirrored feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a mirrored feature</source>
-        <translation>Créer une fonction de symétrie</translation>
+        <translation type="obsolete">Créer une fonction de symétrie</translation>
     </message>
 </context>
 <context>
@@ -131,14 +139,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a multitransform feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a multitransform feature</source>
-        <translation>Créer une fonction de transformation multiple</translation>
+        <translation type="obsolete">Créer une fonction de transformation multiple</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1059"/>
+        <location line="-1061"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -167,14 +179,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a pocket with the selected sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a pocket with the selected sketch</source>
-        <translation>Créer une cavité avec l&apos;esquisse sélectionnée</translation>
+        <translation type="obsolete">Créer une cavité avec l&apos;esquisse sélectionnée</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+814"/>
+        <location line="+816"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -185,14 +201,18 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a polar pattern feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a polar pattern feature</source>
-        <translation>Créer une fonction de répétition circulaire</translation>
+        <translation type="obsolete">Créer une fonction de répétition circulaire</translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-746"/>
+        <location line="-748"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -210,7 +230,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+825"/>
+        <location line="+827"/>
         <source>PartDesign</source>
         <translation>ConceptionPièce</translation>
     </message>
@@ -221,8 +241,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a scaled feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>create a scaled feature</source>
-        <translation>Créer une fonction de mise à l&apos;échelle</translation>
+        <translation type="obsolete">Créer une fonction de mise à l&apos;échelle</translation>
     </message>
 </context>
 <context>
@@ -248,44 +272,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Paramètres de la développante</translation>
+        <translation>Paramètres de la développante</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Nombre de dents :</translation>
+        <translation>Nombre de dents :</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules :</translation>
+        <translation>Modules :</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished">Haute précision :</translation>
+        <translation>Haute précision :</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished">Vrai</translation>
+        <translation>Vrai</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished">Faux</translation>
+        <translation>Faux</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished">Engrenages externes :</translation>
+        <translation>Engrenages externes :</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Angle de pression :</translation>
+        <translation>Angle de pression :</translation>
     </message>
 </context>
 <context>
@@ -407,7 +431,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Modifier le chanfrein</translation>
+        <translation>Modifier le chanfrein</translation>
     </message>
 </context>
 <context>
@@ -423,7 +447,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Modifier le congé</translation>
+        <translation>Modifier le congé</translation>
     </message>
 </context>
 <context>
@@ -463,7 +487,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Modifier la cavité</translation>
+        <translation>Modifier la cavité</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -667,19 +691,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse horizontal</translation>
+        <translation>Axe d&apos;esquisse horizontal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse vertical</translation>
+        <translation>Axe d&apos;esquisse vertical</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Sélectionnez une référence...</translation>
+        <translation>Sélectionnez une référence...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -714,7 +738,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non défini</translation>
+        <translation>Non défini</translation>
     </message>
 </context>
 <context>
@@ -749,19 +773,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse horizontal</translation>
+        <translation>Axe d&apos;esquisse horizontal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Axe d&apos;esquisse vertical</translation>
+        <translation>Axe d&apos;esquisse vertical</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Sélectionnez une référence...</translation>
+        <translation>Sélectionnez une référence...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -780,12 +804,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Sélectionnez une face</translation>
+        <translation>Sélectionnez une face</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non défini</translation>
+        <translation>Non défini</translation>
     </message>
 </context>
 <context>
@@ -1043,7 +1067,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Reversed</source>
-        <translation type="unfinished">Inversé</translation>
+        <translation>Inversé</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1130,19 +1154,19 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished">Axe</translation>
+        <translation>Axe</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Axe normal à l&apos;esquisse</translation>
+        <translation>Axe normal à l&apos;esquisse</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Sélectionnez une référence...</translation>
+        <translation>Sélectionnez une référence...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1233,7 +1257,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Non défini</translation>
+        <translation>Non défini</translation>
     </message>
 </context>
 <context>
@@ -1280,13 +1304,13 @@ Please check one or more edge entities first.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-650"/>
+        <location filename="../../Command.cpp" line="-652"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+65"/>
+        <location line="+66"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1305,7 +1329,7 @@ Please check one or more edge entities first.</source>
         <translation type="obsolete">La forme de l&apos;objet sélectionné n&apos;est pas filaire.</translation>
     </message>
     <message>
-        <location line="-661"/>
+        <location line="-663"/>
         <location line="+84"/>
         <location line="+74"/>
         <location line="+84"/>
@@ -1313,94 +1337,143 @@ Please check one or more edge entities first.</source>
         <translation>Aucune esquisse valide dans ce document</translation>
     </message>
     <message>
-        <location line="-241"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Veuillez d&apos;abord créer une esquisse ou un objet 2D</translation>
+        <translation type="obsolete">Veuillez d&apos;abord créer une esquisse ou un objet 2D</translation>
     </message>
     <message>
-        <location line="-74"/>
-        <location line="+158"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Veuillez d&apos;abord créer une esquisse ou un objet 2D, qui devra être appliqué sur la face d&apos;un solide.</translation>
+        <translation type="obsolete">Veuillez d&apos;abord créer une esquisse ou un objet 2D, qui devra être appliqué sur la face d&apos;un solide.</translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+151"/>
+        <location line="+75"/>
+        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>Sélectionnez une arête, une face ou un corps. Un seul corps est autorisé.</translation>
     </message>
     <message>
-        <location line="-146"/>
-        <location line="+151"/>
+        <location line="-147"/>
         <location line="+152"/>
+        <location line="+153"/>
         <source>Wrong object type</source>
         <translation>Type d&apos;objet incorrect</translation>
     </message>
     <message>
-        <location line="-302"/>
         <source>Fillet works only on parts</source>
-        <translation>Le congé s&apos;applique uniquement sur les pièces</translation>
+        <translation type="obsolete">Le congé s&apos;applique uniquement sur les pièces</translation>
     </message>
     <message>
-        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>La forme de la pièce sélectionnée est vide.</translation>
+        <translation type="obsolete">La forme de la pièce sélectionnée est vide.</translation>
     </message>
     <message>
-        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Aucun congé possible sur les faces/arêtes sélectionnés.</translation>
+        <translation type="obsolete">Aucun congé possible sur les faces/arêtes sélectionnés.</translation>
     </message>
     <message>
-        <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>La fonction chanfrein ne fonctionne que sur les pièces.</translation>
+        <translation type="obsolete">La fonction chanfrein ne fonctionne que sur les pièces.</translation>
     </message>
     <message>
-        <location line="-142"/>
-        <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>La forme de la pièce sélectionnée est vide.</translation>
+        <translation type="obsolete">La forme de la pièce sélectionnée est vide.</translation>
     </message>
     <message>
-        <location line="-481"/>
+        <location line="-626"/>
+        <location line="+158"/>
+        <source>Please create a sketch or 2D object first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-156"/>
         <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun croquis valide sélectionné</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune esquisse ou objet 2D sélectionné n&apos;est valable pour le remplissage. Veuillez sélectionner une esquisse ou un objet non utilisé par une autre fonctionnalité.</translation>
     </message>
     <message>
+        <location line="+81"/>
         <location line="+158"/>
-        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+393"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>Aucun chanfrein possible sur les faces/arêtes sélectionnés.</translation>
+        <location line="-81"/>
+        <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
+        <translation>Aucune esquisse ou objet 2D sélectionné n&apos;est valable pour une rotation. Veuillez sélectionner une esquisse ou un objet non utilisé par une autre fonctionnalité.</translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+161"/>
+        <source>Fillet works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+153"/>
+        <source>Shape of selected part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-82"/>
+        <source>No fillet possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Chamfer works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>No chamfer possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Draft works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Shape of selected Part is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>No draft possible on selected faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
+        <location line="+72"/>
+        <source>Please create a subtractive or additive feature first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No chamfer possible on selected faces/edges</source>
+        <translation type="obsolete">Aucun chanfrein possible sur les faces/arêtes sélectionnés.</translation>
+    </message>
+    <message>
+        <location line="-443"/>
         <source>Select one or more faces.</source>
         <translation>Sélectionner une ou plusieurs faces.</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>La dépouille n&apos;est possible que sur une pièce.</translation>
+        <translation type="obsolete">La dépouille n&apos;est possible que sur une pièce.</translation>
     </message>
     <message>
-        <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Dépouille impossible sur les faces sélectionnées.</translation>
+        <translation type="obsolete">Dépouille impossible sur les faces sélectionnées.</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+128"/>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1409,17 +1482,12 @@ Please check one or more edge entities first.</source>
         <translation>Aucune fonction valide dans ce document</translation>
     </message>
     <message>
-        <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished">Veuillez d&apos;abord créer une fonctionnalité soustractive ou additive</translation>
+        <translation type="obsolete">Veuillez d&apos;abord créer une fonctionnalité soustractive ou additive</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Veuillez d&apos;abord créer une fonction d&apos;ajout ou d&apos;enlèvement de matière.</translation>
+        <translation type="obsolete">Veuillez d&apos;abord créer une fonction d&apos;ajout ou d&apos;enlèvement de matière.</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1484,13 +1552,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Le lien à l&apos;esquisse de base est perdu</translation>
+        <translation>Le lien à l&apos;esquisse de base est perdu</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">L&apos;objet ne peut pas être modifié parce que le lien vers le l&apos;esquisse de base est perdu.</translation>
+        <translation>L&apos;objet ne peut pas être modifié parce que le lien vers le l&apos;esquisse de base est perdu.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1531,12 +1599,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Éditer la gorge</translation>
+        <translation>Éditer la rainure</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Éditer la révolution</translation>
+        <translation>Éditer la révolution</translation>
     </message>
 </context>
 <context>

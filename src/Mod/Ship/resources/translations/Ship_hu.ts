@@ -4,49 +4,54 @@
   <context>
     <name>Ship</name>
     <message>
-      <location filename="InitGui.py" line="67"/>
+      <location filename="InitGui.py" line="65"/>
       <source>Ship design</source>
-      <translation type="unfinished">Hajó tervezés</translation>
+      <translation>Hajó tervezés</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="70"/>
+      <location filename="InitGui.py" line="68"/>
       <source>Weights</source>
-      <translation type="unfinished">Súlyok</translation>
+      <translation>Súlyok</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="46"/>
+      <location filename="Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation>Igaz, ha egy érvényes hajó példányra, egyébként hamis</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="56"/>
+      <location filename="Instance.py" line="54"/>
       <source>Ship length [m]</source>
-      <translation type="unfinished">Ship length [m]</translation>
+      <translation>Hajó hossza [m]</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="65"/>
+      <location filename="Instance.py" line="63"/>
       <source>Ship breadth [m]</source>
-      <translation type="unfinished">Ship breadth [m]</translation>
+      <translation>Hajó szélessége [m]</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="74"/>
+      <location filename="Instance.py" line="72"/>
       <source>Ship draft [m]</source>
-      <translation type="unfinished">Ship draft [m]</translation>
+      <translation>Hajó tervezet [m]</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="85"/>
+      <location filename="Instance.py" line="83"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation>Hajótest külső felületek csoportja</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="94"/>
+      <location filename="Instance.py" line="92"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Súly példánykészletek</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="103"/>
+      <location filename="Instance.py" line="101"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Tartály példánykészletek</translation>
+    </message>
+    <message>
+      <location filename="Instance.py" line="110"/>
+      <source>Set of load conditions</source>
+      <translation>Terhelési feltételek</translation>
     </message>
   </context>
   <context>
@@ -54,12 +59,12 @@
     <message>
       <location filename="ShipGui.py" line="94"/>
       <source>Areas curve</source>
-      <translation type="unfinished">Területek görbéi</translation>
+      <translation>Területek görbéi</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="97"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>A transzverzális területek görbéit nyomtatja</translation>
     </message>
   </context>
   <context>
@@ -67,12 +72,12 @@
     <message>
       <location filename="ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">Új hajó létrehozása</translation>
+      <translation>Új hajó létrehozása</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="63"/>
       <source>Create a new ship instance on top of the hull geometry</source>
-      <translation type="unfinished">Create a new ship instance on top of the hull geometry</translation>
+      <translation>Létrehoz egy új hajó példányt a hajótest geometria tetején</translation>
     </message>
   </context>
   <context>
@@ -80,12 +85,12 @@
     <message>
       <location filename="ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation type="unfinished">Vízszilárdság / hydrostatika</translation>
+      <translation>Vízszilárdság / hydrostatika</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="114"/>
       <source>Plot the ship hydrostatics</source>
-      <translation type="unfinished">Plot the ship hydrostatics</translation>
+      <translation>A hajó hidrosztatika tételeinek nyomtatása</translation>
     </message>
   </context>
   <context>
@@ -93,12 +98,12 @@
     <message>
       <location filename="ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation type="unfinished">Egy hajó geometria példa betöltése</translation>
+      <translation>Egy hajó geometria példa betöltése</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation type="unfinished">Load an example ship hull geometry.</translation>
+      <translation>Egy példa hajó test geometria betöltése.</translation>
     </message>
   </context>
   <context>
@@ -106,45 +111,55 @@
     <message>
       <location filename="ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Külső vonal rajzolása</translation>
+      <translation>Külső vonal rajzolása</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="80"/>
       <source>Plots the ship hull outline draw</source>
-      <translation type="unfinished">Plots the ship hull outline draw</translation>
+      <translation>Hajótest külső szerkezeti rajzot nyomtat</translation>
     </message>
   </context>
   <context>
     <name>ship_areas</name>
     <message>
-      <location filename="TaskPanel.py" line="219"/>
+      <location filename="TaskPanel.py" line="228"/>
       <source>Draft</source>
-      <translation type="unfinished">Tervezés</translation>
+      <translation>Tervrajz</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="225"/>
-      <source>Trim</source>
-      <translation type="unfinished">Vágás</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="329"/>
+      <location filename="TaskPanel.py" line="326"/>
       <source>Displacement</source>
-      <translation type="unfinished">Elmozdulás</translation>
+      <translation>Elmozdulás</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="353"/>
+      <location filename="TaskPanel.py" line="352"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation type="unfinished">Területek görbéi tervező eszköz kiválasztva [m]</translation>
+      <translation>Területek görbéi tervező eszköz kiválasztva [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="214"/>
+      <location filename="TaskPanel.py" line="223"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>A transzverzális területek görbéit nyomtatja</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="369"/>
+      <location filename="TaskPanel.py" line="368"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation type="unfinished">Areas curve tool trim selected [deg]</translation>
+      <translation>Területek görbe vágó eszköz kiválasztva [fok]</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="234"/>
+      <source>Trim angle</source>
+      <translation>Vágás szöge</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="240"/>
+      <source>Number of points</source>
+      <translation>Pontok száma</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="384"/>
+      <source>Areas curve tool number of points</source>
+      <translation>Területek görbe eszköz pontok száma</translation>
     </message>
   </context>
   <context>
@@ -152,120 +167,225 @@
     <message>
       <location filename="ShipGui.py" line="162"/>
       <source>Tank capacity curve</source>
-      <translation type="unfinished">Tank capacity curve</translation>
+      <translation>Tartály kapacitás görbe</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="165"/>
       <source>Plot the tank capacity curve (level-volume curve)</source>
-      <translation type="unfinished">Plot the tank capacity curve (level-volume curve)</translation>
+      <translation>A tartály kapacitás görbe nyomtatása (térfogat-szint görbe)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="145"/>
+      <location filename="TaskPanel.py" line="159"/>
       <source>Plot the tank capacity curve</source>
-      <translation type="unfinished">Plot the tank capacity curve</translation>
+      <translation>Tartály kapacitás görbe nyomtatás</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="150"/>
+      <location filename="TaskPanel.py" line="164"/>
       <source>Number of points</source>
-      <translation type="unfinished">Pontok száma</translation>
+      <translation>Pontok száma</translation>
     </message>
   </context>
   <context>
     <name>ship_console</name>
     <message>
-      <location filename="TaskPanel.py" line="162"/>
+      <location filename="TaskPanel.py" line="160"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation type="unfinished">Kérjük, hozzon létre, vagy töltsön be egy hajó törzs geometriát mielőtt használná ezt az eszközt</translation>
+      <translation>Kérjük, hozzon létre, vagy töltsön be egy hajó törzs geometriát mielőtt használná ezt az eszközt</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="155"/>
+      <location filename="TaskPanel.py" line="153"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation type="unfinished">Hajó objektumok csak hajótörzs geometriára létrehozhatók (nem található szilárd test a kijelölt objektumokon)</translation>
+      <translation>Hajó objektumok csak hajótörzs geometriára létrehozhatók (nem található szilárd test a kijelölt objektumokon)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="95"/>
       <source>Computing hydrostatics</source>
-      <translation type="unfinished">Vízszilárdság / hydrostatika kiszámítása</translation>
+      <translation>Vízszilárdság / hydrostatika kiszámítása</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="496"/>
+      <location filename="TaskPanel.py" line="500"/>
       <source>Computing external faces</source>
-      <translation type="unfinished">Külső felületek számítása</translation>
+      <translation>Külső felületek számítása</translation>
     </message>
     <message>
       <location filename="Preview.py" line="54"/>
       <source>Computing sections</source>
-      <translation type="unfinished">Szakaszok számítása</translation>
+      <translation>Szakaszok számítása</translation>
     </message>
     <message>
       <location filename="Preview.py" line="128"/>
       <source>Any valid ship section found</source>
-      <translation type="unfinished">Bármely megtalálható érvényes hajó rész</translation>
+      <translation>Bármely megtalálható érvényes hajó rész</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="134"/>
+      <location filename="TaskPanel.py" line="132"/>
       <source>Ship objects can only be created on top of hull geometry (no objects selected)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no objects selected)</translation>
+      <translation>Hajó objektumok csak hajótörzs geometriára létrehozhatók (nincsenek kijelölt objektumok)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="199"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Egy hajó példányt kell kijelölni, mielőtt használja ezt az eszközt (nincsenek kijelölt objektumok)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="216"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
+      <translation>Több, mint egy hajót választott ki (az extra hajókat nem veszi figyelembe)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
+      <translation>Egy hajó példányt ki kell jelölni, mielőtt használja ezt az eszközt (nem található érvényes hajó a kijelölt objektumokon)</translation>
     </message>
     <message>
       <location filename="PlotAux.py" line="57"/>
       <source>Plot module is disabled, so I cannot perform the plot</source>
-      <translation type="unfinished">Plot module is disabled, so I cannot perform the plot</translation>
+      <translation>Nyomtató modul le van tiltva, ezért nem hajtható végre nyomtatás</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="183"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (no objects selected)</translation>
+      <translation>Egy hajó példányt kell kijelölni, mielőtt használja ezt az eszközt (nincsenek kijelölt objektumok)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="202"/>
       <source>More than one ship has been selected (just the first one will be used)</source>
-      <translation type="unfinished">More than one ship has been selected (just the first one will be used)</translation>
+      <translation>Több, mint egy hajó van jelölve (csak az első, aki fogja használni)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="213"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (novalid ships found in the selected objects)</translation>
+      <translation>Egy hajó példányt ki kell jelölni, mielőtt használja ezt az eszközt (nem található érvényes hajó a kijelölt objektumokon)</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="41"/>
       <source>Plot module is disabled, tools cannot graph output curves</source>
-      <translation type="unfinished">Plot module is disabled, tools cannot graph output curves</translation>
+      <translation>Tervrajz nyomtató kiiktatva, az eszköz nem tud kirajzolni görbét</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="86"/>
+      <location filename="TaskPanel.py" line="85"/>
       <source>Failure detecting external faces from the ship object</source>
-      <translation type="unfinished">Failure detecting external faces from the ship object</translation>
+      <translation>Hiba a hajó tárgy külső felületeinek észlelése közben</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="104"/>
+      <location filename="TaskPanel.py" line="118"/>
       <source>A tank instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Egy tank példánynyt kell kijelölni, mielőtt használná ezt az eszközt (nincs tárgy kijelölve)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="121"/>
+      <location filename="TaskPanel.py" line="135"/>
       <source>More than one tank have been selected (the extra tanks will be ignored)</source>
-      <translation type="unfinished">More than one tank have been selected (the extra tanks will be ignored)</translation>
+      <translation>Több mint egy tartályt választott (extra tartályokat figyelmen kívül hagyja)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="131"/>
+      <location filename="TaskPanel.py" line="145"/>
       <source>A tank instance must be selected before using this tool (no valid tank found at the selected objects)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no valid tank found at the selected objects)</translation>
+      <translation>Egy tartáj példányt kell kijelölni, mielőtt használja ezt az eszközt (nem található érvényes tartáj a kijelölt objektumokon)</translation>
+    </message>
+    <message>
+      <location filename="TankInstance.py" line="129"/>
+      <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
+      <translation>Tartály térfogat művelet nem sikerült. Az eszközt újra próbálkozik kissé elmozgatva a szabad felszíni helyzetet</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="133"/>
+      <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
+      <translation>Terhelési feltétel példányt kell kijelölni, mielőtt használja ezt az eszközt (nincs tárgy kijelölve)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="197"/>
+      <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
+      <translation>Helytelen hajó címke! (nem található "{}" címkével példány)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="206"/>
+      <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
+      <translation>Kétértelmű hajó címke! ({} példány talált ezzel a "{}" címkével ellátva)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="185"/>
+      <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
+      <translation>Egynél több terhelési feltételt választott (extra terhelési feltételeket nem veszi figyelembe)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="196"/>
+      <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
+      <translation>A terhelési feltétel példányt kell kijelölni, mielőtt használja ezt az eszközt (nincs érvényes terhelési feltétel a kijelölt tárgyakon)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="117"/>
+      <source>Too much weight! The ship will never displace water enough</source>
+      <translation>Túl nagy súlyt! A hajó nem képes ennyi vizet kiszorítani</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="232"/>
+      <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
+      <translation>Helytelen súly címke! (nem található "{}" címkével példány)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="241"/>
+      <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
+      <translation>Kétértelmű súly címke! ({} példány talált ezzel a "{}" címkével ellátva)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="254"/>
+      <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
+      <translation>Érvénytelen súly! (a tárgy "{}" címkével nem tömeg)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="280"/>
+      <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
+      <translation>Helytelen tartály címke! (nem található "{}" címkével példány)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="289"/>
+      <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
+      <translation>Kétértelmű tartály címke! ({} példány talált ezzel a "{}" címkével ellátva)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="302"/>
+      <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
+      <translation>Érvénytelen tartály! ("{}" címkével ellátott tárgy nem tartály)</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="49"/>
+      <source>Computing capacity curves</source>
+      <translation>Kapacitás görbék számítása</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="122"/>
+      <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
+      <translation>Logikai művelet nem sikerült a víz alatti oldal elérésénél. Az eszköz újrapróbálkozik a művelettel kissé elmozdítva a szabad felszíni helyzetet</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="198"/>
+      <source>Part.OCCError: Transversal area computation failed</source>
+      <translation>Part.OCCError: Transzverzális terület kiszámítása nem sikerült</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="275"/>
+      <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
+      <translation>ZeroDivisionError: Null térfogat az elhelyezés számítás során!</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="377"/>
+      <source>Part.OCCError: Floating area cannot be computed</source>
+      <translation>Part.OCCError: Úszó terület nem számítható ki</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="390"/>
+      <source>ZeroDivisionError: Null area found during the floating area computation!</source>
+      <translation>ZeroDivisionError: Üres területet talált a lebegő terület kiszámítása során!</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="466"/>
+      <source>Part.OCCError: Main frame area cannot be computed</source>
+      <translation>Part.OCCError: Fő keret terület nem számítható ki</translation>
+    </message>
+    <message>
+      <location filename="Tools.py" line="480"/>
+      <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
+      <translation>ZeroDivisionError: Üres területet tslált a fő keret terület együttható számítása során!</translation>
     </message>
   </context>
   <context>
@@ -273,47 +393,95 @@
     <message>
       <location filename="Preview.py" line="66"/>
       <source>Base line</source>
-      <translation type="unfinished">Alap vonal</translation>
+      <translation>Alap vonal</translation>
     </message>
     <message>
       <location filename="Preview.py" line="83"/>
       <source>Free surface</source>
-      <translation type="unfinished">Szabad felület</translation>
+      <translation>Szabad felület</translation>
     </message>
     <message>
       <location filename="Preview.py" line="100"/>
       <source>Forward perpendicular</source>
-      <translation type="unfinished">Merőleges előtt</translation>
+      <translation>Merőleges előtt</translation>
     </message>
     <message>
       <location filename="Preview.py" line="117"/>
       <source>After perpendicular</source>
-      <translation type="unfinished">Merőleges után</translation>
+      <translation>Merőleges után</translation>
     </message>
     <message>
       <location filename="Preview.py" line="134"/>
       <source>Main frame</source>
-      <translation type="unfinished">Fő keret</translation>
+      <translation>Fő keret</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="222"/>
+      <location filename="TaskPanel.py" line="220"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">Új hajó létrehozása</translation>
+      <translation>Új hajó létrehozása</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="227"/>
+      <location filename="TaskPanel.py" line="225"/>
       <source>Length</source>
-      <translation type="unfinished">Hossz</translation>
+      <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="233"/>
+      <location filename="TaskPanel.py" line="231"/>
       <source>Breadth</source>
-      <translation type="unfinished">Szélesség</translation>
+      <translation>Szélesség</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="239"/>
+      <location filename="TaskPanel.py" line="237"/>
       <source>Draft</source>
-      <translation type="unfinished">Tervezés</translation>
+      <translation>Tervrajz</translation>
+    </message>
+  </context>
+  <context>
+    <name>ship_gz</name>
+    <message>
+      <location filename="ShipGui.py" line="196"/>
+      <source>GZ curve computation</source>
+      <translation>GZ görbe kiszámítása</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="244"/>
+      <source>Plot the GZ curve</source>
+      <translation>A GZ-görbe felrajzolása</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="249"/>
+      <source>Maximum angle</source>
+      <translation>Maximális szög</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="255"/>
+      <source>Number of points</source>
+      <translation>Pontok száma</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="261"/>
+      <source>Variable trim</source>
+      <translation>Változó vágás</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="267"/>
+      <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
+      <translation>A hajót minden csavarási szögnél forgatni kell az egyensúlyi vágási szöghöz. Ez jelentősen növelni fogja a szükséges számítási időt</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="294"/>
+      <source>GZ curve tool angle selected [deg]</source>
+      <translation>GZ görbe eszköz szöge választott [fok]</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="310"/>
+      <source>GZ curve tool number of points selected</source>
+      <translation>GZ görbe eszköz pontok száma választott</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="326"/>
+      <source>GZ curve tool variable trim angle selection</source>
+      <translation>GZ görbe eszköz változó vágási szög választás</translation>
     </message>
   </context>
   <context>
@@ -321,47 +489,47 @@
     <message>
       <location filename="TaskPanel.py" line="279"/>
       <source>Plot hydrostatics</source>
-      <translation type="unfinished">Vízszilárdság / hidrostatika nyomtatása</translation>
+      <translation>Vízszilárdság / hidrostatika nyomtatása</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="284"/>
       <source>Trim</source>
-      <translation type="unfinished">Vágás</translation>
+      <translation>Vágás</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="290"/>
       <source>Minimum draft</source>
-      <translation type="unfinished">Minimális merülés</translation>
+      <translation>Minimális merülés</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="296"/>
       <source>Maximum draft</source>
-      <translation type="unfinished">Maximális merülés</translation>
+      <translation>Maximális merülés</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="302"/>
       <source>Number of points</source>
-      <translation type="unfinished">Pontok száma</translation>
+      <translation>Pontok száma</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="416"/>
+      <location filename="TaskPanel.py" line="420"/>
       <source>Hydrostatics tool trim selected</source>
-      <translation type="unfinished">Vízszilárdság vágó eszköz kiválasztva</translation>
+      <translation>Vízszilárdság vágó eszköz kiválasztva</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="430"/>
+      <location filename="TaskPanel.py" line="434"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation type="unfinished">Vízszilárdság minimum merülés kiválasztva [m]</translation>
+      <translation>Vízszilárdság minimum merülés kiválasztva [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="444"/>
+      <location filename="TaskPanel.py" line="448"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation type="unfinished">Vízszilárdság maximum merülés kiválasztva [m]</translation>
+      <translation>Vízszilárdság maximum merülés kiválasztva [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="458"/>
+      <location filename="TaskPanel.py" line="462"/>
       <source>Hydrostatics tool number of points selected</source>
-      <translation type="unfinished">Vízszilárdság pontok számai eszköz kiválasztva</translation>
+      <translation>Vízszilárdság pontok számai eszköz kiválasztva</translation>
     </message>
   </context>
   <context>
@@ -369,12 +537,25 @@
     <message>
       <location filename="TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">Példa hajó betüöltése</translation>
+      <translation>Példa hajó betüöltése</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="111"/>
       <source>Select ship example geometry</source>
-      <translation type="unfinished">Válasszon példa hajó geometriát</translation>
+      <translation>Válasszon példa hajó geometriát</translation>
+    </message>
+  </context>
+  <context>
+    <name>ship_loadcondition</name>
+    <message>
+      <location filename="ShipGui.py" line="179"/>
+      <source>Create a new loading condition</source>
+      <translation>Létrehoz egy új terhelési feltételt</translation>
+    </message>
+    <message>
+      <location filename="ShipGui.py" line="182"/>
+      <source>Create a new load condition spreadsheet</source>
+      <translation>Létrehoz egy új terhelés feltétel munkafüzetet</translation>
     </message>
   </context>
   <context>
@@ -382,95 +563,85 @@
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Külső vonal rajzolása</translation>
+      <translation>Külső vonal rajzolása</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="232"/>
       <source>Auto create</source>
-      <translation type="unfinished">Automatikus létrehozás</translation>
+      <translation>Automatikus létrehozás</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="238"/>
       <source>Delete all sections</source>
-      <translation type="unfinished">Minden szakasz törlése</translation>
+      <translation>Minden szakasz törlése</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Create sections</source>
-      <translation type="unfinished">Szakaszok létrehozása</translation>
+      <translation>Szakaszok létrehozása</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="250"/>
       <source>Transversal</source>
-      <translation type="unfinished">Átlós</translation>
+      <translation>Átlós</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Longitudinal</source>
-      <translation type="unfinished">Hosszanti</translation>
+      <translation>Hosszanti</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="264"/>
       <source>Water lines</source>
-      <translation type="unfinished">Vízvonalak</translation>
+      <translation>Vízvonalak</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="479"/>
       <source>Transversal section positions [m]</source>
-      <translation type="unfinished">Transversal section positions [m]</translation>
+      <translation>Átlós szakaszok pozíciója [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="488"/>
       <source>Longitudinal section positions [m]</source>
-      <translation type="unfinished">Longitudinal section positions [m]</translation>
+      <translation>Hosszmetszet pozíciója [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="497"/>
       <source>Water line positions [m]</source>
-      <translation type="unfinished">Water line positions [m]</translation>
+      <translation>Víz szint pozíciók [m]</translation>
     </message>
   </context>
   <context>
     <name>ship_tank</name>
     <message>
-      <location filename="TankInstance.py" line="48"/>
+      <location filename="TankInstance.py" line="50"/>
       <source>True if it is a valid tank instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid tank instance, False otherwise</translation>
+      <translation>Igaz, ha egy érvényes tartály példányra, egyébként hamis</translation>
     </message>
     <message>
-      <location filename="TankInstance.py" line="59"/>
-      <source>Volume of fluid [m^3]</source>
-      <translation type="unfinished">Volume of fluid [m^3]</translation>
-    </message>
-    <message>
-      <location filename="TankInstance.py" line="70"/>
-      <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="171"/>
+      <location filename="TaskPanel.py" line="163"/>
       <source>Create a new tank</source>
-      <translation type="unfinished">Create a new tank</translation>
+      <translation>Új tartály létrehozása</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="117"/>
+      <location filename="TaskPanel.py" line="109"/>
       <source>Tanks objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Tanks objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Tartály tárgyakat csak geometria tetején hozhatók létre (nincsenek kijelölt tárgyak)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="131"/>
+      <location filename="TaskPanel.py" line="123"/>
       <source>No solids found in the selected objects</source>
-      <translation type="unfinished">No solids found in the selected objects</translation>
+      <translation>Nem található szilárd testek a kijelölt tárgyon</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="149"/>
+      <location filename="TaskPanel.py" line="141"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Nincsenek hajó tárgyak, melyekre súlyok tehetők</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="176"/>
+      <location filename="TaskPanel.py" line="168"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Hajó</translation>
     </message>
   </context>
   <context>
@@ -478,82 +649,82 @@
     <message>
       <location filename="ShipGui.py" line="131"/>
       <source>Create a new ship weight</source>
-      <translation type="unfinished">Create a new ship weight</translation>
+      <translation>Hozzon létre egy új hajó súlyt</translation>
     </message>
     <message>
-      <location filename="WeightInstance.py" line="48"/>
+      <location filename="WeightInstance.py" line="46"/>
       <source>True if it is a valid weight instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid weight instance, False otherwise</translation>
+      <translation>Igaz, ha az érvényes tömeg példányra, egyébként hamis</translation>
     </message>
     <message>
-      <location filename="WeightInstance.py" line="58"/>
+      <location filename="WeightInstance.py" line="56"/>
       <source>Mass [kg]</source>
-      <translation type="unfinished">Mass [kg]</translation>
+      <translation>Tömeg [kg]</translation>
     </message>
     <message>
-      <location filename="WeightInstance.py" line="68"/>
+      <location filename="WeightInstance.py" line="66"/>
       <source>Linear density [kg / m]</source>
-      <translation type="unfinished">Linear density [kg / m]</translation>
+      <translation>Lineáris sűrűségű [kg / m]</translation>
     </message>
     <message>
-      <location filename="WeightInstance.py" line="78"/>
-      <source>Area density [kg / m^3]</source>
-      <translation type="unfinished">Area density [kg / m^3]</translation>
-    </message>
-    <message>
-      <location filename="WeightInstance.py" line="88"/>
+      <location filename="WeightInstance.py" line="86"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation>Sűrűsége [kg / m ^ 3]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="136"/>
+      <location filename="TaskPanel.py" line="113"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Súly-tárgyak csak a geometriájuk tetején hozhatók létre (nincs kijelölt tárgy)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="150"/>
+      <location filename="TaskPanel.py" line="127"/>
       <source>No geometrical shapes found in the selected objects</source>
-      <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
+      <translation>Nem találhatók a kijelölt objektumon geometriai alakzatok</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="187"/>
+      <location filename="TaskPanel.py" line="164"/>
       <source>Unknow object shapes selected</source>
-      <translation type="unfinished">Unknow object shapes selected</translation>
+      <translation>Ismeretlen alakzatú tárgyakat választott</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="205"/>
+      <location filename="TaskPanel.py" line="182"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Nincsenek hajó tárgyak, melyekre súlyok tehetők</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="240"/>
+      <location filename="TaskPanel.py" line="217"/>
       <source>Create a new weight</source>
-      <translation type="unfinished">Create a new weight</translation>
+      <translation>Hozzon létre egy új súlyt</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="245"/>
+      <location filename="TaskPanel.py" line="222"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Hajó</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="252"/>
+      <location filename="TaskPanel.py" line="229"/>
       <source>Mass</source>
-      <translation type="unfinished">Mass</translation>
+      <translation>Tömeg</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="259"/>
+      <location filename="TaskPanel.py" line="236"/>
       <source>Linear density</source>
-      <translation type="unfinished">Linear density</translation>
+      <translation>Lineáris sűrűség</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="266"/>
+      <location filename="TaskPanel.py" line="243"/>
       <source>Area density</source>
-      <translation type="unfinished">Area density</translation>
+      <translation>Terület sűrűség</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="273"/>
+      <location filename="TaskPanel.py" line="250"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Sűrűség</translation>
+    </message>
+    <message>
+      <location filename="WeightInstance.py" line="76"/>
+      <source>Area density [kg / m^2]</source>
+      <translation>Terület sűrűség [kg / m ^ 2]</translation>
     </message>
   </context>
 </TS>

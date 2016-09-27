@@ -426,6 +426,13 @@
     </message>
 </context>
 <context>
+    <name>SpreadsheetGui::Module</name>
+    <message>
+        <source>Unnamed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
         <source>Insert rows</source>

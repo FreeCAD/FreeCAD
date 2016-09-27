@@ -68,9 +68,9 @@ public:
   /// returns the name of the view (important for messages)
   virtual const char *getName(void) const { return "DockWindow"; }
   /// Message handler
-  virtual bool onMsg(const char* pMsg,const char** ppReturn){ return false; }
+  virtual bool onMsg(const char* ,const char** ){ return false; }
   /// Message handler test
-  virtual bool onHasMsg(const char* pMsg) const { return false; }
+  virtual bool onHasMsg(const char*) const { return false; }
   /// overwrite when checking on close state
   virtual bool canClose(void){return true;}
   //@}

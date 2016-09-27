@@ -51,7 +51,7 @@ Workbench::Workbench()
 {
     // Tree view
     Gui::DockWindow* tree = new Gui::DockWindow(0, Gui::getMainWindow());
-    tree->setWindowTitle(QString::fromAscii("Tree view"));
+    tree->setWindowTitle(QString::fromLatin1("Tree view"));
     Gui::TreeView* treeWidget = new Gui::TreeView(tree);
     treeWidget->setRootIsDecorated(false);
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -63,7 +63,7 @@ Workbench::Workbench()
     pLayout->addWidget(treeWidget, 0, 0);
 
     tree->setObjectName
-        (QString::fromAscii(QT_TRANSLATE_NOOP("QDockWidget","Tree view (MVC)")));
+        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view (MVC)")));
     tree->setMinimumWidth(210);
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     pDockMgr->registerDockWindow("Std_TreeViewMVC", tree);
@@ -151,7 +151,7 @@ SoWidgetShape::SoWidgetShape()
     SO_NODE_CONSTRUCTOR(SoWidgetShape);
 }
 
-void SoWidgetShape::GLRender(SoGLRenderAction *action)
+void SoWidgetShape::GLRender(SoGLRenderAction * /*action*/)
 {
 #if 1
     this->image = QPixmap::grabWidget(w, w->rect()).toImage();

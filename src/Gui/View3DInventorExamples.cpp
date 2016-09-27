@@ -196,7 +196,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
   planeTVerts->finishEditing();
 }
 
-void draggerCB(void * data, SoDragger * dragger)
+void draggerCB(void * /*data*/, SoDragger * dragger)
 {
   SoTransformerDragger * drag = (SoTransformerDragger *)dragger;
   doClipping(drag->translation.getValue(), drag->rotation.getValue());

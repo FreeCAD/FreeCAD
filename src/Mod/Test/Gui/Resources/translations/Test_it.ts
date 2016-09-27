@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>&amp;Start</source>
-        <translation>&amp;Inizio</translation>
+        <translation>&amp;Inizia</translation>
     </message>
     <message>
         <source>Alt+S</source>
@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Remaining:</source>
@@ -73,7 +73,7 @@
     </message>
     <message>
         <source>Run:</source>
-        <translation>Serie:</translation>
+        <translation>Eseguiti:</translation>
     </message>
     <message>
         <source>Test</source>
@@ -106,9 +106,9 @@ FreeCAD UnitTest è parte di FreeCAD e supporta la scrittura di test unitari per
         <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation>Inserisci il nome di un oggetto richiamabile che, quando richiamato, restituirà un TestCase. Fare clic su &apos;inizio&apos; e la prova così prodotta sarà eseguita.
+        <translation>Inserire il nome di un oggetto richiamabile che, quando richiamato, restituisca un TestCase. Per eseguire il test fare clic su &apos;Inizia&apos;.
 
-Doppio clic su un errore nell&apos;albero per visualizzare più informazioni, inclusa la traccia dello stack.</translation>
+Fare doppio clic su un errore nell&apos;albero per visualizzare maggiori informazioni, inclusa la cronologia.</translation>
     </message>
 </context>
 </TS>

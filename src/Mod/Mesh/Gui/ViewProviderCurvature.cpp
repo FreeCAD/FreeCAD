@@ -399,7 +399,7 @@ std::vector<std::string> ViewProviderMeshCurvature::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderMeshCurvature::OnChange(Base::Subject<int> &rCaller,int rcReason)
+void ViewProviderMeshCurvature::OnChange(Base::Subject<int> &/*rCaller*/,int /*rcReason*/)
 {
     setActiveMode();
 }
@@ -493,7 +493,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
-                view->removeEventCallback(SoEvent::getClassTypeId(), curvatureInfoCallback);
+                view->removeEventCallback(SoEvent::getClassTypeId(), curvatureInfoCallback, ud);
             }
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {

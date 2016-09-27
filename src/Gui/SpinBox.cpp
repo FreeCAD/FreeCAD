@@ -279,7 +279,7 @@ void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 void UIntSpinBox::onChange() {
     
     if (getExpression()) {
-        std::auto_ptr<Expression> result(getExpression()->eval());
+        std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
         if (value) {
@@ -331,7 +331,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
 
     try {
         if (isBound() && getExpression()) {
-            std::auto_ptr<Expression> result(getExpression()->eval());
+            std::unique_ptr<Expression> result(getExpression()->eval());
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
             if (value) {
@@ -470,7 +470,7 @@ void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 void IntSpinBox::onChange() {
     
     if (getExpression()) {
-        std::auto_ptr<Expression> result(getExpression()->eval());
+        std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
         if (value) {
@@ -506,7 +506,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
 
     try {
         if (isBound() && getExpression()) {
-            std::auto_ptr<Expression> result(getExpression()->eval());
+            std::unique_ptr<Expression> result(getExpression()->eval());
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
             if (value) {
@@ -645,7 +645,7 @@ void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 void DoubleSpinBox::onChange() {
     
     if (getExpression()) {
-        std::auto_ptr<Expression> result(getExpression()->eval());
+        std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
         if (value) {
@@ -681,7 +681,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
 
     try {
         if (isBound() && getExpression()) {
-            std::auto_ptr<Expression> result(getExpression()->eval());
+            std::unique_ptr<Expression> result(getExpression()->eval());
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
             if (value) {

@@ -46,6 +46,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
 {
+    _viewerPy = 0;
     // important for highlighting 
     setMouseTracking(true);
 }
@@ -55,6 +56,10 @@ AbstractSplitView::~AbstractSplitView()
     hGrp->Detach(this);
     for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
         delete *it;
+    }
+    if (_viewerPy) {
+        static_cast<AbstractSplitViewPy*>(_viewerPy)->_view = 0;
+        Py_DECREF(_viewerPy);
     }
 }
 
@@ -244,7 +249,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
         r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-	    (*it)->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
+            (*it)->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
             if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
                 (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
             else
@@ -263,7 +268,7 @@ const char *AbstractSplitView::getName(void) const
     return "SplitView3DInventor";
 }
 
-bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
+bool AbstractSplitView::onMsg(const char* pMsg, const char**)
 {
     if (strcmp("ViewFit",pMsg) == 0 ) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
@@ -364,7 +369,301 @@ bool AbstractSplitView::onHasMsg(const char* pMsg) const
 
 void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 {
+    Q_UNUSED(aCursor); 
     //_viewer->getWidget()->setCursor(aCursor);
+}
+
+PyObject *AbstractSplitView::getPyObject(void)
+{
+    if (!_viewerPy)
+        _viewerPy = new AbstractSplitViewPy(this);
+    Py_INCREF(_viewerPy);
+    return _viewerPy;
+}
+
+void AbstractSplitView::setPyObject(PyObject *)
+{
+    throw Base::AttributeError("Attribute is read-only");
+}
+
+int AbstractSplitView::getSize()
+{
+    return static_cast<int>(_viewer.size());
+}
+
+// ------------------------------------------------------
+
+void AbstractSplitViewPy::init_type()
+{
+    behaviors().name("AbstractSplitViewPy");
+    behaviors().doc("Python binding class for the Inventor viewer class");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportSequenceType();
+
+    add_varargs_method("fitAll",&AbstractSplitViewPy::fitAll,"fitAll()");
+    add_varargs_method("viewBottom",&AbstractSplitViewPy::viewBottom,"viewBottom()");
+    add_varargs_method("viewFront",&AbstractSplitViewPy::viewFront,"viewFront()");
+    add_varargs_method("viewLeft",&AbstractSplitViewPy::viewLeft,"viewLeft()");
+    add_varargs_method("viewRear",&AbstractSplitViewPy::viewRear,"viewRear()");
+    add_varargs_method("viewRight",&AbstractSplitViewPy::viewRight,"viewRight()");
+    add_varargs_method("viewTop",&AbstractSplitViewPy::viewTop,"viewTop()");
+    add_varargs_method("viewAxometric",&AbstractSplitViewPy::viewAxometric,"viewAxometric()");
+    add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer(index)");
+    add_varargs_method("close",&AbstractSplitViewPy::close,"close()");
+}
+
+AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
+  : _view(vi)
+{
+}
+
+AbstractSplitViewPy::~AbstractSplitViewPy()
+{
+}
+
+void AbstractSplitViewPy::testExistence()
+{
+    if (!(_view && _view->getViewer(0)))
+        throw Py::Exception("Object already deleted");
+}
+
+Py::Object AbstractSplitViewPy::repr()
+{
+    std::string s;
+    std::ostringstream s_out;
+    if (!_view)
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    s_out << "AbstractSplitView";
+    return Py::String(s_out.str());
+}
+
+Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewFit", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewBottom", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewFront", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewLeft", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewRear", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewRight", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewTop", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        _view->onMsg("ViewAxo", 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
+{
+    int viewIndex;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &viewIndex))
+        throw Py::Exception();
+    testExistence();
+
+    try {
+        Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
+        if (!view)
+            throw Py::IndexError("Index out of range");
+        return Py::Object(view->getPyObject());
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+}
+
+Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
+{
+    testExistence();
+    if (viewIndex >= _view->getSize() || viewIndex < 0)
+        throw Py::IndexError("Index out of range");
+    PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
+    return Py::Object(viewer);
+}
+
+int AbstractSplitViewPy::sequence_length()
+{
+    testExistence();
+    return _view->getSize();
+}
+
+Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    testExistence();
+
+    _view->close();
+    if (_view->parentWidget())
+        _view->parentWidget()->deleteLater();
+    _view = 0;
+
+    return Py::None();
 }
 
 // ------------------------------------------------------
@@ -374,25 +673,82 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
 SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : AbstractSplitView(pcDocument,parent, wflags)
 {
-    QSplitter* mainSplitter=0;
+    // attach parameter Observer
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    hGrp->Attach(this);
 
+    //anti-aliasing settings
+    QGLFormat f;
+    bool smoothing = false;
+    bool glformat = false;
+    switch (hGrp->GetInt("AntiAliasing",0) ) {
+    case View3DInventorViewer::MSAA2x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(2);
+        break;
+    case View3DInventorViewer::MSAA4x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(4);
+        break;
+    case View3DInventorViewer::MSAA8x:
+        glformat = true;
+        f.setSampleBuffers(true);
+        f.setSamples(8);
+        break;
+    case View3DInventorViewer::Smoothing:
+        smoothing = true;
+        break;
+    case View3DInventorViewer::None:
+    default:
+        break;
+    }
+
+    // minimal 2 views
+    while (views < 2)
+        views ++;
+
+    QSplitter* mainSplitter = 0;
+
+    // if views < 3 show them as a row
     if (views <= 3) {
         mainSplitter = new QSplitter(Qt::Horizontal, this);
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        _viewer.push_back(new View3DInventorViewer(mainSplitter));
-        if (views==3)
-            _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        for (int i=0; i < views; i++) {
+            if (glformat)
+                _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
+            else
+                _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        }
     }
     else {
         mainSplitter = new QSplitter(Qt::Vertical, this);
         QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
         QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        _viewer.push_back(new View3DInventorViewer(topSplitter));
-        _viewer.push_back(new View3DInventorViewer(topSplitter));
-        for (int i=2;i<views;i++)
-            _viewer.push_back(new View3DInventorViewer(botSplitter));
-        topSplitter->setOpaqueResize( true );
-        botSplitter->setOpaqueResize( true );
+
+        if (glformat) {
+            _viewer.push_back(new View3DInventorViewer(f, topSplitter));
+            _viewer.push_back(new View3DInventorViewer(f, topSplitter));
+        }
+        else {
+            _viewer.push_back(new View3DInventorViewer(topSplitter));
+            _viewer.push_back(new View3DInventorViewer(topSplitter));
+        }
+
+        for (int i=2;i<views;i++) {
+            if (glformat)
+                _viewer.push_back(new View3DInventorViewer(f, botSplitter));
+            else
+                _viewer.push_back(new View3DInventorViewer(botSplitter));
+        }
+
+        topSplitter->setOpaqueResize(true);
+        botSplitter->setOpaqueResize(true);
+    }
+
+    if (smoothing) {
+        for (std::vector<int>::size_type i = 0; i != _viewer.size(); i++)
+            _viewer[i]->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
     }
 
     mainSplitter->show();

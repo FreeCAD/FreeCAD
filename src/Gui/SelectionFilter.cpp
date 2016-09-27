@@ -67,7 +67,7 @@ SelectionFilterGate::~SelectionFilterGate()
     delete Filter;
 }
 
-bool SelectionFilterGate::allow(App::Document*pDoc,App::DocumentObject*pObj, const char*sSubName)
+bool SelectionFilterGate::allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
 {
     return Filter->test(pObj,sSubName);
 }
@@ -242,7 +242,7 @@ void SelectionFilterPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    behaviors().type_object()->tp_new = &PyMake;
+    behaviors().set_tp_new(PyMake);
     add_varargs_method("match",&SelectionFilterPy::match,"match()");
     add_varargs_method("result",&SelectionFilterPy::result,"result()");
     add_varargs_method("test",&SelectionFilterPy::test,"test()");
@@ -276,6 +276,8 @@ Py::Object SelectionFilterPy::repr()
 
 Py::Object SelectionFilterPy::match(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Boolean(filter.match());
 }
 
@@ -362,10 +364,10 @@ bool SelectionFilter::parse(void)
     TopBlock = 0;
     SelectionParser::SelectionFilter_delete_buffer (my_string_buffer);
 
-    if(Errors == "")
+    if (Errors.empty()) {
         return true;
-    else{
+    }
+    else {
         return false;
-        delete Ast;
     }
 }

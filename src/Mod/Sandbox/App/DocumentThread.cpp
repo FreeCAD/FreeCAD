@@ -53,7 +53,7 @@ void DocumentThread::run()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     DocumentProtector dp(doc);
-    dp.addObject("Mesh::Ellipsoid", (const char*)objectName().toAscii());
+    dp.addObject("Mesh::Ellipsoid", (const char*)objectName().toLatin1());
     dp.recompute();
 }
 

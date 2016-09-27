@@ -45,6 +45,9 @@ public:
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVector NormalDirection;
 
+    //OvG: Scale
+    App::PropertyInteger Scale;
+
     /// recalculate the object
     virtual App::DocumentObjectExecReturn *execute(void);
 
@@ -53,14 +56,19 @@ public:
         return "FemGui::ViewProviderFemConstraint";
     }
 
+    //OvG: Allow automatic determination of scaling of constraint drawings, e.g. arrow length and size
+    int calcDrawScaleFactor(double lparam) const;
+    int calcDrawScaleFactor(double lvparam, double luparam) const;
+    int calcDrawScaleFactor() const;
+
 protected:
     virtual void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
 
 protected:
     /// Calculate the points where symbols should be drawn
-    const bool getPoints(std::vector<Base::Vector3d>& points, std::vector<Base::Vector3d>& normals) const;
-    const bool getCylinder(double& radius, double& height, Base::Vector3d& base, Base::Vector3d& axis) const;
+    bool getPoints(std::vector<Base::Vector3d>& points, std::vector<Base::Vector3d>& normals, int * scale) const; //OvG: added scale parameter
+    bool getCylinder(double& radius, double& height, Base::Vector3d& base, Base::Vector3d& axis) const;
     Base::Vector3d getBasePoint(const Base::Vector3d& base, const Base::Vector3d& axis,
                                 const App::PropertyLinkSub &location, const double& dist);
     const Base::Vector3d getDirection(const App::PropertyLinkSub &direction);

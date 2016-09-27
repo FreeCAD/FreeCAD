@@ -60,11 +60,11 @@ Rotation RotationalInterpolation_SingleAxis::Pos(double theta) const {
 	return R_base_start* Rotation::Rot2(rot_start_end,theta);
 }
 
-Vector RotationalInterpolation_SingleAxis::Vel(double theta,double thetad) const {
+Vector RotationalInterpolation_SingleAxis::Vel(double /*theta*/,double thetad) const {
 	return R_base_start * ( rot_start_end*thetad );
 }
 
-Vector RotationalInterpolation_SingleAxis::Acc(double theta,double thetad,double thetadd) const {
+Vector RotationalInterpolation_SingleAxis::Acc(double /*theta*/,double /*thetad*/,double thetadd) const {
 	return R_base_start * ( rot_start_end* thetadd);
 }
 

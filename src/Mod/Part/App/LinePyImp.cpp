@@ -102,6 +102,30 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
+    double first, last;
+    if (PyArg_ParseTuple(args, "O!dd", &(LinePy::Type), &pLine, &first, &last)) {
+        // Copy line
+        LinePy* pcLine = static_cast<LinePy*>(pLine);
+        // get Geom_Line of line segment
+        Handle_Geom_TrimmedCurve that_curv = Handle_Geom_TrimmedCurve::DownCast
+            (pcLine->getGeomLineSegmentPtr()->handle());
+        Handle_Geom_Line that_line = Handle_Geom_Line::DownCast
+            (that_curv->BasisCurve());
+        // get Geom_Line of line segment
+        Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+            (this->getGeomLineSegmentPtr()->handle());
+        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+            (this_curv->BasisCurve());
+
+        Infinite = pcLine->Infinite;
+
+        // Assign the lines
+        this_line->SetLin(that_line->Lin());
+        this_curv->SetTrim(first, last);
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pV1, *pV2;
     if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &pV1,
                                        &(Base::VectorPy::Type), &pV2)) {

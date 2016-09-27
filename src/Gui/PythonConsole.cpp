@@ -100,7 +100,13 @@ struct PythonConsoleP
     PythonConsoleP()
     {
         type = Normal;
+        _stdoutPy = 0;
+        _stderrPy = 0;
+        _stdinPy = 0;
+        _stdin = 0;
         interpreter = 0;
+        callTipsList = 0;
+        interactive = false;
         colormap[QLatin1String("Text")] = Qt::black;
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
@@ -367,7 +373,6 @@ PythonConsole::PythonConsole(QWidget *parent)
   : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(NULL)
 {
     d = new PythonConsoleP();
-    d->interactive = false;
 
     // create an instance of InteractiveInterpreter
     try { 
@@ -435,6 +440,7 @@ PythonConsole::~PythonConsole()
 /** Set new font and colors according to the paramerts. */  
 void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sReason )
 {
+    Q_UNUSED(rCaller); 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
 
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
@@ -1307,6 +1313,8 @@ void PythonConsoleHighlighter::highlightBlock(const QString& text)
 
 void PythonConsoleHighlighter::colorChanged(const QString& type, const QColor& col)
 {
+    Q_UNUSED(type); 
+    Q_UNUSED(col); 
 }
 
 // ---------------------------------------------------------------------
