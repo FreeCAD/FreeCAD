@@ -224,9 +224,9 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
             SbVec3f diry(y_axis_x, y_axis_y ,y_axis_z);
             SbRotation roty(SbVec3f(0, 1, 0), diry);
 
-            base = base + dirz * scaledlengthA *0.75;
-            basex = basex + dirx * scaledlengthA*0.65;
-            basey = basey + diry * scaledlengthA*0.65;
+            base = base + dirz * scaledlengthA * 0.75f;
+            basex = basex + dirx * scaledlengthA * 0.65f;
+            basey = basey + diry * scaledlengthA * 0.65f;
 
             SoSeparator* sep = new SoSeparator();
 

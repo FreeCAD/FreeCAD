@@ -31,7 +31,7 @@ import _FemConstraintSelfWeight
 
 
 def makeFemConstraintSelfWeight(name="FemConstraintSelfWeight"):
-    '''makeFemFemConstraintSelfWeight([name]): creates an self weight object to define a gravitiy load'''
+    '''makeFemFemConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
     obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
     _FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
