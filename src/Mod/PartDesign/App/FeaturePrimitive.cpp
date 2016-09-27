@@ -215,7 +215,7 @@ PROPERTY_SOURCE(PartDesign::Cylinder, PartDesign::FeaturePrimitive)
 Cylinder::Cylinder()
 {
     ADD_PROPERTY_TYPE(Radius,(10.0f),"Cylinder",App::Prop_None,"The radius of the cylinder");
-    ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The closing angel of the cylinder ");
+    ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The closing angle of the cylinder ");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
     Angle.setConstraints(&angleRangeU);
     Radius.setConstraints(&quantityRange);

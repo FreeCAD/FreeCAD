@@ -851,7 +851,7 @@ void MeshObject::offsetSpecial2(float fSize)
             }
         }
         
-        // if there no flipped triangels -> stop
+        // if there are no flipped triangles -> stop
         //int f =fliped.size();
         if (fliped.size() == 0)
             break;
