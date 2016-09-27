@@ -1050,7 +1050,6 @@ bool CDxfRead::ReadLwPolyLine()
                 get_line();
                 strcpy(m_layer_name, m_str);
                 break;
-
             case 10:
                 // x
                 get_line();
@@ -1069,6 +1068,11 @@ bool CDxfRead::ReadLwPolyLine()
                 get_line();
                 ss.str(m_str); ss >> y; y = mm(y); if(ss.fail()) return false;
                 y_found = true;
+                break;
+            case 38: 
+                // elevation
+                get_line();
+                ss.str(m_str); ss >> z; z = mm(z); if(ss.fail()) return false;
                 break;
             case 42:
                 // bulge
