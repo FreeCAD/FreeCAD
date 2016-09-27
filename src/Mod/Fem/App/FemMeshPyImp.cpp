@@ -25,7 +25,11 @@
 #include <stdexcept>
 
 #include <SMESH_Gen.hxx>
+#include <SMESH_Group.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESHDS_Group.hxx>
+#include <SMDSAbs_ElementType.hxx>
+#include <SMDS_MeshElement.hxx>
 #include <SMDS_VolumeTool.hxx>
 
 #include <TopoDS_Shape.hxx>
@@ -898,6 +902,57 @@ PyObject* FemMeshPy::getElementNodes(PyObject *args)
     }
 }
 
+PyObject* FemMeshPy::getGroupName(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+         return 0;
+
+    return PyString_FromString(getFemMeshPtr()->getSMesh()->GetGroup(id)->GetName());
+}
+
+PyObject* FemMeshPy::getGroupElementType(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+         return 0;
+
+    SMDSAbs_ElementType aElementType = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetType();
+    const char* typeString = "";
+    switch(aElementType) {
+        case SMDSAbs_All            : typeString = "All"; break;
+        case SMDSAbs_Node           : typeString = "Node"; break;
+        case SMDSAbs_Edge           : typeString = "Edge"; break;
+        case SMDSAbs_Face           : typeString = "Face"; break;
+        case SMDSAbs_Volume         : typeString = "Volume"; break;
+        case SMDSAbs_0DElement      : typeString = "0DElement"; break;
+        case SMDSAbs_Ball           : typeString = "Ball"; break;
+        case SMDSAbs_NbElementTypes : typeString = "NbElementTypes"; break;
+    }
+    return PyString_FromString(typeString);
+}
+
+PyObject* FemMeshPy::getGroupElements(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+         return 0;
+
+    std::set<int> ids;
+    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetElements();
+    while (aElemIter->more()) {
+        const SMDS_MeshElement* aElement = aElemIter->next();
+        ids.insert(aElement->GetID());
+    }
+
+    Py::Tuple tuple(ids.size());
+    int index = 0;
+    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Int(*it));
+    }
+
+    return Py::new_reference_to(tuple);
+}
 
 // ===== Atributes ============================================================
 
