@@ -112,17 +112,18 @@ class FemToolsCcx(FemTools.FemTools):
                 ccx_path = FreeCAD.getHomePath() + "bin/ccx.exe"
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
                 self.ccx_binary = ccx_path
+            elif system() == "Linux":
+                import subprocess
+                p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
+                if p1.wait() == 0:
+                    ccx_path = p1.stdout.read().split('\n')[0]
+                elif p1.wait() == 1:
+                    raise Exception("FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences.\n")
+                self.ccx_binary = ccx_path
         else:
             if not ccx_binary:
                 self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
                 ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
-            if not ccx_binary:
-                if system() == "Linux":
-                    ccx_binary = "ccx"
-                elif system() == "Windows":
-                    ccx_binary = FreeCAD.getHomePath() + "bin/ccx.exe"
-                else:
-                    ccx_binary = "ccx"
             self.ccx_binary = ccx_binary
 
         import subprocess
@@ -143,10 +144,10 @@ class FemToolsCcx(FemTools.FemTools):
         except OSError as e:
             FreeCAD.Console.PrintError(e.message)
             if e.errno == 2:
-                raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.".format(ccx_binary))
+                raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.\n".format(ccx_binary))
         except Exception as e:
             FreeCAD.Console.PrintError(e.message)
-            raise Exception("FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer".
+            raise Exception("FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer\n".
                             format(ccx_binary, ccx_stdout, ccx_binary_sig))
 
     def start_ccx(self):
