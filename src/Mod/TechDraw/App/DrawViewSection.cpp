@@ -96,7 +96,6 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Show the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),fgroup,App::Prop_None,"The color to shade the cut surface");
 
-
     geometryObject = new TechDrawGeometry::GeometryObject();
 }
 
@@ -109,7 +108,6 @@ short DrawViewSection::mustExecute() const
     short result = 0;
     if (!isRestoring()) {
         result  = (Scale.isTouched() ||
-                   ScaleType.isTouched() ||
                    Direction.isTouched()     ||
                    XAxisDirection.isTouched() ||
                    BaseView.isTouched()  ||
@@ -119,7 +117,7 @@ short DrawViewSection::mustExecute() const
     if (result) {
         return result;
     }
-    return TechDraw::DrawViewPart::mustExecute();
+    return TechDraw::DrawView::mustExecute();
 }
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
@@ -141,6 +139,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     if (partTopo.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
+
+    (void) DrawView::execute();          //make sure Scale is up to date
 
     gp_Pln pln = getSectionPlane();
     // Get the Axis Directions for the Plane to transform UV components again
@@ -254,7 +254,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn(e2->GetMessageString());
     }
 
-    return DrawView::execute();
+    return App::DocumentObject::StdReturn;
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const

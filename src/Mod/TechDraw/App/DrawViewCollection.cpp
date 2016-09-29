@@ -147,8 +147,7 @@ int DrawViewCollection::countChildren()
 
 void DrawViewCollection::onDocumentRestored()
 {
-    // Rebuild the view
-    execute();
+    DrawView::execute();
 }
 
 void DrawViewCollection::onChanged(const App::Property* prop)

@@ -153,6 +153,7 @@ short DrawPage::mustExecute() const
         return 1;
 
     // Check if within this Page, any Views have been touched
+    // Why does Page have to execute if a View changes?
     bool ViewsTouched = false;
     const std::vector<App::DocumentObject*> &vals = Views.getValues();
     for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
@@ -275,7 +276,6 @@ int DrawPage::removeView(App::DocumentObject *docObj)
         }
     }
     Views.setValues(newViews);
-    Views.touch();
 
     return Views.getSize();
 }
@@ -287,14 +287,16 @@ void DrawPage::onDocumentRestored()
     //first, make sure all the Parts have been executed so GeometryObjects exist
     for(; it != featViews.end(); ++it) {
         TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
-        if (part != NULL) {
+        if (part != nullptr &&
+            !part->hasGeometry()) {
             part->execute();
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References
     for(it = featViews.begin(); it != featViews.end(); ++it) {
         TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-        if (dim != NULL) {
+        if (dim != nullptr &&
+            !dim->has2DReferences()) {
             dim->execute();
         }
     }

@@ -56,6 +56,7 @@
 #endif  // #ifndef _PreComp_
 
 #include <algorithm>
+#include <chrono>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -69,6 +70,7 @@
 //#include <QDebug>
 
 using namespace TechDrawGeometry;
+using namespace std;
 
 struct EdgePoints {
     gp_Pnt v1, v2;
@@ -131,13 +133,11 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     // Clear previous Geometry
     clear();
 
-    //next 2 lines might make HLR quicker, but not dramatically
-    BRepMesh_IncrementalMesh(input, Tolerance);
-    BRepLib::BuildCurves3d(input);
+    auto start = chrono::high_resolution_clock::now();
 
     Handle_HLRBRep_Algo brep_hlr = NULL;
     try {
-        brep_hlr = new HLRBRep_Algo();                //leak? when does this get freed? handle/smart pointer?
+        brep_hlr = new HLRBRep_Algo();
         brep_hlr->Add(input);
 
         // Project the shape into view space with the object's centroid
@@ -154,6 +154,10 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
     }
+    auto end   = chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - GO spent: %.3f millisecs in HLRBRep_Algo & co\n",diffOut);
     try {
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
 
