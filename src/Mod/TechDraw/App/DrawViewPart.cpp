@@ -40,6 +40,7 @@
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
 #include <Geom_Curve.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GProp_GProps.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
@@ -63,11 +64,14 @@
 #endif
 
 #include <algorithm>
+#include <cmath>
 
+#include <App/Application.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Parameter.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "DrawUtil.h"
@@ -125,6 +129,9 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(SymbolSection,("A") ,lgroup,App::Prop_None,"Section identifier");
 
     geometryObject = new TechDrawGeometry::GeometryObject();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/RunControl");
+    m_interAlgo = hGrp->GetInt("InterAlgo", 2l);
 }
 
 DrawViewPart::~DrawViewPart()
@@ -149,13 +156,10 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }
 
+    (void) DrawView::execute();           //make sure Scale is up to date
+
     geometryObject->setTolerance(Tolerance.getValue());
-    double s = Scale.getValue();
-    if (!s) {                                           //might be problem, might be mid property change
-        Base::Console().Log("INFO - DVP::execute - Scale: %.3f\n",s);
-        return DrawView::execute();
-    }
-    geometryObject->setScale(s);
+    geometryObject->setScale(Scale.getValue());
 
     //TODO: remove these try/catch block when code is stable
     gp_Pnt inputCenter;
@@ -203,17 +207,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
-    //TODO: not sure about this
-    // There is a guaranteed change so check any references linked to this and touch
-    // We need to update all views pointing at this (ProjectionGroup, ClipGroup, Section, etc)
-//    std::vector<App::DocumentObject*> parent = getInList();
-//    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-//        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
-//            TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
-//            view->touch();
-//        }
-//    }
-    return DrawView::execute();
+    return App::DocumentObject::StdReturn;
 }
 
 short DrawViewPart::mustExecute() const
@@ -223,13 +217,8 @@ short DrawViewPart::mustExecute() const
         result  =  (Direction.isTouched()  ||
                     XAxisDirection.isTouched()  ||
                     Source.isTouched()  ||
-                    Scale.isTouched()  ||
-                    ScaleType.isTouched()  ||
-                    Tolerance.isTouched()  ||
-                    ShowHiddenLines.isTouched()  ||
-                    ShowSmoothLines.isTouched()  ||
-                    ShowSeamLines.isTouched() );
-        }
+                    Scale.isTouched() );
+    }
 
     if (result) {
         return result;
@@ -239,28 +228,9 @@ short DrawViewPart::mustExecute() const
 
 void DrawViewPart::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        if (prop == &SymbolSection && getSectionRef()) {
-            getSectionRef()->touch();
-        }
-        if (prop == &Direction ||
-            prop == &XAxisDirection ||
-            prop == &Source ||
-            prop == &Scale ||
-            prop == &ScaleType  ||
-            prop == &ShowHiddenLines ||
-            prop == &ShowSmoothLines ||
-            prop == &ShowSeamLines)
-            try {
-                App::DocumentObjectExecReturn *ret = recompute();
-                delete ret;
-            }
-            catch (...) {
-            }
-    }
     DrawView::onChanged(prop);
 
-//TODO: when scale changes, any Dimensions for this View sb recalculated.  (might happen anyway if document is recomputed?)
+//TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
 }
 
 void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
@@ -275,29 +245,26 @@ void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
                             inputCenter,
                             Direction.getValue(),
                             validXDir);
-    //TODO: why not be all line type in 1 call to extract geometry
     geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
                                     true);
-    //if (ShowSmoothLines.getValue()) {
-        geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
-                                        true);
-    //}
-    //if (ShowSeamLines.getValue()) {
-        geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
-                                        true);
-    //}
-    //if (ShowIsoLines.getValue()) {
-    //    geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
-    //                                    true);
-    //}
-    //if (ShowHiddenLines.getValue()) {
-        geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
-                                        false);
-        //geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,     //hidden outline,smooth,seam??
-        //                                true);
-    //}
+    geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
+                                    true);
+    geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
+                                    true);
+//    geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
+//                                    true);
+    geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
+                                    false);
+//    geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
+//                                    false);
+//    geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
+//                                    false);
+//    geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
+//                                    false);
+//    geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
+//                                    false);
     bbox = geometryObject->calcBoundingBox();
 }
 
@@ -309,7 +276,7 @@ void DrawViewPart::extractFaces()
     std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        if ((*itEdge)->visible) {                        //don't make invisible faces!
+        if ((*itEdge)->visible) {                        //don't make invisible faces!  //TODO: only use Seam/Smooth if checked
             origEdges.push_back((*itEdge)->occEdge);
         }
     }
@@ -428,24 +395,89 @@ double DrawViewPart::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2) const
     return minDist;
 }
 
+//this routine is the big time consumer.  gets called many times (and is slow?))
 bool DrawViewPart::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds)
 {
     bool result = false;
-    double dist = simpleMinDist(v,e);
-    if (dist < 0.0) {
-        Base::Console().Error("DVP::isOnEdge - simpleMinDist failed: %.3f\n",dist);
-        result = false;
-    } else if (dist < Precision::Confusion()) {
-        result = true;
-    }
-    if (result) {
-        TopoDS_Vertex v1 = TopExp::FirstVertex(e);
-        TopoDS_Vertex v2 = TopExp::LastVertex(e);
-        if (DrawUtil::isSamePoint(v,v1) || DrawUtil::isSamePoint(v,v2)) {
-            if (!allowEnds) {
-                result = false;
+    bool outOfBox = false;
+
+//0) using parameterOnEdge
+    if (m_interAlgo == 0) {
+        try {                                                   //v. fast,but misses some edge/faces?? faster w/o bndbox check
+            Standard_Real par = BRep_Tool::Parameter(v, e);     //if this doesn't throw except then v is on e
+            result = true;
+            BRepAdaptor_Curve adapt(e);
+            double first = BRepLProp_CurveTool::FirstParameter(adapt);
+            double last = BRepLProp_CurveTool::LastParameter(adapt);
+            if ((fabs(par - first) < Precision::Confusion()) ||
+                (fabs(par - last) < Precision::Confusion())) {
+                if (!allowEnds) {
+                    result  = false;
+                }
             }
         }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();    //"no parameter on Edge"
+        }
+    } else {
+        //eliminate obvious cases
+        Bnd_Box sBox;
+        BRepBndLib::Add(e, sBox);
+        sBox.SetGap(0.1);
+        if (sBox.IsVoid()) {
+            Base::Console().Message("DVP::isOnEdge - Bnd_Box is void for %s\n",getNameInDocument());
+        } else {
+            gp_Pnt pt = BRep_Tool::Pnt(v);
+            if (sBox.IsOut(pt)) {
+                outOfBox = true;
+            }
+        }
+        if (!outOfBox) {
+            if (m_interAlgo == 1) {
+            //1) using projPointOnCurve.  roughly similar to dist to shape w/ bndbox.  hangs(?) w/o bndbox
+                try {
+                    gp_Pnt pt = BRep_Tool::Pnt(v);
+                    BRepAdaptor_Curve adapt(e);
+                    Handle_Geom_Curve c = adapt.Curve().Curve();
+                    GeomAPI_ProjectPointOnCurve proj(pt,c);
+                    int n = proj.NbPoints();
+                    if (n > 0) {
+                        if (proj.LowerDistance() < Precision::Confusion()) {
+                            result = true;
+                        }
+                        double par = proj.LowerDistanceParameter();
+                        double first = BRepLProp_CurveTool::FirstParameter(adapt);
+                        double last = BRepLProp_CurveTool::LastParameter(adapt);
+                        if ((fabs(par - first) < Precision::Confusion()) ||
+                            (fabs(par - last) < Precision::Confusion())) {
+                            if (!allowEnds) {
+                                result = false;
+                            }
+                        }
+                    }
+                }
+                catch (Standard_Failure) {
+                    Handle_Standard_Failure e = Standard_Failure::Caught();     //no perp projection
+                }
+            } else if (m_interAlgo == 2) {                                     //this is the original and still best algorithm
+                double dist = simpleMinDist(v,e);
+                if (dist < 0.0) {
+                    Base::Console().Error("DVP::isOnEdge - simpleMinDist failed: %.3f\n",dist);
+                    result = false;
+                } else if (dist < Precision::Confusion()) {
+                    result = true;
+                }
+                if (result) {
+                    TopoDS_Vertex v1 = TopExp::FirstVertex(e);
+                    TopoDS_Vertex v2 = TopExp::LastVertex(e);
+                    if (DrawUtil::isSamePoint(v,v1) || DrawUtil::isSamePoint(v,v2)) {
+                        if (!allowEnds) {
+                            result = false;
+                        }
+                    }
+                }
+            } //method 2
+        } //!outofbox
     }
     return result;
 }

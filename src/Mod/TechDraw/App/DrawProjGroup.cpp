@@ -666,7 +666,7 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
 
 void DrawProjGroup::onDocumentRestored()
 {
-    execute();
+    DrawViewCollection::onDocumentRestored();
 }
 
 PyObject *DrawProjGroup::getPyObject(void)
