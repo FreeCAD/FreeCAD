@@ -538,7 +538,7 @@ class Line(Creator):
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
             if self.isWire:
-                msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
+                msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
         else:
             currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node)-2]
@@ -546,7 +546,7 @@ class Line(Creator):
                 newseg = Part.Line(last,point).toShape()
                 newshape=currentshape.fuse(newseg)
                 self.obj.Shape = newshape
-            msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
+            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
 
     def wipe(self):
         "removes all previous segments and starts from last point"
@@ -677,7 +677,7 @@ class BSpline(Line):
             spline = Part.BSplineCurve()
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
-            msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
+            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
 
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
@@ -771,7 +771,7 @@ class BezCurve(Line):
             msg(translate("draft", "Pick next point:\n"))
         else:
             self.obj.Shape = self.updateShape(self.node)
-            msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
+            msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
 
     def updateShape(self, pts):
         '''creates shape for display during creation process.'''
