@@ -29,7 +29,8 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FemTools
-from PySide import QtCore
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
 
 
 class FemToolsCcx(FemTools.FemTools):
@@ -105,6 +106,8 @@ class FemToolsCcx(FemTools.FemTools):
     #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
     #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
     def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
+        error_title = "No CalculiX binary ccx"
+        error_message = ""
         from platform import system
         ccx_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").GetBool("UseStandardCcxLocation", True)
         if ccx_std_location:
@@ -118,7 +121,10 @@ class FemToolsCcx(FemTools.FemTools):
                 if p1.wait() == 0:
                     ccx_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
-                    raise Exception("FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences.\n")
+                    error_message = "FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences.\n"
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, error_title, error_message)
+                    raise Exception(error_message)
                 self.ccx_binary = ccx_path
         else:
             if not ccx_binary:
@@ -141,14 +147,22 @@ class FemToolsCcx(FemTools.FemTools):
             ccx_stdout, ccx_stderr = p.communicate()
             if ccx_binary_sig in ccx_stdout:
                 self.ccx_binary_present = True
+            else:
+                raise Exception("FEM: wrong ccx binary")  # since we raise an exception the try will fail and the exception later with the error popup will be raised
+                # TODO: I'm still able to break it. If user gives not a file but a path without a file or a file which is not a binary no excetion at all is raised.
         except OSError as e:
             FreeCAD.Console.PrintError(e.message)
             if e.errno == 2:
-                raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.\n".format(ccx_binary))
+                error_message = "FEM: CalculiX binary ccx \'{}\' not found. Please set the CalculiX binary ccx path in FEM preferences.\n".format(ccx_binary)
+                if FreeCAD.GuiUp:
+                    QtGui.QMessageBox.critical(None, error_title, error_message)
+                raise Exception(error_message)
         except Exception as e:
             FreeCAD.Console.PrintError(e.message)
-            raise Exception("FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer\n".
-                            format(ccx_binary, ccx_stdout, ccx_binary_sig))
+            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, error_title, error_message)
+            raise Exception(error_message)
 
     def start_ccx(self):
         import multiprocessing
