@@ -39,6 +39,7 @@ class TempoVis(FrozenClass):
 
     def __define_attributes(self):
         self.data = {} # dict. key = ("Object","Property"), value = original value of the property
+        self.data_pickstyle = {} # dict. key = "Object", value = original value of pickstyle
 
         self.cam_string = ""          # inventor ASCII string representing the camera
         self.viewer = None            # viewer the camera is saved from
@@ -74,9 +75,9 @@ class TempoVis(FrozenClass):
                     raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
                 oldval = getattr(doc_obj.ViewObject, prop_name)
                 setattr(doc_obj.ViewObject, prop_name, new_value)
+                self.restore_on_delete = True
                 if not self.data.has_key((doc_obj.Name,prop_name)):
                     self.data[(doc_obj.Name,prop_name)] = oldval
-                    self.restore_on_delete = True
 
     def show(self, doc_obj_or_list):
         '''show(doc_obj_or_list): shows objects (sets their Visibility to True). doc_obj_or_list can be a document object, or a list of document objects'''
@@ -137,6 +138,9 @@ class TempoVis(FrozenClass):
                                          .format(err= err.message,
                                                  obj= obj_name,
                                                  prop= prop_name))
+        
+        self.restoreUnpickable()
+        
         try:
             self.restoreCamera()
         except Exception as err:
@@ -147,6 +151,7 @@ class TempoVis(FrozenClass):
     def forget(self):
         '''forget(): resets TempoVis'''
         self.data = {}
+        self.data_pickstyle = {}
 
         self.cam_string = ""
         self.viewer = None
@@ -172,3 +177,63 @@ class TempoVis(FrozenClass):
         self.data = dict(items)
         self.links_are_lost = True
         
+    def _getPickStyleNode(self, viewprovider, make_if_missing = True):
+        from pivy import coin
+        sa = coin.SoSearchAction()
+        sa.setType(coin.SoPickStyle.getClassTypeId())
+        sa.traverse(viewprovider.RootNode)
+        if sa.isFound() and sa.getPath().getLength() == 1:
+            return sa.getPath().getTail()
+        else:
+            if not make_if_missing:
+                return None
+            pick_style = coin.SoPickStyle()
+            pick_style.style.setValue(coin.SoPickStyle.SHAPE)
+            viewprovider.RootNode.insertChild(pick_style, 0)
+            return pick_style
+            
+    def _getPickStyle(self, viewprovider):
+        ps = self._getPickStyleNode(viewprovider, make_if_missing= False)
+        if ps is not None:
+            return ps.style.getValue()
+        else:
+            return 0 #coin.SoPickStyle.SHAPE
+    
+    def _setPickStyle(self, viewprovider, pickstyle):
+        ps = self._getPickStyleNode(viewprovider, make_if_missing= pickstyle != 0) #coin.SoPickStyle.SHAPE
+        if ps is not None:
+            return ps.style.setValue(pickstyle)
+
+    def setUnpickable(self, doc_obj_or_list, actual_pick_style = 2): #2 is coin.SoPickStyle.UNPICKABLE
+        '''setUnpickable(doc_obj_or_list, actual_pick_style = 2): sets object unpickable (transparent to clicks).
+        doc_obj_or_list: object or list of objects to alter (App)
+        actual_pick_style: optional parameter, specifying the actual pick style: 
+        0 = regular, 1 = bounding box, 2 (default) = unpickable.
+        
+        Implementation detail: uses SoPickStyle node. If viewprovider already has a node 
+        of this type as direct child, one is used. Otherwise, new one is created and 
+        inserted as the very first node, and remains there even after restore()/deleting 
+        tempovis. '''
+        
+        if App.GuiUp:
+            if type(doc_obj_or_list) is not list:
+                doc_obj_or_list = [doc_obj_or_list]
+            for doc_obj in doc_obj_or_list:
+                if doc_obj.Document is not self.document:  #ignore objects from other documents
+                    raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
+                oldval = self._getPickStyle(doc_obj.ViewObject)
+                if actual_pick_style != oldval:
+                    self._setPickStyle(doc_obj.ViewObject, actual_pick_style)
+                    self.restore_on_delete = True
+                if not self.data_pickstyle.has_key(doc_obj.Name):
+                    self.data_pickstyle[doc_obj.Name] = oldval
+                    
+    def restoreUnpickable(self):
+        for obj_name in self.data_pickstyle:
+            try:
+                self._setPickStyle(self.document.getObject(obj_name).ViewObject, self.data_pickstyle[obj_name])
+            except Exception as err:
+                App.Console.PrintWarning("TempoVis: failed to restore pickability of {obj}. {err}\n"
+                                         .format(err= err.message,
+                                                 obj= obj_name))
+    
