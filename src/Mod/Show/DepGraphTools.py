@@ -74,7 +74,7 @@ def isContainer(obj):
     
     if obj.isDerivedFrom("App::DocumentObjectGroup"):
         return True
-    if obj.isDerivedFrom("PartDesign::Body"):
+    if obj.isDerivedFrom("Part::BodyBase"):
         return True
     if obj.isDerivedFrom("App::Origin"):
         return True
