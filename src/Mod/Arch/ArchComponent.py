@@ -633,7 +633,7 @@ class Component:
                     except Part.OCCError:
                         # error in computing the areas. Better set them to zero than show a wrong value
                         if obj.HorizontalArea.Value != 0:
-                            print "Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")"
+                            print("Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")")
                             obj.HorizontalArea = 0
                         if hasattr(obj,"PerimeterLength"):
                             if obj.PerimeterLength.Value != 0:
