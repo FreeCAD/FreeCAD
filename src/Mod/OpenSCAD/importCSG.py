@@ -708,7 +708,10 @@ def processTextCmd(t):
     import os
     from OpenSCADUtils import callopenscadstring
     tmpfilename = callopenscadstring(t,'dxf')
-    obj=processDXF(os.path.splitext(tmpfilename)[0],"")
+    from OpenSCAD2Dgeom import importDXFface 
+    face = importDXFface(tmpfilename,None,None)
+    obj=doc.addObject('Part::Feature','text')
+    obj.Shape=face
     try:
         os.unlink(tmpfilename)
     except OSError:
