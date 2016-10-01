@@ -982,9 +982,9 @@ float MeshKernel::GetSurface( const std::vector<unsigned long>& aSegment ) const
 
 float MeshKernel::GetVolume() const
 {
-    MeshEvalSolid cSolid(*this);
-    if ( !cSolid.Evaluate() )
-        return 0.0f; // no solid
+    //MeshEvalSolid cSolid(*this);
+    //if ( !cSolid.Evaluate() )
+    //    return 0.0f; // no solid
 
     float fVolume = 0.0;
     MeshFacetIterator cIter(*this);
