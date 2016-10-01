@@ -116,7 +116,7 @@ template = """<!DOCTYPE html>
         </html>"""
 
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
     
 def export(exportList,filename):

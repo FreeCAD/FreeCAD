@@ -34,7 +34,7 @@ import re, FreeCAD, FreeCADGui, Part, cProfile, os, string
 from FreeCAD import Vector, Base
 from Draft import makeWire
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
         pythonopen = open
 
 useDraftWire = True
