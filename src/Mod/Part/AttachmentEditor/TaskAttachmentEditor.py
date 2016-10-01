@@ -291,6 +291,8 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if self.tv: # tv will still be None if Show module is unavailable
             self.tv.hide_all_dependent(self.obj)
             self.tv.show(self.obj)
+            self.tv.setUnpickable(self.obj)
+            self.tv.modifyVPProperty(self.obj, "Transparency", 70)
             self.tv.show([obj for (obj,subname) in self.attacher.References])
     
     # task dialog handling
