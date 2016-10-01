@@ -47,7 +47,11 @@ PyObject* DrawProjGroupPy::removeProjection(PyObject* args)
     DrawProjGroup* projGroup = getDrawProjGroupPtr();
     int i = projGroup->removeProjection(projType);
 
-    return PyInt_FromLong((long) i);;
+#if PY_MAJOR_VERSION < 3
+    return PyInt_FromLong((long) i);
+#else
+    return PyLong_FromLong((long) i);
+#endif
 }
 
 PyObject* DrawProjGroupPy::purgeProjections(PyObject* /*args*/)
@@ -55,7 +59,11 @@ PyObject* DrawProjGroupPy::purgeProjections(PyObject* /*args*/)
     DrawProjGroup* projGroup = getDrawProjGroupPtr();
     int i = projGroup->purgeProjections();
 
-    return PyInt_FromLong((long) i);;
+#if PY_MAJOR_VERSION < 3
+    return PyInt_FromLong((long) i);
+#else
+    return PyLong_FromLong((long) i);
+#endif
 }
 
 PyObject* DrawProjGroupPy::getItemByLabel(PyObject* args)
