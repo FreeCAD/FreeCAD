@@ -56,7 +56,7 @@ supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "
                      "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
 # TODO : shading device not supported?
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
 
 def open(filename,skip=None):

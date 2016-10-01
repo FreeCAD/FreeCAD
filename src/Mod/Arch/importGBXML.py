@@ -33,7 +33,7 @@ else:
     def translate(ctx,txt):
         return txt
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
     
     

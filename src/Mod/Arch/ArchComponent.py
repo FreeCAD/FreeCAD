@@ -714,7 +714,7 @@ class Component:
                 except Part.OCCError:
                     # error in computing the areas. Better set them to zero than show a wrong value
                     if obj.HorizontalArea.Value != 0:
-                        print "Error computing areas for ",obj.Label
+                        print ("Error computing areas for ",obj.Label)
                         obj.HorizontalArea = 0
                     if hasattr(obj,"PerimeterLength"):
                         if obj.PerimeterLength.Value != 0:

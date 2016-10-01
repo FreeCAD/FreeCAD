@@ -96,8 +96,8 @@ class _ArchSchedule:
             obj.Result.set("A"+str(i+2),obj.Description[i])
             if verbose:
                 l= "OPERATION: "+obj.Description[i]
-                print l
-                print len(l)*"="
+                print (l)
+                print (len(l)*"=")
             # get list of objects
             objs = obj.Objects[i]
             val = obj.Value[i]
@@ -152,7 +152,7 @@ class _ArchSchedule:
                 if val.upper() == "COUNT":
                     val = len(objs)
                     if verbose:
-                        print val, ",".join([o.Label for o in objs])
+                        print (val, ",".join([o.Label for o in objs]))
                     obj.Result.set("B"+str(i+2),str(val))
                 else:
                     vals = val.split(".")
@@ -160,13 +160,13 @@ class _ArchSchedule:
                     for o in objs:
                         if verbose:
                             l = o.Name+" ("+o.Label+"):"
-                            print l+(40-len(l))*" ",
+                            print (l+(40-len(l))*" ",)
                         try:
                             d = o
                             for v in vals[1:]:
                                 d = getattr(d,v)
                             if verbose:
-                                print d
+                                print (d)
                         except:
                             FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
                         else:
@@ -191,7 +191,7 @@ class _ArchSchedule:
                     else:
                         obj.Result.set("B"+str(i+2),str(val))
                     if verbose:
-                        print "TOTAL:"+34*" "+str(val)
+                        print ("TOTAL:"+34*" "+str(val))
 
     def __getstate__(self):
         return self.Type

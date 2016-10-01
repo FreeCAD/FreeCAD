@@ -29,7 +29,7 @@ import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
 
 DEBUG = False
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
 
 # which IFC type must create which FreeCAD type
