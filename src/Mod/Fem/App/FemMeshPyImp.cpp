@@ -927,7 +927,7 @@ PyObject* FemMeshPy::getGroupElementType(PyObject *args)
         case SMDSAbs_Volume         : typeString = "Volume"; break;
         case SMDSAbs_0DElement      : typeString = "0DElement"; break;
         case SMDSAbs_Ball           : typeString = "Ball"; break;
-        case SMDSAbs_NbElementTypes : typeString = "NbElementTypes"; break;
+        default                     : typeString = "Unknown"; break;
     }
     return PyString_FromString(typeString);
 }
