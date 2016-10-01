@@ -135,9 +135,10 @@ PyObject* MeshPy::copy(PyObject *args)
 
 PyObject*  MeshPy::read(PyObject *args)
 {
-    const char* Name;
-    if (PyArg_ParseTuple(args, "s",&Name)) {
+    char* Name;
+    if (PyArg_ParseTuple(args, "et", "utf-8", &Name)) {
         getMeshObjectPtr()->load(Name);
+        PyMem_Free(Name);
         Py_Return;
     }
 
@@ -183,7 +184,7 @@ PyObject*  MeshPy::read(PyObject *args)
 
 PyObject*  MeshPy::write(PyObject *args)
 {
-    const char* Name;
+    char* Name;
     char* Ext=0;
     char* ObjName=0;
     PyObject* List=0;
@@ -206,7 +207,7 @@ PyObject*  MeshPy::write(PyObject *args)
     ext["APLY"] = MeshCore::MeshIO::APLY;
     ext["PY"  ] = MeshCore::MeshIO::PY;
 
-    if (PyArg_ParseTuple(args, "s|ssO!",&Name,&Ext,&ObjName,&PyList_Type,&List)) {
+    if (PyArg_ParseTuple(args, "et|ssO!","utf-8",&Name,&Ext,&ObjName,&PyList_Type,&List)) {
         if (Ext && ext.find(Ext) != ext.end()) {
             format = ext[Ext];
         }
@@ -234,6 +235,7 @@ PyObject*  MeshPy::write(PyObject *args)
             getMeshObjectPtr()->save(Name, format, 0, ObjName);
         }
 
+        PyMem_Free(Name);
         Py_Return;
     }
 
