@@ -29,7 +29,7 @@ namespace TechDrawGui
 {
 
 /// Convenient utility functions for TechDraw Gui Module
-class TechDrawExport DrawGuiUtil {
+class TechDrawGuiExport DrawGuiUtil {
     public:
     static TechDraw::DrawPage* findPage(Gui::Command* cmd);
     static bool needPage(Gui::Command* cmd);
