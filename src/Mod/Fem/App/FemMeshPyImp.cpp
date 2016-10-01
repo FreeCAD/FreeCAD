@@ -1193,12 +1193,6 @@ Py::Int FemMeshPy::getGroupCount(void) const
 }
 #endif
 
-Py::Object FemMeshPy::getVolume(void) const
-{
-    return Py::Object(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
-
-}
-
 Py::Tuple FemMeshPy::getGroups(void) const
 {
     std::list<int> groupIDs = getFemMeshPtr()->getSMesh()->GetGroupIds();

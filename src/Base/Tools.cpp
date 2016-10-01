@@ -175,7 +175,11 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     PyObject* unicode = PyUnicode_DecodeUnicodeEscape(s.c_str(), s.size(), "strict");
     if (!unicode)
         return string;
-
+#if PY_MAJOR_VERSION >= 3
+    if (PyUnicode_Check(unicode)) {
+        string = PyUnicode_AsUTF8(unicode);
+    }
+#else
     if (PyUnicode_Check(unicode)) {
         PyObject* value = PyUnicode_AsUTF8String(unicode);
         string = PyString_AsString(value);
@@ -184,7 +188,7 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     else if (PyString_Check(unicode)) {
         string = PyString_AsString(unicode);
     }
-
+#endif
     Py_DECREF(unicode);
     return string;
 }

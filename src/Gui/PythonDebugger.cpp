@@ -577,7 +577,6 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
         PyErr_SetInterrupt();
     QCoreApplication::processEvents();
     //int no;
-<<<<<<< 91b0e4ba4d4b6bcc2732c80c9c7c83eb6b7dea74
 
     //no = frame->f_tstate->recursion_depth;
     //std::string funcname = PyString_AsString(frame->f_code->co_name);
