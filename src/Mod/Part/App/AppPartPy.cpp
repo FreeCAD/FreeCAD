@@ -633,14 +633,18 @@ private:
     }
     Py::Object makeFace(const Py::Tuple& args)
     {
-        try{
-
+        try {
             char* className = 0;
             PyObject* pcPyShapeOrList = nullptr;
             PyErr_Clear();
             if (PyArg_ParseTuple(args.ptr(), "Os", &pcPyShapeOrList, &className)) {
                 std::unique_ptr<FaceMaker> fm_instance = Part::FaceMaker::ConstructFromType(className);
-                FaceMaker* fm = &(*fm_instance);
+                FaceMaker* fm = fm_instance.get();
+                if (!fm) {
+                    std::stringstream out;
+                    out << "Cannot create FaceMaker from abstract type " << className;
+                    throw Base::TypeError(out.str());
+                }
 
                 //dump all supplied shapes to facemaker, no matter what type (let facemaker decide).
                 if (PySequence_Check(pcPyShapeOrList)){
@@ -651,7 +655,7 @@ private:
                             const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
                             fm->addShape(sh);
                         } else {
-                            throw Py::Exception(PyExc_TypeError, "Object is not a shape.");
+                            throw Py::TypeError("Object is not a shape.");
                         }
                     }
                 } else if (PyObject_TypeCheck(pcPyShapeOrList, &(Part::TopoShapePy::Type))) {
@@ -674,14 +678,12 @@ private:
                 switch(fm->Shape().ShapeType()){
                 case TopAbs_FACE:
                     return Py::asObject(new TopoShapeFacePy(new TopoShape(fm->Shape())));
-                break;
                 case TopAbs_COMPOUND:
                     return Py::asObject(new TopoShapeCompoundPy(new TopoShape(fm->Shape())));
-                break;
                 default:
                     return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
                 }
-            } ;
+            }
 
             throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
 

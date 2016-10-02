@@ -142,7 +142,7 @@ public:
 
     virtual void Build() override;
 protected:
-    virtual void Build_Essence() override {};
+    virtual void Build_Essence() override {}
 };
 
 } //namespace Part
