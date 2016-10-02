@@ -252,13 +252,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "Os", &pcPyShapeOrList, &className)) {
         try {
-            std::unique_ptr<FaceMaker> fm_instance = Part::FaceMaker::ConstructFromType(className);
-            FaceMaker* fm = fm_instance.get();
-            if (!fm) {
-                std::stringstream out;
-                out << "Cannot create FaceMaker from abstract type " << className;
-                throw Base::TypeError(out.str());
-            }
+            std::unique_ptr<FaceMaker> fm = Part::FaceMaker::ConstructFromType(className);
 
             //dump all supplied shapes to facemaker, no matter what type (let facemaker decide).
             if (PySequence_Check(pcPyShapeOrList)){
