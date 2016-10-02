@@ -191,7 +191,7 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects 
             if obj.Name == has_remaining_femelements:
                 fem_object['FEMElements'] = sorted(remaining_femelements)
     # check if all worked out well
-    if not femelements_count_ok(femelement_table, count_femelements):
+    if not femelements_count_ok(len(femelement_table), count_femelements):
         FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok() failed!\n')
 
 
@@ -767,15 +767,15 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
     return node_sum_geom_table
 
 
-def femelements_count_ok(femelement_table, count_femelements):
-    if count_femelements == len(femelement_table):
-        # print('Count FEM elements for the calculated node load distribution: ', count_femelements)
-        # print('Count FEM elements of the FreeCAD FEM mesh:  ', len(femelement_table))
+def femelements_count_ok(len_femelement_table, count_femelements):
+    if count_femelements == len_femelement_table:
+        print('Count FEM elements as sum of constraints: ', count_femelements)
+        print('Count FEM elements of the FreeCAD FEM mesh:  ', len_femelement_table)
         return True
     else:
         print('ERROR: femelement_table != count_femelements')
-        print('Count FEM elements for the calculated node load distribution: ', count_femelements)
-        print('Count FEM Elements of the FreeCAD FEM Mesh:  ', len(femelement_table))
+        print('Count FEM elements as sum of constraints: ', count_femelements)
+        print('Count FEM elements of the FreeCAD FEM Mesh:  ', len_femelement_table)
         return False
 
 
