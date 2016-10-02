@@ -47,8 +47,8 @@ class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseCl
     TYPESYSTEM_HEADER();
 
 public:
-    FaceMaker() {};
-    virtual ~FaceMaker() {};
+    FaceMaker() {}
+    virtual ~FaceMaker() {}
 
     virtual void addWire(const TopoDS_Wire& w);
     /**

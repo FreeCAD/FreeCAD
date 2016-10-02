@@ -110,7 +110,7 @@ void FaceMakerBullseye::Build_Essence()
     //add wires one by one to current set of faces.
     //We go from last to first, to make it so that outer wires come before inner wires.
     std::vector< std::unique_ptr<FaceDriller> > faces;
-    for( int i = wires.size()-1   ;   i >= 0   ;   --i){
+    for (int i = static_cast<int>(wires.size())-1; i >= 0; --i) {
         TopoDS_Wire &w = wires[i];
 
         //test if this wire is on any of existing faces (if yes, it's a hole;

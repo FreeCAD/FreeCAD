@@ -300,10 +300,14 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
                 //legacy exclusion: ignore "solid" if extruding a face.
             } else {
                 //new strict behavior. If solid==True => make faces from wires, and if myShape not wires - fail!
-                std::unique_ptr<FaceMaker> fm_instance = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
-                FaceMaker* mkFace = &(*(fm_instance));
+                std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
+                if (!mkFace) {
+                    std::stringstream out;
+                    out << "Cannot create FaceMaker from abstract type " << params.faceMakerClass.c_str();
+                    throw Base::TypeError(out.str());
+                }
 
-                if(myShape.ShapeType() == TopAbs_COMPOUND)
+                if (myShape.ShapeType() == TopAbs_COMPOUND)
                     mkFace->useCompound(TopoDS::Compound(myShape));
                 else
                     mkFace->addShape(myShape);
@@ -500,7 +504,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 
 //----------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::FaceMakerExtrusion, Part::FaceMakerCheese);
+TYPESYSTEM_SOURCE(Part::FaceMakerExtrusion, Part::FaceMakerCheese)
 
 std::string FaceMakerExtrusion::getUserFriendlyName() const
 {
