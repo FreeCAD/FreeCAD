@@ -136,7 +136,7 @@ std::unique_ptr<Part::FaceMaker> Part::FaceMaker::ConstructFromType(const char* 
     if (fmType.isBad()){
         std::stringstream ss;
         ss << "Class '"<< className <<"' not found.";
-        throw Base::Exception(ss.str().c_str());
+        throw Base::TypeError(ss.str().c_str());
     }
     return Part::FaceMaker::ConstructFromType(fmType);
 }

@@ -2223,11 +2223,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         //so, we just extract all nesting
         Handle_TopTools_HSequenceOfShape seq = ShapeExtend_Explorer().SeqFromCompound(offsetShape, Standard_True);
         TopoDS_Iterator it(offsetShape);
-        for(int i = 0   ;   i < seq->Length()   ;   ++i){
+        for(int i = 0; i < seq->Length(); ++i){
             offsetWires.push_back(TopoDS::Wire(seq->Value(i+1)));
         }
 
-        if(offsetWires.empty())
+        if (offsetWires.empty())
             throw Base::Exception("makeOffset2D: offset result has no wires.");
 
         std::list<TopoDS_Wire> wiresForMakingFaces;
@@ -2357,7 +2357,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
             ShapeExtend_Explorer xp;
             Handle_TopTools_HSequenceOfShape result_leaves = xp.SeqFromCompound(result, Standard_True);
-            for(int i = 0   ;   i < result_leaves->Length()   ;   ++i)
+            for(int i = 0; i < result_leaves->Length(); ++i)
                 shapesToReturn.push_back(result_leaves->Value(i+1));
         }
     }
