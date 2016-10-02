@@ -82,11 +82,6 @@ App::DocumentObjectExecReturn *Face::execute(void)
         return new App::DocumentObjectExecReturn("No shapes linked");
 
     std::unique_ptr<FaceMaker> facemaker = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
-    if (!facemaker) {
-        std::stringstream out;
-        out << "Cannot create FaceMaker from abstract type " << this->FaceMakerClass.getValue();
-        throw Base::TypeError(out.str());
-    }
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
         if (!(*it && (*it)->isDerivedFrom(Part::Feature::getClassTypeId())))

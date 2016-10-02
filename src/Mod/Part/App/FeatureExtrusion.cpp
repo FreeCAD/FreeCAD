@@ -301,11 +301,6 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
             } else {
                 //new strict behavior. If solid==True => make faces from wires, and if myShape not wires - fail!
                 std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
-                if (!mkFace) {
-                    std::stringstream out;
-                    out << "Cannot create FaceMaker from abstract type " << params.faceMakerClass.c_str();
-                    throw Base::TypeError(out.str());
-                }
 
                 if (myShape.ShapeType() == TopAbs_COMPOUND)
                     mkFace->useCompound(TopoDS::Compound(myShape));

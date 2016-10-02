@@ -93,8 +93,7 @@ void Part::FaceMaker::Build()
     this->Build_Essence();//adds stuff to myShapesToReturn
 
     for(const TopoDS_Compound& cmp : this->myCompounds){
-        std::unique_ptr<FaceMaker> facemaker_instance = Part::FaceMaker::ConstructFromType(this->getTypeId());
-        FaceMaker* facemaker = &(*facemaker_instance); //handy to have plain pointer for intellisense to work =)
+        std::unique_ptr<FaceMaker> facemaker = Part::FaceMaker::ConstructFromType(this->getTypeId());
 
         facemaker->useCompound(cmp);
 
@@ -148,7 +147,13 @@ std::unique_ptr<Part::FaceMaker> Part::FaceMaker::ConstructFromType(Base::Type t
         ss << "Class '" << type.getName() << "' is not derived from Part::FaceMaker.";
         throw Base::TypeError(ss.str().c_str());
     }
-    return std::unique_ptr<FaceMaker>(static_cast<Part::FaceMaker*>(type.createInstance()));
+    std::unique_ptr<FaceMaker> instance(static_cast<Part::FaceMaker*>(type.createInstance()));
+    if (!instance){
+        std::stringstream ss;
+        ss << "Cannot create FaceMaker from abstract type '" << type.getName() << "'";
+        throw Base::TypeError(ss.str().c_str());
+    }
+    return instance;
 }
 
 void Part::FaceMaker::throwNotImplemented()
