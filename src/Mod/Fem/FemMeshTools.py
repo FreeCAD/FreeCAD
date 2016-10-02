@@ -195,6 +195,35 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects 
         FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok() failed!\n')
 
 
+def get_femelement_sets_from_group_data(femmesh, fem_objects):
+    # get femelements from femmesh groupdata for reference shapes of each obj.References
+    print("")
+    count_femelements = 0
+    sum_group_elements = []
+    # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
+    # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
+    for fem_object_i, fem_object in enumerate(fem_objects):
+        obj = fem_object['Object']
+        fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
+        if femmesh.GroupCount:
+            for g in femmesh.Groups:
+                grp_name = femmesh.getGroupName(g)
+                if grp_name.startswith(obj.Name + '_'):
+                    if femmesh.getGroupElementType(g) == "Volume":
+                        print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                        group_elements = femmesh.getGroupElements(g)  # == ref_shape_femelements
+                        sum_group_elements += group_elements
+                        count_femelements += len(group_elements)
+                        fem_object['FEMElements'] = group_elements
+    # check if all worked out well
+    if not femelements_count_ok(femmesh.VolumeCount, count_femelements):
+        FreeCAD.Console.PrintError('Error in get_femelement_sets_from_group_data -- > femelements_count_ok() failed!\n')
+        return False
+    else:
+        return True
+    print("")
+
+
 def get_elset_short_name(obj, i):
     if hasattr(obj, "Proxy") and obj.Proxy.Type == 'MechanicalMaterial':
         return 'Mat' + str(i)
