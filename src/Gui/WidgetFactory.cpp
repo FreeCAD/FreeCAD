@@ -40,6 +40,11 @@
 #endif
 #endif
 
+#ifdef __GNUC__
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 #ifdef HAVE_SHIBOKEN
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
@@ -54,6 +59,10 @@
 PyTypeObject** SbkPySide_QtCoreTypes=NULL;
 PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 # endif
+#endif
+
+#ifdef __GNUC__
+# pragma GCC diagnostic pop
 #endif
 
 #include <CXX/Objects.hxx>
