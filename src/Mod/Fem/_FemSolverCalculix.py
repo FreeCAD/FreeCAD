@@ -51,14 +51,19 @@ class _FemSolverCalculix():
         analysis_type = ccx_prefs.GetInt("AnalysisType", 0)
         obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types[analysis_type]
 
-        known_geom_nonlinear_types = ["linear", "nonlinear"]
-        obj.addProperty("App::PropertyEnumeration", "GeometricalNonlinearity", "Fem", "Type of geometrical nonlinearity")
-        obj.GeometricalNonlinearity = known_geom_nonlinear_types
-        geom = ccx_prefs.GetBool("NonlinearGeometry", False)
-        if geom is True:
-            obj.GeometricalNonlinearity = known_geom_nonlinear_types[1]  # nonlinear
+        choices_geom_nonlinear = ["linear", "nonlinear"]
+        obj.addProperty("App::PropertyEnumeration", "GeometricalNonlinearity", "Fem", "Set geometrical nonlinearity")
+        obj.GeometricalNonlinearity = choices_geom_nonlinear
+        nonlinear_geom = ccx_prefs.GetBool("NonlinearGeometry", False)
+        if nonlinear_geom is True:
+            obj.GeometricalNonlinearity = choices_geom_nonlinear[1]  # nonlinear
         else:
-            obj.GeometricalNonlinearity = known_geom_nonlinear_types[0]  # linear
+            obj.GeometricalNonlinearity = choices_geom_nonlinear[0]  # linear
+
+        choices_material_nonlinear = ["linear", "nonlinear"]
+        obj.addProperty("App::PropertyEnumeration", "MaterialNonlinearity", "Fem", "Set material nonlinearity (needs geometrical nonlinearity)")
+        obj.MaterialNonlinearity = choices_material_nonlinear
+        obj.MaterialNonlinearity = choices_material_nonlinear[0]
 
         obj.addProperty("App::PropertyIntegerConstraint", "EigenmodesCount", "Fem", "Number of modes for frequency calculations")
         noe = ccx_prefs.GetInt("EigenmodesCount", 10)
@@ -72,9 +77,9 @@ class _FemSolverCalculix():
         ehl = ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
-        obj.addProperty("App::PropertyIntegerConstraint", "IterationsMaximum", "Fem", "Number of iterations allowed before stopping jobs")
+        obj.addProperty("App::PropertyIntegerConstraint", "IterationsThermoMechMaximum", "Fem", "Maximum Number of thermo mechanical iterations in each time step before stopping jobs")
         niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
-        obj.IterationsMaximum = niter
+        obj.IterationsThermoMechMaximum = niter
 
         obj.addProperty("App::PropertyFloatConstraint", "TimeInitialStep", "Fem", "Initial time steps")
         ini = ccx_prefs.GetFloat("AnalysisTimeInitialStep", 1.0)
@@ -84,9 +89,9 @@ class _FemSolverCalculix():
         eni = ccx_prefs.GetFloat("AnalysisTime", 1.0)
         obj.TimeEnd = eni
 
-        obj.addProperty("App::PropertyBool", "SteadyState", "Fem", "Run steady state or transient analysis")
+        obj.addProperty("App::PropertyBool", "ThermoMechSteadyState", "Fem", "Choose between steady state thermo mech or transient thermo mech analysis")
         sted = ccx_prefs.GetBool("StaticAnalysis", True)
-        obj.SteadyState = sted
+        obj.ThermoMechSteadyState = sted
 
         obj.addProperty("App::PropertyBool", "IterationsControlParameterTimeUse", "Fem", "Use the user defined time incrementation control parameter")
         use_non_ccx_iterations_param = ccx_prefs.GetInt("UseNonCcxIterationParam", False)
@@ -120,6 +125,12 @@ class _FemSolverCalculix():
         obj.IterationsControlParameterIter = p_iter
         obj.addProperty("App::PropertyString", "IterationsControlParameterCutb", "Fem", "User defined time incrementation cutbacks control parameter")
         obj.IterationsControlParameterCutb = p_cutb
+
+        obj.addProperty("App::PropertyBool", "IterationsUserDefinedIncrementations", "Fem", "Set to True to switch of the ccx automatic incrementation (ccx parameter DIRECT)")
+        obj.IterationsUserDefinedIncrementations = False
+
+        obj.addProperty("App::PropertyString", "IterationsUserDefinedTimeStepLength", "Fem", "Set the time step length for the current step, only used if IterationsUserDefinedIncrementations is set to True")
+        obj.IterationsUserDefinedTimeStepLength = "0.1, 1.0"
 
         known_ccx_solver_types = ["default", "spooles", "iterativescaling", "iterativecholesky"]
         obj.addProperty("App::PropertyEnumeration", "MatrixSolverType", "Fem", "Type of solver to use")

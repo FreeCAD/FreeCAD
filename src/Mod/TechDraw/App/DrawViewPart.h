@@ -141,6 +141,7 @@ protected:
     Base::Vector3d vDir;                       //paperspace Y
     Base::Vector3d wDir;                       //paperspace Z
     Base::Vector3d shapeCentroid;
+    int m_interAlgo;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

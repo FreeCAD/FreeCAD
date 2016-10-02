@@ -616,7 +616,7 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     
-    assert(vp);    
+    assert(vp);
     
     //make sure the relevant things are visible
     cs_visibility = vp->isVisible();

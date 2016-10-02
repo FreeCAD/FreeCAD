@@ -345,7 +345,7 @@ void QGIView::drawBorder()
                               frameWidth,
                               frameHeight);
     prepareGeometryChange();
-    m_border->setRect(frameArea);
+    m_border->setRect(frameArea.adjusted(-2,-2,2,2));
     m_border->setPos(0.,0.);
 
     m_label->show();

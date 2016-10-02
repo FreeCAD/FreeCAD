@@ -9,6 +9,14 @@
 #include "AreaDxf.h"
 #include "kurve/geometry.h"
 
+#if defined (_POSIX_C_SOURCE)
+#   undef    _POSIX_C_SOURCE
+#endif
+
+#if defined (_XOPEN_SOURCE)
+#   undef    _XOPEN_SOURCE
+#endif
+
 #if _DEBUG
 #undef _DEBUG
 #include <Python.h>
@@ -63,7 +71,11 @@ boost::python::tuple transformed_point(const geoff_geometry::Matrix &matrix, dou
 static void print_curve(const CCurve& c)
 {
 	std::size_t nvertices = c.m_vertices.size();
+#if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
+	printf("number of vertices = %d\n", nvertices);
+#else
 	printf("number of vertices = %lu\n", nvertices);
+#endif
 	int i = 0;
 	for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
 	{

@@ -137,7 +137,7 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
             for nodeID in femelement_table[elementID]:
                 if nodeID in node_list:
                     nodecount = nodecount + 1
-            if nodecount == 4: 
+            if nodecount == 4:
                 e.append(elementID)
         elif el_nd_ct == 20:  # hexa20
             for nodeID in femelement_table[elementID]:
@@ -473,12 +473,12 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
         if has_no_face_data(femmesh):
             print('No face date in volume mesh. We try to use getccxVolumesByFace() to retrive the volume elments of the ref_face!')
             # there is no face data
-            # the problem if we retrive the nodes ourself is they are not sorted we just have the nodes. We need to sourt them according 
+            # the problem if we retrive the nodes ourself is they are not sorted we just have the nodes. We need to sourt them according
             # the shell mesh notaion of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
             # try to use getccxVolumesByFace() to get the volume ids of element with elementfaces on the ref_face --> should work for tetra4 and tetra10
             ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)  # list of tupels (mv, ccx_face_nr)
-            if ref_face_volume_elements: # mesh with tetras
+            if ref_face_volume_elements:  # mesh with tetras
                 print('Use of getccxVolumesByFace() has returned volume elements of the ref_face!')
                 for ve in ref_face_volume_elements:
                     veID = ve[0]
@@ -489,7 +489,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                     face_table[veID] = ve_ref_face_nodes  # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
             else:  # mesh with hexa or penta
                 print('Use of getccxVolumesByFace() has NOT returned volume elements of the ref_face! We try to use get_femvolumeelements_by_femfacenodes()!')
-                ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(femelement_table, ref_face_nodes) # list of integer [mv]
+                ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(femelement_table, ref_face_nodes)  # list of integer [mv]
                 for veID in ref_face_volume_elements:
                     ve_ref_face_nodes = []
                     for nodeID in femelement_table[veID]:
@@ -607,7 +607,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             else:
                 FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): pent6: face not found!" + str(face_node_indexs) + "\n")
         else:
-             FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
+            FreeCAD.Console.PrintError("Error in build_mesh_faces_of_volume_elements(): Volume not implemented: volume node count" + str(vol_node_ct) + "\n")
         face_nodes = []
         for i in node_numbers:
             i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
@@ -866,6 +866,70 @@ def get_three_non_colinear_nodes(nodes_coords):
     node_2 = int(dum_max[4])
     print([node_1, node_2, node_3])
     return [node_1, node_2, node_3]
+
+
+def get_rectangular_coords(obj):
+    from math import cos, sin, radians
+    A = [1, 0, 0]
+    B = [0, 1, 0]
+    a_x = A[0]
+    a_y = A[1]
+    a_z = A[2]
+    b_x = A[0]
+    b_y = A[1]
+    b_z = A[2]
+    x_rot = radians(obj.X_rot)
+    y_rot = radians(obj.Y_rot)
+    z_rot = radians(obj.Z_rot)
+    if obj.X_rot != 0:
+        a_x = A[0]
+        a_y = A[1] * cos(x_rot) + A[2] * sin(x_rot)
+        a_z = A[2] * cos(x_rot) - A[1] * sin(x_rot)
+        b_x = B[0]
+        b_y = B[1] * cos(x_rot) + B[2] * sin(x_rot)
+        b_z = B[2] * cos(x_rot) - B[1] * sin(x_rot)
+        A = [a_x, a_y, a_z]
+        B = [b_x, b_y, b_z]
+    if obj.Y_rot != 0:
+        a_x = A[0] * cos(y_rot) - A[2] * sin(y_rot)
+        a_y = A[1]
+        a_z = A[2] * cos(y_rot) + A[0] * sin(y_rot)
+        b_x = B[0] * cos(y_rot) - B[2] * sin(y_rot)
+        b_y = B[1]
+        b_z = B[2] * cos(y_rot) + B[0] * sin(z_rot)
+        A = [a_x, a_y, a_z]
+        B = [b_x, b_y, b_z]
+    if obj.Z_rot != 0:
+        a_x = A[0] * cos(z_rot) + A[1] * sin(z_rot)
+        a_y = A[1] * cos(z_rot) - A[0] * sin(z_rot)
+        a_z = A[2]
+        b_x = B[0] * cos(z_rot) + B[1] * sin(z_rot)
+        b_y = B[1] * cos(z_rot) - B[0] * sin(z_rot)
+        b_z = B[2]
+        A = [a_x, a_y, a_z]
+        B = [b_x, b_y, b_z]
+
+    A_coords = str(round(A[0], 4)) + ',' + str(round(A[1], 4)) + ',' + str(round(A[2], 4))
+    B_coords = str(round(B[0], 4)) + ',' + str(round(B[1], 4)) + ',' + str(round(B[2], 4))
+    coords = A_coords + ',' + B_coords
+    return coords
+
+
+def get_cylindrical_coords(obj):
+    vec = obj.Axis
+    base = obj.BasePoint
+    Ax = base[0] + 10 * vec[0]
+    Ay = base[1] + 10 * vec[1]
+    Az = base[2] + 10 * vec[2]
+    Bx = base[0] - 10 * vec[0]
+    By = base[1] - 10 * vec[1]
+    Bz = base[2] - 10 * vec[2]
+    A = [Ax, Ay, Az]
+    B = [Bx, By, Bz]
+    A_coords = str(A[0]) + ',' + str(A[1]) + ',' + str(A[2])
+    B_coords = str(B[0]) + ',' + str(B[1]) + ',' + str(B[2])
+    coords = A_coords + ',' + B_coords
+    return coords
 
 
 def make_femmesh(mesh_data):

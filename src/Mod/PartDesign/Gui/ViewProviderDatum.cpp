@@ -254,7 +254,6 @@ bool ViewProviderDatum::setEdit(int ModNum)
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
 
-        // always change to PartDesign WB, remember where we come from
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // start the edit dialog
@@ -275,22 +274,21 @@ bool ViewProviderDatum::doubleClicked(void)
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
+    
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(getObject());
     PartDesign::Body* activeBody = getActiveView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-    // TODO check if this feature belongs to the active body
-    //      and if not set the body it belongs to as active (2015-09-08, Fat-Zer)
-    if (activeBody != NULL) {
-        // TODO Rewrite this (2015-09-08, Fat-Zer)
-        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
-        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-        oldTip = activeBody->Tip.getValue();
-        if (oldTip != this->pcObject)
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        else
-            oldTip = NULL;
-    } else {
-        oldTip = NULL;
+    auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
+    
+    if (datumBody != NULL) {
+        if (datumBody != activeBody) {
+            Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
+                datumBody->getDocument()->getName(),
+                PDBODYKEY,
+                datumBody->getDocument()->getName(),
+                datumBody->getNameInDocument());
+        }
     }
-
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
     return true;
 }
@@ -303,16 +301,6 @@ void ViewProviderDatum::unsetEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
-        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-
-        if ((activeBody != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-            oldTip = NULL;
-        } else {
-            oldTip = NULL;
-        }
     }
     else {
         Gui::ViewProviderGeometryObject::unsetEdit(ModNum);

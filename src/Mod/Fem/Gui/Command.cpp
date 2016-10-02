@@ -438,6 +438,50 @@ bool CmdFemConstraintContact::isActive(void)
 }
 
 //=====================================================================================
+DEF_STD_CMD_A(CmdFemConstraintTransform);
+
+CmdFemConstraintTransform::CmdFemConstraintTransform()
+  : Command("Fem_ConstraintTransform")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create FEM transform constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
+    sWhatsThis      = "Fem_ConstraintTransform";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-constraint-transform";
+}
+
+void CmdFemConstraintTransform::activated(int iMsg)
+{
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
+    std::string FeatName = getUniqueObjectName("FemConstraintTransform");
+
+    openCommand("Make FEM constraint transform on face");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.X_rot = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Y_rot = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Z_rot = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
+                             Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
+
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+    
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintTransform::isActive(void)
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+//=====================================================================================
 DEF_STD_CMD_A(CmdFemConstraintHeatflux);
 
 CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
@@ -1409,6 +1453,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintPlaneRotation());
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
     rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
+    rcCmdMgr.addCommand(new CmdFemConstraintTransform());
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);

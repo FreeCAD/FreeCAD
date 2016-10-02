@@ -34,6 +34,8 @@
 
 # include <App/DocumentObject.h>
 # include <Base/Exception.h>
+#include <Base/Console.h>
+#include <Base/Type.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
 # include <Gui/BitmapFactory.h>
@@ -58,8 +60,9 @@
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 
-# include "MDIViewPage.h"
-# include "ViewProviderPage.h"
+#include "DrawGuiUtil.h"
+#include "MDIViewPage.h"
+#include "ViewProviderPage.h"
 #include "TaskLinkDim.h"
 
 using namespace TechDrawGui;
@@ -69,44 +72,6 @@ using namespace std;
 // utility routines
 //===========================================================================
 
-//TODO: still need this as separate routine? only used in LinkDimension now
-//TODO: code is duplicated in Command and CommandDecorate
-TechDraw::DrawPage* _findPageCCD(Gui::Command* cmd)
-{
-    TechDraw::DrawPage* page = 0;
-    //check if a DrawPage is currently displayed
-    Gui::MainWindow* w = Gui::getMainWindow();
-    Gui::MDIView* mv = w->activeWindow();
-    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
-    if (mvp) {
-        QGVPage* qp = mvp->getQGVPage();
-        page = qp->getDrawPage();
-    } else {
-        //DrawPage not displayed, check Selection and/or Document for a DrawPage
-        std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (selPages.empty()) {                                            //no page in selection
-            selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-            if (selPages.empty()) {                                        //no page in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
-                                     QObject::tr("Create a page first."));
-                return page;
-            } else if (selPages.size() > 1) {                              //multiple pages in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                     QObject::tr("Can not determine correct page."));
-                return page;
-            } else {                                                       //use only page in document
-                page = static_cast<TechDraw::DrawPage*>(selPages.front());
-            }
-        } else if (selPages.size() > 1) {                                  //multiple pages in selection
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                 QObject::tr("Select exactly 1 page."));
-            return page;
-        } else {                                                           //use only page in selection
-            page = static_cast<TechDraw::DrawPage*>(selPages.front());
-        }
-    }
-    return page;
-}
 
 //internal functions
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
@@ -116,6 +81,7 @@ int _isValidSingleEdge(Gui::Command* cmd);
 bool _isValidVertexes(Gui::Command* cmd);
 int _isValidEdgeToEdge(Gui::Command* cmd);
 bool _isValidVertexToEdge(Gui::Command* cmd);
+//bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
 
 enum EdgeType{
         isInvalid,
@@ -260,8 +226,9 @@ void CmdTechDrawNewDimension::activated(int iMsg)
 
 bool CmdTechDrawNewDimension::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //===========================================================================
@@ -348,8 +315,9 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 
 bool CmdTechDrawNewRadiusDimension::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //===========================================================================
@@ -438,8 +406,9 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 
 bool CmdTechDrawNewDiameterDimension::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //===========================================================================
@@ -546,8 +515,9 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
 
 bool CmdTechDrawNewLengthDimension::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //===========================================================================
@@ -652,8 +622,9 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 
 bool CmdTechDrawNewDistanceXDimension::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //===========================================================================
@@ -757,8 +728,9 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
 
 bool CmdTechDrawNewDistanceYDimension::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //===========================================================================
@@ -844,8 +816,9 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
 
 bool CmdTechDrawNewAngleDimension::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //! link 3D geometry to Dimension(s) on a Page
@@ -871,7 +844,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
 void CmdTechDrawLinkDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = _findPageCCD(this);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
     if (!page) {
         return;
     }
@@ -907,7 +880,13 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
 
 bool CmdTechDrawLinkDimension::isActive(void)
 {
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    bool taskInProgress = false;
+    if (havePage) {
+        taskInProgress = Gui::Control().activeDialog();
+    }
+    return (havePage && haveView && !taskInProgress);
 }
 
 void CreateTechDrawCommandsDims(void)
@@ -1133,3 +1112,24 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     }
     return result;
 }
+//bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs)
+//{
+//    //need a page, a selected classType and [a subelement]
+//    bool active = false;
+//    if (cmd->hasActiveDocument()) {
+//        auto drawPageType( TechDraw::DrawPage::getClassTypeId() );
+//        auto selPages = cmd->getDocument()->getObjectsOfType(drawPageType);
+//        if (!selPages.empty()) {
+//            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+//            for (auto& s:selection) {
+//                if (s.getObject()->isDerivedFrom(classType)) {
+//                    if (needSubs && !(s.getSubNames().empty())) {
+//                        active = true;
+//                        break;
+//                    }
+//                }
+//            }
+//         }
+//    }
+//    return active;
+//}

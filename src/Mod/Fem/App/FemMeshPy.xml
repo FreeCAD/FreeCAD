@@ -129,6 +129,21 @@
                 <UserDocu>Return a tuple of node IDs to a given element ID</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getGroupName" Const="true">
+            <Documentation>
+                <UserDocu>Return a string of group name to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getGroupElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return a string of group element type to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getGroupElements" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of ElementIDs to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
         <Attribute Name="Nodes" ReadOnly="true">
             <Documentation>
                 <UserDocu>Dictionary of Nodes by ID (int ID:Vector())</UserDocu>
@@ -236,6 +251,12 @@
                 <UserDocu>Number of Groups in the Mesh.</UserDocu>
             </Documentation>
             <Parameter Name="GroupCount" Type="Int"/>
+        </Attribute>
+        <Attribute Name="Groups" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of Group IDs.</UserDocu>
+            </Documentation>
+            <Parameter Name="Groups" Type="Tuple"/>
         </Attribute>
         <Attribute Name="Volume" ReadOnly="true">
             <Documentation>

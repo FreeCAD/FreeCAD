@@ -221,8 +221,11 @@ void ViewProviderPath::updateData(const App::Property* prop)
     if (prop == &pcPathObj->Path) {
         
         const Toolpath &tp = pcPathObj->Path.getValue();
-        if(tp.getSize()==0)
+        if(tp.getSize()==0) {
+            pcLineCoords->point.deleteValues(0);
+            pcMarkerCoords->point.deleteValues(0);
             return;
+        }
             
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
         float deviation = hGrp->GetFloat("MeshDeviation",0.2);

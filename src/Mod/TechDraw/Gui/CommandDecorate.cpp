@@ -53,53 +53,13 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
-# include "MDIViewPage.h"
-# include "ViewProviderPage.h"
+#include "DrawGuiUtil.h"
+#include "MDIViewPage.h"
+#include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 using namespace std;
 
-//===========================================================================
-// utility routines
-//===========================================================================
-
-//TODO: code is duplicated in Command and CommandCreateDims
-TechDraw::DrawPage* _findPageCD(Gui::Command* cmd)
-{
-    TechDraw::DrawPage* page = 0;
-    //check if a DrawPage is currently displayed
-    Gui::MainWindow* w = Gui::getMainWindow();
-    Gui::MDIView* mv = w->activeWindow();
-    MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
-    if (mvp) {
-        QGVPage* qp = mvp->getQGVPage();
-        page = qp->getDrawPage();
-    } else {
-        //DrawPage not displayed, check Selection and/or Document for a DrawPage
-        std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (selPages.empty()) {                                            //no page in selection
-            selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-            if (selPages.empty()) {                                        //no page in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
-                                     QObject::tr("Create a page first."));
-                return page;
-            } else if (selPages.size() > 1) {                              //multiple pages in document
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                     QObject::tr("Can not determine correct page."));
-                return page;
-            } else {                                                       //use only page in document
-                page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
-            }
-        } else if (selPages.size() > 1) {                                  //multiple pages in selection
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                 QObject::tr("Select exactly 1 page."));
-            return page;
-        } else {                                                           //use only page in selection
-            page = dynamic_cast<TechDraw::DrawPage*>(selPages.front());
-        }
-    }
-    return page;
-}
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
@@ -161,8 +121,9 @@ void CmdTechDrawNewHatch::activated(int iMsg)
 
 bool CmdTechDrawNewHatch::isActive(void)
 {
-    // TODO: Also ensure that there's a part selected?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 //===========================================================================
@@ -186,7 +147,7 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
 void CmdTechDrawToggleFrame::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = _findPageCD(this);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
     if (!page) {
         return;
     }
@@ -207,8 +168,9 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
 bool CmdTechDrawToggleFrame::isActive(void)
 {
-    // TODO: Also ensure that there's a page displayed?
-    return hasActiveDocument();
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
 }
 
 void CreateTechDrawCommandsDecorate(void)
@@ -227,14 +189,14 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("Select an object first"));
+                             QObject::tr("Select a Face first"));
         return false;
     }
 
     TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     if(!objFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("No Feature in selection"));
+                             QObject::tr("No TechDraw object in selection"));
         return false;
     }
 
@@ -246,10 +208,15 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
     }
 
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+        QObject::tr("Can't make a Hatched area from this selection"));
+        return false;
+    }
     std::string gType = TechDraw::DrawUtil::getGeomTypeFromName(SubNames.at(0));
     if (!(gType == "Face")) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-        QObject::tr("Can't make a Hatched area from this selection"));
+        QObject::tr("No Face in this selection"));
         return false;
     }
 

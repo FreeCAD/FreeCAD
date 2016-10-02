@@ -160,6 +160,8 @@ public:
 
     ObjectIdentifier(const App::Property & prop);
 
+    virtual ~ObjectIdentifier() {}
+
     // Components
     void addComponent(const Component &c) { components.push_back(c); }
 

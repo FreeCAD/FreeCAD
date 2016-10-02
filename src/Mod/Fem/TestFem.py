@@ -82,7 +82,7 @@ class FemTest(unittest.TestCase):
     def create_new_solver(self):
         self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
         self.solver_object.GeometricalNonlinearity = 'linear'
-        self.solver_object.SteadyState = True
+        self.solver_object.ThermoMechSteadyState = False
         self.solver_object.MatrixSolverType = 'default'
         self.solver_object.IterationsControlParameterTimeUse = False
         self.solver_object.EigenmodesCount = 10
@@ -337,9 +337,9 @@ class TherMechFemTest(unittest.TestCase):
     def create_new_solver(self):
         self.solver_object = FemSolverCalculix.makeFemSolverCalculix('CalculiX')
         self.solver_object.GeometricalNonlinearity = 'linear'
-        self.solver_object.SteadyState = True
+        self.solver_object.ThermoMechSteadyState = True
         self.solver_object.MatrixSolverType = 'default'
-        self.solver_object.IterationsMaximum = 2000
+        self.solver_object.IterationsThermoMechMaximum = 2000
         self.solver_object.IterationsControlParameterTimeUse = True
         self.active_doc.recompute()
 

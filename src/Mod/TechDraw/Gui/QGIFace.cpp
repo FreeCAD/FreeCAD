@@ -47,7 +47,6 @@
 
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
-#include "QGIView.h"
 #include "QGIFace.h"
 
 using namespace TechDrawGui;
@@ -107,6 +106,14 @@ void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
 void QGIFace::setFill(QBrush b) {
     m_colNormalFill = b.color();
     m_styleNormal = b.style();
+}
+
+void QGIFace::setDrawEdges(bool b) {
+    if (b) {
+        setStyle(Qt::DashLine);
+    } else {
+        setStyle(Qt::NoPen);    //don't draw face lines, just fill
+    }
 }
 
 void QGIFace::resetFill() {

@@ -470,7 +470,7 @@ Eall
 ** Young's modulus unit is MPa = N/mm2
 ** FreeCAD material name: Steel-Generic
 *MATERIAL, NAME=MechanicalMaterial
-*ELASTIC 
+*ELASTIC
 200000, 0.300
 
 ***********************************************************

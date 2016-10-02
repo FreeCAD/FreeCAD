@@ -233,6 +233,7 @@ class _TaskPanelShowResult:
         userdefined_eq = x + y + z + T + Von + P1 + P2 + P3  # Dummy equation to get around flake8, varibles not being used
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
+        self.result_object.UserDefined = UserDefinedFormula
         minm = min(UserDefinedFormula)
         avg = sum(UserDefinedFormula) / len(UserDefinedFormula)
         maxm = max(UserDefinedFormula)

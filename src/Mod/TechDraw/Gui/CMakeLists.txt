@@ -81,6 +81,8 @@ SET(TechDrawGui_SRCS
     TaskSectionView.ui
     TaskSectionView.cpp
     TaskSectionView.h
+    DrawGuiUtil.cpp
+    DrawGuiUtil.h
 )
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
