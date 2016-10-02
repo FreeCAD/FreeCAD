@@ -793,9 +793,14 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_solid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
+        all_found = False
+        if self.femmesh.GroupCount:
+            all_found = FemMeshTools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
+            print(all_found)
+        if all_found is False:
+            if not self.femelement_table:
+                self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
