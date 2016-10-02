@@ -171,11 +171,6 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         if (makeSolid && strlen(this->FaceMakerClass.getValue())>0){
             //new facemaking behavior: use facemaker class
             std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
-            if (!mkFace) {
-                std::stringstream out;
-                out << "Cannot create FaceMaker from abstract type " << this->FaceMakerClass.getValue();
-                throw Base::TypeError(out.str());
-            }
 
             TopoDS_Shape myShape = sourceShape.getShape();
             if(myShape.ShapeType() == TopAbs_COMPOUND)
