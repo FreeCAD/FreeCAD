@@ -517,6 +517,7 @@ struct ColorButtonP
     QColor old, col;
     QPointer<QColorDialog> cd;
     bool allowChange;
+    bool autoChange;
     bool drawFrame;
     bool modal;
     bool dirty;
@@ -524,6 +525,7 @@ struct ColorButtonP
     ColorButtonP()
         : cd(0)
         , allowChange(true)
+        , autoChange(false)
         , drawFrame(true)
         , modal(true)
         , dirty(true)
@@ -604,6 +606,16 @@ bool ColorButton::isModal() const
     return d->modal;
 }
 
+void ColorButton::setAutoChangeColor(bool on)
+{
+    d->autoChange = on;
+}
+
+bool ColorButton::autoChangeColor() const
+{
+    return d->autoChange;
+}
+
 /**
  * Draws the button label.
  */
@@ -675,9 +687,23 @@ void ColorButton::onChooseColor()
 #if QT_VERSION >= 0x040500
     if (d->modal) {
 #endif
-        QColor c = QColorDialog::getColor(d->col, this);
-        if (c.isValid()) {
-            setColor(c);
+        QColor currentColor = d->col;
+        QColorDialog cd(d->col, this);
+
+        if (d->autoChange) {
+            connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
+                    this, SLOT(onColorChosen(const QColor&)));
+        }
+
+        if (cd.exec() == QDialog::Accepted) {
+            QColor c = cd.selectedColor();
+            if (c.isValid()) {
+                setColor(c);
+                changed();
+            }
+        }
+        else if (d->autoChange) {
+            setColor(currentColor);
             changed();
         }
 #if QT_VERSION >= 0x040500
