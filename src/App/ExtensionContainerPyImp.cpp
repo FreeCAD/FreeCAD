@@ -110,7 +110,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 
     //get the extension type asked for
     Base::Type extension =  Base::Type::fromName(type);
-    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getClassTypeId())) {
+    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;
         str << "No extension found of type '" << type << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
@@ -133,7 +133,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
 
     //get the extension type asked for
     Base::Type extension =  Base::Type::fromName(type);
-    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getClassTypeId())) {
+    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;
         str << "No extension found of type '" << type << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
