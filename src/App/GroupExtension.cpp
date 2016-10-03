@@ -38,7 +38,7 @@ EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
 GroupExtension::GroupExtension()
 {
-    initExtension(GroupExtension::getClassTypeId());
+    initExtension(GroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
 }
@@ -96,8 +96,8 @@ void GroupExtension::removeObjectsFromDocument()
 void GroupExtension::removeObjectFromDocument(DocumentObject* obj)
 {
     // remove all children
-    if (obj->hasExtension(GroupExtension::getClassTypeId())) {
-        GroupExtension *grp = static_cast<GroupExtension*>(obj->getExtension(GroupExtension::getClassTypeId()));
+    if (obj->hasExtension(GroupExtension::getExtensionClassTypeId())) {
+        GroupExtension *grp = static_cast<GroupExtension*>(obj->getExtension(GroupExtension::getExtensionClassTypeId()));
 
         // recursive call to remove all subgroups
         grp->removeObjectsFromDocument();
@@ -120,8 +120,9 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
         if (*it == obj) {
             return true;
-        } else if ( recursive && (*it)->hasExtension(GroupExtension::getClassTypeId()) ) {
-            App::GroupExtension *subGroup = static_cast<App::GroupExtension *> ((*it)->getExtension(GroupExtension::getClassTypeId()));
+        } else if ( recursive && (*it)->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
+            App::GroupExtension *subGroup = static_cast<App::GroupExtension *> (
+                                    (*it)->getExtension(GroupExtension::getExtensionClassTypeId()));
 
             if (subGroup->hasObject (obj, recursive)) {
                 return true;
@@ -138,8 +139,8 @@ bool GroupExtension::isChildOf(const GroupExtension* group) const
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
         if (*it == getExtendedObject())
             return true;
-        if ((*it)->hasExtension(GroupExtension::getClassTypeId())) {
-            if (this->isChildOf(static_cast<GroupExtension*>((*it)->getExtension(GroupExtension::getClassTypeId()))))
+        if ((*it)->hasExtension(GroupExtension::getExtensionClassTypeId())) {
+            if (this->isChildOf(static_cast<GroupExtension*>((*it)->getExtension(GroupExtension::getExtensionClassTypeId()))))
 
                 return true;
         }
@@ -180,7 +181,7 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GroupExtension::getClassTypeId());
+    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GroupExtension::getExtensionClassTypeId());
     for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
         GroupExtension* grp = (GroupExtension*)(*it);
         if (grp->hasObject(obj))

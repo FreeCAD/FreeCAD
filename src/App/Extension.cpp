@@ -37,12 +37,17 @@
 /* We do not use a standart property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data. 
  */
-TYPESYSTEM_SOURCE_P(App::Extension);
+EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension);
 const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(void){return &propertyData;}
 const App::PropertyData & App::Extension::extensionGetPropertyData(void) const{return propertyData;}
 App::PropertyData App::Extension::propertyData;
 void App::Extension::init(void){
-  initSubclass(App::Extension::classTypeId, "App::Extension" , "Base::Persistence", &(App::Extension::create) );
+
+    assert(Extension::classTypeId == Base::Type::badType() && "don't init() twice!");
+ 
+    /* Set up entry in the type system. */ 
+    Extension::classTypeId = Base::Type::createType(Base::Type::badType(), "App::Extension", 
+                                Extension::create); 
 }
 
 using namespace App;
@@ -159,6 +164,20 @@ void Extension::extensionGetPropertyList(std::vector< Property* >& List) const {
 void Extension::extensionGetPropertyMap(std::map< std::string, Property* >& Map) const {
 
     extensionGetPropertyData().getPropertyMap(this, Map);
+}
+
+void Extension::initExtensionSubclass(Base::Type& toInit, const char* ClassName, const char* ParentName, 
+                             Base::Type::instantiationMethod method) {
+
+    // dont't init twice!
+    assert(toInit == Base::Type::badType());
+    // get the parent class
+    Base::Type parentType(Base::Type::fromName(ParentName)); 
+    // forgot init parent!
+    assert(parentType != Base::Type::badType() );
+
+    // create the new type
+    toInit = Base::Type::createType(parentType, ClassName, method);
 }
 
 
