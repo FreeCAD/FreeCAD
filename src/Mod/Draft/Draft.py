@@ -1984,6 +1984,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'fill="'+ color +'" stroke="none" '
             svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
             svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
+        elif obj.ViewObject.ArrowType == "Tick":
+            svg += '<path transform="rotate('+str(math.degrees(angle))
+            svg += ','+ str(point.x) + ',' + str(point.y) + ') '
+            svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
+            svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
+            svg += 'fill="'+ color +'" stroke="none" '
+            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"/>\n'
         else:
             print("getSVG: arrow type not implemented")
         return svg
