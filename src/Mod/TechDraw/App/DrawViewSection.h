@@ -67,7 +67,7 @@ public:
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
-//    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop);
     //@}
 
     /// returns the type name of the ViewProvider
