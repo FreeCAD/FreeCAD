@@ -44,6 +44,8 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
 
 #endif
 
@@ -118,11 +120,21 @@ bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2)
     return result;
 }
 
-bool DrawUtil::isZeroEdge(TopoDS_Edge& e)
+bool DrawUtil::isZeroEdge(TopoDS_Edge e)
 {
     TopoDS_Vertex vStart = TopExp::FirstVertex(e);
     TopoDS_Vertex vEnd = TopExp::LastVertex(e);
-    return isSamePoint(vStart,vEnd);
+    bool result = isSamePoint(vStart,vEnd);
+    if (result) {
+        //closed edge will have same V's but non-zero length
+        GProp_GProps props;
+        BRepGProp::LinearProperties(e, props);
+        double len = props.Mass();
+        if (len > Precision::Confusion()) {
+            result = false;
+        }
+    }
+    return result;
 }
 
 //============================

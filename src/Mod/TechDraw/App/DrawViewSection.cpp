@@ -95,8 +95,6 @@ DrawViewSection::DrawViewSection()
 
     ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Show the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),fgroup,App::Prop_None,"The color to shade the cut surface");
-
-    geometryObject = new TechDrawGeometry::GeometryObject();
 }
 
 DrawViewSection::~DrawViewSection()
@@ -120,6 +118,10 @@ short DrawViewSection::mustExecute() const
     return TechDraw::DrawView::mustExecute();
 }
 
+void DrawViewSection::onChanged(const App::Property* prop)
+{
+    DrawView::onChanged(prop);
+}
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
     App::DocumentObject* link = Source.getValue();

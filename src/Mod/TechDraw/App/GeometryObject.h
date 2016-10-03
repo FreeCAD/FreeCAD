@@ -32,6 +32,7 @@
 #include <string>
 #include <vector>
 
+#include "DrawView.h"
 #include "Geometry.h"
 
 namespace TechDrawGeometry
@@ -51,7 +52,7 @@ class TechDrawExport GeometryObject
 {
 public:
     /// Constructor
-    GeometryObject();
+    GeometryObject(TechDraw::DrawView* parent);
     virtual ~GeometryObject();
 
     void clear();
@@ -119,6 +120,8 @@ protected:
 
     double Tolerance;
     double Scale;
+
+    TechDraw::DrawView* m_parent;
 };
 
 } //namespace TechDrawGeometry
