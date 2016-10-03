@@ -39,7 +39,7 @@ EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtensi
 
 OriginGroupExtension::OriginGroupExtension () {
     
-    initExtension(OriginGroupExtension::getClassTypeId());
+    initExtension(OriginGroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
 }
@@ -67,9 +67,11 @@ App::Origin *OriginGroupExtension::getOrigin () const {
 
 App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj, bool indirect) {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension ( OriginGroupExtension::getClassTypeId() );
+    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension ( OriginGroupExtension::getExtensionClassTypeId() );
     for (auto grpObj: grps) {
-        OriginGroupExtension* grp = dynamic_cast <OriginGroupExtension* >(grpObj->getExtension(OriginGroupExtension::getClassTypeId()));
+        OriginGroupExtension* grp = dynamic_cast <OriginGroupExtension* >(grpObj->getExtension(
+                                                    OriginGroupExtension::getExtensionClassTypeId()));
+        
         if(!grp) throw Base::TypeError("Wrong type in origin group extenion");
             
         if ( indirect ) {

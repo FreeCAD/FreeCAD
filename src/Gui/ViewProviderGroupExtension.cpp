@@ -44,7 +44,7 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExte
 
 ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false)
 {
-    initExtension(ViewProviderGroupExtension::getClassTypeId());
+    initExtension(ViewProviderGroupExtension::getExtensionClassTypeId());
     
 }
 
@@ -83,7 +83,7 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
         return false;  
     
     //group into group?
-    if (obj->hasExtension(App::GroupExtension::getClassTypeId()))
+    if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
             if (group->isChildOf(obj->getExtensionByType<App::GroupExtension>()))
                 return false;
     

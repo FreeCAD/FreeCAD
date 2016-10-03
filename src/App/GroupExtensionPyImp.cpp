@@ -76,7 +76,7 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add a group object to itself");
         return NULL;
     }
-    if (docObj->getDocumentObjectPtr()->hasExtension(GroupExtension::getClassTypeId())) {
+    if (docObj->getDocumentObjectPtr()->hasExtension(GroupExtension::getExtensionClassTypeId())) {
         App::GroupExtension* docGrp = docObj->getDocumentObjectPtr()->getExtensionByType<GroupExtension>();
         if (docGrp->hasObject(getGroupExtensionPtr()->getExtendedObject())) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add a group object to a child group");
