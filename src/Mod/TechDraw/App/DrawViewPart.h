@@ -52,6 +52,11 @@ class DrawHatch;
 
 namespace TechDraw
 {
+struct splitPoint {
+    int i;
+    Base::Vector3d v;
+    double param;
+};
 class DrawViewSection;
 
 class TechDrawExport DrawViewPart : public DrawView
@@ -109,6 +114,9 @@ public:
 
     virtual short mustExecute() const;
 
+    bool handleFaces(void);
+    bool showSectionEdges(void);
+
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
@@ -130,9 +138,10 @@ protected:
     void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
     void extractFaces();
 
-    bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds = false);
-    std::vector<TopoDS_Edge> splitEdge(std::vector<TopoDS_Vertex> splitPoints, TopoDS_Edge e);
-    double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2) const;   //probably sb static or DrawUtil
+    bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
+    std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);
+    std::vector<TopoDS_Edge> split1Edge(TopoDS_Edge e, std::vector<splitPoint> splitPoints);
+    double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2); //const;   //probably sb static or DrawUtil
 
     //Projection parameter space
     void saveParamSpace(const Base::Vector3d& direction,
@@ -141,7 +150,14 @@ protected:
     Base::Vector3d vDir;                       //paperspace Y
     Base::Vector3d wDir;                       //paperspace Z
     Base::Vector3d shapeCentroid;
-    int m_interAlgo;
+    std::vector<splitPoint> sortSplits(std::vector<splitPoint>& s, bool ascend);
+    static bool splitCompare(const splitPoint& p1, const splitPoint& p2);
+    static bool splitEqual(const splitPoint& p1, const splitPoint& p2);
+    void getRunControl(void);
+
+    long int m_interAlgo;
+    long int m_sectionEdges;
+    long int m_handleFaces;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

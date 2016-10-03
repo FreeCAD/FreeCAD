@@ -134,7 +134,7 @@ short DrawView::mustExecute() const
     if (result) {
         return result;
     }
-    return App::DocumentObject::mustExecute();   return App::DocumentObject::mustExecute();
+        return App::DocumentObject::mustExecute();
 }
 
 ////you must override this in derived class
@@ -146,7 +146,6 @@ QRectF DrawView::getRect() const
 
 void DrawView::onDocumentRestored()
 {
-    // Rebuild the view
     DrawView::execute();
 }
 
