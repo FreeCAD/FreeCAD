@@ -45,7 +45,7 @@ EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 
 GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
-    initExtension(GeoFeatureGroupExtension::getClassTypeId());
+    initExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY(Placement,(Base::Placement()));
 }
@@ -128,7 +128,7 @@ bool GeoFeatureGroupExtension::geoHasObject (const DocumentObject* obj) const {
 DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject* obj, bool indirect)
 {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GeoFeatureGroupExtension::getClassTypeId());
+    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GeoFeatureGroupExtension::getExtensionClassTypeId());
     for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
         GeoFeatureGroupExtension* grp = (GeoFeatureGroupExtension*)(*it);
         if ( indirect ) {

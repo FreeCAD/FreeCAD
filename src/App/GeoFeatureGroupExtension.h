@@ -71,7 +71,7 @@ public:
 
     /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
     static bool isNonGeoGroup(const DocumentObject* obj) {
-        return obj->hasExtension(GroupExtension::getClassTypeId());
+        return obj->hasExtension(GroupExtension::getExtensionClassTypeId());
     }
 };
 

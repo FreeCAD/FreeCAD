@@ -1894,15 +1894,14 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     string ObjectName;
     if (!base)
         return 0;
-    
-    App::DocumentObject* pcObject = dynamic_cast<App::DocumentObject*>(base);
-    if (!pcObject) {
+    if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         delete base;
         std::stringstream str;
         str << "'" << sType << "' is not a document object type";
         throw Base::TypeError(str.str());
     }
 
+    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(base);
     pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!

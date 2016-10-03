@@ -130,14 +130,14 @@ public:
     //returns first of type (or derived from) and throws otherwise
     template<typename ExtensionT>
     ExtensionT* getExtensionByType() {
-        return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getClassTypeId()));
+        return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId()));
     };
     
     //get all extensions which have the given base class
     std::vector<Extension*> getExtensionsDerivedFrom(Base::Type type) const;
     template<typename ExtensionT>
     std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
-        auto vec = getExtensionsDerivedFrom(ExtensionT::getClassTypeId());
+        auto vec = getExtensionsDerivedFrom(ExtensionT::getExtensionClassTypeId());
         std::vector<ExtensionT*> typevec;
         for(auto ext : vec)
             typevec.push_back(dynamic_cast<ExtensionT*>(ext));

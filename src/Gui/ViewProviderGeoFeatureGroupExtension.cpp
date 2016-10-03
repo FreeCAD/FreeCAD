@@ -38,7 +38,7 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroupExtension, Gui::ViewPr
 
 ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
 {
-    initExtension(ViewProviderGeoFeatureGroupExtension::getClassTypeId());
+    initExtension(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
     
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();

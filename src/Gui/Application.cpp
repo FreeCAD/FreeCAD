@@ -277,27 +277,27 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
     SoNode* node = 0;
     try {
         Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
-        //throws if dynamic_cast fails, hence no check needed
-        std::unique_ptr<Gui::ViewProviderDocumentObject> vp(dynamic_cast<Gui::ViewProviderDocumentObject*>(base));
+        if (base && base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+            std::unique_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
+            std::map<std::string, App::Property*> Map;
+            obj->getPropertyMap(Map);
+            vp->attach(obj);
+            for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
+                vp->updateData(it->second);
+            }
 
-        std::map<std::string, App::Property*> Map;
-        obj->getPropertyMap(Map);
-        vp->attach(obj);
-        for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            vp->updateData(it->second);
+            std::vector<std::string> modes = vp->getDisplayModes();
+            if (!modes.empty())
+                vp->setDisplayMode(modes.front().c_str());
+            node = vp->getRoot()->copy();
+            node->ref();
+            std::string type = "So";
+            type += node->getTypeId().getName().getString();
+            type += " *";
+            PyObject* proxy = 0;
+            proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)node, 1);
+            return Py::new_reference_to(Py::Object(proxy, true));
         }
-
-        std::vector<std::string> modes = vp->getDisplayModes();
-        if (!modes.empty())
-            vp->setDisplayMode(modes.front().c_str());
-        node = vp->getRoot()->copy();
-        node->ref();
-        std::string type = "So";
-        type += node->getTypeId().getName().getString();
-        type += " *";
-        PyObject* proxy = 0;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)node, 1);
-        return Py::new_reference_to(Py::Object(proxy, true));
     }
     catch (const Base::Exception& e) {
         if (node) node->unref();

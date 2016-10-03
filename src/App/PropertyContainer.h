@@ -101,7 +101,7 @@ struct AppExport PropertyData
 
 /** Base class of all classes with properties
  */
-class AppExport PropertyContainer: public virtual Base::Persistence
+class AppExport PropertyContainer: public Base::Persistence
 {
 
   TYPESYSTEM_HEADER();
@@ -270,28 +270,5 @@ template<> void _class_::init(void){\
 }
 
 } // namespace App
-
-
-/**
- * Overload of freecads base class cast for all cases without any virtual inheritance
- */
-template<typename T> T * freecad_dynamic_cast(App::PropertyContainer* t)
-{
-    if (t && t->isDerivedFrom(T::getClassTypeId()))
-        return static_cast<T*>(t);
-    else
-        return nullptr;
-}
-
-/**
- * See explaination above
- */
-template<typename T> const T * freecad_dynamic_cast(const App::PropertyContainer* t)
-{
-    if (t && t->isDerivedFrom(T::getClassTypeId()))
-        return static_cast<const T*>(t);
-    else
-        return nullptr;
-}
 
 #endif // APP_PROPERTYCONTAINER_H

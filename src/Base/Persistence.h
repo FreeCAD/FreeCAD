@@ -48,7 +48,7 @@ public:
      * It is not meant to have the exact size, it is more or less an estimation
      * which runs fast! Is it two bytes or a GB?
      */
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize (void) const = 0;
     /** This method is used to save properties to an XML document.
      * A good example you'll find in PropertyStandard.cpp, e.g. the vector:
      * \code
@@ -65,7 +65,7 @@ public:
      * is written. This means closing tags and writing UTF-8. 
      * @see Base::Writer
      */
-    virtual void Save (Writer &/*writer*/) const;
+    virtual void Save (Writer &/*writer*/) const = 0;
     /** This method is used to restore properties from an XML document.
      * It uses the XMLReader class, which bases on SAX, to read the in Save() 
      * written information. Again the Vector as an example:
@@ -81,7 +81,7 @@ public:
      * }
      * \endcode
      */
-    virtual void Restore(XMLReader &/*reader*/);
+    virtual void Restore(XMLReader &/*reader*/) = 0;
     /** This method is used to save large amounts of data to a binary file.
      * Sometimes it makes no sense to write property data as XML. In case the 
      * amount of data is too big or the data type has a more effective way to 
