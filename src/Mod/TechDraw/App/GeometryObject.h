@@ -32,8 +32,14 @@
 #include <string>
 #include <vector>
 
-#include "DrawView.h"
 #include "Geometry.h"
+//#include "DrawViewPart.h"
+
+namespace TechDraw
+{
+class DrawViewPart;
+class DrawView;
+}
 
 namespace TechDrawGeometry
 {
@@ -52,7 +58,7 @@ class TechDrawExport GeometryObject
 {
 public:
     /// Constructor
-    GeometryObject(TechDraw::DrawView* parent);
+    GeometryObject(TechDraw::DrawViewPart* parent);
     virtual ~GeometryObject();
 
     void clear();
@@ -65,6 +71,7 @@ public:
 
     const std::vector<Vertex *>   & getVertexGeometry() const { return vertexGeom; };
     const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; };
+    const std::vector<BaseGeom *> getVisibleFaceEdges() const;
     const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; };
 
     void projectShape(const TopoDS_Shape &input,
@@ -74,6 +81,7 @@ public:
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
     void clearFaceGeom();
+    void setIsoCount(int i) { m_isoCount = i; }
 
 protected:
     //HLR output
@@ -121,7 +129,8 @@ protected:
     double Tolerance;
     double Scale;
 
-    TechDraw::DrawView* m_parent;
+    TechDraw::DrawViewPart* m_parent;
+    int m_isoCount;
 };
 
 } //namespace TechDrawGeometry

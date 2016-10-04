@@ -104,6 +104,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     static const char *group = "Projection";
     static const char *fgroup = "Format";
     static const char *lgroup = "SectionLine";
+    static const char *sgroup = "Show";
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
@@ -113,19 +114,27 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     Tolerance.setConstraints(&floatRange);
 
     //properties that affect Appearance
-    ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),fgroup,App::Prop_None,"Hidden lines on/off");
-    ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),fgroup,App::Prop_None,"Smooth lines on/off");
-    ADD_PROPERTY_TYPE(ShowSeamLines ,(false),fgroup,App::Prop_None,"Seam lines on/off");
-    //ADD_PROPERTY_TYPE(ShowIsoLines ,(false),group,App::Prop_None,"Iso u,v lines on/off");
+    //visible outline
+    ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
+    ADD_PROPERTY_TYPE(ShowSeamLines ,(false),sgroup,App::Prop_None,"Visible Seam lines on/off");
+    ADD_PROPERTY_TYPE(ShowIsoLines ,(false),sgroup,App::Prop_None,"Visible Iso u,v lines on/off");
+    ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),sgroup,App::Prop_None,"Hidden Hard lines on/off");   // and outline
+    //hidden outline
+    ADD_PROPERTY_TYPE(SmoothHidden ,(false),sgroup,App::Prop_None,"Hidden Smooth lines on/off");
+    ADD_PROPERTY_TYPE(SeamHidden ,(false),sgroup,App::Prop_None,"Hidden Seam lines on/off");
+    ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
+    ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
+
     ADD_PROPERTY_TYPE(LineWidth,(0.7f),fgroup,App::Prop_None,"The thickness of visible lines");
     ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
-    ADD_PROPERTY_TYPE(ShowCenters ,(true),fgroup,App::Prop_None,"Center marks on/off");
+    ADD_PROPERTY_TYPE(IsoWidth,(0.30),fgroup,App::Prop_None,"The thickness of UV isoparameter lines, if enabled");
+    ADD_PROPERTY_TYPE(ShowCenters ,(true),sgroup,App::Prop_None,"Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
-    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),fgroup,App::Prop_None,"Show a horizontal centerline through view");
-    ADD_PROPERTY_TYPE(VertCenterLine ,(false),fgroup,App::Prop_None,"Show a vertical centerline through view");
+    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),sgroup,App::Prop_None,"Show a horizontal centerline through view");
+    ADD_PROPERTY_TYPE(VertCenterLine ,(false),sgroup,App::Prop_None,"Show a vertical centerline through view");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,lgroup,App::Prop_None,"Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup,App::Prop_None,"Show/hide section line if applicable");
     ADD_PROPERTY_TYPE(HorizSectionLine ,(true)    ,lgroup,App::Prop_None,"Section line is horizontal");
     ADD_PROPERTY_TYPE(ArrowUpSection ,(false)    ,lgroup,App::Prop_None,"Section line arrows point up");
     ADD_PROPERTY_TYPE(SymbolSection,("A") ,lgroup,App::Prop_None,"Section identifier");
@@ -189,6 +198,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 
     try {
+        geometryObject->setIsoCount(IsoCount.getValue());
         buildGeometryObject(mirroredShape,inputCenter);
     }
     catch (Standard_Failure) {
@@ -248,26 +258,40 @@ void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
                             inputCenter,
                             Direction.getValue(),
                             validXDir);
-    geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
+    geometryObject->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
                                     true);
-    geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
-                                    true);
-    geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
-                                    true);
-//    geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
-//                                    true);
-    geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
-                                    false);
-//    geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
-//                                    false);
-//    geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
-//                                    false);
-//    geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
-//                                    false);
-//    geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
-//                                    false);
+    if (ShowSmoothLines.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
+                                        true);
+    }
+    if (ShowSeamLines.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
+                                        true);
+    }
+    if ((ShowIsoLines.getValue()) && (IsoCount.getValue() > 0)) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
+                                        true);
+    }
+    if (ShowHiddenLines.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
+                                        false);
+        geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
+                                        false);
+    }
+    if (SmoothHidden.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
+                                        false);
+    }
+    if (SeamHidden.getValue()) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
+                                        false);
+    }
+    if (IsoHidden.getValue() && (IsoCount.getValue() > 0)) {
+        geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
+                                        false);
+    }
     bbox = geometryObject->calcBoundingBox();
 }
 
@@ -275,20 +299,24 @@ void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
 void DrawViewPart::extractFaces()
 {
     geometryObject->clearFaceGeom();
-    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getEdgeGeometry();    //TODO: get visible edge geom!
+    //const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getEdgeGeometry();    //TODO: get visible edge geom!
+    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getVisibleFaceEdges();      //visible but not iso
     std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-        if ((*itEdge)->visible) {                        //don't make invisible faces!  //TODO: only use Seam/Smooth if checked
+//        if ((*itEdge)->visible) {                        //don't make invisible faces!  //TODO: only use Seam/Smooth if checked
             origEdges.push_back((*itEdge)->occEdge);
-        }
+//        }
     }
+
 
     std::vector<TopoDS_Edge> faceEdges;
     std::vector<TopoDS_Edge> nonZero;
-    for (auto& e:origEdges) {                            //drop any zero edges
+    for (auto& e:origEdges) {                            //drop any zero edges (shouldn't be any by now!!!)
         if (!DrawUtil::isZeroEdge(e)) {
             nonZero.push_back(e);
+        } else {
+            Base::Console().Message("INFO - DVP::extractFaces for %s found ZeroEdge!\n",getNameInDocument());
         }
     }
     faceEdges = nonZero;
@@ -327,7 +355,7 @@ void DrawViewPart::extractFaces()
             BRepBndLib::Add(*itInner, sInner);
             sInner.SetGap(0.1);
             if (sInner.IsVoid()) {
-                Base::Console().Message("DVP::Extract Faces - inner Bnd_Box is void for %s\n",getNameInDocument());
+                Base::Console().Log("INFO - DVP::Extract Faces - inner Bnd_Box is void for %s\n",getNameInDocument());
                 continue;
             }
             if (sOuter.IsOut(sInner)) {      //bboxes of edges don't intersect, don't bother
@@ -810,6 +838,11 @@ DrawViewSection* DrawViewPart::getSectionRef(void) const
         }
     }
     return result;
+}
+
+const std::vector<TechDrawGeometry::BaseGeom  *> DrawViewPart::getVisibleFaceEdges() const
+{
+    return geometryObject->getVisibleFaceEdges();
 }
 
 void DrawViewPart::getRunControl()

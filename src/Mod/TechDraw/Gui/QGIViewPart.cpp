@@ -247,15 +247,20 @@ void QGIViewPart::updateView(bool update)
 
 
     if (update ||
-       viewPart->isTouched() ||
-       viewPart->Source.isTouched() ||
-       viewPart->Direction.isTouched() ||
-       viewPart->XAxisDirection.isTouched() ||
-       viewPart->Tolerance.isTouched() ||
-       viewPart->Scale.isTouched() ||
-       viewPart->ShowHiddenLines.isTouched() ||
-       viewPart->ShowSmoothLines.isTouched() ||
-       viewPart->ShowSeamLines.isTouched() ) {
+        viewPart->isTouched() ||
+        viewPart->Source.isTouched() ||
+        viewPart->Direction.isTouched() ||
+        viewPart->XAxisDirection.isTouched() ||
+        viewPart->Tolerance.isTouched() ||
+        viewPart->Scale.isTouched() ||
+        viewPart->ShowHiddenLines.isTouched() ||
+        viewPart->ShowSmoothLines.isTouched() ||
+        viewPart->ShowSeamLines.isTouched()   ||
+        viewPart->ShowIsoLines.isTouched()    ||
+        viewPart->SmoothHidden.isTouched()    ||
+        viewPart->SeamHidden.isTouched()      ||
+        viewPart->IsoHidden.isTouched()       ||
+        viewPart->IsoCount.isTouched()  ) {
         draw();
     } else if (update ||
               viewPart->LineWidth.isTouched() ||
@@ -282,8 +287,6 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
-    //Base::Console().Message("TRACE - QGIVP::drawViewPart\n");
-
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
         return;
@@ -291,6 +294,7 @@ void QGIViewPart::drawViewPart()
 
     float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
+    float lineWidthIso = viewPart->IsoWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
     removePrimitives();                      //clean the slate
@@ -329,11 +333,16 @@ void QGIViewPart::drawViewPart()
             if (((*itEdge)->classOfEdge == ecHARD) ||
                 ((*itEdge)->classOfEdge == ecOUTLINE) ||
                 (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->ShowSmoothLines.getValue()) ||
-                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->ShowSeamLines.getValue())) {
+                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->ShowSeamLines.getValue())    ||
+                (((*itEdge)->classOfEdge == ecUVISO) && viewPart->ShowIsoLines.getValue())) {
                 showEdge = true;
             }
         } else {
-            if (viewPart->ShowHiddenLines.getValue()) {
+            if ( (((*itEdge)->classOfEdge == ecHARD) && (viewPart->ShowHiddenLines.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecOUTLINE) && (viewPart->ShowHiddenLines.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))    ||
+                 (((*itEdge)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue())) ) {
                 showEdge = true;
             }
         }
@@ -348,6 +357,9 @@ void QGIViewPart::drawViewPart()
                 item->setWidth(lineWidthHid);
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
+            }
+            if ((*itEdge)->classOfEdge == ecUVISO) {
+                item->setWidth(lineWidthIso);
             }
             item->setPrettyNormal();
             //debug a path
@@ -454,8 +466,6 @@ void QGIViewPart::removeDecorations()
 
 void QGIViewPart::drawSectionLine(bool b)
 {
-    //Base::Console().Message("TRACE - QGIVP::drawSectionLine);
-
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
     TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
     if (!viewPart ||

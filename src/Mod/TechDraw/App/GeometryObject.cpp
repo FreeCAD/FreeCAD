@@ -67,6 +67,7 @@
 
 #include "DrawUtil.h"
 #include "GeometryObject.h"
+#include "DrawViewPart.h"
 
 //#include <QDebug>
 
@@ -82,10 +83,11 @@ struct EdgePoints {
 //debugging routine signatures
 const char* _printBool(bool b);
 
-GeometryObject::GeometryObject(DrawView* parent) :
+GeometryObject::GeometryObject(DrawViewPart* parent) :
     Tolerance(0.05f),
     Scale(1.f),
-    m_parent(parent)
+    m_parent(parent),
+    m_isoCount(0)
 {
 }
 
@@ -104,9 +106,40 @@ void GeometryObject::setScale(double value)
     Scale = value;
 }
 
+const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges() const
+{
+    std::vector<BaseGeom *> result;
+    bool smoothOK = m_parent->ShowSmoothLines.getValue();
+    bool seamOK   = m_parent->ShowSeamLines.getValue();
+    for (auto& e:edgeGeom) {
+        if (e->visible) {
+            switch (e->classOfEdge) {
+                case ecHARD:
+                case ecOUTLINE:
+                    result.push_back(e);
+                    break;
+                case ecSMOOTH:
+                    if (smoothOK) {
+                        result.push_back(e);
+                    }
+                    break;
+                case ecSEAM:
+                    if (seamOK) {
+                        result.push_back(e);
+                    }
+                    break;
+                default:
+                ;
+            }
+        }
+    }
+    return result;
+}
+
+
+
 void GeometryObject::clear()
 {
-
     for(std::vector<BaseGeom *>::iterator it = edgeGeom.begin(); it != edgeGeom.end(); ++it) {
         delete *it;
         *it = 0;
@@ -141,7 +174,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     Handle_HLRBRep_Algo brep_hlr = NULL;
     try {
         brep_hlr = new HLRBRep_Algo();
-        brep_hlr->Add(input);
+        brep_hlr->Add(input, m_isoCount);
 
         // Project the shape into view space with the object's centroid
         // at the origin.
@@ -212,6 +245,9 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
             case ecSEAM:
                 filtEdges = visSeam;
                 break;
+            case ecUVISO:
+                filtEdges = visIso;
+                break;
             default:
                 Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported visible edgeClass: %d\n",category);
                 return;
@@ -221,7 +257,18 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
             case ecHARD:
                 filtEdges = hidHard;
                 break;
-            //more cases here?
+            case ecOUTLINE:
+                filtEdges = hidOutline;
+                break;
+            case ecSMOOTH:
+                filtEdges = hidSmooth;
+                break;
+            case ecSEAM:
+                filtEdges = hidSeam;
+                break;
+            case ecUVISO:
+                filtEdges = hidIso;
+                break;
             default:
                 Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported hidden edgeClass: %d\n",category);
                 return;
@@ -239,10 +286,6 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         return; // There is no OpenCascade Geometry to be calculated
     }
 
-    // build a mesh to explore the shape
-    //BRepMesh_IncrementalMesh(edgeCompound, Tolerance);    //TODO: is this needed? no idea why we need to mesh shape doesn't seem to change anything
-
-    // Explore all edges of edgeCompound and calculate base geometry representation
     BaseGeom* base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
     for (int i = 1 ; edges.More(); edges.Next(),i++) {
@@ -313,7 +356,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 }
             }
         }
-    }
+    }  //end TopExp
 }
 
 //! empty Face geometry

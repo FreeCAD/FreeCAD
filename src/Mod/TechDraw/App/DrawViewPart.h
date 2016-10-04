@@ -31,10 +31,13 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include "DrawView.h"
 #include <App/FeaturePython.h>
 
 #include <Base/BoundBox.h>
+
+//#include "GeometryObject.h"
 
 class gp_Pnt;
 
@@ -70,11 +73,21 @@ public:
     App::PropertyLink   Source;                                        //Part Feature
     App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyVector XAxisDirection;
-    App::PropertyBool   ShowHiddenLines;
-    App::PropertyBool   ShowSmoothLines;
     App::PropertyBool   ShowSeamLines;
+    App::PropertyBool   ShowSmoothLines;
+    //App::PropertyBool   ShowOutLines;
+    App::PropertyBool   ShowIsoLines;
+
+    App::PropertyBool   ShowHiddenLines;
+    App::PropertyBool   SmoothHidden;
+    App::PropertyBool   SeamHidden;
+    //App::PropertyBool   OutLinesHidden;
+    App::PropertyBool   IsoHidden;
+    App::PropertyInteger  IsoCount;
+
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
+    App::PropertyFloat  IsoWidth;
     App::PropertyBool   ShowCenters;
     App::PropertyFloat  CenterScale;
     App::PropertyFloatConstraint  Tolerance;
@@ -93,6 +106,7 @@ public:
 
     const std::vector<TechDrawGeometry::Vertex *> & getVertexGeometry() const;
     const std::vector<TechDrawGeometry::BaseGeom  *> & getEdgeGeometry() const;
+    const std::vector<TechDrawGeometry::BaseGeom  *> getVisibleFaceEdges() const;
     const std::vector<TechDrawGeometry::Face *> & getFaceGeometry() const;
     bool hasGeometry(void) const;
 
