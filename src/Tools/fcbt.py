@@ -17,6 +17,7 @@ possible commands are:
  - DistAll         (DA)   Run all three above modules
  - NextBuildNumber (NBN)  Increase the Build Number of this Version 
  - CreateModule    (CM)   Insert a new FreeCAD Module in the module directory
+ - CreatePyModule  (CP)   Insert a new FreeCAD Python Module in the module directory
 
 For help on the modules type:
   fcbt <command name> ?
@@ -49,6 +50,8 @@ elif Cmd == "nextbuildnumber" or Cmd == "nbn":
 	import fcbt.NextBuildNumber
 elif Cmd == "createmodule" or Cmd == "cm":
 	import fcbt.CreateModule
+elif Cmd == "createpymodule" or Cmd == "cp":
+	import fcbt.CreatePyModule
 elif Cmd == "?" or Cmd == "help" or Cmd == "/h" or Cmd == "/?" or Cmd == "-h" or Cmd == "-help":
 	sys.stdout.write(help1)
 else:
