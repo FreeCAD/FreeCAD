@@ -191,7 +191,10 @@ std::string  DrawViewDimension::getFormatedValue() const
     } else {
         qVal.setUnit(Base::Unit::Length);
     }
-    QString userStr = qVal.getUserString();
+    QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
+    QRegExp rx2(QString::fromUtf8("\\D*$"));
+    QString userVal = userStr;
+    userVal.remove(rx2);
 
     QRegExp rx(QString::fromUtf8("%(\\w+)%"));                        //any word bracketed by %
     QStringList list;
@@ -202,13 +205,27 @@ std::string  DrawViewDimension::getFormatedValue() const
         pos += rx.matchedLength();
     }
 
+    QString repl = userVal;
+    if (showUnits()) {
+        repl = userStr;
+    }
+
     for(QStringList::const_iterator it = list.begin(); it != list.end(); ++it) {
         if(*it == QString::fromUtf8("%value%")){
-            str.replace(*it,userStr);
+            str.replace(*it,repl);
 //        } else {                                                       //insert additional placeholder replacement logic here
         }
     }
     return str.toUtf8().constData();
+}
+
+bool DrawViewDimension::showUnits() const
+{
+    bool result = false;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    result = hGrp->GetBool("ShowUnits", true);
+    return result;
 }
 
 double DrawViewDimension::getDimValue() const
