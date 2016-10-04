@@ -297,23 +297,25 @@ void QGIViewPart::drawViewPart()
     removeDecorations();
 
 #if MOD_TECHDRAW_HANDLE_FACES
-    // Draw Faces
-    std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
-    const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
-    std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
-    for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
-        QGIFace* newFace = drawFace(*fit,i);
-        TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
-        if (fHatch) {
-            if (!fHatch->HatchPattern.isEmpty()) {
-                App::Color hColor = fHatch->HatchColor.getValue();
-                newFace->setHatchColor(hColor.asCSSString());
-                newFace->setHatch(fHatch->HatchPattern.getValue());
+    if (viewPart->handleFaces()) {
+        // Draw Faces
+        std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
+        const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
+        std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
+        for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
+            QGIFace* newFace = drawFace(*fit,i);
+            TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
+            if (fHatch) {
+                if (!fHatch->HatchPattern.isEmpty()) {
+                    App::Color hColor = fHatch->HatchColor.getValue();
+                    newFace->setHatchColor(hColor.asCSSString());
+                    newFace->setHatch(fHatch->HatchPattern.getValue());
+                }
             }
+            newFace->setDrawEdges(false);
+            newFace->setZValue(ZVALUE::FACE);
+            newFace->setPrettyNormal();
         }
-        newFace->setDrawEdges(false);
-        newFace->setZValue(ZVALUE::FACE);
-        newFace->setPrettyNormal();
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
