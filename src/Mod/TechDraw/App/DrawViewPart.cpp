@@ -817,28 +817,20 @@ void DrawViewPart::getRunControl()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/RunControl");
     m_interAlgo = hGrp->GetInt("InterAlgo", 2l);
-    m_sectionEdges = hGrp->GetInt("ShowSectionEdges", 1l);
-    m_handleFaces = hGrp->GetInt("HandleFaces", 1l);
+    m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 1l);
+    m_handleFaces = hGrp->GetBool("HandleFaces", 1l);
 //    Base::Console().Message("TRACE - DVP::getRunControl - interAlgo: %ld sectionFaces: %ld handleFaces: %ld\n",
 //                             m_interAlgo,m_sectionEdges,m_handleFaces);
 }
 
 bool DrawViewPart::handleFaces(void)
 {
-    bool result = false;
-    if (m_handleFaces == 1l) {
-        result = true;
-    }
-    return result;
+    return m_handleFaces;
 }
 
 bool DrawViewPart::showSectionEdges(void)
 {
-    bool result = false;
-    if (m_sectionEdges == 1l) {
-        result = true;
-    }
-    return result;
+    return m_sectionEdges;
 }
 
 PyObject *DrawViewPart::getPyObject(void)
