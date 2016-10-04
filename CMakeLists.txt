@@ -585,19 +585,26 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             vtkFiltersSources
             vtkFiltersGeometry
         )
-        # On Linux vtkParallelMPI package is required
-        if (UNIX AND NOT APPLE)
-            set (VTK_COMPONENTS
-                ${VTK_COMPONENTS}
-                vtkIOMPIParallel
-                vtkParallelMPI)
+        # check which modules are available
+        if(UNIX AND NOT APPLE)
+            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI)
+            foreach(_module ${VTK_COMPONENTS})
+                file(GLOB_RECURSE _module_exists /usr/lib*/cmake/*${_module}.cmake
+                                                 ${CMAKE_ROOT}/*${_module}.cmake)
+                if(_module_exists)
+                    list(APPEND AVAILABLE_VTK_COMPONENTS ${_module})
+                endif()
+            endforeach()
         endif()
 
-        # For Debian testing you may have to only allow a certain list of components:
-        # http://forum.freecadweb.org/viewtopic.php?f=4&t=15646&start=10#p141693
-        #
-        #find_package(VTK COMPONENTS ${VTK_COMPONENTS} REQUIRED NO_MODULE) #don't check VERSION 6 as this would exclude version 7
-        find_package(VTK REQUIRED NO_MODULE) #don't check VERSION 6 as this would exclude version 7
+        # don't check VERSION 6 as this would exlude VERSION 7
+        if(AVAILABLE_VTK_COMPONENTS)
+            message(STATUS "VTK components: ${AVAILABLE_VTK_COMPONENTS}")
+            find_package(VTK COMPONENTS ${AVAILABLE_VTK_COMPONENTS} REQUIRED NO_MODULE)
+        else()
+            message(STATUS "VTK components: not found or used")
+            find_package(VTK REQUIRED NO_MODULE)
+        endif()
 
         set(BUILD_FEM_VTK ON)
         if(${VTK_MAJOR_VERSION} LESS 6)
