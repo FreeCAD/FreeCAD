@@ -156,8 +156,8 @@ protected:
     void getRunControl(void);
 
     long int m_interAlgo;
-    long int m_sectionEdges;
-    long int m_handleFaces;
+    bool m_sectionEdges;
+    bool m_handleFaces;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
