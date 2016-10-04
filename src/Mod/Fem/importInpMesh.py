@@ -77,7 +77,13 @@ def read_inp(file_name):
             if line[:8].upper() == "*INCLUDE":
                 start = 1 + line.index("=")
                 include = line[start:].strip().strip('"')
-                f_include = pyopen(include, "r")
+                include_path = os.path.normpath(include)
+                if os.path.isfile(include_path) is True:
+                    f_include = pyopen(include_path, "r")
+                else:
+                    path_start = os.path.split(file_name)[0]
+                    include_full_path = os.path.join(path_start, include_path)
+                    f_include = pyopen(include_full_path, "r")
                 continue
             read_node = False
             elm_category = []
