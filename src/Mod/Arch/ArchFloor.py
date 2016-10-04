@@ -97,8 +97,10 @@ Floor creation aborted.\n" )
 class _Floor:
     "The Floor object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLength","Height","Arch","The height of this floor")
-        obj.addProperty("App::PropertyPlacement","Placement","Arch","The placement of this group")
+        obj.addProperty("App::PropertyLength","Height","Arch","The height of this object")
+        if not hasattr(obj,"Placement"):
+            # obj can be a Part Feature and already has a placement
+            obj.addProperty("App::PropertyPlacement","Placement","Arch","The placement of this object")
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj
