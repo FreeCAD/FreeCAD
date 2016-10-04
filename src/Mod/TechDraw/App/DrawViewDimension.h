@@ -88,6 +88,7 @@ protected:
     virtual void onDocumentRestored();
     int getIndexFromName(std::string geomName) const;
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
+    bool showUnits() const;
 
 protected:
     Measure::Measurement *measurement;
