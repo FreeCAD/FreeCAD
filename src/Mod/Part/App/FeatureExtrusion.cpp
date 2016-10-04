@@ -296,10 +296,11 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
 
         //make faces from wires
         if (params.solid) {
-            if (myShape.ShapeType() == TopAbs_FACE && params.faceMakerClass == "Part::FaceMakerExtrusion"){
-                //legacy exclusion: ignore "solid" if extruding a face.
+            //test if we need to make faces from wires. If there are faces - we don't.
+            TopExp_Explorer xp(myShape, TopAbs_FACE);
+            if (xp.More()){
+                //source shape has faces. Just extrude as-is.
             } else {
-                //new strict behavior. If solid==True => make faces from wires, and if myShape not wires - fail!
                 std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
 
                 if (myShape.ShapeType() == TopAbs_COMPOUND)
