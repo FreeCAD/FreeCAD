@@ -253,10 +253,10 @@ void QGIViewPart::updateView(bool update)
         viewPart->XAxisDirection.isTouched() ||
         viewPart->Tolerance.isTouched() ||
         viewPart->Scale.isTouched() ||
-        viewPart->ShowHiddenLines.isTouched() ||
-        viewPart->ShowSmoothLines.isTouched() ||
-        viewPart->ShowSeamLines.isTouched()   ||
-        viewPart->ShowIsoLines.isTouched()    ||
+        viewPart->HardHidden.isTouched() ||
+        viewPart->SmoothVisible.isTouched() ||
+        viewPart->SeamVisible.isTouched()   ||
+        viewPart->IsoVisible.isTouched()    ||
         viewPart->SmoothHidden.isTouched()    ||
         viewPart->SeamHidden.isTouched()      ||
         viewPart->IsoHidden.isTouched()       ||
@@ -332,14 +332,14 @@ void QGIViewPart::drawViewPart()
         if ((*itEdge)->visible) {
             if (((*itEdge)->classOfEdge == ecHARD) ||
                 ((*itEdge)->classOfEdge == ecOUTLINE) ||
-                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->ShowSmoothLines.getValue()) ||
-                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->ShowSeamLines.getValue())    ||
-                (((*itEdge)->classOfEdge == ecUVISO) && viewPart->ShowIsoLines.getValue())) {
+                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue()) ||
+                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->SeamVisible.getValue())    ||
+                (((*itEdge)->classOfEdge == ecUVISO) && viewPart->IsoVisible.getValue())) {
                 showEdge = true;
             }
         } else {
-            if ( (((*itEdge)->classOfEdge == ecHARD) && (viewPart->ShowHiddenLines.getValue())) ||
-                 (((*itEdge)->classOfEdge == ecOUTLINE) && (viewPart->ShowHiddenLines.getValue())) ||
+            if ( (((*itEdge)->classOfEdge == ecHARD) && (viewPart->HardHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecOUTLINE) && (viewPart->HardHidden.getValue())) ||
                  (((*itEdge)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue())) ||
                  (((*itEdge)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))    ||
                  (((*itEdge)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue())) ) {
@@ -373,7 +373,7 @@ void QGIViewPart::drawViewPart()
     // Draw Vertexs:
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-    bool showCenters = viewPart->ShowCenters.getValue();
+    bool showCenters = viewPart->ArcCenterMarks.getValue();
     double cAdjust = viewPart->CenterScale.getValue();
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter) {

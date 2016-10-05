@@ -73,22 +73,22 @@ public:
     App::PropertyLink   Source;                                        //Part Feature
     App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyVector XAxisDirection;
-    App::PropertyBool   ShowSeamLines;
-    App::PropertyBool   ShowSmoothLines;
-    //App::PropertyBool   ShowOutLines;
-    App::PropertyBool   ShowIsoLines;
+    App::PropertyBool   SeamVisible;
+    App::PropertyBool   SmoothVisible;
+    //App::PropertyBool   OutlinesVisible;
+    App::PropertyBool   IsoVisible;
 
-    App::PropertyBool   ShowHiddenLines;
+    App::PropertyBool   HardHidden;
     App::PropertyBool   SmoothHidden;
     App::PropertyBool   SeamHidden;
-    //App::PropertyBool   OutLinesHidden;
+    //App::PropertyBool   OutlinesHidden;
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
     App::PropertyFloat  IsoWidth;
-    App::PropertyBool   ShowCenters;
+    App::PropertyBool   ArcCenterMarks;
     App::PropertyFloat  CenterScale;
     App::PropertyFloatConstraint  Tolerance;
     App::PropertyBool   HorizCenterLine;
