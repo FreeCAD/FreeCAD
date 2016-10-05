@@ -1927,7 +1927,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
         //PyList_Append(overlappss2, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape2 (anIt2.Key()))));
 #if PY_MAJOR_VERSION >= 3
         PyList_Append(overlappssindex2,PyLong_FromLong(anIt2.Key()+1));
-#esle
+#else
         PyList_Append(overlappssindex2,PyInt_FromLong(anIt2.Key()+1));
 #endif
     }
