@@ -385,7 +385,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
 
-    char * format = u8"\xe2\x8c\x80%value%";
+    const char * format = "\xe2\x8c\x80%value%";
     doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%s'", FeatName.c_str(),format);
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
