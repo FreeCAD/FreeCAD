@@ -26,7 +26,9 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
+#include <App/Material.h>
 
 #include <TopoDS_Compound.hxx>
 
@@ -60,6 +62,10 @@ public:
     App::PropertyVector SectionOrigin;
     App::PropertyBool   ShowCutSurface;
     App::PropertyColor  CutSurfaceColor;
+    App::PropertyBool   HatchCutSurface;
+    App::PropertyFile   HatchPattern;
+    App::PropertyColor  HatchColor;
+
 
     virtual short mustExecute() const;
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
@@ -87,6 +93,7 @@ protected:
                                      gp_Pnt faceCenter,
                                      const Base::Vector3d &direction,
                                      const Base::Vector3d &xaxis);
+    void getParameters(void);
 };
 
 typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;

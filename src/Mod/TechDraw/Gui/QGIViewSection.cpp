@@ -76,14 +76,19 @@ void QGIViewSection::drawSectionFace()
     std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
     QColor faceColor = section->CutSurfaceColor.getValue().asValue<QColor>();
     for(; fit != sectionFaces.end(); fit++) {
-        QGIFace* newFace = drawFace(*fit,-1);  //TODO: do we need to know which sectionFace this QGIFace came from?
+        QGIFace* newFace = drawFace(*fit,-1);
         newFace->setZValue(ZVALUE::SECTIONFACE);
-        newFace->setFill(faceColor, Qt::SolidPattern);
         if (section->showSectionEdges()) {
             newFace->setDrawEdges(true);
         } else {
             newFace->setDrawEdges(false);
         }
+        if (section->HatchCutSurface.getValue()) {
+            App::Color hColor = section->HatchColor.getValue();
+            newFace->setHatchColor(hColor.asCSSString());
+            newFace->setHatch(section->HatchPattern.getValue());
+        }
+        newFace->setFill(faceColor, Qt::SolidPattern);
         newFace->setPrettyNormal();
         newFace->setAcceptHoverEvents(false);
         newFace->setFlag(QGraphicsItem::ItemIsSelectable, false);
