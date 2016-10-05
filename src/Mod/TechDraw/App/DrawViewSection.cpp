@@ -56,6 +56,9 @@
 
 #include <chrono>
 
+# include <QFile>
+# include <QFileInfo>
+
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/BoundBox.h>
@@ -85,16 +88,20 @@ DrawViewSection::DrawViewSection()
     static const char *fgroup = "Format";
     //static const char *lgroup = "Line";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
 
     ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View with SectionLine");
-    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0)    ,sgroup,App::Prop_None,"Section Plane normal direction");  //direction of extrusion of cutting prism
+    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,"Section Plane normal direction");  //direction of extrusion of cutting prism
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
 
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Show the cut surface");
-    ADD_PROPERTY_TYPE(CutSurfaceColor,(fcColor),fgroup,App::Prop_None,"The color to shade the cut surface");
+    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Shade the cut surface");
+
+    ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color to shade the cut surface");
+    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),fgroup,App::Prop_None,"Hatch the cut surface");
+    ADD_PROPERTY_TYPE(HatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
+    ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color of the hatch pattern");
+
+    getParameters();
+
 }
 
 DrawViewSection::~DrawViewSection()
@@ -439,6 +446,30 @@ bool DrawViewSection::isReallyInBox (const Base::Vector3d v, const Base::BoundBo
     return true;
 }
 
+void DrawViewSection::getParameters()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color cutColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
+    CutSurfaceColor.setValue(cutColor);
+    App::Color hatchColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionHatchColor", 0x00000000));
+    HatchColor.setValue(hatchColor);
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
+    std::string defaultFileName = defaultDir + "simple.svg";
+    QString patternFileName = QString::fromStdString(hGrp->GetASCII("PatternFile",defaultFileName.c_str()));
+    if (patternFileName.isEmpty()) {
+        patternFileName = QString::fromStdString(defaultFileName);
+    }
+    QFileInfo tfi(patternFileName);
+        if (tfi.isReadable()) {
+            HatchPattern.setValue(patternFileName.toUtf8().constData());
+        }
+
+}
 
 // Python Drawing feature ---------------------------------------------------------
 
