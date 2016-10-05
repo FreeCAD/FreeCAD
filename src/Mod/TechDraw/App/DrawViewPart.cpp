@@ -115,10 +115,10 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 
     //properties that affect Appearance
     //visible outline
-    ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
-    ADD_PROPERTY_TYPE(ShowSeamLines ,(false),sgroup,App::Prop_None,"Visible Seam lines on/off");
-    ADD_PROPERTY_TYPE(ShowIsoLines ,(false),sgroup,App::Prop_None,"Visible Iso u,v lines on/off");
-    ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),sgroup,App::Prop_None,"Hidden Hard lines on/off");   // and outline
+    ADD_PROPERTY_TYPE(SmoothVisible ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
+    ADD_PROPERTY_TYPE(SeamVisible ,(false),sgroup,App::Prop_None,"Visible Seam lines on/off");
+    ADD_PROPERTY_TYPE(IsoVisible ,(false),sgroup,App::Prop_None,"Visible Iso u,v lines on/off");
+    ADD_PROPERTY_TYPE(HardHidden ,(false),sgroup,App::Prop_None,"Hidden Hard lines on/off");   // and outline
     //hidden outline
     ADD_PROPERTY_TYPE(SmoothHidden ,(false),sgroup,App::Prop_None,"Hidden Smooth lines on/off");
     ADD_PROPERTY_TYPE(SeamHidden ,(false),sgroup,App::Prop_None,"Hidden Seam lines on/off");
@@ -128,7 +128,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     ADD_PROPERTY_TYPE(LineWidth,(0.7f),fgroup,App::Prop_None,"The thickness of visible lines");
     ADD_PROPERTY_TYPE(HiddenWidth,(0.15),fgroup,App::Prop_None,"The thickness of hidden lines, if enabled");
     ADD_PROPERTY_TYPE(IsoWidth,(0.30),fgroup,App::Prop_None,"The thickness of UV isoparameter lines, if enabled");
-    ADD_PROPERTY_TYPE(ShowCenters ,(true),sgroup,App::Prop_None,"Center marks on/off");
+    ADD_PROPERTY_TYPE(ArcCenterMarks ,(true),sgroup,App::Prop_None,"Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale,(2.0),fgroup,App::Prop_None,"Center mark size adjustment, if enabled");
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false),sgroup,App::Prop_None,"Show a horizontal centerline through view");
     ADD_PROPERTY_TYPE(VertCenterLine ,(false),sgroup,App::Prop_None,"Show a vertical centerline through view");
@@ -262,19 +262,19 @@ void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
                                     true);
-    if (ShowSmoothLines.getValue()) {
+    if (SmoothVisible.getValue()) {
         geometryObject->extractGeometry(TechDrawGeometry::ecSMOOTH,
                                         true);
     }
-    if (ShowSeamLines.getValue()) {
+    if (SeamVisible.getValue()) {
         geometryObject->extractGeometry(TechDrawGeometry::ecSEAM,
                                         true);
     }
-    if ((ShowIsoLines.getValue()) && (IsoCount.getValue() > 0)) {
+    if ((IsoVisible.getValue()) && (IsoCount.getValue() > 0)) {
         geometryObject->extractGeometry(TechDrawGeometry::ecUVISO,
                                         true);
     }
-    if (ShowHiddenLines.getValue()) {
+    if (HardHidden.getValue()) {
         geometryObject->extractGeometry(TechDrawGeometry::ecHARD,
                                         false);
         geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -299,14 +299,11 @@ void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
 void DrawViewPart::extractFaces()
 {
     geometryObject->clearFaceGeom();
-    //const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getEdgeGeometry();    //TODO: get visible edge geom!
-    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getVisibleFaceEdges();      //visible but not iso
+    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = geometryObject->getVisibleFaceEdges();
     std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
-//        if ((*itEdge)->visible) {                        //don't make invisible faces!  //TODO: only use Seam/Smooth if checked
-            origEdges.push_back((*itEdge)->occEdge);
-//        }
+        origEdges.push_back((*itEdge)->occEdge);
     }
 
 
