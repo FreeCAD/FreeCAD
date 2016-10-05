@@ -109,8 +109,8 @@ void GeometryObject::setScale(double value)
 const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges() const
 {
     std::vector<BaseGeom *> result;
-    bool smoothOK = m_parent->ShowSmoothLines.getValue();
-    bool seamOK   = m_parent->ShowSeamLines.getValue();
+    bool smoothOK = m_parent->SmoothVisible.getValue();
+    bool seamOK   = m_parent->SeamVisible.getValue();
     for (auto& e:edgeGeom) {
         if (e->visible) {
             switch (e->classOfEdge) {
