@@ -136,6 +136,9 @@ void TaskMirroredParameters::setupUI()
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         this->fillPlanesCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
     }
+    else {
+        this->fillPlanesCombo(planeLinks, NULL);
+    }
 
     //show the parts coordinate system planes for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
