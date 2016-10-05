@@ -26,13 +26,12 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD
-import FemGui
 import _FemConstraintSelfWeight
 
 
 def makeFemConstraintSelfWeight(name="FemConstraintSelfWeight"):
     '''makeFemFemConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
     _FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
         import _ViewProviderFemConstraintSelfWeight
