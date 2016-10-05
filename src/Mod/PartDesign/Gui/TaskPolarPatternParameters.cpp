@@ -156,6 +156,9 @@ void TaskPolarPatternParameters::setupUI()
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
     }
+    else {
+        this->fillAxisCombo(axesLinks, NULL);
+    }
 
     //show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
@@ -214,7 +217,7 @@ void TaskPolarPatternParameters::kickUpdateViewTimer() const
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-
+        
         if (originalSelected(msg)) {
             if (selectionMode == addFeature)
                 ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
@@ -222,23 +225,18 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
             exitSelectionMode();
         } else {
-            // TODO checkme (2015-09-01, Fat-Zer)
-            exitSelectionMode();
-            std::vector<std::string> axes;
-            App::DocumentObject* selObj;
-            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-            if(!selObj)
-                return;
-            // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || 
-                selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ||
-                selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ) {
+            if (selectionMode == reference) {
+                std::vector<std::string> axes;
+                App::DocumentObject* selObj;
+                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
+                if(!selObj)
+                    return;
                 pcPolarPattern->Axis.setValue(selObj, axes);
-
                 recomputeFeature();
                 updateUI();
             }
+            exitSelectionMode();
         }
     }
 }
